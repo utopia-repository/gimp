@@ -1,0 +1,42 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpgradientmenu</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimpfontmenu.html" title="gimpfontmenu"><link rel="next" href="libgimp-gimppalettemenu.html" title="gimppalettemenu"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpfontmenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimppalettemenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpgradientmenu"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpgradientmenu</span></h2><p>gimpgradientmenu &#8212; A widget for selecting gradients.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+GtkWidget*  <a href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new">gimp_gradient_select_widget_new</a> (const gchar *title,
+                                             const gchar *gradient_name,
+                                             <a href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
+                                             gpointer data);
+void        <a href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-close">gimp_gradient_select_widget_close</a>
+                                            (GtkWidget *widget);
+void        <a href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-set">gimp_gradient_select_widget_set</a> (GtkWidget *widget,
+                                             const gchar *gradient_name);
+</pre></div><div class="refsect1" lang="en"><a name="id2672130"></a><h2>Description</h2><p>
+A widget for selecting gradients.
+</p></div><div class="refsect1" lang="en"><a name="id2668787"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2668792"></a><h3><a name="gimp-gradient-select-widget-new"></a>gimp_gradient_select_widget_new ()</h3><a class="indexterm" name="id2668800"></a><pre class="programlisting">GtkWidget*  gimp_gradient_select_widget_new (const gchar *title,
+                                             const gchar *gradient_name,
+                                             <a href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
+                                             gpointer data);</pre><p>
+Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
+a gradient.  This widget is suitable for placement in a table in a
+plug-in dialog.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>         Title of the dialog to use or <tt class="literal">NULL</tt> to use the default title.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>gradient_name</tt></i> :</span></td><td> Initial gradient name or <tt class="literal">NULL</tt> to use current selection.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>      A function to call when the selected gradient changes.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>          A pointer to arbitary data to be used in the call to
+                <i class="parameter"><tt>callback</tt></i>.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A <span class="type">GtkWidget</span> that you can use in your UI.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2672349"></a><h3><a name="gimp-gradient-select-widget-close"></a>gimp_gradient_select_widget_close ()</h3><a class="indexterm" name="id2672357"></a><pre class="programlisting">void        gimp_gradient_select_widget_close
+                                            (GtkWidget *widget);</pre><p>
+Closes the popup window associated with <i class="parameter"><tt>widget</tt></i>.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td> A gradient select widget.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2672399"></a><h3><a name="gimp-gradient-select-widget-set"></a>gimp_gradient_select_widget_set ()</h3><a class="indexterm" name="id2672407"></a><pre class="programlisting">void        gimp_gradient_select_widget_set (GtkWidget *widget,
+                                             const gchar *gradient_name);</pre><p>
+Sets the current gradient for the gradient select widget.  Calls
+the callback function if one was supplied in the call to
+<a href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new"><tt class="function">gimp_gradient_select_widget_new()</tt></a>.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>widget</tt></i> :</span></td><td>        A gradient select widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>gradient_name</tt></i> :</span></td><td> Gradient name to set.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimpfontmenu.html"><b>&lt;&lt; gimpfontmenu</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimppalettemenu.html"><b>gimppalettemenu &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimpbase-gimpprotocol">
+<refmeta>
+<refentrytitle>gimpprotocol</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>gimpprotocol</refname><refpurpose>The communication protocol between GIMP and it's plug-ins.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+#define     <link linkend="GIMP-PROTOCOL-VERSION:CAPS">GIMP_PROTOCOL_VERSION</link>
+            <link linkend="GPConfig">GPConfig</link>;
+            <link linkend="GPTileReq">GPTileReq</link>;
+            <link linkend="GPTileAck">GPTileAck</link>;
+            <link linkend="GPTileData">GPTileData</link>;
+            <link linkend="GPParam">GPParam</link>;
+            <link linkend="GPParamDef">GPParamDef</link>;
+            <link linkend="GPProcRun">GPProcRun</link>;
+            <link linkend="GPProcReturn">GPProcReturn</link>;
+            <link linkend="GPProcInstall">GPProcInstall</link>;
+            <link linkend="GPProcUninstall">GPProcUninstall</link>;
+<link linkend="void">void</link>        <link linkend="gp-init">gp_init</link>                         (void);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-has-init-write">gp_has_init_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-quit-write">gp_quit_write</link>                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-config-write">gp_config_write</link>                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPConfig">GPConfig</link> *config,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-tile-req-write">gp_tile_req_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPTileReq">GPTileReq</link> *tile_req,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-tile-ack-write">gp_tile_ack_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-tile-data-write">gp_tile_data_write</link>              (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPTileData">GPTileData</link> *tile_data,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-run-write">gp_proc_run_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-return-write">gp_proc_return_write</link>            (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-temp-proc-run-write">gp_temp_proc_run_write</link>          (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-temp-proc-return-write">gp_temp_proc_return_write</link>       (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-install-write">gp_proc_install_write</link>           (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcInstall">GPProcInstall</link> *proc_install,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-uninstall-write">gp_proc_uninstall_write</link>         (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcUninstall">GPProcUninstall</link> *proc_uninstall,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gp-extension-ack-write">gp_extension_ack_write</link>          (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+The communication protocol between GIMP and it's plug-ins.
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GIMP-PROTOCOL-VERSION:CAPS"/>GIMP_PROTOCOL_VERSION</title>
+<indexterm><primary>GIMP_PROTOCOL_VERSION</primary></indexterm><programlisting>#define GIMP_PROTOCOL_VERSION  0x0011
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPConfig"/>GPConfig</title>
+<indexterm><primary>GPConfig</primary></indexterm><programlisting>typedef struct {
+  guint32  version;
+  guint32  tile_width;
+  guint32  tile_height;
+  gint32   shm_ID;
+  gint8    check_size;
+  gint8    check_type;
+  gint8    show_help_button;
+  gint8    gimp_reserved_4;
+  gint8    gimp_reserved_5;
+  gint8    gimp_reserved_6;
+  gint8    gimp_reserved_7;
+  gint8    gimp_reserved_8;
+  gint8    install_cmap;
+  gint8    show_tool_tips;
+  gint32   min_colors;
+  gint32   gdisp_ID;
+  gchar   *app_name;
+  gchar   *wm_class;
+  gchar   *display_name;
+  gint32   monitor_number;
+} GPConfig;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPTileReq"/>GPTileReq</title>
+<indexterm><primary>GPTileReq</primary></indexterm><programlisting>typedef struct {
+  gint32   drawable_ID;
+  guint32  tile_num;
+  guint32  shadow;
+} GPTileReq;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPTileAck"/>GPTileAck</title>
+<indexterm><primary>GPTileAck</primary></indexterm><programlisting>typedef struct _GPTileAck GPTileAck;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPTileData"/>GPTileData</title>
+<indexterm><primary>GPTileData</primary></indexterm><programlisting>typedef struct {
+  gint32   drawable_ID;
+  guint32  tile_num;
+  guint32  shadow;
+  guint32  bpp;
+  guint32  width;
+  guint32  height;
+  guint32  use_shm;
+  guchar  *data;
+} GPTileData;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPParam"/>GPParam</title>
+<indexterm><primary>GPParam</primary></indexterm><programlisting>typedef struct {
+  guint32 type;
+
+  union
+  {
+    gint32    d_int32;
+    gint16    d_int16;
+    gint8     d_int8;
+    gdouble   d_float;
+    gchar    *d_string;
+    gint32   *d_int32array;
+    gint16   *d_int16array;
+    gint8    *d_int8array;
+    gdouble  *d_floatarray;
+    gchar   **d_stringarray;
+    GimpRGB   d_color;
+    struct
+    {
+      gint32 x;
+      gint32 y;
+      gint32 width;
+      gint32 height;
+    } d_region;
+    gint32 d_display;
+    gint32 d_image;
+    gint32 d_layer;
+    gint32 d_channel;
+    gint32 d_drawable;
+    gint32 d_selection;
+    gint32 d_boundary;
+    gint32 d_path;
+    struct
+    {
+      gchar    *name;
+      guint32   flags;
+      guint32   size;
+      gpointer  data;
+    } d_parasite;
+    gint32 d_status;
+  } data;
+} GPParam;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPParamDef"/>GPParamDef</title>
+<indexterm><primary>GPParamDef</primary></indexterm><programlisting>typedef struct {
+  guint32  type;
+  gchar   *name;
+  gchar   *description;
+} GPParamDef;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPProcRun"/>GPProcRun</title>
+<indexterm><primary>GPProcRun</primary></indexterm><programlisting>typedef struct {
+  gchar   *name;
+  guint32  nparams;
+  GPParam *params;
+} GPProcRun;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPProcReturn"/>GPProcReturn</title>
+<indexterm><primary>GPProcReturn</primary></indexterm><programlisting>typedef struct {
+  gchar   *name;
+  guint32  nparams;
+  GPParam *params;
+} GPProcReturn;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPProcInstall"/>GPProcInstall</title>
+<indexterm><primary>GPProcInstall</primary></indexterm><programlisting>typedef struct {
+  gchar      *name;
+  gchar      *blurb;
+  gchar      *help;
+  gchar      *author;
+  gchar      *copyright;
+  gchar      *date;
+  gchar      *menu_path;
+  gchar      *image_types;
+  guint32     type;
+  guint32     nparams;
+  guint32     nreturn_vals;
+  GPParamDef *params;
+  GPParamDef *return_vals;
+} GPProcInstall;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GPProcUninstall"/>GPProcUninstall</title>
+<indexterm><primary>GPProcUninstall</primary></indexterm><programlisting>typedef struct {
+  gchar *name;
+} GPProcUninstall;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gp-init"/>gp_init ()</title>
+<indexterm><primary>gp_init</primary></indexterm><programlisting><link linkend="void">void</link>        gp_init                         (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gp-has-init-write"/>gp_has_init_write ()</title>
+<indexterm><primary>gp_has_init_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_has_init_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-quit-write"/>gp_quit_write ()</title>
+<indexterm><primary>gp_quit_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_quit_write                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-config-write"/>gp_config_write ()</title>
+<indexterm><primary>gp_config_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_config_write                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPConfig">GPConfig</link> *config,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-tile-req-write"/>gp_tile_req_write ()</title>
+<indexterm><primary>gp_tile_req_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_tile_req_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPTileReq">GPTileReq</link> *tile_req,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tile_req</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-tile-ack-write"/>gp_tile_ack_write ()</title>
+<indexterm><primary>gp_tile_ack_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_tile_ack_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-tile-data-write"/>gp_tile_data_write ()</title>
+<indexterm><primary>gp_tile_data_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_tile_data_write              (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPTileData">GPTileData</link> *tile_data,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tile_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-proc-run-write"/>gp_proc_run_write ()</title>
+<indexterm><primary>gp_proc_run_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_run_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>proc_run</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-proc-return-write"/>gp_proc_return_write ()</title>
+<indexterm><primary>gp_proc_return_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_return_write            (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>proc_return</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-temp-proc-run-write"/>gp_temp_proc_run_write ()</title>
+<indexterm><primary>gp_temp_proc_run_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_temp_proc_run_write          (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>proc_run</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-temp-proc-return-write"/>gp_temp_proc_return_write ()</title>
+<indexterm><primary>gp_temp_proc_return_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_temp_proc_return_write       (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>proc_return</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-proc-install-write"/>gp_proc_install_write ()</title>
+<indexterm><primary>gp_proc_install_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_install_write           (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcInstall">GPProcInstall</link> *proc_install,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>proc_install</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-proc-uninstall-write"/>gp_proc_uninstall_write ()</title>
+<indexterm><primary>gp_proc_uninstall_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_uninstall_write         (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="GPProcUninstall">GPProcUninstall</link> *proc_uninstall,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>proc_uninstall</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gp-extension-ack-write"/>gp_extension_ack_write ()</title>
+<indexterm><primary>gp_extension_ack_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_extension_ack_write          (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>See Also</title>
+<para>
+<link linkend="libgimp-gimpwire"><type>libgimp-gimpwire</type></link>
+</para>
+</refsect1>
+
+</refentry>

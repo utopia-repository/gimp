@@ -22,55 +22,56 @@
 
 ; Copies the specified rectangle from/to the specified drawable
 
-(define (copy-rectangle img drawable x1 y1 width height dest-x dest-y)
-  (gimp-rect-select img x1 y1 width height REPLACE FALSE 0)
-  (gimp-edit-copy img drawable)
-  (let ((floating-sel (car (gimp-edit-paste img drawable FALSE))))
+(define (copy-rectangle img
+			drawable
+			x1
+			y1
+			width
+			height
+			dest-x
+			dest-y)
+  (gimp-rect-select img x1 y1 width height CHANNEL-OP-REPLACE FALSE 0)
+  (gimp-edit-copy drawable)
+  (let ((floating-sel (car (gimp-edit-paste drawable FALSE))))
     (gimp-layer-set-offsets floating-sel dest-x dest-y)
     (gimp-floating-sel-anchor floating-sel))
   (gimp-selection-none img))
 
 ; Creates a single weaving tile
 
-(define (create-weave-tile ribbon-width ribbon-spacing shadow-darkness shadow-depth)
+(define (create-weave-tile ribbon-width
+			   ribbon-spacing
+			   shadow-darkness
+			   shadow-depth)
   (let* ((tile-size (+ (* 2 ribbon-width) (* 2 ribbon-spacing)))
 	 (darkness (* 255 (/ (- 100 shadow-darkness) 100)))
 	 (img (car (gimp-image-new tile-size tile-size RGB)))
-	 (drawable (car (gimp-layer-new img tile-size tile-size RGB_IMAGE "Weave tile" 100 NORMAL))))
-    (gimp-image-disable-undo img)
+	 (drawable (car (gimp-layer-new img tile-size tile-size RGB-IMAGE
+					"Weave tile" 100 NORMAL-MODE))))
+    (gimp-image-undo-disable img)
     (gimp-image-add-layer img drawable 0)
 
-    (gimp-palette-set-background '(0 0 0))
-    (gimp-edit-fill img drawable)
+    (gimp-context-set-background '(0 0 0))
+    (gimp-edit-fill drawable BACKGROUND-FILL)
 
     ; Create main horizontal ribbon
 
-    (gimp-palette-set-foreground '(255 255 255))
-    (gimp-palette-set-background (list darkness darkness darkness))
+    (gimp-context-set-foreground '(255 255 255))
+    (gimp-context-set-background (list darkness darkness darkness))
 
     (gimp-rect-select img
 		      0
 		      ribbon-spacing
 		      (+ (* 2 ribbon-spacing) ribbon-width)
 		      ribbon-width
-		      REPLACE
+		      CHANNEL-OP-REPLACE
 		      FALSE
 		      0)
-    (gimp-blend img
-		drawable
-		FG-BG-RGB
-		NORMAL
-		BILINEAR
-		100
-		(- 100 shadow-depth)
-		REPEAT-NONE
-		FALSE
-		0
-		0
-		(/ (+ (* 2 ribbon-spacing) ribbon-width -1) 2)
-		0
-		0
-		0)
+
+    (gimp-edit-blend drawable FG-BG-RGB-MODE NORMAL-MODE
+		     GRADIENT-BILINEAR 100 (- 100 shadow-depth) REPEAT-NONE FALSE
+		     FALSE 0 0 TRUE
+		     (/ (+ (* 2 ribbon-spacing) ribbon-width -1) 2) 0 0 0)
 
     ; Create main vertical ribbon
 
@@ -79,24 +80,14 @@
 		      0
 		      ribbon-width
 		      (+ (* 2 ribbon-spacing) ribbon-width)
-		      REPLACE
+		      CHANNEL-OP-REPLACE
 		      FALSE
 		      0)
-    (gimp-blend img
-		drawable
-		FG-BG-RGB
-		NORMAL
-		BILINEAR
-		100
-		(- 100 shadow-depth)
-		REPEAT-NONE
-		FALSE
-		0
-		0
-		0
-		(/ (+ (* 2 ribbon-spacing) ribbon-width -1) 2)
-		0
-		0)
+
+    (gimp-edit-blend drawable FG-BG-RGB-MODE NORMAL-MODE
+		     GRADIENT-BILINEAR 100 (- 100 shadow-depth) REPEAT-NONE FALSE
+		     FALSE 0 0 TRUE
+		     0 (/ (+ (* 2 ribbon-spacing) ribbon-width -1) 2) 0 0)
 
     ; Create the secondary horizontal ribbon
 
@@ -140,14 +131,20 @@
 
     ; Done
 
-    (gimp-image-enable-undo img)
+    (gimp-image-undo-enable img)
 
     (list img drawable)))
 
 ; Creates a complete weaving mask
 
-(define (create-weave width height ribbon-width ribbon-spacing shadow-darkness shadow-depth)
-  (let* ((tile (create-weave-tile ribbon-width ribbon-spacing shadow-darkness shadow-depth))
+(define (create-weave width
+		      height
+		      ribbon-width
+		      ribbon-spacing
+		      shadow-darkness
+		      shadow-depth)
+  (let* ((tile (create-weave-tile ribbon-width ribbon-spacing shadow-darkness
+				  shadow-depth))
 	 (tile-img (car tile))
 	 (tile-layer (cadr tile))
  	 (weaving (plug-in-tile 1 tile-img tile-layer width height TRUE)))
@@ -156,51 +153,77 @@
 
 ; Creates a single tile for masking
 
-(define (create-mask-tile ribbon-width ribbon-spacing
-			  r1-x1 r1-y1 r1-width r1-height
-			  r2-x1 r2-y1 r2-width r2-height
-			  r3-x1 r3-y1 r3-width r3-height)
+(define (create-mask-tile ribbon-width
+			  ribbon-spacing
+			  r1-x1
+			  r1-y1
+			  r1-width
+			  r1-height
+			  r2-x1
+			  r2-y1
+			  r2-width
+			  r2-height
+			  r3-x1
+			  r3-y1
+			  r3-width
+			  r3-height)
   (let* ((tile-size (+ (* 2 ribbon-width) (* 2 ribbon-spacing)))
 	 (img (car (gimp-image-new tile-size tile-size RGB)))
-	 (drawable (car (gimp-layer-new img tile-size tile-size RGB_IMAGE "Mask" 100 NORMAL))))
-    (gimp-image-disable-undo img)
+	 (drawable (car (gimp-layer-new img tile-size tile-size RGB-IMAGE
+					"Mask" 100 NORMAL-MODE))))
+    (gimp-image-undo-disable img)
     (gimp-image-add-layer img drawable 0)
 
-    (gimp-palette-set-background '(0 0 0))
-    (gimp-edit-fill img drawable)
+    (gimp-context-set-background '(0 0 0))
+    (gimp-edit-fill drawable BACKGROUND-FILL)
 
-    (gimp-rect-select img r1-x1 r1-y1 r1-width r1-height REPLACE FALSE 0)
-    (gimp-rect-select img r2-x1 r2-y1 r2-width r2-height ADD FALSE 0)
-    (gimp-rect-select img r3-x1 r3-y1 r3-width r3-height ADD FALSE 0)
+    (gimp-rect-select img r1-x1 r1-y1 r1-width r1-height CHANNEL-OP-REPLACE FALSE 0)
+    (gimp-rect-select img r2-x1 r2-y1 r2-width r2-height CHANNEL-OP-ADD FALSE 0)
+    (gimp-rect-select img r3-x1 r3-y1 r3-width r3-height CHANNEL-OP-ADD FALSE 0)
 
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill img drawable)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill drawable BACKGROUND-FILL)
     (gimp-selection-none img)
 
-    (gimp-image-enable-undo img)
+    (gimp-image-undo-enable img)
 
     (list img drawable)))
 
 ; Creates a complete mask image
 
-(define (create-mask final-width final-height
-		     ribbon-width ribbon-spacing
-		     r1-x1 r1-y1 r1-width r1-height
-		     r2-x1 r2-y1 r2-width r2-height
-		     r3-x1 r3-y1 r3-width r3-height)
+(define (create-mask final-width
+		     final-height
+		     ribbon-width
+		     ribbon-spacing
+		     r1-x1
+		     r1-y1
+		     r1-width
+		     r1-height
+		     r2-x1
+		     r2-y1
+		     r2-width
+		     r2-height
+		     r3-x1
+		     r3-y1
+		     r3-width
+		     r3-height)
   (let* ((tile (create-mask-tile ribbon-width ribbon-spacing
 				 r1-x1 r1-y1 r1-width r1-height
 				 r2-x1 r2-y1 r2-width r2-height
 				 r3-x1 r3-y1 r3-width r3-height))
 	 (tile-img (car tile))
 	 (tile-layer (cadr tile))
-	 (mask (plug-in-tile 1 tile-img tile-layer final-width final-height TRUE)))
+	 (mask (plug-in-tile 1 tile-img tile-layer final-width final-height
+			     TRUE)))
     (gimp-image-delete tile-img)
     mask))
 
 ; Creates the mask for horizontal ribbons
 
-(define (create-horizontal-mask ribbon-width ribbon-spacing final-width final-height)
+(define (create-horizontal-mask ribbon-width
+				ribbon-spacing
+				final-width
+				final-height)
   (create-mask final-width
 	       final-height
 	       ribbon-width
@@ -220,7 +243,10 @@
 
 ; Creates the mask for vertical ribbons
 
-(define (create-vertical-mask ribbon-width ribbon-spacing final-width final-height)
+(define (create-vertical-mask ribbon-width
+			      ribbon-spacing
+			      final-width
+			      final-height)
   (create-mask final-width
 	       final-height
 	       ribbon-width
@@ -240,12 +266,18 @@
 
 ; Adds a threads layer at a certain orientation to the specified image
 
-(define (create-threads-layer img width height length density orientation)
-  (let* ((drawable (car (gimp-layer-new img width height RGBA_IMAGE "Threads" 100 NORMAL)))
+(define (create-threads-layer img
+			      width
+			      height
+			      length
+			      density
+			      orientation)
+  (let* ((drawable (car (gimp-layer-new img width height RGBA-IMAGE
+					"Threads" 100 NORMAL-MODE)))
 	 (dense (/ density 100.0)))
     (gimp-image-add-layer img drawable -1)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill img drawable)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill drawable BACKGROUND-FILL)
     (plug-in-noisify 1 img drawable FALSE dense dense dense dense)
     (plug-in-c-astretch 1 img drawable)
     (cond ((eq? orientation 'horizontal)
@@ -264,17 +296,21 @@
 			       thread-length
 			       thread-density
 			       thread-intensity)
-  (let* ((weave (create-weave width height ribbon-width ribbon-spacing shadow-darkness shadow-depth))
+  (let* ((weave (create-weave width height ribbon-width ribbon-spacing
+			      shadow-darkness shadow-depth))
 	 (w-img (car weave))
 	 (w-layer (cadr weave))
 
-	 (h-layer (create-threads-layer w-img width height thread-length thread-density 'horizontal))
-	 (h-mask (car (gimp-layer-create-mask h-layer WHITE-MASK)))
+	 (h-layer (create-threads-layer w-img width height thread-length
+					thread-density 'horizontal))
+	 (h-mask (car (gimp-layer-create-mask h-layer ADD-WHITE-MASK)))
 
-	 (v-layer (create-threads-layer w-img width height thread-length thread-density 'vertical))
-	 (v-mask (car (gimp-layer-create-mask v-layer WHITE-MASK)))
+	 (v-layer (create-threads-layer w-img width height thread-length
+					thread-density 'vertical))
+	 (v-mask (car (gimp-layer-create-mask v-layer ADD-WHITE-MASK)))
 
-	 (hmask (create-horizontal-mask ribbon-width ribbon-spacing width height))
+	 (hmask (create-horizontal-mask ribbon-width ribbon-spacing
+					width height))
 	 (hm-img (car hmask))
 	 (hm-layer (cadr hmask))
 
@@ -282,24 +318,24 @@
 	 (vm-img (car vmask))
 	 (vm-layer (cadr vmask)))
 
-    (gimp-image-add-layer-mask w-img h-layer h-mask)
+    (gimp-layer-add-mask h-layer h-mask)
     (gimp-selection-all hm-img)
-    (gimp-edit-copy hm-img hm-layer)
+    (gimp-edit-copy hm-layer)
     (gimp-image-delete hm-img)
-    (gimp-floating-sel-anchor (car (gimp-edit-paste w-img h-mask FALSE)))
+    (gimp-floating-sel-anchor (car (gimp-edit-paste h-mask FALSE)))
     (gimp-layer-set-opacity h-layer thread-intensity)
-    (gimp-layer-set-mode h-layer MULTIPLY)
+    (gimp-layer-set-mode h-layer MULTIPLY-MODE)
 
-    (gimp-image-add-layer-mask w-img v-layer v-mask)
+    (gimp-layer-add-mask v-layer v-mask)
     (gimp-selection-all vm-img)
-    (gimp-edit-copy vm-img vm-layer)
+    (gimp-edit-copy vm-layer)
     (gimp-image-delete vm-img)
-    (gimp-floating-sel-anchor (car (gimp-edit-paste w-img v-mask FALSE)))
+    (gimp-floating-sel-anchor (car (gimp-edit-paste v-mask FALSE)))
     (gimp-layer-set-opacity v-layer thread-intensity)
-    (gimp-layer-set-mode v-layer MULTIPLY)
+    (gimp-layer-set-mode v-layer MULTIPLY-MODE)
 
     ; Uncomment this if you want to keep the weaving mask image
-    ; (gimp-display-new (car (gimp-channel-ops-duplicate w-img)))
+    ; (gimp-display-new (car (gimp-image-duplicate w-img)))
 
     (list w-img
 	  (car (gimp-image-flatten w-img)))))
@@ -315,10 +351,7 @@
 			 thread-length
 			 thread-density
 			 thread-intensity)
-  (let* ((old-fg-color (car (gimp-palette-get-foreground)))
-	 (old-bg-color (car (gimp-palette-get-background)))
-
-	 (d-img (car (gimp-drawable-image drawable)))
+  (let* ((d-img (car (gimp-drawable-get-image drawable)))
 	 (d-width (car (gimp-drawable-width drawable)))
 	 (d-height (car (gimp-drawable-height drawable)))
 	 (d-offsets (gimp-drawable-offsets drawable))
@@ -335,35 +368,39 @@
 	 (w-img (car weaving))
 	 (w-layer (cadr weaving)))
 
+    (gimp-context-push)
+
     (gimp-selection-all w-img)
-    (gimp-edit-copy w-img w-layer)
+    (gimp-edit-copy w-layer)
     (gimp-image-delete w-img)
-    (let ((floating-sel (car (gimp-edit-paste d-img drawable FALSE))))
+    (let ((floating-sel (car (gimp-edit-paste drawable FALSE))))
       (gimp-layer-set-offsets floating-sel
 			      (car d-offsets)
 			      (cadr d-offsets))
-      (gimp-layer-set-mode floating-sel MULTIPLY)
+      (gimp-layer-set-mode floating-sel MULTIPLY-MODE)
       (gimp-floating-sel-to-layer floating-sel))
 
-    (gimp-palette-set-foreground old-fg-color)
-    (gimp-palette-set-background old-bg-color)
-    (gimp-displays-flush)))
+    (gimp-displays-flush)
 
-; Register!
+    (gimp-context-pop)))
+
 
 (script-fu-register "script-fu-weave"
-		    "<Image>/Script-Fu/Alchemy/Weave"
-		    "Weave effect a la Alien Skin"
+		    _"_Weave..."
+		    "Weave effect like Alien Skin"
 		    "Federico Mena Quintero"
 		    "Federico Mena Quintero"
 		    "June 1997"
-		    "RGB*, GRAY*"
-		    SF-IMAGE "Image to weave" 0
-		    SF-DRAWABLE "Drawable to weave" 0
-		    SF-VALUE "Ribbon width" "30"
-		    SF-VALUE "Ribbon spacing" "10"
-		    SF-VALUE "Shadow darkness" "75"
-		    SF-VALUE "Shadow depth" "75"
-		    SF-VALUE "Thread length" "20"
-		    SF-VALUE "Thread density" "50"
-		    SF-VALUE "Thread intensity" "100")
+		    "RGB* GRAY*"
+		    SF-IMAGE       "Image to Weave"    0
+		    SF-DRAWABLE    "Drawable to Weave" 0
+		    SF-ADJUSTMENT _"Ribbon width"      '(30  0 256 1 10 1 1)
+		    SF-ADJUSTMENT _"Ribbon spacing"    '(10  0 256 1 10 1 1)
+		    SF-ADJUSTMENT _"Shadow darkness"   '(75  0 100 1 10 1 1)
+		    SF-ADJUSTMENT _"Shadow depth"      '(75  0 100 1 10 1 1)
+		    SF-ADJUSTMENT _"Thread length"     '(200 0 256 1 10 1 1)
+		    SF-ADJUSTMENT _"Thread density"    '(50  0 100 1 10 1 1)
+		    SF-ADJUSTMENT _"Thread intensity"  '(100 0 100 1 10 1 1))
+
+(script-fu-menu-register "script-fu-weave"
+			 _"<Image>/Script-Fu/Alchemy")

@@ -26,10 +26,8 @@
 
 (define (deltacolour col delta)
   (let* ((newcol (+ col delta)))
-;    (print "Old colour -") (print col)
     (if (< newcol 0) (set! newcol 0))
     (if (> newcol 255) (set! newcol 255))
-;    (print "New colour") (print newcol)
     newcol)
   )
 
@@ -98,79 +96,88 @@
 )
 
 (define (script-fu-addborder aimg adraw xsize ysize colour dvalue)
-  (let* ((img (car (gimp-drawable-image adraw)))
-	 (owidth (car (gimp-image-width img)))
-	 (oheight (car (gimp-image-height img)))
-	 (old-fg (car (gimp-palette-get-foreground)))
-         (old-bg (car (gimp-palette-get-background)))
-	 (width (+ owidth (* 2 xsize)))
-	 (height (+ oheight (* 2 ysize)))
-	 (layer (car (gimp-layer-new img width height RGBA_IMAGE "Border-Layer" 100 NORMAL))))
+  (let* ((img (car (gimp-drawable-get-image adraw)))
+         (owidth (car (gimp-image-width img)))
+         (oheight (car (gimp-image-height img)))
+         (width (+ owidth (* 2 xsize)))
+         (height (+ oheight (* 2 ysize)))
+         (layer (car (gimp-layer-new img
+                                     width height
+                                     (car (gimp-drawable-type-with-alpha adraw))
+                                     "Border-Layer" 100 NORMAL-MODE))))
+
 ;Add this for debugging    (verbose 4)
-    (gimp-image-disable-undo img)
-    (gimp-drawable-fill layer TRANS-IMAGE-FILL)
-    (gimp-image-resize img 
-		       width 
-    		       height
-    		       xsize
-    		       ysize)
-    (gimp-palette-set-background (adjcolour colour dvalue))
-    (gimp-free-select img
-		      10
-		      (gen_top_array xsize ysize owidth oheight width height)
-		      REPLACE
-		      0
-		      0
-		      0.0)
-    (gimp-edit-fill img layer)
-    (gimp-palette-set-background (adjcolour colour (/ dvalue 2)))
-    (gimp-free-select img
-		      10
-		      (gen_left_array xsize ysize owidth oheight width height)
-		      REPLACE
-		      0
-		      0
-		      0.0)
-    (gimp-edit-fill img layer)
-    (gimp-palette-set-background (adjcolour colour (- 0 (/ dvalue 2))))
-    (gimp-free-select img
-		      10
-		      (gen_right_array xsize ysize owidth oheight width height)
-		      REPLACE
-		      0
-		      0
-		      0.0)
 
-    (gimp-edit-fill img layer)
-    (gimp-palette-set-background (adjcolour colour (- 0 dvalue)))
-    (gimp-free-select img
-		      10
-		      (gen_bottom_array xsize ysize owidth oheight width height)
-		      REPLACE
-		      0
-		      0
-		      0.0)
+    (gimp-context-push)
 
-    (gimp-edit-fill img layer)
-    (gimp-selection-none img)
+    (gimp-image-undo-group-start img)
+
+    (gimp-image-resize img
+                       width
+                       height
+                       xsize
+                       ysize)
+
     (gimp-image-add-layer img layer 0)
-    (gimp-image-enable-undo img)
-    (gimp-palette-set-background old-bg)
-    (gimp-displays-flush)
-    )
-)
+    (gimp-drawable-fill layer TRANSPARENT-FILL)
 
+    (gimp-context-set-background (adjcolour colour dvalue))
+    (gimp-free-select img
+                      10
+                      (gen_top_array xsize ysize owidth oheight width height)
+                      CHANNEL-OP-REPLACE
+                      0
+                      0
+                      0.0)
+    (gimp-edit-fill layer BACKGROUND-FILL)
+    (gimp-context-set-background (adjcolour colour (/ dvalue 2)))
+    (gimp-free-select img
+                      10
+                      (gen_left_array xsize ysize owidth oheight width height)
+                      CHANNEL-OP-REPLACE
+                      0
+                      0
+                      0.0)
+    (gimp-edit-fill layer BACKGROUND-FILL)
+    (gimp-context-set-background (adjcolour colour (- 0 (/ dvalue 2))))
+    (gimp-free-select img
+                      10
+                      (gen_right_array xsize ysize owidth oheight width height)
+                      CHANNEL-OP-REPLACE
+                      0
+                      0
+                      0.0)
+
+    (gimp-edit-fill layer BACKGROUND-FILL)
+    (gimp-context-set-background (adjcolour colour (- 0 dvalue)))
+    (gimp-free-select img
+                      10
+                      (gen_bottom_array xsize ysize owidth oheight width height)
+                      CHANNEL-OP-REPLACE
+                      0
+                      0
+                      0.0)
+
+    (gimp-edit-fill layer BACKGROUND-FILL)
+    (gimp-selection-none img)
+    (gimp-image-undo-group-end img)
+    (gimp-displays-flush)
+
+    (gimp-context-pop)))
 
 (script-fu-register "script-fu-addborder"
-		    "<Image>/Script-Fu/Modify/Add Border"
-		    "Add a border around an image"
-		    "Andy Thomas <alt@picnic.demon.co.uk>"
-		    "Andy Thomas"
-		    "6/10/97"
-		    "RGB*"
-		    SF-IMAGE "Input Image" 0
-		    SF-DRAWABLE "Input Drawable" 0
-		    SF-VALUE "Border x size" "12"
-		    SF-VALUE "Border y size" "12"
-		    SF-COLOR "Border Colour" '(38 31 207)
-		    SF-VALUE "Delta value on colour" "25")
+                    _"Add _Border..."
+                    "Add a border around an image"
+                    "Andy Thomas <alt@picnic.demon.co.uk>"
+                    "Andy Thomas"
+                    "6/10/97"
+                    "*"
+                    SF-IMAGE       "Input image"          0
+                    SF-DRAWABLE    "Input drawable"       0
+                    SF-ADJUSTMENT _"Border X size"        '(12 1 250 1 10 0 1)
+                    SF-ADJUSTMENT _"Border Y size"        '(12 1 250 1 10 0 1)
+                    SF-COLOR      _"Border color"         '(38 31 207)
+                    SF-ADJUSTMENT _"Delta value on color" '(25 1 255 1 10 0 1))
+
+(script-fu-menu-register "script-fu-addborder"
+                         _"<Image>/Script-Fu/Decor")

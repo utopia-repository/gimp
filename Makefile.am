@@ -1,42 +1,98 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = libgimp plug-ins app data @GIMPDOCS@
+SUBDIRS = \
+	m4macros	\
+	tools		\
+	regexrepl	\
+	cursors		\
+	themes		\
+	po		\
+	po-libgimp	\
+	po-plug-ins	\
+	po-script-fu	\
+	data		\
+	menus		\
+	tips		\
+	libgimpbase	\
+	libgimpcolor	\
+	libgimpmath	\
+	libgimpmodule	\
+	libgimpthumb	\
+	libgimpwidgets	\
+	libgimp		\
+	app		\
+	$(GIMP_MODULES)	\
+	$(GIMP_PLUGINS)	\
+	etc		\
+	devel-docs	\
+	docs
 
-bin_SCRIPTS = gimptool
+bin_SCRIPTS = gimptool-@GIMP_TOOL_VERSION@ @GIMPINSTALL@
 
-EXTRA_DIST = TODO gtkrc gimp_logo.ppm gimp_splash.ppm rmshm user_install gimp_tips.txt ps-menurc gimp.1 gimptool.1 gtkrc.forest2 gimp.m4 RPM/gimp.wmconfig RPM/wilbur.xpm RPM/mini-wilbur.xpm
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = \
+	gimp-@GIMP_PKGCONFIG_VERSION@.pc	\
+	gimpthumb-@GIMP_PKGCONFIG_VERSION@.pc	\
+	gimpui-@GIMP_PKGCONFIG_VERSION@.pc
 
-gimpdata_DATA = gimprc gimprc_user gtkrc gimp_logo.ppm gimp_splash.ppm gimp_tips.txt ps-menurc gtkrc.forest2
 
-gimpdata_SCRIPTS = user_install
+AUTHORS: authors.xml
+if HAVE_XSLTPROC
+	$(XSLTPROC) authors.xsl $< > $(@) || rm -f $(@)
+endif
 
-man_MANS=gimp.1 gimptool.1
 
-m4datadir = $(datadir)/aclocal
-m4data_DATA = gimp.m4
+EXTRA_SCRIPTS = gimpinstall-@GIMP_TOOL_VERSION@
 
-scriptdata =
+EXTRA_DIST = \
+	AUTHORS			\
+	COPYING			\
+	ChangeLog		\
+	ChangeLog.pre-1-0	\
+	ChangeLog.pre-1-2	\
+	ChangeLog.pre-2-0	\
+	HACKING			\
+	INSTALL			\
+	LICENSE			\
+	NEWS			\
+	NEWS.pre-2-0		\
+	NEWS.pre-2-2		\
+	README			\
+	README.i18n		\
+	README.win32		\
+	authors.dtd		\
+	authors.xml		\
+	authors.xsl		\
+	config.h.win32		\
+	gimp-zip.in		\
+	gimpdefs.msc		\
+	gimptool-win32.c.in	\
+	intltool-extract.in	\
+	intltool-merge.in	\
+	intltool-update.in	\
+	makefile.msc		\
+	po-libgimp/update.sh	\
+	po-plug-ins/update.sh	\
+	po-script-fu/update.sh
 
-.PHONY: files populate checkin release
 
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+DISTCHECK_CONFIGURE_FLAGS = --enable-gimp-console
 
-populate:
-	@echo "populating project"
-	@files=`$(MAKE) files | grep -v "make\[[1-9]\]"`; prcs populate -d gimp.prj $$files
+DISTCLEANFILES = \
+	intltool-extract	\
+	intltool-merge		\
+	intltool-update
 
-checkin: populate
-	@echo "checking in project"
-	@prcs checkin
 
-release:
-	$(MAKE) dist distdir=$(PACKAGE)`date +"%y%m%d"`
+gimpinstall-@GIMP_TOOL_VERSION@:
+	$(LN_S) $(srcdir)/install-sh $(srcdir)/gimpinstall-@GIMP_TOOL_VERSION@
+
+
+validate-authors:
+if HAVE_XMLLINT
+	@$(XMLLINT) --noout --valid authors.xml || \
+	  ( echo "* authors.xml INVALID *"; exit 1; )
+endif
+
+
+dist-hook: validate-authors

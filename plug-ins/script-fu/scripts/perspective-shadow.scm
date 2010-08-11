@@ -16,22 +16,16 @@
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ;
 ;
-; perspective-shadow.scm   version 1.02   12/13/97
+; perspective-shadow.scm   version 1.2   2000/11/08
 ;
-; CHANGE-LOG:
-; 1.00 - initial release
-; 1.01 - fixed the problem with a remaining copy of the selection
-; 1.02 - some code cleanup, no real changes
-;
-;
-; Copyright (C) 1997 Sven Neumann (neumanns@uni-duesseldorf.de)
+; Copyright (C) 1997-2000 Sven Neumann <sven@gimp.org>
 ; 
 ;  
 ; Adds a perspective shadow of the current selection or alpha-channel 
 ; as a layer below the active layer
 ;
   
-(define (script-fu-perspective-shadow image 
+(define (script-fu-perspective-shadow image
 				      drawable
 				      alpha
 				      rel-distance
@@ -39,7 +33,7 @@
 				      shadow-blur
 				      shadow-color
 				      shadow-opacity
-				      interpolate
+				      interpolation
 				      allow-resize)
   (let* ((shadow-blur (max shadow-blur 0))
 	 (shadow-opacity (min shadow-opacity 100))
@@ -49,21 +43,22 @@
 	 (type (car (gimp-drawable-type-with-alpha drawable)))
 	 (image-width (car (gimp-image-width image)))
 	 (image-height (car (gimp-image-height image)))
-	 (old-bg (car (gimp-palette-get-background)))
 	 (from-selection 0)
 	 (active-selection 0)
 	 (shadow-layer 0))
-
     
-  (if (= rel-distance 0) (set! rel-distance 999999)) 
-  (gimp-image-disable-undo image)
+  (if (= rel-distance 0) (set! rel-distance 999999))
+
+  (gimp-context-push)
+  
+  (gimp-image-undo-group-start image)
   
   (gimp-layer-add-alpha drawable)
   (if (= (car (gimp-selection-is-empty image)) TRUE)
       (begin
-	(gimp-selection-layer-alpha image drawable)
+	(gimp-selection-layer-alpha drawable)
 	(set! from-selection FALSE))
-      (begin 
+      (begin
 	(set! from-selection TRUE)
 	(set! active-selection (car (gimp-selection-save image)))))
   
@@ -75,8 +70,8 @@
  
 	 (abs-length (* rel-length select-height))
 	 (abs-distance (* rel-distance select-height))
-	 (half-bottom-width (/ select-width 2)) 
-	 (half-top-width (* half-bottom-width 
+	 (half-bottom-width (/ select-width 2))
+	 (half-top-width (* half-bottom-width
 			  (/ (- rel-distance rel-length) rel-distance)))
   
 	 (x0 (+ select-offset-x (+ (- half-bottom-width half-top-width)
@@ -96,17 +91,20 @@
 	 (shadow-offset-y (- (min y0 y2) shadow-blur)))
 	 
   
-    (set! shadow-layer (car (gimp-layer-new image 
-					    select-width 
-					    select-height 
+    (set! shadow-layer (car (gimp-layer-new image
+					    select-width
+					    select-height
 					    type
-					    "Perspective Shadow" 
+					    "Perspective Shadow"
 					    shadow-opacity
-					    NORMAL)))
+					    NORMAL-MODE)))
+
+
+    (gimp-image-add-layer image shadow-layer -1)
     (gimp-layer-set-offsets shadow-layer select-offset-x select-offset-y)
-    (gimp-drawable-fill shadow-layer TRANS-IMAGE-FILL)
-    (gimp-palette-set-background shadow-color)
-    (gimp-edit-fill image shadow-layer)
+    (gimp-drawable-fill shadow-layer TRANSPARENT-FILL)
+    (gimp-context-set-background shadow-color)
+    (gimp-edit-fill shadow-layer BACKGROUND-FILL)
     (gimp-selection-none image)
 
     (if (= allow-resize TRUE)
@@ -131,91 +129,68 @@
 	  (if (> (+ shadow-height shadow-offset-y) new-image-height)
 	      (set! new-image-height (+ shadow-height shadow-offset-y)))
 	  (gimp-image-resize image
-			     new-image-width 
-			     new-image-height 
-			     image-offset-x 
+			     new-image-width
+			     new-image-height
+			     image-offset-x
 			     image-offset-y)))
-
-    (gimp-image-add-layer image shadow-layer -1)
   
-    (gimp-perspective image
-		      shadow-layer
-		      interpolate
-		      x0 y0
-		      x1 y1
-		      x2 y2
-		      x3 y3)
+    (gimp-drawable-transform-perspective shadow-layer
+					 x0 y0
+					 x1 y1
+					 x2 y2
+					 x3 y3
+					 TRANSFORM-FORWARD interpolation
+					 TRUE 3 FALSE)
 
-    (if (> shadow-blur 0) 
+    (if (>= shadow-blur 1.0)
 	(begin
 	  (gimp-layer-set-preserve-trans shadow-layer FALSE)
-	  (gimp-layer-resize shadow-layer 
+	  (gimp-layer-resize shadow-layer
 			     shadow-width
 			     shadow-height
 			     shadow-blur
 			     shadow-blur)
-	  (plug-in-gauss-rle 1 
-			     image 
-			     shadow-layer 
-			     shadow-blur 
-			     TRUE 
+	  (plug-in-gauss-rle 1
+			     image
+			     shadow-layer
+			     shadow-blur
+			     TRUE
 			     TRUE))))
 
   (if (= from-selection TRUE)
       (begin
-	(gimp-selection-load image active-selection)
-	(gimp-edit-clear image shadow-layer)
+	(gimp-selection-load active-selection)
+	(gimp-edit-clear shadow-layer)
 	(gimp-image-remove-channel image active-selection)))
 
-  (if (and 
+  (if (and
        (= (car (gimp-layer-is-floating-sel drawable)) 0)
        (= from-selection FALSE))
       (gimp-image-raise-layer image drawable))
 
   (gimp-image-set-active-layer image drawable)
-  (gimp-palette-set-background old-bg)
-  (gimp-image-enable-undo image)
-  (gimp-displays-flush)))
+  (gimp-image-undo-group-end image)
+  (gimp-displays-flush)
 
-(script-fu-register "script-fu-perspective-shadow" 
-		    "<Image>/Script-Fu/Shadow/Perspective"
+  (gimp-context-pop)))
+
+(script-fu-register "script-fu-perspective-shadow"
+		    _"_Perspective..."
 		    "Add a perspective shadow"
-		    "Sven Neumann (neumanns@uni-duesseldorf.de)"
+		    "Sven Neumann <sven@gimp.org>"
 		    "Sven Neumann"
-		    "12/13/1997"
-		    "RGB RGBA GRAY GRAYA"
-		    SF-IMAGE "Image" 0
-		    SF-DRAWABLE "Drawable" 0
-		    SF-VALUE "Angle" "45"
-		    SF-VALUE "Relative horizon distance" "5.0"
-		    SF-VALUE "Relative shadow length" "1.0"
-		    SF-VALUE "Blur Radius" "3"
-		    SF-COLOR "Color" '(0 0 0)
-		    SF-VALUE "Opacity" "80"
-		    SF-TOGGLE "Interpolate" TRUE
-		    SF-TOGGLE "Allow Resizing" FALSE) 
+		    "2000/11/08"
+		    "RGB* GRAY*"
+		    SF-IMAGE       "Image"          0
+		    SF-DRAWABLE    "Drawable"       0
+		    SF-ADJUSTMENT _"Angle"          '(45 0 180 1 10 1 0)
+		    SF-ADJUSTMENT _"Relative distance of horizon" '(5 0 24 .1 1 1 1)
+		    SF-ADJUSTMENT _"Relative length of shadow" '(1 0 24 .1 1 1 1)
+		    SF-ADJUSTMENT _"Blur radius"    '(3 0 1024 1 10 0 0)
+		    SF-COLOR      _"Color"          '(0 0 0)
+		    SF-ADJUSTMENT _"Opacity"        '(80 0 100 1 10 0 0)
+		    SF-OPTION     _"Interpolation"  '(_"None" _"Linear" _"Cubic")
+		    SF-TOGGLE     _"Allow resizing" FALSE)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(script-fu-menu-register "script-fu-perspective-shadow"
+			 _"<Image>/Script-Fu/Shadow")

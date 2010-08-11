@@ -1,40 +1,51 @@
 ## Process this file with automake to produce Makefile.in
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 
-pluginlib_PROGRAMS = MapObject
+if OS_WIN32
+mwindows = -mwindows
+endif
+
+AM_LDFLAGS = $(mwindows)
+
+libexecdir = $(gimpplugindir)/plug-ins
+
+libexec_PROGRAMS = MapObject
 
 MapObject_SOURCES = \
-	amb1.xpm amb2.xpm arcball.c arcball.h diffint1.xpm diffint2.xpm diffref1.xpm diffref2.xpm high1.xpm high2.xpm mapobject_apply.c mapobject_apply.h mapobject_image.c mapobject_image.h mapobject_main.c mapobject_main.h mapobject_pixmaps.h mapobject_preview.c mapobject_preview.h mapobject_shade.c mapobject_shade.h mapobject_ui.c mapobject_ui.h specref1.xpm specref2.xpm	
+	arcball.h		\
+	mapobject_apply.c	\
+	mapobject_apply.h	\
+	mapobject_image.c	\
+	mapobject_image.h	\
+	mapobject_main.c	\
+	mapobject_main.h	\
+	mapobject_preview.c	\
+	mapobject_preview.h	\
+	mapobject_shade.c	\
+	mapobject_shade.h	\
+	mapobject_stock.c	\
+	mapobject_stock.h	\
+	mapobject_ui.c		\
+	mapobject_ui.h
 
 INCLUDES = \
-	-I$(top_srcdir)			\
-	-I$(top_srcdir)/plug-ins/libgck	\
-	-I$(includedir)			\
-	$(X_CFLAGS)
+	-I$(top_srcdir)	\
+	$(GTK_CFLAGS)	\
+	-I$(includedir)
 
 LDADD = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la	\
-	$(top_builddir)/plug-ins/libgck/gck/libgck.la	\
-	$(X_LIBS)
-
-DEPS = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la	\
-	$(top_builddir)/plug-ins/libgck/gck/libgck.la
-	
-MapObject_DEPENDENCIES = $(DEPS)
-
-.PHONY: files
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)

@@ -23,7 +23,7 @@
   (* (sqrt val) scale))
 
 (define (calculate-inset-gamma img layer)
-  (let* ((stats (gimp-histogram img layer 0 0 255))
+  (let* ((stats (gimp-histogram layer 0 0 255))
 	 (mean (car stats)))
     (cond ((< mean 127) (+ 1.0 (* 0.5 (/ (- 127 mean) 127.0))))
 	  ((>= mean 127) (- 1.0 (* 0.5 (/ (- mean 127) 127.0)))))))
@@ -31,11 +31,11 @@
 
 (define (copy-layer-carve-it dest-image dest-drawable source-image source-drawable)
   (gimp-selection-all dest-image)
-  (gimp-edit-clear dest-image dest-drawable)
+  (gimp-edit-clear dest-drawable)
   (gimp-selection-none dest-image)
   (gimp-selection-all source-image)
-  (gimp-edit-copy source-image source-drawable)
-      (let ((floating-sel (car (gimp-edit-paste dest-image dest-drawable FALSE))))
+  (gimp-edit-copy source-drawable)
+      (let ((floating-sel (car (gimp-edit-paste dest-drawable FALSE))))
 	(gimp-floating-sel-anchor floating-sel)))
 
 
@@ -44,12 +44,12 @@
   (let* ((width (car (gimp-drawable-width mask-drawable)))
 	 (height (car (gimp-drawable-height mask-drawable)))
 	 (type (car (gimp-drawable-type bg-layer)))
-	 (img (car (gimp-image-new width height (cond ((= type RGB_IMAGE) RGB)
-						      ((= type RGBA_IMAGE) RGB)
-						      ((= type GRAY_IMAGE) GRAY)
-						      ((= type GRAYA_IMAGE) GRAY)
-						      ((= type INDEXED_IMAGE) INDEXED)
-						      ((= type INDEXEDA_IMAGE) INDEXED)))))
+	 (img (car (gimp-image-new width height (cond ((= type RGB-IMAGE) RGB)
+						      ((= type RGBA-IMAGE) RGB)
+						      ((= type GRAY-IMAGE) GRAY)
+						      ((= type GRAYA-IMAGE) GRAY)
+						      ((= type INDEXED-IMAGE) INDEXED)
+						      ((= type INDEXEDA-IMAGE) INDEXED)))))
 	 (size (min width height))
 	 (offx (carve-scale size 0.33))
 	 (offy (carve-scale size 0.25))
@@ -57,7 +57,7 @@
 	 (brush-size (carve-scale size 0.3))
 	 (mask-fs 0)
 	 (mask (car (gimp-channel-new img width height "Engraving Mask" 50 '(0 0 0))))
-	 (inset-gamma (calculate-inset-gamma (car (gimp-drawable-image bg-layer)) bg-layer))
+	 (inset-gamma (calculate-inset-gamma (car (gimp-drawable-get-image bg-layer)) bg-layer))
 	 (mask-fat 0)
 	 (mask-emboss 0)
 	 (mask-highlight 0)
@@ -71,37 +71,35 @@
 	 (bg-width (car (gimp-drawable-width bg-layer)))
 	 (bg-height (car (gimp-drawable-height bg-layer)))
 	 (bg-type (car (gimp-drawable-type bg-layer)))
-	 (bg-image (car (gimp-drawable-image bg-layer)))
-	 (layer1 (car (gimp-layer-new img bg-width bg-height bg-type "Layer1" 100 NORMAL)))
-	 (inset-layer (car (gimp-layer-new img bg-width bg-height bg-type "inset1" 100 NORMAL)))
- 	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background)))
-	 (old-brush (car (gimp-brushes-get-brush))))
-    (gimp-image-disable-undo img)
+	 (bg-image (car (gimp-drawable-get-image bg-layer)))
+	 (layer1 (car (gimp-layer-new img bg-width bg-height bg-type "Layer1" 100 NORMAL-MODE))))
+
+    (gimp-context-push)
+
+    (gimp-image-undo-disable img)
+
+    (gimp-image-add-layer img layer1 0)
+
     (gimp-selection-all img)
-    (gimp-edit-clear img inset-layer)
-    (gimp-edit-clear img layer1)
+    (gimp-edit-clear layer1)
     (gimp-selection-none img)
     (copy-layer-carve-it img layer1 bg-image bg-layer)
 
-    (gimp-edit-clear img inset-layer)
-
-    (gimp-edit-copy mask-img mask-drawable)
+    (gimp-edit-copy mask-drawable)
     (gimp-image-add-channel img mask 0)
 
-    (gimp-image-add-layer img layer1 0)
     (plug-in-tile 1 img layer1 width height FALSE)
-    (set! mask-fs (car (gimp-edit-paste img mask FALSE)))
+    (set! mask-fs (car (gimp-edit-paste mask FALSE)))
     (gimp-floating-sel-anchor mask-fs)
     (if (= carve-white FALSE)
-	(gimp-invert img mask))
+	(gimp-invert mask))
 
     (set! mask-fat (car (gimp-channel-copy mask)))
     (gimp-image-add-channel img mask-fat 0)
-    (gimp-selection-load img mask-fat)
-    (gimp-brushes-set-brush (carve-brush brush-size))
-    (gimp-palette-set-foreground '(255 255 255))
-    (gimp-edit-stroke img mask-fat)
+    (gimp-selection-load mask-fat)
+    (gimp-context-set-brush (carve-brush brush-size))
+    (gimp-context-set-foreground '(255 255 255))
+    (gimp-edit-stroke mask-fat)
     (gimp-selection-none img)
 
     (set! mask-emboss (car (gimp-channel-copy mask-fat)))
@@ -109,81 +107,83 @@
     (plug-in-gauss-rle 1 img mask-emboss feather TRUE TRUE)
     (plug-in-emboss 1 img mask-emboss 315.0 45.0 7 TRUE)
 
-    (gimp-palette-set-background '(180 180 180))
-    (gimp-selection-load img mask-fat)
+    (gimp-context-set-background '(180 180 180))
+    (gimp-selection-load mask-fat)
     (gimp-selection-invert img)
-    (gimp-edit-fill img mask-emboss)
-    (gimp-selection-load img mask)
-    (gimp-edit-fill img mask-emboss)
+    (gimp-edit-fill mask-emboss BACKGROUND-FILL)
+    (gimp-selection-load mask)
+    (gimp-edit-fill mask-emboss BACKGROUND-FILL)
     (gimp-selection-none img)
 
     (set! mask-highlight (car (gimp-channel-copy mask-emboss)))
     (gimp-image-add-channel img mask-highlight 0)
-    (gimp-levels img mask-highlight 0 180 255 1.0 0 255)
+    (gimp-levels mask-highlight 0 180 255 1.0 0 255)
 
     (set! mask-shadow mask-emboss)
-    (gimp-levels img mask-shadow 0 0 180 1.0 0 255)
+    (gimp-levels mask-shadow 0 0 180 1.0 0 255)
 
-    (gimp-edit-copy img mask-shadow)
-    (set! shadow-layer (car (gimp-edit-paste img layer1 FALSE)))
+    (gimp-edit-copy mask-shadow)
+    (set! shadow-layer (car (gimp-edit-paste layer1 FALSE)))
     (gimp-floating-sel-to-layer shadow-layer)
-    (gimp-layer-set-mode shadow-layer MULTIPLY)
+    (gimp-layer-set-mode shadow-layer MULTIPLY-MODE)
 
-    (gimp-edit-copy img mask-highlight)
-    (set! highlight-layer (car (gimp-edit-paste img shadow-layer FALSE)))
+    (gimp-edit-copy mask-highlight)
+    (set! highlight-layer (car (gimp-edit-paste shadow-layer FALSE)))
     (gimp-floating-sel-to-layer highlight-layer)
-    (gimp-layer-set-mode highlight-layer SCREEN)
+    (gimp-layer-set-mode highlight-layer SCREEN-MODE)
 
-    (gimp-edit-copy img mask)
-    (set! cast-shadow-layer (car (gimp-edit-paste img highlight-layer FALSE)))
+    (gimp-edit-copy mask)
+    (set! cast-shadow-layer (car (gimp-edit-paste highlight-layer FALSE)))
     (gimp-floating-sel-to-layer cast-shadow-layer)
-    (gimp-layer-set-mode cast-shadow-layer MULTIPLY)
+    (gimp-layer-set-mode cast-shadow-layer MULTIPLY-MODE)
     (gimp-layer-set-opacity cast-shadow-layer 75)
     (plug-in-gauss-rle 1 img cast-shadow-layer feather TRUE TRUE)
     (gimp-layer-translate cast-shadow-layer offx offy)
 
-    (set! csl-mask (car (gimp-layer-create-mask cast-shadow-layer BLACK-MASK)))
-    (gimp-image-add-layer-mask img cast-shadow-layer csl-mask)
-    (gimp-selection-load img mask)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill img csl-mask)
+    (set! csl-mask (car (gimp-layer-create-mask cast-shadow-layer ADD-BLACK-MASK)))
+    (gimp-layer-add-mask cast-shadow-layer csl-mask)
+    (gimp-selection-load mask)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill csl-mask BACKGROUND-FILL)
 
-   (set! inset-layer (car (gimp-layer-copy layer1 TRUE)))
-   (gimp-image-add-layer img inset-layer 1)
+    (set! inset-layer (car (gimp-layer-copy layer1 TRUE)))
+    (gimp-image-add-layer img inset-layer 1)
 
-    (set! il-mask (car (gimp-layer-create-mask inset-layer BLACK-MASK)))
-    (gimp-image-add-layer-mask img inset-layer il-mask)
-    (gimp-selection-load img mask)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill img il-mask)
+    (set! il-mask (car (gimp-layer-create-mask inset-layer ADD-BLACK-MASK)))
+    (gimp-layer-add-mask inset-layer il-mask)
+    (gimp-selection-load mask)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill il-mask BACKGROUND-FILL)
     (gimp-selection-none img)
     (gimp-selection-none bg-image)
-    (gimp-levels img inset-layer 0 0 255 inset-gamma 0 255)
+    (gimp-levels inset-layer 0 0 255 inset-gamma 0 255)
     (gimp-image-remove-channel img mask)
     (gimp-image-remove-channel img mask-fat)
     (gimp-image-remove-channel img mask-highlight)
     (gimp-image-remove-channel img mask-shadow)
 
-    (gimp-layer-set-name layer1 "Carved Surface")
-    (gimp-layer-set-name shadow-layer "Bevel Shadow")
-    (gimp-layer-set-name highlight-layer "Bevel Highlight")
-    (gimp-layer-set-name cast-shadow-layer "Cast Shadow")
-    (gimp-layer-set-name inset-layer "Inset")
+    (gimp-drawable-set-name layer1 "Carved Surface")
+    (gimp-drawable-set-name shadow-layer "Bevel Shadow")
+    (gimp-drawable-set-name highlight-layer "Bevel Highlight")
+    (gimp-drawable-set-name cast-shadow-layer "Cast Shadow")
+    (gimp-drawable-set-name inset-layer "Inset")
 
-    (gimp-palette-set-foreground old-fg)
-    (gimp-palette-set-background old-bg)
-    (gimp-brushes-set-brush old-brush)
     (gimp-display-new img)
-    (gimp-image-enable-undo img)))
+    (gimp-image-undo-enable img)
+
+    (gimp-context-pop)))
 
 (script-fu-register "script-fu-carve-it"
-		    "<Image>/Script-Fu/Stencil Ops/Carve-It"
+		    _"C_arve-It..."
 		    "Use the specified [GRAY] drawable as a stencil to carve from the specified image. The specified image must be either RGB colour or grayscale, not indexed."
 		    "Spencer Kimball"
 		    "Spencer Kimball"
 		    "1997"
 		    "GRAY"
-		    SF-IMAGE "Mask Image" 0
-		    SF-DRAWABLE "Mask Drawable" 0
-		    SF-DRAWABLE "Image to Carve" 0
-		    SF-TOGGLE "Carve White Areas" TRUE)
+		    SF-IMAGE     "Mask image"        0
+		    SF-DRAWABLE  "Mask drawable"     0
+		    SF-DRAWABLE _"Image to carve"    0
+		    SF-TOGGLE   _"Carve white areas" TRUE)
+
+(script-fu-menu-register "script-fu-carve-it"
+			 _"<Image>/Script-Fu/Stencil Ops")

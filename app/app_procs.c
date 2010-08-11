@@ -15,671 +15,406 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/param.h>
-#include <unistd.h>
-
-#include <gtk/gtk.h>
-
-#include "libgimp/gimpfeatures.h"
-
-#include "appenv.h"
-#include "app_procs.h"
-#include "batch.h"
-#include "brushes.h"
-#include "color_transfer.h"
-#include "curves.h"
-#include "gdisplay.h"
-#include "colormaps.h"
-#include "fileops.h"
-#include "gimprc.h"
-#include "global_edit.h"
-#include "gradient.h"
-#include "gximage.h"
-#include "hue_saturation.h"
-#include "image_render.h"
-#include "interface.h"
-#include "internal_procs.h"
-#include "layers_dialog.h"
-#include "levels.h"
-#include "menus.h"
-#include "paint_funcs.h"
-#include "palette.h"
-#include "patterns.h"
-#include "plug_in.h"
-#include "procedural_db.h"
-#include "temp_buf.h"
-#include "tile_swap.h"
-#include "tips_dialog.h"
-#include "tools.h"
-#include "undo.h"
-#include "xcf.h"
-#include "errors.h"
 
 #include "config.h"
 
-#define LOGO_WIDTH_MIN 350
-#define LOGO_HEIGHT_MIN 110
-#define NAME "The GIMP"
-#define BROUGHT "brought to you by"
-#define AUTHORS "Spencer Kimball and Peter Mattis"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-#define SHOW_NEVER 0
-#define SHOW_LATER 1
-#define SHOW_NOW 2
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
 
-/*  Function prototype for affirmation dialog when exiting application  */
-static void      really_quit_dialog (void);
-static Argument* quit_invoker       (Argument *args);
-static void make_initialization_status_window(void);
-static void destroy_initialization_status_window(void);
-static int splash_logo_load (GtkWidget *window);
-static int splash_logo_load_size (GtkWidget *window);
-static void splash_logo_draw (GtkWidget *widget);
-static void splash_text_draw (GtkWidget *widget);
-static void splash_logo_expose (GtkWidget *widget);
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#include <glib-object.h>
+
+#include "libgimpbase/gimpbase.h"
+
+#include "core/core-types.h"
+
+#include "config/gimprc.h"
+
+#include "base/base.h"
+
+#include "core/gimp.h"
+
+#include "file/file-open.h"
+#include "file/file-utils.h"
+
+#ifndef GIMP_CONSOLE_COMPILATION
+#include "dialogs/user-install-dialog.h"
+
+#include "gui/gui.h"
+#endif
+
+#include "app_procs.h"
+#include "batch.h"
+#include "errors.h"
+#include "units.h"
+
+#include "gimp-intl.h"
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 
-static gint is_app_exit_finish_done = FALSE;
+/*  local prototypes  */
 
-static ProcArg quit_args[] =
+static void       app_init_update_none    (const gchar *text1,
+                                           const gchar *text2,
+                                           gdouble      percentage);
+static gboolean   app_exit_after_callback (Gimp        *gimp,
+                                           gboolean     kill_it,
+                                           GMainLoop   *loop);
+
+
+/*  public functions  */
+
+gboolean
+app_libs_init (gboolean   *no_interface,
+               gint       *argc,
+               gchar    ***argv)
 {
-  { PDB_INT32,
-    "kill",
-    "Flag specifying whether to kill the gimp process or exit normally" },
-};
+#ifdef GIMP_CONSOLE_COMPILATION
+  *no_interface = TRUE;
+#endif
 
-static ProcRecord quit_proc =
-{
-  "gimp_quit",
-  "Causes the gimp to exit gracefully",
-  "The internal procedure which can either be used to make the gimp quit normally, or to have the gimp clean up its resources and exit immediately. The normaly shutdown process allows for querying the user to save any dirty images.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  PDB_INTERNAL,
-  1,
-  quit_args,
-  0,
-  NULL,
-  { { quit_invoker } },
-};
+  if (*no_interface)
+    {
+      gchar *basename;
 
+      basename = g_path_get_basename ((*argv)[0]);
+      g_set_prgname (basename);
+      g_free (basename);
+
+      g_type_init ();
+
+      return TRUE;
+    }
+#ifndef GIMP_CONSOLE_COMPILATION
+  else
+    {
+      return gui_libs_init (argc, argv);
+    }
+#endif
+
+  return FALSE;
+}
 
 void
-gimp_init (int    gimp_argc,
-	   char **gimp_argv)
+app_abort (gboolean     no_interface,
+           const gchar *abort_message)
 {
-  /* Initialize the application */
-  app_init ();
+#ifndef GIMP_CONSOLE_COMPILATION
+  if (no_interface)
+#endif
+    {
+      g_print ("%s\n\n", abort_message);
+    }
+#ifndef GIMP_CONSOLE_COMPILATION
+  else
+    {
+      gui_abort (abort_message);
+    }
+#endif
 
-  /* Parse the rest of the command line arguments as images to load */
+  app_exit (EXIT_FAILURE);
+}
+
+void
+app_exit (gint status)
+{
+#ifdef G_OS_WIN32
+  /* Give them time to read the message if it was printed in a
+   * separate console window. I would really love to have
+   * some way of asking for confirmation to close the console
+   * window.
+   */
+  HANDLE console;
+  DWORD  mode;
+
+  console = GetStdHandle (STD_OUTPUT_HANDLE);
+  if (GetConsoleMode (console, &mode) != 0)
+    {
+      g_print (_("(This console window will close in ten seconds)\n"));
+      Sleep(10000);
+    }
+#endif
+
+  exit (status);
+}
+
+void
+app_run (const gchar         *full_prog_name,
+         gint                 gimp_argc,
+         gchar              **gimp_argv,
+         const gchar         *alternate_system_gimprc,
+         const gchar         *alternate_gimprc,
+         const gchar         *session_name,
+         const gchar         *batch_interpreter,
+         const gchar        **batch_commands,
+         gboolean             no_interface,
+         gboolean             no_data,
+         gboolean             no_fonts,
+         gboolean             no_splash,
+         gboolean             be_verbose,
+         gboolean             use_shm,
+         gboolean             use_cpu_accel,
+         gboolean             console_messages,
+         GimpStackTraceMode   stack_trace_mode,
+         GimpPDBCompatMode    pdb_compat_mode)
+{
+  GimpInitStatusFunc  update_status_func = NULL;
+  Gimp               *gimp;
+  GMainLoop          *loop;
+  gboolean            swap_is_ok;
+  gint                i;
+
+  const gchar *log_domains[] =
+  {
+    "Gimp",
+    "Gimp-Actions",
+    "Gimp-Base",
+    "Gimp-Composite",
+    "Gimp-Config",
+    "Gimp-Core",
+    "Gimp-Dialogs",
+    "Gimp-Display",
+    "Gimp-File",
+    "Gimp-GUI",
+    "Gimp-Menus",
+    "Gimp-PDB",
+    "Gimp-Paint-Funcs",
+    "Gimp-Plug-In",
+    "Gimp-Text",
+    "Gimp-Tools",
+    "Gimp-Vectors",
+    "Gimp-Widgets",
+    "Gimp-XCF"
+  };
+
+  /*  Create an instance of the "Gimp" object which is the root of the
+   *  core object system
+   */
+  gimp = gimp_new (full_prog_name,
+                   session_name,
+                   be_verbose,
+                   no_data,
+                   no_fonts,
+                   no_interface,
+                   use_shm,
+                   console_messages,
+                   stack_trace_mode,
+                   pdb_compat_mode);
+
+  for (i = 0; i < G_N_ELEMENTS (log_domains); i++)
+    g_log_set_handler (log_domains[i],
+                       G_LOG_LEVEL_MESSAGE,
+                       gimp_message_log_func, &gimp);
+
+  g_log_set_handler (NULL,
+		     G_LOG_LEVEL_ERROR | G_LOG_FLAG_FATAL,
+		     gimp_error_log_func, &gimp);
+
+  units_init (gimp);
+
+  /*  Check if the user's gimp_directory exists
+   */
+  if (! g_file_test (gimp_directory (), G_FILE_TEST_IS_DIR))
+    {
+      /*  not properly installed  */
+
+#ifndef GIMP_CONSOLE_COMPILATION
+      if (no_interface)
+#endif
+	{
+          const gchar *msg;
+
+          msg = _("GIMP is not properly installed for the current user.\n"
+                  "User installation was skipped because the '--no-interface' flag was used.\n"
+                  "To perform user installation, run the GIMP without the '--no-interface' flag.");
+
+          g_printerr ("%s\n\n", msg);
+	}
+#ifndef GIMP_CONSOLE_COMPILATION
+      else
+	{
+          user_install_dialog_run (alternate_system_gimprc,
+                                   alternate_gimprc,
+                                   be_verbose);
+	}
+#endif
+    }
+
+#if defined G_OS_WIN32 && !defined GIMP_CONSOLE_COMPILATION
+  /* Common windoze apps don't have a console at all. So does Gimp
+   * - if appropiate. This allows to compile as console application
+   * with all it's benefits (like inheriting the console) but hide
+   * it, if the user doesn't want it.
+   */
+  if (!no_interface && !be_verbose && !console_messages)
+    FreeConsole ();
+#endif
+
+  gimp_load_config (gimp, alternate_system_gimprc, alternate_gimprc);
+
+  /*  initialize lowlevel stuff  */
+  swap_is_ok = base_init (GIMP_BASE_CONFIG (gimp->config),
+                          be_verbose, use_cpu_accel);
+
+#ifndef GIMP_CONSOLE_COMPILATION
+  if (! no_interface)
+    update_status_func = gui_init (gimp, no_splash);
+#endif
+
+  if (! update_status_func)
+    update_status_func = app_init_update_none;
+
+  /*  Create all members of the global Gimp instance which need an already
+   *  parsed gimprc, e.g. the data factories
+   */
+  gimp_initialize (gimp, update_status_func);
+
+  /*  Load all data files
+   */
+  gimp_restore (gimp, update_status_func);
+
+  /* display a warning when no test swap file could be generated */
+  if (! swap_is_ok)
+    g_message (_("Unable to open a test swap file. To avoid data loss "
+                 "please check the location and permissions of the swap "
+                 "directory defined in your Preferences "
+                 "(currently \"%s\")."),
+               GIMP_BASE_CONFIG (gimp->config)->swap_path);
+
+  /*  enable autosave late so we don't autosave when the
+   *  monitor resolution is set in gui_init()
+   */
+  gimp_rc_set_autosave (GIMP_RC (gimp->edit_config), TRUE);
+
+  /*  Parse the rest of the command line arguments as images to load
+   */
   if (gimp_argc > 0)
-    while (gimp_argc--)
-      {
-	if (*gimp_argv)
-	  file_open (*gimp_argv, *gimp_argv);
-	gimp_argv++;
-      }
+    {
+      gint i;
 
-  batch_init ();
+      for (i = 0; i < gimp_argc; i++)
+        {
+          if (gimp_argv[i])
+            {
+              GError *error = NULL;
+              gchar  *uri;
 
-  /* Handle showing dialogs with gdk_quit_adds here  */
-  if (!no_interface && show_tips)
-    tips_dialog_create ();
+              /*  first try if we got a file uri  */
+              uri = g_filename_from_uri (gimp_argv[i], NULL, NULL);
+
+              if (uri)
+                {
+                  g_free (uri);
+                  uri = g_strdup (gimp_argv[i]);
+                }
+              else
+                {
+                  uri = file_utils_filename_to_uri (gimp->load_procs,
+                                                    gimp_argv[i], &error);
+                }
+
+              if (! uri)
+                {
+                  g_printerr ("conversion filename -> uri failed: %s\n",
+                              error->message);
+                  g_clear_error (&error);
+                }
+              else
+                {
+                  GimpImage         *gimage;
+                  GimpPDBStatusType  status;
+
+                  gimage = file_open_with_display (gimp,
+                                                   gimp_get_user_context (gimp),
+                                                   NULL,
+                                                   uri,
+                                                   &status, &error);
+
+                  if (! gimage && status != GIMP_PDB_CANCEL)
+                    {
+                      gchar *filename = file_utils_uri_to_utf8_filename (uri);
+
+                      g_message (_("Opening '%s' failed: %s"),
+                                 filename, error->message);
+                      g_clear_error (&error);
+
+                      g_free (filename);
+                   }
+
+                  g_free (uri);
+                }
+            }
+        }
+    }
+
+#ifndef GIMP_CONSOLE_COMPILATION
+  if (! no_interface)
+    gui_post_init (gimp);
+#endif
+
+  batch_run (gimp, batch_interpreter, batch_commands);
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  g_signal_connect_after (gimp, "exit",
+                          G_CALLBACK (app_exit_after_callback),
+                          loop);
+
+  gimp_threads_leave (gimp);
+  g_main_loop_run (loop);
+  gimp_threads_enter (gimp);
+
+  g_main_loop_unref (loop);
+
+  g_object_unref (gimp);
+  base_exit ();
 }
 
 
-static GtkWidget *logo_area = NULL;
-static GdkPixmap *logo_pixmap = NULL;
-static int logo_width = 0;
-static int logo_height = 0;
-static int logo_area_width = 0;
-static int logo_area_height = 0;
-static int show_logo = SHOW_NEVER;
-static int max_label_length = MAXPATHLEN;
-
-static int
-splash_logo_load_size (GtkWidget *window)
-{
-  char buf[1024];
-  FILE *fp;
-
-  if (logo_pixmap)
-    return TRUE;
-
-  sprintf (buf, "%s/gimp_splash.ppm", DATADIR);
-
-  fp = fopen (buf, "r");
-  if (!fp)
-    return 0;
-
-  fgets (buf, 1024, fp);
-  if (strcmp (buf, "P6\n") != 0)
-    {
-      fclose (fp);
-      return 0;
-    }
-
-  fgets (buf, 1024, fp);
-  fgets (buf, 1024, fp);
-  sscanf (buf, "%d %d", &logo_width, &logo_height);
-
-  fclose (fp);
-  return TRUE;
-}
-
-static int
-splash_logo_load (GtkWidget *window)
-{
-  GtkWidget *preview;
-  GdkGC *gc;
-  char buf[1024];
-  unsigned char *pixelrow;
-  FILE *fp;
-  int count;
-  int i;
-
-  if (logo_pixmap)
-    return TRUE;
-
-  sprintf (buf, "%s/gimp_splash.ppm", DATADIR);
-
-  fp = fopen (buf, "r");
-  if (!fp)
-    return 0;
-
-  fgets (buf, 1024, fp);
-  if (strcmp (buf, "P6\n") != 0)
-    {
-      fclose (fp);
-      return 0;
-    }
-
-  fgets (buf, 1024, fp);
-  fgets (buf, 1024, fp);
-  sscanf (buf, "%d %d", &logo_width, &logo_height);
-
-  fgets (buf, 1024, fp);
-  if (strcmp (buf, "255\n") != 0)
-    {
-      fclose (fp);
-      return 0;
-    }
-
-  preview = gtk_preview_new (GTK_PREVIEW_COLOR);
-  gtk_preview_size (GTK_PREVIEW (preview), logo_width, logo_height);
-  pixelrow = g_new (guchar, logo_width * 3);
-
-  for (i = 0; i < logo_height; i++)
-    {
-      count = fread (pixelrow, sizeof (unsigned char), logo_width * 3, fp);
-      if (count != (logo_width * 3))
-	{
-	  gtk_widget_destroy (preview);
-	  g_free (pixelrow);
-	  fclose (fp);
-	  return 0;
-	}
-      gtk_preview_draw_row (GTK_PREVIEW (preview), pixelrow, 0, i, logo_width);
-    }
-
-  gtk_widget_realize (window);
-  logo_pixmap = gdk_pixmap_new (window->window, logo_width, logo_height,
-				gtk_preview_get_visual ()->depth);
-  gc = gdk_gc_new (logo_pixmap);
-  gtk_preview_put (GTK_PREVIEW (preview),
-		   logo_pixmap, gc,
-		   0, 0, 0, 0, logo_width, logo_height);
-  gdk_gc_destroy (gc);
-
-  gtk_widget_unref (preview);
-  g_free (pixelrow);
-
-  fclose (fp);
-  return TRUE;
-}
+/*  private functions  */
 
 static void
-splash_text_draw (GtkWidget *widget)
+app_init_update_none (const gchar *text1,
+                      const gchar *text2,
+                      gdouble      percentage)
 {
-  GdkFont *font = NULL;
-
-  font = gdk_font_load ("-Adobe-Helvetica-Bold-R-Normal--*-140-*-*-*-*-*-*");
-  gdk_draw_string (widget->window,
-		   font,
-		   widget->style->fg_gc[GTK_STATE_NORMAL],
-		   ((logo_area_width - gdk_string_width (font, NAME)) / 2),
-		   (0.25 * logo_area_height),
-		   NAME);
-
-  font = gdk_font_load ("-Adobe-Helvetica-Bold-R-Normal--*-120-*-*-*-*-*-*");
-  gdk_draw_string (widget->window,
-		   font,
-		   widget->style->fg_gc[GTK_STATE_NORMAL],
-		   ((logo_area_width - gdk_string_width (font, GIMP_VERSION)) / 2),
-		   (0.45 * logo_area_height),
-		   GIMP_VERSION);
-  gdk_draw_string (widget->window,
-		   font,
-		   widget->style->fg_gc[GTK_STATE_NORMAL],
-		   ((logo_area_width - gdk_string_width (font, BROUGHT)) / 2),
-		   (0.65 * logo_area_height),
-		   BROUGHT);
-  gdk_draw_string (widget->window,
-		   font,
-		   widget->style->fg_gc[GTK_STATE_NORMAL],
-		   ((logo_area_width - gdk_string_width (font, AUTHORS)) / 2),
-		   (0.80 * logo_area_height),
-		   AUTHORS);
 }
 
-static void
-splash_logo_draw (GtkWidget *widget)
+static gboolean
+app_exit_after_callback (Gimp      *gimp,
+                         gboolean   kill_it,
+                         GMainLoop *loop)
 {
-  gdk_draw_pixmap (widget->window,
-		   widget->style->black_gc,
-		   logo_pixmap,
-		   0, 0,
-		   ((logo_area_width - logo_width) / 2), ((logo_area_height - logo_height) / 2),
-		   logo_width, logo_height);
-}
-
-static void
-splash_logo_expose (GtkWidget *widget)
-{
-  switch (show_logo) {
-     case SHOW_NEVER:
-     case SHOW_LATER:
-       splash_text_draw (widget);
-       break;
-     case SHOW_NOW:
-       splash_logo_draw (widget);
-  }
-}
-
-static GtkWidget *win_initstatus = NULL;
-static GtkWidget *label1 = NULL;
-static GtkWidget *label2 = NULL;
-static GtkWidget *pbar = NULL;
-
-static void
-destroy_initialization_status_window(void)
-{
-  if(win_initstatus)
-    {
-      gtk_widget_destroy(win_initstatus);
-      if (logo_pixmap != NULL)
-	gdk_pixmap_unref(logo_pixmap);
-      win_initstatus = label1 = label2 = pbar = logo_area = NULL;
-      logo_pixmap = NULL;
-    }
-}
-
-static void
-make_initialization_status_window(void)
-{
-  if (no_interface == FALSE)
-    {
-      if (no_splash == FALSE)
-	{
-	  GtkWidget *vbox;
-	  GtkStyle *style;
-
-	  win_initstatus = gtk_window_new(GTK_WINDOW_DIALOG);
-	  gtk_signal_connect (GTK_OBJECT (win_initstatus), "delete_event",
-			      GTK_SIGNAL_FUNC (gtk_true),
-			      NULL);
-	  gtk_window_set_wmclass (GTK_WINDOW(win_initstatus), "gimp_startup", "Gimp");
-	  gtk_window_set_title(GTK_WINDOW(win_initstatus),
-		               "GIMP Startup");
-
-	  if (no_splash_image == FALSE && splash_logo_load_size (win_initstatus))
-	    {
-	      show_logo = SHOW_LATER;
-	    }
-
-	  vbox = gtk_vbox_new(FALSE, 4);
-	  gtk_container_add(GTK_CONTAINER(win_initstatus), vbox);
-
-	  gtk_widget_push_visual (gtk_preview_get_visual ());
-	  gtk_widget_push_colormap  (gtk_preview_get_cmap ());
-
-	  logo_area = gtk_drawing_area_new ();
-
-	  gtk_widget_pop_colormap ();
-	  gtk_widget_pop_visual ();
-
-	  gtk_signal_connect (GTK_OBJECT (logo_area), "expose_event",
-			      (GtkSignalFunc) splash_logo_expose, NULL);
-	  logo_area_width = ( logo_width > LOGO_WIDTH_MIN ) ? logo_width : LOGO_WIDTH_MIN;
-	  logo_area_height = ( logo_height > LOGO_HEIGHT_MIN ) ? logo_height : LOGO_HEIGHT_MIN;
-	  gtk_drawing_area_size (GTK_DRAWING_AREA (logo_area), logo_area_width, logo_area_height);
-	  gtk_box_pack_start_defaults(GTK_BOX(vbox), logo_area);
-
-	  label1 = gtk_label_new("");
-	  gtk_box_pack_start_defaults(GTK_BOX(vbox), label1);
-	  label2 = gtk_label_new("");
-	  gtk_box_pack_start_defaults(GTK_BOX(vbox), label2);
-
-	  pbar = gtk_progress_bar_new();
-	  gtk_box_pack_start_defaults(GTK_BOX(vbox), pbar);
-
-	  gtk_widget_show(vbox);
-	  gtk_widget_show (logo_area);
-	  gtk_widget_show(label1);
-	  gtk_widget_show(label2);
-	  gtk_widget_show(pbar);
-
-	  gtk_window_position(GTK_WINDOW(win_initstatus),
-			      GTK_WIN_POS_CENTER);
-
-	  gtk_widget_show(win_initstatus);
-
-	  gtk_window_set_policy (GTK_WINDOW (win_initstatus), FALSE, TRUE, FALSE);
-	  /*
-	   *  This is a hack: we try to compute a good guess for the maximum
-	   *  number of charcters that will fit into the splash-screen using
-	   *  the default_font
-	   */
-	  style = gtk_widget_get_style (win_initstatus);
-	  max_label_length = 0.95 * (float)strlen (AUTHORS) *
-	    ( (float)logo_area_width / (float)gdk_string_width (style->font, AUTHORS) );
-	}
-    }
-}
-
-void
-app_init_update_status(char *label1val,
-		       char *label2val,
-		       float pct_progress)
-{
-  char *temp;
-
-  if(no_interface == FALSE && no_splash == FALSE && win_initstatus)
-    {
-      GdkRectangle area = {0, 0, -1, -1};
-      if(label1val
-	 && strcmp(label1val, GTK_LABEL(label1)->label))
-	{
-	  gtk_label_set(GTK_LABEL(label1), label1val);
-	}
-      if(label2val
-	 && strcmp(label2val, GTK_LABEL(label2)->label))
-	{
-	  while ( strlen (label2val) > max_label_length )
-	    {
-	      temp = strchr (label2val, '/');
-	      if (temp == NULL)  /* for sanity */
-		break;
-	      temp++;
-	      label2val = temp;
-	    }
-	  gtk_label_set(GTK_LABEL(label2), label2val);
-	}
-      if (pct_progress >= 0.0 && pct_progress <= 1.0 &&
-	  gtk_progress_get_current_percentage(&(GTK_PROGRESS_BAR(pbar)->progress)) != pct_progress)
-	 /*
-	  GTK_PROGRESS_BAR(pbar)->percentage != pct_progress)
-	 */
-	{
-	  gtk_progress_bar_update(GTK_PROGRESS_BAR(pbar), pct_progress);
-	}
-      gtk_widget_draw(win_initstatus, &area);
-      while (gtk_events_pending())
-	gtk_main_iteration();
-      /* We sync here to make sure things get drawn before continuing,
-       * is the improved look worth the time? I'm not sure...
-       */
-      gdk_flush();
-    }
-}
-
-/* #define RESET_BAR() app_init_update_status("", "", 0) */
-#define RESET_BAR()
-
-void
-app_init (void)
-{
-  char filename[MAXPATHLEN];
-  char *gimp_dir;
-  char *path;
-
-  gimp_dir = gimp_directory ();
-  if (gimp_dir[0] != '\000')
-    {
-      sprintf (filename, "%s/gtkrc", gimp_dir);
-
-      if ((be_verbose == TRUE) || (no_splash == TRUE))
-	g_print ("parsing \"%s\"\n", filename);
-
-      gtk_rc_parse (filename);
-    }
-
-  make_initialization_status_window();
-  if (no_interface == FALSE && no_splash == FALSE && win_initstatus) {
-    splash_text_draw (logo_area);
-  }
+  if (gimp->be_verbose)
+    g_print ("EXIT: app_exit_after_callback\n");
 
   /*
-   *  Initialize the procedural database
-   *    We need to do this first because any of the init
-   *    procedures might install or query it as needed.
+   *  In stable releases, we simply call exit() here. This speeds up
+   *  the process of quitting GIMP and also works around the problem
+   *  that plug-ins might still be running.
+   *
+   *  In unstable releases, we shut down GIMP properly in an attempt
+   *  to catch possible problems in our finalizers.
    */
-  procedural_db_init ();
-  RESET_BAR();
-  internal_procs_init ();
-  RESET_BAR();
-  procedural_db_register (&quit_proc);
 
-  RESET_BAR();
-  parse_gimprc ();         /*  parse the local GIMP configuration file  */
+#ifdef GIMP_UNSTABLE
+  g_main_loop_quit (loop);
+#else
+  /*  make sure that the swap file is removed before we quit */
+  base_exit ();
+  exit (EXIT_SUCCESS);
+#endif
 
-  /* Now we are ready to draw the splash-screen-image to the start-up window */
-  if (no_interface == FALSE)
-    {
-      if (no_splash_image == FALSE && show_logo && splash_logo_load (win_initstatus)) {
-	show_logo = SHOW_NOW;
-	splash_logo_draw (logo_area);
-      }
-    }
-
-  RESET_BAR();
-  file_ops_pre_init ();    /*  pre-initialize the file types  */
-  RESET_BAR();
-  xcf_init ();             /*  initialize the xcf file format routines */
-
-  app_init_update_status ("Looking for data files", "Brushes", 0.00);
-  brushes_init (no_data);         /*  initialize the list of gimp brushes  */
-  app_init_update_status (NULL, "Patterns", 0.25);
-  patterns_init (no_data);        /*  initialize the list of gimp patterns  */
-  app_init_update_status (NULL, "Palettes", 0.50);
-  palettes_init (no_data);        /*  initialize the list of gimp palettes  */
-  app_init_update_status (NULL, "Gradients", 0.75);
-  gradients_init (no_data);       /*  initialize the list of gimp gradients  */
-  app_init_update_status (NULL, NULL, 1.00);
-
-  plug_in_init ();         /*  initialize the plug in structures  */
-  RESET_BAR();
-  file_ops_post_init ();   /*  post-initialize the file types  */
-
-  /* Add the swap file  */
-  if (swap_path == NULL)
-    swap_path = "/tmp";
-  path = g_new (gchar, strlen (swap_path) + 32);
-  sprintf (path, "%s/gimpswap.%ld", swap_path, (long)getpid ());
-  tile_swap_add (path, NULL, NULL);
-  g_free (path);
-
-  destroy_initialization_status_window();
-
-  /*  Things to do only if there is an interface  */
-  if (no_interface == FALSE)
-    {
-      get_standard_colormaps ();
-      create_toolbox ();
-      gximage_init ();
-      render_setup (transparency_type, transparency_size);
-      tools_options_dialog_new ();
-      tools_select (RECT_SELECT);
-      message_handler = MESSAGE_BOX;
-    }
-
-  color_transfer_init ();
-  get_active_brush ();
-  get_active_pattern ();
-  paint_funcs_setup ();
-
-}
-
-int
-app_exit_finish_done (void)
-{
-  return is_app_exit_finish_done;
-}
-
-void
-app_exit_finish (void)
-{
-  if (app_exit_finish_done ())
-    return;
-  is_app_exit_finish_done = TRUE;
-
-  message_handler = CONSOLE;
-
-  lc_dialog_free ();
-  gdisplays_delete ();
-  global_edit_free ();
-  named_buffers_free ();
-  swapping_free ();
-  brushes_free ();
-  patterns_free ();
-  palettes_free ();
-  gradients_free ();
-  hue_saturation_free ();
-  curves_free ();
-  levels_free ();
-  brush_select_dialog_free ();
-  pattern_select_dialog_free ();
-  palette_free ();
-  paint_funcs_free ();
-  plug_in_kill ();
-  procedural_db_free ();
-  menus_quit ();
-  tile_swap_exit ();
-
-  /*  Things to do only if there is an interface  */
-  if (no_interface == FALSE)
-    {
-      gximage_free ();
-      render_free ();
-      tools_options_dialog_free ();
-    }
-  /*  gtk_exit (0); */
-  gtk_main_quit();
-}
-
-void
-app_exit (int kill_it)
-{
-  /*  If it's the user's perogative, and there are dirty images  */
-  if (kill_it == 0 && gdisplays_dirty () && no_interface == FALSE)
-    really_quit_dialog ();
-  else if (no_interface == FALSE)
-    toolbox_free ();
-  else
-    app_exit_finish ();
-}
-
-/********************************************************
- *   Routines to query exiting the application          *
- ********************************************************/
-
-static void
-really_quit_callback (GtkButton *button,
-		      GtkWidget *dialog)
-{
-  gtk_widget_destroy (dialog);
-  toolbox_free ();
-}
-
-static void
-really_quit_cancel_callback (GtkWidget *widget,
-			     GtkWidget *dialog)
-{
-  menus_set_sensitive ("<Toolbox>/File/Quit", TRUE);
-  menus_set_sensitive ("<Image>/File/Quit", TRUE);
-  gtk_widget_destroy (dialog);
-}
-
-static gint
-really_quit_delete_callback (GtkWidget *widget,
-			     GdkEvent  *event,
-			     gpointer client_data)
-{
-  really_quit_cancel_callback (widget, (GtkWidget *) client_data);
-
-  return TRUE;
-}
-
-static void
-really_quit_dialog ()
-{
-  GtkWidget *dialog;
-  GtkWidget *button;
-  GtkWidget *label;
-
-  menus_set_sensitive ("<Toolbox>/File/Quit", FALSE);
-  menus_set_sensitive ("<Image>/File/Quit", FALSE);
-
-  dialog = gtk_dialog_new ();
-  gtk_window_set_wmclass (GTK_WINDOW (dialog), "really_quit", "Gimp");
-  gtk_window_set_title (GTK_WINDOW (dialog), "Really Quit?");
-  gtk_window_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-  gtk_container_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 2);
-
-  gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
-		      (GtkSignalFunc) really_quit_delete_callback,
-		      dialog);
-
-  button = gtk_button_new_with_label ("Yes");
-  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      (GtkSignalFunc) really_quit_callback,
-		      dialog);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->action_area), button, TRUE, TRUE, 0);
-  gtk_widget_grab_default (button);
-  gtk_widget_show (button);
-
-  button = gtk_button_new_with_label ("No");
-  GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      (GtkSignalFunc) really_quit_cancel_callback,
-		      dialog);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->action_area), button, TRUE, TRUE, 0);
-  gtk_widget_show (button);
-
-  label = gtk_label_new ("Some files unsaved.  Quit the GIMP?");
-  gtk_misc_set_padding (GTK_MISC (label), 10, 1);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label, TRUE, TRUE, 0);
-  gtk_widget_show (label);
-
-  gtk_widget_show (dialog);
-}
-
-static Argument*
-quit_invoker (Argument *args)
-{
-  Argument *return_args;
-  int kill_it;
-
-  kill_it = args[0].value.pdb_int;
-  app_exit (kill_it);
-
-  return_args = procedural_db_return_args (&quit_proc, TRUE);
-
-  return return_args;
+  return FALSE;
 }

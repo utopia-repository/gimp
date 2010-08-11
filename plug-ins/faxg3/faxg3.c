@@ -1,5 +1,4 @@
-/*
- * This is a plugin for the GIMP.
+/* This is a plugin for the GIMP.
  *
  * Copyright (C) 1997 Jochen Friedrich
  * Parts Copyright (C) 1995 Gert Doering
@@ -18,56 +17,79 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
  */
+#include "config.h"
 
-#define VERSION "0.6"
+#include <glib.h>		/* For G_OS_WIN32 */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+#include <sys/types.h>
 #include <string.h>
 #include <fcntl.h>
 
-#include <gtk/gtk.h>
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
+
+#ifndef _O_BINARY
+#define _O_BINARY 0
+#endif
+
 #include <libgimp/gimp.h>
+
 #include "g3.h"
+
+#include "libgimp/stdplugins-intl.h"
+
+
+#define VERSION "0.6"
 
 /* Declare local functions.
  */
-gint32        emitgimp   (int, int, char *, int, char *);
-void   query      (void);
-static void   run        (char    *name,
-			  int      nparams,
-			  GParam  *param,
-			  int     *nreturn_vals,
-			  GParam **return_vals);
-static gint32 load_image (char *);
 
-GPlugInInfo PLUG_IN_INFO =
+static void   query      (void);
+static void   run        (const gchar      *name,
+			  gint              nparams,
+			  const GimpParam  *param,
+			  gint             *nreturn_vals,
+			  GimpParam       **return_vals);
+
+static gint32 load_image (const gchar      *filename);
+
+static gint32 emitgimp   (gint              hcol,
+                          gint              row,
+                          const gchar      *bitmap,
+                          gint              bperrow,
+                          const gchar      *filename);
+
+
+GimpPlugInInfo PLUG_IN_INFO =
 {
-  NULL,    /* init_proc */
-  NULL,    /* quit_proc */
-  query,   /* query_proc */
-  run,     /* run_proc */
+  NULL,  /* init_proc  */
+  NULL,  /* quit_proc  */
+  query, /* query_proc */
+  run,   /* run_proc   */
 };
 
 MAIN ()
 
-void query ()
+void query (void)
 {
-  static GParamDef load_args[] =
+  static GimpParamDef load_args[] =
   {
-    { PARAM_INT32, "run_mode", "Interactive, non-interactive" },
-    { PARAM_STRING, "filename", "The name of the file to load" },
-    { PARAM_STRING, "raw_filename", "The name of the file to load" },
+    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_STRING, "filename", "The name of the file to load" },
+    { GIMP_PDB_STRING, "raw_filename", "The name of the file to load" },
   };
-  static GParamDef load_return_vals[] =
+  static GimpParamDef load_return_vals[] =
   {
-    { PARAM_IMAGE, "image", "Output image" },
+    { GIMP_PDB_IMAGE, "image", "Output image" },
   };
-  static int nload_args = sizeof (load_args) / sizeof (load_args[0]);
-  static int nload_return_vals = sizeof (load_return_vals) / sizeof (load_return_vals[0]);
 
   gimp_install_procedure ("file_faxg3_load",
                           "loads g3 fax files",
@@ -75,46 +97,55 @@ void query ()
                           "Jochen Friedrich",
                           "Jochen Friedrich, Gert Doering, Spencer Kimball & Peter Mattis",
                           VERSION,
-			  "<Load>/Fax G3",
+			  N_("G3 fax image"),
 			  NULL,
-                          PROC_PLUG_IN,
-                          nload_args, nload_return_vals,
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (load_args),
+                          G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_magic_load_handler ("file_faxg3_load", "g3", "", "0,short,0x0001,0,short,0x0014");
+  gimp_register_file_handler_mime ("file_faxg3_load", "image/g3-fax");
+  gimp_register_magic_load_handler ("file_faxg3_load",
+				    "g3",
+				    "",
+				    "0,short,0x0001,0,short,0x0014");
 }
 
-static void run (char    *name,
-     int      nparams,
-     GParam  *param,
-     int     *nreturn_vals,
-     GParam **return_vals)
+static void
+run (const gchar      *name,
+     gint              nparams,
+     const GimpParam  *param,
+     gint             *nreturn_vals,
+     GimpParam       **return_vals)
 {
-  static GParam values[2];
-  GRunModeType run_mode;
-  gint32 image_ID;
+  static GimpParam values[2];
+  GimpRunMode      run_mode;
+  gint32           image_ID;
 
   run_mode = param[0].data.d_int32;
 
   *nreturn_vals = 1;
   *return_vals = values;
-  values[0].type = PARAM_STATUS;
-  values[0].data.d_status = STATUS_CALLING_ERROR;
+  values[0].type = GIMP_PDB_STATUS;
+  values[0].data.d_status = GIMP_PDB_CALLING_ERROR;
+
   if (strcmp (name, "file_faxg3_load") == 0)
     {
-	  *nreturn_vals = 2;
+      INIT_I18N();
+
+      *nreturn_vals = 2;
       image_ID = load_image (param[1].data.d_string);
-	  values[1].type = PARAM_IMAGE;
-	  values[1].data.d_image = image_ID;
+      values[1].type = GIMP_PDB_IMAGE;
+      values[1].data.d_image = image_ID;
 
       if (image_ID != -1)
-		{
-		  values[0].data.d_status = STATUS_SUCCESS;
-		}
+	{
+	  values[0].data.d_status = GIMP_PDB_SUCCESS;
+	}
       else
-		{
-		  values[0].data.d_status = STATUS_EXECUTION_ERROR;
-		}
+	{
+	  values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+	}
     }
 }
 
@@ -149,7 +180,7 @@ static	int  rs;		/* read buffer size */
 #define MAX_COLS 1728		/* !! FIXME - command line parameter */
 
 static gint32
-load_image (char *filename)
+load_image (const gchar *filename)
 {
   int data;
   int hibit;
@@ -160,18 +191,19 @@ load_image (char *filename)
   int i, rr, rsize;
   int cons_eol;
 
-  int	bperrow = MAX_COLS/8;	/* bytes per bit row */
-  char *bitmap;			/* MAX_ROWS by (bperrow) bytes */
-  char *bp;			/* bitmap pointer */
-  char *name;
-  int	row;
-  int	max_rows;		/* max. rows allocated */
-  int	col, hcol;		/* column, highest column ever used */
+  gint32 image_id;
+  gint   bperrow = MAX_COLS/8;	/* bytes per bit row */
+  gchar *bitmap;		/* MAX_ROWS by (bperrow) bytes */
+  gchar *bp;			/* bitmap pointer */
+  gchar *name;
+  gint	 row;
+  gint	 max_rows;		/* max. rows allocated */
+  gint 	 col, hcol;		/* column, highest column ever used */
 
-  name = (char *) malloc (strlen (filename) + 12);
-  sprintf (name, "Loading %s:", filename);
+  name = g_strdup_printf (_("Opening '%s'..."),
+                          gimp_filename_to_utf8 (filename));
   gimp_progress_init (name);
-  free (name);
+  g_free (name);
 
   /* initialize lookup trees */
   build_tree( &white, t_white );
@@ -181,7 +213,14 @@ load_image (char *filename)
 
   init_byte_tab( 0, byte_tab );
 
-  fd = open(filename, O_RDONLY );
+  fd = open (filename, O_RDONLY | _O_BINARY);
+
+  if (fd < 0)
+    {
+      g_message (_("Could not open '%s' for reading: %s"),
+                 gimp_filename_to_utf8 (filename), g_strerror (errno));
+      return -1;
+    }
 
   hibit = 0;
   data = 0;
@@ -205,16 +244,10 @@ load_image (char *filename)
   /* initialize bitmap */
 
   row = col = hcol = 0;
-  bitmap = (char *) malloc( ( max_rows = MAX_ROWS ) * MAX_COLS / 8 );
-  if ( bitmap == NULL )
-  {
-    fprintf( stderr, "cannot allocate %d bytes for bitmap",
-             max_rows * MAX_COLS/8 );
-    close( fd );
-    exit(9);
-  }
-  memset( bitmap, 0, max_rows * MAX_COLS/8 );
-  bp = &bitmap[ row * MAX_COLS/8 ]; 
+
+  bitmap = g_new0 (gchar, ( max_rows = MAX_ROWS ) * MAX_COLS / 8 );
+
+  bp = &bitmap[ row * MAX_COLS/8 ];
 
   while ( rs > 0 && cons_eol < 4 )	/* i.e., while (!EOF) */
   {
@@ -255,7 +288,7 @@ load_image (char *filename)
 	}
 
 	if ( p == NULL )	/* invalid code */
-	{ 
+	{
 	    fprintf( stderr, "invalid code, row=%d, col=%d, file offset=%lx, skip to eol\n",
 		     row, col, (unsigned long) lseek( fd, 0, 1 ) - rs + rp );
 	    while ( ( data & 0x03f ) != 0 )
@@ -328,8 +361,8 @@ load_image (char *filename)
 #endif
 	    }				/* end skip 0bits */
 	    hibit--; data >>=1;
-	    
-	    color=0; 
+
+	    color=0;
 
 	    if ( col == 0 )
 		cons_eol++;		/* consecutive EOLs */
@@ -355,8 +388,8 @@ load_image (char *filename)
 			       ( max_rows - row ) * MAX_COLS/8 );
 		    }
 		}
-			
-		col=0; bp = &bitmap[ row * MAX_COLS/8 ]; 
+
+		col=0; bp = &bitmap[ row * MAX_COLS/8 ];
 		cons_eol = 0;
 	    }
 	}
@@ -390,8 +423,11 @@ do_write:      	/* write pbm (or whatever) file */
     fprintf( stderr, "consecutive EOLs: %d, max columns: %d\n", cons_eol, hcol );
 #endif
 
-    return emitgimp(hcol, row, bitmap, bperrow, filename );
+    image_id = emitgimp (hcol, row, bitmap, bperrow, filename);
 
+    g_free (bitmap);
+
+    return image_id;
 }
 
 /* hcol is the number of columns, row the number of rows
@@ -400,15 +436,20 @@ do_write:      	/* write pbm (or whatever) file */
  * than 1728 pixels wide]
  */
 
-gint32 emitgimp ( int hcol, int row, char *bitmap, int bperrow, char *filename )
+static gint32
+emitgimp (gint         hcol,
+          gint         row,
+          const gchar *bitmap,
+          gint         bperrow,
+          const gchar *filename)
 {
-  GPixelRgn pixel_rgn;
-  GDrawable *drawable;
-  gint32 image_ID;
-  gint32 layer_ID;
-  guchar *buf;
-  guchar tmp;
-  int x,y,xx,yy,tile_height;
+  GimpPixelRgn  pixel_rgn;
+  GimpDrawable *drawable;
+  gint32        image_ID;
+  gint32        layer_ID;
+  guchar       *buf;
+  guchar        tmp;
+  gint          x,y,xx,yy,tile_height;
 
   /* initialize */
 
@@ -418,23 +459,24 @@ gint32 emitgimp ( int hcol, int row, char *bitmap, int bperrow, char *filename )
   fprintf( stderr, "emit gimp: %d x %d\n", hcol, row);
 #endif
 
-  image_ID = gimp_image_new (hcol, row, GRAY);
+  image_ID = gimp_image_new (hcol, row, GIMP_GRAY);
   gimp_image_set_filename (image_ID, filename);
 
-  layer_ID = gimp_layer_new (image_ID, "Background",
+  layer_ID = gimp_layer_new (image_ID, _("Background"),
 			     hcol,
 			     row,
-			     GRAY_IMAGE, 100, NORMAL_MODE);
+			     GIMP_GRAY_IMAGE, 100, GIMP_NORMAL_MODE);
   gimp_image_add_layer (image_ID, layer_ID, 0);
 
   drawable = gimp_drawable_get (layer_ID);
-  gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width, drawable->height, TRUE, FALSE);
+  gimp_pixel_rgn_init (&pixel_rgn, drawable,
+                       0, 0, drawable->width, drawable->height, TRUE, FALSE);
   tile_height = gimp_tile_height ();
 #ifdef DEBUG
   fprintf( stderr, "tile height: %d\n", tile_height);
 #endif
 
-  buf = g_new(guchar, hcol*tile_height);
+  buf = g_new (guchar, hcol*tile_height);
   xx=0;
   yy=0;
   for (y=0; y<row; y++) {
@@ -465,6 +507,4 @@ gint32 emitgimp ( int hcol, int row, char *bitmap, int bperrow, char *filename )
   gimp_drawable_flush (drawable);
 
   return image_ID;
-
 }
-

@@ -1,41 +1,51 @@
 ## Process this file with automake to produce Makefile.in
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+
+if OS_WIN32
+mwindows = -mwindows
+endif
+
+AM_LDFLAGS = $(mwindows)
+
+libexecdir = $(gimpplugindir)/plug-ins
+
+noinst_LTLIBRARIES = libgimpprocbrowser.la
+libexec_PROGRAMS = plugin-browser procedure-browser
+
+libgimpprocbrowser_la_SOURCES = \
+	gimpprocbox.c		\
+	gimpprocbox.h		\
+	gimpprocbrowser.c	\
+	gimpprocbrowser.h	\
+	gimpprocview.c		\
+	gimpprocview.h
+
+plugin_browser_SOURCES = \
+	plugin-browser.c
+
+procedure_browser_SOURCES = \
+	procedure-browser.c
+
 
 EXTRA_DIST = README
 
-pluginlib_PROGRAMS = dbbrowser
-
-dbbrowser_SOURCES = \
-	dbbrowser.c		\
-	dbbrowser.h		\
-	dbbrowser_utils.c	\
-	dbbrowser_utils.h
-
 INCLUDES = \
-	$(X_CFLAGS)			\
-	-I$(top_srcdir)			\
+	-I$(top_srcdir)		\
+	$(GTK_CFLAGS)		\
 	-I$(includedir)
 
 LDADD = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)
-DEPS = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la
-
-dbbrowser_DEPENDENCIES = $(DEPS)
-
-.PHONY: files
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+	libgimpprocbrowser.la	\
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)

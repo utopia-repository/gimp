@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="GimpFileEntry">
+<refmeta>
+<refentrytitle>GimpFileEntry</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpFileEntry</refname><refpurpose>Widget for entering a filename.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+struct      <link linkend="GimpFileEntry-struct">GimpFileEntry</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-file-entry-new">gimp_file_entry_new</link>             (const <link linkend="gchar">gchar</link> *title,
+                                             const <link linkend="gchar">gchar</link> *filename,
+                                             <link linkend="gboolean">gboolean</link> dir_only,
+                                             <link linkend="gboolean">gboolean</link> check_valid);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-file-entry-get-filename">gimp_file_entry_get_filename</link>    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);
+<link linkend="void">void</link>        <link linkend="gimp-file-entry-set-filename">gimp_file_entry_set_filename</link>    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
+                                             const <link linkend="gchar">gchar</link> *filename);
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title>Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBox">GtkBox</link>
+                           +----<link linkend="GtkHBox">GtkHBox</link>
+                                 +----GimpFileEntry
+</synopsis>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Implemented Interfaces</title>
+<para>
+GimpFileEntry implements
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Signal Prototypes</title>
+<synopsis>
+
+&quot;<link linkend="GimpFileEntry-filename-changed">filename-changed</link>&quot;
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpFileEntry">GimpFileEntry</link> *,
+                                            <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsect1>
+
+
+<refsect1>
+<title>Description</title>
+<para>
+This widget is used to enter filenames or directories.
+</para>
+<para>
+There is a <link linkend="GtkEntry"><type>GtkEntry</type></link> for entering the filename manually and a "..."
+button which will pop up a <link linkend="GtkFileSelection"><type>GtkFileSelection</type></link> dialog.
+</para>
+<para>
+You can restrict the <link linkend="GimpFileSelection"><type>GimpFileSelection</type></link> to directories. In this case
+the filename listbox of the <link linkend="GtkFileSelection"><type>GtkFileSelection</type></link> dialog will be hidden.
+</para>
+<para>
+If you specify <parameter>check_valid</parameter> as <link linkend="TRUE-CAPS"><type>TRUE</type></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
+the entered filename will be checked for validity and a pixmap will be
+shown which indicates if the file exists or not.
+</para>
+<para>
+Whenever the user changes the filename, the "filename_changed" signal
+will be emitted.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpFileEntry-struct"/>struct GimpFileEntry</title>
+<indexterm><primary>GimpFileEntry</primary></indexterm><programlisting>struct GimpFileEntry;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-file-entry-new"/>gimp_file_entry_new ()</title>
+<indexterm><primary>gimp_file_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_file_entry_new             (const <link linkend="gchar">gchar</link> *title,
+                                             const <link linkend="gchar">gchar</link> *filename,
+                                             <link linkend="gboolean">gboolean</link> dir_only,
+                                             <link linkend="gboolean">gboolean</link> check_valid);</programlisting>
+<para>
+Creates a new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> widget.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>title</parameter>&nbsp;:</term>
+<listitem><simpara>       The title of the <link linkend="GtkFileEntry"><type>GtkFileEntry</type></link> dialog.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>    The initial filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dir_only</parameter>&nbsp;:</term>
+<listitem><simpara>    <literal>TRUE</literal> if the file entry should accept directories only.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>check_valid</parameter>&nbsp;:</term>
+<listitem><simpara> <literal>TRUE</literal> if the widget should check if the entered file
+              really exists.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> widget.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-file-entry-get-filename"/>gimp_file_entry_get_filename ()</title>
+<indexterm><primary>gimp_file_entry_get_filename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_file_entry_get_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);</programlisting>
+<para>
+Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<listitem><simpara> The file entry you want to know the filename from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The file or directory the user has entered.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-file-entry-set-filename"/>gimp_file_entry_set_filename ()</title>
+<indexterm><primary>gimp_file_entry_set_filename</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_file_entry_set_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
+                                             const <link linkend="gchar">gchar</link> *filename);</programlisting>
+<para>
+If you specified <parameter>check_valid</parameter> as <literal>TRUE</literal> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
+the <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> will immediately check the validity of the file
+name.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<listitem><simpara>    The file entry you want to set the filename for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara> The new filename.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+<refsect1>
+<title>Signals</title>
+<refsect2><title><anchor id="GimpFileEntry-filename-changed"/>The &quot;filename-changed&quot; signal</title>
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFileEntry">GimpFileEntry</link> *,
+                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+This signal is emitted whenever the user changes the filename.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+<refsect1>
+<title>See Also</title>
+<para>
+<link linkend="GimpPathEditor"><type>GimpPathEditor</type></link>
+</para>
+</refsect1>
+
+</refentry>

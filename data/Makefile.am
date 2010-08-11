@@ -1,21 +1,13 @@
-## Process this file with automake to produce Makefile.in
+## Makefile.am for gimp/data
 
-SUBDIRS = brushes gradients palettes patterns
+SUBDIRS = environ misc images brushes gradients palettes patterns
 
-brushdata=
-gradientdata=
-palettedata=
-patterndata=
+EXTRA_DIST = \
+	AUTHORS		\
+	ChangeLog	\
+	README
 
-.PHONY: files
+fontdir = $(gimpdatadir)/fonts
 
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(fontdir)

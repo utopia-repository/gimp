@@ -19,66 +19,122 @@
 ;  by Brian McFee <keebler@wco.com>
 ;  Create cool glossy bevelly text
 
-(define (script-fu-gradient-bevel-logo text size font bevel-height bevel-width)
-  (let* ((img (car (gimp-image-new 256 256 RGB)))
-         (border (/ size 4))
-	 (text-layer (car (gimp-text img -1 0 0 text border TRUE size PIXELS "*" font "*" "*" "*" "*")))
-	 (width (car (gimp-drawable-width text-layer)))
-	 (height (car (gimp-drawable-height text-layer)))
-         (indentX (+ border 12))
-	 (indentY (+ border (/ height 8)))
-	 (bg-layer (car (gimp-layer-new img width height RGBA_IMAGE "Background" 100 NORMAL)))
-	 (blur-layer (car (gimp-layer-new img width height RGBA_IMAGE "Blur" 100 NORMAL)))
-	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background))))
-    (gimp-image-disable-undo img)
-    (gimp-image-resize img width height 0 0)
+(define (apply-gradient-bevel-logo-effect img
+					  logo-layer
+					  b-size
+					  bevel-height
+					  bevel-width
+					  bg-color)
+  (let* ((width (car (gimp-drawable-width logo-layer)))
+	 (height (car (gimp-drawable-height logo-layer)))
+         (indentX (+ b-size 12))
+	 (indentY (+ b-size (/ height 8)))
+	 (bg-layer (car (gimp-layer-new img width height RGBA-IMAGE "Background" 100 NORMAL-MODE)))
+	 (blur-layer (car (gimp-layer-new img width height RGBA-IMAGE "Blur" 100 NORMAL-MODE))))
+
+    (gimp-context-push)
+
+    (script-fu-util-image-resize-from-layer img logo-layer)
     (gimp-image-add-layer img bg-layer 1)
     (gimp-image-add-layer img blur-layer 1)
 
-    (gimp-selection-all img bg-layer)
-    (gimp-edit-fill img bg-layer)
+    (gimp-selection-all img)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
     (gimp-layer-set-preserve-trans blur-layer TRUE)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-selection-all img blur-layer)
-    (gimp-edit-fill img blur-layer)
-    (gimp-edit-clear img blur-layer)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-selection-all img)
+    (gimp-edit-fill blur-layer BACKGROUND-FILL)
+    (gimp-edit-clear blur-layer)
     (gimp-selection-none img)
     (gimp-layer-set-preserve-trans blur-layer FALSE)
-    (gimp-selection-layer-alpha img text-layer)
-    (gimp-edit-fill img blur-layer)
+    (gimp-selection-layer-alpha logo-layer)
+    (gimp-edit-fill blur-layer BACKGROUND-FILL)
     (plug-in-gauss-rle 1 img blur-layer bevel-width 1 1)
     (gimp-selection-none img)
-    (gimp-palette-set-background '(127 127 127))
-    (gimp-palette-set-foreground '(255 255 255))
-    (gimp-layer-set-preserve-trans text-layer TRUE)
-    (gimp-selection-all img text-layer)
-    (gimp-blend img text-layer FG-BG-RGB NORMAL RADIAL 95 0 REPEAT-NONE FALSE 0 0 indentX indentY indentX (- height indentY))
+    (gimp-context-set-background '(127 127 127))
+    (gimp-context-set-foreground '(255 255 255))
+    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-selection-all img)
+
+    (gimp-edit-blend logo-layer FG-BG-RGB-MODE NORMAL-MODE
+		     GRADIENT-RADIAL 95 0 REPEAT-NONE FALSE
+		     FALSE 0 0 TRUE
+		     indentX indentY indentX (- height indentY))
+
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans text-layer FALSE)
-    (gimp-layer-set-name text-layer text)
-    (plug-in-bump-map 1 img text-layer blur-layer 115 bevel-height 5 0 0 0 15 TRUE FALSE 0)
+    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (plug-in-bump-map 1 img logo-layer blur-layer 115 bevel-height 5 0 0 0 15 TRUE FALSE 0)
     (gimp-layer-set-offsets blur-layer 5 5)
-    (gimp-invert img blur-layer)
+    (gimp-invert blur-layer)
     (gimp-layer-set-opacity blur-layer 50.0)
-    (gimp-image-set-active-layer img text-layer)
-    (gimp-palette-set-background old-bg)
-    (gimp-palette-set-foreground old-fg)
-    (gimp-image-enable-undo img)
+    (gimp-image-set-active-layer img logo-layer)
+
+    (gimp-context-pop)))
+
+(define (script-fu-gradient-bevel-logo-alpha img
+					     logo-layer
+					     b-size
+					     bevel-height
+					     bevel-width
+					     bg-color)
+  (begin
+    (gimp-image-undo-group-start img)
+    (apply-gradient-bevel-logo-effect img logo-layer b-size
+				      bevel-height bevel-width bg-color)
+    (gimp-image-undo-group-end img)
+    (gimp-displays-flush)))
+
+(script-fu-register "script-fu-gradient-bevel-logo-alpha"
+		    _"Gradient Beve_l..."
+		    "Makes Shiny Bevelly text"
+		    "Brian McFee <keebler@wco.com>"
+		    "Brian McFee"
+		    "April 1998"
+		    "RGBA"
+                    SF-IMAGE      "Image"                     0
+                    SF-DRAWABLE   "Drawable"                  0
+		    SF-ADJUSTMENT _"Border size (pixels)"     '(22 1 300 1 10 0 1)
+		    SF-ADJUSTMENT _"Bevel height (Sharpness)" '(40 1 250 1 10 0 1)
+		    SF-ADJUSTMENT _"Bevel width"              '(2.5 1 200 1 10 1 1)
+		    SF-COLOR      _"Background color"         '(255 255 255))
+
+(script-fu-menu-register "script-fu-gradient-bevel-logo-alpha"
+			 _"<Image>/Script-Fu/Alpha to Logo")
+
+
+(define (script-fu-gradient-bevel-logo text
+				       size
+				       font
+				       bevel-height
+				       bevel-width
+				       bg-color)
+  (let* ((img (car (gimp-image-new 256 256 RGB)))
+         (border (/ size 4))
+	 (text-layer (car (gimp-text-fontname img -1 0 0 text
+					      border TRUE size PIXELS font))))
+    (gimp-image-undo-disable img)
+    (gimp-drawable-set-name text-layer text)
+    (apply-gradient-bevel-logo-effect img text-layer border
+				      bevel-height bevel-width bg-color)
+    (gimp-image-undo-enable img)
     (gimp-display-new img)))
 
-
 (script-fu-register "script-fu-gradient-bevel-logo"
-		    "<Toolbox>/Xtns/Script-Fu/Logos/Gradient Bevel"
+		    _"Gradient Beve_l..."
 		    "Makes Shiny Bevelly text"
 		    "Brian McFee <keebler@wco.com>"
 		    "Brian McFee"
 		    "April 1998"
 		    ""
-		    SF-VALUE "Text String" "\"Moo\""
-		    SF-VALUE "Font Size (in pixels)" "90"
-		    SF-VALUE "Font" "\"futura_poster\""
-		    SF-VALUE "Bevel Height (sharpness)" "40"
-		    SF-VALUE "Bevel Width" "2.5")
+		    SF-STRING     _"Text"                     "Moo"
+		    SF-ADJUSTMENT _"Font size (pixels)"       '(90 2 1000 1 10 0 1)
+		    SF-FONT       _"Font"                     "Sans Bold"
+		    SF-ADJUSTMENT _"Bevel height (sharpness)" '(40 1 250 1 10 0 1)
+		    SF-ADJUSTMENT _"Bevel width"              '(2.5 1 200 1 10 1 1)
+		    SF-COLOR      _"Background color"         '(255 255 255))
+
+(script-fu-menu-register "script-fu-gradient-bevel-logo"
+			 _"<Toolbox>/Xtns/Script-Fu/Logos")

@@ -1,5 +1,5 @@
-#define MAZE_TITLE "Maze 1.2.1"
-#define MAZE_URL "http://www.poboxes.com/kevint/gimp/maze-help.html"
+
+#define MAZE_TITLE N_("Maze")
 
 #define HELP_OPENS_NEW_WINDOW FALSE
 
@@ -12,7 +12,7 @@
    Instead, update every . . . */
 #define PRIMS_PROGRESS_UPDATE 256
 
-/* Don't draw in anything that has less than 
+/* Don't draw in anything that has less than
    this value in the selection channel. */
 #define MAZE_ALPHA_THRESHOLD 127
 
@@ -26,13 +26,13 @@ typedef enum {
 typedef struct {
      gint width;
      gint height;
-     guint seed;
+     guint32 seed;
      gboolean tile;
      gint multiple;
      gint offset;
      MazeAlgoType algorithm;
+     gboolean random_seed;
      /* Interface options. */
-     gboolean timeseed;
 } MazeValues;
 
 enum CellTypes {

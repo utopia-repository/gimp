@@ -1,32 +1,96 @@
-What's new in GIMP 1.0.4
+The GNU Image Manipulation Program Version 2.2
+----------------------------------------------
 
-* Fixes in the menu code - hotkey accelerators for tools work again
-* Fixes for 8 bit visual rendering
+This is the stable branch of GIMP 2.2. Only bug-fixes are applied
+here. New features are being added in the HEAD branch that will be
+released as GIMP version 2.4.
 
-What's new in GIMP 1.0.3
 
-* GTK+ 1.2 support. Now the GIMP *requires* GTK+ 1.2
+Bugs fixed in GIMP 2.2.4
+========================
+- fixed an out-of-bounds read access in the Edge plug-in (bug #164963)
+- limit aspect ratio in crop tool to sane values (bug #164827)
+- fixed indexed conversion on floating selections (bug #165342)
+- fixed button order in resize and scale dialogs
+- improved handling of UNC paths on Windows
+- fixed crash in winicon save plug-in (bug #162742)
+- fixed image types registration for some python plug-ins (bug #1666650)
+- workaround problems with font names ending in numbers (bug #166540)
+- show clone source when cloning from a different image (bug #167002)
+- corrected coordinate limits in New Guide script (bug #167529)
+- fixed crash in gradient editor (bug #167604)
+- don't give keyboard focus to combo boxes in image window (bug #167809)
+- fixed saving of MNG files with negative layer offsets (bug #166059)
+- fixed use of the text tool on floating selections (bug #166829)
+- don't create duplicate templates when migrating user settings (bug #167893)
+- let the py-slice script ignore out-of-bounds guides (bug #167843)
+- store thumbnails in temporary folder if no valid home directory exists
+  (bug #167973)
+- fixed Emboss plug-in for small images (bug #168022)
+- avoid crashes in toolbox size allocation code (bug #162500)
+- switch from display-wide grab to application-wide grab while tool
+  actions are being performed (bug #162823)
 
-What's new in GIMP 1.0.2
 
-* Evil GIF infinite file bug introduced in 1.0.1 fixed
-* GIMP_DATADIR environment var can override precompiled DATADIR spec
-* Nicer write error handling
-* A few small bugfixes
+Bugs fixed in GIMP 2.2.3
+========================
+- fixed build problem in MIDI input controller (bug #163593)
+- remember last used directory in file open and save dialogs (bug #162385)
+- fixed crashed in DND of indexed drawables (bug #163879)
+- removed bumpmap artifacts in Lighting Effects plug-in (bug #163877)
+- fixed non-interactive mode of Retinex plug-in
+- fixed undo of ink strokes (bug #163670)
+- fixed expose event handling in Curve Bend plug-in (bug #164207)
+- added a missing pressure sensitivity toggle to Airbrush tool (bug #164237)
+- fixed loading of XJT images files from read-only folders (bug #164116)
+- fixed bug in the Info dialog that crashed the Crop tool (bug #163617)
+- fixed yet another entry problem in the Scale Image dialog (bug #163951)
+- fixed serialization of binary parasites (bug #163131)
+- correctly initialize the preview in the Bumpmap plug-in (bug #162285)
+- give visual feedback if a dialog is already opened (bug #164156)
+- fixed saving of JPEG images with large quality settings (bug #164087)
+- update the menus when selecting a component in the Channels dialog
+  (bug #164195)
+- fixed issues with the save dialog in the Imagemap plug-in (bug #164864)
+- update filesize in JPEG dialog if size of EXIF data changes (bug #164914)
 
-What's new in GIMP 1.0.1
 
-* Redid the way batch mode works: it now uses script-fu instead of a thin
-  wrapper around the PDB. This may break some stuff that relies on batch
-  mode, but batch mode was broken in 1.0 anyway
-* NeXTStep support
-* Portability fixes (should compile on non-gcc compilers)
-* gimptool supports a lot more options
-* Added gimpfeatures.h header
-* Plug-in bugfixes, updates
-* New gimp.m4 for plug-ins to use to check for gimp using autoconf/automake
-* Less spurious message dialogs
-* PDB interface for setting the g_message handler
-* App bugfixes
+Bugs fixed in GIMP 2.2.2
+========================
+- let Decompose plug-in create layers with alpha channel
+- fixed crash in save dialog (bug #162443)
+- fixed misbehaviour in Scale and Resize dialogs (bug #162387)
+- fixed preview in Imagemap plug-in (bug #162592)
+- fixed handling of broken menu path translations (bug #162590)
+- fixed bugs in the Sparkle plug-in and the Frosty Logo script (bug #132145)
+- fixed two broken Python scripts (bug #162707)
+- changed default response in Close dialog (bug #162872)
+- flush the display when plug-in dialogs are disposed (bug #163084)
+- fixed build problem on amd64 with gcc-4.0 (bug #163041)
+- fixed problem in locales that are rendered right-to-left (bug #162663)
+- fixed bug in Frosty Logo Script-Fu (bug #132145)
+- raise the toolbox when it is selected from the Tools menu (bug #163381)
+- improved usability of Keyboard Shortcuts editor (bug #163385)
+- fixed gradient selection widget in libgimpui (bug #163427)
+- workaround a problem in the MMX code (bug #162778)
 
-GIMP 1.0 Released!
+
+Bugs fixed in GIMP 2.2.1
+========================
+
+- added python logo to EXTRA_DIST so it shows up in the tarball (bug #161716)
+- fixed mempory corruption in FracalExplorer plug-in (bug #161729)
+- fixed crash in gradient editor (bug #161411)
+- fixed crash in unsharp mask plug-in preview code (bug #157910)
+- fixed bug in unsharp mask plug-in that caused artefacts when a large blur
+  radius was being used on a small drawable; minor optimizations
+- removed broken asc2img Script-Fu
+- fixed channel drag-n-drop (bug #161877)
+- fixed misbehaviour of entries in Scale and Resize dialogs (bug #161756)
+- speed up preview in several plug-ins
+- fixed bug in Despeckle plug-in that caused it to run very slowly
+  (bug #162129)
+- fixed a crash in the error dialog (bug #162147)
+- fixed parameter value range in Weave script (bug #162182)
+- fixed crash in brush preview (bug #162232)
+- minor improvements to the API docs

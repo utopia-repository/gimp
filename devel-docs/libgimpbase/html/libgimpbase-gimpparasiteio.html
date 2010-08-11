@@ -1,0 +1,36 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpparasiteio</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimpparasite.html" title="gimpparasite"><link rel="next" href="libgimpbase-gimpsignal.html" title="gimpsignal"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimpparasite.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th><td><a accesskey="n" href="libgimpbase-gimpsignal.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimpparasiteio"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpparasiteio</span></h2><p>gimpparasiteio &#8212; Utility functions to (de)serialize certain C structures to/from <a href="libgimpbase-gimpparasite.html#GimpParasite"><span class="type">GimpParasite</span></a>'s.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+#define     <a href="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS">GIMP_PIXPIPE_MAXDIM</a>
+void        <a href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init">gimp_pixpipe_params_init</a>        (GimpPixPipeParams *params);
+void        <a href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse">gimp_pixpipe_params_parse</a>       (const gchar *parameters,
+                                             GimpPixPipeParams *params);
+gchar*      <a href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build">gimp_pixpipe_params_build</a>       (GimpPixPipeParams *params);
+</pre></div><div class="refsect1" lang="en"><a name="id2585906"></a><h2>Description</h2><p>
+Utility functions to (de)serialize certain C structures to/from <a href="libgimpbase-gimpparasite.html#GimpParasite"><span class="type">GimpParasite</span></a>'s.
+
+</p></div><div class="refsect1" lang="en"><a name="id2527278"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2527284"></a><h3><a name="GIMP-PIXPIPE-MAXDIM:CAPS"></a>GIMP_PIXPIPE_MAXDIM</h3><a class="indexterm" name="id2527292"></a><pre class="programlisting">#define GIMP_PIXPIPE_MAXDIM 4
+</pre><p>
+
+</p></div><hr><div class="refsect2" lang="en"><a name="id2527302"></a><h3><a name="gimp-pixpipe-params-init"></a>gimp_pixpipe_params_init ()</h3><a class="indexterm" name="id2527310"></a><pre class="programlisting">void        gimp_pixpipe_params_init        (GimpPixPipeParams *params);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2527344"></a><h3><a name="gimp-pixpipe-params-parse"></a>gimp_pixpipe_params_parse ()</h3><a class="indexterm" name="id2527352"></a><pre class="programlisting">void        gimp_pixpipe_params_parse       (const gchar *parameters,
+                                             GimpPixPipeParams *params);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>parameters</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2570130"></a><h3><a name="gimp-pixpipe-params-build"></a>gimp_pixpipe_params_build ()</h3><a class="indexterm" name="id2570138"></a><pre class="programlisting">gchar*      gimp_pixpipe_params_build       (GimpPixPipeParams *params);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2570183"></a><h2>See Also</h2><p>
+<a href="libgimpbase-gimpparasite.html#GimpParasite"><span class="type">GimpParasite</span></a>
+</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimpparasite.html"><b>&lt;&lt; gimpparasite</b></a></td><td align="right"><a accesskey="n" href="libgimpbase-gimpsignal.html"><b>gimpsignal &gt;&gt;</b></a></td></tr></table></body></html>

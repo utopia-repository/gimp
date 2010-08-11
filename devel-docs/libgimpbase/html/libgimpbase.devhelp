@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="GIMP Base Library Reference Manual" link="index.html" author="" name="libgimpbase">
+  <chapters>
+    <sub name="GIMP Base Library" link="libgimpbase.html">
+      <sub name="gimpbaseenums" link="libgimpbase-gimpbaseenums.html"/>
+      <sub name="gimpbasetypes" link="libgimpbase-gimpbasetypes.html"/>
+      <sub name="gimpversion" link="libgimpbase-gimpversion.html"/>
+      <sub name="gimplimits" link="libgimpbase-gimplimits.html"/>
+      <sub name="gimpchecks" link="libgimpbase-gimpchecks.html"/>
+      <sub name="gimpdatafiles" link="libgimpbase-gimpdatafiles.html"/>
+      <sub name="gimpenv" link="libgimpbase-gimpenv.html"/>
+      <sub name="gimpmemsize" link="libgimpbase-gimpmemsize.html"/>
+      <sub name="gimpparasite" link="libgimpbase-gimpparasite.html"/>
+      <sub name="gimpparasiteio" link="libgimpbase-gimpparasiteio.html"/>
+      <sub name="gimpsignal" link="libgimpbase-gimpsignal.html"/>
+      <sub name="gimpunit" link="libgimpbase-gimpunit.html"/>
+      <sub name="gimputils" link="libgimpbase-gimputils.html"/>
+      <sub name="gimpprotocol" link="libgimpbase-gimpprotocol.html"/>
+      <sub name="gimpwire" link="libgimpbase-gimpwire.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <function name="enum GimpCheckSize" link="libgimpbase-gimpbaseenums.html#GimpCheckSize"/>
+    <function name="enum GimpCheckType" link="libgimpbase-gimpbaseenums.html#GimpCheckType"/>
+    <function name="enum GimpImageBaseType" link="libgimpbase-gimpbaseenums.html#GimpImageBaseType"/>
+    <function name="enum GimpImageType" link="libgimpbase-gimpbaseenums.html#GimpImageType"/>
+    <function name="enum GimpMessageHandlerType" link="libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"/>
+    <function name="enum GimpPDBArgType" link="libgimpbase-gimpbaseenums.html#GimpPDBArgType"/>
+    <function name="enum GimpPDBProcType" link="libgimpbase-gimpbaseenums.html#GimpPDBProcType"/>
+    <function name="enum GimpPDBStatusType" link="libgimpbase-gimpbaseenums.html#GimpPDBStatusType"/>
+    <function name="enum GimpProgressCommand" link="libgimpbase-gimpbaseenums.html#GimpProgressCommand"/>
+    <function name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
+    <function name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
+    <function name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
+    <function name="gimp_type_set_translation_domain ()" link="libgimpbase-gimpbasetypes.html#gimp-type-set-translation-domain"/>
+    <function name="gimp_type_get_translation_domain ()" link="libgimpbase-gimpbasetypes.html#gimp-type-get-translation-domain"/>
+    <function name="gimp_enum_set_value_descriptions ()" link="libgimpbase-gimpbasetypes.html#gimp-enum-set-value-descriptions"/>
+    <function name="gimp_enum_get_value_descriptions ()" link="libgimpbase-gimpbasetypes.html#gimp-enum-get-value-descriptions"/>
+    <function name="gimp_flags_get_value_descriptions ()" link="libgimpbase-gimpbasetypes.html#gimp-flags-get-value-descriptions"/>
+    <function name="gimp_flags_set_value_descriptions ()" link="libgimpbase-gimpbasetypes.html#gimp-flags-set-value-descriptions"/>
+    <function name="GIMP_MAJOR_VERSION" link="libgimpbase-gimpversion.html#GIMP-MAJOR-VERSION:CAPS"/>
+    <function name="GIMP_MINOR_VERSION" link="libgimpbase-gimpversion.html#GIMP-MINOR-VERSION:CAPS"/>
+    <function name="GIMP_MICRO_VERSION" link="libgimpbase-gimpversion.html#GIMP-MICRO-VERSION:CAPS"/>
+    <function name="GIMP_VERSION" link="libgimpbase-gimpversion.html#GIMP-VERSION:CAPS"/>
+    <function name="GIMP_API_VERSION" link="libgimpbase-gimpversion.html#GIMP-API-VERSION:CAPS"/>
+    <function name="GIMP_CHECK_VERSION()" link="libgimpbase-gimpversion.html#GIMP-CHECK-VERSION:CAPS"/>
+    <function name="GIMP_MIN_IMAGE_SIZE" link="libgimpbase-gimplimits.html#GIMP-MIN-IMAGE-SIZE:CAPS"/>
+    <function name="GIMP_MAX_IMAGE_SIZE" link="libgimpbase-gimplimits.html#GIMP-MAX-IMAGE-SIZE:CAPS"/>
+    <function name="GIMP_MIN_RESOLUTION" link="libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS"/>
+    <function name="GIMP_MAX_RESOLUTION" link="libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS"/>
+    <function name="GIMP_MAX_MEMSIZE" link="libgimpbase-gimplimits.html#GIMP-MAX-MEMSIZE:CAPS"/>
+    <function name="GIMP_CHECK_SIZE" link="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE:CAPS"/>
+    <function name="GIMP_CHECK_SIZE_SM" link="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE-SM:CAPS"/>
+    <function name="GIMP_CHECK_DARK" link="libgimpbase-gimpchecks.html#GIMP-CHECK-DARK:CAPS"/>
+    <function name="GIMP_CHECK_LIGHT" link="libgimpbase-gimpchecks.html#GIMP-CHECK-LIGHT:CAPS"/>
+    <function name="gimp_checks_get_shades ()" link="libgimpbase-gimpchecks.html#gimp-checks-get-shades"/>
+    <function name="GimpDatafileData" link="libgimpbase-gimpdatafiles.html#GimpDatafileData"/>
+    <function name="GimpDatafileLoaderFunc ()" link="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc"/>
+    <function name="gimp_datafiles_check_extension ()" link="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension"/>
+    <function name="gimp_datafiles_read_directories ()" link="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories"/>
+    <function name="gimp_directory ()" link="libgimpbase-gimpenv.html#gimp-directory"/>
+    <function name="gimp_personal_rc_file ()" link="libgimpbase-gimpenv.html#gimp-personal-rc-file"/>
+    <function name="gimp_data_directory ()" link="libgimpbase-gimpenv.html#gimp-data-directory"/>
+    <function name="gimp_locale_directory ()" link="libgimpbase-gimpenv.html#gimp-locale-directory"/>
+    <function name="gimp_plug_in_directory ()" link="libgimpbase-gimpenv.html#gimp-plug-in-directory"/>
+    <function name="gimp_sysconf_directory ()" link="libgimpbase-gimpenv.html#gimp-sysconf-directory"/>
+    <function name="gimp_gtkrc ()" link="libgimpbase-gimpenv.html#gimp-gtkrc"/>
+    <function name="gimp_path_parse ()" link="libgimpbase-gimpenv.html#gimp-path-parse"/>
+    <function name="gimp_path_to_str ()" link="libgimpbase-gimpenv.html#gimp-path-to-str"/>
+    <function name="gimp_path_free ()" link="libgimpbase-gimpenv.html#gimp-path-free"/>
+    <function name="gimp_path_get_user_writable_dir ()" link="libgimpbase-gimpenv.html#gimp-path-get-user-writable-dir"/>
+    <function name="gimp_memsize_serialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-serialize"/>
+    <function name="gimp_memsize_deserialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize"/>
+    <function name="gimp_memsize_to_string ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-to-string"/>
+    <function name="GIMP_TYPE_MEMSIZE" link="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS"/>
+    <function name="GIMP_VALUE_HOLDS_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS"/>
+    <function name="GimpParasite" link="libgimpbase-gimpparasite.html#GimpParasite"/>
+    <function name="gimp_parasite_new ()" link="libgimpbase-gimpparasite.html#gimp-parasite-new"/>
+    <function name="gimp_parasite_free ()" link="libgimpbase-gimpparasite.html#gimp-parasite-free"/>
+    <function name="gimp_parasite_copy ()" link="libgimpbase-gimpparasite.html#gimp-parasite-copy"/>
+    <function name="gimp_parasite_compare ()" link="libgimpbase-gimpparasite.html#gimp-parasite-compare"/>
+    <function name="gimp_parasite_is_type ()" link="libgimpbase-gimpparasite.html#gimp-parasite-is-type"/>
+    <function name="gimp_parasite_is_persistent ()" link="libgimpbase-gimpparasite.html#gimp-parasite-is-persistent"/>
+    <function name="gimp_parasite_is_undoable ()" link="libgimpbase-gimpparasite.html#gimp-parasite-is-undoable"/>
+    <function name="gimp_parasite_has_flag ()" link="libgimpbase-gimpparasite.html#gimp-parasite-has-flag"/>
+    <function name="gimp_parasite_flags ()" link="libgimpbase-gimpparasite.html#gimp-parasite-flags"/>
+    <function name="gimp_parasite_name ()" link="libgimpbase-gimpparasite.html#gimp-parasite-name"/>
+    <function name="gimp_parasite_data ()" link="libgimpbase-gimpparasite.html#gimp-parasite-data"/>
+    <function name="gimp_parasite_data_size ()" link="libgimpbase-gimpparasite.html#gimp-parasite-data-size"/>
+    <function name="GIMP_PARASITE_PERSISTENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-PERSISTENT:CAPS"/>
+    <function name="GIMP_PARASITE_UNDOABLE" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-UNDOABLE:CAPS"/>
+    <function name="GIMP_PARASITE_ATTACH_PARENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-ATTACH-PARENT:CAPS"/>
+    <function name="GIMP_PARASITE_PARENT_PERSISTENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-PARENT-PERSISTENT:CAPS"/>
+    <function name="GIMP_PARASITE_PARENT_UNDOABLE" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-PARENT-UNDOABLE:CAPS"/>
+    <function name="GIMP_PARASITE_ATTACH_GRANDPARENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS"/>
+    <function name="GIMP_PARASITE_GRANDPARENT_PERSISTENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS"/>
+    <function name="GIMP_PARASITE_GRANDPARENT_UNDOABLE" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS"/>
+    <function name="GIMP_PIXPIPE_MAXDIM" link="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS"/>
+    <function name="gimp_pixpipe_params_init ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init"/>
+    <function name="gimp_pixpipe_params_parse ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse"/>
+    <function name="gimp_pixpipe_params_build ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build"/>
+    <function name="GimpSignalHandlerFunc ()" link="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc"/>
+    <function name="gimp_signal_private ()" link="libgimpbase-gimpsignal.html#gimp-signal-private"/>
+    <function name="enum GimpUnit" link="libgimpbase-gimpunit.html#GimpUnit"/>
+    <function name="gimp_unit_get_number_of_units ()" link="libgimpbase-gimpunit.html#gimp-unit-get-number-of-units"/>
+    <function name="gimp_unit_get_number_of_built_in_units ()" link="libgimpbase-gimpunit.html#gimp-unit-get-number-of-built-in-units"/>
+    <function name="gimp_unit_new ()" link="libgimpbase-gimpunit.html#gimp-unit-new"/>
+    <function name="gimp_unit_get_deletion_flag ()" link="libgimpbase-gimpunit.html#gimp-unit-get-deletion-flag"/>
+    <function name="gimp_unit_set_deletion_flag ()" link="libgimpbase-gimpunit.html#gimp-unit-set-deletion-flag"/>
+    <function name="gimp_unit_get_factor ()" link="libgimpbase-gimpunit.html#gimp-unit-get-factor"/>
+    <function name="gimp_unit_get_digits ()" link="libgimpbase-gimpunit.html#gimp-unit-get-digits"/>
+    <function name="gimp_unit_get_identifier ()" link="libgimpbase-gimpunit.html#gimp-unit-get-identifier"/>
+    <function name="gimp_unit_get_symbol ()" link="libgimpbase-gimpunit.html#gimp-unit-get-symbol"/>
+    <function name="gimp_unit_get_abbreviation ()" link="libgimpbase-gimpunit.html#gimp-unit-get-abbreviation"/>
+    <function name="gimp_unit_get_singular ()" link="libgimpbase-gimpunit.html#gimp-unit-get-singular"/>
+    <function name="gimp_unit_get_plural ()" link="libgimpbase-gimpunit.html#gimp-unit-get-plural"/>
+    <function name="GIMP_TYPE_UNIT" link="libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS"/>
+    <function name="GIMP_VALUE_HOLDS_UNIT()" link="libgimpbase-gimpunit.html#GIMP-VALUE-HOLDS-UNIT:CAPS"/>
+    <function name="gimp_any_to_utf8 ()" link="libgimpbase-gimputils.html#gimp-any-to-utf8"/>
+    <function name="gimp_filename_to_utf8 ()" link="libgimpbase-gimputils.html#gimp-filename-to-utf8"/>
+    <function name="gimp_utf8_strtrim ()" link="libgimpbase-gimputils.html#gimp-utf8-strtrim"/>
+    <function name="gimp_escape_uline ()" link="libgimpbase-gimputils.html#gimp-escape-uline"/>
+    <function name="gimp_strip_uline ()" link="libgimpbase-gimputils.html#gimp-strip-uline"/>
+    <function name="gimp_enum_get_desc ()" link="libgimpbase-gimputils.html#gimp-enum-get-desc"/>
+    <function name="gimp_enum_get_value ()" link="libgimpbase-gimputils.html#gimp-enum-get-value"/>
+    <function name="gimp_enum_value_get_desc ()" link="libgimpbase-gimputils.html#gimp-enum-value-get-desc"/>
+    <function name="gimp_enum_value_get_help ()" link="libgimpbase-gimputils.html#gimp-enum-value-get-help"/>
+    <function name="gimp_flags_get_first_desc ()" link="libgimpbase-gimputils.html#gimp-flags-get-first-desc"/>
+    <function name="gimp_flags_get_first_value ()" link="libgimpbase-gimputils.html#gimp-flags-get-first-value"/>
+    <function name="gimp_flags_value_get_desc ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-desc"/>
+    <function name="gimp_flags_value_get_help ()" link="libgimpbase-gimputils.html#gimp-flags-value-get-help"/>
+    <function name="GIMP_PROTOCOL_VERSION" link="libgimpbase-gimpprotocol.html#GIMP-PROTOCOL-VERSION:CAPS"/>
+    <function name="GPConfig" link="libgimpbase-gimpprotocol.html#GPConfig"/>
+    <function name="GPTileReq" link="libgimpbase-gimpprotocol.html#GPTileReq"/>
+    <function name="GPTileAck" link="libgimpbase-gimpprotocol.html#GPTileAck"/>
+    <function name="GPTileData" link="libgimpbase-gimpprotocol.html#GPTileData"/>
+    <function name="GPParam" link="libgimpbase-gimpprotocol.html#GPParam"/>
+    <function name="GPParamDef" link="libgimpbase-gimpprotocol.html#GPParamDef"/>
+    <function name="GPProcRun" link="libgimpbase-gimpprotocol.html#GPProcRun"/>
+    <function name="GPProcReturn" link="libgimpbase-gimpprotocol.html#GPProcReturn"/>
+    <function name="GPProcInstall" link="libgimpbase-gimpprotocol.html#GPProcInstall"/>
+    <function name="GPProcUninstall" link="libgimpbase-gimpprotocol.html#GPProcUninstall"/>
+    <function name="gp_init ()" link="libgimpbase-gimpprotocol.html#gp-init"/>
+    <function name="gp_has_init_write ()" link="libgimpbase-gimpprotocol.html#gp-has-init-write"/>
+    <function name="gp_quit_write ()" link="libgimpbase-gimpprotocol.html#gp-quit-write"/>
+    <function name="gp_config_write ()" link="libgimpbase-gimpprotocol.html#gp-config-write"/>
+    <function name="gp_tile_req_write ()" link="libgimpbase-gimpprotocol.html#gp-tile-req-write"/>
+    <function name="gp_tile_ack_write ()" link="libgimpbase-gimpprotocol.html#gp-tile-ack-write"/>
+    <function name="gp_tile_data_write ()" link="libgimpbase-gimpprotocol.html#gp-tile-data-write"/>
+    <function name="gp_proc_run_write ()" link="libgimpbase-gimpprotocol.html#gp-proc-run-write"/>
+    <function name="gp_proc_return_write ()" link="libgimpbase-gimpprotocol.html#gp-proc-return-write"/>
+    <function name="gp_temp_proc_run_write ()" link="libgimpbase-gimpprotocol.html#gp-temp-proc-run-write"/>
+    <function name="gp_temp_proc_return_write ()" link="libgimpbase-gimpprotocol.html#gp-temp-proc-return-write"/>
+    <function name="gp_proc_install_write ()" link="libgimpbase-gimpprotocol.html#gp-proc-install-write"/>
+    <function name="gp_proc_uninstall_write ()" link="libgimpbase-gimpprotocol.html#gp-proc-uninstall-write"/>
+    <function name="gp_extension_ack_write ()" link="libgimpbase-gimpprotocol.html#gp-extension-ack-write"/>
+    <function name="WireMessage" link="libgimpbase-gimpwire.html#WireMessage"/>
+    <function name="WireReadFunc ()" link="libgimpbase-gimpwire.html#WireReadFunc"/>
+    <function name="WireWriteFunc ()" link="libgimpbase-gimpwire.html#WireWriteFunc"/>
+    <function name="WireDestroyFunc ()" link="libgimpbase-gimpwire.html#WireDestroyFunc"/>
+    <function name="WireIOFunc ()" link="libgimpbase-gimpwire.html#WireIOFunc"/>
+    <function name="WireFlushFunc ()" link="libgimpbase-gimpwire.html#WireFlushFunc"/>
+    <function name="wire_register ()" link="libgimpbase-gimpwire.html#wire-register"/>
+    <function name="wire_set_reader ()" link="libgimpbase-gimpwire.html#wire-set-reader"/>
+    <function name="wire_set_writer ()" link="libgimpbase-gimpwire.html#wire-set-writer"/>
+    <function name="wire_set_flusher ()" link="libgimpbase-gimpwire.html#wire-set-flusher"/>
+    <function name="wire_read ()" link="libgimpbase-gimpwire.html#wire-read"/>
+    <function name="wire_write ()" link="libgimpbase-gimpwire.html#wire-write"/>
+    <function name="wire_flush ()" link="libgimpbase-gimpwire.html#wire-flush"/>
+    <function name="wire_error ()" link="libgimpbase-gimpwire.html#wire-error"/>
+    <function name="wire_clear_error ()" link="libgimpbase-gimpwire.html#wire-clear-error"/>
+    <function name="wire_read_msg ()" link="libgimpbase-gimpwire.html#wire-read-msg"/>
+    <function name="wire_write_msg ()" link="libgimpbase-gimpwire.html#wire-write-msg"/>
+    <function name="wire_destroy ()" link="libgimpbase-gimpwire.html#wire-destroy"/>
+    <function name="wire_read_int32 ()" link="libgimpbase-gimpwire.html#wire-read-int32"/>
+    <function name="wire_read_int16 ()" link="libgimpbase-gimpwire.html#wire-read-int16"/>
+    <function name="wire_read_int8 ()" link="libgimpbase-gimpwire.html#wire-read-int8"/>
+    <function name="wire_read_double ()" link="libgimpbase-gimpwire.html#wire-read-double"/>
+    <function name="wire_read_string ()" link="libgimpbase-gimpwire.html#wire-read-string"/>
+    <function name="wire_write_int32 ()" link="libgimpbase-gimpwire.html#wire-write-int32"/>
+    <function name="wire_write_int16 ()" link="libgimpbase-gimpwire.html#wire-write-int16"/>
+    <function name="wire_write_int8 ()" link="libgimpbase-gimpwire.html#wire-write-int8"/>
+    <function name="wire_write_double ()" link="libgimpbase-gimpwire.html#wire-write-double"/>
+    <function name="wire_write_string ()" link="libgimpbase-gimpwire.html#wire-write-string"/>
+  </functions>
+</book>

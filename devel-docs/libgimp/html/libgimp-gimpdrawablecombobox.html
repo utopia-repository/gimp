@@ -1,0 +1,81 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpdrawablecombobox</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="GimpDrawablePreview.html" title="GimpDrawablePreview"><link rel="next" href="libgimp-gimpimagecombobox.html" title="gimpimagecombobox"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpDrawablePreview.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimpimagecombobox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpdrawablecombobox"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpdrawablecombobox</span></h2><p>gimpdrawablecombobox &#8212; A widget providing a popup menu of drawables.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+gboolean    (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">*GimpDrawableConstraintFunc</a>)   (gint32 image_id,
+                                             gint32 drawable_id,
+                                             gpointer data);
+GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-drawable-combo-box-new">gimp_drawable_combo_box_new</a>     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             gpointer data);
+GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-channel-combo-box-new">gimp_channel_combo_box_new</a>      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             gpointer data);
+GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-layer-combo-box-new">gimp_layer_combo_box_new</a>        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             gpointer data);
+</pre></div><div class="refsect1" lang="en"><a name="id2666128"></a><h2>Description</h2><p>
+A widget providing a popup menu of drawables.
+</p></div><div class="refsect1" lang="en"><a name="id2666138"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2666144"></a><h3><a name="GimpDrawableConstraintFunc"></a>GimpDrawableConstraintFunc ()</h3><a class="indexterm" name="id2666152"></a><pre class="programlisting">gboolean    (*GimpDrawableConstraintFunc)   (gint32 image_id,
+                                             gint32 drawable_id,
+                                             gpointer data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_id</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>drawable_id</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2666229"></a><h3><a name="gimp-drawable-combo-box-new"></a>gimp_drawable_combo_box_new ()</h3><a class="indexterm" name="id2666238"></a><pre class="programlisting">GtkWidget*  gimp_drawable_combo_box_new     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             gpointer data);</pre><p>
+Creates a new <a
+href="../libgimpwidgets/GimpIntComboBox.html"
+><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+drawables. If a <i class="parameter"><tt>constraint</tt></i> function is specified, it is called for
+each drawable and only if the function returns <tt class="literal">TRUE</tt>, the drawable
+is added to the combobox.
+</p><p>
+You should use <a
+href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-connect"
+><tt class="function">gimp_int_combo_box_connect()</tt></a> to initialize and connect
+the combo.  Use <a
+href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-set-active"
+><tt class="function">gimp_int_combo_box_set_active()</tt></a> to get the active
+drawable ID and <a
+href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"
+><tt class="function">gimp_int_combo_box_get_active()</tt></a> to retrieve the ID
+of the selected drawable.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>constraint</tt></i> :</span></td><td> a <a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <tt class="literal">NULL</tt>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>       a pointer that is passed to <i class="parameter"><tt>constraint</tt></i>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a
+href="../libgimpwidgets/GimpIntComboBox.html"
+><span class="type">GimpIntComboBox</span></a>.
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div><hr><div class="refsect2" lang="en"><a name="id2670409"></a><h3><a name="gimp-channel-combo-box-new"></a>gimp_channel_combo_box_new ()</h3><a class="indexterm" name="id2670417"></a><pre class="programlisting">GtkWidget*  gimp_channel_combo_box_new      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             gpointer data);</pre><p>
+Creates a new <a
+href="../libgimpwidgets/GimpIntComboBox.html"
+><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+channels. See <tt class="function">gimp_drawable_combo_box()</tt> for more info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>constraint</tt></i> :</span></td><td> a <a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <tt class="literal">NULL</tt>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>       a pointer that is passed to <i class="parameter"><tt>constraint</tt></i>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a
+href="../libgimpwidgets/GimpIntComboBox.html"
+><span class="type">GimpIntComboBox</span></a>.
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div><hr><div class="refsect2" lang="en"><a name="id2670517"></a><h3><a name="gimp-layer-combo-box-new"></a>gimp_layer_combo_box_new ()</h3><a class="indexterm" name="id2670526"></a><pre class="programlisting">GtkWidget*  gimp_layer_combo_box_new        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+                                             gpointer data);</pre><p>
+Creates a new <a
+href="../libgimpwidgets/GimpIntComboBox.html"
+><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+layers. See <tt class="function">gimp_drawable_combo_box()</tt> for more info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>constraint</tt></i> :</span></td><td> a <a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <tt class="literal">NULL</tt>
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>       a pointer that is passed to <i class="parameter"><tt>constraint</tt></i>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a
+href="../libgimpwidgets/GimpIntComboBox.html"
+><span class="type">GimpIntComboBox</span></a>.
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpDrawablePreview.html"><b>&lt;&lt; GimpDrawablePreview</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimpimagecombobox.html"><b>gimpimagecombobox &gt;&gt;</b></a></td></tr></table></body></html>

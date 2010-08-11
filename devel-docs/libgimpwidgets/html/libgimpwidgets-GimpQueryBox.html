@@ -1,0 +1,339 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpQueryBox</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="prev" href="libgimpwidgets-GimpHelpUI.html" title="GimpHelpUI"><link rel="next" href="GimpSizeEntry.html" title="GimpSizeEntry"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpwidgets-GimpHelpUI.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpSizeEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpwidgets-GimpQueryBox"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpQueryBox</span></h2><p>GimpQueryBox &#8212; Some simple dialogs to enter a single int, double, string or boolean value.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">*GimpQueryStringCallback</a>)      (GtkWidget *query_box,
+                                             const gchar *string,
+                                             gpointer data);
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">*GimpQueryIntCallback</a>)         (GtkWidget *query_box,
+                                             gint value,
+                                             gpointer data);
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">*GimpQueryDoubleCallback</a>)      (GtkWidget *query_box,
+                                             gdouble value,
+                                             gpointer data);
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">*GimpQuerySizeCallback</a>)        (GtkWidget *query_box,
+                                             gdouble size,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+>GimpUnit</a> unit,
+                                             gpointer data);
+void        (<a href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback">*GimpQueryBooleanCallback</a>)     (GtkWidget *query_box,
+                                             gboolean value,
+                                             gpointer data);
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-string-box">gimp_query_string_box</a>           (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             const gchar *initial,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">GimpQueryStringCallback</a> callback,
+                                             gpointer data);
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box">gimp_query_int_box</a>              (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             gint initial,
+                                             gint lower,
+                                             gint upper,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">GimpQueryIntCallback</a> callback,
+                                             gpointer data);
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-double-box">gimp_query_double_box</a>           (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             gdouble initial,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gint digits,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">GimpQueryDoubleCallback</a> callback,
+                                             gpointer data);
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box">gimp_query_size_box</a>             (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             gdouble initial,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gint digits,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+>GimpUnit</a> unit,
+                                             gdouble resolution,
+                                             gboolean dot_for_dot,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">GimpQuerySizeCallback</a> callback,
+                                             gpointer data);
+GtkWidget*  <a href="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box">gimp_query_boolean_box</a>          (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *stock_id,
+                                             const gchar *message,
+                                             const gchar *true_button,
+                                             const gchar *false_button,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback">GimpQueryBooleanCallback</a> callback,
+                                             gpointer data);
+#define     <a href="libgimpwidgets-GimpQueryBox.html#GIMP-QUERY-BOX-VBOX-CAPS">GIMP_QUERY_BOX_VBOX</a>             (qbox)
+</pre></div><div class="refsect1" lang="en"><a name="id2604978"></a><h2>Description</h2><p>
+These functions provide simple dialogs for entering a single string,
+integer, double, boolean or pixel size value.
+</p><p>
+They return a pointer to a <span class="type">GtkDialog</span> which has to be shown with
+<tt class="function">gtk_widget_show()</tt> by the caller.
+</p><p>
+The dialogs contain an entry widget for the kind of value they ask for
+and "OK" and "Cancel" buttons. On "Cancel", all query boxes except the
+boolean one silently destroy themselves. On "OK" the user defined
+callback function is called and returns the entered value.
+</p></div><div class="refsect1" lang="en"><a name="id2605013"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2605018"></a><h3><a name="GimpQueryStringCallback"></a>GimpQueryStringCallback ()</h3><a class="indexterm" name="id2605027"></a><pre class="programlisting">void        (*GimpQueryStringCallback)      (GtkWidget *query_box,
+                                             const gchar *string,
+                                             gpointer data);</pre><p>
+Note that you have to <tt class="function">g_free()</tt> the returned string.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>query_box</tt></i> :</span></td><td>The query box.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>string</tt></i> :</span></td><td>The entered string.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>The user data.
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2605101"></a><h3><a name="GimpQueryIntCallback"></a>GimpQueryIntCallback ()</h3><a class="indexterm" name="id2605109"></a><pre class="programlisting">void        (*GimpQueryIntCallback)         (GtkWidget *query_box,
+                                             gint value,
+                                             gpointer data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>query_box</tt></i> :</span></td><td>The query box.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>The entered integer value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>The user data.
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2605177"></a><h3><a name="GimpQueryDoubleCallback"></a>GimpQueryDoubleCallback ()</h3><a class="indexterm" name="id2605185"></a><pre class="programlisting">void        (*GimpQueryDoubleCallback)      (GtkWidget *query_box,
+                                             gdouble value,
+                                             gpointer data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>query_box</tt></i> :</span></td><td>The query box.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>The entered double value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>The user data.
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2612706"></a><h3><a name="GimpQuerySizeCallback"></a>GimpQuerySizeCallback ()</h3><a class="indexterm" name="id2612715"></a><pre class="programlisting">void        (*GimpQuerySizeCallback)        (GtkWidget *query_box,
+                                             gdouble size,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+>GimpUnit</a> unit,
+                                             gpointer data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>query_box</tt></i> :</span></td><td>The query box.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>The entered size in pixels.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td>The selected unit from the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>The user data.
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2612806"></a><h3><a name="GimpQueryBooleanCallback"></a>GimpQueryBooleanCallback ()</h3><a class="indexterm" name="id2612814"></a><pre class="programlisting">void        (*GimpQueryBooleanCallback)     (GtkWidget *query_box,
+                                             gboolean value,
+                                             gpointer data);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>query_box</tt></i> :</span></td><td>The query box.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>The entered boolean value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>The user data.
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2612882"></a><h3><a name="gimp-query-string-box"></a>gimp_query_string_box ()</h3><a class="indexterm" name="id2612890"></a><pre class="programlisting">GtkWidget*  gimp_query_string_box           (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             const gchar *initial,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback">GimpQueryStringCallback</a> callback,
+                                             gpointer data);</pre><p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for a string value.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>     The query box dialog's title.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>parent</tt></i> :</span></td><td>    The dialog's parent widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_func</tt></i> :</span></td><td> The help function to show this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>   A string identifying this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td>   A string which will be shown above the dialog's entry widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>initial</tt></i> :</span></td><td>   The initial value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>object</tt></i> :</span></td><td>    The object this query box is associated with.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>signal</tt></i> :</span></td><td>    The object's signal which will cause the query box to be closed.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>  The function which will be called when the user selects "OK".
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>      The callback's user data.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <span class="type">GtkDialog</span>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2613110"></a><h3><a name="gimp-query-int-box"></a>gimp_query_int_box ()</h3><a class="indexterm" name="id2613119"></a><pre class="programlisting">GtkWidget*  gimp_query_int_box              (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             gint initial,
+                                             gint lower,
+                                             gint upper,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback">GimpQueryIntCallback</a> callback,
+                                             gpointer data);</pre><p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for an integer value.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>     The query box dialog's title.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>parent</tt></i> :</span></td><td>    The dialog's parent widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_func</tt></i> :</span></td><td> The help function to show this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>   A string identifying this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td>   A string which will be shown above the dialog's entry widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>initial</tt></i> :</span></td><td>   The initial value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>lower</tt></i> :</span></td><td>     The lower boundary of the range of possible values.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>upper</tt></i> :</span></td><td>     The upper boundray of the range of possible values.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>object</tt></i> :</span></td><td>    The object this query box is associated with.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>signal</tt></i> :</span></td><td>    The object's signal which will cause the query box to be closed.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>  The function which will be called when the user selects "OK".
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>      The callback's user data.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <span class="type">GtkDialog</span>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2613375"></a><h3><a name="gimp-query-double-box"></a>gimp_query_double_box ()</h3><a class="indexterm" name="id2613383"></a><pre class="programlisting">GtkWidget*  gimp_query_double_box           (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             gdouble initial,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gint digits,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback">GimpQueryDoubleCallback</a> callback,
+                                             gpointer data);</pre><p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for a double value.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>     The query box dialog's title.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>parent</tt></i> :</span></td><td>    The dialog's parent widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_func</tt></i> :</span></td><td> The help function to show this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>   A string identifying this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td>   A string which will be shown above the dialog's entry widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>initial</tt></i> :</span></td><td>   The initial value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>lower</tt></i> :</span></td><td>     The lower boundary of the range of possible values.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>upper</tt></i> :</span></td><td>     The upper boundray of the range of possible values.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>digits</tt></i> :</span></td><td>    The number of decimal digits the <span class="type">GtkSpinButton</span> will provide.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>object</tt></i> :</span></td><td>    The object this query box is associated with.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>signal</tt></i> :</span></td><td>    The object's signal which will cause the query box to be closed.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>  The function which will be called when the user selects "OK".
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>      The callback's user data.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <span class="type">GtkDialog</span>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2613664"></a><h3><a name="gimp-query-size-box"></a>gimp_query_size_box ()</h3><a class="indexterm" name="id2613672"></a><pre class="programlisting">GtkWidget*  gimp_query_size_box             (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *message,
+                                             gdouble initial,
+                                             gdouble lower,
+                                             gdouble upper,
+                                             gint digits,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+>GimpUnit</a> unit,
+                                             gdouble resolution,
+                                             gboolean dot_for_dot,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback">GimpQuerySizeCallback</a> callback,
+                                             gpointer data);</pre><p>
+Creates a new <span class="type">GtkDialog</span> that queries the user for a size using a
+<a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>       The query box dialog's title.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>parent</tt></i> :</span></td><td>      The dialog's parent widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_func</tt></i> :</span></td><td>   The help function to show this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>     A string identifying this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td>     A string which will be shown above the dialog's entry widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>initial</tt></i> :</span></td><td>     The initial value.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>lower</tt></i> :</span></td><td>       The lower boundary of the range of possible values.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>upper</tt></i> :</span></td><td>       The upper boundray of the range of possible values.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>digits</tt></i> :</span></td><td>      The number of decimal digits the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> provide in
+              "pixel" mode.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td>        The unit initially shown by the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>resolution</tt></i> :</span></td><td>  The resolution (in dpi) which will be used for pixel/unit
+              calculations.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>dot_for_dot</tt></i> :</span></td><td> <tt class="literal">TRUE</tt> if the <a href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>'s initial unit should be "pixels".
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>object</tt></i> :</span></td><td>      The object this query box is associated with.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>signal</tt></i> :</span></td><td>      The object's signal which will cause the query box
+              to be closed.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>    The function which will be called when the user selects "OK".
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>        The callback's user data.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <span class="type">GtkDialog</span>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2614030"></a><h3><a name="gimp-query-boolean-box"></a>gimp_query_boolean_box ()</h3><a class="indexterm" name="id2614038"></a><pre class="programlisting">GtkWidget*  gimp_query_boolean_box          (const gchar *title,
+                                             GtkWidget *parent,
+                                             <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
+                                             const gchar *help_id,
+                                             const gchar *stock_id,
+                                             const gchar *message,
+                                             const gchar *true_button,
+                                             const gchar *false_button,
+                                             GObject *object,
+                                             const gchar *signal,
+                                             <a href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback">GimpQueryBooleanCallback</a> callback,
+                                             gpointer data);</pre><p>
+Creates a new <span class="type">GtkDialog</span> that asks the user to do a boolean decision.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>title</tt></i> :</span></td><td>        The query box dialog's title.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>parent</tt></i> :</span></td><td>       The dialog's parent widget.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_func</tt></i> :</span></td><td>    The help function to show this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>help_id</tt></i> :</span></td><td>      A string identifying this dialog's help page.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>stock_id</tt></i> :</span></td><td>     A stock_id to specify an icon to appear on the left
+               on the dialog's message.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td>      A string which will be shown in the query box.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>true_button</tt></i> :</span></td><td>  The string to be shown in the dialog's left button.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>false_button</tt></i> :</span></td><td> The string to be shown in the dialog's right button.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>object</tt></i> :</span></td><td>       The object this query box is associated with.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>signal</tt></i> :</span></td><td>       The object's signal which will cause the query box
+               to be closed.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td>     The function which will be called when the user clicks one
+               of the buttons.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>         The callback's user data.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A pointer to the new <span class="type">GtkDialog</span>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2614299"></a><h3><a name="GIMP-QUERY-BOX-VBOX-CAPS"></a>GIMP_QUERY_BOX_VBOX()</h3><a class="indexterm" name="id2614308"></a><pre class="programlisting">#define     GIMP_QUERY_BOX_VBOX(qbox)</pre><p>
+A macro to access the <span class="type">GtkVBox</span> in a <span class="type">GimpQueryBox</span>. Useful if you want to add
+more widgets.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>qbox</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2614347"></a><h2>See Also</h2><p>
+GimpSizeEntry
+</p><p>
+GimpUnitMenu
+</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpwidgets-GimpHelpUI.html"><b>&lt;&lt; GimpHelpUI</b></a></td><td align="right"><a accesskey="n" href="GimpSizeEntry.html"><b>GimpSizeEntry &gt;&gt;</b></a></td></tr></table></body></html>

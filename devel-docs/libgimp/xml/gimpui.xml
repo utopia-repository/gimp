@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimp-gimpui">
+<refmeta>
+<refentrytitle>gimpui</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMP Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>gimpui</refname><refpurpose>Common user interface functions. This header includes all other GIMP User
+Interface Library headers.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+<link linkend="void">void</link>        <link linkend="gimp-ui-init">gimp_ui_init</link>                    (const <link linkend="gchar">gchar</link> *prog_name,
+                                             <link linkend="gboolean">gboolean</link> preview);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+Common user interface functions. This header includes all other GIMP User
+Interface Library headers.
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="gimp-ui-init"/>gimp_ui_init ()</title>
+<indexterm><primary>gimp_ui_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_ui_init                    (const <link linkend="gchar">gchar</link> *prog_name,
+                                             <link linkend="gboolean">gboolean</link> preview);</programlisting>
+<para>
+This function initializes GTK+ with <link linkend="gtk-init"><function>gtk_init()</function></link> and initializes GDK's
+image rendering subsystem (GdkRGB) to follow the GIMP main program's
+colormap allocation/installation policy.
+</para>
+<para>
+The GIMP's colormap policy can be determinded by the user with the
+gimprc variables <parameter>min_colors</parameter> and <parameter>install_cmap</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>prog_name</parameter>&nbsp;:</term>
+<listitem><simpara> The name of the plug-in which will be passed as argv[0] to
+            <link linkend="gtk-init"><function>gtk_init()</function></link>. It's a convention to use the name of the
+            executable and _not_ the PDB procedure name or something.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara>   This parameter is unused and exists for historical
+            reasons only.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>See Also</title>
+<para>
+<link linkend="gtk-init"><function>gtk_init()</function></link>, <link linkend="gdk-set-use-xshm"><function>gdk_set_use_xshm()</function></link>, <link linkend="gdk-rgb-set-min-colors"><function>gdk_rgb_set_min_colors()</function></link>,
+<link linkend="gdk-rgb-set-install"><function>gdk_rgb_set_install()</function></link>, <link linkend="gdk-rgb-get-visual"><function>gdk_rgb_get_visual()</function></link>, <link linkend="gdk-rgb-get-cmap"><function>gdk_rgb_get_cmap()</function></link>,
+<link linkend="gtk-widget-set-default-visual"><function>gtk_widget_set_default_visual()</function></link>, <link linkend="gtk-widget-set-default-colormap"><function>gtk_widget_set_default_colormap()</function></link>,
+<link linkend="gtk-preview-set-gamma"><function>gtk_preview_set_gamma()</function></link>.
+</para>
+</refsect1>
+
+</refentry>

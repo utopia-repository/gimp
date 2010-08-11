@@ -1,63 +1,65 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = scripts
+libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpprocbrowser = $(top_builddir)/plug-ins/dbbrowser/libgimpprocbrowser.la
 
-scriptdata =
+if OS_WIN32
+mwindows = -mwindows
+WINSOCK_LIBS = -lwsock32
+endif
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+AM_LDFLAGS = $(mwindows)
 
-pluginlib_PROGRAMS = script-fu
+SUBDIRS = siod scripts
+
+libexecdir = $(gimpplugindir)/plug-ins
+
+libexec_PROGRAMS = script-fu
 
 script_fu_SOURCES = \
-	interp_md5.c		\
-	interp_md5.h		\
-	interp_regex.c		\
-	interp_slib.c		\
-	interp_sliba.c		\
-	interp_trace.c		\
-	script-fu.c		\
-	script-fu-console.c	\
-	script-fu-console.h	\
-	script-fu-scripts.c	\
-	script-fu-scripts.h	\
-	script-fu-server.c	\
-	script-fu-server.h	\
-	script-fu-enums.h	\
-	siod.h			\
-	siodp.h			\
-	regex.h			\
-	regex.c
+	script-fu.c			\
+	script-fu-console.c		\
+	script-fu-console.h		\
+	script-fu-interface.c		\
+	script-fu-interface.h		\
+	script-fu-text-console.h	\
+	script-fu-text-console.c	\
+	script-fu-intl.h		\
+	script-fu-scripts.c		\
+	script-fu-scripts.h		\
+	script-fu-server.c		\
+	script-fu-server.h		\
+	script-fu-types.h		\
+	script-fu-enums.h		\
+	siod-wrapper.c			\
+	siod-wrapper.h
 
 INCLUDES = \
-	$(X_CFLAGS)			\
-	-I$(top_srcdir)			\
+	-I$(top_srcdir)	\
+	$(GTK_CFLAGS)	\
 	-I$(includedir)
 
+if HAVE_GLIBC_REGEX
+REGEXREPL =
+else
+REGEXREPL = $(top_builddir)/regexrepl/libregex.a
+endif
+
 LDADD = \
-	$(top_builddir)/plug-ins/dbbrowser/dbbrowser_utils.o	\
-	$(top_builddir)/libgimp/libgimpui.la			\
-	$(top_builddir)/libgimp/libgimp.la			\
-	$(X_LIBS)
-
-DEPS = \
-	$(top_builddir)/plug-ins/dbbrowser/dbbrowser_utils.o	\
-	$(top_builddir)/libgimp/libgimpui.la			\
-	$(top_builddir)/libgimp/libgimp.la
-
-script_fu_DEPENDENCIES = $(DEPS)
-
-CPPFLAGS = \
-	-DREGEX_MALLOC
-
-.PHONY: files
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+	$(libgimpprocbrowser)	\
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	siod/libsiod.a		\
+	$(REGEXREPL)		\
+	$(GTK_LIBS)		\
+	$(SOCKET_LIBS)		\
+	$(WINSOCK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)

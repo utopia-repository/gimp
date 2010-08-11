@@ -15,11 +15,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #ifndef __ERRORS_H__
 #define __ERRORS_H__
 
-void message_func (char *);
-void fatal_error (char *, ...);
-void terminate (char *, ...);
+#ifndef GIMP_APP_GLUE_COMPILATION
+#error You must not #include "errors.h" from an app/ subdir
+#endif
+
+
+void   gimp_errors_init      (const gchar        *full_prog_name,
+                              gboolean            use_debug_handler,
+                              GimpStackTraceMode  stack_trace_mode);
+
+void   gimp_message_log_func (const gchar        *log_domain,
+                              GLogLevelFlags      flags,
+                              const gchar        *message,
+                              gpointer            data);
+void   gimp_error_log_func   (const gchar        *domain,
+                              GLogLevelFlags      flags,
+                              const gchar        *message,
+                              gpointer            data) G_GNUC_NORETURN;
+
+void   gimp_fatal_error      (const gchar        *message,
+                              ...) G_GNUC_NORETURN ;
+void   gimp_terminate        (const gchar        *message,
+                              ...) G_GNUC_NORETURN;
+
 
 #endif /* __ERRORS_H__ */

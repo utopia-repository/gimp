@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimp-gimpmenu">
+<refmeta>
+<refentrytitle>gimpmenu</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMP Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>gimpmenu</refname><refpurpose>Menus for selecting images, layers, channels and drawables</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+<link linkend="gboolean">gboolean</link>    (<link linkend="GimpConstraintFunc">*GimpConstraintFunc</link>)           (<link linkend="gint32">gint32</link> image_id,
+                                             <link linkend="gint32">gint32</link> drawable_id,
+                                             <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>        (<link linkend="GimpMenuCallback">*GimpMenuCallback</link>)             (<link linkend="gint32">gint32</link> any_id,
+                                             <link linkend="gpointer">gpointer</link> data);
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-image-menu-new">gimp_image_menu_new</link>             (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_image);
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-layer-menu-new">gimp_layer_menu_new</link>             (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_layer);
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-channel-menu-new">gimp_channel_menu_new</link>           (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_channel);
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-drawable-menu-new">gimp_drawable_menu_new</link>          (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_drawable);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpConstraintFunc"/>GimpConstraintFunc ()</title>
+<indexterm role="deprecated"><primary>GimpConstraintFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*GimpConstraintFunc)           (<link linkend="gint32">gint32</link> image_id,
+                                             <link linkend="gint32">gint32</link> drawable_id,
+                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<warning><para><literal>GimpConstraintFunc</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>drawable_id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GimpMenuCallback"/>GimpMenuCallback ()</title>
+<indexterm role="deprecated"><primary>GimpMenuCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpMenuCallback)             (<link linkend="gint32">gint32</link> any_id,
+                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<warning><para><literal>GimpMenuCallback</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>any_id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-image-menu-new"/>gimp_image_menu_new ()</title>
+<indexterm role="deprecated"><primary>gimp_image_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_image_menu_new             (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_image);</programlisting>
+<warning><para><literal>gimp_image_menu_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>active_image</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-layer-menu-new"/>gimp_layer_menu_new ()</title>
+<indexterm role="deprecated"><primary>gimp_layer_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_layer_menu_new             (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_layer);</programlisting>
+<warning><para><literal>gimp_layer_menu_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>active_layer</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-channel-menu-new"/>gimp_channel_menu_new ()</title>
+<indexterm role="deprecated"><primary>gimp_channel_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_channel_menu_new           (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_channel);</programlisting>
+<warning><para><literal>gimp_channel_menu_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>active_channel</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-drawable-menu-new"/>gimp_drawable_menu_new ()</title>
+<indexterm role="deprecated"><primary>gimp_drawable_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_menu_new          (<link linkend="GimpConstraintFunc">GimpConstraintFunc</link> constraint,
+                                             <link linkend="GimpMenuCallback">GimpMenuCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data,
+                                             <link linkend="gint32">gint32</link> active_drawable);</programlisting>
+<warning><para><literal>gimp_drawable_menu_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>active_drawable</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

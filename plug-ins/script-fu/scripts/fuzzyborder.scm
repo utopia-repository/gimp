@@ -23,111 +23,111 @@
 
 ; Define the function:
 
-(define (script-fu-fuzzy-border	inImage 
-				inLayer 
-				inColor 
-				inSize 
-				inBlur 
-				inGranu 
-				inShadow 
-				inShadWeight 
+(define (script-fu-fuzzy-border	inImage
+				inLayer
+				inColor
+				inSize
+				inBlur
+				inGranu
+				inShadow
+				inShadWeight
 				inCopy
                                 inFlatten
 	)
          
 	(gimp-selection-all inImage)
 	(set! theImage (if (= inCopy TRUE)
-		       (car (gimp-channel-ops-duplicate inImage))
+		       (car (gimp-image-duplicate inImage))
                        inImage)
         )
-	(if 	(> 	(car (gimp-drawable-type inLayer)) 
+	(if 	(> 	(car (gimp-drawable-type inLayer))
                		1
             	)
-		(gimp-convert-rgb theImage)
+		(gimp-image-convert-rgb theImage)
 	)
-        (set! theWidth (car (gimp-image-width inImage))) 
-	(set! theHeight (car (gimp-image-height inImage))) 
+        (set! theWidth (car (gimp-image-width inImage)))
+	(set! theHeight (car (gimp-image-height inImage)))
 
-	(set! theLayer (car (gimp-layer-new 	theImage 
-						theWidth 
-						theHeight 
-						RGBA_IMAGE 
-						"layer 1" 
-						100 
-						NORMAL
+	(set! theLayer (car (gimp-layer-new 	theImage
+						theWidth
+						theHeight
+						RGBA-IMAGE
+						"layer 1"
+						100
+						NORMAL-MODE
 	) ) )
 
 	(gimp-image-add-layer theImage theLayer 0)
 
 
-        (gimp-edit-clear theImage theLayer)
+        (gimp-edit-clear theLayer)
 	(chris-color-edge theImage theLayer inColor inSize)
 
-	(gimp-layer-scale 	theLayer 
-				(/ theWidth inGranu) 
-				(/ theHeight inGranu) 
+	(gimp-layer-scale 	theLayer
+				(/ theWidth inGranu)
+				(/ theHeight inGranu)
 				TRUE
 	)
 
-	(plug-in-spread 	TRUE 
-				theImage 
-				theLayer 	
-				(/ inSize inGranu) 
+	(plug-in-spread 	TRUE
+				theImage
+				theLayer
+				(/ inSize inGranu)
 				(/ inSize inGranu)
 	)
 	(chris-color-edge theImage theLayer inColor 1)
 	(gimp-layer-scale theLayer theWidth theHeight TRUE)
 	
-	(gimp-selection-layer-alpha theImage theLayer)
+	(gimp-selection-layer-alpha theLayer)
 	(gimp-selection-invert theImage)
-	(gimp-edit-clear theImage theLayer)
+	(gimp-edit-clear theLayer)
 	(gimp-selection-invert theImage)
-	(gimp-edit-clear theImage theLayer)
-	(gimp-palette-set-background inColor)
-	(gimp-edit-fill theImage theLayer)
+	(gimp-edit-clear theLayer)
+	(gimp-context-set-background inColor)
+	(gimp-edit-fill theLayer BACKGROUND-FILL)
         (gimp-selection-none inImage)
 	(chris-color-edge theImage theLayer inColor 1)
         
-	(if 	(= inBlur TRUE) 
+	(if 	(= inBlur TRUE)
 		(plug-in-gauss-rle TRUE theImage theLayer inSize TRUE TRUE)
 		()
 	)
-	(if (= inShadow FALSE) 
+	(if (= inShadow FALSE)
 	    ()
-            (begin	
+            (begin
                 (gimp-selection-none inImage)
-	        (gimp-image-add-layer 	theImage 
-	 				(car (gimp-layer-copy 	theLayer 
+	        (gimp-image-add-layer 	theImage
+	 				(car (gimp-layer-copy 	theLayer
 								FALSE
-					)) 
+					))
 					0
 	        )
 		(gimp-layer-scale 	theLayer (- theWidth inSize) (- theHeight inSize) TRUE)
-	        (gimp-desaturate theImage theLayer)
-		(gimp-brightness-contrast theImage theLayer 127 127)
-        	(gimp-invert theImage theLayer)
-		(gimp-layer-resize 	theLayer 
-		   			theWidth 
-		    			theHeight 
-		    			(/ inSize 2) 
+	        (gimp-desaturate theLayer)
+		(gimp-brightness-contrast theLayer 127 127)
+        	(gimp-invert theLayer)
+		(gimp-layer-resize 	theLayer
+		   			theWidth
+		    			theHeight
+		    			(/ inSize 2)
 		    			(/ inSize 2)
 		)
-		(plug-in-gauss-rle 	TRUE 
-		    			theImage 
-		    			theLayer 
-		    			(/ inSize 2) 
-		    			TRUE 
+		(plug-in-gauss-rle 	TRUE
+		    			theImage
+		    			theLayer
+		    			(/ inSize 2)
+		    			TRUE
 		    			TRUE
 		)
 		(gimp-layer-set-opacity theLayer inShadWeight)
             )
 	)
-	(if 	(= inFlatten TRUE) 
+	(if 	(= inFlatten TRUE)
  		(gimp-image-flatten theImage)
 		()
 	)
-	(if 	(= inCopy TRUE) 
-		(begin 	(gimp-image-clean-all theImage) 
+	(if 	(= inCopy TRUE)
+		(begin 	(gimp-image-clean-all theImage)
 			(gimp-display-new theImage)
 		)
 		()
@@ -139,29 +139,28 @@
           (gimp-selection-all inImage)
           (gimp-selection-shrink inImage inSize)
           (gimp-selection-invert inImage)
-	  (gimp-palette-set-background inColor)
-	(gimp-edit-fill theImage theLayer)
+	  (gimp-context-set-background inColor)
+	(gimp-edit-fill theLayer BACKGROUND-FILL)
           (gimp-selection-none inImage)
 )
 
-; Register the function with the GIMP:
+(script-fu-register "script-fu-fuzzy-border"
+		    _"_Fuzzy Border..."
+		    "Fade border to chosen color"
+		    "Chris Gutteridge"
+		    "1998, Chris Gutteridge / ECS dept, University of Southampton, England."
+		    "3rd April 1998"
+		    "RGB* GRAY*"
+		    SF-IMAGE       "The image"              0
+		    SF-DRAWABLE    "The layer"              0
+		    SF-COLOR      _"Color"                  '(255 255 255)
+		    SF-ADJUSTMENT _"Border size"            '(16 1 300 1 10 0 1)
+		    SF-TOGGLE     _"Blur border"            TRUE
+		    SF-ADJUSTMENT _"Granularity (1 is Low)" '(4 1 16 0.25 5 2 0)
+		    SF-TOGGLE     _"Add shadow"             FALSE
+		    SF-ADJUSTMENT _"Shadow weight (%)"      '(100 0 100 1 10 0 0)
+		    SF-TOGGLE     _"Work on copy"           TRUE
+		    SF-TOGGLE     _"Flatten image"          TRUE)
 
-(script-fu-register
-    "script-fu-fuzzy-border"
-    "<Image>/Script-Fu/Decor/Fuzzy Border"
-    "foo"
-    "Chris Gutteridge"
-    "1998, Chris Gutteridge / ECS dept, University of Southampton, England."
-    "3rd April 1998"
-    "RGB RGBA GRAY GRAYA"
-    SF-IMAGE "The Image" 0
-    SF-DRAWABLE "The Layer" 0
-    SF-COLOR "Color:"      '(255 255 255)
-    SF-VALUE "Border Size:" "16"
-    SF-TOGGLE "Blur Border?" TRUE
-    SF-VALUE "Granularity: (1 is low)" "4"
-    SF-TOGGLE "Add Shadow?" FALSE
-    SF-VALUE "Shadow-Weight (%):" "100"
-    SF-TOGGLE "Work on Copy?" TRUE
-    SF-TOGGLE "Flatten Layers?" TRUE
-)
+(script-fu-menu-register "script-fu-fuzzy-border"
+			 _"<Image>/Script-Fu/Decor")

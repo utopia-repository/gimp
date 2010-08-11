@@ -1,9 +1,9 @@
-/* handy.c
+/* $Id: handy.c,v 1.13 2004/09/22 18:43:08 mitch Exp $
  * These routines are useful for working with the GIMP and need not be
  * specific to plug-in-maze.
  *
- * Kevin Turner <kevint@poboxes.com>
- * http://www.poboxes.com/kevint/gimp/maze.html
+ * Kevin Turner <acapnotic@users.sourceforge.net>
+ * http://gimp-plug-ins.sourceforge.net/maze/
  */
 
 /*
@@ -23,120 +23,58 @@
  *
  */
 
+#include "config.h"
+
+#include <string.h>
+
 #include "libgimp/gimp.h"
 
 /* get_colors Returns the current foreground and background colors in
    nice little arrays.  It works nicely for RGB and grayscale images,
    however handling of indexed images is somewhat broken.  Patches
    appreciated. */
-void      get_colors (GDrawable * drawable,
-		      guint8 *fg,
-		      guint8 *bg);
-
-/* drawbox draws a solid colored box in a GPixelRgn, hopefully fairly
-   quickly.  See comments below. */
-void      drawbox (GPixelRgn *dest_rgn, 
-		   guint x, 
-		   guint y,
-		   guint w,
-		   guint h, 
-		   guint8 clr[4]);
-
 
 void 
-get_colors (GDrawable *drawable, guint8 *fg, guint8 *bg) 
+get_colors (GimpDrawable *drawable, 
+	    guint8       *fg, 
+	    guint8       *bg) 
 {
-  GParam *return_vals;
-  gint nreturn_vals;
+  GimpRGB foreground;
+  GimpRGB background;
 
-  switch ( gimp_drawable_type (drawable->id) )
+  gimp_context_get_foreground (&foreground);
+  gimp_context_get_background (&background);
+
+  fg[0] = fg[1] = fg[2] = fg[3] = 255;
+  bg[0] = bg[1] = bg[2] = bg[3] = 255;
+
+  switch ( gimp_drawable_type (drawable->drawable_id) )
     {
-    case RGBA_IMAGE:   /* ASSUMPTION: Assuming the user wants entire */
-      fg[3] = 255;                 /* area to be fully opaque.       */
-      bg[3] = 255;
-    case RGB_IMAGE:
-
-      return_vals = gimp_run_procedure ("gimp_palette_get_foreground",
-					&nreturn_vals,
-					PARAM_END);
-
-      if (return_vals[0].data.d_status == STATUS_SUCCESS)
-	{
-	  fg[0] = return_vals[1].data.d_color.red;
-	  fg[1] = return_vals[1].data.d_color.green;
-	  fg[2] = return_vals[1].data.d_color.blue;
-	}
-      else
-	{
-	  fg[0] = 255;
-	  fg[1] = 255;
-	  fg[2] = 255;
-	}
-      return_vals = gimp_run_procedure ("gimp_palette_get_background",
-					&nreturn_vals,
-					PARAM_END);
-
-      if (return_vals[0].data.d_status == STATUS_SUCCESS)
-	{
-	  bg[0] = return_vals[1].data.d_color.red;
-	  bg[1] = return_vals[1].data.d_color.green;
-	  bg[2] = return_vals[1].data.d_color.blue;
-	}
-      else
-	{
-	  bg[0] = 0;
-	  bg[1] = 0;
-	  bg[2] = 0;
-	}
+    case GIMP_RGB_IMAGE:
+    case GIMP_RGBA_IMAGE:
+      gimp_rgb_get_uchar (&foreground, &fg[0], &fg[1], &fg[2]); 
+      gimp_rgb_get_uchar (&background, &bg[0], &bg[1], &bg[2]); 
       break;
-    case GRAYA_IMAGE:       /* and again */
-      fg[1] = 255;
-      bg[1] = 255;
-    case GRAY_IMAGE:       
 
-	return_vals = gimp_run_procedure ("gimp_palette_get_foreground",
-					&nreturn_vals,
-					PARAM_END);
+    case GIMP_GRAYA_IMAGE:
+    case GIMP_GRAY_IMAGE:
+      fg[0] = gimp_rgb_intensity_uchar (&foreground);
+      bg[0] = gimp_rgb_intensity_uchar (&background); 
+      break;
 
-	if (return_vals[0].data.d_status == STATUS_SUCCESS)
-	    {
-		fg[0] = 0.30 * return_vals[1].data.d_color.red + 
-		    0.59 * return_vals[1].data.d_color.green + 
-		    0.11 * return_vals[1].data.d_color.blue;
-	    }
-	else
-	    {
-		fg[0] = 255;
-	    }
-
-	return_vals = gimp_run_procedure ("gimp_palette_get_background",
-					  &nreturn_vals,
-					  PARAM_END);
-	
-	if (return_vals[0].data.d_status == STATUS_SUCCESS)
-	    {
-		bg[0] = 0.30 * return_vals[1].data.d_color.red + 
-		    0.59 * return_vals[1].data.d_color.green + 
-		    0.11 * return_vals[1].data.d_color.blue;
-	    }
-	else
-	    {
-		bg[0] = 0;
-	    }
-	
-	break;
-    case INDEXEDA_IMAGE:
-    case INDEXED_IMAGE:     /* FIXME: Should use current fg/bg colors.  */
+    case GIMP_INDEXEDA_IMAGE:
+    case GIMP_INDEXED_IMAGE:     /* FIXME: Should use current fg/bg colors.  */
 	g_warning("maze: get_colors: Indexed image.  Using colors 15 and 0.\n");
-	fg[0] = 15;        /* As a plugin, I protest.  *I* shouldn't be the */
+	fg[0] = 15;      /* As a plugin, I protest.  *I* shouldn't be the */
 	bg[0] = 0;       /* one who has to deal with this colormapcrap.   */
 	break;
+
     default:
       break;
     }
 }
 
-/* Draws a solid color box in a GPixelRgn. */
+/* Draws a solid color box in a GimpPixelRgn. */
 /* Optimization assumptions:
  * (Or, "Why Maze is Faster Than Checkerboard.")
  * 
@@ -166,63 +104,47 @@ get_colors (GDrawable *drawable, guint8 *fg, guint8 *bg)
  *  re-fill it every time...  */
 
 void 
-drawbox( GPixelRgn *dest_rgn, 
+drawbox( GimpPixelRgn *dest_rgn, 
 	 guint x, guint y, guint w, guint h, 
 	 guint8 clr[4])
 {
-     guint xx, yy, y_max, x_min /*, x_max */;
-     static guint8 *rowbuf;
-     guint rowsize;
-     static guint high_size=0;
+     const guint bpp = dest_rgn->bpp;
+     const guint x_min = x * bpp;
+
+     /* x_max = dest_rgn->bpp * MIN(dest_rgn->w, (x + w)); */
+     /* rowsize = x_max - x_min */
+     const guint rowsize = bpp * MIN(dest_rgn->w, (x + w)) - x_min;
   
      /* The maximum [xy] value is that of the far end of the box, or
       * the edge of the region, whichever comes first. */
+     const guint y_max = dest_rgn->rowstride * MIN(dest_rgn->h, (y + h));
      
-     y_max = dest_rgn->rowstride * MIN(dest_rgn->h, (y + h));
-/*   x_max = dest_rgn->bpp * MIN(dest_rgn->w, (x + w)); */
+     static guint8 *rowbuf;
+     static guint high_size = 0; 
      
-     x_min = x * dest_rgn->bpp;
-     
-     /* rowsize = x_max - x_min */
-     rowsize = dest_rgn->bpp * MIN(dest_rgn->w, (x + w)) - x_min;
+     guint xx, yy;
      
      /* Does the row buffer need to be (re)allocated? */
-     if (high_size == 0) {
-	  rowbuf = g_new(guint8, rowsize);
-     } else if (rowsize > high_size) {
-	  g_realloc(rowbuf, rowsize * sizeof(guint8) );
-     }
+     if (high_size == 0) 
+       {
+	 rowbuf = g_new (guint8, rowsize);
+       } 
+     else if (rowsize > high_size) 
+       {
+	 rowbuf = g_renew (guint8, rowbuf, rowsize);
+       }
      
      high_size = MAX(high_size, rowsize);
      
      /* Fill the row buffer with the color. */
-     for (xx= 0;
-	  xx < rowsize;
-	  xx+= dest_rgn->bpp) {
-	  memcpy (&rowbuf[xx], clr, dest_rgn->bpp);
-     } /* next xx */
+     for (xx = 0; xx < rowsize; xx += bpp) 
+       {
+	 memcpy (&rowbuf[xx], clr, bpp);
+       }
      
      /* Fill in the box in the region with rows... */
-     for (yy = dest_rgn->rowstride * y; 
-	  yy < y_max; 
-	  yy += dest_rgn->rowstride ) {
-	  memcpy (&dest_rgn->data[yy+x_min], rowbuf, rowsize);
-     } /* next yy */
+     for (yy = dest_rgn->rowstride * y; yy < y_max; yy += dest_rgn->rowstride)
+       {
+	 memcpy (&dest_rgn->data[yy + x_min], rowbuf, rowsize);
+       }
 }
-
-/* Alternate ways of doing things if you don't like memcpy. */
-#if 0
-	for (xx= x * dest_rgn->bpp;
-	     xx < bar;
-	     xx+= dest_rgn->bpp) {
-#if 0
-	    for (bp=0; bp < dest_rgn->bpp; bp++) {
-		dest_rgn->data[yy+xx+bp]=clr[bp];
-	    } /* next bp */
-#else
-		memcpy (&dest_rgn->data[yy+xx], clr, dest_rgn->bpp);
-#endif
-	} /* next xx */
-    } /* next yy */
-}
-#endif 

@@ -10,21 +10,25 @@
 
 (define (script-fu-swirl-tile depth azimuth elevation blurRadius height width whirl-amount noise-level bg-color)
   (let* ((img (car (gimp-image-new width height RGB)))
-	 (layer-one (car (gimp-layer-new img width height RGB "TEST" 100 NORMAL)))
+	 (layer-one (car (gimp-layer-new img width height
+					 RGB-IMAGE "TEST" 100 NORMAL-MODE)))
 	 (cx (/ width 2))
-	 (cy (/ height 2))
-	 (old-bg (car (gimp-palette-get-background))))
-    (gimp-image-disable-undo img)
-    (gimp-palette-set-background bg-color)
-    (gimp-edit-fill img layer-one)
+	 (cy (/ height 2)))
+
+    (gimp-context-push)
+
+    (gimp-image-undo-disable img)
+
     (gimp-image-add-layer img layer-one 0)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill layer-one BACKGROUND-FILL)
     (plug-in-noisify 1 img layer-one FALSE noise-level noise-level noise-level 1.0)
 
     (plug-in-whirl-pinch 1 img layer-one whirl-amount 0.0 1.0)
     (plug-in-whirl-pinch 1 img layer-one whirl-amount 0.0 1.0)
     (plug-in-whirl-pinch 1 img layer-one whirl-amount 0.0 1.0)
 
-    (gimp-channel-ops-offset img layer-one TRUE 0 cx cy)
+    (gimp-drawable-offset layer-one TRUE 0 cx cy)
 
     (plug-in-whirl-pinch 1 img layer-one whirl-amount 0.0 1.0)
     (plug-in-whirl-pinch 1 img layer-one whirl-amount 0.0 1.0)
@@ -35,21 +39,26 @@
     (plug-in-bump-map 1 img layer-one layer-one azimuth elevation depth 0 0 0 0 FALSE FALSE 0)
 
     (gimp-display-new img)
-    (gimp-image-enable-undo img)))
+    (gimp-image-undo-enable img)
+
+    (gimp-context-pop)))
 
 (script-fu-register "script-fu-swirl-tile"
-		    "<Toolbox>/Xtns/Script-Fu/Patterns/Swirl-Tile"
+		    _"Swirl-_Tile..."
 		    "Create an interesting swirled tile"
 		    "Adrian Likins <aklikins@eos.ncsu.edu>"
 		    "Adrian Likins"
 		    "1997"
 		    ""
-		    SF-VALUE "Depth" "10"
-		    SF-VALUE "Azimuth" "135"
-		    SF-VALUE "Elevation" "45"
-		    SF-VALUE "Blur Radius" "3"
-		    SF-VALUE "Height" "256"
-		    SF-VALUE "Width" "256"
-		    SF-VALUE "Whirl Amount" "320"
-		    SF-VALUE "Roughness" ".5"
-		    SF-COLOR "Backgound Color" '(255 255 255))
+		    SF-ADJUSTMENT _"Depth"            '(10 0 64 1 1 0 0)
+		    SF-ADJUSTMENT _"Azimuth"          '(135 0 360 1 10 0 0)
+		    SF-ADJUSTMENT _"Elevation"        '(45 0 90 1 10 0 0)
+		    SF-ADJUSTMENT _"Blur radius"      '(3 0 128 1 10 0 0)
+		    SF-ADJUSTMENT _"Height"           '(256 0 1024 1 10 0 1)
+		    SF-ADJUSTMENT _"Width"            '(256 0 1024 1 10 0 1)
+		    SF-ADJUSTMENT _"Whirl amount"     '(320 0 360 1 10 0 0)
+		    SF-ADJUSTMENT _"Roughness"        '(.5 0 1 .1 .01 2 1)
+		    SF-COLOR      _"Background color" '(255 255 255))
+
+(script-fu-menu-register "script-fu-swirl-tile"
+			 _"<Toolbox>/Xtns/Script-Fu/Patterns")

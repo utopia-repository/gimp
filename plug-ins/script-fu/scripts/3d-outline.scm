@@ -21,73 +21,151 @@
 ; along with this program; if not, write to the Free Software
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-(define (script-fu-3d-outline-logo text-pattern text size font outline-blur-radius shadow-blur-radius bump-map-blur-radius noninteractive s-offset-x s-offset-y)
-  (let* ((img (car (gimp-image-new 256 256 RGB)))
-         (text-layer (car (gimp-text img -1 0 0 text 30 TRUE size PIXELS "*" font "*" "*" "*" "*")))
-         (width (car (gimp-drawable-width text-layer)))
-         (height (car (gimp-drawable-height text-layer)))
-         (bg-layer (car (gimp-layer-new img width height RGB_IMAGE "Background" 100 NORMAL)))
-         (pattern (car (gimp-layer-new img width height RGBA_IMAGE "Pattern" 100 NORMAL)))
-         (old-fg (car (gimp-palette-get-foreground)))
-         (old-bg (car (gimp-palette-get-background))))
-    (gimp-image-disable-undo img)
-    (gimp-image-resize img width height 0 0)
+(define (apply-3d-outline-logo-effect img
+				      logo-layer
+				      text-pattern
+				      outline-blur-radius
+				      shadow-blur-radius
+				      bump-map-blur-radius
+				      noninteractive
+				      s-offset-x
+				      s-offset-y)
+  (let* ((width (car (gimp-drawable-width logo-layer)))
+         (height (car (gimp-drawable-height logo-layer)))
+         (bg-layer (car (gimp-layer-new img width height
+					RGB-IMAGE "Background" 100 NORMAL-MODE)))
+         (pattern (car (gimp-layer-new img width height
+				       RGBA-IMAGE "Pattern" 100 NORMAL-MODE)))
+         (layer2)
+         (layer3)
+         (pattern-mask)
+         (floating-sel))
+
+    (gimp-context-push)
+
+    (gimp-selection-none img)
+    (script-fu-util-image-resize-from-layer img logo-layer)
     (gimp-image-add-layer img pattern 1)
     (gimp-image-add-layer img bg-layer 2)
-    (gimp-edit-fill img bg-layer)
-    (gimp-edit-clear img pattern)                     
-    (gimp-layer-set-preserve-trans text-layer FALSE)
-    (plug-in-gauss-iir 1 img text-layer outline-blur-radius TRUE TRUE)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
+    (gimp-edit-clear pattern)
+    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-context-set-foreground '(0 0 0))
+    (gimp-edit-fill logo-layer FOREGROUND-FILL)
+    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (plug-in-gauss-iir 1 img logo-layer outline-blur-radius TRUE TRUE)
 
-    (gimp-layer-set-visible pattern FALSE)
-    (set! layer2 (car (gimp-image-merge-visible-layers img 1)))
-    (plug-in-edge 1 img layer2 2 1)
+    (gimp-drawable-set-visible pattern FALSE)
+    (set! layer2 (car (gimp-image-merge-visible-layers img CLIP-TO-IMAGE)))
+    (plug-in-edge 1 img layer2 2 1 0)
     (set! layer3 (car (gimp-layer-copy layer2 TRUE)))
     (gimp-image-add-layer img layer3 2)
     (plug-in-gauss-iir 1 img layer2 bump-map-blur-radius TRUE TRUE)
 
     (gimp-selection-all img)
-    (gimp-patterns-set-pattern text-pattern)
-    (gimp-bucket-fill img pattern PATTERN-BUCKET-FILL NORMAL 100 0 FALSE 0 0)
-    (plug-in-bump-map noninteractive img pattern layer2 110.0 45.0 4 0 0 0 0 TRUE FALSE 0)
+    (gimp-context-set-pattern text-pattern)
+    (gimp-edit-bucket-fill pattern
+			   PATTERN-BUCKET-FILL NORMAL-MODE 100 0 FALSE 0 0)
+    (plug-in-bump-map noninteractive img pattern layer2
+		      110.0 45.0 4 0 0 0 0 TRUE FALSE 0)
 
-    (set! pattern-mask (car (gimp-layer-create-mask pattern ALPHA-MASK)))
-    (gimp-image-add-layer-mask img pattern pattern-mask)
+    (set! pattern-mask (car (gimp-layer-create-mask pattern ADD-ALPHA-MASK)))
+    (gimp-layer-add-mask pattern pattern-mask)
 
     (gimp-selection-all img)
-    (gimp-edit-copy img layer3)
-    (set! floating_sel (car (gimp-edit-paste img pattern-mask 0)))
-    (gimp-floating-sel-anchor floating_sel)
+    (gimp-edit-copy layer3)
+    (set! floating-sel (car (gimp-edit-paste pattern-mask FALSE)))
+    (gimp-floating-sel-anchor floating-sel)
 
-    (gimp-image-remove-layer-mask img pattern APPLY)
-    (gimp-invert img layer3)
+    (gimp-layer-remove-mask pattern MASK-APPLY)
+    (gimp-invert layer3)
     (plug-in-gauss-iir 1 img layer3 shadow-blur-radius TRUE TRUE)
 
-    (gimp-channel-ops-offset img layer3 0 1 s-offset-x s-offset-y)
+    (gimp-drawable-offset layer3 0 1 s-offset-x s-offset-y)
 
-    (gimp-layer-set-visible layer2 FALSE)
-    (gimp-layer-set-visible pattern TRUE)
-    (set! final (car (gimp-image-flatten img)))
-    
-    (gimp-palette-set-background old-bg)
-    (gimp-palette-set-foreground old-fg)
-    (gimp-image-enable-undo img)
-    (gimp-display-new img)))    
+    (gimp-drawable-set-visible layer2 FALSE)
+    (gimp-drawable-set-visible pattern TRUE)
+    ;;(set! final (car (gimp-image-flatten img)))
+
+    (gimp-context-pop)))
+
+(define (script-fu-3d-outline-logo-alpha img
+					 logo-layer
+					 text-pattern
+					 outline-blur-radius
+					 shadow-blur-radius
+					 bump-map-blur-radius
+					 noninteractive
+					 s-offset-x
+					 s-offset-y)
+  (begin
+    (gimp-image-undo-group-start img)
+    (apply-3d-outline-logo-effect img logo-layer text-pattern
+				  outline-blur-radius shadow-blur-radius
+				  bump-map-blur-radius noninteractive
+				  s-offset-x s-offset-y)
+    (gimp-image-undo-group-end img)
+    (gimp-displays-flush)))
+
+(script-fu-register "script-fu-3d-outline-logo-alpha"
+                    _"3D _Outline..."
+                    "Creates outlined texts with drop shadow"
+                    "Hrvoje Horvat (hhorvat@open.hr)"
+                    "Hrvoje Horvat"
+                    "07 April, 1998"
+                    "RGBA"
+                    SF-IMAGE       "Image"               0
+                    SF-DRAWABLE    "Drawable"            0
+		    SF-PATTERN    _"Pattern"             "Parque #1"
+                    SF-ADJUSTMENT _"Outline blur radius" '(5 1 200 1 10 0 1)
+                    SF-ADJUSTMENT _"Shadow blur radius"  '(10 1 200 1 10 0 1)
+                    SF-ADJUSTMENT _"Bumpmap (alpha layer) blur radius" '(5 1 200 1 10 0 1)
+		    SF-TOGGLE     _"Default bumpmap settings" TRUE
+		    SF-ADJUSTMENT _"Shadow X offset"     '(0 0 200 1 5 0 1)
+                    SF-ADJUSTMENT _"Shadow Y offset"     '(0 0 200 1 5 0 1))
+
+(script-fu-menu-register "script-fu-3d-outline-logo-alpha"
+			 _"<Image>/Script-Fu/Alpha to Logo")
+
+
+(define (script-fu-3d-outline-logo text-pattern
+				   text
+				   size
+				   font
+				   outline-blur-radius
+				   shadow-blur-radius
+				   bump-map-blur-radius
+				   noninteractive
+				   s-offset-x
+				   s-offset-y)
+  (let* ((img (car (gimp-image-new 256 256 RGB)))
+         (text-layer (car (gimp-text-fontname img -1 0 0 text 30 TRUE size PIXELS font))))
+    (gimp-image-undo-disable img)
+    (apply-3d-outline-logo-effect img text-layer text-pattern
+				  outline-blur-radius shadow-blur-radius
+				  bump-map-blur-radius noninteractive
+				  s-offset-x s-offset-y)
+    (gimp-image-undo-enable img)
+    (gimp-display-new img)))
 
 (script-fu-register "script-fu-3d-outline-logo"
-                    "<Toolbox>/Xtns/Script-Fu/Logos/3D Outline"
+                    _"3D _Outline..."
                     "Creates outlined texts with drop shadow"
                     "Hrvoje Horvat (hhorvat@open.hr)"
                     "Hrvoje Horvat"
                     "07 April, 1998"
                     ""
-		    SF-VALUE "Text Pattern" "\"Parque #1\""
-                    SF-VALUE "Text String" "\"The Gimp\""
-                    SF-VALUE "Font Size (in pixels)" "100"
-                    SF-VALUE "Font" "\"Roostheavy\""
-                    SF-VALUE "Outline blur radius" "5"
-                    SF-VALUE "Shadow blur radius" "10"
-                    SF-VALUE "Bump-map (alpha layer) blur radius" "5"
-		    SF-TOGGLE "Default bump-map settings" TRUE
-		    SF-VALUE "Shadow X offset" "0"
-                    SF-VALUE "Shadow Y offset" "0")
+		    SF-PATTERN    _"Pattern"             "Parque #1"
+                    SF-STRING     _"Text"                "The Gimp"
+                    SF-ADJUSTMENT _"Font size (pixels)"  '(100 2 1000 1 10 0 1)
+                    SF-FONT       _"Font"                "RoostHeavy"
+                    SF-ADJUSTMENT _"Outline blur radius" '(5 1 200 1 10 0 1)
+                    SF-ADJUSTMENT _"Shadow blur radius"  '(10 1 200 1 10 0 1)
+                    SF-ADJUSTMENT _"Bumpmap (alpha layer) blur radius" '(5 1 200 1 10 0 1)
+		    SF-TOGGLE     _"Default bumpmap settings" TRUE
+		    SF-ADJUSTMENT _"Shadow X offset"     '(0 0 200 1 5 0 1)
+                    SF-ADJUSTMENT _"Shadow Y offset"     '(0 0 200 1 5 0 1))
+
+(script-fu-menu-register "script-fu-3d-outline-logo"
+			 _"<Toolbox>/Xtns/Script-Fu/Logos")

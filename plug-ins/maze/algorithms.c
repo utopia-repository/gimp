@@ -1,9 +1,9 @@
-/* algorithms.c 
+/* $Id: algorithms.c,v 1.12 2004/02/01 13:22:08 mitch Exp $
  * Contains routines for generating mazes, somewhat intertwined with 
  * Gimp plug-in-maze specific stuff.
  *
- * Kevin Turner <kevint@poboxes.com>
- * http://www.poboxes.com/kevint/gimp/maze.html
+ * Kevin Turner <acapnotic@users.sourceforge.net>
+ * http://gimp-plug-ins.sourceforge.net/maze/
  */
  
 /* mazegen code from rec.games.programmer's maze-faq:
@@ -37,12 +37,18 @@
  *
  */
 
+#ifndef SOLO_COMPILE
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include "maze.h"
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
+#include "libgimp/stdplugins-intl.h"
 
 extern MazeValues mvals;
+extern GRand     *gr;
 
 void      mazegen(gint     pos,
 		  gchar   *maz,
@@ -54,15 +60,13 @@ void      mazegen_tileable(gint     pos,
 			   gint     x,
 			   gint     y,
 			   gint     rnd);
-void      prim(guint pos,
+void      prim(gint pos,
 	       gchar *maz, 
 	       guint x, 
-	       guint y, 
-	       gint rnd);
+	       guint y);
 void      prim_tileable(gchar *maz, 
 			guint x, 
-			guint y, 
-			gint rnd);
+			guint y);
 
 #define ABSMOD(A,B) ( ((A) < 0) ? (((B) + (A)) % (B)) : ((A) % (B)) )
 
@@ -268,7 +272,7 @@ print_glist(gpointer data, gpointer user_data)
    does break, let me know, and I'll go cry in a corner for a while
    before I get up the strength to re-code it. */
 void
-prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
+prim(gint pos, gchar *maz, guint x, guint y)
 {
      GSList *front_cells=NULL;
      guint current;
@@ -276,8 +280,11 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
      guint progress=0, max_progress;
      char d, i;
      guint c=0;
+     gint rnd = mvals.seed;
 
-     gimp_progress_init ("Constructing maze using Prim's Algorithm...");
+     g_rand_set_seed (gr, rnd);
+
+     gimp_progress_init (_("Constructing maze using Prim's Algorithm..."));
 
      /* OUT is zero, so we should be already initalized. */
 
@@ -298,29 +305,29 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 
      if (up >= 0) {
 	  maz[up]=FRONTIER;
-	  front_cells=g_slist_append(front_cells,(gpointer)up);
+	  front_cells=g_slist_append(front_cells,GINT_TO_POINTER(up));
      }
      if (down >= 0) {
-	  maz[up]=FRONTIER;
-	  front_cells=g_slist_append(front_cells,(gpointer)down);
+	  maz[down]=FRONTIER;
+	  front_cells=g_slist_append(front_cells,GINT_TO_POINTER(down));
      }
      if (left >= 0) {
-	  maz[up]=FRONTIER;
-	  front_cells=g_slist_append(front_cells,(gpointer)left);
+	  maz[left]=FRONTIER;
+	  front_cells=g_slist_append(front_cells,GINT_TO_POINTER(left));
      }
      if (right >= 0) {
-	  maz[up]=FRONTIER;
-	  front_cells=g_slist_append(front_cells,(gpointer)right);
+	  maz[right]=FRONTIER;
+	  front_cells=g_slist_append(front_cells,GINT_TO_POINTER(right));
      }
 
      /* While frontier is not empty do the following... */
      while(g_slist_length(front_cells) > 0) {
 
 	  /* Remove one cell at random from frontier and place it in IN. */
-	  current = rand() % g_slist_length(front_cells);
-	  pos = (guint)g_slist_nth(front_cells,current)->data;
+	  current = g_rand_int_range (gr, 0, g_slist_length(front_cells));
+	  pos = GPOINTER_TO_INT(g_slist_nth(front_cells,current)->data);
 
-	  front_cells=g_slist_remove(front_cells,(gpointer)pos);
+	  front_cells=g_slist_remove(front_cells,GINT_TO_POINTER(pos));
 	  maz[pos]=IN;
 
 	  /* If the cell has any neighbors in OUT, remove them from
@@ -336,7 +343,8 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 	       switch (maz[up]) {
 	       case OUT:
 		    maz[up]=FRONTIER;
-		    front_cells=g_slist_append(front_cells,(gpointer)up); 
+		    front_cells=g_slist_prepend(front_cells,
+						GINT_TO_POINTER(up)); 
 	       break;
 	       case IN:
 		    d=1;
@@ -349,7 +357,8 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 	       switch (maz[down]) {
 	       case OUT:
 		    maz[down]=FRONTIER;
-		    front_cells=g_slist_append(front_cells,(gpointer)down); 
+		    front_cells=g_slist_prepend(front_cells,
+						GINT_TO_POINTER(down)); 
 		    break;
 	       case IN:
 		    d=d|2;
@@ -362,7 +371,8 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 	       switch (maz[left]) {
 	       case OUT:
 		    maz[left]=FRONTIER;
-		    front_cells=g_slist_append(front_cells,(gpointer)left); 
+		    front_cells=g_slist_prepend(front_cells,
+						GINT_TO_POINTER(left)); 
 		    break;
 	       case IN:
 		    d=d|4;
@@ -375,7 +385,8 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 	       switch (maz[right]) {
 	       case OUT:
 		    maz[right]=FRONTIER;
-		    front_cells=g_slist_append(front_cells,(gpointer)right); 
+		    front_cells=g_slist_prepend(front_cells,
+						GINT_TO_POINTER(right)); 
 		    break;
 	       case IN:
 		    d=d|8;
@@ -409,16 +420,16 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 	  
 	  switch (i) {
 	  case 0:
-	       maz[WALL_UP(pos)]=1;
+	       maz[WALL_UP(pos)]=IN;
 	       break;
 	  case 1:
-	       maz[WALL_DOWN(pos)]=1;
+	       maz[WALL_DOWN(pos)]=IN;
 	       break;
 	  case 2:
-	       maz[WALL_LEFT(pos)]=1;
+	       maz[WALL_LEFT(pos)]=IN;
 	       break;
 	  case 3:
-	       maz[WALL_RIGHT(pos)]=1;
+	       maz[WALL_RIGHT(pos)]=IN;
 	       break;
 	  case 99:
 	       break;
@@ -437,7 +448,7 @@ prim(guint pos, gchar *maz, guint x, guint y, gint rnd)
 } /* prim */
 
 void
-prim_tileable(gchar *maz, guint x, guint y, gint rnd)
+prim_tileable(gchar *maz, guint x, guint y)
 {
      GSList *front_cells=NULL;
      guint current, pos;
@@ -445,16 +456,19 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
      guint progress=0, max_progress;
      char d, i;
      guint c=0;
+     gint rnd = mvals.seed;
 
-     gimp_progress_init ("Constructing tileable maze using Prim's Algorithm...");
+     g_rand_set_seed (gr, rnd);
+
+     gimp_progress_init (_("Constructing tileable maze using Prim's Algorithm..."));
 
      /* OUT is zero, so we should be already initalized. */
 
      max_progress=x*y/4;
 
      /* Pick someplace to start. */
-     srand(rnd);
-     pos = x * 2 * (rand() % y / 2) + 2 * (rand() % x / 2);
+
+     pos = x * 2 * g_rand_int_range (gr, 0, y/2) + 2 * g_rand_int_range(gr, 0, x/2);
 
      maz[pos]=IN;
 
@@ -466,19 +480,19 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
 
      maz[up]=maz[down]=maz[left]=maz[right]=FRONTIER;
 
-     front_cells=g_slist_append(front_cells,(gpointer)up);
-     front_cells=g_slist_append(front_cells,(gpointer)down);
-     front_cells=g_slist_append(front_cells,(gpointer)left);
-     front_cells=g_slist_append(front_cells,(gpointer)right);
+     front_cells=g_slist_append(front_cells,GINT_TO_POINTER(up));
+     front_cells=g_slist_append(front_cells,GINT_TO_POINTER(down));
+     front_cells=g_slist_append(front_cells,GINT_TO_POINTER(left));
+     front_cells=g_slist_append(front_cells,GINT_TO_POINTER(right));
  
      /* While frontier is not empty do the following... */
      while(g_slist_length(front_cells) > 0) {
 
 	  /* Remove one cell at random from frontier and place it in IN. */
-	  current = rand() % g_slist_length(front_cells);
-	  pos = (guint)g_slist_nth(front_cells,current)->data;
+	  current = g_rand_int_range (gr, 0, g_slist_length(front_cells));
+	  pos = GPOINTER_TO_UINT(g_slist_nth(front_cells,current)->data);
 
-	  front_cells=g_slist_remove(front_cells,(gpointer)pos);
+	  front_cells=g_slist_remove(front_cells,GUINT_TO_POINTER(pos));
 	  maz[pos]=IN;
 
 	  /* If the cell has any neighbors in OUT, remove them from
@@ -493,7 +507,7 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
 	  switch (maz[up]) {
 	  case OUT:
 	       maz[up]=FRONTIER;
-	       front_cells=g_slist_append(front_cells,(gpointer)up); 
+	       front_cells=g_slist_append(front_cells,GINT_TO_POINTER(up));
 	       break;
 	  case IN:
 	       d=1;
@@ -504,7 +518,7 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
 	  switch (maz[down]) {
 	  case OUT:
 	       maz[down]=FRONTIER;
-	       front_cells=g_slist_append(front_cells,(gpointer)down); 
+	       front_cells=g_slist_append(front_cells,GINT_TO_POINTER(down));
 	       break;
 	  case IN:
 	       d=d|2;
@@ -515,7 +529,7 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
 	  switch (maz[left]) {
 	  case OUT:
 	       maz[left]=FRONTIER;
-	       front_cells=g_slist_append(front_cells,(gpointer)left); 
+	       front_cells=g_slist_append(front_cells,GINT_TO_POINTER(left));
 	       break;
 	  case IN:
 	       d=d|4;
@@ -526,7 +540,7 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
 	  switch (maz[right]) {
 	  case OUT:
 	       maz[right]=FRONTIER;
-	       front_cells=g_slist_append(front_cells,(gpointer)right); 
+	       front_cells=g_slist_append(front_cells,GINT_TO_POINTER(right));
 	       break;
 	  case IN:
 	       d=d|8;
@@ -559,16 +573,16 @@ prim_tileable(gchar *maz, guint x, guint y, gint rnd)
 	  
 	  switch (i) {
 	  case 0:
-	       maz[WALL_UP_TILEABLE(pos)]=1;
+	       maz[WALL_UP_TILEABLE(pos)]=IN;
 	       break;
 	  case 1:
-	       maz[WALL_DOWN_TILEABLE(pos)]=1;
+	       maz[WALL_DOWN_TILEABLE(pos)]=IN;
 	       break;
 	  case 2:
-	       maz[WALL_LEFT_TILEABLE(pos)]=1;
+	       maz[WALL_LEFT_TILEABLE(pos)]=IN;
 	       break;
 	  case 3:
-	       maz[WALL_RIGHT_TILEABLE(pos)]=1;
+	       maz[WALL_RIGHT_TILEABLE(pos)]=IN;
 	       break;
 	  case 99:
 	       break;

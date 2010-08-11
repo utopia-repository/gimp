@@ -1,0 +1,47 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpsignal</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimpparasiteio.html" title="gimpparasiteio"><link rel="next" href="libgimpbase-gimpunit.html" title="gimpunit"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimpparasiteio.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th><td><a accesskey="n" href="libgimpbase-gimpunit.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimpsignal"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpsignal</span></h2><p>gimpsignal &#8212; Portable signal handling.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+void        (<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">*GimpSignalHandlerFunc</a>)        (gint signum);
+<a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> <a href="libgimpbase-gimpsignal.html#gimp-signal-private">gimp_signal_private</a>   (gint signum,
+                                             <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
+                                             gint flags);
+</pre></div><div class="refsect1" lang="en"><a name="id2585424"></a><h2>Description</h2><p>
+Portable signal handling.
+
+</p></div><div class="refsect1" lang="en"><a name="id2585433"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2585439"></a><h3><a name="GimpSignalHandlerFunc"></a>GimpSignalHandlerFunc ()</h3><a class="indexterm" name="id2585447"></a><pre class="programlisting">void        (*GimpSignalHandlerFunc)        (gint signum);</pre><p>
+A prototype for signal handler functions. Note that each function which
+takes or returns a variable of this type also accepts or may return
+special values defined by your system's signal.h header file (like
+<i class="parameter"><tt>SIG_DFL</tt></i> or <i class="parameter"><tt>SIG_IGN</tt></i>).
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>signum</tt></i> :</span></td><td>The number of the signal. Useful if different signals are handled
+         by a single handler.
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585493"></a><h3><a name="gimp-signal-private"></a>gimp_signal_private ()</h3><a class="indexterm" name="id2585501"></a><pre class="programlisting"><a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> gimp_signal_private   (gint signum,
+                                             <a href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc">GimpSignalHandlerFunc</a> handler,
+                                             gint flags);</pre><p>
+This function furnishes a workalike for signal(2) but
+which internally invokes sigaction(2) after certain
+sa_flags are set; these primarily to ensure restarting
+of interrupted system calls. See sigaction(2)  It is a
+aid to transition and not new development: that effort
+should employ sigaction directly. [gosgood 18.04.2000]
+</p><p>
+Cause <i class="parameter"><tt>handler</tt></i> to be run when <i class="parameter"><tt>signum</tt></i> is delivered.  We
+use sigaction(2) rather than signal(2) so that we can control the
+signal handler's environment completely via <i class="parameter"><tt>flags</tt></i>: some signal(2)
+implementations differ in their sematics, so we need to nail down
+exactly what we want. [austin 06.04.2000]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>signum</tt></i> :</span></td><td> Selects signal to be handled see man 5 signal (or man 7 signal)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>handler</tt></i> :</span></td><td> Handler that maps to signum. Invoked by O/S.
+          Handler gets signal that caused invocation. Corresponds
+          to the <i class="parameter"><tt>sa_handler</tt></i> field of the <i class="parameter"><tt>sigaction</tt></i> struct.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>flags</tt></i> :</span></td><td> Preferences. OR'ed SA_&lt;xxx&gt;. See man sigaction. Corresponds
+        to the <i class="parameter"><tt>sa_flags</tt></i> field of the <i class="parameter"><tt>sigaction</tt></i> struct.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A reference to the signal handling function which was
+         active before the call to <a href="libgimpbase-gimpsignal.html#gimp-signal-private"><tt class="function">gimp_signal_private()</tt></a>.
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2536296"></a><h2>See Also</h2><p>
+signal(2), signal(5 or 7), sigaction(2).
+</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimpparasiteio.html"><b>&lt;&lt; gimpparasiteio</b></a></td><td align="right"><a accesskey="n" href="libgimpbase-gimpunit.html"><b>gimpunit &gt;&gt;</b></a></td></tr></table></body></html>

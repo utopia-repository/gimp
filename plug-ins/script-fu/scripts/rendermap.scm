@@ -1,6 +1,3 @@
-;
-;
-;
 ; Chris Gutteridge (cjg@ecs.soton.ac.uk)
 ; At ECS Dept, University of Southampton, England.
 
@@ -19,56 +16,75 @@
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-(define (script-fu-render-map inSize inGrain inGrad inWiden) 
+(define (script-fu-render-map inSize
+			      inGrain
+			      inGrad
+			      inWiden)
+  (let* (
+        (theWidth inSize)
+        (theHeight inSize)
+        (theImage (car (gimp-image-new theWidth theHeight RGB)))
+        (theLayer)
+        (thinLayer)
+        )
 
+  (gimp-context-push)
 
-        (set! theWidth inSize)
-	(set! theHeight inSize)
-        (set! theImage (car(gimp-image-new theWidth theHeight RGB)))
+  (gimp-selection-all theImage)
 
-        (gimp-selection-all theImage)
+  (set! theLayer (car (gimp-layer-new theImage theWidth theHeight
+				      RGBA-IMAGE
+				      "I've got more rubber ducks than you!"
+				      100 NORMAL-MODE)))
+  (gimp-image-add-layer theImage theLayer 0)
+  (plug-in-solid-noise TRUE theImage theLayer 1 0 (rand 65536)
+		       inGrain inGrain inGrain)
 
-        (set! theLayer (car (gimp-layer-new theImage theWidth theHeight RGBA_IMAGE "I've got more rubber ducks than you!" 100 NORMAL)))
-        (gimp-image-add-layer theImage theLayer 0)
-        (plug-in-solid-noise TRUE theImage theLayer 1 0 (rand 65536) inGrain inGrain inGrain)
+  (if (= inWiden 1)
+      (begin
+	(set! thinLayer (car (gimp-layer-new theImage theWidth theHeight
+					     RGBA-IMAGE "Camo Thin Layer"
+					     100 NORMAL-MODE)))
+	(gimp-image-add-layer theImage thinLayer 0)
 
-	(if (= inWiden TRUE) (begin
-        	(set! thinLayer (car (gimp-layer-new theImage theWidth theHeight RGBA_IMAGE "Camo Thin Layer" 100 NORMAL)))
-        	(gimp-image-add-layer theImage thinLayer 0)
-		(let 	((theBigGrain (min 15 (* 2 inGrain))))
-             		(plug-in-solid-noise TRUE theImage thinLayer 1 0 (rand 65536) theBigGrain theBigGrain theBigGrain)
-		)
-		(gimp-palette-set-background '(255 255 255))
-		(gimp-palette-set-foreground '(0 0 0))
-		(let 	((theMask (car(gimp-layer-create-mask thinLayer 0))))
-			(gimp-image-add-layer-mask theImage thinLayer theMask)
-			(gimp-blend theImage theMask FG-BG-RGB NORMAL LINEAR 100 
-				0 REPEAT-TRIANGULAR FALSE 0 0 0 0 0 (/ theHeight 2) )
-		)
-		(set! theLayer (car(gimp-image-flatten theImage)))
-	))
+	(let ((theBigGrain (min 15 (* 2 inGrain))))
+	  (plug-in-solid-noise TRUE theImage thinLayer 1 0 (rand 65536)
+			       theBigGrain theBigGrain theBigGrain))
+
+	(gimp-context-set-background '(255 255 255))
+	(gimp-context-set-foreground '(0 0 0))
+
+	(let ((theMask (car (gimp-layer-create-mask thinLayer 0))))
+	  (gimp-layer-add-mask thinLayer theMask)
+
+	  (gimp-edit-blend theMask FG-BG-RGB-MODE NORMAL-MODE
+			   GRADIENT-LINEAR 100 0 REPEAT-TRIANGULAR FALSE
+			   FALSE 0 0 TRUE
+			   0 0 0 (/ theHeight 2)))
+
+	(set! theLayer (car(gimp-image-flatten theImage)))))
 	
-	(gimp-selection-none theImage)
-	(gimp-gradients-set-active inGrad)
-	(plug-in-gradmap TRUE theImage theLayer)
-        (gimp-display-new theImage)
-)
+  (gimp-selection-none theImage)
+  (gimp-context-set-gradient inGrad)
+  (plug-in-gradmap TRUE theImage theLayer)
 
+  (gimp-display-new theImage)
 
+  (gimp-context-pop)))
 
-; Register the function with the GIMP:
+(script-fu-register "script-fu-render-map"
+		    _"Render _Map..."
+		    "Another pattern which resembles a map"
+		    "Chris Gutteridge: cjg@ecs.soton.ac.uk"
+		    "28th April 1998"
+		    "Chris Gutteridge / ECS @ University of Southampton, England"
+		    ""
+		    SF-ADJUSTMENT _"Image size"       '(256 0 2048 1 10 0 0)
+		    SF-ADJUSTMENT _"Granularity"      '(4 0 15 1 1 0 0)
+		    SF-GRADIENT   _"Gradient"         "Land and Sea"
+		    SF-TOGGLE     _"Gradient reverse" FALSE
+		    SF-OPTION     _"Behaviour"        '(_"Tile"
+							_"Detail in Middle"))
 
-(script-fu-register
- "script-fu-render-map"
- "<Toolbox>/Xtns/Script-Fu/Patterns/Render Map"
- "foo"
- "Chris Gutteridge: cjg@ecs.soton.ac.uk"
- "28th April 1998"
- "Chris Gutteridge / ECS @ University of Southampton, England"
- ""
- SF-VALUE "Image Size:" "256"
- SF-VALUE "Granularity (0 - 15):" "4"
- SF-VALUE "Gradient:" "\"Land_and_Sea\""
- SF-TOGGLE "TRUE = Detail in middle, FALSE = tile" FALSE
-)
-
+(script-fu-menu-register "script-fu-render-map"
+			 _"<Toolbox>/Xtns/Script-Fu/Patterns")

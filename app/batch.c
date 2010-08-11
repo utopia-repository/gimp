@@ -1,156 +1,167 @@
-#include <ctype.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
+/* The GIMP -- an image manipulation program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+#include "config.h"
+
 #include <string.h>
-#include <unistd.h>
+#include <stdlib.h>
 
-#include "appenv.h"
-#include "app_procs.h"
+#include <glib-object.h>
+
+#include "core/core-types.h"
+
+#include "base/base.h"
+
+#include "core/gimp.h"
+
 #include "batch.h"
-#include "procedural_db.h"
+
+#include "pdb/procedural_db.h"
+
+#include "gimp-intl.h"
 
 
-static void batch_run_cmd  (char              *cmd);
-static void batch_read     (gpointer           data,
-			    gint               source,
-			    GdkInputCondition  condition);
+#define BATCH_DEFAULT_EVAL_PROC   "plug_in_script_fu_eval"
 
 
-static ProcRecord *eval_proc;
+static gboolean  batch_exit_after_callback (Gimp        *gimp,
+                                            gboolean     kill_it);
+static void      batch_run_cmd             (Gimp        *gimp,
+                                            const gchar *proc_name,
+                                            ProcRecord  *proc,
+                                            GimpRunMode  run_mode,
+                                            const gchar *cmd);
 
 
 void
-batch_init ()
+batch_run (Gimp         *gimp,
+           const gchar  *batch_interpreter,
+           const gchar **batch_commands)
 {
-  extern char **batch_cmds;
+  gulong  exit_id;
 
-  int read_from_stdin;
-  int i;
+  if (! batch_commands || ! batch_commands[0])
+    return;
 
-  eval_proc = procedural_db_lookup ("extension_script_fu_eval");
-  if (!eval_proc)
+  exit_id = g_signal_connect_after (gimp, "exit",
+                                    G_CALLBACK (batch_exit_after_callback),
+                                    NULL);
+
+  if (! batch_interpreter)
     {
-      g_message ("script-fu not available: batch mode disabled\n");
-      return;
+      batch_interpreter = BATCH_DEFAULT_EVAL_PROC;
+
+      g_printerr ("No batch interpreter specified, using the default '%s'.\n",
+                  batch_interpreter);
     }
 
-  read_from_stdin = FALSE;
-  for (i = 0; batch_cmds[i]; i++)
+  /*  script-fu text console, hardcoded for backward compatibility  */
+
+  if (strcmp (batch_interpreter, "plug_in_script_fu_eval") == 0 &&
+      strcmp (batch_commands[0], "-") == 0)
     {
-      if (strcmp (batch_cmds[i], "-") == 0)
-	{
-	  if (!read_from_stdin)
-	    {
-	      g_print ("reading batch commands from stdin\n");
-	      gdk_input_add (STDIN_FILENO, GDK_INPUT_READ, batch_read, NULL);
-	      read_from_stdin = TRUE;
-	    }
-	}
+      const gchar *proc_name = "plug_in_script_fu_text_console";
+      ProcRecord  *proc      = procedural_db_lookup (gimp, proc_name);
+
+      if (proc)
+        batch_run_cmd (gimp, proc_name, proc, GIMP_RUN_INTERACTIVE, NULL);
       else
-	{
-	  batch_run_cmd (batch_cmds[i]);
-	}
+        g_message (_("The batch interpreter '%s' is not available, "
+                     "batch mode disabled."), proc_name);
     }
+  else
+    {
+      ProcRecord *eval_proc = procedural_db_lookup (gimp, batch_interpreter);
+
+      if (eval_proc)
+        {
+          gint i;
+
+          for (i = 0; batch_commands[i]; i++)
+            batch_run_cmd (gimp, batch_interpreter, eval_proc,
+                           GIMP_RUN_NONINTERACTIVE, batch_commands[i]);
+        }
+      else
+        {
+          g_message (_("The batch interpreter '%s' is not available, "
+                       "batch mode disabled."), batch_interpreter);
+        }
+    }
+
+  g_signal_handler_disconnect (gimp, exit_id);
 }
 
 
+static gboolean
+batch_exit_after_callback (Gimp     *gimp,
+                           gboolean  kill_it)
+{
+  if (gimp->be_verbose)
+    g_print ("EXIT: %s\n", G_STRLOC);
+
+  /*  make sure that the swap file is removed before we quit */
+  base_exit ();
+  exit (EXIT_SUCCESS);
+
+  return TRUE;
+}
+
 static void
-batch_run_cmd (char *cmd)
+batch_run_cmd (Gimp        *gimp,
+               const gchar *proc_name,
+               ProcRecord  *proc,
+               GimpRunMode  run_mode,
+	       const gchar *cmd)
 {
   Argument *args;
   Argument *vals;
-  int i;
+  gint      i;
 
-  if (g_strcasecmp (cmd, "(gimp-quit 0)") == 0)
-    {
-      app_exit (0);
-      exit (0);
-    }
+  args = g_new0 (Argument, proc->num_args);
+  for (i = 0; i < proc->num_args; i++)
+    args[i].arg_type = proc->args[i].arg_type;
 
-  args = g_new0 (Argument, eval_proc->num_args);
-  for (i = 0; i < eval_proc->num_args; i++)
-    args[i].arg_type = eval_proc->args[i].arg_type;
+  args[0].value.pdb_int = run_mode;
 
-  args[0].value.pdb_int = 1;
-  args[1].value.pdb_pointer = cmd;
+  if (proc->num_args > 1)
+    args[1].value.pdb_pointer = (gpointer) cmd;
 
-  vals = procedural_db_execute ("extension_script_fu_eval", args);
+  vals = procedural_db_execute (gimp,
+                                gimp_get_user_context (gimp), NULL,
+                                proc_name, args);
+
   switch (vals[0].value.pdb_int)
     {
-    case PDB_EXECUTION_ERROR:
-      g_print ("batch command: experienced an execution error.\n");
+    case GIMP_PDB_EXECUTION_ERROR:
+      g_printerr ("batch command: experienced an execution error.\n");
       break;
-    case PDB_CALLING_ERROR:
-      g_print ("batch command: experienced a calling error.\n");
+
+    case GIMP_PDB_CALLING_ERROR:
+      g_printerr ("batch command: experienced a calling error.\n");
       break;
-    case PDB_SUCCESS:
-      g_print ("batch command: executed successfully.\n");
-      break;
-    default:
+
+    case GIMP_PDB_SUCCESS:
+      g_printerr ("batch command: executed successfully.\n");
       break;
     }
-  
-  procedural_db_destroy_args (vals, eval_proc->num_values);
-  g_free(args);
+
+  procedural_db_destroy_args (vals, proc->num_values);
+  g_free (args);
 
   return;
-}
-
-
-static void
-batch_read (gpointer          data,
-	    gint              source,
-	    GdkInputCondition condition)
-{
-  static GString *string;
-  char buf[32], *t;
-  int nread, done;
-
-  if (condition & GDK_INPUT_READ)
-    {
-      do {
-	nread = read (source, &buf, sizeof (char) * 31);
-      } while ((nread == -1) && ((errno == EAGAIN) || (errno == EINTR)));
-
-      if ((nread == 0) && (!string || (string->len == 0)))
-	app_exit (FALSE);
-
-      buf[nread] = '\0';
-
-      if (!string)
-	string = g_string_new ("");
-
-      t = buf;
-      if (string->len == 0)
-	{
-	  while (*t)
-	    {
-	      if (isspace (*t))
-		t++;
-	      else
-		break;
-	    }
-	}
-
-      g_string_append (string, t);
-
-      done = FALSE;
-
-      while (*t)
-	{
-	  if ((*t == '\n') || (*t == '\r'))
-	    {
-              t = '\0';
-	      done = TRUE;
-	    }
-	  t++;
-	}
-
-      if (done)
-	{
-	  batch_run_cmd (string->str);
-	  g_string_truncate (string, 0);
-	}
-    }
 }

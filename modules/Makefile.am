@@ -1,0 +1,81 @@
+## Process this file with automake to produce Makefile.in
+
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+
+if OS_WIN32
+no_undefined = -no-undefined
+endif
+
+libdir = $(gimpplugindir)/modules
+
+INCLUDES = \
+        -I$(top_srcdir)	\
+        $(GTK_CFLAGS)	\
+        -I$(includedir)
+
+EXTRA_DIST = \
+	makefile.msc
+
+if HAVE_LCMS
+cdisplay_proof_module = libcdisplay_proof.la
+endif
+
+if HAVE_LINUX_INPUT
+controller_linux_input_module = libcontroller_linux_input.la
+endif
+
+lib_LTLIBRARIES = \
+	libcolorsel_cmyk.la		\
+	libcolorsel_triangle.la		\
+	libcolorsel_water.la		\
+	libcdisplay_colorblind.la	\
+	libcdisplay_gamma.la		\
+	libcdisplay_highcontrast.la	\
+	$(cdisplay_proof_module)	\
+	libcontroller_midi.la		\
+	$(controller_linux_input_module)
+
+
+colorsel_libadd = $(libgimpcolor) $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
+cdisplay_libadd = $(libgimpbase) $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
+controller_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
+
+libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
+libcolorsel_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolorsel_cmyk_la_LIBADD = $(colorsel_libadd)
+
+libcolorsel_triangle_la_SOURCES = colorsel_triangle.c
+libcolorsel_triangle_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolorsel_triangle_la_LIBADD = $(colorsel_libadd)
+
+libcolorsel_water_la_SOURCES = colorsel_water.c
+libcolorsel_water_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolorsel_water_la_LIBADD = $(colorsel_libadd)
+
+libcdisplay_colorblind_la_SOURCES = cdisplay_colorblind.c
+libcdisplay_colorblind_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcdisplay_colorblind_la_LIBADD = $(cdisplay_libadd)
+
+libcdisplay_gamma_la_SOURCES = cdisplay_gamma.c
+libcdisplay_gamma_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcdisplay_gamma_la_LIBADD = $(cdisplay_libadd)
+
+libcdisplay_highcontrast_la_SOURCES = cdisplay_highcontrast.c
+libcdisplay_highcontrast_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcdisplay_highcontrast_la_LIBADD = $(cdisplay_libadd)
+
+libcdisplay_proof_la_SOURCES = cdisplay_proof.c
+libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcdisplay_proof_la_LIBADD = $(cdisplay_libadd) $(LCMS_LIBS)
+
+libcontroller_linux_input_la_SOURCES = controller_linux_input.c
+libcontroller_linux_input_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcontroller_linux_input_la_LIBADD = $(controller_libadd)
+
+libcontroller_midi_la_SOURCES = controller_midi.c
+libcontroller_midi_la_CFLAGS = $(ALSA_CFLAGS)
+libcontroller_midi_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcontroller_midi_la_LIBADD = $(controller_libadd) $(ALSA_LIBS)

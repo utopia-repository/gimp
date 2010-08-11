@@ -1,37 +1,36 @@
 ## Process this file with automake to produce Makefile.in
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 
-pluginlib_PROGRAMS = faxg3
+if OS_WIN32
+mwindows = -mwindows
+endif
+
+AM_LDFLAGS = $(mwindows)
+
+libexecdir = $(gimpplugindir)/plug-ins
+
+libexec_PROGRAMS = faxg3
 
 faxg3_SOURCES = \
-	faxg3.c g3.c g3.h run_tbl.c   
+	faxg3.c		\
+	g3.c		\
+	g3.h		\
+	run_tbl.c
 
 INCLUDES = \
-	$(X_CFLAGS)			\
-	-I$(top_srcdir)			\
+	-I$(top_srcdir)	\
+	$(GLIB_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)
-
-DEPS = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la
-
-faxg3_DEPENDENCIES = $(DEPS)
-
-.PHONY: files
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+	$(libgimp)	\
+	$(libgimpcolor)	\
+	$(libgimpbase)	\
+	$(GLIB_LIBS)	\
+	$(RT_LIBS)	\
+	$(INTLLIBS)

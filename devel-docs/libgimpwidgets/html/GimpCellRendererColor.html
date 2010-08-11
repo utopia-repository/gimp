@@ -1,0 +1,65 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpCellRendererColor</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="prev" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="next" href="GimpCellRendererToggle.html" title="GimpCellRendererToggle"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpwidgets-cell-renderers.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-cell-renderers.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpCellRendererToggle.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpCellRendererColor"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpCellRendererColor</span></h2><p>GimpCellRendererColor &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+struct      <a href="GimpCellRendererColor.html#GimpCellRendererColor-struct">GimpCellRendererColor</a>;
+GtkCellRenderer* <a href="GimpCellRendererColor.html#gimp-cell-renderer-color-new">gimp_cell_renderer_color_new</a>
+                                            (void);
+
+</pre></div><div class="refsect1" lang="en"><a name="id2553641"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+
+  GObject
+   +----GtkObject
+         +----GtkCellRenderer
+               +----GimpCellRendererColor
+</pre></div><div class="refsect1" lang="en"><a name="id2563493"></a><h2>Properties</h2><pre class="synopsis">
+
+  "<a href="GimpCellRendererColor.html#GimpCellRendererColor--color">color</a>"                <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+>GimpRGB</a>              : Read / Write
+  "<a href="GimpCellRendererColor.html#GimpCellRendererColor--icon-size">icon-size</a>"            gint                 : Read / Write / Construct
+  "<a href="GimpCellRendererColor.html#GimpCellRendererColor--opaque">opaque</a>"               gboolean             : Read / Write / Construct
+</pre></div><div class="refsect1" lang="en"><a name="id2596368"></a><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><a name="id2596378"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2596383"></a><h3><a name="GimpCellRendererColor-struct"></a>struct GimpCellRendererColor</h3><a class="indexterm" name="id2596394"></a><pre class="programlisting">struct GimpCellRendererColor;</pre><p>
+
+</p></div><hr><div class="refsect2" lang="en"><a name="id2596404"></a><h3><a name="gimp-cell-renderer-color-new"></a>gimp_cell_renderer_color_new ()</h3><a class="indexterm" name="id2596416"></a><pre class="programlisting">GtkCellRenderer* gimp_cell_renderer_color_new
+                                            (void);</pre><p>
+Creates a <span class="type">GtkCellRenderer</span> that displays a color.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> a new <a href="GimpCellRendererColor.html" title="GimpCellRendererColor"><span class="type">GimpCellRendererColor</span></a>
+
+</td></tr></tbody></table></div><p>Since  GIMP 2.2
+</p></div></div><div class="refsect1" lang="en"><a name="id2598801"></a><h2>Properties</h2><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><a name="GimpCellRendererColor--color"></a>"<tt class="literal">color</tt>" (<a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+>GimpRGB</a> : Read / Write)</span></td><td><p></p></td></tr><tr><td><span class="term"><a name="GimpCellRendererColor--icon-size"></a>"<tt class="literal">icon-size</tt>" (gint : Read / Write / Construct)</span></td><td><p></p></td></tr><tr><td><span class="term"><a name="GimpCellRendererColor--opaque"></a>"<tt class="literal">opaque</tt>" (gboolean : Read / Write / Construct)</span></td><td><p></p></td></tr></tbody></table></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpwidgets-cell-renderers.html"><b>&lt;&lt; Cell Renderers for GtkTreeView</b></a></td><td align="right"><a accesskey="n" href="GimpCellRendererToggle.html"><b>GimpCellRendererToggle &gt;&gt;</b></a></td></tr></table></body></html>

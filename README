@@ -1,120 +1,122 @@
-The GIMP: the GNU Image Manipulation Program
---------------------------------------------
+The GNU Image Manipulation Program Version 2.2
+----------------------------------------------
 
-The main difference between v1.0.4 and much earlier versions is the
-use of a tile based memory management for images. This allows the GIMP
-to work with images much larger than physical memory in a usable
-fashion. Before such memory management, the GIMP was nearly unusable
-for large images. (Large being something on the order of
-4000x3000). With the tile memory management, image size is effectively
-limited by disk space. It is due to the switch to a tile based memory
-management system that old plug-ins will not work with this version of
-the GIMP.
+This is version 2.2 of The GIMP. Version 2.2 is an update on GIMP 2.0.
+GIMP 2.2 is fully backward compatible to GIMP 2.0. Plug-ins and
+scripts written for GIMP 2.0 will continue to work and don't need to
+be changed nor recompiled to be used with GIMP 2.2.  We do however
+hope that plug-in authors will update their plug-ins for GIMP 2.2 and
+adapt the GUI changes we did with this version.
 
-The plug-in API has changed drastically from previous versions. The
-result is that it is now possible to access much of the GIMP's
-internals through a database of procedures aptly named the procedure
-database. Plug-ins fit into the procedure database by inserting
-themselves into it. The result is that plug-ins can call GIMP internal
-procedures and other plug-ins. Most plug-ins now fully support the
-procedural database, so that you can call them from scripts and other
-places as well.
+GIMP 2.2 replaces GIMP 2.0. It is advised that you uninstall GIMP 2.0
+before installing GIMP 2.2. If you want to keep GIMP 2.0 installed in
+parallel to GIMP 2.2, you have to choose a separate prefix which is
+not in your default library search path.
 
-The procedure database is self-documenting. To add a procedure to the
-procedure database the programmer must specify a help string and help
-strings for the arguments and return values. This allows us to
-automatically create documentation for the procedures in the procedure
-database. The documentation resides in "docs" and is provided in
-texinfo format.
+This code has already seen quite some testing but a lot has changed
+since version GIMP 2.0 and we could very well have introduced new
+bugs. If you find any , make sure you report them at bugzilla.gnome.org
+(after checking that it isn't reported already).
 
-A new type of plug-in called an extension has been created. Extensions
-are similar to plug-ins in that they are external program, but they
-differ in when and how they are run. The essential difference is that
-plug-ins are associated with a particular image/drawable, while
-extensions are not.
+The GIMP 2.2 API is guaranteed to be backward compatible (source and
+binary) with the GIMP 2.0 API. If you find that your 2.0 plug-in break
+when used with the GIMP 2.2 libraries, or if you cannot compile a GIMP
+2.0 plug-in against the GIMP 2.2 header files, please report that as a
+bug.
 
-A good example of a complex extension is Script-fu, which resides in
-the "plug-ins/script-fu" directory.  Script-fu is a simple Scheme
-interpreter that provides bindings to the GIMP's procedural database.
-This way you can write useful scripts that call the GIMP's functions
-and plug-ins, thus allowing automatization of repetitive tasks.  Many
-scripts are included for your enjoyment in the
-"plug-ins/script-fu/scripts" directory.
+If you want to hack on The GIMP, please read the file HACKING. For
+detailed installation instructions, see the file INSTALL.
 
-Another extension is the "dbbrowser" utility, which lets you
-interactively browse through the procedures installed in the
-procedural database.  This will mainly be of use to Script-fu
-programmers.  Dbbrowser is also nicely integrated in the interactive
-Script-fu console.
 
-Lastly, there is new file format (xcf) designed specifically for
-saving GIMP images. It handles layers, channels and tiles as well as
-saving all of the state information about the image, such as the
-active channel, the selection, etc.  It also will probably change
-sometime in the future to implement some form of compression for the
-tiles.
+1. Web Resources
+================
 
-The GIMP's home page is at
+The GIMP's home page is at:
 
-	http://www.gimp.org
+	http://www.gimp.org/
 
 Please be sure to visit this site for information, documentation,
 tutorials, news, etc.  All things GIMP-ish are available from there.
 
-The automated plug-in registry is located at
+The automated plug-in registry is located at:
 
-	http://registry.gimp.org
+	http://registry.gimp.org/
 
-There you can get the latest versions of plug-ins using a convenient
+There you can get the latest versions of plug-ins, using a convenient
 forms-based interface.
 
+The latest version of The GIMP can be found at:
+
+	http://www.gimp.org/downloads/
+
+
+2. Mailing Lists
+================
+
 We have several mailing lists dedicated to GIMP user and development
-discussion.  To subscribe, send mail to
+discussion.  There is more info at
 
-	majordomo@scam.xcf.berkeley.edu
+	https://lists.xcf.berkeley.edu/mailman/listinfo/<listname>
 
-and in the body of the message put
+with <listname> replaced by "gimp-announce", "gimp-user", "gimp-win-users"
+or "gimp-developer" (without the quotes, of course) depending on the list
+you want to subscribe to.  Links to the mailing list archives can be
+found at the same addresses as given above.
 
-	subscribe <list-name> your@email.address
+Gimp-announce is a low-traffic list with announcements about new
+releases of GIMP and plug-ins. Gimp-user is a mailing list dedicated
+to user problems, hints and tips, discussion of cool effects, etc.
+Gimp-developer is oriented to GIMP core and plug-in developers.  Most
+people will only want to be subscribed to gimp-user. If you want to
+help develop The GIMP, the gimp-developer mailing list is a good
+starting point.
 
-substituting <list-name> for "gimp-user" or "gimp-developer" (without
-the quotes, of course) depending on the list you want to subscribe
-to.  The mailing list archives can be found at
+There is also a mailing list, "gimpwin-users", dedicated to users of the
+Win32 port.  To subscribe, send an empty message to
 
-        http://www.findmail.com/listsaver/gimp-developer/
-        http://www.findmail.com/listsaver/gimp-user/
+	gimpwin-users-subscribe@egroups.com
 
-Gimp-user is a mailing list dedicated to user problems, hints and
-tips, discussion of cool effects, etc.  Gimp-developer is oriented to
-GIMP core and plug-in developers.  Most people will only want to be
-subscribed to gimp-user.
+You can also use the web interface at
+http://www.egroups.com/group/gimpwin-users/. Note that as this mailing
+list is hosted on egroups.com, the messages from the list contain
+relatively unintrusive and easily ignored advertisements at the
+end. But if you are absolutely allergic to ads, don't subscribe.
+
+
+3. IRC
+======
 
 And finally, for the real junkies, there is an IRC channel devoted to
-the GIMP :-) On Byxnet (a private mostly-GIMP network) there is #gimp.
-Many of the developers hang out there.  Some of the Byxnet servers are:
+the GIMP. On GIMPNet (a private free software oriented network) there is
+#gimp.  Many of the developers hang out there.  Some of the GIMPNet
+servers are:
 
 	irc.gimp.org:6667
-	irc.olg.com:6667
-	irc.coherent.net:6667
-	irc.mint.net:6667
+	irc.us.gimp.org:6667
+	irc.eu.gimp.org:6667
 
-You can customize the look of the interface quite a bit my editing the
-~/.gimp/gtkrc file. A sample file, gtkrc.forest2, is included (Thanks to
-Tuomas Kuosmanen)
 
-Included is a set of keybindings similar to those in Adobe Photoshop (tm).
-You can find them in the ps-menurc file.  To use them, copy this file to
-~/.gimp/menurc
+4. Customizing
+==============
 
-We sincerely hope you enjoy the program.  Please report problems to
-bugs@gimp.org.  Before reporting a problem, you may want to see if someone
-else has already did (check the http://www.wilberworks.com/bugs.cgi for
-this). If you have a fix for the problem, upload a patch to the incoming
-dir on ftp.gimp.org.
+The look of GIMP's interface can be customized like any other GTK app
+by editing the ~/.gtkrc-2.0 file or by using "themes" (ready-made
+customizations).  For downloadable themes and further details, see
+http://gtk.themes.org.  Additionally, GIMP reads ~/.gimp-2.2/gtkrc so
+you can have settings that only apply to The GIMP.
+
+Included is a set of keybindings similar to those in Adobe Photoshop.
+You can find them in the ps-menurc file.  To use them, copy this file
+to ~/.gimp-2.2/menurc. You can also manually change the keybindings to
+any of your choice by editing ~/.gimp-2.2/menurc.
+
 
 Have fun,
 
-  Spencer Kimball <spencer@xcf.berkeley.edu>
-  Peter Mattis <petm@xcf.berkeley.edu>
-  Federico Mena <federico@nuclecu.unam.mx>
-  Manish Singh <yosh@gimp.org>
+  Spencer Kimball
+  Peter Mattis
+  Federico Mena
+  Manish Singh
+  Sven Neumann
+  Michael Natterer
+  Dave Neary

@@ -1,39 +1,69 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = gfig-examples
+libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+if OS_WIN32
+mwindows = -mwindows
+endif
 
-pluginlib_PROGRAMS = gfig
+AM_LDFLAGS = $(mwindows)
+
+SUBDIRS = gfig-examples images
+
+libexecdir = $(gimpplugindir)/plug-ins
+
+libexec_PROGRAMS = gfig
 
 gfig_SOURCES = \
-	gfig.c pix_data.h
+	gfig.c		\
+	gfig.h		\
+	gfig-arc.c	\
+	gfig-arc.h	\
+	gfig-bezier.c	\
+	gfig-bezier.h	\
+	gfig-circle.c	\
+	gfig-circle.h	\
+	gfig-dialog.c	\
+	gfig-dialog.h	\
+	gfig-dobject.c	\
+	gfig-dobject.h	\
+	gfig-ellipse.c	\
+	gfig-ellipse.h	\
+	gfig-grid.c	\
+	gfig-grid.h	\
+	gfig-line.c	\
+	gfig-line.h	\
+	gfig-poly.c	\
+	gfig-poly.h	\
+	gfig-preview.c	\
+	gfig-preview.h	\
+	gfig-spiral.c	\
+	gfig-spiral.h	\
+	gfig-star.c	\
+	gfig-star.h	\
+	gfig-stock.c	\
+	gfig-stock.h	\
+	gfig-style.c	\
+	gfig-style.h    \
+	gfig-types.h
+
+EXTRA_DIST = README
 
 INCLUDES = \
-	$(X_CFLAGS)			\
-	-I$(top_srcdir)			\
+	-I$(top_srcdir)	\
+	$(GTK_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)
-
-DEPS = \
-	$(top_builddir)/libgimp/libgimpui.la	\
-	$(top_builddir)/libgimp/libgimp.la
-
-gfig_DEPENDENCIES = $(DEPS)
-
-.PHONY: files
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null`; for p in $$files; do \
-	  echo $$p; \
-	done
-	@for subdir in $(SUBDIRS); do \
-	  files=`cd $$subdir; $(MAKE) files | grep -v "make\[[1-9]\]"`; \
-	  for file in $$files; do \
-	    echo $$subdir/$$file; \
-	  done; \
-	done
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)

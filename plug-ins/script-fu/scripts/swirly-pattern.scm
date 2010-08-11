@@ -30,60 +30,62 @@
   (let* ((hsize (* qsize 2))
 	 (img-size (* qsize 4))
 	 (img (car (gimp-image-new img-size img-size RGB)))
-	 (drawable (car (gimp-layer-new img img-size img-size RGB "Swirly pattern" 100 NORMAL)))
+	 (drawable (car (gimp-layer-new img img-size img-size
+					RGB-IMAGE "Swirly pattern"
+					100 NORMAL-MODE))))
 
-	 ; Save old foregound and background colors
+    (gimp-context-push)
 
-	 (old-fg-color (car (gimp-palette-get-foreground)))
-	 (old-bg-color (car (gimp-palette-get-background))))
-
-    (gimp-image-disable-undo img)
+    (gimp-image-undo-disable img)
     (gimp-image-add-layer img drawable 0)
 
     ; Render checkerboard
 
-    (gimp-palette-set-foreground '(0 0 0))
-    (gimp-palette-set-background '(255 255 255))
+    (gimp-context-set-foreground '(0 0 0))
+    (gimp-context-set-background '(255 255 255))
 
     (plug-in-checkerboard 1 img drawable 0 qsize)
 
     ; Whirl upper left
 
-    (gimp-rect-select img 0 0 hsize hsize REPLACE 0 0)
+    (gimp-rect-select img 0 0 hsize hsize CHANNEL-OP-REPLACE 0 0)
     (whirl-it img drawable angle times)
-    (gimp-invert img drawable)
+    (gimp-invert drawable)
 
     ; Whirl upper right
 
-    (gimp-rect-select img hsize 0 hsize hsize REPLACE 0 0)
+    (gimp-rect-select img hsize 0 hsize hsize CHANNEL-OP-REPLACE 0 0)
     (whirl-it img drawable (- angle) times)
 
     ; Whirl lower left
 
-    (gimp-rect-select img 0 hsize hsize hsize REPLACE 0 0)
+    (gimp-rect-select img 0 hsize hsize hsize CHANNEL-OP-REPLACE 0 0)
     (whirl-it img drawable (- angle) times)
 
     ; Whirl lower right
 
-    (gimp-rect-select img hsize hsize hsize hsize REPLACE 0 0)
+    (gimp-rect-select img hsize hsize hsize hsize CHANNEL-OP-REPLACE 0 0)
     (whirl-it img drawable angle times)
-    (gimp-invert img drawable)
+    (gimp-invert drawable)
 
     ; Terminate
 
     (gimp-selection-none img)
-    (gimp-palette-set-foreground old-fg-color)
-    (gimp-palette-set-background old-bg-color)
-    (gimp-image-enable-undo img)
-    (gimp-display-new img)))
+    (gimp-image-undo-enable img)
+    (gimp-display-new img)
+
+    (gimp-context-pop)))
 
 (script-fu-register "script-fu-swirly-pattern"
-		    "<Toolbox>/Xtns/Script-Fu/Patterns/Swirly (tileable)"
+		    _"_Swirly..."
 		    "Create a swirly pattern"
 		    "Federico Mena Quintero"
 		    "Federico Mena Quintero"
 		    "June 1997"
 		    ""
-		    SF-VALUE "Quarter size" "20"
-		    SF-VALUE "Whirl angle" "90"
-		    SF-VALUE "Number of times to whirl" "4")
+		    SF-ADJUSTMENT _"Quarter size"             '(20 0 2048 1 10 0 1)
+		    SF-ADJUSTMENT _"Whirl angle"              '(90 0 360 1 1 0 0)
+		    SF-ADJUSTMENT _"Number of times to whirl" '(4 0 128 1 1 0 1))
+
+(script-fu-menu-register "script-fu-swirly-pattern"
+			 _"<Toolbox>/Xtns/Script-Fu/Patterns")

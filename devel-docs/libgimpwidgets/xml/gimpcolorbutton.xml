@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="GimpColorButton">
+<refmeta>
+<refentrytitle>GimpColorButton</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpColorButton</refname><refpurpose>Widget for selecting a color from a simple button.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+struct      <link linkend="GimpColorButton-struct">GimpColorButton</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-color-button-new">gimp_color_button_new</link>           (const <link linkend="gchar">gchar</link> *title,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             const <link linkend="GimpRGB">GimpRGB</link> *color,
+                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);
+<link linkend="void">void</link>        <link linkend="gimp-color-button-set-color">gimp_color_button_set_color</link>     (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="void">void</link>        <link linkend="gimp-color-button-get-color">gimp_color_button_get_color</link>     (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="void">void</link>        <link linkend="gimp-color-button-set-update">gimp_color_button_set_update</link>    (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             <link linkend="gboolean">gboolean</link> continuous);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-color-button-get-update">gimp_color_button_get_update</link>    (<link linkend="GimpColorButton">GimpColorButton</link> *button);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-color-button-has-alpha">gimp_color_button_has_alpha</link>     (<link linkend="GimpColorButton">GimpColorButton</link> *button);
+<link linkend="void">void</link>        <link linkend="gimp-color-button-set-type">gimp_color_button_set_type</link>      (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title>Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBin">GtkBin</link>
+                           +----<link linkend="GtkButton">GtkButton</link>
+                                 +----<link linkend="GimpButton">GimpButton</link>
+                                       +----GimpColorButton
+</synopsis>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Implemented Interfaces</title>
+<para>
+GimpColorButton implements
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Signal Prototypes</title>
+<synopsis>
+
+&quot;<link linkend="GimpColorButton-color-changed">color-changed</link>&quot;
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpColorButton">GimpColorButton</link> *gimpcolorbutton,
+                                            <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsect1>
+
+
+<refsect1>
+<title>Description</title>
+<para>
+This widget provides a simple button with a preview showing the
+color.
+</para>
+<para>
+On click a GtkColorSelectionDialog is opened. Additionally the button
+supports Drag and Drop and has a right-click menu that allows to choose
+the color from the current FG or BG color. If the user changes the 
+color, the "color_changed" signal is emitted.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpColorButton-struct"/>struct GimpColorButton</title>
+<indexterm><primary>GimpColorButton</primary></indexterm><programlisting>struct GimpColorButton;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-new"/>gimp_color_button_new ()</title>
+<indexterm><primary>gimp_color_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_button_new           (const <link linkend="gchar">gchar</link> *title,
+                                             <link linkend="gint">gint</link> width,
+                                             <link linkend="gint">gint</link> height,
+                                             const <link linkend="GimpRGB">GimpRGB</link> *color,
+                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);</programlisting>
+<para>
+Creates a new <link linkend="GimpColorButton"><type>GimpColorButton</type></link> widget.
+</para>
+<para>
+This returns a button with a preview showing the color.
+When the button is clicked a GtkColorSelectionDialog is opened.
+If the user changes the color the new color is written into the
+array that was used to pass the initial color and the "color_changed"
+signal is emitted.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>title</parameter>&nbsp;:</term>
+<listitem><simpara> String that will be used as title for the color_selector.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>width</parameter>&nbsp;:</term>
+<listitem><simpara> Width of the colorpreview in pixels.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>height</parameter>&nbsp;:</term>
+<listitem><simpara> Height of the colorpreview in pixels.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<listitem><simpara> A pointer to a <link linkend="GimpRGB"><type>GimpRGB</type></link> color.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> Pointer to the new <link linkend="GimpColorButton"><type>GimpColorButton</type></link> widget.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-set-color"/>gimp_color_button_set_color ()</title>
+<indexterm><primary>gimp_color_button_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_set_color     (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<para>
+Sets the <parameter>button</parameter> to the given <parameter>color</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpColorButton"><type>GimpColorButton</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to the new <link linkend="GimpRGB"><type>GimpRGB</type></link> color.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-get-color"/>gimp_color_button_get_color ()</title>
+<indexterm><primary>gimp_color_button_get_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_get_color     (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<para>
+Retrieves the currently set color from the <parameter>button</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpColorButton"><type>GimpColorButton</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpRGB"><type>GimpRGB</type></link> struct used to return the color.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-set-update"/>gimp_color_button_set_update ()</title>
+<indexterm><primary>gimp_color_button_set_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_set_update    (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             <link linkend="gboolean">gboolean</link> continuous);</programlisting>
+<para>
+When set to <link linkend="TRUE-CAPS"><type>TRUE</type></link>, the <parameter>button</parameter> will emit the "color_changed"
+continuously while the color is changed in the color selection
+dialog.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara>     A <link linkend="GimpColorButton"><type>GimpColorButton</type></link> widget.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>continuous</parameter>&nbsp;:</term>
+<listitem><simpara> The new setting of the <parameter>continuous_update</parameter> property.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-get-update"/>gimp_color_button_get_update ()</title>
+<indexterm><primary>gimp_color_button_get_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_button_get_update    (<link linkend="GimpColorButton">GimpColorButton</link> *button);</programlisting>
+<para>
+Returns the color button's <parameter>continuous_update</parameter> property.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> A <link linkend="GimpColorButton"><type>GimpColorButton</type></link> widget.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the <parameter>continuous_update</parameter> property.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-has-alpha"/>gimp_color_button_has_alpha ()</title>
+<indexterm><primary>gimp_color_button_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_button_has_alpha     (<link linkend="GimpColorButton">GimpColorButton</link> *button);</programlisting>
+<para>
+Checks whether the <parameter>buttons</parameter> shows transparency information.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpColorButton"><type>GimpColorButton</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if the <parameter>button</parameter> shows transparency information, <literal>FALSE</literal>
+otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-button-set-type"/>gimp_color_button_set_type ()</title>
+<indexterm><primary>gimp_color_button_set_type</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_button_set_type      (<link linkend="GimpColorButton">GimpColorButton</link> *button,
+                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);</programlisting>
+<para>
+Sets the <parameter>button</parameter> to the given <parameter>type</parameter>. See also <link linkend="gimp-color-area-set-type"><function>gimp_color_area_set_type()</function></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpColorButton"><type>GimpColorButton</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> the new <link linkend="GimpColorAreaType"><type>GimpColorAreaType</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+<refsect1>
+<title>Signals</title>
+<refsect2><title><anchor id="GimpColorButton-color-changed"/>The &quot;color-changed&quot; signal</title>
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorButton">GimpColorButton</link> *gimpcolorbutton,
+                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gimpcolorbutton</parameter>&nbsp;:</term>
+<listitem><simpara>the object which received the signal.
+
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+<refsect1>
+<title>See Also</title>
+<para>
+<link linkend="libgimpcolor-gimpcolorspace"><type>libgimpcolor-gimpcolorspace</type></link>
+</para>
+</refsect1>
+
+</refentry>

@@ -1,0 +1,682 @@
+# The GIMP -- an image manipulation program
+# Copyright (C) 1995 Spencer Kimball and Peter Mattis
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+# "Perlized" from C source by Manish Singh <yosh@gimp.org>
+
+sub proc_name_arg () {{
+    name  => 'procedure',
+    type  => 'string',
+    desc  => 'The procedure name',
+    alias => 'proc_name'
+}}
+
+sub data_ident_arg () {{
+    name => 'identifier',
+    type => 'string',
+    desc => 'The identifier associated with data'
+}}
+
+sub data_bytes_arg () {{
+    name => 'bytes',
+    type => '0 < int32',
+    desc => 'The number of bytes in the data',
+}}
+
+sub data_arg () {{
+    name  => 'data',
+    type  => 'int8array',
+    desc  => 'A byte array containing data',
+    array => &data_bytes_arg
+}}
+
+sub arg_info_proc {
+    my ($type, $long_type, $real_type) = @_;
+
+    $blurb = <<BLURB;
+Queries the procedural database for information on the specified procedure's
+$long_type.
+BLURB
+
+    $help = <<HELP;
+This procedure returns information on the specified procedure's $long_type. The
+$long_type type, name, and a description are retrieved.
+HELP
+
+    &std_pdb_misc;
+    $date = '1997';
+
+    @inargs = (
+	&proc_name_arg,
+	{ name => "${type}_num", type => 'int32',
+	  desc => "The $long_type number" }
+    );
+
+    @outargs = (
+	{ name => "${type}_type", type => 'enum GimpPDBArgType (no GIMP_PDB_END)',
+	  desc => "The type of $long_type { %%desc%% }", void_ret => 1,
+	  alias => "${type}->arg_type", no_declare => 1 },
+	{ name => "${type}_name", type => 'string',
+	  desc => "The name of the $long_type",
+	  alias => "g_strdup (${type}->name)", no_declare => 1 },
+	{ name => "${type}_desc", type => 'string',
+	  desc => "A description of the $long_type",
+	  alias => "g_strdup (${type}->description)", no_declare => 1 }
+    );
+
+   %invoke = (
+	vars => [ 'ProcRecord *proc', "ProcArg *$type = NULL" ],
+	code => <<CODE
+{
+  proc = procedural_db_lookup (gimp, proc_name);
+
+  if (! proc)
+    {
+      const gchar *compat_name;
+
+      compat_name = g_hash_table_lookup (gimp->procedural_compat_ht, proc_name);
+
+      if (compat_name)
+        proc = procedural_db_lookup (gimp, compat_name);
+    }
+
+  if (proc && (${type}_num >= 0 && ${type}_num < proc->num_$real_type))
+    $type = \&proc->${real_type}\[${type}_num];
+  else
+    success = FALSE;
+}
+CODE
+   );
+}
+
+# The defs
+
+sub procedural_db_temp_name {
+    $blurb = 'Generates a unique temporary PDB name.';
+
+    $help = <<'HELP';
+This procedure generates a temporary PDB entry name that is guaranteed to be
+unique. It is many used by the interactive popup dialogs to generate a PDB
+entry name.
+HELP
+
+    $author = $copyright = 'Andy Thomas';
+    $date = '1998';
+
+    @outargs = (
+	{ name => 'temp_name', type => 'string',
+	  desc => 'A unique temporary name for a temporary PDB entry' }
+    );
+
+    %invoke = (
+	vars => [ 'static gint proc_number = 0' ],
+	code => <<'CODE'
+temp_name = g_strdup_printf ("temp_procedure_number_%d", proc_number++);
+CODE
+    );
+}
+
+sub procedural_db_dump {
+    $blurb = 'Dumps the current contents of the procedural database';
+
+    $help = <<'HELP';
+This procedure dumps the contents of the procedural database to the specified
+file. The file will contain all of the information provided for each registered
+procedure. This file is in a format appropriate for use with the supplied
+"pdb_self_doc.el" Elisp script, which generates a texinfo document.
+HELP
+
+    &std_pdb_misc;
+    $author = 'Spencer Kimball & Josh MacDonald';
+    $copyright = $author . ' & Peter Mattis';
+
+    @inargs = (
+	{ name => 'filename', type => 'string', no_validate => 1,
+	  desc => 'The dump filename' }
+    );
+
+    %invoke = (
+	headers => [ qw(<stdio.h> "core/gimp.h") ],
+        vars => [ "FILE *file" ],
+	code => <<'CODE'
+{
+  if ((file = fopen (filename, "w")))
+    {
+      g_hash_table_foreach (gimp->procedural_ht,
+                            procedural_db_print_entry, file);
+      fclose (file);
+    }
+  else
+    success = FALSE;
+}
+CODE
+    );
+}
+
+sub procedural_db_query {
+    $blurb = <<'BLURB';
+Queries the procedural database for its contents using regular expression
+matching.
+BLURB
+
+    $help = <<'HELP';
+This procedure queries the contents of the procedural database. It is supplied
+with seven arguments matching procedures on { name, blurb, help, author,
+copyright, date, procedure type}. This is accomplished using regular expression
+matching. For instance, to find all procedures with "jpeg" listed in the blurb,
+all seven arguments can be supplied as ".*", except for the second, which can
+be supplied as ".*jpeg.*". There are two return arguments for this procedure.
+The first is the number of procedures matching the query. The second is a
+concatenated list of procedure names corresponding to those matching the query.
+If no matching entries are found, then the returned string is NULL and the
+number of entries is 0.
+HELP
+
+    &std_pdb_misc;
+
+    my $regcomp = ""; my $free = ""; $once = 0;
+    foreach (qw(name blurb help author copyright date proc_type)) {
+	push @inargs, { name => $_, type => 'string', no_validate => 1,
+			desc => "The regex for procedure $_" };
+
+	$regcomp .= ' ' x 2 if $once;
+	$regcomp .= "regcomp (&pdb_query.${_}_regex, $_, 0);\n";
+
+	$free .= ' ' x 2 if $once++;
+	$free .= "regfree (&pdb_query.${_}_regex);\n";
+    }
+    chop $free;
+
+    $inargs[$#inargs]->{desc} =~
+	s <proc_type$>
+	  <type: { 'Internal GIMP procedure', 'GIMP Plug-in',
+		   'GIMP Extension' }>;
+
+    @outargs = (
+	{ name  => 'procedure_names', type  => 'stringarray', void_ret => 1,
+	  desc  => 'The list of procedure names',
+	  alias => 'pdb_query.list_of_procs', no_declare => 1,
+	  array => { name  => 'num_matches',
+		     desc  => 'The number of matching procedures',
+		     alias => 'pdb_query.num_procs', no_declare => 1 }
+	}
+    );
+
+    %invoke = (
+	headers => [ qw(<stdlib.h> "regexrepl/regex.h") ],
+	vars => [ 'PDBQuery pdb_query' ],
+	code => <<CODE
+{
+  $regcomp
+  pdb_query.gimp            = gimp;
+  pdb_query.list_of_procs   = NULL;
+  pdb_query.num_procs       = 0;
+  pdb_query.querying_compat = FALSE;
+
+  g_hash_table_foreach (gimp->procedural_ht,
+                        procedural_db_query_entry, \&pdb_query);
+
+  pdb_query.querying_compat = TRUE;
+
+  g_hash_table_foreach (gimp->procedural_compat_ht,
+                        procedural_db_query_entry, \&pdb_query);
+
+  $free
+}
+CODE
+    );
+}
+
+sub procedural_db_proc_info {
+    $blurb = <<'BLURB';
+Queries the procedural database for information on the specified procedure.
+BLURB
+
+    $help = <<'HELP';
+This procedure returns information on the specified procedure. A short blurb,
+detailed help, author(s), copyright information, procedure type, number of
+input, and number of return values are returned. For specific information on
+each input argument and return value, use the
+'gimp_procedural_db_proc_arg' and
+'gimp_procedural_db_proc_val' procedures.
+HELP
+
+    &std_pdb_misc;
+    $date = '1997';
+
+    @inargs = ( &proc_name_arg );
+
+    @outargs = (
+	{ name => 'blurb', type => 'string', void_ret => 1, wrap => 1,
+	  desc => 'A short blurb' },
+	{ name => 'help', type => 'string',
+	  desc => 'Detailed procedure help' },
+	{ name => 'author', type => 'string',
+	  desc => 'Author(s) of the procedure' },
+	{ name => 'copyright', type => 'string',
+	  desc => 'The copyright' },
+	{ name => 'date', type => 'string',
+	  desc => 'Copyright date' },
+        { name => 'proc_type', type => 'enum GimpPDBProcType',
+	  desc => 'The procedure type: { %%desc%% }' },
+        { name => 'num_args', type => 'int32',
+	  desc => 'The number of input arguments' },
+        { name => 'num_values', type => 'int32',
+	  desc => 'The number of return values' }
+    );
+
+    foreach (@outargs) {
+        if ($_->{type} eq 'string') {
+            $_->{alias} = "strings.compat ? strings.$_->{name} : g_strdup (strings.$_->{name})";
+        } else {
+            $_->{alias} = "proc->$_->{name}";
+        }
+
+	$_->{no_declare} = 1;
+    }
+
+    %invoke = (
+	vars => [ 'PDBStrings strings', 'ProcRecord *proc = NULL' ],
+	code => <<'CODE'
+{
+  proc = procedural_db_lookup (gimp, proc_name);
+
+  if (proc)
+    {
+      get_pdb_strings (&strings, proc, FALSE);
+    }
+  else
+    {
+      const gchar *compat_name;
+
+      compat_name = g_hash_table_lookup (gimp->procedural_compat_ht, proc_name);
+
+      if (compat_name)
+        {
+          proc = procedural_db_lookup (gimp, compat_name);
+
+          if (proc)
+            get_pdb_strings (&strings, proc, TRUE);
+        }
+    }
+
+  success = (proc != NULL);
+}
+CODE
+    );
+}
+
+sub procedural_db_proc_arg {
+    &arg_info_proc('arg', 'argument', 'args');
+}
+
+sub procedural_db_proc_val {
+    &arg_info_proc('val', 'return value', 'values');
+}
+
+sub procedural_db_get_data {
+    $alias{lib} = 'get_data';
+
+    $blurb = 'Returns data associated with the specified identifier.';
+
+    $help = <<'HELP';
+This procedure returns any data which may have been associated with the
+specified identifier. The data is a variable length array of bytes. If no data
+has been associated with the identifier, an error is returned.
+HELP
+
+    &std_pdb_misc;
+    $date = '1997';
+
+    @inargs = ( &data_ident_arg );
+
+    @outargs = ( &data_arg );
+    $outargs[0]->{alias} = 'data_copy';
+    $outargs[0]->{init} = 1;
+    $outargs[0]->{wrap} = 1;
+    $outargs[0]->{void_ret} = 1;
+
+    %invoke = (
+	vars => [ 'const guint8 *data' ],
+	code => <<'CODE'
+{
+  data = procedural_db_get_data (gimp, identifier, &bytes);
+  success = (data != NULL);
+
+  if (success)
+    data_copy = g_memdup (data, bytes);
+}
+CODE
+    );
+}
+
+sub procedural_db_get_data_size {
+    $blurb = 'Returns size of data associated with the specified identifier.';
+
+    $help = <<'HELP';
+This procedure returns the size of any data which may have been associated with
+the specified identifier. If no data has been associated with the identifier,
+an error is returned.
+HELP
+
+    $author = $copyright = 'Nick Lamb';
+    $date = '1998';
+
+    @inargs = ( &data_ident_arg );
+
+    @outargs = ( &data_bytes_arg );
+
+    %invoke = (
+	vars => [ 'const guint8 *data' ],
+	code => <<'CODE'
+{
+  data = procedural_db_get_data (gimp, identifier, &bytes);
+  success = (data != NULL);
+}
+CODE
+    );
+}
+
+sub procedural_db_set_data {
+    $alias{lib} = 'set_data';
+
+    $blurb = 'Associates the specified identifier with the supplied data.';
+
+    $help = <<'HELP';
+This procedure associates the supplied data with the provided identifier. The
+data may be subsequently retrieved by a call to 'procedural-db-get-data'.
+HELP
+
+    &std_pdb_misc;
+    $date = '1997';
+
+    @inargs = ( &data_ident_arg, &data_arg );
+    $inargs[1]->{wrap} = 1;
+    delete @{$inargs[1]->{array}}{qw(alias no_declare)};
+
+    %invoke = (
+	code => 'procedural_db_set_data (gimp, identifier, bytes, data);'
+    );
+}
+
+@headers = qw(<string.h> "gimp-intl.h");
+
+$extra{app}->{decls} = <<'CODE';
+#define COMPAT_BLURB "This procedure is deprecated! Use '%s' instead."
+
+
+/*  Query structure  */
+typedef struct _PDBQuery PDBQuery;
+
+struct _PDBQuery
+{
+  Gimp     *gimp;
+
+  regex_t   name_regex;
+  regex_t   blurb_regex;
+  regex_t   help_regex;
+  regex_t   author_regex;
+  regex_t   copyright_regex;
+  regex_t   date_regex;
+  regex_t   proc_type_regex;
+
+  gchar   **list_of_procs;
+  gint      num_procs;
+  gboolean  querying_compat;
+};
+
+
+typedef struct _PDBStrings PDBStrings;
+
+struct _PDBStrings
+{
+  gboolean  compat;
+
+  gchar    *blurb;
+  gchar    *help;
+  gchar    *author;
+  gchar    *copyright;
+  gchar    *date;
+};
+
+static gchar *proc_type_str[] =
+{
+  N_("Internal GIMP procedure"),
+  N_("GIMP Plug-In"),
+  N_("GIMP Extension"),
+  N_("Temporary Procedure")
+};
+
+static const gchar * const type_str[] =
+{
+CODE
+
+foreach (@{$Gimp::CodeGen::enums::enums{GimpPDBArgType}->{symbols}}) {
+    $extra{app}->{decls} .= qq/  "$_",\n/;
+}
+
+$extra{app}->{decls} =~ s/,\n$/\n};\n/;
+
+$extra{app}->{code} = <<'CODE';
+static int
+match_strings (regex_t     *preg,
+               const gchar *a)
+{
+  if (!a)
+    a = "";
+
+  return regexec (preg, a, 0, NULL, 0);
+}
+
+static void
+get_pdb_strings (PDBStrings *strings,
+                 ProcRecord *proc,
+                 gboolean    compat)
+{
+  strings->compat = compat;
+
+  if (compat)
+    {
+      strings->blurb     = g_strdup_printf (COMPAT_BLURB, proc->name);
+      strings->help      = g_strdup (strings->blurb);
+      strings->author    = NULL;
+      strings->copyright = NULL;
+      strings->date      = NULL;
+    }
+  else
+    {
+      strings->blurb     = proc->blurb;
+      strings->help      = proc->help;
+      strings->author    = proc->author;
+      strings->copyright = proc->copyright;
+      strings->date      = proc->date;
+    }
+}
+
+static void
+procedural_db_query_entry (gpointer key,
+                           gpointer value,
+                           gpointer user_data)
+{
+  PDBQuery    *pdb_query = user_data;
+  GList       *list;
+  ProcRecord  *proc;
+  const gchar *proc_name;
+  PDBStrings   strings;
+
+  proc_name = key;
+
+  if (pdb_query->querying_compat)
+    list = g_hash_table_lookup (pdb_query->gimp->procedural_ht, value);
+  else
+    list = value;
+
+  if (! list)
+    return;
+
+  proc = (ProcRecord *) list->data;
+
+  get_pdb_strings (&strings, proc, pdb_query->querying_compat);
+
+  if (! match_strings (&pdb_query->name_regex,      proc_name)         &&
+      ! match_strings (&pdb_query->blurb_regex,     strings.blurb)     &&
+      ! match_strings (&pdb_query->help_regex,      strings.help)      &&
+      ! match_strings (&pdb_query->author_regex,    strings.author)    &&
+      ! match_strings (&pdb_query->copyright_regex, strings.copyright) &&
+      ! match_strings (&pdb_query->date_regex,      strings.date)      &&
+      ! match_strings (&pdb_query->proc_type_regex,
+                       proc_type_str[(gint) proc->proc_type]))
+    {
+      pdb_query->num_procs++;
+      pdb_query->list_of_procs = g_renew (gchar *, pdb_query->list_of_procs,
+                                          pdb_query->num_procs);
+      pdb_query->list_of_procs[pdb_query->num_procs - 1] = g_strdup (proc_name);
+    }
+
+  if (strings.compat)
+    {
+      g_free (strings.blurb);
+      g_free (strings.help);
+    }
+}
+
+static gboolean
+output_string (FILE        *file,
+               const gchar *string)
+{
+  if (fprintf (file, "\"") < 0)
+    return FALSE;
+
+  if (string)
+    while (*string)
+      {
+        switch (*string)
+          {
+          case '\\' : if (fprintf (file, "\\\\") < 0) return FALSE; break;
+          case '\"' : if (fprintf (file, "\\\"") < 0) return FALSE; break;
+          case '{'  : if (fprintf (file, "@{")   < 0) return FALSE; break;
+          case '@'  : if (fprintf (file, "@@")   < 0) return FALSE; break;
+          case '}'  : if (fprintf (file, "@}")   < 0) return FALSE; break;
+
+          default:
+            if (fprintf (file, "%c", *string) < 0)
+              return FALSE;
+          }
+        string++;
+      }
+
+  if (fprintf (file, "\"\n") < 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static void
+procedural_db_print_entry (gpointer key,
+                           gpointer value,
+                           gpointer user_data)
+{
+  ProcRecord *procedure;
+  GString    *buf;
+  GList      *list;
+  FILE       *file;
+  gint        i;
+  gint        num = 0;
+
+  list = (GList *) value;
+  file = (FILE *) user_data;
+
+  buf = g_string_new ("");
+
+  while (list)
+    {
+      num++;
+      procedure = (ProcRecord*) list->data;
+      list = list->next;
+
+      fprintf (file, "\n(register-procedure ");
+
+      if (list || num != 1)
+        {
+          g_string_printf (buf, "%s <%d>", procedure->name, num);
+          output_string (file, buf->str);
+        }
+      else
+        output_string (file, procedure->name);
+
+      output_string (file, procedure->blurb);
+      output_string (file, procedure->help);
+      output_string (file, procedure->author);
+      output_string (file, procedure->copyright);
+      output_string (file, procedure->date);
+      output_string (file, proc_type_str[(int) procedure->proc_type]);
+
+      fprintf (file, "( ");
+      for (i = 0; i < procedure->num_args; i++)
+        {
+          fprintf (file, "( ");
+
+          output_string (file, procedure->args[i].name );
+          output_string (file, type_str[procedure->args[i].arg_type]);
+          output_string (file, procedure->args[i].description);
+
+          fprintf (file, " ) ");
+        }
+      fprintf (file, " ) ");
+
+      fprintf (file, "( ");
+      for (i = 0; i < procedure->num_values; i++)
+        {
+          fprintf (file, "( ");
+          output_string (file, procedure->values[i].name );
+          output_string (file, type_str[procedure->values[i].arg_type]);
+          output_string (file, procedure->values[i].description);
+
+          fprintf (file, " ) ");
+        }
+      fprintf (file, " ) ");
+      fprintf (file, " ) ");
+    }
+
+  g_string_free (buf, TRUE);
+}
+
+/* This really doesn't belong here, but it depends on our generated type_str
+ * array.
+ */
+const char *
+pdb_type_name (gint type)
+{
+  if (type >= 0 && type <= GIMP_PDB_END)
+    return type_str[type];
+  else
+    return g_strdup_printf ("(PDB type %d unknown)", type);
+   /* Yeah, we leak the memory.  But then you shouldn't try and
+    * get the name of a PDB type that doesn't exist, should you.
+    */
+}
+CODE
+
+@procs = qw(procedural_db_temp_name procedural_db_dump
+            procedural_db_query procedural_db_proc_info
+	    procedural_db_proc_arg procedural_db_proc_val
+	    procedural_db_get_data procedural_db_get_data_size
+	    procedural_db_set_data);
+%exports = (app => [@procs], lib => [@procs]);
+
+$desc = 'Procedural database';
+
+1;

@@ -2,78 +2,117 @@
 ;    Effect courtesy Xach Beane's web page
 
 
-(define (script-fu-starburst-logo text size font burst-color bg-color)
-  (let* ((img (car (gimp-image-new 256 256 RGB)))
-	 (off (* size 0.03))
+(define (apply-starburst-logo-effect img
+				     logo-layer
+				     size
+				     burst-color
+				     bg-color)
+  (let* ((off (* size 0.03))
 	 (count -1)
 	 (feather (* size 0.04))
 	 (border (+ feather off))
-	 (text-layer (car (gimp-text img -1 0 0 text border TRUE size PIXELS "*" font "*" "*" "*" "*")))
-	 (width (car (gimp-drawable-width text-layer)))
-	 (height (car (gimp-drawable-height text-layer)))
+	 (width (car (gimp-drawable-width logo-layer)))
+	 (height (car (gimp-drawable-height logo-layer)))
 	 (burst-coords (cons (* width 0.5) (* height 0.5)))
 	 (burstradius (* (min height width) 0.35))
-	 (bg-layer (car (gimp-layer-new img width height RGB_IMAGE "Background" 100 NORMAL)))
-	 (shadow-layer (car (gimp-layer-new img width height RGBA_IMAGE "Shadow" 100 NORMAL)))
-	 (burst-layer (car (gimp-layer-new img width height RGBA_IMAGE "Burst" 100 NORMAL)))
-	 (layer-mask (car (gimp-layer-create-mask burst-layer BLACK-MASK)))
-	 (old-pattern (car (gimp-patterns-get-pattern)))
-	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background))))
+	 (bg-layer (car (gimp-layer-new img width height RGB-IMAGE "Background" 100 NORMAL-MODE)))
+	 (shadow-layer (car (gimp-layer-new img width height RGBA-IMAGE "Shadow" 100 NORMAL-MODE)))
+	 (burst-layer (car (gimp-layer-new img width height RGBA-IMAGE "Burst" 100 NORMAL-MODE)))
+	 (layer-mask (car (gimp-layer-create-mask burst-layer ADD-BLACK-MASK))))
 
-    (gimp-image-disable-undo img)
-    (gimp-image-resize img width height 0 0)
+    (gimp-context-push)
+
+    (gimp-selection-none img)
+    (script-fu-util-image-resize-from-layer img logo-layer)
     (gimp-image-add-layer img bg-layer 1)
     (gimp-image-add-layer img shadow-layer 1)
     (gimp-image-add-layer img burst-layer 0)
-    (gimp-image-add-layer-mask img burst-layer layer-mask)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
+    (gimp-layer-add-mask burst-layer layer-mask)
+    (gimp-layer-set-preserve-trans logo-layer TRUE)
 
-    (gimp-palette-set-background bg-color)
-    (gimp-edit-fill img bg-layer)
-    (gimp-edit-clear img shadow-layer)
-    (gimp-edit-clear img burst-layer)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
+    (gimp-edit-clear shadow-layer)
+    (gimp-edit-clear burst-layer)
 
     (gimp-selection-all img)
-    (gimp-patterns-set-pattern "Crack")
-    (gimp-bucket-fill img text-layer PATTERN-BUCKET-FILL NORMAL 100 0 FALSE 0 0)
+    (gimp-context-set-pattern "Crack")
+    (gimp-edit-bucket-fill logo-layer PATTERN-BUCKET-FILL NORMAL-MODE 100 0 FALSE 0 0)
     (gimp-selection-none img)
 
-    (gimp-selection-layer-alpha img text-layer)
+    (gimp-selection-layer-alpha logo-layer)
 
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill img layer-mask)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill layer-mask BACKGROUND-FILL)
     (gimp-selection-none img)
     (plug-in-nova 1 img burst-layer (car burst-coords) (cdr burst-coords)
-		  burst-color burstradius 100)
+		  burst-color burstradius 100 0)
 
-    (gimp-selection-layer-alpha img text-layer)
-    (gimp-palette-set-background '(0 0 0))
+    (gimp-selection-layer-alpha logo-layer)
+    (gimp-context-set-background '(0 0 0))
     (gimp-selection-feather img feather)
     (gimp-selection-translate img -1 -1)
     (while (< count off)
-	   (gimp-edit-fill img shadow-layer)
+	   (gimp-edit-fill shadow-layer BACKGROUND-FILL)
 	   (gimp-selection-translate img 1 1)
 	   (set! count (+ count 1)))
     (gimp-selection-none img)
 
-    (gimp-layer-set-name text-layer text)
-    (gimp-patterns-set-pattern old-pattern)
-    (gimp-palette-set-background old-bg)
-    (gimp-palette-set-foreground old-fg)
-    (gimp-image-enable-undo img)
+    (gimp-context-pop)))
+
+
+(define (script-fu-starburst-logo-alpha img
+					logo-layer
+					size
+					burst-color
+					bg-color)
+  (begin
+    (gimp-image-undo-group-start img)
+    (apply-starburst-logo-effect img logo-layer size burst-color bg-color)
+    (gimp-image-undo-group-end img)
+    (gimp-displays-flush)))
+
+(script-fu-register "script-fu-starburst-logo-alpha"
+		    _"Starb_urst..."
+		    "Starburst as inspired by GIMP News"
+		    "Spencer Kimball & Xach Beane"
+		    "Spencer Kimball & Xach Beane"
+		    "1997"
+		    "RGBA"
+                    SF-IMAGE       "Image"            0
+                    SF-DRAWABLE    "Drawable"         0
+		    SF-ADJUSTMENT _"Effect size (pixels * 30)" '(150 0 512 1 10 0 1)
+		    SF-COLOR      _"Burst color"      '(60 196 33)
+		    SF-COLOR      _"Background color" '(255 255 255))
+
+(script-fu-menu-register "script-fu-starburst-logo-alpha"
+			 _"<Image>/Script-Fu/Alpha to Logo")
+
+
+(define (script-fu-starburst-logo text size fontname burst-color bg-color)
+  (let* ((img (car (gimp-image-new 256 256 RGB)))
+	 (off (* size 0.03))
+	 (feather (* size 0.04))
+	 (border (+ feather off))
+	 (text-layer (car (gimp-text-fontname img -1 0 0 text border TRUE size PIXELS fontname))))
+    (gimp-image-undo-disable img)
+    (gimp-drawable-set-name text-layer text)
+    (apply-starburst-logo-effect img text-layer size burst-color bg-color)
+    (gimp-image-undo-enable img)
     (gimp-display-new img)))
 
-
 (script-fu-register "script-fu-starburst-logo"
-		    "<Toolbox>/Xtns/Script-Fu/Logos/Starburst"
+		    _"Starb_urst..."
 		    "Starburst as inspired by GIMP News"
 		    "Spencer Kimball & Xach Beane"
 		    "Spencer Kimball & Xach Beane"
 		    "1997"
 		    ""
-		    SF-VALUE "Text String" "\"GIMP\""
-		    SF-VALUE "Font Size (in pixels)" "150"
-		    SF-VALUE "Font" "\"Blippo\""
-		    SF-COLOR "Burst Color" '(60 196 33)
-		    SF-COLOR "BG Color" '(255 255 255))
+		    SF-STRING     _"Text"               "GIMP"
+		    SF-ADJUSTMENT _"Font size (pixels)" '(150 0 512 1 10 0 1)
+		    SF-FONT       _"Font"               "Blippo"
+		    SF-COLOR      _"Burst color"        '(60 196 33)
+		    SF-COLOR      _"Background color"   '(255 255 255))
+
+(script-fu-menu-register "script-fu-starburst-logo"
+			 _"<Toolbox>/Xtns/Script-Fu/Logos")

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="GimpChainButton">
+<refmeta>
+<refentrytitle>GimpChainButton</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>GimpChainButton</refname><refpurpose>Widget to visually connect two entry widgets.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+
+<synopsis>
+
+
+
+struct      <link linkend="GimpChainButton-struct">GimpChainButton</link>;
+enum        <link linkend="GimpChainPosition">GimpChainPosition</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-chain-button-new">gimp_chain_button_new</link>           (<link linkend="GimpChainPosition">GimpChainPosition</link> position);
+<link linkend="void">void</link>        <link linkend="gimp-chain-button-set-active">gimp_chain_button_set_active</link>    (<link linkend="GimpChainButton">GimpChainButton</link> *button,
+                                             <link linkend="gboolean">gboolean</link> active);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-chain-button-get-active">gimp_chain_button_get_active</link>    (<link linkend="GimpChainButton">GimpChainButton</link> *button);
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title>Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkTable">GtkTable</link>
+                           +----GimpChainButton
+</synopsis>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Implemented Interfaces</title>
+<para>
+GimpChainButton implements
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Signal Prototypes</title>
+<synopsis>
+
+&quot;<link linkend="GimpChainButton-toggled">toggled</link>&quot;   <link linkend="void">void</link>        user_function      (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
+                                            <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsect1>
+
+
+<refsect1>
+<title>Description</title>
+<para>
+This widget provides a button showing either a linked or a broken
+chain that can be used to link two entries, spinbuttons, colors
+or other GUI elements and show that they may be locked. Use it for
+example to connect X and Y ratios to provide the possibility of a 
+constrained aspect ratio.
+</para>
+<para>
+The <link linkend="GimpChainButton"><type>GimpChainButton</type></link> only gives visual feedback, it does not really 
+connect widgets. You have to take care of locking the values yourself 
+by checking the state of the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> whenever a value changes 
+in one of the connected widgets and adjusting the other value if 
+necessary.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="GimpChainButton-struct"/>struct GimpChainButton</title>
+<indexterm><primary>GimpChainButton</primary></indexterm><programlisting>struct GimpChainButton;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpChainPosition"/>enum GimpChainPosition</title>
+<indexterm><primary>GimpChainPosition</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_CHAIN_TOP,
+  GIMP_CHAIN_LEFT,
+  GIMP_CHAIN_BOTTOM,
+  GIMP_CHAIN_RIGHT
+} GimpChainPosition;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-chain-button-new"/>gimp_chain_button_new ()</title>
+<indexterm><primary>gimp_chain_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_chain_button_new           (<link linkend="GimpChainPosition">GimpChainPosition</link> position);</programlisting>
+<para>
+Creates a new <link linkend="GimpChainButton"><type>GimpChainButton</type></link> widget.
+</para>
+<para>
+This returns a button showing either a broken or a linked chain and
+small clamps attached to both sides that visually group the two widgets
+you want to connect. This widget looks best when attached
+to a table taking up two columns (or rows respectively) next
+to the widgets that it is supposed to connect. It may work
+for more than two widgets, but the look is optimized for two.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>position</parameter>&nbsp;:</term>
+<listitem><simpara> The position you are going to use for the button
+           with respect to the widgets you want to chain.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> Pointer to the new <link linkend="GimpChainButton"><type>GimpChainButton</type></link>, which is inactive
+         by default. Use <link linkend="gimp-chain-button-set-active"><function>gimp_chain_button_set_active()</function></link> to
+         change its state.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-chain-button-set-active"/>gimp_chain_button_set_active ()</title>
+<indexterm><primary>gimp_chain_button_set_active</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_chain_button_set_active    (<link linkend="GimpChainButton">GimpChainButton</link> *button,
+                                             <link linkend="gboolean">gboolean</link> active);</programlisting>
+<para>
+Sets the state of the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> to be either locked (<literal>TRUE</literal>) or
+unlocked (<literal>FALSE</literal>) and changes the showed pixmap to reflect the new state.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpChainButton"><type>GimpChainButton</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>active</parameter>&nbsp;:</term>
+<listitem><simpara> The new state.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-chain-button-get-active"/>gimp_chain_button_get_active ()</title>
+<indexterm><primary>gimp_chain_button_get_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_chain_button_get_active    (<link linkend="GimpChainButton">GimpChainButton</link> *button);</programlisting>
+<para>
+Checks the state of the <link linkend="GimpChainButton"><type>GimpChainButton</type></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<listitem><simpara> Pointer to a <link linkend="GimpChainButton"><type>GimpChainButton</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> is active (locked).
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+<refsect1>
+<title>Signals</title>
+<refsect2><title><anchor id="GimpChainButton-toggled"/>The &quot;toggled&quot; signal</title>
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
+                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gimpchainbutton</parameter>&nbsp;:</term>
+<listitem><simpara>the object which received the signal.
+
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+<refsect1>
+<title>See Also</title>
+<para>
+You may want to use the convenience function <link linkend="gimp-coordinates-new"><function>gimp_coordinates_new()</function></link> to set 
+up two GimpSizeEntries (see <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>) linked with a <link linkend="GimpChainButton"><type>GimpChainButton</type></link>.
+</para>
+</refsect1>
+
+</refentry>

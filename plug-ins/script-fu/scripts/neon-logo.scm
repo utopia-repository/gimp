@@ -27,6 +27,14 @@
     (set-pt a 2 255 255)
     a))
 
+(define (neon-spline4)
+  (let* ((a (cons-array 8 'byte)))
+    (set-pt a 0 0 0)
+    (set-pt a 1 64 64)
+    (set-pt a 2 127 192)
+    (set-pt a 3 255 255)
+    a))
+
 (define (find-hue-offset color)
   (let* ((R (car color))
 	 (G (cadr color))
@@ -35,7 +43,7 @@
 	 (min-val (min R G B))
 	 (delta (- max-val min-val))
 	 (hue 0))
-    (if (= max 0) 0
+    (if (= delta 0) 0
 	(begin
 	  (cond ((= max-val R) (set! hue (/ (- G B) (* 1.0 delta))))
 		((= max-val G) (set! hue (+ 2 (/ (- B R) (* 1.0 delta)))))
@@ -46,10 +54,13 @@
 	  (if (> hue 180) (set! hue (- hue 360)))
 	  hue))))
 
-(define (script-fu-neon-logo text size font bg-color glow-color shadow)
-  (let* ((img (car (gimp-image-new 256 256 RGB)))
-	 (tube-hue (find-hue-offset glow-color))
-	 (border (/ size 4))
+(define (apply-neon-logo-effect img
+				tube-layer
+				size
+				bg-color
+				glow-color
+				shadow)
+  (let* ((tube-hue (find-hue-offset glow-color))
 	 (shrink (/ size 14))
 	 (grow (/ size 40))
 	 (feather (/ size 5))
@@ -60,107 +71,156 @@
 	 (shadow-feather (/ size 20))
 	 (shadow-offx (/ size 10))
 	 (shadow-offy (/ size 10))
-	 (tube-layer (car (gimp-text img -1 0 0 text border TRUE size PIXELS "*" font "*" "*" "*" "*")))
 	 (width (car (gimp-drawable-width tube-layer)))
 	 (height (car (gimp-drawable-height tube-layer)))
-	 (glow-layer (car (gimp-layer-new img width height RGBA_IMAGE "Neon Glow" 100 NORMAL)))
-	 (bg-layer (car (gimp-layer-new img width height RGB_IMAGE "Background" 100 NORMAL)))
+	 (glow-layer (car (gimp-layer-new img width height RGBA-IMAGE "Neon Glow" 100 NORMAL-MODE)))
+	 (bg-layer (car (gimp-layer-new img width height RGB-IMAGE "Background" 100 NORMAL-MODE)))
 	 (shadow-layer (if (= shadow TRUE)
-			   (car (gimp-layer-new img width height RGBA_IMAGE "Shadow" 100 NORMAL))
+			   (car (gimp-layer-new img width height RGBA-IMAGE "Shadow" 100 NORMAL-MODE))
 			   0))
-	 (selection 0)
-	 (old-fg (car (gimp-palette-get-foreground)))
-	 (old-bg (car (gimp-palette-get-background))))
-    (gimp-image-disable-undo img)
-    (gimp-image-resize img width height 0 0)
+	 (selection 0))
+
+    (gimp-context-push)
+
+    (script-fu-util-image-resize-from-layer img tube-layer)
     (gimp-image-add-layer img bg-layer 1)
     (if (not (= shadow 0))
 	(begin
 	  (gimp-image-add-layer img shadow-layer 1)
-	  (gimp-edit-clear img shadow-layer)))
+	  (gimp-edit-clear shadow-layer)))
     (gimp-image-add-layer img glow-layer 1)
 
-    (gimp-palette-set-background '(0 0 0))
-    (gimp-selection-layer-alpha img tube-layer)
+    (gimp-context-set-background '(0 0 0))
+    (gimp-selection-layer-alpha tube-layer)
     (set! selection (car (gimp-selection-save img)))
     (gimp-selection-none img)
 
-    (gimp-edit-clear img glow-layer)
-    (gimp-edit-fill img tube-layer)
+    (gimp-edit-clear glow-layer)
+    (gimp-edit-clear tube-layer)
 
-    (gimp-palette-set-background bg-color)
-    (gimp-edit-fill img bg-layer)
+    (gimp-context-set-background bg-color)
+    (gimp-edit-fill bg-layer BACKGROUND-FILL)
 
-    (gimp-selection-load img selection)
-    (gimp-palette-set-background '(255 255 255))
-    (gimp-edit-fill img tube-layer)
+    (gimp-selection-load selection)
+    (gimp-context-set-background '(255 255 255))
+    (gimp-edit-fill tube-layer BACKGROUND-FILL)
     (gimp-selection-shrink img shrink)
-    (gimp-palette-set-background '(0 0 0))
-    (gimp-edit-fill img selection)
-    (gimp-edit-fill img tube-layer)
+    (gimp-context-set-background '(0 0 0))
+    (gimp-edit-fill selection BACKGROUND-FILL)
+    (gimp-edit-clear tube-layer)
 
     (gimp-selection-none img)
     (if (not (= feather1 0)) (plug-in-gauss-rle 1 img tube-layer feather1 TRUE TRUE))
-    (gimp-selection-load img selection)
+    (gimp-selection-load selection)
     (if (not (= feather2 0)) (plug-in-gauss-rle 1 img tube-layer feather2 TRUE TRUE))
 
-    (gimp-brightness-contrast img tube-layer -10 15)
-    (gimp-selection-none img)
-    (gimp-hue-saturation img tube-layer 0 tube-hue -15 70)
-
-    (gimp-selection-load img selection)
     (gimp-selection-feather img inc-shrink)
     (gimp-selection-shrink img inc-shrink)
-    (gimp-curves-spline img tube-layer 0 6 (neon-spline1))
+    (gimp-curves-spline tube-layer 4 6 (neon-spline1))
 
-    (gimp-selection-load img selection)
+    (gimp-selection-load selection)
     (gimp-selection-feather img inc-shrink)
     (gimp-selection-shrink img (* inc-shrink 2))
-    (gimp-curves-spline img tube-layer 0 6 (neon-spline2))
+    (gimp-curves-spline tube-layer 4 6 (neon-spline2))
 
-    (gimp-selection-load img selection)
+    (gimp-selection-load selection)
     (gimp-selection-feather img inc-shrink)
     (gimp-selection-shrink img (* inc-shrink 3))
-    (gimp-curves-spline img tube-layer 0 6 (neon-spline3))
+    (gimp-curves-spline tube-layer 4 6 (neon-spline3))
 
-    (gimp-selection-load img selection)
+    (gimp-layer-set-preserve-trans tube-layer 1)
+    (gimp-selection-layer-alpha tube-layer)
+    (gimp-selection-invert img)
+    (gimp-context-set-background glow-color)
+    (gimp-edit-fill tube-layer BACKGROUND-FILL)
+
+    (gimp-selection-none img)
+    (gimp-layer-set-preserve-trans tube-layer 0)
+    (gimp-curves-spline tube-layer 4 8 (neon-spline4))
+
+    (gimp-selection-load selection)
     (gimp-selection-grow img grow)
     (gimp-selection-invert img)
-    (gimp-edit-clear img tube-layer)
+    (gimp-edit-clear tube-layer)
     (gimp-selection-invert img)
 
     (gimp-selection-feather img feather)
-    (gimp-palette-set-background glow-color)
-    (gimp-edit-fill img glow-layer)
+    (gimp-edit-fill glow-layer BACKGROUND-FILL)
 
     (if (not (= shadow 0))
 	(begin
-	  (gimp-selection-layer-alpha img tube-layer)
+          (gimp-selection-load selection)
+          (gimp-selection-grow img grow)
 	  (gimp-selection-shrink img shadow-shrink)
 	  (gimp-selection-feather img shadow-feather)
 	  (gimp-selection-translate img shadow-offx shadow-offy)
-	  (gimp-palette-set-background '(0 0 0))
-	  (gimp-edit-fill img shadow-layer)))
+	  (gimp-context-set-background '(0 0 0))
+	  (gimp-edit-fill shadow-layer BACKGROUND-FILL)))
     (gimp-selection-none img)
 
-    (gimp-layer-set-name tube-layer "Neon Tubes")
-    (gimp-palette-set-background old-bg)
-    (gimp-palette-set-foreground old-fg)
+    (gimp-drawable-set-name tube-layer "Neon Tubes")
     (gimp-image-remove-channel img selection)
-    (gimp-image-enable-undo img)
+
+    (gimp-context-pop)))
+
+(define (script-fu-neon-logo-alpha img
+				   tube-layer
+				   size
+				   bg-color
+				   glow-color
+				   shadow)
+  (begin
+    (gimp-image-undo-group-start img)
+    (apply-neon-logo-effect img tube-layer size bg-color glow-color shadow)
+    (gimp-image-undo-group-end img)
+    (gimp-displays-flush)))
+
+(script-fu-register "script-fu-neon-logo-alpha"
+		    _"N_eon..."
+		    "Neon logos"
+		    "Spencer Kimball"
+		    "Spencer Kimball"
+		    "1997"
+		    "RGBA"
+                    SF-IMAGE      "Image"             0
+                    SF-DRAWABLE   "Drawable"          0
+		    SF-ADJUSTMENT _"Effect size (pixels * 5)" '(150 2 1000 1 10 0 1)
+		    SF-COLOR      _"Background color" '(0 0 0)
+		    SF-COLOR      _"Glow color"       '(38 211 255)
+		    SF-TOGGLE     _"Create shadow"    FALSE)
+
+(script-fu-menu-register "script-fu-neon-logo-alpha"
+			 _"<Image>/Script-Fu/Alpha to Logo")
+
+
+(define (script-fu-neon-logo text
+			     size
+			     font
+			     bg-color
+			     glow-color
+			     shadow)
+  (let* ((img (car (gimp-image-new 256 256 RGB)))
+	 (border (/ size 4))
+	 (tube-layer (car (gimp-text-fontname img -1 0 0 text border TRUE size PIXELS font))))
+    (gimp-image-undo-disable img)
+    (gimp-drawable-set-name tube-layer text)
+    (apply-neon-logo-effect img tube-layer size bg-color glow-color shadow)
+    (gimp-image-undo-enable img)
     (gimp-display-new img)))
 
-
 (script-fu-register "script-fu-neon-logo"
-		    "<Toolbox>/Xtns/Script-Fu/Logos/Neon"
+		    _"N_eon..."
 		    "Neon logos"
 		    "Spencer Kimball"
 		    "Spencer Kimball"
 		    "1997"
 		    ""
-		    SF-VALUE "Text String" "\"NEON\""
-		    SF-VALUE "Font Size (in pixels)" "150"
-		    SF-VALUE "Font" "\"Blippo\""
-		    SF-COLOR "Background Color" '(0 0 0)
-		    SF-COLOR "Glow Color" '(38 211 255)
-		    SF-TOGGLE "Create Shadow" FALSE)
+		    SF-STRING     _"Text"               "NEON"
+		    SF-ADJUSTMENT _"Font size (pixels)" '(150 2 1000 1 10 0 1)
+		    SF-FONT       _"Font"               "Blippo"
+		    SF-COLOR      _"Background color"   '(0 0 0)
+		    SF-COLOR      _"Glow color"         '(38 211 255)
+		    SF-TOGGLE     _"Create shadow"      FALSE)
+
+(script-fu-menu-register "script-fu-neon-logo"
+			 _"<Toolbox>/Xtns/Script-Fu/Logos")

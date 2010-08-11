@@ -1,19 +1,5 @@
-#ifndef MAPOBJECTMAINH
-#define MAPOBJECTMAINH
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <gdk/gdk.h>
-#include <gtk/gtk.h>
-#include <gck/gck.h>
-#include <libgimp/gimp.h>
-
-#include "arcball.h"
-#include "mapobject_ui.h"
-#include "mapobject_image.h"
-#include "mapobject_apply.h"
-#include "mapobject_preview.h"
+#ifndef __MAPOBJECT_MAIN_H__
+#define __MAPOBJECT_MAIN_H__
 
 /* Defines and stuff */
 /* ================= */
@@ -23,15 +9,19 @@
 /* Typedefs */
 /* ======== */
 
-typedef enum {
+typedef enum
+{
   POINT_LIGHT,
   DIRECTIONAL_LIGHT,
   NO_LIGHT
 } LightType;
 
-typedef enum {
+typedef enum
+{
   MAP_PLANE,
-  MAP_SPHERE
+  MAP_SPHERE,
+  MAP_BOX,
+  MAP_CYLINDER
 } MapType;
 
 /* Typedefs */
@@ -39,25 +29,26 @@ typedef enum {
 
 typedef struct
 {
-  gdouble ambient_int;
-  gdouble diffuse_int;
-  gdouble diffuse_ref;
-  gdouble specular_ref;
-  gdouble highlight;
-  GckRGB  color;
+  gdouble  ambient_int;
+  gdouble  diffuse_int;
+  gdouble  diffuse_ref;
+  gdouble  specular_ref;
+  gdouble  highlight;
+  GimpRGB  color;
 } MaterialSettings;
 
 typedef struct
 {
-  LightType  type;
-  GckVector3 position;
-  GckVector3 direction;
-  GckRGB     color;
-  gdouble    intensity;
+  LightType    type;
+  GimpVector3  position;
+  GimpVector3  direction;
+  GimpRGB      color;
+  gdouble      intensity;
 } LightSettings;
 
-typedef struct {
-  GckVector3    viewpoint,firstaxis,secondaxis,normal,position;
+typedef struct
+{
+  GimpVector3   viewpoint,firstaxis,secondaxis,normal,position,scale;
   LightSettings lightsource;
 
   MaterialSettings material;
@@ -70,21 +61,25 @@ typedef struct {
   gint transparent_background;
   gint tiled;
   gint showgrid;
-  gint tooltips_enabled;
-  
+  gint showcaps;
+
   glong preview_zoom_factor;
-  
+
   gdouble alpha,beta,gamma;
   gdouble maxdepth;
   gdouble pixeltreshold;
   gdouble radius;
+  gdouble cylinder_radius;
+  gdouble cylinder_length;
 
+  gint32 boxmap_id[6];
+  gint32 cylindermap_id[2];
+  
 } MapObjectValues;
 
 /* Externally visible variables */
 /* ============================ */
 
 extern MapObjectValues mapvals;
-extern GckRGB background;
 
-#endif
+#endif  /* __MAPOBJECT_MAIN_H__ */

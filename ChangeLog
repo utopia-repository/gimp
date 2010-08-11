@@ -1,3 +1,160 @@
+2009-02-15  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.6.5 release.
+
+2009-02-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 571628 – Scaling image to 25% turn background from white to grey
+
+	* app/paint-funcs/scale-region.c (pixel_average2): fixed right-shift
+	for GRAYA pixels.
+
+2009-02-12  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/file-faxg3/Makefile.am
+	* plug-ins/help/Makefile.am
+	* plug-ins/metadata/Makefile.am: add $(libgimpconfig) to LDADD
+	where it was missing. Libgimp pulls in libgimpconfig and these
+	plug-ins were linking against the installed libgimpconfig under
+	some #$&%*#%&%$& .la file circumstances.
+
+2009-02-12  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 567840 – GIMP's GtkScaleButton conflicts with GTK's
+
+	* app/widgets/gtkscalebutton.c: rename the type to
+	"GimpGtkScaleButton" so we don't crash if the real
+	GtkScaleButton type is registered too.
+
+2009-01-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpchannel-combine.c (gimp_channel_combine_ellipse_rect):
+	fixed incorrect optimization that caused glitches in the rounded
+	corners on the left side of rectangular selections.
+
+2009-01-28  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpgegltool.c (gimp_param_spec_duplicate): if
+	compiling for GEGL >= 0.0.23, use double parameters with
+	gegl_color_get_rgba().
+
+2009-01-26  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* libgimpwidgets/gimpbutton.c (gimp_button_clicked): chain up if a
+	parent impl exists to be safe against future gtk versions doing
+	something in GtkButton::clicked() (as happened in GTK+ trunk).
+
+2009-01-25  Sven Neumann  <sven@gimp.org>
+
+	Bug 569043 – GEGL tool - missing Operation Settings for all sub-tools
+
+	Merged from trunk:
+
+	* app/tools/gimpgegltool.c (gimp_gegl_tool_get_config): 
+	(gimp_gegl_tool_get_config): canonicalize the type name of the
+	created config class.
+
+2009-01-24  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 568890 – don't rely on GtkAction implementation details
+
+	* app/widgets/gimpuimanager.c (gimp_ui_manager_menu_item_select):
+	use gtk_widget_get_action() instead of g_object_get_data(),
+	which relies on the name of the data key.
+
+2009-01-23  Kevin Cozens  <kcozens@cvs.gimp.org>
+
+	Bug 568909 – wrong RGB values for color names in
+	libgimpcolor/gimprgb-parse.c
+
+	Merged from trunk:
+
+	* libgimpcolor/gimprgb-parse.c: applied patch from Andreas Turtschan
+	to fix more RGB colour values.
+
+2009-01-23  Kevin Cozens  <kcozens@cvs.gimp.org>
+
+	Bug 568839 – wrong hex RGB value for the color names slategrey and
+	slategray
+
+	Merged from trunk:
+
+	* libgimpcolor/gimprgb-parse.c: applied patch from Andreas Turtschan
+	to fix colour values for slategray and slategrey.
+
+2009-01-22  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 559408 - Brushes dragged to the image window look strange 
+
+	* app/widgets/gimppixbuf.c (gimp_pixbuf_format_compare): Drop
+	Windows-specific code to prefer BMP. The BMP format written by
+	gdk-pixbuf doesn't support alpha. PNG is better. Note that the
+	same bug report also takes up a different problem.
+
+2009-01-18  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 563337 – Rectangle Select Tool does not allow 1:1 fixed ratio
+
+	* libgimpwidgets/gimpnumberpairentry.c: When testing if the value
+	changed on focus-out we shall test against the current values, not
+	the default values.
+
+2009-01-17  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 568016 – Black pullout parameter of plug-in-newsprint has
+	no effect
+
+	* plug-ins/common/newsprint.c: fixed the documentation of the
+	colorspace parameter.
+
+2009-01-13  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL
+	* autogen.sh
+	* configure.in: looks like we need intltool >= 0.36.3 (and we
+	recommend using an even newer version).
+
+2009-01-04  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 562818 – First image opened in GIMP offset
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_shrink_wrap):
+	Only rely on disp_width/height for border calculation if they are
+	larger than 1. If not, special-case the calculation so we don't
+	get a severly mispositioned image.
+
+2009-01-04  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 562213 – Align Tool doesn't work properly if it is the active
+	tool at startup
+
+	* app/tools/gimpaligntool.c: Perform NULL-pointer dodging to avoid
+	crashing.
+
+2009-01-01  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.6.5 (interface age 5).
+
 2009-01-01  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.6.4 release.

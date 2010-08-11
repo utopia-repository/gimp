@@ -68,14 +68,14 @@ capabilities.
 </para></refsect2>
 <refsect2 id="GIMP-MICRO-VERSION:CAPS" role="macro">
 <title>GIMP_MICRO_VERSION</title>
-<indexterm zone="GIMP-MICRO-VERSION:CAPS"><primary>GIMP_MICRO_VERSION</primary></indexterm><programlisting>#define GIMP_MICRO_VERSION                              (4)
+<indexterm zone="GIMP-MICRO-VERSION:CAPS"><primary>GIMP_MICRO_VERSION</primary></indexterm><programlisting>#define GIMP_MICRO_VERSION                              (5)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2 id="GIMP-VERSION:CAPS" role="macro">
 <title>GIMP_VERSION</title>
-<indexterm zone="GIMP-VERSION:CAPS"><primary>GIMP_VERSION</primary></indexterm><programlisting>#define GIMP_VERSION                                    "2.6.4"
+<indexterm zone="GIMP-VERSION:CAPS"><primary>GIMP_VERSION</primary></indexterm><programlisting>#define GIMP_VERSION                                    "2.6.5"
 </programlisting>
 <para>
 

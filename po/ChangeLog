@@ -1,3 +1,52 @@
+2009-02-15 Og Maciel <ogmaciel@gnome.org>
+
+	* pt_BR.po: Updated Brazilian Portuguese translation.
+
+2009-02-14  Goran Rakić  <grakic@devbase.net>
+
+	* sr.po, sr@latin.po: Updated Serbian translation (by Miloš Popović)
+
+2009-02-13  Marco Ciampa  <ciampix@liberi.it>
+
+	* it.po: updated italian translation.
+
+2009-02-11  Priit Laes  <plaes at svn dot gnome dot org>
+
+	* et.po: Translation updated by Mattias Põldaru
+
+2009-02-09  Jani Monoses  <jani@ubuntu.com>
+
+	* ro.po: Updated Romanian translation
+	by Cristian Secară <cristi@secarica.ro>
+
+2009-02-02  I Felix  <ifelix@redhat.com>
+
+	* ta.po: Translation updated by Felix.
+
+2009-01-23  Alexandre Prokoudine  <alexandre.prokoudine@gmail.com>
+
+	* ru.po: updated and improved Russian translation.
+
+2009-01-16  Rajesh Ranjan  <rajeshkajha@yahoo.com>
+
+	* hi.po: Updated Hindi Translation.
+	
+2009-01-15  Rajesh Ranjan  <rajeshkajha@yahoo.com>
+
+	* hi.po: Updated Hindi Translation.
+	
+2009-01-07  Rajesh Ranjan  <rajeshkajha@yahoo.com>
+
+	* hi.po: Updated Hindi Translation.
+
+2009-01-02  Rajesh Ranjan  <rajeshkajha@yahoo.com>
+
+	* hi.po: Updated Hindi Translation.
+
+2009-01-02  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation by Francisco Vila
+
 2008-12-31  Rajesh Ranjan  <rajeshkajha@yahoo.com>
 
 	* hi.po: Updated Hindi Translation.

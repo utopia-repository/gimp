@@ -59,22 +59,22 @@ am_metadata_OBJECTS = metadata.$(OBJEXT) base64.$(OBJEXT) \
 metadata_OBJECTS = $(am_metadata_OBJECTS)
 metadata_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-metadata_DEPENDENCIES = $(libgimp) $(libgimpcolor) $(libgimpbase) \
-	$(libgimpmath) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+metadata_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
+	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_testbase64_OBJECTS = base64.$(OBJEXT) testbase64.$(OBJEXT)
 testbase64_OBJECTS = $(am_testbase64_OBJECTS)
 testbase64_LDADD = $(LDADD)
-testbase64_DEPENDENCIES = $(libgimp) $(libgimpcolor) $(libgimpbase) \
-	$(libgimpmath) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+testbase64_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
+	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_xmpdump_OBJECTS = xmpdump.$(OBJEXT) base64.$(OBJEXT) \
 	xmp-parse.$(OBJEXT)
 xmpdump_OBJECTS = $(am_xmpdump_OBJECTS)
 xmpdump_LDADD = $(LDADD)
-xmpdump_DEPENDENCIES = $(libgimp) $(libgimpcolor) $(libgimpbase) \
-	$(libgimpmath) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+xmpdump_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
+	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -409,6 +409,7 @@ top_srcdir = @top_srcdir@
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
@@ -442,12 +443,13 @@ INCLUDES = \
 	-I$(includedir)
 
 LDADD = \
-	$(libgimp)	\
-	$(libgimpcolor)	\
-	$(libgimpbase)	\
-	$(libgimpmath)	\
-	$(GTK_LIBS)	\
-	$(RT_LIBS)	\
+	$(libgimp)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(libgimpmath)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
 	$(INTLLIBS)
 
 

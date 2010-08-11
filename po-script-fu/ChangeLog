@@ -1,3 +1,24 @@
+2009-02-14  Goran Rakić  <grakic@devbase.net>
+
+	* sr.po, sr@latin.po: Updated Serbian translation (by Miloš Popović)
+
+2009-02-09  Jani Monoses  <jani@ubuntu.com>
+
+	* ro.po: Updated Romanian translation
+	by Cristian Secară <cristi@secarica.ro>
+
+2009-02-05  Stanislav Brabec  <sbrabec@hammer.suse.cz>
+
+	* zh_CN.po: Fixed invalid charset tag.
+
+2009-01-23  Alexandre Prokoudine  <alexandre.prokoudine@gmail.com>
+
+	* ru.po: updated and improved Russian translation.
+
+2009-01-02  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation by Francisco Vila
+
 2008-12-28  Duarte Loreto <happyguy_pt@hotmail.com>
 
 	* pt.po: Updated Portuguese translation by Bruno Queiros

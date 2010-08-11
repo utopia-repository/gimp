@@ -557,10 +557,19 @@ gimp_param_spec_duplicate (GParamSpec *pspec)
     {
       GeglColor *gegl_color;
       GimpRGB    gimp_color;
+#if (GEGL_MAJOR_VERSION > 0 || \
+     (GEGL_MAJOR_VERSION == 0 && GEGL_MINOR_VERSION > 0) || \
+     (GEGL_MAJOR_VERSION == 0 && GEGL_MINOR_VERSION == 0 && GEGL_MICRO_VERSION >= 23))
+      gdouble    r = 0.0;
+      gdouble    g = 0.0;
+      gdouble    b = 0.0;
+      gdouble    a = 1.0;
+#else
       gfloat     r = 0.0;
       gfloat     g = 0.0;
       gfloat     b = 0.0;
       gfloat     a = 1.0;
+#endif
       GValue     value = { 0, };
 
       g_value_init (&value, GEGL_TYPE_COLOR);
@@ -742,6 +751,8 @@ gimp_gegl_tool_get_config (GimpGeglTool *tool)
 
       gchar *type_name = g_strdup_printf ("GimpGeglTool-%s-config",
                                           tool->operation);
+
+      g_strcanon (type_name, G_CSET_DIGITS "-" G_CSET_a_2_z G_CSET_A_2_Z, '-');
 
       config_type = g_type_register_static (GIMP_TYPE_OBJECT, type_name,
                                             &info, 0);

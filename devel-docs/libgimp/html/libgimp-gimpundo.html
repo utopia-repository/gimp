@@ -1,4 +1,43 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpundo</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="prev" href="libgimp-gimptools.html" title="gimptools"><link rel="next" href="libgimp-data.html" title="Data Objects"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimptools.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-data.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpundo"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpundo</span></h2><p>gimpundo &#8212; Control of undo/redo.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimpundo</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="prev" href="libgimp-gimptools.html" title="gimptools">
+<link rel="next" href="libgimp-data.html" title="Data Objects">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
+<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-data.html" title="Data Objects">
+<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
+<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimp-gimptools.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Library Reference Manual</th>
+<td><a accesskey="n" href="libgimp-data.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimp-gimpundo"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimpundo</span></h2>
+<p>gimpundo &#8212; Control of undo/redo.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -9,61 +48,194 @@ gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-disable">gimp_image_u
 gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-enable">gimp_image_undo_enable</a>          (gint32 image_ID);
 gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-freeze">gimp_image_undo_freeze</a>          (gint32 image_ID);
 gboolean    <a href="libgimp-gimpundo.html#gimp-image-undo-thaw">gimp_image_undo_thaw</a>            (gint32 image_ID);
-</pre></div><div class="refsect1" lang="en"><a name="id2602483"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2615917"></a><h2>Description</h2>
+<p>
 Control of undo/redo.
 
-</p></div><div class="refsect1" lang="en"><a name="id2602492"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2602498"></a><h3><a name="gimp-image-undo-group-start"></a>gimp_image_undo_group_start ()</h3><a class="indexterm" name="id2602506"></a><pre class="programlisting">gboolean    gimp_image_undo_group_start     (gint32 image_ID);</pre><p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2615928"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2615934"></a><h3>
+<a name="gimp-image-undo-group-start"></a>gimp_image_undo_group_start ()</h3>
+<a class="indexterm" name="id2615943"></a><pre class="programlisting">gboolean    gimp_image_undo_group_start     (gint32 image_ID);</pre>
+<p>
 Starts a group undo.
-</p><p>
+</p>
+<p>
 This function is used to start a group undo--necessary for logically
 combining two or more undo operations into a single operation. This
 call must be used in conjunction with a 'gimp-image-undo-group-end'
-call.</p><p>
+call.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The ID of the image in which to open an undo group.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2638076"></a><h3><a name="gimp-image-undo-group-end"></a>gimp_image_undo_group_end ()</h3><a class="indexterm" name="id2638084"></a><pre class="programlisting">gboolean    gimp_image_undo_group_end       (gint32 image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The ID of the image in which to open an undo group.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2613901"></a><h3>
+<a name="gimp-image-undo-group-end"></a>gimp_image_undo_group_end ()</h3>
+<a class="indexterm" name="id2613910"></a><pre class="programlisting">gboolean    gimp_image_undo_group_end       (gint32 image_ID);</pre>
+<p>
 Finish a group undo.
-</p><p>
+</p>
+<p>
 This function must be called once for each
-'gimp-image-undo-group-start' call that is made.</p><p>
+'gimp-image-undo-group-start' call that is made.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The ID of the image in which to close an undo group.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2638136"></a><h3><a name="gimp-image-undo-is-enabled"></a>gimp_image_undo_is_enabled ()</h3><a class="indexterm" name="id2638145"></a><pre class="programlisting">gboolean    gimp_image_undo_is_enabled      (gint32 image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The ID of the image in which to close an undo group.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2613974"></a><h3>
+<a name="gimp-image-undo-is-enabled"></a>gimp_image_undo_is_enabled ()</h3>
+<a class="indexterm" name="id2613983"></a><pre class="programlisting">gboolean    gimp_image_undo_is_enabled      (gint32 image_ID);</pre>
+<p>
 Check if the image's undo stack is enabled.
-</p><p>
+</p>
+<p>
 This procedure checks if the image's undo stack is currently enabled
 or disabled. This is useful when several plugins or scripts call
 each other and want to check if their caller has already used
-'gimp_image_undo_disable' or 'gimp_image_undo_freeze'.</p><p>
+'gimp_image_undo_disable' or 'gimp_image_undo_freeze'.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The image.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if undo is enabled for this image.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2637223"></a><h3><a name="gimp-image-undo-disable"></a>gimp_image_undo_disable ()</h3><a class="indexterm" name="id2637231"></a><pre class="programlisting">gboolean    gimp_image_undo_disable         (gint32 image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> True if undo is enabled for this image.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2618672"></a><h3>
+<a name="gimp-image-undo-disable"></a>gimp_image_undo_disable ()</h3>
+<a class="indexterm" name="id2618681"></a><pre class="programlisting">gboolean    gimp_image_undo_disable         (gint32 image_ID);</pre>
+<p>
 Disable the image's undo stack.
-</p><p>
+</p>
+<p>
 This procedure disables the image's undo stack, allowing subsequent
 operations to ignore their undo steps. This is generally called in
 conjunction with 'gimp_image_undo_enable' to temporarily disable an
 image undo stack. This is advantageous because saving undo steps can
-be time and memory intensive.</p><p>
+be time and memory intensive.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The image.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been disabled.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2637286"></a><h3><a name="gimp-image-undo-enable"></a>gimp_image_undo_enable ()</h3><a class="indexterm" name="id2637295"></a><pre class="programlisting">gboolean    gimp_image_undo_enable          (gint32 image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> True if the image undo has been disabled.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2618748"></a><h3>
+<a name="gimp-image-undo-enable"></a>gimp_image_undo_enable ()</h3>
+<a class="indexterm" name="id2618757"></a><pre class="programlisting">gboolean    gimp_image_undo_enable          (gint32 image_ID);</pre>
+<p>
 Enable the image's undo stack.
-</p><p>
+</p>
+<p>
 This procedure enables the image's undo stack, allowing subsequent
 operations to store their undo steps. This is generally called in
 conjunction with 'gimp_image_undo_disable' to temporarily disable an
-image undo stack.</p><p>
+image undo stack.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The image.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been enabled.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2637350"></a><h3><a name="gimp-image-undo-freeze"></a>gimp_image_undo_freeze ()</h3><a class="indexterm" name="id2637461"></a><pre class="programlisting">gboolean    gimp_image_undo_freeze          (gint32 image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> True if the image undo has been enabled.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2618823"></a><h3>
+<a name="gimp-image-undo-freeze"></a>gimp_image_undo_freeze ()</h3>
+<a class="indexterm" name="id2618832"></a><pre class="programlisting">gboolean    gimp_image_undo_freeze          (gint32 image_ID);</pre>
+<p>
 Freeze the image's undo stack.
-</p><p>
+</p>
+<p>
 This procedure freezes the image's undo stack, allowing subsequent
 operations to ignore their undo steps. This is generally called in
 conjunction with 'gimp_image_undo_thaw' to temporarily disable an
@@ -73,13 +245,37 @@ be time and memory intensive. 'gimp_image_undo_{freeze,thaw}' and
 not free up all undo steps when undo is thawed, so is more suited to
 interactive in-situ previews. It is important in this case that the
 image is back to the same state it was frozen in before thawing,
-else 'undo' behaviour is undefined.</p><p>
+else 'undo' behaviour is undefined.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The image.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been frozen.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2547236"></a><h3><a name="gimp-image-undo-thaw"></a>gimp_image_undo_thaw ()</h3><a class="indexterm" name="id2580866"></a><pre class="programlisting">gboolean    gimp_image_undo_thaw            (gint32 image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> True if the image undo has been frozen.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2545470"></a><h3>
+<a name="gimp-image-undo-thaw"></a>gimp_image_undo_thaw ()</h3>
+<a class="indexterm" name="id2558259"></a><pre class="programlisting">gboolean    gimp_image_undo_thaw            (gint32 image_ID);</pre>
+<p>
 Thaw the image's undo stack.
-</p><p>
+</p>
+<p>
 This procedure thaws the image's undo stack, allowing subsequent
 operations to store their undo steps. This is generally called in
 conjunction with 'gimp_image_undo_freeze' to temporarily freeze an
@@ -89,8 +285,33 @@ where one wishes to leave the undo stack in the same state in which
 one found it despite non-destructively playing with the image in the
 meantime. An example would be in-situ plugin previews. Balancing
 freezes and thaws and ensuring image consistancy is the
-responsibility of the caller.</p><p>
+responsibility of the caller.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The image.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> True if the image undo has been thawed.
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimptools.html"><b>&lt;&lt; gimptools</b></a></td><td align="right"><a accesskey="n" href="libgimp-data.html"><b>Data Objects &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> True if the image undo has been thawed.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimptools.html"><b>&lt;&lt;&#160;gimptools</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-data.html"><b>Data Objects&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

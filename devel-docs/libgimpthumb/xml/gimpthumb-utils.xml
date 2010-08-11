@@ -224,7 +224,7 @@ again. It must not be changed or freed.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbs-delete-for-uri"/>gimp_thumbs_delete_for_uri ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbs_delete_for_uri</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbs_delete_for_uri      (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumbs_delete_for_uri</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbs_delete_for_uri      (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
 Deletes all thumbnails for the image file specified by <parameter>uri</parameter> from the
 user's thumbnail repository.</para>
@@ -238,7 +238,7 @@ user's thumbnail repository.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-name-from-uri-local"/>gimp_thumb_name_from_uri_local ()</title>
-<indexterm role="GIMP"><primary>gimp_thumb_name_from_uri_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_name_from_uri_local  (const <link linkend="gchar">gchar</link> *uri,
+<indexterm role="GIMP 2.2"><primary>gimp_thumb_name_from_uri_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_name_from_uri_local  (const <link linkend="gchar">gchar</link> *uri,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Creates the name of a local thumbnail file of the specified <parameter>size</parameter>
@@ -262,7 +262,7 @@ thumbnails have been introduced with version 0.7 of the spec.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-ensure-thumb-dir-local"/>gimp_thumb_ensure_thumb_dir_local ()</title>
-<indexterm role="GIMP"><primary>gimp_thumb_ensure_thumb_dir_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumb_ensure_thumb_dir_local
+<indexterm role="GIMP 2.2"><primary>gimp_thumb_ensure_thumb_dir_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumb_ensure_thumb_dir_local
                                             (const <link linkend="gchar">gchar</link> *dirname,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size,
                                              <link linkend="GError">GError</link> **error);</programlisting>
@@ -294,7 +294,7 @@ You shouldn't have to call this function directly since
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-get-thumb-dir-local"/>gimp_thumb_get_thumb_dir_local ()</title>
-<indexterm role="GIMP"><primary>gimp_thumb_get_thumb_dir_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_get_thumb_dir_local  (const <link linkend="gchar">gchar</link> *dirname,
+<indexterm role="GIMP 2.2"><primary>gimp_thumb_get_thumb_dir_local</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_thumb_get_thumb_dir_local  (const <link linkend="gchar">gchar</link> *dirname,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Retrieve the name of the local thumbnail folder for a specific
@@ -316,7 +316,7 @@ constant and should be free'd when it is not any longer needed.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbs-delete-for-uri-local"/>gimp_thumbs_delete_for_uri_local ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbs_delete_for_uri_local</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbs_delete_for_uri_local
+<indexterm role="GIMP 2.2"><primary>gimp_thumbs_delete_for_uri_local</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbs_delete_for_uri_local
                                             (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
 Deletes all thumbnails for the image file specified by <parameter>uri</parameter> from

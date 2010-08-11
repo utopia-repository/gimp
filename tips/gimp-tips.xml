@@ -32,6 +32,7 @@
     <welcome xml:lang="fr"><big>Bienvenue sur Le Gimp !</big></welcome>
     <welcome xml:lang="hu"><big>Üdvözli a GIMP!</big></welcome>
     <welcome xml:lang="it"><big>Benvenuti in GIMP!</big></welcome>
+    <welcome xml:lang="ja"><big>GIMP へようこそ !</big></welcome>
     <welcome xml:lang="ko"><big>김프에 오신것을 환영합니다!</big></welcome>
     <welcome xml:lang="lt"><big>Sveiki GIMP vartotojai!</big></welcome>
     <welcome xml:lang="nb"><big>Velkommen til GIMP!</big></welcome>
@@ -42,9 +43,10 @@
     <welcome xml:lang="sv"><big>Välkommen till GIMP!</big></welcome>
     <welcome xml:lang="uk"><big>Ласкаво просимо до GIMP!</big></welcome>
     <welcome xml:lang="zh_CN"><big>欢迎使用 GIMP！</big></welcome>
+    <welcome xml:lang="zh_TW"><big>歡迎使用 GIMP！</big></welcome>
     <thetip>The GIMP can undo most changes to the image, so feel free to experiment.</thetip>
     <thetip xml:lang="ca">El GIMP pot desfer la majoria de canvis en la imatge, així que experimenteu quant vulgueu.</thetip>
-    <thetip xml:lang="cs">GIMP může vrátit zpět většinu změn obráku, takže se nebojte experimentovat.</thetip>
+    <thetip xml:lang="cs">GIMP může vrátit zpět většinu změn obrázku, takže se nebojte experimentovat.</thetip>
     <thetip xml:lang="da">Gimp'en kan fortryde de fleste ændringer i et billede, så gå bare i gang med at eksperimentere!</thetip>
     <thetip xml:lang="de">The GIMP kann die meisten Änderungen an einem Bild rückgänig machen - fühlen Sie sich also frei nach Belieben zu experimentieren.</thetip>
     <thetip xml:lang="en_CA">The GIMP can undo most changes to the image, so feel free to experiment.</thetip>
@@ -54,6 +56,7 @@
     <thetip xml:lang="fr">Gimp peut presque annuler tous les changements faits dans l'image, n'hésitez donc pas à expérimenter.</thetip>
     <thetip xml:lang="hu">A legtöbb képművelet visszavonható, tehát nyugodtan kísérletezhet a programmal.</thetip>
     <thetip xml:lang="it">GIMP può annullare molti cambiamenti alle immagini perciò sentitevi liberi di fare esperimenti!</thetip>
+    <thetip xml:lang="ja">GIMP ではほとんどの変更はやり直しがきくから、気軽に試すといいよ。</thetip>
     <thetip xml:lang="ko">김프는 이미지에서 바뀐 내용을 대부분 취소할 수 있으니, 마음껏 실험해 보십시오.</thetip>
     <thetip xml:lang="lt">GIMP gali atšaukti daugumą operacijų, tad nebijokite eksperimentuoti.</thetip>
     <thetip xml:lang="nb">GIMP gir deg mulighet til å angre alle handlinger utført på bildet.</thetip>
@@ -64,6 +67,7 @@
     <thetip xml:lang="sv">GIMP kan ångra de flesta ändringar i bilden, så experimentera gärna.</thetip>
     <thetip xml:lang="uk">У GIMP можна скасувати більшість змін зображення, тому можете сміливо експериментувати.</thetip>
     <thetip xml:lang="zh_CN">GIMP 可以撤销对图像所做的大多数修改，因此请放心尝试。</thetip>
+    <thetip xml:lang="zh_TW">GIMP 幾乎可以還原所有更改影像的操作程序，因此您可以放心嘗試。</thetip>
   </tip>
 
 
@@ -86,7 +90,7 @@
     <thetip xml:lang="hr">U svakom trenutku možete dobiti trenutnu pomoć za većinu mogućnosti Gimpa ako pritisnete tipku F1. Ova opcija takođe radi i unutar izbornika.</thetip>
     <thetip xml:lang="hu">A GIMP legtöbb funkciójáról környezetérzékeny segítség kérhető az F1 billentyű lenyomásával. Ez a menükön belül is működik.</thetip>
     <thetip xml:lang="it">Puoi ottenere un aiuto sensibile al contesto per gran parte delle caratteristiche di GiMP premendo F1 in qualsiasi momento. Funziona anche nei menu.</thetip>
-    <thetip xml:lang="ja">F1 キーを押すことでいつでも GIMP 機能の状況適応ヘルプを呼び出すことができるんだ．これはメニューの中でも使えるよ．</thetip>
+    <thetip xml:lang="ja">F1 キーを押すことでいつでも GIMP 機能の状況適応ヘルプを呼び出すことができるんだ。これはメニューの中でも使えるよ。</thetip>
     <thetip xml:lang="ko">언제라도 F1키를 누르면 GIMP의 대부분의 기능들에 대해서 문맥에 맞는 도움말을 볼 수 있습니다. 물론 메뉴 안에서도 됩니다.</thetip>
     <thetip xml:lang="lt">Bet kuriuo metu paspaudę F1 klavišą, gausite susijusią su kontekstu pagalbą.Tokiu pat būdu galite gauti pagalbą apie meniu punktus.</thetip>
     <thetip xml:lang="ms">Anda boleh mendapatkan bantuan peka konteks bagi kebanyakan ciri GIMP dengan menekan kekunci F1 pada bila-bila masa. Ini juga boleh dilakukan dalam menu.</thetip>
@@ -120,7 +124,7 @@
     <thetip xml:lang="hr">GIMP koristi slojeve za organizaciju slika. Gledajte na slojeve kao na gomilu slajdova ili filtera, kao da gledate kroz njih i vidite mješavinu njihovih sadržaja.</thetip>
     <thetip xml:lang="hu">A GIMP a képtartalom rendezetten tartása érdekében támogatja a rétegek használatát. Ezek elképzelhetők például úgy, mint egymásra helyezett fóliák illetve szűrők, amelyek tartalma összeadódva alkot egy képet.</thetip>
     <thetip xml:lang="it">GIMP usa i livelli per organizzare l'immagine. Immaginali come una pila di diapositive o filtri, in modo che guardando attraverso loro puoi vedere una composizione del loro contenuto.</thetip>
-    <thetip xml:lang="ja">GIMP ではレイヤーを使って画像をまとめることができるんだ．まぁスライドとかフィルタを積み重ねたものをすかして見ているようなものだと思ってくれればいい．</thetip>
+    <thetip xml:lang="ja">GIMP ではレイヤーを使って画像をまとめることができるんだ。まぁスライドとかフィルタを積み重ねたものをすかして見ているようなものだと思ってくれればいい。</thetip>
     <thetip xml:lang="ko">김프는 이미지를 조직화하기 위해 레이어을 사용합니다. 레이어를 슬라이드나 필터를 쌓아놓은 것이라고 생각하면, 그것들을 통과하면서 합성된 내용을 보게 되는 거죠.</thetip>
     <thetip xml:lang="lt">GIMP naudojami sluoksniai padės Jums sutvarkyti paveikslėlį. įsivaizduokite, kad sluoksniai yra filtrų arba skaidrių rinkinys, pro kurį žiūrėdami matysite iš jų sudarytą paveikslėlį.</thetip>
     <thetip xml:lang="ms">GIMP menggunakan lapisan bagi membolehkan anda menyusun imej anda. Fikirkannya sebagai tindanan slaid atau penapis, iaitu apabila anda memandangnya anda dapat melihat gabungan bagi kandungan imej tersebut.</thetip>
@@ -154,7 +158,7 @@
     <thetip xml:lang="hr">Možete izvesti mnoge operacija nad slojevima desnim klikom na tekstualnu oznaku sloja u dijalogu „Slojevi, kanali i putanje“.</thetip>
     <thetip xml:lang="hu">A rétegműveletek nagy része elvégezhető a megfelelő rétegnek a Rétegek párbeszédablakban levő bejegyzésére jobb gombbal kattintva előbukkanó menüvel.</thetip>
     <thetip xml:lang="it">Puoi eseguire un gran numero di operazioni cliccando col tasto destro sul nome del livello nella finestra di dialogo Livelli.</thetip>
-    <thetip xml:lang="ja">レイヤーダイアログ内のそれぞれのレイヤー名の上で右クリックをすることで，レイヤーに対するいろんな操作が行えるんだ．</thetip>
+    <thetip xml:lang="ja">レイヤーダイアログ内のそれぞれのレイヤー名の上で右クリックをすることで、レイヤーに対するいろんな操作が行えるんだ。</thetip>
     <thetip xml:lang="ko">레이어 대화상자의 텍스트 레이블에서 오른쪽-클릭을 하면 많은 레이어 관련 작업을 수행할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Galite atlikti daug veiksmų su sluoksniu, paspaudę dešinį pelės klavišą ant jo pavadinimo Sluoksnių dialoge.</thetip>
     <thetip xml:lang="ms">Anda boleh melaksanakan banyak pengendalian lapisan dengan mengklik kanan label teks lapisan dalam dialog Lapisan.</thetip>
@@ -188,7 +192,7 @@
     <thetip xml:lang="hr">Kada snimite neku sliku da bi kasnije nastavili njezinu obradu, odaberite format XCF, vlastiti format datoteka za GIMP (koristite nastavak <tt>.xcf</tt>). Na ovaj način će slojevi i svi aspekti vašeg trenunog rada biti spremljeni. Jednom kada završite projekt, možete ga sačuvati kao JPEG, PNG, GIF, ...</thetip>
     <thetip xml:lang="hu">Ha egy elmentendő képen a későbbiekben is szeretne majd módosításokat végezni, akkor használja az XCF formátumot, amely a GIMP saját fájlformátuma (használja ehhez a <tt>.xcf</tt> végződést a fájlnévben). Ez a formátum megőrzi a kép összes tulajdonságát - például a rétegeket. Amikor a kép elkészült, érdemes lehet elmenteni JPEG, PNG vagy esetleg GIF formátumban.</thetip>
     <thetip xml:lang="it">Quando salvi un immagine con l'intenzione di continuare a lavorarci, prova il formato nativo di GIMP,XCF (usa l'estensione <tt>xcf</tt>). Esso manterrà i livelli e ogni altro aspetto del tuo lavoro. Una volta che  il progetto è completato, puoi salvarlo in JPEG, PNG, GIF, ...</thetip>
-    <thetip xml:lang="ja">後でまた編集をする画像を保存する時には，GIMP 固有形式の XCF を使おう(拡張子は <tt>.xcf</tt>)．これは作業中の全ての状態を記録してくれるんだ．画像を完成させてから，JPEG, PNG, GIF として保存しようね...</thetip>
+    <thetip xml:lang="ja">後でまた編集をする画像を保存する時には、GIMP 固有形式の XCF を使おう(拡張子は <tt>.xcf</tt>)。これは作業中の全ての状態を記録してくれるんだ。画像を完成させてから、JPEG, PNG, GIF として保存しようね...</thetip>
     <thetip xml:lang="ko">나중에 다시 작업할 이미지를 저장할 때는 김프의 자체 파일 형식인 XCF(파일 확장자가 <tt>.xcf</tt>입니다)를 사용해보세요. 이 형식을 사용하면 레이어와 작업 중인 모든 측면들이 보존됩니다. 프로젝트를 완료했을 때, JPEG, PNG, GIF, ... 등으로 저장하면 됩니다.</thetip>
     <thetip xml:lang="lt">Išsaugokite paveikslėlį XCF formatu, (GIMP'o formatas su praplėtimu <tt>.xcf</tt>). Jame išlieka darbinė paveikslėlio būsena (sluoksniai ir t.t.). Kai baigsite darbą, galėsite išsaugoti paveikslėlį JPEG, PNG, GIF, ir kitais formatais.</thetip>
     <thetip xml:lang="ms">Apabila anda menyimpan imej yang akan digunakan kemudian, cuba gunakan XCF, format fail natif GIMP (gunakan sambungan fail <tt>.xcf</tt>). Cara ini melindungi lapisan dan segala aspek kerja yang sedang anda jalankan. Selesai sahaja projek, anda boleh menyimpannya sebagai JPEG, PNG, GIF, ...</thetip>
@@ -220,6 +224,7 @@
     <thetip xml:lang="fr">Le calque nommé « Arrière-plan » est spécial parce qu'il n'a pas de transparence. Ceci vous évite d'ajouter un masque de calque ou de monter ce calque dans la pile. Vous pouvez lui ajouter de la transparence en cliquant-droit dans le dialogue des calques et en sélectionnant « Ajouter un canal alpha ».</thetip>
     <thetip xml:lang="hu">A &quot;Háttér&quot; nevű réteg egy különleges réteg, mivel nincs átlátszósága. Ez megakadályozza, hogy a réteg feljebb legyen helyezve (más réteg fölé). Ha szeretne átlátszóságot adni ennek a rétegnek, akkor kattintson rá a jobb oldali egérgombbal a Rétegek párbeszédablakban, majd válassza ki az &quot;Alfa-csatorna hozzáadása&quot; funkciót.</thetip>
     <thetip xml:lang="it">Il livello chiamato &quot;Sfondo&quot; è speciale poiché è privo di trasparenza. Ciò ti impedisce di aggiungere una maschera di livello o di muovere il livello in alto nella pila. Puoi aggiungergli trasparenza cliccandoci sopra col tasto destro nella finestra di dialogo Livelli e selezionando &quot;Aggiungi canale alfa&quot;.</thetip>
+    <thetip xml:lang="ja">&quot;背景&quot; という名のレイヤーは特別だよ。透明にしたり、レイヤーマスクを付けたり、レイヤーを上に移動させることができないんだ。透明にしたい場合にはレイヤーダイアログ中で右クリックして、&quot;アルファチャンネルを追加&quot;を選択してやるといいよ。</thetip>
     <thetip xml:lang="ko">&quot;배경&quot; 레이어는 투명도가 없다는 점에서 특별합니다. 그래서 이 레이어는 다른 레이어 위에 올릴 수 없습니다. 레이어 대화상자에서 오른쪽-클릭을 하고 &quot;알파 채널 더하기&quot;를 선택하면 투명도를 추가할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Sluoksnis „Fonas“ neturi permatomumo savybės. Todėl Jūs negalėsite uždėti sluoksnio kaukės arba perkelti sluoksnio aukštyn sluoksnių sąraše. Permatomumą galite pridėti paspaudę dešinį klavišą Sluoksnių dialoge ir pasirinkę „Pridėti Alfa kanalą“.</thetip>
     <thetip xml:lang="nb">Laget som heter «Bakgrunn» er spesielt fordi det ikke har gjennomsiktighet. Dette hindrer deg i å legge til en lagmaske eller flytte laget opp i stabelen. Du kan legge til gjennomsiktiget veed å høyreklikke i Lag-menyen og velge «Legg til alfrakanal».</thetip>
@@ -230,6 +235,7 @@
     <thetip xml:lang="sv">Lagret med namnet &quot;Bakgrund&quot; är speciell eftersom den saknar transparens. Detta förhindrar dig från att lägga till en lagermask eller flytta lagret upp i stacken. Du kan lägga till transparens till den genom att högerklicka i lagerdialogen och välja &quot;Lägga till alfakanal&quot;.</thetip>
     <thetip xml:lang="uk">Шар &quot;Тло&quot; - особливий. У ньому відсутня прозорість. Це не дає змоги додати до нього маску шару або перемістити шар вгору у стеку шарів. Можна додати до нього прозорість, якщо натиснути праву кнопку миші у діалоговому вікні &quot;Шари&quot; та вибрати &quot;Додати альфа-канал&quot;.</thetip>
     <thetip xml:lang="zh_CN">名叫“背景”的图层是特殊的，因为它没有透明。这使您不能将这个图层沿堆栈上移。如果您想给它添加透明，可以在图层对话框中右点并选择“添加 Alpha 通道”。</thetip>
+    <thetip xml:lang="zh_TW">圖層中稱為「背景」的一層是比較特殊的，因為它沒有透明度。這樣會妨礙您加上圖層遮罩或將圖層移至較面層的位置。在「圖層」對話方塊中按右邊滑鼠按鈕並選取「新增透明色版」可以替它加上透明度。</thetip>
   </tip>
   <tip level="beginner">
     <thetip>Most plug-ins work on the current layer of the current image. In some cases, you will have to merge all layers (Image-&gt;Flatten Image) if you want the plug-in to work on the whole image.</thetip>
@@ -244,7 +250,7 @@
     <thetip xml:lang="fr">La plupart des filtres travaillent sur le calque courant de l'image courante. Parfois vous aurez à fusionner tous les calques (Image-&gt;Aplatir l'image) si vous souhaitez que le filtre agisse sur l'image entière.</thetip>
     <thetip xml:lang="hu">A legtöbb bővítmény az aktuális kép aktuális rétegén végez műveletet. Bizonyos esetekben össze kell fésülni az összes réteget ("Kép-&gt;Egy réteggé lapítás" menüpont) ahhoz, hogy a bővítmény a teljes képet feldolgozza.</thetip>
     <thetip xml:lang="it">La maggior parte dei plug-in lavora sul livello attivo dell'immagine corrente. In alcuni casi è necessario unire tutti i livelli (Immagine&gt;Appiattisci immagine) se vuoi che i plug-in agiscano sull'intera immagine.</thetip>
-    <thetip xml:lang="ja">大半のプラグインは今作業中の画像の有効なレイヤーだけに働くんだ．だから画像全体に効果を与えたいときには画像を統合 (画像-&gt;画像の統合) する必要があるんじゃないかな．</thetip>
+    <thetip xml:lang="ja">大半のプラグインは今作業中の画像の有効なレイヤーだけに働くんだ。だから画像全体に効果を与えたいときには画像を統合 (画像-&gt;画像の統合) する必要があるんじゃないかな。</thetip>
     <thetip xml:lang="ko">대부분의 플러그인들은 현재 이미지의 현재 레이어에만 조작합니다. 경우에 따라, 플러그인이 전체 이미지를 조작하도록 하려면 모든 레이어를 합쳐야(이미지-&gt;배경으로 이미지 합치기) 될 수도 있습니다.</thetip>
     <thetip xml:lang="lt">Daugelis priedų veikia aktyvaus paveikslėlio aktyviame sluoksnyje.Tačiau pasitaiko atvejų, kai reikia, kad priedas veiktų visą paveikslėlį. Tada reikia sujungti sluoksnius (Paveikslėlis-&gt;Sujungti sluoksnius).</thetip>
     <thetip xml:lang="nb">De fleste tilleggene jobber mot det gjeldende laget på det gjeldende bildet. I noen tilfeller vil du være nødt til å flette alle lag (Bilde-&gt;Flat ut bilde) hvis du vil at tillegget skal virke på hele bildet.</thetip>
@@ -276,6 +282,7 @@
     <thetip xml:lang="fr">Tous les effets ne peuvent pas être appliqués sur tous les types d'images. Ceci est signalé par une entrée de menu grisée. Vous pourriez donc avoir besoin de changer le mode de l'image en RVB (Image-&gt;Mode-&gt;RVB), ajouter un canal alpha (Calque-&gt; Transparence-&gt;Ajouter un canal alpha) ou l'aplatir (Image-&gt;Aplatir l'image).</thetip>
     <thetip xml:lang="hu">A kép típusától függően elképzelhető, hogy nem minden effektus alkalmazható arra. Ha nem alkalmazható, azt a megfelelő menübejegyzés szürkítése (inaktív állapota) jelzi. Ilyenkor szükség lehet a kép módjának RGB-re való módosítására ("Kép-&gt;Mód-&gt;RGB" menüpont), alfa-csatorna felvételére ("Réteg-&gt;Átlátszóság-&gt;Alfa-csatorna hozzáadása" menüpont) vagy a kép lapítására ("Kép-&gt;Egy réteggé lapítás" menüpont).</thetip>
     <thetip xml:lang="it">Non tutti gli effetti possono essere applicati ad ogni tipo di immagine. In caso di impossibilità la corrispondente voce del menù sarà grigia. Per risolvere il problema, puoi cambiare la modalità immagine in RGB (Immagine-&gt;Modalità-&gt;RGB), aggiungere un canale alfa (Livelli-&gt;Trasparenze-&gt;Aggiungi canale alfa) o appiattirla (Immagine-&gt;Appiattisci immagine).</thetip>
+    <thetip xml:lang="ja">全部のプラグインが全ての種類の画像に使えるわけじゃないんだ。作業中の画像に対して使えないやつは、メニューが灰色になって選択できなくなってるはずだよ。そんな時には RGB 形式にしたり (画像-&gt;モード-&gt;RGB)、アルファチャンネルを加えたり (レイヤー-&gt;透明-&gt;アルファチャンネルの追加)、画像を統合してみたり (画像-&gt;画像の統合) するといいかもしれないね。</thetip>
     <thetip xml:lang="ko">모든 효과가 모든 종류의 이미지에 적용되지는 않습니다. 이런 경우에는 메뉴 항목이 회색으로 표시됩니다. 이미지의 모드를 RGB로 바꾸거나(이미지-&gt;모드-&gt;RGB), 알파 채널을 더하거나(레이어-&gt;투명도-&gt;알파 채널 더하기), 배경으로 합쳐야(이미지-&gt;배경으로 합치기) 할 수도 있습니다.</thetip>
     <thetip xml:lang="lt">Yra efektų, kurių negalima taikyti visoms paveikslėlių rūšims. Neteisingai taikydami efektą, gausite klaidos pranešimą. Turėsite pakeisti paveikslėlį į RGB režimą (Paveikslėlis-&gt;Režimas-&gt;RGB) ir pridėti Alfa kanalą (Sluoksniai-&gt;Permatomumas-&gt;Pridėti Alfa kanalą) arba sujungti paveikslėlio sluoksnius (Paveikslėlis-&gt;Sujungti sluoksnius).</thetip>
     <thetip xml:lang="nb">Ikke alle effekter kan gjøre på alle typer bilder. Dette vises med et utgrået menyinnslag. Du kan trenge å endre bildet til RGB (Bilde-&gt;Modus-&gt;RGB), legge til en alfakanal (Lag-&gt;Gjennomsiktighet-&gt;Legg til alfakanal) eller flate det ut (Bilde-&gt;Flat ut bilde).</thetip>
@@ -286,6 +293,7 @@
     <thetip xml:lang="sv">Alla effekter kan inte tillämpas på alla typer av bilder. Detta visas genom att menyposten är gråtonad. Du kan behöva ändra bildläget till RGB (Bild-&gt;Läge-&gt;RGB), lägga till en alfakanal (Lager-&gt;Transparens-&gt;Lägg till alfakanal) eller platta till den (Bild-&gt;Platta till bild).</thetip>
     <thetip xml:lang="uk">Не всі ефекти можуть бути застосовані до усіх типів зображення. Це позначується сірим кольором елементів меню. Можливо знадобиться перевести зображення у режим RGB (Зображення-&gt;Режим-&gt;RGB), додати канал прозорості (Шари-&gt;Прозорість-&gt;Додати альфа-канал) або об'єднати шари зображення (Зображення-&gt;Звести зображення).</thetip>
     <thetip xml:lang="zh_CN">并非所有的效果都可以应用到所有类型的图像的。这会通过灰色的菜单项表示出来。您也许需要将图像模式改变为 RGB (图像-&gt;模式-&gt;RGB)、添加一个 alpha 通道(图层-&gt;透明-&gt;添加 Alpha 通道)或者平整图像(图像-&gt;平整图像)。</thetip>
+    <thetip xml:lang="zh_TW">並非所有效果都適用於各類影像。當某項功能無法使用時，選單的文字會以淺灰色表示。如果需要該種效果，可能需要將影像的色系轉為 RGB (影像→模式→RGB)、加入透明色版 (圖層→透明度→新增透明色版) 或者將它平面化 (影像→影像平面化)。</thetip>
   </tip>
 
 
@@ -307,7 +315,7 @@
     <thetip xml:lang="hr">Možete povući i ispustiti mnoge stvari u Gimpu. Na primjer, povlačenjem boje sa palete alata ili s palete boja i ispuštanjem na sliku, ispuniti će trenutnu sliku ili odabir odabranom bojom.</thetip>
     <thetip xml:lang="hu">A GIMP-ben sokféle művelet elvégezhető húzással. Ha például áthúz egy színt az eszköztárról vagy egy színpalettáról egy képre, akkor az adott kép illetve kijelölés kitöltésre kerül azzal a színnel.</thetip>
     <thetip xml:lang="it">Puoi trascinare molte cose in GIMP. Per esempio, trascinando un colore dalla finestra degli strumenti o da un colore della palette e rilasciandolo nell'immagine riempirai l'immagine corrente o la selezione con quel colore.</thetip>
-    <thetip xml:lang="ja">GIMP の色々なものをドラッグ＆ドロップすることができるよ．例えば道具箱や色パレットから色をドラッグして画像へドロップすると，その色で画像や選択領域が塗りつぶされるんだ．</thetip>
+    <thetip xml:lang="ja">GIMP の色々なものをドラッグ＆ドロップすることができるよ。例えば道具箱や色パレットから色をドラッグして画像へドロップすると、その色で画像や選択領域が塗りつぶされるんだ。</thetip>
     <thetip xml:lang="ko">김프에서는 많은 것을 드래그하고 드롭할 수 있습니다. 예를 들면, 도구 상자나 색상표에서 색상을 드래그해서 이미지에 드롭하면 현재 이미지나 선택을 그 색상으로 채웁니다.</thetip>
     <thetip xml:lang="lt">GIMP'e yra daug veiksmų, kuriuos galite vykdyti „nuvilkdami pele ir paleisdami“. Pavyzdžiui, jei nuvilksite spalvą iš įrankinės arba spalvų paletės ir paleisite paveikslėlyje, šia spalva bus užpildytas aktyvus paveikslėlis arba pažymėjimas.</thetip>
     <thetip xml:lang="ms">Anda boleh menyeret dan melepaskan banyak benda dalam GIMP. Contohnya, menyeret warna dari kotak alatan atau dari pelet warna dan melepaskannya ke dalam imej akan mengisi imej atau pemilihan semasa dengan warna tersebut.</thetip>
@@ -341,7 +349,7 @@
     <thetip xml:lang="hr">Kada koristite alat za crtanje (četkica, kist  ili olovka), <tt>Shift</tt>-klik će iscrtati ravnu liniju od posljednje iscrtane točke do trenutne pozicije pokazivača. Ako pritisnete <tt>Ctrl</tt>, moći ćete rotirati liniju pod kutom od 15°.</thetip>
     <thetip xml:lang="hu">Az ecset, a festékszóró és a ceruza használatakor a <tt>Shift</tt> billentyű lenyomása mellett végzett kattintás egyenes vonalat hoz létre a legutóbbi ponttól az aktuális kurzorpozícióig. Ha lenyomja a <tt>Ctrl</tt> billentyűt is, akkor a vonal szöge 15 fokos lépésközönként állítható.</thetip>
     <thetip xml:lang="it">Quando usi uno strumento di disegno (Pennello, Aerografo, o Matita), premendo <tt>Shift</tt>-click potrai disegnare una linea retta dall'ultimo punto di disegno a quello corrente. Se premi anche il tasto <tt>Ctrl</tt>, la linea sarà forzata a rotazioni di 15 gradi.</thetip>
-    <thetip xml:lang="ja">描画ツール (絵筆，エアブラシ，鉛筆) を使っているときに <tt>Shift</tt> を押しながらクリックするとカーソルのところまで直線が引かれるよ．さらに <tt>Ctrl</tt> を押してやれば，直線が15度単位になるんだ．</thetip>
+    <thetip xml:lang="ja">描画ツール (絵筆、エアブラシ、鉛筆) を使っているときに <tt>Shift</tt> を押しながらクリックするとカーソルのところまで直線が引かれるよ。さらに <tt>Ctrl</tt> を押してやれば、直線が15度単位になるんだ。</thetip>
     <thetip xml:lang="ko">그리기 도구(페인트브러시, 에어브러시, 연필)를 사용할 때, <tt>Shift</tt>-클릭하면 마지막으로 그린 곳에서 현재 커서 위치로 직선을 그립니다. <tt>Ctrl</tt>도 같이 누르면, 직선을 15도 단위로 제한합니다.</thetip>
     <thetip xml:lang="lt">Jei piešdami teptuku, purkštuvu ar pieštuku laikysite nuspaudę <tt>Shift</tt> klavišą, nubrėšite tiesią liniją. Jei tuo pačiu spausite <tt>Ctrl</tt> klavišą, liniją bus galima sukioti 15 laipsnių žingsniu.</thetip>
     <thetip xml:lang="ms">Apabila menggunakan alat lukisan (Beberus Cat, Penyembur, atau Pensel), dengan mengklik <tt>Shift</tt>-garis lurus akan dilukis dari titik lukisan terakhir anda ke kedudukan kursor semasa. Jika anda menekan juga <tt>Ctrl</tt>, garis tersebut akan mengekang kepada sudut 15 darjah.</thetip>
@@ -377,7 +385,7 @@
     <thetip xml:lang="hr">Možete koristiti srednju tipku miša za pomicanje vidljivog dijela slike, ako je veća od prozora u kome je prikazana.</thetip>
     <thetip xml:lang="hu">A képben való mozgásra használható a középső egérgomb, amennyiben a kép nagyobb, mint az azt megjelenítő ablak.</thetip>
     <thetip xml:lang="it">Se l'immagine è più larga della finestra che la contiene, puoi usare il tasto centrale del mouse per muoverti nell'immagine.</thetip>
-    <thetip xml:lang="ja">表示されている窓よりも画像の方が大きい場合には，マウスの中ボタンでずりずり表示領域を動かせるよ．</thetip>
+    <thetip xml:lang="ja">表示されている窓よりも画像の方が大きい場合には、マウスの中ボタンでずりずり表示領域を動かせるよ。</thetip>
     <thetip xml:lang="ko">이미지가 표시하는 창 보다 크면, 가운데 마우스 단추를사용해서 이미지의 주위를 밀고 당기면서 볼 수 있습니다.</thetip>
     <thetip xml:lang="lt">Nuspaudę vidurinį pelės klavišą galite stumdyti paveikslėlį, jei jis yra didesnis nei paveikslėlio langas.</thetip>
     <thetip xml:lang="ms">Anda boleh menggunakan butang tengah tetikus untuk menyorot di sekitar imej, jika ia lebih besar daripada tetingkap paparannya.</thetip>
@@ -410,6 +418,7 @@
     <thetip xml:lang="fr">Cliquez sur une règle et glissez la pour placer un guide sur l'image. Toutes les constructions de sélection vont accrocher aux guides. Vous pouvez enlever les guides en les glissant hors de l'image avec l'outil déplacer.</thetip>
     <thetip xml:lang="hu">Segédvonal felvételéhez kattintson az egyik vonalzóra - ezt követően húzással helyezheti az új segédvonalat a képre. A húzással áthelyezett kijelölések a segédvonalakra fognak illeszkedni. Egy segédvonal eltávolításához helyezze azt (húzással) a képen kívülre az Áthelyezés eszközzel.</thetip>
     <thetip xml:lang="it">Clicca su un righello e trascina verso l'immagine per posizionare una guida. Tutte le selezioni trascinate si attaccheranno alle guide. Puoi rimuovere le guide trascinandole fuori dall'immagine con lo strumento sposta.</thetip>
+    <thetip xml:lang="ja">目盛枠の上からドラッグすると定規を画像上に引き出せるよ。選択領域なんかはこの定規に吸いつくようになってるんだ。この定規は移動ツールを使って画像上から追い出すこともできるようになってるよ。</thetip>
     <thetip xml:lang="ko">이미지에 안내선을 표시하려면 눈금자를 클릭한 다음 드래그하십시오. 드래그를 사용하는 모든 선택은 안내선에 자동으로 맞춰집니다. 이동 도구로 안내선을 이미지 밖으로 드래그하면 없어집니다.</thetip>
     <thetip xml:lang="lt">Jei reikia pagalbinės linijos, paspauskite ant liniuotės kairiuoju pelės klavišu ir patempkite ant paveikslėlio. Perkeliami pažymėjimai kibs prie pagalbinių linijų. Pagalbines linijas pašalinsite, nutempdami jas už paveikslėlio ribų poslinkio įrankiu.</thetip>
     <thetip xml:lang="nb">Klikk og dra en linjal for å plassere en innrettingslinje i et bilde. Alle utvalg som blir dratt, vil tilpasses innrettingslinjene. Du kan fjerne innrettingslinjer ved å dra dem ut av bildet med flytteverktøyet.</thetip>
@@ -420,6 +429,7 @@
     <thetip xml:lang="sv">Klicka på en linjal och drag den för att placera en hjälplinje på en bild. Alla markeringar som dras kommer att fästas vid hjälplinjerna. Du kan ta bort hjälplinjer genom att dra dem utanför bilden med flyttverktyget.</thetip>
     <thetip xml:lang="uk">Щоб помістити напрямну на зображення натисніть на лінійку та перетягніть. Всі виділені області, які переміщуватимуться, будуть причіплюватись до напрямних. Видалити напрямні можна перетягнувши їх за межі зображення за допомогою інструменту &quot;Переміщення&quot;.</thetip>
     <thetip xml:lang="zh_CN">点击并拖动标尺可以在图像中放置参考线。所有拖动的选区都会被吸附到参考线上。您可以用移动工具把参考线拖出图像外来删除它们。</thetip>
+    <thetip xml:lang="zh_TW">在尺規上按下滑鼠左鍵並拖曳至影像內就可以加入參考線。以後任何拖曳的選擇區域都會自動吸引至參考線上。如果要去除參考線，可利用「移動」工具將參考線拖曳到影像範圍以外。</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can drag a layer from the Layers dialog and drop it onto the toolbox. This will create a new image containing only that layer.</thetip>
@@ -435,7 +445,7 @@
     <thetip xml:lang="hr">Možete povući sloj iz dijaloga „Slojevi, kanali i putanje“ i spustiti ga na paletu alata. Na taj način će se napraviti nova slika koja sadrži samo taj sloj.</thetip>
     <thetip xml:lang="hu">Ha a Rétegek párbeszédablakból áthúz egy réteget az eszköztárra, akkor létrejön egy új kép, amely csak a szóban forgó réteget fogja tartalmazni.</thetip>
     <thetip xml:lang="it">Trascinando e rilasciando un livello dalla finestra di dialogo Livelli alla finestra degli strumenti, verrà creata una nuova immagine contenente solo quel livello.</thetip>
-    <thetip xml:lang="ja">レイヤーダイアログから道具箱へレイヤーをドラッグして持っていくこともできるんだ．するとそのレイヤーで新しい画像を作るんだ．</thetip>
+    <thetip xml:lang="ja">レイヤーダイアログから道具箱へレイヤーをドラッグして持っていくこともできるんだ。するとそのレイヤーで新しい画像を作るんだ。</thetip>
     <thetip xml:lang="ko">레이어 대화상자에서 레이어를 드래그해서 도구 상자에 드롭하면, 그 레이어만 가진 새 이미지가 만들어 집니다.</thetip>
     <thetip xml:lang="lt">Galite nuvilkti pele sluoksnį iš Sluoksnių dialogo ir paleisti ant įrankinės. Taip sukursite naują paveikslėlį, kuriame bus tik šis sluoksnis.</thetip>
     <thetip xml:lang="ms">Anda boleh menyeret lapisan dari dialog Lapisan dan melepaskannya ke dalam kotak alatan. Ini akan mewujudkan imej baru yang hanya mengandungi lapisan tersebut.</thetip>
@@ -467,6 +477,7 @@
     <thetip xml:lang="fr">Une sélection flottante doit être ancrée comme un nouveau calque ou au dernier calque actif avant de procéder à de nouvelles opérations sur l'image. Cliquez sur les boutons « Nouveau calque » ou « Ancrer le calque » dans la boite de dialogue des calques, ou utilisez le menu pour faire de même.</thetip>
     <thetip xml:lang="hu">A lebegő kijelölést rögzíteni kell egy új rétegre vagy a legutóbbi aktív rétegre ahhoz, hogy további műveleteket végre lehessen hajtani a képen. Ez végrehajtható a Rétegek párbeszédablakban az &quot;Új réteg&quot; illetve a &quot;Réteg rögzítése&quot; gomb használatával vagy a menükkel.</thetip>
     <thetip xml:lang="it">Le selezioni fluttuanti devono essere ancorate a un nuovo livello o all'ultimo livello attivo prima di compiere altre operazioni sull'immagine. Per questo scopo clicca su &quot;Nuovo livello&quot; o &quot;Àncora livello&quot; nella finestra di dialogo Livelli, oppure usa le voci del menu per eseguire le stesse azioni.</thetip>
+    <thetip xml:lang="ja">フローティング選択は新規レイヤーか最後に操作したアクティブレイヤーに固定する必要があるんだ。レイヤーダイアログで &quot;新規レイヤー&quot; か &quot;レイヤー固定&quot;ボタンをクリックするか、メニューを使うのさ。</thetip>
     <thetip xml:lang="ko">떠있는 선택은 이미지에 다른 조작을 하기 전에 새 레이어나 마지막 활성 레이어에 고정해야 합니다. 레이어 대화상자의 &quot;새 레이어&quot;나 &quot;떠있는 레이어 고정&quot; 단추를 클릭하거나, 같은 기능을 하는 메뉴를 사용하십시오.</thetip>
     <thetip xml:lang="lt">Prieš veiksmų atlikimą plaukiojantis pažymėjimas turi būti pririštas prie naujo sluoksnio arba prie paskutinio aktyvaus sluoksnio. Tai įvykdysite Sluoksnių dialoge paspaudę mygtukus (arba meniu) "Naujas sluoksnis"  arba "Pritvirtinti sluoksnį".</thetip>
     <thetip xml:lang="nb">Et flytende utvalg må bli forankret til et nytt lag eller til det forrige aktive laget før det kan gjøres andre operasjoner på bildet. Klikk på «Nytt Lag»- eller «Forankre Lag»-knappene i Lag-menyen, eller bruk menyene til å gjøre det samme.</thetip>
@@ -477,6 +488,7 @@
     <thetip xml:lang="sv">En flytande markering måste ankras vid ett nytt lager eller i det senast aktiva lagret innan andra åtgärder utförs på bilden. Klicka på knapparna &quot;Nytt lager&quot; eller &quot;Ankra lager&quot; i lagerdialogen, eller använd menyerna för att utföra samma sak.</thetip>
     <thetip xml:lang="uk">Плаваюча виділена ділянка повинна бути прикріплена до нового шару або до останнього активного шару, перед виконанням інших маніпуляцій із зображенням. Для цього натисніть &quot;Новий шар&quot; у діалоговому вікні &quot;Шари&quot; або &quot;Прикріпити плаваючий шар&quot;, або виберіть цю функцію з меню.</thetip>
     <thetip xml:lang="zh_CN">在对图像进行其它操作之前，必须先把浮动选区固定到当前活动图层或者新的图层。点击图层对话框中的“新建图层”或者“固定图层”按钮，或者使用菜单也可以。</thetip>
+    <thetip xml:lang="zh_TW">對影像進行任何操作前，浮動選擇區域必須先固定在新的圖層或是最後使用的圖層上。要進行以上的程序，可以在「圖層」對話方塊中選取「新增圖層」或「固定圖層」按鈕。另外在選單中也可以使用同樣的方法。</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>The GIMP supports gzip compression on the fly. Just add <tt>.gz</tt> (or <tt>.bz2</tt>, if you have bzip2 installed) to the filename and your image will be saved compressed. Of course loading compressed images works too.</thetip>
@@ -492,7 +504,7 @@
     <thetip xml:lang="hr">GIMP podržava gzip kompresiju u letu. Jednostavno dodajte nastavak <tt>.gz</tt> (ili <tt>.bz2</tt>, ako imate instairanu podršku za bzip2) nazivu datoteke i vaša slika će biti spremljena i sažeta. Naravno, učitavanje sažetih slika u letu takođe radi kao i spremanje.</thetip>
     <thetip xml:lang="hu">A GIMP-pel automatikus tömörítés is végezhető. A funkció a következő módon használható: hozzá kell fűzni egy <tt>.gz</tt> végződést (vagy <tt>.bz2</tt> végződést, ha telepítve van a bzip2) a fájlnévhez - ennek hatására a kép tömörített formában lesz elmentve. A tömörített képek közvetlen betöltését is támogatja a program.</thetip>
     <thetip xml:lang="it">GIMP supporta la compressione gzip al volo. Basta aggiungere <tt>.gz</tt> (o <tt>.bz2</tt>, se hai installato bzip2) al nome del file e la tua immagine sarà salvata compressa. Ovviamente funzionerà anche il caricamento di immagini compresse.</thetip>
-    <thetip xml:lang="ja">GIMP は自動 gzip 圧縮をサポートしているよ．単に拡張子 <tt>.gz</tt> を (bzip2 がある時には <tt>.bz2</tt> の方がいいかな) 付けるだけで，自動的に圧縮されるようになってるんだ．もちろん，読み込む時にも自動で展開されるよ．</thetip>
+    <thetip xml:lang="ja">GIMP は自動 gzip 圧縮をサポートしているよ。単に拡張子 <tt>.gz</tt> を (bzip2 がある時には <tt>.bz2</tt> の方がいいかな) 付けるだけで、自動的に圧縮されるようになってるんだ。もちろん、読み込む時にも自動で展開されるよ。</thetip>
     <thetip xml:lang="ko">김프는 gzip 압축을 즉석에서 지원합니다. 단지 파일이름에 <tt>.gz</tt>(또는 bzip2가 설치되어 있다면 <tt>.bz2</tt>)를 더하기만하면 이미지를 압축해서 저장합니다. 물론 압축된 이미지를 불러오는 것도 문제 없죠.</thetip>
     <thetip xml:lang="lt">GIMP galite panaudoti gzip archyvavimą. Pridėkite <tt>.gz</tt> (arba <tt>.bz2</tt>, jei turite įdiegtą bzip2) prie bylos pavadinimo, ir išsaugosite suarchyvuotą paveikslėlį. Taip pat ir su atidaromais paveikslėliais.</thetip>
     <thetip xml:lang="ms">GIMP menyokong pemampatan gzip secara layang. Hanya tambahkan <tt>.gz</tt> (atau <tt>.bz2</tt>, jika bzip2 telah dipasang) pada nama fail dan imej anda akan disimpan secara mampat. Sudah tentu, memuatkan imej mampat juga boleh dilakukan.</thetip>
@@ -526,7 +538,7 @@
     <thetip xml:lang="hr">Pritisnite i držite tipku <tt>Shift</tt> prije odabira kako bi mogli dodati novi već postojećem odabiru, umjesto da ga zamijenite novim. Koristite <tt>Ctrl</tt> prije odabira za izdvajanje novog izdvojili odabira iz već postojećeg odabira.</thetip>
     <thetip xml:lang="hu">Ha kijelölés közben lenyomva tartja a <tt>Shift</tt> billentyűt, akkor az új kijelölés hozzáadódik a korábbihoz, nem pedig a helyébe lép. Ha ugyanezt a <tt>Ctrl</tt> billentyűvel teszi, akkor kivonás történik a korábbi kijelölésből.</thetip>
     <thetip xml:lang="it">Tenendo premuto il tasto <tt>Shift</tt> prima di effettuare una selezione ti consentirà di aggiungere la selezione corrente invece di rimpiazzarla. Usando il tasto <tt>Ctrl</tt> la selezione verrà sottratta a quella presente.</thetip>
-    <thetip xml:lang="ja">領域を選択し始める時に <tt>Shift</tt> キーを押したままにしておくと，その時の選択領域を置き換えるんじゃなくって，付け加える事が出来るんだ．<tt>Ctrl</tt>を押しながら始めれば領域をさっ引く事になるしね．</thetip>
+    <thetip xml:lang="ja">領域を選択し始める時に <tt>Shift</tt> キーを押したままにしておくと、その時の選択領域を置き換えるんじゃなくって、付け加える事が出来るんだ。<tt>Ctrl</tt>を押しながら始めれば領域をさっ引く事になるしね。</thetip>
     <thetip xml:lang="ko"><tt>Shift</tt>키를 누른 채로 선택을 만들면 현재 선택을 바꾸는 대신 더합니다. <tt>Ctrl</tt>를 누른 채로 선택을 만들면 현재 선택에서 뺍니다.</thetip>
     <thetip xml:lang="lt">Jei pradėdami pažymėjimo veiksmą laikysite nuspaudę <tt>Shift</tt> klavišą, papildysite pažymėtą plotą, o ne atliksite naują pažymėjimą. Naudodami <tt>Ctlr</tt> klavišu atimsite žymimą plotą iš jau pažymėto.</thetip>
     <thetip xml:lang="ms">Dengan menekan seketika kekunci <tt>Shift</tt> sebelum membuat pemilihan membolehkan anda menambahkan pemilihan semasa bukannya menggantikannya. Dengan menggunakan <tt>Ctrl</tt> sebelum membuat pemilihan tolak daripada yang ada sekarang.</thetip>
@@ -559,6 +571,7 @@
     <thetip xml:lang="fr">Vous pouvez presser et maintenir les touches <tt>Maj</tt> et <tt>Ctrl</tt> tandis que vous faites une sélection de façon à la contraindre à un cercle ou un carré parfait, ou pour l'avoir centrée sur son point de départ.</thetip>
     <thetip xml:lang="hu">Négyzet vagy kör alakú terület kijelöléséhez tartsa nyomva a <tt>Shift</tt> billentyűt a kijelölés elvégzésekor. Ahhoz, hogy a kijelölési alakzat középpontja a kiindulási pont legyen, a <tt>Ctrl</tt> billentyűt tartsa nyomva.</thetip>
     <thetip xml:lang="it">Premendo o rilasciando i tasti <tt>Maiusc</tt> e <tt>Ctrl</tt> mentre stai facendo una selezione puoi forzarla ad un quandrato o un cerchio, o ad averla centrata nel punto di partenza.</thetip>
+    <thetip xml:lang="ja">選択領域を作ってる最中に <tt>Shift</tt> や <tt>Ctrl</tt> を押すことで、選択領域を正方形や正円にしたり、領域を対角じゃなくって中心と角で指定することもできたりするんだ。</thetip>
     <thetip xml:lang="ko">선택하는 동안 <tt>Shift</tt>를 누르면, 정사각형이나 정원으로 제한할 수 있습니다. <tt>Ctrl</tt>을 누르면 시작점을 가운데로 만들 수 있죠.</thetip>
     <thetip xml:lang="lt">Jei norite pažymėti tikslų kvadratą arba apskritimą ir žymėti juos nuo centrinio taško, žymėdami spauskite <tt>Ctrl</tt> ir <tt>Shift</tt>.</thetip>
     <thetip xml:lang="nb">Du kan trykke eller slippe <tt>Shift</tt>- and <tt>Ctrl</tt>-knappene mens du gjør et utvalg for å begrense det til et kvadrat eller sirkel, eller for å ha det sentrert på startpunktet. </thetip>
@@ -569,6 +582,7 @@
     <thetip xml:lang="sv">Du kan trycka eller släppa <tt>Skift</tt>- och <tt>Ctrl</tt>-knapparna då du skapar en markering för att begränsa den till en perfekt kvadrat eller cirkel, eller för att centrera den på dess startpunkt.</thetip>
     <thetip xml:lang="uk">Щоб створити виділену ділянку у вигляді квадрату або кола, а також, щоб створити виділену ділянку з вказаного центру, використовуйте клавіші <tt>Shift</tt> та <tt>Ctrl</tt>.</thetip>
     <thetip xml:lang="zh_CN">在进行选择的时候，您可以按下或释放<tt>Shift</tt>和<tt>Ctrl</tt>键得到一个标准的正方形或圆，或者使它以起始点为中心。</thetip>
+    <thetip xml:lang="zh_TW">當選取區域時可以同時按下 <tt>Shift</tt> 及 <tt>Ctrl</tt> 鍵，這樣可以限制選擇區域為正方形或正圓形，或是將滑鼠開始拖曳的位置定為選擇區域的中心點。</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can adjust or move a selection by using <tt>Alt</tt>-drag. If this makes the window move, your window manager uses the <tt>Alt</tt> key already. Try pressing <tt>Shift</tt> at the same time.</thetip>
@@ -583,6 +597,7 @@
     <thetip xml:lang="fr">Vous pouvez ajuster ou replacer une sélection en utilisant <tt>Alt</tt> glissé. Si cette action provoque un déplacement de la fenêtre c'est que votre gestionnaire utilise déjà la touche <tt>Alt</tt>. Essayer alors d'appuyer sur <tt>Maj</tt> en même temps.</thetip>
     <thetip xml:lang="hu">Kijelölés átalakítása és áthelyezése az <tt>Alt</tt> billentyű nyomva tartásával végzett húzással lehetséges. Ha ez a kombináció az ablakot mozdítja el, akkor az ablakkezelő már használja ezt a kombinációt; ebben az esetben nyomja le a <tt>Shift</tt> billentyűt is a kijelölés kezeléséhez.</thetip>
     <thetip xml:lang="it">Puoi muovere una selezione premendo <tt>Alt</tt> mentre trascini la selezione. Se si dovesse muovere la finestra, vuol dire che il tuo window manager usa già il tasto <tt>Alt</tt>. Prova a premere allo stesso tempo anche il tasto <tt>Maiusc</tt> o <tt>Ctrl</tt>.</thetip>
+    <thetip xml:lang="ja"><tt>Alt</tt> を押しながらドラッグすると選択領域の調節や移動ができるよ。もしウィンドウが動いてしまうのであれば、君の使っているウィンドウマネージャーがすでに <tt>Alt</tt> を使ってるんだ。そういうときは <tt>Shift</tt> も押しながら試してみてね。</thetip>
     <thetip xml:lang="ko"><tt>Alt</tt>-드래그를 사용해서 선택을 조절하거나 이동할 수 있습니다. 이렇게 했더니 창이 움직인다면, 사용 중인 창 관리자가 <tt>Alt</tt>를 사용하고 있는 겁니다. 그럴 땐 <tt>Shift</tt>키도 같이 눌러 주세요.</thetip>
     <thetip xml:lang="lt">Galite pakoreguoti pažymėjimą, spausdami <tt>Alt</tt> ir kairįjį pelės klavišą. Jei tai priverčia judėti langą, reiškia, kad <tt>Alt</tt> klavišas jau naudojamas. Pabandykite paspausti ir <tt>Shift</tt> tuo pačiu metu, kai spaudžiate <tt>Alt</tt>.</thetip>
     <thetip xml:lang="nb">Du kan justere og endre posisjon for et utvalg ved å bruke <tt>Alt</tt>-dra. Hvis dette gjør at vinduet flyttes, bruker vindushåndtereren din <tt>Alt</tt>-knappen allerede. Prøv da å holde <tt>Shift</tt> nede samtidig for å unngå dette.</thetip>
@@ -593,6 +608,7 @@
     <thetip xml:lang="sv">Du kan justera och placera om en markering genom att använda <tt>Alt</tt>-drag. Om detta gör att fönstret flyttar sig använder din fönsterhanterare redan <tt>Alt</tt>-tangenten. Prova att trycka <tt>Shift</tt> på samma gång.</thetip>
     <thetip xml:lang="uk">Ви можете скорегувати та перемістити виділену ділянку використовуючи перетягування з утриманням натиснутої <tt>Alt</tt>. Якщо це призводить до переміщення цілого вікна, це означає ваш менеджер вікон вже використовує клавішу <tt>Alt</tt>. Спробуйте одночасно з цим натискати <tt>Shift</tt>.</thetip>
     <thetip xml:lang="zh_CN">可以通过<tt>Alt</tt>+拖动来调整和改变选区。如果这样做使窗口移位了，说明您的窗口管理器已经使用了<tt>Alt</tt>键，请同时按住<tt>Shift</tt>键。</thetip>
+    <thetip xml:lang="zh_TW">按 <tt>Alt</tt> 鍵再用滑鼠拖曳可以調整和重新放置選擇區域。如果這個組合令視窗移動，即表示視窗總管已經使用了 <tt>Alt</tt>鍵。這個時候，請試試同時按下 <tt>Shift</tt> 鍵。</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can draw simple squares or circles using Edit-&gt;Stroke Selection. It strokes the edge of your current selection. More complex shapes can be drawn using the Path tool or with Filters-&gt;Render-&gt;Gfig.</thetip>
@@ -607,7 +623,7 @@
     <thetip xml:lang="fr">Vous pouvez dessiner de simples carrés ou cercles en utilisant Édition-&gt;Tracer la sélection. Il trace les contours de votre sélection courante. Des figures géométriques plus complexes sont réalisables avec l'outil chemin ou avec Filtres-&gt;Rendu-&gt;Figures géométriques.</thetip>
     <thetip xml:lang="hu">Egyszerű négyzeteket és köröket rajzolhat a "Szerkesztés-&gt;Kijelölés körberajzolása" menüponttal. Ez a funkció megrajzolja az aktuális kijelölés határvonalait. A bonyolultabb alakzatok elkészíthetők az útvonaleszközzel vagy a Szűrők-&gt;Megjelenítés-&gt;GFig menüponttal.</thetip>
     <thetip xml:lang="it">Usando Modifica-&gt;Disegna selezione potrai disegnare semplici quadrati o cerchi tracciando la selezione corrente con il pennello attivo. Forme più complesse possono essere disegnate con Filtri-&gt;Render-&gt;Gfig.</thetip>
-    <thetip xml:lang="ja">編集 -&gt; ストローク描画 を使って現在有効なブラシで選択領域の縁に沿って描くことができるんだ．正方形や正円を書きたい時には便利だね．もっと複雑な図形を描きたい時にはパスツールや フィルタ -&gt; 描写 -&gt; Gfig だね．</thetip>
+    <thetip xml:lang="ja">編集 -&gt; ストローク描画 を使って現在有効なブラシで選択領域の縁に沿って描くことができるんだ。正方形や正円を書きたい時には便利だね。もっと複雑な図形を描きたい時にはパスツールや フィルタ -&gt; 描写 -&gt; Gfig だね。</thetip>
     <thetip xml:lang="ko">편집-&gt;선택 따라그리기를 사용하면 단순한 사격형이나 원을 그릴 수 있습니다. 현재 선택의 모서리를 따라 그립니다. 더 복잡한 도형은 경로 도구나 필터-&gt;렌더-&gt;Gfig를 사용해서 그릴 수 있습니다.</thetip>
     <thetip xml:lang="lt">Naudodami Keisti-&gt;Apvesti galite nupiešti paprastus kvadratus ir apskritimus. Šiuo veiksmu apvesite pažymėtą plotą aktyviu teptuku. Sudėtingesnes kreives nupiešite naudodami Kontūrų įrankį arba Filtrai-&gt;Perteikimas-&gt;Gfig.</thetip>
     <thetip xml:lang="nb">Du kan tegne enkle firkanter eller sirkler med Edit-&gt;Strøkutvalg. Det vil tegne kantene på utvalget ditt. Mer komplekse former kan også bli tegnet ved å bruke Baneverktøyet eller med Filter-&gt;Render-&gt;Gfig.</thetip>
@@ -639,7 +655,7 @@
     <thetip xml:lang="fr">Si vous tracez un chemin (Édition-&gt;Tracer un chemin), un outil courant de peinture avec ses réglages courants peut être utilisé. Vous pouvez utilisez le pinceau en mode dégradé ou même la gomme ou l'outil éclaircir/assombrir.</thetip>
     <thetip xml:lang="hu">Egy útvonal körberajzoltatásakor ("Szerkesztés-&gt;Útvonal körberajzolása" menüpont) a festőeszközök az aktuális beállításaik szerint használhatók. Használhatja az Ecset eszközt például színátmenet-módban, vagy akár a Radír vagy a Maszatolás eszközt is.</thetip>
     <thetip xml:lang="it">Se si delinea un tracciato (Modifica-&gt;Disegna tracciato), vengono usate le impostazioni dello strumento di disegno corrente. Si può usare il Pennello nella modalità gradiente oppure la Gomma o lo strumento Sfumino.</thetip>
-    <thetip xml:lang="ja">パスをストローク描画 (編集-&gt;ストローク描画) するときは現在の描画ツールの設定を使うんだ．グラデーションモードの絵筆やパターンを使ったスタンプツールや消しゴムやにじみツールだって使うことができるんだ．</thetip>
+    <thetip xml:lang="ja">パスをストローク描画 (編集-&gt;ストローク描画) するときは現在の描画ツールの設定を使うんだ。グラデーションモードの絵筆やパターンを使ったスタンプツールや消しゴムやにじみツールだって使うことができるんだ。</thetip>
     <thetip xml:lang="ko">경로를 따라그릴 때(편집-&gt;경로 따라 그리기), 그리기 도구들을 현재을 설정으로 사용할 수 있습니다. 그라디언트 모드 페인트브러시는 물론이고 심지어 지우개나 문지르기 도구도 사용할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Jei Jūs apvesite kontūrą (Keisti-&gt;Apvesti), bus naudojamas aktyvus įrankis ir jo nustatymai. Galite naudoti teptuką su perėjimu, klonavimo įrankį su raštu arba net trintuką, tepimo įrankį.</thetip>
     <thetip xml:lang="nb">Hvis du streker opp en bane (Rediger-&gt;Strek opp bane), kan tegneverktøyene bli brukt med de gjeldende innstillingene. Du kan bruke luftpensel i graderingsmodus eller til og med sletteverktøyet eller andre utsmøringsverktøyet.</thetip>
@@ -670,7 +686,7 @@
     <thetip xml:lang="fr">Vous pouvez créer et éditer des sélections complexes en utilisant l'outil chemin. Le dialogue des chemins vous permet de travailler sur de multiples chemins et de les convertir en sélections.</thetip>
     <thetip xml:lang="hu">Bonyolultabb kijelöléseket hozhat létre és szerkeszthet az útvonaleszközzel. Az Útvonalak párbeszédablakban lehetőség van több útvonal kezelésére illetve azok kijelöléssé való alakítására.</thetip>
     <thetip xml:lang="it">Puoi creare e modificare selezioni complesse usando lo strumento Tracciati. La finestra di dialogo Tracciati ti permette di lavorare con molteplici tracciati e di convertirli in selezioni.</thetip>
-    <thetip xml:lang="ja">ベジエツールを使って複雑な選択領域を作れるよ．パスダイアログでは複数のパスで作業したり選択領域に変換したりできるんだ．</thetip>
+    <thetip xml:lang="ja">パスツールを使って複雑な選択領域を作れるよ。パスダイアログでは複数のパスで作業したり選択領域に変換したりできるんだ。</thetip>
     <thetip xml:lang="ko">경로 도구를 이용해서 복잡한 선택을 만들고 고칠 수 있습니다. 경로 대화상자에서 여러 개의 경로를 조작하여, 선택으로 변환할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Galite sukurti ir keisti sudėtingus pažymėjimus, naudodami Kontūrų įrankį. Kontūrų dialogas suteikia galimybę dirbti su daugeriopais kontūrais ir paversti juos pažymėjimais.</thetip>
     <thetip xml:lang="nb">Du kan opprette og redigerer komplekse utvalg ved å bruke Baneverktøyet. Banedialogen lar deg arbeide på flere baner samtidig og konvertere dem til utvalg.</thetip>
@@ -701,6 +717,7 @@
     <thetip xml:lang="fr">Vous pouvez utiliser les outils de dessin pour changer la sélection. Cliquer sur le bouton « Masquage rapide » dans le coin bas gauche de la fenêtre d'image. Changez votre sélection en dessinant dans l'image et cliquez à nouveau sur le bouton pour la reconvertir comme une sélection normale.</thetip>
     <thetip xml:lang="hu">A kijelölés módosítható a festőeszközökkel. Kattintson a képablak bal alsó sarkában levő &quot;Gyorsmaszk be-ki&quot; gombra, majd módosítsa a kijelölést a képre való rajzolással, ez után kattintson ismét a gombra - ezzel a rajz vissza lesz alakítva normál kijelöléssé.</thetip>
     <thetip xml:lang="it">Gli strumenti di disegno possono servire per cambiare le selezioni: fare clic sul bottone &quot;Maschera veloce&quot; in basso a sinistra della finestra dell'immagine, cambiare la selezione disegnando nell'immagine e fare clic nuovamente sul bottone per convertirla ad una selezione normale.</thetip>
+    <thetip xml:lang="ja">選択領域を変えるために描画ツールを使うことができるよ。画像ウィンドウの左下の&quot;クイックマスク&quot;ボタンをクリックしよう。描画の変更が終わったらもう一度クリックしてやることでいつもの選択領域に戻るんだ。</thetip>
     <thetip xml:lang="ko">선택을 고치기 위해서 그리기 도구를 사용할 수 있습니다. 이미지 창의 좌하단에 있는 &quot;퀵마스크&quot; 단추를 클릭하십시오. 이미지에 그리기만 하면 선택이 되고 단추를 한번 더 클릭하면 보통의 선택으로 바뀝니다.</thetip>
     <thetip xml:lang="lt">Galite naudoti piešimo įrankius pažymėjimui pakeisti. Spragtelėkite ant Greitos Kaukės mygtuko kairiajame apatiniame paveikslėlio kampe. Piešdami pakeiskite pažymėjimą ir paspauskite tą patį mygtuką, kad grįžtumėte į normalų režimą.</thetip>
     <thetip xml:lang="nb">Du kan bruke tegneverktøyene til å endre utvalget. Klikk på «Hurtigmaske»-knappen nederst til venstre i et bildevindu. Gjør endringer på utvalget ved å tegne i bildet, og klikk på knappen en gang til for å gjøre det om til et normalt utvalg igjen.</thetip>
@@ -711,6 +728,7 @@
     <thetip xml:lang="sv">Du kan använda målarverktygen för att ändra markeringen. Klicka på &quot;Snabbmask&quot;-knappen i nedre vänstra hörnet i ett bildfönster. Ändra din markering genom att måla i bilden och klicka på knappen igen för att konvertera den tillbaka till en normal markering.</thetip>
     <thetip xml:lang="uk">Для редагування меж виділеної ділянки можна використовувати інструменти малювання. Для цього необхідно увімкнути &quot;Швидка маска&quot; у нижньому лівому куті вінка зображення, відредагувати виділену ділянку інструментом малювання, потім ще раз натиснути кнопку для переходу у звичайний режим.</thetip>
     <thetip xml:lang="zh_CN">您可以使用涂画工具来改变选区。点击图像窗口左下角的“快速蒙板”按钮，在图像上涂画来修改您的选区，然后再次点击按钮把它转换回一个正常选区。</thetip>
+    <thetip xml:lang="zh_TW">您可以使用繪畫工具來更改選擇區域。按下影像視窗左下角的「快速遮罩」按鈕。透過在影像上繪圖可以更改選擇區域，然後再按一次按鈕可以將之轉換為普通的選擇區域。</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can save a selection to a channel (Select-&gt;Save to Channel) and then modify this channel with any paint tools. Using the buttons in the Channels dialog, you can toggle the visibility of this new channel or convert it to a selection.</thetip>
@@ -725,7 +743,7 @@
     <thetip xml:lang="fr">Vous pouvez sauvegarder une sélection dans un canal (Sélection-&gt;Enregistrer dans un canal) puis la modifier avec n'importe quel outil de dessin. En utilisant les boutons du dialogue des canaux, vous pouvez activer/désactiver la visibilité de ce nouveau canal ou le convertir comme une sélection.</thetip>
     <thetip xml:lang="hu">Elmenthet egy kijelölést csatornába (Kijelölés-&gt;Mentés csatornába), majd módosíthatja a csatornát bármely festőeszközzel. A Csatornák párbeszédablak gombjainak segítségével átkapcsolhatja az új csatorna láthatóságát, vagy kijelöléssé alakíthatja a csatornát.</thetip>
     <thetip xml:lang="it">Puoi salvare una selezione in un canale (Seleziona&gt;Salva in Canale) e poi modificare il canale con gli strumenti di disegno. Con i bottoni presenti nella finestra di dialogo Canali, puoi rendere visibile il nuovo canale o convertirlo in selezione.</thetip>
-    <thetip xml:lang="ja">選択領域をチャンネルに保存して (選択-&gt;チャンネルに保存)，描画ツールでこのチャンネルを修正することができるよ．チャンネルダイアログのボタンを使って，このチャンネルを表示したり選択領域に変換したりできるよ．</thetip>
+    <thetip xml:lang="ja">選択領域をチャンネルに保存して (選択-&gt;チャンネルに保存)、描画ツールでこのチャンネルを修正することができるよ。チャンネルダイアログのボタンを使って、このチャンネルを表示したり選択領域に変換したりできるよ。</thetip>
     <thetip xml:lang="ko">선택을 채널에 저장하고(선택-&gt;채널로 저장), 이 채널을 원하는 그리기 도구로 고칠 수 있습니다. 채널 대화상자의 단추들을 이용해서 채널을 표시하거나 숨길 수 있고, 선택으로 변환할 수도 있습니다.</thetip>
     <thetip xml:lang="lt">Galite išsaugoti pažymėjimą į kanalą (Pažymėti-&gt;Išsaugoti į kanalą) ir keisti kanalą bet kuriuo piešimo įrankiu. Mygtukais Kanalų dialoge galite įjungti/išjungti naują kanalą arba paversti jį pažymėjimu.</thetip>
     <thetip xml:lang="ms">Anda boleh menyimpan pemilihan ke saluran (Pilih-&gt;Simpan ke Saluran) dan kemudian mengubah suai saluran ini dengan mana-mana alat cat. Dengan menggunakan butang dalam dialog Saluran, anda boleh togol kejelasan saluran baru ini atau menukarkannya kepada pemilihan.</thetip>
@@ -763,6 +781,7 @@
     <thetip xml:lang="fr">Après avoir activé les « Raccourcis claviers dynamiques » dans le dialogue des préférences, vous pouvez réassigner les raccourcis clavier. Faites cela en affichant le menu, sélectionnez un élément du menu, et pressez sur la combinaison de touche désirée. Si « Enregistrer à la sortie les raccourcis clavier» est activé, Ils sont enregistrés lorsque vous quittez GIMP.</thetip>
     <thetip xml:lang="hu">Ha be van kapcsolva a &quot;Dinamikus gyorsbillentyűk használata&quot; beállítás (Beállítások párbeszédablak), akkor a gyorsbillentyűk hozzárendelése módosítható. A módosítás a következőképpen végezhető: menü megnyitása, menübejegyzés kijelölése, majd a kívánt billentyűkombináció lenyomása. Ha a &quot;Gyorsbillentyűk mentése kilépéskor&quot; beállítás be van kapcsolva, akkor a GIMP-ből való kilépéskor a billentyűkombinációk elmentésre kerülnek.</thetip>
     <thetip xml:lang="it">Dopo aver attivato &quot;Tasti scorciatoia dinamici&quot; nelle Preferenze, puoi riassegnare le scorciatoie da tastiera. Basta aprire il menu, selezionare una voce, e premere la combinazione desiderata. Se l'opzione &quot;Salva i tasti scorciatoia all'uscita&quot; è abilitata, la combinazione sarà salvata quando si esce da GIMP.</thetip>
+    <thetip xml:lang="ja">設定ダイアログで &quot;動的キーボードショートカット&quot; をオンにしておけば、ショートカットキーの割当を変えることができるよ。どんなメニューでもまずそのメニューを呼び出して、メニューにカーソルを当てた状態で、新しく割り当てるキーの組合せを押すだけで良いんだ。&quot;ショートカットの保存&quot; をオンにしておけば、GIMP の終了時に自動的に保存されるよ。</thetip>
     <thetip xml:lang="ko">기본 설정 대화상자에서 &quot;동적인 키보드 단축키&quot;를 선택한 다음, 단축키를 재할당 할 수 있습니다. 단축키를 설정하려면 해당 메뉴를 열고, 메뉴 항목을 선택하고, 원하는 키 조합을 누르면 됩니다. &quot;마칠 때 키보드 단축키 저장&quot;을 선택했다면, 김프를 마칠 때 단축키 설정이 저장됩니다.</thetip>
     <thetip xml:lang="lt">Jei esate įjungę "Dinaminės klavišų kombinacijos" bet kokiam meniu punktui galite sukurti klavišų kombinaciją, kuria galėsite šį meniu punktą išsikviesti. Pasirinkite meniu punktą ir paspauskite pasirinktus klavišus. Klavišų kombinacija bus išsaugota uždarius GIMP, jei bus įjungta „Išsaugoti klavišų kombinacijas“.</thetip>
     <thetip xml:lang="nb">Etter at du aktiverte «Dynamiske tastesnarveier» i Alternativer-menyen, kan du opprette hurtigtaster. Dette gjør du ved å få fram menyen, velge en ting fra menyen, og trykke den ønskede tastekombinasjonen. Hvis «Lagre tastesnarveier» er aktivert, blir de nye innstillingene lagret når du avslutter GIMP.</thetip>
@@ -773,6 +792,7 @@
     <thetip xml:lang="sv">När du har aktiverat &quot;Dynamiska kortkommandon&quot; i inställningsdialogen kan du ställa om snabbtangenter. Detta gör du genom att ta fram menyn, markera ett menyval och trycka på den önskade snabbtangentskombinationen. Detta sparas då du avslutar GIMP om &quot;Spara kortkommandon&quot; är aktiverat.</thetip>
     <thetip xml:lang="uk">Після ввімкнення функції &quot;Динамічні комбінації клавіш&quot; у діалоговому вікні Параметри" ви можете перевизначати комбінації клавіш. Для цього відкрийте меню наведіть вказівник на потрібний пункт меню, та натисніть бажану комбінацію клавіш. Якщо ввімкнено &quot;Зберігати комбінації клавіш при виході&quot;, вона буде збережена під час виходу з програми GIMP.</thetip>
     <thetip xml:lang="zh_CN">当您在首选项对话框中启用了“动态快捷键”以后，您就可以重新分配快捷键了。只要弹出菜单，选择一个菜单项，然后按新的快捷键组合就行了。如果启用了“保存快捷键”，退出 GIMP 时，这些新的快捷键将会被保存下来。</thetip>
+    <thetip xml:lang="zh_TW">在偏好設定對話方塊中啟用「可即時更改捷徑鍵設定」後，您可以重新安排選單上的捷徑鍵。方法是先用滑鼠選取選單的某個項目，但不要按滑鼠按鈕，然後按下新的捷徑鍵組合。GIMP 結束時，這些按鍵組合會被儲存下來。</thetip>
   </tip>
   <tip level="advanced">
     <thetip>If your screen is too cluttered, you can press <tt>Tab</tt> multiple times in an image window to hide or show the toolbox and other dialogs.</thetip>
@@ -789,7 +809,7 @@
     <thetip xml:lang="hr">Ako vam se čini da je vaš zaslon prezatrpan možete pritisnuti tipku <tt>Tab</tt> nekoliko puta u okviru prozora neke slike kako bi omogućili sakrivanje ili prikazivanje palete alata i ostalih dijaloga.</thetip>
     <thetip xml:lang="hu">Ha zsúfolt a képernyő, akkor nyomja le többször egymás után a <tt>Tab</tt> billentyűt egy képablakban - ezzel a módszerrel váltogatni lehet az eszköztár és egyéb párbeszédablakok elrejtése és megjelenítése között.</thetip>
     <thetip xml:lang="it">Se lo schermo è troppo affollato, premi il tasto <tt>Tab</tt> più volte nella finestra dell'immagine per nascondere o mostrare la barra degli strumenti o le altre finestre di dialogo.</thetip>
-    <thetip xml:lang="ja">画面がきゅうくつな時は，画像ウィンドウで何回か <tt>Tab</tt> キーを押すことで道具箱やダイアログを出し入れすることができるんだ．</thetip>
+    <thetip xml:lang="ja">画面がきゅうくつな時は、画像ウィンドウで何回か <tt>Tab</tt> キーを押すことで道具箱やダイアログを出し入れすることができるんだ。</thetip>
     <thetip xml:lang="ko">화면이 너무 어지럽다면, 이미지 창에서 <tt>Tab</tt>을 여러 번 눌러서, 도구 상자나 다른 대화상자들을 표시하거나 숨길 수 있습니다.</thetip>
     <thetip xml:lang="lt">Jei Jūsų ekranas per daug apkrautas, galite keletą kartų paspausti <tt>Tab</tt> paveikslėlio lange, kad paslėptumėte įrankinę ir kitus dialogų langus.</thetip>
     <thetip xml:lang="ms">Jika skrin anda terlalu berselerak, anda boleh menekan <tt>Tab</tt> beberapa kali dalam tetingkap imej untuk menyembunyikan atau menunjukkan dialog kotak alatan dan dialog lain.</thetip>
@@ -823,7 +843,7 @@
     <thetip xml:lang="hr">Možete prilagoditi područje odabira za nejasni odabir ako kliknete i povlačite pokazivač lijevo i desno.</thetip>
     <thetip xml:lang="hu">Varázspálca-kijelölés esetén beállíthatja a kijelölési tartományt a következőképpen: kattintás után végezzen húzást balra vagy jobbra.</thetip>
     <thetip xml:lang="it">Puoi modificare l'intervallo di selezione per la selezione fuzzy cliccando e trascinando a sinistra o a destra.</thetip>
-    <thetip xml:lang="ja">ファジー選択ツールではクリックした後に，左右にドラッグする事で選択領域を広げたり狭めたりできるんだ．</thetip>
+    <thetip xml:lang="ja">ファジー選択ツールではクリックした後に、左右にドラッグする事で選択領域を広げたり狭めたりできるんだ。</thetip>
     <thetip xml:lang="ko">퍼지 선택에서, 클릭하고 왼쪽이나 오른쪽으로 드래그하면 선택 범위를 조절할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Jūs galite pakeisti artimos spalvos žymejimo įrankio pažymėtas ribas spusteldami kairyjį pelės klavišą ir jo neatleidę patemdami kairėn arba dešinėn. </thetip>
     <thetip xml:lang="ms">Anda boleh menyelaraskan jenis pemilihan untuk pilih kabur dengan mengklik dan menyeret ke kiri dan kanan.</thetip>
@@ -857,7 +877,7 @@
     <thetip xml:lang="hr"><tt>Shift</tt>-kliknite na sličicu oka u dijalogu sloja kako bi sakrili sve slojeve osim tog sloja. <tt>Shift</tt>-kliknite ponovno kako bi prikazali sve slojeve.</thetip>
     <thetip xml:lang="hu">Egy kivételével az összes réteg elrejtése: a <tt>Shift</tt> billentyűt nyomva tartva kattintson a szemet ábrázoló ikonra a megfelelő réteg bejegyzésénél a Rétegek párbeszédablakban. Az összes réteg megjelenítéséhez ismételje meg a Shift+kattintás műveletet.</thetip>
     <thetip xml:lang="it"><tt>Shift</tt>-click sull'icona a forma d'occhio nella finestra di dialogo Livelli nasconderà tutti i livelli eccetto quello cui è associato l'occhio. Premendo di nuovo <tt>Shift</tt>-click, riappariranno.</thetip>
-    <thetip xml:lang="ja">レイヤーダイアログで「目」のアイコンを <tt>Shift</tt> を押しながらクリックすることで、それ以外のレイヤー全部を隠すことができるんだ．もう一回同じ事をすれば全部のレイヤーが表示されるようになるよ．</thetip>
+    <thetip xml:lang="ja">レイヤーダイアログで「目」のアイコンを <tt>Shift</tt> を押しながらクリックすることで、それ以外のレイヤー全部を隠すことができるんだ。もう一回同じ事をすれば全部のレイヤーが表示されるようになるよ。</thetip>
     <thetip xml:lang="ko">레이어 대화상자에서 눈동자 아이콘을 <tt>Shift</tt>-클릭하면, 현재 레이어를 제외한 모든 레이어를 숨깁니다. 다시 <tt>Shift</tt>-클릭하면 모든 레이어를 표시합니다.</thetip>
     <thetip xml:lang="lt">Spragtelėkite pele ant akies ženklo Sluoksnių dialoge laikydami <tt>Shift</tt> klavišą, kad paslėptumėte visus sluoksnius išskyrus pažymėtąjį. Pakartokite tai dar kartą jei norite, kad visi sluoksniai vėl būtų matomi.</thetip>
     <thetip xml:lang="ms"><tt>Shift</tt>-klik pada ikon mata dalam dialog Lapisan untuk menyembunyikan semua lapisan melainkan yang itu. <tt>Shift</tt>-klik sekali lagi untuk menunjukkan semua lapisan.</thetip>
@@ -891,7 +911,7 @@
     <thetip xml:lang="hr"><tt>Ctrl</tt>-kliknite na pregled maske sloja (layera) u dijalogu slojeva pod efekti maske sloja.</thetip>
     <thetip xml:lang="hu">A Rétegek párbeszédablakban a rétegmaszk hatásának átkapcsolásához kattintson a rétegmaszk előnézetére a <tt>Ctrl</tt> billentyűt nyomva tartva.</thetip>
     <thetip xml:lang="it"><tt>Ctrl</tt>-click sull'anteprima della maschera di livello nella finestra di dialogo Livelli consente di nascondere l'effetto della maschera di livello.</thetip>
-    <thetip xml:lang="ja">レイヤーダイアログのレイヤーマスクの縮小表示を <tt>Ctrl</tt> を押しながらクリックするとレイヤーマスクの有効無効を切替えられるんだ．</thetip>
+    <thetip xml:lang="ja">レイヤーダイアログのレイヤーマスクの縮小表示を <tt>Ctrl</tt> を押しながらクリックするとレイヤーマスクの有効無効を切替えられるんだ。</thetip>
     <thetip xml:lang="ko">레이어 대화상자에서 레이어 마스크의 미리보기를 <tt>Ctrl</tt>-클릭하면, 레이어 마스크의 효과를 전환합니다.</thetip>
     <thetip xml:lang="lt">Spragtelėkite pele laikydami <tt>Ctrl</tt> klavišą ant sluoksnio kaukės peržiūros Sluoksnių dialoge, kad peržiūrėtumėte kaukę tiesiogiai.</thetip>
     <thetip xml:lang="ms"><tt>Ctrl</tt>-klik pralihat topeng lapisan dalam dialog Lapisan toggle kesan daripada topeng lapisan.</thetip>
@@ -925,7 +945,7 @@
     <thetip xml:lang="hr"><tt>Alt</tt>-kliknite na pregled maske sloja (layera) u dijalogu slojeva gledajući direktno na masku.</thetip>
     <thetip xml:lang="hu">A Rétegek párbeszédablakban a maszk közvetlen megjelenítésének átkapcsolásához kattintson a rétegmaszk előnézetére az <tt>Alt</tt> billentyűt nyomva tartva.</thetip>
     <thetip xml:lang="it"><tt>Alt</tt>-click sull'anteprima della maschera di livello nella finestra di dialogo Livelli consente di visualizzare solo la maschera.</thetip>
-    <thetip xml:lang="ja">レイヤーダイアログのレイヤーマスクの縮小表示を <tt>Alt</tt> を押しながらクリックするとレイヤーマスクを直接見るモードに切替えられるんだ．</thetip>
+    <thetip xml:lang="ja">レイヤーダイアログのレイヤーマスクの縮小表示を <tt>Alt</tt> を押しながらクリックするとレイヤーマスクを直接見るモードに切替えられるんだ。</thetip>
     <thetip xml:lang="ko">레이어 대화상자에서 레이어 마스크의 미리보기를 <tt>Alt</tt>-클릭하면 마스크 표시 여부를 전환합니다.</thetip>
     <thetip xml:lang="lt">Nuspaudę <tt>Alt</tt> spragtelėkite pele ant sluoksnio kaukės peržiūros Sluoksnių dialoge, kad peržiūrėtumėte kaukę tiesiogiai.</thetip>
     <thetip xml:lang="ms"><tt>Alt</tt>-klik pralihat topeng lapisan dalam dialog Lapisan toggle semasa melihat topeng secara terus.</thetip>
@@ -959,7 +979,7 @@
     <thetip xml:lang="hr">Možete koristiti <tt>Alt</tt>-<tt>Tab</tt> za kruženje kroz sve slojeve u slici koja se uređuje (ako upravitelj prozora koji koristite ne preuzme akcije tih tipaka...).</thetip>
     <thetip xml:lang="hu">A kép rétegei közt való váltogatáshoz használható az <tt>Alt</tt>+<tt>Tab</tt> billentyűkombináció, amennyiben az ablakkezelő nem használja a kombinációt más célra.</thetip>
     <thetip xml:lang="it">Puoi usare <tt>Alt</tt>-<tt>Tab</tt> per spostarti trai livelli dell'immagine (a meno che questi tasti non vengano usati dal window manager ...).</thetip>
-    <thetip xml:lang="ja"><tt>Alt</tt> を押しながら <tt>Tab</tt> を押すとレイヤーを順に切替えられるんだ．(ウィンドウマネージャがこのキー割当を横取りしてなければね‥‥)</thetip>
+    <thetip xml:lang="ja"><tt>Alt</tt> を押しながら <tt>Tab</tt> を押すとレイヤーを順に切替えられるんだ。(ウィンドウマネージャがこのキー割当を横取りしてなければね‥‥)</thetip>
     <thetip xml:lang="ko"><tt>Alt</tt>-<tt>Tab</tt>를 누르면 이미지의 모든 레이어를 돌아가면서 선택합니다(창관리자가 이 키를 가로채지 않는다면 말이죠...).</thetip>
     <thetip xml:lang="lt">Spausdami <tt>Alt</tt>-<tt>Tab</tt> pereisite visus paveikslėlio sluoksnius (jei šie klavišai nenaudojami kitur).</thetip>
     <thetip xml:lang="ms">Anda boleh menggunakan <tt>Alt</tt>-<tt>Tab</tt> untuk mengitar di seluruh lapisan dalam imej (jika pengurus tetingkap anda tidak menyekat kekunci tersebut...).</thetip>
@@ -993,7 +1013,7 @@
     <thetip xml:lang="hr"><tt>Ctrl</tt>-kliknite s alatom Bucket Fill kako bi koristio boju pozadine umjesto boje prednjeg plana.</thetip>
     <thetip xml:lang="hu">A Kitöltés eszköz használata az előtérszín helyett a háttérszínnel: kattintás közben tartsa nyomva a <tt>Ctrl</tt> billentyűt.</thetip>
     <thetip xml:lang="it">Premendo <tt>Ctrl</tt>-click con lo strumento Riempimento Colore attivo, sarà utilizzato il colore di sfondo invece di quello in primo piano.</thetip>
-    <thetip xml:lang="ja">塗りつぶしツールでは <tt>Ctrl</tt> を押しながらクリックすると，背景色で塗りつぶすことができるよ．</thetip>
+    <thetip xml:lang="ja">塗りつぶしツールでは <tt>Ctrl</tt> を押しながらクリックすると、背景色で塗りつぶすことができるよ。</thetip>
     <thetip xml:lang="ko">영역 채우기 도구에서 <tt>Ctrl</tt>-클릭하면, 전경색대신 배경색을 사용합니다.</thetip>
     <thetip xml:lang="lt">Jei naudodami Užpildymo įrankį, nuspauskite <tt>Ctrl</tt> klavišą, tai užpildysite ne priekinio plano, o fono spalva.</thetip>
     <thetip xml:lang="ms"><tt>Ctrl</tt>-klik alat Isian Baldi supaya warna latar belakang digunakan bukannya warna latar depan.</thetip>
@@ -1026,7 +1046,7 @@
     <thetip xml:lang="fr">Un <tt>Ctrl</tt>-glissé avec l'outil rotation contraindra la rotation à des angles multiples de 15 degrés.</thetip>
     <thetip xml:lang="hu">Az elforgatási szög korlátozása 15 fokos lépcsőkben a Forgatás eszköz használatakor: húzás közben tartsa nyomva a <tt>Ctrl</tt> billentyűt.</thetip>
     <thetip xml:lang="it">Premendo <tt>Ctrl</tt> e trascinando con lo strumento Rotazione, quest'ultima sarà forzata ad angoli di 15 gradi.</thetip>
-    <thetip xml:lang="ja">変換ツールの回転モードでは <tt>Ctrl</tt> を押しながらドラッグすると，回転が15度単位になるんだ．</thetip>
+    <thetip xml:lang="ja">変換ツールの回転モードでは <tt>Ctrl</tt> を押しながらドラッグすると、回転が15度単位になるんだ。</thetip>
     <thetip xml:lang="ko">회전 도구에서 <tt>Ctrl</tt>-드래그하면, 회전 각을 15도 단위로 제한합니다.</thetip>
     <thetip xml:lang="lt">Transformavimo įrankiu pasuksite tiksliai kas 15 laipsnių kampu, jei  spausite <tt>Ctrl</tt>.</thetip>
     <thetip xml:lang="nb"><tt>Ctrl</tt>-dra med Rotasjonsverktøyet begrenser rotasjonen til 15-graders vinkler.</thetip>
@@ -1058,6 +1078,7 @@
     <thetip xml:lang="fr">Pour créer un cercle parfait maintenez la touche <tt>Maj</tt> tandis que vous faites une sélection elliptique. Pour placer un cercle précisement, mettez en place des guides verticaux et horizontaux tangents au cercle que vous voulez faire, placez votre curseur à l'intersection des guides et la sélection résultante coïncidera avec les guides.</thetip>
     <thetip xml:lang="hu">Kör alakú terület kijelöléséhez tartsa nyomva a <tt>Shift</tt> billentyűt, miközben ellipsziskijelölést végez. Kör alakú kijelölés pontos elvégzéséhez vegyen fel a kijelölendő kört érintő vízszintes és függőleges segédvonalakat, majd kijelölés közben vigye a kurzort a segédvonalak metszéspontjához, így a keletkező kijelölés érinteni fogja a segédvonalakat.</thetip>
     <thetip xml:lang="it">Per creare un cerchio perfetto, premi il tasto <tt>Maiusc</tt> mentre stai facendo una selezione ellittica. Per posizionare un cerchio in maniera precisa, trascina le guide verticali e orizzontali in posizione tangente al cerchio che vuoi selezionare, posiziona il cursore nell'intersezione delle guide: la selezione risultante toccherà le guide.</thetip>
+    <thetip xml:lang="ja">円形の選択領域を作るには、楕円選択ツールを使ってる時に <tt>Shift</tt> を押すんだ。さらに正確に位置を決める時には定規を円の接線となる場所に水平、垂直に置いておこう。で、最後に定規の交点にカーソルをもってこれば完璧さ。</thetip>
     <thetip xml:lang="ko">원형 선택을 만들려면, 타원형 선택을 하는 동안 <tt>Shift</tt>를 누르세요. 원을 정확한 위치에 만들려면, 선택하려는 원의 접선으로 가로 세로 안내선을 만들고, 커서를 안내선의 교차점에 두면, 안내선에 맞춰서 선택할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Jei norite idealų apskritimą, nubrėžkite vertikalią ir horizontalią pagalbines linijas, kurios bus apskirtimo liestinės. Nuveskite kursorių į pagalbinių linijų susikitimo tašką ir nuspaudę <tt>Shift</tt> klavišą temkite kursorių pele, kol gausite norimą apskritimą.</thetip>
     <thetip xml:lang="nb">For å lage en perfekt sirkel, hold <tt>Shift</tt> inne mens du gjør et ellipseutvalg. For å plassere sirkelen presist, dra horisontale og vertikale innrettingslinjer så de tangerer sirkelen du vil velge, plasser markøren i krysset mellom innrettingslinjene, og det resulterende utvalget vil akkurat treffe innrettingslinjene.</thetip>
@@ -1068,6 +1089,7 @@
     <thetip xml:lang="sv">För att skapa en perfekt cirkel håller du nere <tt>Skift</tt> när du gör en ellipsmarkering. För att placera cirkeln exakt drar du horisontella och vertikala hjälplinjer till den cirkel som du vill markera, placerar din markör på skärningen av hjälplinjerna, och den resulterande markeringen kommer att precis röra vid hjälplinjerna.</thetip>
     <thetip xml:lang="uk">Щоб створити рівне коло, утримуйте клавішу <tt>Shift</tt> під час виділення еліптичної ділянки. Щоб досягти точного розташування кола, додайте вертикальні та горизонтальні напрямні, які будуть дотичними майбутнього кола, розташуйте вказівник у точці перетину напрямних та створіть ділянку виділення.</thetip>
     <thetip xml:lang="zh_CN">如果需要创建一个圆形选区，可以在进行椭圆选择的时候按住<tt>Shift</tt>键。需要精确放置一个圆，可以拖动水平和垂直的参考线使之与您想要选择的圆相切，把您的光标放在参考线的相交处，最终的选区就会刚好触到参考线。</thetip>
+    <thetip xml:lang="zh_TW">若要選擇正圓形區域，方法是選擇橢圓區域時按下 <tt>Shift</tt> 鍵。若要精確地選取放置圓形的位置，先拖曳水平及垂直參考線至目標圓形的切線位置，再用滑鼠選取參考線的交點，得出來的選擇區域便會僅僅接觸到參考線。</thetip>
   </tip>
   <tip level="advanced">
     <thetip>If some of your scanned photos do not look colorful enough, you can easily improve their tonal range with the &quot;Auto&quot; button in the Levels tool (Layer-&gt;Colors-&gt;Levels). If there are any color casts, you can correct them with the Curves tool (Layer-&gt;Colors-&gt;Curves).</thetip>
@@ -1081,6 +1103,7 @@
     <thetip xml:lang="fr">Si quelques unes de vos photos scannées ne semblent pas assez colorées, vous pouvez facilement améliorer leur coloration avec le bouton « Auto » dans les outils de niveaux (Calque-&gt;Couleurs-&gt;Niveaux). S'il y une couleur dominante quelconque vous pouvez la corriger avec l'outil courbes (Calques-&gt;Couleurs-&gt;Courbes).</thetip>
     <thetip xml:lang="hu">Ha bizonyos szkennelt fényképek nem eléggé színesek, akkor a színtartományuk bővíthető a Szintek eszköz (&quot;Réteg-&gt;Színek-&gt;Szintek&quot; menüpont) &quot;Automatikus&quot; gombjával. Ha a színek aránya nem megfelelő, akkor a Görbék eszközzel (&quot;Réteg-&gt;Színek-&gt;Görbék&quot; menüpont) végezhető el a javítás.</thetip>
     <thetip xml:lang="it">Se le tue foto appena digitalizzate appaiono un po' sbiadite, puoi facilmente migliorare l'intervallo tonale con il bottone &quot;Auto&quot; nello strumento Livelli (Livelli-&gt;Colori-&gt;Livelli). Se sono presenti delle dominanti di colore puoi correggerle con lo strumento Curve (Livelli-&gt;Colori-&gt;Curve).</thetip>
+    <thetip xml:lang="ja">スキャンした画像の色が減っちゃうときには、レベルツール (画像-&gt;色-&gt;レベル) で&quot;自動&quot;ボタンを使ってトーンを簡単に改善することができるよ。カラーキャストがあれば、カーブツール (レイヤー-&gt;色-&gt;カーブ) で修正することができるよ。</thetip>
     <thetip xml:lang="ko">스캔된 사진이 칙칙해 보일 때, 레벨 도구(레이어-&gt;색상-&gt;레벨)에서 &quot;자동&quot; 단추를 사용하면 손쉽게 색조의 폭을 향상 시킬 수 있습니다. 색상이 무언가 불안하다면, 곡선 도구(레이어-&gt;색상-&gt;곡선)를 사용해서 수정할 수 있습니다.</thetip>
     <thetip xml:lang="lt">Jei Jūsų nuskenuoti paveikslėliai nepakankamai spalvingi, galite lengvai pakeisti jų spalvinį intervalą nuspaudę „Auto“ mygtuką Sluoksnių įrankyje. (Paveikslėlis-&gt;Spalvos-&gt;Sluoksniai).Atspalvius galite koreguoti Kreivėmis (Paveikslėlis-&gt;Spalvos-&gt;Kreivės).</thetip>
     <thetip xml:lang="nb">Hvis noen av dine skannede fotografier ikke har nok farge, kan du enkelt forbedre fargespekteret med «Auto»-knappen i Nivåverktøytet (Lag-&gt;Farger-&gt;Nivåer). Hvis det er noen ujevnheter kan du rette dem med kurveverktøytet (Lag-&gt;Farger-&gt;Kurver).</thetip>
@@ -1091,6 +1114,7 @@
     <thetip xml:lang="sv">Om en del av dina inlästa bilder inte ser ut att vara tillräckligt färggranna kan du enkelt förbättra deras färgtonsintervall med knappen &quot;Auto&quot; i nivåverktyget (Lager-&gt;Färger-&gt;Nivåer). Om det finns några färgskiftningar kan du korrigera dem med kurvverktyget (Lager-&gt;Färger-&gt;Kurvor).</thetip>
     <thetip xml:lang="uk">Якщо відскановані зображення виглядають недостатньо кольоровими, їх тональний діапазон можна виправити за допомогою кнопки &quot;Авто&quot; у діалоговому вікні &quot;Рівні&quot; (Шар-&gt;Кольори-&gt;Рівні). Відтінки кольору можна скорегувати інструментом &quot;Криві&quot; (Шар-&gt;Кольори-&gt;Криві).</thetip>
     <thetip xml:lang="zh_CN">如果您扫描的一些照片看起来色彩不足，您可以使用色阶工具(图层-&gt;颜色-&gt;色阶)中的“自动”按钮轻松改进它们的色彩效果。如果有什么颜色损失，您可以用曲线工具(图层-&gt;颜色-&gt;曲线)把它们纠正回来。</thetip>
+    <thetip xml:lang="zh_TW">如果掃描出來的相片色彩不太鮮豔，可以使用「色階」工具（影像→色彩→色階）中的「自動」按鈕來改善影像的色彩範圍。如果色彩有任何走樣，可以利用「曲線」工具（影像→色彩→曲線）來修正。</thetip>
   </tip>
 
 

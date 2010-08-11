@@ -230,7 +230,7 @@ thumbnail pixbuf, use <link linkend="gimp-thumbnail-check-thumb"><function>gimp_
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbnail-check-thumb"/>gimp_thumbnail_check_thumb ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbnail_check_thumb</primary></indexterm><programlisting><link linkend="GimpThumbState">GimpThumbState</link> gimp_thumbnail_check_thumb   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
+<indexterm role="GIMP 2.2"><primary>gimp_thumbnail_check_thumb</primary></indexterm><programlisting><link linkend="GimpThumbState">GimpThumbState</link> gimp_thumbnail_check_thumb   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Checks if a thumbnail file for the <parameter>thumbnail</parameter> exists, loads it and
@@ -326,7 +326,7 @@ set in order to be stored with the preview image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbnail-save-thumb-local"/>gimp_thumbnail_save_thumb_local ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbnail_save_thumb_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_save_thumb_local (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
+<indexterm role="GIMP 2.2"><primary>gimp_thumbnail_save_thumb_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_save_thumb_local (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
                                              const <link linkend="gchar">gchar</link> *software,
                                              <link linkend="GError">GError</link> **error);</programlisting>
@@ -387,7 +387,7 @@ prevent the software from further attempts to create this thumbnail.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbnail-delete-failure"/>gimp_thumbnail_delete_failure ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbnail_delete_failure</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_delete_failure   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumbnail_delete_failure</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_delete_failure   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
 <para>
 Removes a failure thumbnail if one exists. This function should be
 used after a thumbnail has been successfully created.</para>
@@ -401,7 +401,7 @@ used after a thumbnail has been successfully created.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbnail-delete-others"/>gimp_thumbnail_delete_others ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbnail_delete_others</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_delete_others    (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
+<indexterm role="GIMP 2.2"><primary>gimp_thumbnail_delete_others</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_delete_others    (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
 Removes all other thumbnails from the global thumbnail
@@ -422,7 +422,7 @@ delete thumbnails.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumbnail-has-failed"/>gimp_thumbnail_has_failed ()</title>
-<indexterm role="GIMP"><primary>gimp_thumbnail_has_failed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_has_failed       (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_thumbnail_has_failed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_has_failed       (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
 <para>
 Checks if a valid failure thumbnail for the given thumbnail exists
 in the global thumbnail repository. This may be the case even if

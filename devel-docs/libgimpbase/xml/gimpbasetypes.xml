@@ -80,7 +80,7 @@ Translation between gettext translation domain identifier and GType.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-type-set-translation-domain"/>gimp_type_set_translation_domain ()</title>
-<indexterm role="GIMP"><primary>gimp_type_set_translation_domain</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_type_set_translation_domain
+<indexterm role="GIMP 2.2"><primary>gimp_type_set_translation_domain</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_type_set_translation_domain
                                             (<link linkend="GType">GType</link> type,
                                              const <link linkend="gchar">gchar</link> *domain);</programlisting>
 <para>
@@ -101,7 +101,7 @@ names.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-type-get-translation-domain"/>gimp_type_get_translation_domain ()</title>
-<indexterm role="GIMP"><primary>gimp_type_get_translation_domain</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_type_get_translation_domain
+<indexterm role="GIMP 2.2"><primary>gimp_type_get_translation_domain</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_type_get_translation_domain
                                             (<link linkend="GType">GType</link> type);</programlisting>
 <para>
 Retrieves the gettext translation domain identifier that has been
@@ -122,7 +122,7 @@ or <link linkend="gimp-enum-value-get-name"><function>gimp_enum_value_get_name()
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enum-set-value-descriptions"/>gimp_enum_set_value_descriptions ()</title>
-<indexterm role="GIMP"><primary>gimp_enum_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enum_set_value_descriptions
+<indexterm role="GIMP 2.2"><primary>gimp_enum_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enum_set_value_descriptions
                                             (<link linkend="GType">GType</link> enum_type,
                                              const <link linkend="GimpEnumDesc">GimpEnumDesc</link> *descriptions);</programlisting>
 <para>
@@ -141,7 +141,7 @@ and help texts for enum values.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enum-get-value-descriptions"/>gimp_enum_get_value_descriptions ()</title>
-<indexterm role="GIMP"><primary>gimp_enum_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpEnumDesc">GimpEnumDesc</link>* gimp_enum_get_value_descriptions
+<indexterm role="GIMP 2.2"><primary>gimp_enum_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpEnumDesc">GimpEnumDesc</link>* gimp_enum_get_value_descriptions
                                             (<link linkend="GType">GType</link> enum_type);</programlisting>
 <para>
 Retreives the array of human readable and translatable descriptions
@@ -159,7 +159,7 @@ and help texts for enum values.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-flags-get-value-descriptions"/>gimp_flags_get_value_descriptions ()</title>
-<indexterm role="GIMP"><primary>gimp_flags_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* gimp_flags_get_value_descriptions
+<indexterm role="GIMP 2.2"><primary>gimp_flags_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* gimp_flags_get_value_descriptions
                                             (<link linkend="GType">GType</link> flags_type);</programlisting>
 <para>
 Retreives the array of human readable and translatable descriptions
@@ -177,7 +177,7 @@ and help texts for flags values.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-flags-set-value-descriptions"/>gimp_flags_set_value_descriptions ()</title>
-<indexterm role="GIMP"><primary>gimp_flags_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_flags_set_value_descriptions
+<indexterm role="GIMP 2.2"><primary>gimp_flags_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_flags_set_value_descriptions
                                             (<link linkend="GType">GType</link> flags_type,
                                              const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link> *descriptions);</programlisting>
 <para>

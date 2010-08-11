@@ -1,4 +1,43 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimplayer</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="prev" href="libgimp-gimpimage.html" title="gimpimage"><link rel="next" href="libgimp-gimppaths.html" title="gimppaths"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpimage.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimppaths.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimplayer"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimplayer</span></h2><p>gimplayer &#8212; Operations on a single layer.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimplayer</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="prev" href="libgimp-gimpimage.html" title="gimpimage">
+<link rel="next" href="libgimp-gimppaths.html" title="gimppaths">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
+<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-data.html" title="Data Objects">
+<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
+<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimp-gimpimage.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Library Reference Manual</th>
+<td><a accesskey="n" href="libgimp-gimppaths.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimp-gimplayer"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimplayer</span></h2>
+<p>gimplayer &#8212; Operations on a single layer.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -58,10 +97,21 @@ gboolean    <a href="libgimp-gimplayer.html#gimp-layer-set-opacity">gimp_layer_s
 gboolean    <a href="libgimp-gimplayer.html#gimp-layer-set-mode">gimp_layer_set_mode</a>             (gint32 layer_ID,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> mode);
 gboolean    <a href="libgimp-gimplayer.html#gimp-layer-is-floating-sel">gimp_layer_is_floating_sel</a>      (gint32 layer_ID);
-</pre></div><div class="refsect1" lang="en"><a name="id2611347"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2591357"></a><h2>Description</h2>
+<p>
 Operations on a single layer.
 
-</p></div><div class="refsect1" lang="en"><a name="id2611357"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2611362"></a><h3><a name="gimp-layer-new"></a>gimp_layer_new ()</h3><a class="indexterm" name="id2611371"></a><pre class="programlisting">gint32      gimp_layer_new                  (gint32 image_ID,
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2591368"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2591374"></a><h3>
+<a name="gimp-layer-new"></a>gimp_layer_new ()</h3>
+<a class="indexterm" name="id2591384"></a><pre class="programlisting">gint32      gimp_layer_new                  (gint32 image_ID,
                                              const gchar *name,
                                              gint width,
                                              gint height,
@@ -69,123 +119,402 @@ Operations on a single layer.
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
                                              gdouble opacity,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> mode);</pre><p>
+                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> mode);</pre>
+<p>
 Create a new layer.
-</p><p>
+</p>
+<p>
 This procedure creates a new layer with the specified width, height,
 and type. Name, opacity, and mode are also supplied parameters. The
 new layer still needs to be added to the image, as this is not
 automatic. Add the new layer with the 'gimp_image_add_layer'
 command. Other attributes such as layer mask modes, and offsets
-should be set with explicit procedure calls.</p><p>
+should be set with explicit procedure calls.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></td><td> The image to which to add the layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The layer name.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>width</code></em> :</span></td><td> The layer width.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>height</code></em> :</span></td><td> The layer height.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>type</code></em> :</span></td><td> The layer type.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>opacity</code></em> :</span></td><td> The layer opacity.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>mode</code></em> :</span></td><td> The layer combination mode.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The newly created layer.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2611528"></a><h3><a name="gimp-layer-copy"></a>gimp_layer_copy ()</h3><a class="indexterm" name="id2611537"></a><pre class="programlisting">gint32      gimp_layer_copy                 (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image to which to add the layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td> The layer name.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td> The layer width.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td> The layer height.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
+<td> The layer type.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td> The layer opacity.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
+<td> The layer combination mode.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The newly created layer.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596048"></a><h3>
+<a name="gimp-layer-copy"></a>gimp_layer_copy ()</h3>
+<a class="indexterm" name="id2596058"></a><pre class="programlisting">gint32      gimp_layer_copy                 (gint32 layer_ID);</pre>
+<p>
 Copy a layer.
-</p><p>
+</p>
+<p>
 This procedure copies the specified layer and returns the copy. The
 newly copied layer is for use within the original layer's image. It
 should not be subsequently added to any other image. If you create
 a copy of the background layer, remember to add an alpha channel
-before you add the new layer to the image.</p><p>
+before you add the new layer to the image.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer to copy.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The newly copied layer.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2621878"></a><h3><a name="gimp-layer-scale"></a>gimp_layer_scale ()</h3><a class="indexterm" name="id2621886"></a><pre class="programlisting">gboolean    gimp_layer_scale                (gint32 layer_ID,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer to copy.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The newly copied layer.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596126"></a><h3>
+<a name="gimp-layer-scale"></a>gimp_layer_scale ()</h3>
+<a class="indexterm" name="id2596136"></a><pre class="programlisting">gboolean    gimp_layer_scale                (gint32 layer_ID,
                                              gint new_width,
                                              gint new_height,
-                                             gboolean local_origin);</pre><p>
+                                             gboolean local_origin);</pre>
+<p>
 Scale the layer to the specified extents.
-</p><p>
+</p>
+<p>
 This procedure scales the layer so that it's new width and height
 are equal to the supplied parameters. The \"local_origin\" parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added
-to an image.</p><p>
+to an image.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>new_width</code></em> :</span></td><td> New layer width.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>new_height</code></em> :</span></td><td> New layer height.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>local_origin</code></em> :</span></td><td> Use a local origin (as opposed to the image origin).
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2621993"></a><h3><a name="gimp-layer-resize"></a>gimp_layer_resize ()</h3><a class="indexterm" name="id2622001"></a><pre class="programlisting">gboolean    gimp_layer_resize               (gint32 layer_ID,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
+<td> New layer width.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
+<td> New layer height.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>local_origin</code></em>&#160;:</span></td>
+<td> Use a local origin (as opposed to the image origin).
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596268"></a><h3>
+<a name="gimp-layer-resize"></a>gimp_layer_resize ()</h3>
+<a class="indexterm" name="id2596278"></a><pre class="programlisting">gboolean    gimp_layer_resize               (gint32 layer_ID,
                                              gint new_width,
                                              gint new_height,
                                              gint offx,
-                                             gint offy);</pre><p>
+                                             gint offy);</pre>
+<p>
 Resize the layer to the specified extents.
-</p><p>
+</p>
+<p>
 This procedure resizes the layer so that it's new width and height
 are equal to the supplied parameters. Offsets are also provided
 which describe the position of the previous layer's content. This
-operation only works if the layer has been added to an image.</p><p>
+operation only works if the layer has been added to an image.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>new_width</code></em> :</span></td><td> New layer width.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>new_height</code></em> :</span></td><td> New layer height.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>offx</code></em> :</span></td><td> x offset between upper left corner of old and new layers: (old - new).
-</td></tr><tr><td><span class="term"><em class="parameter"><code>offy</code></em> :</span></td><td> y offset between upper left corner of old and new layers: (old - new).
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622127"></a><h3><a name="gimp-layer-resize-to-image-size"></a>gimp_layer_resize_to_image_size ()</h3><a class="indexterm" name="id2622135"></a><pre class="programlisting">gboolean    gimp_layer_resize_to_image_size (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>new_width</code></em>&#160;:</span></td>
+<td> New layer width.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>new_height</code></em>&#160;:</span></td>
+<td> New layer height.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
+<td> x offset between upper left corner of old and new layers: (old - new).
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
+<td> y offset between upper left corner of old and new layers: (old - new).
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596434"></a><h3>
+<a name="gimp-layer-resize-to-image-size"></a>gimp_layer_resize_to_image_size ()</h3>
+<a class="indexterm" name="id2596443"></a><pre class="programlisting">gboolean    gimp_layer_resize_to_image_size (gint32 layer_ID);</pre>
+<p>
 Resize a layer to the image size.
-</p><p>
+</p>
+<p>
 This procedure resizes the layer so that it's new width and height
-are equal to the width and height of its image container.</p><p>
+are equal to the width and height of its image container.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer to resize.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622189"></a><h3><a name="gimp-layer-translate"></a>gimp_layer_translate ()</h3><a class="indexterm" name="id2622198"></a><pre class="programlisting">gboolean    gimp_layer_translate            (gint32 layer_ID,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer to resize.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596510"></a><h3>
+<a name="gimp-layer-translate"></a>gimp_layer_translate ()</h3>
+<a class="indexterm" name="id2596519"></a><pre class="programlisting">gboolean    gimp_layer_translate            (gint32 layer_ID,
                                              gint offx,
-                                             gint offy);</pre><p>
+                                             gint offy);</pre>
+<p>
 Translate the layer by the specified offsets.
-</p><p>
+</p>
+<p>
 This procedure translates the layer by the amounts specified in the
 x and y arguments. These can be negative, and are considered offsets
 from the current position. This command only works if the layer has
 been added to an image. All additional layers contained in the image
 which have the linked flag set to TRUE w ill also be translated by
-the specified offsets.</p><p>
+the specified offsets.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>offx</code></em> :</span></td><td> Offset in x direction.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>offy</code></em> :</span></td><td> Offset in y direction.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622289"></a><h3><a name="gimp-layer-add-alpha"></a>gimp_layer_add_alpha ()</h3><a class="indexterm" name="id2622298"></a><pre class="programlisting">gboolean    gimp_layer_add_alpha            (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
+<td> Offset in x direction.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
+<td> Offset in y direction.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596631"></a><h3>
+<a name="gimp-layer-add-alpha"></a>gimp_layer_add_alpha ()</h3>
+<a class="indexterm" name="id2596640"></a><pre class="programlisting">gboolean    gimp_layer_add_alpha            (gint32 layer_ID);</pre>
+<p>
 Add an alpha channel to the layer if it doesn't already have one.
-</p><p>
+</p>
+<p>
 This procedure adds an additional component to the specified layer
 if it does not already possess an alpha channel. An alpha channel
 makes it possible to move a layer from the bottom of the layer stack
 and to clear and erase to transparency, instead of the background
 color. This transforms images of type RGB to RGBA, GRAY to GRAYA,
-and INDEXED to INDEXEDA.</p><p>
+and INDEXED to INDEXEDA.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622355"></a><h3><a name="gimp-layer-set-offsets"></a>gimp_layer_set_offsets ()</h3><a class="indexterm" name="id2622364"></a><pre class="programlisting">gboolean    gimp_layer_set_offsets          (gint32 layer_ID,
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596710"></a><h3>
+<a name="gimp-layer-set-offsets"></a>gimp_layer_set_offsets ()</h3>
+<a class="indexterm" name="id2596719"></a><pre class="programlisting">gboolean    gimp_layer_set_offsets          (gint32 layer_ID,
                                              gint offx,
-                                             gint offy);</pre><p>
+                                             gint offy);</pre>
+<p>
 Set the layer offsets.
-</p><p>
+</p>
+<p>
 This procedure sets the offsets for the specified layer. The offsets
 are relative to the image origin and can be any values. This
-operation is valid only on layers which have been added to an image.</p><p>
+operation is valid only on layers which have been added to an image.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>offx</code></em> :</span></td><td> Offset in x direction.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>offy</code></em> :</span></td><td> Offset in y direction.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622452"></a><h3><a name="gimp-layer-create-mask"></a>gimp_layer_create_mask ()</h3><a class="indexterm" name="id2622460"></a><pre class="programlisting">gint32      gimp_layer_create_mask          (gint32 layer_ID,
-                                             <a href="libgimp-gimpenums.html#GimpAddMaskType">GimpAddMaskType</a> mask_type);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>offx</code></em>&#160;:</span></td>
+<td> Offset in x direction.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>offy</code></em>&#160;:</span></td>
+<td> Offset in y direction.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596828"></a><h3>
+<a name="gimp-layer-create-mask"></a>gimp_layer_create_mask ()</h3>
+<a class="indexterm" name="id2596837"></a><pre class="programlisting">gint32      gimp_layer_create_mask          (gint32 layer_ID,
+                                             <a href="libgimp-gimpenums.html#GimpAddMaskType">GimpAddMaskType</a> mask_type);</pre>
+<p>
 Create a layer mask for the specified specified layer.
-</p><p>
+</p>
+<p>
 This procedure creates a layer mask for the specified layer. Layer
 masks serve as an additional alpha channel for a layer. A number of
 ifferent types of masks are allowed for initialisation: completely
@@ -195,185 +524,693 @@ layer's already existing alpha channel (which will leave the layer
 fully visible, but which may be more useful than a white mask), the
 current selection or a grayscale copy of the layer. The layer mask
 still needs to be added to the layer. This can be done with a call
-to 'gimp_layer_add_mask'.</p><p>
+to 'gimp_layer_add_mask'.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer to which to add the mask.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>mask_type</code></em> :</span></td><td> The type of mask.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The newly created mask.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598941"></a><h3><a name="gimp-layer-from-mask"></a>gimp_layer_from_mask ()</h3><a class="indexterm" name="id2589800"></a><pre class="programlisting">gint32      gimp_layer_from_mask            (gint32 mask_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer to which to add the mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mask_type</code></em>&#160;:</span></td>
+<td> The type of mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The newly created mask.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596902"></a><h3>
+<a name="gimp-layer-from-mask"></a>gimp_layer_from_mask ()</h3>
+<a class="indexterm" name="id2596911"></a><pre class="programlisting">gint32      gimp_layer_from_mask            (gint32 mask_ID);</pre>
+<p>
 Get the specified mask's layer.
-</p><p>
+</p>
+<p>
 This procedure returns the specified mask's layer , or -1 if none
-exists.</p><p>
+exists.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>mask_ID</code></em> :</span></td><td> Mask for which to return the layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The mask's layer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mask_ID</code></em>&#160;:</span></td>
+<td> Mask for which to return the layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The mask's layer.
 
-</td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2622541"></a><h3><a name="gimp-layer-get-mask"></a>gimp_layer_get_mask ()</h3><a class="indexterm" name="id2622548"></a><pre class="programlisting">gint32      gimp_layer_get_mask             (gint32 layer_ID);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.2
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2596980"></a><h3>
+<a name="gimp-layer-get-mask"></a>gimp_layer_get_mask ()</h3>
+<a class="indexterm" name="id2596990"></a><pre class="programlisting">gint32      gimp_layer_get_mask             (gint32 layer_ID);</pre>
+<p>
 Get the specified layer's mask if it exists.
-</p><p>
+</p>
+<p>
 This procedure returns the specified layer's mask, or -1 if none
-exists.</p><p>
+exists.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer mask.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622596"></a><h3><a name="gimp-layer-add-mask"></a>gimp_layer_add_mask ()</h3><a class="indexterm" name="id2622604"></a><pre class="programlisting">gboolean    gimp_layer_add_mask             (gint32 layer_ID,
-                                             gint32 mask_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer mask.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597055"></a><h3>
+<a name="gimp-layer-add-mask"></a>gimp_layer_add_mask ()</h3>
+<a class="indexterm" name="id2597066"></a><pre class="programlisting">gboolean    gimp_layer_add_mask             (gint32 layer_ID,
+                                             gint32 mask_ID);</pre>
+<p>
 Add a layer mask to the specified layer.
-</p><p>
+</p>
+<p>
 This procedure adds a layer mask to the specified layer. Layer masks
 serve as an additional alpha channel for a layer. This procedure
 will fail if a number of prerequisites aren't met. The layer cannot
 already have a layer mask. The specified mask must exist and have
 the same dimensions as the layer. Both the mask and the layer must
-have been created for use with the specified image.</p><p>
+have been created for use with the specified image.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer to receive the mask.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>mask_ID</code></em> :</span></td><td> The mask to add to the layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622673"></a><h3><a name="gimp-layer-remove-mask"></a>gimp_layer_remove_mask ()</h3><a class="indexterm" name="id2622681"></a><pre class="programlisting">gboolean    gimp_layer_remove_mask          (gint32 layer_ID,
-                                             <a href="libgimp-gimpenums.html#GimpMaskApplyMode">GimpMaskApplyMode</a> mode);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer to receive the mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mask_ID</code></em>&#160;:</span></td>
+<td> The mask to add to the layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597158"></a><h3>
+<a name="gimp-layer-remove-mask"></a>gimp_layer_remove_mask ()</h3>
+<a class="indexterm" name="id2597167"></a><pre class="programlisting">gboolean    gimp_layer_remove_mask          (gint32 layer_ID,
+                                             <a href="libgimp-gimpenums.html#GimpMaskApplyMode">GimpMaskApplyMode</a> mode);</pre>
+<p>
 Remove the specified layer mask from the layer.
-</p><p>
+</p>
+<p>
 This procedure removes the specified layer mask from the layer. If
-the mask doesn't exist, an error is returned.</p><p>
+the mask doesn't exist, an error is returned.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer from which to remove mask.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>mode</code></em> :</span></td><td> Removal mode.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622746"></a><h3><a name="gimp-layer-new-from-drawable"></a>gimp_layer_new_from_drawable ()</h3><a class="indexterm" name="id2622753"></a><pre class="programlisting">gint32      gimp_layer_new_from_drawable    (gint32 drawable_ID,
-                                             gint32 dest_image_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer from which to remove mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
+<td> Removal mode.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597255"></a><h3>
+<a name="gimp-layer-new-from-drawable"></a>gimp_layer_new_from_drawable ()</h3>
+<a class="indexterm" name="id2597266"></a><pre class="programlisting">gint32      gimp_layer_new_from_drawable    (gint32 drawable_ID,
+                                             gint32 dest_image_ID);</pre>
+<p>
 Create a new layer by copying an existing drawable.
-</p><p>
+</p>
+<p>
 This procedure creates a new layer as a copy of the specified
 drawable. The new layer still needs to be added to the image, as
 this is not automatic. Add the new layer with the
 'gimp_image_add_layer' command. Other attributes such as layer mask
-modes, and offsets should be set with explicit procedure calls.</p><p>
+modes, and offsets should be set with explicit procedure calls.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></td><td> The source drawable from where the new layer is copied.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>dest_image_ID</code></em> :</span></td><td> The destination image to which to add the layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The newly copied layer.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622826"></a><h3><a name="gimp-layer-get-preserve-trans"></a>gimp_layer_get_preserve_trans ()</h3><a class="indexterm" name="id2622835"></a><pre class="programlisting">gboolean    gimp_layer_get_preserve_trans   (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td> The source drawable from where the new layer is copied.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest_image_ID</code></em>&#160;:</span></td>
+<td> The destination image to which to add the layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The newly copied layer.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597359"></a><h3>
+<a name="gimp-layer-get-preserve-trans"></a>gimp_layer_get_preserve_trans ()</h3>
+<a class="indexterm" name="id2597370"></a><pre class="programlisting">gboolean    gimp_layer_get_preserve_trans   (gint32 layer_ID);</pre>
+<p>
 Get the preserve transperancy setting of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure returns the specified layer's preserve transperancy
-setting.</p><p>
+setting.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer's preserve transperancy setting.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622888"></a><h3><a name="gimp-layer-set-preserve-trans"></a>gimp_layer_set_preserve_trans ()</h3><a class="indexterm" name="id2622897"></a><pre class="programlisting">gboolean    gimp_layer_set_preserve_trans   (gint32 layer_ID,
-                                             gboolean preserve_trans);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer's preserve transperancy setting.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597437"></a><h3>
+<a name="gimp-layer-set-preserve-trans"></a>gimp_layer_set_preserve_trans ()</h3>
+<a class="indexterm" name="id2597448"></a><pre class="programlisting">gboolean    gimp_layer_set_preserve_trans   (gint32 layer_ID,
+                                             gboolean preserve_trans);</pre>
+<p>
 Set the preserve transperancy setting of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure sets the specified layer's preserve transperancy
-setting.</p><p>
+setting.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>preserve_trans</code></em> :</span></td><td> The new layer's preserve transperancy setting.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2622967"></a><h3><a name="gimp-layer-get-apply-mask"></a>gimp_layer_get_apply_mask ()</h3><a class="indexterm" name="id2622975"></a><pre class="programlisting">gboolean    gimp_layer_get_apply_mask       (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>preserve_trans</code></em>&#160;:</span></td>
+<td> The new layer's preserve transperancy setting.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597536"></a><h3>
+<a name="gimp-layer-get-apply-mask"></a>gimp_layer_get_apply_mask ()</h3>
+<a class="indexterm" name="id2597546"></a><pre class="programlisting">gboolean    gimp_layer_get_apply_mask       (gint32 layer_ID);</pre>
+<p>
 Get the apply mask of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure returns the specified layer's apply mask. If the
 value is non-zero, then the layer mask for this layer is currently
-being composited with the layer's alpha channel.</p><p>
+being composited with the layer's alpha channel.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer apply mask.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623029"></a><h3><a name="gimp-layer-set-apply-mask"></a>gimp_layer_set_apply_mask ()</h3><a class="indexterm" name="id2623037"></a><pre class="programlisting">gboolean    gimp_layer_set_apply_mask       (gint32 layer_ID,
-                                             gboolean apply_mask);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer apply mask.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597613"></a><h3>
+<a name="gimp-layer-set-apply-mask"></a>gimp_layer_set_apply_mask ()</h3>
+<a class="indexterm" name="id2597622"></a><pre class="programlisting">gboolean    gimp_layer_set_apply_mask       (gint32 layer_ID,
+                                             gboolean apply_mask);</pre>
+<p>
 Set the apply mask of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure sets the specified layer's apply mask. This controls
 whether the layer's mask is currently affecting the alpha channel.
-If there is no layer mask, this function will return an error.</p><p>
+If there is no layer mask, this function will return an error.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>apply_mask</code></em> :</span></td><td> The new layer apply mask.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623108"></a><h3><a name="gimp-layer-get-show-mask"></a>gimp_layer_get_show_mask ()</h3><a class="indexterm" name="id2623117"></a><pre class="programlisting">gboolean    gimp_layer_get_show_mask        (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>apply_mask</code></em>&#160;:</span></td>
+<td> The new layer apply mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597711"></a><h3>
+<a name="gimp-layer-get-show-mask"></a>gimp_layer_get_show_mask ()</h3>
+<a class="indexterm" name="id2597720"></a><pre class="programlisting">gboolean    gimp_layer_get_show_mask        (gint32 layer_ID);</pre>
+<p>
 Get the show mask of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure returns the specified layer's show mask. If the value
 is non-zero, then the layer mask for this layer is currently being
-shown instead of the layer.</p><p>
+shown instead of the layer.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer show mask.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623170"></a><h3><a name="gimp-layer-set-show-mask"></a>gimp_layer_set_show_mask ()</h3><a class="indexterm" name="id2623178"></a><pre class="programlisting">gboolean    gimp_layer_set_show_mask        (gint32 layer_ID,
-                                             gboolean show_mask);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer show mask.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597787"></a><h3>
+<a name="gimp-layer-set-show-mask"></a>gimp_layer_set_show_mask ()</h3>
+<a class="indexterm" name="id2597796"></a><pre class="programlisting">gboolean    gimp_layer_set_show_mask        (gint32 layer_ID,
+                                             gboolean show_mask);</pre>
+<p>
 Set the show mask of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure sets the specified layer's show mask. This controls
 whether the layer or it's mask is visible. Non-zero values indicate
 that the mask should be visible. If the layer has no mask, then this
-function returns an error.</p><p>
+function returns an error.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>show_mask</code></em> :</span></td><td> The new layer show mask.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623249"></a><h3><a name="gimp-layer-get-edit-mask"></a>gimp_layer_get_edit_mask ()</h3><a class="indexterm" name="id2623257"></a><pre class="programlisting">gboolean    gimp_layer_get_edit_mask        (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>show_mask</code></em>&#160;:</span></td>
+<td> The new layer show mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597885"></a><h3>
+<a name="gimp-layer-get-edit-mask"></a>gimp_layer_get_edit_mask ()</h3>
+<a class="indexterm" name="id2597894"></a><pre class="programlisting">gboolean    gimp_layer_get_edit_mask        (gint32 layer_ID);</pre>
+<p>
 Get the show mask of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure returns the specified layer's show mask. If the value
 is non-zero, then the layer mask for this layer is currently active,
-and not the layer.</p><p>
+and not the layer.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer show mask.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623310"></a><h3><a name="gimp-layer-set-edit-mask"></a>gimp_layer_set_edit_mask ()</h3><a class="indexterm" name="id2623318"></a><pre class="programlisting">gboolean    gimp_layer_set_edit_mask        (gint32 layer_ID,
-                                             gboolean edit_mask);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer show mask.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2597960"></a><h3>
+<a name="gimp-layer-set-edit-mask"></a>gimp_layer_set_edit_mask ()</h3>
+<a class="indexterm" name="id2597969"></a><pre class="programlisting">gboolean    gimp_layer_set_edit_mask        (gint32 layer_ID,
+                                             gboolean edit_mask);</pre>
+<p>
 Set the show mask of the specified layer.
-</p><p>
+</p>
+<p>
 This procedure sets the specified layer's show mask. This controls
 whether the layer or it's mask is currently active for editing. If
 the specified layer has no layer mask, then this procedure will
-return an error.</p><p>
+return an error.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>edit_mask</code></em> :</span></td><td> The new layer show mask.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623388"></a><h3><a name="gimp-layer-get-opacity"></a>gimp_layer_get_opacity ()</h3><a class="indexterm" name="id2623397"></a><pre class="programlisting">gdouble     gimp_layer_get_opacity          (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>edit_mask</code></em>&#160;:</span></td>
+<td> The new layer show mask.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2598058"></a><h3>
+<a name="gimp-layer-get-opacity"></a>gimp_layer_get_opacity ()</h3>
+<a class="indexterm" name="id2598067"></a><pre class="programlisting">gdouble     gimp_layer_get_opacity          (gint32 layer_ID);</pre>
+<p>
 Get the opacity of the specified layer.
-</p><p>
-This procedure returns the specified layer's opacity.</p><p>
+</p>
+<p>
+This procedure returns the specified layer's opacity.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer opacity.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623448"></a><h3><a name="gimp-layer-set-opacity"></a>gimp_layer_set_opacity ()</h3><a class="indexterm" name="id2623456"></a><pre class="programlisting">gboolean    gimp_layer_set_opacity          (gint32 layer_ID,
-                                             gdouble opacity);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer opacity.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2598132"></a><h3>
+<a name="gimp-layer-set-opacity"></a>gimp_layer_set_opacity ()</h3>
+<a class="indexterm" name="id2598141"></a><pre class="programlisting">gboolean    gimp_layer_set_opacity          (gint32 layer_ID,
+                                             gdouble opacity);</pre>
+<p>
 Set the opacity of the specified layer.
-</p><p>
-This procedure sets the specified layer's opacity.</p><p>
+</p>
+<p>
+This procedure sets the specified layer's opacity.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>opacity</code></em> :</span></td><td> The new layer opacity.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623524"></a><h3><a name="gimp-layer-get-mode"></a>gimp_layer_get_mode ()</h3><a class="indexterm" name="id2623532"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_layer_get_mode    (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td> The new layer opacity.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2598226"></a><h3>
+<a name="gimp-layer-get-mode"></a>gimp_layer_get_mode ()</h3>
+<a class="indexterm" name="id2598237"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_layer_get_mode    (gint32 layer_ID);</pre>
+<p>
 Get the combination mode of the specified layer.
-</p><p>
-This procedure returns the specified layer's combination mode.</p><p>
+</p>
+<p>
+This procedure returns the specified layer's combination mode.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The layer combination mode.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623584"></a><h3><a name="gimp-layer-set-mode"></a>gimp_layer_set_mode ()</h3><a class="indexterm" name="id2623592"></a><pre class="programlisting">gboolean    gimp_layer_set_mode             (gint32 layer_ID,
-                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> mode);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer combination mode.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2598301"></a><h3>
+<a name="gimp-layer-set-mode"></a>gimp_layer_set_mode ()</h3>
+<a class="indexterm" name="id2598311"></a><pre class="programlisting">gboolean    gimp_layer_set_mode             (gint32 layer_ID,
+                                             <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> mode);</pre>
+<p>
 Set the combination mode of the specified layer.
-</p><p>
-This procedure sets the specified layer's combination mode.</p><p>
+</p>
+<p>
+This procedure sets the specified layer's combination mode.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>mode</code></em> :</span></td><td> The new layer combination mode.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2623661"></a><h3><a name="gimp-layer-is-floating-sel"></a>gimp_layer_is_floating_sel ()</h3><a class="indexterm" name="id2623670"></a><pre class="programlisting">gboolean    gimp_layer_is_floating_sel      (gint32 layer_ID);</pre><p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
+<td> The new layer combination mode.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2598398"></a><h3>
+<a name="gimp-layer-is-floating-sel"></a>gimp_layer_is_floating_sel ()</h3>
+<a class="indexterm" name="id2598407"></a><pre class="programlisting">gboolean    gimp_layer_is_floating_sel      (gint32 layer_ID);</pre>
+<p>
 Is the specified layer a floating selection?
-</p><p>
+</p>
+<p>
 This procedure returns whether the layer is a floating selection.
 Floating selections are special cases of layers which are attached
-to a specific drawable.</p><p>
+to a specific drawable.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></td><td> The layer.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> Non-zero if the layer is a floating selection.
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimpimage.html"><b>&lt;&lt; gimpimage</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimppaths.html"><b>gimppaths &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> Non-zero if the layer is a floating selection.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimpimage.html"><b>&lt;&lt;&#160;gimpimage</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimppaths.html"><b>gimppaths&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

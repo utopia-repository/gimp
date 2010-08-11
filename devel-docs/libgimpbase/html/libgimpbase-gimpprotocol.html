@@ -1,4 +1,36 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpprotocol</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimputils.html" title="gimputils"><link rel="next" href="libgimpbase-gimpwire.html" title="gimpwire"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimputils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th><td><a accesskey="n" href="libgimpbase-gimpwire.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimpprotocol"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpprotocol</span></h2><p>gimpprotocol &#8212; The communication protocol between GIMP and it's plug-ins.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimpprotocol</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
+<link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+<link rel="prev" href="libgimpbase-gimputils.html" title="gimputils">
+<link rel="next" href="libgimpbase-gimpwire.html" title="gimpwire">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpbase-gimputils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Base Library Reference Manual</th>
+<td><a accesskey="n" href="libgimpbase-gimpwire.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpbase-gimpprotocol"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimpprotocol</span></h2>
+<p>gimpprotocol &#8212; The communication protocol between GIMP and it's plug-ins.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -49,13 +81,31 @@ gboolean    <a href="libgimpbase-gimpprotocol.html#gp-proc-uninstall-write">gp_p
                                              gpointer user_data);
 gboolean    <a href="libgimpbase-gimpprotocol.html#gp-extension-ack-write">gp_extension_ack_write</a>          (GIOChannel *channel,
                                              gpointer user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2592359"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2553084"></a><h2>Description</h2>
+<p>
 The communication protocol between GIMP and it's plug-ins.
 
-</p></div><div class="refsect1" lang="en"><a name="id2592370"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2592375"></a><h3><a name="GIMP-PROTOCOL-VERSION:CAPS"></a>GIMP_PROTOCOL_VERSION</h3><a class="indexterm" name="id2592384"></a><pre class="programlisting">#define GIMP_PROTOCOL_VERSION  0x0011
-</pre><p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2553096"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2553102"></a><h3>
+<a name="GIMP-PROTOCOL-VERSION:CAPS"></a>GIMP_PROTOCOL_VERSION</h3>
+<a class="indexterm" name="id2553111"></a><pre class="programlisting">#define GIMP_PROTOCOL_VERSION  0x0011
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592393"></a><h3><a name="GPConfig"></a>GPConfig</h3><a class="indexterm" name="id2592402"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2553126"></a><h3>
+<a name="GPConfig"></a>GPConfig</h3>
+<a class="indexterm" name="id2553136"></a><pre class="programlisting">typedef struct {
   guint32  version;
   guint32  tile_width;
   guint32  tile_height;
@@ -77,18 +127,39 @@ The communication protocol between GIMP and it's plug-ins.
   gchar   *display_name;
   gint32   monitor_number;
 } GPConfig;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2575446"></a><h3><a name="GPTileReq"></a>GPTileReq</h3><a class="indexterm" name="id2542390"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2528581"></a><h3>
+<a name="GPTileReq"></a>GPTileReq</h3>
+<a class="indexterm" name="id2550687"></a><pre class="programlisting">typedef struct {
   gint32   drawable_ID;
   guint32  tile_num;
   guint32  shadow;
 } GPTileReq;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2549152"></a><h3><a name="GPTileAck"></a>GPTileAck</h3><a class="indexterm" name="id2552572"></a><pre class="programlisting">typedef struct _GPTileAck GPTileAck;</pre><p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2543387"></a><h3>
+<a name="GPTileAck"></a>GPTileAck</h3>
+<a class="indexterm" name="id2539344"></a><pre class="programlisting">typedef struct _GPTileAck GPTileAck;</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2533018"></a><h3><a name="GPTileData"></a>GPTileData</h3><a class="indexterm" name="id2587390"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2553168"></a><h3>
+<a name="GPTileData"></a>GPTileData</h3>
+<a class="indexterm" name="id2553178"></a><pre class="programlisting">typedef struct {
   gint32   drawable_ID;
   guint32  tile_num;
   guint32  shadow;
@@ -98,9 +169,16 @@ The communication protocol between GIMP and it's plug-ins.
   guint32  use_shm;
   guchar  *data;
 } GPTileData;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592420"></a><h3><a name="GPParam"></a>GPParam</h3><a class="indexterm" name="id2592427"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2553196"></a><h3>
+<a name="GPParam"></a>GPParam</h3>
+<a class="indexterm" name="id2553206"></a><pre class="programlisting">typedef struct {
   guint32 type;
 
   union
@@ -141,30 +219,58 @@ The communication protocol between GIMP and it's plug-ins.
     gint32 d_status;
   } data;
 } GPParam;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2543037"></a><h3><a name="GPParamDef"></a>GPParamDef</h3><a class="indexterm" name="id2567111"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538570"></a><h3>
+<a name="GPParamDef"></a>GPParamDef</h3>
+<a class="indexterm" name="id2538580"></a><pre class="programlisting">typedef struct {
   guint32  type;
   gchar   *name;
   gchar   *description;
 } GPParamDef;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592454"></a><h3><a name="GPProcRun"></a>GPProcRun</h3><a class="indexterm" name="id2592461"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538597"></a><h3>
+<a name="GPProcRun"></a>GPProcRun</h3>
+<a class="indexterm" name="id2538606"></a><pre class="programlisting">typedef struct {
   gchar   *name;
   guint32  nparams;
   GPParam *params;
 } GPProcRun;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592472"></a><h3><a name="GPProcReturn"></a>GPProcReturn</h3><a class="indexterm" name="id2592480"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538623"></a><h3>
+<a name="GPProcReturn"></a>GPProcReturn</h3>
+<a class="indexterm" name="id2538634"></a><pre class="programlisting">typedef struct {
   gchar   *name;
   guint32  nparams;
   GPParam *params;
 } GPProcReturn;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2592491"></a><h3><a name="GPProcInstall"></a>GPProcInstall</h3><a class="indexterm" name="id2592498"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538651"></a><h3>
+<a name="GPProcInstall"></a>GPProcInstall</h3>
+<a class="indexterm" name="id2538661"></a><pre class="programlisting">typedef struct {
   gchar      *name;
   gchar      *blurb;
   gchar      *help;
@@ -179,137 +285,561 @@ The communication protocol between GIMP and it's plug-ins.
   GPParamDef *params;
   GPParamDef *return_vals;
 } GPProcInstall;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2571498"></a><h3><a name="GPProcUninstall"></a>GPProcUninstall</h3><a class="indexterm" name="id2571505"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538682"></a><h3>
+<a name="GPProcUninstall"></a>GPProcUninstall</h3>
+<a class="indexterm" name="id2538692"></a><pre class="programlisting">typedef struct {
   gchar *name;
 } GPProcUninstall;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2571515"></a><h3><a name="gp-init"></a>gp_init ()</h3><a class="indexterm" name="id2571522"></a><pre class="programlisting">void        gp_init                         (void);</pre><p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538708"></a><h3>
+<a name="gp-init"></a>gp_init ()</h3>
+<a class="indexterm" name="id2538718"></a><pre class="programlisting">void        gp_init                         (void);</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2571535"></a><h3><a name="gp-has-init-write"></a>gp_has_init_write ()</h3><a class="indexterm" name="id2571543"></a><pre class="programlisting">gboolean    gp_has_init_write               (GIOChannel *channel,
-                                             gpointer user_data);</pre><p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2538739"></a><h3>
+<a name="gp-has-init-write"></a>gp_has_init_write ()</h3>
+<a class="indexterm" name="id2538749"></a><pre class="programlisting">gboolean    gp_has_init_write               (GIOChannel *channel,
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2571599"></a><h3><a name="gp-quit-write"></a>gp_quit_write ()</h3><a class="indexterm" name="id2571607"></a><pre class="programlisting">gboolean    gp_quit_write                   (GIOChannel *channel,
-                                             gpointer user_data);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569191"></a><h3>
+<a name="gp-quit-write"></a>gp_quit_write ()</h3>
+<a class="indexterm" name="id2569200"></a><pre class="programlisting">gboolean    gp_quit_write                   (GIOChannel *channel,
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2571663"></a><h3><a name="gp-config-write"></a>gp_config_write ()</h3><a class="indexterm" name="id2571671"></a><pre class="programlisting">gboolean    gp_config_write                 (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569268"></a><h3>
+<a name="gp-config-write"></a>gp_config_write ()</h3>
+<a class="indexterm" name="id2569276"></a><pre class="programlisting">gboolean    gp_config_write                 (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPConfig">GPConfig</a> *config,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>config</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>config</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2571744"></a><h3><a name="gp-tile-req-write"></a>gp_tile_req_write ()</h3><a class="indexterm" name="id2571753"></a><pre class="programlisting">gboolean    gp_tile_req_write               (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569364"></a><h3>
+<a name="gp-tile-req-write"></a>gp_tile_req_write ()</h3>
+<a class="indexterm" name="id2569372"></a><pre class="programlisting">gboolean    gp_tile_req_write               (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPTileReq">GPTileReq</a> *tile_req,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>tile_req</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>tile_req</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595901"></a><h3><a name="gp-tile-ack-write"></a>gp_tile_ack_write ()</h3><a class="indexterm" name="id2595909"></a><pre class="programlisting">gboolean    gp_tile_ack_write               (GIOChannel *channel,
-                                             gpointer user_data);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569460"></a><h3>
+<a name="gp-tile-ack-write"></a>gp_tile_ack_write ()</h3>
+<a class="indexterm" name="id2569468"></a><pre class="programlisting">gboolean    gp_tile_ack_write               (GIOChannel *channel,
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2595969"></a><h3><a name="gp-tile-data-write"></a>gp_tile_data_write ()</h3><a class="indexterm" name="id2595978"></a><pre class="programlisting">gboolean    gp_tile_data_write              (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569538"></a><h3>
+<a name="gp-tile-data-write"></a>gp_tile_data_write ()</h3>
+<a class="indexterm" name="id2569546"></a><pre class="programlisting">gboolean    gp_tile_data_write              (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPTileData">GPTileData</a> *tile_data,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>tile_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>tile_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596055"></a><h3><a name="gp-proc-run-write"></a>gp_proc_run_write ()</h3><a class="indexterm" name="id2596063"></a><pre class="programlisting">gboolean    gp_proc_run_write               (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569634"></a><h3>
+<a name="gp-proc-run-write"></a>gp_proc_run_write ()</h3>
+<a class="indexterm" name="id2569642"></a><pre class="programlisting">gboolean    gp_proc_run_write               (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcRun">GPProcRun</a> *proc_run,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>proc_run</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>proc_run</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596140"></a><h3><a name="gp-proc-return-write"></a>gp_proc_return_write ()</h3><a class="indexterm" name="id2596149"></a><pre class="programlisting">gboolean    gp_proc_return_write            (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569730"></a><h3>
+<a name="gp-proc-return-write"></a>gp_proc_return_write ()</h3>
+<a class="indexterm" name="id2569739"></a><pre class="programlisting">gboolean    gp_proc_return_write            (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcReturn">GPProcReturn</a> *proc_return,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>proc_return</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>proc_return</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596226"></a><h3><a name="gp-temp-proc-run-write"></a>gp_temp_proc_run_write ()</h3><a class="indexterm" name="id2596235"></a><pre class="programlisting">gboolean    gp_temp_proc_run_write          (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569827"></a><h3>
+<a name="gp-temp-proc-run-write"></a>gp_temp_proc_run_write ()</h3>
+<a class="indexterm" name="id2569835"></a><pre class="programlisting">gboolean    gp_temp_proc_run_write          (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcRun">GPProcRun</a> *proc_run,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>proc_run</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>proc_run</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596312"></a><h3><a name="gp-temp-proc-return-write"></a>gp_temp_proc_return_write ()</h3><a class="indexterm" name="id2596320"></a><pre class="programlisting">gboolean    gp_temp_proc_return_write       (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2569923"></a><h3>
+<a name="gp-temp-proc-return-write"></a>gp_temp_proc_return_write ()</h3>
+<a class="indexterm" name="id2569932"></a><pre class="programlisting">gboolean    gp_temp_proc_return_write       (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcReturn">GPProcReturn</a> *proc_return,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>proc_return</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>proc_return</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596398"></a><h3><a name="gp-proc-install-write"></a>gp_proc_install_write ()</h3><a class="indexterm" name="id2596406"></a><pre class="programlisting">gboolean    gp_proc_install_write           (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2570020"></a><h3>
+<a name="gp-proc-install-write"></a>gp_proc_install_write ()</h3>
+<a class="indexterm" name="id2570028"></a><pre class="programlisting">gboolean    gp_proc_install_write           (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcInstall">GPProcInstall</a> *proc_install,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>proc_install</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>proc_install</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596483"></a><h3><a name="gp-proc-uninstall-write"></a>gp_proc_uninstall_write ()</h3><a class="indexterm" name="id2596492"></a><pre class="programlisting">gboolean    gp_proc_uninstall_write         (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2570116"></a><h3>
+<a name="gp-proc-uninstall-write"></a>gp_proc_uninstall_write ()</h3>
+<a class="indexterm" name="id2570125"></a><pre class="programlisting">gboolean    gp_proc_uninstall_write         (GIOChannel *channel,
                                              <a href="libgimpbase-gimpprotocol.html#GPProcUninstall">GPProcUninstall</a> *proc_uninstall,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>proc_uninstall</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>proc_uninstall</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2596569"></a><h3><a name="gp-extension-ack-write"></a>gp_extension_ack_write ()</h3><a class="indexterm" name="id2596577"></a><pre class="programlisting">gboolean    gp_extension_ack_write          (GIOChannel *channel,
-                                             gpointer user_data);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2570213"></a><h3>
+<a name="gp-extension-ack-write"></a>gp_extension_ack_write ()</h3>
+<a class="indexterm" name="id2570221"></a><pre class="programlisting">gboolean    gp_extension_ack_write          (GIOChannel *channel,
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2596639"></a><h2>See Also</h2><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2570291"></a><h2>See Also</h2>
+<p>
 <span class="type">libgimp-gimpwire</span>
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimputils.html"><b>&lt;&lt; gimputils</b></a></td><td align="right"><a accesskey="n" href="libgimpbase-gimpwire.html"><b>gimpwire &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpbase-gimputils.html"><b>&lt;&lt;&#160;gimputils</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpbase-gimpwire.html"><b>gimpwire&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

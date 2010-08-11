@@ -19,9 +19,9 @@
 
 
 
-struct      <link linkend="GimpVector2">GimpVector2</link>;
-struct      <link linkend="GimpVector3">GimpVector3</link>;
-struct      <link linkend="GimpVector4">GimpVector4</link>;
+            <link linkend="GimpVector2">GimpVector2</link>;
+            <link linkend="GimpVector3">GimpVector3</link>;
+            <link linkend="GimpVector4">GimpVector4</link>;
 <link linkend="GimpVector2">GimpVector2</link> <link linkend="gimp-vector2-new">gimp_vector2_new</link>                (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y);
 <link linkend="void">void</link>        <link linkend="gimp-vector2-set">gimp_vector2_set</link>                (<link linkend="GimpVector2">GimpVector2</link> *vector,
@@ -148,31 +148,28 @@ Utilities to set up and manipulate vectors.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpVector2"/>struct GimpVector2</title>
-<indexterm><primary>GimpVector2</primary></indexterm><programlisting>struct GimpVector2 {
-
+<title><anchor id="GimpVector2"/>GimpVector2</title>
+<indexterm><primary>GimpVector2</primary></indexterm><programlisting>typedef struct {
   gdouble x, y;
-};
+} GimpVector2;
 </programlisting>
 <para>
 A two dimensional vector.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpVector3"/>struct GimpVector3</title>
-<indexterm><primary>GimpVector3</primary></indexterm><programlisting>struct GimpVector3 {
-
+<title><anchor id="GimpVector3"/>GimpVector3</title>
+<indexterm><primary>GimpVector3</primary></indexterm><programlisting>typedef struct {
   gdouble x, y, z;
-};
+} GimpVector3;
 </programlisting>
 <para>
 A three dimensional vector.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpVector4"/>struct GimpVector4</title>
-<indexterm><primary>GimpVector4</primary></indexterm><programlisting>struct GimpVector4 {
-
+<title><anchor id="GimpVector4"/>GimpVector4</title>
+<indexterm><primary>GimpVector4</primary></indexterm><programlisting>typedef struct {
   gdouble x, y, z, w;
-};
+} GimpVector4;
 </programlisting>
 <para>
 A four dimensional vector.
@@ -192,7 +189,7 @@ Creates a <link linkend="GimpVector2"><type>GimpVector2</type></link> of coordin
 <varlistentry><term><parameter>y</parameter>&nbsp;:</term>
 <listitem><simpara> the Y coordinate.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -226,7 +223,7 @@ Computes the length of a 2D vector.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a pointer to a <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -241,7 +238,7 @@ vector is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -277,7 +274,7 @@ passed by value rather than by reference.</para>
 <varlistentry><term><parameter>factor</parameter>&nbsp;:</term>
 <listitem><simpara> a scalar.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -305,7 +302,7 @@ vector is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link> parallel to <parameter>vector</parameter>, pointing in the same
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link> parallel to <parameter>vector</parameter>, pointing in the same
 direction but with a length of 1.0.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -333,7 +330,7 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the negated <link linkend="GimpVector2"><type>GimpVector2</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the negated <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -373,7 +370,7 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -413,7 +410,7 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -432,7 +429,7 @@ This product is zero if and only if the two vectors are orthognal.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> a pointer to the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The inner product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -451,7 +448,7 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The inner product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -476,7 +473,7 @@ parallel or not, or to compute the area spawned by two vectors.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> a pointer to the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The cross product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -495,7 +492,7 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> the second <link linkend="GimpVector2"><type>GimpVector2</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The cross product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -530,7 +527,7 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
 <listitem><simpara> an angle (in radians).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link> representing <parameter>vector</parameter> rotated by <parameter>alpha</parameter>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a <link linkend="GimpVector2"><type>GimpVector2</type></link> representing <parameter>vector</parameter> rotated by <parameter>alpha</parameter>
 radians.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -553,7 +550,7 @@ Creates a <link linkend="GimpVector3"><type>GimpVector3</type></link> of coordin
 <varlistentry><term><parameter>z</parameter>&nbsp;:</term>
 <listitem><simpara> the Z coordinate.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -591,7 +588,7 @@ Computes the length of a 3D vector.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a pointer to a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -606,7 +603,7 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the length of <parameter>vector</parameter> (a positive gdouble).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -642,7 +639,7 @@ passed by value rather than by reference.</para>
 <varlistentry><term><parameter>factor</parameter>&nbsp;:</term>
 <listitem><simpara> a scalar.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -670,7 +667,7 @@ vector is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link> parallel to <parameter>vector</parameter>, pointing in the same
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link> parallel to <parameter>vector</parameter>, pointing in the same
 direction but with a length of 1.0.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -698,7 +695,7 @@ is passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the negated <link linkend="GimpVector3"><type>GimpVector3</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the negated <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -738,7 +735,7 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -778,7 +775,7 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the resulting <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -797,7 +794,7 @@ is zero if and only if the two vectors are orthognal.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> a pointer to the second <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The inner product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -816,7 +813,7 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> the second <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The inner product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The inner product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -841,7 +838,7 @@ defined by <parameter>vector1</parameter> and <parameter>vector2</parameter>.</p
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> a pointer to the second <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The cross product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -860,7 +857,7 @@ vectors are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>vector2</parameter>&nbsp;:</term>
 <listitem><simpara> the second <link linkend="GimpVector3"><type>GimpVector3</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The cross product.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The cross product.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -918,7 +915,7 @@ are passed by value rather than by reference.</para>
 <varlistentry><term><parameter>gamma</parameter>&nbsp;:</term>
 <listitem><simpara> the angle (in radian) of rotation around the X axis.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the rotated vector.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the rotated vector.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1009,7 +1006,7 @@ value rather than by reference.</para>
 <varlistentry><term><parameter>p</parameter>&nbsp;:</term>
 <listitem><simpara> the resulting point.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the computed <link linkend="GimpVector3"><type>GimpVector3</type></link> point.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the computed <link linkend="GimpVector3"><type>GimpVector3</type></link> point.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

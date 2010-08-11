@@ -19,11 +19,11 @@
 
 
 
-#define     <link linkend="RINT-CAPS">RINT</link>                            (x)
-#define     <link linkend="ROUND-CAPS">ROUND</link>                           (x)
-#define     <link linkend="SQR-CAPS">SQR</link>                             (x)
-#define     <link linkend="MAX255-CAPS">MAX255</link>                          (a)
-#define     <link linkend="CLAMP0255-CAPS">CLAMP0255</link>                       (a)
+#define     <link linkend="RINT:CAPS">RINT</link>                            (x)
+#define     <link linkend="ROUND:CAPS">ROUND</link>                           (x)
+#define     <link linkend="SQR:CAPS">SQR</link>                             (x)
+#define     <link linkend="MAX255:CAPS">MAX255</link>                          (a)
+#define     <link linkend="CLAMP0255:CAPS">CLAMP0255</link>                       (a)
 #define     <link linkend="gimp-deg-to-rad">gimp_deg_to_rad</link>                 (angle)
 #define     <link linkend="gimp-rad-to-deg">gimp_rad_to_deg</link>                 (angle)
 </synopsis>
@@ -48,7 +48,7 @@ rather than the ones from math.h for enhanced portability.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="RINT-CAPS"/>RINT()</title>
+<title><anchor id="RINT:CAPS"/>RINT()</title>
 <indexterm><primary>RINT</primary></indexterm><programlisting>#define     RINT(x)</programlisting>
 <para>
 This macro rounds its argument <parameter>x</parameter> to an integer value in floating point
@@ -61,7 +61,7 @@ format.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="ROUND-CAPS"/>ROUND()</title>
+<title><anchor id="ROUND:CAPS"/>ROUND()</title>
 <indexterm><primary>ROUND</primary></indexterm><programlisting>#define ROUND(x) ((int) ((x) + 0.5))
 </programlisting>
 <para>
@@ -74,7 +74,7 @@ This macro rounds its argument <parameter>x</parameter> to the nearest integer.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="SQR-CAPS"/>SQR()</title>
+<title><anchor id="SQR:CAPS"/>SQR()</title>
 <indexterm><primary>SQR</primary></indexterm><programlisting>#define SQR(x) ((x) * (x))
 </programlisting>
 <para>
@@ -87,7 +87,7 @@ This macro squares its argument <parameter>x</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="MAX255-CAPS"/>MAX255()</title>
+<title><anchor id="MAX255:CAPS"/>MAX255()</title>
 <indexterm><primary>MAX255</primary></indexterm><programlisting>#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
 </programlisting>
 <para>
@@ -100,7 +100,7 @@ This macro limits it argument <parameter>a</parameter>, an (0-511) int, to 255.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="CLAMP0255-CAPS"/>CLAMP0255()</title>
+<title><anchor id="CLAMP0255:CAPS"/>CLAMP0255()</title>
 <indexterm><primary>CLAMP0255</primary></indexterm><programlisting>#define CLAMP0255(a)  CLAMP(a,0,255)
 </programlisting>
 <para>

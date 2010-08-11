@@ -1,3 +1,307 @@
+2005-10-27  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.9 release.
+
+	* autogen.sh: prefer newer versions of automake over older ones.
+
+2005-10-25  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpdockable.c (gimp_dockable_realize): create the
+	title window as GDK_WINDOW_CHILD, not GDK_WINDOW_TEMP.
+
+2005-10-25  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpimage-contiguous-region.c
+	(gimp_image_contiguous_region_by_color): the color samples are
+	always RGB or RGBA, so always compare 3 or 4 bytes of pixel data,
+	and not just the number of bytes of the drawable/projection.
+	Fixes "select by color" on GRAYA (bug #319683).
+
+2005-10-20  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/helpbrowser/dialog.c (title_changed): replace newlines
+	with spaces to avoid multiple lines in the combo box.
+
+2005-10-06  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/gauss.c: always use RLE if horz or
+	vert radius is less than 1.  Fixes bug #315953.
+
+2005-10-04  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* plug-ins/Lighting/lighting_shade.c: Don't add foreground
+	when using an env map; fixes bug #313872.  This bug does
+	not apply to HEAD.
+
+2005-09-28  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/actions/dialogs-actions.c (dialogs_dockable_actions): fixed
+	action parameter to match both the palette list and grid.
+	Fixes bug #317435.
+
+2005-09-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/gqbist.c: use a single random number generator
+	for the lifetime of the plug-in. Fixes bug #317355.
+
+2005-09-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimpbase/gimputils.c (gimp_enum_get_value): ref the enum
+	class instead of only peeking at it.
+
+2005-09-26  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_new): applied
+	patch from Robert Ögren that works around problem creating guides
+	with a tablet on Windows by enabling extension events for the
+	rulers.  Fixes the first problem described in bug #168516.
+
+2005-09-25  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/display/gimpdisplayshell-callbacks.c
+	(gimp_display_shell_canvas_tool_events): reordered checks for
+	the modifiers pressed on <Tab> so NumLock and friends don't
+	interfere. Fixes bug #317118.
+
+2005-09-20  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/svg.c: corrected version check (bug #314400).
+
+2005-09-17  Michael Natterer  <mitch@gimp.org>
+
+	* app/actions/actions.c (action_groups): s/QuickMask/Quick Mask/
+	Fixes bug #316569.
+
+2005-09-11  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/script-fu/script-fu-interface.c (script_fu_response):
+	bail out if the action_area is insensitive. Ignores attempts to
+	close the window while the script is running. Fixes bug #308662.
+
+2005-09-10  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/tools/gimpiscissorstool.c	(gimp_iscissors_tool_button_release):
+	use gimp_draw_tool_on_handle() to figure if we need to close the
+	path. Makes sure that the anchor's sensitive area matches its size
+	on screen. Fixes bug #134250.
+
+2005-09-09  Tor Lillqvist  <tml@novell.com>
+
+	* gimptool-win32.c.in (get_prefix, maybe_append_exe)
+	* libgimpbase/gimpdatafiles.c (is_script): Do what I say
+	and use g_ascii_strcasecmp() instead of g_strcasecmp().
+
+2005-09-07  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/core/gimpchannel-combine.c (gimp_channel_combine_ellipse):
+	use gimp_rectangle_intersect() instead of just looking at the
+	passed in w,h to figure whether nothing needs to be done. While
+	the algorithm does nicely with an entirely out-of-image ellipse,
+	the channel's bounds were set to a rectangle of zero width or
+	height, which caused subsequent calls to gimp_channel_bounds() to
+	return broken bounds. Fixes bug #315417.
+
+	(gimp_channel_combine_rect)
+	(gimp_channel_combine_mask): use gimp_rectangle_intersect() here
+	too instead of the usual unclear CLAMPing on x1,y1,x2,y2.
+
+2005-09-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/dialogs/stroke-dialog.c (stroke_dialog_new): use
+	gtk_object_sink() to destroy a floating widget.
+
+2005-09-02  Sven Neumann  <sven@gimp.org>
+
+	* configure.in
+	* modules/Makefile.am: applied patch that fixes build issues on
+	Cygwin (bug #314893).
+
+2005-08-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/svg.c: deal with SVG API change. This is a
+	compile-time check and thus somewhat ugly because it requires a
+	recompile of the plug-in when updating librsvg to 2.11.0 or newer.
+	Fixes bug #314400.
+
+2005-08-26  Tor Lillqvist  <tml@novell.com>
+
+	* app/plug-in/plug-in.c (plug_in_prep_for_exec, plug_in_open):
+	Instead of passing a child_setup function whose body is ifdeffed
+	out on Win32 to g_spawn_async(), pass NULL for child_setup on
+	Win32. Newer g_spawn_async() implementations on Win32 warn if
+	child_setup functions are attempted to be used, as they don't make
+	sense because without any fork(), they are called in the parent
+	process.
+
+2005-08-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/dicom.c: use an empty field instead of "?" for
+	the unknown value (bug #313008).
+
+2005-08-24  Tor Lillqvist  <tml@novell.com>
+
+	* README.win32: Update. Mention should build against GLib 2.4.
+	Better late than never.
+
+	* app/core/gimpdata.c (gimp_data_create_filename): Make safer on
+	Win32. Not just \ is verboten in file names, also < > / : " | .
+	Look for these in the UTF-8 string, so we don't have to do
+	double-byte aware scanning of the string after conversion to
+	system codepage.
+
+	* libgimpbase/gimpenv.c (gimp_toplevel_directory): [Win32] Use
+	_mbsrchr() to search for backslashes in the path to the executable
+	file. Doing it with strchr() doesn't work in East Asian locales
+	with double-byte codepages, where the trailing byte of double-byte
+	character can be a backslash.
+
+2005-08-20  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_proc_changed):
+	when looking for the file extension, only look at the part after
+	the last directory separator.
+
+2005-08-18  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/scripts/text-circle.scm: Incorporated changes
+	made by Daniel P. Stasinski in his text-circle2.scm script. Letters
+	are now placed properly for both positive and negative fill angles.
+	Fix for bug #144588.
+
+2005-08-17  Tor Lillqvist  <tml@novell.com>
+
+	* plug-ins/winsnap/Makefile.am (LDADD): Use $(WINDRES) to handle
+	cross-compilation.
+
+	* plug-ins/winsnap/winsnap.rc: Refer to the .ico files in
+	lowercase, in case cross-compiling.
+
+2005-08-15  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/fp.c: merged fixes for bug #160032 and bug
+	#141032 from HEAD branch.
+
+2005-08-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/rcm/rcm_callback.c
+	* plug-ins/rcm/rcm_dialog.c
+	* plug-ins/rcm/rcm_misc.[ch]: redraw the previews if their size
+	changes. Fixes bug #172284.
+
+2005-08-13  Manish Singh  <yosh@gimp.org>
+
+	* app/core/gimpimage-preview.c (gimp_image_get_new_preview): if the
+	offsets of the layer are such that they are just on the border of
+	the image, detect that and bail instead of trying to make a
+	sub-preview with a 0 dimension. Fixes bug #312144.
+
+2005-08-13  Manish Singh  <yosh@gimp.org>
+
+	Backported mmx/sse CFLAGS automake gymnastics from HEAD:
+
+	* acinclude.m4: new macro: GIMP_DETECT_CFLAGS; used to detect which
+	of a set of compiler options a compiler supports.
+
+	* configure.in: use the above for -fno-strict-aliasing flag. Also,
+	use it to detect the presence of -mmmx and -msse, since those are
+	needed to compile even MMX/SSE assembly with gcc 4.0. Define
+	MMX/SSE_EXTRA_CFLAGS.
+
+	* app/composite/Makefile.am: compile each of the composite flavors
+	into their own library, so we can use automake's per-target CFLAGS.
+	Use MMX/SSE_EXTRA_CFLAGS in the appropriate places. Build
+	libappcomposite.a out of the resulting objects.
+
+	* app/composite/gimp-composite-3dnow.c
+	* app/composite/gimp-composite-altivec.c
+	* app/composite/gimp-composite-mmx.c
+	* app/composite/gimp-composite-sse.c
+	* app/composite/gimp-composite-sse2.c
+	* app/composite/gimp-composite-vis.c
+	* app/composite/make-installer.py: move the _init functions into
+	the installers, so only actually mmx/sse code gets compiled
+	under the appropriate CFLAGS.
+
+	* app/composite/gimp-composite-3dnow-installer.c
+	* app/composite/gimp-composite-altivec-installer.c
+	* app/composite/gimp-composite-mmx-installer.c
+	* app/composite/gimp-composite-sse-installer.c
+	* app/composite/gimp-composite-sse2-installer.c
+	* app/composite/gimp-composite-vis-installer.c: regenerated.
+
+	* app/composite/gimp-composite.c: remove useless cpu-accel.h include.
+
+	* app/composite/ns.py: resynced with HEAD.
+
+2005-08-08  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/psd.c: Generate valid names for aux channels that
+	do not have names defined. Fixes bug #312963.
+
+2005-07-29  Maurits Rijk  <m.rijk@chello.nl>
+
+	* plug-ins/imagemap/imap_csim.y: make buffer large enough to hold
+	all polygon data.
+
+	* plug-ins/imagemap/imap_csim_parse.[ch]: regenerated. Fixes #169698
+
+2005-07-26  Sven Neumann  <sven@gimp.org>
+
+	* configure.in (ALL_LINGUAS): added mk (Macedonian).
+
+2005-07-20  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpconfig-dump.c: fixed typo (Debian bug #310018).
+
+2005-07-05  Manish Singh  <yosh@gimp.org>
+
+	* INSTALL
+	* configure.in: Allow gtkhtml2, svg, and lcms features to be disabled
+	explicitly at configure time. Based on patch from John N. Laliberte,
+	fixes bug #307704.
+
+2005-07-01  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/common/jpeg.c: Initialize restart markers check button
+	accordingly from defaults. Fixes bug #309091, patch from
+	David 'Bombe' Roden.
+
+2005-06-27  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.9, interface_age 9.
+
 2005-06-27  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.8 release.

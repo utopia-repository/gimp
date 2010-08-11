@@ -359,7 +359,7 @@ to 'gimp_layer_add_mask'.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-from-mask"/>gimp_layer_from_mask ()</title>
-<indexterm role="GIMP"><primary>gimp_layer_from_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_from_mask            (<link linkend="gint32">gint32</link> mask_ID);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_layer_from_mask</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_from_mask            (<link linkend="gint32">gint32</link> mask_ID);</programlisting>
 <para>
 Get the specified mask's layer.
 </para>

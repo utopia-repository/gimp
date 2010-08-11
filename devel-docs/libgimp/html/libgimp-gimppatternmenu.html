@@ -1,4 +1,41 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppatternmenu</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="prev" href="libgimp-gimppalettemenu.html" title="gimppalettemenu"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimppalettemenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppatternmenu"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppatternmenu</span></h2><p>gimppatternmenu &#8212; A widget for selecting patterns.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimppatternmenu</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="prev" href="libgimp-gimppalettemenu.html" title="gimppalettemenu">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
+<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-data.html" title="Data Objects">
+<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
+<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimp-gimppalettemenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Library Reference Manual</th>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimp-gimppatternmenu"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimppatternmenu</span></h2>
+<p>gimppatternmenu &#8212; A widget for selecting patterns.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -16,42 +53,133 @@ void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
                                              const gchar *pattern_name);
-</pre></div><div class="refsect1" lang="en"><a name="id2669945"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2642130"></a><h2>Description</h2>
+<p>
 A widget for selecting patterns.
-</p></div><div class="refsect1" lang="en"><a name="id2669954"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2669960"></a><h3><a name="gimp-pattern-select-widget-new"></a>gimp_pattern_select_widget_new ()</h3><a class="indexterm" name="id2669968"></a><pre class="programlisting"><a
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2642141"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2642147"></a><h3>
+<a name="gimp-pattern-select-widget-new"></a>gimp_pattern_select_widget_new ()</h3>
+<a class="indexterm" name="id2642156"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_pattern_select_widget_new  (const gchar *title,
                                              const gchar *pattern_name,
                                              <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                             gpointer data);</pre><p>
+                                             gpointer data);</pre>
+<p>
 Creates a new <a
 href="../gtk/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> that completely controls the selection of
 a pattern. This widget is suitable for placement in a table in a
-plug-in dialog.</p><p>
+plug-in dialog.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>title</code></em> :</span></td><td>        Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>pattern_name</code></em> :</span></td><td> Initial pattern name or <code class="literal">NULL</code> to use current selection.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>callback</code></em> :</span></td><td>     A function to call when the selected pattern changes.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>         A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A <a
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td>        Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td> Initial pattern name or <code class="literal">NULL</code> to use current selection.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td>     A function to call when the selected pattern changes.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>         A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <a
 href="../gtk/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> that you can use in your UI.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2666443"></a><h3><a name="gimp-pattern-select-widget-close"></a>gimp_pattern_select_widget_close ()</h3><a class="indexterm" name="id2666451"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2647141"></a><h3>
+<a name="gimp-pattern-select-widget-close"></a>gimp_pattern_select_widget_close ()</h3>
+<a class="indexterm" name="id2647150"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
                                             (<a
 href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);</pre><p>
-Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p><p>
+>GtkWidget</a> *widget);</pre>
+<p>
+Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>widget</code></em> :</span></td><td> A pattern select widget.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2668073"></a><h3><a name="gimp-pattern-select-widget-set"></a>gimp_pattern_select_widget_set ()</h3><a class="indexterm" name="id2668082"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (<a
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td> A pattern select widget.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2647205"></a><h3>
+<a name="gimp-pattern-select-widget-set"></a>gimp_pattern_select_widget_set ()</h3>
+<a class="indexterm" name="id2647214"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
-                                             const gchar *pattern_name);</pre><p>
+                                             const gchar *pattern_name);</pre>
+<p>
 Sets the current pattern for the pattern select widget.  Calls the
 callback function if one was supplied in the call to
-<a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new"><code class="function">gimp_pattern_select_widget_new()</code></a>.</p><p>
+<a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new"><code class="function">gimp_pattern_select_widget_new()</code></a>.</p>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>widget</code></em> :</span></td><td>       A pattern select widget.
-</td></tr><tr><td><span class="term"><em class="parameter"><code>pattern_name</code></em> :</span></td><td> Pattern name to set. NULL means no change.
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimppalettemenu.html"><b>&lt;&lt; gimppalettemenu</b></a></td><td align="right"></td></tr></table></body></html>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td>       A pattern select widget.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td> Pattern name to set. NULL means no change.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimppalettemenu.html"><b>&lt;&lt;&#160;gimppalettemenu</b></a></td>
+<td align="right"></td>
+</tr></table>
+</body>
+</html>

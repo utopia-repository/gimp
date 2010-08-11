@@ -161,7 +161,7 @@ using <link linkend="g-free"><function>g_free()</function></link> when it is not
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-escape-uline"/>gimp_escape_uline ()</title>
-<indexterm role="GIMP"><primary>gimp_escape_uline</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_escape_uline               (const <link linkend="gchar">gchar</link> *str);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_escape_uline</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_escape_uline               (const <link linkend="gchar">gchar</link> *str);</programlisting>
 <para>
 This function returns a copy of <parameter>str</parameter> with all underline converted
 to two adjacent underlines. This comes in handy when needing to display
@@ -204,7 +204,7 @@ rid of the mnemonic (see bug <link linkend="157561:CAPS"><type>157561</type></li
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-enum-get-desc"/>gimp_enum_get_desc ()</title>
-<indexterm role="GIMP"><primary>gimp_enum_get_desc</primary></indexterm><programlisting><link linkend="GimpEnumDesc">GimpEnumDesc</link>* gimp_enum_get_desc            (<link linkend="GEnumClass">GEnumClass</link> *enum_class,
+<indexterm role="GIMP 2.2"><primary>gimp_enum_get_desc</primary></indexterm><programlisting><link linkend="GimpEnumDesc">GimpEnumDesc</link>* gimp_enum_get_desc            (<link linkend="GEnumClass">GEnumClass</link> *enum_class,
                                              <link linkend="gint">gint</link> value);</programlisting>
 <para>
 Retrieves <link linkend="GimpEnumDesc"><type>GimpEnumDesc</type></link> associated with the given value, or <literal>NULL</literal>.</para>
@@ -224,7 +224,7 @@ Retrieves <link linkend="GimpEnumDesc"><type>GimpEnumDesc</type></link> associat
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enum-get-value"/>gimp_enum_get_value ()</title>
-<indexterm role="GIMP"><primary>gimp_enum_get_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_enum_get_value             (<link linkend="GType">GType</link> enum_type,
+<indexterm role="GIMP 2.2"><primary>gimp_enum_get_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_enum_get_value             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> value,
                                              const <link linkend="gchar">gchar</link> **value_name,
                                              const <link linkend="gchar">gchar</link> **value_nick,
@@ -264,7 +264,7 @@ and <parameter>value_help</parameter> are not <literal>NULL</literal>).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enum-value-get-desc"/>gimp_enum_value_get_desc ()</title>
-<indexterm role="GIMP"><primary>gimp_enum_value_get_desc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_enum_value_get_desc       (<link linkend="GEnumClass">GEnumClass</link> *enum_class,
+<indexterm role="GIMP 2.2"><primary>gimp_enum_value_get_desc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_enum_value_get_desc       (<link linkend="GEnumClass">GEnumClass</link> *enum_class,
                                              <link linkend="GEnumValue">GEnumValue</link> *enum_value);</programlisting>
 <para>
 Retrieves the translated desc for a given <parameter>enum_value</parameter>.</para>
@@ -284,7 +284,7 @@ Retrieves the translated desc for a given <parameter>enum_value</parameter>.</pa
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enum-value-get-help"/>gimp_enum_value_get_help ()</title>
-<indexterm role="GIMP"><primary>gimp_enum_value_get_help</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_enum_value_get_help       (<link linkend="GEnumClass">GEnumClass</link> *enum_class,
+<indexterm role="GIMP 2.2"><primary>gimp_enum_value_get_help</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_enum_value_get_help       (<link linkend="GEnumClass">GEnumClass</link> *enum_class,
                                              <link linkend="GEnumValue">GEnumValue</link> *enum_value);</programlisting>
 <para>
 Retrieves the translated help for a given <parameter>enum_value</parameter>.</para>
@@ -304,7 +304,7 @@ Retrieves the translated help for a given <parameter>enum_value</parameter>.</pa
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-flags-get-first-desc"/>gimp_flags_get_first_desc ()</title>
-<indexterm role="GIMP"><primary>gimp_flags_get_first_desc</primary></indexterm><programlisting><link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* gimp_flags_get_first_desc    (<link linkend="GFlagsClass">GFlagsClass</link> *flags_class,
+<indexterm role="GIMP 2.2"><primary>gimp_flags_get_first_desc</primary></indexterm><programlisting><link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* gimp_flags_get_first_desc    (<link linkend="GFlagsClass">GFlagsClass</link> *flags_class,
                                              <link linkend="guint">guint</link> value);</programlisting>
 <para>
 Retrieves the first <link linkend="GimpFlagsDesc"><type>GimpFlagsDesc</type></link> that matches the given value, or <literal>NULL</literal>.</para>
@@ -324,7 +324,7 @@ Retrieves the first <link linkend="GimpFlagsDesc"><type>GimpFlagsDesc</type></li
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-flags-get-first-value"/>gimp_flags_get_first_value ()</title>
-<indexterm role="GIMP"><primary>gimp_flags_get_first_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_flags_get_first_value      (<link linkend="GType">GType</link> flags_type,
+<indexterm role="GIMP 2.2"><primary>gimp_flags_get_first_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_flags_get_first_value      (<link linkend="GType">GType</link> flags_type,
                                              <link linkend="guint">guint</link> value,
                                              const <link linkend="gchar">gchar</link> **value_name,
                                              const <link linkend="gchar">gchar</link> **value_nick,
@@ -364,7 +364,7 @@ and <parameter>value_help</parameter> are not <literal>NULL</literal>).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-flags-value-get-desc"/>gimp_flags_value_get_desc ()</title>
-<indexterm role="GIMP"><primary>gimp_flags_value_get_desc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_flags_value_get_desc      (<link linkend="GFlagsClass">GFlagsClass</link> *flags_class,
+<indexterm role="GIMP 2.2"><primary>gimp_flags_value_get_desc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_flags_value_get_desc      (<link linkend="GFlagsClass">GFlagsClass</link> *flags_class,
                                              <link linkend="GFlagsValue">GFlagsValue</link> *flags_value);</programlisting>
 <para>
 Retrieves the translated desc for a given <parameter>flags_value</parameter>.</para>
@@ -384,7 +384,7 @@ Retrieves the translated desc for a given <parameter>flags_value</parameter>.</p
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-flags-value-get-help"/>gimp_flags_value_get_help ()</title>
-<indexterm role="GIMP"><primary>gimp_flags_value_get_help</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_flags_value_get_help      (<link linkend="GFlagsClass">GFlagsClass</link> *flags_class,
+<indexterm role="GIMP 2.2"><primary>gimp_flags_value_get_help</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_flags_value_get_help      (<link linkend="GFlagsClass">GFlagsClass</link> *flags_class,
                                              <link linkend="GFlagsValue">GFlagsValue</link> *flags_value);</programlisting>
 <para>
 Retrieves the translated help for a given <parameter>flags_value</parameter>.</para>

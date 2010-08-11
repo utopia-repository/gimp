@@ -1,5 +1,35 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpwire</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimpprotocol.html" title="gimpprotocol"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimpprotocol.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimpwire"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpwire</span></h2><p>gimpwire &#8212; The lowlevel I/O protocol used for communication between GIMP and
-it's plug-ins.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimpwire</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
+<link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+<link rel="prev" href="libgimpbase-gimpprotocol.html" title="gimpprotocol">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpbase-gimpprotocol.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Base Library Reference Manual</th>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpbase-gimpwire"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimpwire</span></h2>
+<p>gimpwire &#8212; The lowlevel I/O protocol used for communication between GIMP and
+it's plug-ins.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -83,269 +113,1076 @@ gboolean    <a href="libgimpbase-gimpwire.html#wire-write-string">wire_write_str
                                              gchar **data,
                                              gint count,
                                              gpointer user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2571952"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2553717"></a><h2>Description</h2>
+<p>
 The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.
 
-</p></div><div class="refsect1" lang="en"><a name="id2571963"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2571968"></a><h3><a name="WireMessage"></a>WireMessage</h3><a class="indexterm" name="id2571977"></a><pre class="programlisting">typedef struct {
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2553729"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2553736"></a><h3>
+<a name="WireMessage"></a>WireMessage</h3>
+<a class="indexterm" name="id2573032"></a><pre class="programlisting">typedef struct {
   guint32  type;
   gpointer data;
 } WireMessage;
-</pre><p>
+</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2571986"></a><h3><a name="WireReadFunc"></a>WireReadFunc ()</h3><a class="indexterm" name="id2571995"></a><pre class="programlisting">void        (*WireReadFunc)                 (GIOChannel *channel,
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573045"></a><h3>
+<a name="WireReadFunc"></a>WireReadFunc ()</h3>
+<a class="indexterm" name="id2573054"></a><pre class="programlisting">void        (*WireReadFunc)                 (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>msg</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599374"></a><h3><a name="WireWriteFunc"></a>WireWriteFunc ()</h3><a class="indexterm" name="id2599383"></a><pre class="programlisting">void        (*WireWriteFunc)                (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573109"></a><h3>
+<a name="WireWriteFunc"></a>WireWriteFunc ()</h3>
+<a class="indexterm" name="id2573117"></a><pre class="programlisting">void        (*WireWriteFunc)                (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>msg</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599450"></a><h3><a name="WireDestroyFunc"></a>WireDestroyFunc ()</h3><a class="indexterm" name="id2599459"></a><pre class="programlisting">void        (*WireDestroyFunc)              (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573195"></a><h3>
+<a name="WireDestroyFunc"></a>WireDestroyFunc ()</h3>
+<a class="indexterm" name="id2573203"></a><pre class="programlisting">void        (*WireDestroyFunc)              (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>msg</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599493"></a><h3><a name="WireIOFunc"></a>WireIOFunc ()</h3><a class="indexterm" name="id2599501"></a><pre class="programlisting">gboolean    (*WireIOFunc)                   (GIOChannel *channel,
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573243"></a><h3>
+<a name="WireIOFunc"></a>WireIOFunc ()</h3>
+<a class="indexterm" name="id2573252"></a><pre class="programlisting">gboolean    (*WireIOFunc)                   (GIOChannel *channel,
                                              guint8 *buf,
                                              gulong count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>buf</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599595"></a><h3><a name="WireFlushFunc"></a>WireFlushFunc ()</h3><a class="indexterm" name="id2599604"></a><pre class="programlisting">gboolean    (*WireFlushFunc)                (GIOChannel *channel,
-                                             gpointer user_data);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573358"></a><h3>
+<a name="WireFlushFunc"></a>WireFlushFunc ()</h3>
+<a class="indexterm" name="id2573366"></a><pre class="programlisting">gboolean    (*WireFlushFunc)                (GIOChannel *channel,
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599664"></a><h3><a name="wire-register"></a>wire_register ()</h3><a class="indexterm" name="id2599672"></a><pre class="programlisting">void        wire_register                   (guint32 type,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573435"></a><h3>
+<a name="wire-register"></a>wire_register ()</h3>
+<a class="indexterm" name="id2573444"></a><pre class="programlisting">void        wire_register                   (guint32 type,
                                              <a href="libgimpbase-gimpwire.html#WireReadFunc">WireReadFunc</a> read_func,
                                              <a href="libgimpbase-gimpwire.html#WireWriteFunc">WireWriteFunc</a> write_func,
-                                             <a href="libgimpbase-gimpwire.html#WireDestroyFunc">WireDestroyFunc</a> destroy_func);</pre><p>
+                                             <a href="libgimpbase-gimpwire.html#WireDestroyFunc">WireDestroyFunc</a> destroy_func);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>type</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>read_func</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>write_func</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>destroy_func</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>read_func</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>write_func</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>destroy_func</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599757"></a><h3><a name="wire-set-reader"></a>wire_set_reader ()</h3><a class="indexterm" name="id2599765"></a><pre class="programlisting">void        wire_set_reader                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> read_func);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573541"></a><h3>
+<a name="wire-set-reader"></a>wire_set_reader ()</h3>
+<a class="indexterm" name="id2573549"></a><pre class="programlisting">void        wire_set_reader                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> read_func);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>read_func</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>read_func</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599799"></a><h3><a name="wire-set-writer"></a>wire_set_writer ()</h3><a class="indexterm" name="id2599807"></a><pre class="programlisting">void        wire_set_writer                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> write_func);</pre><p>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573590"></a><h3>
+<a name="wire-set-writer"></a>wire_set_writer ()</h3>
+<a class="indexterm" name="id2573598"></a><pre class="programlisting">void        wire_set_writer                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> write_func);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>write_func</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>write_func</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599841"></a><h3><a name="wire-set-flusher"></a>wire_set_flusher ()</h3><a class="indexterm" name="id2599849"></a><pre class="programlisting">void        wire_set_flusher                (<a href="libgimpbase-gimpwire.html#WireFlushFunc">WireFlushFunc</a> flush_func);</pre><p>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573639"></a><h3>
+<a name="wire-set-flusher"></a>wire_set_flusher ()</h3>
+<a class="indexterm" name="id2573647"></a><pre class="programlisting">void        wire_set_flusher                (<a href="libgimpbase-gimpwire.html#WireFlushFunc">WireFlushFunc</a> flush_func);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>flush_func</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>flush_func</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599884"></a><h3><a name="wire-read"></a>wire_read ()</h3><a class="indexterm" name="id2599892"></a><pre class="programlisting">gboolean    wire_read                       (GIOChannel *channel,
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573688"></a><h3>
+<a name="wire-read"></a>wire_read ()</h3>
+<a class="indexterm" name="id2573696"></a><pre class="programlisting">gboolean    wire_read                       (GIOChannel *channel,
                                              guint8 *buf,
                                              gsize count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>buf</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2599987"></a><h3><a name="wire-write"></a>wire_write ()</h3><a class="indexterm" name="id2599996"></a><pre class="programlisting">gboolean    wire_write                      (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573803"></a><h3>
+<a name="wire-write"></a>wire_write ()</h3>
+<a class="indexterm" name="id2573811"></a><pre class="programlisting">gboolean    wire_write                      (GIOChannel *channel,
                                              guint8 *buf,
                                              gsize count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>buf</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600091"></a><h3><a name="wire-flush"></a>wire_flush ()</h3><a class="indexterm" name="id2600099"></a><pre class="programlisting">gboolean    wire_flush                      (GIOChannel *channel,
-                                             gpointer user_data);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573918"></a><h3>
+<a name="wire-flush"></a>wire_flush ()</h3>
+<a class="indexterm" name="id2573927"></a><pre class="programlisting">gboolean    wire_flush                      (GIOChannel *channel,
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600160"></a><h3><a name="wire-error"></a>wire_error ()</h3><a class="indexterm" name="id2600168"></a><pre class="programlisting">gboolean    wire_error                      (void);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2573996"></a><h3>
+<a name="wire-error"></a>wire_error ()</h3>
+<a class="indexterm" name="id2574004"></a><pre class="programlisting">gboolean    wire_error                      (void);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600197"></a><h3><a name="wire-clear-error"></a>wire_clear_error ()</h3><a class="indexterm" name="id2600205"></a><pre class="programlisting">void        wire_clear_error                (void);</pre><p>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574036"></a><h3>
+<a name="wire-clear-error"></a>wire_clear_error ()</h3>
+<a class="indexterm" name="id2574045"></a><pre class="programlisting">void        wire_clear_error                (void);</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2600220"></a><h3><a name="wire-read-msg"></a>wire_read_msg ()</h3><a class="indexterm" name="id2600228"></a><pre class="programlisting">gboolean    wire_read_msg                   (GIOChannel *channel,
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574064"></a><h3>
+<a name="wire-read-msg"></a>wire_read_msg ()</h3>
+<a class="indexterm" name="id2574072"></a><pre class="programlisting">gboolean    wire_read_msg                   (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>msg</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600306"></a><h3><a name="wire-write-msg"></a>wire_write_msg ()</h3><a class="indexterm" name="id2600315"></a><pre class="programlisting">gboolean    wire_write_msg                  (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574160"></a><h3>
+<a name="wire-write-msg"></a>wire_write_msg ()</h3>
+<a class="indexterm" name="id2574168"></a><pre class="programlisting">gboolean    wire_write_msg                  (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>msg</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600393"></a><h3><a name="wire-destroy"></a>wire_destroy ()</h3><a class="indexterm" name="id2600401"></a><pre class="programlisting">void        wire_destroy                    (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574256"></a><h3>
+<a name="wire-destroy"></a>wire_destroy ()</h3>
+<a class="indexterm" name="id2574265"></a><pre class="programlisting">void        wire_destroy                    (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>msg</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600436"></a><h3><a name="wire-read-int32"></a>wire_read_int32 ()</h3><a class="indexterm" name="id2600444"></a><pre class="programlisting">gboolean    wire_read_int32                 (GIOChannel *channel,
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574305"></a><h3>
+<a name="wire-read-int32"></a>wire_read_int32 ()</h3>
+<a class="indexterm" name="id2574314"></a><pre class="programlisting">gboolean    wire_read_int32                 (GIOChannel *channel,
                                              guint32 *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600539"></a><h3><a name="wire-read-int16"></a>wire_read_int16 ()</h3><a class="indexterm" name="id2600547"></a><pre class="programlisting">gboolean    wire_read_int16                 (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574421"></a><h3>
+<a name="wire-read-int16"></a>wire_read_int16 ()</h3>
+<a class="indexterm" name="id2574429"></a><pre class="programlisting">gboolean    wire_read_int16                 (GIOChannel *channel,
                                              guint16 *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600642"></a><h3><a name="wire-read-int8"></a>wire_read_int8 ()</h3><a class="indexterm" name="id2600651"></a><pre class="programlisting">gboolean    wire_read_int8                  (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574536"></a><h3>
+<a name="wire-read-int8"></a>wire_read_int8 ()</h3>
+<a class="indexterm" name="id2574544"></a><pre class="programlisting">gboolean    wire_read_int8                  (GIOChannel *channel,
                                              guint8 *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600746"></a><h3><a name="wire-read-double"></a>wire_read_double ()</h3><a class="indexterm" name="id2600754"></a><pre class="programlisting">gboolean    wire_read_double                (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574651"></a><h3>
+<a name="wire-read-double"></a>wire_read_double ()</h3>
+<a class="indexterm" name="id2574660"></a><pre class="programlisting">gboolean    wire_read_double                (GIOChannel *channel,
                                              gdouble *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2544225"></a><h3><a name="wire-read-string"></a>wire_read_string ()</h3><a class="indexterm" name="id2546604"></a><pre class="programlisting">gboolean    wire_read_string                (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574767"></a><h3>
+<a name="wire-read-string"></a>wire_read_string ()</h3>
+<a class="indexterm" name="id2574775"></a><pre class="programlisting">gboolean    wire_read_string                (GIOChannel *channel,
                                              gchar **data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600903"></a><h3><a name="wire-write-int32"></a>wire_write_int32 ()</h3><a class="indexterm" name="id2600911"></a><pre class="programlisting">gboolean    wire_write_int32                (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574882"></a><h3>
+<a name="wire-write-int32"></a>wire_write_int32 ()</h3>
+<a class="indexterm" name="id2574890"></a><pre class="programlisting">gboolean    wire_write_int32                (GIOChannel *channel,
                                              guint32 *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2600999"></a><h3><a name="wire-write-int16"></a>wire_write_int16 ()</h3><a class="indexterm" name="id2601007"></a><pre class="programlisting">gboolean    wire_write_int16                (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2574997"></a><h3>
+<a name="wire-write-int16"></a>wire_write_int16 ()</h3>
+<a class="indexterm" name="id2575006"></a><pre class="programlisting">gboolean    wire_write_int16                (GIOChannel *channel,
                                              guint16 *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601099"></a><h3><a name="wire-write-int8"></a>wire_write_int8 ()</h3><a class="indexterm" name="id2601107"></a><pre class="programlisting">gboolean    wire_write_int8                 (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2575113"></a><h3>
+<a name="wire-write-int8"></a>wire_write_int8 ()</h3>
+<a class="indexterm" name="id2575121"></a><pre class="programlisting">gboolean    wire_write_int8                 (GIOChannel *channel,
                                              guint8 *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601202"></a><h3><a name="wire-write-double"></a>wire_write_double ()</h3><a class="indexterm" name="id2601210"></a><pre class="programlisting">gboolean    wire_write_double               (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2575228"></a><h3>
+<a name="wire-write-double"></a>wire_write_double ()</h3>
+<a class="indexterm" name="id2575236"></a><pre class="programlisting">gboolean    wire_write_double               (GIOChannel *channel,
                                              gdouble *data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601304"></a><h3><a name="wire-write-string"></a>wire_write_string ()</h3><a class="indexterm" name="id2601312"></a><pre class="programlisting">gboolean    wire_write_string               (GIOChannel *channel,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2575343"></a><h3>
+<a name="wire-write-string"></a>wire_write_string ()</h3>
+<a class="indexterm" name="id2575352"></a><pre class="programlisting">gboolean    wire_write_string               (GIOChannel *channel,
                                              gchar **data,
                                              gint count,
-                                             gpointer user_data);</pre><p>
+                                             gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>channel</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>count</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2601408"></a><h2>See Also</h2><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575460"></a><h2>See Also</h2>
+<p>
 <span class="type">libgimp-gimpprotocol</span>
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpbase-gimpprotocol.html"><b>&lt;&lt; gimpprotocol</b></a></td><td align="right"></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpbase-gimpprotocol.html"><b>&lt;&lt;&#160;gimpprotocol</b></a></td>
+<td align="right"></td>
+</tr></table>
+</body>
+</html>

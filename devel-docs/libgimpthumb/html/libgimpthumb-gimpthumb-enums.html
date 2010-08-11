@@ -1,4 +1,36 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpthumb-enums</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Thumbnail Library Reference Manual"><link rel="up" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library"><link rel="prev" href="libgimpthumb-gimpthumb-utils.html" title="gimpthumb-utils"><link rel="next" href="libgimpthumb-gimpthumb-error.html" title="gimpthumb-error"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpthumb-gimpthumb-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpthumb.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Thumbnail Library Reference Manual</th><td><a accesskey="n" href="libgimpthumb-gimpthumb-error.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpthumb-gimpthumb-enums"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpthumb-enums</span></h2><p>gimpthumb-enums &#8212; Enumerations used by libgimpthumb</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimpthumb-enums</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Thumbnail Library Reference Manual">
+<link rel="up" href="libgimpthumb.html" title="Part&#160;I.&#160;GIMP Thumbnail Library">
+<link rel="prev" href="libgimpthumb-gimpthumb-utils.html" title="gimpthumb-utils">
+<link rel="next" href="libgimpthumb-gimpthumb-error.html" title="gimpthumb-error">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpthumb.html" title="Part&#160;I.&#160;GIMP Thumbnail Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpthumb-gimpthumb-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpthumb.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Thumbnail Library Reference Manual</th>
+<td><a accesskey="n" href="libgimpthumb-gimpthumb-error.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpthumb-gimpthumb-enums"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimpthumb-enums</span></h2>
+<p>gimpthumb-enums &#8212; Enumerations used by libgimpthumb</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
@@ -6,36 +38,106 @@ enum        <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpTh
 enum        <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a>;
 enum        <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbState">GimpThumbState</a>;
 
-</pre></div><div class="refsect1" lang="en"><a name="id2557546"></a><h2>Description</h2><p>
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2490885"></a><h2>Description</h2>
+<p>
 
-</p></div><div class="refsect1" lang="en"><a name="id2563757"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2564403"></a><h3><a name="GimpThumbFileType"></a>enum GimpThumbFileType</h3><a class="indexterm" name="id2549637"></a><pre class="programlisting">typedef enum
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2521914"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2546094"></a><h3>
+<a name="GimpThumbFileType"></a>enum GimpThumbFileType</h3>
+<a class="indexterm" name="id2549841"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_FILE_TYPE_NONE,
   GIMP_THUMB_FILE_TYPE_REGULAR,
   GIMP_THUMB_FILE_TYPE_FOLDER,
   GIMP_THUMB_FILE_TYPE_SPECIAL
 } GimpThumbFileType;
-</pre><p>
-File types as returned by <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test"><tt class="function">gimp_thumb_file_test()</tt></a>.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><tt class="literal">GIMP_THUMB_FILE_TYPE_NONE</tt></span></td><td>    file does not exist
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_FILE_TYPE_REGULAR</tt></span></td><td> a regular file
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_FILE_TYPE_FOLDER</tt></span></td><td>  a directory
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_FILE_TYPE_SPECIAL</tt></span></td><td> a special file (device node, fifo, socket, ...)
+</pre>
+<p>
+File types as returned by <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test"><code class="function">gimp_thumb_file_test()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_FILE_TYPE_NONE</code></span></td>
+<td>    file does not exist
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_FILE_TYPE_REGULAR</code></span></td>
+<td> a regular file
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_FILE_TYPE_FOLDER</code></span></td>
+<td>  a directory
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_FILE_TYPE_SPECIAL</code></span></td>
+<td> a special file (device node, fifo, socket, ...)
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2539499"></a><h3><a name="GimpThumbSize"></a>enum GimpThumbSize</h3><a class="indexterm" name="id2539507"></a><pre class="programlisting">typedef enum
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2549934"></a><h3>
+<a name="GimpThumbSize"></a>enum GimpThumbSize</h3>
+<a class="indexterm" name="id2549944"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_SIZE_FAIL   = 0,
   GIMP_THUMB_SIZE_NORMAL = 128,
   GIMP_THUMB_SIZE_LARGE  = 256
 } GimpThumbSize;
-</pre><p>
+</pre>
+<p>
 Possible thumbnail sizes as defined by the Thumbnail Managaging Standard
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><tt class="literal">GIMP_THUMB_SIZE_FAIL</tt></span></td><td>   special size used to indicate a thumbnail
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_SIZE_FAIL</code></span></td>
+<td>   special size used to indicate a thumbnail
                           creation failure
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_SIZE_NORMAL</tt></span></td><td> normal thumbnail size (128 pixels)
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_SIZE_LARGE</tt></span></td><td>  large thumbnail size (256 pixels)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_SIZE_NORMAL</code></span></td>
+<td> normal thumbnail size (128 pixels)
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_SIZE_LARGE</code></span></td>
+<td>  large thumbnail size (256 pixels)
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2526729"></a><h3><a name="GimpThumbState"></a>enum GimpThumbState</h3><a class="indexterm" name="id2526737"></a><pre class="programlisting">typedef enum
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2550294"></a><h3>
+<a name="GimpThumbState"></a>enum GimpThumbState</h3>
+<a class="indexterm" name="id2550304"></a><pre class="programlisting">typedef enum
 {
   GIMP_THUMB_STATE_UNKNOWN,
   GIMP_THUMB_STATE_REMOTE,
@@ -47,16 +149,76 @@ Possible thumbnail sizes as defined by the Thumbnail Managaging Standard
   GIMP_THUMB_STATE_FAILED,
   GIMP_THUMB_STATE_OK
 } GimpThumbState;
-</pre><p>
+</pre>
+<p>
 Possible image and thumbnail file states used by libgimpthumb.
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_UNKNOWN</tt></span></td><td>   nothing is known about the file/thumbnail
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_REMOTE</tt></span></td><td>    the file is on a remote file system
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_FOLDER</tt></span></td><td>
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_SPECIAL</tt></span></td><td>
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_NOT_FOUND</tt></span></td><td> the file/thumbnail doesn't exist
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_EXISTS</tt></span></td><td>    the file/thumbnail exists
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_OLD</tt></span></td><td>       the thumbnail may be outdated
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_FAILED</tt></span></td><td>    the thumbnail couldn't be created
-</td></tr><tr><td><span class="term"><tt class="literal">GIMP_THUMB_STATE_OK</tt></span></td><td>        the thumbnail exists and matches the image
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_UNKNOWN</code></span></td>
+<td>   nothing is known about the file/thumbnail
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_REMOTE</code></span></td>
+<td>    the file is on a remote file system
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_FOLDER</code></span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_SPECIAL</code></span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_NOT_FOUND</code></span></td>
+<td> the file/thumbnail doesn't exist
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_EXISTS</code></span></td>
+<td>    the file/thumbnail exists
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_OLD</code></span></td>
+<td>       the thumbnail may be outdated
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_FAILED</code></span></td>
+<td>    the thumbnail couldn't be created
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><code class="literal">GIMP_THUMB_STATE_OK</code></span></td>
+<td>        the thumbnail exists and matches the image
 
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpthumb-gimpthumb-utils.html"><b>&lt;&lt; gimpthumb-utils</b></a></td><td align="right"><a accesskey="n" href="libgimpthumb-gimpthumb-error.html"><b>gimpthumb-error &gt;&gt;</b></a></td></tr></table></body></html>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpthumb-gimpthumb-utils.html"><b>&lt;&lt;&#160;gimpthumb-utils</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpthumb-gimpthumb-error.html"><b>gimpthumb-error&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

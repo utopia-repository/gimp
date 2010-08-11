@@ -1,35 +1,58 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpColorDisplay</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="prev" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="next" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpwidgets-colordisplay.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-colordisplay.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpColorDisplayStack.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpColorDisplay"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpColorDisplay</span></h2><p>GimpColorDisplay &#8212; Pluggable GIMP display color correction modules.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpColorDisplay</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<link rel="up" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
+<link rel="prev" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
+<link rel="next" href="GimpColorDisplayStack.html" title="GimpColorDisplayStack">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpwidgets-colordisplay.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpwidgets-colordisplay.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
+<td><a accesskey="n" href="GimpColorDisplayStack.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="GimpColorDisplay"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">GimpColorDisplay</span></h2>
+<p>GimpColorDisplay &#8212; Pluggable GIMP display color correction modules.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
 
 
 
             <a href="GimpColorDisplay.html#GimpColorDisplay-struct">GimpColorDisplay</a>;
-<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* <a href="GimpColorDisplay.html#gimp-color-display-new">gimp_color_display_new</a>    (<a
-href="../gobject/gobject-Type-Information.html#GType"
->GType</a> display_type);
+<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* <a href="GimpColorDisplay.html#gimp-color-display-new">gimp_color_display_new</a>    (GType display_type);
 <a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* <a href="GimpColorDisplay.html#gimp-color-display-clone">gimp_color_display_clone</a>  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);
 void        <a href="GimpColorDisplay.html#gimp-color-display-set-enabled">gimp_color_display_set_enabled</a>  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
-                                             <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> enabled);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="GimpColorDisplay.html#gimp-color-display-get-enabled">gimp_color_display_get_enabled</a>  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);
+                                             gboolean enabled);
+gboolean    <a href="GimpColorDisplay.html#gimp-color-display-get-enabled">gimp_color_display_get_enabled</a>  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);
 void        <a href="GimpColorDisplay.html#gimp-color-display-convert">gimp_color_display_convert</a>      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
-                                             <a
-href="../glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> height,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> bpl);
+                                             guchar *buf,
+                                             gint width,
+                                             gint height,
+                                             gint bpp,
+                                             gint bpl);
 void        <a href="GimpColorDisplay.html#gimp-color-display-load-state">gimp_color_display_load_state</a>   (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
                                              <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
@@ -44,137 +67,406 @@ void        <a href="GimpColorDisplay.html#gimp-color-display-configure-reset">g
                                             (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);
 void        <a href="GimpColorDisplay.html#gimp-color-display-changed">gimp_color_display_changed</a>      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2598503"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2571693"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
 
-  <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
+  GObject
    +----GimpColorDisplay
-</pre></div><div class="refsect1" lang="en"><a name="id2598518"></a><h2>Properties</h2><pre class="synopsis">
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2571713"></a><h2>Properties</h2>
+<pre class="synopsis">
 
-  "<a href="GimpColorDisplay.html#GimpColorDisplay--enabled">enabled</a>"              <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct
-</pre></div><div class="refsect1" lang="en"><a name="id2598538"></a><h2>Signal Prototypes</h2><pre class="synopsis">
+  "<a href="GimpColorDisplay.html#GimpColorDisplay--enabled">enabled</a>"              gboolean              : Read / Write / Construct
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2571738"></a><h2>Signal Prototypes</h2>
+<pre class="synopsis">
 
 "<a href="GimpColorDisplay.html#GimpColorDisplay-changed">changed</a>"   void        user_function      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *gimpcolordisplay,
-                                            <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
-</pre></div><div class="refsect1" lang="en"><a name="id2598569"></a><h2>Description</h2><p>
+                                            gpointer user_data);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2571775"></a><h2>Description</h2>
+<p>
 Functions and definitions for creating pluggable GIMP
 display color correction modules.
-</p></div><div class="refsect1" lang="en"><a name="id2598580"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2598585"></a><h3><a name="GimpColorDisplay-struct"></a>GimpColorDisplay</h3><a class="indexterm" name="id2598594"></a><pre class="programlisting">typedef struct _GimpColorDisplay GimpColorDisplay;</pre><p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2571788"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2571794"></a><h3>
+<a name="GimpColorDisplay-struct"></a>GimpColorDisplay</h3>
+<a class="indexterm" name="id2571803"></a><pre class="programlisting">typedef struct _GimpColorDisplay GimpColorDisplay;</pre>
+<p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2598604"></a><h3><a name="gimp-color-display-new"></a>gimp_color_display_new ()</h3><a class="indexterm" name="id2598612"></a><pre class="programlisting"><a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* gimp_color_display_new    (<a
-href="../gobject/gobject-Type-Information.html#GType"
->GType</a> display_type);</pre><p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2571820"></a><h3>
+<a name="gimp-color-display-new"></a>gimp_color_display_new ()</h3>
+<a class="indexterm" name="id2571829"></a><pre class="programlisting"><a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* gimp_color_display_new    (GType display_type);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display_type</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598656"></a><h3><a name="gimp-color-display-clone"></a>gimp_color_display_clone ()</h3><a class="indexterm" name="id2598665"></a><pre class="programlisting"><a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* gimp_color_display_clone  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2598709"></a><h3><a name="gimp-color-display-set-enabled"></a>gimp_color_display_set_enabled ()</h3><a class="indexterm" name="id2598720"></a><pre class="programlisting">void        gimp_color_display_set_enabled  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
-                                             <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> enabled);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>enabled</code></em> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601425"></a><h3><a name="gimp-color-display-get-enabled"></a>gimp_color_display_get_enabled ()</h3><a class="indexterm" name="id2601436"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_color_display_get_enabled  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601480"></a><h3><a name="gimp-color-display-convert"></a>gimp_color_display_convert ()</h3><a class="indexterm" name="id2601489"></a><pre class="programlisting">void        gimp_color_display_convert      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
-                                             <a
-href="../glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> height,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> bpl);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>buf</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>width</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>height</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>bpp</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>bpl</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display_type</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601608"></a><h3><a name="gimp-color-display-load-state"></a>gimp_color_display_load_state ()</h3><a class="indexterm" name="id2601619"></a><pre class="programlisting">void        gimp_color_display_load_state   (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2571884"></a><h3>
+<a name="gimp-color-display-clone"></a>gimp_color_display_clone ()</h3>
+<a class="indexterm" name="id2571893"></a><pre class="programlisting"><a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a>* gimp_color_display_clone  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2577772"></a><h3>
+<a name="gimp-color-display-set-enabled"></a>gimp_color_display_set_enabled ()</h3>
+<a class="indexterm" name="id2577783"></a><pre class="programlisting">void        gimp_color_display_set_enabled  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
+                                             gboolean enabled);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>enabled</code></em>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2577850"></a><h3>
+<a name="gimp-color-display-get-enabled"></a>gimp_color_display_get_enabled ()</h3>
+<a class="indexterm" name="id2577861"></a><pre class="programlisting">gboolean    gimp_color_display_get_enabled  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2577917"></a><h3>
+<a name="gimp-color-display-convert"></a>gimp_color_display_convert ()</h3>
+<a class="indexterm" name="id2577926"></a><pre class="programlisting">void        gimp_color_display_convert      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
+                                             guchar *buf,
+                                             gint width,
+                                             gint height,
+                                             gint bpp,
+                                             gint bpl);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>bpl</code></em>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2576415"></a><h3>
+<a name="gimp-color-display-load-state"></a>gimp_color_display_load_state ()</h3>
+<a class="indexterm" name="id2576425"></a><pre class="programlisting">void        gimp_color_display_load_state   (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display,
                                              <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a> *state);</pre><p>
+>GimpParasite</a> *state);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><em class="parameter"><code>state</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>state</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601670"></a><h3><a name="gimp-color-display-save-state"></a>gimp_color_display_save_state ()</h3><a class="indexterm" name="id2601681"></a><pre class="programlisting"><a
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2576493"></a><h3>
+<a name="gimp-color-display-save-state"></a>gimp_color_display_save_state ()</h3>
+<a class="indexterm" name="id2576504"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>* gimp_color_display_save_state (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre><p>
+>GimpParasite</a>* gimp_color_display_save_state (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2601726"></a><h3><a name="gimp-color-display-configure"></a>gimp_color_display_configure ()</h3><a class="indexterm" name="id2601737"></a><pre class="programlisting"><a
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2576561"></a><h3>
+<a name="gimp-color-display-configure"></a>gimp_color_display_configure ()</h3>
+<a class="indexterm" name="id2576572"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_color_display_configure    (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre><p>
+>GtkWidget</a>*  gimp_color_display_configure    (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2605483"></a><h3><a name="gimp-color-display-configure-reset"></a>gimp_color_display_configure_reset ()</h3><a class="indexterm" name="id2605494"></a><pre class="programlisting">void        gimp_color_display_configure_reset
-                                            (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre><p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2576629"></a><h3>
+<a name="gimp-color-display-configure-reset"></a>gimp_color_display_configure_reset ()</h3>
+<a class="indexterm" name="id2576641"></a><pre class="programlisting">void        gimp_color_display_configure_reset
+                                            (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2605529"></a><h3><a name="gimp-color-display-changed"></a>gimp_color_display_changed ()</h3><a class="indexterm" name="id2605538"></a><pre class="programlisting">void        gimp_color_display_changed      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre><p>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2576687"></a><h3>
+<a name="gimp-color-display-changed"></a>gimp_color_display_changed ()</h3>
+<a class="indexterm" name="id2576697"></a><pre class="programlisting">void        gimp_color_display_changed      (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *display);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>display</code></em> :</span></td><td>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>display</code></em>&#160;:</span></td>
+<td>
 
 
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2605574"></a><h2>Properties</h2><div class="refsect2" lang="en"><a name="id2605579"></a><h3><a name="GimpColorDisplay--enabled"></a>The "<code class="literal">enabled</code>" property</h3><pre class="programlisting">  "enabled"              <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct</pre><p></p><p>Default value: TRUE</p></div></div><div class="refsect1" lang="en"><a name="id2605605"></a><h2>Signals</h2><div class="refsect2" lang="en"><a name="id2605610"></a><h3><a name="GimpColorDisplay-changed"></a>The "changed" signal</h3><pre class="programlisting">void        user_function                  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *gimpcolordisplay,
-                                            <a
-href="../glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre><p>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576744"></a><h2>Properties</h2>
+<div class="refsect2" lang="en">
+<a name="id2576750"></a><h3>
+<a name="GimpColorDisplay--enabled"></a>The "<code class="literal">enabled</code>" property</h3>
+<pre class="programlisting">  "enabled"              gboolean              : Read / Write / Construct</pre>
+<p></p>
+<p>Default value: TRUE</p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576784"></a><h2>Signals</h2>
+<div class="refsect2" lang="en">
+<a name="id2579737"></a><h3>
+<a name="GimpColorDisplay-changed"></a>The "changed" signal</h3>
+<pre class="programlisting">void        user_function                  (<a href="GimpColorDisplay.html" title="GimpColorDisplay">GimpColorDisplay</a> *gimpcolordisplay,
+                                            gpointer user_data);</pre>
+<p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>gimpcolordisplay</code></em> :</span></td><td>the object which received the signal.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>gimpcolordisplay</code></em>&#160;:</span></td>
+<td>the object which received the signal.
 
-</td></tr><tr><td><span class="term"><em class="parameter"><code>user_data</code></em> :</span></td><td>user data set when the signal handler was connected.</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2605669"></a><h2>See Also</h2><p>
-<a
-href="../glib/glib-Dynamic-Loading-of-Modules.html#GModule"
-><span class="type">GModule</span></a>
-</p><p>
-<a
-href="../gobject/GTypeModule.html"
-><span class="type">GTypeModule</span></a>
-</p><p>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2579801"></a><h2>See Also</h2>
+<p>
+<span class="type">GModule</span>
+</p>
+<p>
+<span class="type">GTypeModule</span>
+</p>
+<p>
 <span class="type">libgimp-gimpmodule</span>
-</p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpwidgets-colordisplay.html"><b>&lt;&lt; Part II. GIMP Display Filters</b></a></td><td align="right"><a accesskey="n" href="GimpColorDisplayStack.html"><b>GimpColorDisplayStack &gt;&gt;</b></a></td></tr></table></body></html>
+</p>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpwidgets-colordisplay.html"><b>&lt;&lt;&#160;Part&#160;II.&#160;GIMP Display Filters</b></a></td>
+<td align="right"><a accesskey="n" href="GimpColorDisplayStack.html"><b>GimpColorDisplayStack&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

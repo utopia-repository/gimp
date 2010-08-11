@@ -7,13 +7,13 @@
     </sub>
   </chapters>
   <functions>
-    <function name="struct GimpModule" link="GimpModule.html#GimpModule-struct"/>
-    <function name="struct GimpModuleInfo" link="GimpModule.html#GimpModuleInfo"/>
+    <function name="GimpModule" link="GimpModule.html#GimpModule-struct"/>
+    <function name="GimpModuleInfo" link="GimpModule.html#GimpModuleInfo"/>
     <function name="enum GimpModuleState" link="GimpModule.html#GimpModuleState"/>
     <function name="GimpModuleQueryFunc ()" link="GimpModule.html#GimpModuleQueryFunc"/>
     <function name="GimpModuleRegisterFunc ()" link="GimpModule.html#GimpModuleRegisterFunc"/>
-    <function name="GIMP_MODULE_ABI_VERSION" link="GimpModule.html#GIMP-MODULE-ABI-VERSION-CAPS"/>
-    <function name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE-CAPS"/>
+    <function name="GIMP_MODULE_ABI_VERSION" link="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS"/>
+    <function name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS"/>
     <function name="gimp_module_new ()" link="GimpModule.html#gimp-module-new"/>
     <function name="gimp_module_modified ()" link="GimpModule.html#gimp-module-modified"/>
     <function name="gimp_module_query_module ()" link="GimpModule.html#gimp-module-query-module"/>
@@ -24,7 +24,7 @@
     <function name="gimp_module_info_copy ()" link="GimpModule.html#gimp-module-info-copy"/>
     <function name="gimp_module_info_free ()" link="GimpModule.html#gimp-module-info-free"/>
     <function name="The &quot;modified&quot; signal" link="GimpModule.html#GimpModule-modified"/>
-    <function name="struct GimpModuleDB" link="GimpModuleDB.html#GimpModuleDB-struct"/>
+    <function name="GimpModuleDB" link="GimpModuleDB.html#GimpModuleDB-struct"/>
     <function name="gimp_module_db_new ()" link="GimpModuleDB.html#gimp-module-db-new"/>
     <function name="gimp_module_db_set_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-set-load-inhibit"/>
     <function name="gimp_module_db_get_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-get-load-inhibit"/>

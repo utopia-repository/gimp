@@ -19,14 +19,14 @@
 
 
 
-struct      <link linkend="GimpModule-struct">GimpModule</link>;
-struct      <link linkend="GimpModuleInfo">GimpModuleInfo</link>;
+            <link linkend="GimpModule-struct">GimpModule</link>;
+            <link linkend="GimpModuleInfo">GimpModuleInfo</link>;
 enum        <link linkend="GimpModuleState">GimpModuleState</link>;
 const <link linkend="GimpModuleInfo">GimpModuleInfo</link>* (<link linkend="GimpModuleQueryFunc">*GimpModuleQueryFunc</link>)
                                             (<link linkend="GTypeModule">GTypeModule</link> *module);
 <link linkend="gboolean">gboolean</link>    (<link linkend="GimpModuleRegisterFunc">*GimpModuleRegisterFunc</link>)       (<link linkend="GTypeModule">GTypeModule</link> *module);
-#define     <link linkend="GIMP-MODULE-ABI-VERSION-CAPS">GIMP_MODULE_ABI_VERSION</link>
-#define     <link linkend="GIMP-MODULE-PARAM-SERIALIZE-CAPS">GIMP_MODULE_PARAM_SERIALIZE</link>
+#define     <link linkend="GIMP-MODULE-ABI-VERSION:CAPS">GIMP_MODULE_ABI_VERSION</link>
+#define     <link linkend="GIMP-MODULE-PARAM-SERIALIZE:CAPS">GIMP_MODULE_PARAM_SERIALIZE</link>
 <link linkend="GimpModule">GimpModule</link>* <link linkend="gimp-module-new">gimp_module_new</link>                 (const <link linkend="gchar">gchar</link> *filename,
                                              <link linkend="gboolean">gboolean</link> load_inhibit,
                                              <link linkend="gboolean">gboolean</link> verbose);
@@ -93,8 +93,8 @@ A <link linkend="GTypeModule"><type>GTypeModule</type></link> subclass which imp
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpModule-struct"/>struct GimpModule</title>
-<indexterm><primary>GimpModule</primary></indexterm><programlisting>struct GimpModule {
+<title><anchor id="GimpModule-struct"/>GimpModule</title>
+<indexterm><primary>GimpModule</primary></indexterm><programlisting>typedef struct {
   gchar           *filename;     /* path to the module                       */
   gboolean         verbose;      /* verbose error reporting                  */
   GimpModuleState  state;        /* what's happened to the module            */
@@ -104,8 +104,7 @@ A <link linkend="GTypeModule"><type>GTypeModule</type></link> subclass which imp
   /* stuff from now on may be NULL depending on the state the module is in   */
   GimpModuleInfo  *info;         /* returned values from module_query        */
   gchar           *last_module_error;
-
-};
+} GimpModule;
 </programlisting>
 <para>
 <link linkend="GimpModule"><type>GimpModule</type></link> is a generic mechanism to dynamically load modules into
@@ -115,47 +114,46 @@ implemented by the modules, it just provides a framework to get
 arbitrary <link linkend="GType"><type>GType</type></link> implementations loaded from disk.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpModuleInfo"/>struct GimpModuleInfo</title>
-<indexterm><primary>GimpModuleInfo</primary></indexterm><programlisting>struct GimpModuleInfo {
-
+<title><anchor id="GimpModuleInfo"/>GimpModuleInfo</title>
+<indexterm><primary>GimpModuleInfo</primary></indexterm><programlisting>typedef struct {
   guint32  abi_version;
   gchar   *purpose;
   gchar   *author;
   gchar   *version;
   gchar   *copyright;
   gchar   *date;
-};
+} GimpModuleInfo;
 </programlisting>
 <para>
 This structure contains information about a loadable module.
 </para><variablelist role="struct">
 <varlistentry>
-<term><link linkend="guint32">guint32</link> <structfield>abi_version</structfield></term>
-<listitem><simpara>The <link linkend="GIMP-MODULE-ABI-VERSION-CAPS"><type>GIMP_MODULE_ABI_VERSION</type></link> the module was compiled against.
+<term><link linkend="guint32">guint32</link>&nbsp;<structfield>abi_version</structfield>;</term>
+<listitem><simpara>The <link linkend="GIMP-MODULE-ABI-VERSION:CAPS"><type>GIMP_MODULE_ABI_VERSION</type></link> the module was compiled against.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="gchar">gchar</link> *<structfield>purpose</structfield></term>
+<term><link linkend="gchar">gchar</link>&nbsp;*<structfield>purpose</structfield>;</term>
 <listitem><simpara>    The module's general purpose.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="gchar">gchar</link> *<structfield>author</structfield></term>
+<term><link linkend="gchar">gchar</link>&nbsp;*<structfield>author</structfield>;</term>
 <listitem><simpara>     The module's author.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="gchar">gchar</link> *<structfield>version</structfield></term>
+<term><link linkend="gchar">gchar</link>&nbsp;*<structfield>version</structfield>;</term>
 <listitem><simpara>    The module's version.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="gchar">gchar</link> *<structfield>copyright</structfield></term>
+<term><link linkend="gchar">gchar</link>&nbsp;*<structfield>copyright</structfield>;</term>
 <listitem><simpara>  The module's copyright.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="gchar">gchar</link> *<structfield>date</structfield></term>
+<term><link linkend="gchar">gchar</link>&nbsp;*<structfield>date</structfield>;</term>
 <listitem><simpara>       The module's release date.
 
 </simpara></listitem>
@@ -195,7 +193,7 @@ The possible states a <link linkend="GimpModule"><type>GimpModule</type></link> 
 </varlistentry>
 <varlistentry>
 <term><literal>GIMP_MODULE_STATE_LOAD_FAILED</literal></term>
-<listitem><simpara><link linkend="gimp-module-register"><function>gimp_module_register()</function></link> returned <link linkend="FALSE-CAPS"><type>FALSE</type></link>.
+<listitem><simpara><link linkend="gimp-module-register"><function>gimp_module_register()</function></link> returned <link linkend="FALSE:CAPS"><type>FALSE</type></link>.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -224,7 +222,7 @@ the module will just return a pointer to a constant structure).
 <varlistentry><term><parameter>module</parameter>&nbsp;:</term>
 <listitem><simpara> The <link linkend="GimpModule"><type>GimpModule</type></link> responsible for this loadable module.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>The <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct describing the module.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>The <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct describing the module.
 
 
 </simpara></listitem></varlistentry>
@@ -245,13 +243,13 @@ it implements with the passed <parameter>module</parameter>.
 <varlistentry><term><parameter>module</parameter>&nbsp;:</term>
 <listitem><simpara> The <link linkend="GimpModule"><type>GimpModule</type></link> responsible for this loadable module.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara><link linkend="TRUE-CAPS"><type>TRUE</type></link> on success, <link linkend="FALSE-CAPS"><type>FALSE</type></link> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara><link linkend="TRUE:CAPS"><type>TRUE</type></link> on success, <link linkend="FALSE:CAPS"><type>FALSE</type></link> otherwise.
 
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MODULE-ABI-VERSION-CAPS"/>GIMP_MODULE_ABI_VERSION</title>
+<title><anchor id="GIMP-MODULE-ABI-VERSION:CAPS"/>GIMP_MODULE_ABI_VERSION</title>
 <indexterm><primary>GIMP_MODULE_ABI_VERSION</primary></indexterm><programlisting>#define GIMP_MODULE_ABI_VERSION 0x0004
 </programlisting>
 <para>
@@ -261,7 +259,7 @@ can check if it was compiled against the same module ABI the modules
 are compiled against.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-MODULE-PARAM-SERIALIZE-CAPS"/>GIMP_MODULE_PARAM_SERIALIZE</title>
+<title><anchor id="GIMP-MODULE-PARAM-SERIALIZE:CAPS"/>GIMP_MODULE_PARAM_SERIALIZE</title>
 <indexterm><primary>GIMP_MODULE_PARAM_SERIALIZE</primary></indexterm><programlisting>#define GIMP_MODULE_PARAM_SERIALIZE (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
 </programlisting>
 <para>
@@ -286,7 +284,7 @@ Creates a new <link linkend="GimpModule"><type>GimpModule</type></link> instance
 <varlistentry><term><parameter>verbose</parameter>&nbsp;:</term>
 <listitem><simpara>      Pass <literal>TRUE</literal> to enable debugging output.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The new <link linkend="GimpModule"><type>GimpModule</type></link> object.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new <link linkend="GimpModule"><type>GimpModule</type></link> object.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -315,7 +313,7 @@ may implement. After successful query, the <parameter>info</parameter> field of 
 <varlistentry><term><parameter>module</parameter>&nbsp;:</term>
 <listitem><simpara> A <link linkend="GimpModule"><type>GimpModule</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> on success.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -346,7 +344,7 @@ The returned string must not be freed.</para>
 <varlistentry><term><parameter>state</parameter>&nbsp;:</term>
 <listitem><simpara> A <link linkend="GimpModuleState"><type>GimpModuleState</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The <parameter>state</parameter>'s name.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The <parameter>state</parameter>'s name.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -370,7 +368,7 @@ there's no such API, it is provided here.</para>
 <varlistentry><term><parameter>const_static_values</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a new enum <link linkend="GType"><type>GType</type></link>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new enum <link linkend="GType"><type>GType</type></link>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -387,7 +385,7 @@ Creates a newly allocated <link linkend="GimpModuleInfo"><type>GimpModuleInfo</t
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>abi_version</parameter>&nbsp;:</term>
-<listitem><simpara> The <link linkend="GIMP-MODULE-ABI-VERSION-CAPS"><type>GIMP_MODULE_ABI_VERSION</type></link> the module was compiled against.
+<listitem><simpara> The <link linkend="GIMP-MODULE-ABI-VERSION:CAPS"><type>GIMP_MODULE_ABI_VERSION</type></link> the module was compiled against.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>purpose</parameter>&nbsp;:</term>
 <listitem><simpara>     The module's general purpose.
@@ -404,7 +402,7 @@ Creates a newly allocated <link linkend="GimpModuleInfo"><type>GimpModuleInfo</t
 <varlistentry><term><parameter>date</parameter>&nbsp;:</term>
 <listitem><simpara>        The module's release date.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The new <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -418,7 +416,7 @@ Copies a <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struc
 <varlistentry><term><parameter>info</parameter>&nbsp;:</term>
 <listitem><simpara> The <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct to copy.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The new copy.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new copy.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

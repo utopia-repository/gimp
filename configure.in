@@ -8,11 +8,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [6])
-m4_define([gimp_micro_version], [5])
+m4_define([gimp_micro_version], [6])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [5])
+m4_define([gimp_interface_age], [6])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -473,8 +473,8 @@ AM_PATH_GTK_2_0(gtk_required_version, :,
   AC_MSG_ERROR(Test for GTK+ failed. See the file 'INSTALL' for help.),
   gthread)
 
-AC_MSG_CHECKING([if GTK+ is version 2.17.0 or newer])
-if $PKG_CONFIG --atleast-version=2.17.0 gtk+-2.0; then
+AC_MSG_CHECKING([if GTK+ is version 2.15.0 or newer])
+if $PKG_CONFIG --atleast-version=2.15.0 gtk+-2.0; then
   have_gtk_2_15=yes
 else
   have_gtk_2_15=no

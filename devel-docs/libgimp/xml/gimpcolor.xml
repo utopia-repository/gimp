@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>gimpcolor</refname>
 <refpurpose>Functions for manipulating color.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimpcolor.synopsis" role="synopsis">
@@ -90,7 +89,6 @@
 <title role="desc.title">Description</title>
 <para>
 Functions for manipulating color, including curves and histograms.
-
 </para>
 </refsect1>
 
@@ -98,7 +96,7 @@ Functions for manipulating color, including curves and histograms.
 <title role="details.title">Details</title>
 <refsect2 id="gimp-brightness-contrast" role="function">
 <title>gimp_brightness_contrast ()</title>
-<indexterm zone="gimp-brightness-contrast"><primary>gimp_brightness_contrast</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brightness_contrast            (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-brightness-contrast"><primary sortas="gimp_brightness_contrast">gimp_brightness_contrast</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brightness_contrast            (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> brightness,
                                                          <link linkend="gint">gint</link> contrast);</programlisting>
 <para>
@@ -109,23 +107,22 @@ This procedures allows the brightness and contrast of the specified
 drawable to be modified. Both 'brightness' and 'contrast' parameters
 are defined between -127 and 127.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>brightness</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>brightness</parameter>&#160;:</term>
 <listitem><simpara> Brightness adjustment.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>contrast</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>contrast</parameter>&#160;:</term>
 <listitem><simpara> Contrast adjustment.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-levels" role="function">
 <title>gimp_levels ()</title>
-<indexterm zone="gimp-levels"><primary>gimp_levels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_levels                         (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-levels"><primary sortas="gimp_levels">gimp_levels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_levels                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                                          <link linkend="gint">gint</link> low_input,
                                                          <link linkend="gint">gint</link> high_input,
@@ -149,50 +146,48 @@ the low output level and no final intensity will be higher than the
 high output level. This tool is only valid on RGB color and
 grayscale images. It will not operate on indexed drawables.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>channel</parameter>&#160;:</term>
 <listitem><simpara> The channel to modify.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>low_input</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>low_input</parameter>&#160;:</term>
 <listitem><simpara> Intensity of lowest input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>high_input</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>high_input</parameter>&#160;:</term>
 <listitem><simpara> Intensity of highest input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>gamma</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>gamma</parameter>&#160;:</term>
 <listitem><simpara> Gamma correction factor.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>low_output</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>low_output</parameter>&#160;:</term>
 <listitem><simpara> Intensity of lowest output.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>high_output</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>high_output</parameter>&#160;:</term>
 <listitem><simpara> Intensity of highest output.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-levels-auto" role="function" condition="deprecated:">
 <title>gimp_levels_auto ()</title>
-<indexterm zone="gimp-levels-auto" role="deprecated"><primary>gimp_levels_auto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_levels_auto                    (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<indexterm zone="gimp-levels-auto" role="deprecated"><primary sortas="gimp_levels_auto">gimp_levels_auto</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_levels_auto                    (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <warning><para><literal>gimp_levels_auto</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-levels-stretch"><function>gimp_levels_stretch()</function></link> instead.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-levels-stretch" role="function">
 <title>gimp_levels_stretch ()</title>
-<indexterm zone="gimp-levels-stretch"><primary>gimp_levels_stretch</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_levels_stretch                 (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<indexterm zone="gimp-levels-stretch"><primary sortas="gimp_levels_stretch">gimp_levels_stretch</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_levels_stretch                 (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Automatically modifies intensity levels in the specified drawable.
 </para>
@@ -203,17 +198,16 @@ equivalent to clicking the \"Auto\" button in the Levels tool. This
 procedure is only valid on RGB color and grayscale images. It will
 not operate on indexed drawables.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-posterize" role="function">
 <title>gimp_posterize ()</title>
-<indexterm zone="gimp-posterize"><primary>gimp_posterize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_posterize                      (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-posterize"><primary sortas="gimp_posterize">gimp_posterize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_posterize                      (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> levels);</programlisting>
 <para>
 Posterize the specified drawable.
@@ -222,20 +216,19 @@ Posterize the specified drawable.
 This procedures reduces the number of shades allows in each
 intensity channel to the specified 'levels' parameter.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>levels</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>levels</parameter>&#160;:</term>
 <listitem><simpara> Levels of posterization.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-desaturate" role="function">
 <title>gimp_desaturate ()</title>
-<indexterm zone="gimp-desaturate"><primary>gimp_desaturate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_desaturate                     (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<indexterm zone="gimp-desaturate"><primary sortas="gimp_desaturate">gimp_desaturate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_desaturate                     (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Desaturate the contents of the specified drawable.
 </para>
@@ -243,17 +236,16 @@ Desaturate the contents of the specified drawable.
 This procedure desaturates the contents of the specified drawable.
 This procedure only works on drawables of type RGB color.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-desaturate-full" role="function" condition="since:GIMP 2.4">
 <title>gimp_desaturate_full ()</title>
-<indexterm zone="gimp-desaturate-full" role="GIMP 2.4"><primary>gimp_desaturate_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_desaturate_full                (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-desaturate-full" role="GIMP 2.4"><primary sortas="gimp_desaturate_full">gimp_desaturate_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_desaturate_full                (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpDesaturateMode">GimpDesaturateMode</link> desaturate_mode);</programlisting>
 <para>
 Desaturate the contents of the specified drawable, with the
@@ -264,22 +256,20 @@ This procedure desaturates the contents of the specified drawable,
 with the specified formula. This procedure only works on drawables
 of type RGB color.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>desaturate_mode</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>desaturate_mode</parameter>&#160;:</term>
 <listitem><simpara> The formula to use to desaturate.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-equalize" role="function">
 <title>gimp_equalize ()</title>
-<indexterm zone="gimp-equalize"><primary>gimp_equalize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_equalize                       (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-equalize"><primary sortas="gimp_equalize">gimp_equalize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_equalize                       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> mask_only);</programlisting>
 <para>
 Equalize the contents of the specified drawable.
@@ -294,20 +284,19 @@ selection bounds, or the entire image based on the histogram of the
 selected area. If there is no selection, the entire image is
 adjusted based on the histogram for the entire image.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mask_only</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>mask_only</parameter>&#160;:</term>
 <listitem><simpara> Equalization option.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-invert" role="function">
 <title>gimp_invert ()</title>
-<indexterm zone="gimp-invert"><primary>gimp_invert</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_invert                         (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
+<indexterm zone="gimp-invert"><primary sortas="gimp_invert">gimp_invert</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_invert                         (<link linkend="gint32">gint32</link> drawable_ID);</programlisting>
 <para>
 Invert the contents of the specified drawable.
 </para>
@@ -317,17 +306,16 @@ intensity channel is inverted independently. The inverted intensity
 is given as inten' = (255 - inten). Indexed color drawables are not
 valid for this operation.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-curves-spline" role="function">
 <title>gimp_curves_spline ()</title>
-<indexterm zone="gimp-curves-spline"><primary>gimp_curves_spline</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_curves_spline                  (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-curves-spline"><primary sortas="gimp_curves_spline">gimp_curves_spline</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_curves_spline                  (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                                          <link linkend="gint">gint</link> num_points,
                                                          const <link linkend="guint8">guint8</link> *control_pts);</programlisting>
@@ -343,26 +331,25 @@ of control points which describe a Catmull Rom spline which yields
 the final intensity curve. Use the <link linkend="gimp-curves-explicit"><function>gimp_curves_explicit()</function></link> function
 to explicitly modify intensity levels.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>channel</parameter>&#160;:</term>
 <listitem><simpara> The channel to modify.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_points</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_points</parameter>&#160;:</term>
 <listitem><simpara> The number of values in the control point array.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>control_pts</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>control_pts</parameter>&#160;:</term>
 <listitem><simpara> The spline control points: { cp1.x, cp1.y, cp2.x, cp2.y, ... }.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-curves-explicit" role="function">
 <title>gimp_curves_explicit ()</title>
-<indexterm zone="gimp-curves-explicit"><primary>gimp_curves_explicit</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_curves_explicit                (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-curves-explicit"><primary sortas="gimp_curves_explicit">gimp_curves_explicit</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_curves_explicit                (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                                          <link linkend="gint">gint</link> num_bytes,
                                                          const <link linkend="guint8">guint8</link> *curve);</programlisting>
@@ -378,26 +365,25 @@ each pixel value in the drawable will be modified. Use the
 <link linkend="gimp-curves-spline"><function>gimp_curves_spline()</function></link> function to modify intensity levels with
 Catmull Rom splines.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>channel</parameter>&#160;:</term>
 <listitem><simpara> The channel to modify.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_bytes</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_bytes</parameter>&#160;:</term>
 <listitem><simpara> The number of bytes in the new curve (always 256).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>curve</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>curve</parameter>&#160;:</term>
 <listitem><simpara> The explicit curve.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-color-balance" role="function">
 <title>gimp_color_balance ()</title>
-<indexterm zone="gimp-color-balance"><primary>gimp_color_balance</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_color_balance                  (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-color-balance"><primary sortas="gimp_color_balance">gimp_color_balance</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_color_balance                  (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpTransferMode">GimpTransferMode</link> transfer_mode,
                                                          <link linkend="gboolean">gboolean</link> preserve_lum,
                                                          <link linkend="gdouble">gdouble</link> cyan_red,
@@ -416,32 +402,31 @@ shadows, mid-tones, and highlights in an image to be affected
 differently. The 'preserve-lum' parameter, if TRUE, ensures that the
 luminosity of each pixel remains fixed.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>transfer_mode</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>transfer_mode</parameter>&#160;:</term>
 <listitem><simpara> Transfer mode.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>preserve_lum</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>preserve_lum</parameter>&#160;:</term>
 <listitem><simpara> Preserve luminosity values at each pixel.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan_red</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan_red</parameter>&#160;:</term>
 <listitem><simpara> Cyan-Red color balance.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta_green</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta_green</parameter>&#160;:</term>
 <listitem><simpara> Magenta-Green color balance.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow_blue</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow_blue</parameter>&#160;:</term>
 <listitem><simpara> Yellow-Blue color balance.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-colorize" role="function" condition="since:GIMP 2.2">
 <title>gimp_colorize ()</title>
-<indexterm zone="gimp-colorize" role="GIMP 2.2"><primary>gimp_colorize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_colorize                       (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-colorize" role="GIMP 2.2"><primary sortas="gimp_colorize">gimp_colorize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_colorize                       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> hue,
                                                          <link linkend="gdouble">gdouble</link> saturation,
                                                          <link linkend="gdouble">gdouble</link> lightness);</programlisting>
@@ -454,28 +439,26 @@ Desaturates the drawable, then tints it with the specified color.
 This tool is only valid on RGB color images. It will not operate on
 grayscale or indexed drawables.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>hue</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hue</parameter>&#160;:</term>
 <listitem><simpara> Hue in degrees.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>saturation</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>saturation</parameter>&#160;:</term>
 <listitem><simpara> Saturation in percent.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>lightness</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>lightness</parameter>&#160;:</term>
 <listitem><simpara> Lightness in percent.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-histogram" role="function">
 <title>gimp_histogram ()</title>
-<indexterm zone="gimp-histogram"><primary>gimp_histogram</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_histogram                      (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-histogram"><primary sortas="gimp_histogram">gimp_histogram</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_histogram                      (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpHistogramChannel">GimpHistogramChannel</link> channel,
                                                          <link linkend="gint">gint</link> start_range,
                                                          <link linkend="gint">gint</link> end_range,
@@ -504,44 +487,43 @@ values and by the current selection mask. That is, pixels that lie
 outside an active selection mask will not be counted. Similarly,
 pixels with transparent alpha values will not be counted.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>channel</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>channel</parameter>&#160;:</term>
 <listitem><simpara> The channel to modify.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_range</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_range</parameter>&#160;:</term>
 <listitem><simpara> Start of the intensity measurement range.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_range</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_range</parameter>&#160;:</term>
 <listitem><simpara> End of the intensity measurement range.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>mean</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>mean</parameter>&#160;:</term>
 <listitem><simpara> Mean intensity value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>std_dev</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>std_dev</parameter>&#160;:</term>
 <listitem><simpara> Standard deviation of intensity values.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>median</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>median</parameter>&#160;:</term>
 <listitem><simpara> Median intensity value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pixels</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pixels</parameter>&#160;:</term>
 <listitem><simpara> Alpha-weighted pixel count for entire image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>count</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
 <listitem><simpara> Alpha-weighted pixel count for range.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>percentile</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>percentile</parameter>&#160;:</term>
 <listitem><simpara> Percentile that range falls under.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-hue-saturation" role="function">
 <title>gimp_hue_saturation ()</title>
-<indexterm zone="gimp-hue-saturation"><primary>gimp_hue_saturation</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_hue_saturation                 (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-hue-saturation"><primary sortas="gimp_hue_saturation">gimp_hue_saturation</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_hue_saturation                 (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpHueRange">GimpHueRange</link> hue_range,
                                                          <link linkend="gdouble">gdouble</link> hue_offset,
                                                          <link linkend="gdouble">gdouble</link> lightness,
@@ -554,29 +536,28 @@ This procedures allows the hue, lightness, and saturation in the
 specified drawable to be modified. The 'hue-range' parameter
 provides the capability to limit range of affected hues.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>hue_range</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hue_range</parameter>&#160;:</term>
 <listitem><simpara> Range of affected hues.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>hue_offset</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hue_offset</parameter>&#160;:</term>
 <listitem><simpara> Hue offset in degrees.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>lightness</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>lightness</parameter>&#160;:</term>
 <listitem><simpara> Lightness modification.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>saturation</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>saturation</parameter>&#160;:</term>
 <listitem><simpara> Saturation modification.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-threshold" role="function">
 <title>gimp_threshold ()</title>
-<indexterm zone="gimp-threshold"><primary>gimp_threshold</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_threshold                      (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm zone="gimp-threshold"><primary sortas="gimp_threshold">gimp_threshold</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_threshold                      (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> low_threshold,
                                                          <link linkend="gint">gint</link> high_threshold);</programlisting>
 <para>
@@ -588,18 +569,17 @@ All pixels between the values of 'low_threshold' and
 'high_threshold' are replaced with white, and all other pixels with
 black.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> The drawable.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>low_threshold</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>low_threshold</parameter>&#160;:</term>
 <listitem><simpara> The low threshold value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>high_threshold</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>high_threshold</parameter>&#160;:</term>
 <listitem><simpara> The high threshold value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

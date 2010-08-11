@@ -1,3 +1,49 @@
+2009-03-16  Inaki Larranaga Murgoitio  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2009-03-12  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Updated Portuguese translation by Manuel Dias
+	<manueldias33@yahoo.com>.
+
+2009-03-11  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2009-03-09  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Minor bugfixes in German translation.
+
+2009-03-08  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2009-03-05  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Updated French translation by Julien Hardelin.
+
+2009-03-05  Funda Wang  <fundawang@gmail.com>
+
+	* zh_CN.po: Updated zh_CN translation.
+
+2009-03-02  Priit Laes  <plaes at svn dot gnome dot org>
+
+	* et.po: Translation updated by Mattias Põldaru
+
+2009-02-23  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2009-02-23  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Updated Portuguese translation by Bruno Queiros
+	<bqueiros@gmail.com>.
+
+2009-02-22  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
 2009-02-15 Og Maciel <ogmaciel@gnome.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
@@ -6,7 +52,7 @@
 
 	* sr.po, sr@latin.po: Updated Serbian translation (by Miloš Popović)
 
-2009-02-13  Marco Ciampa  <ciampix@liberi.it>
+2009-02-13  Marco Ciampa  <ciampix@libero.it>
 
 	* it.po: updated italian translation.
 
@@ -51,7 +97,7 @@
 
 	* hi.po: Updated Hindi Translation.
 
-2008-12-29  Marco Ciampa  <ciampix@liberi.it>
+2008-12-29  Marco Ciampa  <ciampix@libero.it>
 
 	* it.po: updated italian translation.
 	
@@ -222,7 +268,7 @@
 
 	 gl.po: Updated Galician translation
 
-2008-09-25  Marco Ciampa  <ciampix@liberi.it>
+2008-09-25  Marco Ciampa  <ciampix@libero.it>
 
 	* it.po: updated italian translation.
 	
@@ -250,7 +296,7 @@
 
 	* eu.po: Updated Basque translation.
 	
-2008-09-20  Marco Ciampa  <ciampix@liberi.it>
+2008-09-20  Marco Ciampa  <ciampix@libero.it>
 
 	* it.po: updated italian translation.
 	

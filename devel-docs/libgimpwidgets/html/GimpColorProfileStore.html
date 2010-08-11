@@ -60,14 +60,14 @@
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
 >GtkListStore</a>*       <a class="link" href="GimpColorProfileStore.html#gimp-color-profile-store-new" title="gimp_color_profile_store_new ()">gimp_color_profile_store_new</a>        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *history);
 void                <a class="link" href="GimpColorProfileStore.html#gimp-color-profile-store-add" title="gimp_color_profile_store_add ()">gimp_color_profile_store_add</a>        (<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a> *store,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *label);
 </pre>
 </div>
@@ -75,7 +75,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <a name="GimpColorProfileStore.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
 href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
@@ -103,7 +103,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkTreeSortable.html"
 <a name="GimpColorProfileStore.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpColorProfileStore.html#GimpColorProfileStore--history" title='The "history" property'>history</a>"                  <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>*                : Read / Write / Construct Only
 </pre>
 </div>
@@ -128,7 +128,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"
 >GtkListStore</a>*       gimp_color_profile_store_new        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *history);</pre>
 <p>
 Creates a new <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a> object and populates it with
@@ -151,7 +151,7 @@ following code snippet:
 <tr>
 <td><p><span class="term"><em class="parameter"><code>history</code></em> :</span></p></td>
 <td> filename of the profilerc (or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a> for no history)
 </td>
 </tr>
@@ -171,10 +171,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 <a name="gimp-color-profile-store-add"></a><h3>gimp_color_profile_store_add ()</h3>
 <pre class="programlisting">void                gimp_color_profile_store_add        (<a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore">GimpColorProfileStore</a> *store,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *label);</pre>
 <p>
 Adds a color profile item to the <a class="link" href="GimpColorProfileStore.html" title="GimpColorProfileStore"><span class="type">GimpColorProfileStore</span></a>. Items
@@ -183,10 +183,10 @@ the history of last used color profiles.
 </p>
 <p>
 This function is often used to add a selectable item for the <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a>
 filename. If you pass <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a> for both <em class="parameter"><code>filename</code></em> and <em class="parameter"><code>label</code></em>, the
 <em class="parameter"><code>label</code></em> will be set to the string "None" for you (and translated for
 the user).</p>
@@ -204,7 +204,7 @@ the user).</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
 <td> filename of the profile to add (or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a>)
 </td>
 </tr>
@@ -212,9 +212,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
 <td>    label to use for the profile
            (may only be <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a> if <em class="parameter"><code>filename</code></em> is <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a>)
 </td>
 </tr>
@@ -229,7 +229,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 <div class="refsect2" lang="en">
 <a name="GimpColorProfileStore--history"></a><h3>The <code class="literal">"history"</code> property</h3>
 <pre class="programlisting">  "history"                  <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>*                : Read / Write / Construct Only</pre>
 <p>
 Filename of the color history used to populate the profile store.</p>

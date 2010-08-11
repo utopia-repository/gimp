@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="GIMP Library Reference Manual" link="index.html" author="" name="libgimp" version="2">
+<book xmlns="http://www.devhelp.net/book" title="GIMP Library Reference Manual" link="index.html" author="" name="libgimp" version="2" language="c">
   <chapters>
     <sub name="GIMP Library" link="libgimp.html">
       <sub name="Functions not Related to Specific Images" link="libgimp-general.html">
@@ -107,7 +107,7 @@
     <keyword type="struct" name="GimpParamRegion" link="libgimp-gimp.html#GimpParamRegion"/>
     <keyword type="union" name="union GimpParamData" link="libgimp-gimp.html#GimpParamData"/>
     <keyword type="struct" name="GimpParam" link="libgimp-gimp.html#GimpParam"/>
-    <keyword type="macro" name="MAIN()" link="libgimp-gimp.html#MAIN:CAPS"/>
+    <keyword type="macro" name="MAIN()" link="libgimp-gimp.html#MAIN--CAPS"/>
     <keyword type="function" name="gimp_main ()" link="libgimp-gimp.html#gimp-main"/>
     <keyword type="function" name="gimp_quit ()" link="libgimp-gimp.html#gimp-quit"/>
     <keyword type="function" name="gimp_install_procedure ()" link="libgimp-gimp.html#gimp-install-procedure"/>
@@ -238,7 +238,7 @@
     <keyword type="function" name="GimpProgressTextCallback ()" link="libgimp-gimpprogress.html#GimpProgressTextCallback" deprecated=""/>
     <keyword type="function" name="GimpProgressValueCallback ()" link="libgimp-gimpprogress.html#GimpProgressValueCallback" deprecated=""/>
     <keyword type="function" name="gimp_progress_install_vtable ()" link="libgimp-gimpprogress.html#gimp-progress-install-vtable" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_progress_install ()" link="libgimp-gimpprogress.html#gimp-progress-install" deprecated="" since=""/>
+    <keyword type="function" name="gimp_progress_install ()" link="libgimp-gimpprogress.html#gimp-progress-install" deprecated="" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_channel_new ()" link="libgimp-gimpchannel.html#gimp-channel-new"/>
@@ -803,40 +803,40 @@
     <keyword type="function" name="gimp_brush_select_button_new ()" link="GimpBrushSelectButton.html#gimp-brush-select-button-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_brush_select_button_get_brush ()" link="GimpBrushSelectButton.html#gimp-brush-select-button-get-brush" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_brush_select_button_set_brush ()" link="GimpBrushSelectButton.html#gimp-brush-select-button-set-brush" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;brush-name&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-name"/>
-    <keyword type="" name="The &quot;brush-opacity&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-opacity"/>
-    <keyword type="" name="The &quot;brush-paint-mode&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-paint-mode"/>
-    <keyword type="" name="The &quot;brush-spacing&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-spacing"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--title"/>
-    <keyword type="" name="The &quot;brush-set&quot; signal" link="GimpBrushSelectButton.html#GimpBrushSelectButton-brush-set"/>
+    <keyword type="property" name="The &quot;brush-name&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-name"/>
+    <keyword type="property" name="The &quot;brush-opacity&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-opacity"/>
+    <keyword type="property" name="The &quot;brush-paint-mode&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-paint-mode"/>
+    <keyword type="property" name="The &quot;brush-spacing&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-spacing"/>
+    <keyword type="property" name="The &quot;title&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--title"/>
+    <keyword type="signal" name="The &quot;brush-set&quot; signal" link="GimpBrushSelectButton.html#GimpBrushSelectButton-brush-set"/>
     <keyword type="struct" name="GimpFontSelectButton" link="GimpFontSelectButton.html#GimpFontSelectButton-struct"/>
     <keyword type="function" name="gimp_font_select_button_new ()" link="GimpFontSelectButton.html#gimp-font-select-button-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_font_select_button_get_font ()" link="GimpFontSelectButton.html#gimp-font-select-button-get-font" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_font_select_button_set_font ()" link="GimpFontSelectButton.html#gimp-font-select-button-set-font" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
-    <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
+    <keyword type="property" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
+    <keyword type="property" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
+    <keyword type="signal" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
     <keyword type="struct" name="GimpGradientSelectButton" link="GimpGradientSelectButton.html#GimpGradientSelectButton-struct"/>
     <keyword type="function" name="gimp_gradient_select_button_new ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_gradient_select_button_get_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-get-gradient" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_gradient_select_button_set_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-set-gradient" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;gradient-name&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--gradient-name"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--title"/>
-    <keyword type="" name="The &quot;gradient-set&quot; signal" link="GimpGradientSelectButton.html#GimpGradientSelectButton-gradient-set"/>
+    <keyword type="property" name="The &quot;gradient-name&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--gradient-name"/>
+    <keyword type="property" name="The &quot;title&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--title"/>
+    <keyword type="signal" name="The &quot;gradient-set&quot; signal" link="GimpGradientSelectButton.html#GimpGradientSelectButton-gradient-set"/>
     <keyword type="struct" name="GimpPaletteSelectButton" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton-struct"/>
     <keyword type="function" name="gimp_palette_select_button_new ()" link="GimpPaletteSelectButton.html#gimp-palette-select-button-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_palette_select_button_get_palette ()" link="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_palette_select_button_set_palette ()" link="GimpPaletteSelectButton.html#gimp-palette-select-button-set-palette" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;palette-name&quot; property" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title"/>
-    <keyword type="" name="The &quot;palette-set&quot; signal" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton-palette-set"/>
+    <keyword type="property" name="The &quot;palette-name&quot; property" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name"/>
+    <keyword type="property" name="The &quot;title&quot; property" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title"/>
+    <keyword type="signal" name="The &quot;palette-set&quot; signal" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton-palette-set"/>
     <keyword type="struct" name="GimpPatternSelectButton" link="GimpPatternSelectButton.html#GimpPatternSelectButton-struct"/>
     <keyword type="function" name="gimp_pattern_select_button_new ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_pattern_select_button_get_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-get-pattern" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_pattern_select_button_set_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-set-pattern" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;pattern-name&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--pattern-name"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--title"/>
-    <keyword type="" name="The &quot;pattern-set&quot; signal" link="GimpPatternSelectButton.html#GimpPatternSelectButton-pattern-set"/>
+    <keyword type="property" name="The &quot;pattern-name&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--pattern-name"/>
+    <keyword type="property" name="The &quot;title&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--title"/>
+    <keyword type="signal" name="The &quot;pattern-set&quot; signal" link="GimpPatternSelectButton.html#GimpPatternSelectButton-pattern-set"/>
     <keyword type="function" name="GimpRunBrushCallback ()" link="libgimp-gimpbrushselect.html#GimpRunBrushCallback"/>
     <keyword type="function" name="gimp_brush_select_new ()" link="libgimp-gimpbrushselect.html#gimp-brush-select-new"/>
     <keyword type="function" name="gimp_brush_select_destroy ()" link="libgimp-gimpbrushselect.html#gimp-brush-select-destroy"/>
@@ -879,10 +879,10 @@
     <keyword type="function" name="gimp_drawable_preview_new ()" link="GimpDrawablePreview.html#gimp-drawable-preview-new" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_drawable_preview_get_drawable ()" link="GimpDrawablePreview.html#gimp-drawable-preview-get-drawable" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_drawable_preview_draw_region ()" link="GimpDrawablePreview.html#gimp-drawable-preview-draw-region" since="GIMP 2.2"/>
-    <keyword type="" name="The &quot;drawable&quot; property" link="GimpDrawablePreview.html#GimpDrawablePreview--drawable"/>
+    <keyword type="property" name="The &quot;drawable&quot; property" link="GimpDrawablePreview.html#GimpDrawablePreview--drawable"/>
     <keyword type="struct" name="GimpAspectPreview" link="GimpAspectPreview.html#GimpAspectPreview-struct"/>
     <keyword type="function" name="gimp_aspect_preview_new ()" link="GimpAspectPreview.html#gimp-aspect-preview-new" since="GIMP 2.2"/>
-    <keyword type="" name="The &quot;drawable&quot; property" link="GimpAspectPreview.html#GimpAspectPreview--drawable"/>
+    <keyword type="property" name="The &quot;drawable&quot; property" link="GimpAspectPreview.html#GimpAspectPreview--drawable"/>
     <keyword type="struct" name="GimpZoomPreview" link="GimpZoomPreview.html#GimpZoomPreview-struct"/>
     <keyword type="function" name="gimp_zoom_preview_new ()" link="GimpZoomPreview.html#gimp-zoom-preview-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_zoom_preview_new_with_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-new-with-model" since="GIMP 2.4"/>
@@ -890,8 +890,8 @@
     <keyword type="function" name="gimp_zoom_preview_get_drawable ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-drawable" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_zoom_preview_get_factor ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-factor" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_zoom_preview_get_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-model" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;drawable&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--drawable"/>
-    <keyword type="" name="The &quot;model&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--model"/>
+    <keyword type="property" name="The &quot;drawable&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--drawable"/>
+    <keyword type="property" name="The &quot;model&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--model"/>
     <keyword type="function" name="GimpItemConstraintFunc ()" link="libgimp-GimpItemComboBox.html#GimpItemConstraintFunc"/>
     <keyword type="struct" name="GimpDrawableComboBox" link="libgimp-GimpItemComboBox.html#GimpDrawableComboBox-struct"/>
     <keyword type="typedef" name="GimpDrawableConstraintFunc" link="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc"/>
@@ -937,8 +937,8 @@
     <keyword type="struct" name="GimpProcBrowserDialog" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-struct"/>
     <keyword type="function" name="gimp_proc_browser_dialog_new ()" link="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_proc_browser_dialog_get_selected ()" link="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-get-selected" since="GIMP 2.4"/>
-    <keyword type="" name="The &quot;row-activated&quot; signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-row-activated"/>
-    <keyword type="" name="The &quot;selection-changed&quot; signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-selection-changed"/>
+    <keyword type="signal" name="The &quot;row-activated&quot; signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-row-activated"/>
+    <keyword type="signal" name="The &quot;selection-changed&quot; signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-selection-changed"/>
     <keyword type="function" name="gimp_proc_view_new ()" link="libgimp-gimpprocview.html#gimp-proc-view-new"/>
   </functions>
 </book>

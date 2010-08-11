@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpcolor.html" title="gimpcolor">
 <link rel="next" href="libgimp-gimpdisplay.html" title="gimpdisplay">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdisplay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpconvert.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimpconvert.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimpconvert.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimpconvert.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpconvert"></a><div class="titlepage"></div>
@@ -49,48 +51,55 @@
 <a name="libgimp-gimpconvert.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-rgb" title="gimp_image_convert_rgb ()">gimp_image_convert_rgb</a>              (gint32 image_ID);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-rgb" title="gimp_image_convert_rgb ()">gimp_image_convert_rgb</a>              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-grayscale" title="gimp_image_convert_grayscale ()">gimp_image_convert_grayscale</a>        (gint32 image_ID);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-grayscale" title="gimp_image_convert_grayscale ()">gimp_image_convert_grayscale</a>        (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-indexed" title="gimp_image_convert_indexed ()">gimp_image_convert_indexed</a>          (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-indexed" title="gimp_image_convert_indexed ()">gimp_image_convert_indexed</a>          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpConvertDitherType" title="enum GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpConvertPaletteType" title="enum GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_cols,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> alpha_dither,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> remove_unused,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *palette);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix" title="gimp_image_convert_set_dither_matrix ()">gimp_image_convert_set_dither_matrix</a>
                                                         (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> height,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> matrix_length,
-                                                         const guint8 *matrix);
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
+>guint8</a> *matrix);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimp-gimpconvert.description"></a><h2>Description</h2>
 <p>
 Conversions between RGB, indexed, and grayscale modes.
-
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -98,8 +107,10 @@ Conversions between RGB, indexed, and grayscale modes.
 <div class="refsect2" lang="en">
 <a name="gimp-image-convert-rgb"></a><h3>gimp_image_convert_rgb ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_rgb              (gint32 image_ID);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_image_convert_rgb              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre>
 <p>
 Convert specified image to RGB color
 </p>
@@ -109,7 +120,6 @@ process requires an image in Grayscale or Indexed color mode. No
 image content is lost in this process aside from the colormap for an
 indexed image.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -131,8 +141,10 @@ indexed image.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-image-convert-grayscale"></a><h3>gimp_image_convert_grayscale ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_grayscale        (gint32 image_ID);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_image_convert_grayscale        (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre>
 <p>
 Convert specified image to grayscale (256 intensity levels)
 </p>
@@ -141,7 +153,6 @@ This procedure converts the specified image to grayscale with 8 bits
 per pixel (256 intensity levels). This process requires an image in
 RGB or Indexed color mode.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -163,21 +174,23 @@ RGB or Indexed color mode.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-image-convert-indexed"></a><h3>gimp_image_convert_indexed ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_indexed          (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_image_convert_indexed          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpConvertDitherType" title="enum GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpConvertPaletteType" title="enum GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_cols,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> alpha_dither,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> remove_unused,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *palette);</pre>
 <p>
 Convert specified image to and Indexed image
@@ -197,7 +210,6 @@ Floyd-Steinberg error diffusion, '2' means Floyd-Steinberg error
 diffusion with reduced bleeding, '3' means dithering based on pixel
 location ('Fixed' dithering).</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -249,18 +261,20 @@ location ('Fixed' dithering).</p>
 <div class="refsect2" lang="en">
 <a name="gimp-image-convert-set-dither-matrix"></a><h3>gimp_image_convert_set_dither_matrix ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_image_convert_set_dither_matrix
                                                         (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> height,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> matrix_length,
-                                                         const guint8 *matrix);</pre>
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
+>guint8</a> *matrix);</pre>
 <p>
 Set dither matrix for conversion to indexed
 </p>
@@ -268,7 +282,6 @@ Set dither matrix for conversion to indexed
 This procedure sets the dither matrix used when converting images to
 INDEXED mode with positional dithering.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -301,13 +314,12 @@ INDEXED mode with positional dithering.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

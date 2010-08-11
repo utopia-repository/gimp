@@ -12,14 +12,13 @@
 <refnamediv>
 <refname>gimpprocview</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimpprocview.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-proc-view-new">gimp_proc_view_new</link>                  (const <link linkend="gchar">gchar</link> *name,
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-proc-view-new">gimp_proc_view_new</link>                  (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *menu_path,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          const <link linkend="gchar">gchar</link> *help,
@@ -45,7 +44,6 @@
 <refsect1 id="libgimp-gimpprocview.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -53,7 +51,7 @@
 <title role="details.title">Details</title>
 <refsect2 id="gimp-proc-view-new" role="function">
 <title>gimp_proc_view_new ()</title>
-<indexterm zone="gimp-proc-view-new"><primary>gimp_proc_view_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_proc_view_new                  (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-proc-view-new"><primary sortas="gimp_proc_view_new">gimp_proc_view_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_proc_view_new                  (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *menu_path,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          const <link linkend="gchar">gchar</link> *help,
@@ -66,47 +64,44 @@
                                                          const <link linkend="GimpParamDef">GimpParamDef</link> *params,
                                                          const <link linkend="GimpParamDef">GimpParamDef</link> *return_vals);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>menu_path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>menu_path</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blurb</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>author</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>author</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>copyright</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>copyright</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>date</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>date</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_return_vals</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>params</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>return_vals</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

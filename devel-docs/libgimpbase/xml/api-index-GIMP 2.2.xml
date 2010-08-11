@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-checks-get-shades"><link linkend="gimp-checks-get-shades">gimp_checks_get_shades</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-enum-get-desc"><link linkend="gimp-enum-get-desc">gimp_enum_get_desc</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-enum-get-value"><link linkend="gimp-enum-get-value">gimp_enum_get_value</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-enum-get-value-descriptions"><link linkend="gimp-enum-get-value-descriptions">gimp_enum_get_value_descriptions</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-enum-set-value-descriptions"><link linkend="gimp-enum-set-value-descriptions">gimp_enum_set_value_descriptions</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-enum-value-get-desc"><link linkend="gimp-enum-value-get-desc">gimp_enum_value_get_desc</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-enum-value-get-help"><link linkend="gimp-enum-value-get-help">gimp_enum_value_get_help</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-escape-uline"><link linkend="gimp-escape-uline">gimp_escape_uline</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flags-get-first-desc"><link linkend="gimp-flags-get-first-desc">gimp_flags_get_first_desc</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flags-get-first-value"><link linkend="gimp-flags-get-first-value">gimp_flags_get_first_value</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flags-get-value-descriptions"><link linkend="gimp-flags-get-value-descriptions">gimp_flags_get_value_descriptions</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flags-set-value-descriptions"><link linkend="gimp-flags-set-value-descriptions">gimp_flags_set_value_descriptions</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flags-value-get-desc"><link linkend="gimp-flags-value-get-desc">gimp_flags_value_get_desc</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flags-value-get-help"><link linkend="gimp-flags-value-get-help">gimp_flags_value_get_help</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-memsize-deserialize"><link linkend="gimp-memsize-deserialize">gimp_memsize_deserialize</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-memsize-serialize"><link linkend="gimp-memsize-serialize">gimp_memsize_serialize</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-type-get-translation-domain"><link linkend="gimp-type-get-translation-domain">gimp_type_get_translation_domain</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-type-set-translation-domain"><link linkend="gimp-type-set-translation-domain">gimp_type_set_translation_domain</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

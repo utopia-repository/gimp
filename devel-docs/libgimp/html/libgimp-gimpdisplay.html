@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpconvert.html" title="gimpconvert">
 <link rel="next" href="libgimp-gimpdrawable.html" title="gimpdrawable">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdrawable.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpdisplay.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimpdisplay.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimpdisplay.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimpdisplay.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdisplay"></a><div class="titlepage"></div>
@@ -48,37 +50,54 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimpdisplay.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-gint32              <a class="link" href="libgimp-gimpdisplay.html#gimp-display-new" title="gimp_display_new ()">gimp_display_new</a>                    (gint32 image_ID);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-display-delete" title="gimp_display_delete ()">gimp_display_delete</a>                 (gint32 display_ID);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpdisplay.html#gimp-display-new" title="gimp_display_new ()">gimp_display_new</a>                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-display-is-valid" title="gimp_display_is_valid ()">gimp_display_is_valid</a>               (gint32 display_ID);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-display-delete" title="gimp_display_delete ()">gimp_display_delete</a>                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimp-gimpdisplay.html#gimp-display-get-window-handle" title="gimp_display_get_window_handle ()">gimp_display_get_window_handle</a>      (gint32 display_ID);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-display-is-valid" title="gimp_display_is_valid ()">gimp_display_is_valid</a>               (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpdisplay.html#gimp-display-get-window-handle" title="gimp_display_get_window_handle ()">gimp_display_get_window_handle</a>      (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-displays-flush" title="gimp_displays_flush ()">gimp_displays_flush</a>                 (void);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-displays-reconnect" title="gimp_displays_reconnect ()">gimp_displays_reconnect</a>             (gint32 old_image_ID,
-                                                         gint32 new_image_ID);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpdisplay.html#gimp-displays-reconnect" title="gimp_displays_reconnect ()">gimp_displays_reconnect</a>             (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> old_image_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> new_image_ID);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimp-gimpdisplay.description"></a><h2>Description</h2>
 <p>
 Functions to create, delete and flush new displays (views) on an image.
-
 </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimp-gimpdisplay.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-display-new"></a><h3>gimp_display_new ()</h3>
-<pre class="programlisting">gint32              gimp_display_new                    (gint32 image_ID);</pre>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_display_new                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre>
 <p>
 Create a new display for the specified image.
 </p>
@@ -89,7 +108,6 @@ transparently by GIMP. The newly created display is returned and can
 be subsequently destroyed with a call to <a class="link" href="libgimp-gimpdisplay.html#gimp-display-delete" title="gimp_display_delete ()"><code class="function">gimp_display_delete()</code></a>. This
 procedure only makes sense for use with the GIMP UI.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -111,8 +129,10 @@ procedure only makes sense for use with the GIMP UI.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-display-delete"></a><h3>gimp_display_delete ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_display_delete                 (gint32 display_ID);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_display_delete                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);</pre>
 <p>
 Delete the specified display.
 </p>
@@ -123,7 +143,6 @@ deleted also. Note that the display is closed no matter if the image
 is dirty or not. Better save the image before calling this
 procedure.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -145,8 +164,10 @@ procedure.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-display-is-valid"></a><h3>gimp_display_is_valid ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_display_is_valid               (gint32 display_ID);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_display_is_valid               (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);</pre>
 <p>
 Returns TRUE if the display is valid.
 </p>
@@ -154,7 +175,6 @@ Returns TRUE if the display is valid.
 This procedure checks if the given display ID is valid and refers to
 an existing display.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -172,15 +192,16 @@ an existing display.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-display-get-window-handle"></a><h3>gimp_display_get_window_handle ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                gimp_display_get_window_handle      (gint32 display_ID);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
+>gint</a>                gimp_display_get_window_handle      (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);</pre>
 <p>
 Get a handle to the native window for an image display.
 </p>
@@ -191,7 +212,6 @@ handle is an Xlib XID. A value of 0 is returned for an invalid
 display or if this function is unimplemented for the windowing
 system that is being used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -209,14 +229,13 @@ system that is being used.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-displays-flush"></a><h3>gimp_displays_flush ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_displays_flush                 (void);</pre>
 <p>
 Flush all internal changes to the user interface
@@ -227,7 +246,6 @@ success status. Its purpose is to flush all pending updates of image
 manipulations to the user interface. It should be called whenever
 appropriate.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -242,9 +260,13 @@ appropriate.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-displays-reconnect"></a><h3>gimp_displays_reconnect ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_displays_reconnect             (gint32 old_image_ID,
-                                                         gint32 new_image_ID);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_displays_reconnect             (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> old_image_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> new_image_ID);</pre>
 <p>
 Reconnect displays from one image to another image.
 </p>
@@ -254,7 +276,6 @@ new_image. If the old_image has no display or new_image already has
 a display the reconnect is not performed and the procedure returns
 without success. You should rarely need to use this function.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -281,6 +302,6 @@ without success. You should rarely need to use this function.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

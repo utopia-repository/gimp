@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>gimpproceduraldb</refname>
 <refpurpose>Functions for querying and changing procedural database (PDB) entries.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimpproceduraldb.synopsis" role="synopsis">
@@ -73,7 +72,6 @@
 <title role="desc.title">Description</title>
 <para>
 Functions for querying and changing procedural database (PDB) entries.
-
 </para>
 </refsect1>
 
@@ -81,7 +79,7 @@ Functions for querying and changing procedural database (PDB) entries.
 <title role="details.title">Details</title>
 <refsect2 id="gimp-procedural-db-temp-name" role="function">
 <title>gimp_procedural_db_temp_name ()</title>
-<indexterm zone="gimp-procedural-db-temp-name"><primary>gimp_procedural_db_temp_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_procedural_db_temp_name        (void);</programlisting>
+<indexterm zone="gimp-procedural-db-temp-name"><primary sortas="gimp_procedural_db_temp_name">gimp_procedural_db_temp_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_procedural_db_temp_name        (void);</programlisting>
 <para>
 Generates a unique temporary PDB name.
 </para>
@@ -89,14 +87,13 @@ Generates a unique temporary PDB name.
 This procedure generates a temporary PDB entry name that is
 guaranteed to be unique.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A unique temporary name for a temporary PDB entry.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A unique temporary name for a temporary PDB entry.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-get-data" role="function">
 <title>gimp_procedural_db_get_data ()</title>
-<indexterm zone="gimp-procedural-db-get-data"><primary>gimp_procedural_db_get_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_get_data         (const <link linkend="gchar">gchar</link> *identifier,
+<indexterm zone="gimp-procedural-db-get-data"><primary sortas="gimp_procedural_db_get_data">gimp_procedural_db_get_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_get_data         (const <link linkend="gchar">gchar</link> *identifier,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Returns data associated with the specified identifier.
@@ -106,21 +103,20 @@ This procedure returns any data which may have been associated with
 the specified identifier. The data is copied into the given memory
 location.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>identifier</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>identifier</parameter>&#160;:</term>
 <listitem><simpara> The identifier associated with data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara> A byte array containing data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success, FALSE if no data has been associated with
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success, FALSE if no data has been associated with
 the identifier
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-set-data" role="function">
 <title>gimp_procedural_db_set_data ()</title>
-<indexterm zone="gimp-procedural-db-set-data"><primary>gimp_procedural_db_set_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_set_data         (const <link linkend="gchar">gchar</link> *identifier,
+<indexterm zone="gimp-procedural-db-set-data"><primary sortas="gimp_procedural_db_set_data">gimp_procedural_db_set_data</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_set_data         (const <link linkend="gchar">gchar</link> *identifier,
                                                          <link linkend="gconstpointer">gconstpointer</link> data,
                                                          <link linkend="guint32">guint32</link> bytes);</programlisting>
 <para>
@@ -131,23 +127,22 @@ This procedure associates the supplied data with the provided
 identifier. The data may be subsequently retrieved by a call to
 'procedural-db-get-data'.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>identifier</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>identifier</parameter>&#160;:</term>
 <listitem><simpara> The identifier associated with data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara> A byte array containing data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bytes</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bytes</parameter>&#160;:</term>
 <listitem><simpara> The number of bytes in the data
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-dump" role="function">
 <title>gimp_procedural_db_dump ()</title>
-<indexterm zone="gimp-procedural-db-dump"><primary>gimp_procedural_db_dump</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_dump             (const <link linkend="gchar">gchar</link> *filename);</programlisting>
+<indexterm zone="gimp-procedural-db-dump"><primary sortas="gimp_procedural_db_dump">gimp_procedural_db_dump</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_dump             (const <link linkend="gchar">gchar</link> *filename);</programlisting>
 <para>
 Dumps the current contents of the procedural database
 </para>
@@ -156,17 +151,16 @@ This procedure dumps the contents of the procedural database to the
 specified file. The file will contain all of the information
 provided for each registered procedure.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>filename</parameter>&#160;:</term>
 <listitem><simpara> The dump filename.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-query" role="function">
 <title>gimp_procedural_db_query ()</title>
-<indexterm zone="gimp-procedural-db-query"><primary>gimp_procedural_db_query</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_query            (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-procedural-db-query"><primary sortas="gimp_procedural_db_query">gimp_procedural_db_query</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_query            (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          const <link linkend="gchar">gchar</link> *help,
                                                          const <link linkend="gchar">gchar</link> *author,
@@ -193,41 +187,40 @@ corresponding to those matching the query. If no matching entries
 are found, then the returned string is NULL and the number of
 entries is 0.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blurb</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure blurb.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure help.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>author</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>author</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure author.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>copyright</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>copyright</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure copyright.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>date</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>date</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure date.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>proc_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>proc_type</parameter>&#160;:</term>
 <listitem><simpara> The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-In', 'GIMP Extension', 'Temporary Procedure' }.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_matches</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_matches</parameter>&#160;:</term>
 <listitem><simpara> The number of matching procedures.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>procedure_names</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure_names</parameter>&#160;:</term>
 <listitem><simpara> The list of procedure names.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-proc-exists" role="function" condition="since:GIMP 2.6">
 <title>gimp_procedural_db_proc_exists ()</title>
-<indexterm zone="gimp-procedural-db-proc-exists" role="GIMP 2.6"><primary>gimp_procedural_db_proc_exists</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_exists      (const <link linkend="gchar">gchar</link> *procedure_name);</programlisting>
+<indexterm zone="gimp-procedural-db-proc-exists" role="GIMP 2.6"><primary sortas="gimp_procedural_db_proc_exists">gimp_procedural_db_proc_exists</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_exists      (const <link linkend="gchar">gchar</link> *procedure_name);</programlisting>
 <para>
 Checks if the specified procedure exists in the procedural database
 </para>
@@ -235,19 +228,17 @@ Checks if the specified procedure exists in the procedural database
 This procedure checks if the specified procedure is registered in
 the procedural database.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>procedure_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure_name</parameter>&#160;:</term>
 <listitem><simpara> The procedure name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Whether a procedure of that name is registered.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Whether a procedure of that name is registered.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.6
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.6</para></refsect2>
 <refsect2 id="gimp-procedural-db-proc-info" role="function">
 <title>gimp_procedural_db_proc_info ()</title>
-<indexterm zone="gimp-procedural-db-proc-info"><primary>gimp_procedural_db_proc_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_info        (const <link linkend="gchar">gchar</link> *procedure,
+<indexterm zone="gimp-procedural-db-proc-info"><primary sortas="gimp_procedural_db_proc_info">gimp_procedural_db_proc_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_info        (const <link linkend="gchar">gchar</link> *procedure,
                                                          <link linkend="gchar">gchar</link> **blurb,
                                                          <link linkend="gchar">gchar</link> **help,
                                                          <link linkend="gchar">gchar</link> **author,
@@ -269,47 +260,46 @@ procedure type, number of input, and number of return values are
 returned. Additionally this function returns specific information
 about each input argument and return value.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>procedure</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure</parameter>&#160;:</term>
 <listitem><simpara> The procedure name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blurb</parameter>&#160;:</term>
 <listitem><simpara> A short blurb.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help</parameter>&#160;:</term>
 <listitem><simpara> Detailed procedure help.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>author</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>author</parameter>&#160;:</term>
 <listitem><simpara> Author(s) of the procedure.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>copyright</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>copyright</parameter>&#160;:</term>
 <listitem><simpara> The copyright.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>date</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>date</parameter>&#160;:</term>
 <listitem><simpara> Copyright date.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>proc_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>proc_type</parameter>&#160;:</term>
 <listitem><simpara> The procedure type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_args</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_args</parameter>&#160;:</term>
 <listitem><simpara> The number of input arguments.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_values</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_values</parameter>&#160;:</term>
 <listitem><simpara> The number of return values.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>args</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>args</parameter>&#160;:</term>
 <listitem><simpara> The input arguments.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>return_vals</parameter>&#160;:</term>
 <listitem><simpara> The return values.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-proc-arg" role="function">
 <title>gimp_procedural_db_proc_arg ()</title>
-<indexterm zone="gimp-procedural-db-proc-arg"><primary>gimp_procedural_db_proc_arg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_arg         (const <link linkend="gchar">gchar</link> *procedure_name,
+<indexterm zone="gimp-procedural-db-proc-arg"><primary sortas="gimp_procedural_db_proc_arg">gimp_procedural_db_proc_arg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_arg         (const <link linkend="gchar">gchar</link> *procedure_name,
                                                          <link linkend="gint">gint</link> arg_num,
                                                          <link linkend="GimpPDBArgType">GimpPDBArgType</link> *arg_type,
                                                          <link linkend="gchar">gchar</link> **arg_name,
@@ -322,29 +312,28 @@ procedure's argument.
 This procedure returns information on the specified procedure's
 argument. The argument type, name, and a description are retrieved.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>procedure_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure_name</parameter>&#160;:</term>
 <listitem><simpara> The procedure name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg_num</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg_num</parameter>&#160;:</term>
 <listitem><simpara> The argument number.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg_type</parameter>&#160;:</term>
 <listitem><simpara> The type of argument.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg_name</parameter>&#160;:</term>
 <listitem><simpara> The name of the argument.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg_desc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg_desc</parameter>&#160;:</term>
 <listitem><simpara> A description of the argument.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-proc-val" role="function">
 <title>gimp_procedural_db_proc_val ()</title>
-<indexterm zone="gimp-procedural-db-proc-val"><primary>gimp_procedural_db_proc_val</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_val         (const <link linkend="gchar">gchar</link> *procedure_name,
+<indexterm zone="gimp-procedural-db-proc-val"><primary sortas="gimp_procedural_db_proc_val">gimp_procedural_db_proc_val</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_procedural_db_proc_val         (const <link linkend="gchar">gchar</link> *procedure_name,
                                                          <link linkend="gint">gint</link> val_num,
                                                          <link linkend="GimpPDBArgType">GimpPDBArgType</link> *val_type,
                                                          <link linkend="gchar">gchar</link> **val_name,
@@ -358,29 +347,28 @@ This procedure returns information on the specified procedure's
 return value. The return value type, name, and a description are
 retrieved.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>procedure_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure_name</parameter>&#160;:</term>
 <listitem><simpara> The procedure name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>val_num</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>val_num</parameter>&#160;:</term>
 <listitem><simpara> The return value number.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>val_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>val_type</parameter>&#160;:</term>
 <listitem><simpara> The type of return value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>val_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>val_name</parameter>&#160;:</term>
 <listitem><simpara> The name of the return value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>val_desc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>val_desc</parameter>&#160;:</term>
 <listitem><simpara> A description of the return value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-procedural-db-get-data-size" role="function">
 <title>gimp_procedural_db_get_data_size ()</title>
-<indexterm zone="gimp-procedural-db-get-data-size"><primary>gimp_procedural_db_get_data_size</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_procedural_db_get_data_size    (const <link linkend="gchar">gchar</link> *identifier);</programlisting>
+<indexterm zone="gimp-procedural-db-get-data-size"><primary sortas="gimp_procedural_db_get_data_size">gimp_procedural_db_get_data_size</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_procedural_db_get_data_size    (const <link linkend="gchar">gchar</link> *identifier);</programlisting>
 <para>
 Returns size of data associated with the specified identifier.
 </para>
@@ -389,12 +377,11 @@ This procedure returns the size of any data which may have been
 associated with the specified identifier. If no data has been
 associated with the identifier, an error is returned.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>identifier</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>identifier</parameter>&#160;:</term>
 <listitem><simpara> The identifier associated with data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The number of bytes in the data.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of bytes in the data.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

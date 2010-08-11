@@ -12,14 +12,13 @@
 <refnamediv>
 <refname>gimppatternmenu</refname>
 <refpurpose>A widget for selecting patterns.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimppatternmenu.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</link>      (const <link linkend="gchar">gchar</link> *title,
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</link>      (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *pattern_name,
                                                          <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
                                                          <link linkend="gpointer">gpointer</link> data);
@@ -48,7 +47,7 @@ A widget for selecting patterns.
 <title role="details.title">Details</title>
 <refsect2 id="gimp-pattern-select-widget-new" role="function" condition="deprecated:">
 <title>gimp_pattern_select_widget_new ()</title>
-<indexterm zone="gimp-pattern-select-widget-new" role="deprecated"><primary>gimp_pattern_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_pattern_select_widget_new      (const <link linkend="gchar">gchar</link> *title,
+<indexterm zone="gimp-pattern-select-widget-new" role="deprecated"><primary sortas="gimp_pattern_select_widget_new">gimp_pattern_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_pattern_select_widget_new      (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *pattern_name,
                                                          <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -58,39 +57,37 @@ Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that compl
 a pattern. This widget is suitable for placement in a table in a
 plug-in dialog.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>title</parameter>&nbsp;:</term>
-<listitem><simpara>        Title of the dialog to use or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use the default title.
+<varlistentry><term><parameter>title</parameter>&#160;:</term>
+<listitem><simpara>        Title of the dialog to use or <link linkend="NULL--CAPS"><literal>NULL</literal></link> to use the default title.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pattern_name</parameter>&nbsp;:</term>
-<listitem><simpara> Initial pattern name or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use current selection.
+<varlistentry><term><parameter>pattern_name</parameter>&#160;:</term>
+<listitem><simpara> Initial pattern name or <link linkend="NULL--CAPS"><literal>NULL</literal></link> to use current selection.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
 <listitem><simpara>     A function to call when the selected pattern changes.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>         A pointer to arbitary data to be used in the call to <parameter>callback</parameter>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkWidget"><type>GtkWidget</type></link> that you can use in your UI.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="GtkWidget"><type>GtkWidget</type></link> that you can use in your UI.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-pattern-select-widget-close" role="function" condition="deprecated:">
 <title>gimp_pattern_select_widget_close ()</title>
-<indexterm zone="gimp-pattern-select-widget-close" role="deprecated"><primary>gimp_pattern_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_widget_close    (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<indexterm zone="gimp-pattern-select-widget-close" role="deprecated"><primary sortas="gimp_pattern_select_widget_close">gimp_pattern_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_widget_close    (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <warning><para><literal>gimp_pattern_select_widget_close</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Closes the popup window associated with <parameter>widget</parameter>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>widget</parameter>&#160;:</term>
 <listitem><simpara> A pattern select widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-pattern-select-widget-set" role="function" condition="deprecated:">
 <title>gimp_pattern_select_widget_set ()</title>
-<indexterm zone="gimp-pattern-select-widget-set" role="deprecated"><primary>gimp_pattern_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_widget_set      (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<indexterm zone="gimp-pattern-select-widget-set" role="deprecated"><primary sortas="gimp_pattern_select_widget_set">gimp_pattern_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_widget_set      (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                                          const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
 <warning><para><literal>gimp_pattern_select_widget_set</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -98,12 +95,11 @@ Sets the current pattern for the pattern select widget.  Calls the
 callback function if one was supplied in the call to
 <link linkend="gimp-pattern-select-widget-new"><function>gimp_pattern_select_widget_new()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>widget</parameter>&#160;:</term>
 <listitem><simpara>       A pattern select widget.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pattern_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pattern_name</parameter>&#160;:</term>
 <listitem><simpara> Pattern name to set. NULL means no change.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

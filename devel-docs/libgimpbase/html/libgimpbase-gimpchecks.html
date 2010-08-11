@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparam.html" title="gimpparam">
 <link rel="next" href="libgimpbase-gimpcpuaccel.html" title="gimpcpuaccel">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="index" href="libgimpbase-index.html" title="Index">
@@ -26,9 +26,11 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpcpuaccel.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpbase-gimpchecks.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpbase-gimpchecks.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpbase-gimpchecks.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpbase-gimpchecks.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpchecks"></a><div class="titlepage"></div>
@@ -42,16 +44,16 @@
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimpchecks.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE:CAPS" title="GIMP_CHECK_SIZE">GIMP_CHECK_SIZE</a>
-#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE-SM:CAPS" title="GIMP_CHECK_SIZE_SM">GIMP_CHECK_SIZE_SM</a>
-#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-DARK:CAPS" title="GIMP_CHECK_DARK">GIMP_CHECK_DARK</a>
-#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-LIGHT:CAPS" title="GIMP_CHECK_LIGHT">GIMP_CHECK_LIGHT</a>
+#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE--CAPS" title="GIMP_CHECK_SIZE">GIMP_CHECK_SIZE</a>
+#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE-SM--CAPS" title="GIMP_CHECK_SIZE_SM">GIMP_CHECK_SIZE_SM</a>
+#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-DARK--CAPS" title="GIMP_CHECK_DARK">GIMP_CHECK_DARK</a>
+#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-LIGHT--CAPS" title="GIMP_CHECK_LIGHT">GIMP_CHECK_LIGHT</a>
 void                <a class="link" href="libgimpbase-gimpchecks.html#gimp-checks-get-shades" title="gimp_checks_get_shades ()">gimp_checks_get_shades</a>              (<a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType">GimpCheckType</a> type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 >guchar</a> *light,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 >guchar</a> *dark);
 </pre>
 </div>
@@ -64,7 +66,7 @@ Constants and functions related to rendering checkerboards.
 <div class="refsect1" lang="en">
 <a name="libgimpbase-gimpchecks.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="GIMP-CHECK-SIZE:CAPS"></a><h3>GIMP_CHECK_SIZE</h3>
+<a name="GIMP-CHECK-SIZE--CAPS"></a><h3>GIMP_CHECK_SIZE</h3>
 <pre class="programlisting">#define GIMP_CHECK_SIZE      8
 </pre>
 <p>
@@ -75,7 +77,7 @@ this constant instead.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-CHECK-SIZE-SM:CAPS"></a><h3>GIMP_CHECK_SIZE_SM</h3>
+<a name="GIMP-CHECK-SIZE-SM--CAPS"></a><h3>GIMP_CHECK_SIZE_SM</h3>
 <pre class="programlisting">#define GIMP_CHECK_SIZE_SM   4
 </pre>
 <p>
@@ -84,7 +86,7 @@ The default small checkerboard size in pixels.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-CHECK-DARK:CAPS"></a><h3>GIMP_CHECK_DARK</h3>
+<a name="GIMP-CHECK-DARK--CAPS"></a><h3>GIMP_CHECK_DARK</h3>
 <pre class="programlisting">#define GIMP_CHECK_DARK      0.4
 </pre>
 <p>
@@ -93,7 +95,7 @@ The dark gray value for the default checkerboard pattern.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-CHECK-LIGHT:CAPS"></a><h3>GIMP_CHECK_LIGHT</h3>
+<a name="GIMP-CHECK-LIGHT--CAPS"></a><h3>GIMP_CHECK_LIGHT</h3>
 <pre class="programlisting">#define GIMP_CHECK_LIGHT     0.6
 </pre>
 <p>
@@ -105,16 +107,15 @@ The light gray value for the default checkerboard pattern.
 <a name="gimp-checks-get-shades"></a><h3>gimp_checks_get_shades ()</h3>
 <pre class="programlisting">void                gimp_checks_get_shades              (<a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType">GimpCheckType</a> type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 >guchar</a> *light,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 >guchar</a> *dark);</pre>
 <p>
 Retrieves the actual shades of gray to use when drawing a
 checkerboard for a certain <a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType"><span class="type">GimpCheckType</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -136,13 +137,12 @@ checkerboard for a certain <a class="link" href="libgimpbase-gimpbaseenums.html#
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

@@ -1,3 +1,154 @@
+2009-03-16  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.6.6 release.
+
+2009-03-16  Tor Lillqvist  <tml@iki.fi>
+
+	* app/version.c (gimp_show_library_version): The build-time and
+	run-time versions were swapped in the output.
+
+2009-03-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 571117 – lcms plug-in crashes on broken profile
+
+	* plug-ins/common/lcms.c: don't abort on lcms errors.
+
+2009-03-12  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 575154 – changing the help browser preference may not work
+
+	* app/gui/gui.c (gui_restore_callback): connect to changes of the
+	"user-manual-online" gimprc property and kill the gimp-help
+	plug-in as it caches the location of the help pages.
+
+	* app/widgets/gimphelp.[ch]: added gimp_help_user_manual_changed()
+	for this purpose.
+
+2009-03-12  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 573695 – 1-bit white background saved as PBM becomes all black
+
+	* plug-ins/common/file-pnm.c: look at the colormap and test which
+	of the two colors is black and which is white.
+
+2009-03-12  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 573070 – crash when working with 1x3200 pixel image
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_scale_changed):
+	make sure that x_src_dec and y_src_dec never become zero.
+
+2009-03-12  Sven Neumann  <sven@gimp.org>
+
+	Bug 573542 – blur plugin: bug in the first line
+
+	* plug-ins/common/blur.c (blur_prepare_row): cast GimpPixelRgn.h
+	to a signed integer.
+
+2009-03-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/file-jpeg/jpeg.h (PLUG_IN_BINARY): fixed typo.
+
+2009-03-10  Sven Neumann  <sven@gimp.org>
+
+	Bug 572403 – gimp-2.6 crashed with SIGSEGV in IA__g_object_get()
+
+	* configure.in: fixed check for newer version of GTK+ that
+	determines if GTK_DISABLE_DEPRECATED is used.
+
+2009-03-07  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/file-jpeg/jpeg-load.c (load_image)
+	* plug-ins/file-jpeg/jpeg-save.c (save_image): need to finish the
+	progress update.
+
+2009-03-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 573695 – 1-bit white background saved as PBM becomes all black
+
+	* plug-ins/common/file-pnm.c: need to handle the special case that
+	the image colormap has only one entry.
+
+2009-03-02  Sven Neumann  <sven@gimp.org>
+
+	Fix compilation with GEGL from trunk:
+	
+	* app/gegl/Makefile.am
+	* app/geg/gegl-types.h: renamed to app/gegl/gimp-gegl-types.h
+
+	* app/core/core-types.h
+	* app/gegl/*.c: changed accordingly.
+
+2009-02-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 573488 – Small bug in Filter>Distorts>Ripple
+
+	* plug-ins/common/ripple.c (ripple_vertical): fixed bug spotted in
+	SMEAR mode, pointed out by Andreas Groth.
+
+2009-02-22  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/image-actions.c: reverted last change. No changes in
+	the stable branch without commit approval. And definitely no
+	string changes.
+
+2009-02-22  Marco Ciampa  <ciampix@libero.it>
+
+	* app/actions/image-actions.c: fixed duplicated keyboard shortcut
+
+2009-02-20  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 572156 – top left pixel position/coordinate is not 0,0 but 1,1
+
+	* app/display/gimpstatusbar.c
+	(gimp_statusbar_push_coords)
+	(gimp_statusbar_update_cursor): fix braino for
+	GIMP_CURSOR_PRECISION_PIXEL_CENTER: going to the pixel's
+	center doesn't need any rounding, it simply needs clipping
+	away the coordinates' fractional parts, gah...
+
+	Review all tools' cursor precision:
+
+	* app/tools/gimpblendtool.c (gimp_blend_tool_init): set cursor
+	precision to SUBPIXEL.
+
+	* app/tools/gimptexttool.c (gimp_text_tool_init)
+	* app/tools/gimpmeasuretool.c (gimp_measure_tool_init)
+	* app/tools/gimpeditselectiontool.c (gimp_edit_selection_tool_init):
+	set cursor precision to PIXEL_BORDER.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 472644 – Rotate with clipping crops the whole layer
+
+	* app/core/gimp-transform-resize.c: applied patch as attached to
+	bug #472644. Supposedly fixes the problem of the disappearing
+	image.
+
+2009-02-15  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.6.6 (interface age 6).
+
 2009-02-15  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.6.5 release.

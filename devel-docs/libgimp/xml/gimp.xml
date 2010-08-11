@@ -13,7 +13,6 @@
 <refname>gimp</refname>
 <refpurpose>Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimp.synopsis" role="synopsis">
@@ -38,7 +37,7 @@ all other GIMP Library headers.</refpurpose>
                     <link linkend="GimpParamRegion">GimpParamRegion</link>;
 union               <link linkend="GimpParamData">GimpParamData</link>;
                     <link linkend="GimpParam">GimpParam</link>;
-#define             <link linkend="MAIN:CAPS">MAIN</link>                                ()
+#define             <link linkend="MAIN--CAPS">MAIN</link>                                ()
 <link linkend="gint">gint</link>                <link linkend="gimp-main">gimp_main</link>                           (const <link linkend="GimpPlugInInfo">GimpPlugInInfo</link> *info,
                                                          <link linkend="gint">gint</link> argc,
                                                          <link linkend="gchar">gchar</link> *argv[]);
@@ -71,10 +70,10 @@ union               <link linkend="GimpParamData">GimpParamData</link>;
                                                          const <link linkend="GimpParamDef">GimpParamDef</link> *return_vals,
                                                          <link linkend="GimpRunProc">GimpRunProc</link> run_proc);
 <link linkend="void">void</link>                <link linkend="gimp-uninstall-temp-proc">gimp_uninstall_temp_proc</link>            (const <link linkend="gchar">gchar</link> *name);
-<link linkend="GimpParam">GimpParam</link>*          <link linkend="gimp-run-procedure">gimp_run_procedure</link>                  (const <link linkend="gchar">gchar</link> *name,
+<link linkend="GimpParam">GimpParam</link> *         <link linkend="gimp-run-procedure">gimp_run_procedure</link>                  (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *n_return_vals,
                                                          ...);
-<link linkend="GimpParam">GimpParam</link>*          <link linkend="gimp-run-procedure2">gimp_run_procedure2</link>                 (const <link linkend="gchar">gchar</link> *name,
+<link linkend="GimpParam">GimpParam</link> *         <link linkend="gimp-run-procedure2">gimp_run_procedure2</link>                 (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *n_return_vals,
                                                          <link linkend="gint">gint</link> n_params,
                                                          const <link linkend="GimpParam">GimpParam</link> *params);
@@ -82,11 +81,11 @@ union               <link linkend="GimpParamData">GimpParamData</link>;
                                                          <link linkend="gint">gint</link> n_params);
 <link linkend="void">void</link>                <link linkend="gimp-destroy-paramdefs">gimp_destroy_paramdefs</link>              (<link linkend="GimpParamDef">GimpParamDef</link> *paramdefs,
                                                          <link linkend="gint">gint</link> n_params);
-const <link linkend="gchar">gchar</link>*        <link linkend="gimp-get-pdb-error">gimp_get_pdb_error</link>                  (void);
+const <link linkend="gchar">gchar</link> *       <link linkend="gimp-get-pdb-error">gimp_get_pdb_error</link>                  (void);
 <link linkend="guint">guint</link>               <link linkend="gimp-tile-width">gimp_tile_width</link>                     (void);
 <link linkend="guint">guint</link>               <link linkend="gimp-tile-height">gimp_tile_height</link>                    (void);
 <link linkend="gint">gint</link>                <link linkend="gimp-shm-ID">gimp_shm_ID</link>                         (void);
-<link linkend="guchar">guchar</link>*             <link linkend="gimp-shm-addr">gimp_shm_addr</link>                       (void);
+<link linkend="guchar">guchar</link> *            <link linkend="gimp-shm-addr">gimp_shm_addr</link>                       (void);
 <link linkend="gdouble">gdouble</link>             <link linkend="gimp-gamma">gimp_gamma</link>                          (void);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-install-cmap">gimp_install_cmap</link>                   (void);
 <link linkend="gint">gint</link>                <link linkend="gimp-min-colors">gimp_min_colors</link>                     (void);
@@ -95,11 +94,11 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-get-pdb-err
 <link linkend="GimpCheckSize">GimpCheckSize</link>       <link linkend="gimp-check-size">gimp_check_size</link>                     (void);
 <link linkend="GimpCheckType">GimpCheckType</link>       <link linkend="gimp-check-type">gimp_check_type</link>                     (void);
 <link linkend="gint32">gint32</link>              <link linkend="gimp-default-display">gimp_default_display</link>                (void);
-const <link linkend="gchar">gchar</link>*        <link linkend="gimp-wm-class">gimp_wm_class</link>                       (void);
-const <link linkend="gchar">gchar</link>*        <link linkend="gimp-display-name">gimp_display_name</link>                   (void);
+const <link linkend="gchar">gchar</link> *       <link linkend="gimp-wm-class">gimp_wm_class</link>                       (void);
+const <link linkend="gchar">gchar</link> *       <link linkend="gimp-display-name">gimp_display_name</link>                   (void);
 <link linkend="gint">gint</link>                <link linkend="gimp-monitor-number">gimp_monitor_number</link>                 (void);
 <link linkend="guint32">guint32</link>             <link linkend="gimp-user-time">gimp_user_time</link>                      (void);
-const <link linkend="gchar">gchar</link>*        <link linkend="gimp-get-progname">gimp_get_progname</link>                   (void);
+const <link linkend="gchar">gchar</link> *       <link linkend="gimp-get-progname">gimp_get_progname</link>                   (void);
 <link linkend="void">void</link>                <link linkend="gimp-extension-enable">gimp_extension_enable</link>               (void);
 <link linkend="void">void</link>                <link linkend="gimp-extension-ack">gimp_extension_ack</link>                  (void);
 <link linkend="void">void</link>                <link linkend="gimp-extension-process">gimp_extension_process</link>              (<link linkend="guint">guint</link> timeout);
@@ -128,7 +127,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-get-prognam
 <para>
 Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.
-
 </para>
 </refsect1>
 
@@ -136,7 +134,7 @@ all other GIMP Library headers.
 <title role="details.title">Details</title>
 <refsect2 id="gimp-version" role="function">
 <title>gimp_version ()</title>
-<indexterm zone="gimp-version"><primary>gimp_version</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_version                        (void);</programlisting>
+<indexterm zone="gimp-version"><primary sortas="gimp_version">gimp_version</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_version                        (void);</programlisting>
 <para>
 Returns the host GIMP version.
 </para>
@@ -144,102 +142,88 @@ Returns the host GIMP version.
 This procedure returns the version number of the currently running
 GIMP.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> GIMP version number.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> GIMP version number.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-getpid" role="function" condition="since:GIMP 2.4">
 <title>gimp_getpid ()</title>
-<indexterm zone="gimp-getpid" role="GIMP 2.4"><primary>gimp_getpid</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_getpid                         (void);</programlisting>
+<indexterm zone="gimp-getpid" role="GIMP 2.4"><primary sortas="gimp_getpid">gimp_getpid</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_getpid                         (void);</programlisting>
 <para>
 Returns the PID of the host GIMP process.
 </para>
 <para>
 This procedure returns the process ID of the currently running GIMP.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The PID.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The PID.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-get-data" role="macro">
 <title>gimp_get_data</title>
-<indexterm zone="gimp-get-data"><primary>gimp_get_data</primary></indexterm><programlisting>#define gimp_get_data         gimp_procedural_db_get_data
+<indexterm zone="gimp-get-data"><primary sortas="gimp_get_data">gimp_get_data</primary></indexterm><programlisting>#define gimp_get_data         gimp_procedural_db_get_data
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-get-data-size" role="macro">
 <title>gimp_get_data_size</title>
-<indexterm zone="gimp-get-data-size"><primary>gimp_get_data_size</primary></indexterm><programlisting>#define gimp_get_data_size    gimp_procedural_db_get_data_size
+<indexterm zone="gimp-get-data-size"><primary sortas="gimp_get_data_size">gimp_get_data_size</primary></indexterm><programlisting>#define gimp_get_data_size    gimp_procedural_db_get_data_size
 </programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-set-data" role="macro">
 <title>gimp_set_data</title>
-<indexterm zone="gimp-set-data"><primary>gimp_set_data</primary></indexterm><programlisting>#define gimp_set_data         gimp_procedural_db_set_data
+<indexterm zone="gimp-set-data"><primary sortas="gimp_set_data">gimp_set_data</primary></indexterm><programlisting>#define gimp_set_data         gimp_procedural_db_set_data
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpInitProc" role="function">
 <title>GimpInitProc ()</title>
-<indexterm zone="GimpInitProc"><primary>GimpInitProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpInitProc)                     (void);</programlisting>
+<indexterm zone="GimpInitProc"><primary sortas="GimpInitProc">GimpInitProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpInitProc)                     (void);</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpQuitProc" role="function">
 <title>GimpQuitProc ()</title>
-<indexterm zone="GimpQuitProc"><primary>GimpQuitProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpQuitProc)                     (void);</programlisting>
+<indexterm zone="GimpQuitProc"><primary sortas="GimpQuitProc">GimpQuitProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpQuitProc)                     (void);</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpQueryProc" role="function">
 <title>GimpQueryProc ()</title>
-<indexterm zone="GimpQueryProc"><primary>GimpQueryProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpQueryProc)                    (void);</programlisting>
+<indexterm zone="GimpQueryProc"><primary sortas="GimpQueryProc">GimpQueryProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpQueryProc)                    (void);</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpRunProc" role="function">
 <title>GimpRunProc ()</title>
-<indexterm zone="GimpRunProc"><primary>GimpRunProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunProc)                      (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="GimpRunProc"><primary sortas="GimpRunProc">GimpRunProc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunProc)                      (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> n_params,
                                                          const <link linkend="GimpParam">GimpParam</link> *param,
                                                          <link linkend="gint">gint</link> *n_return_vals,
                                                          <link linkend="GimpParam">GimpParam</link> **return_vals);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>param</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>param</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_return_vals</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>return_vals</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="GimpPlugInInfo" role="struct">
 <title>GimpPlugInInfo</title>
-<indexterm zone="GimpPlugInInfo"><primary>GimpPlugInInfo</primary></indexterm><programlisting>typedef struct {
+<indexterm zone="GimpPlugInInfo"><primary sortas="GimpPlugInInfo">GimpPlugInInfo</primary></indexterm><programlisting>typedef struct {
   /* called when the gimp application initially starts up */
   GimpInitProc  init_proc;
 
@@ -259,22 +243,20 @@ This procedure returns the process ID of the currently running GIMP.</para>
 } GimpPlugInInfo;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpParamDef" role="struct">
 <title>GimpParamDef</title>
-<indexterm zone="GimpParamDef"><primary>GimpParamDef</primary></indexterm><programlisting>typedef struct {
+<indexterm zone="GimpParamDef"><primary sortas="GimpParamDef">GimpParamDef</primary></indexterm><programlisting>typedef struct {
   GimpPDBArgType  type;
   gchar          *name;
   gchar          *description;
 } GimpParamDef;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpParamRegion" role="struct">
 <title>GimpParamRegion</title>
-<indexterm zone="GimpParamRegion"><primary>GimpParamRegion</primary></indexterm><programlisting>typedef struct {
+<indexterm zone="GimpParamRegion"><primary sortas="GimpParamRegion">GimpParamRegion</primary></indexterm><programlisting>typedef struct {
   gint32 x;
   gint32 y;
   gint32 width;
@@ -282,11 +264,10 @@ This procedure returns the process ID of the currently running GIMP.</para>
 } GimpParamRegion;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpParamData" role="union">
 <title>union GimpParamData</title>
-<indexterm zone="GimpParamData"><primary>GimpParamData</primary></indexterm><programlisting>union GimpParamData
+<indexterm zone="GimpParamData"><primary sortas="GimpParamData">GimpParamData</primary></indexterm><programlisting>union GimpParamData
 {
   gint32            d_int32;
   gint16            d_int16;
@@ -318,66 +299,61 @@ This procedure returns the process ID of the currently running GIMP.</para>
 };
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpParam" role="struct">
 <title>GimpParam</title>
-<indexterm zone="GimpParam"><primary>GimpParam</primary></indexterm><programlisting>typedef struct {
+<indexterm zone="GimpParam"><primary sortas="GimpParam">GimpParam</primary></indexterm><programlisting>typedef struct {
   GimpPDBArgType type;
   GimpParamData  data;
 } GimpParam;
 </programlisting>
 <para>
-
 </para></refsect2>
-<refsect2 id="MAIN:CAPS" role="macro">
+<refsect2 id="MAIN--CAPS" role="macro">
 <title>MAIN()</title>
-<indexterm zone="MAIN:CAPS"><primary>MAIN</primary></indexterm><programlisting>#define             MAIN()</programlisting>
+<indexterm zone="MAIN--CAPS"><primary sortas="MAIN">MAIN</primary></indexterm><programlisting>#define             MAIN()</programlisting>
 <para>
 A macro that expands to the appropriate <link linkend="main"><function>main()</function></link> function for the
 platform being compiled for.
 </para>
 <para>
 To use this macro, simply place a line that contains just the code
-<link linkend="MAIN:CAPS"><function>MAIN()</function></link> at the toplevel of your file.  No semicolon should be used.</para>
+<link linkend="MAIN--CAPS"><function>MAIN()</function></link> at the toplevel of your file.  No semicolon should be used.</para>
 <para>
-    
 </para></refsect2>
 <refsect2 id="gimp-main" role="function">
 <title>gimp_main ()</title>
-<indexterm zone="gimp-main"><primary>gimp_main</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_main                           (const <link linkend="GimpPlugInInfo">GimpPlugInInfo</link> *info,
+<indexterm zone="gimp-main"><primary sortas="gimp_main">gimp_main</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_main                           (const <link linkend="GimpPlugInInfo">GimpPlugInInfo</link> *info,
                                                          <link linkend="gint">gint</link> argc,
                                                          <link linkend="gchar">gchar</link> *argv[]);</programlisting>
 <para>
 The main procedure that must be called with the PLUG_IN_INFO structure
 and the 'argc' and 'argv' that are passed to "main".</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>info</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>info</parameter>&#160;:</term>
 <listitem><simpara> the PLUG_IN_INFO structure
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>argc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>argc</parameter>&#160;:</term>
 <listitem><simpara> the number of arguments
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>argv</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>argv</parameter>&#160;:</term>
 <listitem><simpara> the arguments
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-quit" role="function">
 <title>gimp_quit ()</title>
-<indexterm zone="gimp-quit"><primary>gimp_quit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_quit                           (void);</programlisting>
+<indexterm zone="gimp-quit"><primary sortas="gimp_quit">gimp_quit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_quit                           (void);</programlisting>
 <para>
 Forcefully causes the GIMP library to exit and close down its
 connection to main gimp application. This function never returns.</para>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-install-procedure" role="function">
 <title>gimp_install_procedure ()</title>
-<indexterm zone="gimp-install-procedure"><primary>gimp_install_procedure</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_install_procedure              (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-install-procedure"><primary sortas="gimp_install_procedure">gimp_install_procedure</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_install_procedure              (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          const <link linkend="gchar">gchar</link> *help,
                                                          const <link linkend="gchar">gchar</link> *author,
@@ -431,75 +407,74 @@ possible here, so you could say "RGB*" instead of "RGB, RGBA" or
 run, use the empty string.
 </para>
 <para>
-<parameter>type</parameter> must be one of <link linkend="GIMP-PLUGIN:CAPS"><type>GIMP_PLUGIN</type></link> or <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link>. Note that
+<parameter>type</parameter> must be one of <link linkend="GIMP-PLUGIN--CAPS"><type>GIMP_PLUGIN</type></link> or <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link>. Note that
 temporary procedures must be installed using
 <link linkend="gimp-install-temp-proc"><function>gimp_install_temp_proc()</function></link>.
 </para>
 <para>
-NOTE: Unlike the GIMP 1.2 API, <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link> no longer means
+NOTE: Unlike the GIMP 1.2 API, <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link> no longer means
 that the procedure's menu prefix is &lt;Toolbox&gt;, but that
 it will install temporary procedures. Therefore, the GIMP core
-will wait until the <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link> procedure has called
+will wait until the <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link> procedure has called
 <link linkend="gimp-extension-ack"><function>gimp_extension_ack()</function></link>, which means that the procedure has done
 its initialization, installed its temporary procedures and is
 ready to run.
 </para>
 <para>
-<emphasis>Not calling <link linkend="gimp-extension-ack"><function>gimp_extension_ack()</function></link> from a <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link>
+<emphasis>Not calling <link linkend="gimp-extension-ack"><function>gimp_extension_ack()</function></link> from a <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link>
 procedure will cause the GIMP core to lock up.</emphasis>
 </para>
 <para>
-Additionally, a <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link> procedure with no parameters
-(<parameter>n_params</parameter> == 0 and <parameter>params</parameter> == <link linkend="NULL:CAPS"><type>NULL</type></link>) is an "automatic" extension
+Additionally, a <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link> procedure with no parameters
+(<parameter>n_params</parameter> == 0 and <parameter>params</parameter> == <link linkend="NULL--CAPS"><type>NULL</type></link>) is an "automatic" extension
 that will be automatically started on each GIMP startup.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>          the procedure's name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blurb</parameter>&#160;:</term>
 <listitem><simpara>         a short text describing what the procedure does.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help</parameter>&#160;:</term>
 <listitem><simpara>          the help text for the procedure (usually considerably
                 longer than <parameter>blurb</parameter>).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>author</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>author</parameter>&#160;:</term>
 <listitem><simpara>        the procedure's author(s).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>copyright</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>copyright</parameter>&#160;:</term>
 <listitem><simpara>     the procedure's copyright.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>date</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>date</parameter>&#160;:</term>
 <listitem><simpara>          the date the procedure was added.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>menu_label</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>menu_label</parameter>&#160;:</term>
 <listitem><simpara>    the label to use for the procedure's menu entry,
-                or <link linkend="NULL:CAPS"><type>NULL</type></link> if the procedure has no menu entry.
+                or <link linkend="NULL--CAPS"><type>NULL</type></link> if the procedure has no menu entry.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>image_types</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_types</parameter>&#160;:</term>
 <listitem><simpara>   the drawable types the procedure can handle.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
 <listitem><simpara>          the type of the procedure.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara>      the number of parameters the procedure takes.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_return_vals</parameter>&#160;:</term>
 <listitem><simpara> the number of return values the procedure returns.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>params</parameter>&#160;:</term>
 <listitem><simpara>        the procedure's parameters.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>return_vals</parameter>&#160;:</term>
 <listitem><simpara>   the procedure's return values.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-install-temp-proc" role="function">
 <title>gimp_install_temp_proc ()</title>
-<indexterm zone="gimp-install-temp-proc"><primary>gimp_install_temp_proc</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_install_temp_proc              (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-install-temp-proc"><primary sortas="gimp_install_temp_proc">gimp_install_temp_proc</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_install_temp_proc              (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          const <link linkend="gchar">gchar</link> *help,
                                                          const <link linkend="gchar">gchar</link> *author,
@@ -524,7 +499,7 @@ one of your plug-in's "real" procedures is running.
 See <link linkend="gimp-install-procedure"><function>gimp_install_procedure()</function></link> for most details.
 </para>
 <para>
-<parameter>type</parameter> <emphasis>must</emphasis> be <link linkend="GIMP-TEMPORARY:CAPS"><type>GIMP_TEMPORARY</type></link> or the function
+<parameter>type</parameter> <emphasis>must</emphasis> be <link linkend="GIMP-TEMPORARY--CAPS"><type>GIMP_TEMPORARY</type></link> or the function
 will fail.
 </para>
 <para>
@@ -539,69 +514,67 @@ using either <link linkend="gimp-extension-enable"><function>gimp_extension_enab
 <link linkend="gimp-extension-process"><function>gimp_extension_process()</function></link>. See this functions' documentation for
 details.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>          the procedure's name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blurb</parameter>&#160;:</term>
 <listitem><simpara>         a short text describing what the procedure does.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help</parameter>&#160;:</term>
 <listitem><simpara>          the help text for the procedure (usually considerably
                 longer than <parameter>blurb</parameter>).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>author</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>author</parameter>&#160;:</term>
 <listitem><simpara>        the procedure's author(s).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>copyright</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>copyright</parameter>&#160;:</term>
 <listitem><simpara>     the procedure's copyright.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>date</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>date</parameter>&#160;:</term>
 <listitem><simpara>          the date the procedure was added.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>menu_label</parameter>&nbsp;:</term>
-<listitem><simpara>    the procedure's menu label, or <link linkend="NULL:CAPS"><type>NULL</type></link> if the procedure has
+<varlistentry><term><parameter>menu_label</parameter>&#160;:</term>
+<listitem><simpara>    the procedure's menu label, or <link linkend="NULL--CAPS"><type>NULL</type></link> if the procedure has
                 no menu entry.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>image_types</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_types</parameter>&#160;:</term>
 <listitem><simpara>   the drawable types the procedure can handle.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
 <listitem><simpara>          the type of the procedure.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara>      the number of parameters the procedure takes.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_return_vals</parameter>&#160;:</term>
 <listitem><simpara> the number of return values the procedure returns.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>params</parameter>&#160;:</term>
 <listitem><simpara>        the procedure's parameters.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>return_vals</parameter>&#160;:</term>
 <listitem><simpara>   the procedure's return values.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>run_proc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>run_proc</parameter>&#160;:</term>
 <listitem><simpara>      the function to call for executing the procedure.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-uninstall-temp-proc" role="function">
 <title>gimp_uninstall_temp_proc ()</title>
-<indexterm zone="gimp-uninstall-temp-proc"><primary>gimp_uninstall_temp_proc</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_uninstall_temp_proc            (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-uninstall-temp-proc"><primary sortas="gimp_uninstall_temp_proc">gimp_uninstall_temp_proc</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_uninstall_temp_proc            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Uninstalls a temporary procedure which has previously been
 installed using <link linkend="gimp-install-temp-proc"><function>gimp_install_temp_proc()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> the procedure's name
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-run-procedure" role="function">
 <title>gimp_run_procedure ()</title>
-<indexterm zone="gimp-run-procedure"><primary>gimp_run_procedure</primary></indexterm><programlisting><link linkend="GimpParam">GimpParam</link>*          gimp_run_procedure                  (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-run-procedure"><primary sortas="gimp_run_procedure">gimp_run_procedure</primary></indexterm><programlisting><link linkend="GimpParam">GimpParam</link> *         gimp_run_procedure                  (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *n_return_vals,
                                                          ...);</programlisting>
 <para>
@@ -609,30 +582,29 @@ This function calls a GIMP procedure and returns its return values.
 </para>
 <para>
 The procedure's parameters are given by a va_list in the format
-(type, value, type, value) and must be terminated by <link linkend="GIMP-PDB-END:CAPS"><type>GIMP_PDB_END</type></link>.
+(type, value, type, value) and must be terminated by <link linkend="GIMP-PDB-END--CAPS"><type>GIMP_PDB_END</type></link>.
 </para>
 <para>
 This function converts the va_list of parameters into an array and
 passes them to <link linkend="gimp-run-procedure2"><function>gimp_run_procedure2()</function></link>. Please look there for further
 information.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>          the name of the procedure to run
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_return_vals</parameter>&#160;:</term>
 <listitem><simpara> return location for the number of return values
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>...</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
 <listitem><simpara>       list of procedure parameters
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the procedure's return values.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the procedure's return values.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-run-procedure2" role="function">
 <title>gimp_run_procedure2 ()</title>
-<indexterm zone="gimp-run-procedure2"><primary>gimp_run_procedure2</primary></indexterm><programlisting><link linkend="GimpParam">GimpParam</link>*          gimp_run_procedure2                 (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-run-procedure2"><primary sortas="gimp_run_procedure2">gimp_run_procedure2</primary></indexterm><programlisting><link linkend="GimpParam">GimpParam</link> *         gimp_run_procedure2                 (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *n_return_vals,
                                                          <link linkend="gint">gint</link> n_params,
                                                          const <link linkend="GimpParam">GimpParam</link> *params);</programlisting>
@@ -646,60 +618,57 @@ as found in the Xtns menu in GIMP's toolbox.
 As soon as you don't need the return values any longer, you should
 free them using <link linkend="gimp-destroy-params"><function>gimp_destroy_params()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>          the name of the procedure to run
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_return_vals</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_return_vals</parameter>&#160;:</term>
 <listitem><simpara> return location for the number of return values
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara>      the number of parameters the procedure takes.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>params</parameter>&#160;:</term>
 <listitem><simpara>        the procedure's parameters array.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the procedure's return values.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the procedure's return values.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-destroy-params" role="function">
 <title>gimp_destroy_params ()</title>
-<indexterm zone="gimp-destroy-params"><primary>gimp_destroy_params</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_destroy_params                 (<link linkend="GimpParam">GimpParam</link> *params,
+<indexterm zone="gimp-destroy-params"><primary sortas="gimp_destroy_params">gimp_destroy_params</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_destroy_params                 (<link linkend="GimpParam">GimpParam</link> *params,
                                                          <link linkend="gint">gint</link> n_params);</programlisting>
 <para>
 Destroys a <link linkend="GimpParam"><type>GimpParam</type></link> array as returned by <link linkend="gimp-run-procedure"><function>gimp_run_procedure()</function></link> or
 <link linkend="gimp-run-procedure2"><function>gimp_run_procedure2()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>params</parameter>&#160;:</term>
 <listitem><simpara>   the <link linkend="GimpParam"><type>GimpParam</type></link> array to destroy
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara> the number of elements in the array
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-destroy-paramdefs" role="function">
 <title>gimp_destroy_paramdefs ()</title>
-<indexterm zone="gimp-destroy-paramdefs"><primary>gimp_destroy_paramdefs</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_destroy_paramdefs              (<link linkend="GimpParamDef">GimpParamDef</link> *paramdefs,
+<indexterm zone="gimp-destroy-paramdefs"><primary sortas="gimp_destroy_paramdefs">gimp_destroy_paramdefs</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_destroy_paramdefs              (<link linkend="GimpParamDef">GimpParamDef</link> *paramdefs,
                                                          <link linkend="gint">gint</link> n_params);</programlisting>
 <para>
 Destroys a <link linkend="GimpParamDef"><type>GimpParamDef</type></link> array as returned by
 <link linkend="gimp-procedural-db-proc-info"><function>gimp_procedural_db_proc_info()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>paramdefs</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>paramdefs</parameter>&#160;:</term>
 <listitem><simpara> the <link linkend="GimpParamDef"><type>GimpParamDef</type></link> array to destroy
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>n_params</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>n_params</parameter>&#160;:</term>
 <listitem><simpara>  the number of elements in the array
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-get-pdb-error" role="function" condition="since:GIMP 2.6">
 <title>gimp_get_pdb_error ()</title>
-<indexterm zone="gimp-get-pdb-error" role="GIMP 2.6"><primary>gimp_get_pdb_error</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_get_pdb_error                  (void);</programlisting>
+<indexterm zone="gimp-get-pdb-error" role="GIMP 2.6"><primary sortas="gimp_get_pdb_error">gimp_get_pdb_error</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       gimp_get_pdb_error                  (void);</programlisting>
 <para>
 Retrieves the error message from the last procedure call.
 </para>
@@ -714,44 +683,40 @@ function. The next procedure call unsets the error message again.
 The returned string is owned by libgimp and must not be freed or
 modified.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the error message
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the error message
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.6
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.6</para></refsect2>
 <refsect2 id="gimp-tile-width" role="function">
 <title>gimp_tile_width ()</title>
-<indexterm zone="gimp-tile-width"><primary>gimp_tile_width</primary></indexterm><programlisting><link linkend="guint">guint</link>               gimp_tile_width                     (void);</programlisting>
+<indexterm zone="gimp-tile-width"><primary sortas="gimp_tile_width">gimp_tile_width</primary></indexterm><programlisting><link linkend="guint">guint</link>               gimp_tile_width                     (void);</programlisting>
 <para>
 Returns the tile width GIMP is using.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the tile_width
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the tile_width
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-tile-height" role="function">
 <title>gimp_tile_height ()</title>
-<indexterm zone="gimp-tile-height"><primary>gimp_tile_height</primary></indexterm><programlisting><link linkend="guint">guint</link>               gimp_tile_height                    (void);</programlisting>
+<indexterm zone="gimp-tile-height"><primary sortas="gimp_tile_height">gimp_tile_height</primary></indexterm><programlisting><link linkend="guint">guint</link>               gimp_tile_height                    (void);</programlisting>
 <para>
 Returns the tile height GIMP is using.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the tile_height
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the tile_height
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-shm-ID" role="function">
 <title>gimp_shm_ID ()</title>
-<indexterm zone="gimp-shm-ID"><primary>gimp_shm_ID</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_shm_ID                         (void);</programlisting>
+<indexterm zone="gimp-shm-ID"><primary sortas="gimp_shm_ID">gimp_shm_ID</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_shm_ID                         (void);</programlisting>
 <para>
 Returns the shared memory ID used for passing tile data between the
 GIMP core and the plug-in.
@@ -759,14 +724,13 @@ GIMP core and the plug-in.
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the shared memory ID
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the shared memory ID
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-shm-addr" role="function">
 <title>gimp_shm_addr ()</title>
-<indexterm zone="gimp-shm-addr"><primary>gimp_shm_addr</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*             gimp_shm_addr                       (void);</programlisting>
+<indexterm zone="gimp-shm-addr"><primary sortas="gimp_shm_addr">gimp_shm_addr</primary></indexterm><programlisting><link linkend="guchar">guchar</link> *            gimp_shm_addr                       (void);</programlisting>
 <para>
 Returns the address of the shared memory segment used for passing
 tile data between the GIMP core and the plug-in.
@@ -774,14 +738,13 @@ tile data between the GIMP core and the plug-in.
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the shared memory address
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the shared memory address
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-gamma" role="function">
 <title>gimp_gamma ()</title>
-<indexterm zone="gimp-gamma"><primary>gimp_gamma</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_gamma                          (void);</programlisting>
+<indexterm zone="gimp-gamma"><primary sortas="gimp_gamma">gimp_gamma</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_gamma                          (void);</programlisting>
 <para>
 Returns the global gamma value GIMP and all its plug-ins should
 use.
@@ -794,14 +757,13 @@ NOTE: This function will always return 2.2, the gamma value for
 sRGB. There's currently no way to change this and all operations
 should assume that pixel data is in the sRGB colorspace.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the gamma value
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the gamma value
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-install-cmap" role="function">
 <title>gimp_install_cmap ()</title>
-<indexterm zone="gimp-install-cmap"><primary>gimp_install_cmap</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_install_cmap                   (void);</programlisting>
+<indexterm zone="gimp-install-cmap"><primary sortas="gimp_install_cmap">gimp_install_cmap</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_install_cmap                   (void);</programlisting>
 <para>
 Returns whether or not the plug-in should allocate an own colormap
 when running on an 8 bit display. See also: <link linkend="gimp-min-colors"><function>gimp_min_colors()</function></link>.
@@ -809,14 +771,13 @@ when running on an 8 bit display. See also: <link linkend="gimp-min-colors"><fun
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the install_cmap boolean
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the install_cmap boolean
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-min-colors" role="function">
 <title>gimp_min_colors ()</title>
-<indexterm zone="gimp-min-colors"><primary>gimp_min_colors</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_min_colors                     (void);</programlisting>
+<indexterm zone="gimp-min-colors"><primary sortas="gimp_min_colors">gimp_min_colors</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_min_colors                     (void);</programlisting>
 <para>
 Returns the minimum number of colors to use when allocating an own
 colormap on 8 bit displays.
@@ -827,28 +788,26 @@ This is a constant value given at plug-in configuration time.
 <para>
 See also: <link linkend="gimp-install-cmap"><function>gimp_install_cmap()</function></link></para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the minimum number of colors to allocate
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the minimum number of colors to allocate
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-show-tool-tips" role="function">
 <title>gimp_show_tool_tips ()</title>
-<indexterm zone="gimp-show-tool-tips"><primary>gimp_show_tool_tips</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_show_tool_tips                 (void);</programlisting>
+<indexterm zone="gimp-show-tool-tips"><primary sortas="gimp_show_tool_tips">gimp_show_tool_tips</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_show_tool_tips                 (void);</programlisting>
 <para>
 Returns whether or not the plug-in should show tool-tips.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the show_tool_tips boolean
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the show_tool_tips boolean
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-show-help-button" role="function" condition="since:GIMP 2.2">
 <title>gimp_show_help_button ()</title>
-<indexterm zone="gimp-show-help-button" role="GIMP 2.2"><primary>gimp_show_help_button</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_show_help_button               (void);</programlisting>
+<indexterm zone="gimp-show-help-button" role="GIMP 2.2"><primary sortas="gimp_show_help_button">gimp_show_help_button</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_show_help_button               (void);</programlisting>
 <para>
 Returns whether or not GimpDialog should automatically add a help
 button if help_func and help_id are given.
@@ -856,48 +815,42 @@ button if help_func and help_id are given.
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the show_help_button boolean
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the show_help_button boolean
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-check-size" role="function" condition="since:GIMP 2.2">
 <title>gimp_check_size ()</title>
-<indexterm zone="gimp-check-size" role="GIMP 2.2"><primary>gimp_check_size</primary></indexterm><programlisting><link linkend="GimpCheckSize">GimpCheckSize</link>       gimp_check_size                     (void);</programlisting>
+<indexterm zone="gimp-check-size" role="GIMP 2.2"><primary sortas="gimp_check_size">gimp_check_size</primary></indexterm><programlisting><link linkend="GimpCheckSize">GimpCheckSize</link>       gimp_check_size                     (void);</programlisting>
 <para>
 Returns the size of the checkerboard to be used in previews.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the check_size value
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the check_size value
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-check-type" role="function" condition="since:GIMP 2.2">
 <title>gimp_check_type ()</title>
-<indexterm zone="gimp-check-type" role="GIMP 2.2"><primary>gimp_check_type</primary></indexterm><programlisting><link linkend="GimpCheckType">GimpCheckType</link>       gimp_check_type                     (void);</programlisting>
+<indexterm zone="gimp-check-type" role="GIMP 2.2"><primary sortas="gimp_check_type">gimp_check_type</primary></indexterm><programlisting><link linkend="GimpCheckType">GimpCheckType</link>       gimp_check_type                     (void);</programlisting>
 <para>
 Returns the type of the checkerboard to be used in previews.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the check_type value
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the check_type value
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-default-display" role="function">
 <title>gimp_default_display ()</title>
-<indexterm zone="gimp-default-display"><primary>gimp_default_display</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_default_display                (void);</programlisting>
+<indexterm zone="gimp-default-display"><primary sortas="gimp_default_display">gimp_default_display</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_default_display                (void);</programlisting>
 <para>
 Returns the default display ID. This corresponds to the display the
 running procedure's menu entry was invoked from.
@@ -905,56 +858,52 @@ running procedure's menu entry was invoked from.
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the default display ID
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the default display ID
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-wm-class" role="function">
 <title>gimp_wm_class ()</title>
-<indexterm zone="gimp-wm-class"><primary>gimp_wm_class</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_wm_class                       (void);</programlisting>
+<indexterm zone="gimp-wm-class"><primary sortas="gimp_wm_class">gimp_wm_class</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       gimp_wm_class                       (void);</programlisting>
 <para>
 Returns the window manager class to be used for plug-in windows.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the window manager class
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the window manager class
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-display-name" role="function">
 <title>gimp_display_name ()</title>
-<indexterm zone="gimp-display-name"><primary>gimp_display_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_display_name                   (void);</programlisting>
+<indexterm zone="gimp-display-name"><primary sortas="gimp_display_name">gimp_display_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       gimp_display_name                   (void);</programlisting>
 <para>
 Returns the display to be used for plug-in windows.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the display name
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the display name
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-monitor-number" role="function">
 <title>gimp_monitor_number ()</title>
-<indexterm zone="gimp-monitor-number"><primary>gimp_monitor_number</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_monitor_number                 (void);</programlisting>
+<indexterm zone="gimp-monitor-number"><primary sortas="gimp_monitor_number">gimp_monitor_number</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_monitor_number                 (void);</programlisting>
 <para>
 Returns the monitor number to be used for plug-in windows.
 </para>
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the monitor number
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the monitor number
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-user-time" role="function" condition="since:GIMP 2.6">
 <title>gimp_user_time ()</title>
-<indexterm zone="gimp-user-time" role="GIMP 2.6"><primary>gimp_user_time</primary></indexterm><programlisting><link linkend="guint32">guint32</link>             gimp_user_time                      (void);</programlisting>
+<indexterm zone="gimp-user-time" role="GIMP 2.6"><primary sortas="gimp_user_time">gimp_user_time</primary></indexterm><programlisting><link linkend="guint32">guint32</link>             gimp_user_time                      (void);</programlisting>
 <para>
 Returns the timestamp of the user interaction that should be set on
 the plug-in window. This is handled transparently, plug-in authors
@@ -963,27 +912,24 @@ do not have to care about it.
 <para>
 This is a constant value given at plug-in configuration time.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> timestamp for plug-in window
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> timestamp for plug-in window
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.6
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.6</para></refsect2>
 <refsect2 id="gimp-get-progname" role="function">
 <title>gimp_get_progname ()</title>
-<indexterm zone="gimp-get-progname"><primary>gimp_get_progname</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_get_progname                   (void);</programlisting>
+<indexterm zone="gimp-get-progname"><primary sortas="gimp_get_progname">gimp_get_progname</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       gimp_get_progname                   (void);</programlisting>
 <para>
 Returns the plug-in's executable name.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the executable name
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the executable name
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-extension-enable" role="function">
 <title>gimp_extension_enable ()</title>
-<indexterm zone="gimp-extension-enable"><primary>gimp_extension_enable</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_extension_enable               (void);</programlisting>
+<indexterm zone="gimp-extension-enable"><primary sortas="gimp_extension_enable">gimp_extension_enable</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_extension_enable               (void);</programlisting>
 <para>
 Enables asynchronous processing of messages from the main GIMP
 application.
@@ -1006,24 +952,23 @@ a GUI and is hanging around in a <link linkend="GMainLoop"><type>GMainLoop</type
 <link linkend="gimp-extension-enable"><function>gimp_extension_enable()</function></link>.
 </para>
 <para>
-Note that the plug-in does not need to be a <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link> to
+Note that the plug-in does not need to be a <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link> to
 register temporary procedures.
 </para>
 <para>
 See also: <link linkend="gimp-install-procedure"><function>gimp_install_procedure()</function></link>, <link linkend="gimp-install-temp-proc"><function>gimp_install_temp_proc()</function></link></para>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-extension-ack" role="function">
 <title>gimp_extension_ack ()</title>
-<indexterm zone="gimp-extension-ack"><primary>gimp_extension_ack</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_extension_ack                  (void);</programlisting>
+<indexterm zone="gimp-extension-ack"><primary sortas="gimp_extension_ack">gimp_extension_ack</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_extension_ack                  (void);</programlisting>
 <para>
 Notify the main GIMP application that the extension has been properly
 initialized and is ready to run.
 </para>
 <para>
 This function <emphasis>must</emphasis> be called from every
-procedure that was registered as <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link>.
+procedure that was registered as <link linkend="GIMP-EXTENSION--CAPS"><type>GIMP_EXTENSION</type></link>.
 </para>
 <para>
 Subsequently, extensions can process temporary procedure run
@@ -1033,11 +978,10 @@ requests using either <link linkend="gimp-extension-enable"><function>gimp_exten
 <para>
 See also: <link linkend="gimp-install-procedure"><function>gimp_install_procedure()</function></link>, <link linkend="gimp-install-temp-proc"><function>gimp_install_temp_proc()</function></link></para>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-extension-process" role="function">
 <title>gimp_extension_process ()</title>
-<indexterm zone="gimp-extension-process"><primary>gimp_extension_process</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_extension_process              (<link linkend="guint">guint</link> timeout);</programlisting>
+<indexterm zone="gimp-extension-process"><primary sortas="gimp_extension_process">gimp_extension_process</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_extension_process              (<link linkend="guint">guint</link> timeout);</programlisting>
 <para>
 Processes one message sent by GIMP and returns.
 </para>
@@ -1053,32 +997,30 @@ same if running an endless loop is not an option.
 <para>
 See also: <link linkend="gimp-install-procedure"><function>gimp_install_procedure()</function></link>, <link linkend="gimp-install-temp-proc"><function>gimp_install_temp_proc()</function></link></para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>timeout</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>timeout</parameter>&#160;:</term>
 <listitem><simpara> The timeout (in ms) to use for the <link linkend="select"><function>select()</function></link> call.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-parasite-find" role="function">
 <title>gimp_parasite_find ()</title>
-<indexterm zone="gimp-parasite-find"><primary>gimp_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>*       gimp_parasite_find                  (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-parasite-find"><primary sortas="gimp_parasite_find">gimp_parasite_find</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>*       gimp_parasite_find                  (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Look up a global parasite.
 </para>
 <para>
 Finds and returns the global parasite that was previously attached.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The name of the parasite to find.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The found parasite.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The found parasite.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-parasite-list" role="function">
 <title>gimp_parasite_list ()</title>
-<indexterm zone="gimp-parasite-list"><primary>gimp_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_parasite_list                  (<link linkend="gint">gint</link> *num_parasites,
+<indexterm zone="gimp-parasite-list"><primary sortas="gimp_parasite_list">gimp_parasite_list</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_parasite_list                  (<link linkend="gint">gint</link> *num_parasites,
                                                          <link linkend="gchar">gchar</link> ***parasites);</programlisting>
 <para>
 List all parasites.
@@ -1086,37 +1028,35 @@ List all parasites.
 <para>
 Returns a list of all currently attached global parasites.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>num_parasites</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_parasites</parameter>&#160;:</term>
 <listitem><simpara> The number of attached parasites.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>parasites</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>parasites</parameter>&#160;:</term>
 <listitem><simpara> The names of currently attached parasites.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-parasite-attach" role="function">
 <title>gimp_parasite_attach ()</title>
-<indexterm zone="gimp-parasite-attach"><primary>gimp_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_parasite_attach                (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
+<indexterm zone="gimp-parasite-attach"><primary sortas="gimp_parasite_attach">gimp_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_parasite_attach                (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 Add a global parasite.
 </para>
 <para>
 This procedure attaches a global parasite. It has no return values.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>parasite</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>parasite</parameter>&#160;:</term>
 <listitem><simpara> The parasite to attach.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-parasite-detach" role="function">
 <title>gimp_parasite_detach ()</title>
-<indexterm zone="gimp-parasite-detach"><primary>gimp_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_parasite_detach                (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-parasite-detach"><primary sortas="gimp_parasite_detach">gimp_parasite_detach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_parasite_detach                (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Removes a global parasite.
 </para>
@@ -1124,17 +1064,16 @@ Removes a global parasite.
 This procedure detaches a global parasite from. It has no return
 values.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The name of the parasite to detach.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-attach-new-parasite" role="function">
 <title>gimp_attach_new_parasite ()</title>
-<indexterm zone="gimp-attach-new-parasite"><primary>gimp_attach_new_parasite</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_attach_new_parasite            (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-attach-new-parasite"><primary sortas="gimp_attach_new_parasite">gimp_attach_new_parasite</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_attach_new_parasite            (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> flags,
                                                          <link linkend="gint">gint</link> size,
                                                          <link linkend="gconstpointer">gconstpointer</link> data);</programlisting>
@@ -1142,21 +1081,20 @@ values.</para>
 Convenience function that creates a parasite and attaches it
 to GIMP.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> the name of the <link linkend="GimpParasite"><type>GimpParasite</type></link> to create and attach.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>flags</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>flags</parameter>&#160;:</term>
 <listitem><simpara> the flags set on the <link linkend="GimpParasite"><type>GimpParasite</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
 <listitem><simpara> the size of the parasite data in bytes.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara> a pointer to the data attached with the <link linkend="GimpParasite"><type>GimpParasite</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on successful creation and attachment of
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on successful creation and attachment of
 the new parasite.
 
 See Also: <link linkend="gimp-parasite-attach"><function>gimp_parasite_attach()</function></link>

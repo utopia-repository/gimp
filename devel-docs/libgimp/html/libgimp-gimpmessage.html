@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimphelp.html" title="gimphelp">
 <link rel="next" href="libgimp-gimpplugin.html" title="gimpplugin">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpplugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpmessage.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimpmessage.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimpmessage.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimpmessage.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpmessage"></a><div class="titlepage"></div>
@@ -49,15 +51,15 @@
 <a name="libgimp-gimpmessage.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libgimp-gimpmessage.html#gimp-message" title="gimp_message ()">gimp_message</a>                        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *message);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
->GimpMessageHandlerType</a> <a class="link" href="libgimp-gimpmessage.html#gimp-message-get-handler" title="gimp_message_get_handler ()">gimp_message_get_handler</a>         (void);
+>GimpMessageHandlerType</a>  <a class="link" href="libgimp-gimpmessage.html#gimp-message-get-handler" title="gimp_message_get_handler ()">gimp_message_get_handler</a>        (void);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libgimp-gimpmessage.html#gimp-message-set-handler" title="gimp_message_set_handler ()">gimp_message_set_handler</a>            (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);
@@ -67,7 +69,6 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 <a name="libgimp-gimpmessage.description"></a><h2>Description</h2>
 <p>
 Display a dialog box with a message.
-
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -75,9 +76,9 @@ Display a dialog box with a message.
 <div class="refsect2" lang="en">
 <a name="gimp-message"></a><h3>gimp_message ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_message                        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *message);</pre>
 <p>
 Displays a dialog box with a message.
@@ -86,7 +87,6 @@ Displays a dialog box with a message.
 Displays a dialog box with a message. Useful for status or error
 reporting. The message must be in UTF-8 encoding.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -109,7 +109,7 @@ reporting. The message must be in UTF-8 encoding.</p>
 <a name="gimp-message-get-handler"></a><h3>gimp_message_get_handler ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
->GimpMessageHandlerType</a> gimp_message_get_handler         (void);</pre>
+>GimpMessageHandlerType</a>  gimp_message_get_handler        (void);</pre>
 <p>
 Returns the current state of where warning messages are displayed.
 </p>
@@ -118,7 +118,6 @@ This procedure returns the way g_message warnings are displayed.
 They can be shown in a dialog box or printed on the console where
 gimp was started.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -133,7 +132,7 @@ gimp was started.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-message-set-handler"></a><h3>gimp_message_set_handler ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_message_set_handler            (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);</pre>
@@ -145,7 +144,6 @@ This procedure controls how g_message warnings are displayed. They
 can be shown in a dialog box or printed on the console where gimp
 was started.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -167,6 +165,6 @@ was started.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

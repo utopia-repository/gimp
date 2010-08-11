@@ -7,14 +7,14 @@
 <link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
 <link rel="prev" href="libgimpmath-GimpVector.html" title="GimpVector">
-<link rel="next" href="ix01.html" title="Index">
+<link rel="next" href="libgimpmath-index.html" title="Index">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpmath-index.html" title="Index">
+<link rel="index" href="libgimpmath-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpmath-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpmath-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -23,18 +23,18 @@
 <td><a accesskey="u" href="libgimpmath.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Math Library Reference Manual</th>
-<td><a accesskey="n" href="ix01.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libgimpmath-index.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577531" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2563301" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2557655" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2562362" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpmath-GimpMD5"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577531"></a><span class="refentrytitle">GimpMD5</span>
+<a name="id2563301"></a><span class="refentrytitle">GimpMD5</span>
 </h2>
 <p>GimpMD5 &#8212; the MD5 message-digest algorithm</p>
 </td>
@@ -52,17 +52,17 @@ void        <a href="libgimpmath-GimpMD5.html#gimp-md5-get-digest">gimp_md5_get_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2557655"></a><h2>Description</h2>
+<a name="id2562362"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2557671"></a><h2>Details</h2>
+<a name="id2562378"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2557681"></a><h3>
+<a name="id2562389"></a><h3>
 <a name="gimp-md5-get-digest"></a>gimp_md5_get_digest ()</h3>
-<a class="indexterm" name="id2557694"></a><pre class="programlisting">void        gimp_md5_get_digest             (const gchar *buffer,
+<a class="indexterm" name="id2562400"></a><pre class="programlisting">void        gimp_md5_get_digest             (const gchar *buffer,
                                              gint buffer_size,
                                              guchar digest[16]);</pre>
 <p>
@@ -83,20 +83,17 @@ digest. For more information see RFC 1321.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>buffer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>buffer</code></em>&#160;:</span></td>
 <td> byte buffer
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>buffer_size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>buffer_size</code></em>&#160;:</span></td>
 <td> buffer size (in bytes) or -1 if <em class="parameter"><code>buffer</code></em> is nul-terminated.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>digest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>digest</code></em>&#160;:</span></td>
 <td> 16 bytes buffer receiving the hash code.
 </td>
 </tr>

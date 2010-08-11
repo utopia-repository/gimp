@@ -829,6 +829,7 @@ gimp_window_get_native (GtkWindow *window)
 #ifdef __GNUC__
 #warning gimp_window_get_native() unimplementable for the target windowing system
 #endif
+  return (GdkNativeWindow)0;
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
@@ -857,6 +858,14 @@ void
 gimp_window_set_transient_for (GtkWindow *window,
                                guint32    parent_ID)
 {
+  /* Cross-process transient-for is broken in gdk/win32 <= 2.10.6. It
+   * causes hangs, at least when used as by the gimp and script-fu
+   * processes. In some newer GTK+ version it will be fixed to be a
+   * no-op. If it eventually is fixed to actually work, change this to
+   * a run-time check of GTK+ version. Remember to change also the
+   * function with the same name in libgimp/gimpui.c
+   */
+#ifndef GDK_WINDOWING_WIN32
   GdkWindow *parent;
 
   parent = gdk_window_foreign_new_for_display (gdk_display_get_default (),
@@ -873,34 +882,7 @@ gimp_window_set_transient_for (GtkWindow *window,
                            parent, 0);
 
   g_object_unref (parent);
-}
-
-void
-gimp_dialog_set_sensitive (GtkDialog *dialog,
-                           gboolean   sensitive)
-{
-  GList *children;
-  GList *list;
-
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
-
-  children = gtk_container_get_children (GTK_CONTAINER (dialog->vbox));
-
-  for (list = children; list; list = g_list_next (list))
-    {
-      /*  skip the last item (the action area) */
-      if (! g_list_next (list))
-        break;
-
-      gtk_widget_set_sensitive (list->data, sensitive);
-    }
-
-  g_list_free (children);
-
-  if (sensitive)
-    gtk_dialog_set_response_sensitive (dialog, GTK_RESPONSE_CANCEL, sensitive);
-
-  gtk_dialog_set_response_sensitive (dialog, GTK_RESPONSE_OK, sensitive);
+#endif
 }
 
 gboolean

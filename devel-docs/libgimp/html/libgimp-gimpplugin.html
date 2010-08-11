@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpproceduraldb.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583380" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2590578" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2571866" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2582154" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpplugin"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583380"></a><span class="refentrytitle">gimpplugin</span>
+<a name="id2590578"></a><span class="refentrytitle">gimpplugin</span>
 </h2>
 <p>gimpplugin &#8212; Functions useful for plugins, e.g. registration and progress indicators.</p>
 </td>
@@ -70,18 +70,18 @@ gboolean    <a href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571866"></a><h2>Description</h2>
+<a name="id2582154"></a><h2>Description</h2>
 <p>
 Functions useful for plugins, e.g. registration and progress indicators.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571883"></a><h2>Details</h2>
+<a name="id2582171"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2571894"></a><h3>
+<a name="id2582182"></a><h3>
 <a name="gimp-plugin-domain-register"></a>gimp_plugin_domain_register ()</h3>
-<a class="indexterm" name="id2571905"></a><pre class="programlisting">gboolean    gimp_plugin_domain_register     (const gchar *domain_name,
+<a class="indexterm" name="id2582193"></a><pre class="programlisting">gboolean    gimp_plugin_domain_register     (const gchar *domain_name,
                                              const gchar *domain_path);</pre>
 <p>
 Registers a textdomain for localisation.
@@ -102,20 +102,17 @@ called before any procedure is installed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>domain_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>domain_name</code></em>&#160;:</span></td>
 <td> The name of the textdomain (must be unique).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>domain_path</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>domain_path</code></em>&#160;:</span></td>
 <td> The absolute path to the compiled message catalog (may be NULL).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -124,9 +121,9 @@ called before any procedure is installed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572143"></a><h3>
+<a name="id2563804"></a><h3>
 <a name="gimp-plugin-help-register"></a>gimp_plugin_help_register ()</h3>
-<a class="indexterm" name="id2572155"></a><pre class="programlisting">gboolean    gimp_plugin_help_register       (const gchar *domain_name,
+<a class="indexterm" name="id2563816"></a><pre class="programlisting">gboolean    gimp_plugin_help_register       (const gchar *domain_name,
                                              const gchar *domain_uri);</pre>
 <p>
 Register a help path for a plug-in.
@@ -142,20 +139,17 @@ interpreted relative to this rootdir.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>domain_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>domain_name</code></em>&#160;:</span></td>
 <td> The XML namespace of the plug-in's help pages.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>domain_uri</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>domain_uri</code></em>&#160;:</span></td>
 <td> The root URI of the plug-in's help pages.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -164,9 +158,9 @@ interpreted relative to this rootdir.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570591"></a><h3>
+<a name="id2594397"></a><h3>
 <a name="gimp-plugin-icon-register"></a>gimp_plugin_icon_register ()</h3>
-<a class="indexterm" name="id2570602"></a><pre class="programlisting">gboolean    gimp_plugin_icon_register       (const gchar *procedure_name,
+<a class="indexterm" name="id2594408"></a><pre class="programlisting">gboolean    gimp_plugin_icon_register       (const gchar *procedure_name,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 >GimpIconType</a> icon_type,
@@ -178,26 +172,22 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>icon_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>icon_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>icon_type</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>icon_data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -208,9 +198,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570700"></a><h3>
+<a name="id2594507"></a><h3>
 <a name="gimp-plugin-menu-register"></a>gimp_plugin_menu_register ()</h3>
-<a class="indexterm" name="id2570714"></a><pre class="programlisting">gboolean    gimp_plugin_menu_register       (const gchar *procedure_name,
+<a class="indexterm" name="id2594520"></a><pre class="programlisting">gboolean    gimp_plugin_menu_register       (const gchar *procedure_name,
                                              const gchar *menu_path);</pre>
 <p>
 Register an additional menu path for a plug-in procedure.
@@ -225,20 +215,17 @@ procedure.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>procedure_name</code></em>&#160;:</span></td>
 <td> The procedure for which to install the menu path.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>menu_path</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>menu_path</code></em>&#160;:</span></td>
 <td> The procedure's additional menu path.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -250,9 +237,9 @@ procedure.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600209"></a><h3>
+<a name="id2599588"></a><h3>
 <a name="gimp-plugin-menu-branch-register"></a>gimp_plugin_menu_branch_register ()</h3>
-<a class="indexterm" name="id2600223"></a><pre class="programlisting">gboolean    gimp_plugin_menu_branch_register
+<a class="indexterm" name="id2599602"></a><pre class="programlisting">gboolean    gimp_plugin_menu_branch_register
                                             (const gchar *menu_path,
                                              const gchar *menu_name);</pre>
 <p>
@@ -268,20 +255,17 @@ procedure.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>menu_path</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>menu_path</code></em>&#160;:</span></td>
 <td> The sub-menu's menu path.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>menu_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>menu_name</code></em>&#160;:</span></td>
 <td> The name of the sub-menu.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>

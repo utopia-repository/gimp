@@ -1,3 +1,62 @@
+2006-11-18  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Added Arabic Translation.
+	* LINGUAS: Added ar.
+
+2006-11-13  Sven Neumann  <sven@gimp.org>
+
+	* removed obsolete update.sh script.
+
+2006-11-13  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2006-11-06  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2006-11-06  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2006-11-02  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2006-11-02  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-11-01  Francisco Javier F. Serrador  <serrador@openshine.com>
+
+	* es.po: Updated Spanish translation.
+
+2006-10-30  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-10-28  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-10-18  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Quim Perez <noguer@gmail.com>
+
+2006-09-18  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-10-15  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-10-12  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+	
+	* ru.po: Updated Russian translation by
+
 2006-10-03  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Updated Finnish translation.

@@ -84,7 +84,7 @@ gimp_rotate_tool_register (GimpToolRegisterCallback  callback,
                 0,
                 "gimp-rotate-tool",
                 _("Rotate"),
-                _("Rotate Tool: Rotate the layer or selection"),
+                _("Rotate Tool: Rotate the layer, selection or path"),
                 N_("_Rotate"), "<shift>R",
                 NULL, GIMP_HELP_TOOL_ROTATE,
                 GIMP_STOCK_TOOL_ROTATE,
@@ -141,7 +141,7 @@ gimp_rotate_tool_dialog (GimpTransformTool *tr_tool)
                                  0, -180, 180, 0.1, 15, 0, 2, 2);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (button), TRUE);
   gtk_entry_set_width_chars (GTK_ENTRY (button), SB_WIDTH);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 0, _("Angle:"),
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, 0, _("_Angle:"),
                              0.0, 0.5, button, 1, TRUE);
 
   g_signal_connect (rotate->angle_adj, "value-changed",
@@ -156,7 +156,7 @@ gimp_rotate_tool_dialog (GimpTransformTool *tr_tool)
 
   button = gimp_spin_button_new (&adj, 0, -1, 1, 1, 10, 1, 1, 2);
   gtk_entry_set_width_chars (GTK_ENTRY (button), SB_WIDTH);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 2, _("Center X:"),
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, 2, _("Center _X:"),
                              0.0, 0.5, button, 1, TRUE);
 
   rotate->sizeentry = gimp_size_entry_new (1, GIMP_UNIT_PIXEL, "%a",
@@ -164,7 +164,8 @@ gimp_rotate_tool_dialog (GimpTransformTool *tr_tool)
                                            GIMP_SIZE_ENTRY_UPDATE_SIZE);
   gimp_size_entry_add_field (GIMP_SIZE_ENTRY (rotate->sizeentry),
                              GTK_SPIN_BUTTON (button), NULL);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 3, _("Center Y:"),
+  gimp_size_entry_set_pixel_digits (GIMP_SIZE_ENTRY (rotate->sizeentry), 2);
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, 3, _("Center _Y:"),
                              0.0, 0.5, rotate->sizeentry, 1, TRUE);
 
   g_signal_connect (rotate->sizeentry, "value-changed",

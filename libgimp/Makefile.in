@@ -103,12 +103,12 @@ am__DEPENDENCIES_6 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VE
 am__DEPENDENCIES_7 = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 am__objects_5 = gimpuimarshal.lo
 am__objects_6 = gimpui.lo gimpaspectpreview.lo gimpbrushmenu.lo \
-	gimpbrushselectbutton.lo gimpdrawablecombobox.lo \
-	gimpdrawablepreview.lo gimpexport.lo gimpfontmenu.lo \
-	gimpfontselectbutton.lo gimpgradientmenu.lo \
-	gimpgradientselectbutton.lo gimpimagecombobox.lo gimpmenu.lo \
-	gimppalettemenu.lo gimppaletteselectbutton.lo \
-	gimppatternmenu.lo gimppatternselectbutton.lo gimppixbuf.lo \
+	gimpbrushselectbutton.lo gimpdrawablepreview.lo gimpexport.lo \
+	gimpfontmenu.lo gimpfontselectbutton.lo gimpgradientmenu.lo \
+	gimpgradientselectbutton.lo gimpimagecombobox.lo \
+	gimpitemcombobox.lo gimpmenu.lo gimppalettemenu.lo \
+	gimppaletteselectbutton.lo gimppatternmenu.lo \
+	gimppatternselectbutton.lo gimppixbuf.lo \
 	gimpprocbrowserdialog.lo gimpprocview.lo gimpprogressbar.lo \
 	gimpselectbutton.lo gimpzoompreview.lo
 am_libgimpui_2_0_la_OBJECTS = $(am__objects_5) $(am__objects_6)
@@ -269,6 +269,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -310,12 +312,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -394,6 +396,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -685,8 +688,6 @@ libgimpui_2_0_la_sources = \
 	gimpbrushmenu.h			\
 	gimpbrushselectbutton.c		\
 	gimpbrushselectbutton.h		\
-	gimpdrawablecombobox.c		\
-	gimpdrawablecombobox.h		\
 	gimpdrawablepreview.c		\
 	gimpdrawablepreview.h		\
 	gimpexport.c			\
@@ -701,6 +702,8 @@ libgimpui_2_0_la_sources = \
 	gimpgradientselectbutton.h	\
 	gimpimagecombobox.c		\
 	gimpimagecombobox.h		\
+	gimpitemcombobox.c		\
+	gimpitemcombobox.h		\
 	gimpmenu.c			\
 	gimpmenu.h			\
 	gimppalettemenu.c		\
@@ -768,7 +771,6 @@ gimpinclude_HEADERS = \
 	gimpaspectpreview.h		\
 	gimpbrushmenu.h			\
 	gimpbrushselectbutton.h		\
-	gimpdrawablecombobox.h		\
 	gimpdrawablepreview.h   	\
 	gimpexport.h			\
 	gimpfontmenu.h			\
@@ -776,6 +778,7 @@ gimpinclude_HEADERS = \
 	gimpgradientmenu.h		\
 	gimpgradientselectbutton.h	\
 	gimpimagecombobox.h		\
+	gimpitemcombobox.h		\
 	gimpmenu.h			\
 	gimppalettemenu.h		\
 	gimppaletteselectbutton.h	\
@@ -908,7 +911,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdisplay_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable_pdb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawablecombobox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawablepreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawabletransform_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpedit_pdb.Plo@am__quote@
@@ -936,6 +938,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagecombobox.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitemcombobox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayer_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmenu.Plo@am__quote@

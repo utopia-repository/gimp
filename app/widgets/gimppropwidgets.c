@@ -42,6 +42,7 @@
 #include "gimpview.h"
 #include "gimppropwidgets.h"
 #include "gimpwidgets-constructors.h"
+#include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
@@ -67,6 +68,51 @@ static void         connect_notify     (GObject     *config,
                                         gpointer     callback_data);
 
 
+/*********************/
+/*  expanding frame  */
+/*********************/
+
+GtkWidget *
+gimp_prop_expanding_frame_new (GObject      *config,
+                               const gchar  *property_name,
+                               const gchar  *button_label,
+                               GtkWidget    *child,
+                               GtkWidget   **button)
+{
+  GtkWidget *frame;
+  GtkWidget *toggle;
+  gboolean   value;
+
+  if (! check_param_spec (config, property_name,
+                          G_TYPE_PARAM_BOOLEAN, G_STRFUNC))
+    return NULL;
+
+  frame = gimp_frame_new (NULL);
+
+  toggle = gimp_prop_check_button_new (config, property_name, button_label);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), toggle);
+  gtk_widget_show (toggle);
+
+  gtk_container_add (GTK_CONTAINER (frame), child);
+
+  g_object_get (config,
+                property_name, &value,
+                NULL);
+
+  if (value)
+    gtk_widget_show (child);
+
+  g_signal_connect_object (toggle, "toggled",
+                           G_CALLBACK (gimp_toggle_button_set_visible),
+                           child, 0);
+
+  if (button)
+    *button = toggle;
+
+  return frame;
+}
+
+
 /****************/
 /*  paint menu  */
 /****************/
@@ -79,9 +125,11 @@ static void   gimp_prop_paint_menu_notify   (GObject     *config,
 
 /**
  * gimp_prop_paint_mode_menu_new:
- * @config:           #GimpConfig object to which property is attached.
- * @property_name:    Name of Enum property.
- * @with_behind_mode: Whether to include "Behind" mode in the menu.
+ * @config:             #GimpConfig object to which property is attached.
+ * @property_name:      Name of Enum property.
+ * @with_behind_mode:   Whether to include "Behind" mode in the menu.
+ * @with_replace_modes: Whether to include the "Replace", "Erase" and
+ *                      "Anti Erase" modes in the menu.
  *
  * Creates a #GimpPaintModeMenu widget to display and set the specified
  * Enum property, for which the enum must be #GimpLayerModeEffects.
@@ -93,7 +141,8 @@ static void   gimp_prop_paint_menu_notify   (GObject     *config,
 GtkWidget *
 gimp_prop_paint_mode_menu_new (GObject     *config,
                                const gchar *property_name,
-                               gboolean     with_behind_mode)
+                               gboolean     with_behind_mode,
+                               gboolean     with_replace_modes)
 {
   GParamSpec *param_spec;
   GtkWidget  *menu;
@@ -108,7 +157,7 @@ gimp_prop_paint_mode_menu_new (GObject     *config,
                 property_name, &value,
                 NULL);
 
-  menu = gimp_paint_mode_menu_new (with_behind_mode);
+  menu = gimp_paint_mode_menu_new (with_behind_mode, with_replace_modes);
 
   gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (menu),
                               value,

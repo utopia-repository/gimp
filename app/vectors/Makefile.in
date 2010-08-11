@@ -57,9 +57,10 @@ libappvectors_a_AR = $(AR) $(ARFLAGS)
 libappvectors_a_LIBADD =
 am_libappvectors_a_OBJECTS = gimpanchor.$(OBJEXT) \
 	gimpbezierstroke.$(OBJEXT) gimpstroke.$(OBJEXT) \
-	gimpvectors.$(OBJEXT) gimpvectors-compat.$(OBJEXT) \
-	gimpvectors-export.$(OBJEXT) gimpvectors-import.$(OBJEXT) \
-	gimpvectors-preview.$(OBJEXT) gimpvectors-warp.$(OBJEXT)
+	gimpstroke-new.$(OBJEXT) gimpvectors.$(OBJEXT) \
+	gimpvectors-compat.$(OBJEXT) gimpvectors-export.$(OBJEXT) \
+	gimpvectors-import.$(OBJEXT) gimpvectors-preview.$(OBJEXT) \
+	gimpvectors-warp.$(OBJEXT)
 libappvectors_a_OBJECTS = $(am_libappvectors_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -214,6 +215,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -255,12 +258,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -339,6 +342,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -448,6 +452,7 @@ INCLUDES = \
 
 noinst_LIBRARIES = libappvectors.a
 libappvectors_a_SOURCES = \
+	vectors-enums.h		\
 	vectors-types.h		\
 	gimpanchor.c		\
 	gimpanchor.h		\
@@ -455,6 +460,8 @@ libappvectors_a_SOURCES = \
 	gimpbezierstroke.c	\
 	gimpstroke.h		\
 	gimpstroke.c		\
+	gimpstroke-new.h	\
+	gimpstroke-new.c	\
 	gimpvectors.c		\
 	gimpvectors.h		\
 	gimpvectors-compat.c	\
@@ -518,6 +525,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpanchor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbezierstroke.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstroke-new.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstroke.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectors-compat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectors-export.Po@am__quote@

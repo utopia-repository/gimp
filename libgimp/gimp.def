@@ -191,6 +191,7 @@ EXPORTS
 	gimp_edit_paste
 	gimp_edit_paste_as_new
 	gimp_edit_stroke
+	gimp_edit_stroke_vectors
 	gimp_ellipse_select
 	gimp_enums_get_type_names
 	gimp_enums_init
@@ -202,7 +203,9 @@ EXPORTS
 	gimp_extension_process
 	gimp_file_load
 	gimp_file_load_layer
+	gimp_file_load_layers
 	gimp_file_save
+	gimp_file_save_thumbnail
 	gimp_fill_type_get_type
 	gimp_flip
 	gimp_floating_sel_anchor
@@ -276,6 +279,8 @@ EXPORTS
 	gimp_gradients_sample_uniform
 	gimp_gradients_set_gradient
 	gimp_gradients_set_popup
+	gimp_heal
+	gimp_heal_default
 	gimp_help
 	gimp_histogram
 	gimp_histogram_channel_get_type
@@ -292,6 +297,7 @@ EXPORTS
 	gimp_image_convert_grayscale
 	gimp_image_convert_indexed
 	gimp_image_convert_rgb
+	gimp_image_convert_set_dither_matrix
 	gimp_image_crop
 	gimp_image_delete
 	gimp_image_delete_guide
@@ -306,6 +312,7 @@ EXPORTS
 	gimp_image_get_active_layer
 	gimp_image_get_active_vectors
 	gimp_image_get_channel_by_tattoo
+	gimp_image_get_channel_position
 	gimp_image_get_channels
 	gimp_image_get_cmap
 	gimp_image_get_colormap
@@ -316,6 +323,7 @@ EXPORTS
 	gimp_image_get_guide_orientation
 	gimp_image_get_guide_position
 	gimp_image_get_layer_by_tattoo
+	gimp_image_get_layer_position
 	gimp_image_get_layers
 	gimp_image_get_name
 	gimp_image_get_resolution
@@ -324,6 +332,7 @@ EXPORTS
 	gimp_image_get_thumbnail_data
 	gimp_image_get_unit
 	gimp_image_get_vectors
+	gimp_image_get_vectors_position
 	gimp_image_grid_get_background_color
 	gimp_image_grid_get_foreground_color
 	gimp_image_grid_get_offset
@@ -421,12 +430,15 @@ EXPORTS
 	gimp_levels_auto
 	gimp_levels_stretch
 	gimp_main
+	gimp_major_version
 	gimp_mask_apply_mode_get_type
 	gimp_merge_type_get_type
 	gimp_message
 	gimp_message_get_handler
 	gimp_message_set_handler
+	gimp_micro_version
 	gimp_min_colors
+	gimp_minor_version
 	gimp_monitor_number
 	gimp_offset_type_get_type
 	gimp_orientation_type_get_type
@@ -473,7 +485,6 @@ EXPORTS
 	gimp_path_get_points
 	gimp_path_get_tattoo
 	gimp_path_import
-	gimp_path_import_string
 	gimp_path_list
 	gimp_path_set_current
 	gimp_path_set_locked
@@ -557,6 +568,7 @@ EXPORTS
 	gimp_rgn_iterator_src_dest
 	gimp_rotate
 	gimp_rotation_type_get_type
+	gimp_round_rect_select
 	gimp_run_procedure
 	gimp_run_procedure2
 	gimp_scale
@@ -613,20 +625,27 @@ EXPORTS
 	gimp_vectors_get_strokes
 	gimp_vectors_get_tattoo
 	gimp_vectors_get_visible
+	gimp_vectors_import_from_file
+	gimp_vectors_import_from_string
 	gimp_vectors_new
 	gimp_vectors_parasite_attach
 	gimp_vectors_parasite_detach
 	gimp_vectors_parasite_find
 	gimp_vectors_parasite_list
+	gimp_vectors_remove_stroke
 	gimp_vectors_set_linked
 	gimp_vectors_set_name
 	gimp_vectors_set_tattoo
 	gimp_vectors_set_visible
 	gimp_vectors_stroke_close
+	gimp_vectors_stroke_flip
+	gimp_vectors_stroke_flip_free
 	gimp_vectors_stroke_get_length
 	gimp_vectors_stroke_get_point_at_dist
+	gimp_vectors_stroke_get_points
 	gimp_vectors_stroke_interpolate
-	gimp_vectors_stroke_remove
+	gimp_vectors_stroke_new_from_points
+	gimp_vectors_stroke_rotate
 	gimp_vectors_stroke_scale
 	gimp_vectors_stroke_translate
 	gimp_vectors_to_selection

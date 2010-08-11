@@ -11,10 +11,10 @@
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpcolor-index.html" title="Index">
+<link rel="index" href="libgimpcolor-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpcolor-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpcolor-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpHSV.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2576051" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2575437" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2594471" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2593853" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpRGB"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2576051"></a><span class="refentrytitle">GimpRGB</span>
+<a name="id2575437"></a><span class="refentrytitle">GimpRGB</span>
 </h2>
 <p>GimpRGB &#8212; Definitions and Functions relating to RGB colors.</p>
 </td>
@@ -145,17 +145,17 @@ void        <a href="libgimpcolor-GimpRGB.html#gimp-value-set-rgb">gimp_value_se
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594471"></a><h2>Description</h2>
+<a name="id2593853"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to RGB colors.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594486"></a><h2>Details</h2>
+<a name="id2593868"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2594497"></a><h3>
+<a name="id2593878"></a><h3>
 <a name="GimpRGB"></a>GimpRGB</h3>
-<a class="indexterm" name="id2594509"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2593890"></a><pre class="programlisting">typedef struct {
   gdouble r, g, b, a;
 } GimpRGB;
 </pre>
@@ -165,9 +165,9 @@ Definitions and Functions relating to RGB colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594525"></a><h3>
+<a name="id2593906"></a><h3>
 <a name="GimpRGBCompositeMode"></a>enum GimpRGBCompositeMode</h3>
-<a class="indexterm" name="id2594536"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2593917"></a><pre class="programlisting">typedef enum
 {
   GIMP_RGB_COMPOSITE_NONE = 0,
   GIMP_RGB_COMPOSITE_NORMAL,
@@ -180,9 +180,9 @@ Definitions and Functions relating to RGB colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594554"></a><h3>
+<a name="id2593935"></a><h3>
 <a name="gimp-rgb-set"></a>gimp_rgb_set ()</h3>
-<a class="indexterm" name="id2594566"></a><pre class="programlisting">void        gimp_rgb_set                    (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2593947"></a><pre class="programlisting">void        gimp_rgb_set                    (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble red,
                                              gdouble green,
                                              gdouble blue);</pre>
@@ -198,26 +198,22 @@ set exactly as they are passed in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -226,9 +222,9 @@ set exactly as they are passed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594695"></a><h3>
+<a name="id2594076"></a><h3>
 <a name="gimp-rgb-set-alpha"></a>gimp_rgb_set_alpha ()</h3>
-<a class="indexterm" name="id2594707"></a><pre class="programlisting">void        gimp_rgb_set_alpha              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2594088"></a><pre class="programlisting">void        gimp_rgb_set_alpha              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble alpha);</pre>
 <p>
 Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leaves the RGB components unchanged.</p>
@@ -239,14 +235,12 @@ Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leav
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -255,9 +249,9 @@ Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leav
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594790"></a><h3>
+<a name="id2594171"></a><h3>
 <a name="gimp-rgb-set-uchar"></a>gimp_rgb_set_uchar ()</h3>
-<a class="indexterm" name="id2594802"></a><pre class="programlisting">void        gimp_rgb_set_uchar              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2594183"></a><pre class="programlisting">void        gimp_rgb_set_uchar              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              guchar red,
                                              guchar green,
                                              guchar blue);</pre>
@@ -271,26 +265,22 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -299,9 +289,9 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594928"></a><h3>
+<a name="id2594289"></a><h3>
 <a name="gimp-rgb-get-uchar"></a>gimp_rgb_get_uchar ()</h3>
-<a class="indexterm" name="id2594941"></a><pre class="programlisting">void        gimp_rgb_get_uchar              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2594299"></a><pre class="programlisting">void        gimp_rgb_get_uchar              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              guchar *red,
                                              guchar *green,
                                              guchar *blue);</pre>
@@ -312,26 +302,22 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
 <td>
 
 
@@ -342,9 +328,9 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595050"></a><h3>
+<a name="id2594396"></a><h3>
 <a name="gimp-rgb-parse-name"></a>gimp_rgb_parse_name ()</h3>
-<a class="indexterm" name="id2595064"></a><pre class="programlisting">gboolean    gimp_rgb_parse_name             (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2594409"></a><pre class="programlisting">gboolean    gimp_rgb_parse_name             (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              const gchar *name,
                                              gint len);</pre>
 <p>
@@ -363,26 +349,22 @@ This function does not touch the alpha component of <em class="parameter"><code>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>  a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> a color name (in UTF-8 encoding)
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
 <td>  the length of <em class="parameter"><code>name</code></em>, in bytes. or -1 if <em class="parameter"><code>name</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if <em class="parameter"><code>name</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
               set, <code class="literal">FALSE</code> otherwise
 
@@ -395,9 +377,9 @@ This function does not touch the alpha component of <em class="parameter"><code>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595242"></a><h3>
+<a name="id2594570"></a><h3>
 <a name="gimp-rgb-parse-hex"></a>gimp_rgb_parse_hex ()</h3>
-<a class="indexterm" name="id2595256"></a><pre class="programlisting">gboolean    gimp_rgb_parse_hex              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2594582"></a><pre class="programlisting">gboolean    gimp_rgb_parse_hex              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              const gchar *hex,
                                              gint len);</pre>
 <p>
@@ -413,26 +395,22 @@ This function does not touch the alpha component of <em class="parameter"><code>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>hex</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>hex</code></em>&#160;:</span></td>
 <td> a string describing a color in hexadecimal notation
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>hex</code></em>, in bytes. or -1 if <em class="parameter"><code>hex</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if <em class="parameter"><code>hex</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
               set, <code class="literal">FALSE</code> otherwise
 
@@ -445,9 +423,9 @@ This function does not touch the alpha component of <em class="parameter"><code>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595428"></a><h3>
+<a name="id2594736"></a><h3>
 <a name="gimp-rgb-parse-css"></a>gimp_rgb_parse_css ()</h3>
-<a class="indexterm" name="id2595442"></a><pre class="programlisting">gboolean    gimp_rgb_parse_css              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2594748"></a><pre class="programlisting">gboolean    gimp_rgb_parse_css              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              const gchar *css,
                                              gint len);</pre>
 <p>
@@ -467,26 +445,22 @@ This function does not touch the alpha component of <em class="parameter"><code>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>css</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>css</code></em>&#160;:</span></td>
 <td> a string describing a color in CSS notation
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>hex</code></em>, in bytes. or -1 if <em class="parameter"><code>hex</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if <em class="parameter"><code>css</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
               set, <code class="literal">FALSE</code> otherwise
 
@@ -499,9 +473,9 @@ This function does not touch the alpha component of <em class="parameter"><code>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595654"></a><h3>
+<a name="id2594938"></a><h3>
 <a name="gimp-rgb-list-names"></a>gimp_rgb_list_names ()</h3>
-<a class="indexterm" name="id2595668"></a><pre class="programlisting">gint        gimp_rgb_list_names             (const gchar ***names,
+<a class="indexterm" name="id2594950"></a><pre class="programlisting">gint        gimp_rgb_list_names             (const gchar ***names,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> **colors);</pre>
 <p>
 Allows to retrieve the list of <a href="http://www.w3.org/TR/SVG/types.html" target="_top">SVG 1.0 color
@@ -518,20 +492,17 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>names</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>names</code></em>&#160;:</span></td>
 <td>  return location for an array of color names
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>colors</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>colors</code></em>&#160;:</span></td>
 <td> return location for an array of GimpRGB structs
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the number of named colors
               (i.e. the length of the returned arrays)
 
@@ -544,9 +515,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595783"></a><h3>
+<a name="id2595070"></a><h3>
 <a name="gimp-rgb-add"></a>gimp_rgb_add ()</h3>
-<a class="indexterm" name="id2595794"></a><pre class="programlisting">void        gimp_rgb_add                    (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2595080"></a><pre class="programlisting">void        gimp_rgb_add                    (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
@@ -555,14 +526,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></td>
 <td>
 
 
@@ -573,9 +542,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595853"></a><h3>
+<a name="id2595140"></a><h3>
 <a name="gimp-rgb-subtract"></a>gimp_rgb_subtract ()</h3>
-<a class="indexterm" name="id2595864"></a><pre class="programlisting">void        gimp_rgb_subtract               (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2595150"></a><pre class="programlisting">void        gimp_rgb_subtract               (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
@@ -584,14 +553,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></td>
 <td>
 
 
@@ -602,9 +569,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595923"></a><h3>
+<a name="id2595210"></a><h3>
 <a name="gimp-rgb-multiply"></a>gimp_rgb_multiply ()</h3>
-<a class="indexterm" name="id2595934"></a><pre class="programlisting">void        gimp_rgb_multiply               (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2595220"></a><pre class="programlisting">void        gimp_rgb_multiply               (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                              gdouble factor);</pre>
 <p>
 
@@ -613,14 +580,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
 <td>
 
 
@@ -631,9 +596,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2595993"></a><h3>
+<a name="id2595280"></a><h3>
 <a name="gimp-rgb-distance"></a>gimp_rgb_distance ()</h3>
-<a class="indexterm" name="id2596003"></a><pre class="programlisting">gdouble     gimp_rgb_distance               (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2595290"></a><pre class="programlisting">gdouble     gimp_rgb_distance               (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
@@ -642,20 +607,17 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -666,9 +628,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596073"></a><h3>
+<a name="id2595359"></a><h3>
 <a name="gimp-rgb-max"></a>gimp_rgb_max ()</h3>
-<a class="indexterm" name="id2596083"></a><pre class="programlisting">gdouble     gimp_rgb_max                    (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595370"></a><pre class="programlisting">gdouble     gimp_rgb_max                    (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -676,14 +638,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -694,9 +654,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596133"></a><h3>
+<a name="id2595420"></a><h3>
 <a name="gimp-rgb-min"></a>gimp_rgb_min ()</h3>
-<a class="indexterm" name="id2596144"></a><pre class="programlisting">gdouble     gimp_rgb_min                    (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595430"></a><pre class="programlisting">gdouble     gimp_rgb_min                    (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -704,14 +664,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -722,17 +680,16 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596194"></a><h3>
+<a name="id2595480"></a><h3>
 <a name="gimp-rgb-clamp"></a>gimp_rgb_clamp ()</h3>
-<a class="indexterm" name="id2596204"></a><pre class="programlisting">void        gimp_rgb_clamp                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595491"></a><pre class="programlisting">void        gimp_rgb_clamp                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 
 
@@ -742,9 +699,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596245"></a><h3>
+<a name="id2595531"></a><h3>
 <a name="gimp-rgb-gamma"></a>gimp_rgb_gamma ()</h3>
-<a class="indexterm" name="id2596255"></a><pre class="programlisting">void        gimp_rgb_gamma                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2595542"></a><pre class="programlisting">void        gimp_rgb_gamma                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                              gdouble gamma);</pre>
 <p>
 
@@ -753,14 +710,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></td>
 <td>
 
 
@@ -771,9 +726,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596315"></a><h3>
+<a name="id2595601"></a><h3>
 <a name="gimp-rgb-luminance"></a>gimp_rgb_luminance ()</h3>
-<a class="indexterm" name="id2596327"></a><pre class="programlisting">gdouble     gimp_rgb_luminance              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595614"></a><pre class="programlisting">gdouble     gimp_rgb_luminance              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 </p>
 <p>
@@ -783,14 +738,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the luminous intensity of the range from 0.0 to 1.0.
 
 </td>
@@ -802,9 +755,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596386"></a><h3>
+<a name="id2595672"></a><h3>
 <a name="gimp-rgb-luminance-uchar"></a>gimp_rgb_luminance_uchar ()</h3>
-<a class="indexterm" name="id2596398"></a><pre class="programlisting">guchar      gimp_rgb_luminance_uchar        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595685"></a><pre class="programlisting">guchar      gimp_rgb_luminance_uchar        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 </p>
 <p>
@@ -814,14 +767,12 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the luminous intensity in the range from 0 to 255.
 
 </td>
@@ -833,9 +784,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596457"></a><h3>
+<a name="id2595743"></a><h3>
 <a name="gimp-rgb-intensity"></a>gimp_rgb_intensity ()</h3>
-<a class="indexterm" name="id2596467"></a><pre class="programlisting">gdouble     gimp_rgb_intensity              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595754"></a><pre class="programlisting">gdouble     gimp_rgb_intensity              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance"><code class="function">gimp_rgb_luminance()</code></a> instead.</p>
 <p>
@@ -845,14 +796,12 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the intensity in the range from 0.0 to 1.0.
 </td>
 </tr>
@@ -861,9 +810,9 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596531"></a><h3>
+<a name="id2595817"></a><h3>
 <a name="gimp-rgb-intensity-uchar"></a>gimp_rgb_intensity_uchar ()</h3>
-<a class="indexterm" name="id2596541"></a><pre class="programlisting">guchar      gimp_rgb_intensity_uchar        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2595828"></a><pre class="programlisting">guchar      gimp_rgb_intensity_uchar        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar"><code class="function">gimp_rgb_luminance_uchar()</code></a> instead.</p>
 <p>
@@ -873,14 +822,12 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the intensity in the range from 0 to 255.
 </td>
 </tr>
@@ -889,9 +836,9 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596604"></a><h3>
+<a name="id2595891"></a><h3>
 <a name="gimp-rgb-composite"></a>gimp_rgb_composite ()</h3>
-<a class="indexterm" name="id2596615"></a><pre class="programlisting">void        gimp_rgb_composite              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color1,
+<a class="indexterm" name="id2595901"></a><pre class="programlisting">void        gimp_rgb_composite              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color2,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">GimpRGBCompositeMode</a> mode);</pre>
 <p>
@@ -901,20 +848,17 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color1</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>color2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>color2</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
 <td>
 
 
@@ -925,9 +869,9 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596693"></a><h3>
+<a name="id2595980"></a><h3>
 <a name="gimp-rgba-set"></a>gimp_rgba_set ()</h3>
-<a class="indexterm" name="id2596704"></a><pre class="programlisting">void        gimp_rgba_set                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2595990"></a><pre class="programlisting">void        gimp_rgba_set                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                              gdouble red,
                                              gdouble green,
                                              gdouble blue,
@@ -943,32 +887,27 @@ and the values are set exactly as they are passed in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -977,9 +916,9 @@ and the values are set exactly as they are passed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596838"></a><h3>
+<a name="id2596124"></a><h3>
 <a name="gimp-rgba-set-uchar"></a>gimp_rgba_set_uchar ()</h3>
-<a class="indexterm" name="id2596848"></a><pre class="programlisting">void        gimp_rgba_set_uchar             (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2596135"></a><pre class="programlisting">void        gimp_rgba_set_uchar             (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                              guchar red,
                                              guchar green,
                                              guchar blue,
@@ -994,32 +933,27 @@ values (0 to 255).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -1028,9 +962,9 @@ values (0 to 255).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596980"></a><h3>
+<a name="id2596267"></a><h3>
 <a name="gimp-rgba-get-uchar"></a>gimp_rgba_get_uchar ()</h3>
-<a class="indexterm" name="id2596991"></a><pre class="programlisting">void        gimp_rgba_get_uchar             (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2596277"></a><pre class="programlisting">void        gimp_rgba_get_uchar             (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                              guchar *red,
                                              guchar *green,
                                              guchar *blue,
@@ -1042,32 +976,27 @@ values (0 to 255).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1078,9 +1007,9 @@ values (0 to 255).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597107"></a><h3>
+<a name="id2596394"></a><h3>
 <a name="gimp-rgba-parse-css"></a>gimp_rgba_parse_css ()</h3>
-<a class="indexterm" name="id2597120"></a><pre class="programlisting">gboolean    gimp_rgba_parse_css             (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2596406"></a><pre class="programlisting">gboolean    gimp_rgba_parse_css             (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                              const gchar *css,
                                              gint len);</pre>
 <p>
@@ -1098,26 +1027,22 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
 <td> a <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>css</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>css</code></em>&#160;:</span></td>
 <td> a string describing a color in CSS notation
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>hex</code></em>, in bytes. or -1 if <em class="parameter"><code>hex</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if <em class="parameter"><code>css</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
               set, <code class="literal">FALSE</code> otherwise
 
@@ -1130,9 +1055,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597283"></a><h3>
+<a name="id2596569"></a><h3>
 <a name="gimp-rgba-add"></a>gimp_rgba_add ()</h3>
-<a class="indexterm" name="id2597293"></a><pre class="programlisting">void        gimp_rgba_add                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
+<a class="indexterm" name="id2596580"></a><pre class="programlisting">void        gimp_rgba_add                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
@@ -1141,14 +1066,12 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1159,9 +1082,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597353"></a><h3>
+<a name="id2596639"></a><h3>
 <a name="gimp-rgba-subtract"></a>gimp_rgba_subtract ()</h3>
-<a class="indexterm" name="id2597363"></a><pre class="programlisting">void        gimp_rgba_subtract              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
+<a class="indexterm" name="id2596650"></a><pre class="programlisting">void        gimp_rgba_subtract              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
@@ -1170,14 +1093,12 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1188,9 +1109,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597423"></a><h3>
+<a name="id2596709"></a><h3>
 <a name="gimp-rgba-multiply"></a>gimp_rgba_multiply ()</h3>
-<a class="indexterm" name="id2597433"></a><pre class="programlisting">void        gimp_rgba_multiply              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2596720"></a><pre class="programlisting">void        gimp_rgba_multiply              (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                              gdouble factor);</pre>
 <p>
 
@@ -1199,14 +1120,12 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1217,9 +1136,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597493"></a><h3>
+<a name="id2596787"></a><h3>
 <a name="gimp-rgba-distance"></a>gimp_rgba_distance ()</h3>
-<a class="indexterm" name="id2597503"></a><pre class="programlisting">gdouble     gimp_rgba_distance              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
+<a class="indexterm" name="id2596801"></a><pre class="programlisting">gdouble     gimp_rgba_distance              (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
@@ -1228,20 +1147,17 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1252,9 +1168,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597572"></a><h3>
+<a name="id2596878"></a><h3>
 <a name="GIMP-RGB-LUMINANCE:CAPS"></a>GIMP_RGB_LUMINANCE()</h3>
-<a class="indexterm" name="id2597583"></a><pre class="programlisting">#define     GIMP_RGB_LUMINANCE(r,g,b)</pre>
+<a class="indexterm" name="id2596892"></a><pre class="programlisting">#define     GIMP_RGB_LUMINANCE(r,g,b)</pre>
 <p>
 
 </p>
@@ -1262,20 +1178,17 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>r</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>g</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>r</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>g</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1286,9 +1199,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597639"></a><h3>
+<a name="id2596955"></a><h3>
 <a name="GIMP-RGB-LUMINANCE-RED:CAPS"></a>GIMP_RGB_LUMINANCE_RED</h3>
-<a class="indexterm" name="id2597650"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_RED    (0.2126)
+<a class="indexterm" name="id2596969"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_RED    (0.2126)
 </pre>
 <p>
 
@@ -1296,9 +1209,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597664"></a><h3>
+<a name="id2596985"></a><h3>
 <a name="GIMP-RGB-LUMINANCE-GREEN:CAPS"></a>GIMP_RGB_LUMINANCE_GREEN</h3>
-<a class="indexterm" name="id2597677"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_GREEN  (0.7152)
+<a class="indexterm" name="id2596999"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_GREEN  (0.7152)
 </pre>
 <p>
 
@@ -1306,9 +1219,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597691"></a><h3>
+<a name="id2597016"></a><h3>
 <a name="GIMP-RGB-LUMINANCE-BLUE:CAPS"></a>GIMP_RGB_LUMINANCE_BLUE</h3>
-<a class="indexterm" name="id2597703"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
+<a class="indexterm" name="id2597029"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
 </pre>
 <p>
 
@@ -1316,9 +1229,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597717"></a><h3>
+<a name="id2597046"></a><h3>
 <a name="GIMP-RGB-INTENSITY:CAPS"></a>GIMP_RGB_INTENSITY()</h3>
-<a class="indexterm" name="id2597728"></a><pre class="programlisting">#define     GIMP_RGB_INTENSITY(r,g,b)</pre>
+<a class="indexterm" name="id2597059"></a><pre class="programlisting">#define     GIMP_RGB_INTENSITY(r,g,b)</pre>
 <p>
 This macro calculates the intensity of an RGB value based on
 coefficients taken from the NTSC analog television standard.
@@ -1327,20 +1240,17 @@ coefficients taken from the NTSC analog television standard.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>r</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>r</code></em>&#160;:</span></td>
 <td>red
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>g</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>g</code></em>&#160;:</span></td>
 <td>green
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></td>
 <td>blue
 
 
@@ -1351,9 +1261,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597786"></a><h3>
+<a name="id2597125"></a><h3>
 <a name="GIMP-RGB-INTENSITY-RED:CAPS"></a>GIMP_RGB_INTENSITY_RED</h3>
-<a class="indexterm" name="id2597797"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_RED    (0.30)
+<a class="indexterm" name="id2597138"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_RED    (0.30)
 </pre>
 <p>
 
@@ -1361,9 +1271,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597811"></a><h3>
+<a name="id2597154"></a><h3>
 <a name="GIMP-RGB-INTENSITY-GREEN:CAPS"></a>GIMP_RGB_INTENSITY_GREEN</h3>
-<a class="indexterm" name="id2597823"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_GREEN  (0.59)
+<a class="indexterm" name="id2597169"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_GREEN  (0.59)
 </pre>
 <p>
 
@@ -1371,9 +1281,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597837"></a><h3>
+<a name="id2597185"></a><h3>
 <a name="GIMP-RGB-INTENSITY-BLUE:CAPS"></a>GIMP_RGB_INTENSITY_BLUE</h3>
-<a class="indexterm" name="id2597849"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_BLUE   (0.11)
+<a class="indexterm" name="id2597199"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_BLUE   (0.11)
 </pre>
 <p>
 
@@ -1381,9 +1291,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597863"></a><h3>
+<a name="id2597215"></a><h3>
 <a name="GIMP-TYPE-RGB:CAPS"></a>GIMP_TYPE_RGB</h3>
-<a class="indexterm" name="id2597874"></a><pre class="programlisting">#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
+<a class="indexterm" name="id2597228"></a><pre class="programlisting">#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
 </pre>
 <p>
 <a href="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"><span class="type">GIMP_TYPE_RGB</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_BOXED</span>.
@@ -1391,9 +1301,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597907"></a><h3>
+<a name="id2597266"></a><h3>
 <a name="GIMP-TYPE-PARAM-RGB:CAPS"></a>GIMP_TYPE_PARAM_RGB</h3>
-<a class="indexterm" name="id2597918"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_RGB           (gimp_param_rgb_get_type ())
+<a class="indexterm" name="id2597280"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_RGB           (gimp_param_rgb_get_type ())
 </pre>
 <p>
 
@@ -1401,9 +1311,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597932"></a><h3>
+<a name="id2597297"></a><h3>
 <a name="gimp-param-spec-rgb"></a>gimp_param_spec_rgb ()</h3>
-<a class="indexterm" name="id2597945"></a><pre class="programlisting">GParamSpec* gimp_param_spec_rgb             (const gchar *name,
+<a class="indexterm" name="id2597312"></a><pre class="programlisting">GParamSpec* gimp_param_spec_rgb             (const gchar *name,
                                              const gchar *nick,
                                              const gchar *blurb,
                                              gboolean has_alpha,
@@ -1419,44 +1329,37 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>          Canonical name of the param
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>nick</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>nick</code></em>&#160;:</span></td>
 <td>          Nickname of the param
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>         Brief desciption of param.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>has_alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>has_alpha</code></em>&#160;:</span></td>
 <td>     <code class="literal">TRUE</code> if the alpha channel has relevance.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>default_value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>default_value</code></em>&#160;:</span></td>
 <td> Value to use if none is assigned.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>         a combination of <span class="type">GParamFlags</span>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a newly allocated <span class="type">GParamSpec</span> instance
 
 </td>
@@ -1468,9 +1371,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598142"></a><h3>
+<a name="id2597526"></a><h3>
 <a name="gimp-param-spec-rgb-has-alpha"></a>gimp_param_spec_rgb_has_alpha ()</h3>
-<a class="indexterm" name="id2598158"></a><pre class="programlisting">gboolean    gimp_param_spec_rgb_has_alpha   (GParamSpec *pspec);</pre>
+<a class="indexterm" name="id2597542"></a><pre class="programlisting">gboolean    gimp_param_spec_rgb_has_alpha   (GParamSpec *pspec);</pre>
 <p>
 </p>
 <p>
@@ -1480,14 +1383,12 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pspec</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pspec</code></em>&#160;:</span></td>
 <td> a <span class="type">GParamSpec</span> to hold an <a href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> value.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if the alpha channel is relevant.
 
 </td>
@@ -1499,9 +1400,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598248"></a><h3>
+<a name="id2597631"></a><h3>
 <a name="GIMP-VALUE-HOLDS-RGB:CAPS"></a>GIMP_VALUE_HOLDS_RGB()</h3>
-<a class="indexterm" name="id2598261"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
+<a class="indexterm" name="id2597645"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
 </pre>
 <p>
 
@@ -1509,8 +1410,7 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1520,9 +1420,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598297"></a><h3>
+<a name="id2597681"></a><h3>
 <a name="gimp-value-get-rgb"></a>gimp_value_get_rgb ()</h3>
-<a class="indexterm" name="id2598311"></a><pre class="programlisting">void        gimp_value_get_rgb              (const GValue *value,
+<a class="indexterm" name="id2597694"></a><pre class="programlisting">void        gimp_value_get_rgb              (const GValue *value,
                                              <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
@@ -1531,14 +1431,12 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 
 
@@ -1549,9 +1447,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598378"></a><h3>
+<a name="id2597761"></a><h3>
 <a name="gimp-value-set-rgb"></a>gimp_value_set_rgb ()</h3>
-<a class="indexterm" name="id2598391"></a><pre class="programlisting">void        gimp_value_set_rgb              (GValue *value,
+<a class="indexterm" name="id2597774"></a><pre class="programlisting">void        gimp_value_set_rgb              (GValue *value,
                                              const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
@@ -1560,14 +1458,12 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></td>
 <td>
 
 

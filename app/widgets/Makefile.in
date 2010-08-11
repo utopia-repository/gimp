@@ -67,11 +67,11 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpcolorbar.$(OBJEXT) gimpcolordialog.$(OBJEXT) \
 	gimpcolordisplayeditor.$(OBJEXT) gimpcoloreditor.$(OBJEXT) \
 	gimpcolorframe.$(OBJEXT) gimpcolormapeditor.$(OBJEXT) \
-	gimpcolorpanel.$(OBJEXT) gimpcomponenteditor.$(OBJEXT) \
-	gimpcontainerbox.$(OBJEXT) gimpcontainercombobox.$(OBJEXT) \
-	gimpcontainereditor.$(OBJEXT) gimpcontainerentry.$(OBJEXT) \
-	gimpcontainergridview.$(OBJEXT) gimpcontainerpopup.$(OBJEXT) \
-	gimpcontainertreeview.$(OBJEXT) \
+	gimpcolorpanel.$(OBJEXT) gimpcolorselectorpalette.$(OBJEXT) \
+	gimpcomponenteditor.$(OBJEXT) gimpcontainerbox.$(OBJEXT) \
+	gimpcontainercombobox.$(OBJEXT) gimpcontainereditor.$(OBJEXT) \
+	gimpcontainerentry.$(OBJEXT) gimpcontainergridview.$(OBJEXT) \
+	gimpcontainerpopup.$(OBJEXT) gimpcontainertreeview.$(OBJEXT) \
 	gimpcontainertreeview-dnd.$(OBJEXT) \
 	gimpcontainerview.$(OBJEXT) gimpcontainerview-utils.$(OBJEXT) \
 	gimpcontrollereditor.$(OBJEXT) gimpcontrollerinfo.$(OBJEXT) \
@@ -95,7 +95,8 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpgrideditor.$(OBJEXT) gimphelp.$(OBJEXT) \
 	gimphistogrambox.$(OBJEXT) gimphistogrameditor.$(OBJEXT) \
 	gimphistogramview.$(OBJEXT) gimpimagedock.$(OBJEXT) \
-	gimpimageeditor.$(OBJEXT) gimpimagepropview.$(OBJEXT) \
+	gimpimageeditor.$(OBJEXT) gimpimageparasiteview.$(OBJEXT) \
+	gimpimageprofileview.$(OBJEXT) gimpimagepropview.$(OBJEXT) \
 	gimpimageview.$(OBJEXT) gimpitemtreeview.$(OBJEXT) \
 	gimplayertreeview.$(OBJEXT) gimpmenudock.$(OBJEXT) \
 	gimpmenufactory.$(OBJEXT) gimpmessagebox.$(OBJEXT) \
@@ -290,6 +291,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -331,12 +334,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -415,6 +418,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -568,6 +572,8 @@ libappwidgets_a_sources = \
 	gimpcolormapeditor.h		\
 	gimpcolorpanel.c		\
 	gimpcolorpanel.h		\
+	gimpcolorselectorpalette.c	\
+	gimpcolorselectorpalette.h	\
 	gimpcomponenteditor.c		\
 	gimpcomponenteditor.h		\
 	gimpcontainerbox.c		\
@@ -677,6 +683,10 @@ libappwidgets_a_sources = \
 	gimpimagedock.h			\
 	gimpimageeditor.c		\
 	gimpimageeditor.h		\
+	gimpimageparasiteview.c		\
+	gimpimageparasiteview.h		\
+	gimpimageprofileview.c		\
+	gimpimageprofileview.h		\
 	gimpimagepropview.c		\
 	gimpimagepropview.h		\
 	gimpimageview.c			\
@@ -892,6 +902,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolorframe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolormapeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolorpanel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolorselectorpalette.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcomponenteditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainerbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainercombobox.Po@am__quote@
@@ -946,6 +957,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphistogramview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagedock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageeditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageparasiteview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageprofileview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagepropview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitemtreeview.Po@am__quote@

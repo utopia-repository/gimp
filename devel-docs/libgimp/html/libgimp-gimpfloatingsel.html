@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgrid.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566437" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2580188" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2617424" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2607417" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfloatingsel"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566437"></a><span class="refentrytitle">gimpfloatingsel</span>
+<a name="id2580188"></a><span class="refentrytitle">gimpfloatingsel</span>
 </h2>
 <p>gimpfloatingsel &#8212; Functions for removing or attaching floating selections.</p>
 </td>
@@ -65,18 +65,18 @@ gboolean    <a href="libgimp-gimpfloatingsel.html#gimp-floating-sel-relax">gimp_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2617424"></a><h2>Description</h2>
+<a name="id2607417"></a><h2>Description</h2>
 <p>
 Functions for removing or attaching floating selections.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2617441"></a><h2>Details</h2>
+<a name="id2605945"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2617452"></a><h3>
+<a name="id2605955"></a><h3>
 <a name="gimp-floating-sel-remove"></a>gimp_floating_sel_remove ()</h3>
-<a class="indexterm" name="id2617463"></a><pre class="programlisting">gboolean    gimp_floating_sel_remove        (gint32 floating_sel_ID);</pre>
+<a class="indexterm" name="id2605967"></a><pre class="programlisting">gboolean    gimp_floating_sel_remove        (gint32 floating_sel_ID);</pre>
 <p>
 Remove the specified floating selection from its associated
 drawable.
@@ -91,14 +91,12 @@ any side effects. The associated drawable is then set to active.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
 <td> The floating selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -107,9 +105,9 @@ any side effects. The associated drawable is then set to active.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617529"></a><h3>
+<a name="id2606033"></a><h3>
 <a name="gimp-floating-sel-anchor"></a>gimp_floating_sel_anchor ()</h3>
-<a class="indexterm" name="id2615479"></a><pre class="programlisting">gboolean    gimp_floating_sel_anchor        (gint32 floating_sel_ID);</pre>
+<a class="indexterm" name="id2606044"></a><pre class="programlisting">gboolean    gimp_floating_sel_anchor        (gint32 floating_sel_ID);</pre>
 <p>
 Anchor the specified floating selection to its associated drawable.
 </p>
@@ -125,14 +123,12 @@ after this operation.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
 <td> The floating selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -141,9 +137,9 @@ after this operation.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615547"></a><h3>
+<a name="id2607465"></a><h3>
 <a name="gimp-floating-sel-to-layer"></a>gimp_floating_sel_to_layer ()</h3>
-<a class="indexterm" name="id2615558"></a><pre class="programlisting">gboolean    gimp_floating_sel_to_layer      (gint32 floating_sel_ID);</pre>
+<a class="indexterm" name="id2607476"></a><pre class="programlisting">gboolean    gimp_floating_sel_to_layer      (gint32 floating_sel_ID);</pre>
 <p>
 Transforms the specified floating selection into a layer.
 </p>
@@ -163,14 +159,12 @@ selection is above an auxillary channel or a layer mask.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
 <td> The floating selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -179,9 +173,9 @@ selection is above an auxillary channel or a layer mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615630"></a><h3>
+<a name="id2607547"></a><h3>
 <a name="gimp-floating-sel-attach"></a>gimp_floating_sel_attach ()</h3>
-<a class="indexterm" name="id2612309"></a><pre class="programlisting">gboolean    gimp_floating_sel_attach        (gint32 layer_ID,
+<a class="indexterm" name="id2607558"></a><pre class="programlisting">gboolean    gimp_floating_sel_attach        (gint32 layer_ID,
                                              gint32 drawable_ID);</pre>
 <p>
 Attach the specified layer as floating to the specified drawable.
@@ -196,20 +190,17 @@ drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
 <td> The layer (is attached as floating selection).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The drawable (where to attach the floating selection).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -218,9 +209,9 @@ drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612397"></a><h3>
+<a name="id2612839"></a><h3>
 <a name="gimp-floating-sel-rigor"></a>gimp_floating_sel_rigor ()</h3>
-<a class="indexterm" name="id2612408"></a><pre class="programlisting">gboolean    gimp_floating_sel_rigor         (gint32 floating_sel_ID,
+<a class="indexterm" name="id2612850"></a><pre class="programlisting">gboolean    gimp_floating_sel_rigor         (gint32 floating_sel_ID,
                                              gboolean undo);</pre>
 <p>
 Rigor the floating selection.
@@ -234,20 +225,17 @@ This procedure rigors the floating selection.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
 <td> The floating selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>undo</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>undo</code></em>&#160;:</span></td>
 <td> .
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -256,9 +244,9 @@ This procedure rigors the floating selection.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612493"></a><h3>
+<a name="id2622884"></a><h3>
 <a name="gimp-floating-sel-relax"></a>gimp_floating_sel_relax ()</h3>
-<a class="indexterm" name="id2612504"></a><pre class="programlisting">gboolean    gimp_floating_sel_relax         (gint32 floating_sel_ID,
+<a class="indexterm" name="id2622895"></a><pre class="programlisting">gboolean    gimp_floating_sel_relax         (gint32 floating_sel_ID,
                                              gboolean undo);</pre>
 <p>
 Relax the floating selection.
@@ -272,20 +260,17 @@ This procedure relaxes the floating selection.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>floating_sel_ID</code></em>&#160;:</span></td>
 <td> The floating selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>undo</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>undo</code></em>&#160;:</span></td>
 <td> .
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

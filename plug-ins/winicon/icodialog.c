@@ -35,6 +35,8 @@
 
 static void   ico_bpp_changed (GtkWidget *combo,
                                GObject   *hbox);
+static void   ico_toggle_compress (GtkWidget *checkbox,
+                                   GObject   *hbox);
 
 
 
@@ -126,6 +128,7 @@ ico_create_icon_hbox (GtkWidget   *icon_preview,
   GtkWidget *vbox;
   GtkWidget *alignment;
   GtkWidget *combo;
+  GtkWidget *checkbox;
 
   hbox = gtk_hbox_new (FALSE, 6);
 
@@ -150,13 +153,14 @@ ico_create_icon_hbox (GtkWidget   *icon_preview,
 
   gtk_size_group_add_widget (size, alignment);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_vbox_new (FALSE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
   combo = gimp_int_combo_box_new (_("1 bpp, 1-bit alpha, 2-slot palette"),   1,
                                   _("4 bpp, 1-bit alpha, 16-slot palette"),  4,
                                   _("8 bpp, 1-bit alpha, 256-slot palette"), 8,
+                                  _("24 bpp, 1-bit alpha, no palette"),     24,
                                   _("32 bpp, 8-bit alpha, no palette"),     32,
                                   NULL);
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo),
@@ -170,6 +174,14 @@ ico_create_icon_hbox (GtkWidget   *icon_preview,
 
   gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
+
+  checkbox = gtk_check_button_new_with_label (_("Compressed (PNG)"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox),
+                                info->compress[layer_num]);
+  g_signal_connect (checkbox, "toggled",
+                    G_CALLBACK (ico_toggle_compress), hbox);
+  gtk_box_pack_start (GTK_BOX (vbox), checkbox, FALSE, FALSE, 0);
+  gtk_widget_show (checkbox);
 
   return hbox;
 }
@@ -308,6 +320,70 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
 
       gimp_image_delete (tmp_image);
     }
+  else if (bpp == 24)
+    {
+      GimpDrawable *drawable;
+      GimpDrawable *tmp;
+      GimpPixelRgn  src_pixel_rgn, dst_pixel_rgn;
+      gint32        image;
+      gint32        tmp_image;
+      gint32        tmp_layer;
+      guchar       *buffer;
+      GimpParam    *return_vals;
+      gint          n_return_vals;
+
+      image = gimp_drawable_get_image (layer);
+
+      tmp_image = gimp_image_new (w, h, gimp_image_base_type (image));
+      gimp_image_undo_disable (tmp_image);
+
+      if (gimp_drawable_is_indexed (layer))
+        {
+          guchar *cmap;
+          gint    num_colors;
+
+          cmap = gimp_image_get_colormap (image, &num_colors);
+          gimp_image_set_colormap (tmp_image, cmap, num_colors);
+          g_free (cmap);
+        }
+
+      tmp_layer = gimp_layer_new (tmp_image, "temporary", w, h,
+                                  gimp_drawable_type (layer),
+                                  100, GIMP_NORMAL_MODE);
+      gimp_image_add_layer (tmp_image, tmp_layer, 0);
+
+      drawable = gimp_drawable_get (layer);
+      tmp      = gimp_drawable_get (tmp_layer);
+
+      gimp_pixel_rgn_init (&src_pixel_rgn, drawable, 0, 0, w, h, FALSE, FALSE);
+      gimp_pixel_rgn_init (&dst_pixel_rgn, tmp,      0, 0, w, h, TRUE, FALSE);
+
+      buffer = g_malloc (w * h * 4);
+      gimp_pixel_rgn_get_rect (&src_pixel_rgn, buffer, 0, 0, w, h);
+      gimp_pixel_rgn_set_rect (&dst_pixel_rgn, buffer, 0, 0, w, h);
+      g_free (buffer);
+
+      gimp_drawable_detach (tmp);
+      gimp_drawable_detach (drawable);
+
+      if (gimp_drawable_is_indexed (layer))
+        gimp_image_convert_rgb (tmp_image);
+
+      return_vals =
+        gimp_run_procedure ("plug-in-threshold-alpha", &n_return_vals,
+                            GIMP_PDB_INT32, GIMP_RUN_NONINTERACTIVE,
+                            GIMP_PDB_IMAGE, tmp_image,
+                            GIMP_PDB_DRAWABLE, tmp_layer,
+                            GIMP_PDB_INT32, ICO_ALPHA_THRESHOLD,
+                            GIMP_PDB_END);
+      gimp_destroy_params (return_vals, n_return_vals);
+
+      pixbuf = gimp_drawable_get_thumbnail (tmp_layer,
+                                            MIN (w, 128), MIN (h, 128),
+                                            GIMP_PIXBUF_SMALL_CHECKS);
+
+      gimp_image_delete (tmp_image);
+    }
   else
     {
       pixbuf = gimp_drawable_get_thumbnail (layer,
@@ -373,3 +449,21 @@ ico_bpp_changed (GtkWidget *combo,
   ico_dialog_update_icon_preview (dialog, layer, bpp);
 }
 
+static void
+ico_toggle_compress (GtkWidget *checkbox,
+                     GObject   *hbox)
+{
+  GtkWidget   *dialog;
+  gint         layer_num;
+  IcoSaveInfo *info;
+
+  dialog = gtk_widget_get_toplevel (checkbox);
+
+  info = g_object_get_data (G_OBJECT (dialog), "save_info");
+  g_assert (info);
+  layer_num = GPOINTER_TO_INT (g_object_get_data (hbox, "icon_layer_num"));
+
+  /* Update vector entry for later when we're actually saving */
+  info->compress[layer_num] =
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (checkbox));
+}

@@ -303,7 +303,7 @@ gimp_plug_in_manager_initialize (GimpPlugInManager  *manager,
   gimp_environ_table_load (manager->environ_table, path);
   g_free (path);
 
-  /* allocate a piece of shared memory for use in transporting tiles
+  /*  allocate a piece of shared memory for use in transporting tiles
    *  to plug-ins. if we can't allocate a piece of shared memory then
    *  we'll fall back on sending the data over the pipe.
    */
@@ -382,7 +382,7 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
 
       g_slist_free (rc_defs);
     }
-  else
+  else if (error)
     {
       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
         gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
@@ -856,8 +856,8 @@ gimp_plug_in_manager_add_from_rc (GimpPlugInManager *manager,
           ! proc->prefixes   &&
           ! proc->magics     &&
           proc->menu_paths   &&
-          (! strncmp (proc->menu_paths->data, "<Load>", 6) ||
-           ! strncmp (proc->menu_paths->data, "<Save>", 6)))
+          (g_str_has_prefix (proc->menu_paths->data, "<Load>") ||
+           g_str_has_prefix (proc->menu_paths->data, "<Save>")))
         {
           proc->extensions = g_strdup ("");
         }
@@ -959,10 +959,10 @@ gimp_plug_in_manager_file_proc_compare (gconstpointer a,
   gchar                     *label_b;
   gint                       retval  = 0;
 
-  if (strncmp (proc_a->prog, "gimp-xcf", 8) == 0)
+  if (g_str_has_prefix (proc_a->prog, "gimp-xcf"))
     return -1;
 
-  if (strncmp (proc_b->prog, "gimp-xcf", 8) == 0)
+  if (g_str_has_prefix (proc_b->prog, "gimp-xcf"))
     return 1;
 
   domain_a = gimp_plug_in_manager_get_locale_domain (manager, proc_a->prog,

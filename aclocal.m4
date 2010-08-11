@@ -915,7 +915,30 @@ AC_PATH_PROG(INTLTOOL_XGETTEXT, xgettext, xgettext)
 
 # Substitute ALL_LINGUAS so we can use it in po/Makefile
 AC_SUBST(ALL_LINGUAS)
-    
+
+# Set DATADIRNAME correctly if it is not set yet
+# (copied from glib-gettext.m4)
+if test -z "$DATADIRNAME"; then
+  AC_TRY_LINK(, [extern int _nl_msg_cat_cntr;
+                 return _nl_msg_cat_cntr],
+    [DATADIRNAME=share],
+    [case $host in
+    *-*-solaris*)
+    dnl On Solaris, if bind_textdomain_codeset is in libc,
+    dnl GNU format message catalog is always supported,
+    dnl since both are added to the libc all together.
+    dnl Hence, we'd like to go with DATADIRNAME=share
+    dnl in this case.
+    AC_CHECK_FUNC(bind_textdomain_codeset,
+      [DATADIRNAME=share], [DATADIRNAME=lib])
+    ;;
+    *)
+    [DATADIRNAME=lib]
+    ;;
+    esac])
+fi
+AC_SUBST(DATADIRNAME)
+
 IT_PO_SUBDIR([po])
 
 dnl The following is very similar to
@@ -1004,31 +1027,6 @@ AU_ALIAS([AC_PROG_INTLTOOL], [IT_PROG_INTLTOOL])
 # A hint is needed for aclocal from Automake <= 1.9.4:
 # AC_DEFUN([AC_PROG_INTLTOOL], ...)
 
-
-# isc-posix.m4 serial 2 (gettext-0.11.2)
-dnl Copyright (C) 1995-2002 Free Software Foundation, Inc.
-dnl This file is free software; the Free Software Foundation
-dnl gives unlimited permission to copy and/or distribute it,
-dnl with or without modifications, as long as this notice is preserved.
-
-# This file is not needed with autoconf-2.53 and newer.  Remove it in 2005.
-
-# This test replaces the one in autoconf.
-# Currently this macro should have the same name as the autoconf macro
-# because gettext's gettext.m4 (distributed in the automake package)
-# still uses it.  Otherwise, the use in gettext.m4 makes autoheader
-# give these diagnostics:
-#   configure.in:556: AC_TRY_COMPILE was called before AC_ISC_POSIX
-#   configure.in:556: AC_TRY_RUN was called before AC_ISC_POSIX
-
-undefine([AC_ISC_POSIX])
-
-AC_DEFUN([AC_ISC_POSIX],
-  [
-    dnl This test replaces the obsolescent AC_ISC_POSIX kludge.
-    AC_CHECK_LIB(cposix, strerror, [LIBS="$LIBS -lcposix"])
-  ]
-)
 
 # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
 

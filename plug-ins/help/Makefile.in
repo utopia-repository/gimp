@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -53,27 +54,34 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
+LIBRARIES = $(noinst_LIBRARIES)
+ARFLAGS = cru
+libgimphelp_a_AR = $(AR) $(ARFLAGS)
+libgimphelp_a_LIBADD =
+am_libgimphelp_a_OBJECTS = gimphelp.$(OBJEXT) gimphelpdomain.$(OBJEXT) \
+	gimphelpitem.$(OBJEXT) gimphelplocale.$(OBJEXT)
+libgimphelp_a_OBJECTS = $(am_libgimphelp_a_OBJECTS)
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS) $(noinst_PROGRAMS)
-am_gimp_help_lookup_OBJECTS = domain.$(OBJEXT) locales.$(OBJEXT) \
-	gimp-help-lookup.$(OBJEXT)
+am_gimp_help_lookup_OBJECTS = gimp-help-lookup.$(OBJEXT)
 gimp_help_lookup_OBJECTS = $(am_gimp_help_lookup_OBJECTS)
-am__DEPENDENCIES_3 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_5 =
-gimp_help_lookup_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_5)
-am_help_OBJECTS = domain.$(OBJEXT) locales.$(OBJEXT) help.$(OBJEXT)
+am__DEPENDENCIES_1 = libgimphelp.a
+am__DEPENDENCIES_4 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_6 =
+gimp_help_lookup_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_6)
+am_help_OBJECTS = help.$(OBJEXT)
 help_OBJECTS = $(am_help_OBJECTS)
 help_LDADD = $(LDADD)
-am__DEPENDENCIES_1 =  \
+am__DEPENDENCIES_2 =  \
 	$(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_2 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_4 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_5 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 help_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_5)
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -85,8 +93,10 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(gimp_help_lookup_SOURCES) $(help_SOURCES)
-DIST_SOURCES = $(gimp_help_lookup_SOURCES) $(help_SOURCES)
+SOURCES = $(libgimphelp_a_SOURCES) $(gimp_help_lookup_SOURCES) \
+	$(help_SOURCES)
+DIST_SOURCES = $(libgimphelp_a_SOURCES) $(gimp_help_lookup_SOURCES) \
+	$(help_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -227,6 +237,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -268,12 +280,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -352,6 +364,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -446,6 +459,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+libgimphelp = libgimphelp.a
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
@@ -453,20 +467,26 @@ libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 @OS_WIN32_TRUE@mwindows = -mwindows
 AM_CPPFLAGS = -DDATADIR=\""$(gimpdatadir)"\"
 AM_LDFLAGS = $(mwindows)
-help_SOURCES = \
-	domain.c	\
-	domain.h	\
-	locales.c	\
-	locales.h	\
-	help.c		\
-	help.h
+noinst_LIBRARIES = libgimphelp.a
+libgimphelp_a_SOURCES = \
+	gimphelptypes.h		\
+	gimphelp.c		\
+	gimphelp.h		\
+	gimphelpdomain.c	\
+	gimphelpdomain.h	\
+	gimphelpitem.c		\
+	gimphelpitem.h		\
+	gimphelplocale.c	\
+	gimphelplocale.h
 
+help_SOURCES = help.c
 INCLUDES = \
 	-I$(top_srcdir)	\
 	$(GLIB_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \
+	$(libgimphelp)	\
 	$(libgimp)	\
 	$(libgimpcolor)	\
 	$(libgimpbase)	\
@@ -475,15 +495,9 @@ LDADD = \
 	$(RT_LIBS)	\
 	$(INTLLIBS)
 
-gimp_help_lookup_SOURCES = \
-	domain.c	\
-	domain.h	\
-	locales.c	\
-	locales.h	\
-	help.h		\
-	gimp-help-lookup.c
-
+gimp_help_lookup_SOURCES = gimp-help-lookup.c
 gimp_help_lookup_LDADD = \
+	$(libgimphelp)	\
 	$(libgimpbase)	\
 	$(GLIB_LIBS)
 
@@ -520,6 +534,13 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+libgimphelp.a: $(libgimphelp_a_OBJECTS) $(libgimphelp_a_DEPENDENCIES) 
+	-rm -f libgimphelp.a
+	$(libgimphelp_a_AR) libgimphelp.a $(libgimphelp_a_OBJECTS) $(libgimphelp_a_LIBADD)
+	$(RANLIB) libgimphelp.a
 install-libexecPROGRAMS: $(libexec_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(libexecdir)" || $(mkdir_p) "$(DESTDIR)$(libexecdir)"
@@ -568,10 +589,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/domain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-help-lookup.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelpdomain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelpitem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelplocale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/help.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/locales.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -681,7 +704,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(LIBRARIES) $(PROGRAMS)
 installdirs:
 	for dir in "$(DESTDIR)$(libexecdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
@@ -713,7 +736,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libexecPROGRAMS clean-libtool \
-	clean-noinstPROGRAMS mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -762,17 +785,17 @@ ps-am:
 uninstall-am: uninstall-info-am uninstall-libexecPROGRAMS
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libexecPROGRAMS clean-libtool clean-noinstPROGRAMS ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-exec install-exec-am install-info \
-	install-info-am install-libexecPROGRAMS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-info-am uninstall-libexecPROGRAMS
+	clean-libexecPROGRAMS clean-libtool clean-noinstLIBRARIES \
+	clean-noinstPROGRAMS ctags distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-exec install-exec-am \
+	install-info install-info-am install-libexecPROGRAMS \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-info-am uninstall-libexecPROGRAMS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

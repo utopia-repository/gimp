@@ -132,9 +132,10 @@ PyTypeObject PyGimpZoomPreview_Type;
 PyTypeObject PyGimpDrawableComboBox_Type;
 PyTypeObject PyGimpChannelComboBox_Type;
 PyTypeObject PyGimpLayerComboBox_Type;
+PyTypeObject PyGimpVectorsComboBox_Type;
 PyTypeObject PyGimpImageComboBox_Type;
 
-#line 138 "gimpui.c"
+#line 139 "gimpui.c"
 
 
 
@@ -157,6 +158,66 @@ _wrap_gimp_browser_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
+
+
+#line 923 "gimpui.override"
+static PyObject *
+_wrap_gimp_browser_add_search_types(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_types = NULL;
+    int len, i;
+
+    static char *kwlist[] = { "search_types", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "O:GimpBrowser.add_search_types",
+                                     kwlist,
+                                     &py_types))
+        return NULL;
+
+    if (PyTuple_Check(py_types))
+        len = PyTuple_Size(py_types);
+    else {
+        PyErr_SetString(PyExc_TypeError,
+                        "search_types must be a tuple containing label/id "
+                        "pairs");
+        return NULL;
+    }
+
+    if (len % 2) {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "search_types tuple must contain label/id pairs");
+        return NULL;
+    }
+
+    for (i = 0; i < len; i += 2) {
+        PyObject *label = PyTuple_GetItem(py_types, i);
+        PyObject *id = PyTuple_GetItem(py_types, i + 1);
+
+        if (!PyString_Check(label)) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "first member of each label/id pair "
+                            "must be a string");
+            return NULL;
+        }
+
+        if (!PyInt_Check(id)) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "second member of each label/id pair "
+                            "must be a number");
+            return NULL;
+        }
+
+        gimp_browser_add_search_types(GIMP_BROWSER(self->obj),
+                                      PyString_AsString(label),
+                                      PyInt_AsLong(id),
+                                      NULL);
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+#line 221 "gimpui.c"
 
 
 static PyObject *
@@ -186,6 +247,7 @@ _wrap_gimp_browser_show_message(PyGObject *self, PyObject *args, PyObject *kwarg
 }
 
 static PyMethodDef _PyGimpBrowser_methods[] = {
+    { "add_search_types", (PyCFunction)_wrap_gimp_browser_add_search_types, METH_VARARGS|METH_KEYWORDS },
     { "set_widget", (PyCFunction)_wrap_gimp_browser_set_widget, METH_VARARGS|METH_KEYWORDS },
     { "show_message", (PyCFunction)_wrap_gimp_browser_show_message, METH_VARARGS|METH_KEYWORDS },
     { NULL, NULL, 0 }
@@ -773,7 +835,7 @@ PyTypeObject PyGimpColorArea_Type = {
 
 /* ----------- GimpColorButton ----------- */
 
-#line 624 "gimpui.override"
+#line 715 "gimpui.override"
 static int
 _wrap_gimp_color_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -818,7 +880,7 @@ _wrap_gimp_color_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
                                 width, height);
     return 0;
 }
-#line 822 "gimpui.c"
+#line 884 "gimpui.c"
 
 
 static PyObject *
@@ -841,7 +903,7 @@ _wrap_gimp_color_button_set_color(PyGObject *self, PyObject *args, PyObject *kwa
     return Py_None;
 }
 
-#line 586 "gimpui.override"
+#line 677 "gimpui.override"
 static PyObject *
 _wrap_gimp_color_button_get_color(PyGObject *self)
 {
@@ -851,7 +913,7 @@ _wrap_gimp_color_button_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 855 "gimpui.c"
+#line 917 "gimpui.c"
 
 
 static PyObject *
@@ -1393,7 +1455,7 @@ PyTypeObject PyGimpColorHexEntry_Type = {
 
 /* ----------- GimpColorScale ----------- */
 
-#line 672 "gimpui.override"
+#line 763 "gimpui.override"
 static int
 _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -1431,7 +1493,7 @@ _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     
     return 0;
 }
-#line 1435 "gimpui.c"
+#line 1497 "gimpui.c"
 
 
 static PyObject *
@@ -1999,7 +2061,7 @@ PyTypeObject PyGimpColorNotebook_Type = {
 
 /* ----------- GimpDialog ----------- */
 
-#line 416 "gimpui.override"
+#line 507 "gimpui.override"
 static void
 pygimp_help_func_marshal(const gchar *help_id, gpointer help_data)
 {
@@ -2166,7 +2228,7 @@ _wrap_gimp_dialog_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 2170 "gimpui.c"
+#line 2232 "gimpui.c"
 
 
 static PyObject *
@@ -2193,7 +2255,7 @@ _wrap_gimp_dialog_run(PyGObject *self)
     return PyInt_FromLong(ret);
 }
 
-#line 615 "gimpui.override"
+#line 706 "gimpui.override"
 static PyObject *
 _wrap_gimp_window_set_transient(PyGObject *self)
 {
@@ -2201,7 +2263,7 @@ _wrap_gimp_window_set_transient(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 2205 "gimpui.c"
+#line 2267 "gimpui.c"
 
 
 static PyMethodDef _PyGimpDialog_methods[] = {
@@ -2260,27 +2322,39 @@ PyTypeObject PyGimpDialog_Type = {
 
 /* ----------- GimpEnumLabel ----------- */
 
+#line 804 "gimpui.override"
 static int
 _wrap_gimp_enum_label_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-    static char *kwlist[] = { "enum_type", "value", NULL };
     PyObject *py_enum_type = NULL;
-    int value;
+    gint value;
     GType enum_type;
+    GimpEnumLabel *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Oi:GimpEnumLabel.__init__", kwlist, &py_enum_type, &value))
+    static char *kwlist[] = { "enum_type", "value", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "Oi:gimpui.GimpEnumLabel.__init__",
+                                     kwlist,
+                                     &py_enum_type, &value))
         return -1;
+
     if ((enum_type = pyg_type_from_object(py_enum_type)) == 0)
         return -1;
-    self->obj = (GObject *)gimp_enum_label_new(enum_type, value);
 
-    if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create GimpEnumLabel object");
+    if (pygobject_construct(self, NULL))
         return -1;
-    }
-    pygobject_register_wrapper((PyObject *)self);
-    return 0;
+
+    label = GIMP_ENUM_LABEL(self->obj);
+
+    label->enum_class = g_type_class_ref(enum_type);
+
+    gimp_enum_label_set_value (label, value);
+
+    return 0; 
 }
+#line 2357 "gimpui.c"
+
 
 static PyObject *
 _wrap_gimp_enum_label_set_value(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -2495,15 +2569,73 @@ PyTypeObject PyGimpHintBox_Type = {
 
 /* ----------- GimpIntComboBox ----------- */
 
+#line 838 "gimpui.override"
 static int
-pygobject_no_constructor(PyObject *self, PyObject *args, PyObject *kwargs)
+_wrap_gimp_int_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-    gchar buf[512];
+    PyObject *py_items = NULL;
+    int len, i;
 
-    g_snprintf(buf, sizeof(buf), "%s is an abstract widget", self->ob_type->tp_name);
-    PyErr_SetString(PyExc_NotImplementedError, buf);
-    return -1;
+    static char *kwlist[] = { "items", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "|O:gimpui.IntComboBox.__init__",
+                                     kwlist,
+                                     &py_items))
+        return -1; 
+
+    if (py_items == NULL || py_items == Py_None)
+        len = 0;
+    else if (PyTuple_Check(py_items))
+        len = PyTuple_Size(py_items);
+    else {
+        PyErr_SetString(PyExc_TypeError,
+                        "items must be a tuple containing label/value pairs "
+                        "or None");
+        return -1;
+    }
+
+    if (len % 2) {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "items tuple must contain label/value pairs");
+        return -1;
+    }
+
+    if (pygobject_construct(self, NULL))
+        return -1;
+
+    for (i = 0; i < len; i += 2) {
+        PyObject *label = PyTuple_GetItem(py_items, i);
+        PyObject *value = PyTuple_GetItem(py_items, i + 1);
+
+        if (!PyString_Check(label)) {
+            gtk_object_destroy(GTK_OBJECT(self->obj));
+            self->obj = NULL;
+            PyErr_SetString(PyExc_RuntimeError,
+                            "first member of each label/value pair "
+                            "must be a string");
+            return -1;
+        }
+
+        if (!PyInt_Check(value)) {
+            gtk_object_destroy(GTK_OBJECT(self->obj));
+            self->obj = NULL;
+            PyErr_SetString(PyExc_RuntimeError,
+                            "second member of each label/value pair "
+                            "must be a number");
+            return -1;
+        }
+
+        gimp_int_combo_box_append(GIMP_INT_COMBO_BOX(self->obj),
+                                  PyString_AsString(label),
+                                  PyInt_AsLong(value),
+                                  -1);
+    }
+
+    return 0;
 }
+#line 2638 "gimpui.c"
+
 
 static PyObject *
 _wrap_gimp_int_combo_box_set_active(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -2518,8 +2650,28 @@ _wrap_gimp_int_combo_box_set_active(PyGObject *self, PyObject *args, PyObject *k
 
 }
 
+#line 906 "gimpui.override"
+static PyObject *
+_wrap_gimp_int_combo_box_get_active(PyGObject *self, PyObject *args)
+{
+    int value;
+
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    if (gimp_int_combo_box_get_active(GIMP_INT_COMBO_BOX(self->obj), &value))
+        return PyLong_FromLong(value);
+
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+#line 2670 "gimpui.c"
+
+
 static PyMethodDef _PyGimpIntComboBox_methods[] = {
     { "set_active", (PyCFunction)_wrap_gimp_int_combo_box_set_active, METH_VARARGS|METH_KEYWORDS },
+    { "get_active", (PyCFunction)_wrap_gimp_int_combo_box_get_active, METH_VARARGS },
     { NULL, NULL, 0 }
 };
 
@@ -2561,7 +2713,7 @@ PyTypeObject PyGimpIntComboBox_Type = {
     (descrgetfunc)0,	/* tp_descr_get */
     (descrsetfunc)0,	/* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)pygobject_no_constructor,		/* tp_init */
+    (initproc)_wrap_gimp_int_combo_box_new,		/* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3935,6 +4087,107 @@ PyTypeObject PyGimpPreviewArea_Type = {
 
 /* ----------- GimpProcBrowserDialog ----------- */
 
+#line 981 "gimpui.override"
+static int
+_wrap_gimp_proc_browser_dialog_new(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    gchar *title, *role;
+    PyObject *py_buttons = Py_None;
+    PyObject *help_func = NULL;
+    gchar *help_id = NULL;
+    int len, i;
+    GimpHelpFunc func;
+
+    static char *kwlist[] = { "title", "role", "help_func", "help_id",
+                              "buttons", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "zz|OzO:gimpui.GimpProcBrowserDialog.__init__",
+                                     kwlist,
+                                     &title, &role, &help_func, &help_id,
+                                     &py_buttons))
+        return -1;
+
+    if (help_func) {
+        if (help_func != Py_None) {
+            if (!PyCallable_Check(help_func)) {
+                PyErr_SetString(PyExc_TypeError, "help_func must be callable");
+                return -1;
+            }
+
+            func = pygimp_help_func_marshal;
+
+            g_object_set_data(self->obj, "pygimp-dialog-help-data", self);
+
+            Py_INCREF(help_func);
+            g_object_set_data_full(self->obj, "pygimp-dialog-help-func",
+                                   help_func, pygimp_help_func_destroy);
+        } else {
+            func = gimp_standard_help_func;
+        }
+    } else {
+        func = gimp_standard_help_func;
+    }
+
+    if (py_buttons == Py_None)
+        len = 0;
+    else if (PyTuple_Check(py_buttons))
+        len = PyTuple_Size(py_buttons);
+    else {
+        PyErr_SetString(PyExc_TypeError, "buttons must be a tuple containing text/response pairs or None");
+        return -1;
+    }
+
+    if (len % 2) {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "buttons tuple must contain text/response id pairs");
+        return -1;
+    }
+
+    pygobject_construct(self,
+                        "title",     title,
+                        "role",      role,
+                        "help-func", func,
+                        "help-id",   help_id,
+                        NULL);
+
+    if (!self->obj) {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "could not create GimpProcBrowserDialog object");
+        return -1;
+    }
+
+    for (i = 0; i < len; i += 2) {
+        PyObject *text = PyTuple_GetItem(py_buttons, i);
+        PyObject *id = PyTuple_GetItem(py_buttons, i + 1);
+        if (!PyString_Check(text) && !PyUnicode_Check(text)) {
+            gtk_object_destroy(GTK_OBJECT(self->obj));
+            self->obj = NULL;
+            PyErr_SetString(PyExc_RuntimeError,
+                            "first member of each text/response id pair "
+                            "must be a string");
+            return -1;
+        }
+        if (!PyInt_Check(id)) {
+            gtk_object_destroy(GTK_OBJECT(self->obj));
+            self->obj = NULL;
+            PyErr_SetString(PyExc_RuntimeError,
+                            "second member of each text/response id pair "
+                            "must be a number");
+            return -1;
+        }
+
+        gimp_dialog_add_button(GIMP_DIALOG(self->obj), PyString_AsString(text),
+                               PyInt_AsLong(id));
+    }
+
+    g_signal_emit_by_name(GIMP_PROC_BROWSER_DIALOG(self->obj)->browser,
+                          "search", "", 0, self->obj);
+    return 0;
+}
+#line 4189 "gimpui.c"
+
+
 static PyObject *
 _wrap_gimp_proc_browser_dialog_get_selected(PyGObject *self)
 {
@@ -3993,7 +4246,7 @@ PyTypeObject PyGimpProcBrowserDialog_Type = {
     (descrgetfunc)0,	/* tp_descr_get */
     (descrsetfunc)0,	/* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)pygobject_no_constructor,		/* tp_init */
+    (initproc)_wrap_gimp_proc_browser_dialog_new,		/* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4836,7 +5089,7 @@ _wrap_gimp_brush_select_button_new(PyGObject *self, PyObject *args, PyObject *kw
 }
 
 
-#line 597 "gimpui.override"
+#line 688 "gimpui.override"
 static PyObject *
 _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
 {
@@ -4853,7 +5106,7 @@ _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
 			 pyg_enum_from_gtype(GIMP_TYPE_LAYER_MODE_EFFECTS,
 					     paint_mode));
 }
-#line 4857 "gimpui.c"
+#line 5110 "gimpui.c"
 
 
 static PyObject *
@@ -4929,6 +5182,16 @@ PyTypeObject PyGimpBrushSelectButton_Type = {
 
 
 /* ----------- GimpSizeEntry ----------- */
+
+static int
+pygobject_no_constructor(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    gchar buf[512];
+
+    g_snprintf(buf, sizeof(buf), "%s is an abstract widget", self->ob_type->tp_name);
+    PyErr_SetString(PyExc_NotImplementedError, buf);
+    return -1;
+}
 
 static PyObject *
 _wrap_gimp_size_entry_add_field(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -5586,7 +5849,7 @@ _wrap_gimp_drawable_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5590 "gimpui.c"
+#line 5853 "gimpui.c"
 
 
 PyTypeObject PyGimpDrawableComboBox_Type = {
@@ -5728,7 +5991,7 @@ _wrap_gimp_channel_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5732 "gimpui.c"
+#line 5995 "gimpui.c"
 
 
 PyTypeObject PyGimpChannelComboBox_Type = {
@@ -5870,7 +6133,7 @@ _wrap_gimp_layer_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5874 "gimpui.c"
+#line 6137 "gimpui.c"
 
 
 PyTypeObject PyGimpLayerComboBox_Type = {
@@ -5920,9 +6183,151 @@ PyTypeObject PyGimpLayerComboBox_Type = {
 
 
 
-/* ----------- GimpImageComboBox ----------- */
+/* ----------- GimpVectorsComboBox ----------- */
 
 #line 334 "gimpui.override"
+static gboolean
+pygimp_vectors_constraint_marshal(gint32 image_id, gint32 vectors_id,
+                                  gpointer user_data)
+{
+    PyObject *img, *vect, *ret;
+    gboolean res;
+    PyGimpConstraintData *data = user_data;
+
+    img = pygimp_image_new(image_id);
+    if (!img) {
+        PyErr_Print();
+        return FALSE;
+    }
+
+    vect = pygimp_vectors_new(vectors_id);
+    if (!vect) {
+        PyErr_Print();
+        Py_DECREF(img);
+        return FALSE;
+    }
+
+    if (data->user_data && data->user_data != Py_None)
+        ret = PyObject_CallFunctionObjArgs(data->constraint, img, vect,
+                                           data->user_data, NULL);
+    else
+        ret = PyObject_CallFunctionObjArgs(data->constraint, img, vect, NULL);
+
+    if (!ret) {
+        PyErr_Print();
+        res = FALSE;
+    } else {
+        res = PyObject_IsTrue(ret);
+        Py_DECREF(ret);
+    }
+
+    Py_DECREF(vect);
+    Py_DECREF(img);
+
+    return res;
+}
+
+static int
+_wrap_gimp_vectors_combo_box_new(PyGObject *self, PyObject *args,
+                                 PyObject *kwargs)
+{
+    PyObject *constraint = NULL, *user_data = NULL;
+    GimpVectorsConstraintFunc func = NULL;
+    PyGimpConstraintData *data = NULL;
+
+    static char *kwlist[] = { "constraint", "data", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "|OO:gimpui.VectorsComboBox.__init__",
+                                     kwlist,
+                                     &constraint, &user_data))
+        return -1;
+
+    if (constraint && constraint != Py_None) {
+        if (!PyCallable_Check(constraint)) {
+            PyErr_SetString(PyExc_TypeError, "first arg must be callable");
+            return -1;
+        }
+
+        data = g_new(PyGimpConstraintData, 1);
+
+        data->constraint = constraint;
+        Py_INCREF(constraint);
+
+        data->user_data = user_data;
+        Py_XINCREF(user_data);
+
+        func = pygimp_vectors_constraint_marshal;
+    }
+
+    self->obj = (GObject *)gimp_vectors_combo_box_new(func, data);
+
+    Py_XDECREF(constraint);
+    Py_XDECREF(user_data);
+    g_free(data);
+
+    if (pyg_type_from_object((PyObject *)self) != GIMP_TYPE_VECTORS_COMBO_BOX) {
+        PyErr_SetString(PyExc_RuntimeError, "__gobject_init__ must be used "
+                        "when subclassing gimpui.VectorsComboBox");
+        return -1;
+    }
+
+    pygobject_register_wrapper((PyObject *)self);
+    return 0;
+}
+#line 6279 "gimpui.c"
+
+
+PyTypeObject PyGimpVectorsComboBox_Type = {
+    PyObject_HEAD_INIT(NULL)
+    0,					/* ob_size */
+    "gimpui.VectorsComboBox",			/* tp_name */
+    sizeof(PyGObject),	        /* tp_basicsize */
+    0,					/* tp_itemsize */
+    /* methods */
+    (destructor)0,	/* tp_dealloc */
+    (printfunc)0,			/* tp_print */
+    (getattrfunc)0,	/* tp_getattr */
+    (setattrfunc)0,	/* tp_setattr */
+    (cmpfunc)0,		/* tp_compare */
+    (reprfunc)0,		/* tp_repr */
+    (PyNumberMethods*)0,     /* tp_as_number */
+    (PySequenceMethods*)0, /* tp_as_sequence */
+    (PyMappingMethods*)0,   /* tp_as_mapping */
+    (hashfunc)0,		/* tp_hash */
+    (ternaryfunc)0,		/* tp_call */
+    (reprfunc)0,		/* tp_str */
+    (getattrofunc)0,	/* tp_getattro */
+    (setattrofunc)0,	/* tp_setattro */
+    (PyBufferProcs*)0,	/* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
+    NULL, 				/* Documentation string */
+    (traverseproc)0,	/* tp_traverse */
+    (inquiry)0,		/* tp_clear */
+    (richcmpfunc)0,	/* tp_richcompare */
+    offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
+    (getiterfunc)0,		/* tp_iter */
+    (iternextfunc)0,	/* tp_iternext */
+    NULL,			/* tp_methods */
+    0,					/* tp_members */
+    0,		       	/* tp_getset */
+    NULL,				/* tp_base */
+    NULL,				/* tp_dict */
+    (descrgetfunc)0,	/* tp_descr_get */
+    (descrsetfunc)0,	/* tp_descr_set */
+    offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
+    (initproc)_wrap_gimp_vectors_combo_box_new,		/* tp_init */
+    (allocfunc)0,           /* tp_alloc */
+    (newfunc)0,               /* tp_new */
+    (freefunc)0,             /* tp_free */
+    (inquiry)0              /* tp_is_gc */
+};
+
+
+
+/* ----------- GimpImageComboBox ----------- */
+
+#line 425 "gimpui.override"
 static gboolean
 pygimp_image_constraint_marshal(gint32 image_id, gpointer user_data)
 {
@@ -6003,7 +6408,7 @@ _wrap_gimp_image_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 6007 "gimpui.c"
+#line 6412 "gimpui.c"
 
 
 PyTypeObject PyGimpImageComboBox_Type = {
@@ -6448,7 +6853,7 @@ gimpui_register_classes(PyObject *d)
     }
 
 
-#line 6452 "gimpui.c"
+#line 6857 "gimpui.c"
     pygobject_register_class(d, "GimpBrowser", GIMP_TYPE_BROWSER, &PyGimpBrowser_Type, Py_BuildValue("(O)", &PyGtkHPaned_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_BROWSER);
     pygobject_register_class(d, "GimpButton", GIMP_TYPE_BUTTON, &PyGimpButton_Type, Py_BuildValue("(O)", &PyGtkButton_Type));
@@ -6477,10 +6882,12 @@ gimpui_register_classes(PyObject *d)
     pygobject_register_class(d, "GimpDialog", GIMP_TYPE_DIALOG, &PyGimpDialog_Type, Py_BuildValue("(O)", &PyGtkDialog_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_DIALOG);
     pygobject_register_class(d, "GimpEnumLabel", GIMP_TYPE_ENUM_LABEL, &PyGimpEnumLabel_Type, Py_BuildValue("(O)", &PyGtkLabel_Type));
+    pyg_set_object_has_new_constructor(GIMP_TYPE_ENUM_LABEL);
     pygobject_register_class(d, "GimpFrame", GIMP_TYPE_FRAME, &PyGimpFrame_Type, Py_BuildValue("(O)", &PyGtkFrame_Type));
     pygobject_register_class(d, "GimpHintBox", GIMP_TYPE_HINT_BOX, &PyGimpHintBox_Type, Py_BuildValue("(O)", &PyGtkHBox_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_HINT_BOX);
     pygobject_register_class(d, "GimpIntComboBox", GIMP_TYPE_INT_COMBO_BOX, &PyGimpIntComboBox_Type, Py_BuildValue("(O)", &PyGtkComboBox_Type));
+    pyg_set_object_has_new_constructor(GIMP_TYPE_INT_COMBO_BOX);
     pygobject_register_class(d, "GimpEnumComboBox", GIMP_TYPE_ENUM_COMBO_BOX, &PyGimpEnumComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
     pygobject_register_class(d, "GimpIntStore", GIMP_TYPE_INT_STORE, &PyGimpIntStore_Type, Py_BuildValue("(O)", &PyGtkListStore_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_INT_STORE);
@@ -6498,6 +6905,7 @@ gimpui_register_classes(PyObject *d)
     pygobject_register_class(d, "GimpPreviewArea", GIMP_TYPE_PREVIEW_AREA, &PyGimpPreviewArea_Type, Py_BuildValue("(O)", &PyGtkDrawingArea_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_PREVIEW_AREA);
     pygobject_register_class(d, "GimpProcBrowserDialog", GIMP_TYPE_PROC_BROWSER_DIALOG, &PyGimpProcBrowserDialog_Type, Py_BuildValue("(O)", &PyGimpDialog_Type));
+    pyg_set_object_has_new_constructor(GIMP_TYPE_PROC_BROWSER_DIALOG);
     pygobject_register_class(d, "GimpProgressBar", GIMP_TYPE_PROGRESS_BAR, &PyGimpProgressBar_Type, Py_BuildValue("(O)", &PyGtkProgressBar_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_PROGRESS_BAR);
     pygobject_register_class(d, "GimpResolutionEntry", GIMP_TYPE_RESOLUTION_ENTRY, &PyGimpResolutionEntry_Type, Py_BuildValue("(O)", &PyGtkTable_Type));
@@ -6524,5 +6932,6 @@ gimpui_register_classes(PyObject *d)
     pygobject_register_class(d, "GimpDrawableComboBox", GIMP_TYPE_DRAWABLE_COMBO_BOX, &PyGimpDrawableComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
     pygobject_register_class(d, "GimpChannelComboBox", GIMP_TYPE_CHANNEL_COMBO_BOX, &PyGimpChannelComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
     pygobject_register_class(d, "GimpLayerComboBox", GIMP_TYPE_LAYER_COMBO_BOX, &PyGimpLayerComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
+    pygobject_register_class(d, "GimpVectorsComboBox", GIMP_TYPE_VECTORS_COMBO_BOX, &PyGimpVectorsComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
     pygobject_register_class(d, "GimpImageComboBox", GIMP_TYPE_IMAGE_COMBO_BOX, &PyGimpImageComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
 }

@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdrawable.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583032" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591809" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2606120" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2608691" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdisplay"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583032"></a><span class="refentrytitle">gimpdisplay</span>
+<a name="id2591809"></a><span class="refentrytitle">gimpdisplay</span>
 </h2>
 <p>gimpdisplay &#8212; Functions to create, delete and flush new displays (views) on an image.</p>
 </td>
@@ -62,18 +62,18 @@ gboolean    <a href="libgimp-gimpdisplay.html#gimp-displays-reconnect">gimp_disp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2606120"></a><h2>Description</h2>
+<a name="id2608691"></a><h2>Description</h2>
 <p>
 Functions to create, delete and flush new displays (views) on an image.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2606137"></a><h2>Details</h2>
+<a name="id2608708"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2606147"></a><h3>
+<a name="id2608718"></a><h3>
 <a name="gimp-display-new"></a>gimp_display_new ()</h3>
-<a class="indexterm" name="id2606160"></a><pre class="programlisting">gint32      gimp_display_new                (gint32 image_ID);</pre>
+<a class="indexterm" name="id2605513"></a><pre class="programlisting">gint32      gimp_display_new                (gint32 image_ID);</pre>
 <p>
 Create a new display for the specified image.
 </p>
@@ -90,14 +90,12 @@ This procedure only makes sense for use with the GIMP UI.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new display.
 </td>
 </tr>
@@ -106,9 +104,9 @@ This procedure only makes sense for use with the GIMP UI.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606238"></a><h3>
+<a name="id2605592"></a><h3>
 <a name="gimp-display-delete"></a>gimp_display_delete ()</h3>
-<a class="indexterm" name="id2606250"></a><pre class="programlisting">gboolean    gimp_display_delete             (gint32 display_ID);</pre>
+<a class="indexterm" name="id2605604"></a><pre class="programlisting">gboolean    gimp_display_delete             (gint32 display_ID);</pre>
 <p>
 Delete the specified display.
 </p>
@@ -123,14 +121,12 @@ deleted also.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>display_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>display_ID</code></em>&#160;:</span></td>
 <td> The display to delete.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -139,9 +135,9 @@ deleted also.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606315"></a><h3>
+<a name="id2605669"></a><h3>
 <a name="gimp-display-get-window-handle"></a>gimp_display_get_window_handle ()</h3>
-<a class="indexterm" name="id2606329"></a><pre class="programlisting">gint        gimp_display_get_window_handle  (gint32 display_ID);</pre>
+<a class="indexterm" name="id2605682"></a><pre class="programlisting">gint        gimp_display_get_window_handle  (gint32 display_ID);</pre>
 <p>
 Get a handle to the native window for an image display.
 </p>
@@ -158,14 +154,12 @@ system that is being used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>display_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>display_ID</code></em>&#160;:</span></td>
 <td> The display to get the window handle from.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The native window handle or 0.
 
 </td>
@@ -177,9 +171,9 @@ system that is being used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606402"></a><h3>
+<a name="id2605756"></a><h3>
 <a name="gimp-displays-flush"></a>gimp_displays_flush ()</h3>
-<a class="indexterm" name="id2606415"></a><pre class="programlisting">gboolean    gimp_displays_flush             (void);</pre>
+<a class="indexterm" name="id2605768"></a><pre class="programlisting">gboolean    gimp_displays_flush             (void);</pre>
 <p>
 Flush all internal changes to the user interface
 </p>
@@ -194,8 +188,7 @@ appropriate.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr></tbody>
@@ -203,9 +196,9 @@ appropriate.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606461"></a><h3>
+<a name="id2605815"></a><h3>
 <a name="gimp-displays-reconnect"></a>gimp_displays_reconnect ()</h3>
-<a class="indexterm" name="id2606473"></a><pre class="programlisting">gboolean    gimp_displays_reconnect         (gint32 old_image_ID,
+<a class="indexterm" name="id2605826"></a><pre class="programlisting">gboolean    gimp_displays_reconnect         (gint32 old_image_ID,
                                              gint32 new_image_ID);</pre>
 <p>
 Reconnect displays from one image to another image.
@@ -222,20 +215,17 @@ without success. You should rarely need to use this function.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>old_image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>old_image_ID</code></em>&#160;:</span></td>
 <td> The old image (must have at least one display).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>new_image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>new_image_ID</code></em>&#160;:</span></td>
 <td> The new image (must not have a display).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

@@ -11,10 +11,10 @@
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpbase-index.html" title="Index">
+<link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpsignal.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577368" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589267" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2596052" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2553615" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpparasiteio"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577368"></a><span class="refentrytitle">gimpparasiteio</span>
+<a name="id2589267"></a><span class="refentrytitle">gimpparasiteio</span>
 </h2>
 <p>gimpparasiteio &#8212; Utility functions to (de)serialize certain C structures to/from <a href="libgimpbase-gimpparasite.html#GimpParasite"><span class="type">GimpParasite</span></a>'s.</p>
 </td>
@@ -54,18 +54,18 @@ gchar*      <a href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build">
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2596052"></a><h2>Description</h2>
+<a name="id2553615"></a><h2>Description</h2>
 <p>
 Utility functions to (de)serialize certain C structures to/from <a href="libgimpbase-gimpparasite.html#GimpParasite"><span class="type">GimpParasite</span></a>'s.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2596076"></a><h2>Details</h2>
+<a name="id2553639"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2596831"></a><h3>
+<a name="id2553650"></a><h3>
 <a name="GIMP-PIXPIPE-MAXDIM:CAPS"></a>GIMP_PIXPIPE_MAXDIM</h3>
-<a class="indexterm" name="id2596842"></a><pre class="programlisting">#define GIMP_PIXPIPE_MAXDIM 4
+<a class="indexterm" name="id2596261"></a><pre class="programlisting">#define GIMP_PIXPIPE_MAXDIM 4
 </pre>
 <p>
 
@@ -73,17 +73,16 @@ Utility functions to (de)serialize certain C structures to/from <a href="libgimp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596858"></a><h3>
+<a name="id2596276"></a><h3>
 <a name="gimp-pixpipe-params-init"></a>gimp_pixpipe_params_init ()</h3>
-<a class="indexterm" name="id2596869"></a><pre class="programlisting">void        gimp_pixpipe_params_init        (GimpPixPipeParams *params);</pre>
+<a class="indexterm" name="id2596288"></a><pre class="programlisting">void        gimp_pixpipe_params_init        (GimpPixPipeParams *params);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>
 
 
@@ -93,9 +92,9 @@ Utility functions to (de)serialize certain C structures to/from <a href="libgimp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596914"></a><h3>
+<a name="id2596333"></a><h3>
 <a name="gimp-pixpipe-params-parse"></a>gimp_pixpipe_params_parse ()</h3>
-<a class="indexterm" name="id2596925"></a><pre class="programlisting">void        gimp_pixpipe_params_parse       (const gchar *parameters,
+<a class="indexterm" name="id2596344"></a><pre class="programlisting">void        gimp_pixpipe_params_parse       (const gchar *parameters,
                                              GimpPixPipeParams *params);</pre>
 <p>
 
@@ -104,14 +103,12 @@ Utility functions to (de)serialize certain C structures to/from <a href="libgimp
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>parameters</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>parameters</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>
 
 
@@ -122,9 +119,9 @@ Utility functions to (de)serialize certain C structures to/from <a href="libgimp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596320"></a><h3>
+<a name="id2595739"></a><h3>
 <a name="gimp-pixpipe-params-build"></a>gimp_pixpipe_params_build ()</h3>
-<a class="indexterm" name="id2596331"></a><pre class="programlisting">gchar*      gimp_pixpipe_params_build       (GimpPixPipeParams *params);</pre>
+<a class="indexterm" name="id2595750"></a><pre class="programlisting">gchar*      gimp_pixpipe_params_build       (GimpPixPipeParams *params);</pre>
 <p>
 
 </p>
@@ -132,14 +129,12 @@ Utility functions to (de)serialize certain C structures to/from <a href="libgimp
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>params</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -150,7 +145,7 @@ Utility functions to (de)serialize certain C structures to/from <a href="libgimp
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2596388"></a><h2>See Also</h2>
+<a name="id2595807"></a><h2>See Also</h2>
 <p>
 <a href="libgimpbase-gimpparasite.html#GimpParasite"><span class="type">GimpParasite</span></a>
 </p>

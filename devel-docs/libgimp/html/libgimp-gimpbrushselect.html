@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfontselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2563897" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589642" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2694787" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2697988" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrushselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2563897"></a><span class="refentrytitle">gimpbrushselect</span>
+<a name="id2589642"></a><span class="refentrytitle">gimpbrushselect</span>
 </h2>
 <p>gimpbrushselect &#8212; Functions providing a brush selection dialog.</p>
 </td>
@@ -85,17 +85,17 @@ gboolean    <a href="libgimp-gimpbrushselect.html#gimp-brushes-set-popup">gimp_b
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694787"></a><h2>Description</h2>
+<a name="id2697988"></a><h2>Description</h2>
 <p>
 Functions providing a brush selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694803"></a><h2>Details</h2>
+<a name="id2698004"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2694813"></a><h3>
+<a name="id2698014"></a><h3>
 <a name="GimpRunBrushCallback"></a>GimpRunBrushCallback ()</h3>
-<a class="indexterm" name="id2694825"></a><pre class="programlisting">void        (*GimpRunBrushCallback)         (const gchar *brush_name,
+<a class="indexterm" name="id2698026"></a><pre class="programlisting">void        (*GimpRunBrushCallback)         (const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
@@ -111,56 +111,47 @@ Functions providing a brush selection dialog.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>mask_data</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>mask_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -171,9 +162,9 @@ Functions providing a brush selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694301"></a><h3>
+<a name="id2692616"></a><h3>
 <a name="gimp-brush-select-new"></a>gimp_brush_select_new ()</h3>
-<a class="indexterm" name="id2694312"></a><pre class="programlisting">const gchar* gimp_brush_select_new          (const gchar *title,
+<a class="indexterm" name="id2692627"></a><pre class="programlisting">const gchar* gimp_brush_select_new          (const gchar *title,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -187,50 +178,42 @@ Functions providing a brush selection dialog.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -241,17 +224,16 @@ Functions providing a brush selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694494"></a><h3>
+<a name="id2695771"></a><h3>
 <a name="gimp-brush-select-destroy"></a>gimp_brush_select_destroy ()</h3>
-<a class="indexterm" name="id2694505"></a><pre class="programlisting">void        gimp_brush_select_destroy       (const gchar *brush_callback);</pre>
+<a class="indexterm" name="id2695782"></a><pre class="programlisting">void        gimp_brush_select_destroy       (const gchar *brush_callback);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
 <td>
 
 
@@ -261,9 +243,9 @@ Functions providing a brush selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2694550"></a><h3>
+<a name="id2695827"></a><h3>
 <a name="gimp-brushes-popup"></a>gimp_brushes_popup ()</h3>
-<a class="indexterm" name="id2694561"></a><pre class="programlisting">gboolean    gimp_brushes_popup              (const gchar *brush_callback,
+<a class="indexterm" name="id2695838"></a><pre class="programlisting">gboolean    gimp_brushes_popup              (const gchar *brush_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_brush,
                                              gdouble opacity,
@@ -281,44 +263,37 @@ This procedure popups the brush selection dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
 <td> The callback PDB proc to call when brush selection is made.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
 <td> Title to give the brush popup window.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>initial_brush</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>initial_brush</code></em>&#160;:</span></td>
 <td> The name of the brush to set as the first selected.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The initial opacity of the brush.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td> The initial spacing of the brush (if &lt; 0 then use brush default spacing).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td> The initial paint mode.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -327,9 +302,9 @@ This procedure popups the brush selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2693000"></a><h3>
+<a name="id2699072"></a><h3>
 <a name="gimp-brushes-close-popup"></a>gimp_brushes_close_popup ()</h3>
-<a class="indexterm" name="id2693011"></a><pre class="programlisting">gboolean    gimp_brushes_close_popup        (const gchar *brush_callback);</pre>
+<a class="indexterm" name="id2699083"></a><pre class="programlisting">gboolean    gimp_brushes_close_popup        (const gchar *brush_callback);</pre>
 <p>
 Popdown the Gimp brush selection.
 </p>
@@ -342,14 +317,12 @@ This procedure closes an opened brush selection dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this popup.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -358,9 +331,9 @@ This procedure closes an opened brush selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2693074"></a><h3>
+<a name="id2699141"></a><h3>
 <a name="gimp-brushes-set-popup"></a>gimp_brushes_set_popup ()</h3>
-<a class="indexterm" name="id2693085"></a><pre class="programlisting">gboolean    gimp_brushes_set_popup          (const gchar *brush_callback,
+<a class="indexterm" name="id2699151"></a><pre class="programlisting">gboolean    gimp_brushes_set_popup          (const gchar *brush_callback,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -377,38 +350,32 @@ Sets the current brush selection in a popup.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this popup.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
 <td> The name of the brush to set as selected.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The initial opacity of the brush.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td> The initial spacing of the brush (if &lt; 0 then use brush default spacing).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td> The initial paint mode.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

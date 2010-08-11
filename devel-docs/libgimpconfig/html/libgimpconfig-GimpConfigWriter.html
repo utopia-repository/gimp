@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix03.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpconfig-index.html" title="Index">
+<link rel="index" href="libgimpconfig-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpconfig-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-GimpScanner.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2573577" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582159" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2593274" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2556875" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-GimpConfigWriter"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2573577"></a><span class="refentrytitle">gimpconfigwriter</span>
+<a name="id2582159"></a><span class="refentrytitle">gimpconfigwriter</span>
 </h2>
 <p>gimpconfigwriter &#8212; Functions for writing config info to a file for libgimpconfig.</p>
 </td>
@@ -83,27 +83,27 @@ gboolean    <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-fini
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593274"></a><h2>Description</h2>
+<a name="id2556875"></a><h2>Description</h2>
 <p>
 Functions for writing config info to a file for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2593291"></a><h2>Details</h2>
+<a name="id2556892"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2593302"></a><h3>
+<a name="id2556902"></a><h3>
 <a name="GimpConfigWriter"></a>GimpConfigWriter</h3>
-<a class="indexterm" name="id2593314"></a><pre class="programlisting">typedef struct _GimpConfigWriter GimpConfigWriter;</pre>
+<a class="indexterm" name="id2556915"></a><pre class="programlisting">typedef struct _GimpConfigWriter GimpConfigWriter;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2593330"></a><h3>
+<a name="id2556931"></a><h3>
 <a name="gimp-config-writer-new-file"></a>gimp_config_writer_new_file ()</h3>
-<a class="indexterm" name="id2593344"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_file
+<a class="indexterm" name="id2556945"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_file
                                             (const gchar *filename,
                                              gboolean atomic,
                                              const gchar *header,
@@ -120,32 +120,27 @@ possible race conditions. The temporary file is then moved to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td> a filename
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>atomic</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>atomic</code></em>&#160;:</span></td>
 <td> if <code class="literal">TRUE</code> the file is written atomically
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>header</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>header</code></em>&#160;:</span></td>
 <td> text to include as comment at the top of the file
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
 <td> return location for errors
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error
 
 </td>
@@ -157,9 +152,9 @@ possible race conditions. The temporary file is then moved to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592608"></a><h3>
+<a name="id2559028"></a><h3>
 <a name="gimp-config-writer-new-fd"></a>gimp_config_writer_new_fd ()</h3>
-<a class="indexterm" name="id2592622"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_fd (gint fd);</pre>
+<a class="indexterm" name="id2559043"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_fd (gint fd);</pre>
 <p>
 </p>
 <p>
@@ -169,14 +164,12 @@ possible race conditions. The temporary file is then moved to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>fd</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>fd</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error
 
 </td>
@@ -188,9 +181,9 @@ possible race conditions. The temporary file is then moved to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592703"></a><h3>
+<a name="id2559124"></a><h3>
 <a name="gimp-config-writer-new-string"></a>gimp_config_writer_new_string ()</h3>
-<a class="indexterm" name="id2592719"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_string
+<a class="indexterm" name="id2559140"></a><pre class="programlisting"><a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a>* gimp_config_writer_new_string
                                             (GString *string);</pre>
 <p>
 </p>
@@ -201,14 +194,12 @@ possible race conditions. The temporary file is then moved to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error
 
 </td>
@@ -220,9 +211,9 @@ possible race conditions. The temporary file is then moved to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2592801"></a><h3>
+<a name="id2559222"></a><h3>
 <a name="gimp-config-writer-open"></a>gimp_config_writer_open ()</h3>
-<a class="indexterm" name="id2592815"></a><pre class="programlisting">void        gimp_config_writer_open         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2559236"></a><pre class="programlisting">void        gimp_config_writer_open         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *name);</pre>
 <p>
 This function writes the opening parenthese followed by <em class="parameter"><code>name</code></em>.
@@ -235,14 +226,12 @@ can be used by <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-r
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> name of the element to open
 </td>
 </tr>
@@ -253,9 +242,9 @@ can be used by <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-r
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599406"></a><h3>
+<a name="id2598777"></a><h3>
 <a name="gimp-config-writer-comment-mode"></a>gimp_config_writer_comment_mode ()</h3>
-<a class="indexterm" name="id2599418"></a><pre class="programlisting">void        gimp_config_writer_comment_mode (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2598791"></a><pre class="programlisting">void        gimp_config_writer_comment_mode (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              gboolean enable);</pre>
 <p>
 This function toggles whether the <em class="parameter"><code>writer</code></em> should create commented
@@ -272,14 +261,12 @@ funtion will insert a newline if necessary.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>enable</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>enable</code></em>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> to enable comment mode, <code class="literal">FALSE</code> to disable it
 </td>
 </tr>
@@ -290,9 +277,9 @@ funtion will insert a newline if necessary.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599529"></a><h3>
+<a name="id2598902"></a><h3>
 <a name="gimp-config-writer-print"></a>gimp_config_writer_print ()</h3>
-<a class="indexterm" name="id2599543"></a><pre class="programlisting">void        gimp_config_writer_print        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2598916"></a><pre class="programlisting">void        gimp_config_writer_print        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *string,
                                              gint len);</pre>
 <p>
@@ -305,20 +292,17 @@ must not contain any special characters that might need to be escaped.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
 <td> a string to write
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></td>
 <td> number of bytes from <em class="parameter"><code>string</code></em> or -1 if <em class="parameter"><code>string</code></em> is NUL-terminated.
 </td>
 </tr>
@@ -329,9 +313,9 @@ must not contain any special characters that might need to be escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599671"></a><h3>
+<a name="id2599044"></a><h3>
 <a name="gimp-config-writer-printf"></a>gimp_config_writer_printf ()</h3>
-<a class="indexterm" name="id2599686"></a><pre class="programlisting">void        gimp_config_writer_printf       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2599059"></a><pre class="programlisting">void        gimp_config_writer_printf       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *format,
                                              ...);</pre>
 <p>
@@ -343,20 +327,17 @@ A printf-like function for <a href="libgimpconfig-GimpConfigWriter.html#GimpConf
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>format</code></em>&#160;:</span></td>
 <td> a format string as described for <code class="function">g_strdup_printf()</code>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td> list of arguments according to <em class="parameter"><code>format</code></em>
 </td>
 </tr>
@@ -367,9 +348,9 @@ A printf-like function for <a href="libgimpconfig-GimpConfigWriter.html#GimpConf
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599807"></a><h3>
+<a name="id2599180"></a><h3>
 <a name="gimp-config-writer-identifier"></a>gimp_config_writer_identifier ()</h3>
-<a class="indexterm" name="id2599823"></a><pre class="programlisting">void        gimp_config_writer_identifier   (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2599196"></a><pre class="programlisting">void        gimp_config_writer_identifier   (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *identifier);</pre>
 <p>
 Writes an identifier to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is *not* quoted and special
@@ -381,14 +362,12 @@ characters are *not* escaped.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td>     a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
 <td> a NUL-terminated string
 </td>
 </tr>
@@ -399,9 +378,9 @@ characters are *not* escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599918"></a><h3>
+<a name="id2599292"></a><h3>
 <a name="gimp-config-writer-string"></a>gimp_config_writer_string ()</h3>
-<a class="indexterm" name="id2599933"></a><pre class="programlisting">void        gimp_config_writer_string       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2599306"></a><pre class="programlisting">void        gimp_config_writer_string       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *string);</pre>
 <p>
 Writes a string value to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is quoted and special
@@ -413,14 +392,12 @@ characters are escaped.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>string</code></em>&#160;:</span></td>
 <td> a NUL-terminated string
 </td>
 </tr>
@@ -431,9 +408,9 @@ characters are escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600028"></a><h3>
+<a name="id2599401"></a><h3>
 <a name="gimp-config-writer-data"></a>gimp_config_writer_data ()</h3>
-<a class="indexterm" name="id2600041"></a><pre class="programlisting">void        gimp_config_writer_data         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2599414"></a><pre class="programlisting">void        gimp_config_writer_data         (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              gint length,
                                              const guint8 *data);</pre>
 <p>
@@ -445,20 +422,17 @@ characters are escaped.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
@@ -469,9 +443,9 @@ characters are escaped.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600145"></a><h3>
+<a name="id2599518"></a><h3>
 <a name="gimp-config-writer-comment"></a>gimp_config_writer_comment ()</h3>
-<a class="indexterm" name="id2600159"></a><pre class="programlisting">void        gimp_config_writer_comment      (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2599532"></a><pre class="programlisting">void        gimp_config_writer_comment      (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *comment);</pre>
 <p>
 Appends the <em class="parameter"><code>comment</code></em> to <em class="parameter"><code>str</code></em> and inserts linebreaks and hash-marks to
@@ -484,14 +458,12 @@ characters.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>comment</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>comment</code></em>&#160;:</span></td>
 <td> the comment to write (ASCII only)
 </td>
 </tr>
@@ -502,17 +474,16 @@ characters.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600257"></a><h3>
+<a name="id2599630"></a><h3>
 <a name="gimp-config-writer-linefeed"></a>gimp_config_writer_linefeed ()</h3>
-<a class="indexterm" name="id2600269"></a><pre class="programlisting">void        gimp_config_writer_linefeed     (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
+<a class="indexterm" name="id2599642"></a><pre class="programlisting">void        gimp_config_writer_linefeed     (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td>
 
 
@@ -522,9 +493,9 @@ characters.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600314"></a><h3>
+<a name="id2599687"></a><h3>
 <a name="gimp-config-writer-revert"></a>gimp_config_writer_revert ()</h3>
-<a class="indexterm" name="id2600329"></a><pre class="programlisting">void        gimp_config_writer_revert       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
+<a class="indexterm" name="id2599702"></a><pre class="programlisting">void        gimp_config_writer_revert       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 Reverts all changes to <em class="parameter"><code>writer</code></em> that were done since the last call
 to <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code class="function">gimp_config_writer_open()</code></a>. This can only work if you didn't call
@@ -535,8 +506,7 @@ to <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code c
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr></tbody>
@@ -546,9 +516,9 @@ to <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2553446"></a><h3>
+<a name="id2599788"></a><h3>
 <a name="gimp-config-writer-close"></a>gimp_config_writer_close ()</h3>
-<a class="indexterm" name="id2553513"></a><pre class="programlisting">void        gimp_config_writer_close        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
+<a class="indexterm" name="id2599801"></a><pre class="programlisting">void        gimp_config_writer_close        (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 Closes an element opened with <a href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open"><code class="function">gimp_config_writer_open()</code></a>.</p>
 <p>
@@ -557,8 +527,7 @@ Closes an element opened with <a href="libgimpconfig-GimpConfigWriter.html#gimp-
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr></tbody>
@@ -568,9 +537,9 @@ Closes an element opened with <a href="libgimpconfig-GimpConfigWriter.html#gimp-
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600475"></a><h3>
+<a name="id2599872"></a><h3>
 <a name="gimp-config-writer-finish"></a>gimp_config_writer_finish ()</h3>
-<a class="indexterm" name="id2600488"></a><pre class="programlisting">gboolean    gimp_config_writer_finish       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
+<a class="indexterm" name="id2599886"></a><pre class="programlisting">gboolean    gimp_config_writer_finish       (<a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter">GimpConfigWriter</a> *writer,
                                              const gchar *footer,
                                              GError **error);</pre>
 <p>
@@ -585,26 +554,22 @@ the <em class="parameter"><code>writer</code></em> afterwards.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>writer</code></em>&#160;:</span></td>
 <td> a <a href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>footer</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>footer</code></em>&#160;:</span></td>
 <td> text to include as comment at the bottom of the file
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
 <td> return location for possible errors
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if everything could be successfully written,
               <code class="literal">FALSE</code> otherwise
 

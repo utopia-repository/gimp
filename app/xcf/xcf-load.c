@@ -245,7 +245,8 @@ xcf_load_image (Gimp    *gimp,
 
       /* add the channel to the image if its not the selection */
       if (channel != image->selection_mask)
-        gimp_image_add_channel (image, channel, -1);
+        gimp_image_add_channel (image, channel,
+                                gimp_container_num_children (image->channels));
 
       /* restore the saved position so we'll be ready to
        *  read the next offset.
@@ -785,8 +786,7 @@ xcf_load_channel_props (XcfInfo      *info,
             gimp_selection_new (image,
                                 gimp_item_width (GIMP_ITEM (*channel)),
                                 gimp_item_height (GIMP_ITEM (*channel)));
-          g_object_ref (image->selection_mask);
-          gimp_item_sink (GIMP_ITEM (image->selection_mask));
+          g_object_ref_sink (image->selection_mask);
 
           tile_manager_unref (GIMP_DRAWABLE (image->selection_mask)->tiles);
           GIMP_DRAWABLE (image->selection_mask)->tiles =

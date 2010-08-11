@@ -59,18 +59,18 @@ am_libappactions_a_OBJECTS = actions.$(OBJEXT) \
 	brush-editor-actions.$(OBJEXT) brushes-actions.$(OBJEXT) \
 	buffers-actions.$(OBJEXT) buffers-commands.$(OBJEXT) \
 	channels-actions.$(OBJEXT) channels-commands.$(OBJEXT) \
-	colormap-editor-actions.$(OBJEXT) \
-	colormap-editor-commands.$(OBJEXT) context-actions.$(OBJEXT) \
-	context-commands.$(OBJEXT) cursor-info-actions.$(OBJEXT) \
-	cursor-info-commands.$(OBJEXT) data-commands.$(OBJEXT) \
-	data-editor-commands.$(OBJEXT) debug-actions.$(OBJEXT) \
-	debug-commands.$(OBJEXT) dialogs-actions.$(OBJEXT) \
-	dialogs-commands.$(OBJEXT) dock-actions.$(OBJEXT) \
-	dock-commands.$(OBJEXT) dockable-actions.$(OBJEXT) \
-	dockable-commands.$(OBJEXT) documents-actions.$(OBJEXT) \
-	documents-commands.$(OBJEXT) drawable-actions.$(OBJEXT) \
-	drawable-commands.$(OBJEXT) edit-actions.$(OBJEXT) \
-	edit-commands.$(OBJEXT) error-console-actions.$(OBJEXT) \
+	colormap-actions.$(OBJEXT) colormap-commands.$(OBJEXT) \
+	context-actions.$(OBJEXT) context-commands.$(OBJEXT) \
+	cursor-info-actions.$(OBJEXT) cursor-info-commands.$(OBJEXT) \
+	data-commands.$(OBJEXT) data-editor-commands.$(OBJEXT) \
+	debug-actions.$(OBJEXT) debug-commands.$(OBJEXT) \
+	dialogs-actions.$(OBJEXT) dialogs-commands.$(OBJEXT) \
+	dock-actions.$(OBJEXT) dock-commands.$(OBJEXT) \
+	dockable-actions.$(OBJEXT) dockable-commands.$(OBJEXT) \
+	documents-actions.$(OBJEXT) documents-commands.$(OBJEXT) \
+	drawable-actions.$(OBJEXT) drawable-commands.$(OBJEXT) \
+	edit-actions.$(OBJEXT) edit-commands.$(OBJEXT) \
+	error-console-actions.$(OBJEXT) \
 	error-console-commands.$(OBJEXT) file-actions.$(OBJEXT) \
 	file-commands.$(OBJEXT) fonts-actions.$(OBJEXT) \
 	fonts-commands.$(OBJEXT) gradient-editor-actions.$(OBJEXT) \
@@ -84,16 +84,16 @@ am_libappactions_a_OBJECTS = actions.$(OBJEXT) \
 	palettes-commands.$(OBJEXT) patterns-actions.$(OBJEXT) \
 	plug-in-actions.$(OBJEXT) plug-in-commands.$(OBJEXT) \
 	quick-mask-actions.$(OBJEXT) quick-mask-commands.$(OBJEXT) \
-	sample-point-editor-actions.$(OBJEXT) \
-	sample-point-editor-commands.$(OBJEXT) \
-	select-actions.$(OBJEXT) select-commands.$(OBJEXT) \
-	templates-actions.$(OBJEXT) templates-commands.$(OBJEXT) \
-	text-editor-actions.$(OBJEXT) text-editor-commands.$(OBJEXT) \
-	tool-options-actions.$(OBJEXT) tool-options-commands.$(OBJEXT) \
-	tools-actions.$(OBJEXT) tools-commands.$(OBJEXT) \
-	vectors-actions.$(OBJEXT) vectors-commands.$(OBJEXT) \
-	view-actions.$(OBJEXT) view-commands.$(OBJEXT) \
-	window-actions.$(OBJEXT) window-commands.$(OBJEXT)
+	sample-points-actions.$(OBJEXT) \
+	sample-points-commands.$(OBJEXT) select-actions.$(OBJEXT) \
+	select-commands.$(OBJEXT) templates-actions.$(OBJEXT) \
+	templates-commands.$(OBJEXT) text-editor-actions.$(OBJEXT) \
+	text-editor-commands.$(OBJEXT) tool-options-actions.$(OBJEXT) \
+	tool-options-commands.$(OBJEXT) tools-actions.$(OBJEXT) \
+	tools-commands.$(OBJEXT) vectors-actions.$(OBJEXT) \
+	vectors-commands.$(OBJEXT) view-actions.$(OBJEXT) \
+	view-commands.$(OBJEXT) window-actions.$(OBJEXT) \
+	window-commands.$(OBJEXT)
 libappactions_a_OBJECTS = $(am_libappactions_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -248,6 +248,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -289,12 +291,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -373,6 +375,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -485,10 +488,10 @@ libappactions_a_SOURCES = \
 	channels-actions.h		\
 	channels-commands.c		\
 	channels-commands.h		\
-	colormap-editor-actions.c	\
-	colormap-editor-actions.h	\
-	colormap-editor-commands.c	\
-	colormap-editor-commands.h	\
+	colormap-actions.c		\
+	colormap-actions.h		\
+	colormap-commands.c		\
+	colormap-commands.h		\
 	context-actions.c		\
 	context-actions.h		\
 	context-commands.c		\
@@ -583,10 +586,10 @@ libappactions_a_SOURCES = \
 	quick-mask-actions.h		\
 	quick-mask-commands.c		\
 	quick-mask-commands.h		\
-	sample-point-editor-actions.c	\
-	sample-point-editor-actions.h	\
-	sample-point-editor-commands.c	\
-	sample-point-editor-commands.h	\
+	sample-points-actions.c		\
+	sample-points-actions.h		\
+	sample-points-commands.c	\
+	sample-points-commands.h	\
 	select-actions.c		\
 	select-actions.h		\
 	select-commands.c		\
@@ -689,8 +692,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/buffers-commands.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/channels-actions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/channels-commands.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormap-editor-actions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormap-editor-commands.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormap-actions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormap-commands.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/context-actions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/context-commands.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cursor-info-actions.Po@am__quote@
@@ -738,8 +741,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-commands.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quick-mask-actions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quick-mask-commands.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample-point-editor-actions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample-point-editor-commands.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample-points-actions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample-points-commands.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/select-actions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/select-commands.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/templates-actions.Po@am__quote@

@@ -74,7 +74,7 @@
       <sub name="GimpDrawablePreview" link="GimpDrawablePreview.html"/>
       <sub name="GimpAspectPreview" link="GimpAspectPreview.html"/>
       <sub name="GimpZoomPreview" link="GimpZoomPreview.html"/>
-      <sub name="gimpdrawablecombobox" link="GimpDrawableComboBox.html"/>
+      <sub name="GimpItemComboBox" link="libgimp-GimpItemComboBox.html"/>
       <sub name="gimpimagecombobox" link="GimpImageComboBox.html"/>
       <sub name="gimppixbuf" link="libgimp-gimppixbuf.html"/>
       <sub name="GimpProgressBar" link="GimpProgressBar.html"/>
@@ -87,10 +87,10 @@
       <sub name="GimpProcBrowserDialog" link="GimpProcBrowserDialog.html"/>
       <sub name="gimpprocview" link="libgimp-gimpprocview.html"/>
     </sub>
-    <sub name="Index" link="ix01.html"/>
-    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
-    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
-    <sub name="Index of deprecated symbols" link="ix04.html"/>
+    <sub name="Index" link="libgimp-index.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="libgimp-index-new-in-2-2.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="libgimp-index-new-in-2-4.html"/>
+    <sub name="Index of deprecated symbols" link="libgimp-index-deprecated.html"/>
   </chapters>
   <functions>
     <keyword type="function" name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init" since="GIMP 2.4"/>
@@ -350,10 +350,13 @@
     <keyword type="function" name="gimp_edit_bucket_fill ()" link="libgimp-gimpedit.html#gimp-edit-bucket-fill"/>
     <keyword type="function" name="gimp_edit_blend ()" link="libgimp-gimpedit.html#gimp-edit-blend"/>
     <keyword type="function" name="gimp_edit_stroke ()" link="libgimp-gimpedit.html#gimp-edit-stroke"/>
+    <keyword type="function" name="gimp_edit_stroke_vectors ()" link="libgimp-gimpedit.html#gimp-edit-stroke-vectors" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_temp_name ()" link="libgimp-gimpfileops.html#gimp-temp-name"/>
     <keyword type="function" name="gimp_file_load ()" link="libgimp-gimpfileops.html#gimp-file-load"/>
     <keyword type="function" name="gimp_file_load_layer ()" link="libgimp-gimpfileops.html#gimp-file-load-layer" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_file_load_layers ()" link="libgimp-gimpfileops.html#gimp-file-load-layers" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_file_save ()" link="libgimp-gimpfileops.html#gimp-file-save"/>
+    <keyword type="function" name="gimp_file_save_thumbnail ()" link="libgimp-gimpfileops.html#gimp-file-save-thumbnail"/>
     <keyword type="function" name="gimp_register_magic_load_handler ()" link="libgimp-gimpfileops.html#gimp-register-magic-load-handler"/>
     <keyword type="function" name="gimp_register_load_handler ()" link="libgimp-gimpfileops.html#gimp-register-load-handler"/>
     <keyword type="function" name="gimp_register_save_handler ()" link="libgimp-gimpfileops.html#gimp-register-save-handler"/>
@@ -398,7 +401,6 @@
     <keyword type="function" name="gimp_image_get_layers ()" link="libgimp-gimpimage.html#gimp-image-get-layers"/>
     <keyword type="function" name="gimp_image_get_channels ()" link="libgimp-gimpimage.html#gimp-image-get-channels"/>
     <keyword type="function" name="gimp_image_get_active_drawable ()" link="libgimp-gimpimage.html#gimp-image-get-active-drawable"/>
-    <keyword type="function" name="gimp_image_unset_active_channel ()" link="libgimp-gimpimage.html#gimp-image-unset-active-channel"/>
     <keyword type="function" name="gimp_image_get_floating_sel ()" link="libgimp-gimpimage.html#gimp-image-get-floating-sel"/>
     <keyword type="function" name="gimp_image_floating_sel_attached_to ()" link="libgimp-gimpimage.html#gimp-image-floating-sel-attached-to"/>
     <keyword type="function" name="gimp_image_pick_color ()" link="libgimp-gimpimage.html#gimp-image-pick-color"/>
@@ -409,10 +411,12 @@
     <keyword type="function" name="gimp_image_lower_layer ()" link="libgimp-gimpimage.html#gimp-image-lower-layer"/>
     <keyword type="function" name="gimp_image_raise_layer_to_top ()" link="libgimp-gimpimage.html#gimp-image-raise-layer-to-top"/>
     <keyword type="function" name="gimp_image_lower_layer_to_bottom ()" link="libgimp-gimpimage.html#gimp-image-lower-layer-to-bottom"/>
+    <keyword type="function" name="gimp_image_get_layer_position ()" link="libgimp-gimpimage.html#gimp-image-get-layer-position" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_image_add_channel ()" link="libgimp-gimpimage.html#gimp-image-add-channel"/>
     <keyword type="function" name="gimp_image_remove_channel ()" link="libgimp-gimpimage.html#gimp-image-remove-channel"/>
     <keyword type="function" name="gimp_image_raise_channel ()" link="libgimp-gimpimage.html#gimp-image-raise-channel"/>
     <keyword type="function" name="gimp_image_lower_channel ()" link="libgimp-gimpimage.html#gimp-image-lower-channel"/>
+    <keyword type="function" name="gimp_image_get_channel_position ()" link="libgimp-gimpimage.html#gimp-image-get-channel-position" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_image_flatten ()" link="libgimp-gimpimage.html#gimp-image-flatten"/>
     <keyword type="function" name="gimp_image_merge_visible_layers ()" link="libgimp-gimpimage.html#gimp-image-merge-visible-layers"/>
     <keyword type="function" name="gimp_image_merge_down ()" link="libgimp-gimpimage.html#gimp-image-merge-down"/>
@@ -422,6 +426,7 @@
     <keyword type="function" name="gimp_image_set_active_layer ()" link="libgimp-gimpimage.html#gimp-image-set-active-layer"/>
     <keyword type="function" name="gimp_image_get_active_channel ()" link="libgimp-gimpimage.html#gimp-image-get-active-channel"/>
     <keyword type="function" name="gimp_image_set_active_channel ()" link="libgimp-gimpimage.html#gimp-image-set-active-channel"/>
+    <keyword type="function" name="gimp_image_unset_active_channel ()" link="libgimp-gimpimage.html#gimp-image-unset-active-channel"/>
     <keyword type="function" name="gimp_image_get_selection ()" link="libgimp-gimpimage.html#gimp-image-get-selection"/>
     <keyword type="function" name="gimp_image_get_component_active ()" link="libgimp-gimpimage.html#gimp-image-get-component-active"/>
     <keyword type="function" name="gimp_image_set_component_active ()" link="libgimp-gimpimage.html#gimp-image-set-component-active"/>
@@ -457,6 +462,7 @@
     <keyword type="function" name="gimp_image_raise_vectors ()" link="libgimp-gimpimage.html#gimp-image-raise-vectors" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_image_lower_vectors_to_bottom ()" link="libgimp-gimpimage.html#gimp-image-lower-vectors-to-bottom" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_image_raise_vectors_to_top ()" link="libgimp-gimpimage.html#gimp-image-raise-vectors-to-top" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_image_get_vectors_position ()" link="libgimp-gimpimage.html#gimp-image-get-vectors-position" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_layer_new ()" link="libgimp-gimplayer.html#gimp-layer-new"/>
     <keyword type="function" name="gimp_layer_copy ()" link="libgimp-gimplayer.html#gimp-layer-copy"/>
     <keyword type="function" name="gimp_layer_scale ()" link="libgimp-gimplayer.html#gimp-layer-scale"/>
@@ -487,11 +493,11 @@
     <keyword type="function" name="gimp_layer_set_mode ()" link="libgimp-gimplayer.html#gimp-layer-set-mode"/>
     <keyword type="function" name="gimp_layer_is_floating_sel ()" link="libgimp-gimplayer.html#gimp-layer-is-floating-sel"/>
     <keyword type="function" name="gimp_path_list ()" link="libgimp-gimppaths.html#gimp-path-list" deprecated=""/>
-    <keyword type="function" name="gimp_path_get_points ()" link="libgimp-gimppaths.html#gimp-path-get-points"/>
+    <keyword type="function" name="gimp_path_get_points ()" link="libgimp-gimppaths.html#gimp-path-get-points" deprecated=""/>
     <keyword type="function" name="gimp_path_get_current ()" link="libgimp-gimppaths.html#gimp-path-get-current" deprecated=""/>
     <keyword type="function" name="gimp_path_set_current ()" link="libgimp-gimppaths.html#gimp-path-set-current" deprecated=""/>
-    <keyword type="function" name="gimp_path_set_points ()" link="libgimp-gimppaths.html#gimp-path-set-points"/>
-    <keyword type="function" name="gimp_path_stroke_current ()" link="libgimp-gimppaths.html#gimp-path-stroke-current"/>
+    <keyword type="function" name="gimp_path_set_points ()" link="libgimp-gimppaths.html#gimp-path-set-points" deprecated=""/>
+    <keyword type="function" name="gimp_path_stroke_current ()" link="libgimp-gimppaths.html#gimp-path-stroke-current" deprecated=""/>
     <keyword type="function" name="gimp_path_get_point_at_dist ()" link="libgimp-gimppaths.html#gimp-path-get-point-at-dist" deprecated=""/>
     <keyword type="function" name="gimp_path_get_tattoo ()" link="libgimp-gimppaths.html#gimp-path-get-tattoo" deprecated=""/>
     <keyword type="function" name="gimp_get_path_by_tattoo ()" link="libgimp-gimppaths.html#gimp-get-path-by-tattoo" deprecated=""/>
@@ -500,8 +506,7 @@
     <keyword type="function" name="gimp_path_set_locked ()" link="libgimp-gimppaths.html#gimp-path-set-locked" deprecated=""/>
     <keyword type="function" name="gimp_path_set_tattoo ()" link="libgimp-gimppaths.html#gimp-path-set-tattoo" deprecated=""/>
     <keyword type="function" name="gimp_path_to_selection ()" link="libgimp-gimppaths.html#gimp-path-to-selection" deprecated=""/>
-    <keyword type="function" name="gimp_path_import ()" link="libgimp-gimppaths.html#gimp-path-import"/>
-    <keyword type="function" name="gimp_path_import_string ()" link="libgimp-gimppaths.html#gimp-path-import-string" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_path_import ()" link="libgimp-gimppaths.html#gimp-path-import" deprecated=""/>
     <keyword type="enum" name="enum GimpPixelFetcherEdgeMode" link="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode"/>
     <keyword type="struct" name="GimpPixelFetcher" link="libgimp-gimppixelfetcher.html#GimpPixelFetcher"/>
     <keyword type="function" name="gimp_pixel_fetcher_new ()" link="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-new"/>
@@ -591,6 +596,7 @@
     <keyword type="function" name="gimp_pencil ()" link="libgimp-gimptools.html#gimp-pencil"/>
     <keyword type="function" name="gimp_perspective ()" link="libgimp-gimptools.html#gimp-perspective" deprecated=""/>
     <keyword type="function" name="gimp_rect_select ()" link="libgimp-gimptools.html#gimp-rect-select"/>
+    <keyword type="function" name="gimp_round_rect_select ()" link="libgimp-gimptools.html#gimp-round-rect-select" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_rotate ()" link="libgimp-gimptools.html#gimp-rotate" deprecated=""/>
     <keyword type="function" name="gimp_scale ()" link="libgimp-gimptools.html#gimp-scale" deprecated=""/>
     <keyword type="function" name="gimp_shear ()" link="libgimp-gimptools.html#gimp-shear" deprecated=""/>
@@ -604,29 +610,36 @@
     <keyword type="function" name="gimp_image_undo_enable ()" link="libgimp-gimpundo.html#gimp-image-undo-enable"/>
     <keyword type="function" name="gimp_image_undo_freeze ()" link="libgimp-gimpundo.html#gimp-image-undo-freeze"/>
     <keyword type="function" name="gimp_image_undo_thaw ()" link="libgimp-gimpundo.html#gimp-image-undo-thaw"/>
+    <keyword type="function" name="gimp_vectors_new ()" link="libgimp-gimpvectors.html#gimp-vectors-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_import_from_file ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-file" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_import_from_string ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-string" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_image ()" link="libgimp-gimpvectors.html#gimp-vectors-get-image" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_linked ()" link="libgimp-gimpvectors.html#gimp-vectors-get-linked" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_name ()" link="libgimp-gimpvectors.html#gimp-vectors-get-name" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-get-tattoo" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-get-visible" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_vectors_new ()" link="libgimp-gimpvectors.html#gimp-vectors-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_set_linked ()" link="libgimp-gimpvectors.html#gimp-vectors-set-linked" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_set_name ()" link="libgimp-gimpvectors.html#gimp-vectors-set-name" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_set_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-set-tattoo" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_set_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-set-visible" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_remove_stroke ()" link="libgimp-gimpvectors.html#gimp-vectors-remove-stroke" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_to_selection ()" link="libgimp-gimpvectors.html#gimp-vectors-to-selection" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_attach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-attach" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_detach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-detach" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_find ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-find" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_list ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-list" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_stroke_new_from_points ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-new-from-points" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_stroke_close ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-close" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_vectors_stroke_remove ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-remove" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_stroke_get_length ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_stroke_get_points ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-get-points" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_stroke_get_point_at_dist ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-get-point-at-dist" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_stroke_interpolate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_stroke_scale ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-scale" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_stroke_translate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-translate" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_stroke_flip ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-flip" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_stroke_flip_free ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-flip-free" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_stroke_rotate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-rotate" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_bezier_stroke_conicto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_bezier_stroke_cubicto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_bezier_stroke_lineto ()" link="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-lineto" since="GIMP 2.4"/>
@@ -754,9 +767,6 @@
     <keyword type="function" name="gimp_font_select_button_set_font ()" link="GimpFontSelectButton.html#gimp-font-select-button-set-font" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
     <keyword type="" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
-    <keyword type="" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
-    <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
     <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
     <keyword type="struct" name="GimpGradientSelectButton" link="GimpGradientSelectButton.html#GimpGradientSelectButton-struct"/>
     <keyword type="function" name="gimp_gradient_select_button_new ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-new" since="GIMP 2.4"/>
@@ -834,13 +844,17 @@
     <keyword type="function" name="gimp_zoom_preview_get_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-model" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;drawable&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--drawable"/>
     <keyword type="" name="The &quot;model&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--model"/>
-    <keyword type="struct" name="GimpDrawableComboBox" link="GimpDrawableComboBox.html#GimpDrawableComboBox-struct"/>
-    <keyword type="function" name="GimpDrawableConstraintFunc ()" link="GimpDrawableComboBox.html#GimpDrawableConstraintFunc"/>
-    <keyword type="function" name="gimp_drawable_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-drawable-combo-box-new" since="GIMP 2.2"/>
-    <keyword type="struct" name="GimpChannelComboBox" link="GimpDrawableComboBox.html#GimpChannelComboBox-struct"/>
-    <keyword type="function" name="gimp_channel_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-channel-combo-box-new" since="GIMP 2.2"/>
-    <keyword type="struct" name="GimpLayerComboBox" link="GimpDrawableComboBox.html#GimpLayerComboBox-struct"/>
-    <keyword type="function" name="gimp_layer_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-layer-combo-box-new" since="GIMP 2.2"/>
+    <keyword type="function" name="GimpItemConstraintFunc ()" link="libgimp-GimpItemComboBox.html#GimpItemConstraintFunc"/>
+    <keyword type="struct" name="GimpDrawableComboBox" link="libgimp-GimpItemComboBox.html#GimpDrawableComboBox-struct"/>
+    <keyword type="typedef" name="GimpDrawableConstraintFunc" link="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc"/>
+    <keyword type="function" name="gimp_drawable_combo_box_new ()" link="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" since="GIMP 2.2"/>
+    <keyword type="struct" name="GimpChannelComboBox" link="libgimp-GimpItemComboBox.html#GimpChannelComboBox-struct"/>
+    <keyword type="function" name="gimp_channel_combo_box_new ()" link="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new" since="GIMP 2.2"/>
+    <keyword type="struct" name="GimpLayerComboBox" link="libgimp-GimpItemComboBox.html#GimpLayerComboBox-struct"/>
+    <keyword type="function" name="gimp_layer_combo_box_new ()" link="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new" since="GIMP 2.2"/>
+    <keyword type="struct" name="GimpVectorsComboBox" link="libgimp-GimpItemComboBox.html#GimpVectorsComboBox-struct"/>
+    <keyword type="typedef" name="GimpVectorsConstraintFunc" link="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc"/>
+    <keyword type="function" name="gimp_vectors_combo_box_new ()" link="libgimp-GimpItemComboBox.html#gimp-vectors-combo-box-new" since="GIMP 2.4"/>
     <keyword type="struct" name="GimpImageComboBox" link="GimpImageComboBox.html#GimpImageComboBox-struct"/>
     <keyword type="function" name="GimpImageConstraintFunc ()" link="GimpImageComboBox.html#GimpImageConstraintFunc"/>
     <keyword type="function" name="gimp_image_combo_box_new ()" link="GimpImageComboBox.html#gimp-image-combo-box-new" since="GIMP 2.2"/>

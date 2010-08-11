@@ -10,7 +10,7 @@
       </placeholder>
       <placeholder name="Open">
         <menuitem action="file-open-from-image" />
-        <menuitem action="file-open-as-layer" />
+        <menuitem action="file-open-as-layers" />
         <menuitem action="file-open-location" />
       </placeholder>
       <menu action="file-open-recent-menu" name="Open Recent">
@@ -149,6 +149,7 @@
       <placeholder name="Undo">
         <menuitem action="edit-undo" />
         <menuitem action="edit-redo" />
+        <menuitem action="edit-fade" />
         <menuitem action="dialogs-undo-history" />
       </placeholder>
       <separator />

@@ -63,8 +63,6 @@ static void     gimp_rect_select_tool_rectangle_tool_iface_init (GimpRectangleTo
 static GObject *gimp_rect_select_tool_constructor         (GType              type,
                                                            guint              n_params,
                                                            GObjectConstructParam *params);
-static void     gimp_rect_select_tool_dispose             (GObject           *object);
-static void     gimp_rect_select_tool_finalize            (GObject           *object);
 static void     gimp_rect_select_tool_control             (GimpTool          *tool,
                                                            GimpToolAction     action,
                                                            GimpDisplay       *display);
@@ -92,6 +90,7 @@ static void     gimp_rect_select_tool_cursor_update       (GimpTool          *to
                                                            GimpCoords        *coords,
                                                            GdkModifierType    state,
                                                            GimpDisplay       *display);
+static void     gimp_rect_select_tool_draw                (GimpDrawTool      *draw_tool);
 static void     gimp_rect_select_tool_select              (GimpRectangleTool *rect_tool,
                                                            gint               x,
                                                            gint               y,
@@ -105,12 +104,15 @@ static gboolean gimp_rect_select_tool_execute             (GimpRectangleTool *re
 static void     gimp_rect_select_tool_cancel              (GimpRectangleTool *rect_tool);
 static gboolean gimp_rect_select_tool_rectangle_changed   (GimpRectangleTool *rect_tool);
 static void     gimp_rect_select_tool_real_select         (GimpRectSelectTool *rect_select,
-                                                           SelectOps           operation,
+                                                           GimpChannelOps      operation,
                                                            gint                x,
                                                            gint                y,
                                                            gint                w,
                                                            gint                h);
 
+static void    gimp_rect_select_tool_round_corners_notify (GimpRectSelectOptions *options,
+                                                           GParamSpec            *pspec,
+                                                           GimpRectSelectTool    *rect_sel);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpRectSelectTool, gimp_rect_select_tool,
@@ -145,15 +147,12 @@ gimp_rect_select_tool_class_init (GimpRectSelectToolClass *klass)
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
 
-  object_class->constructor  = gimp_rect_select_tool_constructor;
-  object_class->dispose      = gimp_rect_select_tool_dispose;
-  object_class->finalize     = gimp_rect_select_tool_finalize;
-  object_class->set_property = gimp_rectangle_tool_set_property;
-  object_class->get_property = gimp_rectangle_tool_get_property;
+  object_class->constructor       = gimp_rect_select_tool_constructor;
+  object_class->set_property      = gimp_rectangle_tool_set_property;
+  object_class->get_property      = gimp_rectangle_tool_get_property;
 
   gimp_rectangle_tool_install_properties (object_class);
 
-  tool_class->initialize          = gimp_rectangle_tool_initialize;
   tool_class->control             = gimp_rect_select_tool_control;
   tool_class->button_press        = gimp_rect_select_tool_button_press;
   tool_class->button_release      = gimp_rect_select_tool_button_release;
@@ -163,9 +162,17 @@ gimp_rect_select_tool_class_init (GimpRectSelectToolClass *klass)
   tool_class->oper_update         = gimp_rect_select_tool_oper_update;
   tool_class->cursor_update       = gimp_rect_select_tool_cursor_update;
 
-  draw_tool_class->draw           = gimp_rectangle_tool_draw;
+  draw_tool_class->draw           = gimp_rect_select_tool_draw;
 
   klass->select                   = gimp_rect_select_tool_real_select;
+}
+
+static void
+gimp_rect_select_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface)
+{
+  iface->execute           = gimp_rect_select_tool_execute;
+  iface->cancel            = gimp_rect_select_tool_cancel;
+  iface->rectangle_changed = gimp_rect_select_tool_rectangle_changed;
 }
 
 static void
@@ -183,41 +190,33 @@ gimp_rect_select_tool_init (GimpRectSelectTool *rect_select)
   rect_select->redo = NULL;
 }
 
-static void
-gimp_rect_select_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface)
-{
-  iface->execute           = gimp_rect_select_tool_execute;
-  iface->cancel            = gimp_rect_select_tool_cancel;
-  iface->rectangle_changed = gimp_rect_select_tool_rectangle_changed;
-}
-
 static GObject *
 gimp_rect_select_tool_constructor (GType                  type,
                                    guint                  n_params,
                                    GObjectConstructParam *params)
 {
-  GObject  *object;
-  GimpTool *tool;
+  GObject               *object;
+  GimpRectSelectTool    *rect_sel;
+  GimpRectSelectOptions *options;
 
   object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
 
   gimp_rectangle_tool_constructor (object);
 
-  tool    = GIMP_TOOL (object);
+  rect_sel = GIMP_RECT_SELECT_TOOL (object);
+  options  = GIMP_RECT_SELECT_TOOL_GET_OPTIONS (rect_sel);
+
+  rect_sel->round_corners = options->round_corners;
+  rect_sel->corner_radius = options->corner_radius;
+
+  g_signal_connect_object (options, "notify::round-corners",
+                           G_CALLBACK (gimp_rect_select_tool_round_corners_notify),
+                           object, 0);
+  g_signal_connect_object (options, "notify::corner-radius",
+                           G_CALLBACK (gimp_rect_select_tool_round_corners_notify),
+                           object, 0);
 
   return object;
-}
-
-static void
-gimp_rect_select_tool_dispose (GObject *object)
-{
-  gimp_rectangle_tool_dispose (object);
-}
-
-static void
-gimp_rect_select_tool_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -231,19 +230,71 @@ gimp_rect_select_tool_control (GimpTool       *tool,
 }
 
 static void
-gimp_rect_select_tool_button_press (GimpTool        *tool,
-                                        GimpCoords      *coords,
-                                        guint32          time,
-                                        GdkModifierType  state,
-                                        GimpDisplay     *display)
+gimp_rect_select_tool_draw (GimpDrawTool *draw_tool)
 {
-  GimpRectSelectTool   *rect_select = GIMP_RECT_SELECT_TOOL (tool);
-  guint                 function;
+  GimpRectSelectTool *rect_sel = GIMP_RECT_SELECT_TOOL (draw_tool);
+
+  gimp_rectangle_tool_draw (draw_tool);
+
+  if (rect_sel->round_corners)
+    {
+      gint    x1, y1, x2, y2;
+      gdouble radius;
+      gint    square_size;
+
+      g_object_get (rect_sel,
+                    "x1", &x1,
+                    "y1", &y1,
+                    "x2", &x2,
+                    "y2", &y2,
+                    NULL);
+
+      radius = MIN (rect_sel->corner_radius,
+                    MIN ((x2 - x1) / 2.0, (y2 - y1) / 2.0));
+
+      square_size = (int) (radius * 2);
+
+      gimp_draw_tool_draw_arc (draw_tool, FALSE,
+                               x1, y1,
+                               square_size, square_size,
+                               90 * 64,  90 * 64,
+                               FALSE);
+
+      gimp_draw_tool_draw_arc (draw_tool, FALSE,
+                               x2 - square_size, y1,
+                               square_size, square_size,
+                               0,        90 * 64,
+                               FALSE);
+
+      gimp_draw_tool_draw_arc (draw_tool, FALSE,
+                               x2 - square_size, y2 - square_size,
+                               square_size, square_size,
+                               270 * 64, 90 * 64,
+                               FALSE);
+
+      gimp_draw_tool_draw_arc (draw_tool, FALSE,
+                               x1, y2 - square_size,
+                               square_size, square_size,
+                               180 * 64, 90 * 64,
+                               FALSE);
+    }
+}
+
+static void
+gimp_rect_select_tool_button_press (GimpTool        *tool,
+                                    GimpCoords      *coords,
+                                    guint32          time,
+                                    GdkModifierType  state,
+                                    GimpDisplay     *display)
+{
+  GimpRectangleTool     *rectangle   = GIMP_RECTANGLE_TOOL (tool);
+  GimpRectSelectTool    *rect_select = GIMP_RECT_SELECT_TOOL (tool);
+  GimpRectangleFunction  function;
 
   if (tool->display && display != tool->display)
     gimp_rectangle_tool_cancel (GIMP_RECTANGLE_TOOL (tool));
 
-  g_object_get (tool, "function", &function, NULL);
+  function = gimp_rectangle_tool_get_function (rectangle);
 
   rect_select->saved_show_selection
     = gimp_display_shell_get_show_selection (GIMP_DISPLAY_SHELL (display->shell));
@@ -271,7 +322,7 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
   /* if the shift or ctrl keys are down, we don't want to adjust, we
    * want to create a new rectangle, regardless of pointer loc */
   if (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK))
-    g_object_set (tool, "function", RECT_CREATING, NULL);
+    gimp_rectangle_tool_set_function (rectangle, RECT_CREATING);
 
   gimp_rectangle_tool_button_press (tool, coords, time, state, display);
 
@@ -279,7 +330,7 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
    * we have already "executed", and need to undo at this point,
    * unless the user has done something in the meantime
    */
-  g_object_get (tool, "function", &function, NULL);
+  function = gimp_rectangle_tool_get_function (rectangle);
 
   if (function == RECT_CREATING)
     {
@@ -290,7 +341,7 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
       GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
       GimpImage            *image   = tool->display->image;
       GimpUndo             *undo;
-      SelectOps             operation;
+      GimpChannelOps        operation;
 
       if (rect_select->use_saved_op)
         operation = rect_select->operation;
@@ -316,7 +367,7 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
 
       /* if the operation is "Replace", turn off the marching ants,
          because they are confusing */
-      if (operation == SELECTION_REPLACE)
+      if (operation == GIMP_CHANNEL_OP_REPLACE)
         gimp_display_shell_set_show_selection (GIMP_DISPLAY_SHELL (display->shell),
                                                FALSE);
     }
@@ -331,8 +382,8 @@ gimp_rect_select_tool_button_release (GimpTool        *tool,
                                       GdkModifierType  state,
                                       GimpDisplay     *display)
 {
-  GimpRectSelectTool   *rect_select = GIMP_RECT_SELECT_TOOL (tool);
-  GimpRectangleTool    *rectangle   = GIMP_RECTANGLE_TOOL (tool);
+  GimpRectSelectTool *rect_select = GIMP_RECT_SELECT_TOOL (tool);
+  GimpRectangleTool  *rectangle   = GIMP_RECTANGLE_TOOL (tool);
 
   gimp_tool_pop_status (tool, display);
   gimp_display_shell_set_show_selection (GIMP_DISPLAY_SHELL (display->shell),
@@ -401,11 +452,11 @@ gimp_rect_select_tool_oper_update (GimpTool        *tool,
                                    gboolean         proximity,
                                    GimpDisplay     *display)
 {
-  guint function;
+  GimpRectangleFunction function;
 
   gimp_rectangle_tool_oper_update (tool, coords, state, proximity, display);
 
-  g_object_get (tool, "function", &function, NULL);
+  function = gimp_rectangle_tool_get_function (GIMP_RECTANGLE_TOOL (tool));
 
   if (function == RECT_INACTIVE)
     GIMP_SELECTION_TOOL (tool)->allow_move = TRUE;
@@ -444,7 +495,7 @@ gimp_rect_select_tool_select (GimpRectangleTool *rectangle,
   GimpSelectionOptions *options     = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
   GimpImage            *image;
   gboolean              rectangle_exists;
-  SelectOps             operation;
+  GimpChannelOps        operation;
 
   gimp_tool_pop_status (tool, tool->display);
 
@@ -464,28 +515,51 @@ gimp_rect_select_tool_select (GimpRectangleTool *rectangle,
   /* if rectangle exists, turn it into a selection */
   if (rectangle_exists)
     GIMP_RECT_SELECT_TOOL_GET_CLASS (rect_select)->select (rect_select,
-                                                               operation,
-                                                               x, y, w, h);
+                                                           operation,
+                                                           x, y, w, h);
 }
 
 static void
 gimp_rect_select_tool_real_select (GimpRectSelectTool *rect_select,
-                                   SelectOps           operation,
+                                   GimpChannelOps      operation,
                                    gint                x,
                                    gint                y,
                                    gint                w,
                                    gint                h)
 {
-  GimpTool             *tool    = GIMP_TOOL (rect_select);
-  GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+  GimpTool              *tool = GIMP_TOOL (rect_select);
+  GimpSelectionOptions  *options;
+  GimpRectSelectOptions *rect_select_options;
 
-  gimp_channel_select_rectangle (gimp_image_get_mask (tool->display->image),
-                                 x, y, w, h,
-                                 operation,
-                                 options->feather,
-                                 options->feather_radius,
-                                 options->feather_radius,
-                                 TRUE);
+  options             = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+  rect_select_options = GIMP_RECT_SELECT_TOOL_GET_OPTIONS (tool);
+
+  if (rect_select_options->round_corners)
+    {
+      /* To prevent elliptification of the rect, we must cap the corner radius */
+      gdouble radius = MIN (rect_select_options->corner_radius,
+                            MIN (w / 2.0, h / 2.0));
+
+      gimp_channel_select_round_rect (gimp_image_get_mask (tool->display->image),
+                                      x, y, w, h,
+                                      radius, radius,
+                                      operation,
+                                      options->antialias,
+                                      options->feather,
+                                      options->feather_radius,
+                                      options->feather_radius,
+                                      TRUE);
+    }
+  else
+    {
+      gimp_channel_select_rectangle (gimp_image_get_mask (tool->display->image),
+                                     x, y, w, h,
+                                     operation,
+                                     options->feather,
+                                     options->feather_radius,
+                                     options->feather_radius,
+                                     TRUE);
+    }
 }
 
 /*
@@ -520,6 +594,7 @@ gimp_rect_select_tool_execute (GimpRectangleTool *rectangle,
       if (gimp_image_floating_sel (image))
         {
           floating_sel_anchor (gimp_image_floating_sel (image));
+          gimp_image_flush (image);
           return TRUE;
         }
 
@@ -579,7 +654,7 @@ gimp_rect_select_tool_execute (GimpRectangleTool *rectangle,
                             NULL);
             }
 
-          g_object_set (rectangle, "function", RECT_MOVING, NULL);
+          gimp_rectangle_tool_set_function (rectangle, RECT_MOVING);
 
           return FALSE;
         }
@@ -592,6 +667,7 @@ gimp_rect_select_tool_execute (GimpRectangleTool *rectangle,
 
           /* otherwise clear the selection */
           gimp_channel_clear (selection, NULL, TRUE);
+          gimp_image_flush (image);
 
           gimp_tool_control_set_preserve (tool->control, FALSE);
         }
@@ -634,7 +710,7 @@ gimp_rect_select_tool_cancel (GimpRectangleTool *rectangle)
 }
 
 static gboolean
-gimp_rect_select_tool_rectangle_changed (GimpRectangleTool  *rectangle)
+gimp_rect_select_tool_rectangle_changed (GimpRectangleTool *rectangle)
 {
   GimpTool *tool = GIMP_TOOL (rectangle);
 
@@ -643,10 +719,10 @@ gimp_rect_select_tool_rectangle_changed (GimpRectangleTool  *rectangle)
 
   if (tool->display)
     {
-      GimpRectSelectTool   *rect_select = GIMP_RECT_SELECT_TOOL (tool);
-      GimpImage            *image       = tool->display->image;
-      GimpUndo             *undo;
-      gint                  x1, y1, x2, y2;
+      GimpRectSelectTool *rect_select = GIMP_RECT_SELECT_TOOL (tool);
+      GimpImage          *image       = tool->display->image;
+      GimpUndo           *undo;
+      gint                x1, y1, x2, y2;
 
       /* if we got here via button release, we have already undone the
        * previous operation.  But if we got here by some other means,
@@ -688,4 +764,17 @@ gimp_rect_select_tool_rectangle_changed (GimpRectangleTool  *rectangle)
   gimp_tool_control_set_preserve (tool->control, FALSE);
 
   return TRUE;
+}
+
+static void
+gimp_rect_select_tool_round_corners_notify (GimpRectSelectOptions *options,
+                                            GParamSpec            *pspec,
+                                            GimpRectSelectTool    *rect_sel)
+{
+  gimp_draw_tool_pause (GIMP_DRAW_TOOL (rect_sel));
+
+  rect_sel->round_corners = options->round_corners;
+  rect_sel->corner_radius = options->corner_radius;
+
+  gimp_draw_tool_resume (GIMP_DRAW_TOOL (rect_sel));
 }

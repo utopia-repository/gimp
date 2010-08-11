@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpplugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577631" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2555383" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2579283" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2587539" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpmessage"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577631"></a><span class="refentrytitle">gimpmessage</span>
+<a name="id2555383"></a><span class="refentrytitle">gimpmessage</span>
 </h2>
 <p>gimpmessage &#8212; Display a dialog box with a message.</p>
 </td>
@@ -64,18 +64,18 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579283"></a><h2>Description</h2>
+<a name="id2587539"></a><h2>Description</h2>
 <p>
 Display a dialog box with a message.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569692"></a><h2>Details</h2>
+<a name="id2568226"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2551954"></a><h3>
+<a name="id2554280"></a><h3>
 <a name="gimp-message"></a>gimp_message ()</h3>
-<a class="indexterm" name="id2579816"></a><pre class="programlisting">gboolean    gimp_message                    (const gchar *message);</pre>
+<a class="indexterm" name="id2554292"></a><pre class="programlisting">gboolean    gimp_message                    (const gchar *message);</pre>
 <p>
 Displays a dialog box with a message.
 </p>
@@ -89,14 +89,12 @@ reporting. The message must be in UTF-8 encoding.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
 <td> Message to display in the dialog.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -105,9 +103,9 @@ reporting. The message must be in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2558679"></a><h3>
+<a name="id2586094"></a><h3>
 <a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3>
-<a class="indexterm" name="id2558690"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2586105"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> gimp_message_get_handler
                                             (void);</pre>
@@ -124,8 +122,7 @@ gimp was started.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The current handler type.
 </td>
 </tr></tbody>
@@ -133,9 +130,9 @@ gimp was started.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2558737"></a><h3>
+<a name="id2586152"></a><h3>
 <a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3>
-<a class="indexterm" name="id2558748"></a><pre class="programlisting">gboolean    gimp_message_set_handler        (<a
+<a class="indexterm" name="id2586163"></a><pre class="programlisting">gboolean    gimp_message_set_handler        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);</pre>
 <p>
@@ -152,14 +149,12 @@ was started.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>handler</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>handler</code></em>&#160;:</span></td>
 <td> The new handler type.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

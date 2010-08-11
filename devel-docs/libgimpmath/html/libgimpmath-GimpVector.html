@@ -11,10 +11,10 @@
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpmath.html" title="Part&#160;I.&#160;GIMP Math Library">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpmath-index.html" title="Index">
+<link rel="index" href="libgimpmath-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpmath-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpmath-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Math Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpmath-GimpMD5.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581751" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2565803" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2599749" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2599123" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpmath-GimpVector"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2581751"></a><span class="refentrytitle">GimpVector</span>
+<a name="id2565803"></a><span class="refentrytitle">GimpVector</span>
 </h2>
 <p>GimpVector &#8212; Utilities to set up and manipulate vectors.</p>
 </td>
@@ -156,18 +156,18 @@ void        <a href="libgimpmath-GimpVector.html#gimp-vector-3d-to-2d">gimp_vect
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599749"></a><h2>Description</h2>
+<a name="id2599123"></a><h2>Description</h2>
 <p>
 Utilities to set up and manipulate vectors.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2599765"></a><h2>Details</h2>
+<a name="id2599140"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2599776"></a><h3>
+<a name="id2599151"></a><h3>
 <a name="GimpVector2"></a>GimpVector2</h3>
-<a class="indexterm" name="id2599788"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2599163"></a><pre class="programlisting">typedef struct {
   gdouble x, y;
 } GimpVector2;
 </pre>
@@ -177,9 +177,9 @@ A two dimensional vector.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599804"></a><h3>
+<a name="id2599179"></a><h3>
 <a name="GimpVector3"></a>GimpVector3</h3>
-<a class="indexterm" name="id2599816"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2599191"></a><pre class="programlisting">typedef struct {
   gdouble x, y, z;
 } GimpVector3;
 </pre>
@@ -189,9 +189,9 @@ A three dimensional vector.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599833"></a><h3>
+<a name="id2599207"></a><h3>
 <a name="GimpVector4"></a>GimpVector4</h3>
-<a class="indexterm" name="id2599845"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2599219"></a><pre class="programlisting">typedef struct {
   gdouble x, y, z, w;
 } GimpVector4;
 </pre>
@@ -201,9 +201,9 @@ A four dimensional vector.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599861"></a><h3>
+<a name="id2599236"></a><h3>
 <a name="gimp-vector2-new"></a>gimp_vector2_new ()</h3>
-<a class="indexterm" name="id2599874"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_new                (gdouble x,
+<a class="indexterm" name="id2599248"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_new                (gdouble x,
                                              gdouble y);</pre>
 <p>
 Creates a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a> of coordinates <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.</p>
@@ -214,20 +214,17 @@ Creates a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">G
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the X coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the Y coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -236,9 +233,9 @@ Creates a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">G
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599982"></a><h3>
+<a name="id2599356"></a><h3>
 <a name="gimp-vector2-set"></a>gimp_vector2_set ()</h3>
-<a class="indexterm" name="id2599994"></a><pre class="programlisting">void        gimp_vector2_set                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector,
+<a class="indexterm" name="id2599369"></a><pre class="programlisting">void        gimp_vector2_set                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector,
                                              gdouble x,
                                              gdouble y);</pre>
 <p>
@@ -250,20 +247,17 @@ Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> t
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the X coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the Y coordinate.
 </td>
 </tr>
@@ -272,9 +266,9 @@ Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> t
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600111"></a><h3>
+<a name="id2599485"></a><h3>
 <a name="gimp-vector2-length"></a>gimp_vector2_length ()</h3>
-<a class="indexterm" name="id2600123"></a><pre class="programlisting">gdouble     gimp_vector2_length             (const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector);</pre>
+<a class="indexterm" name="id2599498"></a><pre class="programlisting">gdouble     gimp_vector2_length             (const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector);</pre>
 <p>
 Computes the length of a 2D vector.</p>
 <p>
@@ -284,14 +278,12 @@ Computes the length of a 2D vector.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>vector</code></em> (a positive gdouble).
 </td>
 </tr>
@@ -300,9 +292,9 @@ Computes the length of a 2D vector.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600196"></a><h3>
+<a name="id2599570"></a><h3>
 <a name="gimp-vector2-length-val"></a>gimp_vector2_length_val ()</h3>
-<a class="indexterm" name="id2600207"></a><pre class="programlisting">gdouble     gimp_vector2_length_val         (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector);</pre>
+<a class="indexterm" name="id2599582"></a><pre class="programlisting">gdouble     gimp_vector2_length_val         (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-length"><code class="function">gimp_vector2_length()</code></a> but the
 vector is passed by value rather than by reference.</p>
@@ -313,14 +305,12 @@ vector is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>vector</code></em> (a positive gdouble).
 </td>
 </tr>
@@ -329,9 +319,9 @@ vector is passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600290"></a><h3>
+<a name="id2599665"></a><h3>
 <a name="gimp-vector2-mul"></a>gimp_vector2_mul ()</h3>
-<a class="indexterm" name="id2600302"></a><pre class="programlisting">void        gimp_vector2_mul                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector,
+<a class="indexterm" name="id2599677"></a><pre class="programlisting">void        gimp_vector2_mul                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector,
                                              gdouble factor);</pre>
 <p>
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that this
@@ -343,14 +333,12 @@ is equivalent to multiplying the vectors length by <em class="parameter"><code>f
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
 <td> a scalar.
 </td>
 </tr>
@@ -359,9 +347,9 @@ is equivalent to multiplying the vectors length by <em class="parameter"><code>f
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600399"></a><h3>
+<a name="id2599775"></a><h3>
 <a name="gimp-vector2-mul-val"></a>gimp_vector2_mul_val ()</h3>
-<a class="indexterm" name="id2600410"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_mul_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector,
+<a class="indexterm" name="id2599786"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_mul_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector,
                                              gdouble factor);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-mul"><code class="function">gimp_vector2_mul()</code></a> but the vector is
@@ -373,20 +361,17 @@ passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
 <td> a scalar.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -395,9 +380,9 @@ passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600489"></a><h3>
+<a name="id2599892"></a><h3>
 <a name="gimp-vector2-normalize"></a>gimp_vector2_normalize ()</h3>
-<a class="indexterm" name="id2600499"></a><pre class="programlisting">void        gimp_vector2_normalize          (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector);</pre>
+<a class="indexterm" name="id2599903"></a><pre class="programlisting">void        gimp_vector2_normalize          (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector);</pre>
 <p>
 Normalizes the <em class="parameter"><code>vector</code></em> so the length of the <em class="parameter"><code>vector</code></em> is 1.0. The nul
 vector will not be changed.</p>
@@ -407,8 +392,7 @@ vector will not be changed.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr></tbody>
@@ -416,9 +400,9 @@ vector will not be changed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600561"></a><h3>
+<a name="id2599972"></a><h3>
 <a name="gimp-vector2-normalize-val"></a>gimp_vector2_normalize_val ()</h3>
-<a class="indexterm" name="id2600572"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_normalize_val      (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector);</pre>
+<a class="indexterm" name="id2599984"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_normalize_val      (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-normalize"><code class="function">gimp_vector2_normalize()</code></a> but the
 vector is passed by value rather than by reference.</p>
@@ -429,14 +413,12 @@ vector is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a> parallel to <em class="parameter"><code>vector</code></em>, pointing in the same
 direction but with a length of 1.0.
 </td>
@@ -446,9 +428,9 @@ direction but with a length of 1.0.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600654"></a><h3>
+<a name="id2600075"></a><h3>
 <a name="gimp-vector2-neg"></a>gimp_vector2_neg ()</h3>
-<a class="indexterm" name="id2600664"></a><pre class="programlisting">void        gimp_vector2_neg                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector);</pre>
+<a class="indexterm" name="id2600087"></a><pre class="programlisting">void        gimp_vector2_neg                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector);</pre>
 <p>
 Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its coordinates).</p>
 <p>
@@ -457,8 +439,7 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr></tbody>
@@ -466,9 +447,9 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600720"></a><h3>
+<a name="id2600151"></a><h3>
 <a name="gimp-vector2-neg-val"></a>gimp_vector2_neg_val ()</h3>
-<a class="indexterm" name="id2600731"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_neg_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector);</pre>
+<a class="indexterm" name="id2600162"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_neg_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-neg"><code class="function">gimp_vector2_neg()</code></a> but the vector
 is passed by value rather than by reference.</p>
@@ -479,14 +460,12 @@ is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the negated <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -495,9 +474,9 @@ is passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600806"></a><h3>
+<a name="id2600247"></a><h3>
 <a name="gimp-vector2-add"></a>gimp_vector2_add ()</h3>
-<a class="indexterm" name="id2600817"></a><pre class="programlisting">void        gimp_vector2_add                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *result,
+<a class="indexterm" name="id2600259"></a><pre class="programlisting">void        gimp_vector2_add                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *result,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector2);</pre>
 <p>
@@ -510,20 +489,17 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
 <td> destination for the resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -532,9 +508,9 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600931"></a><h3>
+<a name="id2600386"></a><h3>
 <a name="gimp-vector2-add-val"></a>gimp_vector2_add_val ()</h3>
-<a class="indexterm" name="id2600941"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_add_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
+<a class="indexterm" name="id2600397"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_add_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-add"><code class="function">gimp_vector2_add()</code></a> but the vectors
@@ -546,20 +522,17 @@ are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -568,9 +541,9 @@ are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601042"></a><h3>
+<a name="id2600483"></a><h3>
 <a name="gimp-vector2-sub"></a>gimp_vector2_sub ()</h3>
-<a class="indexterm" name="id2601052"></a><pre class="programlisting">void        gimp_vector2_sub                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *result,
+<a class="indexterm" name="id2600494"></a><pre class="programlisting">void        gimp_vector2_sub                (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *result,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector2);</pre>
 <p>
@@ -583,20 +556,17 @@ The resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="typ
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
 <td> the destination for the resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -605,9 +575,9 @@ The resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="typ
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601177"></a><h3>
+<a name="id2600618"></a><h3>
 <a name="gimp-vector2-sub-val"></a>gimp_vector2_sub_val ()</h3>
-<a class="indexterm" name="id2601187"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_sub_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
+<a class="indexterm" name="id2600628"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_sub_val            (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-sub"><code class="function">gimp_vector2_sub()</code></a> but the vectors
@@ -619,20 +589,17 @@ are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
@@ -641,9 +608,9 @@ are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601288"></a><h3>
+<a name="id2600729"></a><h3>
 <a name="gimp-vector2-inner-product"></a>gimp_vector2_inner_product ()</h3>
-<a class="indexterm" name="id2601299"></a><pre class="programlisting">gdouble     gimp_vector2_inner_product      (const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector1,
+<a class="indexterm" name="id2600740"></a><pre class="programlisting">gdouble     gimp_vector2_inner_product      (const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector2);</pre>
 <p>
 Computes the inner (dot) product of two 2D vectors.
@@ -655,20 +622,17 @@ This product is zero if and only if the two vectors are orthognal.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The inner product.
 </td>
 </tr>
@@ -677,9 +641,9 @@ This product is zero if and only if the two vectors are orthognal.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601386"></a><h3>
+<a name="id2600827"></a><h3>
 <a name="gimp-vector2-inner-product-val"></a>gimp_vector2_inner_product_val ()</h3>
-<a class="indexterm" name="id2601399"></a><pre class="programlisting">gdouble     gimp_vector2_inner_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
+<a class="indexterm" name="id2600840"></a><pre class="programlisting">gdouble     gimp_vector2_inner_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-inner-product"><code class="function">gimp_vector2_inner_product()</code></a> but the
@@ -691,20 +655,17 @@ vectors are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The inner product.
 </td>
 </tr>
@@ -713,9 +674,9 @@ vectors are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601495"></a><h3>
+<a name="id2600936"></a><h3>
 <a name="gimp-vector2-cross-product"></a>gimp_vector2_cross_product ()</h3>
-<a class="indexterm" name="id2601506"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_cross_product      (const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector1,
+<a class="indexterm" name="id2600947"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_cross_product      (const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector2);</pre>
 <p>
 Compute the cross product of two vectors. The result is a
@@ -733,20 +694,17 @@ parallel or not, or to compute the area spawned by two vectors.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The cross product.
 </td>
 </tr>
@@ -755,9 +713,9 @@ parallel or not, or to compute the area spawned by two vectors.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601626"></a><h3>
+<a name="id2601067"></a><h3>
 <a name="gimp-vector2-cross-product-val"></a>gimp_vector2_cross_product_val ()</h3>
-<a class="indexterm" name="id2601639"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_cross_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
+<a class="indexterm" name="id2601080"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_cross_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-cross-product"><code class="function">gimp_vector2_cross_product()</code></a> but the
@@ -769,20 +727,17 @@ vectors are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> the first <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> the second <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The cross product.
 </td>
 </tr>
@@ -791,9 +746,9 @@ vectors are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601735"></a><h3>
+<a name="id2601176"></a><h3>
 <a name="gimp-vector2-rotate"></a>gimp_vector2_rotate ()</h3>
-<a class="indexterm" name="id2601745"></a><pre class="programlisting">void        gimp_vector2_rotate             (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector,
+<a class="indexterm" name="id2601186"></a><pre class="programlisting">void        gimp_vector2_rotate             (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> *vector,
                                              gdouble alpha);</pre>
 <p>
 Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <em class="parameter"><code>alpha</code></em> radians.</p>
@@ -804,14 +759,12 @@ Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td> an angle (in radians).
 </td>
 </tr>
@@ -820,9 +773,9 @@ Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601825"></a><h3>
+<a name="id2601266"></a><h3>
 <a name="gimp-vector2-rotate-val"></a>gimp_vector2_rotate_val ()</h3>
-<a class="indexterm" name="id2601835"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_rotate_val         (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector,
+<a class="indexterm" name="id2601276"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> gimp_vector2_rotate_val         (<a href="libgimpmath-GimpVector.html#GimpVector2">GimpVector2</a> vector,
                                              gdouble alpha);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector2-rotate"><code class="function">gimp_vector2_rotate()</code></a> but the vector
@@ -834,20 +787,17 @@ is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td> an angle (in radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector2"><span class="type">GimpVector2</span></a> representing <em class="parameter"><code>vector</code></em> rotated by <em class="parameter"><code>alpha</code></em>
 radians.
 </td>
@@ -857,9 +807,9 @@ radians.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601940"></a><h3>
+<a name="id2601381"></a><h3>
 <a name="gimp-vector3-new"></a>gimp_vector3_new ()</h3>
-<a class="indexterm" name="id2601951"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_new                (gdouble x,
+<a class="indexterm" name="id2601392"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_new                (gdouble x,
                                              gdouble y,
                                              gdouble z);</pre>
 <p>
@@ -871,26 +821,22 @@ Creates a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">G
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the X coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the Y coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>z</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>z</code></em>&#160;:</span></td>
 <td> the Z coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -899,9 +845,9 @@ Creates a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">G
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602070"></a><h3>
+<a name="id2601511"></a><h3>
 <a name="gimp-vector3-set"></a>gimp_vector3_set ()</h3>
-<a class="indexterm" name="id2602080"></a><pre class="programlisting">void        gimp_vector3_set                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector,
+<a class="indexterm" name="id2601521"></a><pre class="programlisting">void        gimp_vector3_set                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector,
                                              gdouble x,
                                              gdouble y,
                                              gdouble z);</pre>
@@ -914,26 +860,22 @@ Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the X coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the Y coordinate.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>z</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>z</code></em>&#160;:</span></td>
 <td> the Z coordinate.
 </td>
 </tr>
@@ -942,9 +884,9 @@ Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602208"></a><h3>
+<a name="id2601649"></a><h3>
 <a name="gimp-vector3-length"></a>gimp_vector3_length ()</h3>
-<a class="indexterm" name="id2602218"></a><pre class="programlisting">gdouble     gimp_vector3_length             (const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector);</pre>
+<a class="indexterm" name="id2601660"></a><pre class="programlisting">gdouble     gimp_vector3_length             (const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector);</pre>
 <p>
 Computes the length of a 3D vector.</p>
 <p>
@@ -954,14 +896,12 @@ Computes the length of a 3D vector.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>vector</code></em> (a positive gdouble).
 </td>
 </tr>
@@ -970,9 +910,9 @@ Computes the length of a 3D vector.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602284"></a><h3>
+<a name="id2601725"></a><h3>
 <a name="gimp-vector3-length-val"></a>gimp_vector3_length_val ()</h3>
-<a class="indexterm" name="id2602295"></a><pre class="programlisting">gdouble     gimp_vector3_length_val         (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector);</pre>
+<a class="indexterm" name="id2601736"></a><pre class="programlisting">gdouble     gimp_vector3_length_val         (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-length"><code class="function">gimp_vector3_length()</code></a> but the vector
 is passed by value rather than by reference.</p>
@@ -983,14 +923,12 @@ is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the length of <em class="parameter"><code>vector</code></em> (a positive gdouble).
 </td>
 </tr>
@@ -999,9 +937,9 @@ is passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602370"></a><h3>
+<a name="id2601811"></a><h3>
 <a name="gimp-vector3-mul"></a>gimp_vector3_mul ()</h3>
-<a class="indexterm" name="id2602380"></a><pre class="programlisting">void        gimp_vector3_mul                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector,
+<a class="indexterm" name="id2601821"></a><pre class="programlisting">void        gimp_vector3_mul                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector,
                                              gdouble factor);</pre>
 <p>
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that
@@ -1013,14 +951,12 @@ this is equivalent to multiplying the vectors length by <em class="parameter"><c
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
 <td> a scalar.
 </td>
 </tr>
@@ -1029,9 +965,9 @@ this is equivalent to multiplying the vectors length by <em class="parameter"><c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602466"></a><h3>
+<a name="id2601908"></a><h3>
 <a name="gimp-vector3-mul-val"></a>gimp_vector3_mul_val ()</h3>
-<a class="indexterm" name="id2602477"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_mul_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector,
+<a class="indexterm" name="id2601918"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_mul_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector,
                                              gdouble factor);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-mul"><code class="function">gimp_vector3_mul()</code></a> but the vector is
@@ -1043,20 +979,17 @@ passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></td>
 <td> a scalar.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -1065,9 +998,9 @@ passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602572"></a><h3>
+<a name="id2602013"></a><h3>
 <a name="gimp-vector3-normalize"></a>gimp_vector3_normalize ()</h3>
-<a class="indexterm" name="id2602582"></a><pre class="programlisting">void        gimp_vector3_normalize          (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector);</pre>
+<a class="indexterm" name="id2602023"></a><pre class="programlisting">void        gimp_vector3_normalize          (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector);</pre>
 <p>
 Normalizes the <em class="parameter"><code>vector</code></em> so the length of the <em class="parameter"><code>vector</code></em> is 1.0. The nul
 vector will not be changed.</p>
@@ -1077,8 +1010,7 @@ vector will not be changed.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr></tbody>
@@ -1086,9 +1018,9 @@ vector will not be changed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602643"></a><h3>
+<a name="id2602084"></a><h3>
 <a name="gimp-vector3-normalize-val"></a>gimp_vector3_normalize_val ()</h3>
-<a class="indexterm" name="id2602654"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_normalize_val      (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector);</pre>
+<a class="indexterm" name="id2602096"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_normalize_val      (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-normalize"><code class="function">gimp_vector3_normalize()</code></a> but the
 vector is passed by value rather than by reference.</p>
@@ -1099,14 +1031,12 @@ vector is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a> parallel to <em class="parameter"><code>vector</code></em>, pointing in the same
 direction but with a length of 1.0.
 </td>
@@ -1116,9 +1046,9 @@ direction but with a length of 1.0.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602737"></a><h3>
+<a name="id2602178"></a><h3>
 <a name="gimp-vector3-neg"></a>gimp_vector3_neg ()</h3>
-<a class="indexterm" name="id2602747"></a><pre class="programlisting">void        gimp_vector3_neg                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector);</pre>
+<a class="indexterm" name="id2602188"></a><pre class="programlisting">void        gimp_vector3_neg                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector);</pre>
 <p>
 Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its coordinates).</p>
 <p>
@@ -1127,8 +1057,7 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr></tbody>
@@ -1136,9 +1065,9 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602809"></a><h3>
+<a name="id2602244"></a><h3>
 <a name="gimp-vector3-neg-val"></a>gimp_vector3_neg_val ()</h3>
-<a class="indexterm" name="id2602822"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_neg_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector);</pre>
+<a class="indexterm" name="id2602254"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_neg_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-neg"><code class="function">gimp_vector3_neg()</code></a> but the vector
 is passed by value rather than by reference.</p>
@@ -1149,14 +1078,12 @@ is passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the negated <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -1165,9 +1092,9 @@ is passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602907"></a><h3>
+<a name="id2602330"></a><h3>
 <a name="gimp-vector3-add"></a>gimp_vector3_add ()</h3>
-<a class="indexterm" name="id2602920"></a><pre class="programlisting">void        gimp_vector3_add                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *result,
+<a class="indexterm" name="id2602341"></a><pre class="programlisting">void        gimp_vector3_add                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *result,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector2);</pre>
 <p>
@@ -1180,20 +1107,17 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
 <td> destination for the resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -1202,9 +1126,9 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603048"></a><h3>
+<a name="id2602454"></a><h3>
 <a name="gimp-vector3-add-val"></a>gimp_vector3_add_val ()</h3>
-<a class="indexterm" name="id2603061"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_add_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
+<a class="indexterm" name="id2602465"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_add_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-add"><code class="function">gimp_vector3_add()</code></a> but the vectors
@@ -1216,20 +1140,17 @@ are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -1238,9 +1159,9 @@ are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603175"></a><h3>
+<a name="id2602566"></a><h3>
 <a name="gimp-vector3-sub"></a>gimp_vector3_sub ()</h3>
-<a class="indexterm" name="id2603188"></a><pre class="programlisting">void        gimp_vector3_sub                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *result,
+<a class="indexterm" name="id2602576"></a><pre class="programlisting">void        gimp_vector3_sub                (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *result,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector2);</pre>
 <p>
@@ -1253,20 +1174,17 @@ The resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="typ
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>result</code></em>&#160;:</span></td>
 <td> the destination for the resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -1275,9 +1193,9 @@ The resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="typ
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603328"></a><h3>
+<a name="id2602702"></a><h3>
 <a name="gimp-vector3-sub-val"></a>gimp_vector3_sub_val ()</h3>
-<a class="indexterm" name="id2603342"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_sub_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
+<a class="indexterm" name="id2602716"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_sub_val            (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-sub"><code class="function">gimp_vector3_sub()</code></a> but the vectors
@@ -1289,20 +1207,17 @@ are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the resulting <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
@@ -1311,9 +1226,9 @@ are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603455"></a><h3>
+<a name="id2602830"></a><h3>
 <a name="gimp-vector3-inner-product"></a>gimp_vector3_inner_product ()</h3>
-<a class="indexterm" name="id2603469"></a><pre class="programlisting">gdouble     gimp_vector3_inner_product      (const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector1,
+<a class="indexterm" name="id2602844"></a><pre class="programlisting">gdouble     gimp_vector3_inner_product      (const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector2);</pre>
 <p>
 Computes the inner (dot) product of two 3D vectors. This product
@@ -1325,20 +1240,17 @@ is zero if and only if the two vectors are orthognal.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The inner product.
 </td>
 </tr>
@@ -1347,9 +1259,9 @@ is zero if and only if the two vectors are orthognal.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603567"></a><h3>
+<a name="id2602942"></a><h3>
 <a name="gimp-vector3-inner-product-val"></a>gimp_vector3_inner_product_val ()</h3>
-<a class="indexterm" name="id2603582"></a><pre class="programlisting">gdouble     gimp_vector3_inner_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
+<a class="indexterm" name="id2602956"></a><pre class="programlisting">gdouble     gimp_vector3_inner_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-inner-product"><code class="function">gimp_vector3_inner_product()</code></a> but the
@@ -1361,20 +1273,17 @@ vectors are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> the first <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> the second <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The inner product.
 </td>
 </tr>
@@ -1383,9 +1292,9 @@ vectors are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603689"></a><h3>
+<a name="id2603064"></a><h3>
 <a name="gimp-vector3-cross-product"></a>gimp_vector3_cross_product ()</h3>
-<a class="indexterm" name="id2603703"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_cross_product      (const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector1,
+<a class="indexterm" name="id2603078"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_cross_product      (const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector1,
                                              const <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector2);</pre>
 <p>
 Compute the cross product of two vectors. The result is a
@@ -1403,20 +1312,17 @@ defined by <em class="parameter"><code>vector1</code></em> and <em class="parame
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> a pointer to the first <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> a pointer to the second <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The cross product.
 </td>
 </tr>
@@ -1425,9 +1331,9 @@ defined by <em class="parameter"><code>vector1</code></em> and <em class="parame
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603849"></a><h3>
+<a name="id2603223"></a><h3>
 <a name="gimp-vector3-cross-product-val"></a>gimp_vector3_cross_product_val ()</h3>
-<a class="indexterm" name="id2603863"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_cross_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
+<a class="indexterm" name="id2603238"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_cross_product_val  (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector1,
                                              <a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector2);</pre>
 <p>
 This function is identical to <a href="libgimpmath-GimpVector.html#gimp-vector3-cross-product"><code class="function">gimp_vector3_cross_product()</code></a> but the
@@ -1439,20 +1345,17 @@ vectors are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector1</code></em>&#160;:</span></td>
 <td> the first <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector2</code></em>&#160;:</span></td>
 <td> the second <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The cross product.
 </td>
 </tr>
@@ -1461,9 +1364,9 @@ vectors are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603970"></a><h3>
+<a name="id2603345"></a><h3>
 <a name="gimp-vector3-rotate"></a>gimp_vector3_rotate ()</h3>
-<a class="indexterm" name="id2603984"></a><pre class="programlisting">void        gimp_vector3_rotate             (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector,
+<a class="indexterm" name="id2603358"></a><pre class="programlisting">void        gimp_vector3_rotate             (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> *vector,
                                              gdouble alpha,
                                              gdouble beta,
                                              gdouble gamma);</pre>
@@ -1483,26 +1386,22 @@ this function with only one of <em class="parameter"><code>alpha</code></em>, <e
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a pointer to a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td> the angle (in radian) of rotation around the Z axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>beta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>beta</code></em>&#160;:</span></td>
 <td> the angle (in radian) of rotation around the Y axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></td>
 <td> the angle (in radian) of rotation around the X axis.
 </td>
 </tr>
@@ -1511,9 +1410,9 @@ this function with only one of <em class="parameter"><code>alpha</code></em>, <e
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604156"></a><h3>
+<a name="id2603531"></a><h3>
 <a name="gimp-vector3-rotate-val"></a>gimp_vector3_rotate_val ()</h3>
-<a class="indexterm" name="id2604169"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_rotate_val         (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector,
+<a class="indexterm" name="id2603544"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector3_rotate_val         (<a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> vector,
                                              gdouble alpha,
                                              gdouble beta,
                                              gdouble gamma);</pre>
@@ -1527,32 +1426,27 @@ are passed by value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vector</code></em>&#160;:</span></td>
 <td> a <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></td>
 <td> the angle (in radian) of rotation around the Z axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>beta</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>beta</code></em>&#160;:</span></td>
 <td> the angle (in radian) of rotation around the Y axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></td>
 <td> the angle (in radian) of rotation around the X axis.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the rotated vector.
 </td>
 </tr>
@@ -1561,9 +1455,9 @@ are passed by value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604314"></a><h3>
+<a name="id2603688"></a><h3>
 <a name="gimp-vector-2d-to-3d"></a>gimp_vector_2d_to_3d ()</h3>
-<a class="indexterm" name="id2604328"></a><pre class="programlisting">void        gimp_vector_2d_to_3d            (gint sx,
+<a class="indexterm" name="id2603702"></a><pre class="programlisting">void        gimp_vector_2d_to_3d            (gint sx,
                                              gint sy,
                                              gint w,
                                              gint h,
@@ -1587,50 +1481,42 @@ through the screen (<em class="parameter"><code>sx</code></em>, <em class="param
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sx</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sx</code></em>&#160;:</span></td>
 <td> the abscisse of the upper-left screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sy</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sy</code></em>&#160;:</span></td>
 <td> the ordinate of the upper-left screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
 <td> the width of the screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
 <td> the height of the screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the abscisse of the point in the screen rectangle to map.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the ordinate of the point in the screen rectangle to map.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vp</code></em>&#160;:</span></td>
 <td> the position of the observer.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
 <td> the resulting point.
 </td>
 </tr>
@@ -1639,9 +1525,9 @@ through the screen (<em class="parameter"><code>sx</code></em>, <em class="param
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604597"></a><h3>
+<a name="id2603972"></a><h3>
 <a name="gimp-vector-2d-to-3d-val"></a>gimp_vector_2d_to_3d_val ()</h3>
-<a class="indexterm" name="id2604610"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector_2d_to_3d_val        (gint sx,
+<a class="indexterm" name="id2603985"></a><pre class="programlisting"><a href="libgimpmath-GimpVector.html#GimpVector3">GimpVector3</a> gimp_vector_2d_to_3d_val        (gint sx,
                                              gint sy,
                                              gint w,
                                              gint h,
@@ -1660,56 +1546,47 @@ value rather than by reference.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sx</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sx</code></em>&#160;:</span></td>
 <td> the abscisse of the upper-left screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sy</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sy</code></em>&#160;:</span></td>
 <td> the ordinate of the upper-left screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
 <td> the width of the screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
 <td> the height of the screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the abscisse of the point in the screen rectangle to map.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the ordinate of the point in the screen rectangle to map.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vp</code></em>&#160;:</span></td>
 <td> position of the observer.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
 <td> the resulting point.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the computed <a href="libgimpmath-GimpVector.html#GimpVector3"><span class="type">GimpVector3</span></a> point.
 </td>
 </tr>
@@ -1718,9 +1595,9 @@ value rather than by reference.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604852"></a><h3>
+<a name="id2604227"></a><h3>
 <a name="gimp-vector-3d-to-2d"></a>gimp_vector_3d_to_2d ()</h3>
-<a class="indexterm" name="id2604866"></a><pre class="programlisting">void        gimp_vector_3d_to_2d            (gint sx,
+<a class="indexterm" name="id2604241"></a><pre class="programlisting">void        gimp_vector_3d_to_2d            (gint sx,
                                              gint sy,
                                              gint w,
                                              gint h,
@@ -1743,50 +1620,42 @@ This is basically the opposite of <a href="libgimpmath-GimpVector.html#gimp-vect
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sx</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sx</code></em>&#160;:</span></td>
 <td> the abscisse of the upper-left screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sy</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sy</code></em>&#160;:</span></td>
 <td> the ordinate of the upper-left screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>w</code></em>&#160;:</span></td>
 <td> the width of the screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>h</code></em>&#160;:</span></td>
 <td> the height of the screen rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> the abscisse of the point in the screen rectangle to map (return value).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> the ordinate of the point in the screen rectangle to map (return value).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>vp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>vp</code></em>&#160;:</span></td>
 <td> position of the observer.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>p</code></em>&#160;:</span></td>
 <td> the 3D point to project to the plane.
 </td>
 </tr>
@@ -1795,7 +1664,7 @@ This is basically the opposite of <a href="libgimpmath-GimpVector.html#gimp-vect
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2605087"></a><h2>See Also</h2>
+<a name="id2604462"></a><h2>See Also</h2>
 <p>
 <a href="libgimpmath-GimpMatrix.html#GimpMatrix3"><span class="type">GimpMatrix3</span></a>
 </p>

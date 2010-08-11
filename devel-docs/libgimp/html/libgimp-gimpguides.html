@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpimage.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2565618" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2572654" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2615091" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2628928" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpguides"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2565618"></a><span class="refentrytitle">gimpguides</span>
+<a name="id2572654"></a><span class="refentrytitle">gimpguides</span>
 </h2>
 <p>gimpguides &#8212; Functions for manipulating guides.</p>
 </td>
@@ -69,18 +69,18 @@ gint        <a href="libgimp-gimpguides.html#gimp-image-get-guide-position">gimp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2615091"></a><h2>Description</h2>
+<a name="id2628928"></a><h2>Description</h2>
 <p>
 Functions for manipulating guides.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2615106"></a><h2>Details</h2>
+<a name="id2628943"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2615117"></a><h3>
+<a name="id2628954"></a><h3>
 <a name="gimp-image-add-hguide"></a>gimp_image_add_hguide ()</h3>
-<a class="indexterm" name="id2615128"></a><pre class="programlisting">gint32      gimp_image_add_hguide           (gint32 image_ID,
+<a class="indexterm" name="id2628965"></a><pre class="programlisting">gint32      gimp_image_add_hguide           (gint32 image_ID,
                                              gint yposition);</pre>
 <p>
 Add a horizontal guide to an image.
@@ -96,20 +96,17 @@ returns the guide ID of the new guide.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>yposition</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>yposition</code></em>&#160;:</span></td>
 <td> The guide's y-offset from top of image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new guide.
 </td>
 </tr>
@@ -118,9 +115,9 @@ returns the guide ID of the new guide.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611502"></a><h3>
+<a name="id2629052"></a><h3>
 <a name="gimp-image-add-vguide"></a>gimp_image_add_vguide ()</h3>
-<a class="indexterm" name="id2611513"></a><pre class="programlisting">gint32      gimp_image_add_vguide           (gint32 image_ID,
+<a class="indexterm" name="id2629063"></a><pre class="programlisting">gint32      gimp_image_add_vguide           (gint32 image_ID,
                                              gint xposition);</pre>
 <p>
 Add a vertical guide to an image.
@@ -136,20 +133,17 @@ the guide ID of the new guide.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>xposition</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>xposition</code></em>&#160;:</span></td>
 <td> The guide's x-offset from left of image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new guide.
 </td>
 </tr>
@@ -158,9 +152,9 @@ the guide ID of the new guide.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611599"></a><h3>
+<a name="id2628626"></a><h3>
 <a name="gimp-image-delete-guide"></a>gimp_image_delete_guide ()</h3>
-<a class="indexterm" name="id2611611"></a><pre class="programlisting">gboolean    gimp_image_delete_guide         (gint32 image_ID,
+<a class="indexterm" name="id2628637"></a><pre class="programlisting">gboolean    gimp_image_delete_guide         (gint32 image_ID,
                                              gint32 guide_ID);</pre>
 <p>
 Deletes a guide from an image.
@@ -175,20 +169,17 @@ the specified guide from the specified image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
 <td> The ID of the guide to be removed.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -197,9 +188,9 @@ the specified guide from the specified image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628062"></a><h3>
+<a name="id2628722"></a><h3>
 <a name="gimp-image-find-next-guide"></a>gimp_image_find_next_guide ()</h3>
-<a class="indexterm" name="id2628074"></a><pre class="programlisting">gint32      gimp_image_find_next_guide      (gint32 image_ID,
+<a class="indexterm" name="id2628734"></a><pre class="programlisting">gint32      gimp_image_find_next_guide      (gint32 image_ID,
                                              gint32 guide_ID);</pre>
 <p>
 Find next guide on an image.
@@ -217,20 +208,17 @@ as an argument or the image has no guides.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
 <td> The ID of the current guide (0 if first invocation).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The next guide's ID.
 </td>
 </tr>
@@ -239,9 +227,9 @@ as an argument or the image has no guides.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628163"></a><h3>
+<a name="id2613568"></a><h3>
 <a name="gimp-image-get-guide-orientation"></a>gimp_image_get_guide_orientation ()</h3>
-<a class="indexterm" name="id2628174"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> gimp_image_get_guide_orientation
+<a class="indexterm" name="id2613580"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> gimp_image_get_guide_orientation
                                             (gint32 image_ID,
                                              gint32 guide_ID);</pre>
 <p>
@@ -257,20 +245,17 @@ the orientations of the guide.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
 <td> The guide.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The guide's orientation.
 </td>
 </tr>
@@ -279,9 +264,9 @@ the orientations of the guide.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628261"></a><h3>
+<a name="id2613666"></a><h3>
 <a name="gimp-image-get-guide-position"></a>gimp_image_get_guide_position ()</h3>
-<a class="indexterm" name="id2628420"></a><pre class="programlisting">gint        gimp_image_get_guide_position   (gint32 image_ID,
+<a class="indexterm" name="id2613678"></a><pre class="programlisting">gint        gimp_image_get_guide_position   (gint32 image_ID,
                                              gint32 guide_ID);</pre>
 <p>
 Get position of a guide on an image.
@@ -296,20 +281,17 @@ the position of the guide relative to the top or left of the image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>guide_ID</code></em>&#160;:</span></td>
 <td> The guide.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The guide's position relative to top or left of image.
 </td>
 </tr>

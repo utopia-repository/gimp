@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppalette.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2573720" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2548344" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2662098" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2665599" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradients"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2573720"></a><span class="refentrytitle">gimpgradients</span>
+<a name="id2548344"></a><span class="refentrytitle">gimpgradients</span>
 </h2>
 <p>gimpgradients &#8212; Operations related to gradients.</p>
 </td>
@@ -72,18 +72,18 @@ gchar*      <a href="libgimp-gimpgradients.html#gimp-gradients-get-gradient-data
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662098"></a><h2>Description</h2>
+<a name="id2665599"></a><h2>Description</h2>
 <p>
 Operations related to gradients.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662113"></a><h2>Details</h2>
+<a name="id2665614"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2662124"></a><h3>
+<a name="id2665625"></a><h3>
 <a name="gimp-gradients-refresh"></a>gimp_gradients_refresh ()</h3>
-<a class="indexterm" name="id2662135"></a><pre class="programlisting">gboolean    gimp_gradients_refresh          (void);</pre>
+<a class="indexterm" name="id2665636"></a><pre class="programlisting">gboolean    gimp_gradients_refresh          (void);</pre>
 <p>
 Refresh current gradients. This function always succeeds.
 </p>
@@ -96,8 +96,7 @@ gradient path and updates the gradient dialogs accordingly.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr></tbody>
@@ -105,9 +104,9 @@ gradient path and updates the gradient dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665356"></a><h3>
+<a name="id2665680"></a><h3>
 <a name="gimp-gradients-get-list"></a>gimp_gradients_get_list ()</h3>
-<a class="indexterm" name="id2665367"></a><pre class="programlisting">gchar**     gimp_gradients_get_list         (const gchar *filter,
+<a class="indexterm" name="id2681320"></a><pre class="programlisting">gchar**     gimp_gradients_get_list         (const gchar *filter,
                                              gint *num_gradients);</pre>
 <p>
 Retrieve the list of loaded gradients.
@@ -123,20 +122,17 @@ to set the active gradient.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></td>
 <td> An optional regular expression used to filter the list.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_gradients</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_gradients</code></em>&#160;:</span></td>
 <td> The number of loaded gradients.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The list of gradient names.
 </td>
 </tr>
@@ -145,9 +141,9 @@ to set the active gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2665461"></a><h3>
+<a name="id2681414"></a><h3>
 <a name="gimp-gradients-get-gradient"></a>gimp_gradients_get_gradient ()</h3>
-<a class="indexterm" name="id2665474"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient     (void);</pre>
+<a class="indexterm" name="id2681427"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient     (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradients_get_gradient</code> is deprecated and should not be used in newly-written code.</p>
@@ -160,8 +156,7 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The name of the active gradient.
 </td>
 </tr></tbody>
@@ -169,9 +164,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2681558"></a><h3>
+<a name="id2681487"></a><h3>
 <a name="gimp-gradients-set-gradient"></a>gimp_gradients_set_gradient ()</h3>
-<a class="indexterm" name="id2681572"></a><pre class="programlisting">gboolean    gimp_gradients_set_gradient     (const gchar *name);</pre>
+<a class="indexterm" name="id2681500"></a><pre class="programlisting">gboolean    gimp_gradients_set_gradient     (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradients_set_gradient</code> is deprecated and should not be used in newly-written code.</p>
@@ -185,14 +180,12 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The name of the gradient to set.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -201,9 +194,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2681651"></a><h3>
+<a name="id2664249"></a><h3>
 <a name="gimp-gradients-sample-uniform"></a>gimp_gradients_sample_uniform ()</h3>
-<a class="indexterm" name="id2681664"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_uniform   (gint num_samples,
+<a class="indexterm" name="id2664263"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_uniform   (gint num_samples,
                                              gboolean reverse);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -219,20 +212,17 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
 <td> The number of samples to take.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
 <td> Use the reverse gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
 </td>
 </tr>
@@ -241,9 +231,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2662407"></a><h3>
+<a name="id2664364"></a><h3>
 <a name="gimp-gradients-sample-custom"></a>gimp_gradients_sample_custom ()</h3>
-<a class="indexterm" name="id2662420"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_custom    (gint num_samples,
+<a class="indexterm" name="id2664378"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_custom    (gint num_samples,
                                              const gdouble *positions,
                                              gboolean reverse);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -260,26 +250,22 @@ instead.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_samples</code></em>&#160;:</span></td>
 <td> The number of samples to take.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>positions</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>positions</code></em>&#160;:</span></td>
 <td> The list of positions to sample along the gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
 <td> Use the reverse gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
 </td>
 </tr>
@@ -288,9 +274,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2662545"></a><h3>
+<a name="id2664505"></a><h3>
 <a name="gimp-gradients-get-gradient-data"></a>gimp_gradients_get_gradient_data ()</h3>
-<a class="indexterm" name="id2662561"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient_data
+<a class="indexterm" name="id2664868"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient_data
                                             (const gchar *name,
                                              gint sample_size,
                                              gboolean reverse,
@@ -310,38 +296,32 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The gradient name (\"\" means current active gradient).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sample_size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sample_size</code></em>&#160;:</span></td>
 <td> Size of the sample to return when the gradient is changed.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></td>
 <td> Use the reverse gradient.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The gradient sample width (r,g,b,a).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>grad_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>grad_data</code></em>&#160;:</span></td>
 <td> The gradient sample data.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The gradient name.
 </td>
 </tr>

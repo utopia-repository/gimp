@@ -38,8 +38,10 @@
 #include "core/gimpgradient.h"
 #include "core/gimplist.h"
 
+#include "internal_procs.h"
 
-GimpGradient *
+
+static GimpGradient *
 gradient_get (Gimp                 *gimp,
               const gchar          *name,
               gint                  segment,
@@ -56,7 +58,7 @@ gradient_get (Gimp                 *gimp,
   return gradient;
 }
 
-GimpGradient *
+static GimpGradient *
 gradient_get_range (Gimp                 *gimp,
                     const gchar          *name,
                     gint                  start_segment,

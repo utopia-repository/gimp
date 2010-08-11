@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradient.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2576393" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2553014" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2580817" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2581348" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfonts"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2576393"></a><span class="refentrytitle">gimpfonts</span>
+<a name="id2553014"></a><span class="refentrytitle">gimpfonts</span>
 </h2>
 <p>gimpfonts &#8212; Operations related to fonts.</p>
 </td>
@@ -59,17 +59,17 @@ gchar**     <a href="libgimp-gimpfonts.html#gimp-fonts-get-list">gimp_fonts_get_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2580817"></a><h2>Description</h2>
+<a name="id2581348"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575901"></a><h2>Details</h2>
+<a name="id2563934"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2562288"></a><h3>
+<a name="id2562251"></a><h3>
 <a name="gimp-fonts-refresh"></a>gimp_fonts_refresh ()</h3>
-<a class="indexterm" name="id2555131"></a><pre class="programlisting">gboolean    gimp_fonts_refresh              (void);</pre>
+<a class="indexterm" name="id2577072"></a><pre class="programlisting">gboolean    gimp_fonts_refresh              (void);</pre>
 <p>
 Refresh current fonts. This function always succeeds.
 </p>
@@ -82,8 +82,7 @@ and updates the font dialogs accordingly.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr></tbody>
@@ -91,9 +90,9 @@ and updates the font dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2663758"></a><h3>
+<a name="id2662409"></a><h3>
 <a name="gimp-fonts-get-list"></a>gimp_fonts_get_list ()</h3>
-<a class="indexterm" name="id2663769"></a><pre class="programlisting">gchar**     gimp_fonts_get_list             (const gchar *filter,
+<a class="indexterm" name="id2662420"></a><pre class="programlisting">gchar**     gimp_fonts_get_list             (const gchar *filter,
                                              gint *num_fonts);</pre>
 <p>
 Retrieve the list of loaded fonts.
@@ -108,20 +107,17 @@ available.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></td>
 <td> An optional regular expression used to filter the list.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_fonts</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_fonts</code></em>&#160;:</span></td>
 <td> The number of available fonts.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The list of font names.
 </td>
 </tr>

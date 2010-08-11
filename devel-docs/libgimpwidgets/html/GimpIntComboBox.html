@@ -19,10 +19,10 @@
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimpwidgets-index.html" title="Index">
+<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpIntStore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2553895" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2572722" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2602858" class="shortcut">Description</a>
+                  <a href="#id2603019" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2602726" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2602886" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2602794" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2602954" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2602828" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2602988" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpIntComboBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2553895"></a><span class="refentrytitle">GimpIntComboBox</span>
+<a name="id2572722"></a><span class="refentrytitle">GimpIntComboBox</span>
 </h2>
 <p>GimpIntComboBox &#8212; A widget providing a popup menu of integer values (e.g. enums).</p>
 </td>
@@ -92,7 +92,7 @@ void        <a href="GimpIntComboBox.html#gimp-int-combo-box-set-sensitivity">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602726"></a><h2>Object Hierarchy</h2>
+<a name="id2602886"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -107,39 +107,39 @@ void        <a href="GimpIntComboBox.html#gimp-int-combo-box-set-sensitivity">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602794"></a><h2>Implemented Interfaces</h2>
+<a name="id2602954"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpIntComboBox implements
  AtkImplementorIface,  GtkCellEditable and  GtkCellLayout.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602828"></a><h2>Properties</h2>
+<a name="id2602988"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpIntComboBox.html#GimpIntComboBox--ellipsize">ellipsize</a>"            PangoEllipsizeMode    : Read / Write
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602858"></a><h2>Description</h2>
+<a name="id2603019"></a><h2>Description</h2>
 <p>
 A widget providing a popup menu of integer values (e.g. enums).
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602875"></a><h2>Details</h2>
+<a name="id2600997"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2602886"></a><h3>
+<a name="id2601007"></a><h3>
 <a name="GimpIntComboBox-struct"></a>GimpIntComboBox</h3>
-<a class="indexterm" name="id2602897"></a><pre class="programlisting">typedef struct _GimpIntComboBox GimpIntComboBox;</pre>
+<a class="indexterm" name="id2601019"></a><pre class="programlisting">typedef struct _GimpIntComboBox GimpIntComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585444"></a><h3>
+<a name="id2601035"></a><h3>
 <a name="GimpIntSensitivityFunc"></a>GimpIntSensitivityFunc ()</h3>
-<a class="indexterm" name="id2585455"></a><pre class="programlisting">gboolean    (*GimpIntSensitivityFunc)       (gint value,
+<a class="indexterm" name="id2601046"></a><pre class="programlisting">gboolean    (*GimpIntSensitivityFunc)       (gint value,
                                              gpointer data);</pre>
 <p>
 
@@ -148,20 +148,17 @@ A widget providing a popup menu of integer values (e.g. enums).
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -172,9 +169,9 @@ A widget providing a popup menu of integer values (e.g. enums).
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585531"></a><h3>
+<a name="id2601123"></a><h3>
 <a name="gimp-int-combo-box-new"></a>gimp_int_combo_box_new ()</h3>
-<a class="indexterm" name="id2585545"></a><pre class="programlisting">GtkWidget*  gimp_int_combo_box_new          (const gchar *first_label,
+<a class="indexterm" name="id2601136"></a><pre class="programlisting">GtkWidget*  gimp_int_combo_box_new          (const gchar *first_label,
                                              gint first_value,
                                              ...);</pre>
 <p>
@@ -192,26 +189,22 @@ g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>first_label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>first_label</code></em>&#160;:</span></td>
 <td> the label of the first item
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>first_value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>first_value</code></em>&#160;:</span></td>
 <td> the value of the first item
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td> a <code class="literal">NULL</code> terminated list of more label, value pairs
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>.
 
 </td>
@@ -223,9 +216,9 @@ g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585686"></a><h3>
+<a name="id2601278"></a><h3>
 <a name="gimp-int-combo-box-new-valist"></a>gimp_int_combo_box_new_valist ()</h3>
-<a class="indexterm" name="id2585702"></a><pre class="programlisting">GtkWidget*  gimp_int_combo_box_new_valist   (const gchar *first_label,
+<a class="indexterm" name="id2601294"></a><pre class="programlisting">GtkWidget*  gimp_int_combo_box_new_valist   (const gchar *first_label,
                                              gint first_value,
                                              va_list values);</pre>
 <p>
@@ -238,26 +231,22 @@ label/value pairs. Probably only useful for language bindings.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>first_label</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>first_label</code></em>&#160;:</span></td>
 <td> the label of the first item
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>first_value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>first_value</code></em>&#160;:</span></td>
 <td> the value of the first item
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>values</code></em>&#160;:</span></td>
 <td> a va_list with more values
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>.
 
 </td>
@@ -269,9 +258,9 @@ label/value pairs. Probably only useful for language bindings.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585828"></a><h3>
+<a name="id2601419"></a><h3>
 <a name="gimp-int-combo-box-new-array"></a>gimp_int_combo_box_new_array ()</h3>
-<a class="indexterm" name="id2606445"></a><pre class="programlisting">GtkWidget*  gimp_int_combo_box_new_array    (gint n_values,
+<a class="indexterm" name="id2605841"></a><pre class="programlisting">GtkWidget*  gimp_int_combo_box_new_array    (gint n_values,
                                              const gchar *labels[]);</pre>
 <p>
 A variant of <a href="GimpIntComboBox.html#gimp-int-combo-box-new"><code class="function">gimp_int_combo_box_new()</code></a> that takes an array of labels.
@@ -283,20 +272,17 @@ The array indices are used as values.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>n_values</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>n_values</code></em>&#160;:</span></td>
 <td> the number of values
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>labels</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>labels</code></em>&#160;:</span></td>
 <td>   an array of labels (array length must be <em class="parameter"><code>n_values</code></em>)
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>.
 
 </td>
@@ -308,9 +294,9 @@ The array indices are used as values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606544"></a><h3>
+<a name="id2605940"></a><h3>
 <a name="gimp-int-combo-box-prepend"></a>gimp_int_combo_box_prepend ()</h3>
-<a class="indexterm" name="id2606558"></a><pre class="programlisting">void        gimp_int_combo_box_prepend      (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
+<a class="indexterm" name="id2605953"></a><pre class="programlisting">void        gimp_int_combo_box_prepend      (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
                                              ...);</pre>
 <p>
 This function provides a convenient way to prepend items to a
@@ -326,14 +312,12 @@ The column number must be taken from the enum <a href="GimpIntStore.html#GimpInt
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
 <td> a <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>       pairs of column number and value, terminated with -1
 </td>
 </tr>
@@ -344,9 +328,9 @@ The column number must be taken from the enum <a href="GimpIntStore.html#GimpInt
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606670"></a><h3>
+<a name="id2606064"></a><h3>
 <a name="gimp-int-combo-box-append"></a>gimp_int_combo_box_append ()</h3>
-<a class="indexterm" name="id2606685"></a><pre class="programlisting">void        gimp_int_combo_box_append       (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
+<a class="indexterm" name="id2606079"></a><pre class="programlisting">void        gimp_int_combo_box_append       (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
                                              ...);</pre>
 <p>
 This function provides a convenient way to append items to a
@@ -362,14 +346,12 @@ The column number must be taken from the enum <a href="GimpIntStore.html#GimpInt
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
 <td> a <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></td>
 <td>       pairs of column number and value, terminated with -1
 </td>
 </tr>
@@ -380,9 +362,9 @@ The column number must be taken from the enum <a href="GimpIntStore.html#GimpInt
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606797"></a><h3>
+<a name="id2606191"></a><h3>
 <a name="gimp-int-combo-box-set-active"></a>gimp_int_combo_box_set_active ()</h3>
-<a class="indexterm" name="id2606813"></a><pre class="programlisting">gboolean    gimp_int_combo_box_set_active   (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
+<a class="indexterm" name="id2606207"></a><pre class="programlisting">gboolean    gimp_int_combo_box_set_active   (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
                                              gint value);</pre>
 <p>
 Looks up the item that belongs to the given <em class="parameter"><code>value</code></em> and makes it the
@@ -394,20 +376,17 @@ selected item in the <em class="parameter"><code>combo_box</code></em>.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
 <td> a <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>     an integer value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> on success or <code class="literal">FALSE</code> if there was no item for
               this value.
 
@@ -420,9 +399,9 @@ selected item in the <em class="parameter"><code>combo_box</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606939"></a><h3>
+<a name="id2606333"></a><h3>
 <a name="gimp-int-combo-box-get-active"></a>gimp_int_combo_box_get_active ()</h3>
-<a class="indexterm" name="id2606955"></a><pre class="programlisting">gboolean    gimp_int_combo_box_get_active   (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
+<a class="indexterm" name="id2606349"></a><pre class="programlisting">gboolean    gimp_int_combo_box_get_active   (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
                                              gint *value);</pre>
 <p>
 Retrieves the value of the selected (active) item in the <em class="parameter"><code>combo_box</code></em>.</p>
@@ -433,20 +412,17 @@ Retrieves the value of the selected (active) item in the <em class="parameter"><
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
 <td> a <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>     return location for the integer value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> <code class="literal">TRUE</code> if <em class="parameter"><code>value</code></em> has been set or <code class="literal">FALSE</code> if no item was
               active.
 
@@ -459,9 +435,9 @@ Retrieves the value of the selected (active) item in the <em class="parameter"><
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607081"></a><h3>
+<a name="id2606475"></a><h3>
 <a name="gimp-int-combo-box-connect"></a>gimp_int_combo_box_connect ()</h3>
-<a class="indexterm" name="id2607096"></a><pre class="programlisting">gulong      gimp_int_combo_box_connect      (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
+<a class="indexterm" name="id2606490"></a><pre class="programlisting">gulong      gimp_int_combo_box_connect      (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
                                              gint value,
                                              GCallback callback,
                                              gpointer data);</pre>
@@ -485,32 +461,27 @@ href="../libgimp/GimpDrawableComboBox.html#gimp-drawable-combo-box-new"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
 <td> a <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></td>
 <td>     the value to set
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>  a callback to connect to the <em class="parameter"><code>combo_box</code></em>'s "changed" signal
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>      a pointer passed as data to <code class="function">g_signal_connect()</code>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the signal handler ID as returned by <code class="function">g_signal_connect()</code>
 
 </td>
@@ -522,9 +493,9 @@ href="../libgimp/GimpDrawableComboBox.html#gimp-drawable-combo-box-new"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607318"></a><h3>
+<a name="id2606712"></a><h3>
 <a name="gimp-int-combo-box-set-sensitivity"></a>gimp_int_combo_box_set_sensitivity ()</h3>
-<a class="indexterm" name="id2607334"></a><pre class="programlisting">void        gimp_int_combo_box_set_sensitivity
+<a class="indexterm" name="id2606728"></a><pre class="programlisting">void        gimp_int_combo_box_set_sensitivity
                                             (<a href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a> *combo_box,
                                              <a href="GimpIntComboBox.html#GimpIntSensitivityFunc">GimpIntSensitivityFunc</a> func,
                                              gpointer data,
@@ -544,26 +515,22 @@ sensitivity to be updated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>combo_box</code></em>&#160;:</span></td>
 <td> a <a href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
 <td> a function that returns a boolean value, or <code class="literal">NULL</code> to unset
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td> data to pass to <em class="parameter"><code>func</code></em>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>destroy</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>destroy</code></em>&#160;:</span></td>
 <td> destroy notification for <em class="parameter"><code>data</code></em>
 </td>
 </tr>
@@ -574,11 +541,11 @@ sensitivity to be updated.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2607510"></a><h2>Property Details</h2>
+<a name="id2606904"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2607520"></a><h3>
+<a name="id2606914"></a><h3>
 <a name="GimpIntComboBox--ellipsize"></a>The "<code class="literal">ellipsize</code>" property</h3>
-<a class="indexterm" name="id2607534"></a><pre class="programlisting">  "ellipsize"            PangoEllipsizeMode    : Read / Write</pre>
+<a class="indexterm" name="id2606928"></a><pre class="programlisting">  "ellipsize"            PangoEllipsizeMode    : Read / Write</pre>
 <p>
 Specifies the preferred place to ellipsize text in the combo-box,
 if the cell renderer does not have enough room to display the

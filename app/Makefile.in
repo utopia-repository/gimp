@@ -76,9 +76,9 @@ gimp_2_3_DEPENDENCIES = gui/libappgui.a actions/libappactions.a \
 	dialogs/libappdialogs.a menus/libappmenus.a \
 	display/libappdisplay.a tools/libapptools.a \
 	widgets/libappwidgets.a pdb/libappinternal-procs.a \
-	xcf/libappxcf.a plug-in/libappplug-in.a pdb/libapppdb.a \
-	vectors/libappvectors.a core/libappcore.a paint/libapppaint.a \
-	text/libapptext.a file/libappfile.a config/libappconfig.a \
+	xcf/libappxcf.a file/libappfile.a plug-in/libappplug-in.a \
+	pdb/libapppdb.a vectors/libappvectors.a core/libappcore.a \
+	paint/libapppaint.a text/libapptext.a config/libappconfig.a \
 	paint-funcs/libapppaint-funcs.a composite/libappcomposite.a \
 	base/libappbase.a $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
@@ -106,13 +106,13 @@ gimp_console_2_3_OBJECTS = $(am_gimp_console_2_3_OBJECTS)
 @ENABLE_GIMP_CONSOLE_TRUE@	display/display-enums.o \
 @ENABLE_GIMP_CONSOLE_TRUE@	display/gimpdisplayoptions.o \
 @ENABLE_GIMP_CONSOLE_TRUE@	pdb/libappinternal-procs.a \
-@ENABLE_GIMP_CONSOLE_TRUE@	xcf/libappxcf.a \
+@ENABLE_GIMP_CONSOLE_TRUE@	xcf/libappxcf.a file/libappfile.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	plug-in/libappplug-in.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	pdb/libapppdb.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	vectors/libappvectors.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	core/libappcore.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	paint/libapppaint.a \
-@ENABLE_GIMP_CONSOLE_TRUE@	text/libapptext.a file/libappfile.a \
+@ENABLE_GIMP_CONSOLE_TRUE@	text/libapptext.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	config/libappconfig.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	paint-funcs/libapppaint-funcs.a \
 @ENABLE_GIMP_CONSOLE_TRUE@	composite/libappcomposite.a \
@@ -294,6 +294,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -335,12 +337,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -419,6 +421,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -529,8 +532,8 @@ SUBDIRS = \
 	paint		\
 	text		\
 	vectors		\
-	file		\
 	plug-in		\
+	file		\
 	xcf		\
 	pdb		\
 	widgets		\
@@ -590,13 +593,13 @@ gimp_2_3_LDADD = \
 	widgets/libappwidgets.a		\
 	pdb/libappinternal-procs.a	\
 	xcf/libappxcf.a			\
+	file/libappfile.a		\
 	plug-in/libappplug-in.a		\
 	pdb/libapppdb.a			\
 	vectors/libappvectors.a		\
 	core/libappcore.a		\
 	paint/libapppaint.a		\
 	text/libapptext.a		\
-	file/libappfile.a		\
 	config/libappconfig.a		\
 	paint-funcs/libapppaint-funcs.a	\
 	composite/libappcomposite.a	\
@@ -631,13 +634,13 @@ gimp_2_3_LDADD = \
 @ENABLE_GIMP_CONSOLE_TRUE@	display/gimpdisplayoptions.o	\
 @ENABLE_GIMP_CONSOLE_TRUE@	pdb/libappinternal-procs.a	\
 @ENABLE_GIMP_CONSOLE_TRUE@	xcf/libappxcf.a			\
+@ENABLE_GIMP_CONSOLE_TRUE@	file/libappfile.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	plug-in/libappplug-in.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	pdb/libapppdb.a			\
 @ENABLE_GIMP_CONSOLE_TRUE@	vectors/libappvectors.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	core/libappcore.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	paint/libapppaint.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	text/libapptext.a		\
-@ENABLE_GIMP_CONSOLE_TRUE@	file/libappfile.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	config/libappconfig.a		\
 @ENABLE_GIMP_CONSOLE_TRUE@	paint-funcs/libapppaint-funcs.a	\
 @ENABLE_GIMP_CONSOLE_TRUE@	composite/libappcomposite.a	\

@@ -36,6 +36,7 @@
 
 #include "tools/gimp-tools.h"
 #include "tools/gimpcoloroptions.h"
+#include "tools/gimpforegroundselectoptions.h"
 #include "tools/gimprectangleoptions.h"
 #include "tools/gimpimagemaptool.h"
 #include "tools/gimptoolcontrol.h"
@@ -266,7 +267,27 @@ tools_color_average_radius_cmd_callback (GtkAction *action,
       action_select_property ((GimpActionSelectType) value,
                               G_OBJECT (tool_info->tool_options),
                               "average-radius",
-                              1.0, 10.0, FALSE);
+                              1.0, 1.0, 10.0, FALSE);
+    }
+}
+
+void
+tools_paint_brush_scale_cmd_callback (GtkAction *action,
+                                      gint       value,
+                                      gpointer   data)
+{
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
+  return_if_no_context (context, data);
+
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              G_OBJECT (tool_info->tool_options),
+                              "brush-scale",
+                              0.01, 0.1, 1.0, FALSE);
     }
 }
 
@@ -286,7 +307,7 @@ tools_ink_blob_size_cmd_callback (GtkAction *action,
       action_select_property ((GimpActionSelectType) value,
                               G_OBJECT (tool_info->tool_options),
                               "size",
-                              1.0, 10.0, FALSE);
+                              1.0, 1.0, 10.0, FALSE);
     }
 }
 
@@ -306,7 +327,7 @@ tools_ink_blob_aspect_cmd_callback (GtkAction *action,
       action_select_property ((GimpActionSelectType) value,
                               G_OBJECT (tool_info->tool_options),
                               "blob-aspect",
-                              0.1, 1.0, FALSE);
+                              1.0, 0.1, 1.0, FALSE);
     }
 }
 
@@ -326,7 +347,27 @@ tools_ink_blob_angle_cmd_callback (GtkAction *action,
       action_select_property ((GimpActionSelectType) value,
                               G_OBJECT (tool_info->tool_options),
                               "blob-angle",
-                              1.0, 15.0, TRUE);
+                              1.0, 1.0, 15.0, TRUE);
+    }
+}
+
+void
+tools_fg_select_brush_size_cmd_callback (GtkAction *action,
+                                         gint       value,
+                                         gpointer   data)
+{
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
+  return_if_no_context (context, data);
+
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_FOREGROUND_SELECT_OPTIONS (tool_info->tool_options))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              G_OBJECT (tool_info->tool_options),
+                              "stroke-width",
+                              1.0, 4.0, 16.0, FALSE);
     }
 }
 
@@ -334,9 +375,8 @@ void
 tools_rectangle_toggle_fixed_aspect (GtkAction *action,
                                      gpointer   data)
 {
-  GimpContext     *context;
-  GimpToolInfo    *tool_info;
-
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
   return_if_no_context (context, data);
 
   tool_info = gimp_context_get_tool (context);
@@ -361,14 +401,12 @@ tools_rectangle_toggle_fixed_aspect (GtkAction *action,
     }
 }
 
-
 void
 tools_rectangle_toggle_fixed_center (GtkAction *action,
                                      gpointer   data)
 {
-  GimpContext     *context;
-  GimpToolInfo    *tool_info;
-
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
   return_if_no_context (context, data);
 
   tool_info = gimp_context_get_tool (context);
@@ -392,7 +430,6 @@ tools_rectangle_toggle_fixed_center (GtkAction *action,
         }
     }
 }
-
 
 void
 tools_value_1_cmd_callback (GtkAction *action,

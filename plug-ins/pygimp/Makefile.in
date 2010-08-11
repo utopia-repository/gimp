@@ -93,20 +93,12 @@ gimp_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
 am_gimp_la_OBJECTS = gimpmodule.lo pygimp-display.lo \
 	pygimp-drawable.lo pygimp-image.lo pygimp-parasite.lo \
-	pygimp-pdb.lo pygimp-tile.lo
+	pygimp-pdb.lo pygimp-tile.lo pygimp-vectors.lo
 gimp_la_OBJECTS = $(am_gimp_la_OBJECTS)
 gimpcolor_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
 am_gimpcolor_la_OBJECTS = gimpcolormodule.lo pygimp-colors.lo
 gimpcolor_la_OBJECTS = $(am_gimpcolor_la_OBJECTS)
-gimpprocbrowser_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
-am_gimpprocbrowser_la_OBJECTS = procbrowser.lo
-gimpprocbrowser_la_OBJECTS = $(am_gimpprocbrowser_la_OBJECTS)
 am__DEPENDENCIES_9 = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
 gimpthumb_la_DEPENDENCIES = $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
@@ -125,10 +117,10 @@ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(_gimpenums_la_SOURCES) $(_gimpui_la_SOURCES) \
 	$(gimp_la_SOURCES) $(gimpcolor_la_SOURCES) \
-	$(gimpprocbrowser_la_SOURCES) $(gimpthumb_la_SOURCES)
+	$(gimpthumb_la_SOURCES)
 DIST_SOURCES = $(_gimpenums_la_SOURCES) $(_gimpui_la_SOURCES) \
 	$(gimp_la_SOURCES) $(gimpcolor_la_SOURCES) \
-	$(gimpprocbrowser_la_SOURCES) $(gimpthumb_la_SOURCES)
+	$(gimpthumb_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-exec-recursive install-info-recursive \
@@ -280,6 +272,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -321,12 +315,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -405,6 +399,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -516,7 +511,7 @@ INCLUDES = -I$(top_srcdir) $(PYTHON_INCLUDES) $(PYGTK_CFLAGS) $(GTK_CFLAGS)
 pygimpbase = python
 pygimpdir = $(gimpplugindir)/$(pygimpbase)
 pygimp_LTLIBRARIES = gimp.la _gimpenums.la gimpcolor.la _gimpui.la \
-	gimpthumb.la gimpprocbrowser.la
+	gimpthumb.la
 
 gimp_la_SOURCES = \
 	gimpmodule.c		\
@@ -526,6 +521,7 @@ gimp_la_SOURCES = \
 	pygimp-parasite.c	\
 	pygimp-pdb.c		\
 	pygimp-tile.c		\
+	pygimp-vectors.c	\
 	pygimp.h		\
 	pygimp-api.h		\
 	pygimp-intl.h		\
@@ -601,25 +597,6 @@ gimpthumb_la_LIBADD = \
 	$(libgimpthumb)		\
 	$(GDK_PIXBUF_LIBS)	\
 	$(PYLINK_LIBS)
-
-gimpprocbrowser_la_SOURCES = \
-	procbrowser.c
-
-gimpprocbrowser_la_LDFLAGS = -module -avoid-version $(no_undefined) \
-	-export-symbols-regex initgimpprocbrowser
-
-gimpprocbrowser_la_LIBADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimpconfig)	\
-	$(libgimpmath)		\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(GTK_LIBS)		\
-	$(PYLINK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
 
 pygimp_PYTHON = \
 	gimpenums.py	\
@@ -715,8 +692,6 @@ gimp.la: $(gimp_la_OBJECTS) $(gimp_la_DEPENDENCIES)
 	$(LINK) -rpath $(pygimpdir) $(gimp_la_LDFLAGS) $(gimp_la_OBJECTS) $(gimp_la_LIBADD) $(LIBS)
 gimpcolor.la: $(gimpcolor_la_OBJECTS) $(gimpcolor_la_DEPENDENCIES) 
 	$(LINK) -rpath $(pygimpdir) $(gimpcolor_la_LDFLAGS) $(gimpcolor_la_OBJECTS) $(gimpcolor_la_LIBADD) $(LIBS)
-gimpprocbrowser.la: $(gimpprocbrowser_la_OBJECTS) $(gimpprocbrowser_la_DEPENDENCIES) 
-	$(LINK) -rpath $(pygimpdir) $(gimpprocbrowser_la_LDFLAGS) $(gimpprocbrowser_la_OBJECTS) $(gimpprocbrowser_la_LIBADD) $(LIBS)
 gimpthumb.la: $(gimpthumb_la_OBJECTS) $(gimpthumb_la_DEPENDENCIES) 
 	$(LINK) -rpath $(pygimpdir) $(gimpthumb_la_LDFLAGS) $(gimpthumb_la_OBJECTS) $(gimpthumb_la_LIBADD) $(LIBS)
 
@@ -733,7 +708,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthumbmodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpui.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpuimodule.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procbrowser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-colors.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-display.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-drawable.Plo@am__quote@
@@ -741,6 +715,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-parasite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-tile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-vectors.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

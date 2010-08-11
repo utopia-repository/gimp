@@ -55,8 +55,9 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
-am_winicon_OBJECTS = icodialog.$(OBJEXT) icoload.$(OBJEXT) \
-	icosave.$(OBJEXT) main.$(OBJEXT)
+am_winicon_OBJECTS = winicon-icodialog.$(OBJEXT) \
+	winicon-icoload.$(OBJEXT) winicon-icosave.$(OBJEXT) \
+	winicon-main.$(OBJEXT)
 winicon_OBJECTS = $(am_winicon_OBJECTS)
 winicon_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =  \
@@ -73,7 +74,8 @@ winicon_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
-	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -227,6 +229,8 @@ HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
 HAVE_MAC_TWAIN_TRUE = @HAVE_MAC_TWAIN_TRUE@
+HAVE_PNG_FALSE = @HAVE_PNG_FALSE@
+HAVE_PNG_TRUE = @HAVE_PNG_TRUE@
 HAVE_WINDRES_FALSE = @HAVE_WINDRES_FALSE@
 HAVE_WINDRES_TRUE = @HAVE_WINDRES_TRUE@
 HAVE_XMLLINT_FALSE = @HAVE_XMLLINT_FALSE@
@@ -268,12 +272,12 @@ INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
 LCMS = @LCMS@
-LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
 LIBJPEG = @LIBJPEG@
+LIBLCMS = @LIBLCMS@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
@@ -352,6 +356,7 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
+SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -455,6 +460,7 @@ libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 @OS_WIN32_TRUE@mwindows = -mwindows
 AM_LDFLAGS = $(mwindows)
+winicon_CFLAGS = $(PNG_CFLAGS)
 winicon_SOURCES = \
 	icodialog.c	\
 	icodialog.h	\
@@ -478,6 +484,7 @@ LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpmath)		\
 	$(libgimpbase)		\
+	$(LIBPNG)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
@@ -553,10 +560,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icodialog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icoload.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icosave.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winicon-icodialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winicon-icoload.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winicon-icosave.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winicon-main.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -578,6 +585,62 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+winicon-icodialog.o: icodialog.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-icodialog.o -MD -MP -MF "$(DEPDIR)/winicon-icodialog.Tpo" -c -o winicon-icodialog.o `test -f 'icodialog.c' || echo '$(srcdir)/'`icodialog.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-icodialog.Tpo" "$(DEPDIR)/winicon-icodialog.Po"; else rm -f "$(DEPDIR)/winicon-icodialog.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='icodialog.c' object='winicon-icodialog.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-icodialog.o `test -f 'icodialog.c' || echo '$(srcdir)/'`icodialog.c
+
+winicon-icodialog.obj: icodialog.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-icodialog.obj -MD -MP -MF "$(DEPDIR)/winicon-icodialog.Tpo" -c -o winicon-icodialog.obj `if test -f 'icodialog.c'; then $(CYGPATH_W) 'icodialog.c'; else $(CYGPATH_W) '$(srcdir)/icodialog.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-icodialog.Tpo" "$(DEPDIR)/winicon-icodialog.Po"; else rm -f "$(DEPDIR)/winicon-icodialog.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='icodialog.c' object='winicon-icodialog.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-icodialog.obj `if test -f 'icodialog.c'; then $(CYGPATH_W) 'icodialog.c'; else $(CYGPATH_W) '$(srcdir)/icodialog.c'; fi`
+
+winicon-icoload.o: icoload.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-icoload.o -MD -MP -MF "$(DEPDIR)/winicon-icoload.Tpo" -c -o winicon-icoload.o `test -f 'icoload.c' || echo '$(srcdir)/'`icoload.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-icoload.Tpo" "$(DEPDIR)/winicon-icoload.Po"; else rm -f "$(DEPDIR)/winicon-icoload.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='icoload.c' object='winicon-icoload.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-icoload.o `test -f 'icoload.c' || echo '$(srcdir)/'`icoload.c
+
+winicon-icoload.obj: icoload.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-icoload.obj -MD -MP -MF "$(DEPDIR)/winicon-icoload.Tpo" -c -o winicon-icoload.obj `if test -f 'icoload.c'; then $(CYGPATH_W) 'icoload.c'; else $(CYGPATH_W) '$(srcdir)/icoload.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-icoload.Tpo" "$(DEPDIR)/winicon-icoload.Po"; else rm -f "$(DEPDIR)/winicon-icoload.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='icoload.c' object='winicon-icoload.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-icoload.obj `if test -f 'icoload.c'; then $(CYGPATH_W) 'icoload.c'; else $(CYGPATH_W) '$(srcdir)/icoload.c'; fi`
+
+winicon-icosave.o: icosave.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-icosave.o -MD -MP -MF "$(DEPDIR)/winicon-icosave.Tpo" -c -o winicon-icosave.o `test -f 'icosave.c' || echo '$(srcdir)/'`icosave.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-icosave.Tpo" "$(DEPDIR)/winicon-icosave.Po"; else rm -f "$(DEPDIR)/winicon-icosave.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='icosave.c' object='winicon-icosave.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-icosave.o `test -f 'icosave.c' || echo '$(srcdir)/'`icosave.c
+
+winicon-icosave.obj: icosave.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-icosave.obj -MD -MP -MF "$(DEPDIR)/winicon-icosave.Tpo" -c -o winicon-icosave.obj `if test -f 'icosave.c'; then $(CYGPATH_W) 'icosave.c'; else $(CYGPATH_W) '$(srcdir)/icosave.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-icosave.Tpo" "$(DEPDIR)/winicon-icosave.Po"; else rm -f "$(DEPDIR)/winicon-icosave.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='icosave.c' object='winicon-icosave.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-icosave.obj `if test -f 'icosave.c'; then $(CYGPATH_W) 'icosave.c'; else $(CYGPATH_W) '$(srcdir)/icosave.c'; fi`
+
+winicon-main.o: main.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-main.o -MD -MP -MF "$(DEPDIR)/winicon-main.Tpo" -c -o winicon-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-main.Tpo" "$(DEPDIR)/winicon-main.Po"; else rm -f "$(DEPDIR)/winicon-main.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='winicon-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+
+winicon-main.obj: main.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -MT winicon-main.obj -MD -MP -MF "$(DEPDIR)/winicon-main.Tpo" -c -o winicon-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/winicon-main.Tpo" "$(DEPDIR)/winicon-main.Po"; else rm -f "$(DEPDIR)/winicon-main.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='winicon-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(winicon_CFLAGS) $(CFLAGS) -c -o winicon-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

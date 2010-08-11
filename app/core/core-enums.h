@@ -380,6 +380,7 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_GROUP_ITEM_DISPLACE,      /*< desc="Move item"                   >*/
   GIMP_UNDO_GROUP_ITEM_SCALE,         /*< desc="Scale item"                  >*/
   GIMP_UNDO_GROUP_ITEM_RESIZE,        /*< desc="Resize item"                 >*/
+  GIMP_UNDO_GROUP_LAYER_ADD,          /*< desc="Add layer"                   >*/
   GIMP_UNDO_GROUP_LAYER_ADD_MASK,     /*< desc="Add layer mask"              >*/
   GIMP_UNDO_GROUP_LAYER_APPLY_MASK,   /*< desc="Apply layer mask"            >*/
   GIMP_UNDO_GROUP_FS_TO_LAYER,        /*< desc="Floating selection to layer" >*/
@@ -571,6 +572,18 @@ typedef enum  /*< pdb-skip >*/
   GIMP_MESSAGE_WARNING,  /*< desc="Warning" >*/
   GIMP_MESSAGE_ERROR     /*< desc="Error"   >*/
 } GimpMessageSeverity;
+
+
+#define GIMP_TYPE_COLOR_PROFILE_POLICY (gimp_color_profile_policy_get_type ())
+
+GType gimp_color_profile_policy_get_type (void) G_GNUC_CONST;
+
+typedef enum  /*< pdb-skip >*/
+{
+  GIMP_COLOR_PROFILE_POLICY_ASK,    /*< desc="Ask what to do"           >*/
+  GIMP_COLOR_PROFILE_POLICY_KEEP,   /*< desc="Keep embedded profile"    >*/
+  GIMP_COLOR_PROFILE_POLICY_CONVERT /*< desc="Convert to RGB workspace" >*/
+} GimpColorProfilePolicy;
 
 
 /*

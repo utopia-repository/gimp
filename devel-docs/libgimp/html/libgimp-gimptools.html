@@ -18,10 +18,10 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="ix01.html" title="Index">
-<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+<link rel="index" href="libgimp-index.html" title="Index">
+<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -32,16 +32,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpundo.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2572806" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2627874" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2667938" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2668730" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptools"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2572806"></a><span class="refentrytitle">gimptools</span>
+<a name="id2627874"></a><span class="refentrytitle">gimptools</span>
 </h2>
 <p>gimptools &#8212; Access to common toolbox tools.</p>
 </td>
@@ -82,7 +82,8 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                              gboolean antialias,
                                              gboolean feather,
-                                             gdouble feather_radius,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y,
                                              gboolean sample_merged,
                                              gboolean select_transparent,
                                              <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
@@ -183,7 +184,8 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                              gboolean antialias,
                                              gboolean feather,
-                                             gdouble feather_radius,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y,
                                              gboolean sample_merged,
                                              gboolean select_transparent,
                                              <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
@@ -230,6 +232,20 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                              gboolean feather,
                                              gdouble feather_radius);
+gboolean    <a href="libgimp-gimptools.html#gimp-round-rect-select">gimp_round_rect_select</a>          (gint32 image_ID,
+                                             gdouble x,
+                                             gdouble y,
+                                             gdouble width,
+                                             gdouble height,
+                                             gdouble corner_radius_x,
+                                             gdouble corner_radius_y,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
+>GimpChannelOps</a> operation,
+                                             gboolean antialias,
+                                             gboolean feather,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y);
 gint32      <a href="libgimp-gimptools.html#gimp-rotate">gimp_rotate</a>                     (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble angle);
@@ -262,18 +278,18 @@ gint32      <a href="libgimp-gimptools.html#gimp-transform-2d">gimp_transform_2d
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667938"></a><h2>Description</h2>
+<a name="id2668730"></a><h2>Description</h2>
 <p>
 Functions giving access to common toolbox tools.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667953"></a><h2>Details</h2>
+<a name="id2668745"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2667962"></a><h3>
+<a name="id2668754"></a><h3>
 <a name="gimp-airbrush"></a>gimp_airbrush ()</h3>
-<a class="indexterm" name="id2667972"></a><pre class="programlisting">gboolean    gimp_airbrush                   (gint32 drawable_ID,
+<a class="indexterm" name="id2668764"></a><pre class="programlisting">gboolean    gimp_airbrush                   (gint32 drawable_ID,
                                              gdouble pressure,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
@@ -293,32 +309,27 @@ results in a thinner layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
 <td> The pressure of the airbrush strokes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -327,9 +338,9 @@ results in a thinner layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668093"></a><h3>
+<a name="id2668885"></a><h3>
 <a name="gimp-airbrush-default"></a>gimp_airbrush_default ()</h3>
-<a class="indexterm" name="id2668104"></a><pre class="programlisting">gboolean    gimp_airbrush_default           (gint32 drawable_ID,
+<a class="indexterm" name="id2668896"></a><pre class="programlisting">gboolean    gimp_airbrush_default           (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -348,26 +359,22 @@ default for the option will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -376,9 +383,9 @@ default for the option will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668214"></a><h3>
+<a name="id2669006"></a><h3>
 <a name="gimp-by-color-select"></a>gimp_by_color_select ()</h3>
-<a class="indexterm" name="id2668224"></a><pre class="programlisting">gboolean    gimp_by_color_select            (gint32 drawable_ID,
+<a class="indexterm" name="id2669016"></a><pre class="programlisting">gboolean    gimp_by_color_select            (gint32 drawable_ID,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
@@ -415,56 +422,47 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The color to select.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -473,9 +471,9 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668430"></a><h3>
+<a name="id2669222"></a><h3>
 <a name="gimp-by-color-select-full"></a>gimp_by_color_select_full ()</h3>
-<a class="indexterm" name="id2668442"></a><pre class="programlisting">gboolean    gimp_by_color_select_full       (gint32 drawable_ID,
+<a class="indexterm" name="id2669234"></a><pre class="programlisting">gboolean    gimp_by_color_select_full       (gint32 drawable_ID,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
@@ -485,7 +483,8 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                              gboolean antialias,
                                              gboolean feather,
-                                             gdouble feather_radius,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y,
                                              gboolean sample_merged,
                                              gboolean select_transparent,
                                              <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
@@ -515,68 +514,62 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> The color to select.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
-<td> Radius for feather operation.
+<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td> Radius for feather operation in X direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td> Radius for feather operation in Y direction.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></td>
 <td> Whether to consider transparent pixels for selection. If TRUE, transparency is considered as a unique selectable color.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
 <td> The criterion used to determine color similarity. SELECT_CRITERION_COMPOSITE is the standard choice.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -588,9 +581,9 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668695"></a><h3>
+<a name="id2669508"></a><h3>
 <a name="gimp-clone"></a>gimp_clone ()</h3>
-<a class="indexterm" name="id2668706"></a><pre class="programlisting">gboolean    gimp_clone                      (gint32 drawable_ID,
+<a class="indexterm" name="id2669519"></a><pre class="programlisting">gboolean    gimp_clone                      (gint32 drawable_ID,
                                              gint32 src_drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCloneType"
@@ -622,50 +615,42 @@ significantly slower.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></td>
 <td> The source drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>clone_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>clone_type</code></em>&#160;:</span></td>
 <td> The type of clone.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
 <td> The x coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
 <td> The y coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -674,9 +659,9 @@ significantly slower.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668892"></a><h3>
+<a name="id2669705"></a><h3>
 <a name="gimp-clone-default"></a>gimp_clone_default ()</h3>
-<a class="indexterm" name="id2668902"></a><pre class="programlisting">gboolean    gimp_clone_default              (gint32 drawable_ID,
+<a class="indexterm" name="id2669715"></a><pre class="programlisting">gboolean    gimp_clone_default              (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -696,26 +681,22 @@ will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -724,9 +705,9 @@ will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669014"></a><h3>
+<a name="id2669827"></a><h3>
 <a name="gimp-convolve"></a>gimp_convolve ()</h3>
-<a class="indexterm" name="id2669024"></a><pre class="programlisting">gboolean    gimp_convolve                   (gint32 drawable_ID,
+<a class="indexterm" name="id2669837"></a><pre class="programlisting">gboolean    gimp_convolve                   (gint32 drawable_ID,
                                              gdouble pressure,
                                              <a href="libgimp-gimpenums.html#GimpConvolveType">GimpConvolveType</a> convolve_type,
                                              gint num_strokes,
@@ -746,38 +727,32 @@ between the specified stroke coordinates.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
 <td> The pressure.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>convolve_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>convolve_type</code></em>&#160;:</span></td>
 <td> Convolve type.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -786,9 +761,9 @@ between the specified stroke coordinates.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669164"></a><h3>
+<a name="id2669977"></a><h3>
 <a name="gimp-convolve-default"></a>gimp_convolve_default ()</h3>
-<a class="indexterm" name="id2669174"></a><pre class="programlisting">gboolean    gimp_convolve_default           (gint32 drawable_ID,
+<a class="indexterm" name="id2669987"></a><pre class="programlisting">gboolean    gimp_convolve_default           (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -807,26 +782,22 @@ been activated then the dialogs default values will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -835,9 +806,9 @@ been activated then the dialogs default values will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669285"></a><h3>
+<a name="id2670098"></a><h3>
 <a name="gimp-dodgeburn"></a>gimp_dodgeburn ()</h3>
-<a class="indexterm" name="id2669296"></a><pre class="programlisting">gboolean    gimp_dodgeburn                  (gint32 drawable_ID,
+<a class="indexterm" name="id2670109"></a><pre class="programlisting">gboolean    gimp_dodgeburn                  (gint32 drawable_ID,
                                              gdouble exposure,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
@@ -859,44 +830,37 @@ Dodgeburn. More details here later.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>exposure</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>exposure</code></em>&#160;:</span></td>
 <td> The exposure of the strokes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dodgeburn_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dodgeburn_type</code></em>&#160;:</span></td>
 <td> The type either dodge or burn.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dodgeburn_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dodgeburn_mode</code></em>&#160;:</span></td>
 <td> The mode.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -905,9 +869,9 @@ Dodgeburn. More details here later.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669452"></a><h3>
+<a name="id2670262"></a><h3>
 <a name="gimp-dodgeburn-default"></a>gimp_dodgeburn_default ()</h3>
-<a class="indexterm" name="id2669462"></a><pre class="programlisting">gboolean    gimp_dodgeburn_default          (gint32 drawable_ID,
+<a class="indexterm" name="id2670273"></a><pre class="programlisting">gboolean    gimp_dodgeburn_default          (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -925,26 +889,22 @@ Dodgeburn. More details here later.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -953,9 +913,9 @@ Dodgeburn. More details here later.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669573"></a><h3>
+<a name="id2670382"></a><h3>
 <a name="gimp-edit-bucket-fill-full"></a>gimp_edit_bucket_fill_full ()</h3>
-<a class="indexterm" name="id2669585"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill_full      (gint32 drawable_ID,
+<a class="indexterm" name="id2670394"></a><pre class="programlisting">gboolean    gimp_edit_bucket_fill_full      (gint32 drawable_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
@@ -991,68 +951,57 @@ relative to the drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>fill_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>fill_mode</code></em>&#160;:</span></td>
 <td> The type of fill.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td> The paint application mode.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td> The opacity of the final bucket fill.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
 <td> The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>fill_transparent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>fill_transparent</code></em>&#160;:</span></td>
 <td> Whether to consider transparent pixels for filling. If TRUE, transparency is considered as a unique fillable color.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
 <td> The criterion used to determine color similarity. SELECT_CRITERION_COMPOSITE is the standard choice.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1064,9 +1013,9 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669846"></a><h3>
+<a name="id2670654"></a><h3>
 <a name="gimp-ellipse-select"></a>gimp_ellipse_select ()</h3>
-<a class="indexterm" name="id2669856"></a><pre class="programlisting">gboolean    gimp_ellipse_select             (gint32 image_ID,
+<a class="indexterm" name="id2670664"></a><pre class="programlisting">gboolean    gimp_ellipse_select             (gint32 image_ID,
                                              gdouble x,
                                              gdouble y,
                                              gdouble width,
@@ -1097,62 +1046,52 @@ radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> x coordinate of upper-left corner of ellipse bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> y coordinate of upper-left corner of ellipse bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The width of the ellipse.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The height of the ellipse.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1161,9 +1100,9 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670076"></a><h3>
+<a name="id2670884"></a><h3>
 <a name="gimp-eraser"></a>gimp_eraser ()</h3>
-<a class="indexterm" name="id2670087"></a><pre class="programlisting">gboolean    gimp_eraser                     (gint32 drawable_ID,
+<a class="indexterm" name="id2670895"></a><pre class="programlisting">gboolean    gimp_eraser                     (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes,
                                              <a href="libgimp-gimpenums.html#GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
@@ -1186,38 +1125,32 @@ tool linearly interpolates between the specified stroke coordinates.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>hardness</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>hardness</code></em>&#160;:</span></td>
 <td> How to apply the brush.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></td>
 <td> The paint method to use.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1226,9 +1159,9 @@ tool linearly interpolates between the specified stroke coordinates.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670231"></a><h3>
+<a name="id2671043"></a><h3>
 <a name="gimp-eraser-default"></a>gimp_eraser_default ()</h3>
-<a class="indexterm" name="id2670245"></a><pre class="programlisting">gboolean    gimp_eraser_default             (gint32 drawable_ID,
+<a class="indexterm" name="id2671057"></a><pre class="programlisting">gboolean    gimp_eraser_default             (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1247,26 +1180,22 @@ will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1275,9 +1204,9 @@ will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670368"></a><h3>
+<a name="id2671180"></a><h3>
 <a name="gimp-flip"></a>gimp_flip ()</h3>
-<a class="indexterm" name="id2670383"></a><pre class="programlisting">gint32      gimp_flip                       (gint32 drawable_ID,
+<a class="indexterm" name="id2671195"></a><pre class="programlisting">gint32      gimp_flip                       (gint32 drawable_ID,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1293,20 +1222,17 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
 <td> Type of flip.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The flipped drawable.
 </td>
 </tr>
@@ -1315,9 +1241,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670489"></a><h3>
+<a name="id2671301"></a><h3>
 <a name="gimp-free-select"></a>gimp_free_select ()</h3>
-<a class="indexterm" name="id2670502"></a><pre class="programlisting">gboolean    gimp_free_select                (gint32 image_ID,
+<a class="indexterm" name="id2671314"></a><pre class="programlisting">gboolean    gimp_free_select                (gint32 image_ID,
                                              gint num_segs,
                                              const gdouble *segs,
                                              <a
@@ -1348,50 +1274,42 @@ radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_segs</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_segs</code></em>&#160;:</span></td>
 <td> Number of points (count 1 coordinate as two points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>segs</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>segs</code></em>&#160;:</span></td>
 <td> Array of points: { p1.x, p1.y, p2.x, p2.y, ..., pn.x, pn.y}.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1400,9 +1318,9 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670708"></a><h3>
+<a name="id2671521"></a><h3>
 <a name="gimp-fuzzy-select"></a>gimp_fuzzy_select ()</h3>
-<a class="indexterm" name="id2670722"></a><pre class="programlisting">gboolean    gimp_fuzzy_select               (gint32 drawable_ID,
+<a class="indexterm" name="id2671535"></a><pre class="programlisting">gboolean    gimp_fuzzy_select               (gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
                                              gint threshold,
@@ -1443,62 +1361,52 @@ drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> x coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> y coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1507,9 +1415,9 @@ drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670980"></a><h3>
+<a name="id2671792"></a><h3>
 <a name="gimp-fuzzy-select-full"></a>gimp_fuzzy_select_full ()</h3>
-<a class="indexterm" name="id2670996"></a><pre class="programlisting">gboolean    gimp_fuzzy_select_full          (gint32 drawable_ID,
+<a class="indexterm" name="id2671808"></a><pre class="programlisting">gboolean    gimp_fuzzy_select_full          (gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
                                              gint threshold,
@@ -1518,7 +1426,8 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                              gboolean antialias,
                                              gboolean feather,
-                                             gdouble feather_radius,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y,
                                              gboolean sample_merged,
                                              gboolean select_transparent,
                                              <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
@@ -1552,74 +1461,67 @@ drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> x coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> y coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
-<td> Radius for feather operation.
+<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td> Radius for feather operation in X direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td> Radius for feather operation in Y direction.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></td>
 <td> Whether to consider transparent pixels for selection. If TRUE, transparency is considered as a unique selectable color.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
 <td> The criterion used to determine color similarity. SELECT_CRITERION_COMPOSITE is the standard choice.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1631,9 +1533,9 @@ drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671305"></a><h3>
+<a name="id2672139"></a><h3>
 <a name="gimp-heal"></a>gimp_heal ()</h3>
-<a class="indexterm" name="id2671320"></a><pre class="programlisting">gboolean    gimp_heal                       (gint32 drawable_ID,
+<a class="indexterm" name="id2672155"></a><pre class="programlisting">gboolean    gimp_heal                       (gint32 drawable_ID,
                                              gint32 src_drawable_ID,
                                              gdouble src_x,
                                              gdouble src_y,
@@ -1656,44 +1558,37 @@ except RGB-&gt;Indexed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></td>
 <td> The source drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
 <td> The x coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
 <td> The y coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1705,9 +1600,9 @@ except RGB-&gt;Indexed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671505"></a><h3>
+<a name="id2672339"></a><h3>
 <a name="gimp-heal-default"></a>gimp_heal_default ()</h3>
-<a class="indexterm" name="id2671521"></a><pre class="programlisting">gboolean    gimp_heal_default               (gint32 drawable_ID,
+<a class="indexterm" name="id2672355"></a><pre class="programlisting">gboolean    gimp_heal_default               (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1727,26 +1622,22 @@ be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>
@@ -1758,9 +1649,9 @@ be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671650"></a><h3>
+<a name="id2672484"></a><h3>
 <a name="gimp-paintbrush"></a>gimp_paintbrush ()</h3>
-<a class="indexterm" name="id2671664"></a><pre class="programlisting">gboolean    gimp_paintbrush                 (gint32 drawable_ID,
+<a class="indexterm" name="id2672498"></a><pre class="programlisting">gboolean    gimp_paintbrush                 (gint32 drawable_ID,
                                              gdouble fade_out,
                                              gint num_strokes,
                                              const gdouble *strokes,
@@ -1789,44 +1680,37 @@ pixels. If the gradient-length is 0, no gradient is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>fade_out</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>fade_out</code></em>&#160;:</span></td>
 <td> Fade out parameter.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></td>
 <td> The paint method to use.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gradient_length</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gradient_length</code></em>&#160;:</span></td>
 <td> Length of gradient to draw.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1835,9 +1719,9 @@ pixels. If the gradient-length is 0, no gradient is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671849"></a><h3>
+<a name="id2672683"></a><h3>
 <a name="gimp-paintbrush-default"></a>gimp_paintbrush_default ()</h3>
-<a class="indexterm" name="id2671862"></a><pre class="programlisting">gboolean    gimp_paintbrush_default         (gint32 drawable_ID,
+<a class="indexterm" name="id2672697"></a><pre class="programlisting">gboolean    gimp_paintbrush_default         (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1865,26 +1749,22 @@ is 0, no gradient is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1893,9 +1773,9 @@ is 0, no gradient is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671986"></a><h3>
+<a name="id2672821"></a><h3>
 <a name="gimp-pencil"></a>gimp_pencil ()</h3>
-<a class="indexterm" name="id2671999"></a><pre class="programlisting">gboolean    gimp_pencil                     (gint32 drawable_ID,
+<a class="indexterm" name="id2672833"></a><pre class="programlisting">gboolean    gimp_pencil                     (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -1915,26 +1795,22 @@ white.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1943,9 +1819,9 @@ white.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672114"></a><h3>
+<a name="id2672948"></a><h3>
 <a name="gimp-perspective"></a>gimp_perspective ()</h3>
-<a class="indexterm" name="id2672130"></a><pre class="programlisting">gint32      gimp_perspective                (gint32 drawable_ID,
+<a class="indexterm" name="id2672964"></a><pre class="programlisting">gint32      gimp_perspective                (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble x0,
                                              gdouble y0,
@@ -1969,68 +1845,57 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> The new x coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> The new y coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> The new x coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> The new y coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
 <td> The new x coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
 <td> The new y coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
 <td> The new x coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
 <td> The new y coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The newly mapped drawable.
 </td>
 </tr>
@@ -2039,9 +1904,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672412"></a><h3>
+<a name="id2673247"></a><h3>
 <a name="gimp-rect-select"></a>gimp_rect_select ()</h3>
-<a class="indexterm" name="id2672425"></a><pre class="programlisting">gboolean    gimp_rect_select                (gint32 image_ID,
+<a class="indexterm" name="id2673260"></a><pre class="programlisting">gboolean    gimp_rect_select                (gint32 image_ID,
                                              gdouble x,
                                              gdouble y,
                                              gdouble width,
@@ -2068,56 +1933,47 @@ radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> x coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> y coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The width of the rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The height of the rectangle.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2126,9 +1982,115 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672647"></a><h3>
+<a name="id2673481"></a><h3>
+<a name="gimp-round-rect-select"></a>gimp_round_rect_select ()</h3>
+<a class="indexterm" name="id2673497"></a><pre class="programlisting">gboolean    gimp_round_rect_select          (gint32 image_ID,
+                                             gdouble x,
+                                             gdouble y,
+                                             gdouble width,
+                                             gdouble height,
+                                             gdouble corner_radius_x,
+                                             gdouble corner_radius_y,
+                                             <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
+>GimpChannelOps</a> operation,
+                                             gboolean antialias,
+                                             gboolean feather,
+                                             gdouble feather_radius_x,
+                                             gdouble feather_radius_y);</pre>
+<p>
+Create a rectangular selection with round corners over the specified
+image;
+</p>
+<p>
+This tool creates a rectangular selection with round corners over
+the specified image. The rectangular region can be either added to,
+subtracted from, or replace the contents of the previous selection
+mask. If the feather option is enabled, the resulting selection is
+blurred before combining. The blur is a gaussian blur with the
+specified feather radius.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td> x coordinate of upper-left corner of rectangle.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td> y coordinate of upper-left corner of rectangle.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td> The width of the rectangle.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td> The height of the rectangle.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>corner_radius_x</code></em>&#160;:</span></td>
+<td> The corner radius in X direction.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>corner_radius_y</code></em>&#160;:</span></td>
+<td> The corner radius in Y direction.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td> The selection operation.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td> Antialiasing.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td> Feather option for selections.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td> Radius for feather operation in X direction.
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td> Radius for feather operation in Y direction.
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2673811"></a><h3>
 <a name="gimp-rotate"></a>gimp_rotate ()</h3>
-<a class="indexterm" name="id2672662"></a><pre class="programlisting">gint32      gimp_rotate                     (gint32 drawable_ID,
+<a class="indexterm" name="id2673827"></a><pre class="programlisting">gint32      gimp_rotate                     (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble angle);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -2145,26 +2107,22 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The rotated drawable.
 </td>
 </tr>
@@ -2173,9 +2131,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672789"></a><h3>
+<a name="id2673954"></a><h3>
 <a name="gimp-scale"></a>gimp_scale ()</h3>
-<a class="indexterm" name="id2672805"></a><pre class="programlisting">gint32      gimp_scale                      (gint32 drawable_ID,
+<a class="indexterm" name="id2673970"></a><pre class="programlisting">gint32      gimp_scale                      (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble x0,
                                              gdouble y0,
@@ -2195,44 +2153,37 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
 <td> The new x coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
 <td> The new y coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
 <td> The new x coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
 <td> The new y coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The scaled drawable.
 </td>
 </tr>
@@ -2241,9 +2192,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672999"></a><h3>
+<a name="id2674164"></a><h3>
 <a name="gimp-shear"></a>gimp_shear ()</h3>
-<a class="indexterm" name="id2673014"></a><pre class="programlisting">gint32      gimp_shear                      (gint32 drawable_ID,
+<a class="indexterm" name="id2674179"></a><pre class="programlisting">gint32      gimp_shear                      (gint32 drawable_ID,
                                              gboolean interpolation,
                                              <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
                                              gdouble magnitude);</pre>
@@ -2261,32 +2212,27 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
 <td> Type of shear.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
 <td> The magnitude of the shear.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The sheared drawable.
 </td>
 </tr>
@@ -2295,9 +2241,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673163"></a><h3>
+<a name="id2674328"></a><h3>
 <a name="gimp-smudge"></a>gimp_smudge ()</h3>
-<a class="indexterm" name="id2673176"></a><pre class="programlisting">gboolean    gimp_smudge                     (gint32 drawable_ID,
+<a class="indexterm" name="id2674341"></a><pre class="programlisting">gboolean    gimp_smudge                     (gint32 drawable_ID,
                                              gdouble pressure,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
@@ -2315,32 +2261,27 @@ lesser smudge.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
 <td> The pressure of the smudge strokes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2349,9 +2290,9 @@ lesser smudge.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673310"></a><h3>
+<a name="id2674474"></a><h3>
 <a name="gimp-smudge-default"></a>gimp_smudge_default ()</h3>
-<a class="indexterm" name="id2673324"></a><pre class="programlisting">gboolean    gimp_smudge_default             (gint32 drawable_ID,
+<a class="indexterm" name="id2674488"></a><pre class="programlisting">gboolean    gimp_smudge_default             (gint32 drawable_ID,
                                              gint num_strokes,
                                              const gdouble *strokes);</pre>
 <p>
@@ -2369,26 +2310,22 @@ tools option dialog has not been activated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2397,9 +2334,9 @@ tools option dialog has not been activated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2673446"></a><h3>
+<a name="id2674610"></a><h3>
 <a name="gimp-transform-2d"></a>gimp_transform_2d ()</h3>
-<a class="indexterm" name="id2673462"></a><pre class="programlisting">gint32      gimp_transform_2d               (gint32 drawable_ID,
+<a class="indexterm" name="id2674627"></a><pre class="programlisting">gint32      gimp_transform_2d               (gint32 drawable_ID,
                                              gboolean interpolation,
                                              gdouble source_x,
                                              gdouble source_y,
@@ -2422,62 +2359,52 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
 <td> X coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
 <td> Y coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
 <td> Amount to scale in x direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
 <td> Amount to scale in y direction.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
 <td> X coordinate of where the centre goes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
 <td> Y coordinate of where the centre goes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The transformed drawable.
 </td>
 </tr>

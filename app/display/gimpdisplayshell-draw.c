@@ -25,11 +25,14 @@
 
 #include "display-types.h"
 
+#include "base/tile-manager.h"
+
 #include "core/gimpcontext.h"
 #include "core/gimpgrid.h"
 #include "core/gimpguide.h"
 #include "core/gimpimage.h"
 #include "core/gimplist.h"
+#include "core/gimpprojection.h"
 #include "core/gimpsamplepoint.h"
 
 #include "vectors/gimpstroke.h"
@@ -504,16 +507,31 @@ gimp_display_shell_draw_area (GimpDisplayShell *shell,
                               gint              w,
                               gint              h)
 {
-  gint sx, sy;
-  gint sw, sh;
+  GimpProjection *proj = shell->display->image->projection;
+  TileManager    *tiles;
+  gint            level;
+  gint            level_width;
+  gint            level_height;
+  gint            sx, sy;
+  gint            sw, sh;
 
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell) &&
+                    GIMP_IS_PROJECTION (proj));
+
+  level = gimp_projection_get_level (proj, shell->scale_x, shell->scale_y);
+
+  tiles = gimp_projection_get_tiles_at_level (proj, level);
+
+  level_width  = tile_manager_width (tiles);
+  level_height = tile_manager_height (tiles);
 
   /*  the image's size in display coordinates  */
   sx = shell->disp_xoffset - shell->offset_x;
   sy = shell->disp_yoffset - shell->offset_y;
-  sw = SCALEX (shell, shell->display->image->width);
-  sh = SCALEY (shell, shell->display->image->height);
+
+  /* SCALE[XY] with pyramid level taken into account. */
+  sw = PROJ_ROUND (level_width  * (shell->scale_x * (1 << level)));
+  sh = PROJ_ROUND (level_height * (shell->scale_y * (1 << level)));
 
   /*  check if the passed in area intersects with
    *  both the display and the image

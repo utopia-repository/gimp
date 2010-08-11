@@ -113,6 +113,12 @@ typedef struct
 } classresult;
 
 
+static void
+siox_cache_entry_free (gpointer entry)
+{
+  g_slice_free (classresult, entry);
+}
+
 /* Progressbar update callback */
 static inline void
 siox_progress_update (SioxProgressFunc  progress_callback,
@@ -639,7 +645,7 @@ find_max_blob (TileManager *mask,
 
               if (val && (val != FIND_BLOB_VISITED))
                 {
-                  struct blob *b = g_new (struct blob, 1);
+                  struct blob *b = g_slice_new (struct blob);
 
                   b->seedx    = region.x + col;
                   b->seedy    = pos_y;
@@ -668,7 +674,8 @@ find_max_blob (TileManager *mask,
       depth_first_search (mask, x, y, x + width, y + height, b,
                           (b->mustkeep || (b->size * size_factor >= maxsize)) ?
                           FIND_BLOB_FINAL : 0);
-      g_free (b);
+
+      g_slice_free (struct blob, b);
     }
 
   g_slist_free (list);
@@ -756,7 +763,7 @@ siox_init (TileManager  *pixels,
   g_return_val_if_fail (x >= 0, NULL);
   g_return_val_if_fail (y >= 0, NULL);
 
-  state = g_new0 (SioxState, 1);
+  state = g_slice_new (SioxState);
 
   state->pixels   = pixels;
   state->colormap = colormap;
@@ -771,8 +778,10 @@ siox_init (TileManager  *pixels,
   state->bgsiglen = 0;
   state->fgsiglen = 0;
   state->bpp      = tile_manager_bpp (pixels);
-  state->cache    = g_hash_table_new_full (g_direct_hash,
-                                           NULL, NULL, g_free);
+
+  state->cache = g_hash_table_new_full (g_direct_hash,
+                                        NULL, NULL,
+                                        (GDestroyNotify) siox_cache_entry_free);
 
   cpercep_init ();
 
@@ -1154,7 +1163,7 @@ siox_foreground_extract (SioxState          *state,
 #ifdef SIOX_DEBUG
               ++miss;
 #endif
-              cr = g_new0 (classresult, 1);
+              cr = g_slice_new0 (classresult);
               calc_lab (s, state->bpp, state->colormap, &labpixel);
 
               minbg = euklid (&labpixel, state->bgsig + 0);
@@ -1390,7 +1399,8 @@ siox_done (SioxState *state)
   g_free (state->fgsig);
   g_free (state->bgsig);
   g_hash_table_destroy (state->cache);
-  g_free (state);
+
+  g_slice_free (SioxState, state);
 
 #ifdef SIOX_DEBUG
   g_printerr ("siox.c: siox_done()\n");

@@ -41,7 +41,7 @@ HELP
 	code => <<'CODE'
 {
   valid = (GIMP_IS_DRAWABLE (drawable) &&
-           gimp_item_is_attached (GIMP_ITEM (drawable)));
+           ! gimp_item_is_removed (GIMP_ITEM (drawable)));
 }
 CODE
     );
@@ -547,8 +547,8 @@ HELP
     );
 
     @outargs = (
-	{ name => 'offset_x', type => 'int32',
-	  desc => "x offset of drawable", void_ret => 1 },
+	{ name => 'offset_x', type => 'int32', void_ret => 1,
+	  desc => "x offset of drawable" },
 	{ name => 'offset_y', type => 'int32',
 	  desc => "y offset of drawable" }
     );
@@ -876,9 +876,8 @@ HELP
     @outargs = (
 	{ name => 'pixel', type => 'int8array',
 	  desc => 'The pixel value',
-	  array => { name => 'num_channels', type => 'int32',
-	  	     desc => 'The number of channels for the pixel',
-	   	     no_success => 1 } }
+	  array => { name => 'num_channels', type => 'int32', no_validate => 1,
+	  	     desc => 'The number of channels for the pixel' } }
     );
 
     %invoke = (
@@ -936,9 +935,8 @@ HELP
 	  desc => 'The y coordinate' },
 	{ name => 'pixel', type => 'int8array',
 	  desc => 'The pixel value',
-	  array => { name => 'num_channels', type => 'int32',
-	  	     desc => 'The number of channels for the pixel',
-	   	     no_success => 1 } }
+	  array => { name => 'num_channels', type => 'int32', no_validate => 1,
+	  	     desc => 'The number of channels for the pixel' } }
     );
 
     %invoke = (

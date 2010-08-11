@@ -124,10 +124,11 @@ gimp_brush_tool_constructor (GType                  type,
                              guint                  n_params,
                              GObjectConstructParam *params)
 {
-  GObject       *object;
-  GimpTool      *tool;
-  GimpPaintTool *paint_tool;
-  GimpBrushTool *brush_tool;
+  GObject           *object;
+  GimpTool          *tool;
+  GimpPaintTool     *paint_tool;
+  GimpBrushTool     *brush_tool;
+  GimpDisplayConfig *display_config;
 
   object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
 
@@ -137,17 +138,15 @@ gimp_brush_tool_constructor (GType                  type,
 
   g_assert (GIMP_IS_BRUSH_CORE (paint_tool->core));
 
-  brush_tool->show_cursor =
-    GIMP_DISPLAY_CONFIG (tool->tool_info->gimp->config)->show_paint_tool_cursor;
-  brush_tool->draw_brush =
-    GIMP_DISPLAY_CONFIG (tool->tool_info->gimp->config)->show_brush_outline;
+  display_config = GIMP_DISPLAY_CONFIG (tool->tool_info->gimp->config);
 
-  g_signal_connect_object (tool->tool_info->gimp->config,
-                           "notify::show-paint-tool-cursor",
+  brush_tool->show_cursor = display_config->show_paint_tool_cursor;
+  brush_tool->draw_brush  = display_config->show_brush_outline;
+
+  g_signal_connect_object (display_config, "notify::show-paint-tool-cursor",
                            G_CALLBACK (gimp_brush_tool_notify_brush),
                            brush_tool, 0);
-  g_signal_connect_object (tool->tool_info->gimp->config,
-                           "notify::show-brush-outline",
+  g_signal_connect_object (display_config, "notify::show-brush-outline",
                            G_CALLBACK (gimp_brush_tool_notify_brush),
                            brush_tool, 0);
 
@@ -259,52 +258,61 @@ gimp_brush_tool_draw (GimpDrawTool *draw_tool)
   if (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (draw_tool)))
     return;
 
-  if (brush_tool->draw_brush)
+  gimp_brush_tool_draw_brush (brush_tool,
+                              brush_tool->brush_x, brush_tool->brush_y);
+}
+
+void
+gimp_brush_tool_draw_brush (GimpBrushTool *brush_tool,
+                            gdouble        x,
+                            gdouble        y)
+{
+  GimpDrawTool     *draw_tool;
+  GimpBrushCore    *brush_core;
+  GimpPaintOptions *paint_options;
+
+  g_return_if_fail (GIMP_IS_BRUSH_TOOL (brush_tool));
+
+  if (! brush_tool->draw_brush)
+    return;
+
+  draw_tool     = GIMP_DRAW_TOOL (brush_tool);
+  brush_core    = GIMP_BRUSH_CORE (GIMP_PAINT_TOOL (brush_tool)->core);
+  paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (brush_tool);
+
+  /*  don't create the segments for the purpose of undrawing (if we
+   *  don't have the segments, we can hardly have drawn them before)
+   */
+  if (! brush_core->brush_bound_segs && brush_core->main_brush &&
+      ! gimp_draw_tool_is_drawn (draw_tool))
     {
-      GimpPaintTool    *paint_tool    = GIMP_PAINT_TOOL (draw_tool);
-      GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (draw_tool);
-      GimpBrushCore    *brush_core    = GIMP_BRUSH_CORE (paint_tool->core);
+      gimp_brush_core_create_bound_segs (brush_core, paint_options);
+    }
 
-      /*  don't create the segments for the purpose of undrawing (if we
-       *  don't have the segments, we can hardly have drawn them before)
-       */
-      if (! brush_core->brush_bound_segs && brush_core->main_brush &&
-          ! gimp_draw_tool_is_drawn (draw_tool))
+  if (brush_core->brush_bound_segs)
+    {
+      x -= ((gdouble) brush_core->brush_bound_width  / 2.0);
+      y -= ((gdouble) brush_core->brush_bound_height / 2.0);
+
+      if (gimp_paint_options_get_brush_mode (paint_options) == GIMP_BRUSH_HARD)
         {
-          gimp_brush_core_create_bound_segs (brush_core, paint_options);
-        }
-
-      if (brush_core->brush_bound_segs)
-        {
-          gdouble brush_x, brush_y;
-
-          brush_x = (brush_tool->brush_x -
-                     ((gdouble) brush_core->brush_bound_width  / 2.0));
-          brush_y = (brush_tool->brush_y -
-                     ((gdouble) brush_core->brush_bound_height / 2.0));
-
-          if (gimp_paint_options_get_brush_mode (paint_options) ==
-              GIMP_BRUSH_HARD)
-            {
 #define EPSILON 0.000001
 
-              /*  Add EPSILON before rounding since e.g.
-               *  (5.0 - 0.5) may end up at (4.499999999....)
-               *  due to floating point fnords
-               */
-              brush_x = RINT (brush_x + EPSILON);
-              brush_y = RINT (brush_y + EPSILON);
+          /*  Add EPSILON before rounding since e.g.
+           *  (5.0 - 0.5) may end up at (4.499999999....)
+           *  due to floating point fnords
+           */
+          x = RINT (x + EPSILON);
+          y = RINT (y + EPSILON);
 
 #undef EPSILON
-            }
-
-          gimp_draw_tool_draw_boundary (draw_tool,
-                                        brush_core->brush_bound_segs,
-                                        brush_core->n_brush_bound_segs,
-                                        brush_x,
-                                        brush_y,
-                                        FALSE);
         }
+
+      gimp_draw_tool_draw_boundary (draw_tool,
+                                    brush_core->brush_bound_segs,
+                                    brush_core->n_brush_bound_segs,
+                                    x, y,
+                                    FALSE);
     }
 }
 

@@ -49,8 +49,6 @@
 
 static int   ts_console_mode;
 
-SCHEME_EXPORT void *ts_output_routine;
-
 #undef cons
 
 struct
@@ -219,6 +217,12 @@ ts_print_welcome (void)
   fprintf (ts_output, "Copyright (c) Dimitrios Souflis\n");
 }
 
+void
+ts_interpret_stdin (void)
+{
+  scheme_load_file(&sc, stdin);
+}
+
 gint
 ts_interpret_string (const gchar *expr)
 {
@@ -248,24 +252,19 @@ ts_get_error_msg (void)
 const gchar *
 ts_get_success_msg (void)
 {
-#if 0  /* ~~~~~ */
-  if (sc.vptr->is_string (repl_return_val))
-    return sc.vptr->string_value (repl_return_val);
+  if (sc.vptr->is_string(sc.value)) {
+    return sc.vptr->string_value(sc.value);
+  }
   else
-#else
-  if (sc.linebuff[0])
-    return sc.linebuff;
-  else
-#endif
     return "Success";
 }
 
 void
-ts_output_string (FILE *fp, char *string, int len)
+ts_output_string (const char *string, int len)
 {
   g_return_if_fail (len >= 0);
 
-  if (len > 0 && ts_console_mode && fp == stdout)
+  if (len > 0 && ts_console_mode)
   {
     /* len is the number of UTF-8 characters; we need the number of bytes */
     len = g_utf8_offset_to_pointer (string, len) - string;
@@ -857,10 +856,10 @@ g_printerr ("      string arg is '%s'\n", args[i].data.d_string);
                   pointer v_element = sc->vptr->vector_elem (vector, j);
 
                   /* FIXME: Check values in vector stay within range for each type. */
-                  if (!sc->vptr->is_integer (v_element))
+                  if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not INT32 (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
                       return my_err (error_str, vector);
                     }
@@ -908,10 +907,10 @@ if (count > 0)
                 {
                   pointer v_element = sc->vptr->vector_elem (vector, j);
 
-                  if (!sc->vptr->is_integer (v_element))
+                  if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not INT16 (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
                       return my_err (error_str, vector);
                     }
@@ -959,10 +958,10 @@ if (count > 0)
                 {
                   pointer v_element = sc->vptr->vector_elem (vector, j);
 
-                  if (!sc->vptr->is_integer (v_element))
+                  if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not INT8 (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
                       return my_err (error_str, vector);
                     }
@@ -1013,7 +1012,7 @@ if (count > 0)
                   if (!sc->vptr->is_number (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not FLOAT (argument %d for function %s)\n",
+                                  "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
                       return my_err (error_str, vector);
                     }
@@ -1064,7 +1063,7 @@ if (count > 0)
                   if (!sc->vptr->is_string (v_element))
                     {
                       g_snprintf (error_str, sizeof (error_str),
-                                  "Item %d in vector is not STRING (argument %d for function %s)\n",
+                                  "Item %d in vector is not a string (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
                       return my_err (error_str, vector);
                     }

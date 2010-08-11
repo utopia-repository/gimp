@@ -5,6 +5,7 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
+ole32_lib = -lole32
 gimpbase_def = gimpbase.def
 libgimpbase_export_symbols = -export-symbols gimpbase.def
 
@@ -114,7 +115,9 @@ libgimpbase_sources = \
 	gimputils.h            	\
 	gimpwin32-io.h		\
 	gimpwire.c		\
-	gimpwire.h
+	gimpwire.h		\
+	xdg-user-dir.c		\
+	xdg-user-dir.h
 
 libgimpbase_built_sources = \
 	gimpbaseenums.c
@@ -146,11 +149,12 @@ libgimpbaseinclude_HEADERS = \
 libgimpbase_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined) 			\
-	$(libgimpbase_export_symbols)
+	$(libgimpbase_export_symbols)		\
+	$(CARBON_LDFLAGS)
 
 libgimpbase_2_0_la_DEPENDENCIES = $(gimpbase_def)
 
-libgimpbase_2_0_la_LIBADD = $(GLIB_LIBS)
+libgimpbase_2_0_la_LIBADD = $(GLIB_LIBS) $(ole32_lib)
 
 
 install-data-local: install-ms-lib install-libtool-import-lib
@@ -196,3 +200,6 @@ $(srcdir)/gimpbaseenums.c: $(srcdir)/gimpbaseenums.h $(GIMP_MKENUMS)
 		$(srcdir)/gimpbaseenums.h > xgen-bec \
 	&& cp xgen-bec $(@F) \
 	&& rm -f xgen-bec
+
+
+DISTCLEANFILES = gimpversion.h

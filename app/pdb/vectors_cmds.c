@@ -50,23 +50,17 @@ vectors_is_valid_invoker (GimpProcedure     *procedure,
                           GimpProgress      *progress,
                           const GValueArray *args)
 {
-  gboolean success = TRUE;
   GValueArray *return_vals;
   GimpVectors *vectors;
   gboolean valid = FALSE;
 
   vectors = gimp_value_get_vectors (&args->values[0], gimp);
 
-  if (success)
-    {
-      valid = (GIMP_IS_VECTORS (vectors) &&
-               gimp_item_is_attached (GIMP_ITEM (vectors)));
-    }
+  valid = (GIMP_IS_VECTORS (vectors) &&
+           ! gimp_item_is_removed (GIMP_ITEM (vectors)));
 
-  return_vals = gimp_procedure_get_return_values (procedure, success);
-
-  if (success)
-    g_value_set_boolean (&return_vals->values[1], valid);
+  return_vals = gimp_procedure_get_return_values (procedure, TRUE);
+  g_value_set_boolean (&return_vals->values[1], valid);
 
   return return_vals;
 }
@@ -1274,7 +1268,7 @@ register_vectors_procs (GimpPDB *pdb)
                                                            "vectors",
                                                            "The vectors object to check",
                                                            pdb->gimp, FALSE,
-                                                           GIMP_PARAM_READWRITE));
+                                                           GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("valid",
                                                          "valid",
@@ -1307,7 +1301,7 @@ register_vectors_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("name",
                                                        "name",
                                                        "the name of the new vector object.",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -1370,7 +1364,7 @@ register_vectors_procs (GimpPDB *pdb)
                                    gimp_param_spec_string ("name",
                                                            "name",
                                                            "The name of the vectors object",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -1399,7 +1393,7 @@ register_vectors_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("name",
                                                        "name",
                                                        "the new name of the path",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -2472,7 +2466,7 @@ register_vectors_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the SVG file to import.",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
@@ -2524,7 +2518,7 @@ register_vectors_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("string",
                                                        "string",
                                                        "A string that must be a complete and valid SVG document.",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,

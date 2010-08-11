@@ -1,4 +1,4 @@
-/* curve_bend plugin for the GIMP */
+/* curve_bend plugin for GIMP */
 
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
@@ -812,7 +812,7 @@ p_save_pointfile (BenderDialog *cd,
   gint j;
   FILE *l_fp;
 
-  l_fp = g_fopen(filename, "w+");
+  l_fp = g_fopen(filename, "wb+");
   if (!l_fp)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -864,7 +864,7 @@ p_load_pointfile (BenderDialog *cd,
   float l_fux, l_fuy, l_flx, l_fly;
   gint  l_iuy, l_ily ;
 
-  l_fp = g_fopen(filename, "r");
+  l_fp = g_fopen(filename, "rb");
   if (!l_fp)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -3177,7 +3177,7 @@ p_main_bend (BenderDialog *cd,
    l_tmp_layer_id = gimp_layer_copy(original_drawable->drawable_id);
    /* set layer invisible and dummyname and
     * add at top of the image while working
-    * (for the case of undo the gimp must know,
+    * (for the case of undo GIMP must know,
     *  that the layer was part of the image)
     */
    gimp_image_add_layer (l_image_id, l_tmp_layer_id, 0);

@@ -30,6 +30,9 @@
  * V 1.06, PK, 21-Nov-99: Internationalization
  *                        Fix bug with gimp_export_image()
  *                        (moved it from load to save)
+ * V 1.07, PK, 16-Aug-06: Fix problems with internationalization
+ *                        (writing 255,0 instead of 255.0)
+ *                        Fix problem with not filling up properly last record
  */
 
 #include "config.h"
@@ -803,7 +806,7 @@ save_direct (FITS_FILE *ofp,
 		  src += bpp;
 		}
 	    }
-	  nbytes += bpsl;
+	  nbytes += width;
 	  src -= 2*bpsl;
 
 	  if ((i % 20) == 0)
@@ -981,6 +984,10 @@ load_dialog (void)
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
+
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);

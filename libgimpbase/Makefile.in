@@ -70,7 +70,7 @@ am__objects_1 = gimpbasetypes.lo gimpbase-private.lo gimpchecks.lo \
 	gimpcpuaccel.lo gimpdatafiles.lo gimpenv.lo gimpmemsize.lo \
 	gimpparasite.lo gimpparasiteio.lo gimpprotocol.lo \
 	gimprectangle.lo gimpreloc.lo gimpsignal.lo gimpunit.lo \
-	gimputils.lo gimpwire.lo
+	gimputils.lo gimpwire.lo xdg-user-dir.lo
 am__objects_2 = gimpbaseenums.lo
 am_libgimpbase_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpbase_2_0_la_OBJECTS = $(am_libgimpbase_2_0_la_OBJECTS)
@@ -124,6 +124,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -158,6 +159,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -380,7 +383,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -463,6 +467,7 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
+@OS_WIN32_TRUE@ole32_lib = -lole32
 @OS_WIN32_TRUE@gimpbase_def = gimpbase.def
 @OS_WIN32_TRUE@libgimpbase_export_symbols = -export-symbols gimpbase.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimpbase-$(GIMP_API_VERSION).lib
@@ -535,7 +540,9 @@ libgimpbase_sources = \
 	gimputils.h            	\
 	gimpwin32-io.h		\
 	gimpwire.c		\
-	gimpwire.h
+	gimpwire.h		\
+	xdg-user-dir.c		\
+	xdg-user-dir.h
 
 libgimpbase_built_sources = \
 	gimpbaseenums.c
@@ -564,10 +571,11 @@ libgimpbaseinclude_HEADERS = \
 libgimpbase_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined) 			\
-	$(libgimpbase_export_symbols)
+	$(libgimpbase_export_symbols)		\
+	$(CARBON_LDFLAGS)
 
 libgimpbase_2_0_la_DEPENDENCIES = $(gimpbase_def)
-libgimpbase_2_0_la_LIBADD = $(GLIB_LIBS)
+libgimpbase_2_0_la_LIBADD = $(GLIB_LIBS) $(ole32_lib)
 
 #
 # test programs, not to be built by default and never installed
@@ -587,6 +595,7 @@ test_cpu_accel_LDADD = \
 #
 gen_sources = xgen-bec
 CLEANFILES = $(EXTRA_PROGRAMS) $(gen_sources)
+DISTCLEANFILES = gimpversion.h
 all: all-am
 
 .SUFFIXES:
@@ -677,6 +686,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimputils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwire.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-cpu-accel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xdg-user-dir.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -903,6 +913,7 @@ clean-generic:
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"

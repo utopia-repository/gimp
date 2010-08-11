@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpHSV.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583707" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583714" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2602273" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2602281" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpRGB"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583707"></a><span class="refentrytitle">GimpRGB</span>
+<a name="id2583714"></a><span class="refentrytitle">GimpRGB</span>
 </h2>
 <p>GimpRGB &#8212; Definitions and Functions relating to RGB colors.</p>
 </td>
@@ -145,17 +145,17 @@ void                <a href="libgimpcolor-GimpRGB.html#gimp-value-set-rgb">gimp_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602273"></a><h2>Description</h2>
+<a name="id2602281"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to RGB colors.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2602288"></a><h2>Details</h2>
+<a name="id2602296"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2602299"></a><h3>
+<a name="id2602306"></a><h3>
 <a name="GimpRGB"></a>GimpRGB</h3>
-<a class="indexterm" name="id2602311"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2602318"></a><pre class="programlisting">typedef struct {
   gdouble r, g, b, a;
 } GimpRGB;
 </pre>
@@ -165,9 +165,9 @@ Definitions and Functions relating to RGB colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602327"></a><h3>
+<a name="id2602335"></a><h3>
 <a name="GimpRGBCompositeMode"></a>enum GimpRGBCompositeMode</h3>
-<a class="indexterm" name="id2602338"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2602346"></a><pre class="programlisting">typedef enum
 {
   GIMP_RGB_COMPOSITE_NONE = 0,
   GIMP_RGB_COMPOSITE_NORMAL,
@@ -180,9 +180,9 @@ Definitions and Functions relating to RGB colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602355"></a><h3>
+<a name="id2602363"></a><h3>
 <a name="gimp-rgb-set"></a>gimp_rgb_set ()</h3>
-<a class="indexterm" name="id2602368"></a><pre class="programlisting">void                gimp_rgb_set                        (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2602376"></a><pre class="programlisting">void                gimp_rgb_set                        (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          gdouble red,
                                                          gdouble green,
                                                          gdouble blue);</pre>
@@ -222,9 +222,9 @@ set exactly as they are passed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602498"></a><h3>
+<a name="id2602506"></a><h3>
 <a name="gimp-rgb-set-alpha"></a>gimp_rgb_set_alpha ()</h3>
-<a class="indexterm" name="id2602510"></a><pre class="programlisting">void                gimp_rgb_set_alpha                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2602518"></a><pre class="programlisting">void                gimp_rgb_set_alpha                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          gdouble alpha);</pre>
 <p>
 Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leaves the RGB components unchanged.</p>
@@ -249,9 +249,9 @@ Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leav
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602594"></a><h3>
+<a name="id2602602"></a><h3>
 <a name="gimp-rgb-set-uchar"></a>gimp_rgb_set_uchar ()</h3>
-<a class="indexterm" name="id2602607"></a><pre class="programlisting">void                gimp_rgb_set_uchar                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2602614"></a><pre class="programlisting">void                gimp_rgb_set_uchar                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          guchar red,
                                                          guchar green,
                                                          guchar blue);</pre>
@@ -289,9 +289,9 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602734"></a><h3>
+<a name="id2602742"></a><h3>
 <a name="gimp-rgb-get-uchar"></a>gimp_rgb_get_uchar ()</h3>
-<a class="indexterm" name="id2602747"></a><pre class="programlisting">void                gimp_rgb_get_uchar                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2602755"></a><pre class="programlisting">void                gimp_rgb_get_uchar                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          guchar *red,
                                                          guchar *green,
                                                          guchar *blue);</pre>
@@ -328,9 +328,9 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602856"></a><h3>
+<a name="id2602864"></a><h3>
 <a name="gimp-rgb-parse-name"></a>gimp_rgb_parse_name ()</h3>
-<a class="indexterm" name="id2602871"></a><pre class="programlisting">gboolean            gimp_rgb_parse_name                 (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2602878"></a><pre class="programlisting">gboolean            gimp_rgb_parse_name                 (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          const gchar *name,
                                                          gint len);</pre>
 <p>
@@ -377,9 +377,9 @@ This function does not touch the alpha component of <em class="parameter"><code>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603051"></a><h3>
+<a name="id2603059"></a><h3>
 <a name="gimp-rgb-parse-hex"></a>gimp_rgb_parse_hex ()</h3>
-<a class="indexterm" name="id2603066"></a><pre class="programlisting">gboolean            gimp_rgb_parse_hex                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2603073"></a><pre class="programlisting">gboolean            gimp_rgb_parse_hex                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          const gchar *hex,
                                                          gint len);</pre>
 <p>
@@ -423,9 +423,9 @@ This function does not touch the alpha component of <em class="parameter"><code>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603239"></a><h3>
+<a name="id2603247"></a><h3>
 <a name="gimp-rgb-parse-css"></a>gimp_rgb_parse_css ()</h3>
-<a class="indexterm" name="id2603254"></a><pre class="programlisting">gboolean            gimp_rgb_parse_css                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2603261"></a><pre class="programlisting">gboolean            gimp_rgb_parse_css                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          const gchar *css,
                                                          gint len);</pre>
 <p>
@@ -473,9 +473,9 @@ This function does not touch the alpha component of <em class="parameter"><code>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603467"></a><h3>
+<a name="id2603474"></a><h3>
 <a name="gimp-rgb-list-names"></a>gimp_rgb_list_names ()</h3>
-<a class="indexterm" name="id2603482"></a><pre class="programlisting">gint                gimp_rgb_list_names                 (const gchar ***names,
+<a class="indexterm" name="id2603489"></a><pre class="programlisting">gint                gimp_rgb_list_names                 (const gchar ***names,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> **colors);</pre>
 <p>
 Allows to retrieve the list of <a href="http://www.w3.org/TR/SVG/types.html" target="_top">SVG 1.0 color
@@ -515,9 +515,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603590"></a><h3>
+<a name="id2603602"></a><h3>
 <a name="gimp-rgb-add"></a>gimp_rgb_add ()</h3>
-<a class="indexterm" name="id2603600"></a><pre class="programlisting">void                gimp_rgb_add                        (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2603613"></a><pre class="programlisting">void                gimp_rgb_add                        (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
@@ -542,9 +542,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603660"></a><h3>
+<a name="id2603673"></a><h3>
 <a name="gimp-rgb-subtract"></a>gimp_rgb_subtract ()</h3>
-<a class="indexterm" name="id2603670"></a><pre class="programlisting">void                gimp_rgb_subtract                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2603683"></a><pre class="programlisting">void                gimp_rgb_subtract                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
@@ -569,9 +569,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603730"></a><h3>
+<a name="id2603743"></a><h3>
 <a name="gimp-rgb-multiply"></a>gimp_rgb_multiply ()</h3>
-<a class="indexterm" name="id2603741"></a><pre class="programlisting">void                gimp_rgb_multiply                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2603754"></a><pre class="programlisting">void                gimp_rgb_multiply                   (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                                          gdouble factor);</pre>
 <p>
 
@@ -596,9 +596,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603801"></a><h3>
+<a name="id2603813"></a><h3>
 <a name="gimp-rgb-distance"></a>gimp_rgb_distance ()</h3>
-<a class="indexterm" name="id2603811"></a><pre class="programlisting">gdouble             gimp_rgb_distance                   (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
+<a class="indexterm" name="id2603824"></a><pre class="programlisting">gdouble             gimp_rgb_distance                   (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
@@ -628,9 +628,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603881"></a><h3>
+<a name="id2603893"></a><h3>
 <a name="gimp-rgb-max"></a>gimp_rgb_max ()</h3>
-<a class="indexterm" name="id2603891"></a><pre class="programlisting">gdouble             gimp_rgb_max                        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2603904"></a><pre class="programlisting">gdouble             gimp_rgb_max                        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -654,9 +654,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603942"></a><h3>
+<a name="id2603954"></a><h3>
 <a name="gimp-rgb-min"></a>gimp_rgb_min ()</h3>
-<a class="indexterm" name="id2603952"></a><pre class="programlisting">gdouble             gimp_rgb_min                        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2603965"></a><pre class="programlisting">gdouble             gimp_rgb_min                        (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -680,9 +680,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604002"></a><h3>
+<a name="id2604015"></a><h3>
 <a name="gimp-rgb-clamp"></a>gimp_rgb_clamp ()</h3>
-<a class="indexterm" name="id2604013"></a><pre class="programlisting">void                gimp_rgb_clamp                      (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2604025"></a><pre class="programlisting">void                gimp_rgb_clamp                      (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -699,9 +699,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604054"></a><h3>
+<a name="id2604066"></a><h3>
 <a name="gimp-rgb-gamma"></a>gimp_rgb_gamma ()</h3>
-<a class="indexterm" name="id2604064"></a><pre class="programlisting">void                gimp_rgb_gamma                      (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
+<a class="indexterm" name="id2604077"></a><pre class="programlisting">void                gimp_rgb_gamma                      (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
                                                          gdouble gamma);</pre>
 <p>
 
@@ -726,9 +726,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604124"></a><h3>
+<a name="id2604136"></a><h3>
 <a name="gimp-rgb-luminance"></a>gimp_rgb_luminance ()</h3>
-<a class="indexterm" name="id2604136"></a><pre class="programlisting">gdouble             gimp_rgb_luminance                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2604149"></a><pre class="programlisting">gdouble             gimp_rgb_luminance                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 </p>
 <p>
@@ -755,9 +755,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604197"></a><h3>
+<a name="id2604210"></a><h3>
 <a name="gimp-rgb-luminance-uchar"></a>gimp_rgb_luminance_uchar ()</h3>
-<a class="indexterm" name="id2604209"></a><pre class="programlisting">guchar              gimp_rgb_luminance_uchar            (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2604222"></a><pre class="programlisting">guchar              gimp_rgb_luminance_uchar            (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 </p>
 <p>
@@ -784,9 +784,9 @@ arrays are allocated dynamically. You must call <code class="function">g_free()<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604270"></a><h3>
+<a name="id2604283"></a><h3>
 <a name="gimp-rgb-intensity"></a>gimp_rgb_intensity ()</h3>
-<a class="indexterm" name="id2604283"></a><pre class="programlisting">gdouble             gimp_rgb_intensity                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2604295"></a><pre class="programlisting">gdouble             gimp_rgb_intensity                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_rgb_intensity</code> is deprecated and should not be used in newly-written code.</p>
@@ -814,9 +814,9 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604358"></a><h3>
+<a name="id2604370"></a><h3>
 <a name="gimp-rgb-intensity-uchar"></a>gimp_rgb_intensity_uchar ()</h3>
-<a class="indexterm" name="id2604370"></a><pre class="programlisting">guchar              gimp_rgb_intensity_uchar            (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a class="indexterm" name="id2604383"></a><pre class="programlisting">guchar              gimp_rgb_intensity_uchar            (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_rgb_intensity_uchar</code> is deprecated and should not be used in newly-written code.</p>
@@ -844,9 +844,9 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604445"></a><h3>
+<a name="id2604458"></a><h3>
 <a name="gimp-rgb-composite"></a>gimp_rgb_composite ()</h3>
-<a class="indexterm" name="id2604455"></a><pre class="programlisting">void                gimp_rgb_composite                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color1,
+<a class="indexterm" name="id2604468"></a><pre class="programlisting">void                gimp_rgb_composite                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color2,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">GimpRGBCompositeMode</a> mode);</pre>
 <p>
@@ -877,9 +877,9 @@ This function is deprecated! Use <a href="libgimpcolor-GimpRGB.html#gimp-rgb-lum
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604534"></a><h3>
+<a name="id2604547"></a><h3>
 <a name="gimp-rgba-set"></a>gimp_rgba_set ()</h3>
-<a class="indexterm" name="id2604545"></a><pre class="programlisting">void                gimp_rgba_set                       (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2604558"></a><pre class="programlisting">void                gimp_rgba_set                       (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                                          gdouble red,
                                                          gdouble green,
                                                          gdouble blue,
@@ -924,9 +924,9 @@ and the values are set exactly as they are passed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604680"></a><h3>
+<a name="id2604693"></a><h3>
 <a name="gimp-rgba-set-uchar"></a>gimp_rgba_set_uchar ()</h3>
-<a class="indexterm" name="id2604690"></a><pre class="programlisting">void                gimp_rgba_set_uchar                 (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2604703"></a><pre class="programlisting">void                gimp_rgba_set_uchar                 (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                                          guchar red,
                                                          guchar green,
                                                          guchar blue,
@@ -970,9 +970,9 @@ values (0 to 255).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604824"></a><h3>
+<a name="id2604836"></a><h3>
 <a name="gimp-rgba-get-uchar"></a>gimp_rgba_get_uchar ()</h3>
-<a class="indexterm" name="id2604834"></a><pre class="programlisting">void                gimp_rgba_get_uchar                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2604847"></a><pre class="programlisting">void                gimp_rgba_get_uchar                 (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                                          guchar *red,
                                                          guchar *green,
                                                          guchar *blue,
@@ -1015,9 +1015,9 @@ values (0 to 255).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604951"></a><h3>
+<a name="id2604964"></a><h3>
 <a name="gimp-rgba-parse-css"></a>gimp_rgba_parse_css ()</h3>
-<a class="indexterm" name="id2604964"></a><pre class="programlisting">gboolean            gimp_rgba_parse_css                 (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2604976"></a><pre class="programlisting">gboolean            gimp_rgba_parse_css                 (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                                          const gchar *css,
                                                          gint len);</pre>
 <p>
@@ -1063,9 +1063,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605129"></a><h3>
+<a name="id2605142"></a><h3>
 <a name="gimp-rgba-add"></a>gimp_rgba_add ()</h3>
-<a class="indexterm" name="id2605140"></a><pre class="programlisting">void                gimp_rgba_add                       (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
+<a class="indexterm" name="id2605152"></a><pre class="programlisting">void                gimp_rgba_add                       (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
@@ -1090,9 +1090,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605200"></a><h3>
+<a name="id2605212"></a><h3>
 <a name="gimp-rgba-subtract"></a>gimp_rgba_subtract ()</h3>
-<a class="indexterm" name="id2605210"></a><pre class="programlisting">void                gimp_rgba_subtract                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
+<a class="indexterm" name="id2605223"></a><pre class="programlisting">void                gimp_rgba_subtract                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
@@ -1117,9 +1117,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605270"></a><h3>
+<a name="id2605283"></a><h3>
 <a name="gimp-rgba-multiply"></a>gimp_rgba_multiply ()</h3>
-<a class="indexterm" name="id2605280"></a><pre class="programlisting">void                gimp_rgba_multiply                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
+<a class="indexterm" name="id2605293"></a><pre class="programlisting">void                gimp_rgba_multiply                  (<a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
                                                          gdouble factor);</pre>
 <p>
 
@@ -1144,9 +1144,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605340"></a><h3>
+<a name="id2605353"></a><h3>
 <a name="gimp-rgba-distance"></a>gimp_rgba_distance ()</h3>
-<a class="indexterm" name="id2605351"></a><pre class="programlisting">gdouble             gimp_rgba_distance                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
+<a class="indexterm" name="id2605363"></a><pre class="programlisting">gdouble             gimp_rgba_distance                  (const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
@@ -1176,9 +1176,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605420"></a><h3>
+<a name="id2605433"></a><h3>
 <a name="GIMP-RGB-LUMINANCE:CAPS"></a>GIMP_RGB_LUMINANCE()</h3>
-<a class="indexterm" name="id2605431"></a><pre class="programlisting">#define             GIMP_RGB_LUMINANCE(r,g,b)</pre>
+<a class="indexterm" name="id2605443"></a><pre class="programlisting">#define             GIMP_RGB_LUMINANCE(r,g,b)</pre>
 <p>
 
 </p>
@@ -1207,9 +1207,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605487"></a><h3>
+<a name="id2605500"></a><h3>
 <a name="GIMP-RGB-LUMINANCE-RED:CAPS"></a>GIMP_RGB_LUMINANCE_RED</h3>
-<a class="indexterm" name="id2605498"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_RED    (0.2126)
+<a class="indexterm" name="id2605510"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_RED    (0.2126)
 </pre>
 <p>
 
@@ -1217,9 +1217,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605512"></a><h3>
+<a name="id2605525"></a><h3>
 <a name="GIMP-RGB-LUMINANCE-GREEN:CAPS"></a>GIMP_RGB_LUMINANCE_GREEN</h3>
-<a class="indexterm" name="id2605525"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_GREEN  (0.7152)
+<a class="indexterm" name="id2605537"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_GREEN  (0.7152)
 </pre>
 <p>
 
@@ -1227,9 +1227,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605539"></a><h3>
+<a name="id2605552"></a><h3>
 <a name="GIMP-RGB-LUMINANCE-BLUE:CAPS"></a>GIMP_RGB_LUMINANCE_BLUE</h3>
-<a class="indexterm" name="id2605551"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
+<a class="indexterm" name="id2605563"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
 </pre>
 <p>
 
@@ -1237,9 +1237,9 @@ they leave the alpha channel unspecified.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605565"></a><h3>
+<a name="id2605578"></a><h3>
 <a name="GIMP-RGB-INTENSITY:CAPS"></a>GIMP_RGB_INTENSITY()</h3>
-<a class="indexterm" name="id2605578"></a><pre class="programlisting">#define             GIMP_RGB_INTENSITY(r,g,b)</pre>
+<a class="indexterm" name="id2605590"></a><pre class="programlisting">#define             GIMP_RGB_INTENSITY(r,g,b)</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GIMP_RGB_INTENSITY</code> is deprecated and should not be used in newly-written code.</p>
@@ -1273,9 +1273,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605648"></a><h3>
+<a name="id2605661"></a><h3>
 <a name="GIMP-RGB-INTENSITY-RED:CAPS"></a>GIMP_RGB_INTENSITY_RED</h3>
-<a class="indexterm" name="id2605660"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_RED    (0.30)
+<a class="indexterm" name="id2605673"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_RED    (0.30)
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1287,9 +1287,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605686"></a><h3>
+<a name="id2605699"></a><h3>
 <a name="GIMP-RGB-INTENSITY-GREEN:CAPS"></a>GIMP_RGB_INTENSITY_GREEN</h3>
-<a class="indexterm" name="id2605700"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_GREEN  (0.59)
+<a class="indexterm" name="id2605713"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_GREEN  (0.59)
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1301,9 +1301,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605726"></a><h3>
+<a name="id2605739"></a><h3>
 <a name="GIMP-RGB-INTENSITY-BLUE:CAPS"></a>GIMP_RGB_INTENSITY_BLUE</h3>
-<a class="indexterm" name="id2605740"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_BLUE   (0.11)
+<a class="indexterm" name="id2605752"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_BLUE   (0.11)
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1315,9 +1315,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605766"></a><h3>
+<a name="id2605778"></a><h3>
 <a name="GIMP-TYPE-RGB:CAPS"></a>GIMP_TYPE_RGB</h3>
-<a class="indexterm" name="id2605776"></a><pre class="programlisting">#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
+<a class="indexterm" name="id2605789"></a><pre class="programlisting">#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
 </pre>
 <p>
 <a href="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"><span class="type">GIMP_TYPE_RGB</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_BOXED</span>.
@@ -1325,9 +1325,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605810"></a><h3>
+<a name="id2605822"></a><h3>
 <a name="GIMP-TYPE-PARAM-RGB:CAPS"></a>GIMP_TYPE_PARAM_RGB</h3>
-<a class="indexterm" name="id2605824"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_RGB           (gimp_param_rgb_get_type ())
+<a class="indexterm" name="id2605833"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_RGB           (gimp_param_rgb_get_type ())
 </pre>
 <p>
 
@@ -1335,9 +1335,9 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605840"></a><h3>
+<a name="id2605848"></a><h3>
 <a name="gimp-param-spec-rgb"></a>gimp_param_spec_rgb ()</h3>
-<a class="indexterm" name="id2605855"></a><pre class="programlisting">GParamSpec*         gimp_param_spec_rgb                 (const gchar *name,
+<a class="indexterm" name="id2605863"></a><pre class="programlisting">GParamSpec*         gimp_param_spec_rgb                 (const gchar *name,
                                                          const gchar *nick,
                                                          const gchar *blurb,
                                                          gboolean has_alpha,
@@ -1395,9 +1395,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606073"></a><h3>
+<a name="id2606081"></a><h3>
 <a name="gimp-param-spec-rgb-has-alpha"></a>gimp_param_spec_rgb_has_alpha ()</h3>
-<a class="indexterm" name="id2606090"></a><pre class="programlisting">gboolean            gimp_param_spec_rgb_has_alpha       (GParamSpec *pspec);</pre>
+<a class="indexterm" name="id2606098"></a><pre class="programlisting">gboolean            gimp_param_spec_rgb_has_alpha       (GParamSpec *pspec);</pre>
 <p>
 </p>
 <p>
@@ -1424,9 +1424,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606181"></a><h3>
+<a name="id2606189"></a><h3>
 <a name="GIMP-VALUE-HOLDS-RGB:CAPS"></a>GIMP_VALUE_HOLDS_RGB()</h3>
-<a class="indexterm" name="id2606195"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
+<a class="indexterm" name="id2606203"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
 </pre>
 <p>
 
@@ -1444,9 +1444,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606231"></a><h3>
+<a name="id2606239"></a><h3>
 <a name="gimp-value-get-rgb"></a>gimp_value_get_rgb ()</h3>
-<a class="indexterm" name="id2606244"></a><pre class="programlisting">void                gimp_value_get_rgb                  (const GValue *value,
+<a class="indexterm" name="id2606252"></a><pre class="programlisting">void                gimp_value_get_rgb                  (const GValue *value,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
@@ -1471,9 +1471,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606311"></a><h3>
+<a name="id2606319"></a><h3>
 <a name="gimp-value-set-rgb"></a>gimp_value_set_rgb ()</h3>
-<a class="indexterm" name="id2606325"></a><pre class="programlisting">void                gimp_value_set_rgb                  (GValue *value,
+<a class="indexterm" name="id2606333"></a><pre class="programlisting">void                gimp_value_set_rgb                  (GValue *value,
                                                          const <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 

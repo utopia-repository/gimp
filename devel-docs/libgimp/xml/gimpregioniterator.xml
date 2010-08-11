@@ -232,7 +232,8 @@ using a pre-defined function pointer per pixel.
                                                          <link linkend="GimpRunMode">GimpRunMode</link> unused);</programlisting>
 <para>
 Creates a new <link linkend="GimpRgnIterator"><type>GimpRgnIterator</type></link> for <parameter>drawable</parameter>. The <link linkend="GimpRunMode"><type>GimpRunMode</type></link>
-parameter is ignored.</para>
+parameter is ignored. Use <link linkend="gimp-rgn-iterator-free"><function>gimp_rgn_iterator_free()</function></link> to free thsi
+iterator.</para>
 <para>
 
 </para><variablelist role="params">

@@ -653,8 +653,7 @@ gimp_image_init (GimpImage *image)
   image->group_count           = 0;
   image->pushing_undo_group    = GIMP_UNDO_GROUP_NONE;
 
-  image->comp_preview          = NULL;
-  image->comp_preview_valid    = FALSE;
+  image->preview               = NULL;
 
   image->flush_accum.alpha_changed = FALSE;
   image->flush_accum.mask_changed  = FALSE;
@@ -889,10 +888,10 @@ gimp_image_finalize (GObject *object)
       image->selection_mask = NULL;
     }
 
-  if (image->comp_preview)
+  if (image->preview)
     {
-      temp_buf_free (image->comp_preview);
-      image->comp_preview = NULL;
+      temp_buf_free (image->preview);
+      image->preview = NULL;
     }
 
   if (image->parasites)
@@ -1006,8 +1005,8 @@ gimp_image_get_memsize (GimpObject *object,
   memsize += gimp_object_get_memsize (GIMP_OBJECT (image->redo_stack),
                                       gui_size);
 
-  if (image->comp_preview)
-    *gui_size += temp_buf_get_memsize (image->comp_preview);
+  if (image->preview)
+    *gui_size += temp_buf_get_memsize (image->preview);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -1034,12 +1033,10 @@ gimp_image_invalidate_preview (GimpViewable *viewable)
   if (GIMP_VIEWABLE_CLASS (parent_class)->invalidate_preview)
     GIMP_VIEWABLE_CLASS (parent_class)->invalidate_preview (viewable);
 
-  image->comp_preview_valid = FALSE;
-
-  if (image->comp_preview)
+  if (image->preview)
     {
-      temp_buf_free (image->comp_preview);
-      image->comp_preview = NULL;
+      temp_buf_free (image->preview);
+      image->preview = NULL;
     }
 }
 
@@ -2295,7 +2292,7 @@ gimp_image_parasite_list (const GimpImage *image,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
   *count = gimp_parasite_list_length (image->parasites);
-  cur = list = g_new (gchar*, *count);
+  cur = list = g_new (gchar *, *count);
 
   gimp_parasite_list_foreach (image->parasites, (GHFunc) list_func, &cur);
 
@@ -2306,22 +2303,22 @@ void
 gimp_image_parasite_attach (GimpImage          *image,
                             const GimpParasite *parasite)
 {
-  GimpParasite *copy;
+  GimpParasite  copy;
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (parasite != NULL);
 
-  /*  make a temp copy of the struct because
+  /*  make a temporary copy of the GimpParasite struct because
    *  gimp_parasite_shift_parent() changes it
    */
-  copy = g_memdup (parasite, sizeof (GimpParasite));
+  copy = *parasite;
 
   /* only set the dirty bit manually if we can be saved and the new
      parasite differs from the current one and we aren't undoable */
-  if (gimp_parasite_is_undoable (copy))
+  if (gimp_parasite_is_undoable (&copy))
     gimp_image_undo_push_image_parasite (image,
                                          _("Attach Parasite to Image"),
-                                         copy);
+                                         &copy);
 
   /*  We used to push an cantundo on te stack here. This made the undo stack
       unusable (NULL on the stack) and prevented people from undoing after a
@@ -2330,15 +2327,13 @@ gimp_image_parasite_attach (GimpImage          *image,
       undoable but does not block the undo system.   --Sven
    */
 
-  gimp_parasite_list_add (image->parasites, copy);
+  gimp_parasite_list_add (image->parasites, &copy);
 
-  if (gimp_parasite_has_flag (copy, GIMP_PARASITE_ATTACH_PARENT))
+  if (gimp_parasite_has_flag (&copy, GIMP_PARASITE_ATTACH_PARENT))
     {
-      gimp_parasite_shift_parent (copy);
-      gimp_parasite_attach (image->gimp, copy);
+      gimp_parasite_shift_parent (&copy);
+      gimp_parasite_attach (image->gimp, &copy);
     }
-
-  g_free (copy);
 
   g_signal_emit (image, gimp_image_signals[PARASITE_ATTACHED], 0,
                  parasite->name);

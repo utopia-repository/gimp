@@ -247,7 +247,7 @@ This procedure returns the process ID of the currently running GIMP.</para>
   /* called when the gimp application exits */
   GimpQuitProc  quit_proc;
 
-  /* called by the gimp so that the plug-in can inform the
+  /* called by gimp so that the plug-in can inform the
    *  gimp of what it does. (ie. installing a procedure database
    *  procedure).
    */
@@ -422,6 +422,13 @@ activation by passing a <parameter>menu_label</parameter> to <link linkend="gimp
 not registering any menu path with <link linkend="gimp-plugin-menu-register"><function>gimp_plugin_menu_register()</function></link>. In
 this case, the given <parameter>menu_label</parameter> will only be used as the
 procedure's user-visible name in the keyboard shortcut editor.
+</para>
+<para>
+<parameter>image_types</parameter> is a comma separated list of image types, or actually
+drawable types, that this procedure can deal with. Wildcards are
+possible here, so you could say "RGB*" instead of "RGB, RGBA" or
+"*" for all image types. If the procedure doesn't need an image to
+run, use the empty string.
 </para>
 <para>
 <parameter>type</parameter> must be one of <link linkend="GIMP-PLUGIN:CAPS"><type>GIMP_PLUGIN</type></link> or <link linkend="GIMP-EXTENSION:CAPS"><type>GIMP_EXTENSION</type></link>. Note that
@@ -633,7 +640,7 @@ information.</para>
 This function calls a GIMP procedure and returns its return values.
 To get more information about the available procedures and the
 parameters they expect, please have a look at the Procedure Browser
-as found in the Xtns menu in the GIMP's toolbox.
+as found in the Xtns menu in GIMP's toolbox.
 </para>
 <para>
 As soon as you don't need the return values any longer, you should

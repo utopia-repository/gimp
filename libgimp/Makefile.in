@@ -160,6 +160,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -194,6 +195,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -416,7 +419,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -1254,7 +1258,7 @@ install-data-local: install-ms-lib install-libtool-import-lib
 
 uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 
-$(srcdir)/gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_MKENUMS)
+gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpenums.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \
@@ -1269,12 +1273,12 @@ $(srcdir)/gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_M
 	&& cp xgen-cec $(@F) \
 	&& rm -f xgen-cec
 
-$(srcdir)/gimpuimarshal.h: $(srcdir)/gimpuimarshal.list
+gimpuimarshal.h: $(srcdir)/gimpuimarshal.list
 	$(GLIB_GENMARSHAL) --prefix=_gimpui_marshal $(srcdir)/gimpuimarshal.list --header >> xgen-umh \
 	&& (cmp -s xgen-umh $(@F) || cp xgen-umh $(@F)) \
 	&& rm -f xgen-umh xgen-umh~
 
-$(srcdir)/gimpuimarshal.c: $(srcdir)/gimpuimarshal.h
+gimpuimarshal.c: gimpuimarshal.h
 	echo "#include \"gimpuimarshal.h\"" >> xgen-umc \
 	&& $(GLIB_GENMARSHAL) --prefix=_gimpui_marshal $(srcdir)/gimpuimarshal.list --body >> xgen-umc \
 	&& cp xgen-umc $(@F) \

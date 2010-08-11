@@ -42,7 +42,7 @@ sub unit_get_number_of_built_in_units {
     $blurb = 'Returns the number of built-in units.';
 
     $help = <<'HELP';
-This procedure returns the number of defined units built-in to the GIMP.
+This procedure returns the number of defined units built-in to GIMP.
 HELP
 
     &mitch_pdb_misc('1999');
@@ -73,19 +73,19 @@ HELP
     &mitch_pdb_misc('1999');
 
     @inargs = (
-	{ name => 'identifier', type => 'string', wrap => 1,
+	{ name => 'identifier', type => 'string', wrap => 1, non_empty => 1,
 	  desc => "The new unit's identifier" },
 	{ name => 'factor', type => 'float',
 	  desc => "The new unit's factor" },
 	{ name => 'digits', type => 'int32',
 	  desc => "The new unit's digits" },
-	{ name => 'symbol', type => 'string',
+	{ name => 'symbol', type => 'string', non_empty => 1,
 	  desc => "The new unit's symbol" },
-	{ name => 'abbreviation', type => 'string',
+	{ name => 'abbreviation', type => 'string', non_empty => 1,
 	  desc => "The new unit's abbreviation" },
-	{ name => 'singular', type => 'string',
+	{ name => 'singular', type => 'string', non_empty => 1,
 	  desc => "The new unit's singular form" },
-	{ name => 'plural', type => 'string',
+	{ name => 'plural', type => 'string', non_empty => 1,
 	  desc => "The new unit's plural form" }
     );
 

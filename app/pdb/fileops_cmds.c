@@ -37,6 +37,7 @@
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
 #include "file/file-open.h"
+#include "file/file-procedure.h"
 #include "file/file-save.h"
 #include "file/file-utils.h"
 #include "plug-in/gimppluginmanager-file.h"
@@ -67,7 +68,7 @@ file_load_invoker (GimpProcedure     *procedure,
     return gimp_procedure_get_return_values (procedure, FALSE);
 
   file_proc =
-    file_utils_find_proc (gimp->plug_in_manager->load_procs, uri, NULL);
+    file_procedure_find (gimp->plug_in_manager->load_procs, uri, NULL);
 
   g_free (uri);
 
@@ -235,7 +236,7 @@ file_save_invoker (GimpProcedure     *procedure,
     return gimp_procedure_get_return_values (procedure, FALSE);
 
   file_proc =
-    file_utils_find_proc (gimp->plug_in_manager->save_procs, uri, NULL);
+    file_procedure_find (gimp->plug_in_manager->save_procs, uri, NULL);
 
   g_free (uri);
 
@@ -537,14 +538,14 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the file to load",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("raw-filename",
                                                        "raw filename",
                                                        "The name as entered by the user",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -588,7 +589,7 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the file to load",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -632,7 +633,7 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the file to load",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -685,14 +686,14 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the file to save the image in",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("raw-filename",
                                                        "raw filename",
                                                        "The name as entered by the user",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -715,7 +716,7 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the file that owns the thumbnail to load",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -767,7 +768,7 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The name of the file the thumbnail belongs to",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -790,14 +791,14 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("extension",
                                                        "extension",
                                                        "The extension the file will have",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("name",
                                                            "name",
                                                            "The new temp filename",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -820,28 +821,28 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
                                                        "The name of the procedure to be used for loading",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("extensions",
                                                        "extensions",
                                                        "comma separated list of extensions this handler can load (i.e. \"jpg,jpeg\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("prefixes",
                                                        "prefixes",
                                                        "comma separated list of prefixes this handler can load (i.e. \"http:,ftp:\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("magics",
                                                        "magics",
                                                        "comma separated list of magic file information this handler can load (i.e. \"0,string,GIF\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -864,21 +865,21 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
                                                        "The name of the procedure to be used for loading",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("extensions",
                                                        "extensions",
                                                        "comma separated list of extensions this handler can load (i.e. \"jpg,jpeg\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("prefixes",
                                                        "prefixes",
                                                        "comma separated list of prefixes this handler can load (i.e. \"http:,ftp:\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -901,21 +902,21 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
                                                        "The name of the procedure to be used for saving",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("extensions",
                                                        "extensions",
                                                        "comma separated list of extensions this handler can save (i.e. \"jpg,jpeg\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("prefixes",
                                                        "prefixes",
                                                        "comma separated list of prefixes this handler can save (i.e. \"http:,ftp:\")",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -938,14 +939,14 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
                                                        "The name of the procedure to associate a MIME type with.",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("mime-type",
                                                        "mime type",
                                                        "A single MIME type, like for example \"image/jpeg\".",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -968,14 +969,14 @@ register_fileops_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("load-proc",
                                                        "load proc",
                                                        "The name of the procedure the thumbnail loader with.",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("thumb-proc",
                                                        "thumb proc",
                                                        "The name of the thumbnail load procedure.",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);

@@ -24,11 +24,12 @@
 
 <link linkend="void">void</link>                <link linkend="gimp-env-init">gimp_env_init</link>                       (<link linkend="gboolean">gboolean</link> plug_in);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-directory">gimp_directory</link>                      (void);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-personal-rc-file">gimp_personal_rc_file</link>               (const <link linkend="gchar">gchar</link> *basename);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-data-directory">gimp_data_directory</link>                 (void);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-locale-directory">gimp_locale_directory</link>               (void);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-plug-in-directory">gimp_plug_in_directory</link>              (void);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-sysconf-directory">gimp_sysconf_directory</link>              (void);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-user-directory">gimp_user_directory</link>                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-personal-rc-file">gimp_personal_rc_file</link>               (const <link linkend="gchar">gchar</link> *basename);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gtkrc">gimp_gtkrc</link>                          (void);
 <link linkend="GList">GList</link>*              <link linkend="gimp-path-parse">gimp_path_parse</link>                     (const <link linkend="gchar">gchar</link> *path,
                                                          <link linkend="gint">gint</link> max_paths,
@@ -100,26 +101,6 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The user-specific GIMP settings directory.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-personal-rc-file" role="function"/>gimp_personal_rc_file ()</title>
-<indexterm><primary>gimp_personal_rc_file</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_personal_rc_file               (const <link linkend="gchar">gchar</link> *basename);</programlisting>
-<para>
-Returns the name of a file in the user-specific GIMP settings directory.
-</para>
-<para>
-The returned string is allocated dynamically and *SHOULD* be freed
-with <link linkend="g-free"><function>g_free()</function></link> after use. The returned string is in the encoding used
-for filenames by the system, which isn't necessarily UTF-8 (never
-is on Windows).</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>basename</parameter>&nbsp;:</term>
-<listitem><simpara> The basename of a rc_file.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of a file in the user-specific GIMP settings directory.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -203,10 +184,52 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="gimp-user-directory" role="function" condition="since:GIMP 2.4"/>gimp_user_directory ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_user_directory</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_user_directory                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);</programlisting>
+<para>
+Identifies special folders used frequently by applications, but
+which may not have the same name or location on any given system.
+</para>
+<para>
+Plug-ins may want to use this function to add shortcuts to such
+folders to a file-chooser.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> the type of user directory to retrieve
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly allocated directory name in filesystem encoding,
+         or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-personal-rc-file" role="function"/>gimp_personal_rc_file ()</title>
+<indexterm><primary>gimp_personal_rc_file</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_personal_rc_file               (const <link linkend="gchar">gchar</link> *basename);</programlisting>
+<para>
+Returns the name of a file in the user-specific GIMP settings directory.
+</para>
+<para>
+The returned string is allocated dynamically and *SHOULD* be freed
+with <link linkend="g-free"><function>g_free()</function></link> after use. The returned string is in the encoding used
+for filenames by the system, which isn't necessarily UTF-8 (never
+is on Windows).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>basename</parameter>&nbsp;:</term>
+<listitem><simpara> The basename of a rc_file.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of a file in the user-specific GIMP settings directory.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="gimp-gtkrc" role="function"/>gimp_gtkrc ()</title>
 <indexterm><primary>gimp_gtkrc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gtkrc                          (void);</programlisting>
 <para>
-Returns the name of the GIMP's application-specific gtkrc file.
+Returns the name of GIMP's application-specific gtkrc file.
 </para>
 <para>
 The returned string is owned by GIMP and must not be modified or
@@ -215,7 +238,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of the GIMP's application-specific gtkrc file.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of GIMP's application-specific gtkrc file.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

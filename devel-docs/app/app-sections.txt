@@ -126,6 +126,8 @@ gimp_get_default_context
 gimp_set_user_context
 gimp_get_user_context
 gimp_set_global_buffer
+gimp_message
+gimp_message_valist
 <SUBSECTION Standard>
 GimpClass
 GIMP
@@ -151,6 +153,7 @@ gimp_contexts_clear
 <TITLE>Gimp-gui</TITLE>
 GimpGui
 gimp_gui_init
+gimp_gui_ungrab
 gimp_threads_enter
 gimp_threads_leave
 gimp_set_busy
@@ -158,7 +161,7 @@ gimp_set_busy_until_idle
 gimp_unset_busy
 gimp_new_progress
 gimp_free_progress
-gimp_message
+gimp_show_message
 gimp_help
 gimp_get_display_by_ID
 gimp_get_display_ID
@@ -193,6 +196,7 @@ gimp_edit_named_copy
 gimp_edit_named_copy_visible
 gimp_edit_clear
 gimp_edit_fill
+gimp_edit_fade
 </SECTION>
 
 <SECTION>
@@ -589,6 +593,7 @@ GIMP_CONTEXT_GET_CLASS
 <TITLE>GimpArea</TITLE>
 GimpArea
 gimp_area_new
+gimp_area_free
 gimp_area_list_process
 gimp_area_list_free
 </SECTION>
@@ -1138,6 +1143,7 @@ gimp_image_get_layer_by_name
 gimp_image_get_channel_by_name
 gimp_image_get_vectors_by_name
 gimp_image_add_layer
+gimp_image_add_layers
 gimp_image_remove_layer
 gimp_image_raise_layer
 gimp_image_lower_layer
@@ -2304,6 +2310,9 @@ gimp_display_shell_scale_by_values
 gimp_display_shell_scale_shrink_wrap
 gimp_display_shell_scale_resize
 gimp_display_shell_scale_dialog
+gimp_display_shell_scale_can_revert
+gimp_display_shell_scale_changed
+gimp_display_shell_scale_revert
 </SECTION>
 
 <SECTION>
@@ -2339,6 +2348,10 @@ gimp_display_shell_title_update
 <SECTION>
 <FILE>gimpdisplayshell-transform</FILE>
 <TITLE>GimpDisplayShell-transform</TITLE>
+gimp_display_shell_transform_coordinate
+gimp_display_shell_untransform_coordinate
+gimp_display_shell_transform_points
+gimp_display_shell_transform_segments
 gimp_display_shell_transform_coords
 gimp_display_shell_transform_xy
 gimp_display_shell_untransform_xy
@@ -3398,9 +3411,11 @@ GimpDrawTool
 gimp_draw_tool_start
 gimp_draw_tool_stop
 gimp_draw_tool_is_active
+gimp_draw_tool_is_drawn
 gimp_draw_tool_pause
 gimp_draw_tool_resume
 gimp_draw_tool_calc_distance
+gimp_draw_tool_calc_distance_square
 gimp_draw_tool_in_radius
 gimp_draw_tool_draw_line
 gimp_draw_tool_draw_dashed_line
@@ -4780,6 +4795,9 @@ GIMP_COLOR_EDITOR_GET_CLASS
 <TITLE>GimpColormapEditor</TITLE>
 GimpColormapEditor
 gimp_colormap_editor_new
+gimp_colormap_editor_get_index
+gimp_colormap_editor_set_index
+gimp_colormap_editor_max_index
 <SUBSECTION Standard>
 GimpColormapEditorClass
 GIMP_COLORMAP_EDITOR
@@ -5174,6 +5192,7 @@ gimp_cursor_view_new
 gimp_cursor_view_set_sample_merged
 gimp_cursor_view_get_sample_merged
 gimp_cursor_view_update_cursor
+gimp_cursor_view_clear_cursor
 <SUBSECTION Standard>
 GimpCursorViewClass
 GIMP_CURSOR_VIEW
@@ -5183,6 +5202,28 @@ gimp_cursor_view_get_type
 GIMP_CURSOR_VIEW_CLASS
 GIMP_IS_CURSOR_VIEW_CLASS
 GIMP_CURSOR_VIEW_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>gimpdbusservice</FILE>
+<TITLE>GimpDBusService</TITLE>
+GIMP_DBUS_SERVICE_NAME
+GIMP_DBUS_SERVICE_PATH
+GIMP_DBUS_SERVICE_INTERFACE
+GimpDBusService
+gimp_dbus_service_new
+gimp_dbus_service_open
+gimp_dbus_service_open_as_new
+gimp_dbus_service_activate
+<SUBSECTION Standard>
+GimpDBusServiceClass
+GIMP_DBUS_SERVICE
+GIMP_IS_DBUS_SERVICE
+GIMP_TYPE_DBUS_SERVICE
+gimp_dbus_service_get_type
+GIMP_DBUS_SERVICE_CLASS
+GIMP_IS_DBUS_SERVICE_CLASS
+GIMP_DBUS_SERVICE_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -5242,6 +5283,7 @@ gimp_dialog_factory_add_dialog
 gimp_dialog_factory_add_foreign
 gimp_dialog_factory_remove_dialog
 gimp_dialog_factory_show_toolbox
+gimp_dialog_factory_hide_dialog
 gimp_dialog_factories_session_save
 gimp_dialog_factories_session_restore
 gimp_dialog_factories_session_clear
@@ -5434,6 +5476,7 @@ GIMP_EDITOR_GET_CLASS
 GimpErrorConsole
 gimp_error_console_new
 gimp_error_console_add
+error_console_select_all_cmd_callback
 error_console_save_cmd_callback
 <SUBSECTION Standard>
 GimpErrorConsoleClass
@@ -6381,21 +6424,53 @@ GIMP_SELECTION_EDITOR_GET_CLASS
 <FILE>gimpsessioninfo</FILE>
 <TITLE>GimpSessionInfo</TITLE>
 GimpSessionInfo
-GimpSessionInfoAux
-GimpSessionInfoBook
-GimpSessionInfoDockable
+gimp_session_info_new
 gimp_session_info_free
-gimp_session_info_book_free
-gimp_session_info_dockable_free
-gimp_session_info_aux_new
-gimp_session_info_aux_free
-gimp_session_info_aux_new_from_props
-gimp_session_info_aux_set_props
-gimp_session_info_save
+gimp_session_info_serialize
 gimp_session_info_deserialize
 gimp_session_info_restore
 gimp_session_info_set_geometry
 gimp_session_info_get_geometry
+</SECTION>
+
+<SECTION>
+<FILE>gimpsessioninfo-aux</FILE>
+GimpSessionInfoAux
+gimp_session_info_aux_new
+gimp_session_info_aux_free
+gimp_session_info_aux_new_from_props
+gimp_session_info_aux_set_props
+gimp_session_info_aux_serialize
+gimp_session_info_aux_deserialize
+gimp_session_info_aux_set_list
+gimp_session_info_aux_get_list
+</SECTION>
+
+<SECTION>
+<FILE>gimpsessioninfo-book</FILE>
+GimpSessionInfoBook
+gimp_session_info_book_new
+gimp_session_info_book_free
+gimp_session_info_book_serialize
+gimp_session_info_book_deserialize
+gimp_session_info_book_restore
+</SECTION>
+
+<SECTION>
+<FILE>gimpsessioninfo-dock</FILE>
+gimp_session_info_dock_serialize
+gimp_session_info_dock_deserialize
+gimp_session_info_dock_restore
+</SECTION>
+
+<SECTION>
+<FILE>gimpsessioninfo-dockable</FILE>
+GimpSessionInfoDockable
+gimp_session_info_dockable_new
+gimp_session_info_dockable_free
+gimp_session_info_dockable_serialize
+gimp_session_info_dockable_deserialize
+gimp_session_info_dockable_restore
 </SECTION>
 
 <SECTION>
@@ -6758,7 +6833,7 @@ GTK_VWRAP_BOX_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>app_procs</FILE>
+<FILE>app</FILE>
 app_libs_init
 app_abort
 app_exit
@@ -6772,6 +6847,7 @@ batch_run
 
 <SECTION>
 <FILE>errors</FILE>
+errors_init
 gimp_terminate
 </SECTION>
 
@@ -6972,6 +7048,7 @@ pixel_regions_process_stop
 
 <SECTION>
 <FILE>pixel-surround</FILE>
+PixelSurround
 pixel_surround_new
 pixel_surround_lock
 pixel_surround_release
@@ -7032,12 +7109,10 @@ tile_manager_crop
 <SECTION>
 <FILE>tile-manager-private</FILE>
 TileManager
-PixelDataHandlePrivate
 </SECTION>
 
 <SECTION>
 <FILE>tile-manager</FILE>
-PixelDataHandle
 tile_manager_new
 tile_manager_ref
 tile_manager_unref
@@ -7060,8 +7135,6 @@ tile_manager_set_offsets
 tile_manager_get_memsize
 tile_manager_get_tile_coordinates
 tile_manager_map_over_tile
-request_pixel_data
-release_pixel_data
 read_pixel_data
 write_pixel_data
 read_pixel_data_1
@@ -7070,18 +7143,16 @@ write_pixel_data_1
 
 <SECTION>
 <FILE>tile-private</FILE>
-TileLink
 Tile
+TileLink
+LARGE_SEEK
+LARGE_TRUNCATE
 </SECTION>
 
 <SECTION>
 <FILE>tile-swap</FILE>
-SwapCommand
-SwapFunc
 tile_swap_init
 tile_swap_exit
-tile_swap_add
-tile_swap_remove
 tile_swap_in
 tile_swap_out
 tile_swap_delete
@@ -7092,15 +7163,7 @@ tile_swap_test
 <FILE>tile</FILE>
 TILE_WIDTH
 TILE_HEIGHT
-TileRowHint
-TILEROWHINT_BROKEN
-TILEROWHINT_OPAQUE
-TILEROWHINT_TRANSPARENT
-TILEROWHINT_MIXED
-TILEROWHINT_OUTOFRANGE
-TILEROWHINT_UNDEFINED
-TILEROWHINT_UNKNOWN
-tile_init
+tile_new
 tile_lock
 tile_release
 tile_alloc
@@ -7110,12 +7173,21 @@ tile_eheight
 tile_bpp
 tile_is_valid
 tile_mark_valid
-tile_get_rowhint
-tile_set_rowhint
-tile_sanitize_rowhints
-tile_data_pointer
 tile_attach
 tile_detach
+tile_get_rowhint
+tile_set_rowhint
+tile_allocate_rowhints
+tile_data_pointer
+tile_global_refcount
+TileRowHint
+TILEROWHINT_BROKEN
+TILEROWHINT_OPAQUE
+TILEROWHINT_TRANSPARENT
+TILEROWHINT_MIXED
+TILEROWHINT_OUTOFRANGE
+TILEROWHINT_UNDEFINED
+TILEROWHINT_UNKNOWN
 </SECTION>
 
 <SECTION>
@@ -7815,6 +7887,14 @@ file_open_with_display
 file_open_with_proc_and_display
 file_open_layers
 file_open_thumbnail
+file_open_from_command_line
+</SECTION>
+
+<SECTION>
+<FILE>file-procedure</FILE>
+file_procedure_find
+file_procedure_find_by_prefix
+file_procedure_find_by_extension
 </SECTION>
 
 <SECTION>
@@ -7824,13 +7904,13 @@ file_save
 
 <SECTION>
 <FILE>file-utils</FILE>
+file_utils_filename_is_uri
 file_utils_filename_to_uri
+file_utils_any_to_uri
 file_utils_filename_from_uri
 file_utils_uri_to_utf8_filename
 file_utils_uri_display_basename
 file_utils_uri_display_name
-file_utils_find_proc
-file_utils_find_proc_by_extension
 file_utils_load_thumbnail
 file_utils_save_thumbnail
 </SECTION>
@@ -7946,6 +8026,7 @@ dialogs_vectors_list_view_new
 dialogs_brush_editor_get
 dialogs_gradient_editor_get
 dialogs_palette_editor_get
+dialogs_palette_import_get
 </SECTION>
 
 <SECTION>
@@ -8022,6 +8103,7 @@ gui_libs_init
 gui_init
 gui_post_init
 gui_abort
+gui_message
 </SECTION>
 
 <SECTION>
@@ -8687,6 +8769,7 @@ gimp_text_outline_get_type
 GimpEditSelectionTool
 gimp_edit_selection_tool_start
 gimp_edit_selection_tool_key_press
+gimp_edit_selection_tool_translate
 <SUBSECTION Standard>
 GimpEditSelectionToolClass
 GIMP_EDIT_SELECTION_TOOL
@@ -9444,6 +9527,7 @@ ENABLE_DEBUG_MENU
 debug_mem_profile_cmd_callback
 debug_dump_menus_cmd_callback
 debug_dump_managers_cmd_callback
+debug_dump_attached_data_cmd_callback
 </SECTION>
 
 <SECTION>
@@ -9502,9 +9586,6 @@ drawable_visible_cmd_callback
 
 <SECTION>
 <FILE>edit-commands</FILE>
-edit_undo_cmd_callback
-edit_redo_cmd_callback
-edit_undo_clear_cmd_callback
 edit_cut_cmd_callback
 edit_copy_cmd_callback
 edit_copy_visible_cmd_callback
@@ -9517,6 +9598,12 @@ edit_named_copy_visible_cmd_callback
 edit_named_paste_cmd_callback
 edit_clear_cmd_callback
 edit_fill_cmd_callback
+edit_undo_cmd_callback
+edit_redo_cmd_callback
+edit_strong_redo_cmd_callback
+edit_strong_undo_cmd_callback
+edit_undo_clear_cmd_callback
+edit_fade_cmd_callback
 </SECTION>
 
 <SECTION>
@@ -9546,9 +9633,11 @@ fonts_refresh_cmd_callback
 <SECTION>
 <FILE>gradient-editor-commands</FILE>
 gradient_editor_left_color_cmd_callback
+gradient_editor_left_color_type_cmd_callback
 gradient_editor_load_left_cmd_callback
 gradient_editor_save_left_cmd_callback
 gradient_editor_right_color_cmd_callback
+gradient_editor_right_color_type_cmd_callback
 gradient_editor_load_right_cmd_callback
 gradient_editor_save_right_cmd_callback
 gradient_editor_blending_func_cmd_callback
@@ -9616,6 +9705,8 @@ layers_anchor_cmd_callback
 layers_merge_down_cmd_callback
 layers_delete_cmd_callback
 layers_text_discard_cmd_callback
+layers_text_along_vectors_cmd_callback
+layers_text_to_vectors_cmd_callback
 layers_resize_cmd_callback
 layers_resize_to_image_cmd_callback
 layers_scale_cmd_callback
@@ -9766,6 +9857,7 @@ view_zoom_fit_in_cmd_callback
 view_zoom_fit_to_cmd_callback
 view_zoom_cmd_callback
 view_zoom_other_cmd_callback
+view_zoom_revert_cmd_callback
 view_shrink_wrap_cmd_callback
 view_dot_for_dot_cmd_callback
 view_scroll_horizontal_cmd_callback

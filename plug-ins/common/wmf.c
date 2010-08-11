@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* WMF loading file filter for the GIMP
+/* WMF loading file filter for GIMP
  * -Dom Lachowicz <cinamod@hotmail.com> 2003
  * -Francis James Franklin <fjf@alinameridon.com>
  */
@@ -492,6 +492,8 @@ load_dialog (const gchar *filename)
                                            -1);
 
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
@@ -996,7 +998,7 @@ load_image (const gchar *filename)
 
   gimp_progress_update (1.0);
 
-  /* Tell the GIMP to display the image.
+  /* Tell GIMP to display the image.
    */
   gimp_image_add_layer (image, layer, 0);
   gimp_drawable_flush (drawable);

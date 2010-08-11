@@ -108,7 +108,9 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpprogressdialog.$(OBJEXT) gimppropwidgets.$(OBJEXT) \
 	gimprender.$(OBJEXT) gimpsamplepointeditor.$(OBJEXT) \
 	gimpselectiondata.$(OBJEXT) gimpselectioneditor.$(OBJEXT) \
-	gimpsessioninfo.$(OBJEXT) gimpsizebox.$(OBJEXT) \
+	gimpsessioninfo.$(OBJEXT) gimpsessioninfo-aux.$(OBJEXT) \
+	gimpsessioninfo-book.$(OBJEXT) gimpsessioninfo-dock.$(OBJEXT) \
+	gimpsessioninfo-dockable.$(OBJEXT) gimpsizebox.$(OBJEXT) \
 	gimpstringaction.$(OBJEXT) gimpstrokeeditor.$(OBJEXT) \
 	gimptemplateeditor.$(OBJEXT) gimptemplateview.$(OBJEXT) \
 	gimptexteditor.$(OBJEXT) gimpthumbbox.$(OBJEXT) \
@@ -181,6 +183,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -215,6 +218,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -437,7 +442,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -746,6 +752,14 @@ libappwidgets_a_sources = \
 	gimpselectioneditor.h		\
 	gimpsessioninfo.c		\
 	gimpsessioninfo.h		\
+	gimpsessioninfo-aux.c		\
+	gimpsessioninfo-aux.h		\
+	gimpsessioninfo-book.c		\
+	gimpsessioninfo-book.h		\
+	gimpsessioninfo-dock.c		\
+	gimpsessioninfo-dock.h		\
+	gimpsessioninfo-dockable.c	\
+	gimpsessioninfo-dockable.h	\
 	gimpsizebox.c			\
 	gimpsizebox.h			\
 	gimpstringaction.c		\
@@ -996,6 +1010,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsamplepointeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectiondata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectioneditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsessioninfo-aux.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsessioninfo-book.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsessioninfo-dock.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsessioninfo-dockable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsessioninfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsizebox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstringaction.Po@am__quote@
@@ -1245,7 +1263,7 @@ $(srcdir)/gimpdbusservice.c: gimpdbusservice-glue.h
 gimpdbusservice-glue.h: $(srcdir)/dbus-service.xml
 	$(DBUS_BINDING_TOOL) --mode=glib-server --prefix=gimp $< > $(@F)
 
-$(srcdir)/widgets-enums.c: $(srcdir)/widgets-enums.h $(GIMP_MKENUMS)
+widgets-enums.c: $(srcdir)/widgets-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <gtk/gtk.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"widgets-enums.h\"\n#include \"gimp-intl.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \

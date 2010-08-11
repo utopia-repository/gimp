@@ -173,6 +173,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -207,6 +208,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -429,7 +432,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -1214,18 +1218,18 @@ uninstall-am: uninstall-info-am
 	uninstall-info-am
 
 
-$(srcdir)/gimpmarshal.h: $(srcdir)/gimpmarshal.list
+gimpmarshal.h: $(srcdir)/gimpmarshal.list
 	$(GLIB_GENMARSHAL) --prefix=gimp_marshal $(srcdir)/gimpmarshal.list --header >> xgen-gmh \
 	&& (cmp -s xgen-gmh $(@F) || cp xgen-gmh $(@F)) \
 	&& rm -f xgen-gmh xgen-gmh~
 
-$(srcdir)/gimpmarshal.c: $(srcdir)/gimpmarshal.h
+gimpmarshal.c: gimpmarshal.h
 	echo "#include \"gimpmarshal.h\"" >> xgen-gmc \
 	&& $(GLIB_GENMARSHAL) --prefix=gimp_marshal $(srcdir)/gimpmarshal.list --body >> xgen-gmc \
 	&& cp xgen-gmc $(@F) \
 	&& rm -f xgen-gmc xgen-gmc~
 
-$(srcdir)/core-enums.c: $(srcdir)/core-enums.h $(GIMP_MKENUMS)
+core-enums.c: $(srcdir)/core-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"core-enums.h\"\n#include \"gimp-intl.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \

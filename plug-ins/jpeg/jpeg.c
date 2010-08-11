@@ -58,6 +58,10 @@ JpegSaveVals  jsvals;
 gint32        orig_image_ID_global;
 gint32        drawable_ID_global;
 
+#ifdef HAVE_EXIF
+ExifData     *exif_data = NULL;
+#endif
+
 const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
@@ -243,7 +247,6 @@ run (const gchar      *name,
           const gchar *filename = param[0].data.d_string;
           gint         width    = 0;
           gint         height   = 0;
-          gint32       image_ID;
 
           image_ID = load_thumbnail_image (filename, &width, &height);
 

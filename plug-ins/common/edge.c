@@ -1,4 +1,4 @@
-/* edge filter for the GIMP
+/* edge filter for GIMP
  *  -Peter Mattis
  *
  * This filter performs edge detection on the input image.
@@ -57,7 +57,7 @@
 
 
 #ifdef RCSID
-static gchar rcsid[] = "$Id: edge.c 21494 2006-12-09 21:33:38Z neo $";
+static gchar rcsid[] = "$Id: edge.c 22715 2007-06-06 08:44:52Z muks $";
 #endif
 
 /* Some useful macros */
@@ -278,6 +278,7 @@ edge (GimpDrawable *drawable)
   gint              maxval;
   gint              cur_progress;
   gint              max_progress;
+  gdouble           per_progress;
 
   if (evals.amount < 1.0)
     evals.amount = 1.0;
@@ -297,7 +298,8 @@ edge (GimpDrawable *drawable)
   maxval = 255;
 
   cur_progress = 0;
-  max_progress = (x2 - x1) * (y2 - y1);
+  per_progress = 0.0;
+  max_progress = (x2 - x1) * (y2 - y1) / 100;
 
   gimp_pixel_rgn_init (&src_rgn, drawable, x1, y1, x2-x1, y2-y1, FALSE, FALSE);
   gimp_pixel_rgn_init (&dest_rgn, drawable, x1, y1, x2-x1, y2-y1, TRUE, TRUE);
@@ -384,8 +386,16 @@ edge (GimpDrawable *drawable)
             }
         }
       cur_progress += dest_rgn.w * dest_rgn.h;
-      gimp_progress_update ((double) cur_progress / (double) max_progress);
+
+      if (cur_progress > max_progress)
+        {
+          cur_progress = cur_progress - max_progress;
+          per_progress = per_progress + 0.01;
+          gimp_progress_update (per_progress);
+        }
     }
+
+  gimp_progress_update (1.0);
 
   gimp_pixel_fetcher_destroy (pft);
 

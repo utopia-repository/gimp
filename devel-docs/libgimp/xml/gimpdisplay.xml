@@ -59,9 +59,9 @@ Create a new display for the specified image.
 <para>
 Creates a new display for the specified image. If the image already
 has a display, another is added. Multiple displays are handled
-transparently by the GIMP. The newly created display is returned and
-can be subsequently destroyed with a call to <link linkend="gimp-display-delete"><function>gimp_display_delete()</function></link>.
-This procedure only makes sense for use with the GIMP UI.</para>
+transparently by GIMP. The newly created display is returned and can
+be subsequently destroyed with a call to <link linkend="gimp-display-delete"><function>gimp_display_delete()</function></link>. This
+procedure only makes sense for use with the GIMP UI.</para>
 <para>
 
 </para><variablelist role="params">

@@ -1257,7 +1257,7 @@ values.</para>
                                                          <link linkend="gconstpointer">gconstpointer</link> data);</programlisting>
 <para>
 Convenience function that creates a parasite and attaches it
-to the GIMP.</para>
+to GIMP.</para>
 <para>
 
 </para><variablelist role="params">

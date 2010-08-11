@@ -56,6 +56,7 @@
     <function name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
     <function name="enum GimpTransformDirection" link="libgimpbase-gimpbaseenums.html#GimpTransformDirection"/>
     <function name="enum GimpTransformResize" link="libgimpbase-gimpbaseenums.html#GimpTransformResize"/>
+    <function name="enum GimpUserDirectory" link="libgimpbase-gimpbaseenums.html#GimpUserDirectory"/>
     <function name="enum GimpVectorsStrokeType" link="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"/>
     <function name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
     <function name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
@@ -98,11 +99,12 @@
     <function name="gimp_datafiles_read_directories ()" link="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories"/>
     <function name="gimp_env_init ()" link="libgimpbase-gimpenv.html#gimp-env-init"/>
     <function name="gimp_directory ()" link="libgimpbase-gimpenv.html#gimp-directory"/>
-    <function name="gimp_personal_rc_file ()" link="libgimpbase-gimpenv.html#gimp-personal-rc-file"/>
     <function name="gimp_data_directory ()" link="libgimpbase-gimpenv.html#gimp-data-directory"/>
     <function name="gimp_locale_directory ()" link="libgimpbase-gimpenv.html#gimp-locale-directory"/>
     <function name="gimp_plug_in_directory ()" link="libgimpbase-gimpenv.html#gimp-plug-in-directory"/>
     <function name="gimp_sysconf_directory ()" link="libgimpbase-gimpenv.html#gimp-sysconf-directory"/>
+    <function name="gimp_user_directory ()" link="libgimpbase-gimpenv.html#gimp-user-directory"/>
+    <function name="gimp_personal_rc_file ()" link="libgimpbase-gimpenv.html#gimp-personal-rc-file"/>
     <function name="gimp_gtkrc ()" link="libgimpbase-gimpenv.html#gimp-gtkrc"/>
     <function name="gimp_path_parse ()" link="libgimpbase-gimpenv.html#gimp-path-parse"/>
     <function name="gimp_path_to_str ()" link="libgimpbase-gimpenv.html#gimp-path-to-str"/>

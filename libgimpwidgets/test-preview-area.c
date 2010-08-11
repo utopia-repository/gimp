@@ -44,9 +44,8 @@ static void
 test_run (GtkWidget *area,
           gboolean   visible)
 {
-  guchar       *buf;
+  guchar        buf[WIDTH * HEIGHT * 8];
   gint          i, j;
-  gint          offset, offset2, offset3;
   gint          num_iters = NUM_ITERS;
   guchar        val;
   gdouble       start_time, total_time;
@@ -59,10 +58,9 @@ test_run (GtkWidget *area,
 
   gtk_widget_realize (area);
 
-  g_print ("\nPerformance tests for GimpPreviewArea (%s, %d iterations):\n\n",
-           visible ? "visible" : "hidden", num_iters);
-
-  buf = g_malloc (WIDTH * HEIGHT * 8);
+  g_print ("\nPerformance tests for GimpPreviewArea "
+           "(%d x %d, %s, %d iterations):\n\n",
+           WIDTH, HEIGHT, visible ? "visible" : "hidden", num_iters);
 
   val = 0;
   for (j = 0; j < WIDTH * HEIGHT * 8; j++)
@@ -71,13 +69,14 @@ test_run (GtkWidget *area,
       buf[j] = val;
     }
 
-  gimp_preview_area_set_cmap (GIMP_PREVIEW_AREA (area), buf, 256);
+  gimp_preview_area_set_colormap (GIMP_PREVIEW_AREA (area), buf, 256);
 
   /* Let's warm up the cache, and also wait for the window manager
      to settle. */
   for (i = 0; i < NUM_ITERS; i++)
     {
-      offset = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+      gint offset = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+
       gimp_preview_area_draw (GIMP_PREVIEW_AREA (area),
                               0, 0, WIDTH, HEIGHT,
                               GIMP_RGB_IMAGE,
@@ -99,7 +98,8 @@ test_run (GtkWidget *area,
 
       for (i = 0; i < num_iters; i++)
         {
-          offset = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+          gint offset = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+
           gimp_preview_area_draw (GIMP_PREVIEW_AREA (area),
                                   0, 0, WIDTH, HEIGHT,
                                   enum_value->value,
@@ -112,7 +112,7 @@ test_run (GtkWidget *area,
       gdk_flush ();
       total_time = g_timer_elapsed (timer, NULL) - start_time;
 
-      g_print ("%-16s "
+      g_print ("%-20s "
                "draw  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
                enum_value->value_name,
                total_time,
@@ -124,8 +124,9 @@ test_run (GtkWidget *area,
 
       for (i = 0; i < num_iters; i++)
         {
-          offset  = (rand () % (WIDTH * HEIGHT * 4)) & -4;
-          offset2 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+          gint offset  = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+          gint offset2 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+
           gimp_preview_area_blend (GIMP_PREVIEW_AREA (area),
                                    0, 0, WIDTH, HEIGHT,
                                    enum_value->value,
@@ -141,7 +142,7 @@ test_run (GtkWidget *area,
       gdk_flush ();
       total_time = g_timer_elapsed (timer, NULL) - start_time;
 
-      g_print ("%-16s "
+      g_print ("%-20s "
                "blend :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
                enum_value->value_name,
                total_time,
@@ -153,9 +154,10 @@ test_run (GtkWidget *area,
 
       for (i = 0; i < num_iters; i++)
         {
-          offset  = (rand () % (WIDTH * HEIGHT * 4)) & -4;
-          offset2 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
-          offset3 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+          gint offset  = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+          gint offset2 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+          gint offset3 = (rand () % (WIDTH * HEIGHT * 4)) & -4;
+
           gimp_preview_area_mask (GIMP_PREVIEW_AREA (area),
                                   0, 0, WIDTH, HEIGHT,
                                   enum_value->value,
@@ -172,7 +174,7 @@ test_run (GtkWidget *area,
       gdk_flush ();
       total_time = g_timer_elapsed (timer, NULL) - start_time;
 
-      g_print ("%-16s "
+      g_print ("%-20s "
                "mask  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
                enum_value->value_name,
                total_time,
@@ -198,15 +200,13 @@ test_run (GtkWidget *area,
 
   gdk_flush ();
   total_time = g_timer_elapsed (timer, NULL) - start_time;
-  g_print ("%-16s "
+  g_print ("%-20s "
            "fill  :  %5.2fs, %8.1f fps, %8.2f megapixels/s\n",
            "Color fill",
            total_time,
            num_iters / total_time,
            num_iters * (WIDTH * HEIGHT * 1e-6) / total_time);
   g_print ("\n");
-
-  g_free (buf);
 }
 
 static void
@@ -216,6 +216,8 @@ test_preview_area (void)
   GtkWidget *area;
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+  gtk_window_set_accept_focus (GTK_WINDOW (window), FALSE);
 
   area = gimp_preview_area_new ();
   gtk_container_add (GTK_CONTAINER (window), area);

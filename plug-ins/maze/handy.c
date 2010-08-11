@@ -1,5 +1,5 @@
-/* $Id: handy.c 21431 2006-11-24 11:10:10Z neo $
- * These routines are useful for working with the GIMP and need not be
+/* $Id: handy.c 22715 2007-06-06 08:44:52Z muks $
+ * These routines are useful for working with GIMP and need not be
  * specific to plug-in-maze.
  *
  * Kevin Turner <acapnotic@users.sourceforge.net>

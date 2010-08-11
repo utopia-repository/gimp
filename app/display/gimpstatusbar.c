@@ -163,6 +163,7 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   statusbar->length_format_str[0] = '\0';
 
   statusbar->progress_active      = FALSE;
+  statusbar->progress_shown       = FALSE;
 
   box->spacing     = 2;
   box->homogeneous = FALSE;
@@ -281,6 +282,12 @@ gimp_statusbar_progress_start (GimpProgress *progress,
 
       statusbar->progress_active = TRUE;
 
+      if (! GTK_WIDGET_VISIBLE (statusbar))
+        {
+          gtk_widget_show (GTK_WIDGET (statusbar));
+          statusbar->progress_shown = TRUE;
+        }
+
       if (GTK_WIDGET_DRAWABLE (bar))
         gdk_window_process_updates (bar->window, TRUE);
 
@@ -298,6 +305,12 @@ gimp_statusbar_progress_end (GimpProgress *progress)
   if (statusbar->progress_active)
     {
       GtkWidget *bar = statusbar->progressbar;
+
+      if (statusbar->progress_shown)
+        {
+          gtk_widget_hide (GTK_WIDGET (statusbar));
+          statusbar->progress_shown = FALSE;
+        }
 
       statusbar->progress_active = FALSE;
 
@@ -395,7 +408,8 @@ gimp_statusbar_progress_message (GimpProgress        *progress,
     return FALSE;
 
   gimp_statusbar_push_temp (statusbar,
-                            gimp_get_message_stock_id (severity), "%s", message);
+                            gimp_get_message_stock_id (severity),
+                            "%s", message);
 
   return TRUE;
 }
@@ -422,7 +436,7 @@ gimp_statusbar_update (GimpStatusbar *statusbar)
         {
           guint context_id = gimp_statusbar_get_context_id (statusbar,
                                                             "progress");
- 
+
           if (context_id != msg->context_id)
             return;
         }
@@ -474,6 +488,38 @@ gimp_statusbar_new (GimpDisplayShell *shell)
                            statusbar, 0);
 
   return GTK_WIDGET (statusbar);
+}
+
+gboolean
+gimp_statusbar_get_visible (GimpStatusbar *statusbar)
+{
+  g_return_val_if_fail (GIMP_IS_STATUSBAR (statusbar), FALSE);
+
+  if (statusbar->progress_shown)
+    return FALSE;
+
+  return GTK_WIDGET_VISIBLE (statusbar);
+}
+
+void
+gimp_statusbar_set_visible (GimpStatusbar *statusbar,
+                            gboolean       visible)
+{
+  g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
+
+  if (statusbar->progress_shown)
+    {
+      if (visible)
+        {
+          statusbar->progress_shown = FALSE;
+          return;
+        }
+    }
+
+  if (visible)
+    gtk_widget_show (GTK_WIDGET (statusbar));
+  else
+    gtk_widget_hide (GTK_WIDGET (statusbar));
 }
 
 void
@@ -536,7 +582,7 @@ gimp_statusbar_push_valist (GimpStatusbar *statusbar,
         }
     }
 
-  msg = g_new0 (GimpStatusbarMsg, 1);
+  msg = g_slice_new0 (GimpStatusbarMsg);
 
   msg->context_id = context_id;
   msg->text       = message;
@@ -685,7 +731,7 @@ gimp_statusbar_replace_valist (GimpStatusbar *statusbar,
   g_return_if_fail (context != NULL);
   g_return_if_fail (format != NULL);
 
-  message =  gimp_statusbar_vprintf (format, args);
+  message = gimp_statusbar_vprintf (format, args);
 
   context_id = gimp_statusbar_get_context_id (statusbar, context);
 
@@ -705,7 +751,7 @@ gimp_statusbar_replace_valist (GimpStatusbar *statusbar,
         }
     }
 
-  msg = g_new0 (GimpStatusbarMsg, 1);
+  msg = g_slice_new0 (GimpStatusbarMsg);
 
   msg->context_id = context_id;
   msg->text       = message;
@@ -806,7 +852,7 @@ gimp_statusbar_push_temp_valist (GimpStatusbar *statusbar,
         }
     }
 
-  msg = g_new0 (GimpStatusbarMsg, 1);
+  msg = g_slice_new (GimpStatusbarMsg);
 
   msg->context_id = statusbar->temp_context_id;
   msg->stock_id   = g_strdup (stock_id);
@@ -1111,7 +1157,8 @@ gimp_statusbar_msg_free (GimpStatusbarMsg *msg)
 {
   g_free (msg->stock_id);
   g_free (msg->text);
-  g_free (msg);
+
+  g_slice_free (GimpStatusbarMsg, msg);
 }
 
 static gchar *

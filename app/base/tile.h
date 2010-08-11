@@ -39,10 +39,9 @@ typedef guchar TileRowHint;
 #define TILEROWHINT_BROKEN      6
 
 
-/* Initializes the fields of a tile to "good" values.
+/* Returns a newly allocated Tile with all fields initialized to "good" values.
  */
-void          tile_init              (Tile        *tile,
-                                      gint         bpp);
+Tile        * tile_new               (gint         bpp);
 
 
 /*
@@ -79,7 +78,7 @@ TileRowHint   tile_get_rowhint       (Tile        *tile,
 void          tile_set_rowhint       (Tile        *tile,
                                       gint         yoff,
                                       TileRowHint  rowhint);
-void          tile_sanitize_rowhints (Tile        *tile);
+void          tile_allocate_rowhints (Tile        *tile);
 
 void        * tile_data_pointer      (Tile        *tile,
                                       gint         xoff,

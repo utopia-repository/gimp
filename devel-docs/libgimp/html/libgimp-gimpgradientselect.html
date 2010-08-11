@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppaletteselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570719" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586379" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2709844" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2708613" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradientselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2570719"></a><span class="refentrytitle">gimpgradientselect</span>
+<a name="id2586379"></a><span class="refentrytitle">gimpgradientselect</span>
 </h2>
 <p>gimpgradientselect &#8212; Functions providing a gradient selection dialog.</p>
 </td>
@@ -73,17 +73,17 @@ gboolean            <a href="libgimp-gimpgradientselect.html#gimp-gradients-set-
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2709844"></a><h2>Description</h2>
+<a name="id2708613"></a><h2>Description</h2>
 <p>
 Functions providing a gradient selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2709860"></a><h2>Details</h2>
+<a name="id2708630"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2709871"></a><h3>
+<a name="id2708640"></a><h3>
 <a name="GimpRunGradientCallback"></a>GimpRunGradientCallback ()</h3>
-<a class="indexterm" name="id2709882"></a><pre class="programlisting">void                (*GimpRunGradientCallback)          (const gchar *gradient_name,
+<a class="indexterm" name="id2708651"></a><pre class="programlisting">void                (*GimpRunGradientCallback)          (const gchar *gradient_name,
                                                          gint width,
                                                          const gdouble *grad_data,
                                                          gboolean dialog_closing,
@@ -126,9 +126,9 @@ Functions providing a gradient selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708012"></a><h3>
+<a name="id2707221"></a><h3>
 <a name="gimp-gradient-select-new"></a>gimp_gradient_select_new ()</h3>
-<a class="indexterm" name="id2708024"></a><pre class="programlisting">const gchar*        gimp_gradient_select_new            (const gchar *title,
+<a class="indexterm" name="id2707232"></a><pre class="programlisting">const gchar*        gimp_gradient_select_new            (const gchar *title,
                                                          const gchar *gradient_name,
                                                          gint sample_size,
                                                          <a href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
@@ -176,9 +176,9 @@ Functions providing a gradient selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708165"></a><h3>
+<a name="id2707974"></a><h3>
 <a name="gimp-gradient-select-destroy"></a>gimp_gradient_select_destroy ()</h3>
-<a class="indexterm" name="id2708177"></a><pre class="programlisting">void                gimp_gradient_select_destroy        (const gchar *gradient_callback);</pre>
+<a class="indexterm" name="id2707986"></a><pre class="programlisting">void                gimp_gradient_select_destroy        (const gchar *gradient_callback);</pre>
 <p>
 
 </p>
@@ -195,9 +195,9 @@ Functions providing a gradient selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708221"></a><h3>
+<a name="id2708030"></a><h3>
 <a name="gimp-gradients-popup"></a>gimp_gradients_popup ()</h3>
-<a class="indexterm" name="id2708233"></a><pre class="programlisting">gboolean            gimp_gradients_popup                (const gchar *gradient_callback,
+<a class="indexterm" name="id2708042"></a><pre class="programlisting">gboolean            gimp_gradients_popup                (const gchar *gradient_callback,
                                                          const gchar *popup_title,
                                                          const gchar *initial_gradient,
                                                          gint sample_size);</pre>
@@ -242,9 +242,9 @@ This procedure opens the gradient selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2705522"></a><h3>
+<a name="id2704408"></a><h3>
 <a name="gimp-gradients-close-popup"></a>gimp_gradients_close_popup ()</h3>
-<a class="indexterm" name="id2705533"></a><pre class="programlisting">gboolean            gimp_gradients_close_popup          (const gchar *gradient_callback);</pre>
+<a class="indexterm" name="id2704419"></a><pre class="programlisting">gboolean            gimp_gradients_close_popup          (const gchar *gradient_callback);</pre>
 <p>
 Close the gradient selection dialog.
 </p>
@@ -271,9 +271,9 @@ This procedure closes an opened gradient selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2705597"></a><h3>
+<a name="id2704483"></a><h3>
 <a name="gimp-gradients-set-popup"></a>gimp_gradients_set_popup ()</h3>
-<a class="indexterm" name="id2705609"></a><pre class="programlisting">gboolean            gimp_gradients_set_popup            (const gchar *gradient_callback,
+<a class="indexterm" name="id2704494"></a><pre class="programlisting">gboolean            gimp_gradients_set_popup            (const gchar *gradient_callback,
                                                          const gchar *gradient_name);</pre>
 <p>
 Sets the current gradient in a gradient selection dialog.

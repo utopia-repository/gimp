@@ -202,7 +202,7 @@ Paste buffer to a new image.
 This procedure pastes a copy of the internal GIMP edit buffer to a
 new image. The GIMP edit buffer will be empty unless a call was
 previously made to either <link linkend="gimp-edit-cut"><function>gimp_edit_cut()</function></link> or <link linkend="gimp-edit-copy"><function>gimp_edit_copy()</function></link>. This
-procedure returns the new image.</para>
+procedure returns the new image or -1 if the edit buffer was empty.</para>
 <para>
 
 </para><variablelist role="params">

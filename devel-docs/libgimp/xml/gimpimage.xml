@@ -218,8 +218,7 @@ and operations involving multiple layers.
 Returns the list of images currently open.
 </para>
 <para>
-This procedure returns the list of images currently open in the
-GIMP.</para>
+This procedure returns the list of images currently open in GIMP.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1886,7 +1885,7 @@ values.</para>
                                                          <link linkend="gconstpointer">gconstpointer</link> data);</programlisting>
 <para>
 Convenience function that creates a parasite and attaches it
-to the GIMP.</para>
+to GIMP.</para>
 <para>
 
 </para><variablelist role="params">

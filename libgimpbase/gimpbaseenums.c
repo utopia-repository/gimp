@@ -260,8 +260,8 @@ gimp_clone_type_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_IMAGE_CLONE, N_("Image source"), NULL },
-    { GIMP_PATTERN_CLONE, N_("Pattern source"), NULL },
+    { GIMP_IMAGE_CLONE, N_("Image"), NULL },
+    { GIMP_PATTERN_CLONE, N_("Pattern"), NULL },
     { 0, NULL, NULL }
   };
 
@@ -1024,6 +1024,43 @@ gimp_progress_command_get_type (void)
   if (! type)
     {
       type = g_enum_register_static ("GimpProgressCommand", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_user_directory_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_USER_DIRECTORY_DESKTOP, "GIMP_USER_DIRECTORY_DESKTOP", "desktop" },
+    { GIMP_USER_DIRECTORY_DOCUMENTS, "GIMP_USER_DIRECTORY_DOCUMENTS", "documents" },
+    { GIMP_USER_DIRECTORY_MUSIC, "GIMP_USER_DIRECTORY_MUSIC", "music" },
+    { GIMP_USER_DIRECTORY_PICTURES, "GIMP_USER_DIRECTORY_PICTURES", "pictures" },
+    { GIMP_USER_DIRECTORY_TEMPLATES, "GIMP_USER_DIRECTORY_TEMPLATES", "templates" },
+    { GIMP_USER_DIRECTORY_VIDEOS, "GIMP_USER_DIRECTORY_VIDEOS", "videos" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_USER_DIRECTORY_DESKTOP, "GIMP_USER_DIRECTORY_DESKTOP", NULL },
+    { GIMP_USER_DIRECTORY_DOCUMENTS, "GIMP_USER_DIRECTORY_DOCUMENTS", NULL },
+    { GIMP_USER_DIRECTORY_MUSIC, "GIMP_USER_DIRECTORY_MUSIC", NULL },
+    { GIMP_USER_DIRECTORY_PICTURES, "GIMP_USER_DIRECTORY_PICTURES", NULL },
+    { GIMP_USER_DIRECTORY_TEMPLATES, "GIMP_USER_DIRECTORY_TEMPLATES", NULL },
+    { GIMP_USER_DIRECTORY_VIDEOS, "GIMP_USER_DIRECTORY_VIDEOS", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpUserDirectory", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
       gimp_enum_set_value_descriptions (type, descs);
     }

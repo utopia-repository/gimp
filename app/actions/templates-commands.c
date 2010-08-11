@@ -28,6 +28,7 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimptemplate.h"
@@ -49,26 +50,26 @@
 #include "gimp-intl.h"
 
 
-typedef struct _TemplateDeleteData TemplateDeleteData;
-
-struct _TemplateDeleteData
+typedef struct
 {
+  GimpContext   *context;
   GimpContainer *container;
   GimpTemplate  *template;
-};
+} TemplateDeleteData;
 
 
 /*  local function prototypes  */
 
-static void   templates_new_response   (GtkWidget             *dialog,
-                                        gint                   response_id,
-                                        TemplateOptionsDialog *options);
-static void   templates_edit_response  (GtkWidget             *widget,
-                                        gint                   response_id,
-                                        TemplateOptionsDialog *options);
-static void   templates_delete_response (GtkWidget            *dialog,
-                                         gint                  response_id,
-                                         TemplateDeleteData   *delete_data);
+static void   templates_new_response     (GtkWidget             *dialog,
+                                          gint                   response_id,
+                                          TemplateOptionsDialog *options);
+static void   templates_edit_response    (GtkWidget             *widget,
+                                          gint                   response_id,
+                                          TemplateOptionsDialog *options);
+static void   templates_delete_response  (GtkWidget             *dialog,
+                                          gint                   response_id,
+                                          TemplateDeleteData    *delete_data);
+static void   templates_delete_data_free (TemplateDeleteData    *delete_data);
 
 
 /*  public functions */
@@ -89,10 +90,8 @@ templates_create_image_cmd_callback (GtkAction *action,
 
   if (template && gimp_container_have (container, GIMP_OBJECT (template)))
     {
-      GdkScreen *screen;
+      GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (editor));
       GtkWidget *dialog;
-
-      screen = gtk_widget_get_screen (GTK_WIDGET (editor));
 
       dialog = gimp_dialog_factory_dialog_new (global_dialog_factory, screen,
                                                "gimp-image-new-dialog",
@@ -211,11 +210,10 @@ templates_delete_cmd_callback (GtkAction *action,
 
   if (template && gimp_container_have (container, GIMP_OBJECT (template)))
     {
-      TemplateDeleteData *delete_data;
-      GtkWidget           *dialog;
+      TemplateDeleteData *delete_data = g_slice_new (TemplateDeleteData);
+      GtkWidget          *dialog;
 
-      delete_data = g_new0 (TemplateDeleteData, 1);
-
+      delete_data->context   = context;
       delete_data->container = container;
       delete_data->template  = template;
 
@@ -234,7 +232,9 @@ templates_delete_cmd_callback (GtkAction *action,
                                                GTK_RESPONSE_CANCEL,
                                                -1);
 
-      g_object_weak_ref (G_OBJECT (dialog), (GWeakNotify) g_free, delete_data);
+      g_object_weak_ref (G_OBJECT (dialog),
+                         (GWeakNotify) templates_delete_data_free, delete_data);
+
       g_signal_connect_object (template, "disconnect",
                                G_CALLBACK (gtk_widget_destroy),
                                dialog, G_CONNECT_SWAPPED);
@@ -296,13 +296,30 @@ templates_delete_response (GtkWidget          *dialog,
 {
   if (response_id == GTK_RESPONSE_OK)
     {
+      GimpObject *new_active;
+
+      new_active = gimp_container_get_neighbor_of_active (delete_data->container,
+                                                          delete_data->context,
+                                                          GIMP_OBJECT (delete_data->template));
+
       if (gimp_container_have (delete_data->container,
                                GIMP_OBJECT (delete_data->template)))
         {
+          if (new_active)
+            gimp_context_set_by_type (delete_data->context,
+                                      delete_data->container->children_type,
+                                      new_active);
+
           gimp_container_remove (delete_data->container,
                                  GIMP_OBJECT (delete_data->template));
         }
     }
 
   gtk_widget_destroy (dialog);
+}
+
+static void
+templates_delete_data_free (TemplateDeleteData *delete_data)
+{
+  g_slice_free (TemplateDeleteData, delete_data);
 }

@@ -17,7 +17,7 @@
 # ifndef USE_STRLWR
 #   define USE_STRLWR 1
 # endif
-# define SCHEME_EXPORT
+# define SCHEME_EXPORT extern
 #else
 # define USE_STRLWR 0
 # ifdef _SCHEME_SOURCE
@@ -113,6 +113,10 @@ typedef struct num {
           double rvalue;
      } value;
 } num;
+
+#if !STANDALONE
+SCHEME_EXPORT void (*ts_output_routine) (const char *, int);
+#endif
 
 SCHEME_EXPORT scheme *scheme_init_new();
 SCHEME_EXPORT scheme *scheme_init_new_custom_alloc(func_alloc malloc, func_dealloc free);

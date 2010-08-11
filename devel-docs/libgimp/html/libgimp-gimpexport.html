@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpDrawablePreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2665056" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2584147" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2601188" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2582435" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpexport"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2665056"></a><span class="refentrytitle">gimpexport</span>
+<a name="id2584147"></a><span class="refentrytitle">gimpexport</span>
 </h2>
 <p>gimpexport &#8212; Export an image before it is saved.</p>
 </td>
@@ -61,10 +61,10 @@ enum                <a href="libgimp-gimpexport.html#GimpExportReturn">GimpExpor
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601188"></a><h2>Description</h2>
+<a name="id2582435"></a><h2>Description</h2>
 <p>
 This function should be called by all save_plugins unless they are
-able to save all image formats the GIMP knows about. It takes care
+able to save all image formats GIMP knows about. It takes care
 of asking the user if she wishes to export the image to a format the
 save_plugin can handle. It then performs the necessary conversions
 (e.g. Flatten) on a copy of the image so that the image can be saved 
@@ -78,11 +78,11 @@ as it will most probably have to open a dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2609371"></a><h2>Details</h2>
+<a name="id2674385"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2711622"></a><h3>
+<a name="id2710906"></a><h3>
 <a name="GimpExportCapabilities"></a>enum GimpExportCapabilities</h3>
-<a class="indexterm" name="id2711634"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2710917"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 &lt;&lt; 0,
   GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 &lt;&lt; 1,
@@ -101,9 +101,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711657"></a><h3>
+<a name="id2710940"></a><h3>
 <a name="GimpExportReturn"></a>enum GimpExportReturn</h3>
-<a class="indexterm" name="id2711669"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2710952"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CANCEL,
   GIMP_EXPORT_IGNORE,
@@ -116,9 +116,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711685"></a><h3>
+<a name="id2710968"></a><h3>
 <a name="gimp-export-image"></a>gimp_export_image ()</h3>
-<a class="indexterm" name="id2711696"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (gint32 *image_ID,
+<a class="indexterm" name="id2710979"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (gint32 *image_ID,
                                                          gint32 *drawable_ID,
                                                          const gchar *format_name,
                                                          <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>

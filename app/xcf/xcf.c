@@ -107,7 +107,7 @@ xcf_init (Gimp *gimp)
                                      "Saves file in the .xcf file format",
                                      "The XCF file format has been designed "
                                      "specifically for loading and saving "
-                                     "tiled and layered images in the GIMP. "
+                                     "tiled and layered images in GIMP. "
                                      "This procedure will save the specified "
                                      "image in the xcf file format.",
                                      "Spencer Kimball & Peter Mattis",
@@ -141,14 +141,16 @@ xcf_init (Gimp *gimp)
                                                        "in the on-disk "
                                                        "character set and "
                                                        "encoding",
-                                                       TRUE, FALSE, NULL,
+                                                       TRUE, FALSE, TRUE,
+                                                       NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("raw-filename",
                                                        "Raw filename",
                                                        "The basename of the "
                                                        "file, in UTF-8",
-                                                       FALSE, FALSE, NULL,
+                                                       FALSE, FALSE, TRUE,
+                                                       NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, proc);
   g_object_unref (procedure);
@@ -174,7 +176,7 @@ xcf_init (Gimp *gimp)
                                      "Loads file saved in the .xcf file format",
                                      "The XCF file format has been designed "
                                      "specifically for loading and saving "
-                                     "tiled and layered images in the GIMP. "
+                                     "tiled and layered images in GIMP. "
                                      "This procedure will load the specified "
                                      "file.",
                                      "Spencer Kimball & Peter Mattis",
@@ -195,14 +197,16 @@ xcf_init (Gimp *gimp)
                                                        "to load, in the "
                                                        "on-disk character "
                                                        "set and encoding",
-                                                       TRUE, FALSE, NULL,
+                                                       TRUE, FALSE, TRUE,
+                                                       NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("raw-filename",
                                                        "Raw filename",
                                                        "The basename of the "
                                                        "file, in UTF-8",
-                                                       FALSE, FALSE, NULL,
+                                                       FALSE, FALSE, TRUE,
+                                                       NULL,
                                                        GIMP_PARAM_READWRITE));
 
   gimp_procedure_add_return_value (procedure,

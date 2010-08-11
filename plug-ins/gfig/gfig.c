@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This is a plug-in for the GIMP.
+ * This is a plug-in for GIMP.
  *
  * Generates images containing vector type drawings.
  *
@@ -428,7 +428,7 @@ gfig_load (const gchar *filename,
   printf ("Loading %s (%s)\n", filename, name);
 #endif /* DEBUG */
 
-  fp = g_fopen (filename, "r");
+  fp = g_fopen (filename, "rb");
   if (!fp)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -603,11 +603,11 @@ load_options (GFigObj *gfig,
     {
       /* Get option name */
 #ifdef DEBUG
-      printf ("num = %d\n", sscanf (load_buf, "%s %s", str_buf, opt_buf));
+      printf ("num = %d\n", sscanf (load_buf, "%255s %255s", str_buf, opt_buf));
 
       printf ("option %s val %s\n", str_buf, opt_buf);
 #else
-      sscanf (load_buf, "%s %s", str_buf, opt_buf);
+      sscanf (load_buf, "%255s %255s", str_buf, opt_buf);
 #endif /* DEBUG */
 
       if (!strcmp (str_buf, "GridSpacing:"))
@@ -752,7 +752,7 @@ gfig_load_from_parasite (void)
 
   fname = gimp_temp_name ("gfigtmp");
 
-  fp = g_fopen (fname, "w");
+  fp = g_fopen (fname, "wb");
   if (!fp)
     {
       g_message (_("Error trying to open temporary file '%s' "
@@ -787,7 +787,7 @@ gfig_save_callbk (void)
 
   savename = gfig_context->current_obj->filename;
 
-  fp = g_fopen (savename, "w+");
+  fp = g_fopen (savename, "wb+");
 
   if (!fp)
     {

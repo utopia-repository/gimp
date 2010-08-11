@@ -29,6 +29,7 @@
 <ANCHOR id="GimpTransferMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode">
 <ANCHOR id="GimpTransformDirection" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection">
 <ANCHOR id="GimpTransformResize" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize">
+<ANCHOR id="GimpUserDirectory" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpUserDirectory">
 <ANCHOR id="GimpVectorsStrokeType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType">
 <ANCHOR id="libgimpbase-gimpbasetypes" href="libgimpbase/libgimpbase-gimpbasetypes.html">
 <ANCHOR id="GimpEnumDesc" href="libgimpbase/libgimpbase-gimpbasetypes.html#GimpEnumDesc">
@@ -79,11 +80,12 @@
 <ANCHOR id="libgimpbase-gimpenv" href="libgimpbase/libgimpbase-gimpenv.html">
 <ANCHOR id="gimp-env-init" href="libgimpbase/libgimpbase-gimpenv.html#gimp-env-init">
 <ANCHOR id="gimp-directory" href="libgimpbase/libgimpbase-gimpenv.html#gimp-directory">
-<ANCHOR id="gimp-personal-rc-file" href="libgimpbase/libgimpbase-gimpenv.html#gimp-personal-rc-file">
 <ANCHOR id="gimp-data-directory" href="libgimpbase/libgimpbase-gimpenv.html#gimp-data-directory">
 <ANCHOR id="gimp-locale-directory" href="libgimpbase/libgimpbase-gimpenv.html#gimp-locale-directory">
 <ANCHOR id="gimp-plug-in-directory" href="libgimpbase/libgimpbase-gimpenv.html#gimp-plug-in-directory">
 <ANCHOR id="gimp-sysconf-directory" href="libgimpbase/libgimpbase-gimpenv.html#gimp-sysconf-directory">
+<ANCHOR id="gimp-user-directory" href="libgimpbase/libgimpbase-gimpenv.html#gimp-user-directory">
+<ANCHOR id="gimp-personal-rc-file" href="libgimpbase/libgimpbase-gimpenv.html#gimp-personal-rc-file">
 <ANCHOR id="gimp-gtkrc" href="libgimpbase/libgimpbase-gimpenv.html#gimp-gtkrc">
 <ANCHOR id="gimp-path-parse" href="libgimpbase/libgimpbase-gimpenv.html#gimp-path-parse">
 <ANCHOR id="gimp-path-to-str" href="libgimpbase/libgimpbase-gimpenv.html#gimp-path-to-str">

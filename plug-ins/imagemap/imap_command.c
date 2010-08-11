@@ -1,5 +1,5 @@
 /*
- * This is a plug-in for the GIMP.
+ * This is a plug-in for GIMP.
  *
  * Generates clickable image maps.
  *
@@ -209,8 +209,7 @@ command_list_set_undo_level(gint level)
 Command_t*
 command_list_get_redo_command(void)
 {
-   return (_command_list.redo) ? (Command_t*) _command_list.redo->data :
-      NULL;
+   return (_command_list.redo) ? (Command_t*) _command_list.redo->data : NULL;
 }
 
 void

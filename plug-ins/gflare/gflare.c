@@ -1249,7 +1249,7 @@ gflare_load (const gchar *filename,
 
   g_return_val_if_fail (filename != NULL, NULL);
 
-  fp = g_fopen (filename, "r");
+  fp = g_fopen (filename, "rb");
   if (!fp)
     {
       g_message (_("Failed to open GFlare file '%s': %s"),
@@ -1340,7 +1340,7 @@ static void
 gflare_read_double (gdouble    *dblvar,
                     GFlareFile *gf)
 {
-  gchar buf[30];
+  gchar buf[31];
 
   if (gf->error)
     return;
@@ -1362,7 +1362,7 @@ gflare_read_gradient_name (GradientName  name,
 
   /* FIXME: this is buggy */
 
-  if (fscanf (gf->fp, "%s", tmp) == 1)
+  if (fscanf (gf->fp, "%1023s", tmp) == 1)
     {
       /* @GRADIENT_NAME */
       gradient_name_decode (dec, tmp);
@@ -1382,7 +1382,7 @@ gflare_read_shape (GFlareShape *shape,
   if (gf->error)
     return;
 
-  if (fscanf (gf->fp, "%s", tmp) == 1)
+  if (fscanf (gf->fp, "%1023s", tmp) == 1)
     {
       for (i = 0; i < GF_NUM_SHAPES; i++)
         if (strcmp (tmp, gflare_shapes[i]) == 0)
@@ -1404,7 +1404,7 @@ gflare_read_mode (GFlareMode *mode,
   if (gf->error)
     return;
 
-  if (fscanf (gf->fp, "%s", tmp) == 1)
+  if (fscanf (gf->fp, "%1023s", tmp) == 1)
     {
       for (i = 0; i < GF_NUM_MODES; i++)
         if (strcmp (tmp, gflare_modes[i]) == 0)
@@ -1469,7 +1469,7 @@ gflare_save (GFlare *gflare)
       g_free (path);
     }
 
-  fp = g_fopen (gflare->filename, "w");
+  fp = g_fopen (gflare->filename, "wb");
   if (!fp)
     {
       g_message (_("Failed to write GFlare file '%s': %s"),

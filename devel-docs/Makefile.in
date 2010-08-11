@@ -61,7 +61,9 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = tools libgimpbase libgimpcolor libgimpconfig \
+	libgimpmath libgimpmodule libgimpthumb libgimpwidgets libgimp \
+	app
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
@@ -91,6 +93,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -125,6 +128,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -347,7 +352,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -429,7 +435,9 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+@ENABLE_GTK_DOC_APP_TRUE@app = app
 SUBDIRS = \
+	tools		\
 	libgimpbase	\
 	libgimpcolor	\
 	libgimpconfig	\
@@ -438,13 +446,12 @@ SUBDIRS = \
 	libgimpthumb	\
 	libgimpwidgets	\
 	libgimp		\
-	tools
+	$(app)
 
 EXTRA_DIST = \
 	ChangeLog		\
 	README			\
 	README.gtkdoc		\
-	app			\
 	debug-plug-ins.txt	\
 	gbr.txt			\
 	ggr.txt  		\
@@ -773,6 +780,8 @@ uninstall-info: uninstall-info-recursive
 # require gtk-doc when making dist
 #
 @ENABLE_GTK_DOC_TRUE@dist-check-gtk-doc:
+@ENABLE_GTK_DOC_APP_TRUE@@ENABLE_GTK_DOC_TRUE@	@echo "*** gtk-doc-app must be disabled in order to make dist"
+@ENABLE_GTK_DOC_APP_TRUE@@ENABLE_GTK_DOC_TRUE@	@false
 @ENABLE_GTK_DOC_FALSE@dist-check-gtk-doc:
 @ENABLE_GTK_DOC_FALSE@	@echo "*** gtk-doc must be enabled in order to make dist"
 @ENABLE_GTK_DOC_FALSE@	@false

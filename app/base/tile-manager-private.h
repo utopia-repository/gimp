@@ -37,23 +37,14 @@ struct _TileManager
   TileValidateProc   validate_proc; /*  this proc is called when an attempt
                                      *  to get an invalid tile is made.
                                      */
-  gint               cached_num;    /*  number of cached tile */
-  Tile              *cached_tile;   /*  the actual cached tile */
+  gint               cached_num;    /*  number of cached tile                */
+  Tile              *cached_tile;   /*  the actual cached tile               */
+
+  TileManager       *level_below;   /*  The TileManager containing the level
+                                     *  below in an image pyramid.
+                                     */
 
   gpointer           user_data;     /*  hook for hanging data off of         */
-};
-
-typedef struct _PixelDataHandlePrivate PixelDataHandlePrivate;
-
-struct _PixelDataHandlePrivate
-{
-  PixelDataHandle  public;
-  TileManager     *tm;
-  gint                   x1, x2, y1, y2;
-  gboolean           readable;
-  gboolean         writeable;
-  gboolean         local_buffer;
-  Tile            *tile;
 };
 
 

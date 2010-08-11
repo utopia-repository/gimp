@@ -7,6 +7,7 @@
       <sub name="GimpHSV" link="libgimpcolor-GimpHSV.html"/>
       <sub name="GimpCMYK" link="libgimpcolor-GimpCMYK.html"/>
       <sub name="GimpColorSpace" link="libgimpcolor-GimpColorSpace.html"/>
+      <sub name="GimpColorManaged" link="libgimpcolor-GimpColorManaged.html"/>
       <sub name="GimpAdaptiveSupersample" link="libgimpcolor-GimpAdaptiveSupersample.html"/>
       <sub name="GimpBilinear" link="libgimpcolor-GimpBilinear.html"/>
     </sub>
@@ -94,6 +95,10 @@
     <keyword type="function" name="gimp_hsl_to_rgb_int ()" link="libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb-int"/>
     <keyword type="function" name="gimp_rgb_to_hsv4 ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv4"/>
     <keyword type="function" name="gimp_hsv_to_rgb4 ()" link="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4"/>
+    <keyword type="struct" name="GimpColorManaged" link="libgimpcolor-GimpColorManaged.html#GimpColorManaged"/>
+    <keyword type="struct" name="GimpColorManagedInterface" link="libgimpcolor-GimpColorManaged.html#GimpColorManagedInterface"/>
+    <keyword type="function" name="gimp_color_managed_get_icc_profile ()" link="libgimpcolor-GimpColorManaged.html#gimp-color-managed-get-icc-profile" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_color_managed_profile_changed ()" link="libgimpcolor-GimpColorManaged.html#gimp-color-managed-profile-changed" since="GIMP 2.4"/>
     <keyword type="function" name="GimpProgressFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc"/>
     <keyword type="function" name="GimpPutPixelFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc"/>
     <keyword type="function" name="GimpRenderFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc"/>

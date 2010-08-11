@@ -1551,7 +1551,7 @@ save_callback (void)
   /* Write header out */
   fputs (FRACTAL_HEADER, fp);
   fputs ("#**********************************************************************\n", fp);
-  fputs ("# This is a data file for the Fractal Explorer plug-in for the GIMP   *\n", fp);
+  fputs ("# This is a data file for the Fractal Explorer plug-in for GIMP       *\n", fp);
   fputs ("#**********************************************************************\n", fp);
 
   save_options (fp);
@@ -1759,7 +1759,7 @@ load_options (fractalexplorerOBJ *xxx,
   while (!feof (fp) && strcmp (load_buf, "<EOF>"))
     {
       /* Get option name */
-      sscanf (load_buf, "%s %s", str_buf, opt_buf);
+      sscanf (load_buf, "%255s %255s", str_buf, opt_buf);
 
       if (!strcmp (str_buf, "fractaltype:"))
         {

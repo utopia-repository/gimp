@@ -1,6 +1,6 @@
 /* xjt.c
  *
- * XJT (JPEG-TAR fileformat) loading and saving file filter for the GIMP
+ * XJT (JPEG-TAR fileformat) loading and saving file filter for GIMP
  *  -hof (Wolfgang Hofer)
  *
  * This filter requires UNIX tar and the "jpeglib" Library to run.
@@ -865,6 +865,8 @@ save_dialog (void)
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
+  gimp_window_set_transient (GTK_WINDOW (dlg));
+
   table = gtk_table_new (4, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
@@ -1706,7 +1708,7 @@ save_xjt_image (const gchar *filename,
     }
 
   /* create property file PRP */
-  l_fp_prp = g_fopen (l_prop_file, "w");
+  l_fp_prp = g_fopen (l_prop_file, "wb");
   if (l_fp_prp == NULL)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -2441,8 +2443,7 @@ p_scann_token(gchar        *scan_ptr,
            if (*l_ptr == '\"')
            {
              l_ptr++;
-             param->string_val = g_malloc(strlen(l_string_buff) +1);
-             strcpy(param->string_val, l_string_buff);
+             param->string_val = g_strdup (l_string_buff);
              if(xjt_debug) printf("%s", param->string_val);
           }
            else
@@ -3151,7 +3152,7 @@ p_load_linefile (const gchar *filename,
   l_file_buff = g_malloc0(*len +1);
 
   /* read file into buffer */
-  l_fp = g_fopen(filename, "r");
+  l_fp = g_fopen(filename, "rb");
   if(l_fp == NULL)
   {
     return(NULL);

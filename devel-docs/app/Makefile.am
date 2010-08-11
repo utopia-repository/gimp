@@ -37,6 +37,7 @@ IGNORE_HFILES = \
 	gimp-composite-vis.h		\
 	gimp-composite-x86.h		\
 	gimp-intl.h			\
+	gimpdbusservice-glue.h		\
 	gimpimage-convert-data.h	\
 	gimpimage-convert-fsdither.h	\
 	gimphelp-ids.h			\
@@ -44,13 +45,10 @@ IGNORE_HFILES = \
 	paint-funcs-generic.h
 
 # Images to copy into HTML directory
-HTML_IMAGES=
+HTML_IMAGES =
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files =
-
-# Other files to distribute
-extra_files =
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
@@ -62,10 +60,11 @@ GTKDOC_CFLAGS = \
 	-I$(includedir)
 
 GTKDOC_LIBS = \
-	-u $(SYMPREFIX)xcf_init		   \
-	-u $(SYMPREFIX)internal_procs_init \
-	-u $(SYMPREFIX)gimp_coords_mix	   \
-	$(top_builddir)/app/app_procs.o					     \
+	-u $(SYMPREFIX)xcf_init		   		\
+	-u $(SYMPREFIX)internal_procs_init 		\
+	-u $(SYMPREFIX)gimp_coords_mix	   		\
+	-u $(SYMPREFIX)gimp_plug_in_manager_restore	\
+	$(top_builddir)/app/app.o					     \
         $(top_builddir)/app/batch.o					     \
         $(top_builddir)/app/errors.o					     \
         $(top_builddir)/app/sanity.o					     \
@@ -108,10 +107,21 @@ GTKDOC_LIBS = \
 	$(RT_LIBS)							     \
         $(INTLLIBS)
 
-LDFLAGS = -u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init
 
+if ENABLE_GTK_DOC_APP
 
 include $(top_srcdir)/gtk-doc.make
 
+else
+
+EXTRA_DIST = \
+	$(DOC_MODULE)-docs.sgml		\
+	$(DOC_MODULE)-overrides.txt	\
+	$(DOC_MODULE)-sections.txt
+
+endif
+
 # Other files to distribute
-EXTRA_DIST += version.in
+EXTRA_DIST += \
+	$(DOC_MODULE).types	\
+	version.in

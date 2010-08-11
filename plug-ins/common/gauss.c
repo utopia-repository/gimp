@@ -592,40 +592,47 @@ multiply_alpha (guchar *buf,
                 gint    width,
                 gint    bytes)
 {
-  gint    i, j;
-  gdouble alpha;
+  gint i, j;
 
-  for (i = 0; i < width * bytes; i += bytes)
+  for (i = 0; i < width; i++, buf += bytes)
     {
-      alpha = buf[i + bytes - 1] * (1.0 / 255.0);
+      gdouble alpha = buf[bytes - 1] * (1.0 / 255.0);
+
       for (j = 0; j < bytes - 1; j++)
-        buf[i + j] *= alpha;
+        buf[j] = ROUND (buf[j] * alpha);
     }
 }
 
-/* Convert from premultiplied to separated alpha, on a single scan
-   line. */
+/* Convert from premultiplied to separated alpha, on a single scan line. */
 static void
 separate_alpha (guchar *buf,
                 gint    width,
                 gint    bytes)
 {
-  gint   i, j;
-  guchar alpha;
-  gdouble recip_alpha;
-  gint    new_val;
+  gint i, j;
 
-  for (i = 0; i < width * bytes; i += bytes)
+  for (i = 0; i < width; i++, buf += bytes)
     {
-      alpha = buf[i + bytes - 1];
-      if (alpha != 0 && alpha != 255)
+      guchar alpha = buf[bytes - 1];
+
+      switch (alpha)
         {
-          recip_alpha = 255.0 / alpha;
-          for (j = 0; j < bytes - 1; j++)
-            {
-              new_val = buf[i + j] * recip_alpha;
-              buf[i + j] = MIN (255, new_val);
-            }
+        case 0:
+        case 255:
+          break;
+
+        default:
+          {
+            gdouble recip_alpha = 255.0 / alpha;
+
+            for (j = 0; j < bytes - 1; j++)
+              {
+                gint new_val = ROUND (buf[j] * recip_alpha);
+
+                buf[j] = MIN (255, new_val);
+              }
+          }
+          break;
         }
     }
 }
@@ -739,14 +746,14 @@ do_encoded_lre (const gint *enc,
 {
   gint col;
 
-  for (col = 0; col < width; col++)
+  for (col = 0; col < width; col++, dest += dist)
     {
       const gint *rpt;
       const gint *pix;
       gint        nb;
       gint        s1;
       gint        i;
-      gint        val   = 0;
+      gint        val   = ctotal / 2;
       gint        start = - length;
 
       rpt = &enc[col + start];
@@ -770,9 +777,8 @@ do_encoded_lre (const gint *enc,
 
       val += pix[0] * (csum[length] - s1);
 
-      *dest = val / ctotal;
-
-      dest += dist;
+      val = val / ctotal;
+      *dest = MIN (val, 255);
     }
 }
 
@@ -787,13 +793,13 @@ do_full_lre (const gint *src,
 {
   gint col;
 
-  for (col = 0; col < width; col++)
+  for (col = 0; col < width; col++, dest += dist)
     {
       const gint *x1;
       const gint *x2;
-      const gint *c = &curve[0];
+      const gint *c   = &curve[0];
       gint        i;
-      gint        val;
+      gint        val = ctotal / 2;
 
       x1 = x2 = &src[col];
 
@@ -801,7 +807,7 @@ do_full_lre (const gint *src,
        * processed ONCE
        */
 
-      val = x1[0] * c[0];
+      val += x1[0] * c[0];
 
       c  += 1;
       x1 += 1;
@@ -856,9 +862,8 @@ do_full_lre (const gint *src,
           i  -= 1;
         }
 
-      *dest = val / ctotal;
-      dest += dist;
-
+      val = val / ctotal;
+      *dest = MIN (val, 255);
     }
 }
 
@@ -893,7 +898,6 @@ gauss_iir (GimpDrawable *drawable,
   gdouble       std_dev;
   gboolean      direct;
   gint          progress_step;
-
 
   direct = (preview_buffer == NULL);
 
@@ -932,7 +936,8 @@ gauss_iir (GimpDrawable *drawable,
        * can slow down the processing significantly for very
        * large images
        */
-      progress_step = width / 100;
+      progress_step = width / 16;
+
       if (progress_step < 5)
         progress_step = 5;
 
@@ -1001,6 +1006,7 @@ gauss_iir (GimpDrawable *drawable,
               gimp_pixel_rgn_set_col(&dest_rgn, dest, col + x1, y1, height);
 
               progress += height * vert;
+
               if ((col % progress_step) == 0)
                 gimp_progress_update (progress / max_progress);
             }
@@ -1036,7 +1042,7 @@ gauss_iir (GimpDrawable *drawable,
        * can slow down the processing significantly for very
        * large images
        */
-      progress_step = height / 100;
+      progress_step = height / 16;
 
       if (progress_step < 5)
         progress_step = 5;
@@ -1212,7 +1218,7 @@ gauss_rle (GimpDrawable *drawable,
       /* Insure that we do not have too many progress updates for
        * images with a lot of rows or columns
        */
-      progress_step = width / 150;
+      progress_step = width / 16;
 
       if (progress_step < 5)
         progress_step = 5;
@@ -1262,6 +1268,7 @@ gauss_rle (GimpDrawable *drawable,
               gimp_pixel_rgn_set_col (&dest_rgn, dest, col + x1, y1, height);
 
               progress += height * vert;
+
               if ((col % progress_step) == 0)
                 gimp_progress_update (progress / max_progress);
             }
@@ -1299,7 +1306,8 @@ gauss_rle (GimpDrawable *drawable,
       /* Insure that we do not have too many progress updates for
        * images with a lot of rows or columns
        */
-      progress_step = height / 150;
+      progress_step = height / 16;
+
       if (progress_step < 5) {
         progress_step = 5;
       }
@@ -1373,6 +1381,7 @@ gauss_rle (GimpDrawable *drawable,
               gimp_pixel_rgn_set_row (&dest_rgn, dest, x1, row + y1, width);
 
               progress += width * horz;
+
               if ((row % progress_step) == 0)
                 gimp_progress_update (progress / max_progress);
             }
@@ -1503,30 +1512,20 @@ find_iir_constants (gdouble *n_p,
                     gdouble *bd_m,
                     gdouble  std_dev)
 {
-  gint    i;
-  gdouble x0;
-  gdouble x1;
-  gdouble x2;
-  gdouble x3;
-  gdouble x4;
-  gdouble x5;
-  gdouble x6;
-  gdouble x7;
-  gdouble div;
-
   /*  The constants used in the implemenation of a casual sequence
    *  using a 4th order approximation of the gaussian operator
    */
 
-  div = sqrt(2 * G_PI) * std_dev;
-  x0 = -1.783 / std_dev;
-  x1 = -1.723 / std_dev;
-  x2 = 0.6318 / std_dev;
-  x3 = 1.997  / std_dev;
-  x4 = 1.6803 / div;
-  x5 = 3.735 / div;
-  x6 = -0.6803 / div;
-  x7 = -0.2598 / div;
+  const gdouble div = sqrt (2 * G_PI) * std_dev;
+  const gdouble x0 = -1.783 / std_dev;
+  const gdouble x1 = -1.723 / std_dev;
+  const gdouble x2 = 0.6318 / std_dev;
+  const gdouble x3 = 1.997  / std_dev;
+  const gdouble x4 = 1.6803 / div;
+  const gdouble x5 = 3.735 / div;
+  const gdouble x6 = -0.6803 / div;
+  const gdouble x7 = -0.2598 / div;
+  gint          i;
 
   n_p [0] = x4 + x6;
   n_p [1] = (exp(x1)*(x7*sin(x3)-(x6+2*x4)*cos(x3)) +
@@ -1608,16 +1607,13 @@ make_rle_curve (gdouble   sigma,
                 gint    **p_sum,
                 gint     *p_total)
 {
-  gint    *curve;
-  gdouble  sigma2;
-  gdouble  l;
-  gint     temp;
-  gint     i, n;
-  gint     length;
-  gint    *sum;
-
-  sigma2 = 2 * sigma * sigma;
-  l = sqrt (-sigma2 * log (1.0 / 255.0));
+  const gdouble  sigma2 = 2 * sigma * sigma;
+  const gdouble  l      = sqrt (-sigma2 * log (1.0 / 255.0));
+  gint           temp;
+  gint           i, n;
+  gint           length;
+  gint          *sum;
+  gint          *curve;
 
   n = ceil (l) * 2;
   if ((n % 2) == 0)

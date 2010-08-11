@@ -25,22 +25,22 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-deserialize.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566138" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566984" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2585188" class="shortcut">Description</a>
+                  <a href="#id2586033" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2571278" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2571276" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2585145" class="shortcut">Prerequisites</a>
+                  <a href="#id2571300" class="shortcut">Prerequisites</a>
                   &#160;|&#160;
-                  <a href="#id2585167" class="shortcut">Known Implementations</a></nobr></td></tr>
+                  <a href="#id2586012" class="shortcut">Known Implementations</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-GimpConfig"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566138"></a><span class="refentrytitle">gimpconfig-iface</span>
+<a name="id2566984"></a><span class="refentrytitle">gimpconfig-iface</span>
 </h2>
 <p>gimpconfig-iface &#8212; High-level API for libgimpconfig.</p>
 </td>
@@ -85,7 +85,7 @@ void                <a href="libgimpconfig-GimpConfig.html#gimp-config-reset">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571278"></a><h2>Object Hierarchy</h2>
+<a name="id2571276"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GInterface
@@ -93,48 +93,48 @@ void                <a href="libgimpconfig-GimpConfig.html#gimp-config-reset">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585145"></a><h2>Prerequisites</h2>
+<a name="id2571300"></a><h2>Prerequisites</h2>
 <p>
 GimpConfigInterface requires
  GObject.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585167"></a><h2>Known Implementations</h2>
+<a name="id2586012"></a><h2>Known Implementations</h2>
 <p>
 GimpConfigInterface is implemented by
  <a href="GimpColorConfig.html" title="GimpColorConfig">GimpColorConfig</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585188"></a><h2>Description</h2>
+<a name="id2586033"></a><h2>Description</h2>
 <p>
 High-level API functions for libgimpconfig.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585205"></a><h2>Details</h2>
+<a name="id2586049"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2585216"></a><h3>
+<a name="id2586060"></a><h3>
 <a name="GimpConfig"></a>GimpConfig</h3>
-<a class="indexterm" name="id2585228"></a><pre class="programlisting">typedef struct _GimpConfig GimpConfig;</pre>
+<a class="indexterm" name="id2586072"></a><pre class="programlisting">typedef struct _GimpConfig GimpConfig;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585243"></a><h3>
+<a name="id2586088"></a><h3>
 <a name="GimpConfigInterface-struct"></a>GimpConfigInterface</h3>
-<a class="indexterm" name="id2585255"></a><pre class="programlisting">typedef struct _GimpConfigInterface GimpConfigInterface;</pre>
+<a class="indexterm" name="id2586099"></a><pre class="programlisting">typedef struct _GimpConfigInterface GimpConfigInterface;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585271"></a><h3>
+<a name="id2586116"></a><h3>
 <a name="gimp-config-serialize-to-file"></a>gimp_config_serialize_to_file ()</h3>
-<a class="indexterm" name="id2585287"></a><pre class="programlisting">gboolean            gimp_config_serialize_to_file       (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+<a class="indexterm" name="id2586131"></a><pre class="programlisting">gboolean            gimp_config_serialize_to_file       (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                                          const gchar *filename,
                                                          const gchar *header,
                                                          const gchar *footer,
@@ -194,9 +194,9 @@ calls the serialize function of the <em class="parameter"><code>config</code></e
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2510441"></a><h3>
+<a name="id2510447"></a><h3>
 <a name="gimp-config-serialize-to-fd"></a>gimp_config_serialize_to_fd ()</h3>
-<a class="indexterm" name="id2510455"></a><pre class="programlisting">gboolean            gimp_config_serialize_to_fd         (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+<a class="indexterm" name="id2510462"></a><pre class="programlisting">gboolean            gimp_config_serialize_to_fd         (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                                          gint fd,
                                                          gpointer data);</pre>
 <p>
@@ -236,9 +236,9 @@ descriptor.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598452"></a><h3>
+<a name="id2598436"></a><h3>
 <a name="gimp-config-serialize-to-string"></a>gimp_config_serialize_to_string ()</h3>
-<a class="indexterm" name="id2598466"></a><pre class="programlisting">gchar*              gimp_config_serialize_to_string     (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+<a class="indexterm" name="id2598451"></a><pre class="programlisting">gchar*              gimp_config_serialize_to_string     (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                                          gpointer data);</pre>
 <p>
 Serializes the object properties of <em class="parameter"><code>config</code></em> to a string.</p>
@@ -271,9 +271,9 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598575"></a><h3>
+<a name="id2598560"></a><h3>
 <a name="gimp-config-deserialize-file"></a>gimp_config_deserialize_file ()</h3>
-<a class="indexterm" name="id2598588"></a><pre class="programlisting">gboolean            gimp_config_deserialize_file        (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+<a class="indexterm" name="id2598573"></a><pre class="programlisting">gboolean            gimp_config_deserialize_file        (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                                          const gchar *filename,
                                                          gpointer data,
                                                          GError **error);</pre>
@@ -315,9 +315,9 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598709"></a><h3>
+<a name="id2598694"></a><h3>
 <a name="gimp-config-deserialize-string"></a>gimp_config_deserialize_string ()</h3>
-<a class="indexterm" name="id2598725"></a><pre class="programlisting">gboolean            gimp_config_deserialize_string      (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
+<a class="indexterm" name="id2598710"></a><pre class="programlisting">gboolean            gimp_config_deserialize_string      (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config,
                                                          const gchar *text,
                                                          gint text_len,
                                                          gpointer data,
@@ -370,9 +370,9 @@ function of the <em class="parameter"><code>config</code></em>'s <a href="libgim
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598952"></a><h3>
+<a name="id2598937"></a><h3>
 <a name="gimp-config-deserialize-return"></a>gimp_config_deserialize_return ()</h3>
-<a class="indexterm" name="id2598967"></a><pre class="programlisting">gboolean            gimp_config_deserialize_return      (GScanner *scanner,
+<a class="indexterm" name="id2598952"></a><pre class="programlisting">gboolean            gimp_config_deserialize_return      (GScanner *scanner,
                                                          GTokenType expected_token,
                                                          gint nest_level);</pre>
 <p>
@@ -411,9 +411,9 @@ function of the <em class="parameter"><code>config</code></em>'s <a href="libgim
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599047"></a><h3>
+<a name="id2599063"></a><h3>
 <a name="gimp-config-duplicate"></a>gimp_config_duplicate ()</h3>
-<a class="indexterm" name="id2599060"></a><pre class="programlisting">gpointer            gimp_config_duplicate               (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config);</pre>
+<a class="indexterm" name="id2599076"></a><pre class="programlisting">gpointer            gimp_config_duplicate               (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config);</pre>
 <p>
 Creates a copy of the passed object by copying all object
 properties. The default implementation of the <a href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>
@@ -443,9 +443,9 @@ properties.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599148"></a><h3>
+<a name="id2599149"></a><h3>
 <a name="gimp-config-is-equal-to"></a>gimp_config_is_equal_to ()</h3>
-<a class="indexterm" name="id2599160"></a><pre class="programlisting">gboolean            gimp_config_is_equal_to             (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *a,
+<a class="indexterm" name="id2599161"></a><pre class="programlisting">gboolean            gimp_config_is_equal_to             (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *a,
                                                          <a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *b);</pre>
 <p>
 Compares the two objects. The default implementation of the
@@ -481,9 +481,9 @@ properties.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599281"></a><h3>
+<a name="id2599282"></a><h3>
 <a name="gimp-config-reset"></a>gimp_config_reset ()</h3>
-<a class="indexterm" name="id2599293"></a><pre class="programlisting">void                gimp_config_reset                   (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config);</pre>
+<a class="indexterm" name="id2599295"></a><pre class="programlisting">void                gimp_config_reset                   (<a href="libgimpconfig-GimpConfig.html#GimpConfig">GimpConfig</a> *config);</pre>
 <p>
 Resets the object to its default state. The default implementation of the
 <a href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a> only works for objects that are completely defined by

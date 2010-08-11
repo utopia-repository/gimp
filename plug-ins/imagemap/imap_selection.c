@@ -1,5 +1,5 @@
 /*
- * This is a plug-in for the GIMP.
+ * This is a plug-in for GIMP.
  *
  * Generates clickable image maps.
  *
@@ -250,8 +250,9 @@ object_moved_cb(Object_t *obj, gpointer data)
 #endif
 }
 
-static GtkTargetEntry target_table[] = {
-  {"STRING", 0, 1 },
+static const GtkTargetEntry target_table[] =
+{
+  {"STRING",     0, 1 },
   {"text/plain", 0, 2 }
 };
 

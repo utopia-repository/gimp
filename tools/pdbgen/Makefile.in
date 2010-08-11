@@ -81,6 +81,7 @@ BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
 BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
+CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -115,6 +116,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENABLE_GIMP_CONSOLE_FALSE = @ENABLE_GIMP_CONSOLE_FALSE@
 ENABLE_GIMP_CONSOLE_TRUE = @ENABLE_GIMP_CONSOLE_TRUE@
+ENABLE_GTK_DOC_APP_FALSE = @ENABLE_GTK_DOC_APP_FALSE@
+ENABLE_GTK_DOC_APP_TRUE = @ENABLE_GTK_DOC_APP_TRUE@
 ENABLE_GTK_DOC_FALSE = @ENABLE_GTK_DOC_FALSE@
 ENABLE_GTK_DOC_TRUE = @ENABLE_GTK_DOC_TRUE@
 EXEEXT = @EXEEXT@
@@ -337,7 +340,8 @@ SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF = @TIFF@
+TIFF_LOAD = @TIFF_LOAD@
+TIFF_SAVE = @TIFF_SAVE@
 URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
 URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
 URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
@@ -518,7 +522,7 @@ stamp_files = \
 	stamp-enum-code		\
 	stamp-enum-code-py
 
-MAINTAINERCLEANFILES = $(stamp_files)
+DISTCLEANFILES = $(stamp_files)
 all: all-am
 
 .SUFFIXES:
@@ -620,11 +624,11 @@ clean-generic:
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-generic clean-libtool mostlyclean-am
@@ -707,7 +711,7 @@ stamp-groups: Makefile.am
 
 stamp-pdbgen: $(pdbgen_deps) $(pdb_scripts) $(pdb_sources) Makefile.am
 	rootme=`pwd`; \
-	destdir=`cd $(top_srcdir) && pwd`; export destdir; \
+	destdir=`cd $(top_builddir) && pwd`; export destdir; \
 	cd $(srcdir) && \
 	   PDBGEN_BACKUP=$(PDBGEN_BACKUP) PDBGEN_GROUPS=$(PDBGEN_GROUPS) \
 	   $(PERL) pdbgen.pl app lib \
@@ -715,7 +719,7 @@ stamp-pdbgen: $(pdbgen_deps) $(pdb_scripts) $(pdb_sources) Makefile.am
 
 stamp-enum-code: $(srcdir)/enumcode.pl $(enum_deps)
 	rootme=`pwd`; \
-	destdir=`cd $(top_srcdir) && pwd`; export destdir; \
+	destdir=`cd $(top_builddir) && pwd`; export destdir; \
 	cd $(srcdir) && \
 	  PDBGEN_BACKUP=$(PDBGEN_BACKUP) \
 	  $(PERL) enumcode.pl \

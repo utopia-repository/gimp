@@ -199,7 +199,9 @@ edit_paste_as_new_invoker (GimpProcedure     *procedure,
         success = FALSE;
     }
   else
-    success = FALSE;
+    {
+      image = NULL;
+    }
 
   return_vals = gimp_procedure_get_return_values (procedure, success);
 
@@ -227,7 +229,7 @@ edit_named_cut_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (strlen (buffer_name) && gimp_item_is_attached (GIMP_ITEM (drawable)))
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
            GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -269,7 +271,7 @@ edit_named_copy_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (strlen (buffer_name) && gimp_item_is_attached (GIMP_ITEM (drawable)))
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
            GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -311,16 +313,11 @@ edit_named_copy_visible_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (strlen (buffer_name))
-        {
-          real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
-                                                              context);
+      real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
+                                                          context);
 
-          if (real_name)
-            real_name = g_strdup (real_name);
-          else
-            success = FALSE;
-        }
+      if (real_name)
+        real_name = g_strdup (real_name);
       else
         success = FALSE;
     }
@@ -675,7 +672,7 @@ edit_stroke_invoker (GimpProcedure     *procedure,
           g_object_set (desc, "method", GIMP_STROKE_METHOD_PAINT_CORE, NULL);
 
           success = gimp_item_stroke (GIMP_ITEM (gimp_image_get_mask (image)),
-                                      drawable, context, desc, TRUE);
+                                      drawable, context, desc, TRUE, progress);
 
           g_object_unref (desc);
         }
@@ -709,7 +706,7 @@ edit_stroke_vectors_invoker (GimpProcedure     *procedure,
           g_object_set (desc, "method", GIMP_STROKE_METHOD_PAINT_CORE, NULL);
 
           success = gimp_item_stroke (GIMP_ITEM (vectors),
-                                      drawable, context, desc, TRUE);
+                                      drawable, context, desc, TRUE, progress);
 
           g_object_unref (desc);
         }
@@ -851,7 +848,7 @@ register_edit_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-edit-paste-as-new",
                                      "Paste buffer to a new image.",
-                                     "This procedure pastes a copy of the internal GIMP edit buffer to a new image. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure returns the new image.",
+                                     "This procedure pastes a copy of the internal GIMP edit buffer to a new image. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure returns the new image or -1 if the edit buffer was empty.",
                                      "Michael Natterer <mitch@gimp.org>",
                                      "Michael Natterer",
                                      "2005",
@@ -888,14 +885,14 @@ register_edit_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("buffer-name",
                                                        "buffer name",
                                                        "The name of the buffer to create",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("real-name",
                                                            "real name",
                                                            "The real name given to the buffer, or NULL if the selection contained only transparent pixels",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -924,14 +921,14 @@ register_edit_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("buffer-name",
                                                        "buffer name",
                                                        "The name of the buffer to create",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("real-name",
                                                            "real name",
                                                            "The real name given to the buffer, or NULL if the selection contained only transparent pixels",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -960,14 +957,14 @@ register_edit_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("buffer-name",
                                                        "buffer name",
                                                        "The name of the buffer to create",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    gimp_param_spec_string ("real-name",
                                                            "real name",
                                                            "The real name given to the buffer",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -996,7 +993,7 @@ register_edit_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("buffer-name",
                                                        "buffer name",
                                                        "The name of the buffer to paste",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
@@ -1031,7 +1028,7 @@ register_edit_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("buffer-name",
                                                        "buffer name",
                                                        "The name of the buffer to paste",
-                                                       FALSE, FALSE,
+                                                       FALSE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,

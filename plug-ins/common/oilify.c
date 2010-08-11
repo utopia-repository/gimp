@@ -1,5 +1,5 @@
 /*
- * This is a plug-in for the GIMP.
+ * This is a plug-in for GIMP.
  *
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1996 Torsten Martinsen
@@ -38,7 +38,6 @@
 #define MODE_RGB         0
 #define MODE_INTEN       1
 
-#define INTENSITY(p)   ((guint) (p[0]*77+p[1]*150+p[2]*29) >> 8)
 
 typedef struct
 {
@@ -395,7 +394,7 @@ oilify (GimpDrawable *drawable,
                         {
                           if (use_inten_alg)
                             {
-                              c = INTENSITY(src);
+                              c = GIMP_RGB_LUMINANCE (src[0], src[1], src[2]);
                               ++Hist[c];
                               for (b = 0; b < bytes; b++)
                                 Hist_rgb[b][c] += src[b];

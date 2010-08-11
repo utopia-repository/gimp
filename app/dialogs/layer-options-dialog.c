@@ -43,6 +43,7 @@
 
 static void   layer_options_dialog_toggle_rename (GtkWidget          *widget,
                                                   LayerOptionsDialog *options);
+static void   layer_options_dialog_free          (LayerOptionsDialog *options);
 
 
 /*  public functions  */
@@ -75,7 +76,7 @@ layer_options_dialog_new (GimpImage    *image,
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (GTK_IS_WIDGET (parent), NULL);
 
-  options = g_new0 (LayerOptionsDialog, 1);
+  options = g_slice_new0 (LayerOptionsDialog);
 
   options->image     = image;
   options->context   = context;
@@ -99,7 +100,7 @@ layer_options_dialog_new (GimpImage    *image,
                               NULL);
 
   g_object_weak_ref (G_OBJECT (options->dialog),
-                     (GWeakNotify) g_free, options);
+                     (GWeakNotify) layer_options_dialog_free, options);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (options->dialog),
                                            GTK_RESPONSE_OK,
@@ -248,4 +249,10 @@ layer_options_dialog_toggle_rename (GtkWidget          *widget,
           g_free (name);
         }
     }
+}
+
+static void
+layer_options_dialog_free (LayerOptionsDialog *options)
+{
+  g_slice_free (LayerOptionsDialog, options);
 }

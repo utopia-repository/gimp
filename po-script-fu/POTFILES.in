@@ -43,7 +43,6 @@ plug-ins/script-fu/scripts/clothify.scm
 plug-ins/script-fu/scripts/coffee.scm
 plug-ins/script-fu/scripts/comic-logo.scm
 plug-ins/script-fu/scripts/coolmetal-logo.scm
-plug-ins/script-fu/scripts/copy-visible.scm
 plug-ins/script-fu/scripts/crystal-logo.scm
 plug-ins/script-fu/scripts/difference-clouds.scm
 plug-ins/script-fu/scripts/distress-selection.scm
@@ -83,6 +82,7 @@ plug-ins/script-fu/scripts/rendermap.scm
 plug-ins/script-fu/scripts/reverse-layers.scm
 plug-ins/script-fu/scripts/ripply-anim.scm
 plug-ins/script-fu/scripts/round-corners.scm
+plug-ins/script-fu/scripts/script-fu-set-cmap.scm
 plug-ins/script-fu/scripts/select-to-brush.scm
 plug-ins/script-fu/scripts/select-to-image.scm
 plug-ins/script-fu/scripts/select-to-pattern.scm

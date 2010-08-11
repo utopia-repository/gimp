@@ -61,10 +61,10 @@ static void tile_destroy (Tile *tile);
 
 
 void
-tile_sanitize_rowhints (Tile *tile)
+tile_allocate_rowhints (Tile *tile)
 {
   if (! tile->rowhint)
-    tile->rowhint = g_new0 (TileRowHint, tile->eheight);
+    tile->rowhint = g_slice_alloc0 (sizeof (TileRowHint) * TILE_HEIGHT);
 }
 
 TileRowHint
@@ -72,7 +72,7 @@ tile_get_rowhint (Tile *tile,
                   gint  yoff)
 {
 #ifdef HINTS_SANITY
-  if (yoff < tile_eheight(tile) && yoff>=0)
+  if (yoff < tile_eheight(tile) && yoff >= 0)
     {
       return tile->rowhint[yoff];
     }
@@ -93,21 +93,25 @@ tile_set_rowhint (Tile        *tile,
                   TileRowHint  rowhint)
 {
 #ifdef HINTS_SANITY
-  if (yoff < tile_eheight(tile) && yoff>=0)
+  if (yoff < tile_eheight(tile) && yoff >= 0)
     {
       tile->rowhint[yoff] = rowhint;
     }
   else
-    g_error("SET_ROWHINT OUT OF RANGE");
+    {
+      g_error("SET_ROWHINT OUT OF RANGE");
+    }
 #else
+
   tile->rowhint[yoff] = rowhint;
 #endif
 }
 
-void
-tile_init (Tile *tile,
-           gint  bpp)
+Tile *
+tile_new (gint bpp)
 {
+  Tile *tile = g_slice_new (Tile);
+
   tile->ref_count   = 0;
   tile->write_count = 0;
   tile->share_count = 0;
@@ -128,6 +132,8 @@ tile_init (Tile *tile,
 #ifdef TILE_PROFILING
   tile_count++;
 #endif
+
+  return tile;
 }
 
 void
@@ -165,7 +171,7 @@ tile_lock (Tile *tile)
   if (! tile->valid)
     {
       /* an invalid tile should never be shared, so this should work */
-      tile_manager_validate ((TileManager*) tile->tlink->tm, tile);
+      tile_manager_validate ((TileManager *) tile->tlink->tm, tile);
     }
 }
 
@@ -256,7 +262,7 @@ tile_destroy (Tile *tile)
     }
   if (tile->rowhint)
     {
-      g_free (tile->rowhint);
+      g_slice_free1 (sizeof (TileRowHint) * TILE_HEIGHT, tile->rowhint);
       tile->rowhint = NULL;
     }
   if (tile->swap_offset != -1)
@@ -269,7 +275,7 @@ tile_destroy (Tile *tile)
   if (tile->listhead)
     tile_cache_flush (tile);
 
-  g_free (tile);
+  g_slice_free (Tile, tile);
 
 #ifdef TILE_PROFILING
   tile_count--;
@@ -330,7 +336,7 @@ tile_attach (Tile *tile,
   if ((tile->share_count > 0) && (! tile->valid))
     {
       /* trying to share invalid tiles is problematic, not to mention silly */
-      tile_manager_validate ((TileManager*) tile->tlink->tm, tile);
+      tile_manager_validate ((TileManager *) tile->tlink->tm, tile);
     }
 
   tile->share_count++;
@@ -345,7 +351,8 @@ tile_attach (Tile *tile,
 #endif
 
   /* link this tile into the tile's tilelink chain */
-  tmp = g_new (TileLink, 1);
+  tmp = g_slice_new (TileLink);
+
   tmp->tm       = tm;
   tmp->tile_num = tile_num;
   tmp->next     = tile->tlink;
@@ -382,7 +389,8 @@ tile_detach (Tile *tile,
 
   tmp = *link;
   *link = tmp->next;
-  g_free (tmp);
+
+  g_slice_free (TileLink, tmp);
 
 #ifdef TILE_PROFILING
   tile_share_count--;

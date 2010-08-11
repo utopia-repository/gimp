@@ -87,7 +87,7 @@ gimp_clipboard_init (Gimp *gimp)
 
   g_return_if_fail (gimp_clip == NULL);
 
-  gimp_clip = g_new0 (GimpClipboard, 1);
+  gimp_clip = g_slice_new0 (GimpClipboard);
 
   g_object_set_data_full (G_OBJECT (gimp), GIMP_CLIPBOARD_KEY,
                           gimp_clip, (GDestroyNotify) gimp_clipboard_free);
@@ -137,8 +137,8 @@ gimp_clipboard_init (Gimp *gimp)
                   const gchar *mime_type = *type;
 
                   if (gimp->be_verbose)
-                    g_print ("clipboard: writable pixbuf format: %s\n",
-                             mime_type);
+                    g_printerr ("clipboard: writable pixbuf format: %s\n",
+                                mime_type);
 
                   gimp_clip->target_entries[i].target = g_strdup (mime_type);
                   gimp_clip->target_entries[i].flags  = 0;
@@ -537,7 +537,7 @@ gimp_clipboard_free (GimpClipboard *gimp_clip)
 
   g_free (gimp_clip->svg_target_entries);
 
-  g_free (gimp_clip);
+  g_slice_free (GimpClipboard, gimp_clip);
 }
 
 static GdkAtom *
@@ -552,10 +552,10 @@ gimp_clipboard_wait_for_targets (Gimp *gimp,
   if (clipboard)
     {
       GtkSelectionData *data;
+      GdkAtom           atom = gdk_atom_intern_static_string ("TARGETS");
 
-      data = gtk_clipboard_wait_for_contents (clipboard,
-                                              gdk_atom_intern ("TARGETS",
-                                                               FALSE));
+      data = gtk_clipboard_wait_for_contents (clipboard, atom);
+
       if (data)
         {
           GdkAtom  *targets;
@@ -657,8 +657,8 @@ gimp_clipboard_wait_for_svg (Gimp *gimp)
 
   if (targets)
     {
-      GdkAtom svg_atom     = gdk_atom_intern ("image/svg",     FALSE);
-      GdkAtom svg_xml_atom = gdk_atom_intern ("image/svg+xml", FALSE);
+      GdkAtom svg_atom     = gdk_atom_intern_static_string ("image/svg");
+      GdkAtom svg_xml_atom = gdk_atom_intern_static_string ("image/svg+xml");
       gint    i;
 
       for (i = 0; i < n_targets; i++)

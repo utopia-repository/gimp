@@ -1,3 +1,88 @@
+2007-06-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-06-01  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-28  Wadim Dziedzic <wadimd@svn.gnome.org>
+
+	* pl.po: Updated Polish translation by GNOME PL Team. 
+
+2007-05-24  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-22  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-05-21  Sigurd Gartmann  <sigurdga@yahoo-inc.com>
+
+	* nb.po: Updated Bokmål Norwegian translation.
+
+2007-05-19 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2007-05-19  Sigurd Gartmann  <sigurdga@yahoo-inc.com>
+
+	* nb.po: Updated Bokmål Norwegian translation.
+
+2007-05-18  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation by Laurent Monin and Stéphane
+	Raimbault.
+
+2007-05-16  Sven Neumann  <sven@gimp.org>
+
+	* de.po: applied patch from Ulf-D. Ehlert (bug #438886).
+
+2007-05-16  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated British English translation
+
+2007-05-14 Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: updated Czech translation
+
+2007-05-07 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2007-05-7  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-05-06  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-05-05  Roozbeh Pournader  <roozbeh@farsiweb.info>
+
+	* fa.po: Added Persian translation by Meelad Zakaria and
+	  Farzad Ghanei.
+
+2007-05-01  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Updated Macedonian translation.
+
+2007-05-01 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2007-04-29  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* oc.po: Updated Occitan translation from
+	Yannig MARCHEGAY <yannig@marchegay.org>.
+
+2007-04-26  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* oc.po: Added Occitan translation from
+	Yannig MARCHEGAY <yannig@marchegay.org>.
+
 2007-04-21  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
 	* fr.po: Fixed French translation (2 fixes).

@@ -40,6 +40,7 @@
 
 #include "widgets/gimpclipboard.h"
 #include "widgets/gimpcontainerview.h"
+#include "widgets/gimpcontainerview-utils.h"
 #include "widgets/gimpdocumentview.h"
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
@@ -53,21 +54,21 @@
 #include "gimp-intl.h"
 
 
-typedef struct _RaiseClosure RaiseClosure;
-
-struct _RaiseClosure
+typedef struct
 {
   const gchar *name;
   gboolean     found;
-};
+} RaiseClosure;
 
 
 /*  local function prototypes  */
 
-static void   documents_open_image    (GimpContext   *context,
+static void   documents_open_image    (GtkWidget     *editor,
+                                       GimpContext   *context,
                                        GimpImagefile *imagefile);
-static void   documents_raise_display (gpointer       data,
-                                       gpointer       user_data);
+static void   documents_raise_display (GimpDisplay   *display,
+                                       RaiseClosure  *closure);
+
 
 
 /*  public functions */
@@ -88,7 +89,7 @@ documents_open_cmd_callback (GtkAction *action,
 
   if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
     {
-      documents_open_image (context, imagefile);
+      documents_open_image (GTK_WIDGET (editor), context, imagefile);
     }
   else
     {
@@ -118,11 +119,11 @@ documents_raise_or_open_cmd_callback (GtkAction *action,
       closure.found = FALSE;
 
       gimp_container_foreach (context->gimp->displays,
-                              documents_raise_display,
+                              (GFunc) documents_raise_display,
                               &closure);
 
       if (! closure.found)
-        documents_open_image (context, imagefile);
+        documents_open_image (GTK_WIDGET (editor), context, imagefile);
     }
 }
 
@@ -169,19 +170,8 @@ documents_remove_cmd_callback (GtkAction *action,
                                gpointer   data)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
-  GimpContext         *context;
-  GimpContainer       *container;
-  GimpImagefile       *imagefile;
 
-  context   = gimp_container_view_get_context (editor->view);
-  container = gimp_container_view_get_container (editor->view);
-
-  imagefile = gimp_context_get_imagefile (context);
-
-  if (imagefile && gimp_container_have (container, GIMP_OBJECT (imagefile)))
-    {
-      gimp_container_remove (container, GIMP_OBJECT (imagefile));
-    }
+  gimp_container_view_remove_active (editor->view);
 }
 
 void
@@ -299,7 +289,8 @@ documents_remove_dangling_cmd_callback (GtkAction *action,
 /*  private functions  */
 
 static void
-documents_open_image (GimpContext   *context,
+documents_open_image (GtkWidget     *editor,
+                      GimpContext   *context,
                       GimpImagefile *imagefile)
 {
   const gchar        *uri;
@@ -316,7 +307,7 @@ documents_open_image (GimpContext   *context,
     {
       gchar *filename = file_utils_uri_display_name (uri);
 
-      gimp_message (context->gimp, NULL, GIMP_MESSAGE_ERROR,
+      gimp_message (context->gimp, G_OBJECT (editor), GIMP_MESSAGE_ERROR,
                     _("Opening '%s' failed:\n\n%s"),
                     filename, error->message);
       g_clear_error (&error);
@@ -326,14 +317,10 @@ documents_open_image (GimpContext   *context,
 }
 
 static void
-documents_raise_display (gpointer data,
-                         gpointer user_data)
+documents_raise_display (GimpDisplay  *display,
+                         RaiseClosure *closure)
 {
-  GimpDisplay  *display = data;
-  RaiseClosure *closure = user_data;
-  const gchar  *uri;
-
-  uri = gimp_object_get_name (GIMP_OBJECT (display->image));
+  const gchar  *uri = gimp_object_get_name (GIMP_OBJECT (display->image));
 
   if (uri && ! strcmp (closure->name, uri))
     {

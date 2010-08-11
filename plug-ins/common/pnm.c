@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: pnm.c 22152 2007-03-20 10:41:35Z mitch $ */
+/* $Id: pnm.c 22715 2007-06-06 08:44:52Z muks $ */
 
 /*
  * The pnm reading and writing code was written from scratch by Erik Nygren
@@ -584,7 +584,7 @@ load_image (const gchar *filename)
   /* close the file */
   close (fd);
 
-  /* Tell the GIMP to display the image.
+  /* Tell GIMP to display the image.
    */
   gimp_drawable_flush (drawable);
 

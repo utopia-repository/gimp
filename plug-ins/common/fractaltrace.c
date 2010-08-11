@@ -1,6 +1,6 @@
 /******************************************************************************
 
-  fractaltrace.c  -- This is a plug-in for the GIMP 1.0
+  fractaltrace.c  -- This is a plug-in for GIMP 1.0
 
   Copyright (C) 1997  Hirotsuna Mizuno
                       s1041150@u-aizu.ac.jp
@@ -502,8 +502,12 @@ filter (GimpDrawable *drawable)
             }
           pixels_set (x, y, &pixel);
         }
-      gimp_progress_update ((gdouble) (y-selection.y1) / selection.height);
+
+      if (((y - selection.y1) % (selection.height / 100)) == 0)
+        gimp_progress_update ((gdouble) (y-selection.y1) / selection.height);
     }
+
+  gimp_progress_update (1.0);
 
   pixels_store ();
 

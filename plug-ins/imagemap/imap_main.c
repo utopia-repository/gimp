@@ -1,5 +1,5 @@
 /*
- * This is a plug-in for the GIMP.
+ * This is a plug-in for GIMP.
  *
  * Generates clickable image maps.
  *
@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
  */
 
 #include "config.h"
@@ -720,8 +719,7 @@ do_quit(void)
    check_if_changed(really_quit, NULL);
 }
 
-#ifdef _NOT_READY_YET_
-static void
+void
 do_undo(void)
 {
    preview_freeze();
@@ -731,7 +729,7 @@ do_undo(void)
    preview_thaw();
 }
 
-static void
+void
 do_redo(void)
 {
    preview_freeze();
@@ -740,7 +738,6 @@ do_redo(void)
    selection_thaw(_selection);
    preview_thaw();
 }
-#endif
 
 void
 save(void)
@@ -1022,6 +1019,23 @@ static guint _keyval;
 static gint _dx, _dy;
 
 static void
+move_sash_selected_objects(gint dx, gint dy, gboolean fast)
+{
+   if (fast) {
+      dx *= 5;
+      dy *= 5;
+   }
+
+   gdk_gc_set_function(_preferences.normal_gc, GDK_XOR);
+   gdk_gc_set_function(_preferences.selected_gc, GDK_XOR);
+   object_list_draw_selected(_shapes, _preview->preview->window);
+   object_list_move_sash_selected(_shapes, dx, dy);
+   object_list_draw_selected(_shapes, _preview->preview->window);
+   gdk_gc_set_function(_preferences.normal_gc, GDK_COPY);
+   gdk_gc_set_function(_preferences.selected_gc, GDK_COPY);
+}
+
+static void
 move_selected_objects(gint dx, gint dy, gboolean fast)
 {
    if (fast) {
@@ -1061,6 +1075,7 @@ key_press_cb(GtkWidget *widget, GdkEventKey *event)
 {
    gboolean handled = FALSE;
    gboolean shift = event->state & GDK_SHIFT_MASK;
+   gboolean ctrl = event->state & GDK_CONTROL_MASK;
    Command_t *command;
 
    preview_freeze();
@@ -1069,19 +1084,31 @@ key_press_cb(GtkWidget *widget, GdkEventKey *event)
 
    switch (event->keyval) {
    case GDK_Left:
-      move_selected_objects(-1, 0, shift);
+	  if (ctrl)
+         move_sash_selected_objects(-1, 0, shift);
+      else
+         move_selected_objects(-1, 0, shift);
       handled = TRUE;
       break;
    case GDK_Right:
-      move_selected_objects(1, 0, shift);
+	  if (ctrl)
+         move_sash_selected_objects(1, 0, shift);
+      else
+         move_selected_objects(1, 0, shift);
       handled = TRUE;
       break;
    case GDK_Up:
-      move_selected_objects(0, -1, shift);
+	  if (ctrl)
+         move_sash_selected_objects(0, -1, shift);
+      else
+         move_selected_objects(0, -1, shift);
       handled = TRUE;
       break;
    case GDK_Down:
-      move_selected_objects(0, 1, shift);
+	  if (ctrl)
+         move_sash_selected_objects(0, 1, shift);
+      else
+         move_selected_objects(0, 1, shift);
       handled = TRUE;
       break;
    case GDK_Tab:

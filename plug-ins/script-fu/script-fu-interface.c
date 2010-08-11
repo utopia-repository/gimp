@@ -161,8 +161,8 @@ script_fu_interface_report_cc (const gchar *command)
         }
     }
 
-  while (g_main_context_pending (NULL))
-    g_main_context_iteration (NULL, TRUE);
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
 }
 
 void
@@ -209,21 +209,22 @@ script_fu_interface (SFScript *script,
       gtk_initted = TRUE;
     }
 
-  sf_interface = g_new0 (SFInterface, 1);
+  sf_interface = g_slice_new0 (SFInterface);
+
   sf_interface->widgets = g_new0 (GtkWidget *, script->num_args);
 
-  /* strip the first part of the menupath if it contains _("/Script-Fu/") */
-  tmp = strstr (gettext (script->menu_path), _("/Script-Fu/"));
-
-  if (tmp)
-    sf_interface->title = g_strdup (tmp + strlen (_("/Script-Fu/")));
-  else
-    sf_interface->title = g_strdup (gettext (script->menu_path));
-
   /* strip mnemonics from the menupath */
-  tmp = gimp_strip_uline (sf_interface->title);
-  g_free (sf_interface->title);
-  sf_interface->title = tmp;
+  sf_interface->title = gimp_strip_uline (gettext (script->menu_path));
+
+  /* if this looks like a full menu path, use only the last part */
+  if (sf_interface->title[0] == '<' &&
+      (tmp = strrchr (sf_interface->title, '/')) && tmp[1])
+    {
+      tmp = g_strdup (tmp + 1);
+
+      g_free (sf_interface->title);
+      sf_interface->title = tmp;
+    }
 
   /* cut off ellipsis */
   tmp = (strstr (sf_interface->title, "..."));
@@ -631,7 +632,7 @@ script_fu_interface_quit (SFScript *script)
   g_free (sf_interface->widgets);
   g_free (sf_interface->last_command);
 
-  g_free (sf_interface);
+  g_slice_free (SFInterface, sf_interface);
   sf_interface = NULL;
 
   /*

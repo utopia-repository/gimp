@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2565532" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2593769" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2704250" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2705021" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2565532"></a><span class="refentrytitle">gimpfontselect</span>
+<a name="id2593769"></a><span class="refentrytitle">gimpfontselect</span>
 </h2>
 <p>gimpfontselect &#8212; Functions providing a font selection dialog.</p>
 </td>
@@ -69,17 +69,17 @@ gboolean            <a href="libgimp-gimpfontselect.html#gimp-fonts-set-popup">g
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2704250"></a><h2>Description</h2>
+<a name="id2705021"></a><h2>Description</h2>
 <p>
 Functions providing a font selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2704267"></a><h2>Details</h2>
+<a name="id2705038"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2704277"></a><h3>
+<a name="id2705048"></a><h3>
 <a name="GimpRunFontCallback"></a>GimpRunFontCallback ()</h3>
-<a class="indexterm" name="id2704288"></a><pre class="programlisting">void                (*GimpRunFontCallback)              (const gchar *font_name,
+<a class="indexterm" name="id2705059"></a><pre class="programlisting">void                (*GimpRunFontCallback)              (const gchar *font_name,
                                                          gboolean dialog_closing,
                                                          gpointer user_data);</pre>
 <p>
@@ -110,9 +110,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708262"></a><h3>
+<a name="id2706951"></a><h3>
 <a name="gimp-font-select-new"></a>gimp_font_select_new ()</h3>
-<a class="indexterm" name="id2708273"></a><pre class="programlisting">const gchar*        gimp_font_select_new                (const gchar *title,
+<a class="indexterm" name="id2706962"></a><pre class="programlisting">const gchar*        gimp_font_select_new                (const gchar *title,
                                                          const gchar *font_name,
                                                          <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
                                                          gpointer data);</pre>
@@ -154,9 +154,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708394"></a><h3>
+<a name="id2707083"></a><h3>
 <a name="gimp-font-select-destroy"></a>gimp_font_select_destroy ()</h3>
-<a class="indexterm" name="id2708405"></a><pre class="programlisting">void                gimp_font_select_destroy            (const gchar *font_callback);</pre>
+<a class="indexterm" name="id2708280"></a><pre class="programlisting">void                gimp_font_select_destroy            (const gchar *font_callback);</pre>
 <p>
 
 </p>
@@ -173,9 +173,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708450"></a><h3>
+<a name="id2708325"></a><h3>
 <a name="gimp-fonts-popup"></a>gimp_fonts_popup ()</h3>
-<a class="indexterm" name="id2708461"></a><pre class="programlisting">gboolean            gimp_fonts_popup                    (const gchar *font_callback,
+<a class="indexterm" name="id2708336"></a><pre class="programlisting">gboolean            gimp_fonts_popup                    (const gchar *font_callback,
                                                          const gchar *popup_title,
                                                          const gchar *initial_font);</pre>
 <p>
@@ -214,9 +214,9 @@ This procedure opens the font selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2706393"></a><h3>
+<a name="id2708444"></a><h3>
 <a name="gimp-fonts-close-popup"></a>gimp_fonts_close_popup ()</h3>
-<a class="indexterm" name="id2706404"></a><pre class="programlisting">gboolean            gimp_fonts_close_popup              (const gchar *font_callback);</pre>
+<a class="indexterm" name="id2708455"></a><pre class="programlisting">gboolean            gimp_fonts_close_popup              (const gchar *font_callback);</pre>
 <p>
 Close the font selection dialog.
 </p>
@@ -243,9 +243,9 @@ This procedure closes an opened font selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2706468"></a><h3>
+<a name="id2708519"></a><h3>
 <a name="gimp-fonts-set-popup"></a>gimp_fonts_set_popup ()</h3>
-<a class="indexterm" name="id2706479"></a><pre class="programlisting">gboolean            gimp_fonts_set_popup                (const gchar *font_callback,
+<a class="indexterm" name="id2704248"></a><pre class="programlisting">gboolean            gimp_fonts_set_popup                (const gchar *font_callback,
                                                          const gchar *font_name);</pre>
 <p>
 Sets the current font in a font selection dialog.

@@ -76,22 +76,16 @@ image_is_valid_invoker (GimpProcedure     *procedure,
                         GimpProgress      *progress,
                         const GValueArray *args)
 {
-  gboolean success = TRUE;
   GValueArray *return_vals;
   GimpImage *image;
   gboolean valid = FALSE;
 
   image = gimp_value_get_image (&args->values[0], gimp);
 
-  if (success)
-    {
-      valid = GIMP_IS_IMAGE (image);
-    }
+  valid = GIMP_IS_IMAGE (image);
 
-  return_vals = gimp_procedure_get_return_values (procedure, success);
-
-  if (success)
-    g_value_set_boolean (&return_vals->values[1], valid);
+  return_vals = gimp_procedure_get_return_values (procedure, TRUE);
+  g_value_set_boolean (&return_vals->values[1], valid);
 
   return return_vals;
 }
@@ -1558,14 +1552,8 @@ image_thumbnail_invoker (GimpProcedure     *procedure,
       else
         width  = MAX (1, (height * dwidth) / dheight);
 
-      if (image->gimp->config->layer_previews)
-        buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (image), context,
-                                             width, height);
-      else
-        buf = gimp_viewable_get_dummy_preview (GIMP_VIEWABLE (image),
-                                               width, height,
-                                               gimp_image_has_alpha (image) ?
-                                               4 : 3);
+      buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (image), context,
+                                           width, height);
 
       if (buf)
         {
@@ -2289,7 +2277,7 @@ register_image_procs (GimpPDB *pdb)
                                                          "image",
                                                          "The image to check",
                                                          pdb->gimp, FALSE,
-                                                         GIMP_PARAM_READWRITE));
+                                                         GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("valid",
                                                          "valid",
@@ -2307,7 +2295,7 @@ register_image_procs (GimpPDB *pdb)
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-image-list",
                                      "Returns the list of images currently open.",
-                                     "This procedure returns the list of images currently open in the GIMP.",
+                                     "This procedure returns the list of images currently open in GIMP.",
                                      "Spencer Kimball & Peter Mattis",
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
@@ -4325,7 +4313,7 @@ register_image_procs (GimpPDB *pdb)
                                    gimp_param_spec_string ("filename",
                                                            "filename",
                                                            "The filename",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -4354,7 +4342,7 @@ register_image_procs (GimpPDB *pdb)
                                gimp_param_spec_string ("filename",
                                                        "filename",
                                                        "The new image filename",
-                                                       TRUE, FALSE,
+                                                       TRUE, FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);
@@ -4383,7 +4371,7 @@ register_image_procs (GimpPDB *pdb)
                                    gimp_param_spec_string ("name",
                                                            "name",
                                                            "The name",
-                                                           FALSE, FALSE,
+                                                           FALSE, FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
   gimp_pdb_register_procedure (pdb, procedure);

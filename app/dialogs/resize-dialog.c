@@ -253,7 +253,8 @@ resize_dialog_new (GimpViewable       *viewable,
   gimp_viewable_get_preview_size (viewable, 200, FALSE, TRUE, &width, &height);
   pixbuf = gimp_viewable_get_pixbuf (viewable, width, height);
 
-  gimp_offset_area_set_pixbuf (GIMP_OFFSET_AREA (private->area), pixbuf);
+  if (pixbuf)
+    gimp_offset_area_set_pixbuf (GIMP_OFFSET_AREA (private->area), pixbuf);
 
   g_signal_connect (private->area, "offsets_changed",
                     G_CALLBACK (offsets_changed),
@@ -307,9 +308,15 @@ resize_dialog_reset (ResizeDialog *private)
 {
   g_object_set (private->box,
                 "keep-aspect", FALSE,
+                NULL);
+
+  g_object_set (private->box,
                 "width",       private->old_width,
                 "height",      private->old_height,
                 "unit",        private->old_unit,
+                NULL);
+
+  g_object_set (private->box,
                 "keep-aspect", TRUE,
                 NULL);
 }

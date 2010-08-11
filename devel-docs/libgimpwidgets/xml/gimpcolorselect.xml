@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpColorSelect-struct">GimpColorSelect</link>;
+            <link linkend="GimpColorSelect-struct">GimpColorSelect</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -68,8 +68,8 @@ will then change the other two channels accordingly.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpColorSelect-struct"/>struct GimpColorSelect</title>
-<indexterm><primary>GimpColorSelect</primary></indexterm><programlisting>struct GimpColorSelect;</programlisting>
+<title><anchor id="GimpColorSelect-struct"/>GimpColorSelect</title>
+<indexterm><primary>GimpColorSelect</primary></indexterm><programlisting>typedef struct _GimpColorSelect GimpColorSelect;</programlisting>
 <para>
 
 </para></refsect2>

@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpMemsizeEntry-struct">GimpMemsizeEntry</link>;
+            <link linkend="GimpMemsizeEntry-struct">GimpMemsizeEntry</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-memsize-entry-new">gimp_memsize_entry_new</link>          (<link linkend="guint64">guint64</link> value,
                                              <link linkend="guint64">guint64</link> lower,
                                              <link linkend="guint64">guint64</link> upper);
@@ -80,8 +80,8 @@ Kilobytes, Megabytes and Gigabytes. Used in the GIMP preferences dialog.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpMemsizeEntry-struct"/>struct GimpMemsizeEntry</title>
-<indexterm><primary>GimpMemsizeEntry</primary></indexterm><programlisting>struct GimpMemsizeEntry;</programlisting>
+<title><anchor id="GimpMemsizeEntry-struct"/>GimpMemsizeEntry</title>
+<indexterm><primary>GimpMemsizeEntry</primary></indexterm><programlisting>typedef struct _GimpMemsizeEntry GimpMemsizeEntry;</programlisting>
 <para>
 The <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> struct is considered private.
 </para></refsect2>
@@ -105,7 +105,7 @@ and a <link linkend="GtkOptionMenu"><type>GtkOptionMenu</type></link> all setup 
 <varlistentry><term><parameter>upper</parameter>&nbsp;:</term>
 <listitem><simpara> the upper limit for the value (in Bytes)
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> Pointer to the new <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Pointer to the new <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -136,7 +136,7 @@ Retrieves the current value from a <link linkend="GimpMemsizeEntry"><type>GimpMe
 <varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> the current value of <parameter>entry</parameter> (in Bytes).
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the current value of <parameter>entry</parameter> (in Bytes).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

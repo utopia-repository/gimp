@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpIntStore-struct">GimpIntStore</link>;
+            <link linkend="GimpIntStore-struct">GimpIntStore</link>;
 enum        <link linkend="GimpIntStoreColumns">GimpIntStoreColumns</link>;
 <link linkend="GtkListStore">GtkListStore</link>* <link linkend="gimp-int-store-new">gimp_int_store_new</link>            (void);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-int-store-lookup-by-value">gimp_int_store_lookup_by_value</link>  (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
@@ -64,8 +64,8 @@ A model for integer based name-value pairs (e.g. enums)
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpIntStore-struct"/>struct GimpIntStore</title>
-<indexterm><primary>GimpIntStore</primary></indexterm><programlisting>struct GimpIntStore;</programlisting>
+<title><anchor id="GimpIntStore-struct"/>GimpIntStore</title>
+<indexterm><primary>GimpIntStore</primary></indexterm><programlisting>typedef struct _GimpIntStore GimpIntStore;</programlisting>
 <para>
 
 </para></refsect2>
@@ -86,7 +86,7 @@ A model for integer based name-value pairs (e.g. enums)
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-store-new"/>gimp_int_store_new ()</title>
-<indexterm><primary>gimp_int_store_new</primary></indexterm><programlisting><link linkend="GtkListStore">GtkListStore</link>* gimp_int_store_new            (void);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_int_store_new</primary></indexterm><programlisting><link linkend="GtkListStore">GtkListStore</link>* gimp_int_store_new            (void);</programlisting>
 <para>
 Creates a <link linkend="GtkListStore"><type>GtkListStore</type></link> with a number of useful columns.
 <link linkend="GimpIntStore"><type>GimpIntStore</type></link> is especially useful if the items you want to store
@@ -94,14 +94,14 @@ are identified using an integer value.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a new <link linkend="GimpIntStore"><type>GimpIntStore</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpIntStore"><type>GimpIntStore</type></link>.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-int-store-lookup-by-value"/>gimp_int_store_lookup_by_value ()</title>
-<indexterm><primary>gimp_int_store_lookup_by_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_int_store_lookup_by_value  (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
+<indexterm role="GIMP 2.2"><primary>gimp_int_store_lookup_by_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_int_store_lookup_by_value  (<link linkend="GtkTreeModel">GtkTreeModel</link> *model,
                                              <link linkend="gint">gint</link> value,
                                              <link linkend="GtkTreeIter">GtkTreeIter</link> *iter);</programlisting>
 <para>
@@ -118,7 +118,7 @@ Iterate over the <parameter>model</parameter> looking for <parameter>value</para
 <varlistentry><term><parameter>iter</parameter>&nbsp;:</term>
 <listitem><simpara>  return location for the iter of the given <parameter>value</parameter>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if the value has been located and <parameter>iter</parameter> is
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the value has been located and <parameter>iter</parameter> is
               valid, <literal>FALSE</literal> otherwise.
 
 </simpara></listitem></varlistentry>

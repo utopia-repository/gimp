@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpColorScales-struct">GimpColorScales</link>;
+            <link linkend="GimpColorScales-struct">GimpColorScales</link>;
 
 </synopsis>
 </refsynopsisdiv>
@@ -66,8 +66,8 @@ HSV and RGB color channels.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpColorScales-struct"/>struct GimpColorScales</title>
-<indexterm><primary>GimpColorScales</primary></indexterm><programlisting>struct GimpColorScales;</programlisting>
+<title><anchor id="GimpColorScales-struct"/>GimpColorScales</title>
+<indexterm><primary>GimpColorScales</primary></indexterm><programlisting>typedef struct _GimpColorScales GimpColorScales;</programlisting>
 <para>
 
 </para></refsect2>

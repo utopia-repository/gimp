@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpPixmap-struct">GimpPixmap</link>;
+            <link linkend="GimpPixmap-struct">GimpPixmap</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-pixmap-new">gimp_pixmap_new</link>                 (<link linkend="gchar">gchar</link> **xpm_data);
 <link linkend="void">void</link>        <link linkend="gimp-pixmap-set">gimp_pixmap_set</link>                 (<link linkend="GimpPixmap">GimpPixmap</link> *pixmap,
                                              <link linkend="gchar">gchar</link> **xpm_data);
@@ -74,15 +74,15 @@ and cannot be cached in memory without doing bad hacks.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpPixmap-struct"/>struct GimpPixmap</title>
-<indexterm><primary>GimpPixmap</primary></indexterm><programlisting>struct GimpPixmap;</programlisting>
+<title><anchor id="GimpPixmap-struct"/>GimpPixmap</title>
+<indexterm role="deprecated"><primary>GimpPixmap</primary></indexterm><programlisting>typedef struct _GimpPixmap GimpPixmap;</programlisting>
 <warning><para><literal>GimpPixmap</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixmap-new"/>gimp_pixmap_new ()</title>
-<indexterm><primary>gimp_pixmap_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_pixmap_new                 (<link linkend="gchar">gchar</link> **xpm_data);</programlisting>
+<indexterm role="deprecated"><primary>gimp_pixmap_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_pixmap_new                 (<link linkend="gchar">gchar</link> **xpm_data);</programlisting>
 <warning><para><literal>gimp_pixmap_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Creates a new <link linkend="GimpPixmap"><type>GimpPixmap</type></link> widget.</para>
@@ -92,12 +92,12 @@ Creates a new <link linkend="GimpPixmap"><type>GimpPixmap</type></link> widget.<
 <varlistentry><term><parameter>xpm_data</parameter>&nbsp;:</term>
 <listitem><simpara> A pointer to a XPM data structure as found in XPM files.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GimpPixmap"><type>GimpPixmap</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpPixmap"><type>GimpPixmap</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixmap-set"/>gimp_pixmap_set ()</title>
-<indexterm><primary>gimp_pixmap_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixmap_set                 (<link linkend="GimpPixmap">GimpPixmap</link> *pixmap,
+<indexterm role="deprecated"><primary>gimp_pixmap_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixmap_set                 (<link linkend="GimpPixmap">GimpPixmap</link> *pixmap,
                                              <link linkend="gchar">gchar</link> **xpm_data);</programlisting>
 <warning><para><literal>gimp_pixmap_set</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>

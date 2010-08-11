@@ -9,23 +9,23 @@
 void        <a href="libgimpbase-gimpchecks.html#gimp-checks-get-shades">gimp_checks_get_shades</a>          (<a href="libgimpbase-gimpbaseenums.html#GimpCheckType">GimpCheckType</a> type,
                                              guchar *light,
                                              guchar *dark);
-</pre></div><div class="refsect1" lang="en"><a name="id2581674"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2530629"></a><h2>Description</h2><p>
 Constants and functions related to rendering checkerboards.
-</p></div><div class="refsect1" lang="en"><a name="id2538059"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2538065"></a><h3><a name="GIMP-CHECK-SIZE:CAPS"></a>GIMP_CHECK_SIZE</h3><a class="indexterm" name="id2538072"></a><pre class="programlisting">#define GIMP_CHECK_SIZE      8
+</p></div><div class="refsect1" lang="en"><a name="id2530638"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2530644"></a><h3><a name="GIMP-CHECK-SIZE:CAPS"></a>GIMP_CHECK_SIZE</h3><a class="indexterm" name="id2530652"></a><pre class="programlisting">#define GIMP_CHECK_SIZE      8
 </pre><p>
 The default checkerboard size in pixels. This is configurable in the
 core but GIMP plug-ins can't access the user preference and should use
 this constant instead.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538085"></a><h3><a name="GIMP-CHECK-SIZE-SM:CAPS"></a>GIMP_CHECK_SIZE_SM</h3><a class="indexterm" name="id2538093"></a><pre class="programlisting">#define GIMP_CHECK_SIZE_SM   4
+</p></div><hr><div class="refsect2" lang="en"><a name="id2530665"></a><h3><a name="GIMP-CHECK-SIZE-SM:CAPS"></a>GIMP_CHECK_SIZE_SM</h3><a class="indexterm" name="id2530673"></a><pre class="programlisting">#define GIMP_CHECK_SIZE_SM   4
 </pre><p>
 The default small checkerboard size in pixels.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538104"></a><h3><a name="GIMP-CHECK-DARK:CAPS"></a>GIMP_CHECK_DARK</h3><a class="indexterm" name="id2538112"></a><pre class="programlisting">#define GIMP_CHECK_DARK      0.4
+</p></div><hr><div class="refsect2" lang="en"><a name="id2530684"></a><h3><a name="GIMP-CHECK-DARK:CAPS"></a>GIMP_CHECK_DARK</h3><a class="indexterm" name="id2530692"></a><pre class="programlisting">#define GIMP_CHECK_DARK      0.4
 </pre><p>
 The dark gray value for the default checkerboard pattern.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538123"></a><h3><a name="GIMP-CHECK-LIGHT:CAPS"></a>GIMP_CHECK_LIGHT</h3><a class="indexterm" name="id2538131"></a><pre class="programlisting">#define GIMP_CHECK_LIGHT     0.6
+</p></div><hr><div class="refsect2" lang="en"><a name="id2530703"></a><h3><a name="GIMP-CHECK-LIGHT:CAPS"></a>GIMP_CHECK_LIGHT</h3><a class="indexterm" name="id2530711"></a><pre class="programlisting">#define GIMP_CHECK_LIGHT     0.6
 </pre><p>
 The light gray value for the default checkerboard pattern.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2538142"></a><h3><a name="gimp-checks-get-shades"></a>gimp_checks_get_shades ()</h3><a class="indexterm" name="id2538151"></a><pre class="programlisting">void        gimp_checks_get_shades          (<a href="libgimpbase-gimpbaseenums.html#GimpCheckType">GimpCheckType</a> type,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2530721"></a><h3><a name="gimp-checks-get-shades"></a>gimp_checks_get_shades ()</h3><a class="indexterm" name="id2530729"></a><pre class="programlisting">void        gimp_checks_get_shades          (<a href="libgimpbase-gimpbaseenums.html#GimpCheckType">GimpCheckType</a> type,
                                              guchar *light,
                                              guchar *dark);</pre><p>
 Retrieves the actual shades of gray to use when drawing a

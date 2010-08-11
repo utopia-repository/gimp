@@ -6,6 +6,57 @@ here. New features are being added in the HEAD branch that will be
 released as GIMP version 2.4.
 
 
+Changes in GIMP 2.2.6
+=====================
+- reverted change to the print plug-in (see bug #169909)
+
+
+Bugs fixed in GIMP 2.2.5
+========================
+- fixed double-click behaviour of GimpButton
+- properly handle 302 redirect output from wget in URL plug-in (bug #168322)
+- fixed loading of layer masks in PSD plug-in (bug #166976)
+- fixed bugs in PSD save plug-in (bugs #167139 and #121871)
+- fixed Reset in Scale and Resize dialogs (bug #169011)
+- fixed filename encoding issues when loading Script-Fu scripts (bug #165002)
+- fixed i18n build quirks (bug #169274)
+- improve autoscrolling with tablets in Windows (bug #167960)
+- fixed setup of size entries in tool-options (bug #169066)
+- when opening images as layers, do it interactively (bug #168936)
+- fixed precondition checks in gimp_drawable_transform_scale (bug #170195)
+- fixed handling of resolution unit in Print Size dialog (bug #170200)
+- disable "gtk-alternative-button-order" setting because our code
+  doesn't honor it (bug #170543)
+- fixed behaviour of selection tool when dragging from top-right (bug #143887)
+- speed up conversion of grayscale images to indexed colors (bug #170801)
+- fixed bug in grayscale to indexed color conversion (bug #170825)
+- don't offer empty palettes for conversion to indexed color (bug #170973)
+- disable search in container tree-views since it interferes with global 
+  accelerators (bug #169339)
+- corrected mousewheel section of default controllerrc (bug #171083)
+- fixed build on amd64/gcc-4.0 (bug #300227)
+- unset Keep Transparency from Color to Alpha plug-in.
+- fixed crash caused by Histogram dockable in RGB mode (bug #170116)
+- fixed statusbar display for negative moves (bug #171497)
+- fixed a couple of problems in the BMP plug-in (bug #171306, bug #171453
+  and bug #171562)
+- fixed bug in Resize dialog if previews are turned off (bug #171827)
+- fixed disappearing previews in Rotate Colormap plug-in (bug #172284)
+- fixed deletion of fractals in Fractal Explorer plug-in (bug #172347)
+- fixed preview in Deinterlace plug-in (bug #172589)
+- fixed crashes on exit in some locales (bug #172581)
+- fixed installation directories for message catalogs (bug #169274)
+- handle deletion of layers and channels that have a floating selection
+  attached (bug #168582)
+- plugged some smaller memory leaks
+- fixed preview in Gaussian Blur plug-in for zero radii (bug #173039)
+- fixed a couple of problems in the Winicon plug-in
+- fixed bug in GIF loader that was triggered with a broken GIF (bug #173119)
+- fixed crash in Ink tool (bug #164272)
+- let the text tool remember the last-used font (bug #171024)
+- quote the print command used in the Print plug-in (bug #169909)
+
+
 Bugs fixed in GIMP 2.2.4
 ========================
 - fixed an out-of-bounds read access in the Edge plug-in (bug #164963)

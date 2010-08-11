@@ -19,8 +19,8 @@
 
 
 
-struct      <link linkend="GimpSizeEntry-struct">GimpSizeEntry</link>;
-struct      <link linkend="GimpSizeEntryField">GimpSizeEntryField</link>;
+            <link linkend="GimpSizeEntry-struct">GimpSizeEntry</link>;
+            <link linkend="GimpSizeEntryField">GimpSizeEntryField</link>;
 enum        <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-size-entry-new">gimp_size_entry_new</link>             (<link linkend="gint">gint</link> number_of_fields,
                                              <link linkend="GimpUnit">GimpUnit</link> unit,
@@ -142,7 +142,7 @@ specify the <link linkend="GimpUnit"><type>GimpUnit</type></link> of the display
 </para>
 <para>
 For each field, there can be one or two <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>'s to enter
-"value" and "reference value". If you specify <parameter>show_refval</parameter> as <link linkend="FALSE-CAPS"><type>FALSE</type></link>
+"value" and "reference value". If you specify <parameter>show_refval</parameter> as <link linkend="FALSE--CAPS"><type>FALSE</type></link>
 in <link linkend="gimp-size-entry-new"><function>gimp_size_entry_new()</function></link> there will be only one <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link> and the
 <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> will contain an item for selecting GIMP_UNIT_PIXEL.
 </para>
@@ -158,14 +158,14 @@ real-world-unit.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpSizeEntry-struct"/>struct GimpSizeEntry</title>
-<indexterm><primary>GimpSizeEntry</primary></indexterm><programlisting>struct GimpSizeEntry;</programlisting>
+<title><anchor id="GimpSizeEntry-struct"/>GimpSizeEntry</title>
+<indexterm><primary>GimpSizeEntry</primary></indexterm><programlisting>typedef struct _GimpSizeEntry GimpSizeEntry;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpSizeEntryField"/>struct GimpSizeEntryField</title>
-<indexterm><primary>GimpSizeEntryField</primary></indexterm><programlisting>struct GimpSizeEntryField;</programlisting>
+<title><anchor id="GimpSizeEntryField"/>GimpSizeEntryField</title>
+<indexterm><primary>GimpSizeEntryField</primary></indexterm><programlisting>typedef struct _GimpSizeEntryField GimpSizeEntryField;</programlisting>
 <para>
 
 </para></refsect2>
@@ -261,7 +261,7 @@ of the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> to allow th
 <listitem><simpara>     How the automatic pixel &lt;-> real-world-unit
                     calculations should be done.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A Pointer to the new <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A Pointer to the new <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -317,7 +317,7 @@ Attaches a <link linkend="GtkLabel"><type>GtkLabel</type></link> to the <link li
 <varlistentry><term><parameter>alignment</parameter>&nbsp;:</term>
 <listitem><simpara> The horizontal alignment of the label.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A pointer to the new <link linkend="GtkLabel"><type>GtkLabel</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkLabel"><type>GtkLabel</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -331,11 +331,11 @@ Sets the resolution (in dpi) for field # <parameter>field</parameter> of the <li
 </para>
 <para>
 The <parameter>resolution</parameter> passed will be clamped to fit in
-[<link linkend="GIMP-MIN-RESOLUTION-CAPS"><type>GIMP_MIN_RESOLUTION</type></link>..<link linkend="GIMP-MAX-RESOLUTION-CAPS"><type>GIMP_MAX_RESOLUTION</type></link>].
+[<link linkend="GIMP-MIN-RESOLUTION--CAPS"><type>GIMP_MIN_RESOLUTION</type></link>..<link linkend="GIMP-MAX-RESOLUTION--CAPS"><type>GIMP_MAX_RESOLUTION</type></link>].
 </para>
 <para>
 This function does nothing if the <link linkend="GimpSizeEntryUpdatePolicy"><type>GimpSizeEntryUpdatePolicy</type></link> specified in
-<link linkend="gimp-size-entry-new"><function>gimp_size_entry_new()</function></link> doesn't equal to <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE-CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link>.</para>
+<link linkend="gimp-size-entry-new"><function>gimp_size_entry_new()</function></link> doesn't equal to <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE--CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -449,7 +449,7 @@ NOTE: In most cases you won't be interested in this value because the
 <varlistentry><term><parameter>field</parameter>&nbsp;:</term>
 <listitem><simpara> The index of the field you want to know the value of.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The value of the chosen <parameter>field</parameter>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The value of the chosen <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -525,8 +525,8 @@ Sets the decimal digits of field # <parameter>field</parameter> of the <link lin
 </para>
 <para>
 If you don't specify this value explicitly, the reference value's number
-of digits will equal to 0 for <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE-CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link> and to 2 for
-<link linkend="GIMP-SIZE-ENTRY-UPDATE-RESOLUTION-CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_RESOLUTION</type></link>.</para>
+of digits will equal to 0 for <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE--CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link> and to 2 for
+<link linkend="GIMP-SIZE-ENTRY-UPDATE-RESOLUTION--CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_RESOLUTION</type></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -561,7 +561,7 @@ in dpi, depending on which <link linkend="GimpSizeEntryUpdatePolicy"><type>GimpS
 <varlistentry><term><parameter>field</parameter>&nbsp;:</term>
 <listitem><simpara> The index of the field you want to know the reference value of.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The reference value of the chosen <parameter>field</parameter>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The reference value of the chosen <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -601,7 +601,7 @@ Returns the <link linkend="GimpUnit"><type>GimpUnit</type></link> the user has s
 <varlistentry><term><parameter>gse</parameter>&nbsp;:</term>
 <listitem><simpara> The sizeentry you want to know the unit of.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The sizeentry's unit.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The sizeentry's unit.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -671,7 +671,7 @@ can use this function to get a pointer to the spinbuttons.</para>
 <varlistentry><term><parameter>field</parameter>&nbsp;:</term>
 <listitem><simpara> the index of the widget you want to get a pointer to
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link> pointer that you can attach a tooltip to.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link> pointer that you can attach a tooltip to.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

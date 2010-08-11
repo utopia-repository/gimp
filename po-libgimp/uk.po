@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GIMP 1.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-22 23:04+0100\n"
-"PO-Revision-Date: 2004-04-10 16:53+0200\n"
+"POT-Creation-Date: 2005-04-09 21:56+0200\n"
+"PO-Revision-Date: 2005-02-23 16:53+0200\n"
 "Last-Translator: Maxim Dziumanenko <mvd@mylinux.com.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -55,12 +55,12 @@ msgstr "Вирівняти зображення"
 #: ../libgimp/gimpexport.c:260
 #, c-format
 msgid "%s can't handle transparency"
-msgstr "%s не може обробити прозорість"
+msgstr "%s не може обробляти прозорість"
 
 #: ../libgimp/gimpexport.c:269
 #, c-format
 msgid "%s can't handle layer masks"
-msgstr "%s не може обробити маски шарів"
+msgstr "%s не може обробляти маски шарів"
 
 #: ../libgimp/gimpexport.c:270
 msgid "Apply Layer Masks"
@@ -89,7 +89,7 @@ msgstr "Перетворити у відтінки сірого"
 #: ../libgimp/gimpexport.c:296
 #, c-format
 msgid "%s can only handle indexed images"
-msgstr "%s можне обробляти лише індексовані зображення"
+msgstr "%s може обробляти лише індексовані зображення"
 
 #: ../libgimp/gimpexport.c:297 ../libgimp/gimpexport.c:326
 #: ../libgimp/gimpexport.c:336
@@ -97,8 +97,8 @@ msgid ""
 "Convert to Indexed using default settings\n"
 "(Do it manually to tune the result)"
 msgstr ""
-"Перетворити в індексоване використовуючи типові налаштування\n"
-"(Результат можна настроїти вручну)"
+"Перетворити в індексоване використовуючи типові параметри\n"
+"(Результат можна налаштувати вручну)"
 
 #: ../libgimp/gimpexport.c:306
 #, c-format
@@ -110,8 +110,8 @@ msgid ""
 "Convert to Indexed using bitmap default settings\n"
 "(Do it manually to tune the result)"
 msgstr ""
-"Перетворити в індексоване використовуючи типові налаштування\n"
-"(Результат можна настроїти вручну)"
+"Перетворити в індексоване використовуючи типові параметри\n"
+"(Результат можна налаштувати вручну)"
 
 #: ../libgimp/gimpexport.c:316
 #, c-format
@@ -147,7 +147,7 @@ msgstr "Підтвердити"
 
 #: ../libgimp/gimpexport.c:454
 msgid "Export File"
-msgstr "Експортувати файл"
+msgstr "Експорт файлу"
 
 #: ../libgimp/gimpexport.c:458
 msgid "_Ignore"
@@ -200,12 +200,11 @@ msgstr "Вибір градієнта"
 
 #: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
-msgstr ""
+msgstr "(Немає)"
 
 #: ../libgimp/gimppalettemenu.c:91
-#, fuzzy
 msgid "Palette Selection"
-msgstr "Вибір шаблона"
+msgstr "Вибір палітри"
 
 #: ../libgimp/gimppatternmenu.c:113
 msgid "Pattern Selection"
@@ -217,78 +216,76 @@ msgstr "відсоток"
 
 #: ../libgimpbase/gimpbaseenums.c:23
 msgid "Small"
-msgstr ""
+msgstr "Маленький"
 
 #: ../libgimpbase/gimpbaseenums.c:24
 msgid "Medium"
-msgstr ""
+msgstr "Середній"
 
 #: ../libgimpbase/gimpbaseenums.c:25
 msgid "Large"
-msgstr ""
+msgstr "Великий"
 
 #: ../libgimpbase/gimpbaseenums.c:57
 msgid "Light Checks"
-msgstr ""
+msgstr "Білі та сірі клітинки"
 
 #: ../libgimpbase/gimpbaseenums.c:58
 msgid "Mid-Tone Checks"
-msgstr ""
+msgstr "Сірі клітинки"
 
 #: ../libgimpbase/gimpbaseenums.c:59
 msgid "Dark Checks"
-msgstr ""
+msgstr "Чорні та сірі клітинки"
 
 #: ../libgimpbase/gimpbaseenums.c:60
 msgid "White Only"
-msgstr ""
+msgstr "Лише білий"
 
 #: ../libgimpbase/gimpbaseenums.c:61
 msgid "Gray Only"
-msgstr ""
+msgstr "Лише сірий"
 
 #: ../libgimpbase/gimpbaseenums.c:62
-#, fuzzy
 msgid "Black Only"
-msgstr "Чорний"
+msgstr "Лише чорний"
 
 #: ../libgimpbase/gimpbaseenums.c:91
 msgid "RGB color"
-msgstr ""
+msgstr "колір RGB"
 
 #: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
-#, fuzzy
 msgid "Grayscale"
-msgstr "Перетворити у відтінки сірого"
+msgstr "Сірий"
 
 #: ../libgimpbase/gimpbaseenums.c:93
 msgid "Indexed color"
-msgstr ""
+msgstr "Індексований колір"
 
 #: ../libgimpbase/gimpbaseenums.c:125
 msgid "RGB"
-msgstr ""
+msgstr "RGB"
 
 #: ../libgimpbase/gimpbaseenums.c:126
 msgid "RGB-alpha"
-msgstr ""
+msgstr "RGB-альфа"
 
 #: ../libgimpbase/gimpbaseenums.c:128
 msgid "Grayscale-alpha"
-msgstr ""
+msgstr "Альфа-сірий"
 
 #: ../libgimpbase/gimpbaseenums.c:129
 msgid "Indexed"
-msgstr ""
+msgstr "Індексований"
 
 #: ../libgimpbase/gimpbaseenums.c:130
 msgid "Indexed-alpha"
-msgstr ""
+msgstr "Індексований-альфа"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, c-format
 msgid "%d Bytes"
-msgstr "%d байт"
+msgstr "%d байтів"
 
 #: ../libgimpbase/gimpmemsize.c:182
 #, c-format
@@ -378,6 +375,8 @@ msgid ""
 "Cannot determine a valid home directory.\n"
 "Thumbnails will be stored in the folder for temporary files (%s) instead."
 msgstr ""
+"Не вдається визначити коректний домашній каталог.\n"
+"Натомість, мініатюри будуть зберігатись у теці тимчасових файлів (%s)."
 
 #: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
 #, c-format
@@ -385,29 +384,25 @@ msgid "Failed to create thumbnail folder '%s'."
 msgstr "Не вдається створити каталог файлів попереднього перегляду '%s'."
 
 #: ../libgimpthumb/gimpthumbnail.c:919
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create thumbnail for %s: %s"
-msgstr "Не вдається створити каталог файлів попереднього перегляду '%s'."
+msgstr "Не вдається створити файли попереднього перегляду %s: %s"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:99
-#, fuzzy
 msgid "_Foreground Color"
-msgstr "/_Колір переднього плану"
+msgstr "_Колір переднього плану"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:103
-#, fuzzy
 msgid "_Background Color"
-msgstr "/_Колір тла"
+msgstr "_Колір тла"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:107
-#, fuzzy
 msgid "Blac_k"
-msgstr "/_Чорний"
+msgstr "_Чорний"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:111
-#, fuzzy
 msgid "_White"
-msgstr "/_Білий"
+msgstr "_Білий"
 
 #: ../libgimpwidgets/gimpcolorscales.c:133
 msgid "Scales"
@@ -484,21 +479,20 @@ msgid "Alpha"
 msgstr "Альфа"
 
 #: ../libgimpwidgets/gimpcolorscales.c:243
-#, fuzzy
 msgid "Hexadecimal color notation as used in HTML and CSS"
-msgstr "Шістнадцятковий запис кольору, що використовується у HTML"
+msgstr "Шістнадцяткове представлення кольору, що використовується у HTML"
 
 #: ../libgimpwidgets/gimpcolorscales.c:248
 msgid "HTML _Notation:"
-msgstr ""
+msgstr "_Нотація HTML:"
 
 #: ../libgimpwidgets/gimpcolorselection.c:203
 msgid "Current:"
-msgstr "Поточний"
+msgstr "Поточний:"
 
 #: ../libgimpwidgets/gimpcolorselection.c:225
 msgid "Old:"
-msgstr "Старий"
+msgstr "Старий:"
 
 #: ../libgimpwidgets/gimpfileentry.c:351
 msgid "Select Folder"
@@ -509,17 +503,14 @@ msgid "Select File"
 msgstr "Вибір файлу"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:232
-#, fuzzy
 msgid "Kilobytes"
 msgstr "Кілобайти"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:233
-#, fuzzy
 msgid "Megabytes"
 msgstr "Мегабайти"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:234
-#, fuzzy
 msgid "Gigabytes"
 msgstr "Гігабайти"
 
@@ -541,16 +532,16 @@ msgstr ""
 
 #: ../libgimpwidgets/gimppreviewarea.c:126
 msgid "Check Size"
-msgstr ""
+msgstr "Перевірити розмір"
 
 #: ../libgimpwidgets/gimppreviewarea.c:133
 msgid "Check Style"
-msgstr ""
+msgstr "Перевірити стиль"
 
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:240
 msgid "_Preview"
-msgstr ""
+msgstr "_Перегляд"
 
 #: ../libgimpwidgets/gimpstock.c:113
 msgid "Anchor"
@@ -558,7 +549,7 @@ msgstr "Прикріпити"
 
 #: ../libgimpwidgets/gimpstock.c:114
 msgid "C_enter"
-msgstr ""
+msgstr "_Центрувати"
 
 #: ../libgimpwidgets/gimpstock.c:115
 msgid "_Duplicate"
@@ -590,7 +581,7 @@ msgstr "Видимий"
 
 #: ../libgimpwidgets/gimpstock.c:154 ../libgimpwidgets/gimpstock.c:158
 msgid "_Stroke"
-msgstr ""
+msgstr "_Обвести"
 
 #: ../libgimpwidgets/gimpstock.c:170
 msgid "L_etter Spacing"
@@ -659,7 +650,7 @@ msgstr ""
 
 #: ../libgimpwidgets/gimpwidgets.c:1022
 msgid "_Randomize"
-msgstr "_Перемішати"
+msgstr "Пере_мішати"
 
 #: ../modules/cdisplay_colorblind.c:57 ../modules/cdisplay_colorblind.c:545
 msgid "Protanopia (insensitivity to red)"
@@ -679,7 +670,7 @@ msgstr "Фільтр, що моделює брак кольору (алгори�
 
 #: ../modules/cdisplay_colorblind.c:242
 msgid "Color Deficient Vision"
-msgstr "Вигляд зі зниженим сприйняттям кольору"
+msgstr "Зір зі зниженим сприйняттям кольору"
 
 #: ../modules/cdisplay_colorblind.c:540
 msgid "Color _Deficiency Type:"
@@ -786,13 +777,12 @@ msgid "Black"
 msgstr "Чорний"
 
 #: ../modules/colorsel_cmyk.c:191
-#, fuzzy
 msgid "Black _Pullout:"
-msgstr "Вміст чорного (%):"
+msgstr "_Вміст чорного:"
 
 #: ../modules/colorsel_cmyk.c:208
 msgid "The percentage of black to pull out of the colored inks."
-msgstr ""
+msgstr "Відсоток вмісту чорного у кольорових чорнилах."
 
 #: ../modules/colorsel_triangle.c:104
 msgid "Painter-style triangle color selector"
@@ -813,9 +803,3 @@ msgstr "Акварель"
 #: ../modules/colorsel_water.c:220
 msgid "Pressure"
 msgstr "Тиск"
-
-#~ msgid "He_x Triplet:"
-#~ msgstr "_Шістнадцятковий триплет:"
-
-#~ msgid "None"
-#~ msgstr "Немає"

@@ -1,74 +1,84 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpColorNotebook</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="prev" href="GimpColorSelector.html" title="GimpColorSelector"><link rel="next" href="GimpColorScales.html" title="GimpColorScales"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpColorSelector.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-colorselector.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpColorScales.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpColorNotebook"></a><div class="titlepage"></div><div class="refnamediv"><h2><span class="refentrytitle">GimpColorNotebook</span></h2><p>GimpColorNotebook &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GimpColorNotebook</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="up" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="prev" href="GimpColorSelector.html" title="GimpColorSelector"><link rel="next" href="GimpColorScales.html" title="GimpColorScales"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="GimpColorSelector.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpwidgets-colorselector.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Widgets Library Reference Manual</th><td><a accesskey="n" href="GimpColorScales.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="GimpColorNotebook"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">GimpColorNotebook</span></h2><p>GimpColorNotebook &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
-struct      <a href="GimpColorNotebook.html#GimpColorNotebook-struct">GimpColorNotebook</a>;
-GtkWidget*  <a href="GimpColorNotebook.html#gimp-color-notebook-set-has-page">gimp_color_notebook_set_has_page</a>
+            <a href="GimpColorNotebook.html#GimpColorNotebook-struct">GimpColorNotebook</a>;
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpColorNotebook.html#gimp-color-notebook-set-has-page">gimp_color_notebook_set_has_page</a>
                                             (<a href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
-                                             GType page_type,
-                                             gboolean has_page);
+                                             <a
+href="../gobject/gobject-Type-Information.html#GType"
+>GType</a> page_type,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> has_page);
 
-</pre></div><div class="refsect1" lang="en"><a name="id2525617"></a><h2>Object Hierarchy</h2><pre class="synopsis">
+</pre></div><div class="refsect1" lang="en"><a name="id2544668"></a><h2>Object Hierarchy</h2><pre class="synopsis">
 
-  GObject
-   +----GtkObject
-         +----GtkWidget
-               +----GtkContainer
-                     +----GtkBox
-                           +----GtkVBox
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkBox.html"
+>GtkBox</a>
+                           +----<a
+href="../gtk/GtkVBox.html"
+>GtkVBox</a>
                                  +----<a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
                                        +----GimpColorNotebook
-</pre></div><div class="refsect1" lang="en"><a name="id2601202"></a><h2>Implemented Interfaces</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2601958"></a><h2>Implemented Interfaces</h2><p>
 GimpColorNotebook implements
- AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2601217"></a><h2>Style Properties</h2><pre class="synopsis">
+ AtkImplementorIface.</p></div><div class="refsect1" lang="en"><a name="id2601973"></a><h2>Style Properties</h2><pre class="synopsis">
 
-  "<a href="GimpColorNotebook.html#GimpColorNotebook--tab-border">tab-border</a>"           gint                 : Read
-  "<a href="GimpColorNotebook.html#GimpColorNotebook--tab-icon-size">tab-icon-size</a>"        GtkIconSize          : Read
-</pre></div><div class="refsect1" lang="en"><a name="id2601601"></a><h2>Description</h2><p>
+  "<a href="GimpColorNotebook.html#GimpColorNotebook--tab-border">tab-border</a>"           <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read
+  "<a href="GimpColorNotebook.html#GimpColorNotebook--tab-icon-size">tab-icon-size</a>"        <a
+href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
+>GtkIconSize</a>           : Read
+</pre></div><div class="refsect1" lang="en"><a name="id2602003"></a><h2>Description</h2><p>
 The <a href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a> widget is an implementation of a <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>.
 It serves as a container for <span class="type">GimpColorSelectors</span>.
-</p></div><div class="refsect1" lang="en"><a name="id2601629"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2601634"></a><h3><a name="GimpColorNotebook-struct"></a>struct GimpColorNotebook</h3><a class="indexterm" name="id2601643"></a><pre class="programlisting">struct GimpColorNotebook;</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2599563"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2599568"></a><h3><a name="GimpColorNotebook-struct"></a>GimpColorNotebook</h3><a class="indexterm" name="id2599576"></a><pre class="programlisting">typedef struct _GimpColorNotebook GimpColorNotebook;</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2601652"></a><h3><a name="gimp-color-notebook-set-has-page"></a>gimp_color_notebook_set_has_page ()</h3><a class="indexterm" name="id2601661"></a><pre class="programlisting">GtkWidget*  gimp_color_notebook_set_has_page
+</p></div><hr><div class="refsect2" lang="en"><a name="id2599587"></a><h3><a name="gimp-color-notebook-set-has-page"></a>gimp_color_notebook_set_has_page ()</h3><a class="indexterm" name="id2599596"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_color_notebook_set_has_page
                                             (<a href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
-                                             GType page_type,
-                                             gboolean has_page);</pre><p>
+                                             <a
+href="../gobject/gobject-Type-Information.html#GType"
+>GType</a> page_type,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> has_page);</pre><p>
 This function adds and removed pages to / from a <a href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a>.
 The <i class="parameter"><tt>page_type</tt></i> passed must be a <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> subtype.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>notebook</tt></i> :</span></td><td>  A <a href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a> widget.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>page_type</tt></i> :</span></td><td> The <span class="type">GType</span> of the notebook page to add or remove.
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>page_type</tt></i> :</span></td><td> The <a
+href="../gobject/gobject-Type-Information.html#GType"
+><span class="type">GType</span></a> of the notebook page to add or remove.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>has_page</tt></i> :</span></td><td>  Whether the page should be added or removed.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The new page widget, if <i class="parameter"><tt>has_page</tt></i> was <span class="type">TRUE</span>, or <span class="type">NULL</span>
-              if <i class="parameter"><tt>has_page</tt></i> was <span class="type">FALSE</span>.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2606177"></a><h2>Style Properties</h2><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><a name="GimpColorNotebook--tab-border"></a>"<tt class="literal">tab-border</tt>" (gint : Read)</span></td><td><p>Width of the border around the tab contents.</p></td></tr><tr><td><span class="term"><a name="GimpColorNotebook--tab-icon-size"></a>"<tt class="literal">tab-icon-size</tt>" (GtkIconSize : Read)</span></td><td><p>Size for icons displayed in the tab.</p></td></tr></tbody></table></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpColorSelector.html"><b>&lt;&lt; GimpColorSelector</b></a></td><td align="right"><a accesskey="n" href="GimpColorScales.html"><b>GimpColorScales &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The new page widget, if <i class="parameter"><tt>has_page</tt></i> was <a
+href="../glib/glib-Standard-Macros.html#TRUE--CAPS"
+><span class="type">TRUE</span></a>, or <a
+href="../glib/glib-Standard-Macros.html#NULL--CAPS"
+><span class="type">NULL</span></a>
+              if <i class="parameter"><tt>has_page</tt></i> was <a
+href="../glib/glib-Standard-Macros.html#FALSE--CAPS"
+><span class="type">FALSE</span></a>.
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2601363"></a><h2>Style Properties</h2><div class="refsect2" lang="en"><a name="id2601368"></a><h3><a name="GimpColorNotebook--tab-border"></a>The "<tt class="literal">tab-border</tt>" style property</h3><pre class="programlisting">  "tab-border"           <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read</pre><p>Width of the border around the tab contents.</p><p>Allowed values: &gt;= 0</p><p>Default value: 0</p></div><hr><div class="refsect2" lang="en"><a name="id2601399"></a><h3><a name="GimpColorNotebook--tab-icon-size"></a>The "<tt class="literal">tab-icon-size</tt>" style property</h3><pre class="programlisting">  "tab-icon-size"        <a
+href="../gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
+>GtkIconSize</a>           : Read</pre><p>Size for icons displayed in the tab.</p><p>Default value: GTK_ICON_SIZE_BUTTON</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="GimpColorSelector.html"><b>&lt;&lt; GimpColorSelector</b></a></td><td align="right"><a accesskey="n" href="GimpColorScales.html"><b>GimpColorScales &gt;&gt;</b></a></td></tr></table></body></html>

@@ -20,7 +20,7 @@ dialog-related stuff.</refpurpose>
 
 
 
-struct      <link linkend="GimpDialog-struct">GimpDialog</link>;
+            <link linkend="GimpDialog-struct">GimpDialog</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-dialog-new">gimp_dialog_new</link>                 (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *role,
                                              <link linkend="GtkWidget">GtkWidget</link> *parent,
@@ -74,8 +74,8 @@ GimpDialog implements
 <title>Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;            <link linkend="gpointer">gpointer</link>             : Read / Write / Construct Only
-  &quot;<link linkend="GimpDialog--help-id">help-id</link>&quot;              <link linkend="gchararray">gchararray</link>           : Read / Write / Construct Only
+  &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
+  &quot;<link linkend="GimpDialog--help-id">help-id</link>&quot;              <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
@@ -91,8 +91,8 @@ GimpDialog implements
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpDialog-struct"/>struct GimpDialog</title>
-<indexterm><primary>GimpDialog</primary></indexterm><programlisting>struct GimpDialog;</programlisting>
+<title><anchor id="GimpDialog-struct"/>GimpDialog</title>
+<indexterm><primary>GimpDialog</primary></indexterm><programlisting>typedef struct _GimpDialog GimpDialog;</programlisting>
 <para>
 
 </para></refsect2>
@@ -142,7 +142,7 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 <listitem><simpara>          A <literal>NULL</literal>-terminated <parameter>va_list</parameter> destribing the
                action_area buttons.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A <link linkend="GimpDialog"><type>GimpDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GimpDialog"><type>GimpDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -187,7 +187,7 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 <varlistentry><term><parameter>args</parameter>&nbsp;:</term>
 <listitem><simpara>         A <parameter>va_list</parameter> destribing the action_area buttons.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> A <link linkend="GimpDialog"><type>GimpDialog</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GimpDialog"><type>GimpDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -219,12 +219,12 @@ does not make the dialog modal while the <link linkend="GMainLoop"><type>GMainLo
 <varlistentry><term><parameter>dialog</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpDialog"><type>GimpDialog</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> response ID
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> response ID
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-dialogs-show-help-button"/>gimp_dialogs_show_help_button ()</title>
-<indexterm><primary>gimp_dialogs_show_help_button</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_dialogs_show_help_button   (<link linkend="gboolean">gboolean</link> show);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_dialogs_show_help_button</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_dialogs_show_help_button   (<link linkend="gboolean">gboolean</link> show);</programlisting>
 <para>
 This function is for internal use only.</para>
 <para>
@@ -239,17 +239,14 @@ This function is for internal use only.</para>
 </refsect1>
 <refsect1>
 <title>Properties</title>
-<variablelist>
-<varlistentry><term><anchor id="GimpDialog--help-func"/>&quot;<literal>help-func</literal>&quot; (<link linkend="gpointer">gpointer</link> : Read / Write / Construct Only)</term>
-<listitem>
-<para></para>
-</listitem></varlistentry>
-<varlistentry><term><anchor id="GimpDialog--help-id"/>&quot;<literal>help-id</literal>&quot; (<link linkend="gchararray">gchararray</link> : Read / Write / Construct Only)</term>
-<listitem>
-<para></para>
-</listitem></varlistentry>
+<refsect2><title><anchor id="GimpDialog--help-func"/>The &quot;<literal>help-func</literal>&quot; property</title>
+<programlisting>  &quot;help-func&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
+<para></para></refsect2>
+<refsect2><title><anchor id="GimpDialog--help-id"/>The &quot;<literal>help-id</literal>&quot; property</title>
+<programlisting>  &quot;help-id&quot;              <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<para></para><para>Default value: NULL</para>
+</refsect2>
 
-</variablelist>
 </refsect1>
 
 

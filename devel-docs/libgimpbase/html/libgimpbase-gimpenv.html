@@ -16,10 +16,10 @@ GList*      <a href="libgimpbase-gimpenv.html#gimp-path-parse">gimp_path_parse</
 gchar*      <a href="libgimpbase-gimpenv.html#gimp-path-to-str">gimp_path_to_str</a>                (GList *path);
 void        <a href="libgimpbase-gimpenv.html#gimp-path-free">gimp_path_free</a>                  (GList *path);
 gchar*      <a href="libgimpbase-gimpenv.html#gimp-path-get-user-writable-dir">gimp_path_get_user_writable_dir</a> (GList *path);
-</pre></div><div class="refsect1" lang="en"><a name="id2528565"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2581158"></a><h2>Description</h2><p>
 A set of functions to find the locations of GIMP's data directories and
 configuration files.
-</p></div><div class="refsect1" lang="en"><a name="id2582154"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2582159"></a><h3><a name="gimp-directory"></a>gimp_directory ()</h3><a class="indexterm" name="id2582168"></a><pre class="programlisting">const gchar* gimp_directory                 (void);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2581169"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2581174"></a><h3><a name="gimp-directory"></a>gimp_directory ()</h3><a class="indexterm" name="id2581183"></a><pre class="programlisting">const gchar* gimp_directory                 (void);</pre><p>
 Returns the user-specific GIMP settings directory. If the
 environment variable GIMP2_DIRECTORY exists, it is used. If it is
 an absolute path, it is used as is.  If it is a relative path, it
@@ -40,7 +40,7 @@ for filenames by the system, which isn't necessarily UTF-8 (never
 is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The user-specific GIMP settings directory.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2582241"></a><h3><a name="gimp-personal-rc-file"></a>gimp_personal_rc_file ()</h3><a class="indexterm" name="id2582249"></a><pre class="programlisting">gchar*      gimp_personal_rc_file           (const gchar *basename);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2581256"></a><h3><a name="gimp-personal-rc-file"></a>gimp_personal_rc_file ()</h3><a class="indexterm" name="id2581264"></a><pre class="programlisting">gchar*      gimp_personal_rc_file           (const gchar *basename);</pre><p>
 Returns the name of a file in the user-specific GIMP settings directory.
 </p><p>
 The returned string is allocated dynamically and *SHOULD* be freed
@@ -50,7 +50,7 @@ is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>basename</tt></i> :</span></td><td> The basename of a rc_file.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The name of a file in the user-specific GIMP settings directory.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2573625"></a><h3><a name="gimp-data-directory"></a>gimp_data_directory ()</h3><a class="indexterm" name="id2573634"></a><pre class="programlisting">const gchar* gimp_data_directory            (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534792"></a><h3><a name="gimp-data-directory"></a>gimp_data_directory ()</h3><a class="indexterm" name="id2534801"></a><pre class="programlisting">const gchar* gimp_data_directory            (void);</pre><p>
 Returns the top directory for GIMP data. If the environment
 variable GIMP2_DATADIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
@@ -63,7 +63,7 @@ for filenames by the system, which isn't necessarily UTF-8 (never
 is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The top directory for GIMP data.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2573682"></a><h3><a name="gimp-locale-directory"></a>gimp_locale_directory ()</h3><a class="indexterm" name="id2573691"></a><pre class="programlisting">const gchar* gimp_locale_directory          (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534851"></a><h3><a name="gimp-locale-directory"></a>gimp_locale_directory ()</h3><a class="indexterm" name="id2534859"></a><pre class="programlisting">const gchar* gimp_locale_directory          (void);</pre><p>
 Returns the top directory for GIMP locale files. If the environment
 variable GIMP2_LOCALEDIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
@@ -76,7 +76,7 @@ for filenames by the system, which isn't necessarily UTF-8 (never
 is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The top directory for GIMP locale files.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2573741"></a><h3><a name="gimp-plug-in-directory"></a>gimp_plug_in_directory ()</h3><a class="indexterm" name="id2573749"></a><pre class="programlisting">const gchar* gimp_plug_in_directory         (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534909"></a><h3><a name="gimp-plug-in-directory"></a>gimp_plug_in_directory ()</h3><a class="indexterm" name="id2534918"></a><pre class="programlisting">const gchar* gimp_plug_in_directory         (void);</pre><p>
 Returns the top directory for GIMP plug_ins and modules. If the
 environment variable GIMP2_PLUGINDIR exists, that is used.  It
 should be an absolute pathname. Otherwise, on Unix the compile-time
@@ -89,7 +89,7 @@ for filenames by the system, which isn't necessarily UTF-8 (never
 is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The top directory for GIMP plug_ins and modules.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2573801"></a><h3><a name="gimp-sysconf-directory"></a>gimp_sysconf_directory ()</h3><a class="indexterm" name="id2573809"></a><pre class="programlisting">const gchar* gimp_sysconf_directory         (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2534969"></a><h3><a name="gimp-sysconf-directory"></a>gimp_sysconf_directory ()</h3><a class="indexterm" name="id2534977"></a><pre class="programlisting">const gchar* gimp_sysconf_directory         (void);</pre><p>
 Returns the top directory for GIMP config files. If the environment
 variable GIMP2_SYSCONFDIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
@@ -102,7 +102,7 @@ for filenames by the system, which isn't necessarily UTF-8 (never
 is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The top directory for GIMP config files.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2576008"></a><h3><a name="gimp-gtkrc"></a>gimp_gtkrc ()</h3><a class="indexterm" name="id2576017"></a><pre class="programlisting">const gchar* gimp_gtkrc                     (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2562493"></a><h3><a name="gimp-gtkrc"></a>gimp_gtkrc ()</h3><a class="indexterm" name="id2562500"></a><pre class="programlisting">const gchar* gimp_gtkrc                     (void);</pre><p>
 Returns the name of the GIMP's application-specific gtkrc file.
 </p><p>
 The returned string is allocated just once, and should *NOT* be
@@ -111,7 +111,7 @@ for filenames by the system, which isn't necessarily UTF-8 (never
 is on Windows).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The name of the GIMP's application-specific gtkrc file.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2576065"></a><h3><a name="gimp-path-parse"></a>gimp_path_parse ()</h3><a class="indexterm" name="id2576073"></a><pre class="programlisting">GList*      gimp_path_parse                 (const gchar *path,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2562547"></a><h3><a name="gimp-path-parse"></a>gimp_path_parse ()</h3><a class="indexterm" name="id2562555"></a><pre class="programlisting">GList*      gimp_path_parse                 (const gchar *path,
                                              gint max_paths,
                                              gboolean check,
                                              GList **check_failed);</pre><p>
@@ -123,17 +123,17 @@ is on Windows).</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>check_failed</tt></i> :</span></td><td> Returns a <span class="type">GList</span> of path elements for which the
                check failed.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A <span class="type">GList</span> of all directories in <i class="parameter"><tt>path</tt></i>.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2576201"></a><h3><a name="gimp-path-to-str"></a>gimp_path_to_str ()</h3><a class="indexterm" name="id2576209"></a><pre class="programlisting">gchar*      gimp_path_to_str                (GList *path);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2562683"></a><h3><a name="gimp-path-to-str"></a>gimp_path_to_str ()</h3><a class="indexterm" name="id2562691"></a><pre class="programlisting">gchar*      gimp_path_to_str                (GList *path);</pre><p>
 </p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>path</tt></i> :</span></td><td> A list of directories as returned by <a href="libgimpbase-gimpenv.html#gimp-path-parse"><tt class="function">gimp_path_parse()</tt></a>.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A searchpath string separated by <span class="type">G_SEARCHPATH_SEPARATOR</span>.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583838"></a><h3><a name="gimp-path-free"></a>gimp_path_free ()</h3><a class="indexterm" name="id2583846"></a><pre class="programlisting">void        gimp_path_free                  (GList *path);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2562752"></a><h3><a name="gimp-path-free"></a>gimp_path_free ()</h3><a class="indexterm" name="id2582832"></a><pre class="programlisting">void        gimp_path_free                  (GList *path);</pre><p>
 This function frees the memory allocated for the list and the strings
 it contains.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>path</tt></i> :</span></td><td> A list of directories as returned by <a href="libgimpbase-gimpenv.html#gimp-path-parse"><tt class="function">gimp_path_parse()</tt></a>.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583892"></a><h3><a name="gimp-path-get-user-writable-dir"></a>gimp_path_get_user_writable_dir ()</h3><a class="indexterm" name="id2583903"></a><pre class="programlisting">gchar*      gimp_path_get_user_writable_dir (GList *path);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2582878"></a><h3><a name="gimp-path-get-user-writable-dir"></a>gimp_path_get_user_writable_dir ()</h3><a class="indexterm" name="id2582886"></a><pre class="programlisting">gchar*      gimp_path_get_user_writable_dir (GList *path);</pre><p>
 Note that you have to <tt class="function">g_free()</tt> the returned string.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>path</tt></i> :</span></td><td> A list of directories as returned by <a href="libgimpbase-gimpenv.html#gimp-path-parse"><tt class="function">gimp_path_parse()</tt></a>.

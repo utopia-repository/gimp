@@ -35,9 +35,9 @@ const gchar* <a href="libgimpbase-gimputils.html#gimp-flags-value-get-desc">gimp
                                              GFlagsValue *flags_value);
 const gchar* <a href="libgimpbase-gimputils.html#gimp-flags-value-get-help">gimp_flags_value_get_help</a>      (GFlagsClass *flags_class,
                                              GFlagsValue *flags_value);
-</pre></div><div class="refsect1" lang="en"><a name="id2585018"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2538769"></a><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><a name="id2585028"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2585033"></a><h3><a name="gimp-any-to-utf8"></a>gimp_any_to_utf8 ()</h3><a class="indexterm" name="id2585042"></a><pre class="programlisting">gchar*      gimp_any_to_utf8                (const gchar *str,
+</p></div><div class="refsect1" lang="en"><a name="id2538778"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2538784"></a><h3><a name="gimp-any-to-utf8"></a>gimp_any_to_utf8 ()</h3><a class="indexterm" name="id2538792"></a><pre class="programlisting">gchar*      gimp_any_to_utf8                (const gchar *str,
                                              gssize len,
                                              const gchar *warning_format,
                                              ...);</pre><p>
@@ -61,7 +61,7 @@ of <i class="parameter"><tt>str</tt></i> is valid UTF-8, only "(invalid UTF-8 st
                  documentation.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>...</tt></i> :</span></td><td>        The parameters to insert into the format string.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The UTF-8 string as described above.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585180"></a><h3><a name="gimp-filename-to-utf8"></a>gimp_filename_to_utf8 ()</h3><a class="indexterm" name="id2585188"></a><pre class="programlisting">const gchar* gimp_filename_to_utf8          (const gchar *filename);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2538930"></a><h3><a name="gimp-filename-to-utf8"></a>gimp_filename_to_utf8 ()</h3><a class="indexterm" name="id2538939"></a><pre class="programlisting">const gchar* gimp_filename_to_utf8          (const gchar *filename);</pre><p>
 Convert a filename in the filesystem's encoding to UTF-8
 temporarily.  The return value is a pointer to a string that is
 guaranteed to be valid only during the current iteration of the
@@ -74,7 +74,7 @@ UTF-8 encoded filename.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td> The filename to be converted to UTF-8.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A temporarily valid UTF-8 representation of <i class="parameter"><tt>filename</tt></i>.
               This string must not be changed or freed.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583436"></a><h3><a name="gimp-utf8-strtrim"></a>gimp_utf8_strtrim ()</h3><a class="indexterm" name="id2583444"></a><pre class="programlisting">gchar*      gimp_utf8_strtrim               (const gchar *str,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2584090"></a><h3><a name="gimp-utf8-strtrim"></a>gimp_utf8_strtrim ()</h3><a class="indexterm" name="id2584099"></a><pre class="programlisting">gchar*      gimp_utf8_strtrim               (const gchar *str,
                                              gint max_chars);</pre><p>
 Creates a (possibly trimmed) copy of <i class="parameter"><tt>str</tt></i>. The string is cut if it
 exceeds <i class="parameter"><tt>max_chars</tt></i> characters or on the first newline. The fact
@@ -85,7 +85,7 @@ that the string was trimmed is indicated by appending an ellipsis.</p><p>
 trimmed
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A (possibly trimmed) copy of <i class="parameter"><tt>str</tt></i> which should be freed
 using <tt class="function">g_free()</tt> when it is not needed any longer.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2583534"></a><h3><a name="gimp-escape-uline"></a>gimp_escape_uline ()</h3><a class="indexterm" name="id2583542"></a><pre class="programlisting">gchar*      gimp_escape_uline               (const gchar *str);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2584185"></a><h3><a name="gimp-escape-uline"></a>gimp_escape_uline ()</h3><a class="indexterm" name="id2584194"></a><pre class="programlisting">gchar*      gimp_escape_uline               (const gchar *str);</pre><p>
 This function returns a copy of <i class="parameter"><tt>str</tt></i> with all underline converted
 to two adjacent underlines. This comes in handy when needing to display
 strings with underlines (like filenames) in a place that would convert
@@ -96,7 +96,7 @@ them to mnemonics.</p><p>
 freed using <tt class="function">g_free()</tt> when it is not needed any longer.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2583617"></a><h3><a name="gimp-strip-uline"></a>gimp_strip_uline ()</h3><a class="indexterm" name="id2583625"></a><pre class="programlisting">gchar*      gimp_strip_uline                (const gchar *str);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2584265"></a><h3><a name="gimp-strip-uline"></a>gimp_strip_uline ()</h3><a class="indexterm" name="id2584273"></a><pre class="programlisting">gchar*      gimp_strip_uline                (const gchar *str);</pre><p>
 This function returns a copy of <i class="parameter"><tt>str</tt></i> stripped of underline
 characters. This comes in handy when needing to strip mnemonics
 from menu paths etc.
@@ -109,7 +109,7 @@ rid of the mnemonic (see bug <span class="type">157561</span>).</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td> underline infested string (or <tt class="literal">NULL</tt>)
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> A (possibly stripped) copy of <i class="parameter"><tt>str</tt></i> which should be
               freed using <tt class="function">g_free()</tt> when it is not needed any longer.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2590937"></a><h3><a name="gimp-enum-get-desc"></a>gimp_enum_get_desc ()</h3><a class="indexterm" name="id2590946"></a><pre class="programlisting"><a href="libgimpbase-gimpbasetypes.html#GimpEnumDesc">GimpEnumDesc</a>* gimp_enum_get_desc            (GEnumClass *enum_class,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2589376"></a><h3><a name="gimp-enum-get-desc"></a>gimp_enum_get_desc ()</h3><a class="indexterm" name="id2589384"></a><pre class="programlisting"><a href="libgimpbase-gimpbasetypes.html#GimpEnumDesc">GimpEnumDesc</a>* gimp_enum_get_desc            (GEnumClass *enum_class,
                                              gint value);</pre><p>
 Retrieves <a href="libgimpbase-gimpbasetypes.html#GimpEnumDesc"><span class="type">GimpEnumDesc</span></a> associated with the given value, or <tt class="literal">NULL</tt>.</p><p>
 
@@ -118,7 +118,7 @@ Retrieves <a href="libgimpbase-gimpbasetypes.html#GimpEnumDesc"><span class="typ
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the value's <a href="libgimpbase-gimpbasetypes.html#GimpEnumDesc"><span class="type">GimpEnumDesc</span></a>.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2590995"></a><h3><a name="gimp-enum-get-value"></a>gimp_enum_get_value ()</h3><a class="indexterm" name="id2591003"></a><pre class="programlisting">gboolean    gimp_enum_get_value             (GType enum_type,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2589478"></a><h3><a name="gimp-enum-get-value"></a>gimp_enum_get_value ()</h3><a class="indexterm" name="id2589487"></a><pre class="programlisting">gboolean    gimp_enum_get_value             (GType enum_type,
                                              gint value,
                                              const gchar **value_name,
                                              const gchar **value_nick,
@@ -139,7 +139,7 @@ and <i class="parameter"><tt>value_help</tt></i> are not <tt class="literal">NUL
               <tt class="literal">FALSE</tt> otherwise
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2591187"></a><h3><a name="gimp-enum-value-get-desc"></a>gimp_enum_value_get_desc ()</h3><a class="indexterm" name="id2591195"></a><pre class="programlisting">const gchar* gimp_enum_value_get_desc       (GEnumClass *enum_class,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2589684"></a><h3><a name="gimp-enum-value-get-desc"></a>gimp_enum_value_get_desc ()</h3><a class="indexterm" name="id2589692"></a><pre class="programlisting">const gchar* gimp_enum_value_get_desc       (GEnumClass *enum_class,
                                              GEnumValue *enum_value);</pre><p>
 Retrieves the translated desc for a given <i class="parameter"><tt>enum_value</tt></i>.</p><p>
 
@@ -148,7 +148,7 @@ Retrieves the translated desc for a given <i class="parameter"><tt>enum_value</t
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the translated desc of the enum value
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2591276"></a><h3><a name="gimp-enum-value-get-help"></a>gimp_enum_value_get_help ()</h3><a class="indexterm" name="id2591283"></a><pre class="programlisting">const gchar* gimp_enum_value_get_help       (GEnumClass *enum_class,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2583866"></a><h3><a name="gimp-enum-value-get-help"></a>gimp_enum_value_get_help ()</h3><a class="indexterm" name="id2575059"></a><pre class="programlisting">const gchar* gimp_enum_value_get_help       (GEnumClass *enum_class,
                                              GEnumValue *enum_value);</pre><p>
 Retrieves the translated help for a given <i class="parameter"><tt>enum_value</tt></i>.</p><p>
 
@@ -157,7 +157,7 @@ Retrieves the translated help for a given <i class="parameter"><tt>enum_value</t
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the translated help of the enum value
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2591367"></a><h3><a name="gimp-flags-get-first-desc"></a>gimp_flags_get_first_desc ()</h3><a class="indexterm" name="id2591376"></a><pre class="programlisting"><a href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc">GimpFlagsDesc</a>* gimp_flags_get_first_desc    (GFlagsClass *flags_class,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2589814"></a><h3><a name="gimp-flags-get-first-desc"></a>gimp_flags_get_first_desc ()</h3><a class="indexterm" name="id2589822"></a><pre class="programlisting"><a href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc">GimpFlagsDesc</a>* gimp_flags_get_first_desc    (GFlagsClass *flags_class,
                                              guint value);</pre><p>
 Retrieves the first <a href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a> that matches the given value, or <tt class="literal">NULL</tt>.</p><p>
 
@@ -166,7 +166,7 @@ Retrieves the first <a href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"><span
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the value's <a href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a>.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2591469"></a><h3><a name="gimp-flags-get-first-value"></a>gimp_flags_get_first_value ()</h3><a class="indexterm" name="id2591477"></a><pre class="programlisting">gboolean    gimp_flags_get_first_value      (GType flags_type,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2589907"></a><h3><a name="gimp-flags-get-first-value"></a>gimp_flags_get_first_value ()</h3><a class="indexterm" name="id2589915"></a><pre class="programlisting">gboolean    gimp_flags_get_first_value      (GType flags_type,
                                              guint value,
                                              const gchar **value_name,
                                              const gchar **value_nick,
@@ -187,7 +187,7 @@ and <i class="parameter"><tt>value_help</tt></i> are not <tt class="literal">NUL
               <tt class="literal">FALSE</tt> otherwise
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2591671"></a><h3><a name="gimp-flags-value-get-desc"></a>gimp_flags_value_get_desc ()</h3><a class="indexterm" name="id2591679"></a><pre class="programlisting">const gchar* gimp_flags_value_get_desc      (GFlagsClass *flags_class,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2590104"></a><h3><a name="gimp-flags-value-get-desc"></a>gimp_flags_value_get_desc ()</h3><a class="indexterm" name="id2590113"></a><pre class="programlisting">const gchar* gimp_flags_value_get_desc      (GFlagsClass *flags_class,
                                              GFlagsValue *flags_value);</pre><p>
 Retrieves the translated desc for a given <i class="parameter"><tt>flags_value</tt></i>.</p><p>
 
@@ -196,7 +196,7 @@ Retrieves the translated desc for a given <i class="parameter"><tt>flags_value</
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the translated desc of the flags value
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2591767"></a><h3><a name="gimp-flags-value-get-help"></a>gimp_flags_value_get_help ()</h3><a class="indexterm" name="id2591776"></a><pre class="programlisting">const gchar* gimp_flags_value_get_help      (GFlagsClass *flags_class,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2590200"></a><h3><a name="gimp-flags-value-get-help"></a>gimp_flags_value_get_help ()</h3><a class="indexterm" name="id2590209"></a><pre class="programlisting">const gchar* gimp_flags_value_get_help      (GFlagsClass *flags_class,
                                              GFlagsValue *flags_value);</pre><p>
 Retrieves the translated help for a given <i class="parameter"><tt>flags_value</tt></i>.</p><p>
 

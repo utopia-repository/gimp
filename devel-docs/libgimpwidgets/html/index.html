@@ -1,35 +1,5 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GIMP Widgets Library Reference Manual</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="next" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><meta name="generator" content="GTK-Doc V1.2 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en"><div class="titlepage"><div><div><table class="navigation" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">GIMP Widgets Library Reference Manual</p></th></tr></table></div><div><p class="releaseinfo">
-      for GIMP 2.2.1
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>GIMP Widgets Library Reference Manual</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual"><link rel="next" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets"><link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy"><link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView"><link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters"><link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors"><link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers"><link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities"><link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en"><div class="titlepage"><div><div><table class="navigation" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">GIMP Widgets Library Reference Manual</p></th></tr></table></div><div><p class="releaseinfo">
+      for GIMP 2.2.4
 
     </p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="part"><a href="libgimpwidgets-widgets.html">I. GIMP Widgets</a></span></dt><dd><dl><dt><span class="chapter"><a href="libgimpwidgets-hierarchy.html">Object Hierarchy</a></span></dt><dt><a href="GimpButton.html">GimpButton</a> - A GtkButton with a little extra functionality.</dt><dt><a href="GimpChainButton.html">GimpChainButton</a> - Widget to visually connect two entry widgets.</dt><dt><a href="GimpColorArea.html">GimpColorArea</a> - Displays a GimpRGB color, optionally with alpha-channel.</dt><dt><a href="GimpColorButton.html">GimpColorButton</a> - Widget for selecting a color from a simple button.</dt><dt><a href="GimpColorHexEntry.html">GimpColorHexEntry</a> - Widget for entering a color's hex triplet.</dt><dt><a href="GimpColorScale.html">GimpColorScale</a> - Fancy colored sliders.</dt><dt><a href="GimpColorSelection.html">GimpColorSelection</a> - Widget for doing a color selection.</dt><dt><a href="GimpDialog.html">GimpDialog</a> - Constructors for GtkDialog's and action_areas as well as other
 dialog-related stuff.</dt><dt><a href="GimpFileEntry.html">GimpFileEntry</a> - Widget for entering a filename.</dt><dt><a href="GimpFrame.html">GimpFrame</a> - A widget providing a HIG-compliant subclass of GtkFrame.</dt><dt><a href="GimpIntComboBox.html">GimpIntComboBox</a> - A widget providing a popup menu of integer values (e.g. enums).</dt><dt><a href="GimpIntStore.html">GimpIntStore</a> - A model for integer based name-value pairs (e.g. enums)</dt><dt><a href="GimpMemsizeEntry.html">GimpMemsizeEntry</a> - A composite widget that allows to enter a memory size.</dt><dt><a href="GimpOffsetArea.html">GimpOffsetArea</a> - Widget to control image offsets.</dt><dt><a href="GimpPathEditor.html">GimpPathEditor</a> - Widget for editing a file search path.</dt><dt><a href="GimpPickButton.html">GimpPickButton</a> - Widget to pick a color from screen.</dt><dt><a href="GimpPixmap.html">GimpPixmap</a> - Widget which creates a GtkPixmap from XPM data.</dt><dt><a href="GimpPreviewArea.html">GimpPreviewArea</a> - A general purpose preview widget which caches its pixel data.</dt><dt><a href="GimpPreview.html">GimpPreview</a> - A widget providing a GimpPreviewArea plus framework to update the preview.</dt><dt><a href="libgimpwidgets-GimpScrolledPreview.html">GimpScrolledPreview</a> - A widget providing a GimpPreview enhanced by scrolling capabilities.</dt><dt><a href="GimpUnitMenu.html">GimpUnitMenu</a> - Widget for selecting a GimpUnit.</dt></dl></dd><dt><span class="chapter"><a href="libgimpwidgets-cell-renderers.html">Cell Renderers for GtkTreeView</a></span></dt><dd><dl><dt><a href="GimpCellRendererColor.html">GimpCellRendererColor</a> - </dt><dt><a href="GimpCellRendererToggle.html">GimpCellRendererToggle</a> - </dt></dl></dd><dt><span class="part"><a href="libgimpwidgets-colordisplay.html">II. GIMP Display Filters</a></span></dt><dd><dl><dt><a href="GimpColorDisplay.html">GimpColorDisplay</a> - Pluggable GIMP display color correction modules.</dt><dt><a href="GimpColorDisplayStack.html">GimpColorDisplayStack</a> - </dt></dl></dd><dt><span class="part"><a href="libgimpwidgets-colorselector.html">III. GIMP Color Selectors</a></span></dt><dd><dl><dt><a href="GimpColorSelector.html">GimpColorSelector</a> - Pluggable GIMP color selector modules.</dt><dt><a href="GimpColorNotebook.html">GimpColorNotebook</a> - A GimpColorSelector implementation.</dt><dt><a href="GimpColorScales.html">GimpColorScales</a> - A GimpColorSelector implementation.</dt><dt><a href="GimpColorSelect.html">GimpColorSelect</a> - A GimpColorSelector implementation.</dt></dl></dd><dt><span class="part"><a href="libgimpwidgets-controller.html">IV. GIMP Controllers</a></span></dt><dd><dl><dt><a href="GimpController.html">GimpController</a> - Pluggable GIMP input controller modules.</dt></dl></dd><dt><span class="part"><a href="libgimpwidgets-utils.html">V. GIMP Widgets Utilities</a></span></dt><dd><dl><dt><a href="libgimpwidgets-GimpHelpUI.html">GimpHelpUI</a> - Functions for setting GtkTooltips and help identifier used by GIMP help

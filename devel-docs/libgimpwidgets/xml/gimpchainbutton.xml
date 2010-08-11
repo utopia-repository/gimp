@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpChainButton-struct">GimpChainButton</link>;
+            <link linkend="GimpChainButton-struct">GimpChainButton</link>;
 enum        <link linkend="GimpChainPosition">GimpChainPosition</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-chain-button-new">gimp_chain_button_new</link>           (<link linkend="GimpChainPosition">GimpChainPosition</link> position);
 <link linkend="void">void</link>        <link linkend="gimp-chain-button-set-active">gimp_chain_button_set_active</link>    (<link linkend="GimpChainButton">GimpChainButton</link> *button,
@@ -86,8 +86,8 @@ necessary.
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpChainButton-struct"/>struct GimpChainButton</title>
-<indexterm><primary>GimpChainButton</primary></indexterm><programlisting>struct GimpChainButton;</programlisting>
+<title><anchor id="GimpChainButton-struct"/>GimpChainButton</title>
+<indexterm><primary>GimpChainButton</primary></indexterm><programlisting>typedef struct _GimpChainButton GimpChainButton;</programlisting>
 <para>
 
 </para></refsect2>
@@ -124,7 +124,7 @@ for more than two widgets, but the look is optimized for two.</para>
 <listitem><simpara> The position you are going to use for the button
            with respect to the widgets you want to chain.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> Pointer to the new <link linkend="GimpChainButton"><type>GimpChainButton</type></link>, which is inactive
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Pointer to the new <link linkend="GimpChainButton"><type>GimpChainButton</type></link>, which is inactive
          by default. Use <link linkend="gimp-chain-button-set-active"><function>gimp_chain_button_set_active()</function></link> to
          change its state.
 </simpara></listitem></varlistentry>
@@ -157,7 +157,7 @@ Checks the state of the <link linkend="GimpChainButton"><type>GimpChainButton</t
 <varlistentry><term><parameter>button</parameter>&nbsp;:</term>
 <listitem><simpara> Pointer to a <link linkend="GimpChainButton"><type>GimpChainButton</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> <literal>TRUE</literal> if the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> is active (locked).
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> is active (locked).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

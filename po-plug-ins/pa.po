@@ -1,21 +1,24 @@
+# translation of gimp-plug-ins.gimp-2-2.po to Punjabi
 # translation of pa.po to Punjabi
 # Copyright (C) 2004 THE gimp-plug-ins'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gimp-plug-ins package.
 # Jaswinder Singh Phulewala <jaswinderlinux@netscape.net>, 2004.
 # Amanpreet Singh Alam <aalam@redhat.com>, 2004.
+# Amanpreet Singh Alam <amanpreetalam@yahoo.com>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pa\n"
+"Project-Id-Version: gimp-plug-ins.gimp-2-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-22 23:04+0100\n"
-"PO-Revision-Date: 2004-07-20 16:21+0530\n"
-"Last-Translator: Amanpreet Singh Alam <aalam@redhat.com>\n"
-"Language-Team: Punjabi <pa@li.org>\n"
+"POT-Creation-Date: 2005-04-10 02:11+0200\n"
+"PO-Revision-Date: 2005-03-09 10:22+0530\n"
+"Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
+"Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../plug-ins/FractalExplorer/Dialogs.c:523
 #: ../plug-ins/gfig/gfig-dialog.c:283 ../plug-ins/gflare/gflare.c:891
@@ -56,8 +59,9 @@ msgstr "ਤਸਵੀਰ ਮੁਡ਼-ਉਲੀਕੋ"
 #. Zoom Options
 #: ../plug-ins/FractalExplorer/Dialogs.c:627
 #: ../plug-ins/imagemap/imap_popup.c:146
+#, fuzzy
 msgid "Zoom"
-msgstr ""
+msgstr "ਆਕਾਰ"
 
 #: ../plug-ins/FractalExplorer/Dialogs.c:655
 msgid "Undo last zoom"
@@ -382,7 +386,7 @@ msgstr "ਆਂਸ਼ਿਕ"
 #: ../plug-ins/common/pat.c:433 ../plug-ins/common/pcx.c:585
 #: ../plug-ins/common/pix.c:515 ../plug-ins/common/png.c:1178
 #: ../plug-ins/common/pnm.c:809 ../plug-ins/common/postscript.c:1123
-#: ../plug-ins/common/psd_save.c:1588 ../plug-ins/common/raw.c:517
+#: ../plug-ins/common/psd_save.c:1336 ../plug-ins/common/raw.c:517
 #: ../plug-ins/common/raw.c:544 ../plug-ins/common/spheredesigner.c:2088
 #: ../plug-ins/common/sunras.c:513 ../plug-ins/common/tga.c:1030
 #: ../plug-ins/common/tiff.c:1810 ../plug-ins/common/xbm.c:996
@@ -447,9 +451,8 @@ msgid "'%s' is corrupt. Line %d Option section incorrect"
 msgstr "'%s' ਨਸ਼ਟ ਹੈ. ਲਾਈਨ %d ਚੋਣ ਹਿੱਸਾ ਗਲਤ ਹੈ"
 
 #: ../plug-ins/FractalExplorer/FractalExplorer.c:269
-#, fuzzy
 msgid "_Fractal Explorer..."
-msgstr "ਆਂਸ਼ਿਕ-ਐਕਸਪਲੋਰਰ ਰਸਤਾ ਜੋਡ਼ੋ"
+msgstr ""
 
 #: ../plug-ins/FractalExplorer/FractalExplorer.c:400
 msgid "Rendering Fractal..."
@@ -521,9 +524,8 @@ msgid "Lighting Effects..."
 msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ...."
 
 #: ../plug-ins/Lighting/lighting_main.c:197
-#, fuzzy
 msgid "_Lighting Effects..."
-msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ...."
+msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ(_L)..."
 
 #. General options
 #: ../plug-ins/Lighting/lighting_ui.c:261
@@ -531,18 +533,16 @@ msgid "General Options"
 msgstr "ਆਮ ਚੋਣ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:269
-#, fuzzy
 msgid "T_ransparent background"
-msgstr "ਪਾਰਦਰਸ਼ੀ ਪਿੱਠਭੂਮੀ"
+msgstr "ਪਾਰਦਰਸ਼ੀ ਪਿੱਠਭੂਮੀ(_r)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:279
 msgid "Make destination image transparent where bump height is zero"
 msgstr "ਨਿਯਤ ਚਿੱਤਰ ਨੂੰ ਪਾਰਦਰਸ਼ੀ ਬਣਾਓ ਜਿੱਥੇ ਉਬਾਰ ਉਚਾਈ ਸਿਫਰ ਹੈ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:282
-#, fuzzy
 msgid "Cre_ate new image"
-msgstr "ਨਵਾਂ ਚਿੱਤਰ ਬਣਾਓ"
+msgstr "ਨਵਾਂ ਚਿੱਤਰ ਬਣਾਓ(_a)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:292
 #: ../plug-ins/MapObject/mapobject_ui.c:570
@@ -550,9 +550,8 @@ msgid "Create a new image when applying filter"
 msgstr "ਜਦੋਂ ਫਿਲਟਰ ਲਾਗੂ ਕੀਤਾ ਨਵਾਂ ਚਿੱਤਰ ਬਣਾਓ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:294
-#, fuzzy
 msgid "High _Quality preview"
-msgstr "ਵਧੀਆ ਵਿਸ਼ੇਸ਼ਤਾ ਵਾਲਾ ਚਿੱਤਰ"
+msgstr "ਉੱਚ ਗੁਣਵੱਤਾ ਦਿੱਖ(_Q)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:304
 msgid "Enable/disable high quality preview"
@@ -564,34 +563,28 @@ msgid "Light Settings"
 msgstr "ਰੌਸ਼ਨੀ ਵਿਵਸਥਾਵਾਂ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:344
-#, fuzzy
 msgid "Light 1"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ 1"
 
 #: ../plug-ins/Lighting/lighting_ui.c:345
-#, fuzzy
 msgid "Light 2"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ 2"
 
 #: ../plug-ins/Lighting/lighting_ui.c:346
-#, fuzzy
 msgid "Light 3"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ 3"
 
 #: ../plug-ins/Lighting/lighting_ui.c:347
-#, fuzzy
 msgid "Light 4"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ 4"
 
 #: ../plug-ins/Lighting/lighting_ui.c:348
-#, fuzzy
 msgid "Light 5"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ 5"
 
 #: ../plug-ins/Lighting/lighting_ui.c:349
-#, fuzzy
 msgid "Light 6"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ 6"
 
 #. row labels
 #: ../plug-ins/Lighting/lighting_ui.c:358
@@ -600,7 +593,6 @@ msgid "Type:"
 msgstr "ਕਿਸਮ:"
 
 #: ../plug-ins/Lighting/lighting_ui.c:363
-#, fuzzy
 msgid "Color:"
 msgstr "ਰੰਗ"
 
@@ -619,7 +611,6 @@ msgstr "ਲਾਗੂ ਕਰਨ ਲਈ ਰੌਸ਼ਨੀ ਸਰੋਤ ਦੀ ਕ
 
 #: ../plug-ins/Lighting/lighting_ui.c:388
 #: ../plug-ins/MapObject/mapobject_ui.c:679
-#, fuzzy
 msgid "Select lightsource color"
 msgstr "ਰੌਸ਼ਨੀ-ਸਰੋਤ ਰੰਗ ਚੁਣੋ"
 
@@ -629,14 +620,12 @@ msgid "Set light source color"
 msgstr "ਰੌਸ਼ਨੀ ਸਰੋਤ ਰੰਗ ਚੁਣੋ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:408
-#, fuzzy
 msgid "_Intensity:"
-msgstr "ਤੀਬਰਤਾ"
+msgstr "ਤੀਬਰਤਾ(_I):"
 
 #: ../plug-ins/Lighting/lighting_ui.c:414
-#, fuzzy
 msgid "Light intensity"
-msgstr "ਤੀਬਰਤਾ"
+msgstr "ਰੋਸ਼ਨੀ ਤੀਬਰਤਾ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:417
 #: ../plug-ins/MapObject/mapobject_ui.c:694
@@ -736,9 +725,8 @@ msgid "I_solate"
 msgstr ""
 
 #: ../plug-ins/Lighting/lighting_ui.c:512
-#, fuzzy
 msgid "Lighting preset:"
-msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ"
+msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ:"
 
 #: ../plug-ins/Lighting/lighting_ui.c:558
 msgid "Material properties"
@@ -754,9 +742,8 @@ msgid "Amount of original color to show where no direct light falls"
 msgstr "ਵਿਖਾਉਣ ਲਈ ਵਾਸਤਵਿਕ ਰੰਗ ਦੀ ਮਾਤਰਾ ਜਿੱਥੇ ਕੋਈ ਸਿੱਧੀ ਰੌਸਨੀ ਨਹੀ ਪਾਈ ਗਈ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:605
-#, fuzzy
 msgid "_Bright:"
-msgstr "ਰੌਸ਼ਨੀ"
+msgstr "ਰੌਸ਼ਨੀ(_B):"
 
 #: ../plug-ins/Lighting/lighting_ui.c:621
 #: ../plug-ins/MapObject/mapobject_ui.c:888
@@ -764,9 +751,8 @@ msgid "Intensity of original color when lit by a light source"
 msgstr "ਵਾਸਤਵਿਕ ਰੰਗ ਦੀ ਤੀਬਰਤਾ ਜਦੋ ਰੌਸ਼ਨੀ ਸਰੋਤ ਨਾਲ ਰੌਸ਼ਨ ਕੀਤਾ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:634
-#, fuzzy
 msgid "_Shiny:"
-msgstr "ਆਕਾਰ:"
+msgstr ""
 
 #: ../plug-ins/Lighting/lighting_ui.c:650
 #: ../plug-ins/MapObject/mapobject_ui.c:960
@@ -788,18 +774,16 @@ msgid "_Metallic"
 msgstr ""
 
 #: ../plug-ins/Lighting/lighting_ui.c:723
-#, fuzzy
 msgid "E_nable bump mapping"
-msgstr "ਉਬਾਰ ਨਕਸ਼ਾ ਯੋਗ ਕਰੋ"
+msgstr "ਉਬਾਰ ਨਕਸ਼ਾ ਯੋਗ(_n)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:737
 msgid "Enable/disable bump-mapping (image depth)"
 msgstr "ਯੋਗ/ਅਯੋਗ ਉਬਾਰ ਨਕਸ਼ਾ (ਚਿੱਤਰ ਡੂੰਘਾਈ)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:755
-#, fuzzy
 msgid "Bumpm_ap image:"
-msgstr "ਉਬਾਰ-ਨਕਸ਼ਾ ਚਿੱਤਰ:"
+msgstr "ਉਬਾਰ-ਨਕਸ਼ਾ ਚਿੱਤਰ(_a):"
 
 #. Map type menu
 #: ../plug-ins/Lighting/lighting_ui.c:758 ../plug-ins/common/bumpmap.c:898
@@ -826,31 +810,28 @@ msgid "Cu_rve:"
 msgstr "ਚਾਪ:"
 
 #: ../plug-ins/Lighting/lighting_ui.c:776
-#, fuzzy
 msgid "Ma_ximum height:"
-msgstr "ਅਧਿਕਤਮ ਉਚਾਈ:"
+msgstr "ਅਧਿਕਤਮ ਉਚਾਈ(_x):"
 
 #: ../plug-ins/Lighting/lighting_ui.c:786
 msgid "Maximum height for bumps"
 msgstr "ਉਬਾਰ ਲਈ ਅਧਿਕਤਮ ਉਚਾਈ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:811
-#, fuzzy
 msgid "E_nable environment mapping"
-msgstr "ਵਾਤਾਵਰਣ ਨਕਸ਼ਾ ਯੋਗ ਕਰੋ"
+msgstr "ਵਾਤਾਵਰਣ ਨਕਸ਼ਾ ਯੋਗ(_n)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:825
 msgid "Enable/disable environment-mapping (reflection)"
 msgstr "ਯੋਗ/ਅਯੋਗ ਵਾਤਾਵਰਣ ਨਕਸ਼ਾ (ਪਰਾਵਰਤਣ)"
 
 #: ../plug-ins/Lighting/lighting_ui.c:847
-#, fuzzy
 msgid "En_vironment image:"
-msgstr "ਵਾਤਾਵਰਣ ਚਿੱਤਰ:"
+msgstr "ਵਾਤਾਵਰਣ ਚਿੱਤਰ(_v):"
 
 #: ../plug-ins/Lighting/lighting_ui.c:849
 msgid "Environment image to use"
-msgstr "ਵਰਾਣ ਲਈ ਵਾਤਾਵਰਣ ਚਿੱਤਰ"
+msgstr "ਵਰਤਣ ਲਈ ਵਾਤਾਵਰਣ ਚਿੱਤਰ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:871
 msgid "Op_tions"
@@ -898,14 +879,12 @@ msgid "Enable/disable real time preview of changes"
 msgstr "ਤਬਦੀਲੀਆਂ ਦੇ ਰੀਅਲ ਟਾਈਮ ਤਸਵੀਰ ਨੂੰ ਯੋਗ/ਅਯੋਗ ਕਰੋ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:1044
-#, fuzzy
 msgid "Save Lighting Preset"
-msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ"
+msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ ਸੰਭਾਲੋ"
 
 #: ../plug-ins/Lighting/lighting_ui.c:1177
-#, fuzzy
 msgid "Load Lighting Preset"
-msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ"
+msgstr "ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ ਲੋਡ"
 
 #: ../plug-ins/MapObject/mapobject_apply.c:273
 msgid "Map to Plane..."
@@ -939,7 +918,6 @@ msgstr "ਸਿਲੰਡਰ"
 
 #. General options
 #: ../plug-ins/MapObject/mapobject_ui.c:496
-#, fuzzy
 msgid "General options"
 msgstr "ਆਮ ਚੋਣ"
 
@@ -968,7 +946,6 @@ msgid "Type of object to map to"
 msgstr "ਮਾਪਜ਼ ਲਈ ਆਬਜੈਕਟ ਦੀ ਕਿਸਮ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:532
-#, fuzzy
 msgid "Transparent background"
 msgstr "ਪਾਰਦਰਸ਼ੀ ਪਿੱਠਭੂਮੀ"
 
@@ -977,7 +954,6 @@ msgid "Make image transparent outside object"
 msgstr "ਆਬਜੈਕਟ ਦੇ ਬਾਹਰ ਚਿੱਤਰ ਪਾਰਦਰਸ਼ੀ ਬਣਾਓ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:545
-#, fuzzy
 msgid "Tile source image"
 msgstr "ਟਾਈਲ ਸਰੋਤ ਚਿੱਤਰ"
 
@@ -986,7 +962,6 @@ msgid "Tile source image: useful for infinite planes"
 msgstr "ਟਾਈਲ ਸਰੋਤ ਚਿੱਤਰ: ਦੂਰਵਰਤੀ ਸਮਤਲ-ਖੇਤਰਾਂ ਲਈ ਵਰਤਣ ਯੋਗ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:559
-#, fuzzy
 msgid "Create new image"
 msgstr "ਨਵਾਂ ਚਿੱਤਰ ਬਣਾਓ"
 
@@ -1019,27 +994,22 @@ msgid "Stop when pixel differences are smaller than this value"
 msgstr "ਜਦੋਂ ਪਿਕਸਲ ਅੰਤਰ ਇਸ ਕੀਮਤ ਤੋਂ ਘੱਟ ਹੋਵੇ ਤਾਂ ਰੁਕੋ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:658
-#, fuzzy
 msgid "Point light"
 msgstr "ਬਿੰਦੂ ਰੌਸ਼ਨੀ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:659
-#, fuzzy
 msgid "Directional light"
 msgstr "ਦਿਸ਼ਾ ਰੌਸ਼ਨੀ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:660
-#, fuzzy
 msgid "No light"
 msgstr "ਕੋਈ ਰੌਸ਼ਨੀ ਨਹੀ"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:674
-#, fuzzy
 msgid "Lightsource type:"
 msgstr "ਰੌਸ਼ਨੀ-ਸਰੋਤ ਕਿਸਮ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:684
-#, fuzzy
 msgid "Lightsource color:"
 msgstr "ਰੌਸ਼ਨੀ-ਸਰੋਤ ਰੰਗ:"
 
@@ -1108,31 +1078,31 @@ msgstr ""
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1132
 msgid "Front:"
-msgstr "ਮੁੱਖਃ"
+msgstr "ਮੁੱਖ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1132
 msgid "Back:"
-msgstr "ਪਿੱਠਃ"
+msgstr "ਪਿੱਠ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1133
 #: ../plug-ins/print/gimp_main_window.c:523
 msgid "Top:"
-msgstr "ਉੱਪਰਃ"
+msgstr "ਉੱਪਰ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1133
 #: ../plug-ins/print/gimp_main_window.c:564
 msgid "Bottom:"
-msgstr "ਹੇਠਾਂਃ"
+msgstr "ਹੇਠਾਂ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1134
 #: ../plug-ins/print/gimp_main_window.c:510
 msgid "Left:"
-msgstr "ਖੱਬਾਃ"
+msgstr "ਖੱਬਾ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1134
 #: ../plug-ins/print/gimp_main_window.c:536
 msgid "Right:"
-msgstr "ਸੱਜਾਃ"
+msgstr "ਸੱਜਾ:"
 
 #: ../plug-ins/MapObject/mapobject_ui.c:1140
 msgid "Map Images to Box Faces"
@@ -1255,35 +1225,36 @@ msgstr ""
 
 #: ../plug-ins/bmp/bmpread.c:170 ../plug-ins/bmp/bmpread.c:179
 #: ../plug-ins/bmp/bmpread.c:185 ../plug-ins/bmp/bmpread.c:193
-#: ../plug-ins/bmp/bmpread.c:207 ../plug-ins/bmp/bmpread.c:341
+#: ../plug-ins/bmp/bmpread.c:207 ../plug-ins/bmp/bmpread.c:307
+#: ../plug-ins/bmp/bmpread.c:348
 #, c-format
 msgid "'%s' is not a valid BMP file"
 msgstr ""
 
 #: ../plug-ins/bmp/bmpread.c:220 ../plug-ins/bmp/bmpread.c:239
 #: ../plug-ins/bmp/bmpread.c:260 ../plug-ins/bmp/bmpread.c:279
-#: ../plug-ins/bmp/bmpread.c:300 ../plug-ins/bmp/bmpread.c:306
-#: ../plug-ins/bmp/bmpread.c:312
+#: ../plug-ins/bmp/bmpread.c:300 ../plug-ins/bmp/bmpread.c:313
+#: ../plug-ins/bmp/bmpread.c:319
 #, c-format
 msgid "Error reading BMP file header from '%s'"
 msgstr ""
 
-#: ../plug-ins/bmp/bmpread.c:442 ../plug-ins/bmp/bmpread.c:477
+#: ../plug-ins/bmp/bmpread.c:450 ../plug-ins/bmp/bmpread.c:485
 msgid "Unrecognized or invalid BMP compression format."
 msgstr ""
 
 #.
 #. * Create the "background" layer to hold the image...
 #.
-#: ../plug-ins/bmp/bmpread.c:482 ../plug-ins/common/CEL.c:357
+#: ../plug-ins/bmp/bmpread.c:490 ../plug-ins/common/CEL.c:357
 #: ../plug-ins/common/CEL.c:360 ../plug-ins/common/blinds.c:273
 #: ../plug-ins/common/compose.c:625 ../plug-ins/common/decompose.c:595
 #: ../plug-ins/common/dicom.c:442 ../plug-ins/common/film.c:946
-#: ../plug-ins/common/gifload.c:865 ../plug-ins/common/jpeg.c:1113
+#: ../plug-ins/common/gifload.c:864 ../plug-ins/common/jpeg.c:1113
 #: ../plug-ins/common/jpeg.c:2474 ../plug-ins/common/pcx.c:334
 #: ../plug-ins/common/pcx.c:340 ../plug-ins/common/pix.c:374
 #: ../plug-ins/common/png.c:808 ../plug-ins/common/pnm.c:517
-#: ../plug-ins/common/psd.c:2173 ../plug-ins/common/raw.c:677
+#: ../plug-ins/common/psd.c:2174 ../plug-ins/common/raw.c:677
 #: ../plug-ins/common/smooth_palette.c:257 ../plug-ins/common/sunras.c:925
 #: ../plug-ins/common/tga.c:929 ../plug-ins/common/tiff.c:833
 #: ../plug-ins/common/tile.c:266 ../plug-ins/common/winclipboard.c:579
@@ -1291,8 +1262,9 @@ msgstr ""
 #: ../plug-ins/fits/fits.c:506 ../plug-ins/gfig/gfig-dialog.c:1286
 #: ../plug-ins/gimpressionist/general.c:121 ../plug-ins/sgi/sgi.c:376
 #: ../plug-ins/twain/twain.c:571 ../plug-ins/winsnap/winsnap.c:1152
+#, fuzzy
 msgid "Background"
-msgstr ""
+msgstr "ਪਿੱਠਭੂਮੀ"
 
 #: ../plug-ins/bmp/bmpwrite.c:136 ../plug-ins/common/dicom.c:617
 #: ../plug-ins/common/pcx.c:579
@@ -1314,12 +1286,12 @@ msgstr ""
 #: ../plug-ins/common/jpeg.c:1453 ../plug-ins/common/pat.c:438
 #: ../plug-ins/common/pcx.c:545 ../plug-ins/common/pix.c:521
 #: ../plug-ins/common/png.c:1185 ../plug-ins/common/pnm.c:814
-#: ../plug-ins/common/postscript.c:1128 ../plug-ins/common/psd_save.c:1593
+#: ../plug-ins/common/postscript.c:1128 ../plug-ins/common/psd_save.c:1341
 #: ../plug-ins/common/sunras.c:518 ../plug-ins/common/tga.c:1035
 #: ../plug-ins/common/tiff.c:1815 ../plug-ins/common/xbm.c:1001
 #: ../plug-ins/common/xpm.c:628 ../plug-ins/common/xwd.c:582
 #: ../plug-ins/fits/fits.c:455 ../plug-ins/gfli/gfli.c:682
-#: ../plug-ins/sgi/sgi.c:545 ../plug-ins/winicon/icosave.c:957
+#: ../plug-ins/sgi/sgi.c:545 ../plug-ins/winicon/icosave.c:977
 #: ../plug-ins/xjt/xjt.c:1682
 #, c-format
 msgid "Saving '%s'..."
@@ -1370,9 +1342,8 @@ msgid "Green fr_equency:"
 msgstr ""
 
 #: ../plug-ins/common/AlienMap2.c:153
-#, fuzzy
 msgid "Saturation fr_equency:"
-msgstr "ਸਤ੍ਰਿਪਤ:"
+msgstr "ਸਤ੍ਰਿਪਤ ਆਵਿਰਤੀ(_e):"
 
 #: ../plug-ins/common/AlienMap2.c:154
 msgid "Blue freq_uency:"
@@ -1432,18 +1403,17 @@ msgstr ""
 #. Propagate Mode
 #: ../plug-ins/common/AlienMap2.c:512 ../plug-ins/common/hot.c:588
 #: ../plug-ins/common/vpropagate.c:1084 ../plug-ins/common/waves.c:270
+#, fuzzy
 msgid "Mode"
-msgstr ""
+msgstr "ਢੰਗ"
 
 #: ../plug-ins/common/AlienMap2.c:516
-#, fuzzy
 msgid "_RGB color model"
-msgstr "ਰੰਗ ਮੋਡ"
+msgstr "_RGB ਰੰਗ ਮਾਡਲ"
 
 #: ../plug-ins/common/AlienMap2.c:517
-#, fuzzy
 msgid "_HSL color model"
-msgstr "ਰੰਗ ਮੋਡ"
+msgstr "_HSL ਰੰਗ ਮਾਡਲ"
 
 #: ../plug-ins/common/CEL.c:112 ../plug-ins/common/CEL.c:130
 msgid "KISS CEL"
@@ -1659,7 +1629,7 @@ msgid "Hue"
 msgstr "ਆਭਾ"
 
 #: ../plug-ins/common/CML_explorer.c:303 ../plug-ins/common/CML_explorer.c:311
-#: ../plug-ins/common/decompose.c:144 ../plug-ins/rcm/rcm_dialog.c:541
+#: ../plug-ins/common/decompose.c:144 ../plug-ins/rcm/rcm_dialog.c:548
 msgid "Saturation"
 msgstr "ਸਤ੍ਰਿਪਤ"
 
@@ -1720,7 +1690,6 @@ msgid "Channel Independent Parameters"
 msgstr ""
 
 #: ../plug-ins/common/CML_explorer.c:1338
-#, fuzzy
 msgid "Initial value:"
 msgstr "ਮੁੱਢਲਾ ਮੁੱਲ:"
 
@@ -1729,7 +1698,6 @@ msgid "Zoom scale:"
 msgstr ""
 
 #: ../plug-ins/common/CML_explorer.c:1353
-#, fuzzy
 msgid "Start offset:"
 msgstr "ਅੰਤਰਲੰਬ :"
 
@@ -1762,9 +1730,8 @@ msgid "Copy Settings"
 msgstr ""
 
 #: ../plug-ins/common/CML_explorer.c:1440
-#, fuzzy
 msgid "Source channel:"
-msgstr "ਸਰੋਤ 2:"
+msgstr "ਸਰੋਤ ਚੈਨਲ:"
 
 #: ../plug-ins/common/CML_explorer.c:1455
 #: ../plug-ins/common/CML_explorer.c:1503
@@ -1772,9 +1739,8 @@ msgid "Destination channel:"
 msgstr ""
 
 #: ../plug-ins/common/CML_explorer.c:1459
-#, fuzzy
 msgid "Copy parameters"
-msgstr "ਪੈਰਾਮੀਟਰ"
+msgstr "ਨਕਲ ਪੈਰਾਮੀਟਰ"
 
 #: ../plug-ins/common/CML_explorer.c:1468
 msgid "Selective Load Settings"
@@ -1918,9 +1884,8 @@ msgid "Save as Text"
 msgstr ""
 
 #: ../plug-ins/common/aa.c:360
-#, fuzzy
 msgid "_Format:"
-msgstr "ਵੱਲੋਂ:"
+msgstr "ਫਾਰਮਿਟ(_F):"
 
 #: ../plug-ins/common/align_layers.c:135
 msgid "Align _Visible Layers..."
@@ -1953,9 +1918,8 @@ msgid "Snap to grid"
 msgstr ""
 
 #: ../plug-ins/common/align_layers.c:429
-#, fuzzy
 msgid "_Horizontal style:"
-msgstr "ਖਿਤਿਜੀ:"
+msgstr "ਖਿਤਿਜੀ ਸ਼ੈਲੀ (_H):"
 
 #: ../plug-ins/common/align_layers.c:433
 msgid "Left edge"
@@ -1963,18 +1927,17 @@ msgstr ""
 
 #: ../plug-ins/common/align_layers.c:434 ../plug-ins/common/align_layers.c:464
 #: ../plug-ins/gflare/gflare.c:2641
+#, fuzzy
 msgid "Center"
-msgstr ""
+msgstr "ਕੇਂਦਰੀ"
 
 #: ../plug-ins/common/align_layers.c:435
-#, fuzzy
 msgid "Right edge"
-msgstr "ਸੱਜਾਃ"
+msgstr "ਸੱਜਾ ਕੋਨਾ"
 
 #: ../plug-ins/common/align_layers.c:444
-#, fuzzy
 msgid "Ho_rizontal base:"
-msgstr "ਖਿਤਿਜੀ:"
+msgstr "ਖਿਤਿਜੀ ਅਧਾਰ(_r):"
 
 #: ../plug-ins/common/align_layers.c:449
 msgid "Fill (top to bottom)"
@@ -1985,23 +1948,20 @@ msgid "Fill (bottom to top)"
 msgstr ""
 
 #: ../plug-ins/common/align_layers.c:460
-#, fuzzy
 msgid "_Vertical style:"
-msgstr "ਲੰਬਕਾਰੀ:"
+msgstr "ਲੰਬਕਾਰੀ ਸ਼ੈਲੀ(_V):"
 
 #: ../plug-ins/common/align_layers.c:463
 msgid "Top edge"
 msgstr ""
 
 #: ../plug-ins/common/align_layers.c:465
-#, fuzzy
 msgid "Bottom edge"
-msgstr "ਹੇਠਾਂਃ"
+msgstr "ਹੇਠਾਂ ਕੋਨਾ"
 
 #: ../plug-ins/common/align_layers.c:474
-#, fuzzy
 msgid "Ver_tical base:"
-msgstr "ਲੰਬਕਾਰੀ:"
+msgstr "ਲੰਬਕਾਰੀ ਅਧਾਰ(_t):"
 
 #: ../plug-ins/common/align_layers.c:478
 msgid "_Grid size:"
@@ -2024,21 +1984,22 @@ msgid "Animation Playback:"
 msgstr ""
 
 #: ../plug-ins/common/animationplay.c:431
-#, fuzzy
 msgid "Playback:"
-msgstr "ਕਾਲਾ:"
+msgstr ""
 
 #: ../plug-ins/common/animationplay.c:457
 msgid "Play/Stop"
 msgstr ""
 
 #: ../plug-ins/common/animationplay.c:463
+#, fuzzy
 msgid "Rewind"
-msgstr ""
+msgstr "ਤੇਜ਼ ਪਿੱਛੇ"
 
 #: ../plug-ins/common/animationplay.c:469
+#, fuzzy
 msgid "Step"
-msgstr ""
+msgstr "ਪਗ਼"
 
 #: ../plug-ins/common/animationplay.c:1138
 #, c-format
@@ -2058,9 +2019,8 @@ msgid "_UnOptimize"
 msgstr ""
 
 #: ../plug-ins/common/animoptimize.c:198
-#, fuzzy
 msgid "_Remove Backdrop"
-msgstr "ਹਟਾਓ"
+msgstr "ਬੈਕਡਰਾਪ ਹਟਾਓ(_R)"
 
 #: ../plug-ins/common/animoptimize.c:214
 msgid "_Find Backdrop"
@@ -2127,9 +2087,8 @@ msgid "Cropping..."
 msgstr ""
 
 #: ../plug-ins/common/autostretch_hsv.c:80
-#, fuzzy
 msgid "Stretch _HSV"
-msgstr "ਖਿੱਚੋਂ"
+msgstr "_HSV ਖਿੱਚੋ"
 
 #: ../plug-ins/common/autostretch_hsv.c:116
 msgid "Auto-Stretching HSV..."
@@ -2153,8 +2112,9 @@ msgstr ""
 
 #. Orientation toggle box
 #: ../plug-ins/common/blinds.c:255 ../plug-ins/common/ripple.c:535
+#, fuzzy
 msgid "Orientation"
-msgstr ""
+msgstr "ਸਥਿਤੀ"
 
 #: ../plug-ins/common/blinds.c:259 ../plug-ins/common/ripple.c:539
 #: ../plug-ins/common/tileit.c:418 ../plug-ins/pagecurl/pagecurl.c:530
@@ -2176,14 +2136,13 @@ msgid "_Displacement:"
 msgstr ""
 
 #: ../plug-ins/common/blinds.c:315
-#, fuzzy
 msgid "_Number of segments:"
-msgstr "ਸੈਲਾਂ ਦੀ ਗਿਣਤੀ:"
+msgstr "ਖੰਡਾਂ ਦੀ ਗਿਣਤੀ(_N):"
 
 #: ../plug-ins/common/blur.c:147
 #, fuzzy
 msgid "_Blur"
-msgstr "ਨੀਲਾ"
+msgstr "ਧੱਬਾ(_B)"
 
 #: ../plug-ins/common/blur.c:191 ../plug-ins/common/unsharp.c:432
 msgid "Blurring..."
@@ -2232,9 +2191,8 @@ msgid "_Bump map:"
 msgstr "ਉਬਾਰ ਨਕਸ਼ਾ"
 
 #: ../plug-ins/common/bumpmap.c:907
-#, fuzzy
 msgid "_Map type:"
-msgstr "ਨੂੰ ਮਾਪੋ:"
+msgstr "ਨਕਸ਼ਾ ਕਿਸਮ(_M):"
 
 #. Compensate darkening
 #: ../plug-ins/common/bumpmap.c:912
@@ -2260,9 +2218,8 @@ msgid "_Elevation:"
 msgstr ""
 
 #: ../plug-ins/common/bumpmap.c:993 ../plug-ins/common/postscript.c:3137
-#, fuzzy
 msgid "_X offset:"
-msgstr "ਅੰਤਰਲੰਬ :"
+msgstr "_X ਅੰਤਰਲੰਬ :"
 
 #: ../plug-ins/common/bumpmap.c:996 ../plug-ins/common/bumpmap.c:1010
 msgid ""
@@ -2271,9 +2228,8 @@ msgid ""
 msgstr ""
 
 #: ../plug-ins/common/bumpmap.c:1007 ../plug-ins/common/postscript.c:3146
-#, fuzzy
 msgid "_Y offset:"
-msgstr "ਅੰਤਰਲੰਬ :"
+msgstr "_Y ਅੰਤਰਲੰਬ :"
 
 #: ../plug-ins/common/bumpmap.c:1021
 msgid "_Waterlevel:"
@@ -2296,9 +2252,8 @@ msgid "c_astretch: cmap was NULL!  Quitting...\n"
 msgstr ""
 
 #: ../plug-ins/common/cartoon.c:147
-#, fuzzy
 msgid "Ca_rtoon..."
-msgstr "ਸਰੋਤ..."
+msgstr "ਕਾਰਟੂਨ(_r)..."
 
 #: ../plug-ins/common/cartoon.c:229 ../plug-ins/common/dog.c:247
 #: ../plug-ins/common/gauss.c:431 ../plug-ins/common/neon.c:221
@@ -2412,8 +2367,9 @@ msgid "_Monochrome"
 msgstr ""
 
 #: ../plug-ins/common/channel_mixer.c:628
+#, fuzzy
 msgid "Preserve _luminosity"
-msgstr ""
+msgstr "ਪਰਕਾਸ਼ਵਾਨੀ ਰੱਖੋ(_l)"
 
 #: ../plug-ins/common/channel_mixer.c:857
 msgid "Load Channel Mixer Settings"
@@ -2457,9 +2413,8 @@ msgid "Color Enhance..."
 msgstr ""
 
 #: ../plug-ins/common/colorify.c:110
-#, fuzzy
 msgid "_Colorify..."
-msgstr "ਰੰਗਦਾਰ"
+msgstr "ਰੰਗਦਾਰ(_C)..."
 
 #: ../plug-ins/common/colorify.c:171
 msgid "Colorifying..."
@@ -2481,27 +2436,26 @@ msgstr ""
 msgid "Color to _Alpha..."
 msgstr ""
 
-#: ../plug-ins/common/colortoalpha.c:181
+#: ../plug-ins/common/colortoalpha.c:187
 msgid "Removing color..."
 msgstr ""
 
-#: ../plug-ins/common/colortoalpha.c:377
+#: ../plug-ins/common/colortoalpha.c:380
 msgid "Color to Alpha"
 msgstr ""
 
-#: ../plug-ins/common/colortoalpha.c:402 ../plug-ins/common/mapcolor.c:424
+#: ../plug-ins/common/colortoalpha.c:405 ../plug-ins/common/mapcolor.c:424
 #: ../plug-ins/gfli/gfli.c:835 ../plug-ins/gfli/gfli.c:898
 msgid "From:"
 msgstr "ਵੱਲੋਂ:"
 
-#: ../plug-ins/common/colortoalpha.c:406
+#: ../plug-ins/common/colortoalpha.c:409
 msgid "Color to Alpha Color Picker"
 msgstr ""
 
-#: ../plug-ins/common/colortoalpha.c:420
-#, fuzzy
+#: ../plug-ins/common/colortoalpha.c:423
 msgid "to alpha"
-msgstr "ਐਲਫਾ"
+msgstr "ਐਲਫਾ ਤੋਂ"
 
 #: ../plug-ins/common/compose.c:127 ../plug-ins/common/decompose.c:130
 #: ../plug-ins/common/raw.c:953
@@ -2522,13 +2476,13 @@ msgid "HSV"
 msgstr "HSV"
 
 #. Gray: Circle: Spinbutton 1
-#: ../plug-ins/common/compose.c:148 ../plug-ins/rcm/rcm_dialog.c:452
+#: ../plug-ins/common/compose.c:148 ../plug-ins/rcm/rcm_dialog.c:459
 msgid "Hue:"
 msgstr "ਆਭਾ:"
 
 #. Gray: Circle: Spinbutton 2
 #: ../plug-ins/common/compose.c:149 ../plug-ins/print/gimp_color_window.c:364
-#: ../plug-ins/rcm/rcm_dialog.c:479
+#: ../plug-ins/rcm/rcm_dialog.c:486
 msgid "Saturation:"
 msgstr "ਸਤ੍ਰਿਪਤ:"
 
@@ -2542,13 +2496,15 @@ msgstr "CMY"
 
 #: ../plug-ins/common/compose.c:155 ../plug-ins/common/compose.c:162
 #: ../plug-ins/common/fp.c:220 ../plug-ins/print/gimp_color_window.c:307
+#, fuzzy
 msgid "Cyan:"
-msgstr ""
+msgstr "ਯਰਕਾਨ(ਨੀਲਾ):"
 
 #: ../plug-ins/common/compose.c:156 ../plug-ins/common/compose.c:163
 #: ../plug-ins/common/fp.c:222 ../plug-ins/print/gimp_color_window.c:326
+#, fuzzy
 msgid "Magenta:"
-msgstr ""
+msgstr "ਮੈਜ਼ਾਨਟਿਕ:"
 
 #: ../plug-ins/common/compose.c:157 ../plug-ins/common/compose.c:164
 #: ../plug-ins/common/fp.c:221 ../plug-ins/print/gimp_color_window.c:345
@@ -2646,8 +2602,9 @@ msgid "Image is not a gray image (bpp=%d)"
 msgstr ""
 
 #: ../plug-ins/common/compose.c:1103
+#, fuzzy
 msgid "Compose"
-msgstr ""
+msgstr "ਨਿਰਮਾਣ"
 
 #. The left frame keeps the compose type toggles
 #: ../plug-ins/common/compose.c:1119
@@ -2753,13 +2710,13 @@ msgid "Border"
 msgstr "ਹਾਸ਼ੀਆ"
 
 #: ../plug-ins/common/convmatrix.c:1032
+#, fuzzy
 msgid "Channels"
-msgstr ""
+msgstr "ਚੈਨਲ"
 
 #: ../plug-ins/common/csource.c:108
-#, fuzzy
 msgid "C source code"
-msgstr "ਰੰਗ ਮੋਡ"
+msgstr "C ਸਰੋਤ ਕੋਡ"
 
 #: ../plug-ins/common/csource.c:635
 msgid "Save as C-Source"
@@ -2770,15 +2727,15 @@ msgid "_Prefixed name:"
 msgstr ""
 
 #: ../plug-ins/common/csource.c:668
+#, fuzzy
 msgid "Co_mment:"
-msgstr ""
+msgstr "ਟਿੱਪਣੀ :"
 
 #. Use Comment
 #.
 #: ../plug-ins/common/csource.c:675
-#, fuzzy
 msgid "_Save comment to file"
-msgstr "ਸਰਗਰਮ ਆਂਸ਼ਿਕ ਨੂੰ ਫਾਇਲ ਵਿੱਚ ਸੰਭਾਲੋ"
+msgstr "ਟਿੱਪਣੀ ਨੂੰ ਫਾਇਲ ਵਿੱਚ ਸੰਭਾਲੋ(_S)"
 
 #. GLib types
 #.
@@ -2818,7 +2775,7 @@ msgstr ""
 
 #: ../plug-ins/common/cubism.c:298
 msgid "_Tile size:"
-msgstr ""
+msgstr "ਟਾਇਲ ਅਕਾਰ(_T):"
 
 #: ../plug-ins/common/cubism.c:311
 #, fuzzy
@@ -2827,7 +2784,7 @@ msgstr "ਸਤ੍ਰਿਪਤ:"
 
 #: ../plug-ins/common/cubism.c:322
 msgid "_Use background color"
-msgstr ""
+msgstr "ਪਿੱਠਭੂਮੀ ਰੰਗ ਵਰਤੋਂ(_U)"
 
 #: ../plug-ins/common/cubism.c:412
 msgid "Cubistic Transformation..."
@@ -2860,19 +2817,17 @@ msgstr ""
 #: ../plug-ins/gimpressionist/orientmap.c:567
 #: ../plug-ins/gimpressionist/sizemap.c:437
 msgid "Preview"
-msgstr "ਤਸਵੀਰ"
+msgstr "ਦਿੱਖ"
 
 #. The preview button
 #: ../plug-ins/common/curve_bend.c:1297
-#, fuzzy
 msgid "_Preview once"
-msgstr "ਨਮੂਨਾ"
+msgstr "ਦਿੱਖ ਇੱਕਵਾਰ(_P)"
 
 #. The preview toggle
 #: ../plug-ins/common/curve_bend.c:1306
-#, fuzzy
 msgid "Automatic pre_view"
-msgstr "ਸਵੈ-ਚਾਲਤ"
+msgstr "ਸਵੈ-ਚਾਲਤ ਦਿੱਖ(_v)"
 
 #. Options area, bottom of column
 #. the vertical box and its toggle buttons
@@ -2880,12 +2835,12 @@ msgstr "ਸਵੈ-ਚਾਲਤ"
 #: ../plug-ins/common/curve_bend.c:1316 ../plug-ins/common/mosaic.c:529
 #: ../plug-ins/common/ripple.c:501 ../plug-ins/gfig/gfig-dialog.c:1209
 msgid "Options"
-msgstr ""
+msgstr "ਚੋਣ"
 
 #. Rotate spinbutton
 #: ../plug-ins/common/curve_bend.c:1330
 msgid "Rotat_e:"
-msgstr ""
+msgstr "ਘੁੰਮਾਓ(_e):"
 
 #. The smoothing toggle
 #: ../plug-ins/common/curve_bend.c:1348
@@ -2895,13 +2850,14 @@ msgstr ""
 #. The antialiasing toggle
 #: ../plug-ins/common/curve_bend.c:1358 ../plug-ins/common/gqbist.c:823
 #: ../plug-ins/common/mosaic.c:535 ../plug-ins/common/ripple.c:510
+#, fuzzy
 msgid "_Antialiasing"
-msgstr ""
+msgstr "ਐਟੀਲਾਸੀਇੰਗ(_A)"
 
 #. The work_on_copy toggle
 #: ../plug-ins/common/curve_bend.c:1368
 msgid "Work on cop_y"
-msgstr ""
+msgstr "ਨਕਲ ਤੇ ਕੰਮ(_y)"
 
 #. The curves graph
 #: ../plug-ins/common/curve_bend.c:1378
@@ -2910,19 +2866,19 @@ msgstr ""
 
 #: ../plug-ins/common/curve_bend.c:1406
 msgid "Curve for Border"
-msgstr ""
+msgstr "ਹਾਸੀਏ ਦੀ ਚਾਪ"
 
 #: ../plug-ins/common/curve_bend.c:1410
 msgid "_Upper"
-msgstr ""
+msgstr "ਉੱਪਰ(_U)"
 
 #: ../plug-ins/common/curve_bend.c:1411
 msgid "_Lower"
-msgstr ""
+msgstr "ਹੇਠਾਂ(_L)"
 
 #: ../plug-ins/common/curve_bend.c:1421
 msgid "Curve Type"
-msgstr ""
+msgstr "ਚਾਪ ਕਿਸਮ"
 
 #: ../plug-ins/common/curve_bend.c:1425
 msgid "Smoot_h"
@@ -2930,12 +2886,12 @@ msgstr ""
 
 #: ../plug-ins/common/curve_bend.c:1426
 msgid "_Free"
-msgstr ""
+msgstr "ਮੁਕਤ(_F)"
 
 #. The Copy button
 #: ../plug-ins/common/curve_bend.c:1441
 msgid "_Copy"
-msgstr "ਨਕਲ"
+msgstr "ਨਕਲ(_C)"
 
 #: ../plug-ins/common/curve_bend.c:1446
 msgid "Copy the active curve to the other border"
@@ -2944,7 +2900,7 @@ msgstr ""
 #. The CopyInv button
 #: ../plug-ins/common/curve_bend.c:1453
 msgid "_Mirror"
-msgstr ""
+msgstr "ਪ੍ਰਤੀਬਿੰਬ(_M)"
 
 #: ../plug-ins/common/curve_bend.c:1458
 msgid "Mirror the active curve to the other border"
@@ -2953,7 +2909,7 @@ msgstr ""
 #. The Swap button
 #: ../plug-ins/common/curve_bend.c:1466
 msgid "S_wap"
-msgstr ""
+msgstr "ਸਵੈਪ(_w)"
 
 #: ../plug-ins/common/curve_bend.c:1471
 msgid "Swap the two curves"
@@ -3027,12 +2983,14 @@ msgid "yellow"
 msgstr "ਪੀਲਾ"
 
 #: ../plug-ins/common/decompose.c:149
+#, fuzzy
 msgid "Cyan"
-msgstr ""
+msgstr "ਨੀਲਾ-ਹਰਾ"
 
 #: ../plug-ins/common/decompose.c:150
+#, fuzzy
 msgid "Magenta"
-msgstr ""
+msgstr "ਮੈਜ਼ੀਨਟਾ"
 
 #: ../plug-ins/common/decompose.c:151
 msgid "Yellow"
@@ -3067,8 +3025,9 @@ msgid "Yellow_K"
 msgstr ""
 
 #: ../plug-ins/common/decompose.c:159
+#, fuzzy
 msgid "Alpha"
-msgstr ""
+msgstr "ਐਲਫਾ"
 
 #: ../plug-ins/common/decompose.c:166
 msgid "luma_y470"
@@ -3147,15 +3106,15 @@ msgstr ""
 msgid "Deinterlace..."
 msgstr ""
 
-#: ../plug-ins/common/deinterlace.c:315
+#: ../plug-ins/common/deinterlace.c:324
 msgid "Deinterlace"
 msgstr ""
 
-#: ../plug-ins/common/deinterlace.c:340
+#: ../plug-ins/common/deinterlace.c:349
 msgid "Keep o_dd fields"
 msgstr ""
 
-#: ../plug-ins/common/deinterlace.c:341
+#: ../plug-ins/common/deinterlace.c:350
 msgid "Keep _even fields"
 msgstr ""
 
@@ -3176,9 +3135,8 @@ msgid "Source 1:"
 msgstr "ਸਰੋਤ 1:"
 
 #: ../plug-ins/common/depthmerge.c:691 ../plug-ins/common/depthmerge.c:721
-#, fuzzy
 msgid "Depth map:"
-msgstr "ਡੂੰਘਾਈ:"
+msgstr "ਡੂੰਘਾਈ ਖਾਕਾ:"
 
 #: ../plug-ins/common/depthmerge.c:706
 msgid "Source 2:"
@@ -3216,9 +3174,8 @@ msgstr "ਕਿਸਮ"
 
 #. parameter settings
 #: ../plug-ins/common/despeckle.c:454
-#, fuzzy
 msgid "Median"
-msgstr "ਮੁੱਖ"
+msgstr "ਮੱਧਮਾਨ"
 
 #: ../plug-ins/common/despeckle.c:460
 msgid "_Adaptive"
@@ -3236,14 +3193,12 @@ msgid "_Radius:"
 msgstr ""
 
 #: ../plug-ins/common/despeckle.c:510
-#, fuzzy
 msgid "_Black level:"
-msgstr "ਕਾਲਾ:"
+msgstr "ਕਾਲਾ ਪੱਧਰ(_B):"
 
 #: ../plug-ins/common/despeckle.c:526
-#, fuzzy
 msgid "_White level:"
-msgstr "ਸਫੈਦ"
+msgstr "ਚਿੱਟਾ ਪੱਧਰ(_W):"
 
 #: ../plug-ins/common/destripe.c:113
 msgid "Des_tripe..."
@@ -3262,8 +3217,9 @@ msgstr ""
 #: ../plug-ins/common/raw.c:985 ../plug-ins/common/smooth_palette.c:429
 #: ../plug-ins/common/tile.c:417 ../plug-ins/imagemap/imap_cmd_guides.c:167
 #: ../plug-ins/imagemap/imap_rectangle.c:403
+#, fuzzy
 msgid "_Width:"
-msgstr ""
+msgstr "ਚੌਡ਼ਾਈ:"
 
 #: ../plug-ins/common/destripe.c:480
 msgid "Create _histogram"
@@ -3295,14 +3251,12 @@ msgid "Diffraction Patterns"
 msgstr ""
 
 #: ../plug-ins/common/diffraction.c:524
-#, fuzzy
 msgid "Frequencies"
-msgstr "ਮੇਰੀ ਪਸੰਦ"
+msgstr "ਆਵਿਰਤੀ"
 
 #: ../plug-ins/common/diffraction.c:562
-#, fuzzy
 msgid "Contours"
-msgstr "ਕੰਟਰੋਲ"
+msgstr ""
 
 #: ../plug-ins/common/diffraction.c:600
 msgid "Sharp edges"
@@ -3310,8 +3264,9 @@ msgstr ""
 
 #: ../plug-ins/common/diffraction.c:612 ../plug-ins/common/softglow.c:673
 #: ../plug-ins/flame/flame.c:1037
+#, fuzzy
 msgid "_Brightness:"
-msgstr ""
+msgstr "ਚਮੀਕਲਾਪਨ:"
 
 #: ../plug-ins/common/diffraction.c:621
 msgid "Sc_attering:"
@@ -3322,9 +3277,8 @@ msgid "Po_larization:"
 msgstr "ਧੁਰੀਕ੍ਰਿਤ:"
 
 #: ../plug-ins/common/diffraction.c:638
-#, fuzzy
 msgid "Other options"
-msgstr "ਚੋਣ"
+msgstr "ਹੋਰ ਚੋਣ"
 
 #: ../plug-ins/common/displace.c:154
 msgid "_Displace..."
@@ -3360,8 +3314,9 @@ msgstr ""
 #: ../plug-ins/common/displace.c:398 ../plug-ins/common/edge.c:742
 #: ../plug-ins/common/fractaltrace.c:735 ../plug-ins/common/newsprint.c:408
 #: ../plug-ins/common/ripple.c:562
+#, fuzzy
 msgid "_Black"
-msgstr ""
+msgstr "ਕਾਲਾ"
 
 #: ../plug-ins/common/dog.c:139
 msgid "Difference of Gaussians..."
@@ -3376,35 +3331,33 @@ msgid "Smoothing parameters"
 msgstr ""
 
 #: ../plug-ins/common/dog.c:309
-#, fuzzy
 msgid "_Radius 1:"
-msgstr "ਅਰਧ-ਵਿਆਸ:"
+msgstr "ਅਰਧਵਿਆਸ(_R) 1:"
 
 #: ../plug-ins/common/dog.c:313
-#, fuzzy
 msgid "R_adius 2:"
-msgstr "ਅਰਧ-ਵਿਆਸ:"
+msgstr "ਅਰਧਵਿਆਸ(_a) 2:"
 
 #: ../plug-ins/common/dog.c:325 ../plug-ins/common/normalize.c:88
+#, fuzzy
 msgid "_Normalize"
-msgstr ""
+msgstr "ਸਧਾਰਨ"
 
 #: ../plug-ins/common/dog.c:336 ../plug-ins/gimpressionist/paper.c:149
 msgid "_Invert"
-msgstr ""
+msgstr "ਉਲਟ(_I)"
 
 #: ../plug-ins/common/edge.c:162
-#, fuzzy
 msgid "_Edge..."
-msgstr "ਕਿਨਾਰਾ"
+msgstr "ਕਿਨਾਰਾ(_E)..."
 
 #: ../plug-ins/common/edge.c:234
 msgid "Edge Detection..."
-msgstr ""
+msgstr "ਕਿਨਾਰਾ ਖੋਜ..."
 
 #: ../plug-ins/common/edge.c:648
 msgid "Edge Detection"
-msgstr ""
+msgstr "ਕਿਨਾਰਾ ਖੋਜ"
 
 #: ../plug-ins/common/edge.c:675
 #, fuzzy
@@ -3418,41 +3371,40 @@ msgstr "ਬਿੰਦੂ"
 
 #: ../plug-ins/common/edge.c:677 ../plug-ins/common/sinus.c:897
 msgid "Gradient"
-msgstr ""
+msgstr "ਢਾਂਲੂ"
 
 #: ../plug-ins/common/edge.c:678
 msgid "Roberts"
-msgstr ""
+msgstr "ਰੋਬੀਰਟਸ"
 
 #: ../plug-ins/common/edge.c:679
-#, fuzzy
 msgid "Differential"
-msgstr "ਦਿਸ਼ਾ-ਸੰਚਾਲਨ"
+msgstr ""
 
 #: ../plug-ins/common/edge.c:680
 msgid "Laplace"
-msgstr ""
+msgstr "ਲੈਪਲਸ"
 
 #: ../plug-ins/common/edge.c:689
 msgid "_Algorithm:"
-msgstr ""
+msgstr "ਕਨਲਵਿਧੀ(_A):"
 
 #: ../plug-ins/common/edge.c:697
-#, fuzzy
 msgid "A_mount:"
-msgstr "ਖਾਤਾ:"
+msgstr "ਮਾਤਰਾ(_m):"
 
 #: ../plug-ins/common/emboss.c:133
 msgid "_Emboss..."
 msgstr ""
 
 #: ../plug-ins/common/emboss.c:376 ../plug-ins/common/emboss.c:439
+#, fuzzy
 msgid "Emboss"
-msgstr ""
+msgstr "ਝੱਗ"
 
 #: ../plug-ins/common/emboss.c:460
 msgid "Function"
-msgstr ""
+msgstr "ਫੰਕਸ਼ਨ"
 
 #: ../plug-ins/common/emboss.c:464
 msgid "_Bumpmap"
@@ -3485,7 +3437,7 @@ msgstr ""
 #: ../plug-ins/imagemap/imap_cmd_guides.c:177
 #: ../plug-ins/imagemap/imap_rectangle.c:410
 msgid "_Height:"
-msgstr ""
+msgstr "ਉਚਾਈ(_H):"
 
 #: ../plug-ins/common/engrave.c:249
 msgid "_Limit line width"
@@ -3510,11 +3462,11 @@ msgstr ""
 
 #: ../plug-ins/common/exchange.c:346
 msgid "To Color"
-msgstr ""
+msgstr "ਰੰਗ ਤੋਂ"
 
 #: ../plug-ins/common/exchange.c:346
 msgid "From Color"
-msgstr ""
+msgstr "ਰੰਗ ਵਲੋਂ"
 
 #: ../plug-ins/common/exchange.c:364
 msgid "Color Exchange: To Color"
@@ -3525,19 +3477,16 @@ msgid "Color Exchange: From Color"
 msgstr ""
 
 #: ../plug-ins/common/exchange.c:423
-#, fuzzy
 msgid "R_ed threshold:"
-msgstr "ਥਰਿੱਸ਼ਹੋਲਡ (ਦਹਿਲੀਜ਼):"
+msgstr "ਲਾਲ ਥਰਿੱਸ਼ਹੋਲਡ (ਦਹਿਲੀਜ਼):"
 
 #: ../plug-ins/common/exchange.c:484
-#, fuzzy
 msgid "G_reen threshold:"
-msgstr "ਥਰਿੱਸ਼ਹੋਲਡ (ਦਹਿਲੀਜ਼):"
+msgstr "ਹਰਾ ਥਰਿੱਸ਼ਹੋਲਡ:"
 
 #: ../plug-ins/common/exchange.c:545
-#, fuzzy
 msgid "B_lue threshold:"
-msgstr "ਥਰਿੱਸ਼ਹੋਲਡ:"
+msgstr "ਨੀਲਾ ਥਰਿੱਸ਼ਹੋਲਡ:"
 
 #: ../plug-ins/common/exchange.c:573
 #, fuzzy
@@ -3545,9 +3494,8 @@ msgid "Lock _thresholds"
 msgstr "ਥਰਿੱਸ਼ਹੋਲਡ:"
 
 #: ../plug-ins/common/film.c:240
-#, fuzzy
 msgid "_Film..."
-msgstr "ਫਾਇਲ਼"
+msgstr "ਫਿਲਮ(_F)..."
 
 #: ../plug-ins/common/film.c:325
 msgid "Composing Images..."
@@ -3556,31 +3504,31 @@ msgstr ""
 #: ../plug-ins/common/film.c:438 ../plug-ins/common/guillotine.c:183
 #: ../plug-ins/helpbrowser/dialog.c:525
 msgid "Untitled"
-msgstr ""
+msgstr "ਬਿਨਾਂ ਨਾਂ"
 
 #. ** Get a RGB copy of the source region **
 #: ../plug-ins/common/film.c:700
 msgid "Temporary"
-msgstr ""
+msgstr "ਆਰਜ਼ੀ"
 
 #: ../plug-ins/common/film.c:1079
 msgid "Available Images:"
-msgstr ""
+msgstr "ਉਪਲੱਬਧ ਚਿੱਤਰ:"
 
 #: ../plug-ins/common/film.c:1080
 msgid "On Film:"
-msgstr ""
+msgstr "ਫਿਲਮ ਤੋਂ:"
 
 #. Create selection
 #: ../plug-ins/common/film.c:1166 ../plug-ins/imagemap/imap_selection.c:400
-#: ../plug-ins/rcm/rcm_dialog.c:158
+#: ../plug-ins/rcm/rcm_dialog.c:165
 msgid "Selection"
 msgstr "ਚੋਣ"
 
 #. Film height/colour
 #: ../plug-ins/common/film.c:1176 ../plug-ins/common/film.c:1449
 msgid "Film"
-msgstr ""
+msgstr "ਫਿਲਮ"
 
 #. Keep maximum image height
 #: ../plug-ins/common/film.c:1185
@@ -3590,17 +3538,17 @@ msgstr ""
 #. Film color
 #: ../plug-ins/common/film.c:1221
 msgid "Select Film Color"
-msgstr ""
+msgstr "ਫਿਲਮ ਰੰਗ ਚੁਣੋ"
 
 #: ../plug-ins/common/film.c:1226 ../plug-ins/common/film.c:1277
 #: ../plug-ins/common/nova.c:346
 msgid "Co_lor:"
-msgstr ""
+msgstr "ਰੰਗ(_l):"
 
 #. Film numbering: Startindex/Font/colour
 #: ../plug-ins/common/film.c:1235
 msgid "Numbering"
-msgstr ""
+msgstr "ਗਿਣਤੀ"
 
 #: ../plug-ins/common/film.c:1253
 msgid "Start _index:"
@@ -3608,7 +3556,7 @@ msgstr ""
 
 #: ../plug-ins/common/film.c:1267
 msgid "_Font:"
-msgstr ""
+msgstr "ਫੋਂਟ(_F):"
 
 #. Numbering color
 #: ../plug-ins/common/film.c:1272
@@ -3616,18 +3564,17 @@ msgid "Select Number Color"
 msgstr ""
 
 #: ../plug-ins/common/film.c:1287
-#, fuzzy
 msgid "At _bottom"
-msgstr "ਹੇਠਾਂ:"
+msgstr "ਹੇਠਾਂ(_b)"
 
 #: ../plug-ins/common/film.c:1288
 msgid "At _top"
-msgstr ""
+msgstr "ਉੱਪਰ(_t)"
 
 #. ** The right frame keeps the image selection **
 #: ../plug-ins/common/film.c:1301
 msgid "Image Selection"
-msgstr ""
+msgstr "ਚਿੱਤਰ ਚੋਣ"
 
 #: ../plug-ins/common/film.c:1329
 msgid "All Values are Fractions of the Film Height"
@@ -3635,12 +3582,11 @@ msgstr ""
 
 #: ../plug-ins/common/film.c:1332
 msgid "Ad_vanced"
-msgstr ""
+msgstr "ਤਕਨੀਕੀ(_v)"
 
 #: ../plug-ins/common/film.c:1351
-#, fuzzy
 msgid "Image _height:"
-msgstr "ਚਿੱਤਰ ਕਿਸਮ:"
+msgstr "ਚਿੱਤਰ ਉਚਾਈ(_h):"
 
 #: ../plug-ins/common/film.c:1362
 #, fuzzy
@@ -3672,7 +3618,7 @@ msgstr "ਅਧਿਕਤਮ ਉਚਾਈ:"
 
 #: ../plug-ins/common/flarefx.c:196
 msgid "_FlareFX..."
-msgstr ""
+msgstr "_FlareFX..."
 
 #: ../plug-ins/common/flarefx.c:271
 msgid "Render Flare..."
@@ -3680,7 +3626,7 @@ msgstr ""
 
 #: ../plug-ins/common/flarefx.c:308
 msgid "FlareFX"
-msgstr ""
+msgstr "FlareFX"
 
 #: ../plug-ins/common/flarefx.c:741
 msgid "Center of Flare Effect"
@@ -3688,15 +3634,15 @@ msgstr ""
 
 #: ../plug-ins/common/flarefx.c:777
 msgid "_Show cursor"
-msgstr ""
+msgstr "ਕਰਸਰ ਵੇਖਾਓ(_S)"
 
 #: ../plug-ins/common/fp.c:224
 msgid "Darker:"
-msgstr ""
+msgstr "ਗੂੜਾ:"
 
 #: ../plug-ins/common/fp.c:225
 msgid "Lighter:"
-msgstr ""
+msgstr "ਹਲਕਾ:"
 
 #: ../plug-ins/common/fp.c:227
 msgid "More Sat:"
@@ -3712,7 +3658,7 @@ msgstr "ਮੌਜੂਦਾ:"
 
 #: ../plug-ins/common/fp.c:321
 msgid "_Filter Pack..."
-msgstr ""
+msgstr "ਫਿਲਟਰ ਪੈਕ(_F)..."
 
 #: ../plug-ins/common/fp.c:361
 msgid "Convert the image to RGB first!"
@@ -3720,15 +3666,15 @@ msgstr ""
 
 #: ../plug-ins/common/fp.c:366
 msgid "Applying the Filter Pack..."
-msgstr ""
+msgstr "ਫਿਲਟਰ ਪੈਕ ਲਾਗੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #: ../plug-ins/common/fp.c:480
 msgid "Original:"
-msgstr ""
+msgstr "ਅਸਲੀ:"
 
 #: ../plug-ins/common/fp.c:532
 msgid "Hue Variations"
-msgstr ""
+msgstr "ਆਭਾ ਮੁੱਲ"
 
 #: ../plug-ins/common/fp.c:586
 msgid "Roughness"
@@ -3736,11 +3682,11 @@ msgstr ""
 
 #: ../plug-ins/common/fp.c:629
 msgid "Affected Range"
-msgstr ""
+msgstr "ਪ੍ਰਭਾਵਿਤ ਸੀਮਾ"
 
 #: ../plug-ins/common/fp.c:633
 msgid "Sha_dows"
-msgstr ""
+msgstr "ਛਾਂ(_d)"
 
 #: ../plug-ins/common/fp.c:634
 msgid "_Midtones"
@@ -3748,43 +3694,43 @@ msgstr ""
 
 #: ../plug-ins/common/fp.c:635
 msgid "H_ighlights"
-msgstr ""
+msgstr "ਉਭਾਰਨਾ(_i)"
 
 #: ../plug-ins/common/fp.c:649
 msgid "Windows"
-msgstr ""
+msgstr "ਝਰੋਖੇ"
 
 #: ../plug-ins/common/fp.c:659 ../plug-ins/common/lic.c:670
 msgid "_Saturation"
-msgstr ""
+msgstr "ਸਤ੍ਰਿਪਤ(_S)"
 
 #: ../plug-ins/common/fp.c:667
 msgid "A_dvanced"
-msgstr ""
+msgstr "ਤਕਨੀਕੀ(_d)"
 
 #: ../plug-ins/common/fp.c:687
 msgid "Value Variations"
-msgstr ""
+msgstr "ਮੁੱਲ ਅੰਤਰ"
 
 #: ../plug-ins/common/fp.c:731
 msgid "Saturation Variations"
-msgstr ""
+msgstr "ਸਤ੍ਰਿਪਤ ਅੰਤਰ"
 
 #: ../plug-ins/common/fp.c:783
 msgid "Select Pixels by"
-msgstr ""
+msgstr "ਪਿਕਸਲ ਚੋਣ"
 
 #: ../plug-ins/common/fp.c:788
 msgid "H_ue"
-msgstr "ਆਭਾ"
+msgstr "ਆਭਾ(_u)"
 
 #: ../plug-ins/common/fp.c:789
 msgid "Satu_ration"
-msgstr "ਸਤ੍ਰਿਪਤ"
+msgstr "ਸਤ੍ਰਿਪਤ(_r)"
 
 #: ../plug-ins/common/fp.c:790
 msgid "V_alue"
-msgstr "ਮੁੱਲ"
+msgstr "ਮੁੱਲ(_a)"
 
 #: ../plug-ins/common/fp.c:816
 msgid "Show"
@@ -3792,11 +3738,11 @@ msgstr "ਵੇਖਾਓ"
 
 #: ../plug-ins/common/fp.c:821
 msgid "_Entire Image"
-msgstr ""
+msgstr "ਮੁਕੰਮਲ ਚਿੱਤਰ(_E)"
 
 #: ../plug-ins/common/fp.c:822
 msgid "Se_lection Only"
-msgstr ""
+msgstr "ਚੋਣ ਹੀ(_l)"
 
 #: ../plug-ins/common/fp.c:823
 msgid "Selec_tion In Context"
@@ -3808,7 +3754,7 @@ msgstr ""
 
 #: ../plug-ins/common/fp.c:1245
 msgid "Shadows:"
-msgstr ""
+msgstr "ਛਾਂ:"
 
 #: ../plug-ins/common/fp.c:1246
 msgid "Midtones:"
@@ -3816,11 +3762,11 @@ msgstr ""
 
 #: ../plug-ins/common/fp.c:1247
 msgid "Highlights:"
-msgstr ""
+msgstr "ਉਭਰਵਾਂ:"
 
 #: ../plug-ins/common/fp.c:1259
 msgid "Advanced Filter Pack Options"
-msgstr ""
+msgstr "ਤਕਨੀਕੀ ਫਿਲਟਰ ਪੈਕ ਚੋਣ"
 
 #: ../plug-ins/common/fp.c:1270
 msgid "Smoothness of Aliasing"
@@ -3832,12 +3778,11 @@ msgstr ""
 
 #: ../plug-ins/common/fp.c:1374
 msgid "Preview Size"
-msgstr ""
+msgstr "ਦਿੱਖ ਅਕਾਰ"
 
 #: ../plug-ins/common/fractaltrace.c:126
-#, fuzzy
 msgid "_Fractal Trace..."
-msgstr "ਆਂਸ਼ਿਕ ਕਿਸਮ"
+msgstr ""
 
 #: ../plug-ins/common/fractaltrace.c:466 ../plug-ins/common/fractaltrace.c:693
 msgid "Fractal Trace"
@@ -3850,11 +3795,11 @@ msgstr ""
 
 #: ../plug-ins/common/fractaltrace.c:731
 msgid "_Warp"
-msgstr "ਲਪੇਟੋ"
+msgstr "ਸਮੇਟੋ(_W)"
 
 #: ../plug-ins/common/fractaltrace.c:737
 msgid "_White"
-msgstr "ਸਫੈਦ"
+msgstr "ਚਿੱਟਾ(_W)"
 
 #: ../plug-ins/common/fractaltrace.c:744
 msgid "Mandelbrot Parameters"
@@ -3896,12 +3841,12 @@ msgstr ""
 #: ../plug-ins/common/gauss.c:498 ../plug-ins/common/jigsaw.c:2456
 #: ../plug-ins/common/spread.c:379
 msgid "_Horizontal:"
-msgstr "ਖਿਤਿਜੀ:"
+msgstr "ਖਿਤਿਜੀ(_H):"
 
 #: ../plug-ins/common/gauss.c:502 ../plug-ins/common/jigsaw.c:2473
 #: ../plug-ins/common/spread.c:383
 msgid "_Vertical:"
-msgstr "ਲੰਬਕਾਰੀ:"
+msgstr "ਲੰਬਕਾਰੀ(_V):"
 
 #: ../plug-ins/common/gauss.c:525
 msgid "Blur Method"
@@ -3909,29 +3854,29 @@ msgstr ""
 
 #: ../plug-ins/common/gauss.c:529
 msgid "_IIR"
-msgstr ""
+msgstr "_IIR"
 
 #: ../plug-ins/common/gauss.c:530
 msgid "_RLE"
-msgstr ""
+msgstr "_RLE"
 
 #: ../plug-ins/common/gbr.c:130 ../plug-ins/common/gbr.c:151
 msgid "GIMP brush"
-msgstr ""
+msgstr "ਜੈਮਪ ਬੁਰਸ਼"
 
 #: ../plug-ins/common/gbr.c:369 ../plug-ins/common/gbr.c:381
 msgid "Unsupported brush format"
-msgstr ""
+msgstr "ਨਾ-ਸਹਾਇਕ ਬੁਰਸ਼ ਫਾਰਮਿਟ"
 
 #: ../plug-ins/common/gbr.c:392
 #, c-format
 msgid "Error in GIMP brush file '%s'"
-msgstr ""
+msgstr "ਜੈਮਪ ਬੁਰਸ਼ ਫਾਇਲ %s ਵਿੱਚ ਗਲਤੀ"
 
 #: ../plug-ins/common/gbr.c:400
 #, c-format
 msgid "Invalid UTF-8 string in brush file '%s'."
-msgstr ""
+msgstr "ਬੁਰਸ਼ ਫਾਇਲ '%s' ਵਿੱਚ ਗਲਤ ਯੂਟੀਐਫ-8 ਸਤਰ"
 
 #: ../plug-ins/common/gbr.c:406 ../plug-ins/common/gih.c:497
 #: ../plug-ins/common/gih.c:1154 ../plug-ins/gflare/gflare.c:2991
@@ -3944,12 +3889,12 @@ msgstr ""
 
 #: ../plug-ins/common/gbr.c:663
 msgid "Save as Brush"
-msgstr ""
+msgstr "ਬੁਰਸ਼ ਵਾਂਗ ਸੰਭਾਲੋ"
 
 #. attach labels
 #: ../plug-ins/common/gbr.c:683 ../plug-ins/common/grid.c:769
 msgid "Spacing:"
-msgstr ""
+msgstr "ਖਾਲ਼ੀ ਥਾਂ:"
 
 #: ../plug-ins/common/gbr.c:694 ../plug-ins/common/gih.c:904
 #: ../plug-ins/common/pat.c:521 ../plug-ins/gimpressionist/presets.c:642
@@ -3965,7 +3910,6 @@ msgid "GEE-SLIME"
 msgstr "GEE-SLIME"
 
 #: ../plug-ins/common/gee.c:158 ../plug-ins/common/gee_zoom.c:191
-#, fuzzy
 msgid "Thank you for choosing GIMP"
 msgstr "** ਜੈਮਪ ਚੁਣਨ ਲਈ ਧੰਨਵਾਦ **"
 
@@ -3982,7 +3926,7 @@ msgstr "ਆਕਾਰ"
 
 #: ../plug-ins/common/gee_zoom.c:185
 msgid "GEE-ZOOM"
-msgstr ""
+msgstr "GEE-ZOOM"
 
 #: ../plug-ins/common/gee_zoom.c:199
 msgid ""
@@ -3991,9 +3935,8 @@ msgid ""
 msgstr ""
 
 #: ../plug-ins/common/gif.c:402 ../plug-ins/common/gifload.c:143
-#, fuzzy
 msgid "GIF image"
-msgstr "ਚਿੱਤਰ"
+msgstr "GIF ਚਿੱਤਰ"
 
 #: ../plug-ins/common/gif.c:687
 msgid "Couldn't simply reduce colors further. Saving as opaque."
@@ -4052,16 +3995,16 @@ msgstr "ਖਿੱਚਵਾ"
 
 #: ../plug-ins/common/gif.c:1291
 msgid "_GIF comment:"
-msgstr ""
+msgstr "_GIF ਟਿੱਪਣੀ:"
 
 #. additional animated gif parameter settings
 #: ../plug-ins/common/gif.c:1348
 msgid "Animated GIF Options"
-msgstr ""
+msgstr "ਸਜੀਵ GIF ਚੋਣ"
 
 #: ../plug-ins/common/gif.c:1354
 msgid "_Loop forever"
-msgstr ""
+msgstr "ਹਮੇਸ਼ਾ ਲਈ ਚੱਕਰ(_L)"
 
 #: ../plug-ins/common/gif.c:1367
 msgid "_Delay between frames where unspecified:"
@@ -4069,16 +4012,15 @@ msgstr ""
 
 #: ../plug-ins/common/gif.c:1380 ../plug-ins/common/mng.c:1527
 msgid "milliseconds"
-msgstr ""
+msgstr "ਮਿਲੀਸਕਿੰਟ"
 
 #: ../plug-ins/common/gif.c:1390
 msgid "Frame disposal where unspecified: "
 msgstr ""
 
 #: ../plug-ins/common/gif.c:1394
-#, fuzzy
 msgid "I don't care"
-msgstr "ਮੈਂ ਪਰਵਾਹ ਨਹੀ ਕਰਦਾ"
+msgstr "ਮੈਂ ਨੀਂ ਪਰਵਾਹ ਕਰਦਾ"
 
 #: ../plug-ins/common/gif.c:1396
 msgid "Cumulative layers (combine)"
@@ -4086,11 +4028,11 @@ msgstr ""
 
 #: ../plug-ins/common/gif.c:1398
 msgid "One frame per layer (replace)"
-msgstr ""
+msgstr "ਇੱਕ ਫਰੇਮ ਪ੍ਰਤੀ ਪਰਤ (ਤਬਦੀਲ"
 
 #: ../plug-ins/common/gif.c:2611
 msgid "Error writing output file."
-msgstr ""
+msgstr "ਆਉਟਪੁੱਟ ਫਾਇਲ ਲਿਖਣ ਦੌਰਾਨ ਗਲਤੀ ਹੈ।"
 
 #: ../plug-ins/common/gif.c:2681
 #, c-format
@@ -4099,29 +4041,29 @@ msgstr ""
 
 #: ../plug-ins/common/gifload.c:314
 msgid "This is not a GIF file"
-msgstr ""
+msgstr "ਇਹ GIF ਫਾਇਲ ਨਹੀਂ ਹੈ"
 
 #: ../plug-ins/common/gifload.c:352
 msgid "Non-square pixels.  Image might look squashed."
 msgstr ""
 
-#: ../plug-ins/common/gifload.c:867
+#: ../plug-ins/common/gifload.c:866
 #, c-format
 msgid "Background (%d%s)"
-msgstr ""
+msgstr "ਪਿੱਠਭੂਮੀ (%d%s)"
 
-#: ../plug-ins/common/gifload.c:915 ../plug-ins/common/iwarp.c:783
+#: ../plug-ins/common/gifload.c:914 ../plug-ins/common/iwarp.c:783
 #: ../plug-ins/common/iwarp.c:817
 #, c-format
 msgid "Frame %d"
 msgstr "ਫਰੇਮ %d"
 
-#: ../plug-ins/common/gifload.c:917
+#: ../plug-ins/common/gifload.c:916
 #, c-format
 msgid "Frame %d (%d%s)"
-msgstr ""
+msgstr "ਫਰੇਮ %d (%d%s)"
 
-#: ../plug-ins/common/gifload.c:947
+#: ../plug-ins/common/gifload.c:946
 #, c-format
 msgid ""
 "GIF: Undocumented GIF composite type %d is not handled.  Animation might not "
@@ -4130,7 +4072,7 @@ msgstr ""
 
 #: ../plug-ins/common/gih.c:205 ../plug-ins/common/gih.c:226
 msgid "GIMP brush (animated)"
-msgstr ""
+msgstr "ਜੈਮਪ ਬੁਰਸ਼ (ਸਜੀਵ)"
 
 #: ../plug-ins/common/gih.c:319
 #, c-format
@@ -4139,7 +4081,7 @@ msgstr ""
 
 #: ../plug-ins/common/gih.c:490
 msgid "Error in GIMP brush pipe file."
-msgstr ""
+msgstr "ਜੈਮਪ ਬੁਰਸ਼ ਪਾਇਪ ਫਾਇਲ ਵਿੱਚ ਗਲਤੀ ਹੈ।"
 
 #: ../plug-ins/common/gih.c:556
 msgid "GIMP brush file appears to be corrupted."
@@ -4151,7 +4093,7 @@ msgstr ""
 
 #: ../plug-ins/common/gih.c:867
 msgid "Save as Brush Pipe"
-msgstr ""
+msgstr "ਬੁਰਸ਼ ਪਾਈਪ ਵਾਂਗ ਸੰਭਾਲੋ"
 
 #: ../plug-ins/common/gih.c:890
 msgid "Spacing (percent):"
@@ -4162,12 +4104,10 @@ msgid "Pixels"
 msgstr "ਪਿਕਸਲ"
 
 #: ../plug-ins/common/gih.c:962
-#, fuzzy
 msgid "Cell size:"
 msgstr "ਸੈਲ ਆਕਾਰ:"
 
 #: ../plug-ins/common/gih.c:974
-#, fuzzy
 msgid "Number of cells:"
 msgstr "ਸੈਲਾਂ ਦੀ ਗਿਣਤੀ:"
 
@@ -4177,7 +4117,7 @@ msgstr "ਇਸ ਦੀਆਂ ਕਤਾਰਾਂ"
 
 #: ../plug-ins/common/gih.c:1011
 msgid " Columns on each layer"
-msgstr ""
+msgstr " ਪ੍ਰਤੀ ਪਰਤ ਕਾਲਮ"
 
 #: ../plug-ins/common/gih.c:1015
 msgid " (Width Mismatch!) "
@@ -4189,15 +4129,15 @@ msgstr ""
 
 #: ../plug-ins/common/gih.c:1024
 msgid "Display as:"
-msgstr ""
+msgstr "ਵੇਖਾਓ:"
 
 #: ../plug-ins/common/gih.c:1033
 msgid "Dimension:"
-msgstr ""
+msgstr "ਮਾਪ:"
 
 #: ../plug-ins/common/gih.c:1110
 msgid "Ranks:"
-msgstr ""
+msgstr "ਰੈਕ:"
 
 #: ../plug-ins/common/glasstile.c:129
 msgid "_Glass Tile..."
@@ -4213,24 +4153,23 @@ msgstr ""
 
 #: ../plug-ins/common/glasstile.c:281
 msgid "Tile _width:"
-msgstr ""
+msgstr "ਟਾਇਲ ਚੌੜਾਈ(_w):"
 
 #: ../plug-ins/common/glasstile.c:295 ../plug-ins/common/mosaic.c:621
-#, fuzzy
 msgid "Tile _height:"
-msgstr "ਉਭਾਰੋ:"
+msgstr "ਟਾਇਲ ਉਚਾਈ(_h):"
 
 #: ../plug-ins/common/gqbist.c:415
 msgid "_Qbist..."
-msgstr ""
+msgstr "_Qbist..."
 
 #: ../plug-ins/common/gqbist.c:514
 msgid "Qbist ..."
-msgstr ""
+msgstr "Qbist ..."
 
 #: ../plug-ins/common/gqbist.c:695
 msgid "Load QBE file"
-msgstr ""
+msgstr "QBE ਫਾਇਲ ਲੋਡ"
 
 #: ../plug-ins/common/gqbist.c:733
 msgid "Save (middle transform) as QBE file"
@@ -4238,12 +4177,11 @@ msgstr ""
 
 #: ../plug-ins/common/gqbist.c:781
 msgid "G-Qbist"
-msgstr ""
+msgstr "G-Qbist"
 
 #: ../plug-ins/common/gradmap.c:86
-#, fuzzy
 msgid "_Gradient Map"
-msgstr "ਵਾਤਾਵਰਣ ਨਕਸ਼ਾ"
+msgstr ""
 
 #: ../plug-ins/common/gradmap.c:124
 msgid "Gradient Map..."
@@ -4251,26 +4189,26 @@ msgstr ""
 
 #: ../plug-ins/common/grid.c:149
 msgid "_Grid..."
-msgstr ""
+msgstr "ਗਰਿੱਡ(_G)..."
 
 #: ../plug-ins/common/grid.c:242
 msgid "Drawing Grid..."
-msgstr ""
+msgstr "ਗਰਿੱਡ ਬਣਾਇਆ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #: ../plug-ins/common/grid.c:621 ../plug-ins/gfig/gfig-dialog.c:1355
 #: ../plug-ins/imagemap/imap_menu.c:385 ../plug-ins/imagemap/imap_popup.c:153
 #: ../plug-ins/imagemap/imap_toolbar.c:163
 msgid "Grid"
-msgstr ""
+msgstr "ਗਰਿੱਡ"
 
 #. attach labels
 #: ../plug-ins/common/grid.c:696
 msgid "Horizontal"
-msgstr ""
+msgstr "ਖਿਤਿਜੀ"
 
 #: ../plug-ins/common/grid.c:698
 msgid "Vertical"
-msgstr ""
+msgstr "ਲੰਬਕਾਰੀ"
 
 #: ../plug-ins/common/grid.c:700
 msgid "Intersection"
@@ -4281,7 +4219,7 @@ msgstr ""
 #: ../plug-ins/common/wmf.c:548 ../plug-ins/print/gimp_main_window.c:992
 #: ../plug-ins/print/gimp_main_window.c:1199
 msgid "Width:"
-msgstr ""
+msgstr "ਚੌੜਾਈ:"
 
 #. attach labels
 #: ../plug-ins/common/grid.c:836
@@ -4291,7 +4229,7 @@ msgstr "ਅੰਤਰਲੰਬ :"
 #. attach color selectors
 #: ../plug-ins/common/grid.c:875
 msgid "Horizontal Color"
-msgstr ""
+msgstr "ਖਿਤਿਜੀ ਰੰਗ"
 
 #: ../plug-ins/common/grid.c:893
 msgid "Vertical Color"
@@ -4311,7 +4249,7 @@ msgstr ""
 
 #: ../plug-ins/common/gtm.c:419
 msgid "Warning"
-msgstr ""
+msgstr "ਚੇਤਾਵਨੀ"
 
 #: ../plug-ins/common/gtm.c:430
 msgid ""
@@ -4448,8 +4386,9 @@ msgid "Create _New layer"
 msgstr "ਨਵਾਂ ਚਿੱਤਰ ਬਣਾਓ"
 
 #: ../plug-ins/common/hot.c:609
+#, fuzzy
 msgid "Action"
-msgstr ""
+msgstr "ਕਾਰਵਾਈ"
 
 #: ../plug-ins/common/hot.c:613
 msgid "Reduce _Luminance"
@@ -4530,8 +4469,9 @@ msgid "Deform Mode"
 msgstr ""
 
 #: ../plug-ins/common/iwarp.c:1025
+#, fuzzy
 msgid "_Move"
-msgstr ""
+msgstr "_ਭੇਜੋ"
 
 #: ../plug-ins/common/iwarp.c:1026
 msgid "_Grow"
@@ -4683,8 +4623,9 @@ msgid "Save as JPEG"
 msgstr ""
 
 #: ../plug-ins/common/jpeg.c:1947
+#, fuzzy
 msgid "_Quality:"
-msgstr ""
+msgstr "ਗੁਣ:"
 
 #: ../plug-ins/common/jpeg.c:1951
 msgid "JPEG quality parameter"
@@ -4697,11 +4638,12 @@ msgstr ""
 #: ../plug-ins/common/jpeg.c:1983
 #, fuzzy
 msgid "_Advanced Options"
-msgstr "ਤਕਨੀਕੀ"
+msgstr "ਤਕਨੀਕੀ ਚੋਣ(_A)"
 
 #: ../plug-ins/common/jpeg.c:2011
+#, fuzzy
 msgid "_Smoothing:"
-msgstr ""
+msgstr "ਮੁਲਾਅਮੀਕਰਨ:"
 
 #: ../plug-ins/common/jpeg.c:2024
 msgid "Frequency (rows):"
@@ -4747,16 +4689,18 @@ msgid "Fast Integer"
 msgstr ""
 
 #: ../plug-ins/common/jpeg.c:2170
+#, fuzzy
 msgid "Integer"
-msgstr ""
+msgstr "ਪੂਰਨ ਅੰਕ"
 
 #: ../plug-ins/common/jpeg.c:2171
 msgid "Floating-Point"
 msgstr ""
 
 #: ../plug-ins/common/jpeg.c:2185
+#, fuzzy
 msgid "Comment"
-msgstr ""
+msgstr "ਟਿੱਪਣੀ"
 
 #: ../plug-ins/common/jpeg.c:2338
 #, c-format
@@ -4800,8 +4744,9 @@ msgid "_Derivative"
 msgstr ""
 
 #: ../plug-ins/common/lic.c:683
+#, fuzzy
 msgid "_Gradient"
-msgstr ""
+msgstr "ਢਾਂਲਵਾਂ"
 
 #: ../plug-ins/common/lic.c:689
 msgid "Convolve"
@@ -4863,8 +4808,9 @@ msgid "_Sender:"
 msgstr ""
 
 #: ../plug-ins/common/mail.c:522
+#, fuzzy
 msgid "S_ubject:"
-msgstr ""
+msgstr "ਵਿਸ਼ਾ(_u):"
 
 #: ../plug-ins/common/mail.c:534
 msgid "Comm_ent:"
@@ -4985,8 +4931,9 @@ msgid "Blur Type"
 msgstr ""
 
 #: ../plug-ins/common/mblur.c:919
+#, fuzzy
 msgid "_Linear"
-msgstr ""
+msgstr "ਰੇਖਿਕ(_L)"
 
 #: ../plug-ins/common/mblur.c:920
 msgid "_Radial"
@@ -5077,8 +5024,9 @@ msgid "Combine"
 msgstr ""
 
 #: ../plug-ins/common/mng.c:1419
+#, fuzzy
 msgid "Replace"
-msgstr ""
+msgstr "ਤਬਦੀਲ"
 
 #: ../plug-ins/common/mng.c:1430
 msgid "Default frame disposal:"
@@ -5105,8 +5053,9 @@ msgid "Animated MNG options"
 msgstr ""
 
 #: ../plug-ins/common/mng.c:1497
+#, fuzzy
 msgid "Loop"
-msgstr ""
+msgstr "ਲੂਪ"
 
 #: ../plug-ins/common/mng.c:1511
 msgid "Default frame delay:"
@@ -5218,12 +5167,14 @@ msgid "_Amount:"
 msgstr ""
 
 #: ../plug-ins/common/newsprint.c:135
+#, fuzzy
 msgid "Round"
-msgstr ""
+msgstr "ਗੋਲ"
 
 #: ../plug-ins/common/newsprint.c:144
+#, fuzzy
 msgid "Line"
-msgstr ""
+msgstr "ਸਤਰ"
 
 #: ../plug-ins/common/newsprint.c:153
 msgid "Diamond"
@@ -5280,8 +5231,9 @@ msgstr ""
 
 #. resolution settings
 #: ../plug-ins/common/newsprint.c:1243
+#, fuzzy
 msgid "Resolution"
-msgstr ""
+msgstr "ਰੈਜ਼ੋਲੇਸ਼ਨ"
 
 #: ../plug-ins/common/newsprint.c:1262
 msgid "_Input SPI:"
@@ -5298,8 +5250,9 @@ msgstr "ਸੈਲ ਆਕਾਰ:"
 
 #. screen settings
 #: ../plug-ins/common/newsprint.c:1302 ../plug-ins/gflare/gflare.c:562
+#, fuzzy
 msgid "Screen"
-msgstr ""
+msgstr "ਪਰਦਾ"
 
 #: ../plug-ins/common/newsprint.c:1321
 msgid "B_lack pullout (%):"
@@ -5310,8 +5263,9 @@ msgid "Separate to:"
 msgstr ""
 
 #: ../plug-ins/common/newsprint.c:1347
+#, fuzzy
 msgid "_RGB"
-msgstr ""
+msgstr "_RGB"
 
 #: ../plug-ins/common/newsprint.c:1364
 msgid "C_MYK"
@@ -5332,8 +5286,9 @@ msgstr "ਆਂਸ਼ਿਕ"
 
 #. anti-alias control
 #: ../plug-ins/common/newsprint.c:1445 ../plug-ins/gfig/gfig-dialog.c:1258
+#, fuzzy
 msgid "Antialiasing"
-msgstr ""
+msgstr "ਐਟੀਲਾਇਸਿੰਗ"
 
 #: ../plug-ins/common/newsprint.c:1453
 msgid "O_versample:"
@@ -5352,8 +5307,9 @@ msgid "NL Filter"
 msgstr ""
 
 #: ../plug-ins/common/nlfilt.c:1038
+#, fuzzy
 msgid "Filter"
-msgstr ""
+msgstr "ਫਿਲਟਰ"
 
 #: ../plug-ins/common/nlfilt.c:1042
 msgid "_Alpha trimmed mean"
@@ -5467,8 +5423,9 @@ msgid "Paper Tile"
 msgstr ""
 
 #: ../plug-ins/common/papertile.c:254
+#, fuzzy
 msgid "Division"
-msgstr ""
+msgstr "ਭਾਗ"
 
 #: ../plug-ins/common/papertile.c:293
 msgid "Fractional Pixels"
@@ -5501,7 +5458,7 @@ msgstr ""
 #: ../plug-ins/common/papertile.c:343
 #, fuzzy
 msgid "_Wrap around"
-msgstr "ਪਾਰਦਰਸ਼ੀ ਪਿੱਠਭੂਮੀ"
+msgstr "ਪਾਸੇ ਸਮੇਟੋ(_W)"
 
 #: ../plug-ins/common/papertile.c:353
 msgid "Background Type"
@@ -5528,8 +5485,9 @@ msgid "S_elect here:"
 msgstr ""
 
 #: ../plug-ins/common/papertile.c:375
+#, fuzzy
 msgid "Background Color"
-msgstr ""
+msgstr "ਪਿੱਠਭੂਮੀ ਰੰਗ"
 
 #: ../plug-ins/common/papertile.c:527
 msgid "Paper Tile..."
@@ -5892,8 +5850,9 @@ msgstr ""
 #. Resolution
 #: ../plug-ins/common/postscript.c:2949 ../plug-ins/common/svg.c:882
 #: ../plug-ins/common/wmf.c:669 ../plug-ins/print/gimp_main_window.c:1087
+#, fuzzy
 msgid "Resolution:"
-msgstr ""
+msgstr "ਰੈਜ਼ੋਲੇਸ਼ਨ:"
 
 #: ../plug-ins/common/postscript.c:2977
 msgid "Pages:"
@@ -5916,9 +5875,10 @@ msgstr "ਰੰਗਦਾਰ"
 msgid "B/W"
 msgstr "B/W"
 
-#: ../plug-ins/common/postscript.c:3003 ../plug-ins/rcm/rcm_dialog.c:404
+#: ../plug-ins/common/postscript.c:3003 ../plug-ins/rcm/rcm_dialog.c:411
+#, fuzzy
 msgid "Gray"
-msgstr ""
+msgstr "ਸਲੇਟੀ"
 
 #: ../plug-ins/common/postscript.c:3004 ../plug-ins/common/xpm.c:469
 #: ../plug-ins/gimpressionist/color.c:48
@@ -5960,8 +5920,9 @@ msgid "Image Size"
 msgstr "ਚਿੱਤਰ ਆਕਾਰ"
 
 #: ../plug-ins/common/postscript.c:3152
+#, fuzzy
 msgid "_Keep aspect ratio"
-msgstr ""
+msgstr "ਅਕਾਰ ਅਨੁਪਾਤ ਰੱਖੋ"
 
 #: ../plug-ins/common/postscript.c:3158
 msgid ""
@@ -5984,8 +5945,9 @@ msgstr "ਮਿਲੀਮੀਟਰ"
 
 #. Format
 #: ../plug-ins/common/postscript.c:3198
+#, fuzzy
 msgid "Output"
-msgstr ""
+msgstr "ਆਉਟਪੁੱਟ"
 
 #: ../plug-ins/common/postscript.c:3204
 msgid "_PostScript level 2"
@@ -6008,18 +5970,18 @@ msgstr "ਨਮੂਨਾ ਆਕਾਰ:"
 msgid "Invalid UTF-8 string in PSD file"
 msgstr ""
 
-#: ../plug-ins/common/psd_save.c:181
+#: ../plug-ins/common/psd_save.c:192
 msgid "Photoshop image"
 msgstr ""
 
-#: ../plug-ins/common/psd_save.c:1564
+#: ../plug-ins/common/psd_save.c:1312
 #, c-format
 msgid ""
 "Unable to save '%s'.  The psd file format does not support images that are "
 "more than 30000 pixels wide or tall."
 msgstr ""
 
-#: ../plug-ins/common/psd_save.c:1576
+#: ../plug-ins/common/psd_save.c:1324
 #, c-format
 msgid ""
 "Unable to save '%s'.  The psd file format does not support images with "
@@ -6103,15 +6065,16 @@ msgstr ""
 #: ../plug-ins/common/raw.c:943
 #, fuzzy
 msgid "Image"
-msgstr "ਚਿੱਤਰ"
+msgstr "ਪ੍ਰਤੀਬਿੰਬ"
 
 #: ../plug-ins/common/raw.c:955
 msgid "Planar RGB"
 msgstr ""
 
 #: ../plug-ins/common/raw.c:956
+#, fuzzy
 msgid "Indexed"
-msgstr ""
+msgstr "ਤਤਕਰਾ"
 
 #: ../plug-ins/common/raw.c:961
 #, fuzzy
@@ -6121,7 +6084,7 @@ msgstr "ਚਿੱਤਰ ਕਿਸਮ:"
 #: ../plug-ins/common/raw.c:1011
 #, fuzzy
 msgid "Palette"
-msgstr "ਹਟਾਓ"
+msgstr "ਰੰਗ-ਪੱਟੀ"
 
 #: ../plug-ins/common/raw.c:1021 ../plug-ins/common/raw.c:1109
 msgid "R, G, B (normal)"
@@ -6190,8 +6153,9 @@ msgid "Retinex Image Enhancement"
 msgstr ""
 
 #: ../plug-ins/common/retinex.c:311
+#, fuzzy
 msgid "Level"
-msgstr ""
+msgstr "ਪੱਧਰ"
 
 #: ../plug-ins/common/retinex.c:315
 #, fuzzy
@@ -6210,7 +6174,7 @@ msgstr "ਰੌਸ਼ਨੀ"
 #: ../plug-ins/common/retinex.c:344
 #, fuzzy
 msgid "_Scale:"
-msgstr "ਸਰੋਤ 1:"
+msgstr "ਪੈਮਾਨਾ:"
 
 #: ../plug-ins/common/retinex.c:359
 msgid "_Scale division:"
@@ -6279,8 +6243,9 @@ msgid "Sorry, channels and masks can not be rotated."
 msgstr ""
 
 #: ../plug-ins/common/rotate.c:445
+#, fuzzy
 msgid "Rotating..."
-msgstr ""
+msgstr "ਘੁੰਮਾ ਰਿਹਾ ਹੈ..."
 
 #: ../plug-ins/common/sample_colorize.c:296
 msgid "_Sample Colorize..."
@@ -6300,8 +6265,9 @@ msgstr "ਲਾਗੂ"
 
 #. layer combo_box (Dst)
 #: ../plug-ins/common/sample_colorize.c:1335
+#, fuzzy
 msgid "Destination:"
-msgstr ""
+msgstr "ਨਿਯਤ:"
 
 #. layer combo_box (Sample)
 #: ../plug-ins/common/sample_colorize.c:1351
@@ -6492,8 +6458,9 @@ msgid "Sharpening..."
 msgstr ""
 
 #: ../plug-ins/common/sharpen.c:480
+#, fuzzy
 msgid "Sharpen"
-msgstr ""
+msgstr "ਉਘੜਵਾਂ"
 
 #: ../plug-ins/common/shift.c:113
 msgid "_Shift..."
@@ -6504,8 +6471,9 @@ msgid "Shifting..."
 msgstr ""
 
 #: ../plug-ins/common/shift.c:349
+#, fuzzy
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: ../plug-ins/common/shift.c:373
 #, fuzzy
@@ -6574,8 +6542,9 @@ msgstr ""
 
 #: ../plug-ins/common/sinus.c:775 ../plug-ins/common/sinus.c:791
 #: ../plug-ins/imagemap/imap_preferences.c:516
+#, fuzzy
 msgid "Colors"
-msgstr ""
+msgstr "ਰੰਗ"
 
 #. if in grey scale, the colors are necessarily black and white
 #: ../plug-ins/common/sinus.c:784
@@ -6873,16 +6842,18 @@ msgstr ""
 
 #: ../plug-ins/common/spheredesigner.c:280
 #: ../plug-ins/gimpressionist/general.c:147
+#, fuzzy
 msgid "Solid"
-msgstr ""
+msgstr "ਠੋਸ"
 
 #: ../plug-ins/common/spheredesigner.c:281
 msgid "Checker"
 msgstr ""
 
 #: ../plug-ins/common/spheredesigner.c:282
+#, fuzzy
 msgid "Marble"
-msgstr ""
+msgstr "ਸੰਗਮਰਮਰ"
 
 #: ../plug-ins/common/spheredesigner.c:283
 msgid "Lizard"
@@ -6919,8 +6890,9 @@ msgstr ""
 
 #: ../plug-ins/common/spheredesigner.c:1745
 #: ../plug-ins/common/spheredesigner.c:2617
+#, fuzzy
 msgid "Light"
-msgstr ""
+msgstr "ਹਲਕਾ"
 
 #: ../plug-ins/common/spheredesigner.c:2164
 msgid "Open File"
@@ -6956,8 +6928,9 @@ msgid "Texture:"
 msgstr ""
 
 #: ../plug-ins/common/spheredesigner.c:2649
+#, fuzzy
 msgid "Colors:"
-msgstr ""
+msgstr "ਰੰਗ:"
 
 #: ../plug-ins/common/spheredesigner.c:2652
 #: ../plug-ins/common/spheredesigner.c:2663
@@ -7040,8 +7013,9 @@ msgid "Spreading..."
 msgstr ""
 
 #: ../plug-ins/common/spread.c:346
+#, fuzzy
 msgid "Spread"
-msgstr ""
+msgstr "ਫੈਲਿਆ"
 
 #: ../plug-ins/common/spread.c:364
 msgid "Spread Amount"
@@ -7076,7 +7050,7 @@ msgstr "ਹੇਠਾਂ:"
 #: ../plug-ins/common/struc.c:1293
 #, fuzzy
 msgid "Bottom-_right"
-msgstr "ਹੇਠਾਂਃ"
+msgstr "ਹੇਠਾਂ:"
 
 #: ../plug-ins/common/sunras.c:217 ../plug-ins/common/sunras.c:237
 msgid "SUN Rasterfile image"
@@ -7138,8 +7112,9 @@ msgid "Scalable SVG image"
 msgstr ""
 
 #: ../plug-ins/common/svg.c:313 ../plug-ins/common/svg.c:696
+#, fuzzy
 msgid "Unknown reason"
-msgstr ""
+msgstr "ਅਣਪਛਾਤਾ ਕਾਰਨ"
 
 #: ../plug-ins/common/svg.c:317
 msgid "Rendering SVG..."
@@ -7224,8 +7199,9 @@ msgstr ""
 
 #. rle
 #: ../plug-ins/common/tga.c:1209
+#, fuzzy
 msgid "_RLE compression"
-msgstr ""
+msgstr "RLE ਸੁੰਘਡ਼ਨ"
 
 #. origin
 #: ../plug-ins/common/tga.c:1219
@@ -7254,8 +7230,9 @@ msgid "Threshold Alpha"
 msgstr ""
 
 #: ../plug-ins/common/threshold_alpha.c:239
+#, fuzzy
 msgid "Threshold:"
-msgstr ""
+msgstr "ਅਧਾਰ ਮੁੱਲ:"
 
 #: ../plug-ins/common/tiff.c:211 ../plug-ins/common/tiff.c:232
 #: ../plug-ins/common/tiff.c:249
@@ -7292,8 +7269,9 @@ msgstr ""
 
 #. compression
 #: ../plug-ins/common/tiff.c:2118
+#, fuzzy
 msgid "Compression"
-msgstr ""
+msgstr "ਨਪੀੜਨ"
 
 #: ../plug-ins/common/tiff.c:2122
 msgid "_None"
@@ -7320,8 +7298,9 @@ msgid "Save _color values from transparent pixels"
 msgstr ""
 
 #: ../plug-ins/common/tiff.c:2151 ../plug-ins/common/xbm.c:1201
+#, fuzzy
 msgid "Comment:"
-msgstr ""
+msgstr "ਟਿੱਪਣੀ:"
 
 #: ../plug-ins/common/tile.c:112
 #, fuzzy
@@ -7343,7 +7322,7 @@ msgstr ""
 
 #: ../plug-ins/common/tile.c:430
 msgid "C_reate New Image"
-msgstr ""
+msgstr "ਨਵਾਂ ਚਿੱਤਰ ਬਣਾਓ(_r)"
 
 #: ../plug-ins/common/tileit.c:224
 msgid "_Small Tiles..."
@@ -7358,17 +7337,15 @@ msgstr ""
 #. Flip
 #: ../plug-ins/common/tileit.c:406 ../plug-ins/ifscompose/ifscompose.c:628
 msgid "Flip"
-msgstr ""
+msgstr "ਝਟਕੋ"
 
 #: ../plug-ins/common/tileit.c:454
-#, fuzzy
 msgid "A_ll tiles"
-msgstr "ਸਾਰਾ ਚਿੱਟਾ"
+msgstr "ਸਭ ਟਾਇਲਾਂ(_l)"
 
 #: ../plug-ins/common/tileit.c:468
-#, fuzzy
 msgid "Al_ternate tiles"
-msgstr "ਬਦਲਵਾਂ"
+msgstr "ਬਦਲਵੀਂ ਟਾਇਲ(_t)"
 
 #: ../plug-ins/common/tileit.c:482
 msgid "_Explicit tile"
@@ -7376,11 +7353,11 @@ msgstr ""
 
 #: ../plug-ins/common/tileit.c:488
 msgid "Ro_w:"
-msgstr "ਕਤਾਰ:"
+msgstr "ਕਤਾਰ(_w):"
 
 #: ../plug-ins/common/tileit.c:512
 msgid "Col_umn:"
-msgstr "ਕਾਲਮ:"
+msgstr "ਕਾਲਮ(_u):"
 
 #: ../plug-ins/common/tileit.c:564
 msgid "O_pacity:"
@@ -7388,9 +7365,8 @@ msgstr ""
 
 #. Lower frame saying howmany segments
 #: ../plug-ins/common/tileit.c:573
-#, fuzzy
 msgid "Number of Segments"
-msgstr "ਸੈਲਾਂ ਦੀ ਗਿਣਤੀ:"
+msgstr "ਖੰਡਾਂ ਦੀ ਗਿਣਤੀ"
 
 #: ../plug-ins/common/tiler.c:66
 msgid "_Make Seamless"
@@ -7421,7 +7397,7 @@ msgstr ""
 
 #: ../plug-ins/common/uniteditor.c:98
 msgid "Factor"
-msgstr ""
+msgstr "ਫੈਕਟਰ"
 
 #: ../plug-ins/common/uniteditor.c:98
 msgid "How many units make up an inch."
@@ -7429,7 +7405,7 @@ msgstr ""
 
 #: ../plug-ins/common/uniteditor.c:99
 msgid "Digits"
-msgstr ""
+msgstr "ਅੰਕ"
 
 #: ../plug-ins/common/uniteditor.c:99
 msgid ""
@@ -7440,7 +7416,7 @@ msgstr ""
 
 #: ../plug-ins/common/uniteditor.c:104
 msgid "Symbol"
-msgstr ""
+msgstr "ਨਿਸ਼ਾਨ"
 
 #: ../plug-ins/common/uniteditor.c:104
 msgid ""
@@ -7450,7 +7426,7 @@ msgstr ""
 
 #: ../plug-ins/common/uniteditor.c:107
 msgid "Abbreviation"
-msgstr ""
+msgstr "ਛੋਟਾ ਰੂਪ"
 
 #: ../plug-ins/common/uniteditor.c:107
 msgid "The unit's abbreviation (e.g. \"cm\" for centimeters)."
@@ -7458,19 +7434,19 @@ msgstr ""
 
 #: ../plug-ins/common/uniteditor.c:109
 msgid "Singular"
-msgstr ""
+msgstr "ਇੱਕਵਚਨ"
 
 #: ../plug-ins/common/uniteditor.c:109
 msgid "The unit's singular form."
-msgstr ""
+msgstr "ਇੱਕਾਈ ਦਾ ਇੱਕਵਚਨ ਹੈ।"
 
 #: ../plug-ins/common/uniteditor.c:110
 msgid "Plural"
-msgstr ""
+msgstr "ਬਹੁਵਚਨ"
 
 #: ../plug-ins/common/uniteditor.c:110
 msgid "The unit's plural form."
-msgstr ""
+msgstr "ਇੱਕਾਈ ਦਾ ਬਹੁਵਚਨ ਹੈ।"
 
 #: ../plug-ins/common/uniteditor.c:121
 msgid "Create a new unit from scratch."
@@ -7481,9 +7457,8 @@ msgid "Create a new unit with the currently selected unit as template."
 msgstr ""
 
 #: ../plug-ins/common/uniteditor.c:151
-#, fuzzy
 msgid "_Unit Editor"
-msgstr "ਇਕਾਈ ਸੋਧਕ"
+msgstr "ਇਕਾਈ ਸੰਪਾਦਕ(_U)"
 
 #: ../plug-ins/common/uniteditor.c:210
 msgid "New Unit"
@@ -7571,33 +7546,32 @@ msgstr "_3x3"
 
 #: ../plug-ins/common/video.c:50
 msgid "Larg_e 3x3"
-msgstr ""
+msgstr "ਵੱਡਾ(_e) 3x3"
 
 #: ../plug-ins/common/video.c:51
 msgid "_Hex"
-msgstr ""
+msgstr "_Hex"
 
 #: ../plug-ins/common/video.c:52
 msgid "_Dots"
-msgstr ""
+msgstr "ਬਿੰਦੂ(_D)"
 
 #: ../plug-ins/common/video.c:1817
 msgid "Vi_deo..."
-msgstr ""
+msgstr "ਵੀਡਿਓ(_d)..."
 
 #: ../plug-ins/common/video.c:1889
 msgid "Video/RGB..."
-msgstr ""
+msgstr "ਵੀਡਿਓ/RGB..."
 
 #: ../plug-ins/common/video.c:2020
 msgid "Video"
-msgstr ""
+msgstr "ਵੀਡਿਓ"
 
 #. frame for the radio buttons
 #: ../plug-ins/common/video.c:2035
-#, fuzzy
 msgid "Video Pattern"
-msgstr "ਤਰਤੀਬ"
+msgstr "ਵੀਡਿਓ ਤਰਤੀਬ"
 
 #: ../plug-ins/common/video.c:2079
 msgid "_Additive"
@@ -7605,24 +7579,23 @@ msgstr ""
 
 #: ../plug-ins/common/video.c:2089
 msgid "_Rotated"
-msgstr ""
+msgstr "ਘੁੰਮਾਇਆ(_R)"
 
 #: ../plug-ins/common/vinvert.c:84
-#, fuzzy
 msgid "_Value Invert"
-msgstr "ਮੁੱਲ"
+msgstr "ਮੁੱਲ ਉਲਟ(_V)"
 
 #: ../plug-ins/common/vinvert.c:126
 msgid "Value Invert..."
-msgstr ""
+msgstr "ਮੁੱਲ ਉਲਟ..."
 
 #: ../plug-ins/common/vpropagate.c:193
 msgid "More _white (larger value)"
-msgstr ""
+msgstr "ਹੋਰ ਚਿੱਟਾ (ਜਿਆਦਾ ਮੁੱਲ)(_w)"
 
 #: ../plug-ins/common/vpropagate.c:196
 msgid "More blac_k (smaller value)"
-msgstr ""
+msgstr "ਹੋਰ ਕਾਲਾ (ਜਿਆਦਾ ਮੁੱਲ)(_k)"
 
 #: ../plug-ins/common/vpropagate.c:199
 msgid "_Middle value to peaks"
@@ -7634,20 +7607,19 @@ msgstr ""
 
 #: ../plug-ins/common/vpropagate.c:205
 msgid "O_nly foreground"
-msgstr ""
+msgstr "ਸਿਰਫ ਮੁੱਖਭੂਮੀ(_n)"
 
 #: ../plug-ins/common/vpropagate.c:208
 msgid "Only b_ackground"
-msgstr ""
+msgstr "ਪਿੱਠਭੂਮੀ ਹੀ(_a)"
 
 #: ../plug-ins/common/vpropagate.c:211
 msgid "Mor_e opaque"
-msgstr ""
+msgstr "ਹੋਰ ਧੁੰਦਲਾਪਨ(_e)"
 
 #: ../plug-ins/common/vpropagate.c:214
-#, fuzzy
 msgid "More t_ransparent"
-msgstr "ਪਾਰਦਰਸ਼ੀ"
+msgstr "ਹੋਰ ਪਾਰਦਰਸ਼ੀ(_r)"
 
 #: ../plug-ins/common/vpropagate.c:242
 msgid "_Value Propagate..."
@@ -7691,21 +7663,19 @@ msgstr ""
 
 #: ../plug-ins/common/vpropagate.c:1164
 msgid "To l_eft"
-msgstr ""
+msgstr "ਖੱਬੇ(_e)"
 
 #: ../plug-ins/common/vpropagate.c:1167
-#, fuzzy
 msgid "To _right"
-msgstr "ਕੋਈ ਰੌਸ਼ਨੀ ਨਹੀ"
+msgstr "ਸੱਜੇ(_r)"
 
 #: ../plug-ins/common/vpropagate.c:1170
 msgid "To _top"
-msgstr ""
+msgstr "ਉਪਰ(_t)"
 
 #: ../plug-ins/common/vpropagate.c:1173
-#, fuzzy
 msgid "To _bottom"
-msgstr "ਹੇਠਾਂ:"
+msgstr "ਹੇਠਾਂ(_b)"
 
 #: ../plug-ins/common/vpropagate.c:1182
 msgid "Propagating _Alpha Channel"
@@ -7716,23 +7686,20 @@ msgid "Propagating Value Channel"
 msgstr ""
 
 #: ../plug-ins/common/warp.c:247
-#, fuzzy
 msgid "_Warp..."
-msgstr "ਲਪੇਟੋ"
+msgstr "ਸਮੇਟੋ(_W)..."
 
 #: ../plug-ins/common/warp.c:391
 msgid "Warp"
-msgstr ""
+msgstr "ਸਮੇਟੋ"
 
 #: ../plug-ins/common/warp.c:405
-#, fuzzy
 msgid "Basic Options"
-msgstr "XBM ਚੋਣ"
+msgstr "ਮੂਲ ਚੋਣ"
 
 #: ../plug-ins/common/warp.c:427
-#, fuzzy
 msgid "Step size:"
-msgstr "ਆਕਾਰ:"
+msgstr ""
 
 #: ../plug-ins/common/warp.c:441 ../plug-ins/ifscompose/ifscompose.c:1214
 msgid "Iterations:"
@@ -7760,19 +7727,17 @@ msgstr ""
 #: ../plug-ins/common/warp.c:509 ../plug-ins/fits/fits.c:988
 #: ../plug-ins/flame/flame.c:1131 ../plug-ins/gfig/gfig-dialog.c:1421
 msgid "Black"
-msgstr ""
+msgstr "ਕਾਲਾ"
 
 #: ../plug-ins/common/warp.c:524
-#, fuzzy
 msgid "FG color"
-msgstr "ਕੋਈ ਰੰਗ ਨਹੀ"
+msgstr "FG ਰੰਗ"
 
 #. --------------------------------------------------------------------
 #. ---------    The secondary table         --------------------------
 #: ../plug-ins/common/warp.c:544
-#, fuzzy
 msgid "Advanced Options"
-msgstr "ਤਸਵੀਰ ਚੋਣ"
+msgstr "ਤਕਨੀਕੀ ਚੋਣ"
 
 #: ../plug-ins/common/warp.c:560
 msgid "Dither size:"
@@ -7780,7 +7745,7 @@ msgstr ""
 
 #: ../plug-ins/common/warp.c:573
 msgid "Rotation angle:"
-msgstr ""
+msgstr "ਘੁੰਮਾਓ ਕੋਣ:"
 
 #: ../plug-ins/common/warp.c:586
 msgid "Substeps:"
@@ -7798,9 +7763,8 @@ msgstr ""
 #. --------------------------------------------------------------------
 #. ---------    The "other" table         --------------------------
 #: ../plug-ins/common/warp.c:630
-#, fuzzy
 msgid "More Advanced Options"
-msgstr "ਤਸਵੀਰ ਚੋਣ"
+msgstr "ਹੋਰ ਤਕਨੀਕੀ ਚੋਣ"
 
 #: ../plug-ins/common/warp.c:647
 msgid "Gradient scale:"
@@ -7918,7 +7882,7 @@ msgstr ""
 
 #: ../plug-ins/common/winclipboard.c:109
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਨਕਲ"
 
 #: ../plug-ins/common/winclipboard.c:121
 msgid "Paste from Clipboard"
@@ -8006,7 +7970,7 @@ msgstr ""
 
 #: ../plug-ins/common/wind.c:960
 msgid "Bot_h"
-msgstr "ਦੋਵੇ"
+msgstr "ਦੋਵੇ(_h)"
 
 #: ../plug-ins/common/wind.c:997
 msgid "Higher values restrict the effect to fewer areas of the image"
@@ -8014,21 +7978,19 @@ msgstr ""
 
 #: ../plug-ins/common/wind.c:1012 ../plug-ins/gimpressionist/orientmap.c:669
 msgid "_Strength:"
-msgstr ""
+msgstr "ਸ਼ਕਤੀ(_S):"
 
 #: ../plug-ins/common/wind.c:1016
 msgid "Higher values increase the magnitude of the effect"
 msgstr ""
 
 #: ../plug-ins/common/winprint.c:224
-#, fuzzy
 msgid "_Print"
-msgstr "ਬਿੰਦੂ"
+msgstr "ਛਾਪੋ(_P)"
 
 #: ../plug-ins/common/winprint.c:236
-#, fuzzy
 msgid "Page Setup"
-msgstr "ਚਿੱਤਰ ਆਕਾਰ"
+msgstr "ਸਫ਼ਾ ਵਿਵਸਥਾ"
 
 #: ../plug-ins/common/winprint.c:341
 #, c-format
@@ -8045,7 +8007,7 @@ msgstr ""
 
 #: ../plug-ins/common/winprint.c:427 ../plug-ins/print/print-image-gimp.c:320
 msgid "Printing..."
-msgstr ""
+msgstr "ਛਾਪਿਆ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #: ../plug-ins/common/winprint.c:459
 msgid "CreateDIBSection failed"
@@ -8207,9 +8169,8 @@ msgid "Save as XPM"
 msgstr ""
 
 #: ../plug-ins/common/xpm.c:796
-#, fuzzy
 msgid "_Alpha threshold:"
-msgstr "ਥਰਿੱਸ਼ਹੋਲਡ (ਦਹਿਲੀਜ਼):"
+msgstr ""
 
 #: ../plug-ins/common/xwd.c:277 ../plug-ins/common/xwd.c:297
 msgid "X window dump"
@@ -8275,7 +8236,7 @@ msgstr ""
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:224
 #: ../plug-ins/dbbrowser/plugin-browser.c:718
 msgid "_Search:"
-msgstr ""
+msgstr "ਖੋਜ(_S):"
 
 #: ../plug-ins/dbbrowser/gimpprocbrowser.c:386
 #: ../plug-ins/dbbrowser/plugin-browser.c:397
@@ -8314,7 +8275,7 @@ msgstr ""
 #: ../plug-ins/gflare/gflare.c:3503 ../plug-ins/gflare/gflare.c:3608
 #: ../plug-ins/gflare/gflare.c:3745
 msgid "Parameters"
-msgstr ""
+msgstr "ਪੈਰਾਮੀਟਰ"
 
 #: ../plug-ins/dbbrowser/gimpprocview.c:146
 msgid "Return Values"
@@ -8338,24 +8299,23 @@ msgstr "ਹੱਕ ਰਾਖਵੇ ਹਨ:"
 
 #: ../plug-ins/dbbrowser/gimpprocview.c:319
 msgid "Internal GIMP procedure"
-msgstr ""
+msgstr "ਅੰਦਰੂਨੀ ਜੈਮਪ ਤਰੀਕਾ"
 
 #: ../plug-ins/dbbrowser/gimpprocview.c:320
 msgid "GIMP Plug-In"
-msgstr ""
+msgstr "ਜੈਮਪ ਪਲੱਗਿੰਨ"
 
 #: ../plug-ins/dbbrowser/gimpprocview.c:321
 msgid "GIMP Extension"
-msgstr ""
+msgstr "ਜੈਮਪ ਵਿਸਥਾਰ"
 
 #: ../plug-ins/dbbrowser/gimpprocview.c:322
 msgid "Temporary Procedure"
-msgstr ""
+msgstr "ਆਰਜ਼ੀ ਤਰੀਕਾ"
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:151
-#, fuzzy
 msgid "_Plug-In Browser"
-msgstr "ਝਲਕ"
+msgstr "ਪਲੱਗਿੰਨ ਝਲਕਾਰਾ(_P)"
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:418
 msgid "1 Plug-In Interface"
@@ -8367,9 +8327,8 @@ msgid "%d Plug-In Interfaces"
 msgstr ""
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:544
-#, fuzzy
 msgid "Plug-In Browser"
-msgstr "ਜੈਮਪ ਸਹਾਇਤਾ ਝਲਕਾਰਾ"
+msgstr "ਪਲੱਗਿੰਨ ਝਲਕਾਰਾ"
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:595
 msgid "Name"
@@ -8377,9 +8336,8 @@ msgstr "ਨਾਂ"
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:603
 #: ../plug-ins/dbbrowser/plugin-browser.c:672
-#, fuzzy
 msgid "Insertion Date"
-msgstr "ਉਲਟਾ"
+msgstr "ਮਿਤੀ ਸ਼ਾਮਲ"
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:611
 msgid "Menu Path"
@@ -8387,9 +8345,8 @@ msgstr ""
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:619
 #: ../plug-ins/dbbrowser/plugin-browser.c:681
-#, fuzzy
 msgid "Image Types"
-msgstr "ਚਿੱਤਰ ਕਿਸਮ:"
+msgstr "ਚਿੱਤਰ ਕਿਸਮ"
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:643
 msgid "List View"
@@ -8400,9 +8357,8 @@ msgid "Menu Path/Name"
 msgstr ""
 
 #: ../plug-ins/dbbrowser/plugin-browser.c:704
-#, fuzzy
 msgid "Tree View"
-msgstr "ਤਸਵੀਰ"
+msgstr "ਲੜੀ ਦਰਿਸ਼"
 
 #: ../plug-ins/dbbrowser/procedure-browser.c:89
 msgid "Procedure _Browser"
@@ -8439,7 +8395,7 @@ msgstr ""
 #: ../plug-ins/fits/fits.c:989 ../plug-ins/gfig/gfig-dialog.c:1288
 #: ../plug-ins/gfig/gfig-dialog.c:1422
 msgid "White"
-msgstr ""
+msgstr "ਚਿੱਟਾ"
 
 #: ../plug-ins/fits/fits.c:996
 msgid "Pixel value scaling"
@@ -8497,7 +8453,7 @@ msgstr "ਉਹੀ"
 #: ../plug-ins/flame/flame.c:732 ../plug-ins/gimpressionist/orientation.c:146
 #: ../plug-ins/gimpressionist/size.c:149
 msgid "Random"
-msgstr ""
+msgstr "ਰਲਵਾਂ"
 
 #: ../plug-ins/flame/flame.c:736
 msgid "Swirl"
@@ -8561,7 +8517,7 @@ msgstr ""
 
 #: ../plug-ins/flame/flame.c:1162
 msgid "Custom gradient"
-msgstr ""
+msgstr "ਢਾਲਵਾਂ ਸੋਧ"
 
 #: ../plug-ins/flame/flame.c:1188
 msgid "C_amera"
@@ -8581,7 +8537,7 @@ msgstr ""
 
 #: ../plug-ins/gfig/gfig-bezier.c:458
 msgid "Show Line Frame"
-msgstr ""
+msgstr "ਰੇਖਾ ਫਰੇਮ ਵੇਖਾਓ"
 
 #: ../plug-ins/gfig/gfig-bezier.c:463
 msgid "Draws lines between the control points. Only during curve creation"
@@ -8590,38 +8546,33 @@ msgstr ""
 #. Start building the dialog up
 #: ../plug-ins/gfig/gfig-dialog.c:295
 msgid "Gfig"
-msgstr ""
+msgstr "Gfig"
 
 #. Tool options notebook
 #: ../plug-ins/gfig/gfig-dialog.c:341
-#, fuzzy
 msgid "Tool options"
-msgstr "ਜ਼ੂਮ ਚੋਣ"
+msgstr "ਸੰਦ ਚੋਣ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:358
-#, fuzzy
 msgid "_Stroke"
-msgstr "ਸ਼ਕਤੀਸ਼ਾਲੀ"
+msgstr "ਛੋਹ(_S)"
 
 #. Fill frame on right side
 #: ../plug-ins/gfig/gfig-dialog.c:405
-#, fuzzy
 msgid "Fill"
-msgstr "ਫਾਇਲ਼"
+msgstr "ਭਰਨ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:419
 msgid "No fill"
 msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:420
-#, fuzzy
 msgid "Color fill"
-msgstr "ਰੰਗ"
+msgstr "ਰੰਗ ਭਰਨ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:421
-#, fuzzy
 msgid "Pattern fill"
-msgstr "ਤਰਤੀਬ"
+msgstr "ਤਰਤੀਬ ਭਰੋ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:422
 msgid "Gradient fill"
@@ -8634,9 +8585,8 @@ msgstr ""
 
 #. "show grid" checkbutton at bottom of style frame
 #: ../plug-ins/gfig/gfig-dialog.c:504
-#, fuzzy
 msgid "Show grid"
-msgstr "ਵੇਖਾਓ"
+msgstr "ਗਰਿੱਡ ਵੇਖਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:639
 msgid "Load Gfig object collection"
@@ -8651,14 +8601,12 @@ msgid "First Gfig"
 msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:859
-#, fuzzy
 msgid "_Undo"
-msgstr "ਇਕਾਈ ਸੋਧਕ"
+msgstr "ਵਾਪਿਸ(_U)"
 
 #: ../plug-ins/gfig/gfig-dialog.c:863
-#, fuzzy
 msgid "_Clear"
-msgstr "ਸਾਫ਼"
+msgstr "ਸਾਫ਼(_C)"
 
 #: ../plug-ins/gfig/gfig-dialog.c:867
 msgid "_Grid"
@@ -8686,11 +8634,11 @@ msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:895
 msgid "Show next object"
-msgstr ""
+msgstr "ਅੱਗੇ ਇਕਾਈ ਵੇਖਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:899 ../plug-ins/gfig/gfig-stock.c:52
 msgid "Show all objects"
-msgstr ""
+msgstr "ਸਭ ਇਕਾਈਆਂ ਵੇਖਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:905 ../plug-ins/gfig/gfig-stock.c:47
 msgid "Create line"
@@ -8698,24 +8646,23 @@ msgstr "ਰੇਖਾ ਬਣਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:908 ../plug-ins/gfig/gfig-stock.c:42
 msgid "Create circle"
-msgstr ""
+msgstr "ਚੱਕਰ ਬਣਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:911 ../plug-ins/gfig/gfig-stock.c:46
 msgid "Create ellipse"
-msgstr ""
+msgstr "ਅੰਡਕਾਰ ਬਣਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:914 ../plug-ins/gfig/gfig-stock.c:44
-#, fuzzy
 msgid "Create arc"
-msgstr "ਬਣਾਓ"
+msgstr "ਚਾਪ ਬਣਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:917 ../plug-ins/gfig/gfig-stock.c:50
 msgid "Create reg polygon"
-msgstr ""
+msgstr "ਨਿਯਮਤ ਬਹੁਭੁਜ ਬਣਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:920 ../plug-ins/gfig/gfig-stock.c:54
 msgid "Create star"
-msgstr ""
+msgstr "ਤਾਰਾ ਬਣਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:923 ../plug-ins/gfig/gfig-stock.c:53
 msgid "Create spiral"
@@ -8727,43 +8674,40 @@ msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:930 ../plug-ins/gfig/gfig-stock.c:48
 msgid "Move an object"
-msgstr ""
+msgstr "ਇਕਾਈ ਏਧਰ-ਓਧਰ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:933 ../plug-ins/gfig/gfig-stock.c:49
 msgid "Move a single point"
-msgstr ""
+msgstr "ਇੱਕ ਬਿੰਦੂ ਏਧਰ-ਓਧਰ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:936 ../plug-ins/gfig/gfig-stock.c:43
 msgid "Copy an object"
-msgstr ""
+msgstr "ਇਕਾਈ ਨਕਲ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:939 ../plug-ins/gfig/gfig-stock.c:45
 msgid "Delete an object"
-msgstr ""
+msgstr "ਇਕਾਈ ਹਟਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:942 ../plug-ins/gfig/gfig-stock.c:51
 msgid "Select an object"
-msgstr ""
+msgstr "ਇਕਾਈ ਚੁਣੋ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1023
 msgid "This tool has no options"
-msgstr ""
+msgstr "ਇਹ ਸੰਦ ਲਈ ਕੋਈ ਚੋਣ ਨਹੀਂ"
 
 #. Put buttons in
 #: ../plug-ins/gfig/gfig-dialog.c:1230
-#, fuzzy
 msgid "Show position"
-msgstr "ਸਥਿਤੀ"
+msgstr "ਸਥਿਤੀ ਵੇਖਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1242
-#, fuzzy
 msgid "Show control points"
-msgstr "ਕੋਈ ਰੰਗ ਨਹੀ"
+msgstr "ਕੰਟਰੋਲ ਬਿੰਦੂ ਵੇਖਾਓ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1276
-#, fuzzy
 msgid "Max undo:"
-msgstr "ਨੂੰ ਮਾਪੋ:"
+msgstr "ਅਧਿਕਤਮ ਵਾਪਸ:"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1285
 #: ../plug-ins/gimpressionist/general.c:166
@@ -8772,7 +8716,7 @@ msgstr "ਪਾਰਦਰਸ਼ੀ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1287
 msgid "Foreground"
-msgstr ""
+msgstr "ਮੁੱਖ-ਭੂਮੀ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1289 ../plug-ins/imagemap/imap_cmd_copy.c:54
 #: ../plug-ins/imagemap/imap_cmd_copy_object.c:55
@@ -8789,7 +8733,7 @@ msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:1304
 msgid "Background:"
-msgstr ""
+msgstr "ਪਿੱਠਭੂਮੀ:"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1307
 msgid "Feather"
@@ -8797,7 +8741,7 @@ msgstr "ਅੱਗੇ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1331
 msgid "Radius:"
-msgstr ""
+msgstr "ਅਰਧ-ਵਿਆਸ:"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1386
 msgid "Grid spacing:"
@@ -8806,7 +8750,7 @@ msgstr ""
 #: ../plug-ins/gfig/gfig-dialog.c:1402 ../plug-ins/imagemap/imap_menu.c:369
 #: ../plug-ins/imagemap/imap_popup.c:137 ../plug-ins/imagemap/imap_tools.c:156
 msgid "Rectangle"
-msgstr ""
+msgstr "ਚਤੁਰਭੁਜ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1404
 msgid "Isometric"
@@ -8818,7 +8762,7 @@ msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:1420 ../plug-ins/gflare/gflare.c:559
 msgid "Normal"
-msgstr ""
+msgstr "ਸਧਾਰਨ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1423
 msgid "Grey"
@@ -8826,20 +8770,19 @@ msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:1424
 msgid "Darker"
-msgstr ""
+msgstr "ਗੂੜਾ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1425
 msgid "Lighter"
-msgstr ""
+msgstr "ਹਲਕਾ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1426
 msgid "Very dark"
 msgstr ""
 
 #: ../plug-ins/gfig/gfig-dialog.c:1435
-#, fuzzy
 msgid "Grid color:"
-msgstr "ਕੋਈ ਰੰਗ ਨਹੀ"
+msgstr "ਗਰਿੱਡ ਰੰਗ:"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1638
 #, fuzzy
@@ -8847,14 +8790,12 @@ msgid "Sides:"
 msgstr "ਆਕਾਰ:"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1648
-#, fuzzy
 msgid "Right"
-msgstr "ਸੱਜਾਃ"
+msgstr "ਸੱਜੇ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1649
-#, fuzzy
 msgid "Left"
-msgstr "ਖੱਬਾਃ"
+msgstr "ਖੱਬੇ"
 
 #: ../plug-ins/gfig/gfig-dialog.c:1659
 #: ../plug-ins/gimpressionist/orientation.c:130
@@ -8884,7 +8825,6 @@ msgstr "ਇਕਾਈ ਵੇਰਵਾ"
 
 #. Position labels
 #: ../plug-ins/gfig/gfig-preview.c:383
-#, fuzzy
 msgid "XY position:"
 msgstr "XY ਸਥਿਤੀ:"
 
@@ -8922,7 +8862,7 @@ msgstr "ਸ਼ਾਮਿਲ"
 
 #: ../plug-ins/gflare/gflare.c:561
 msgid "Overlay"
-msgstr ""
+msgstr "ਪਰਤ ਫੈਲਾਉ"
 
 #: ../plug-ins/gflare/gflare.c:821
 msgid "_GFlare..."
@@ -9006,7 +8946,7 @@ msgstr ""
 
 #: ../plug-ins/gflare/gflare.c:2785
 msgid "_Threshold"
-msgstr ""
+msgstr "ਮੁੱਢਲਾ ਮੁੱਲ(_T)"
 
 #: ../plug-ins/gflare/gflare.c:2923
 msgid "S_elector"
@@ -9067,7 +9007,7 @@ msgstr ""
 #: ../plug-ins/gflare/gflare.c:3378 ../plug-ins/gflare/gflare.c:3406
 #: ../plug-ins/gflare/gflare.c:3434
 msgid "Opacity:"
-msgstr ""
+msgstr "ਧੁੰਦਲਾਪਨ:"
 
 #: ../plug-ins/gflare/gflare.c:3391 ../plug-ins/gflare/gflare.c:3419
 #: ../plug-ins/gflare/gflare.c:3447
@@ -9086,7 +9026,7 @@ msgstr ""
 
 #: ../plug-ins/gflare/gflare.c:3450 ../plug-ins/gimpressionist/general.c:115
 msgid "_General"
-msgstr ""
+msgstr "ਸਧਾਰਨ(_G)"
 
 #.
 #. *  Gradient Menus
@@ -9094,7 +9034,7 @@ msgstr ""
 #: ../plug-ins/gflare/gflare.c:3476 ../plug-ins/gflare/gflare.c:3579
 #: ../plug-ins/gflare/gflare.c:3718
 msgid "Gradients"
-msgstr ""
+msgstr "ਢਾਲਵਾਂ"
 
 #: ../plug-ins/gflare/gflare.c:3487 ../plug-ins/gflare/gflare.c:3592
 #: ../plug-ins/gflare/gflare.c:3729
@@ -9204,7 +9144,7 @@ msgstr ""
 
 #: ../plug-ins/gimpressionist/brush.c:481
 msgid "_Brush"
-msgstr ""
+msgstr "ਬੁਰਸ਼(_B)"
 
 #: ../plug-ins/gimpressionist/brush.c:518
 #: ../plug-ins/print/gimp_color_window.c:407
@@ -9217,11 +9157,12 @@ msgstr ""
 
 #: ../plug-ins/gimpressionist/brush.c:544
 msgid "Select:"
-msgstr "ਚੁਣ:"
+msgstr "ਚੁਣੋ:"
 
 #: ../plug-ins/gimpressionist/brush.c:573
+#, fuzzy
 msgid "Aspect ratio:"
-msgstr ""
+msgstr "ਆਕਾਰ ਅਨੁਪਾਤ:"
 
 #: ../plug-ins/gimpressionist/brush.c:577
 msgid "Specifies the aspect ratio of the brush"
@@ -9411,8 +9352,9 @@ msgstr ""
 
 #: ../plug-ins/gimpressionist/orientation.c:142
 #: ../plug-ins/gimpressionist/size.c:145
+#, fuzzy
 msgid "Radius"
-msgstr ""
+msgstr "ਅਰਧ-ਵਿਆਸ"
 
 #: ../plug-ins/gimpressionist/orientation.c:143
 msgid ""
@@ -9426,8 +9368,9 @@ msgstr ""
 
 #: ../plug-ins/gimpressionist/orientation.c:150
 #: ../plug-ins/gimpressionist/size.c:153
+#, fuzzy
 msgid "Radial"
-msgstr ""
+msgstr "ਕਰਣੀ"
 
 #: ../plug-ins/gimpressionist/orientation.c:151
 msgid "Let the direction from the center determine the direction of the stroke"
@@ -9458,8 +9401,9 @@ msgstr ""
 
 #: ../plug-ins/gimpressionist/orientation.c:174
 #: ../plug-ins/gimpressionist/size.c:178
+#, fuzzy
 msgid "Manual"
-msgstr ""
+msgstr "ਦਸਤੀ"
 
 #: ../plug-ins/gimpressionist/orientation.c:175
 msgid "Manually specify the stroke orientation"
@@ -9498,8 +9442,9 @@ msgstr ""
 
 #: ../plug-ins/gimpressionist/orientmap.c:595
 #: ../plug-ins/gimpressionist/sizemap.c:466
+#, fuzzy
 msgid "A_dd"
-msgstr ""
+msgstr "ਜੋੜ੍ਹੋ"
 
 #: ../plug-ins/gimpressionist/orientmap.c:599
 msgid "Add new vector"
@@ -9680,8 +9625,9 @@ msgid "Revert to the original image"
 msgstr ""
 
 #: ../plug-ins/gimpressionist/repaint.c:1160
+#, fuzzy
 msgid "Update"
-msgstr ""
+msgstr "ਨਵੀਨੀਕਰਨ"
 
 #: ../plug-ins/gimpressionist/size.c:77
 msgid "_Size"
@@ -9864,8 +9810,9 @@ msgstr ""
 
 #. Simple color control section
 #: ../plug-ins/ifscompose/ifscompose.c:659
+#, fuzzy
 msgid "Simple"
-msgstr ""
+msgstr "ਨਮੂਨਾ"
 
 #: ../plug-ins/ifscompose/ifscompose.c:668
 #, fuzzy
@@ -9882,8 +9829,9 @@ msgstr ""
 
 #. Full color control section
 #: ../plug-ins/ifscompose/ifscompose.c:706
+#, fuzzy
 msgid "Full"
-msgstr ""
+msgstr "ਪੂਰਾ"
 
 #: ../plug-ins/ifscompose/ifscompose.c:713
 #, fuzzy
@@ -9924,7 +9872,7 @@ msgstr ""
 #: ../plug-ins/ifscompose/ifscompose.c:1063
 #, fuzzy
 msgid "Select _All"
-msgstr "ਚੁਣ"
+msgstr "_ਸਭ ਚੁਣੋ"
 
 #: ../plug-ins/ifscompose/ifscompose.c:1067
 #, fuzzy
@@ -9948,8 +9896,9 @@ msgid "Move"
 msgstr "ਭੇਜੋ"
 
 #: ../plug-ins/ifscompose/ifscompose.c:1080
+#, fuzzy
 msgid "Rotate"
-msgstr ""
+msgstr "ਘੁੰਮਾਉ"
 
 #: ../plug-ins/ifscompose/ifscompose.c:1080
 msgid "Rotate / Scale"
@@ -9995,7 +9944,7 @@ msgstr ""
 #: ../plug-ins/ifscompose/ifscompose.c:2400
 #, fuzzy
 msgid "Save failed"
-msgstr "ਫਾਇਲ ਸੰਭਾਲੋ"
+msgstr "ਸੰਭਾਲਣ ਅਸਫਲ"
 
 #: ../plug-ins/ifscompose/ifscompose.c:2481
 #: ../plug-ins/ifscompose/ifscompose.c:2494
@@ -10047,8 +9996,9 @@ msgstr ""
 #: ../plug-ins/imagemap/imap_rectangle.c:401
 #: ../plug-ins/imagemap/imap_rectangle.c:408
 #: ../plug-ins/imagemap/imap_rectangle.c:415
+#, fuzzy
 msgid "pixels"
-msgstr ""
+msgstr "ਪਿਕਸਲ"
 
 #: ../plug-ins/imagemap/imap_circle.c:271
 msgid "Center _y:"
@@ -10175,8 +10125,9 @@ msgid "Resulting Guide Bounds: 0,0 to 0,0 (0 areas)"
 msgstr ""
 
 #: ../plug-ins/imagemap/imap_cmd_guides.c:273
+#, fuzzy
 msgid "Guides"
-msgstr ""
+msgstr "ਗਾਇਡਾਂ"
 
 #: ../plug-ins/imagemap/imap_cmd_insert_point.c:62
 #: ../plug-ins/imagemap/imap_polygon.c:737
@@ -10187,8 +10138,9 @@ msgstr ""
 #: ../plug-ins/imagemap/imap_cmd_object_down.c:55
 #: ../plug-ins/imagemap/imap_object_popup.c:109
 #: ../plug-ins/imagemap/imap_selection.c:163
+#, fuzzy
 msgid "Move Down"
-msgstr ""
+msgstr "ਹੇਠਾਂ"
 
 #: ../plug-ins/imagemap/imap_cmd_move_sash.c:68
 msgid "Move Sash"
@@ -10207,13 +10159,15 @@ msgstr ""
 #: ../plug-ins/imagemap/imap_cmd_object_up.c:55
 #: ../plug-ins/imagemap/imap_object_popup.c:107
 #: ../plug-ins/imagemap/imap_selection.c:159
+#, fuzzy
 msgid "Move Up"
-msgstr ""
+msgstr "ਉੱਪਰ ਜਾਓ"
 
 #: ../plug-ins/imagemap/imap_cmd_paste.c:51
 #: ../plug-ins/imagemap/imap_toolbar.c:129
+#, fuzzy
 msgid "Paste"
-msgstr ""
+msgstr "ਚਿਪਕਾਓ"
 
 #: ../plug-ins/imagemap/imap_cmd_select.c:53
 #: ../plug-ins/imagemap/imap_tools.c:144
@@ -10221,8 +10175,9 @@ msgid "Select"
 msgstr "ਚੁਣ"
 
 #: ../plug-ins/imagemap/imap_cmd_select_all.c:51
+#, fuzzy
 msgid "Select All"
-msgstr ""
+msgstr "ਸਭ ਚੁਣੋ"
 
 #: ../plug-ins/imagemap/imap_cmd_select_next.c:51
 msgid "Select Next"
@@ -10242,12 +10197,14 @@ msgid "Send To Back"
 msgstr ""
 
 #: ../plug-ins/imagemap/imap_cmd_unselect.c:53
+#, fuzzy
 msgid "Unselect"
-msgstr ""
+msgstr "ਨਾ-ਚੁਣੇ"
 
 #: ../plug-ins/imagemap/imap_cmd_unselect_all.c:53
+#, fuzzy
 msgid "Unselect All"
-msgstr ""
+msgstr "ਸਭ ਨਾ-ਚੁਣੇ"
 
 #: ../plug-ins/imagemap/imap_edit_area_info.c:196
 msgid "Link Type"
@@ -10310,8 +10267,9 @@ msgid "_Link"
 msgstr "ਸੰਬੰਧ"
 
 #: ../plug-ins/imagemap/imap_edit_area_info.c:310
+#, fuzzy
 msgid "Dimensions"
-msgstr ""
+msgstr "ਮਾਪ"
 
 #: ../plug-ins/imagemap/imap_edit_area_info.c:314
 msgid "Pre_view"
@@ -10341,7 +10299,7 @@ msgstr ""
 #: ../plug-ins/imagemap/imap_file.c:117
 #, fuzzy
 msgid "File already exists"
-msgstr "ਫਾਇਲ ਮੌਜੂਦ ਹੈ!"
+msgstr "ਫਾਇਲ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ"
 
 #: ../plug-ins/imagemap/imap_file.c:118
 msgid "Do you really want to overwrite?"
@@ -10456,14 +10414,14 @@ msgid "Open recent"
 msgstr "ਫਾਇਲ ਖੋਲੋ"
 
 #: ../plug-ins/imagemap/imap_menu.c:209
-#, c-format
+#, fuzzy, c-format
 msgid "_Undo %s"
-msgstr ""
+msgstr "ਮੁੜ ਕਰੋ %s"
 
 #: ../plug-ins/imagemap/imap_menu.c:225
-#, c-format
+#, fuzzy, c-format
 msgid "_Redo %s"
-msgstr ""
+msgstr "ਮੁੜ ਪਹਿਲਾਂ ਕਰੋ %s"
 
 #: ../plug-ins/imagemap/imap_menu.c:253
 msgid "_Edit"
@@ -10497,8 +10455,9 @@ msgstr "ਸਰੋਤ..."
 
 #: ../plug-ins/imagemap/imap_menu.c:310
 #: ../plug-ins/print/gimp_main_window.c:1410
+#, fuzzy
 msgid "Grayscale"
-msgstr ""
+msgstr "ਸਲੇਟੀ ਪੈਮਾਨਾ"
 
 #: ../plug-ins/imagemap/imap_menu.c:328
 #, fuzzy
@@ -10542,7 +10501,7 @@ msgstr "ਸਹਾਇਤਾ"
 #: ../plug-ins/imagemap/imap_menu.c:401
 #, fuzzy
 msgid "_Contents"
-msgstr "ਤੀਬਰਤਾ"
+msgstr "ਸੰਖੇਪ(_C)"
 
 #: ../plug-ins/imagemap/imap_menu.c:405
 msgid "_About ImageMap"
@@ -10597,13 +10556,14 @@ msgid "Couldn't save resource file:"
 msgstr ""
 
 #: ../plug-ins/imagemap/imap_preferences.c:358
+#, fuzzy
 msgid "Select Color"
-msgstr ""
+msgstr "ਰੰਗ ਚੁਣੋ"
 
 #: ../plug-ins/imagemap/imap_preferences.c:443
 #, fuzzy
 msgid "General"
-msgstr "ਆਮ ਚੋਣ"
+msgstr "ਸਧਾਰਨ"
 
 #: ../plug-ins/imagemap/imap_preferences.c:447
 msgid "Default Map Type"
@@ -10651,8 +10611,9 @@ msgid "Normal:"
 msgstr ""
 
 #: ../plug-ins/imagemap/imap_preferences.c:524
+#, fuzzy
 msgid "Selected:"
-msgstr ""
+msgstr "ਚੁਣਿਆ:"
 
 #: ../plug-ins/imagemap/imap_preferences.c:535
 msgid "Co_ntiguous Region"
@@ -10684,16 +10645,18 @@ msgid "Edit"
 msgstr "ਸੋਧ"
 
 #: ../plug-ins/imagemap/imap_selection.c:410
+#, fuzzy
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: ../plug-ins/imagemap/imap_selection.c:439
 msgid "ALT Text"
 msgstr ""
 
 #: ../plug-ins/imagemap/imap_selection.c:449
+#, fuzzy
 msgid "Target"
-msgstr ""
+msgstr "ਨਿਯਤ"
 
 #: ../plug-ins/imagemap/imap_settings.c:90
 msgid "Settings for this Mapfile"
@@ -10708,12 +10671,14 @@ msgid "Image name:"
 msgstr ""
 
 #: ../plug-ins/imagemap/imap_settings.c:98
+#, fuzzy
 msgid "Select Image File"
-msgstr ""
+msgstr "ਚਿੱਤਰ ਫਾਇਲ ਚੁਣੋ"
 
 #: ../plug-ins/imagemap/imap_settings.c:102
+#, fuzzy
 msgid "_Title:"
-msgstr ""
+msgstr "ਸਿਰਲੇਖ:"
 
 #: ../plug-ins/imagemap/imap_settings.c:104
 msgid "Aut_hor:"
@@ -10752,12 +10717,14 @@ msgid "Preferences"
 msgstr "ਮੇਰੀ ਪਸੰਦ"
 
 #: ../plug-ins/imagemap/imap_toolbar.c:112
+#, fuzzy
 msgid "Undo"
-msgstr ""
+msgstr "ਵਾਪਿਸ"
 
 #: ../plug-ins/imagemap/imap_toolbar.c:116
+#, fuzzy
 msgid "Redo"
-msgstr ""
+msgstr "ਮੁੜ ਉਹੀ"
 
 #: ../plug-ins/imagemap/imap_toolbar.c:137
 msgid "Zoom in"
@@ -10925,8 +10892,9 @@ msgid "Print Color Adjust"
 msgstr ""
 
 #: ../plug-ins/print/gimp_color_window.c:268
+#, fuzzy
 msgid "Brightness:"
-msgstr ""
+msgstr "ਚਮਕੀਲਾਪਨ:"
 
 #: ../plug-ins/print/gimp_color_window.c:276
 msgid ""
@@ -10935,8 +10903,9 @@ msgid ""
 msgstr ""
 
 #: ../plug-ins/print/gimp_color_window.c:288
+#, fuzzy
 msgid "Contrast:"
-msgstr ""
+msgstr "ਭਿੰਨਤਾ:"
 
 #: ../plug-ins/print/gimp_color_window.c:296
 msgid "Set the contrast of the print"
@@ -10961,8 +10930,9 @@ msgid ""
 msgstr ""
 
 #: ../plug-ins/print/gimp_color_window.c:385
+#, fuzzy
 msgid "Density:"
-msgstr ""
+msgstr "ਘਣਤਾ:"
 
 #: ../plug-ins/print/gimp_color_window.c:393
 msgid ""
@@ -11031,12 +11001,14 @@ msgid "Auto"
 msgstr "ਸਵੈ"
 
 #: ../plug-ins/print/gimp_main_window.c:482
+#, fuzzy
 msgid "Portrait"
-msgstr ""
+msgstr "ਪੋਰਟਰੇਟ"
 
 #: ../plug-ins/print/gimp_main_window.c:483
+#, fuzzy
 msgid "Landscape"
-msgstr ""
+msgstr "ਭੂ-ਦਰਿਸ਼"
 
 #: ../plug-ins/print/gimp_main_window.c:484
 msgid "Upside down"
@@ -11259,8 +11231,9 @@ msgid "Media size:"
 msgstr ""
 
 #: ../plug-ins/print/gimp_main_window.c:989
+#, fuzzy
 msgid "Dimensions:"
-msgstr ""
+msgstr "ਆਕਾਰ:"
 
 #: ../plug-ins/print/gimp_main_window.c:1003
 msgid "Width of the paper that you wish to print to"
@@ -11318,8 +11291,9 @@ msgid ""
 msgstr ""
 
 #: ../plug-ins/print/gimp_main_window.c:1162
+#, fuzzy
 msgid "Percent"
-msgstr ""
+msgstr "ਪ੍ਰਤੀਸ਼ਤ"
 
 #: ../plug-ins/print/gimp_main_window.c:1169
 msgid "Scale the print to the size of the page"
@@ -11392,18 +11366,16 @@ msgid "Optimize the output for the type of image being printed"
 msgstr ""
 
 #: ../plug-ins/print/gimp_main_window.c:1329
-#, fuzzy
 msgid "Line art"
-msgstr "ਰੇਖੀ"
+msgstr "ਸਤਰ ਕਲਾਕਾਰੀ"
 
 #: ../plug-ins/print/gimp_main_window.c:1336
 msgid "Fastest and brightest color for text and line art"
 msgstr ""
 
 #: ../plug-ins/print/gimp_main_window.c:1343
-#, fuzzy
 msgid "Solid colors"
-msgstr "ਕੋਈ ਰੰਗ ਨਹੀ"
+msgstr "ਇੱਕ ਰੰਗ"
 
 #: ../plug-ins/print/gimp_main_window.c:1350
 msgid "Best for images dominated by regions of solid color"
@@ -11437,7 +11409,7 @@ msgstr ""
 
 #: ../plug-ins/print/gimp_main_window.c:1424
 msgid "Black and white"
-msgstr ""
+msgstr "ਕਾਲਾ ਤੇ ਚਿੱਟਾ"
 
 #: ../plug-ins/print/gimp_main_window.c:1431
 msgid "Print in black and white (no color, and no shades of gray)"
@@ -11461,7 +11433,7 @@ msgstr ""
 
 #: ../plug-ins/print/print.c:164
 msgid "_Print..."
-msgstr ""
+msgstr "ਛਾਪੋ(_P)..."
 
 #: ../plug-ins/print/print.c:694 ../plug-ins/print/print.c:695
 #: ../plug-ins/print/print.c:785 ../plug-ins/print/print.c:1124
@@ -11476,92 +11448,89 @@ msgstr ""
 msgid "Rotating the colormap..."
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:114
+#: ../plug-ins/rcm/rcm_dialog.c:119
 msgid "Original"
 msgstr "ਅਸਲੀ"
 
-#: ../plug-ins/rcm/rcm_dialog.c:127
+#: ../plug-ins/rcm/rcm_dialog.c:133
 msgid "Rotated"
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:140
+#: ../plug-ins/rcm/rcm_dialog.c:147
 msgid "Continuous update"
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:153
+#: ../plug-ins/rcm/rcm_dialog.c:160
 msgid "Area:"
 msgstr "ਖੇਤਰ:"
 
-#: ../plug-ins/rcm/rcm_dialog.c:157
+#: ../plug-ins/rcm/rcm_dialog.c:164
 msgid "Entire Layer"
 msgstr "ਸਾਰੀ ਪਰਤ"
 
-#: ../plug-ins/rcm/rcm_dialog.c:159
+#: ../plug-ins/rcm/rcm_dialog.c:166
 msgid "Context"
-msgstr ""
+msgstr "ਪ੍ਰਸੰਗ"
 
 #. spinbutton 1
-#: ../plug-ins/rcm/rcm_dialog.c:284 ../plug-ins/rcm/rcm_dialog.c:362
+#: ../plug-ins/rcm/rcm_dialog.c:291 ../plug-ins/rcm/rcm_dialog.c:369
 msgid "From"
 msgstr "ਵੱਲੋਂ"
 
 #. spinbutton 2
-#: ../plug-ins/rcm/rcm_dialog.c:310 ../plug-ins/rcm/rcm_dialog.c:363
+#: ../plug-ins/rcm/rcm_dialog.c:317 ../plug-ins/rcm/rcm_dialog.c:370
 msgid "To"
 msgstr "ਵੱਲ"
 
 #. * Gray: Operation-Mode *
-#: ../plug-ins/rcm/rcm_dialog.c:499
-#, fuzzy
+#: ../plug-ins/rcm/rcm_dialog.c:506
 msgid "Gray Mode"
-msgstr "ਰੰਗ ਮੋਡ"
+msgstr "ਸਲੇਟੀ ਮੋਡ"
 
 #. Gray: Operation-Mode: two radio buttons
-#: ../plug-ins/rcm/rcm_dialog.c:508
+#: ../plug-ins/rcm/rcm_dialog.c:515
 msgid "Treat as this"
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:520
+#: ../plug-ins/rcm/rcm_dialog.c:527
 msgid "Change to this"
 msgstr "ਇਸ ਨੂੰ ਤਬਦੀਲ ਕਰੋ"
 
 #. * Gray: What is gray? *
-#: ../plug-ins/rcm/rcm_dialog.c:533
-#, fuzzy
+#: ../plug-ins/rcm/rcm_dialog.c:540
 msgid "Gray Threshold"
-msgstr "ਥਰਿੱਸ਼ਹੋਲਡ:"
+msgstr "ਸਲੇਟੀ ਥਰਿੱਸ਼ਹੋਲਡ:"
 
 #. * Misc: Used unit selection *
-#: ../plug-ins/rcm/rcm_dialog.c:572 ../plug-ins/rcm/rcm_dialog.c:676
+#: ../plug-ins/rcm/rcm_dialog.c:579 ../plug-ins/rcm/rcm_dialog.c:683
 msgid "Units"
 msgstr "ਇਕਾਈਆਂ"
 
 #. Misc: Used unit selection: 3 radio buttons
-#: ../plug-ins/rcm/rcm_dialog.c:581
+#: ../plug-ins/rcm/rcm_dialog.c:588
 msgid "Radians"
-msgstr ""
+msgstr "ਰੇਡੀਅਨ"
 
-#: ../plug-ins/rcm/rcm_dialog.c:593
+#: ../plug-ins/rcm/rcm_dialog.c:600
 msgid "Radians/Pi"
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:605
+#: ../plug-ins/rcm/rcm_dialog.c:612
 msgid "Degrees"
 msgstr "ਡਿਗਰੀਆਂ"
 
 #. Create dialog
-#: ../plug-ins/rcm/rcm_dialog.c:638
+#: ../plug-ins/rcm/rcm_dialog.c:645
 msgid "Colormap Rotation"
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:670
+#: ../plug-ins/rcm/rcm_dialog.c:677
 msgid "Main Options"
 msgstr ""
 
-#: ../plug-ins/rcm/rcm_dialog.c:673
-#, fuzzy
+#: ../plug-ins/rcm/rcm_dialog.c:680
 msgid "Gray Options"
-msgstr "ਆਮ ਚੋਣ"
+msgstr "ਸਲੇਟੀ ਚੋਣ"
 
 #: ../plug-ins/rcm/rcm_stock.c:35
 msgid "Switch to clockwise"
@@ -11577,7 +11546,7 @@ msgstr ""
 
 #: ../plug-ins/rcm/rcm_stock.c:41
 msgid "Select all"
-msgstr ""
+msgstr "ਸਭ ਚੁਣੋ"
 
 #. printf("width = %d, height = %d\n",BITMAP_WIDTH(marked),BITMAP_HEIGHT(marked));
 #: ../plug-ins/sel2path/pxl-outline.c:83
@@ -11610,9 +11579,8 @@ msgid "Compression type"
 msgstr ""
 
 #: ../plug-ins/sgi/sgi.c:635
-#, fuzzy
 msgid "No compression"
-msgstr "ਕੋਈ ਰੰਗ ਨਹੀ"
+msgstr "ਕੋਈ ਨਪੀੜਨ ਨਹੀ"
 
 #: ../plug-ins/sgi/sgi.c:637
 msgid "RLE compression"
@@ -11641,37 +11609,36 @@ msgstr ""
 msgid "Transferring TWAIN data..."
 msgstr ""
 
-#: ../plug-ins/winicon/icodialog.c:123
+#: ../plug-ins/winicon/icodialog.c:89
 msgid "1 bpp, 1-bit alpha, 2-slot palette"
 msgstr ""
 
-#: ../plug-ins/winicon/icodialog.c:124
+#: ../plug-ins/winicon/icodialog.c:90
 msgid "4 bpp, 1-bit alpha, 16-slot palette"
 msgstr ""
 
-#: ../plug-ins/winicon/icodialog.c:125
+#: ../plug-ins/winicon/icodialog.c:91
 msgid "8 bpp, 1-bit alpha, 256-slot palette"
 msgstr ""
 
-#: ../plug-ins/winicon/icodialog.c:126
+#: ../plug-ins/winicon/icodialog.c:92
 msgid "32 bpp, 8-bit alpha, no palette"
 msgstr ""
 
-#: ../plug-ins/winicon/icodialog.c:151
+#: ../plug-ins/winicon/icodialog.c:117
 msgid "GIMP Windows Icon Plugin"
 msgstr ""
 
-#: ../plug-ins/winicon/icodialog.c:172
-#, fuzzy
+#: ../plug-ins/winicon/icodialog.c:138
 msgid "Icon details"
-msgstr "ਇਕਾਈ ਵੇਰਵਾ"
+msgstr "ਆਈਕਾਨ ਵੇਰਵਾ"
 
 #: ../plug-ins/winicon/icoload.c:340
 #, c-format
 msgid "Icon #%i"
 msgstr ""
 
-#: ../plug-ins/winicon/icosave.c:943
+#: ../plug-ins/winicon/icosave.c:969
 msgid "Windows icons cannot be higher or wider than 255 pixels."
 msgstr ""
 
@@ -11692,9 +11659,8 @@ msgid "after"
 msgstr "ਬਾਅਦ"
 
 #: ../plug-ins/winsnap/winsnap.c:919
-#, fuzzy
 msgid "Seconds delay"
-msgstr "ਸਕਿੰਟਾਂ ਦਾ ਅੰਤਰਾਲ"
+msgstr "ਸਕਿੰਟ ਅੰਤਰਾਲ"
 
 #: ../plug-ins/winsnap/winsnap.c:926
 msgid "Include decorations"
@@ -11743,9 +11709,8 @@ msgid "Save as XJT"
 msgstr ""
 
 #: ../plug-ins/xjt/xjt.c:870
-#, fuzzy
 msgid "Clear transparent"
-msgstr "ਪਾਰਦਰਸ਼ੀ"
+msgstr "ਪਾਰਦਰਸ਼ੀ ਸਾਫ਼"
 
 #: ../plug-ins/xjt/xjt.c:882
 msgid "Quality:"
@@ -11769,258 +11734,3 @@ msgstr ""
 #, c-format
 msgid "Error: XJT property file '%s' is empty."
 msgstr ""
-
-#~ msgid "Before and After"
-#~ msgstr "ਪਹਿਲਾਂ ਤੇ ਬਾਅਦ"
-
-#, fuzzy
-#~ msgid "TIFF images"
-#~ msgstr "TIFF ਚੈਨਲ"
-
-#~ msgid "Paint"
-#~ msgstr "ਚਿੱਤਰ"
-
-#~ msgid "All"
-#~ msgstr "ਸਭ"
-
-#~ msgid "/Move"
-#~ msgstr "/ਭੇਜੋ"
-
-#~ msgid "/Stretch"
-#~ msgstr "/ਖਿੱਚੋਂ"
-
-#~ msgid "/New"
-#~ msgstr "/ਨਵਾਂ"
-
-#~ msgid "/Delete"
-#~ msgstr "/ਹਟਾਓ"
-
-#~ msgid "/Redo"
-#~ msgstr "/ਮੁਡ਼ ਕਰੋ"
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Render"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਰੱਖੋ/ਆਂਸ਼ਿਕ ਐਕਸਪਲੋਰਰ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Light Effects"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਘੱਟ ਪ੍ਰਭਾਵ/ਰੌਸ਼ਨੀ ਪ੍ਰਭਾਵ਼"
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Map"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਨਕਸ਼ਾ/ਨਕਸ਼ਾ ਆਬਜੈਕਟ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Colors/Map"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਨਕਸ਼ਾ/ਨਕਸ਼ਾ ਆਬਜੈਕਟ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Render/Pattern"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਰੱਖੋ/ਆਂਸ਼ਿਕ ਐਕਸਪਲੋਰਰ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Animation"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Glass Effects"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਨਕਸ਼ਾ/ਨਕਸ਼ਾ ਆਬਜੈਕਟ..."
-
-#, fuzzy
-#~ msgid "<Image>/Layer/Colors/Auto"
-#~ msgstr "<Image>/ਪਰਤ/ਰੰਗ/ਸਵੈ/ਰੰਗ ਵਾਧਾ"
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Distorts"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Blur"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Colors"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Layer/Colors/Info"
-#~ msgstr "<Image>/ਪਰਤ/ਰੰਗ/ਸਵੈ/ਰੰਗ ਵਾਧਾ"
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Generic"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Artistic"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Enhance"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਨਕਸ਼ਾ/ਨਕਸ਼ਾ ਆਬਜੈਕਟ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Combine"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Edge-Detect"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਨਕਸ਼ਾ/ਨਕਸ਼ਾ ਆਬਜੈਕਟ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Toys"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/File/Send"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "_Do preview"
-#~ msgstr "ਨਮੂਨਾ"
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Noise"
-#~ msgstr "<Image>/ਫਾਇਲ/ਛਾਪੋ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Render/Clouds"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਰੱਖੋ/ਆਂਸ਼ਿਕ ਐਕਸਪਲੋਰਰ..."
-
-#, fuzzy
-#~ msgid "<Toolbox>/File/Acquire"
-#~ msgstr "<Toolbox>/ਫਾਇਲ਼/ਪ੍ਰਾਪਤ ਕਰੋ/ਪਰਦਾ ਤਸਵੀਰ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Render/Nature"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਰੱਖੋ/ਆਂਸ਼ਿਕ ਐਕਸਪਲੋਰਰ..."
-
-#, fuzzy
-#~ msgid "<Image>/Filters/Web"
-#~ msgstr "<Image>/ਫਿਲਟਰ/ਨਕਸ਼ਾ/ਨਕਸ਼ਾ ਆਬਜੈਕਟ..."
-
-#, fuzzy
-#~ msgid "Source"
-#~ msgstr "ਸਰੋਤ 1:"
-
-#, fuzzy
-#~ msgid "Do pre_view"
-#~ msgstr "ਨਮੂਨਾ"
-
-#~ msgid "Details <<"
-#~ msgstr "ਵੇਰਵਾ <<"
-
-#~ msgid "Details >>"
-#~ msgstr "ਵੇਰਵਾ >>"
-
-#~ msgid "Name:"
-#~ msgstr "ਨਾਂ:"
-
-#~ msgid "Help:"
-#~ msgstr "ਸਹਾਇਤਾ:"
-
-#~ msgid "Search:"
-#~ msgstr "ਖੋਜ:"
-
-#~ msgid "In:"
-#~ msgstr "ਬਾਹਰ:"
-
-#~ msgid "Out:"
-#~ msgstr "ਅੰਦਰ:"
-
-#, fuzzy
-#~ msgid "_Spherical"
-#~ msgstr "ਗੋਲਾਕਾਰ"
-
-#, fuzzy
-#~ msgid "S_inusoidal"
-#~ msgstr "ਸਾਈਨੋਸਾਇਡਲ"
-
-#~ msgid "Save: No filename given"
-#~ msgstr "ਸੰਭਾਲੋ: ਕੋਈ ਫਾਇਲ-ਨਾਮ ਨਹੀ ਦਿੱਤਾ"
-
-#~ msgid "Cannot save to a folder."
-#~ msgstr "ਫੋਲਡਰ ਵਿੱਚ ਸੰਭਾਲ ਨਹੀ ਸਕਦਾ ।"
-
-#~ msgid "Lig_ht Color:"
-#~ msgstr "ਰੌਸ਼ਨੀ ਰੰਗ:"
-
-#~ msgid "_Ambient:"
-#~ msgstr "ਹਰ-ਪਾਸੇ:"
-
-#~ msgid "_Diffuse:"
-#~ msgstr "ਫੈਲਾਉਣਾ:"
-
-#~ msgid "D_iffuse:"
-#~ msgstr "ਫੈਲਾਉਣਾ:"
-
-#~ msgid "_Specular:"
-#~ msgstr "ਚਮਕੀਲਾ:"
-
-#~ msgid "_Highlight:"
-#~ msgstr "ਉਭਾਰੋ:"
-
-#~ msgid "NULL"
-#~ msgstr "NULL"
-
-#~ msgid "The Graph"
-#~ msgstr "ਗਰਾਫ"
-
-#~ msgid "S_inusoidal Map"
-#~ msgstr "ਸਾਈਨੋਸਾਇਡਲ ਨਕਸ਼ਾ"
-
-#~ msgid "Results"
-#~ msgstr "ਨਤੀਜੇ"
-
-#~ msgid "Icon Name:"
-#~ msgstr "ਆਈਕਾਨ ਨਾਂ:"
-
-#~ msgid "Brush"
-#~ msgstr "ਬੁਰਸ਼"
-
-#~ msgid "Airbrush"
-#~ msgstr "ਹਵਾਈ-ਬੁਰਸ਼"
-
-#~ msgid "Pencil"
-#~ msgstr "ਪੈਨਸਿਲ"
-
-#~ msgid "New"
-#~ msgstr "ਨਵਾਂ"
-
-#~ msgid "Multiple"
-#~ msgstr "ਬਹੁ"
-
-#~ msgid "Using:"
-#~ msgstr "ਵਰਤ ਕੇ:"
-
-#~ msgid "Add"
-#~ msgstr "ਜੋੜ੍ਹੋ"
-
-#~ msgid "Subtract"
-#~ msgstr "ਘਟਾਓ"
-
-#~ msgid "Intersect"
-#~ msgstr "ਸ਼ਾਮਿਲ"
-
-#~ msgid "About Gfig"
-#~ msgstr "Gfig ਬਾਰੇ"
-
-#~ msgid "Gfig - GIMP plug-in"
-#~ msgstr "Gfig - ਜੈਮਪ ਪਲੱਗਇਨ"
-
-#~ msgid "Release 2.0"
-#~ msgstr "ਜਾਰੀ ੨.੦"
-
-#~ msgid "%s copy"
-#~ msgstr "%s ਨਕਲ"
-
-#~ msgid "(none)"
-#~ msgstr "(ਕੋਈ ਨਹੀ)"
-
-#~ msgid "<NONE>"
-#~ msgstr "<ਕੋਈ ਨਹੀ>"
-
-#~ msgid "none"
-#~ msgstr "ਕੋਈ ਨਹੀ"
-
-#~ msgid "Misc"
-#~ msgstr "ਫੁਟਕਲ"

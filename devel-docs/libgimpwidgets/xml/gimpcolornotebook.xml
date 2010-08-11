@@ -19,7 +19,7 @@
 
 
 
-struct      <link linkend="GimpColorNotebook-struct">GimpColorNotebook</link>;
+            <link linkend="GimpColorNotebook-struct">GimpColorNotebook</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-color-notebook-set-has-page">gimp_color_notebook_set_has_page</link>
                                             (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
                                              <link linkend="GType">GType</link> page_type,
@@ -59,8 +59,8 @@ GimpColorNotebook implements
 <title>Style Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpColorNotebook--tab-border">tab-border</link>&quot;           <link linkend="gint">gint</link>                 : Read
-  &quot;<link linkend="GimpColorNotebook--tab-icon-size">tab-icon-size</link>&quot;        <link linkend="GtkIconSize">GtkIconSize</link>          : Read
+  &quot;<link linkend="GimpColorNotebook--tab-border">tab-border</link>&quot;           <link linkend="gint">gint</link>                  : Read
+  &quot;<link linkend="GimpColorNotebook--tab-icon-size">tab-icon-size</link>&quot;        <link linkend="GtkIconSize">GtkIconSize</link>           : Read
 </synopsis>
 </refsect1>
 
@@ -77,8 +77,8 @@ It serves as a container for <link linkend="GimpColorSelectors"><type>GimpColorS
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="GimpColorNotebook-struct"/>struct GimpColorNotebook</title>
-<indexterm><primary>GimpColorNotebook</primary></indexterm><programlisting>struct GimpColorNotebook;</programlisting>
+<title><anchor id="GimpColorNotebook-struct"/>GimpColorNotebook</title>
+<indexterm><primary>GimpColorNotebook</primary></indexterm><programlisting>typedef struct _GimpColorNotebook GimpColorNotebook;</programlisting>
 <para>
 
 </para></refsect2>
@@ -103,25 +103,24 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 <varlistentry><term><parameter>has_page</parameter>&nbsp;:</term>
 <listitem><simpara>  Whether the page should be added or removed.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara> The new page widget, if <parameter>has_page</parameter> was <link linkend="TRUE-CAPS"><type>TRUE</type></link>, or <link linkend="NULL-CAPS"><type>NULL</type></link>
-              if <parameter>has_page</parameter> was <link linkend="FALSE-CAPS"><type>FALSE</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new page widget, if <parameter>has_page</parameter> was <link linkend="TRUE--CAPS"><type>TRUE</type></link>, or <link linkend="NULL--CAPS"><type>NULL</type></link>
+              if <parameter>has_page</parameter> was <link linkend="FALSE--CAPS"><type>FALSE</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1>
 <title>Style Properties</title>
-<variablelist>
-<varlistentry><term><anchor id="GimpColorNotebook--tab-border"/>&quot;<literal>tab-border</literal>&quot; (<link linkend="gint">gint</link> : Read)</term>
-<listitem>
-<para>Width of the border around the tab contents.</para>
-</listitem></varlistentry>
-<varlistentry><term><anchor id="GimpColorNotebook--tab-icon-size"/>&quot;<literal>tab-icon-size</literal>&quot; (<link linkend="GtkIconSize">GtkIconSize</link> : Read)</term>
-<listitem>
-<para>Size for icons displayed in the tab.</para>
-</listitem></varlistentry>
+<refsect2><title><anchor id="GimpColorNotebook--tab-border"/>The &quot;<literal>tab-border</literal>&quot; style property</title>
+<programlisting>  &quot;tab-border&quot;           <link linkend="gint">gint</link>                  : Read</programlisting>
+<para>Width of the border around the tab contents.</para><para>Allowed values: &gt;= 0</para>
+<para>Default value: 0</para>
+</refsect2>
+<refsect2><title><anchor id="GimpColorNotebook--tab-icon-size"/>The &quot;<literal>tab-icon-size</literal>&quot; style property</title>
+<programlisting>  &quot;tab-icon-size&quot;        <link linkend="GtkIconSize">GtkIconSize</link>           : Read</programlisting>
+<para>Size for icons displayed in the tab.</para><para>Default value: GTK_ICON_SIZE_BUTTON</para>
+</refsect2>
 
-</variablelist>
 </refsect1>
 
 

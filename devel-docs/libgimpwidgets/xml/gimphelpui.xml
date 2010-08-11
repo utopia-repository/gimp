@@ -22,7 +22,7 @@ system.</refpurpose>
 
 <link linkend="void">void</link>        (<link linkend="GimpHelpFunc">*GimpHelpFunc</link>)                 (const <link linkend="gchar">gchar</link> *help_id,
                                              <link linkend="gpointer">gpointer</link> help_data);
-#define     <link linkend="GIMP-HELP-ID-CAPS">GIMP_HELP_ID</link>
+#define     <link linkend="GIMP-HELP-ID--CAPS">GIMP_HELP_ID</link>
 <link linkend="void">void</link>        <link linkend="gimp-help-enable-tooltips">gimp_help_enable_tooltips</link>       (void);
 <link linkend="void">void</link>        <link linkend="gimp-help-disable-tooltips">gimp_help_disable_tooltips</link>      (void);
 <link linkend="void">void</link>        <link linkend="gimp-standard-help-func">gimp_standard_help_func</link>         (const <link linkend="gchar">gchar</link> *help_id,
@@ -92,7 +92,7 @@ the help.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-HELP-ID-CAPS"/>GIMP_HELP_ID</title>
+<title><anchor id="GIMP-HELP-ID--CAPS"/>GIMP_HELP_ID</title>
 <indexterm><primary>GIMP_HELP_ID</primary></indexterm><programlisting>#define GIMP_HELP_ID (gimp_help_id_quark ())
 </programlisting>
 <para>
@@ -169,7 +169,7 @@ impossible to set a <parameter>private_tip</parameter> (aka <parameter>help_id</
 <parameter>tooltip</parameter>.
 </para>
 <para>
-This function can be called with <link linkend="NULL-CAPS"><type>NULL</type></link> for <parameter>tooltip</parameter>. Use this feature
+This function can be called with <link linkend="NULL--CAPS"><type>NULL</type></link> for <parameter>tooltip</parameter>. Use this feature
 if you want to set a help link for a widget which shouldn't have
 a visible tooltip.</para>
 <para>

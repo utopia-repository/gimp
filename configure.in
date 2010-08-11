@@ -8,11 +8,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [2])
-m4_define([gimp_micro_version], [4])
+m4_define([gimp_micro_version], [6])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [4])
+m4_define([gimp_interface_age], [6])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -1424,12 +1424,20 @@ gimpdatadir="$datadir/$PACKAGE/gimp_data_version"
 gimpplugindir="$libdir/$PACKAGE/gimp_plugin_version"
 gimpsysconfdir="$sysconfdir/$PACKAGE/gimp_sysconf_version"
 
-localedir='${prefix}/${DATADIRNAME}/locale'
-
 AC_SUBST(gimpdir)
 AC_SUBST(gimpdatadir)
 AC_SUBST(gimpplugindir)
 AC_SUBST(gimpsysconfdir)
+
+
+# GNU format message catalogs go into $datadir/locale,
+# standard location is $libdir/locale. DATADIRNAME set accordingly.
+
+localedir="$datadir/locale"
+if test "$DATADIRNAME" = "lib"; then
+   localedir="$libdir/locale"
+fi
+
 AC_SUBST(localedir)
 
 

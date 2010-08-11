@@ -1,21 +1,24 @@
+# translation of gimp-libgimp.gimp-2-2.po to Punjabi
 # translation of pa.po to Punjabi
 # Copyright (C) 2004 THE gimp-libgimp'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gimp-libgimp packageJaswinder Singh Phulewala <jaswinderlinux@netscape.net>, 2004.
 # Amanpreet Singh Alam <aalam@redhat.com>, 2004.
+# Amanpreet Singh Alam <amanpreetalam@yahoo.com>, 2005.
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pa\n"
+"Project-Id-Version: gimp-libgimp.gimp-2-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-22 23:04+0100\n"
-"PO-Revision-Date: 2004-07-20 16:17+0530\n"
-"Last-Translator: Amanpreet Singh Alam <aalam@redhat.com>\n"
-"Language-Team: Punjabi <pa@li.org>\n"
+"POT-Creation-Date: 2005-04-09 21:56+0200\n"
+"PO-Revision-Date: 2005-03-09 09:35+0530\n"
+"Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
+"Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libgimp/gimpbrushmenu.c:129
 msgid "Brush Selection"
@@ -200,10 +203,9 @@ msgstr "ਢਾਲਵਾ ਚੋਣ"
 
 #: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
-msgstr ""
+msgstr "(ਖਾਲੀ)"
 
 #: ../libgimp/gimppalettemenu.c:91
-#, fuzzy
 msgid "Palette Selection"
 msgstr "ਤਰਤੀਬ ਚੋਣ"
 
@@ -217,73 +219,71 @@ msgstr "ਪ੍ਤੀਸ਼ਤ"
 
 #: ../libgimpbase/gimpbaseenums.c:23
 msgid "Small"
-msgstr ""
+msgstr "ਛੋਟਾ"
 
 #: ../libgimpbase/gimpbaseenums.c:24
 msgid "Medium"
-msgstr ""
+msgstr "ਮੱਧ"
 
 #: ../libgimpbase/gimpbaseenums.c:25
 msgid "Large"
-msgstr ""
+msgstr "ਵੱਡੇ"
 
 #: ../libgimpbase/gimpbaseenums.c:57
 msgid "Light Checks"
-msgstr ""
+msgstr "ਹਲਕੇ ਡੱਬ"
 
 #: ../libgimpbase/gimpbaseenums.c:58
 msgid "Mid-Tone Checks"
-msgstr ""
+msgstr "ਅਰਧ ਡੱਬ"
 
 #: ../libgimpbase/gimpbaseenums.c:59
 msgid "Dark Checks"
-msgstr ""
+msgstr "ਗੂੜੇ ਡੱਬ"
 
 #: ../libgimpbase/gimpbaseenums.c:60
 msgid "White Only"
-msgstr ""
+msgstr "ਚਿੱਟਾ ਹੀ"
 
 #: ../libgimpbase/gimpbaseenums.c:61
 msgid "Gray Only"
-msgstr ""
+msgstr "ਸਲੇਟੀ ਹੀ"
 
 #: ../libgimpbase/gimpbaseenums.c:62
-#, fuzzy
 msgid "Black Only"
-msgstr "ਕਾਲਾ"
+msgstr "ਕਾਲਾ ਹੀ"
 
 #: ../libgimpbase/gimpbaseenums.c:91
 msgid "RGB color"
-msgstr ""
+msgstr "RGB ਰੰਗ"
 
 #: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
-#, fuzzy
 msgid "Grayscale"
-msgstr "ਭੂਰੇ-ਪੈਮਾਨੇ ਵਿੱਚ ਬਦਲੋ"
+msgstr "ਸਲੇਟੀ"
 
 #: ../libgimpbase/gimpbaseenums.c:93
 msgid "Indexed color"
-msgstr ""
+msgstr "ਤਤਕਰਾ ਰੰਗ"
 
 #: ../libgimpbase/gimpbaseenums.c:125
 msgid "RGB"
-msgstr ""
+msgstr "RGB"
 
 #: ../libgimpbase/gimpbaseenums.c:126
 msgid "RGB-alpha"
-msgstr ""
+msgstr "RGB-alpha"
 
 #: ../libgimpbase/gimpbaseenums.c:128
 msgid "Grayscale-alpha"
-msgstr ""
+msgstr "ਸਲੇਟੀ-ਐਲਫਾ"
 
 #: ../libgimpbase/gimpbaseenums.c:129
 msgid "Indexed"
-msgstr ""
+msgstr "Indexed"
 
 #: ../libgimpbase/gimpbaseenums.c:130
 msgid "Indexed-alpha"
-msgstr ""
+msgstr "Indexed-alpha"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, c-format
@@ -378,6 +378,8 @@ msgid ""
 "Cannot determine a valid home directory.\n"
 "Thumbnails will be stored in the folder for temporary files (%s) instead."
 msgstr ""
+"ਠੀਕ ਘਰ ਡਾਇਰੈਕਟਰੀ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ ਹੈ।\n"
+"ਥੰਮਨੇਲ ਆਰਜ਼ੀ ਫਾਇਲਾਂ (%s) ਨੂੰ ਇਸ ਦੀ ਬਜਾਏ ਫੋਲਡਰ ਵਿੱਚ ਸੰਭਾਲੇਗਾ।"
 
 #: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
 #, c-format
@@ -385,29 +387,25 @@ msgid "Failed to create thumbnail folder '%s'."
 msgstr "ਥੰਮਨੇਲ ਫੋਲਡਰ '%s' ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ ।"
 
 #: ../libgimpthumb/gimpthumbnail.c:919
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create thumbnail for %s: %s"
-msgstr "ਥੰਮਨੇਲ ਫੋਲਡਰ '%s' ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ ।"
+msgstr "ਥੰਮਨੇਲ ਫੋਲਡਰ '%s' ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ: %s"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:99
-#, fuzzy
 msgid "_Foreground Color"
-msgstr "/ਮੁੱਖ-ਭੂਮੀ ਰੰਗ"
+msgstr "ਮੁੱਖ-ਭੂਮੀ ਰੰਗ(_F)"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:103
-#, fuzzy
 msgid "_Background Color"
-msgstr "/ਪਿੱਠਭੂਮੀ ਰੰਗ"
+msgstr "ਪਿੱਠਭੂਮੀ ਰੰਗ(_B)"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:107
-#, fuzzy
 msgid "Blac_k"
-msgstr "/ਕਾਲਾ"
+msgstr "ਕਾਲਾ(_k)"
 
 #: ../libgimpwidgets/gimpcolorbutton.c:111
-#, fuzzy
 msgid "_White"
-msgstr "/ਸਫੈਦ"
+msgstr "ਚਿੱਟਾ(_W)"
 
 #: ../libgimpwidgets/gimpcolorscales.c:133
 msgid "Scales"
@@ -484,13 +482,12 @@ msgid "Alpha"
 msgstr "ਐਲਫਾ"
 
 #: ../libgimpwidgets/gimpcolorscales.c:243
-#, fuzzy
 msgid "Hexadecimal color notation as used in HTML and CSS"
-msgstr "HTML ਵਿੱਚ ਵਰਤੀ ਜਾਂਦੀ ਹੈਕਸਾਡੈਸੀਮਲ ਰੰਗ "
+msgstr "HTML ਅਤੇ CSS ਵਿੱਚ ਵਰਤੀ ਜਾਂਦੀ ਹੈਕਸਾਡੈਸੀਮਲ ਰੰਗ "
 
 #: ../libgimpwidgets/gimpcolorscales.c:248
 msgid "HTML _Notation:"
-msgstr ""
+msgstr "HTML ਸ਼ੈਲੀ(_N):"
 
 #: ../libgimpwidgets/gimpcolorselection.c:203
 msgid "Current:"
@@ -509,17 +506,14 @@ msgid "Select File"
 msgstr "ਫਾਇਲ ਚੁਣੋ"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:232
-#, fuzzy
 msgid "Kilobytes"
 msgstr "ਕਿਲੋ-ਬਾਈਟ"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:233
-#, fuzzy
 msgid "Megabytes"
 msgstr "ਮੈਗਾ ਬਾਈਟ"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:234
-#, fuzzy
 msgid "Gigabytes"
 msgstr "ਗੀਗਾ ਬਾਈਟ"
 
@@ -539,16 +533,16 @@ msgstr "ਆਈਡਰੌਪਰ ਦਬਾਓ, ਫਿਰ ਆਪਣੇ ਪਰਦੇ 
 
 #: ../libgimpwidgets/gimppreviewarea.c:126
 msgid "Check Size"
-msgstr ""
+msgstr "ਜਾਂਚ ਅਕਾਰ"
 
 #: ../libgimpwidgets/gimppreviewarea.c:133
 msgid "Check Style"
-msgstr ""
+msgstr "ਜਾਂਚ ਸ਼ੈਲੀ"
 
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:240
 msgid "_Preview"
-msgstr ""
+msgstr "ਦਿੱਖ(_P)"
 
 #: ../libgimpwidgets/gimpstock.c:113
 msgid "Anchor"
@@ -556,7 +550,7 @@ msgstr "ਸਹਾਰਾ"
 
 #: ../libgimpwidgets/gimpstock.c:114
 msgid "C_enter"
-msgstr ""
+msgstr "ਕੇਂਦਰ(_e)"
 
 #: ../libgimpwidgets/gimpstock.c:115
 msgid "_Duplicate"
@@ -588,7 +582,7 @@ msgstr "ਦਿੱਖ"
 
 #: ../libgimpwidgets/gimpstock.c:154 ../libgimpwidgets/gimpstock.c:158
 msgid "_Stroke"
-msgstr ""
+msgstr "ਛੋਹ(_S)"
 
 #: ../libgimpwidgets/gimpstock.c:170
 msgid "L_etter Spacing"
@@ -783,13 +777,12 @@ msgid "Black"
 msgstr "ਕਾਲਾ"
 
 #: ../modules/colorsel_cmyk.c:191
-#, fuzzy
 msgid "Black _Pullout:"
-msgstr "ਕਾਲਾ ਖਿੱਚਿਆ ਹੋਇਆ (%):"
+msgstr "ਕਾਲਾ ਖਿੱਚਿਆ ਹੋਇਆ (_P):"
 
 #: ../modules/colorsel_cmyk.c:208
 msgid "The percentage of black to pull out of the colored inks."
-msgstr ""
+msgstr "ਰੰਗਦਾਰ ਸਿਆਹੀ ਵਿੱਚੋਂ ਫੀਸਦੀ ਕਾਲਾ ਰੰਗ ਖਿੱਚਿਆ ਜਾਵੇਗਾ।"
 
 #: ../modules/colorsel_triangle.c:104
 msgid "Painter-style triangle color selector"
@@ -810,9 +803,3 @@ msgstr "ਪਾਣੀ ਵਰਗਾ ਰੰਗ"
 #: ../modules/colorsel_water.c:220
 msgid "Pressure"
 msgstr "ਦਬਾਅ"
-
-#~ msgid "None"
-#~ msgstr "ਕੋਈ ਨਹੀ"
-
-#~ msgid "He_x Triplet:"
-#~ msgstr "ਹੈਕਸ ਤਿੱਕਡ਼ੀ:"

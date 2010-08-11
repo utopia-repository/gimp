@@ -13,111 +13,55 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include "appenv.h"
 #include "buildmenu.h"
-#include "widget.h"
+#include "interface.h"
 
-Widget
-BuildMenu (parent, menu_type, menu_title, menu_mnemonic, tear_off, items, visual, cmap, depth)
-     Widget parent;
-     int menu_type;
-     char *menu_title;
-     int menu_mnemonic;
-     int tear_off;
-     MenuItem *items;
-     Visual *visual;
-     Colormap cmap;
-     int depth;
+GtkWidget *
+build_menu (MenuItem            *items,
+	    GtkAcceleratorTable *table)
 {
-  Widget menu, cascade, widget;
-  int i;
-  XmString str;
-  Arg args[5];
-  int n;
+  GtkWidget *menu;
+  GtkWidget *menu_item;
 
-  n = 0;
-  XtSetArg (args[n], XmNvisual, visual); n++;
-  XtSetArg (args[n], XmNdepth, depth); n++;
-  XtSetArg (args[n], XmNcolormap, cmap); n++;
+  menu = gtk_menu_new ();
+  gtk_menu_set_accelerator_table (GTK_MENU (menu), table);
 
-  if (menu_type == XmMENU_PULLDOWN || menu_type == XmMENU_OPTION)
-    menu = XmCreatePulldownMenu (parent, "_pulldown", args, n);
-  else
-    menu = XmCreatePopupMenu (parent, "_popup", args, n);
-
-  if (tear_off)
-    XtVaSetValues (menu, XmNtearOffModel, XmTEAR_OFF_ENABLED, NULL);
-
-  if (menu_type == XmMENU_PULLDOWN)
+  while (items->label)
     {
-      str = XmStringCreateLocalized (menu_title);
-      cascade = XtVaCreateManagedWidget (menu_title,
-					 xmCascadeButtonGadgetClass, parent,
-					 XmNsubMenuId, menu,
-					 XmNmnemonic, menu_mnemonic,
-					 NULL);
-      XmStringFree (str);
-    }
-  else if (menu_type == XmMENU_OPTION)
-    {
-      Arg args[5];
-      int n = 0;
-
-      str = XmStringCreateLocalized (menu_title);
-      XtSetArg (args[n], XmNsubMenuId, menu); n++;
-      XtSetArg (args[n], XmNlabelString, str); n++;
-      cascade = XmCreateOptionMenu (parent, menu_title, args, n);
-      XmStringFree (str);
-    }
-  
-  for (i = 0; items[i].label != NULL; i++)
-    {
-      n = 0;
-
-      if (items[i].mnemonic)
+      if (items->label[0] == '-')
 	{
-	  XtSetArg (args[n], XmNmnemonic, items[i].mnemonic);  n++;
-	}
-
-      if (items[i].accelerator)
-	{
-	  str = XmStringCreateLocalized (items[i].accel_text);
-	  XtSetArg (args[n], XmNaccelerator, items[i].accelerator);  n++;
-	  XtSetArg (args[n], XmNacceleratorText, str);  n++;
+	  menu_item = gtk_menu_item_new ();
+	  gtk_container_add (GTK_CONTAINER (menu), menu_item);
 	}
       else
-	str = NULL;
+	{
+	  menu_item = gtk_menu_item_new_with_label (items->label);
+	  gtk_container_add (GTK_CONTAINER (menu), menu_item);
 
-      if (items[i].subitems)
-	if (menu_type == XmMENU_OPTION) 
-	  {
-	    XtWarning ("You can't have submenus from option menu items.");
-	    continue;
-	  }
-	else
-	  widget = BuildMenu (menu, XmMENU_PULLDOWN, items[i].label,
-			      items[i].mnemonic, tear_off, items[i].subitems,
-			      visual, cmap, depth);
-      else
-	widget = XtCreateManagedWidget (items[i].label, *items[i].class, menu, 
-					args, n);
+	  if (items->accelerator_key && table)
+	    gtk_widget_install_accelerator (menu_item,
+					    table,
+					    "activate",
+					    items->accelerator_key,
+					    items->accelerator_mods);
+	}
 
-      if (str) 
-	XmStringFree (str);
+      if (items->callback)
+	gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
+			    (GtkSignalFunc) items->callback,
+			    items->user_data);
 
-      if (items[i].callback)
-	XtAddCallback (widget,
-		       (items[i].class == &xmToggleButtonWidgetClass ||
-			items[i].class == &xmToggleButtonGadgetClass) ?
-		       XmNvalueChangedCallback : XmNactivateCallback,
-		       items[i].callback, items[i].callback_data);
+      if (items->subitems)
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), build_menu (items->subitems, table));
 
-      items[i].w = widget;
+      gtk_widget_show (menu_item);
+      items->widget = menu_item;
+
+      items++;
     }
 
-  items[i].w = (menu_type == XmMENU_POPUP) ? menu : cascade;
-
-  return (menu_type == XmMENU_POPUP) ? menu : cascade;
+  return menu;
 }

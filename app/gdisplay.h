@@ -13,16 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __GDISPLAY_H__
 #define __GDISPLAY_H__
 
-#include "gdither.h"
 #include "gimage.h"
-#include "gximage.h"
+#include "info_dialog.h"
 #include "selection.h"
-#include "timer.h"
 
 /*
  *  Global variables
@@ -31,99 +29,111 @@
 
 /*  some useful macros  */
 
-#define  bounds(a,x,y)  ((a < x) ? x : ((a > y) ? y : a))
-
 #define  SCALESRC(g)    (g->scale & 0x00ff)
 #define  SCALEDEST(g)   (g->scale >> 8)
 #define  SCALE(g,x)     ((x * SCALEDEST(g)) / SCALESRC(g))
 #define  UNSCALE(g,x)   ((x * SCALESRC(g)) / SCALEDEST(g))
 
-/*  Two important macros  */
-#define MINIMUM(x,y) ((x < y) ? x : y)
-#define MAXIMUM(x,y) ((x > y) ? x : y)
-
 #define LOWPASS(x) ((x>0) ? x : 0)
 #define HIGHPASS(x,y) ((x>y) ? y : x)
 
 
+typedef enum
+{
+  SelectionOff,
+  SelectionLayerOff,
+  SelectionOn,
+  SelectionPause,
+  SelectionResume
+} SelectionControl;
+
 typedef struct _GDisplay GDisplay;
 struct _GDisplay
-  {
-    int ID;                     /*  unique identifier for this gdisplay     */
-    Widget hsb, vsb;            /*  widgets for scroll bars                 */
-    Widget popup;               /*  widget for popup menu                   */
-    Widget shell;               /*  shell widget for this gdisplay          */
+{
+  int ID;                         /*  unique identifier for this gdisplay     */
 
-    Widget view_options_dialog; /*  dialog box for viewing options          */
-    Widget window_info_dialog;  /*  dialog box for image information        */
+  GtkWidget *shell;               /*  shell widget for this gdisplay          */
+  GtkWidget *canvas;              /*  canvas widget for this gdisplay         */
+  GtkWidget *hsb, *vsb;           /*  widgets for scroll bars                 */
+  GtkWidget *hrule, *vrule;       /*  widgets for rulers                      */
+  GtkWidget *origin;              /*  widgets for rulers                      */
+  GtkWidget *popup;               /*  widget for popup menu                   */
 
-    GImage *gimage;		/*  pointer to the associated gimage struct */
-    int instance;               /*  the instance # of this gdisplay as      */
-                                /*  taken from the gimage at creation       */
+  InfoDialog *window_info_dialog; /*  dialog box for image information        */
 
-    GXImage *disp_image;	/*  offscreen image buffer                  */
+  int color_type;                 /*  is this an RGB or GRAY colormap         */
 
-    unsigned int depth;		/*  depth of our drawables                  */
-    int dither_type;		/*  type of dithering requested             */
-    long offset_x, offset_y;	/*  offset of display image into raw image  */
-    unsigned int scale; 	/*  scale factor from original raw image    */
+  GtkAdjustment *hsbdata;         /*  horizontal data information             */
+  GtkAdjustment *vsbdata;         /*  vertical data information               */
 
-    Colormap colormap;          /*  colormap of this window                 */
-    Window win;			/*  window to draw to, set colormap of, etc */
+  GImage *gimage;	          /*  pointer to the associated gimage struct */
+  int instance;                   /*  the instance # of this gdisplay as      */
+                                  /*  taken from the gimage at creation       */
 
-    TIMER main_timer;
-    TIMER line_timer;
+  int depth;   		          /*  depth of our drawables                  */
+  int disp_width;                 /*  width of drawing area in the window     */
+  int disp_height;                /*  height of drawing area in the window    */
+  int disp_xoffset;
+  int disp_yoffset;
 
-    GDither *gdither;           /*  Dither object pointer                   */
+  int offset_x, offset_y;         /*  offset of display image into raw image  */
+  int scale;        	          /*  scale factor from original raw image    */
+  short draw_guides;              /*  should the guides be drawn?             */
+  short snap_to_guides;           /*  should the guides be snapped to?        */
 
-    Selection *select;          /*  Selection object                        */
+  Selection *select;              /*  Selection object                        */
 
-    XtWorkProcId dither_work_proc_id;
-    XtWorkProcId load_work_proc_id;
-  };
+  GdkGC *scroll_gc;               /*  GC for scrolling */
+
+  GSList *update_areas;           /*  Update areas list                       */
+  GSList *display_areas;          /*  Display areas list                      */
+
+  GdkCursorType current_cursor;   /*  Currently installed cursor              */
+};
+
 
 
 /* member function declarations */
 
-void       gdisplay_remove_and_delete   (GDisplay *);
-void       gdisplay_create_image        (GDisplay *, Widget, Widget);
-void       gdisplay_paint               (GDisplay *);
-void       gdisplay_repaint             (GDisplay *, long, long, long, long, long);
-void       gdisplay_remove_processes    (GDisplay *);
-void       gdisplay_remove_selection    (GDisplay *);
-void       gdisplay_convert             (GDisplay *, long, long, long, long);
-void       gdisplay_dither              (GDisplay *, long, long, long, long, long);
-void       gdisplay_selection           (GDisplay *);
-void       gdisplay_put_image           (GDisplay *, long, long, long, long);
-void       gdisplay_disp_region         (GDisplay *, long, long, long, long, long);
-void       gdisplay_gimage_region       (GDisplay *, long, long, long, long, long);
-void       gdisplay_transform_coords    (GDisplay *, int, int, int *, int *);
-void       gdisplay_untransform_coords  (GDisplay *, int, int, int *, int *, int);
-Boolean    gdisplay_find_bounds         (GDisplay *, int *, int *, int *, int *);
-void       gdisplay_reset_colormap      (GDisplay *);
-
+GDisplay * gdisplay_new                    (GImage *, unsigned int);
+void       gdisplay_remove_and_delete      (GDisplay *);
+int        gdisplay_mask_value             (GDisplay *, int, int);
+int        gdisplay_mask_bounds            (GDisplay *, int *, int *, int *, int *);
+void       gdisplay_transform_coords       (GDisplay *, int, int, int *, int *, int);
+void       gdisplay_untransform_coords     (GDisplay *, int, int, int *,
+					    int *, int, int);
+void       gdisplay_transform_coords_f     (GDisplay *, double, double, double *,
+					    double *, int);
+void       gdisplay_untransform_coords_f   (GDisplay *, double, double, double *,
+					    double *, int);
+void       gdisplay_install_tool_cursor    (GDisplay *, GdkCursorType);
+void       gdisplay_remove_tool_cursor     (GDisplay *);
+void       gdisplay_set_menu_sensitivity   (GDisplay *);
+void       gdisplay_expose_area            (GDisplay *, int, int, int, int);
+void       gdisplay_expose_guide           (GDisplay *, Guide *);
+void       gdisplay_expose_full            (GDisplay *);
+void       gdisplay_flush                  (GDisplay *);
+void       gdisplay_draw_guides            (GDisplay *);
+void       gdisplay_draw_guide             (GDisplay *, Guide *, int);
+Guide*     gdisplay_find_guide             (GDisplay *, int, int);
+void       gdisplay_snap_point             (GDisplay *, int , int, int *, int *);
+void       gdisplay_snap_rectangle         (GDisplay *, int, int, int, int, int *, int *);
 
 /*  function declarations  */
 
-GDisplay * gdisplay_gimage              (GImage *, unsigned int);
-GDisplay * gdisplay_manage              (Widget, Widget, Widget, Widget, Widget,
-					 int, GImage *);
-GDisplay * gdisplay_active              (Widget);
-GDisplay * gdisplay_get_ID              (int);
-void       gdisplay_update              (int, long, long, long, long, long);
-void       gdisplay_update_full         (int, long);
-void       gdisplay_update_title        (int);
-void       gdisplay_install_tool_cursor (int);
-void       gdisplay_remove_tool_cursor  (void);
-int        gdisplays_dirty              (void);
-void       gdisplays_delete             (void);
+GDisplay * gdisplay_active                 (void);
+GDisplay * gdisplay_get_ID                 (int);
+void       gdisplays_update_title          (int);
+void       gdisplays_update_area           (int, int, int, int, int);
+void       gdisplays_expose_guides         (int);
+void       gdisplays_expose_guide          (int, Guide *);
+void       gdisplays_update_full           (int);
+void       gdisplays_shrink_wrap           (int);
+void       gdisplays_expose_full           (void);
+void       gdisplays_selection_visibility  (int, SelectionControl);
+int        gdisplays_dirty                 (void);
+void       gdisplays_delete                (void);
+void       gdisplays_flush                 (void);
 
-
-/*  these functions defined in this include file is an unsightly kludge  */
-
-void       dither_method_change       (GDisplay *, int);
-GDither *  dither_create              (GDither_Func, GDisplay *, long, long, long, long, long);
-
-GDisplay * gdisplay_get (void);
 
 #endif /*  __GDISPLAY_H__  */

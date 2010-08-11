@@ -13,64 +13,37 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include "appenv.h"
 #include "actionarea.h"
 
-#define TIGHTNESS 20
-
-Widget
-build_action_area (parent, actions, num_actions)
-     Widget parent;
-     ActionAreaItem *actions;
-     int num_actions;
+void
+build_action_area (GtkDialog *      dlg,
+		   ActionAreaItem * actions,
+		   int              num_actions,
+		   int              default_action)
 {
-  Widget action_area;
-  Widget widget;
+  GtkWidget *button;
   int i;
 
-  action_area = XtVaCreateWidget ("action_area", xmFormWidgetClass, parent,
-				  XmNfractionBase, TIGHTNESS * num_actions - 1,
-				  XmNleftOffset, 10,
-				  XmNrightOffset, 10,
-				  NULL);
+  gtk_container_border_width (GTK_CONTAINER (dlg->action_area), 2);
 
   for (i = 0; i < num_actions; i++)
     {
-      widget = XtVaCreateManagedWidget (actions[i].label,
-					xmPushButtonWidgetClass, action_area,
-					XmNleftAttachment, i ? XmATTACH_POSITION : XmATTACH_FORM,
-					XmNleftPosition, TIGHTNESS * i,
-					XmNtopAttachment, XmATTACH_FORM,
-					XmNbottomAttachment, XmATTACH_FORM,
-					XmNrightAttachment,
-					 (i != num_actions - 1) ? XmATTACH_POSITION : XmATTACH_FORM,
-					XmNrightPosition, TIGHTNESS * i + (TIGHTNESS - 1),
-					XmNshowAsDefault, i == 0,
-					XmNdefaultButtonShadowThickness, 1,
-					NULL);
-      
+      button = gtk_button_new_with_label (actions[i].label);
+      GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+      gtk_box_pack_start (GTK_BOX (dlg->action_area), button, TRUE, TRUE, 0);
+
       if (actions[i].callback)
-	XtAddCallback (widget, XmNactivateCallback,
-		       actions[i].callback, actions[i].data);
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    (GtkSignalFunc) actions[i].callback,
+			    actions[i].user_data);
 
-      if (i == 0)
-	{
-	  Dimension height, h;
+      if (default_action == i)
+	gtk_widget_grab_default (button);
+      gtk_widget_show (button);
 
-	  XtVaGetValues (action_area, XmNmarginHeight, &h, NULL);
-	  XtVaGetValues (widget, XmNheight, &height, NULL);
-	  height += 2 * h;
-	  XtVaSetValues (action_area,
-			 XmNdefaultButton, widget,
-			 XmNpaneMaximum, height,
-			 XmNpaneMinimum, height,
-			 NULL);
-	}
-
-      actions[i].widget = widget;
+      actions[i].widget = button;
     }
-
-  return action_area;
 }

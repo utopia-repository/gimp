@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __DRAW_CORE_H__
 #define __DRAW_CORE_H__
@@ -31,16 +31,19 @@ typedef void (* DrawCoreDraw) (Tool *);
 
 struct _draw_core
 {
-  GC              gc;           /*  Grahpics context for drawing functions  */
-  Window          win;          /*  Window to draw draw operation to      */
+  GdkGC *         gc;           /*  Grahpics context for drawing functions  */
+  GdkWindow *     win;          /*  Window to draw draw operation to      */
 
   int             draw_state;   /*  Current state in the drawing process    */
 
-  int             line_width;   /*  line width to use--defaults to 1        */
+  int             line_width;   /**/
+  int             line_style;   /**/
+  int             cap_style;    /*  line attributes                         */
+  int             join_style;   /**/
 
   int             paused_count; /*  count to keep track of multiple pauses  */
 
-  XtPointer       data;         /*  data to pass to draw_func               */
+  gpointer        data;         /*  data to pass to draw_func               */
 
   DrawCoreDraw    draw_func;    /*  Member function for actual drawing      */
 };
@@ -48,9 +51,8 @@ struct _draw_core
 
 /*  draw core functions  */
 
-DrawCore *  draw_core_new          (DrawCoreDraw);
-void          draw_core_time_out     (XtPointer, XtIntervalId *);
-void          draw_core_start        (DrawCore *, Window, Tool *);
+DrawCore *    draw_core_new          (DrawCoreDraw);
+void          draw_core_start        (DrawCore *, GdkWindow *, Tool *);
 void          draw_core_stop         (DrawCore *, Tool *);
 void          draw_core_pause        (DrawCore *, Tool *);
 void          draw_core_resume       (DrawCore *, Tool *);

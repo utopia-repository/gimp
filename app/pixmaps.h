@@ -1,666 +1,926 @@
-/* The GIMP -- an image manipulation program
- * Copyright (C) 1995 Spencer Kimball and Peter Mattis
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- */
-static char *rect_select_bits[] = 
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: airbrush  */
+
+
+#define airbrush_width 22
+#define airbrush_height 22
+static char *airbrush_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "....aa..aa..aa..aa..aa..a.......",
-  "....aeeggeeggeeggeeggeegae......",
-  ".....eggggggggggggggggggge......",
-  ".....gggggggggggggggggggg.......",
-  "....aggggggggggggggggggga.......",
-  "....aeggggggggggggggggggae......",
-  ".....eggggggggggggggggggge......",
-  ".....gggggggggggggggggggg.......",
-  "....aggggggggggggggggggga.......",
-  "....aeggggggggggggggggggae......",
-  ".....eggggggggggggggggggge......",
-  ".....gggggggggggggggggggg.......",
-  "....aggggggggggggggggggga.......",
-  "....aegaaggaaggaaggaaggaae......",
-  ".....e..ee..ee..ee..ee..ee......",
-  "......................ee........",
-  "......................eae.......",
-  "......................eaae......",
-  "......................eaaae.....",
-  "......................eaaaae....",
-  "......................eaaaaae...",
-  "......................eaaaaae...",
-  "......................eaaeee....",
-  "......................eee.......",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "................aaa...",
+  "...............aaaae..",
+  "..............aaaaae..",
+  ".............aaaaaee..",
+  "............aaaaaee...",
+  ".......aa..aaaaaee....",
+  "......aa..aaaaaee.....",
+  "......a.aaaaaaee......",
+  "........ahaaaee.......",
+  ".......ahhgaee........",
+  "......ahhgaee.........",
+  ".....ahhgaae.....aa...",
+  "....ahhgaeea....a.....",
+  "....ahgaee.a....a.....",
+  "...ahaaee...a..a......",
+  "...aaeee.....aa.......",
+  "....ee................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: bezier  */
 
-static char *ellipse_select_bits[] = 
+
+#define bezier_width 22
+#define bezier_height 22
+static char *bezier_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "..........aa..aa..aa............",
-  "......aagggeeggeeggeegaa........",
-  "......geeggggggggggggggee.......",
-  "....aggggggggggggggggggggg......",
-  "....aeggggggggggggggggggga......",
-  ".....egggggggggggggggggggae.....",
-  ".....ggggggggggggggggggggge.....",
-  "....aggggggggggggggggggggg......",
-  "....aeggggggggggggggggggga......",
-  ".....egggggggggggggggggggae.....",
-  ".....ggggggggggggggggggggge.....",
-  "......aaggggggggggggggaag.......",
-  ".......eegaaggaaggaagggee.......",
-  "...........ee..ee..ee.ee........",
-  "......................eae.......",
-  "......................eaae......",
-  "......................eaaae.....",
-  "......................eaaaae....",
-  "......................eaaaaae...",
-  "......................eaaaaae...",
-  "......................eaaeee....",
-  "......................eee.......",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "........eaaaaaae......",
+  "......aaa......a......",
+  ".....a.........ae.....",
+  "....a.........aaae....",
+  "....a........ahagae...",
+  "...a.........ahahae...",
+  "...a.........ahahae...",
+  "..aaa.......ahgaggae..",
+  "..aaae......ahgaggae..",
+  "..aaae.....ahgaaaggae.",
+  "...aee.....ahgeaeggae.",
+  "...a........agggggaee.",
+  "...a.........agggaee..",
+  "...a.........aaaaae...",
+  "...a.........aeaaae...",
+  "..a..........aeaaae...",
+  "..a..........aeaaae...",
+  ".a...........aeaaae...",
+  "..............eeeee...",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: blur  */
 
-static char *free_select_bits[] = 
+
+#define blur_width 22
+#define blur_height 22
+static char *blur_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "...........aa...................",
-  "..........geeg..................",
-  ".........agggga.................",
-  "........aegggae....aa...........",
-  "........egggge....ggee..........",
-  ".......gggggg...aeggggga........",
-  "......aggggae..aeggggggae.......",
-  "......aeggggaegggggggggge.......",
-  ".......egggggggggggggggg........",
-  ".......ggggggggggggggggae.......",
-  "......aeggggggggggggggae........",
-  ".......aegggggggggggggg.........",
-  "........gggggggggggggae.........",
-  "........aeggggggggggae..........",
-  ".........aegggggaagg..ee........",
-  "...........gaagggee...eae.......",
-  ".............ee.......eaae......",
-  "......................eaaae.....",
-  "......................eaaaae....",
-  "......................eaaaaae...",
-  "......................eaaaaae...",
-  "......................eaaeee....",
-  "......................eee.......",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "..........e...........",
+  "..........e...........",
+  ".........ehe..........",
+  ".........ehee.........",
+  "........ehhge.........",
+  "........ehhgee........",
+  ".......ehhhgge........",
+  "......ehhhhhgge.......",
+  "......ehhhhhggee......",
+  ".....ehhhhhgggga......",
+  ".....ehhhhhggggae.....",
+  ".....egghhhggggae.....",
+  ".....egggggggggae.....",
+  "......agggggggaee.....",
+  ".......agggggaee......",
+  "........aaaaaee.......",
+  ".........eeeee........",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: circ  */
 
-static char *fuzzy_select_bits[] = 
+
+#define circ_width 22
+#define circ_height 22
+static char *circ_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "........aa..aa..aa..............",
-  ".........ee..ee..ee.............",
-  "................................",
-  "........a...aaae..a.............",
-  "........ae.agggae.ae............",
-  ".........e.agggae..e............",
-  "...........agggae...............",
-  ".....a......agae.....a..........",
-  ".....ae..aaagggaaae..ae.........",
-  "......e.agggggggggae..e.........",
-  "........agggggggggae............",
-  ".....a..agggggggggae.a..........",
-  ".....ae.agagggggagae.ae.........",
-  "......e.agagggggagae..e.........",
-  ".........gagggggagae............",
-  ".....a...............a..........",
-  ".....ae.aa..aa..aa..aaee........",
-  "......e..ee..ee..ee..eeae.......",
-  "......................eaae......",
-  "......................eaaae.....",
-  "......................eaaaae....",
-  "......................eaaaaae...",
-  "......................eaaaaae...",
-  "......................eaaeee....",
-  "......................eee.......",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "........aahha.........",
+  "......hhgggggah.......",
+  ".....ahgggggggha......",
+  ".....aggggggggga......",
+  "....hgggggggggggh.....",
+  "....agggggggggggh.....",
+  "....aggggggggggga.....",
+  "....hggggggggggga.....",
+  "....hgggggggggggh.....",
+  ".....agggggggggh......",
+  ".....ahgggggggaa......",
+  "......haggggghh.......",
+  "........ahhaa.........",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: clone  */
 
-static char *bezier_select_bits[] = 
+
+#define clone_width 22
+#define clone_height 22
+static char *clone_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "..............aa................",
-  "..............aae...............",
-  "...........aaa.ee...............",
-  "..........aggga......aa.........",
-  ".........agggga......aae........",
-  "........agggga.....aaaee........",
-  "....aa.agggga....aaggga.........",
-  "....aaeaggga....agggggga........",
-  ".....eegggga...aggggggga........",
-  "......agggggaaagggggggga........",
-  "......agggaaggggggggggga........",
-  "......agggaaegggggggggga........",
-  "......aggggeeggggggggga.aa......",
-  ".......agggggggggggggga.aae.....",
-  ".......aggggggggggggga...ee.....",
-  "........aggggggggggaa.ee........",
-  ".........aagggggaaa...eae.......",
-  "...........aaaaa......eaae......",
-  ".........aa...........eaaae.....",
-  ".........aae..........eaaaae....",
-  "..........ee..........eaaaaae...",
-  "......................eaaaaae...",
-  "......................eaaeee....",
-  "......................eee.......",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "........eaaae.........",
+  ".......eahhgae........",
+  ".......aheeega........",
+  ".......ahgggga........",
+  ".......aggggga........",
+  ".......eagggae........",
+  "........eaaae.........",
+  ".........aha..........",
+  ".....aaaaahaaaaa......",
+  "....ahhhhaaahhhha.....",
+  "...ahhhhhhhhhhhhha....",
+  "...aaaaaaaaaaaaaaae...",
+  "...aggggaaaaaggggae...",
+  "...agggggaaagggggae...",
+  "...aggggggaggggggae...",
+  "....aaaaaaaaaaaaaee...",
+  ".....eeeeeeeeeeeee....",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: colorpicker  */
 
-static char *iscissors_bits[] = 
+
+#define colorpicker_width 22
+#define colorpicker_height 22
+static char *colorpicker_bits [] =
 {
-  ".................................",
-  ".........ae.........ae..........",
-  ".........ae.........ae..........",
-  "..........ae.......ae...........",
-  "..........ae.......ae...........",
-  ".............hhhh...............",
-  "...........hhaaaaee.............",
-  "...aa.....haaggggaae.....aa.....",
-  "...eeaa..haggggggggae..aaee.....",
-  ".....ee..haggggggggae..ee.......",
-  "........haggggggggggae..........",
-  "........haggggggggggae..........",
-  "........haggggggggggae..........",
-  "........haggggggggggae..........",
-  ".........haggaggaggae...........",
-  "......aa.haggaaaaggae.aa........",
-  "....aaee.haggaggaggae.eeaa......",
-  "....ee....hagaggagae....ee......",
-  "...........haaaaaae.............",
-  "...........haeeeeae.............",
-  "...........haaaaaae.ee..........",
-  "...........haeeeeae.eae.........",
-  "...........haaaaaae.eaae........",
-  "............haeeae..eaaae.......",
-  "............haaaae..eaaaae......",
-  ".............eeee...eaaaaae.....",
-  "....................eaaaaae.....",
-  "....................eaaeee......",
-  "....................eee.........",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "...............aaa....",
+  "..............aaaaa...",
+  "..............aaaaae..",
+  "...........aaaaaaaae..",
+  "............aaaaaaee..",
+  "...........ehaaaeee...",
+  "..........ehhhaae.....",
+  ".........ehhhaeae.....",
+  "........ehhhaee.e.....",
+  ".......ehhhaee........",
+  "......ehhhaee.........",
+  ".....ehhhaee..........",
+  "....ehhhaee...........",
+  "....ehhaee............",
+  "...ehaaee.............",
+  "....aeee..............",
+  ".....e................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: crop  */
 
-static char *crop_bits[] = 
+
+#define crop_width 22
+#define crop_height 22
+static char *crop_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  ".......................hhh......",
-  "......................haaae.....",
-  ".....................haeggae....",
-  "....................haegeeae....",
-  "...................haegeebae....",
-  "..................haegeebae.....",
-  ".................haegeebae......",
-  "................haegeebae.......",
-  "...............haegeebae........",
-  "..............haegeebae.........",
-  ".............haegeebae..........",
-  "............haegeebae...........",
-  "...........haegeebae............",
-  "..........haegeebae.............",
-  ".........habgeebae..............",
-  "........habbbgbae...............",
-  ".......habbbbbae................",
-  "......habbbbbha.................",
-  ".....habbbbbhae.................",
-  "....habbbbbhae..................",
-  "...hahhhhhhae...................",
-  "...haaaaaaae....................",
-  "....eeeeeee.....................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "................eae...",
+  "...............eaaa...",
+  "..............eaaae...",
+  ".............eaaaee...",
+  "............eaaaee....",
+  "...........eaaaee.....",
+  "..........eaaaee......",
+  ".........eaaaee.......",
+  "........eaaaee........",
+  ".......eaaaee.........",
+  "......eaaaee..........",
+  ".....eahhae...........",
+  "....eahhae............",
+  "...eehhae.............",
+  "...aaaae..............",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: erase  */
 
-static char *scale_tool_bits[] = 
+
+#define erase_width 22
+#define erase_height 22
+static char *erase_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "...hhhhhhhhhh...................",
-  "...haaaaaaaahhhhhh..............",
-  "...haggggggahahahahhhhhhhhh.....",
-  "...haggggggahhhhhhhaaaaaaaae....",
-  "...haggggggahhhhhahhhhhhhhhe....",
-  "...haggggggaggggggggggggggae....",
-  "...haeaaaaaagggggaggggggggae....",
-  "....hhhhhgggggggggggggggggae....",
-  "....hahhhgggggagggggggggggae....",
-  "....hhhhhgggggggagggggggggae....",
-  "....hahahagagaggggagggggggae....",
-  "....hhhhhgggggggggggagagggae....",
-  ".....hhahggggggggggggaaaggae....",
-  "......hahggggggggggggaaaagae....",
-  "......hahgggggggggggggggggae....",
-  "......hahaaaaaaaaaaaaaaaaaae....",
-  ".......eeeeeeeeeeeeeeeeeeeee....",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "..........aaaaaaaa....",
+  ".........ahhhhhhaae...",
+  "........ahhhhhhagae...",
+  ".......ahhhhhhaggae...",
+  "......ahhhhhhaggaee...",
+  ".....ahhhhhhaggaee....",
+  "....ahhhhhhaggaee.....",
+  "...aaaaaaaaggaee......",
+  "...aggggggagaee.......",
+  "...aggggggaaee........",
+  "...aaaaaaaaee.........",
+  "....eeeeeeee..........",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: fill  */
 
-static char *flip_htool_bits[] = 
+
+#define fill_width 22
+#define fill_height 22
+static char *fill_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "....bbbbbbbbbbb.bbbbbbbbbbbb....",
-  "....gggggggggggbgggggggggggg....",
-  "....ggggggggggebeggggggggggg....",
-  "....ggggggggggebeggggggggggg....",
-  "....ggggggggggebeggggggggggg....",
-  "....ggggggagggebegggaggggggg....",
-  "....gggggaagggebegggaagggggg....",
-  "....ggggahagggebegggahaggggg....",
-  "....gggahhagggebegggahhagggg....",
-  "....ggahhgagggebegggahggaggg....",
-  "....gahhggagggebegggaggeeagg....",
-  "....ggaggeagggebegggageeageg....",
-  "....gegaeeagggebegggaeeagegg....",
-  "....ggegaeagggebegggaeageggg....",
-  "....gggegaagggebegggaagegggg....",
-  "....ggggegagggebegggageggggg....",
-  "....gggggeggggebeggggegggggg....",
-  "....ggggggggggebeggggggggggg....",
-  "....ggggggggggebeggggggggggg....",
-  "....ggggggggggebeggggggggggg....",
-  "....gggggggggggbgggggggggggg....",
-  "....bbbbbbbbbbb.bbbbbbbbbbbb....",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  ".........ee...........",
+  "........eeee..........",
+  ".......eeggee.........",
+  ".......eegaee.........",
+  ".......eeahee.........",
+  ".......aahheeaa.......",
+  ".......ahhgeegaaa.....",
+  "......ahhghaeggaaa....",
+  ".....ahhghagaggeaaa...",
+  "....ahhghggaggeeaaae..",
+  "...ahhghgggggeeaaaae..",
+  "...ahghgggggeeaeaaae..",
+  "....ahgggggeeaeeaaae..",
+  ".....ahgggeeaee.aaae..",
+  "......aggeeaee..aaee..",
+  ".......aeeaee...aee...",
+  "........aaee.....e....",
+  ".........ee...........",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: free  */
 
-static char *flip_vtool_bits[] = 
+
+#define free_width 22
+#define free_height 22
+static char *free_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  ".....bggggggggggggggggggggb.....",
-  ".....bgggggggggageggggggggb.....",
-  ".....bggggggggahagegggggggb.....",
-  ".....bgggggggahhgageggggggb.....",
-  ".....bggggggahhggeagegggggb.....",
-  ".....bgggggahhggeeeageggggb.....",
-  ".....bggggaaaaaaaaaaagggggb.....",
-  ".....bggggggggggggggggggggb.....",
-  ".....bggggggggggggggggggggb.....",
-  ".....bggggggggggggggggggggb.....",
-  ".....bgeeeeeeeeeeeeeeeeeegb.....",
-  "......bbbbbbbbbbbbbbbbbbbb......",
-  ".....bgeeeeeeeeeeeeeeeeeegb.....",
-  ".....bggggggggggggggggggggb.....",
-  ".....bggggggggggggggggggggb.....",
-  ".....bggggggggggggggggggggb.....",
-  ".....bggggaaaaaaaaaaagggggb.....",
-  ".....bgggggahhhggeeageggggb.....",
-  ".....bggggggahggeeagegggggb.....",
-  ".....bgggggggageeageggggggb.....",
-  ".....bggggggggaeagegggggggb.....",
-  ".....bgggggggggageggggggggb.....",
-  ".....bggggggggggegggggggggb.....",
-  ".....bggggggggggggggggggggb.....",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  ".........aaaaaaa......",
+  "......aaaeeeeeeeaa....",
+  ".....aeeee.......ea...",
+  "....ae............ae..",
+  "...ae.............ae..",
+  "...ae...........aaee..",
+  "...ae........aaaee....",
+  "....aaa...aaaeee......",
+  "...aa..aaae...........",
+  "...a.a.ae.............",
+  "....aaa...............",
+  "......a...............",
+  "......a...............",
+  ".....a................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: fuzzy  */
 
-static char *color_picker_bits[] = 
+
+#define fuzzy_width 22
+#define fuzzy_height 22
+static char *fuzzy_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "......................hhh.......",
-  ".....................haaae......",
-  "....................haaaaae.....",
-  ".................hh.haaaaaae....",
-  "................haahaaaaaaae....",
-  "................haaaaaaaaaae....",
-  ".................haaaaaaaae.....",
-  "................hahaaaaaee......",
-  "...............hahhhaaae........",
-  "..............hahhhgeaaae.......",
-  ".............hahhhgeaeaae.......",
-  "............hahhhgeae.ee........",
-  "...........hahhhgeae............",
-  "..........hahhhgeae.............",
-  ".........hahhhgeae..............",
-  "........hahhhgeae...............",
-  ".......hahhhgeae................",
-  "......hahhhgeae.................",
-  ".....hahhhgeae..................",
-  "....hahhhgeae...................",
-  "...hahhhgeae....................",
-  "...hahhgeae.....................",
-  "...hahhhae......................",
-  "...haaaae.......................",
-  "....eeee........................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......h...............",
+  "....hgagh.............",
+  "....ahgha.............",
+  "...hgahagh............",
+  "...aghahga............",
+  "....hagah.............",
+  "....aghga.e...........",
+  "......a..ege..........",
+  "........eghge.........",
+  ".........eghge........",
+  "..........egaae.......",
+  "...........eaaae......",
+  "............eaaae.....",
+  ".............eaaae....",
+  "..............eaaae...",
+  "...............eaaae..",
+  "................eae...",
+  ".................e....",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: gradient  */
 
-static char *bucket_fill_bits[] = 
+
+#define gradient_width 22
+#define gradient_height 22
+static char *gradient_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "............hhhh................",
-  "...........haaaae...............",
-  "..........ha....ae..............",
-  "..........ha....ae..............",
-  "..........ha..a.ae..............",
-  "..........ha.ahaae..............",
-  "..........haahhhae..............",
-  "..........hahhhhaae.............",
-  ".........hahhhhhahae............",
-  "........hahhhhhhahhaae..........",
-  ".......hahhhhhhhghggaaae........",
-  "......hahhhhhhhgeagggaaaae......",
-  ".....hahhhhhhhheaeggffaaaae.....",
-  "....hahhhhhhhhhggggffeeaaaae....",
-  "...hahhhhhhhhhggggffeeaaaaae....",
-  "...hahhhhhhhhggggffeeaeaaaae....",
-  "...hahhhhhhhggggffeeaeeaaaae....",
-  "....eahhhhhggggffeeae.eaaaae....",
-  ".....eahhhggggffeeae..eaaaae....",
-  "......eahggggffeeae...eaaaae....",
-  ".......eagggffeeae....eaaaae....",
-  "........eagffeeae.....eaaae.....",
-  ".........eafeeae......eaae......",
-  "..........eaaae.......eae.......",
-  "...........eee.........e........",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "..eeeeeeeeeeeeeeeeee..",
+  "..aaaeeeegggggggghhe..",
+  "..aaeaeegegggggghghe..",
+  "..aaaeeeegggggggghhe..",
+  "..aaeaeegegggggghghe..",
+  "..aaaeeeegggggggghhe..",
+  "..aaeaeegegggggghghe..",
+  "..aaaeeeegggggggghhe..",
+  "..aaeaeegegggggghghe..",
+  "..aaaeeeegggggggghhe..",
+  "..aaeaeegegggggghghe..",
+  "..aaaeeeegggggggghhe..",
+  "..aaeaeegegggggghghe..",
+  "..aaaeeeegggggggghhe..",
+  "..aaaaeegegggggghghe..",
+  "..eeeeeeeeeeeeeeeeee..",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: horizflip  */
 
-static char *brush_bits[] = 
+
+#define horizflip_width 22
+#define horizflip_height 22
+static char *horizflip_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "........................hh......",
-  ".......................haae.....",
-  ".....................hhaabe.....",
-  "....................haaeeae.....",
-  "...................haaeeaae.....",
-  ".................hhaaeeaae......",
-  "................haaaehaae.......",
-  "...............haabebbae........",
-  "..............haabebbae.........",
-  ".............haabebbaae.........",
-  "............haabebbaae..........",
-  "...........haabebbaae...........",
-  "..........haabebbaae............",
-  ".........haaaebbaae.............",
-  "........haaegabaae..............",
-  "......hhhaegegaae...............",
-  ".....haaaageeeae................",
-  "....haaaaaaeeae.................",
-  "...haaebaaaaae..................",
-  "...haeebaaaae...................",
-  "...haebbaaaae...................",
-  "...habbaaaae....................",
-  "...habbaaae.....................",
-  "...haaaaae......................",
-  "....eeeee.......................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......a........a......",
+  ".....aa........aa.....",
+  "....aaaaaaaaaaaaaa....",
+  "...aaaeeeeeeeeeeaaa...",
+  "....aaaaaaaaaaaaaaee..",
+  ".....aaeeeeeeeeaaee...",
+  "......ae.......aee....",
+  ".......e........e.....",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: iscissors  */
 
 
-static char *airbrush_bits[] = 
+#define iscissors_width 22
+#define iscissors_height 22
+static char *iscissors_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "........................h.......",
-  ".......................hae......",
-  "......................haaae.....",
-  ".....................haaaaae....",
-  ".................h..haaaaaaae...",
-  "................hahhaaaaaaae....",
-  "...............haaaaaaaaaae.....",
-  "..............haaaahaaaaae......",
-  "...............hhahhhaaae.......",
-  "................hahhgeae........",
-  "...............hahhgeae.........",
-  "..............hahhgeae..........",
-  ".............hahhgeae...........",
-  "............hahhgeae............",
-  "............hahgeae.............",
-  "...........hahaaae..............",
-  "...........haae.................",
-  "..........f.ee..................",
-  ".......fafafa...................",
-  "....fafafafa....................",
-  ".....fafafa.....................",
-  "......fafafa....................",
-  ".......fafa.....................",
-  "........fa......................",
-  ".........fa.....................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  ".eaae.....aaa.........",
+  ".aaaa...eee.ea........",
+  ".aaaa...a....a........",
+  ".eaae..ea....aha......",
+  "..a....e..ha..hae.....",
+  "..a....a..hae.hae.....",
+  "..a....a..hae.hae.....",
+  "..ee...a...hahaee.....",
+  "...a..ee...hahae......",
+  "...a..a.....haae......",
+  "...a..a.....haae......",
+  "...eeea.....haha......",
+  ".....a.....haeha......",
+  "...........hae.ha.....",
+  "..........haee..haa...",
+  ".........haae..haeha..",
+  "........haeha..haehae.",
+  "........haehae..haaee.",
+  ".........haaee....ee..",
+  "...........ee.........",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: magnify  */
 
-static char *clone_bits[] = 
+
+#define magnify_width 22
+#define magnify_height 22
+static char *magnify_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "........hh..........hhh.........",
-  ".......haa.........haaae........",
-  "......haee.a......hagggae.......",
-  "......haee.e......hagggae.......",
-  "......haee.a......hagggae.......",
-  ".....hhhae.e.....hhhagaeee......",
-  "....haaaee......haaagggaaae.....",
-  "...haeeeee.a.a.hagggggggggae....",
-  "...haeeeee.e.e.hagggggggggae....",
-  "...haeeeee.a.a.hagggggggggae....",
-  "...haeaeee.e.e.hagagggggagae....",
-  "...haeaeee.a.a.hagagggggagae....",
-  "...haeaeee.e.e.hagagggggagae....",
-  "...haeaeee.a.a.hagagggggagae....",
-  "...haeaeee.e.e.hagagggggagae....",
-  "...haaaeaa.....haaagaaagaaae....",
-  "...heeaeae.....heeagaeagaee.....",
-  "....hhaeae.a.a..hhagaeagae......",
-  ".....haeae.e.e...hagaeagae......",
-  ".....haeae.a.a...hagaeagae......",
-  ".....haeae.e.e...hagaeagae......",
-  ".....haeae.a.a...hagaeagae......",
-  ".....haeae.e.e...hagaeagae......",
-  ".....haaae.a.a...haaaeaaae......",
-  "......eee..e.e....eee.eee.......",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "...........aaaa.......",
+  ".........eaghh.ae.....",
+  ".........ahheehhae....",
+  "........aghehhhhga....",
+  "........ahehhhhhhae...",
+  "........ahhhhhhhhae...",
+  "........aghhhhhhgae...",
+  ".........ahhhhhhaee...",
+  "........aaaghhgaee....",
+  ".......aaaeaaaaee.....",
+  "......aaaee.eeee......",
+  ".....aaaee............",
+  "....aaaee.............",
+  "...aaaee..............",
+  "...eaee...............",
+  "....ee................",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: move  */
 
-static char *convolve_bits[] = 
+
+#define move_width 22
+#define move_height 22
+static char *move_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................d...............",
-  "...............dc...............",
-  "..............dfc...............",
-  "..............dfc...............",
-  ".............dfefc..............",
-  ".............dfedc..............",
-  "............dffedfc.............",
-  "............dffedfc.............",
-  "...........dfffeddfc............",
-  "...........dfffeddfc............",
-  "..........dffffeeddfc...........",
-  "..........dffffeeddfc...........",
-  "..........dfffffeddfc...........",
-  ".........dffffffeddefc..........",
-  ".........dffffffeddefc..........",
-  ".........dffffffeddefc..........",
-  ".........dffffffeddefc..........",
-  ".........dfffhffeddefc..........",
-  ".........dfffhffeddefc..........",
-  ".........dffhhffeddefc..........",
-  ".........dfffhffeddefc..........",
-  "..........dfffffeddec...........",
-  "...........dffffeddc............",
-  "............dfffedc.............",
-  ".............ccccc..............",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "..........a...........",
+  ".........aaa..........",
+  "........aaaaa.........",
+  "..........aeee........",
+  "..........ae..........",
+  ".....a....ae...a......",
+  "....aa....ae...aa.....",
+  "...aaaaaaaaaaaaaaa....",
+  "....aaeeeeaeeeeaaee...",
+  ".....ae...ae...aee....",
+  "......e...ae....e.....",
+  "..........ae..........",
+  "........aaaaa.........",
+  ".........aaae.........",
+  "..........ae..........",
+  "..........e...........",
+  "......................",
+  "......................",
+  "......................"
 };
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: new  */
 
-static char *blend_bits[] = 
+
+/*
+#define new_width 22
+#define new_height 22
+static char *new_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "...........hhh..................",
-  "..........haaae.................",
-  ".........hahhhae................",
-  "........hahhhhae...hhhh.........",
-  ".......hahhhhae..hhaaaae........",
-  "......hahhhhae..haahhhhaae......",
-  ".....hahhhhae..hahhhcchhhae.....",
-  ".....hahhhhaehhahhdcccbbhae.....",
-  "....hahhhhhhaaahhddcccbbhhae....",
-  "....hahhgghhhhhhdddcccbbbhae....",
-  "....hahhggfffeeedddcccbbbhae....",
-  "...hahhgggfffeeedddcccbbbhae....",
-  "...hahhgggfffeeedddcccbbbhae....",
-  "...hahhgggfffeeedddcccbbhhae....",
-  "...hahhgggfffeeedddcccbbhaee....",
-  "...hahhgggfffeeedddcccbhhae.....",
-  "....eahgggfffeeedddccchhaee.....",
-  "....eahhghfffeeedddcchhaee......",
-  ".....eahhhfffeeedddhhhaee.......",
-  "......eahhhffeeehhhhaaee........",
-  ".......eaahhhhhhhaaaee..........",
-  "........eeaaaaaaaeee............",
-  "..........eeeeeee...............",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  ".....aaaaaaaaa........",
+  ".....ahhhhhhhaa.......",
+  ".....ahhhhhhhaga......",
+  ".....ahhhhhhhagga.....",
+  ".....ahhhhhhhaaaae....",
+  ".....ahhhhhhhhggae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....ahhhhhhhhhhae....",
+  ".....aaaaaaaaaaaae....",
+  "......eeeeeeeeeeee....",
+  "......................",
+  "......................",
+  "......................"
 };
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: open  */
 
-static char *text_tool_bits[] = 
+
+/*
+#define open_width 22
+#define open_height 22
+static char *open_bits [] =
 {
-  "................................",
-  "................................",
-  "................................",
-  "................................",
-  ".......hh................h......",
-  "......haahhhh........hhhhce.....",
-  "......haaaaaahhhhhhhhaaaace.....",
-  "......haaaaaaaaaaaaaaaaaace.....",
-  "......haaccccaaaaacccccaace.....",
-  ".....haaceeeehcaaceeeeeace......",
-  ".....hace....hcaace...eace......",
-  ".....hace...heaaade...eace......",
-  ".....hce....hcaace....eace......",
-  "......e.....hcaace.....ee.......",
-  "............hcaace..............",
-  "...........heaaade..............",
-  "...........hcaace...............",
-  "...........hcaace...............",
-  "...........hcaade...............",
-  "..........heaace................",
-  "..........hcaace................",
-  "..........hcaace................",
-  "..........hcaace................",
-  ".........heaaace................",
-  "........hhcaaade................",
-  ".......hccaaaaace...............",
-  "......hcaaaaaaaace..............",
-  ".......eeeeeeeeee...............",
-  "................................",
-  "................................",
-  "................................",
-  "................................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "....eaaaae............",
+  "...eaggggae...........",
+  "...aggggggaaaaaaaae...",
+  "...agggggggggggggga...",
+  ".aaaaaaaaaaaaaagggae..",
+  ".aegegegegegegagggae..",
+  "..aegegegegegegaggae..",
+  "..agegegegegegeaggae..",
+  "...agegegegegegeagae..",
+  "...aegegegegegegagae..",
+  "...agegegegegegeagae..",
+  "....agegegegegegeaae..",
+  "....aegegegegegegaae..",
+  ".....aaaaaaaaaaaaaae..",
+  "......eeeeeeeeeeeeee..",
+  "......................",
+  "......................",
+  "......................"
 };
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: paint  */
 
+
+#define paint_width 22
+#define paint_height 22
+static char *paint_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  ".............aggae....",
+  ".............aggae....",
+  "............aggaee....",
+  "............aggae.....",
+  "...........aggaee.....",
+  "...........aggae......",
+  "..........aggaee......",
+  "..........aggae.......",
+  ".........aaaaee.......",
+  "........aggaae........",
+  ".......ahhgaae........",
+  ".......ahgeaae........",
+  "......ahgeaaee........",
+  "......ageaaee.........",
+  ".....aheaaee..........",
+  "....aaaaeee...........",
+  ".....eeee.............",
+  "......................",
+  "......................"
+};
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: pencil  */
+
+
+#define pencil_width 22
+#define pencil_height 22
+static char *pencil_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "..........aaaa........",
+  "..........aggga.......",
+  ".........aggggae......",
+  ".........aaggaee......",
+  "........ahhaaae.......",
+  "........ahggaee.......",
+  ".......ahhggae........",
+  ".......ahggaee........",
+  "......ahhggae.........",
+  "......ahggaee.........",
+  "......aaggae..........",
+  "......aaaaee..........",
+  "......aaaee...........",
+  "......aaee............",
+  "......aee.............",
+  ".......e..............",
+  "......................",
+  "......................",
+  "......................"
+};
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: perspective  */
+
+
+/*
+#define perspective_width 22
+#define perspective_height 22
+static char *perspective_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "......aaaaaaaaa.......",
+  ".....eegggggggee......",
+  ".....aegggggggea......",
+  "....agegggggggega.....",
+  "....agegggggggega.....",
+  "...eagegggggggegae....",
+  "...aggeeeeeeeeegga....",
+  "...aggggggggggggga....",
+  "..eagagagggggagagae...",
+  "..aggaagggggggaagga...",
+  "..aggaaagggggaaagga...",
+  ".aegggggggggggggggea..",
+  ".aaaaaaaaaaaaaaaaaaa..",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
+};
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: rect  */
+
+
+#define rect_width 22
+#define rect_height 22
+static char *rect_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "....aahhaahhaahha.....",
+  "....hggggggggggga.....",
+  "....hgggggggggggh.....",
+  "....agggggggggggh.....",
+  "....aggggggggggga.....",
+  "....hggggggggggga.....",
+  "....hgggggggggggh.....",
+  "....agggggggggggh.....",
+  "....aggggggggggga.....",
+  "....hggggggggggga.....",
+  "....haahhaahhaahh.....",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
+};
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: rotate  */
+
+
+/*
+#define rotate_width 22
+#define rotate_height 22
+static char *rotate_bits [] =
+{
+  "......................",
+  "......................",
+  ".aaaaaaaaaaa...aaa....",
+  ".aeeeeeeeeea..a...a.a.",
+  ".aeeeeeeeeea.......aa.",
+  ".aeeeeeeeeea......aaa.",
+  ".aeeeeeeeeeaae........",
+  ".aeeeeeeeeeggae.......",
+  ".aeeeeeeeegeggae......",
+  ".aeeeeeeeggegggae.....",
+  ".aeeeeeegggeggggae....",
+  ".aaaaaageeeegggggae...",
+  ".....eagggggggggggae..",
+  ".....agggggggggggggae.",
+  ".....eagggggggggggaee.",
+  "......eagggggggggaee..",
+  ".......eagggggggaee...",
+  ".aaa....eagggggaee....",
+  ".aa......eagggaee.....",
+  ".a.a...a..eagaee......",
+  "....aaa....eaee.......",
+  "............ee........"
+};
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: scale  */
+
+
+#define scale_width 22
+#define scale_height 22
+static char *scale_bits [] =
+{
+  "......................",
+  "......................",
+  "..aaaaaaa.............",
+  "..aeeeeeaeaeaea.......",
+  "..aeeeeeaggggge.......",
+  "..aeeggggaaaaaaaaaa...",
+  "..aeegggegggggegggae..",
+  "..aaageeegggggagggae..",
+  "...egaggggggggegggae..",
+  "...agaggggggggegggae..",
+  "...egagggggggaggggae..",
+  "...aeaeaeaeaegagagae..",
+  ".....agggggggggaagae..",
+  ".....aggggggggaaagae..",
+  ".....aggggggggggggae..",
+  ".....aaaaaaaaaaaaaae..",
+  "......eeeeeeeeeeeeee..",
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
+};
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: sharpen  */
+
+
+/*
+#define sharpen_width 22
+#define sharpen_height 22
+static char *sharpen_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "..........a...........",
+  "..........ae..........",
+  ".........eha..........",
+  ".........eha..........",
+  ".........ehae.........",
+  "........ehgga.........",
+  "........ehgga.........",
+  "........ehggae........",
+  ".......ehgggga........",
+  ".......ehgggga........",
+  ".......ehggggae.......",
+  "......ehhggggga.......",
+  "......ehggggggae......",
+  "......ehggggggae......",
+  ".....ehhgggggeeae.....",
+  "......aaaaaaaaaee.....",
+  ".......eeeeeeeee......",
+  "......................",
+  "......................"
+};
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: skew  */
+
+
+/*
+#define skew_width 22
+#define skew_height 22
+static char *skew_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  "...aaaaaaaaaaa........",
+  "...agggggggggea.......",
+  "...aeggggggggega......",
+  "...aeggggggggega......",
+  "...aeegggggggegga.....",
+  "...aeegggggggegga.....",
+  "...aeeeggggggeggga....",
+  "...aeeeggggggeggga....",
+  "...aeeeegggggegggga...",
+  "...aaaaageeeeegggga...",
+  "........agggggggggga..",
+  ".....a...aaaaaaaaaaa..",
+  "..aaaaa...............",
+  ".....a................",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
+};
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: text  */
+
+
+#define text_width 22
+#define text_height 22
+static char *text_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "......................",
+  ".....aaaaaaaaaaa......",
+  ".....aaeeaaaeeaae.....",
+  ".....aee.aaae..ae.....",
+  "......e..aaae...e.....",
+  "........eaae..........",
+  "........eaae..........",
+  "........eaae..........",
+  "........aaae..........",
+  "........aae...........",
+  ".......eaae...........",
+  ".......eaae...........",
+  ".......aaae...........",
+  "......aaaaa...........",
+  ".......eeeee..........",
+  "......................",
+  "......................",
+  "......................",
+  "......................"
+};
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: vertflip  */
+
+
+/*
+#define vertflip_width 22
+#define vertflip_height 22
+static char *vertflip_bits [] =
+{
+  "......................",
+  "......................",
+  "......................",
+  "..........a...........",
+  ".........aaa..........",
+  "........aaaaa.........",
+  ".......aaaeaaa........",
+  ".........aeaeee.......",
+  ".........aeae.........",
+  ".........aeae.........",
+  ".........aeae.........",
+  ".........aeae.........",
+  ".........aeae.........",
+  ".........aeae.........",
+  ".........aeae.........",
+  ".......aaaeaaa........",
+  "........aaaaaee.......",
+  ".........aaaee........",
+  "..........aee.........",
+  "...........e..........",
+  "......................",
+  "......................"
+};
+*/
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: default  */
+
+
+#define default_width 13
+#define default_height 13
+static char *default_bits [] =
+{
+  ".............",
+  "eeeeeeee.....",
+  "eaaaaaae.....",
+  "eaaaaaae.....",
+  "eaaaaaae.....",
+  "eaaaaaaeeeee.",
+  "eaaaaaaehhhe.",
+  "eaaaaaaehhhe.",
+  "eeeeeeeehhhe.",
+  "....ehhhhhhe.",
+  "....ehhhhhhe.",
+  "....ehhhhhhe.",
+  "....eeeeeeee."
+};
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: swap  */
+
+
+#define swap_width 13
+#define swap_height 13
+static char *swap_bits [] =
+{
+  "...e.........",
+  "..eae........",
+  ".eaaeee......",
+  "eaaaaaae.....",
+  ".eaaeeeae....",
+  "..eae..eae...",
+  "...e....eae..",
+  "........eae..",
+  ".......eeaee.",
+  "......eaaaaae",
+  ".......eaaae.",
+  "........eae..",
+  ".........e..."
+};

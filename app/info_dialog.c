@@ -13,126 +13,116 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include <string.h>
 #include "appenv.h"
+#include "gimprc.h"
 #include "info_dialog.h"
-
+#include "interface.h"
 
 /*  static functions  */
-static InfoField * info_field_new (Widget, char *, char *);
+static InfoField * info_field_new (InfoDialog *, char *, char *);
 static void        update_field (InfoField *);
-
+static gint        info_dialog_delete_callback (GtkWidget *, GdkEvent *, gpointer);
 
 static InfoField *
-info_field_new (parent, class, text_ptr)
-     Widget parent;
-     char * class;
-     char * text_ptr;
+info_field_new (InfoDialog *idialog,
+		char       *title,
+		char       *text_ptr)
 {
-  char * buf;
-  InfoField * field;
+  GtkWidget *label;
+  InfoField *field;
 
-  buf = (char *) xmalloc (sizeof (char) * (strlen (class) + 4));
-  sprintf (buf, "%sVal", class);
-  field = (InfoField *) xmalloc (sizeof (InfoField));
+  field = (InfoField *) g_malloc (sizeof (InfoField));
 
-  XtVaCreateManagedWidget (class, xmLabelGadgetClass, parent, NULL);
-  field->w = XtVaCreateManagedWidget (buf, xmLabelGadgetClass, parent, NULL);
+  label = gtk_label_new (title);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (idialog->labels), label, FALSE, FALSE, 0);
+
+  field->w = gtk_label_new (text_ptr);
+  gtk_misc_set_alignment (GTK_MISC (field->w), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (idialog->values), field->w, FALSE, FALSE, 0);
+
   field->text_ptr = text_ptr;
 
-  xfree (buf);
+  gtk_widget_show (field->w);
+  gtk_widget_show (label);
 
   return field;
 }
 
-
 static void
-update_field (field)
-     InfoField * field;
+update_field (InfoField *field)
 {
-  XmString field_string;
-  XmString old_text;
+  gchar *old_text;
 
   /*  only update the field if its new value differs from the old  */
+  gtk_label_get (GTK_LABEL (field->w), &old_text);
 
-  XtVaGetValues (field->w, XmNlabelString, &old_text, NULL);
-  field_string = XmStringCreateLocalized (field->text_ptr);
-
-  if (! XmStringCompare (old_text, field_string))
+  if (strcmp (old_text, field->text_ptr))
     {
-      XtVaSetValues (field->w, XmNlabelString, field_string, NULL);
+      /* set the new value and update somehow */
+      gtk_label_set (GTK_LABEL (field->w), field->text_ptr);
     }
-
-  XmStringFree (old_text);
-  XmStringFree (field_string);
-  
 }
-
 
 /*  function definitions  */
 
 InfoDialog *
-info_dialog_new (class, title)
-     char * class;
-     char * title;
+info_dialog_new (char *title)
 {
   InfoDialog * idialog;
-  Widget shell, dialog;
-  Widget info_area, info_frame;
-  Widget rowcol;
-  
-  idialog = (InfoDialog *) xmalloc (sizeof (InfoDialog));
+  GtkWidget *shell;
+  GtkWidget *vbox;
+  GtkWidget *labels, *values;
+  GtkWidget *info_area;
+
+  idialog = (InfoDialog *) g_malloc (sizeof (InfoDialog));
   idialog->field_list = NULL;
 
-  /*  Create the main dialog shell  */
-  shell = XtVaCreatePopupShell (class,
-				xmDialogShellWidgetClass, toplevel,
-				XmNtitle, title,
-				XmNdeleteResponse, XmDESTROY,
-				NULL);
+  shell = gtk_dialog_new ();
+  gtk_window_set_wmclass (GTK_WINDOW (shell), "info_dialog", "Gimp");
+  gtk_window_set_title (GTK_WINDOW (shell), title);
+  gtk_widget_set_uposition (shell, info_x, info_y);
 
-  dialog = XtVaCreateWidget ("iDialogBulletin", xmBulletinBoardWidgetClass,
-			     shell, NULL);
+  gtk_signal_connect (GTK_OBJECT (shell), "delete_event",
+		      GTK_SIGNAL_FUNC (info_dialog_delete_callback),
+		      idialog);
 
-  rowcol = XtVaCreateWidget ("dialogPartition", xmRowColumnWidgetClass, dialog,
-			     XmNpacking, XmPACK_TIGHT,
-			     XmNorientation, XmVERTICAL,
-			     NULL);
+  vbox = gtk_vbox_new (FALSE, 1);
+  gtk_container_border_width (GTK_CONTAINER (vbox), 1);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (shell)->vbox), vbox, TRUE, TRUE, 0);
 
-  info_frame = XtVaCreateWidget ("infoFrame", xmFrameWidgetClass, rowcol,
-				 XmNshadowType, XmSHADOW_ETCHED_IN,
-				 NULL);
-				 
-  info_area = XtVaCreateWidget ("infoArea", xmRowColumnWidgetClass, info_frame,
-				XmNpacking, XmPACK_COLUMN,
-				XmNorientation, XmHORIZONTAL,
-				XmNnumColumns, 0,
-				NULL);
+  info_area = gtk_hbox_new (FALSE, 1);
+  gtk_container_border_width (GTK_CONTAINER (info_area), 5);
+  gtk_box_pack_start (GTK_BOX (vbox), info_area, TRUE, TRUE, 0);
 
-  XtVaSetValues (dialog, XmNdefaultPosition, False, NULL);
+  labels = gtk_vbox_new (FALSE, 1);
+  gtk_box_pack_start (GTK_BOX (info_area), labels, TRUE, TRUE, 0);
+
+  values = gtk_vbox_new (FALSE, 1);
+  gtk_box_pack_start (GTK_BOX (info_area), values, TRUE, TRUE, 0);
 
   idialog->shell = shell;
-  idialog->dialog = dialog;
-  idialog->rowcol = rowcol;
+  idialog->vbox = vbox;
   idialog->info_area = info_area;
-  idialog->action_area = NULL;
+  idialog->labels = labels;
+  idialog->values = values;
 
-  XtManageChild (idialog->info_area);
-  XtManageChild (info_frame);
-  XtManageChild (idialog->rowcol);
-  
+  gtk_widget_show (idialog->labels);
+  gtk_widget_show (idialog->values);
+  gtk_widget_show (idialog->info_area);
+  gtk_widget_show (idialog->vbox);
+
   return idialog;
 }
 
-
 void
-info_dialog_free (idialog)
-     InfoDialog * idialog;
+info_dialog_free (InfoDialog *idialog)
 {
-  link_ptr list;
+  GSList *list;
 
   if (!idialog)
     return;
@@ -142,68 +132,58 @@ info_dialog_free (idialog)
 
   while (list)
     {
-      xfree (list->data);
-      list = next_item (list);
+      g_free (list->data);
+      list = g_slist_next (list);
     }
-  
+
   /*  Free the actual field linked list  */
-  free_list (idialog->field_list);
+  g_slist_free (idialog->field_list);
 
   /*  Destroy the associated widgets  */
-  XtDestroyWidget (idialog->shell);
+  gtk_widget_destroy (idialog->shell);
 
   /*  Free the info dialog memory  */
-  xfree (idialog);
+  g_free (idialog);
 }
 
-
 void
-info_dialog_add_field (idialog, class, text_ptr)
-     InfoDialog * idialog;
-     char * class;
-     char * text_ptr;
+info_dialog_add_field (InfoDialog *idialog,
+		       char       *title,
+		       char       *text_ptr)
 {
-  short num_columns;
   InfoField * new_field;
 
   if (!idialog)
     return;
 
-  new_field = info_field_new (idialog->info_area, class, text_ptr);
-  idialog->field_list = add_to_list (idialog->field_list, (void *) new_field);
-
-  XtVaGetValues (idialog->info_area, XmNnumColumns, &num_columns, NULL);
-  XtVaSetValues (idialog->info_area, XmNnumColumns, (num_columns + 1), NULL);
+  new_field = info_field_new (idialog, title, text_ptr);
+  idialog->field_list = g_slist_prepend (idialog->field_list, (void *) new_field);
 }
 
 void
-info_dialog_popup (idialog)
-     InfoDialog * idialog;
+info_dialog_popup (InfoDialog *idialog)
 {
   if (!idialog)
     return;
 
-  if (!XtIsManaged (idialog->dialog))
-    XtManageChild (idialog->dialog);
+  if (!GTK_WIDGET_VISIBLE (idialog->shell))
+    gtk_widget_show (idialog->shell);
 }
 
-
 void
-info_dialog_popdown (idialog)
-     InfoDialog * idialog;
+info_dialog_popdown (InfoDialog *idialog)
 {
   if (!idialog)
     return;
-
-  XtUnmanageChild (idialog->dialog);
+  
+  if (GTK_WIDGET_VISIBLE (idialog->shell))
+    gtk_widget_hide (idialog->shell);
 }
 
-
 void
-info_dialog_update (idialog)
-     InfoDialog * idialog;
+info_dialog_update (InfoDialog *idialog)
 {
-  link_ptr list;
+  GSList *list;
 
   if (!idialog)
     return;
@@ -213,10 +193,20 @@ info_dialog_update (idialog)
   while (list)
     {
       update_field ((InfoField *) list->data);
-      list = next_item (list);
+      list = g_slist_next (list);
     }
-
 }
+
+static gint
+info_dialog_delete_callback (GtkWidget *w,
+			     GdkEvent *e,
+			     gpointer client_data)
+{
+  info_dialog_popdown ((InfoDialog *) client_data);
+
+  return TRUE;
+}
+
 
 
 

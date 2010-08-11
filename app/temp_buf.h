@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __TEMP_BUF_H__
 #define __TEMP_BUF_H__
@@ -24,59 +24,42 @@ typedef struct _temp_buf MaskBuf;
 
 struct _temp_buf
 {
-  int             bytes;         /*  The necessary info  */
+  int             bytes;      /*  The necessary info  */
   int             width;
   int             height;
-  int             x, y;          /*  origin of data source  */
+  int             x, y;       /*  origin of data source  */
 
-  int             swapped;       /*  flag indicating whether buf is cached to disk  */
-  char *          filename;      /*  filename of cached information  */
+  int             swapped;    /*  flag indicating whether buf is cached to disk  */
+  char *          filename;   /*  filename of cached information  */
 
-  unsigned char * data;          /*  The data buffer     */
+  unsigned char * data;       /*  The data buffer     */
 };
 
 
 /*  The temp buffer functions  */
 
-TempBuf *   temp_buf_new        (int, int, int, int, int, unsigned char *);
-TempBuf *   temp_buf_copy       (TempBuf *, TempBuf *);
-TempBuf *   temp_buf_resize     (TempBuf *, int, int, int, int, int);
-TempBuf *   temp_buf_copy_area  (TempBuf *, TempBuf *, int, int, int, int);
-TempBuf *   temp_buf_load       (TempBuf *, void *, int, int, int, int);
-void        temp_buf_paste      (TempBuf *, void *, int, int, int, int);
-void        temp_buf_free       (TempBuf *);
-unsigned char * temp_buf_data   (TempBuf *);
+TempBuf *         temp_buf_new        (int, int, int, int, int, unsigned char *);
+TempBuf *         temp_buf_copy       (TempBuf *, TempBuf *);
+TempBuf *         temp_buf_resize     (TempBuf *, int, int, int, int, int);
+TempBuf *         temp_buf_copy_area  (TempBuf *, TempBuf *, int, int, int, int, int);
+void              temp_buf_free       (TempBuf *);
+unsigned char *   temp_buf_data       (TempBuf *);
 
 /* The mask buffer functions  */
 
-MaskBuf *   mask_buf_new             (int, int);
-void        mask_buf_free            (MaskBuf *);
-void        mask_convert_to_region   (MaskBuf *, void *);
-MaskBuf *   mask_convert_from_region (void *, int);
-unsigned char * mask_buf_data        (MaskBuf *);
-
+MaskBuf *         mask_buf_new        (int, int);
+void              mask_buf_free       (MaskBuf *);
+unsigned char *   mask_buf_data       (MaskBuf *);
 
 /*  The disk caching functions  */
 
-void        temp_buf_swap            (TempBuf *);
-void        temp_buf_unswap          (TempBuf *);
-void        temp_buf_swap_free       (TempBuf *);
+void              temp_buf_swap       (TempBuf *);
+void              temp_buf_unswap     (TempBuf *);
+void              temp_buf_swap_free  (TempBuf *);
 
 
 /*  Called by app_procs:exit to free up the cached undo buffer  */
 
-void        swapping_free            ();
+void              swapping_free       (void);
 
 #endif  /*  __TEMP_BUF_H__  */
-
-
-
-
-
-
-
-
-
-
-
-

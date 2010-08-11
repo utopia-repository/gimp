@@ -13,16 +13,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __AIRBRUSH_H__
 #define __AIRBRUSH_H__
 
 #include "tools.h"
+#include "paint_core.h"
+#include "procedural_db.h"
 
-void          airbrush_dialog      (void);
-void *        airbrush_paint_func  (Tool *, int);
+void *        airbrush_paint_func  (PaintCore *, GimpDrawable *, int);
 Tool *        tools_new_airbrush   (void);
 void          tools_free_airbrush  (Tool *);
+
+/*  Procedure definition and marshalling function  */
+extern ProcRecord airbrush_proc;
 
 #endif  /*  __AIRBRUSH_H__  */

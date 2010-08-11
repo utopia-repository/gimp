@@ -13,13 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __TRANSFORM_CORE_H__
 #define __TRANSFORM_CORE_H__
 
 #include "info_dialog.h"
 #include "draw_core.h"
+#include "temp_buf.h"
 
 /* possible scaling functions */
 #define CREATING        0
@@ -36,7 +37,7 @@
 
 /* buffer sizes for scaling information strings (for the info dialog) */
 #define MAX_INFO_BUF    12
-#define TRAN_INFO_SIZE  4
+#define TRAN_INFO_SIZE  8
 
 /* control whether the transform tool draws a bounding box */
 #define NON_INTERACTIVE 0
@@ -53,7 +54,7 @@ typedef struct _transform_core TransformCore;
 struct _transform_core
 {
   DrawCore *      core;         /*  Core select object          */
-  
+
   int             startx;       /*  starting x coord            */
   int             starty;       /*  starting y coord            */
 
@@ -81,16 +82,30 @@ struct _transform_core
   Matrix          transform;    /*  transformation matrix       */
   TranInfo        trans_info;   /*  transformation info         */
 
-  void *          select_ptr;   /*  pointer to selection struct */
-  int             gregion_id;   /*  ID of current gdisplay reg. */
-
-  int             srw, srh;     /*  width and height of handles */
+  TileManager *   original;     /*  pointer to original tiles   */
 
   TransformFunc   trans_func;   /*  transformation function     */
 
   int             function;     /*  current tool activity       */
 
   int             interactive;  /*  tool is interactive         */
+  int             bpressed;     /* Bug work around make sure we have 
+				 * a button pressed before we deal with
+				 * motion events. ALT.
+				 */
+};
+
+
+/*  Special undo type  */
+typedef struct _transform_undo TransformUndo;
+
+struct _transform_undo
+{
+  int             tool_ID;
+  int             tool_type;
+  TranInfo        trans_info;
+  int             first;
+  TileManager *   original;
 };
 
 
@@ -98,10 +113,11 @@ struct _transform_core
 extern        InfoDialog * transform_info;
 
 /*  transform tool action functions  */
-void          transform_core_button_press      (Tool *, XButtonEvent *, XtPointer);
-void          transform_core_button_release    (Tool *, XButtonEvent *, XtPointer);
-void          transform_core_motion            (Tool *, XMotionEvent *, XtPointer);
-void          transform_core_control           (Tool *, int, void *);
+void          transform_core_button_press      (Tool *, GdkEventButton *, gpointer);
+void          transform_core_button_release    (Tool *, GdkEventButton *, gpointer);
+void          transform_core_motion            (Tool *, GdkEventMotion *, gpointer);
+void          transform_core_cursor_update     (Tool *, GdkEventMotion *, gpointer);
+void          transform_core_control           (Tool *, int, gpointer);
 
 /*  transform tool functions  */
 void          transform_core_draw         (Tool *);
@@ -109,6 +125,11 @@ void          transform_core_no_draw      (Tool *);
 Tool *        transform_core_new          (int, int);
 void          transform_core_free         (Tool *);
 void          transform_core_reset        (Tool *, void *);
+
+/*  transform functions  */
+TileManager * transform_core_do           (GImage *, GimpDrawable *, TileManager *, int, Matrix);
+TileManager * transform_core_cut          (GImage *, GimpDrawable *, int *);
+Layer *       transform_core_paste        (GImage *, GimpDrawable *, TileManager *, int);
 
 /*  matrix functions  */
 void          transform_bounding_box      (Tool *);
@@ -122,24 +143,4 @@ void          xshear_matrix               (Matrix, double);
 void          yshear_matrix               (Matrix, double);
 
 
-/*  Something to help the transform_undo deal with lots of variables...  */
-
-typedef struct _transform_undo TransformUndo;
-
-struct _transform_undo
-{
-  void *          old_select;
-  int             tool_type;
-  TranInfo        trans_info;
-  Boolean         first;
-  int             initial_move;
-};
-
-
 #endif  /*  __TRANSFORM_CORE_H__  */
-
-
-
-
-
-

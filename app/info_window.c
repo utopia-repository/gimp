@@ -13,84 +13,73 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "appenv.h"
+#include "actionarea.h"
 #include "colormaps.h"
+#include "info_dialog.h"
 #include "info_window.h"
 #include "gdisplay.h"
 #include "general.h"
-#include "widget.h"
-#include "visual.h"
+#include "gximage.h"
+#include "interface.h"
 
+#define MAX_BUF 256
+
+typedef struct _InfoWinData InfoWinData;
+struct _InfoWinData
+{
+  char dimensions_str[MAX_BUF];
+  char scale_str[MAX_BUF];
+  char color_type_str[MAX_BUF];
+  char visual_class_str[MAX_BUF];
+  char visual_depth_str[MAX_BUF];
+  char shades_str[MAX_BUF];
+};
 
 /*  The different classes of visuals  */
 static char *visual_classes[] =
 {
-  "StaticGray",
-  "GrayScale",
-  "StaticColor",
-  "PseudoColor",
-  "TrueColor",
-  "DirectColor",
+  "Static Gray",
+  "Grayscale",
+  "Static Color",
+  "Pseudo Color",
+  "True Color",
+  "Direct Color",
 };
 
 
-/*  Callbacks - forward declarations  */
-static void OK_info_callback      (Widget, XtPointer, XtPointer);
-static void destroy_info_callback (Widget, XtPointer, XtPointer);
-
-
 static void
-create_info_line (parent, category, info)
-     Widget parent;
-     char * category;
-     char * info;
+get_shades (GDisplay *gdisp,
+	    char     *buf)
 {
-  XtVaCreateManagedWidget (category, xmLabelGadgetClass, parent, NULL);
+  GtkPreviewInfo *info;
 
-  XtVaCreateManagedWidget (info, xmTextWidgetClass, parent,
-			   XmNeditable, False,
-			   XmNcursorPositionVisible, False,
-			   XmNvalue, info,
-			   NULL);
-}
+  info = gtk_preview_get_info ();
 
-static void
-get_shades (gdisp, buf)
-     GDisplay * gdisp;
-     char * buf;
-{
-  switch (gdisp->gimage->type)
+  switch (gimage_base_type (gdisp->gimage))
     {
-    case GREY_GIMAGE :
-      if (emulate_grey)
-	switch (gdisp->depth)
-	  {
-	  case 15 : case 16 :
-	    sprintf (buf, "%d",
-		     MINIMUM (MINIMUM ((1 << (8 - red_prec)), (1 << (8 - green_prec))),
-			      (1 << (8 - blue_prec))));
-	    break;
-	  case 24 :
-	    sprintf (buf, "256");
-	    break;
-	  }
-      else
-	sprintf (buf, "%d", shades_grey);
+    case GRAY:
+      sprintf (buf, "%d", info->ngray_shades);
       break;
-    case RGB_GIMAGE :
+    case RGB:
       switch (gdisp->depth)
 	{
 	case 8 :
-	  sprintf (buf, "%d / %d / %d", shades_r, shades_g, shades_b);
+	  sprintf (buf, "%d / %d / %d",
+		   info->nred_shades,
+		   info->ngreen_shades,
+		   info->nblue_shades);
 	  break;
 	case 15 : case 16 :
 	  sprintf (buf, "%d / %d / %d",
-		   (1 << (8 - red_prec)),
-		   (1 << (8 - green_prec)),
-		   (1 << (8 - blue_prec)));
+		   (1 << (8 - info->visual->red_prec)),
+		   (1 << (8 - info->visual->green_prec)),
+		   (1 << (8 - info->visual->blue_prec)));
 	  break;
 	case 24 :
 	  sprintf (buf, "256 / 256 / 256");
@@ -98,171 +87,145 @@ get_shades (gdisp, buf)
 	}
       break;
 
-    case INDEXED_GIMAGE :
+    case INDEXED:
       sprintf (buf, "%d", gdisp->gimage->num_cols);
       break;
     }
 }
 
-
+static void
+info_window_close_callback (GtkWidget *w,
+			    gpointer   client_data)
+{
+  info_dialog_popdown ((InfoDialog *) client_data);
+}
 
   /*  displays information:
    *    image name
    *    image width, height
    *    zoom ratio
    *    image color type
-   *    System info:
-   *      Using shared X Images?
+   *    Display info:
    *      visual class
    *      visual depth
+   *      shades of color/gray
    */
 
-Widget
-create_info_window (gdisp_ptr)
-     XtPointer gdisp_ptr;
+static ActionAreaItem action_items[] =
 {
-  GDisplay * gdisp;
-  Widget shell, dialog, rowcol, form, info;
-  Widget button;
-  char buf[256];
+  { "Close", info_window_close_callback, NULL, NULL },
+};
+
+InfoDialog *
+info_window_create (void *gdisp_ptr)
+{
+  InfoDialog *info_win;
+  GDisplay *gdisp;
+  InfoWinData *iwd;
   char * title, * title_buf;
-  
+  int type;
+
   gdisp = (GDisplay *) gdisp_ptr;
 
-  title = prune_filename (gdisp->gimage->filename);
+  title = prune_filename (gimage_filename (gdisp->gimage));
+  type = gimage_base_type (gdisp->gimage);
 
   /*  allocate the title buffer  */
-  title_buf = (char *) xmalloc (sizeof (char) * (strlen (title) + 15));
+  title_buf = (char *) g_malloc (sizeof (char) * (strlen (title) + 15));
   sprintf (title_buf, "%s: Window Info", title);
 
-  /*  Create the main dialog shell  */
-  shell = XtVaCreatePopupShell ("windowInfoDialog",
-				xmDialogShellWidgetClass, toplevel,
-				XmNtitle, title_buf,
-				XmNallowResize, False,
-				XmNdeleteResponse, XmDESTROY,
-				NULL);
+  /*  create the info dialog  */
+  info_win = info_dialog_new (title_buf);
+  g_free (title_buf);
 
-  /*  free the title buffer  */
-  xfree (title_buf);
+  iwd = (InfoWinData *) g_malloc (sizeof (InfoWinData));
+  info_win->user_data = iwd;
+  iwd->dimensions_str[0] = '\0';
+  iwd->scale_str[0] = '\0';
+  iwd->color_type_str[0] = '\0';
+  iwd->visual_class_str[0] = '\0';
+  iwd->visual_depth_str[0] = '\0';
+  iwd->shades_str[0] = '\0';
 
-  dialog = XtVaCreateWidget ("bulletinBoard", xmBulletinBoardWidgetClass, shell,
-			     NULL);
+  /*  add the information fields  */
+  info_dialog_add_field (info_win, "Dimensions (w x h): ", iwd->dimensions_str);
+  info_dialog_add_field (info_win, "Scale Ratio: ", iwd->scale_str);
+  info_dialog_add_field (info_win, "Display Type: ", iwd->color_type_str);
+  info_dialog_add_field (info_win, "Visual Class: ", iwd->visual_class_str);
+  info_dialog_add_field (info_win, "Visual Depth: ", iwd->visual_depth_str);
+  if (type == RGB)
+    info_dialog_add_field (info_win, "Shades of Color: ", iwd->shades_str);
+  else if (type == INDEXED)
+    info_dialog_add_field (info_win, "Shades: ", iwd->shades_str);
+  else if (type == GRAY)
+    info_dialog_add_field (info_win, "Shades of Gray: ", iwd->shades_str);
 
-  rowcol = XtVaCreateWidget ("dialogPartition", xmRowColumnWidgetClass, dialog,
-			     XmNpacking, XmPACK_TIGHT,
-			     XmNorientation, XmVERTICAL,
-			     XmNnumColumns, 1,
-			     NULL);
-
-  info = XtVaCreateWidget ("info", xmRowColumnWidgetClass, rowcol,
-			   XmNpacking, XmPACK_COLUMN,
-			   XmNnumColumns, 7,
-			   XmNorientation, XmHORIZONTAL,
-			   XmNisAligned, True,
-			   XmNentryAlignment, XmALIGNMENT_BEGINNING,
-			   NULL);
-
-  /*  width and height  */
-  sprintf (buf, "%d x %d", (int) gdisp->gimage->width, (int) gdisp->gimage->height);
-  create_info_line (info, "Dimensions (w x h):", buf);
-
-  /*  zoom ratio  */
-  sprintf (buf, "%d:%d", SCALEDEST (gdisp), SCALESRC (gdisp));
-  create_info_line (info, "Scale Ratio:", buf);
-
-  /*  color type  */
-  if (gdisp->gimage->type == RGB_GIMAGE)
-    sprintf (buf, "%s", "RGB Color");
-  else if (gdisp->gimage->type == GREY_GIMAGE)
-    sprintf (buf, "%s", "Grayscale");
-  else if (gdisp->gimage->type == INDEXED_GIMAGE)
-    sprintf (buf, "%s", "Indexed Color");
-  create_info_line (info, "Display Type:", buf);
-
-  /*  Shared memory?  */
-  if (gdisp->disp_image->type == MIT_SHM)
-    sprintf (buf, "%s", "MIT SHM extension");
-  else
-    sprintf (buf, "%s", "Standard Xlib");
-  create_info_line (info, "XImage Model:", buf);
-
-  /*  visual class  */
-  if (gdisp->gimage->type == RGB_GIMAGE || gdisp->gimage->type == INDEXED_GIMAGE)
-    sprintf (buf, "%s", visual_classes[color_class]);
-  else if (gdisp->gimage->type == GREY_GIMAGE)
-    sprintf (buf, "%s", visual_classes[grey_class]);
-  create_info_line (info, "Visual Class:", buf);
-
-  /*  visual depth  */
-  sprintf (buf, "%d", gdisp->disp_image->depth);
-  create_info_line (info, "Visual Depth:", buf);
-
-  /*  pure color shades  */
-  get_shades (gdisp, buf);
-  if (gdisp->gimage->type == RGB_GIMAGE)
-    create_info_line (info, "Shades of Color:", buf);
-  else if (gdisp->gimage->type == INDEXED_GIMAGE)
-    create_info_line (info, "Shades:", buf);
-  else if (gdisp->gimage->type == GREY_GIMAGE)
-    create_info_line (info, "Shades of Gray:", buf);
+  /*  update the fields  */
+  info_window_update (info_win, gdisp_ptr);
 
   /* Create the action area  */
-  form = XtVaCreateWidget ("form", xmFormWidgetClass, rowcol,
-			   XmNfractionBase, 3,
-			   NULL);
+  action_items[0].user_data = info_win;
+  build_action_area (GTK_DIALOG (info_win->shell), action_items, 1, 0);
 
-  button = XtVaCreateManagedWidget ("OK", xmPushButtonGadgetClass, form,
-				    XmNtopAttachment, XmATTACH_FORM,
-				    XmNbottomAttachment, XmATTACH_FORM,
-				    XmNleftAttachment, XmATTACH_POSITION,
-				    XmNrightAttachment, XmATTACH_POSITION,
-				    XmNleftPosition, 1,
-				    XmNrightPosition, 2,
-				    XmNshowAsDefault, True,
-				    NULL);
-
-  XtAddCallback (button, XmNactivateCallback, OK_info_callback, shell);
-  XtAddCallback (button, XmNdestroyCallback, destroy_info_callback, gdisp_ptr);
-
-  XtVaSetValues (dialog, XmNdefaultPosition, False, NULL);
-  XtAddCallback (dialog, XmNmapCallback, map_dialog, NULL);
-
-  XtManageChild (form);
-  XtManageChild (info);
-  XtManageChild (rowcol);
-  XtManageChild (dialog);
-
-  return shell;
+  return info_win;
 }
 
-
-static void
-OK_info_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+void
+info_window_free (InfoDialog *info_win)
 {
-  Widget shell = (Widget) client_data;
-
-  XtPopdown (shell);
+  g_free (info_win->user_data);
+  info_dialog_free (info_win);
 }
 
-
-static void
-destroy_info_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
-{ 
+void
+info_window_update (InfoDialog *info_win,
+		    void       *gdisp_ptr)
+{
   GDisplay *gdisp;
+  InfoWinData *iwd;
+  int type;
+  int flat;
 
-  gdisp = (GDisplay *) client_data;
+  gdisp = (GDisplay *) gdisp_ptr;
+  iwd = (InfoWinData *) info_win->user_data;
 
-  if (gdisp)
-    gdisp->window_info_dialog = NULL;
+  /*  width and height  */
+  sprintf (iwd->dimensions_str, "%d x %d",
+	   (int) gdisp->gimage->width, (int) gdisp->gimage->height);
+
+  /*  zoom ratio  */
+  sprintf (iwd->scale_str, "%d:%d",
+	   SCALEDEST (gdisp), SCALESRC (gdisp));
+
+  type = gimage_base_type (gdisp->gimage);
+  flat = gimage_is_flat (gdisp->gimage);
+
+  /*  color type  */
+  if (type == RGB && flat)
+    sprintf (iwd->color_type_str, "%s", "RGB Color");
+  else if (type == GRAY && flat)
+    sprintf (iwd->color_type_str, "%s", "Grayscale");
+  else if (type == INDEXED && flat)
+    sprintf (iwd->color_type_str, "%s", "Indexed Color");
+  if (type == RGB && !flat)
+    sprintf (iwd->color_type_str, "%s", "RGB-alpha Color");
+  else if (type == GRAY && !flat)
+    sprintf (iwd->color_type_str, "%s", "Grayscale-alpha");
+  else if (type == INDEXED && !flat)
+    sprintf (iwd->color_type_str, "%s", "Indexed-alpha Color");
+
+  /*  visual class  */
+  if (type == RGB ||
+      type == INDEXED)
+    sprintf (iwd->visual_class_str, "%s", visual_classes[g_visual->type]);
+  else if (type == GRAY)
+    sprintf (iwd->visual_class_str, "%s", visual_classes[g_visual->type]);
+
+  /*  visual depth  */
+  sprintf (iwd->visual_depth_str, "%d", gdisp->depth);
+
+  /*  pure color shades  */
+  get_shades (gdisp, iwd->shades_str);
+
+  info_dialog_update (info_win);
 }
-
-
-
-

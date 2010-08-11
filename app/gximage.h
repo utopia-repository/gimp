@@ -13,66 +13,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __GXIMAGE_H__
 #define __GXIMAGE_H__
 
-#include <X11/extensions/XShm.h>
+#define GXIMAGE_WIDTH       256
+#define GXIMAGE_HEIGHT      256
 
-#define		MIT_SHM		0
-#define		STANDARD	1
+void     gximage_init           (void);
+void     gximage_free           (void);
 
-typedef struct _GXImage  GXImage;
-typedef struct _MIT_SHM_Data  MIT_SHM_Data;
-typedef struct _Standard_Data Standard_Data;
-
-struct _MIT_SHM_Data
-{
-  XShmSegmentInfo *x_shm_info;  /*  Shared memory information for X */
-
-  XImage *ximage;		/*  XImage pointer  */
-
-};
-
-struct _Standard_Data
-{
-  XImage *ximage;               /*  XImage pointer  */
-};
-
-
-
-struct _GXImage
-{
-  Widget shell;			/*  Shell that holds the canvas             */
-  Widget canvas;		/*  canvas for image output                 */
-
-  long width, height;		/*  width and height of ximage structure    */
-  int  bits_per_pixel;          /*  Bits per pixel (ZPixmap format)         */
-  long bytes_per_line;		/*  bytes per line of the ximage structure  */
-  
-  GC gc;			/*  graphics context                        */
-  unsigned int depth;		/*  depth of our drawables                  */
-  Visual *visual;		/*  visual appropriate to our depth         */
-
-  unsigned char * data;		/*  actual ximage data buffer  */
-
-  int type;			/*  Is this MIT_SHM or STANDARD  */
-
-  void * private;		/*  private data  */
-
-};
-
-
-GXImage *	create_image (Widget, Widget, long, long, Visual *, int);
-void		delete_image (GXImage *);
-void		resize_image (GXImage *, long, long);
-void		put_image    (GXImage *, long, long, long, long);
-
+void     gximage_put            (GdkWindow *, int, int, int, int);
+guchar*  gximage_get_data       (void);
+int      gximage_get_bpp        (void);
+int      gximage_get_bpl        (void);
+int      gximage_get_byte_order (void);
 
 #endif  /*  __GXIMAGE_H__  */
-
-
-
-
-

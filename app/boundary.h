@@ -13,13 +13,31 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef  __BOUNDARY_H__
 #define  __BOUNDARY_H__
 
-#include "gregion.h"
+#include "paint_funcs.h"
 
-XSegment *  find_region_boundary (GRegion *, int, int, void *, int *);
+typedef struct _BoundSeg BoundSeg;
+
+struct _BoundSeg
+{
+  int x1, y1;
+  int x2, y2;
+  int open;
+  int visited;
+};
+
+typedef enum
+{
+  WithinBounds,
+  IgnoreBounds
+} BoundaryType;
+
+
+BoundSeg *  find_mask_boundary (PixelRegion *, int *, BoundaryType, int, int, int, int);
+BoundSeg *  sort_boundary (BoundSeg *, int, int *);
 
 #endif  /*  __BOUNDARY_H__  */

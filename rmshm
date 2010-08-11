@@ -1,18 +1,16 @@
 #!/bin/sh
-#
-#  title:	rmshm
-#  author:	Spencer Kimball
-#
-#  This script remove all shared memory segments from the system.
-#
 
-IPCS="ipcs -m"
-IPCRM="ipcrm -m"
+user=`whoami`
 
-shared_mem_ids=`$IPCS | sed 1,3d | awk '{print $2}'`
+if test `uname` = "Linux"; then
+  shmids=`ipcs -m | grep $user | awk '{ print $1 }'`
+  IPCRM="ipcrm shm"
+else
+  shmids=`ipcs -m | grep $user | awk '{ print $2 }'`
+  IPCRM="ipcrm -m"
+fi
 
-echo Removing shared memory segments: 
-for id in $shared_mem_ids ; do
-  echo -n "$id "
+for id in $shmids; do
+  echo removing shared memory segment: $id
   $IPCRM $id
 done

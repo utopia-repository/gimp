@@ -13,26 +13,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __BRUSH_HEADER_H__
 #define __BRUSH_HEADER_H__
 
 typedef struct _BrushHeader BrushHeader;
 
-#define FILE_VERSION 1
-#define sz_BrushHeader 20
+#define FILE_VERSION   2
+#define GBRUSH_MAGIC   (('G' << 24) + ('I' << 16) + ('M' << 8) + ('P' << 0))
+#define sz_BrushHeader (sizeof (BrushHeader))
 
 /*  All field entries are MSB  */
 
 struct _BrushHeader
 {
-  unsigned long   header_size;   /*  header_size = sizeof (BrushHeader) + brush name  */
-  unsigned long   version;       /*  brush file version #  */
-  unsigned long   width;         /*  width of brush  */
-  unsigned long   height;        /*  height of brush  */
-  unsigned long   bytes;         /*  depth of brush in bytes--always 1 */
-  
+  unsigned int   header_size; /*  header_size = sz_BrushHeader + brush name  */
+  unsigned int   version;     /*  brush file version #  */
+  unsigned int   width;       /*  width of brush  */
+  unsigned int   height;      /*  height of brush  */
+  unsigned int   bytes;       /*  depth of brush in bytes--always 1 */
+  unsigned int   magic_number;/*  GIMP brush magic number  */
+  unsigned int   spacing;     /*  brush spacing  */
 };
 
 /*  In a brush file, next comes the brush name, null-terminated.  After that

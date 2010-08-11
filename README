@@ -1,76 +1,119 @@
-The GIMP: the General Image Manipulation Program
-------------------------------------------------
+The GIMP: the GNU Image Manipulation Program
+--------------------------------------------
 
-The GIMP is designed to provide an intuitive graphical interface to a
-variety of image editing operations. Here is a list of the GIMP's 
-major features:
+The main difference between v1.0 and much earlier versions is the
+use of a tile based memory management for images. This allows the GIMP
+to work with images much larger than physical memory in a usable
+fashion. Before such memory management, the GIMP was nearly unusable
+for large images. (Large being something on the order of
+4000x3000). With the tile memory management, image size is effectively
+limited by disk space. It is due to the switch to a tile based memory
+management system that old plug-ins will not work with this version of
+the GIMP.
 
- Image viewing
- -------------
+The plug-in API has changed drastically from previous versions. The
+result is that it is now possible to access much of the GIMP's
+internals through a database of procedures aptly named the procedure
+database. Plug-ins fit into the procedure database by inserting
+themselves into it. The result is that plug-ins can call GIMP internal
+procedures and other plug-ins. Most plug-ins now fully support the
+procedural database, so that you can call them from scripts and other
+places as well.
 
-   *  Supports 8, 15, 16 and 24 bit color.
-   *  Ordered and Floyd-Steinberg dithering for 8 bit displays.
-   *  View images as rgb color, grayscale or indexed color.
-   *  Simultaneously edit multiple images.
-   *  Zoom and pan in real-time.
-   *  GIF, JPEG, PNG, TIFF and XPM support.
+The procedure database is self-documenting. To add a procedure to the
+procedure database the programmer must specify a help string and help
+strings for the arguments and return values. This allows us to
+automatically create documentation for the procedures in the procedure
+database. The documentation resides in "docs" and is provided in
+texinfo format.
 
- Image editing
- -------------
+A new type of plug-in called an extension has been created. Extensions
+are similar to plug-ins in that they are external program, but they
+differ in when and how they are run. The essential difference is that
+plug-ins are associated with a particular image/drawable, while
+extensions are not.
 
-   *  Selection tools including rectangle, ellipse, free, fuzzy, bezier 
-      and intelligent.
-   *  Transformation tools including rotate, scale, shear and flip.
-   *  Painting tools including bucket, brush, airbrush, clone, convolve,
-      blend and text.
-   *  Effects filters (such as blur, edge detect).
-   *  Channel & color operations (such as add, composite, decompose).
-   *  Plug-ins which allow for the easy addition of new file formats and
-      new effect filters.
-   *  Multiple undo/redo.
+A good example of a complex extension is Script-fu, which resides in
+the "plug-ins/script-fu" directory.  Script-fu is a simple Scheme
+interpreter that provides bindings to the GIMP's procedural database.
+This way you can write useful scripts that call the GIMP's functions
+and plug-ins, thus allowing automatization of repetitive tasks.  Many
+scripts are included for your enjoyment in the
+"plug-ins/script-fu/scripts" directory.
 
+Another extension is the "dbbrowser" utility, which lets you
+interactively browse through the procedures installed in the
+procedural database.  This will mainly be of use to Script-fu
+programmers.  Dbbrowser is also nicely integrated in the interactive
+Script-fu console.
 
-Requirements
-------------
+Lastly, there is new file format (xcf) designed specifically for
+saving GIMP images. It handles layers, channels and tiles as well as
+saving all of the state information about the image, such as the
+active channel, the selection, etc.  It also will probably change
+sometime in the future to implement some form of compression for the
+tiles.
 
- *  The operating system must support shared memory. 
- *  X11 R5 or R6. (Actually, it may work on R4, but we have not had a
-    chance to test it).
- *  The X-server must support the X shared memory extension. (The
-    X-server does not actually need to support shared memory so this is
-    only a temporary situation until we integrate the configure
-    information with the source code).
- *  Motif 1.2 or above.
+The GIMP's home page is at 
 
-The GIMP has been tested (and developed) on the following operating
-systems: Linux 1.2.13, Solaris 2.4, HPUX 9.05, SGI IRIX.
+	http://www.gimp.org
 
-Currently, the biggest restriction to running the GIMP is the Motif
-requirement. We will release a statically linked binary for several
-systems soon (including Linux). 
+Please be sure to visit this site for information, documentation,
+tutorials, news, etc.  All things GIMP-ish are available from there.
 
+The automated plug-in registry is located at
 
-URLs
-----
+	http://registry.gimp.org
 
-http://www.xcf.berkeley.edu/~gimp
-ftp://ftp.xcf.berkeley.edu/pub/gimp
-mailto:gimp@xcf.berkeley.edu
+There you can get the latest versions of plug-ins using a convenient
+forms-based interface.
 
+We have several mailing lists dedicated to GIMP user and development
+discussion.  To subscribe, send mail to
 
-Brought to you by
------------------
+	majordomo@scam.xcf.berkeley.edu
 
-  Spencer Kimball (spencer@xcf.berkeley.edu)
-  Peter Mattis (petm@xcf.berkeley.edu)
+and in the body of the message put
 
+	subscribe <list-name> your@email.address
 
-NOTE
-----
+substituting <list-name> for "gimp-user" or "gimp-developer" (without
+the quotes, of course) depending on the list you want to subscribe
+to.  The mailing list archives can be found at
 
-This software is currently a beta release. This means that we haven't
-implemented all of the features we think are required for a full,
-unqualified release. There are undoubtedly bugs we haven't found yet
-just waiting to surface given the right conditions. If you run across
-one of these, please send mail to gimp@xcf.berkeley.edu with
-precise details on how it can be reproduced.
+        http://www.findmail.com/listsaver/gimp-developer/
+        http://www.findmail.com/listsaver/gimp-user/
+
+Gimp-user is a mailing list dedicated to user problems, hints and
+tips, discussion of cool effects, etc.  Gimp-developer is oriented to
+GIMP core and plug-in developers.  Most people will only want to be
+subscribed to gimp-user.
+
+And finally, for the real junkies, there is an IRC channel devoted to
+the GIMP :-) On Byxnet (a private mostly-GIMP network) there is #gimp.
+Many of the developers hang out there.  Some of the Byxnet servers are:
+
+	irc.mint.net:6666
+	irc.canweb.net:6667
+	rudolf.canberra.edu.au:6666
+	levien.com:6666
+
+You can customize the look of the interface quite a bit my editing the
+~/.gimp/gtkrc file. A sample file, gtkrc.forest, is included (Thanks to
+Tuomas Kuosmanen)
+
+Included is a set of keybindings similar to those in Adobe Photoshop (tm).
+You can find them in the ps-menurc file.  To use them, copy this file to
+~/.gimp/menurc
+
+We sincerely hope you enjoy the program.  Please report problems to
+bugs@gimp.org.  Before reporting a problem, you may want to see if someone
+else has already did (check the http://www.wilberworks.com/bugs.cgi for
+this).
+
+Have fun,
+
+  Spencer Kimball <spencer@xcf.berkeley.edu>
+  Peter Mattis <petm@xcf.berkeley.edu>
+  Federico Mena <federico@nuclecu.unam.mx>
+  Manish Singh <yosh@gimp.org>

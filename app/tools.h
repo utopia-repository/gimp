@@ -13,10 +13,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __TOOLS_H__
 #define __TOOLS_H__
+
+#include "layer.h"
+#include "gdisplay.h"
 
 /*  The possible states for tools  */
 #define  INACTIVE               0
@@ -28,74 +31,126 @@
 #define  PAUSE                  0
 #define  RESUME                 1
 #define  HALT                   2
+#define  CURSOR_UPDATE          3
+#define  DESTROY                4
+#define  RECREATE               5
+
+
+/*  The possibilities for where the cursor lies  */
+#define  ACTIVE_LAYER           (1 << 0)
+#define  SELECTION              (1 << 1)
+#define  NON_ACTIVE_LAYER       (1 << 2)
 
 
 /*  The types of tools...  */
+typedef enum
+{
+  RECT_SELECT,
+  ELLIPSE_SELECT,
+  FREE_SELECT,
+  FUZZY_SELECT,
+  BEZIER_SELECT,
+  ISCISSORS,
+  MOVE,
+  MAGNIFY,
+  CROP,
+  ROTATE,
+  SCALE,
+  SHEAR,
+  PERSPECTIVE,
+  FLIP_HORZ,
+  FLIP_VERT,
+  TEXT,
+  COLOR_PICKER,
+  BUCKET_FILL,
+  BLEND,
+  PENCIL,
+  PAINTBRUSH,
+  ERASER,
+  AIRBRUSH,
+  CLONE,
+  CONVOLVE,
 
-#define  RECT_SELECT		0
-#define  ELLIPSE_SELECT		1
-#define  FREE_SELECT		2
-#define  FUZZY_SELECT		3
-#define  BEZIER_SELECT		4
-#define  ISCISSORS        	5
-#define  CROP                   6
-#define  TRANSFORM_TOOL         7
-#define  FLIP_HTOOL             8
-#define  FLIP_VTOOL             9
-#define  COLOR_PICKER           10
-#define  BUCKET_FILL            11
-#define  PAINTBRUSH             12
-#define  AIRBRUSH               13
-#define  CLONE                  14
-#define  CONVOLVE               15
-#define  BLEND                  16
-#define  TEXT                   17
+  /*  Non-toolbox tools  */
+  BY_COLOR_SELECT,
+  COLOR_BALANCE,
+  BRIGHTNESS_CONTRAST,
+  HUE_SATURATION,
+  POSTERIZE,
+  THRESHOLD,
+  CURVES,
+  LEVELS,
+  HISTOGRAM
+} ToolType;
 
+#define XButtonEvent GdkEventButton
+#define XMotionEvent GdkEventMotion
 
 /*  Structure definitions  */
 
 typedef struct _tool Tool;
-typedef void (* ButtonPressFunc)   (Tool *, XButtonEvent *, XtPointer);
-typedef void (* ButtonReleaseFunc) (Tool *, XButtonEvent *, XtPointer);
-typedef void (* MotionFunc)        (Tool *, XMotionEvent *, XtPointer);
-typedef void (* ArrowKeysFunc)     (Tool *, XKeyEvent *, XtPointer);
-typedef void (* ToolCtlFunc)       (Tool *, int, void *);
+typedef struct _ToolInfo ToolInfo;
+typedef void (* ButtonPressFunc)   (Tool *, GdkEventButton *, gpointer);
+typedef void (* ButtonReleaseFunc) (Tool *, GdkEventButton *, gpointer);
+typedef void (* MotionFunc)        (Tool *, GdkEventMotion *, gpointer);
+typedef void (* ArrowKeysFunc)     (Tool *, GdkEventKey *, gpointer);
+typedef void (* CursorUpdateFunc)  (Tool *, GdkEventMotion *, gpointer);
+typedef void (* ToolCtlFunc)       (Tool *, int, gpointer);
+
 
 struct _tool
 {
   /*  Data  */
-  int            type;                 /*  Tool type  */
+  ToolType       type;                 /*  Tool type  */
   int            state;                /*  state of tool activity  */
   int            paused_count;         /*  paused control count  */
   int            scroll_lock;          /*  allow scrolling or not  */
+  int            auto_snap_to;         /*  should the mouse snap to guides automatically */
   void *         private;              /*  Tool-specific information  */
   void *         gdisp_ptr;            /*  pointer to currently active gdisp  */
+  void *         drawable;             /*  pointer to the drawable that was
+					   active when the tool was created */
+  int            ID;                   /*  unique tool ID  */
+
+  int            preserve;             /*  Perserve this tool through the current image changes */
 
   /*  Action functions  */
   ButtonPressFunc    button_press_func;
   ButtonReleaseFunc  button_release_func;
   MotionFunc         motion_func;
   ArrowKeysFunc      arrow_keys_func;
+  CursorUpdateFunc   cursor_update_func;
   ToolCtlFunc        control_func;
-  
+};
+
+
+struct _ToolInfo
+{
+  GtkWidget *tool_options;
+  char *tool_name;
+  int toolbar_position;
 };
 
 
 /*  Global Data Structure  */
 
 extern Tool * active_tool;
-
+extern Layer * active_tool_layer;
+extern ToolInfo tool_info[];
 
 /*  Function declarations  */
 
-void     tools_select             (int);
-void     tools_options            (int);
-void     active_tool_control      (int, void *);
-void     tools_toggle_activation  (Widget);
+void     tools_select              (ToolType);
+void     tools_initialize          (ToolType, GDisplay *);
+void     tools_options_dialog_new  (void);
+void     tools_options_dialog_show (void);
+void     tools_options_dialog_free (void);
+void     tools_register_options    (ToolType, GtkWidget *);
+void *   tools_register_no_options (ToolType, char *);
+void     active_tool_control       (int, void *);
 
 
 /*  Standard member functions  */
-void     standard_arrow_keys_func (Tool *, XKeyEvent *, XtPointer);
+void     standard_arrow_keys_func  (Tool *, GdkEventKey *, gpointer);
 
 #endif  /*  __TOOLS_H__  */
-

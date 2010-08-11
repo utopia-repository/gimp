@@ -13,17 +13,32 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __FILE_IO_H__
 #define __FILE_IO_H__
 
-void file_io_init (void);
-void add_file_filter (char *, char *, char *, char *);
 
-void file_open_callback (Widget, XtPointer, XtPointer);
-void file_save_callback (Widget, XtPointer, XtPointer);
-int file_open (char *, char *);
-int file_save (long, char *, char *);
+#include "gtk/gtk.h"
+
+
+void file_ops_pre_init               (void);
+void file_ops_post_init              (void);
+void file_open_callback              (GtkWidget *w,
+				      gpointer   client_data);
+void file_save_callback              (GtkWidget *w,
+				      gpointer   client_data);
+void file_save_as_callback           (GtkWidget *w,
+				      gpointer   client_data);
+void file_load_by_extension_callback (GtkWidget *w,
+				      gpointer   client_data);
+void file_save_by_extension_callback (GtkWidget *w,
+				      gpointer   client_data);
+int  file_open                       (char      *filename,
+				      char      *raw_filename);
+int  file_save                       (int        image_ID,
+				      char      *filename,
+				      char      *raw_filename);
+
 
 #endif /* FILE_IO_H */

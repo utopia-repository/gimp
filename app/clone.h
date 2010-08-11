@@ -13,16 +13,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __CLONE_H__
 #define __CLONE_H__
 
+#include "paint_core.h"
+#include "procedural_db.h"
 #include "tools.h"
 
-void          clone_dialog      (void);
-void *        clone_paint_func  (Tool *, int);
+void *        clone_paint_func  (PaintCore *, GimpDrawable *, int);
 Tool *        tools_new_clone   (void);
 void          tools_free_clone  (Tool *);
+
+/*  Procedure definition and marshalling function  */
+extern ProcRecord clone_proc;
 
 #endif  /*  __CLONE_H__  */

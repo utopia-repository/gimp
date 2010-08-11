@@ -13,25 +13,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef  __CROP_H__
 #define  __CROP_H__
 
-/*  rect select action functions  */
-
-void          crop_button_press      (Tool *, XButtonEvent *, XtPointer);
-void          crop_button_release    (Tool *, XButtonEvent *, XtPointer);
-void          crop_motion            (Tool *, XMotionEvent *, XtPointer);
-void          crop_control           (Tool *, int, void *);
-void          crop_arrow_keys_func   (Tool *, XKeyEvent *, void *);
-
+#include "tools.h"
+#include "procedural_db.h"
 
 /*   select functions  */
-
 void          crop_draw         (Tool *);
-Tool *        tools_new_crop    ();
+Tool *        tools_new_crop    (void);
 void          tools_free_crop   (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord crop_proc;
 
 #endif  /*  __CROP_H__  */

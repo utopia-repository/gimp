@@ -13,29 +13,35 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __BUILDMENU_H__
 #define __BUILDMENU_H__
 
+#define PULLDOWN   0
+#define POPUP      1
+#define OPTION     2
 
 /* Structures */
 
-typedef struct _menu_item
+typedef struct _MenuItem   MenuItem;
+
+typedef void (*MenuItemCallback) (GtkWidget *widget,
+				  gpointer   user_data);
+
+struct _MenuItem
 {
   char *label;
-  WidgetClass *class;
-  char mnemonic;
-  char *accelerator;
-  char *accel_text;
-  void (*callback) ();
-  XtPointer callback_data;
-  struct _menu_item *subitems;
-  Widget w;
-} MenuItem;
+  char  accelerator_key;
+  int   accelerator_mods;
+  MenuItemCallback callback;
+  gpointer user_data;
+  MenuItem *subitems;
+  GtkWidget *widget;
+};
+
 
 /* Function declarations */
-
-Widget BuildMenu (Widget, int, char *, int, int, MenuItem *, Visual *, Colormap, int);
+GtkWidget *  build_menu (MenuItem *, GtkAcceleratorTable *);
 
 #endif /* BUILDMENU_H */

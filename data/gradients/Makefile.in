@@ -1,0 +1,319 @@
+# Makefile.in generated automatically by automake 1.3 from Makefile.am
+
+# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = /bin/sh
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DISTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AA = @AA@
+CC = @CC@
+CPP = @CPP@
+EMACS = @EMACS@
+GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
+GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
+GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
+GIMP_VERSION = @GIMP_VERSION@
+GTK_CFLAGS = @GTK_CFLAGS@
+GTK_CONFIG = @GTK_CONFIG@
+GTK_LIBS = @GTK_LIBS@
+JPEG = @JPEG@
+LD = @LD@
+LIBAA_LIB = @LIBAA_LIB@
+LIBJPEG_LIB = @LIBJPEG_LIB@
+LIBMPEG_LIB = @LIBMPEG_LIB@
+LIBPNG_LIB = @LIBPNG_LIB@
+LIBTIFF_LIB = @LIBTIFF_LIB@
+LIBTOOL = @LIBTOOL@
+LIBUCB_LIB = @LIBUCB_LIB@
+LIBXDELTA_LIB = @LIBXDELTA_LIB@
+LIBXMU_LIB = @LIBXMU_LIB@
+LIBXPM_LIB = @LIBXPM_LIB@
+LN_S = @LN_S@
+LPC_COMMAND = @LPC_COMMAND@
+LPC_DEF = @LPC_DEF@
+LPR_COMMAND = @LPR_COMMAND@
+LPR_DEF = @LPR_DEF@
+LPSTAT_COMMAND = @LPSTAT_COMMAND@
+LPSTAT_DEF = @LPSTAT_DEF@
+LP_COMMAND = @LP_COMMAND@
+LP_DEF = @LP_DEF@
+MAILER = @MAILER@
+MAINT = @MAINT@
+MAKEINFO = @MAKEINFO@
+MPEG = @MPEG@
+NM = @NM@
+PACKAGE = @PACKAGE@
+PNG = @PNG@
+RANLIB = @RANLIB@
+SENDMAIL = @SENDMAIL@
+TIFF = @TIFF@
+VERSION = @VERSION@
+WEBBROWSER = @WEBBROWSER@
+XD = @XD@
+XPM = @XPM@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+gimpdatadir = @gimpdatadir@
+gimpdir = @gimpdir@
+gimpplugindir = @gimpplugindir@
+
+gradientdatadir = $(gimpdatadir)/gradients
+
+brushdata =
+gradientdata =
+palettedata =
+patterndata =
+
+gradientdata_DATA = @gradientdata@
+
+EXTRA_DATA =
+EXTRA_DIST = $(gradientdata_DATA)
+
+FILES	=\
+    Abstract_1 \
+    Abstract_2 \
+    Abstract_3 \
+    Aneurism \
+    Blinds \
+    Blue_Green	\
+    Browns \
+    Brushed_Aluminium \
+    Burning_Paper \
+    Burning_Transparency \
+    CD \
+    CD_Half \
+    Caribbean_Blues \
+    Coffee \
+    Cold_Steel \
+    Cold_Steel_2 \
+    Crown_molding \
+    Dark_1 \
+    Deep_Sea \
+    Default \
+    Flare_Glow_Angular_1 \
+    Flare_Glow_Radial_1 \
+    Flare_Glow_Radial_2 \
+    Flare_Glow_Radial_3	\
+    Flare_Glow_Radial_4	\
+    Flare_Radial_101 \
+    Flare_Radial_102 \
+    Flare_Radial_103 \
+    Flare_Rays_Radial_1 \
+    Flare_Rays_Radial_2 \
+    Flare_Rays_Size_1 \
+    Flare_Sizefac_101 \
+    Four_bars \
+    French_flag \
+    French_flag_smooth \
+    Full_saturation_spectrum_CCW \
+    Full_saturation_spectrum_CW \
+    German_flag \
+    German_flag_smooth \
+    Golden \
+    Greens \
+    Horizon_1 \
+    Horizon_2 \
+    Incandescent \
+    Land_1 \
+    Land_and_Sea \
+    Metallic_Something	\
+    Mexican_flag \
+    Mexican_flag_smooth \
+    Nauseating_Headache \
+    Neon_Cyan \
+    Neon_Green \
+    Neon_Yellow \
+    Pastels	\
+    Pastel_Rainbow \
+    Purples \
+    Radial_Eyeball_Blue \
+    Radial_Eyeball_Brown \
+    Radial_Eyeball_Green \
+    Radial_Glow_1 \
+    Radial_Rainbow_Hoop \
+    Romanian_flag \
+    Romanian_flag_smooth \
+    Rounded_edge \
+    Shadows_1 \
+    Shadows_2	\
+    Shadows_3	\
+    Skyline \
+    Skyline_polluted \
+    Square_Wood_Frame \
+    Sunrise	\
+    Three_bars_sin \
+    Tropical_Colors \
+    Tube_Red \
+    Wood_1 \
+    Wood_2	\
+    Yellow_Contrast	\
+    Yellow_Orange
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../config.h
+CONFIG_CLEAN_FILES = 
+DATA =  $(gradientdata_DATA)
+
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP = --best
+all: Makefile $(DATA)
+
+.SUFFIXES:
+$(srcdir)/Makefile.in: @MAINT@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps data/gradients/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+install-gradientdataDATA: $(gradientdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(gradientdatadir)
+	@list='$(gradientdata_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(gradientdatadir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(gradientdatadir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(gradientdatadir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(gradientdatadir)/$$p; \
+	  fi; fi; \
+	done
+
+uninstall-gradientdataDATA:
+	@$(NORMAL_UNINSTALL)
+	list='$(gradientdata_DATA)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(gradientdatadir)/$$p; \
+	done
+tags: TAGS
+TAGS:
+
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = data/gradients
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  test -f $(distdir)/$$file \
+	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	  || cp -p $$d/$$file $(distdir)/$$file; \
+	done
+info:
+dvi:
+check: all
+	$(MAKE)
+installcheck:
+install-exec: 
+	@$(NORMAL_INSTALL)
+
+install-data: install-gradientdataDATA
+	@$(NORMAL_INSTALL)
+
+install: install-exec install-data all
+	@:
+
+uninstall: uninstall-gradientdataDATA
+
+install-strip:
+	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+installdirs:
+	$(mkinstalldirs)  $(DATADIR)$(gradientdatadir)
+
+
+mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+
+maintainer-clean-generic:
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+mostlyclean:  mostlyclean-generic
+
+clean:  clean-generic mostlyclean
+
+distclean:  distclean-generic clean
+	-rm -f config.status
+	-rm -f libtool
+
+maintainer-clean:  maintainer-clean-generic distclean
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+.PHONY: uninstall-gradientdataDATA install-gradientdataDATA tags distdir \
+info dvi installcheck install-exec install-data install uninstall all \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+.PHONY: files
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

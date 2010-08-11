@@ -13,15 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __TRANSFORM_TOOL_H__
 #define __TRANSFORM_TOOL_H__
 
 /*  tool functions  */
-Tool *        tools_new_transform_tool    ();
-void          tools_free_transform_tool   (Tool *);
-void          transform_tool_dialog       ();
-int           transform_tool_smoothing    ();
+Tool *        tools_new_transform_tool      (void);
+void          tools_free_transform_tool     (Tool *);
+int           transform_tool_smoothing    (void);
 
 #endif  /*  __TRANSFORM_TOOL_H__  */

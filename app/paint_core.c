@@ -13,192 +13,222 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include "appenv.h"
 #include "brushes.h"
+#include "channels_dialog.h"
+#include "drawable.h"
 #include "errors.h"
 #include "gdisplay.h"
+#include "gimage_mask.h"
+#include "layers_dialog.h"
 #include "paint_funcs.h"
 #include "paint_core.h"
 #include "selection.h"
 #include "tools.h"
 #include "undo.h"
 
-#define    MIN_BLOCK_WIDTH  64
-#define    MIN_BLOCK_HEIGHT 64
+#define    SQR(x) ((x) * (x))
+#define    EPSILON  0.00001
+
+/*  global variables--for use in the various paint tools  */
+PaintCore  non_gui_paint_core;
 
 /*  local function prototypes  */
-static void  reconstruct_original_image  (Tool *, void *, TempBuf *);
-static void  interpolate_brush_mask      (TempBuf *, TempBuf *, int, int, int, int);
+static MaskBuf * paint_core_subsample_mask  (MaskBuf *, double, double);
+static MaskBuf * paint_core_solidify_mask   (MaskBuf *);
+static MaskBuf * paint_core_get_brush_mask  (PaintCore *, int);
+static void      paint_core_paste           (PaintCore *, MaskBuf *, GimpDrawable *, int, int, int, int);
+static void      paint_core_replace         (PaintCore *, MaskBuf *, GimpDrawable *, int, int, int);
+static void      paint_to_canvas_tiles      (PaintCore *, MaskBuf *, int);
+static void      paint_to_canvas_buf        (PaintCore *, MaskBuf *, int);
+static void      set_undo_tiles             (GimpDrawable *, int, int, int, int);
+static void      set_canvas_tiles           (int, int, int, int);
 
 
 /***********************************************************************/
 
 
 /*  undo blocks variables  */
-static TempBuf **  undo_blocks = NULL;
-static int         block_width;
-static int         block_height;
-static int         horz_blocks;
-static int         vert_blocks;
-
-/*  undo blocks utility functions  */
-static void  set_undo_blocks             (void *, void *, int, int, int, int);
-static void  allocate_undo_blocks        (int, int, int, int);
-static void  free_undo_blocks            (void);
+static TileManager *  undo_tiles = NULL;
+static TileManager *  canvas_tiles = NULL;
 
 
 /***********************************************************************/
 
 
 /*  paint buffers variables  */
-static TempBuf *   orig_buf = NULL;
-static TempBuf *   canvas_buf = NULL;
-static TempBuf *   mask_buf = NULL;
+static TempBuf *  orig_buf = NULL;
+static TempBuf *  canvas_buf = NULL;
+
+
+/*  brush buffers  */
+static MaskBuf *  solid_brush;
+static MaskBuf *  kernel_brushes[5][5];
+
 
 /*  paint buffers utility functions  */
-static void       free_paint_buffers     ();
+static void        free_paint_buffers     (void);
 
 
 /***********************************************************************/
 
 
+#define KERNEL_WIDTH   3
+#define KERNEL_HEIGHT  3
+
+/*  Brush pixel subsampling kernels  */
+static int subsample[5][5][9] = {
+	{
+		{ 64, 64, 0, 64, 64, 0, 0, 0, 0, },
+		{ 32, 96, 0, 32, 96, 0, 0, 0, 0, },
+		{ 0, 128, 0, 0, 128, 0, 0, 0, 0, },
+		{ 0, 96, 32, 0, 96, 32, 0, 0, 0, },
+		{ 0, 64, 64, 0, 64, 64, 0, 0, 0, },
+	},
+	{
+		{ 32, 32, 0, 96, 96, 0, 0, 0, 0, },
+		{ 16, 48, 0, 48, 144, 0, 0, 0, 0, },
+		{ 0, 64, 0, 0, 192, 0, 0, 0, 0, },
+		{ 0, 48, 16, 0, 144, 48, 0, 0, 0, },
+		{ 0, 32, 32, 0, 96, 96, 0, 0, 0, },
+	},
+	{
+		{ 0, 0, 0, 128, 128, 0, 0, 0, 0, },
+		{ 0, 0, 0, 64, 192, 0, 0, 0, 0, },
+		{ 0, 0, 0, 0, 256, 0, 0, 0, 0, },
+		{ 0, 0, 0, 0, 192, 64, 0, 0, 0, },
+		{ 0, 0, 0, 0, 128, 128, 0, 0, 0, },
+	},
+	{
+		{ 0, 0, 0, 96, 96, 0, 32, 32, 0, },
+		{ 0, 0, 0, 48, 144, 0, 16, 48, 0, },
+		{ 0, 0, 0, 0, 192, 0, 0, 64, 0, },
+		{ 0, 0, 0, 0, 144, 48, 0, 48, 16, },
+		{ 0, 0, 0, 0, 96, 96, 0, 32, 32, },
+	},
+	{
+		{ 0, 0, 0, 64, 64, 0, 64, 64, 0, },
+		{ 0, 0, 0, 32, 96, 0, 32, 96, 0, },
+		{ 0, 0, 0, 0, 128, 0, 0, 128, 0, },
+		{ 0, 0, 0, 0, 96, 32, 0, 96, 32, },
+		{ 0, 0, 0, 0, 64, 64, 0, 64, 64, },
+	},
+};
+
 void
 paint_core_button_press (tool, bevent, gdisp_ptr)
-     Tool * tool;
-     XButtonEvent * bevent;
-     XtPointer gdisp_ptr;
+     Tool *tool;
+     GdkEventButton *bevent;
+     gpointer gdisp_ptr;
 {
   PaintCore * paint_core;
   GDisplay * gdisp;
-  GBrushP brush;
-  int w, h;
-  int x, y;
+  int draw_line = 0;
+  double x, y;
+  GimpDrawable *drawable;
 
   gdisp = (GDisplay *) gdisp_ptr;
   paint_core = (PaintCore *) tool->private;
 
-  /*  Each buffer is the same size as the maximum bounds of the active brush... */
-  if (!(brush = get_active_brush ()))
-    {
-      warning ("No brushes available for use with this tool.");
-      return;
-    }
+  gdisplay_untransform_coords_f (gdisp, (double) bevent->x, (double) bevent->y, &x, &y, TRUE);
+  drawable = gimage_active_drawable (gdisp->gimage);
 
-  /*  If the undo blocks exist, nuke them  */
-  if (undo_blocks)
-    free_undo_blocks ();
+  if (! paint_core_init (paint_core, drawable, x, y))
+    return;
 
-  /*  Is there a floating selection?  */
-  paint_core->floating = (gdisp->select->float_buf) ? True : False;
-
-  if (paint_core->floating)
-    {
-      w = gdisp->select->float_buf->width;
-      h = gdisp->select->float_buf->height;
-    }
-  else
-    {
-      w = gdisp->gimage->width;
-      h = gdisp->gimage->height;
-    }
-
-  /*  Allocate the undo structure  */
-  allocate_undo_blocks (brush->mask->width, brush->mask->height, w, h);
-
-  /*  initialize some values  */
-  gdisplay_untransform_coords (gdisp, bevent->x, bevent->y, &x, &y, False);
-  paint_core->startx = paint_core->lastx = paint_core->curx = x;
-  paint_core->starty = paint_core->lasty = paint_core->cury = y;
   paint_core->state = bevent->state;
 
-  /*  Get the initial undo extents  */
-  paint_core->x1 = paint_core->x2 = x;
-  paint_core->y1 = paint_core->y2 = y;
-  paint_core->num_movements = 0;
+  /*  if this is a new image, reinit the core vals  */
+  if (gdisp_ptr != tool->gdisp_ptr ||
+      ! (bevent->state & GDK_SHIFT_MASK))
+    {
+      /*  initialize some values  */
+      paint_core->startx = paint_core->lastx = paint_core->curx;
+      paint_core->starty = paint_core->lasty = paint_core->cury;
+    }
+  /*  If shift is down and this is not the first paint
+   *  stroke, then draw a line from the last coords to the pointer
+   */
+  else if (bevent->state & GDK_SHIFT_MASK)
+    {
+      draw_line = 1;
+      paint_core->startx = paint_core->lastx;
+      paint_core->starty = paint_core->lasty;
+    }
 
   tool->state = ACTIVE;
   tool->gdisp_ptr = gdisp_ptr;
   tool->paused_count = 0;
 
   /*  pause the current selection and grab the pointer  */
-  selection_pause (gdisp->select);
+  gdisplays_selection_visibility (gdisp->gimage->ID, SelectionPause);
 
-  XGrabPointer (DISPLAY, XtWindow (gdisp->disp_image->canvas), False,
-		Button1MotionMask | ButtonReleaseMask, GrabModeAsync,
-		GrabModeAsync, None, None, bevent->time);
-      
+  /* add motion memory if you press mod1 first */
+  if (bevent->state & GDK_MOD1_MASK)
+    gdk_pointer_grab (gdisp->canvas->window, FALSE,
+		      GDK_BUTTON1_MOTION_MASK | GDK_BUTTON_RELEASE_MASK,
+		      NULL, NULL, bevent->time);
+  else
+    gdk_pointer_grab (gdisp->canvas->window, FALSE,
+		      GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON_RELEASE_MASK,
+		      NULL, NULL, bevent->time);
+  
   /*  Let the specific painting function initialize itself  */
-  (* paint_core->paint_func) (tool, INIT_PAINT);
+  (* paint_core->paint_func) (paint_core, drawable, INIT_PAINT);
 
   /*  Paint to the image  */
-  (* paint_core->paint_func) (tool, MOTION_PAINT);
-}
+  if (draw_line)
+    {
+      paint_core_interpolate (paint_core, drawable);
+      paint_core->lastx = paint_core->curx;
+      paint_core->lasty = paint_core->cury;
+    }
+  else
+    (* paint_core->paint_func) (paint_core, drawable, MOTION_PAINT);
 
+  gdisplay_flush (gdisp);
+}
 
 void
 paint_core_button_release (tool, bevent, gdisp_ptr)
-     Tool * tool;
-     XButtonEvent * bevent;
-     XtPointer gdisp_ptr;
+     Tool *tool;
+     GdkEventButton *bevent;
+     gpointer gdisp_ptr;
 {
   GDisplay * gdisp;
+  GImage * gimage;
   PaintCore * paint_core;
-  TempBuf * undo_buf;
-  int bx1, by1, bx2, by2;
 
   gdisp = (GDisplay *) gdisp_ptr;
+  gimage = gdisp->gimage;
   paint_core = (PaintCore *) tool->private;
 
   /*  resume the current selection and ungrab the pointer  */
-  selection_resume (gdisp->select);
-  XUngrabPointer (DISPLAY, bevent->time);
+  gdisplays_selection_visibility (gdisp->gimage->ID, SelectionResume);
+
+  gdk_pointer_ungrab (bevent->time);
+  gdk_flush ();
 
   /*  Let the specific painting function finish up  */
-  (* paint_core->paint_func) (tool, FINISH_PAINT);
+  (* paint_core->paint_func) (paint_core, gimage_active_drawable (gdisp->gimage), FINISH_PAINT);
 
-  if (paint_core->floating)
-   {
-      selection_find_bounds (gdisp->select, &bx1, &by1, &bx2, &by2);
-      paint_core->x1 = bounds (paint_core->x1, bx1, bx2) - bx1;
-      paint_core->y1 = bounds (paint_core->y1, by1, by2) - by1;
-      paint_core->x2 = bounds (paint_core->x2, bx1, bx2) - bx1;
-      paint_core->y2 = bounds (paint_core->y2, by1, by2) - by1;
-    }
-
-  /*  Get the undo image  */
-  undo_buf = temp_buf_new ((paint_core->x2 - paint_core->x1),
-			   (paint_core->y2 - paint_core->y1),
-			   gdisp->gimage->bpp,
-			   paint_core->x1, paint_core->y1, NULL);
-
-  reconstruct_original_image (tool, gdisp->select->float_buf, undo_buf);
-
-  /*  Try to push the undo--if it fails, clean up this buffer  */
-  if (paint_core->floating)
-    {
-      if (! undo_push_mod_sel (gdisp->ID, (void *) undo_buf))
-	temp_buf_free (undo_buf);
-    }
-  else
-    {
-      if (! undo_push_buffer (gdisp->gimage->ID, (void *) undo_buf))
-	temp_buf_free (undo_buf);
-    }
-  
   /*  Set tool state to inactive -- no longer painting */
   tool->state = INACTIVE;
-}
 
+  paint_core_finish (paint_core, gimage_active_drawable (gdisp->gimage), tool->ID);
+  gdisplays_flush ();
+}
 
 void
 paint_core_motion (tool, mevent, gdisp_ptr)
-     Tool * tool;
-     XMotionEvent * mevent;
-     XtPointer gdisp_ptr;
+     Tool *tool;
+     GdkEventMotion *mevent;
+     gpointer gdisp_ptr;
 {
   GDisplay * gdisp;
   PaintCore * paint_core;
@@ -206,29 +236,65 @@ paint_core_motion (tool, mevent, gdisp_ptr)
   gdisp = (GDisplay *) gdisp_ptr;
   paint_core = (PaintCore *) tool->private;
 
-  gdisplay_untransform_coords (gdisp, mevent->x, mevent->y,
-			       &paint_core->curx, &paint_core->cury, False);
+  gdisplay_untransform_coords_f (gdisp, (double) mevent->x, (double) mevent->y,
+				 &paint_core->curx, &paint_core->cury, TRUE);
   paint_core->state = mevent->state;
 
-  /*  increment the number of movements  */
-  paint_core->num_movements++;
+  paint_core_interpolate (paint_core, gimage_active_drawable (gdisp->gimage));
 
-  (* paint_core->paint_func) (tool, MOTION_PAINT);
+  gdisplay_flush (gdisp);
 
   paint_core->lastx = paint_core->curx;
   paint_core->lasty = paint_core->cury;
 }
 
+void
+paint_core_cursor_update (tool, mevent, gdisp_ptr)
+     Tool *tool;
+     GdkEventMotion *mevent;
+     gpointer gdisp_ptr;
+{
+  GDisplay *gdisp;
+  Layer *layer;
+  GdkCursorType ctype = GDK_TOP_LEFT_ARROW;
+  int x, y;
+
+  gdisp = (GDisplay *) gdisp_ptr;
+
+  gdisplay_untransform_coords (gdisp, mevent->x, mevent->y, &x, &y, FALSE, FALSE);
+  if ((layer = gimage_get_active_layer (gdisp->gimage))) 
+    {
+      int off_x, off_y;
+      drawable_offsets (GIMP_DRAWABLE(layer), &off_x, &off_y);
+    if (x >= off_x && y >= off_y &&
+	x < (off_x + drawable_width (GIMP_DRAWABLE(layer))) &&
+	y < (off_y + drawable_height (GIMP_DRAWABLE(layer))))
+      {
+	/*  One more test--is there a selected region?
+	 *  if so, is cursor inside?
+	 */
+	if (gimage_mask_is_empty (gdisp->gimage))
+	  ctype = GDK_PENCIL;
+	else if (gimage_mask_value (gdisp->gimage, x, y))
+	  ctype = GDK_PENCIL;
+      }
+    }
+  gdisplay_install_tool_cursor (gdisp, ctype);
+}
 
 void
 paint_core_control (tool, action, gdisp_ptr)
      Tool * tool;
      int action;
-     void * gdisp_ptr;
+     gpointer gdisp_ptr;
 {
   PaintCore * paint_core;
+  GDisplay *gdisp;
+  GimpDrawable *drawable;
 
+  gdisp = (GDisplay *) gdisp_ptr;
   paint_core = (PaintCore *) tool->private;
+  drawable = gimage_active_drawable (gdisp->gimage);
 
   switch (action)
     {
@@ -239,12 +305,11 @@ paint_core_control (tool, action, gdisp_ptr)
       draw_core_resume (paint_core->core, tool);
       break;
     case HALT :
-      (* paint_core->paint_func) (tool, FINISH_PAINT);
+      (* paint_core->paint_func) (paint_core, drawable, FINISH_PAINT);
+      paint_core_cleanup ();
       break;
     }
-
 }
-
 
 void
 paint_core_no_draw (tool)
@@ -253,7 +318,6 @@ paint_core_no_draw (tool)
   return;
 }
 
-
 Tool *
 paint_core_new (type)
      int type;
@@ -261,26 +325,28 @@ paint_core_new (type)
   Tool * tool;
   PaintCore * private;
 
-  tool = (Tool *) xmalloc (sizeof (Tool));
-  private = (PaintCore *) xmalloc (sizeof (PaintCore));
+  tool = (Tool *) g_malloc (sizeof (Tool));
+  private = (PaintCore *) g_malloc (sizeof (PaintCore));
 
   private->core = draw_core_new (paint_core_no_draw);
 
   tool->type = type;
   tool->state = INACTIVE;
   tool->scroll_lock = 0;  /*  Allow scrolling  */
+  tool->auto_snap_to = TRUE;
   tool->gdisp_ptr = NULL;
   tool->private = (void *) private;
+  tool->preserve = TRUE;
 
   tool->button_press_func = paint_core_button_press;
   tool->button_release_func = paint_core_button_release;
   tool->motion_func = paint_core_motion;
   tool->arrow_keys_func = standard_arrow_keys_func;
+  tool->cursor_update_func = paint_core_cursor_update;
   tool->control_func = paint_core_control;
 
   return tool;
 }
-
 
 void
 paint_core_free (tool)
@@ -291,657 +357,729 @@ paint_core_free (tool)
   paint_core = (PaintCore *) tool->private;
 
   /*  Make sure the selection core is not visible  */
-  if (tool->state == ACTIVE)
+  if (tool->state == ACTIVE && paint_core->core)
     draw_core_stop (paint_core->core, tool);
 
   /*  Free the selection core  */
-  draw_core_free (paint_core->core);
+  if (paint_core->core)
+    draw_core_free (paint_core->core);
 
-  /*  If the undo blocks exist, nuke them  */
-  if (undo_blocks)
-    free_undo_blocks ();
+  /*  Cleanup memory  */
+  paint_core_cleanup ();
+
+  /*  Free the paint core  */
+  g_free (paint_core);
+}
+
+int
+paint_core_init (paint_core, drawable, x, y)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
+     double x, y;
+{
+  GBrushP brush;
+
+  paint_core->curx = x;
+  paint_core->cury = y;
+
+  /*  Each buffer is the same size as the maximum bounds of the active brush... */
+  if (!(brush = get_active_brush ()))
+    {
+      g_message ("No brushes available for use with this tool.");
+      return FALSE;
+    }
+
+  paint_core->spacing =
+    (double) MAXIMUM (brush->mask->width, brush->mask->height) *
+    ((double) get_brush_spacing () / 100.0);
+  if (paint_core->spacing < 1.0)
+    paint_core->spacing = 1.0;
+  paint_core->brush_mask = brush->mask;
+
+  /*  free the block structures  */
+  if (undo_tiles)
+    tile_manager_destroy (undo_tiles);
+  if (canvas_tiles)
+    tile_manager_destroy (canvas_tiles);
+
+  /*  Allocate the undo structure  */
+  undo_tiles = tile_manager_new (drawable_width (drawable),
+				 drawable_height (drawable),
+				 drawable_bytes (drawable));
+
+  /*  Allocate the canvas blocks structure  */
+  canvas_tiles = tile_manager_new (drawable_width (drawable),
+				   drawable_height (drawable), 1);
+
+  /*  Get the initial undo extents  */
+  paint_core->x1 = paint_core->x2 = paint_core->curx;
+  paint_core->y1 = paint_core->y2 = paint_core->cury;
+  paint_core->distance = 0.0;
+
+  return TRUE;
+}
+
+void
+paint_core_interpolate (paint_core, drawable)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
+{
+  int n;
+  double dx, dy;
+  double left;
+  double t;
+  double initial;
+  double dist;
+  double total;
+
+  dx = paint_core->curx - paint_core->lastx;
+  dy = paint_core->cury - paint_core->lasty;
+
+  if (!dx && !dy)
+    return;
+
+  dist = sqrt (SQR (dx) + SQR (dy));
+  total = dist + paint_core->distance;
+  initial = paint_core->distance;
+
+  while (paint_core->distance < total)
+    {
+      n = (int) (paint_core->distance / paint_core->spacing + 1.0 + EPSILON);
+      left = n * paint_core->spacing - paint_core->distance;
+      paint_core->distance += left;
+
+      if (paint_core->distance <= total)
+	{
+	  t = (paint_core->distance - initial) / dist;
+
+	  paint_core->curx = paint_core->lastx + dx * t;
+	  paint_core->cury = paint_core->lasty + dy * t;
+	  (* paint_core->paint_func) (paint_core, drawable, MOTION_PAINT);
+	}
+    }
+
+  paint_core->distance = total;
+  paint_core->curx = paint_core->lastx + dx;
+  paint_core->cury = paint_core->lasty + dy;
+}
+
+void
+paint_core_finish (paint_core, drawable, tool_id)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
+     int tool_id;
+{
+  GImage *gimage;
+  PaintUndo *pu;
+
+  if (! (gimage = drawable_gimage (drawable)))
+    return;
+
+  /*  Determine if any part of the image has been altered--
+   *  if nothing has, then just return...
+   */
+  if ((paint_core->x2 == paint_core->x1) || (paint_core->y2 == paint_core->y1))
+    return;
+
+  undo_push_group_start (gimage, PAINT_CORE_UNDO);
+
+  pu = (PaintUndo *) g_malloc (sizeof (PaintUndo));
+  pu->tool_ID = tool_id;
+  pu->lastx = paint_core->startx;
+  pu->lasty = paint_core->starty;
+
+  /*  Push a paint undo  */
+  undo_push_paint (gimage, pu);
+
+  /*  push an undo  */
+  drawable_apply_image (drawable, paint_core->x1, paint_core->y1,
+			paint_core->x2, paint_core->y2, undo_tiles, TRUE);
+  undo_tiles = NULL;
+
+  /*  push the group end  */
+  undo_push_group_end (gimage);
+
+  /*  invalidate the drawable--have to do it here, because
+   *  it is not done during the actual painting.
+   */
+  drawable_invalidate_preview (drawable);
+}
+
+void
+paint_core_cleanup ()
+{
+  /*  CLEANUP  */
+  /*  If the undo tiles exist, nuke them  */
+  if (undo_tiles)
+    {
+      tile_manager_destroy (undo_tiles);
+      undo_tiles = NULL;
+    }
+
+  /*  If the canvas blocks exist, nuke them  */
+  if (canvas_tiles)
+    {
+      tile_manager_destroy (canvas_tiles);
+      canvas_tiles = NULL;
+    }
 
   /*  Free the temporary buffers if they exist  */
   free_paint_buffers ();
-
-  /*  Finally, free the paint tool itself  */
-  xfree (paint_core);
 }
-
 
 
 /************************/
 /*  Painting functions  */
 /************************/
 
-
 TempBuf *
-paint_core_init_discrete (tool, x, y, custom_bmask)
-     Tool * tool;
-     int x, y;
-     TempBuf * custom_bmask;
+paint_core_get_paint_area (paint_core, drawable)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
 {
-  GDisplay * gdisp;
-  PaintCore * paint_core;
-  TempBuf * brush_mask;
-  GBrushP brush;
+  int x, y;
+  int x1, y1, x2, y2;
   int bytes;
 
-  gdisp = (GDisplay *) tool->gdisp_ptr;
-  paint_core = (PaintCore *) tool->private;
-  brush = get_active_brush ();
-  bytes = gdisp->gimage->bpp;
+  bytes = drawable_has_alpha (drawable) ?
+    drawable_bytes (drawable) : drawable_bytes (drawable) + 1;
 
   /*  adjust the x and y coordinates to the upper left corner of the brush  */
-  x -= (brush->mask->width >> 1);
-  y -= (brush->mask->height >> 1);
-  
+  x = (int) paint_core->curx - (paint_core->brush_mask->width >> 1);
+  y = (int) paint_core->cury - (paint_core->brush_mask->height >> 1);
+
+  x1 = BOUNDS (x - 1, 0, drawable_width (drawable));
+  y1 = BOUNDS (y - 1, 0, drawable_height (drawable));
+  x2 = BOUNDS (x + paint_core->brush_mask->width + 1,
+	       0, drawable_width (drawable));
+  y2 = BOUNDS (y + paint_core->brush_mask->height + 1,
+	       0, drawable_height (drawable));
+
   /*  configure the canvas buffer  */
-  canvas_buf = temp_buf_resize (canvas_buf, bytes, x, y,
-				brush->mask->width, brush->mask->height);
-
-  /*  determine which brush mask to use */
-  if (custom_bmask)
-    brush_mask = custom_bmask;
+  if ((x2 - x1) && (y2 - y1))
+    canvas_buf = temp_buf_resize (canvas_buf, bytes, x1, y1,
+				  (x2 - x1), (y2 - y1));
   else
-    brush_mask = brush->mask;
-
-  /*  set the paint tool's brush mask  */
-  paint_core->brush_mask = brush_mask;
+    return NULL;
 
   return canvas_buf;
 }
 
-
 TempBuf *
-paint_core_init_stroke (tool, x1, y1, x2, y2, custom_bmask)
-     Tool * tool;
-     int x1, y1;
-     int x2, y2;
-     TempBuf * custom_bmask;
-{
-  GDisplay * gdisp;
-  PaintCore * paint_core;
-  TempBuf * brush_mask;
-  GBrushP brush;
-  int sx, sy;
-  int ex, ey;
-  int bytes;
-
-  gdisp = (GDisplay *) tool->gdisp_ptr;
-  paint_core = (PaintCore *) tool->private;
-  brush = get_active_brush ();
-  bytes = gdisp->gimage->bpp;
-
-  /*  adjust the x and y coordinates to the upper left corner of the brush  */
-  x1 -= (brush->mask->width >> 1);
-  y1 -= (brush->mask->height >> 1);
-  x2 -= (brush->mask->width >> 1);
-  y2 -= (brush->mask->height >> 1);
-
-  sx = MINIMUM (x1, x2);
-  sy = MINIMUM (y1, y2);
-  ex = MAXIMUM (x1, x2);
-  ey = MAXIMUM (y1, y2);
-
-  /*  configure the canvas buffer  */
-  canvas_buf = temp_buf_resize (canvas_buf, bytes, sx, sy,
-				(ex - sx) + brush->mask->width, 
-				(ey - sy) + brush->mask->height);
-
-  /*  configure the brush mask buffer  */
-  mask_buf = temp_buf_resize (mask_buf, brush->mask->bytes, sx, sy,
-			      (ex - sx) + brush->mask->width, 
-			      (ey - sy) + brush->mask->height);
-  
-  /*  determine which brush mask to use */
-  if (custom_bmask)
-    brush_mask = custom_bmask;
-  else
-    brush_mask = brush->mask;
-
-  /*  calculate the brush mask buffer  */
-  interpolate_brush_mask (mask_buf, brush_mask, x1 - sx, y1 - sy, x2 - sx, y2 - sy);
-
-  /*  set the paint tool's brush mask  */
-  paint_core->brush_mask = mask_buf;
-
-
-  return canvas_buf;
-}
-
-
-TempBuf * 
-paint_core_get_orig_image (tool, x1, y1, x2, y2)
-     Tool * tool;
+paint_core_get_orig_image (paint_core, drawable, x1, y1, x2, y2)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
      int x1, y1;
      int x2, y2;
 {
-  GDisplay * gdisp;
-  PaintCore * paint_core;
-  int bx1, by1, bx2, by2;
-  int bytes;
+  PixelRegion srcPR, destPR;
+  Tile *undo_tile;
+  int h;
+  int pixelwidth;
+  int refd;
+  unsigned char * s, * d;
+  void * pr;
 
-  gdisp = (GDisplay *) tool->gdisp_ptr;
-  paint_core = (PaintCore *) tool->private;
-  bytes = gdisp->gimage->bpp;
+  orig_buf = temp_buf_resize (orig_buf, drawable_bytes (drawable),
+			      x1, y1, (x2 - x1), (y2 - y1));
+  x1 = BOUNDS (x1, 0, drawable_width (drawable));
+  y1 = BOUNDS (y1, 0, drawable_height (drawable));
+  x2 = BOUNDS (x2, 0, drawable_width (drawable));
+  y2 = BOUNDS (y2, 0, drawable_height (drawable));
 
-  /*  configure the original image buffer  */
-  if (paint_core->floating)
+  /*  configure the pixel regions  */
+  pixel_region_init (&srcPR, drawable_data (drawable), x1, y1, (x2 - x1), (y2 - y1), FALSE);
+  destPR.bytes = orig_buf->bytes;
+  destPR.x = 0; destPR.y = 0;
+  destPR.w = (x2 - x1); destPR.h = (y2 - y1);
+  destPR.rowstride = orig_buf->bytes * orig_buf->width;
+  destPR.data = temp_buf_data (orig_buf) +
+    (y1 - orig_buf->y) * destPR.rowstride + (x1 - orig_buf->x) * destPR.bytes;
+
+  for (pr = pixel_regions_register (2, &srcPR, &destPR); pr != NULL; pr = pixel_regions_process (pr))
     {
-      selection_find_bounds (gdisp->select, &bx1, &by1, &bx2, &by2);
-      x1 -= bx1;
-      y1 -= by1;
-      x2 -= bx1;
-      y2 -= by1;
-    }
-  orig_buf = temp_buf_resize (orig_buf, bytes, x1, y1, (x2 - x1), (y2 - y1)); 
+      /*  If the undo tile corresponding to this location is valid, use it  */
+      undo_tile = tile_manager_get_tile (undo_tiles, srcPR.x, srcPR.y, 0);
+      if (undo_tile->valid == TRUE)
+	{
+	  tile_ref (undo_tile);
+	  s = undo_tile->data + srcPR.rowstride * (srcPR.y % TILE_HEIGHT) +
+	    srcPR.bytes * (srcPR.x % TILE_WIDTH);
+	  refd = TRUE;
+	}
+      else
+	{
+	  s = srcPR.data;
+	  refd = FALSE;
+	}
 
-  /*  load the orig temp buffer with the original contents of the gimage  */
-  reconstruct_original_image (tool, gdisp->select->float_buf, orig_buf);
-  
+      d = destPR.data;
+      pixelwidth = srcPR.w * srcPR.bytes;
+      h = srcPR.h;
+      while (h --)
+	{
+	  memcpy (d, s, pixelwidth);
+	  s += srcPR.rowstride;
+	  d += destPR.rowstride;
+	}
+
+      if (refd)
+	tile_unref (undo_tile, FALSE);
+    }
+
   return orig_buf;
 }
 
-
-
 void
-paint_core_paste_canvas (tool, x, y, w, h)
-     Tool * tool;
-     int x, y;
-     int w, h;
+paint_core_paste_canvas (paint_core, drawable, brush_opacity, image_opacity, paint_mode,
+			 brush_hardness, mode)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
+     int brush_opacity;
+     int image_opacity;
+     int paint_mode;
+     int brush_hardness;
+     int mode;
 {
-  GDisplay * gdisp;
-  PaintCore * paint_core;
-  GRegion * region;
-  int bpp;
-  int x1, y1, x2, y2;
-  int nx1, ny1, nx2, ny2;
-  int sm;
-  Boolean no_selection = False;
-  PixelRegion src1PR, src2PR, maskPR;
+  MaskBuf *brush_mask;
 
-  gdisp = (GDisplay *) tool->gdisp_ptr;
-  bpp = gdisp->gimage->bpp;
-  region = gdisp->select->region;
-  paint_core = (PaintCore *) tool->private;
+  /*  get the brush mask  */
+  brush_mask = paint_core_get_brush_mask (paint_core, brush_hardness);
 
-  /******************************************************************/
-  /*  Blend the current image & the new image with the brush mask  */
-
-  /*  configure the pixel regions  */
-  /*  The canvas is source #1  */
-  src1PR.bytes = canvas_buf->bytes;
-  src1PR.w = w;
-  src1PR.h = h;
-  src1PR.rowstride = canvas_buf->width * canvas_buf->bytes;
-  src1PR.data = temp_buf_data (canvas_buf);
-
-  /*  The brush mask is the mask  */
-  maskPR.bytes = paint_core->brush_mask->bytes;
-  maskPR.w = paint_core->brush_mask->width;
-  maskPR.h = paint_core->brush_mask->height;
-  maskPR.rowstride = paint_core->brush_mask->width * paint_core->brush_mask->bytes;
-  maskPR.data = temp_buf_data (paint_core->brush_mask);
-
-  /*  If the gimage is of type INDEXED, then we need a 1 bit mask...  */
-  if (gdisp->gimage->type == INDEXED_GIMAGE)
-    B_W_region (&maskPR, &maskPR);
-  
-  /*  We need to decide where the other src is coming from...
-   *  In the case of a floating selection, it's the "orig_buf".
-   *  In the case of no floating selection, it's the gimage
-   *
-   *  We also need to determine the destination...
-   *  If there is no selection at all, then the destination should be the gimage.
-   *  If there is a selection, but not floating, the destination is the canvas
-   *  If there is a floating selection, the destination is the float_buf
-   */
-
-  /*  Source #2 is the float_buf  */
-  if (gdisp->select->float_buf)
-    {
-      TempBuf * float_buf = gdisp->select->float_buf;
-
-      selection_find_bounds (gdisp->select, &x1, &y1, &x2, &y2);
-
-      nx1 = bounds (x, x1, x2);
-      ny1 = bounds (y, y1, y2);
-      nx2 = bounds (x + w, x1, x2);
-      ny2 = bounds (y + h, y1, y2);
-  
-      /******************************************************************************/
-      /*  Before we paste the canvas to the float_buf, make sure to save the portions
-       *  of the float buffer that are changing...
-       */
-      set_undo_blocks (gdisp->gimage, gdisp->select->float_buf, nx1 - x1, 
-		       ny1 - y1, (nx2 - nx1), (ny2 - ny1));
-
-      /*  offset the canvas and mask buffers valid addresses  */
-      src1PR.w = (nx2 - nx1);
-      src1PR.h = (ny2 - ny1);
-      src1PR.data += (ny1 - canvas_buf->y) * src1PR.rowstride + 
-	(nx1 - canvas_buf->x) * src1PR.bytes;
-
-      maskPR.data += (ny1 - canvas_buf->y) * maskPR.rowstride + 
-	(nx1 - canvas_buf->x) * paint_core->brush_mask->bytes;
-
-      src2PR.rowstride = float_buf->width * float_buf->bytes;
-      src2PR.data = temp_buf_data (float_buf) + 
-	float_buf->bytes * ((ny1 - y1) * float_buf->width + (nx1 - x1));
-
-      /*  Now do the composite  --  the float_buf is the destination as well as source #2  */
-      composite_region (&src1PR, &src2PR, &src2PR, &maskPR);
-
-      /*  blend the floating buffer with the gimage */
-      selection_stencil (gdisp->select, gdisp->gimage, nx1 - x1, ny1 - y1,
-			 nx1 + src1PR.w, ny1 + src1PR.h, BLEND_STENCIL);
-      
-      x1 = nx1;      y1 = ny1;
-      x2 = nx2;      y2 = ny2;
-    }
-
-  /*  If there is a selection, but not floating  */
-  else
-    {
-      /*  Find out if there is an active selected region, and what it is  */
-      no_selection = ! (gdisplay_find_bounds (gdisp, &x1, &y1, &x2, &y2));
-
-      if (no_selection)
-	{
-	  x1 = y1 = 0;
-	  x2 = gdisp->gimage->width;
-	  y2 = gdisp->gimage->height;
-	}
-      
-      x1 = bounds (x, x1, x2);
-      y1 = bounds (y, y1, y2);
-      x2 = bounds (x + w, x1, x2);
-      y2 = bounds (y + h, y1, y2);
-       
-      /***************************************************************************/
-      /*  Before we paste the canvas to the gimage, make sure to save the portions
-       *  of the gimage that are changing...
-       */
-      set_undo_blocks (gdisp->gimage, gdisp->select->float_buf, x1, y1, (x2 - x1), (y2 - y1));
-
-      /*  offset the canvas and mask buffers valid addresses  */
-      src1PR.w = (x2 - x1);
-      src1PR.h = (y2 - y1);
-      src1PR.data += (y1 - canvas_buf->y) * src1PR.rowstride + 
-	(x1 - canvas_buf->x) * src1PR.bytes;
-
-      maskPR.data += (y1 - canvas_buf->y) * maskPR.rowstride + 
-	(x1 - canvas_buf->x) * paint_core->brush_mask->bytes;
-
-      if ( ! no_selection )
-	{
-	  Selection * select;
-	  
-	  select = gdisp->select;
-	  
-	  /*  Source #2 is the gimage  */
-	  src2PR.w = gdisp->gimage->width;
-	  src2PR.h = gdisp->gimage->height;
-	  src2PR.rowstride = gdisp->gimage->width * bpp;
-	  src2PR.data = gdisp->gimage->raw_image + y1 * src2PR.rowstride + x1 * bpp;
-	  
-	  /*  Now do the composite  --  the canvas is the destination */
-	  composite_region (&src1PR, &src2PR, &src1PR, &maskPR);
-
-	  src2PR.data = gdisp->gimage->raw_image;
-	  /*  Paste the canvas buf to the gimage based on the current selection...  */
-	  gregion_stencil (select->region, select->offset_x, select->offset_y, 1.0,
-			   &src1PR, NULL, &src2PR, NULL, 
-			   x1 - select->offset_x, y1 - select->offset_y,
-			   x2 - select->offset_x, y2 - select->offset_y,
-			   COPY_STENCIL, 0);
-	}
-      
-      /*  If there is no selection...  */
-      else
-	{
-	  /*  Source #2 is the gimage  */
-	  src2PR.rowstride = gdisp->gimage->width * bpp;
-	  src2PR.data = gdisp->gimage->raw_image + y1 * src2PR.rowstride + x1 * bpp;
-	  
-	  /*  Now do the composite  --  the gimage is the destination */
-	  composite_region (&src1PR, &src2PR, &src2PR, &maskPR);
-	}
-    }
-  
-
-  /*  Update undo extents  */
-  if (x1 < paint_core->x1)
-    paint_core->x1 = x1;
-  if (y1 < paint_core->y1)
-    paint_core->y1 = y1;
-  if (x2 > paint_core->x2)
-    paint_core->x2 = x2;
-  if (y2 > paint_core->y2)
-    paint_core->y2 = y2;
-
-  /*  Update the gimage  */
-  /*  Account for the fact that selection extends one pixel beyond bounds  */
-  sm = UNSCALE (gdisp, 1);
-  if (sm < 1) sm = 1;
-  gdisplay_update (gdisp->gimage->ID, x1, y1, (x2 - x1) + sm, (y2 - y1) + sm, 0);
-  
+  /*  paste the canvas buf  */
+  paint_core_paste (paint_core, brush_mask, drawable,
+		    brush_opacity, image_opacity, paint_mode, mode);
 }
 
+/* Similar to paint_core_paste_canvas, but replaces the alpha channel
+   rather than using it to composite (i.e. transparent over opaque
+   becomes transparent rather than opauqe. */
+void
+paint_core_replace_canvas (paint_core, drawable, brush_opacity, image_opacity,
+			   brush_hardness, mode)
+     PaintCore *paint_core;
+     GimpDrawable *drawable;
+     int brush_opacity;
+     int image_opacity;
+     int brush_hardness;
+     int mode;
+{
+  MaskBuf *brush_mask;
+
+  /*  get the brush mask  */
+  brush_mask = paint_core_get_brush_mask (paint_core, brush_hardness);
+
+  /*  paste the canvas buf  */
+  paint_core_replace (paint_core, brush_mask, drawable,
+		      brush_opacity, image_opacity, mode);
+}
 
 /************************************************************
  *             LOCAL FUNCTION DEFINITIONS                   *
  ************************************************************/
 
-
-static void 
-reconstruct_original_image (tool, float_buf_ptr, buf)
-     Tool * tool;
-     void * float_buf_ptr;
-     TempBuf * buf;
+static MaskBuf *
+paint_core_subsample_mask (mask, x, y)
+     MaskBuf * mask;
+     double x, y;
 {
-  PaintCore * paint_core;
-  GDisplay * gdisp;
-  TempBuf * block;
-  TempBuf * float_buf;
-  int index;
-  int x, y;
-  int endx, endy;
-  int row, col;
+  static MaskBuf *last_brush = NULL;
+  MaskBuf * dest;
+  double left;
+  unsigned char * m, * d;
+  int * k;
+  int index1, index2;
+  int * kernel;
+  int new_val;
+  int i, j;
+  int r, s;
+
+  x += (x < 0) ? mask->width : 0;
+  left = x - floor(x) + 0.125;
+  index1 = (int) (left * 4);
+
+  y += (y < 0) ? mask->height : 0;
+  left = y - floor(y) + 0.125;
+  index2 = (int) (left * 4);
+
+  kernel = subsample[index2][index1];
+
+  if ((mask == last_brush) && kernel_brushes[index2][index1])
+    return kernel_brushes[index2][index1];
+  else if (mask != last_brush)
+    for (i = 0; i < 5; i++)
+      for (j = 0; j < 5; j++)
+	{
+	  if (kernel_brushes[i][j])
+	    mask_buf_free (kernel_brushes[i][j]);
+	  kernel_brushes[i][j] = NULL;
+	}
+
+  last_brush = mask;
+  kernel_brushes[index2][index1] = mask_buf_new (mask->width + 2, mask->height + 2);
+  dest = kernel_brushes[index2][index1];
+
+  m = mask_buf_data (mask);
+  for (i = 0; i < mask->height; i++)
+    {
+      for (j = 0; j < mask->width; j++)
+	{
+	  k = kernel;
+	  for (r = 0; r < KERNEL_HEIGHT; r++)
+	    {
+	      d = mask_buf_data (dest) + (i+r) * dest->width + j;
+	      s = KERNEL_WIDTH;
+	      while (s--)
+		{
+		  new_val = *d + ((*m * *k++) >> 8);
+		  *d++ = (new_val > 255) ? 255 : new_val;
+		}
+	    }
+	  m++;
+	}
+    }
+
+  return dest;
+}
+
+static MaskBuf *
+paint_core_solidify_mask (brush_mask)
+     MaskBuf * brush_mask;
+{
+  static MaskBuf *last_brush = NULL;
+  int i, j;
+  unsigned char * data, * src;
+
+  if (brush_mask == last_brush)
+    return solid_brush;
+
+  last_brush = brush_mask;
+  if (solid_brush)
+    mask_buf_free (solid_brush);
+  solid_brush = mask_buf_new (brush_mask->width + 2, brush_mask->height + 2);
+
+  /*  get the data and advance one line into it  */
+  data = mask_buf_data (solid_brush) + solid_brush->width;
+  src = mask_buf_data (brush_mask);
+
+  for (i = 0; i < brush_mask->height; i++)
+    {
+      data++;
+      for (j = 0; j < brush_mask->width; j++)
+	{
+	  *data++ = (*src++) ? OPAQUE_OPACITY : TRANSPARENT_OPACITY;
+	}
+      data++;
+    }
+
+  return solid_brush;
+}
+
+static MaskBuf *
+paint_core_get_brush_mask (paint_core, brush_hardness)
+     PaintCore * paint_core;
+     int brush_hardness;
+{
+  MaskBuf * bm;
+
+  switch (brush_hardness)
+    {
+    case SOFT:
+      bm = paint_core_subsample_mask (paint_core->brush_mask, paint_core->curx, paint_core->cury);
+      break;
+    case HARD:
+      bm = paint_core_solidify_mask (paint_core->brush_mask);
+      break;
+    default:
+      bm = NULL;
+      break;
+    }
+
+  return bm;
+}
+
+static void
+paint_core_paste (paint_core, brush_mask, drawable, brush_opacity, image_opacity, paint_mode, mode)
+     PaintCore *paint_core;
+     MaskBuf *brush_mask;
+     GimpDrawable *drawable;
+     int brush_opacity;
+     int image_opacity;
+     int paint_mode;
+     int mode;
+{
+  GImage *gimage;
+  PixelRegion srcPR;
+  TileManager *alt = NULL;
   int offx, offy;
-  int x2, y2;
-  int width, height;
-  PixelRegion srcPR, destPR;
 
-  paint_core = (PaintCore *) tool->private;
+  if (! (gimage = drawable_gimage (drawable)))
+    return;
 
-  if (paint_core->floating)
-    {
-      float_buf = (TempBuf *) float_buf_ptr;
-      width = float_buf->width;
-      height = float_buf->height;
-      /*  load the buffer from the floating buffer  */
-      temp_buf_copy_area (float_buf, buf, buf->x, buf->y, buf->width, buf->height);
-    }
-  else
-    {
-      gdisp = (GDisplay *) tool->gdisp_ptr;
-      /*  load the buffer from the current gimage  */
-      temp_buf_load (buf, gdisp->gimage, buf->x, buf->y, buf->width, buf->height);
-      width = gdisp->gimage->width;
-      height = gdisp->gimage->height;
-    }
+  /*  set undo blocks  */
+  set_undo_tiles (drawable,
+		  canvas_buf->x, canvas_buf->y,
+		  canvas_buf->width, canvas_buf->height);
 
-  /*  init some variables  */
-  srcPR.bytes = buf->bytes;
-  destPR.rowstride = buf->bytes * buf->width;
-
-  y = bounds (buf->y, 0, height);
-  endx = bounds (buf->x + buf->width, buf->x, width);
-  endy = bounds (buf->y + buf->height, buf->y, height);
-
-  row = (y / block_height);
-  /*  patch the buffer with the saved portions of the image  */
-  while (y < endy)
-    {
-      x = bounds (buf->x, 0, width);
-      col = (x / block_width);
-
-      /*  calculate y offset into this row of blocks  */
-      offy = (y - row * block_height);
-      y2 = (row + 1) * block_height;
-      if (y2 > endy) y2 = endy;
-      srcPR.h = y2 - y;
-
-      while (x < endx)
-      {
-	index = row * horz_blocks + col;
-	block = undo_blocks [index];
-	/*  If the block exists, patch it into buf  */
-	if (block)
-	  {
-	    /* calculate x offset into the block  */
-	    offx = (x - col * block_width);
-	    x2 = (col + 1) * block_width;
-	    if (x2 > endx) x2 = endx;
-	    srcPR.w = x2 - x;
-	    
-	    /*  Calculate the offsets into each buffer  */
-	    srcPR.rowstride = srcPR.bytes * block->width;
-	    srcPR.data = temp_buf_data (block) + offy * srcPR.rowstride + offx * srcPR.bytes;
-	    destPR.data = temp_buf_data (buf) + 
-	      (y - buf->y) * destPR.rowstride + (x - buf->x) * buf->bytes;
-
-	    copy_region (&srcPR, &destPR);
-	  }
-
-	col ++;
-	x = col * block_width;
-      }
-
-      row ++;
-      y = row * block_height;
-    }
-}
-
-
-static void
-interpolate_brush_mask (buf, mask, x1, y1, x2, y2)
-     TempBuf * buf;
-     TempBuf * mask;
-     int x1, y1;
-     int x2, y2;
-{
-  PixelRegion maskPR, srcPR;
-  int dx, dy;
-  int incx;
-  int error;
-  int rowstride;
-  int count;
-  int size;
-
-  /*  first, set the buffer to black  */
-  size = buf->width * buf->height * buf->bytes;
-  memset (temp_buf_data (buf), 0, size);
-
-  /*  setup the pixel region structures  */
-  maskPR.bytes = mask->bytes;
-  maskPR.w = mask->width;
-  maskPR.h = mask->height;
-  maskPR.rowstride = maskPR.w * maskPR.bytes;
-  maskPR.data = temp_buf_data (mask);
-
-  srcPR.bytes = buf->bytes;
-  srcPR.w = mask->width;
-  srcPR.h = mask->height;
-  srcPR.rowstride = buf->width * srcPR.bytes;
-  srcPR.data = temp_buf_data (buf);
-
-  dx = x2 - x1;
-  dy = y2 - y1;
-
-  /*  If there has been no length to this stroke, just put the mask
-   *  down once and return...otherwise, interpolate the mask buffer
+  /*  If the mode is CONSTANT:
+   *   combine the canvas buf, the brush mask to the canvas tiles
    */
-  if (!dx && !dy)
-    add_region (&srcPR, &maskPR, &srcPR);
-  else 
+  if (mode == CONSTANT)
     {
-      if (dy < 0)
-	{
-	  dy = -dy;
-	  rowstride = -srcPR.rowstride;
-	}
-      else
-	rowstride = srcPR.rowstride;
-      
-      if (dx < 0)
-	{
-	  dx = -dx;
-	  incx = -1;
-	}
-      else
-	incx = 1;
+      /*  initialize any invalid canvas tiles  */
+      set_canvas_tiles (canvas_buf->x, canvas_buf->y,
+			canvas_buf->width, canvas_buf->height);
 
-      if (dx > dy)
-	{
-	  count = dx;
-	  error = -dx / 2;
-	  
-	  srcPR.data += y1 * srcPR.rowstride + x1;
-	  
-	  while (count--)
-	    {
-	      add_region (&srcPR, &maskPR, &srcPR);
-	      srcPR.data += incx;
-	      
-	      error += dy;
-	      if (error > 0)
-		{
-		  srcPR.data += rowstride;
-		  error -= dx;
-		}
-	    }
-	}
-      else
-	{
-	  count = dy;
-	  error = -dy / 2;
-	  
-	  srcPR.data += y1 * buf->width + x1;
-	  
-	  while (count--)
-	    {
-	      add_region (&srcPR, &maskPR, &srcPR);
-	      srcPR.data += rowstride;
-	      
-	      error += dx;
-	      if (error > 0)
-		{
-		  srcPR.data += incx;
-		  error -= dy;
-		}
-	    }
-	}
+      paint_to_canvas_tiles (paint_core, brush_mask, brush_opacity);
+      alt = undo_tiles;
     }
+  /*  Otherwise:
+   *   combine the canvas buf and the brush mask to the canvas buf
+   */
+  else  /*  mode != CONSTANT  */
+    paint_to_canvas_buf (paint_core, brush_mask, brush_opacity);
+
+  /*  intialize canvas buf source pixel regions  */
+  srcPR.bytes = canvas_buf->bytes;
+  srcPR.x = 0; srcPR.y = 0;
+  srcPR.w = canvas_buf->width;
+  srcPR.h = canvas_buf->height;
+  srcPR.rowstride = canvas_buf->width * canvas_buf->bytes;
+  srcPR.data = temp_buf_data (canvas_buf);
+
+  /*  apply the paint area to the gimage  */
+  gimage_apply_image (gimage, drawable, &srcPR,
+		      FALSE, image_opacity, paint_mode,
+		      alt,  /*  specify an alternative src1  */
+		      canvas_buf->x, canvas_buf->y);
+
+  /*  Update the undo extents  */
+  paint_core->x1 = MINIMUM (paint_core->x1, canvas_buf->x);
+  paint_core->y1 = MINIMUM (paint_core->y1, canvas_buf->y);
+  paint_core->x2 = MAXIMUM (paint_core->x2, (canvas_buf->x + canvas_buf->width));
+  paint_core->y2 = MAXIMUM (paint_core->y2, (canvas_buf->y + canvas_buf->height));
+
+  /*  Update the gimage--it is important to call gdisplays_update_area
+   *  instead of drawable_update because we don't want the drawable
+   *  preview to be constantly invalidated
+   */
+  drawable_offsets (drawable, &offx, &offy);
+  gdisplays_update_area (gimage->ID, canvas_buf->x + offx, canvas_buf->y + offy,
+			 canvas_buf->width, canvas_buf->height);
 }
 
+/* This works similarly to paint_core_paste. However, instead of combining
+   the canvas to the paint core drawable using one of the combination
+   modes, it uses a "replace" mode (i.e. transparent pixels in the 
+   canvas erase the paint core drawable).
+
+   When not drawing on alpha-enabled images, it just paints using NORMAL
+   mode.
+*/
+static void
+paint_core_replace (paint_core, brush_mask, drawable, brush_opacity, image_opacity, mode)
+     PaintCore *paint_core;
+     MaskBuf *brush_mask;
+     GimpDrawable *drawable;
+     int brush_opacity;
+     int image_opacity;
+     int mode;
+{
+  GImage *gimage;
+  PixelRegion srcPR, maskPR;
+  int offx, offy;
+
+  if (!drawable_has_alpha (drawable))
+    {
+      paint_core_paste (paint_core, brush_mask, drawable,
+			brush_opacity, image_opacity, NORMAL_MODE,
+			mode);
+      return;
+    }
+
+  if (mode != INCREMENTAL)
+    {
+      g_message ("paint_core_replace only works in INCREMENTAL mode");
+      return;
+    }
+
+  if (! (gimage = drawable_gimage (drawable)))
+    return;
+
+  /*  set undo blocks  */
+  set_undo_tiles (drawable,
+		  canvas_buf->x, canvas_buf->y,
+		  canvas_buf->width, canvas_buf->height);
+
+  maskPR.bytes = 1;
+  maskPR.x = 0; maskPR.y = 0;
+  maskPR.w = canvas_buf->width;
+  maskPR.h = canvas_buf->height;
+  maskPR.rowstride = maskPR.bytes * brush_mask->width;
+  maskPR.data = mask_buf_data (brush_mask);
+  
+  /*  intialize canvas buf source pixel regions  */
+  srcPR.bytes = canvas_buf->bytes;
+  srcPR.x = 0; srcPR.y = 0;
+  srcPR.w = canvas_buf->width;
+  srcPR.h = canvas_buf->height;
+  srcPR.rowstride = canvas_buf->width * canvas_buf->bytes;
+  srcPR.data = temp_buf_data (canvas_buf);
+
+  /*  apply the paint area to the gimage  */
+  gimage_replace_image (gimage, drawable, &srcPR,
+			FALSE, image_opacity,
+			&maskPR,
+			canvas_buf->x, canvas_buf->y);
+
+  /*  Update the undo extents  */
+  paint_core->x1 = MINIMUM (paint_core->x1, canvas_buf->x);
+  paint_core->y1 = MINIMUM (paint_core->y1, canvas_buf->y);
+  paint_core->x2 = MAXIMUM (paint_core->x2, (canvas_buf->x + canvas_buf->width));
+  paint_core->y2 = MAXIMUM (paint_core->y2, (canvas_buf->y + canvas_buf->height));
+
+  /*  Update the gimage--it is important to call gdisplays_update_area
+   *  instead of drawable_update because we don't want the drawable
+   *  preview to be constantly invalidated
+   */
+  drawable_offsets (drawable, &offx, &offy);
+  gdisplays_update_area (gimage->ID, canvas_buf->x + offx, canvas_buf->y + offy,
+			 canvas_buf->width, canvas_buf->height);
+}
 
 static void
-set_undo_blocks (gimage_ptr, float_buf_ptr, x, y, w, h)
-     void * gimage_ptr;
-     void * float_buf_ptr;
+paint_to_canvas_tiles (paint_core, brush_mask, brush_opacity)
+     PaintCore *paint_core;
+     MaskBuf *brush_mask;
+     int brush_opacity;
+{
+  PixelRegion srcPR, maskPR;
+  int x, y;
+  int xoff, yoff;
+
+  /*   combine the brush mask and the canvas tiles  */
+  pixel_region_init (&srcPR, canvas_tiles,
+		     canvas_buf->x, canvas_buf->y,
+		     canvas_buf->width, canvas_buf->height, TRUE);
+
+  x = (int) paint_core->curx - (brush_mask->width >> 1);
+  y = (int) paint_core->cury - (brush_mask->height >> 1);
+  xoff = (x < 0) ? -x : 0;
+  yoff = (y < 0) ? -y : 0;
+
+  maskPR.bytes = 1;
+  maskPR.x = 0; maskPR.y = 0;
+  maskPR.w = srcPR.w;
+  maskPR.h = srcPR.h;
+  maskPR.rowstride = maskPR.bytes * brush_mask->width;
+  maskPR.data = mask_buf_data (brush_mask) + yoff * maskPR.rowstride + xoff * maskPR.bytes;
+
+  /*  combine the mask and canvas tiles  */
+  combine_mask_and_region (&srcPR, &maskPR, brush_opacity);
+
+  /*  combine the canvas tiles and the canvas buf  */
+  srcPR.bytes = canvas_buf->bytes;
+  srcPR.x = 0; srcPR.y = 0;
+  srcPR.w = canvas_buf->width;
+  srcPR.h = canvas_buf->height;
+  srcPR.rowstride = canvas_buf->width * canvas_buf->bytes;
+  srcPR.data = temp_buf_data (canvas_buf);
+
+  pixel_region_init (&maskPR, canvas_tiles,
+		     canvas_buf->x, canvas_buf->y,
+		     canvas_buf->width, canvas_buf->height, FALSE);
+
+  /*  apply the canvas tiles to the canvas buf  */
+  apply_mask_to_region (&srcPR, &maskPR, OPAQUE_OPACITY);
+}
+
+static void
+paint_to_canvas_buf (paint_core, brush_mask, brush_opacity)
+     PaintCore *paint_core;
+     MaskBuf *brush_mask;
+     int brush_opacity;
+{
+  PixelRegion srcPR, maskPR;
+  int x, y;
+  int xoff, yoff;
+
+  x = (int) paint_core->curx - (brush_mask->width >> 1);
+  y = (int) paint_core->cury - (brush_mask->height >> 1);
+  xoff = (x < 0) ? -x : 0;
+  yoff = (y < 0) ? -y : 0;
+
+
+  /*  combine the canvas buf and the brush mask to the canvas buf  */
+  srcPR.bytes = canvas_buf->bytes;
+  srcPR.x = 0; srcPR.y = 0;
+  srcPR.w = canvas_buf->width;
+  srcPR.h = canvas_buf->height;
+  srcPR.rowstride = canvas_buf->width * canvas_buf->bytes;
+  srcPR.data = temp_buf_data (canvas_buf);
+
+  maskPR.bytes = 1;
+  maskPR.x = 0; maskPR.y = 0;
+  maskPR.w = srcPR.w;
+  maskPR.h = srcPR.h;
+  maskPR.rowstride = maskPR.bytes * brush_mask->width;
+  maskPR.data = mask_buf_data (brush_mask) + yoff * maskPR.rowstride + xoff * maskPR.bytes;
+
+  /*  apply the mask  */
+  apply_mask_to_region (&srcPR, &maskPR, brush_opacity);
+}
+
+static void
+set_undo_tiles (drawable, x, y, w, h)
+     GimpDrawable *drawable;
      int x, y;
      int w, h;
 {
-  GImage * gimage;
-  TempBuf * float_buf;
-  int endx, endy;
-  int startx;
-  int index;
-  int x1, y1;
-  int x2, y2;
-  int row, col;
-  int width, height;
+  int i, j;
+  Tile *src_tile;
+  Tile *dest_tile;
 
-  /*  We need to initialize variables based on whether this is a floating selection  */
-  if (float_buf_ptr)
+  for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
     {
-      float_buf = (TempBuf *) float_buf_ptr;
-      width = float_buf->width;
-      height = float_buf->height;
-    }
-  else
-    {
-      gimage = (GImage *) gimage_ptr;
-      width = gimage->width;
-      height = gimage->height;
-    }
-
-  startx = x;
-  endx = x + w;
-  endy = y + h;
-
-  row = y / block_width;
-  while (y < endy)
-    {
-      col = x / block_width;
-      while (x < endx)
+      for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
 	{
-	  index = row * horz_blocks + col;
-	  
-	  /*  If the block doesn't exist, create and initialize it  */
-	  if (! undo_blocks [index])
+	  dest_tile = tile_manager_get_tile (undo_tiles, j, i, 0);
+	  if (dest_tile->valid == FALSE)
 	    {
-	      /*  determine memory efficient width and height of block  */
-	      x1 = col * block_width;
-	      x2 = bounds (x1 + block_width, 0, width);
-	      w = (x2 - x1);
-	      y1 = row * block_height;
-	      y2 = bounds (y1 + block_height, 0, height);
-	      h = (y2 - y1);
-
-	      if (float_buf_ptr)
-		/*  Get the specified portion of the float buf  */
-		undo_blocks [index] = temp_buf_copy_area (float_buf, NULL, x1, y1, w, h);
-	      else
-		/*  get the specified portion of the gimage  */
-		undo_blocks [index] = temp_buf_load (NULL, gimage, x1, y1, w, h);
+	      src_tile = tile_manager_get_tile (drawable_data (drawable), j, i, 0);
+	      tile_ref (src_tile);
+	      tile_ref (dest_tile);
+	      memcpy (dest_tile->data, src_tile->data,
+		      (src_tile->ewidth * src_tile->eheight * src_tile->bpp));
+	      tile_unref (src_tile, FALSE);
+	      tile_unref (dest_tile, TRUE);
 	    }
-	  col++;
-	  x = col * block_width;
 	}
-
-      row ++;
-      y = row * block_height;
-      x = startx;
     }
 }
 
-
 static void
-allocate_undo_blocks (brush_width, brush_height, image_width, image_height)
-     int brush_width, brush_height;
-     int image_width, image_height;
+set_canvas_tiles (x, y, w, h)
+     int x, y;
+     int w, h;
 {
-  int num_blocks;
-  int i;
+  int i, j;
+  Tile *tile;
 
-  /*  calculate the width and height of each undo block  */
-  block_width = (brush_width*2 < MIN_BLOCK_WIDTH) ? MIN_BLOCK_WIDTH : brush_width*2;
-  block_height = (brush_height*2 < MIN_BLOCK_HEIGHT) ? MIN_BLOCK_HEIGHT : brush_height*2;
-
-  /*  calculate the number of rows and cols in the undo block grid  */
-  horz_blocks = (image_width + block_width - 1) / block_width;
-  vert_blocks = (image_height + block_height - 1) / block_height;
-
-  /*  Allocate the array  */
-  num_blocks = horz_blocks * vert_blocks;
-  undo_blocks = (TempBuf **) xmalloc (sizeof (TempBuf *) * num_blocks);
-
-  /*  Initialize the array  */
-  for (i = 0; i < num_blocks; i++)
-    undo_blocks [i] = NULL;
+  for (i = y; i < (y + h); i += (TILE_HEIGHT - (i % TILE_HEIGHT)))
+    {
+      for (j = x; j < (x + w); j += (TILE_WIDTH - (j % TILE_WIDTH)))
+	{
+	  tile = tile_manager_get_tile (canvas_tiles, j, i, 0);
+	  if (tile->valid == FALSE)
+	    {
+	      tile_ref (tile);
+	      memset (tile->data, 0, (tile->ewidth * tile->eheight * tile->bpp));
+	      tile_unref (tile, TRUE);
+	    }
+	}
+    }
 }
 
-
-static void
-free_undo_blocks ()
-{
-  int i;
-  int num_blocks;
-
-  num_blocks = vert_blocks * horz_blocks;
-
-  for (i = 0; i < num_blocks; i++)
-    if (undo_blocks [i])
-      temp_buf_free (undo_blocks [i]);
-
-  xfree (undo_blocks);
-
-  undo_blocks = NULL;
-}
 
 /*****************************************************/
 /*  Paint buffers utility functions                  */
@@ -953,16 +1091,9 @@ free_paint_buffers ()
 {
   if (orig_buf)
     temp_buf_free (orig_buf);
-
   orig_buf = NULL;
 
   if (canvas_buf)
     temp_buf_free (canvas_buf);
-
   canvas_buf = NULL;
-
-  if (mask_buf)
-    temp_buf_free (mask_buf);
-  
-  mask_buf = NULL;
 }

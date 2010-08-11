@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __SCALE_H__
 #define __SCALE_H__
@@ -23,20 +23,14 @@
 #define ZOOMIN  0
 #define ZOOMOUT 1
 
-
-/*  Callbacks  */
-
-void change_scale (Widget, XtPointer, XtPointer);
-
-
 /*  Functions  */
 
-void resize_display (GDisplay *);
+void change_scale (GDisplay *, int);
+void resize_display (GDisplay *, int, int);
+void shrink_wrap_display (GDisplay *);
 void setup_scale (GDisplay *);
 void scale_image (GDisplay *, long, long, long, long);
 void bounds_checking (GDisplay *);
-
-unsigned char * accelerate_scaling (long, long, int, int, int);
 
 
 #endif  /*  __SCALE_H__  */

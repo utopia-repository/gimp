@@ -1,240 +1,232 @@
-These are the installation instructions for the GIMP.
+There are three basic steps to building and installing the
+GIMP on unix:
 
-To compile the GIMP
--------------------
+  1. You need to have installed GTK version 1.0.1 or better
+  2. You may want to install other third party libraries that
+     are needed for some of the available plugins: TIFF, PNG,
+     JPEG, MPEG, etc.
+  3. Configure the GIMP by running the `configure' script.
+  4. Build the GIMP by running `make'.
+  5. Install the GIMP by running `make install'.
+  6. Optionally install the separate gimp-data-extras package.
 
-WARNING: Do not remake the `configure' script using autoconf. The
-  script has been created using a modified version of autoconf that
-  knows how to handle the `--motif-includes' and `--motif-libraries'
-  command line options.
+Please make sure you don't have any old GTK, jpeg, etc. libraries lying
+around on your system, otherwise configure will fail to find the new
+ones.
 
-1. Configure the GIMP for your system. In the directory that this file
-is in type `./configure'. If you're using `csh' on an old version of
-System V, you might need to type `sh configure' instead to prevent
-`csh' from trying to execute `configure' itself.
+Generic instructions for configuring and compiling auto-configured
+packages are included below. Here is an illustration of commands that
+might be used to build and install the GIMP. The actual configuration,
+compilation and installation output is not shown.
+
+  % tar xvfz gimp-1.0.0.tar.gz   # unpack the sources
+  % cd gimp-1.0.0                # change to the toplevel directory
+  % ./configure                  # run the `configure' script
+  % make                         # build the GIMP
+  % make install                 # install the GIMP
+
+The `configure' script examines your system, and adapts the GIMP to
+run on it. The script has many options, some of which are described in
+the generic instructions included at the end of this file. All of the
+options can be listed using the command `./configure --help'. There
+are six commands special options the GIMP `configure' script
+recognizes. These are:
+
+  1. --enable-shared and --disable-shared. This option affects whether
+     shared libraries will be built or not. Shared libraries provide
+     for much smaller executables, but they are difficult to debug
+     with. If you are interested in doing development, it is probably
+     wise to specify `--disable-shared'. The default is to enable
+     shared libraries.
+
+  2. --enable-debug and --disable-debug. This option causes the build
+     process to compile with debugging enabled. If debugging is
+     disabled, the GIMP will instead be compiled with optimizations turned
+     on. The default is for debugging to be disabled. NOTE: This
+     option is intended primarily as a convenience for developers.
+
+  3. --enable-ansi and --disable-ansi. This options causes stricter
+     ANSI C checking to be performed when compiling with GCC. The
+     default is for strict checking to be disabled. NOTE: This option
+     is intended primarily as a convenience for developers.
+
+  4. --enable-gimpdir=DIR. This option changes the default directory
+     the gimp uses to search for its configuration files from ~/.gimp (the
+     directory .gimp in the users home directory) to DIR.
+
+The `make' command builds several things:
+ - The libraries `libgimp/libgimp.la', `libgimp/libgimpi.la' and
+   `libgimp/libgimpui.la'. The `.la' suffix is used by libtool, the
+    program used to ease the compilation of shared libraries on
+    different platforms.
+ - The plug-in programs in the `plug-ins' subdirectory.
+ - The main GIMP program in `app/gimp'.
+
+The `make install' commands installs the glib, gdk and gtk header
+files and libraries, the gimp header files associated with libgimp and
+the libgimp library, the plug-ins, and the GIMP executable. After
+running `make install' and assuming the build process was successful
+you should be able to run `gimp'.
+
+When ./configure fails
+======================
+
+'configure' tries to compile and run a short GTK program. There are
+several reasons why this might fail:
+
+* The 'gtk-config' script installed with GTK could not be found.
+  (This script is used to get information about where GTK is
+   installed.)
+
+  Fix: Either make sure that this program is in your path, or set
+  the environment variable GTK_CONFIG to the full pathname to
+  this program before running configure.
+
+* The GTK libraries were not found at run time. The details
+  of how to fix this problem will depend on the system:
+
+  Fix: On Linux and other systems using ELF libraries, add the
+  directory to /etc/ld.so.conf or to the environment variable 
+  LD_LIBRARY_PATH, and run 'ldconfig'.
+
+  On other systems, it may be necessary to encode this path
+  into the executable, by setting the LDFLAGS environment variable
+  before running configure. For example:
+
+    LDFLAGS="-R/home/joe/lib" ./configure
+  or
+    LDFLAGS="-Wl,-rpath -Wl,/home/joe/lib" ./configure
+
+* An old version of the GTK libraries was found instead of 
+  your newly installed version. This commonly happens if a
+  binary package of GTK was previously installed on your system,
+  and you later compiled GTK from source.
+
+  Fix: remove the old libraries and include files.
+
+A detailed log of the ./configure output is written to the file
+config.log. This may help diagnose problems.
+
+If you are sure of what you're doing, you can bypass the sanity check and
+just go by what gtk-config by using the --disable-gtktest option. Please
+only use this in dire circumstances.
+
+After fixing a problem, it is safest to delete the file 'config.cache'
+before re-running ./configure.
+
+
+
+When ./configure fails on plug-ins
+==================================
+
+There are some GIMP plug-ins that need additional third-party libraries 
+installed on your system. For example to compile the plug-ins that load 
+and save JPEG, PNG or TIFF files you need the related libraries and header 
+files installed, otherwise you'll get a message that plugin xyz will not 
+be build. 
+
+If you are sure that those libraries are correctly installed, but configure
+fails to detect them, the following might help:
+
+Set your LDFLAGS environment variable to look for the library in a certain
+place, e.g. if you are working in a bash shell you would say:
+      export LDFLAGS="-L<path_to_library> -L<path_to_another_one>"
+before you run configure.
+
+Set your CPPFLAGS environment variable to look for the header file in a
+certain place, e.g. if you are working in a bash shell you would say:
+      export CPPFLAGS="-I<path_to_header_file> -I<path_to_another_one>"
+before you run configure.
+
+It's wise to remove the file 'config.cache' before re-running configure.
+
+
+
+      Generic Instructions for Building Auto-Configured Packages
+      ==========================================================
+
+
+To compile this package:
+
+1.  Configure the package for your system.  In the directory that this
+file is in, type `./configure'.  If you're using `csh' on an old
+version of System V, you might need to type `sh configure' instead to
+prevent `csh' from trying to execute `configure' itself.
 
 The `configure' shell script attempts to guess correct values for
-various system-dependent variables used during compilation, and crates
-the Makefile and a configuration header file (`config.h').
+various system-dependent variables used during compilation, and
+creates the Makefile(s) (one in each subdirectory of the source
+directory).  In some packages it creates a C header file containing
+system-dependent definitions.  It also creates a file `config.status'
+that you can run in the future to recreate the current configuration.
+Running `configure' takes a minute or two.
 
-If the `configure' script fails for some reason and you know it
-shouldn't then you should probably examine the output file
-`config.log' for error messages. For instance, if you have motif, but
-the configure script says it can't find the library, then you can
-check the `config.log' file to find out what went wrong with the test.
+To compile the package in a different directory from the one
+containing the source code, you must use GNU make.  `cd' to the
+directory where you want the object files and executables to go and
+run `configure' with the option `--srcdir=DIR', where DIR is the
+directory that contains the source code.  Using this option is
+actually unnecessary if the source code is in the parent directory of
+the one in which you are compiling; `configure' automatically checks
+for the source code in `..' if it does not find it in the current
+directory.
 
-On some systems, the `configure' script may be unable to find the X11
-include and library directories. These may be specified as arguments
-to the `configure' script. For example:
+By default, `make install' will install the package's files in
+/usr/local/bin, /usr/local/lib, /usr/local/man, etc.  You can specify
+an installation prefix other than /usr/local by giving `configure' the
+option `--prefix=PATH'.  Alternately, you can do so by changing the
+`prefix' variable in the Makefile that `configure' creates (the
+Makefile in the top-level directory, if the package contains
+subdirectories).
 
- configure --x-includes="/usr/X11/include" --x-libraries="/usr/X11/lib"
+You can specify separate installation prefixes for machine-specific
+files and machine-independent files.  If you give `configure' the
+option `--exec-prefix=PATH', the package will use PATH as the prefix
+for installing programs and libraries.  Normally, all files are
+installed using the same prefix.
 
-This specifies that the directory "/usr/X11/include" contains the X11
-include files and the directory "/usr/X11/lib" contains the X11
-libraries. This specification is only necessary if the `configure'
-script cannot find them automatically. (The `configure' script will
-emit a warning if it fails to locate them).
+`configure' ignores any other arguments that you give it.
 
-It is also possible to specify the Motif include and library
-directories as arguments using a similar format.
+If your system requires unusual options for compilation or linking
+that `configure' doesn't know about, you can give `configure' initial
+values for some variables by setting them in the environment.  In
+Bourne-compatible shells, you can do that on the command line like
+this:
+        CC='gcc -traditional' DEFS=-D_POSIX_SOURCE ./configure
 
- configure --motif-includes="/usr/X11/include" --motif-libraries="/usr/X11/lib"
+The `make' variables that you might want to override with environment
+variables when running `configure' are:
 
-This is only necessary if your installation of Motif is in a separate
-directory structure from your installation of X11. For instance, X11
-may be installed in "/usr/X11", while Motif is installed in "/usr/Motif".
+(For these variables, any value given in the environment overrides the
+value that `configure' would choose:)
+CC              C compiler program.
+                Default is `cc', or `gcc' if `gcc' is in your PATH.
+INSTALL         Program to use to install files.
+                Default is `install' if you have it, `cp' otherwise.
+INCLUDEDIR      Directory for `configure' to search for include files.
+                Default is /usr/include.
 
+(For these variables, any value given in the environment is added to
+the value that `configure' chooses:)
+DEFS            Configuration options, in the form '-Dfoo -Dbar ...'
+LIBS            Libraries to link with, in the form '-lfoo -lbar ...'
 
-  Requirements
-  ------------
+If you need to do unusual things to compile the package, we encourage
+you to teach `configure' how to do them and mail the diffs to the
+address given in the README so we can include them in the next
+release.
 
-  - The GIMP requires the operating system to support shared memory. 
-  That is, the `shmget', `shmat' and `shmctl' system calls must exist. 
-  On several systems we've encountered, the shared memory is
-  configurable. See the section on shared memory at the end of this
-  document.
+2.  Type `make' to compile the package.
 
-  - The GIMP requires X11 R5 or R6. (Actually, it may work on R4, but we
-  have not had a chance to test it). The GIMP currently requires that the X
-  shared memory extension header files be present. The X-server does not
-  actually need to support shared memory and this is only a temporary
-  situation until we integrate the configure information with the source
-  code.
+3.  Type `make install' to install programs, data files, and
+documentation.
 
-  - The GIMP requires Motif 1.2 or above. (This is another case where we
-  aren't sure it requires v1.2 or above, but we have only been able to
-  test it on v1.2 and above).
+4.  You can remove the program binaries and object files from the
+source directory by typing `make clean'.  To also remove the
+Makefile(s), the header file containing system-dependent definitions
+(if the package uses one), and `config.status' (all the files that
+`configure' created), type `make distclean'.
 
-
-  If Configuration Fails
-  ----------------------
-
-  If automatic configuration fails you will have to edit the makefiles by
-  hand. The GIMP comes with 3 standard `Makefiles' and a standard
-  `config.h'. These are the files `Makefile.std', `app/Makefile.std',
-  `plug-ins/Makefile.std' and `config.h.std'. You will need to copy them
-  to the files `Makefile', `app/Makefile', `plug-ins/Makefile' and
-  `config.h' respectively. Each file should be examined for anything
-  that needs to be changed. For the most part the makefiles should be
-  ok. The items that might need to be changed are the include and
-  library include directories and the compiler to be used. 
-
-
-2. Configure the plug-ins for your system. In the `plug-ins' directory
-you will need to manually edit the Makefile. (This is temporary until
-we fix `configure'.) Currently, 2 makefiles exist in the `plug-ins'
-directory, `Makefile.make' and `Makefile.gmake'. One is for use with
-BSD make (Makefile.make) and the other is for use with GNU make
-(Makefile.gmake).
-
-The plug-ins are a vital and necessary part of the GIMP. For example,
-all file operations take place through plug-ins. The file format
-plug-ins are the most likely to cause problems when compiling.
-
-The basic difficulty in compiling file format plug-ins is that they
-depend on various libraries to provide their functionality. For
-example, the `jpeg' file format plug-in uses the wonderful
-`libjpeg'. The `png' file format plug-in uses `libpng' and `libgz'
-(zlib). These libraries may already exist on your system or you may
-have to download them (See the next section for pointers to source).
-
-
-  Dependencies
-  ------------
-
-  - `gif' requires no extra libraries. 
-
-  - `jpeg' requires the `libjpeg' library, either v5 or v6. `libjpeg' is
-  available from: ftp://ftp.uu.net/graphics/jpeg. Compiling `libjpeg' is
-  straight forward. In fact, it is one of the easiest packages to
-  compile that I've ever encountered. (No troubles what so ever in
-  compilation on several different systems).
-
-  - `png' requires the `libpng' library and the `libgz'
-  library. (Actually, it only requires `libpng' which requires
-  `libgz'). `libpng' is available from: ftp://ftp.uu.net/graphics/png
-  and ftp://ftp.group42.com/pub/png. `libgz' (zlib) is available from:
-  ftp://ftp.uu.net/graphics/png. (Note: version 0.71 of libpng is known
-  to work...later versions may work but there are no guarantees.)
-
-  - `tiff' requires the `libtiff' library. `libtiff' is available from:
-  ftp://ftp.uu.net/graphics/tiff.
-
-  - `xpm' requires the `libXpm' libray and the `libX11' library. If
-  you have X11 running then you almost definately have `libX11' and
-  probably have `libXpm'. `libXpm' is also available from:
-  ftp://ftp.x.org/contrib. 
-
-3. Install the `gimprc' file in your home directory. This involves
-moving (or copying) the `gimprc' file that comes with the GIMP into
-your home directory and renaming it `.gimprc'. The GIMP needs to be
-able to find this file in order to load or save any images. You may
-also need to edit certain paths specified in the file. Such as the
-"plug-in-path" and the "swap-path". Doing so should be
-self-explanatory (as the file is heavily commented) or you can refer
-to the GIMP documentation.
-
-
-Compiling Tips
---------------
-
-This section contains tips for compiling under certains systems. The
-tips come from us and from you. So if you compile the GIMP on a new
-system send us a note explaining any problems and, if possible
-solutions, and we will include it here.
-
-
-  Linux
-  -----
-
-  This is the development system for the GIMP. We've had no problem
-  compiling it under kernel v1.2.13 (a.out) with Moo-Tiff. Other people
-  have reported similar success with ELF systems and Metrolink's
-  Motif.  
-
-  HPUX
-  ----
-
-  Using gcc and gmake we've had no troubles compiling under HPUX on
-  some HP 9000 715/80's and 712/80's.
-
-  Solaris
-  -------
-
-  SunOS
-  -----
-
-  IRIX
-  ----
-
-  AIX
-  ---
-
-
-Shared Memory
--------------
-
-Shared memory is a means of communicating large pieces of information
-between separate processes. Basically, UNIX restricts one process from
-examining or modifying another processes memory. Shared memory is a
-means by which a process can allocate a piece of memory which is
-viewable by other processes. However, some systems restrict the size
-of a piece of shared memory and/or the number of pieces of shared
-memory that may exist at any one time.
-
-If you have one of the following systems then you can read what we
-have had to do to adjust the shared memory configuration. (Note: you
-may have to ask your system administrator to make these
-changes...unless, of course, you are the system administrator).
-
-  Linux
-  -----
-
-  Linux is a free POSIX operating system for IBM PCs and
-  compatibles. By default, the kernel is configured with a maximum
-  shared memory segment size of 3.98 megs. This is probably large enough
-  for most users, but if you need to work with large images (larger than
-  1024x1024), then you will need to increase this value. It is easily
-  done by anyone who has recompiled their kernel before. In the
-  "include/linux/shm.h" header file in the kernel source tree, change
-  the value of `SHMMAX' to a larger value. The largest possible value is
-  `0x2000000'. (The current value is `0x3fa000'). This change will make
-  it possible for shared memory segments to be up to 32 megs in
-  size. (Which would be an RGB image of 2890x2890). I'm not sure what,
-  if any, side effects this may have. But I have made this change and
-  have experienced no negatives effects...yet.
-
-
-  Solaris
-  -------
-
-  By default Solaris restricts both the maximum size of a shared
-  memory segment and the number of shared memory segments to
-  ridiculously small values. To change these values you must edit the
-  "/etc/system" file. The lines in question refer to setting the symsys
-  values. Specifically the following changes have worked well for us:
-
-   set shmsys:shminfo_shmmax = 0x2000000
-   set shmsys:shminfo_shmmni = 0x1000
-   set shmsys:shminfo_shmseg = 0x100
-
-  This sets the maximum shared memory segment size to 32 megs and the
-  number of shared memory segments to 256.
-
-
-  HPUX
-  ----
-
-  HP seems to have very reasonable limits for shared memory.  We have
-  had no problems with the default values.
-
-  SGI IRIX
-  --------
-
-  Like HP, seems reasonable.
-
-  SUNOS
-  -----
-
-  The default values are too low for useful work.  They can be set
-  by recompiling the kernel.  (Need precise details here)
+The file `configure.in' is used as a template to create `configure' by
+a program called `autoconf'.  You will only need it if you want to
+regenerate `configure' using a newer version of `autoconf'.

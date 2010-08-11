@@ -13,512 +13,244 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
+#include <math.h>
 #include "appenv.h"
-#include "general.h"
-#include "visual.h"
+#include "app_procs.h"
+#include "brushes.h"
 #include "colormaps.h"
+#include "errors.h"
+#include "general.h"
+#include "gimprc.h"
+#include "gradient.h"
+#include "palette.h"
+#include "patterns.h"
+#include "plug_in.h"
+#include "temp_buf.h"
+#include "tile_swap.h"
 
-#define FREE_ENTRIES 8
 
-Colormap rgbcmap;		/* rgb colormap */
-XColor   rgbpal[256];		/* palette associated with rgbcmap  */
+GdkVisual *g_visual = NULL;
+GdkColormap *g_cmap = NULL;
 
-Colormap greycmap;		/* greyscale colormap */
-XColor   greypal[256];		/* palette associated with rgbcmap  */
+gulong g_black_pixel;
+gulong g_gray_pixel;
+gulong g_white_pixel;
+gulong g_color_pixel;
+gulong g_normal_guide_pixel;
+gulong g_active_guide_pixel;
 
-unsigned char *red_shades;
-unsigned char *green_shades;
-unsigned char *blue_shades;
+gulong foreground_pixel;
+gulong background_pixel;
 
-unsigned int shades_r;
-unsigned int shades_g;
-unsigned int shades_b;
-unsigned int shades_grey;
+gulong old_color_pixel;
+gulong new_color_pixel;
 
-Pixel color_black_pixel;
-Pixel color_white_pixel;
-Pixel grey_black_pixel;
-Pixel grey_white_pixel;
+gulong marching_ants_pixels[8];
 
-static unsigned int color_entries;
-static unsigned int grey_entries;
+GtkDitherInfo *red_ordered_dither;
+GtkDitherInfo *green_ordered_dither;
+GtkDitherInfo *blue_ordered_dither;
+GtkDitherInfo *gray_ordered_dither;
 
-/*
- *  Copies the contents of src to dest -- that is, all of the color defs
- */
+guchar ***ordered_dither_matrix;
 
-static Colormap
-create_colormap (visual, size)
-     Visual * visual;
-     unsigned int size;
-{
-  Colormap cmap;
-  unsigned long pixels_return[256];
-  
-  cmap = XCreateColormap (DISPLAY,
-			  XtWindow (toplevel),
-			  visual, AllocNone);
+/*  These arrays are calculated for quick 24 bit to 16 color conversions  */
+gulong *g_lookup_red;
+gulong *g_lookup_green;
+gulong *g_lookup_blue;
 
-  if (!XAllocColorCells (DISPLAY, cmap, False,
-			 NULL, 0,
-			 pixels_return, size))
-    {
-      fprintf (stderr, "Unable to allocate color cells.\n");
-      exit (1);
-    }
-  
-  return cmap;
-			 
-}
+gulong *color_pixel_vals;
+gulong *gray_pixel_vals;
+
+static int reserved_entries = 4;  /* extra colors aside from color cube */
+static gulong *reserved_pixels;
+
+static void make_color (gulong *pixel_ptr,
+			int     red,
+			int     green,
+			int     blue,
+			int     readwrite);
 
 static void
-copy_colormap (dest, src, index, size)
-     Colormap dest;
-     Colormap src;
-     int index;
-     int size;
+set_app_colors ()
 {
   int i;
-  XColor palette [256];
 
-  for (i = index; i < index + size; i++)
-    palette[i - index].pixel = i;
-
-  XQueryColors (DISPLAY, src, palette, size);
-  XStoreColors (DISPLAY, dest, palette, size);
-
-}
-
-static void
-trim_colormap (cmap, index)
-     Colormap cmap;
-     int index;
-{
-  int i;
-  int size;
-  unsigned long pixels [256];
-
-  size = (FREE_ENTRIES > index) ? index : FREE_ENTRIES;
-
-  for (i = 0; i < size; i++)
-    pixels [i] = index - i - 1;
-
-  /*  Unallocate the cells not used by the application  */
-  XFreeColors (DISPLAY, cmap, pixels, size, 0);
-
-}
-
-static void
-match_RGB_colors (pal, match)
-     XColor *pal;
-     XColor *match;
-{
-  int i, cnt;
-  int total, start;
-
-  long red_mult, green_mult;
-  float red_colors_per_shade;
-  float green_colors_per_shade;
-  float blue_colors_per_shade;
-
-  total = shades_r * shades_g * shades_b;
-
-  start = color_max_entries - total;
-
-  cnt = 0;
-  
-  red_mult = shades_g * shades_b;
-  red_colors_per_shade = 256.0 / shades_r;
-
-  green_mult = shades_b;
-  green_colors_per_shade = 256.0 / shades_g;
-
-  blue_colors_per_shade = 256.0 / shades_b;
-
-  for (i = 0; i < 256; i++)
+  if ((g_visual->type == GDK_VISUAL_PSEUDO_COLOR) ||
+      (g_visual->type == GDK_VISUAL_GRAYSCALE))
     {
-      red_shades[i] = ((unsigned char) (i / red_colors_per_shade)) * red_mult;
-      green_shades[i] = ((unsigned char) (i / green_colors_per_shade)) * green_mult;
-      blue_shades[i] = (unsigned char) (i / blue_colors_per_shade);
+      foreground_pixel = reserved_pixels[0];
+      background_pixel = reserved_pixels[1];
+      old_color_pixel = reserved_pixels[2];
+      new_color_pixel = reserved_pixels[3];
+    }
+  else
+    {
+      cycled_marching_ants = FALSE;
     }
 
-  for (i = start; i < color_max_entries; i++)
-    {
-      pal[cnt].red = match[i].red >> 8;
-      pal[cnt].green = match[i].green >> 8;
-      pal[cnt].blue = match[i].blue >> 8;
-      pal[cnt].pixel = match[i].pixel;
-      
-      cnt++;
-    }
+  make_color (&g_black_pixel, 0, 0, 0, FALSE);
+  make_color (&g_gray_pixel, 127, 127, 127, FALSE);
+  make_color (&g_white_pixel, 255, 255, 255, FALSE);
+  make_color (&g_color_pixel, 255, 255, 0, FALSE);
+  make_color (&g_normal_guide_pixel, 0, 127, 255, FALSE);
+  make_color (&g_active_guide_pixel, 255, 0, 0, FALSE);
+
+  store_color (&foreground_pixel, 0, 0, 0);
+  store_color (&background_pixel, 255, 255, 255);
+  store_color (&old_color_pixel, 0, 0, 0);
+  store_color (&new_color_pixel, 255, 255, 255);
+
+  /* marching ants pixels--if enabled */
+  if (cycled_marching_ants)
+    for (i = 0; i < 8; i++)
+      {
+	marching_ants_pixels[i] = reserved_pixels[i + reserved_entries - 8];
+	if (i < 4)
+	  store_color (&marching_ants_pixels[i], 0, 0, 0);
+	else
+	  store_color (&marching_ants_pixels[i], 255, 255, 255);
+      }
 }
 
 
-static void
-create_8_bit_RGB ()
+static unsigned int
+gamma_correct (int intensity, double gamma)
 {
-  unsigned int r, g, b, i;
-  unsigned int dr, dg, db;
-  unsigned int total;
-  Colormap default_cmap, cmap;
-  XColor palette [256];
+  unsigned int val;
+  double ind;
+  double one_over_gamma;
 
-  total = shades_r * shades_g * shades_b;
+  if (gamma != 0.0)
+    one_over_gamma = 1.0 / gamma;
+  else
+    one_over_gamma = 1.0;
 
-  color_entries = total;
+  ind = (double) intensity / 256.0;
+  val = (int) (256 * pow (ind, one_over_gamma));
 
-  cmap = XCreateColormap (DISPLAY,
-			  XtWindow (toplevel),
-			  color_visual, AllocAll);
-  
-  default_cmap = DefaultColormapOfScreen (XtScreen (toplevel));
-
-  for (i=0; i<color_max_entries; i++)
-    palette[i].pixel = i;
-
-  XQueryColors (DISPLAY, default_cmap, palette, color_max_entries);
-
-  i = color_max_entries - total;
-
-  dr = (shades_r > 1) ? (shades_r - 1) : (1);
-  dg = (shades_g > 1) ? (shades_g - 1) : (1);
-  db = (shades_b > 1) ? (shades_b - 1) : (1);
-
-  for (r = 0; r < shades_r; r++)
-    for (g = 0; g < shades_g; g++)
-      for (b = 0; b < shades_b; b++)
-	{
-	  palette[i].pixel = i;
-	  palette[i].red = (unsigned int) ((r * color_max_entries * 0xff) / dr);
-	  palette[i].green = (unsigned int) ((g * color_max_entries * 0xff) / dg);
-	  palette[i].blue = (unsigned int) ((b * color_max_entries * 0xff) / db);
-	  palette[i].flags = DoRed | DoGreen | DoBlue;
-
-	  i++;
-	}
-
-  /*  Set values of white and black pixels  */
-  color_black_pixel = color_max_entries - total;
-  color_white_pixel = color_max_entries - 1;
-
-  match_RGB_colors (rgbpal, palette);
-
-  XStoreColors (DISPLAY, cmap, palette, color_max_entries);
-
-  /*  Free up some colors for X  */
-  rgbcmap = create_colormap (color_visual, color_max_entries);
-  copy_colormap (rgbcmap, cmap, 0, color_max_entries);
-  trim_colormap (rgbcmap, (color_max_entries - color_entries));
- 
-  XFreeColormap (DISPLAY, cmap);
-}
-
-
-static void
-match_greyscale_colors (pal, match)
-     XColor * pal;
-     XColor * match;
-{
-  unsigned int i, col, index;
-  unsigned int last, next;
-
-  index = (grey_max_entries - shades_grey);
-
-  last = 0;
-
-  for (i = 0; i < grey_max_entries; i++)
-    {
-      next = (match[index + 1].red >> 8);
-      
-      /*  our current shade of grey is closer to the next shade  */
-      if (abs (next - i) < abs (last - i))
-	col = index + 1;
-      else
-	col = index;
-
-      pal->pixel = col;
-
-      if (i == next) 
-	{
-	  last = next;
-	  index ++;
-	}
-      pal++;
-    }
-	  
-}
-
-
-static void
-create_8_bit_greyscale (num_greys)
-     unsigned int num_greys;
-{
-  unsigned int i, d, start;
-  Colormap default_cmap, cmap;
-  XColor palette [256];
-
-  if (num_greys > grey_max_entries)
-    num_greys = grey_max_entries;
-
-  grey_entries = num_greys;
-
-  cmap = XCreateColormap (DISPLAY,
-			  XtWindow (toplevel),
-			  grey_visual, AllocAll);
-  
-  default_cmap = DefaultColormapOfScreen (XtScreen (toplevel));
-
-  for (i = 0; i < grey_max_entries; i++)
-    palette[i].pixel = i;
-
-  XQueryColors (DISPLAY, default_cmap, palette, grey_max_entries);
-
-  start = grey_max_entries - num_greys;
-  d = (num_greys > 1) ? (num_greys - 1) : (1);
-
-  for (i = start; i < grey_max_entries; i++)
-    {
-      palette[i].pixel = i;
-
-      palette[i].red = palette[i].green = palette[i].blue = 
-	(unsigned int) (((i - start) * 0xffff) / d);
-      
-      palette[i].flags = DoRed | DoGreen | DoBlue;
-
-    }
-
-  /*  Set values of white and black pixels  */
-  grey_black_pixel = start;
-  grey_white_pixel = grey_max_entries - 1;
-
-  match_greyscale_colors (greypal, palette);
-
-  XStoreColors (DISPLAY, cmap, palette, grey_max_entries);
-
-  /*  Free up some colors for X  */
-  greycmap = create_colormap (grey_visual, grey_max_entries);
-  copy_colormap (greycmap, cmap, 0, grey_max_entries);
-  trim_colormap (greycmap, (grey_max_entries - grey_entries));
-
-  XFreeColormap (DISPLAY, cmap);
-}
-
-
-static void
-parse_colorcube_resource (cc_str, r, g, b)
-     char * cc_str;
-     unsigned int *r;
-     unsigned int *g;
-     unsigned int *b;
-{
-  int count = 0;
-  char * local_copy;
-  char * colorcube;
-  char * last;
-
-  if (!cc_str)
-    return;
-
-  local_copy = xstrdup (cc_str);
-  last = colorcube = local_copy;
-
-  while (*colorcube)
-    {
-      if (*colorcube == '.')
-	{
-	  *colorcube = '\0';
-	  switch (count)
-	    {
-	    case 0:
-	      *r = atoi (last);
-	      break;
-	    case 1:
-	      *g = atoi (last);
-	      break;
-	    }
-	  count ++;
-	  last = colorcube + 1;
-	}
-      colorcube++;
-    }
-
-  *b = atoi (last);
-
-  if (*r < 2 || *g < 2 || *b < 2)
-    {
-      fprintf (stderr, "Invalid color cube specification.\n");
-      if (*r < 2)
-	*r = 2;
-      if (*g < 2)
-	*g = 2;
-      if (*b < 2)
-	*b = 2;
-      fprintf (stderr, "Defaulting to [%d / %d / %d].\n", *r, *g, *b);
-    }
-
-  while ((*r * *g * *b) > color_max_entries)
-    {
-      fprintf (stderr, "Unable to create colorcube [%d, %d, %d].\n",
-	       *r, *g, *b);
-
-      if (*r > *g)
-	if (*r > *b)
-	  (*r)--;
-        else
-	  (*b)--;
-      else if (*g > *b)
-	(*g)--;
-      else
-	(*b)--;
-	
-      fprintf (stderr, "Defaulting to [%d, %d, %d]...\n",
-	       *r, *g, *b);
-    }
-
-  /*  Free local copy of colorcube description string  */
-  xfree (local_copy);
-
-  return;  
-
+  return val;
 }
 
 
 /*************************************************************************/
 
 
-Colormap
-get_colormap (color_type)
-     int color_type;
+gulong
+get_color (int red,
+	   int green,
+	   int blue)
 {
-  Colormap cmap, default_cmap;
+  gulong pixel;
 
-  switch (color_type)
-    {
-    case RGB_GIMAGE:
-      switch (color_depth)
-	{
-	case 8 :
-	case 16 : 
-	case 15 : 
-	case 24 :
-	  return rgbcmap;
-	  break;
-	default :
-	  return 0;
-	  break;
-	}
-      break;
-    case GREY_GIMAGE:
-      /*  The greyscale colormap is always the same--no need to create one  */
-      return greycmap;
-      break;
-    case INDEXED_GIMAGE :
-      switch (color_depth)
-	{
-	case 8 :
-	  default_cmap = DefaultColormapOfScreen (XtScreen (toplevel));
-	  cmap = create_colormap (color_visual, 256);
-	  copy_colormap (cmap, default_cmap, 0, 256);
-	  return cmap;
-	  break;
+  if ((g_visual->type == GDK_VISUAL_PSEUDO_COLOR) ||
+      (g_visual->type == GDK_VISUAL_GRAYSCALE))
+    pixel = color_pixel_vals [(red_ordered_dither[red].s[1] +
+			       green_ordered_dither[green].s[1] +
+			       blue_ordered_dither[blue].s[1])];
+  else
+    store_color (&pixel, red, green, blue);
 
-	case 16 : 
-	case 15 : 
-	case 24 :
-	  return rgbcmap;
-	  break;
+  return pixel;
+}
 
-	default :
-	  return 0;
-	  break;
 
-	}
-      break;
-    default :
-      return 0;
-      break;
-    }
+static void
+make_color (gulong *pixel_ptr,
+	    int     red,
+	    int     green,
+	    int     blue,
+	    int     readwrite)
+{
+  GdkColor col;
+
+  red = gamma_correct (red, gamma_val);
+  green = gamma_correct (green, gamma_val);
+  blue = gamma_correct (blue, gamma_val);
+
+  col.red = red * (65535 / 255);
+  col.green = green * (65535 / 255);
+  col.blue = blue * (65535 / 255);
+  col.pixel = *pixel_ptr;
+
+  if (readwrite && ((g_visual->type == GDK_VISUAL_PSEUDO_COLOR) ||
+		    (g_visual->type == GDK_VISUAL_GRAYSCALE)))
+    gdk_color_change (g_cmap, &col);
+  else
+    gdk_color_alloc (g_cmap, &col);
+
+  *pixel_ptr = col.pixel;
+}
+
+void
+store_color (gulong *pixel_ptr,
+	     int     red,
+	     int     green,
+	     int     blue)
+{
+  make_color (pixel_ptr, red, green, blue, TRUE);
 }
 
 
 void
-create_standard_colormaps ()
+get_standard_colormaps ()
 {
-  red_shades = (unsigned char*) xmalloc (sizeof (char) * 256);
-  green_shades = (unsigned char*) xmalloc (sizeof (char) * 256);
-  blue_shades = (unsigned char*) xmalloc (sizeof (char) * 256);
+  GtkPreviewInfo *info;
 
-  /*  Parse the requested color cube and check for errors...  */
-  if ((color_class != TrueColor) || (grey_class != TrueColor))
-    {
-      parse_colorcube_resource (app_data.colorcube,
-				&shades_r, &shades_g, &shades_b);
-    }
-  else
-    {
-      switch (color_depth)
-	{
-	case 15:
-	case 16:
-	  shades_r = shades_g = shades_b = 5;
-	  break;
-	case 24:
-	  shades_r = shades_g = shades_b = 8;
-	  break;
-	}
-    }
+  if (cycled_marching_ants)
+    reserved_entries += 8;
 
-  /*  For color visuals, we have to decide on how to create an appropriate
-   *  colormap based on depth
-   */
-  switch (color_depth)
-    {
-    case 8 :
-      create_8_bit_RGB ();
-      break;
-    case 15 : 
-    case 16 : 
-    case 24 :
-      rgbcmap = XCreateColormap (DISPLAY,
-				 XtWindow (toplevel),
-				 color_visual, AllocNone);
-      color_black_pixel = COLOR_COMPOSE (0, 0, 0);
-      color_white_pixel = COLOR_COMPOSE (255, 255, 255);
-      break;
-    }
-  
+  gtk_preview_set_gamma (gamma_val);
+  gtk_preview_set_color_cube (color_cube_shades[0], color_cube_shades[1],
+			      color_cube_shades[2], color_cube_shades[3]);
+  gtk_preview_set_install_cmap (install_cmap);
+  gtk_preview_set_reserved (reserved_entries);
 
-  /*  Calculate the number of grey tones from the total number of
-      Colors requested in the RGB color space                      */
-  shades_grey = shades_r * shades_g * shades_b;
+  /* so we can reinit the colormaps */
+  gtk_preview_reset ();
 
-  /* Handles the case of emulating greyscale with a truecolor visual...  */
-  if (emulate_grey)
-    {
-      greycmap = XCreateColormap (DISPLAY,
-				  XtWindow (toplevel),
-				  grey_visual, AllocNone);
+  gtk_widget_set_default_visual (gtk_preview_get_visual ());
+  gtk_widget_set_default_colormap (gtk_preview_get_cmap ());
 
-      grey_black_pixel = color_black_pixel;
-      grey_white_pixel = color_white_pixel;
-    }
-  /* In the case of an 8 bit greyscale... */
-  else
-    create_8_bit_greyscale (shades_grey);
+  info = gtk_preview_get_info ();
+  g_visual = info->visual;
 
+  if (((g_visual->type == GDK_VISUAL_PSEUDO_COLOR) ||
+       (g_visual->type == GDK_VISUAL_GRAYSCALE)) &&
+      info->reserved_pixels == NULL) {
+    g_print("GIMP cannot get enough colormaps to boot.\n");
+    g_print("Try exiting other color intensive applications.\n");
+    g_print("Also try enabling the (install-colormap) option in gimprc.\n");
+    swapping_free ();
+    brushes_free ();
+    patterns_free ();
+    palettes_free ();
+    gradients_free ();
+    palette_free ();
+    procedural_db_free ();
+    plug_in_kill ();
+    tile_swap_exit ();
+    gtk_exit(0);
+  }
+
+  g_cmap = info->cmap;
+  color_pixel_vals = info->color_pixels;
+  gray_pixel_vals = info->gray_pixels;
+  reserved_pixels = info->reserved_pixels;
+
+  red_ordered_dither = info->dither_red;
+  green_ordered_dither = info->dither_green;
+  blue_ordered_dither = info->dither_blue;
+  gray_ordered_dither = info->dither_gray;
+
+  ordered_dither_matrix = info->dither_matrix;
+
+  g_lookup_red = info->lookup_red;
+  g_lookup_green = info->lookup_green;
+  g_lookup_blue = info->lookup_blue;
+
+  set_app_colors ();
 }
-
-
-void
-free_standard_colormaps ()
-{
-  if (rgbcmap)
-    XFreeColormap (DISPLAY, rgbcmap);
-  if (greycmap)
-    XFreeColormap (DISPLAY, greycmap);
-}
-
-

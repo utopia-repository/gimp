@@ -13,26 +13,25 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
-
+#include <string.h>
 #include "appenv.h"
 #include "bezier_select.h"
+#include "bezier_selectP.h"
 #include "draw_core.h"
 #include "edit_selection.h"
 #include "errors.h"
 #include "gdisplay.h"
-#include "gregion.h"
-#include "linked.h"
+#include "gimage_mask.h"
+#include "rect_select.h"
+#include "interface.h"
 
 #define BEZIER_START     1
 #define BEZIER_ADD       2
 #define BEZIER_EDIT      4
 #define BEZIER_DRAG      8
-
-#define BEZIER_ANCHOR    1
-#define BEZIER_CONTROL   2
 
 #define BEZIER_DRAW_CURVE   1
 #define BEZIER_DRAW_CURRENT 2
@@ -44,15 +43,21 @@
 
 #define SUBDIVIDE  1000
 
-#define IMAGE_COORDS  1
-#define SCREEN_COORDS 2
+#define IMAGE_COORDS    1
+#define AA_IMAGE_COORDS 2
+#define SCREEN_COORDS   3
+
+#define SUPERSAMPLE   3
+#define SUPERSAMPLE2  9
+
+#define NO  0
+#define YES 1
 
 /*  bezier select type definitions */
 
 typedef struct _bezier_select BezierSelect;
-typedef struct _bezier_point BezierPoint;
 typedef double BezierMatrix[4][4];
-typedef void (*BezierPointsFunc) (BezierSelect *, XPoint *, int);
+typedef void (*BezierPointsFunc) (BezierSelect *, GdkPoint *, int);
 
 struct _bezier_select
 {
@@ -65,46 +70,35 @@ struct _bezier_select
   BezierPoint *cur_control;  /* the current active control point  */
   BezierPoint *last_point;   /* the last point on the curve       */
   int num_points;            /* number of points in the curve     */
-  GRegion *region;           /* null if the curve is open         */
-  link_ptr *scanlines;       /* used in converting a curve        */
+  Channel *mask;             /* null if the curve is open         */
+  GSList **scanlines;        /* used in converting a curve        */
 };
-
-struct _bezier_point
-{
-  int type;                   /* type of point (anchor or control) */
-  int x, y;                   /* location of point in image space  */
-  int sx, sy;                 /* location of point in screen space */
-  BezierPoint *next;          /* next point on curve               */
-  BezierPoint *prev;          /* prev point on curve               */
-};
-
-/*  bezier select action functions  */
 
 static void  bezier_select_reset           (BezierSelect *);
-static void  bezier_select_button_press    (Tool *, XButtonEvent *, XtPointer);
-static void  bezier_select_button_release  (Tool *, XButtonEvent *, XtPointer);
-static void  bezier_select_motion          (Tool *, XMotionEvent *, XtPointer);
-static void  bezier_select_control         (Tool *, int, XtPointer);
+static void  bezier_select_button_press    (Tool *, GdkEventButton *, gpointer);
+static void  bezier_select_button_release  (Tool *, GdkEventButton *, gpointer);
+static void  bezier_select_motion          (Tool *, GdkEventMotion *, gpointer);
+static void  bezier_select_control         (Tool *, int, gpointer);
 static void  bezier_select_draw            (Tool *);
 
 static void  bezier_add_point              (BezierSelect *, int, int, int);
 static void  bezier_offset_point           (BezierPoint *, int, int);
-static int   bezier_check_point            (BezierPoint *, int, int);
+static int   bezier_check_point            (BezierPoint *, int, int, int);
 static void  bezier_draw_curve             (BezierSelect *);
 static void  bezier_draw_handles           (BezierSelect *);
 static void  bezier_draw_current           (BezierSelect *);
 static void  bezier_draw_point             (BezierSelect *, BezierPoint *, int);
 static void  bezier_draw_line              (BezierSelect *, BezierPoint *, BezierPoint *);
 static void  bezier_draw_segment           (BezierSelect *, BezierPoint *, int, int, BezierPointsFunc);
-static void  bezier_draw_segment_points    (BezierSelect *, XPoint *, int);
+static void  bezier_draw_segment_points    (BezierSelect *, GdkPoint *, int);
 static void  bezier_compose                (BezierMatrix, BezierMatrix, BezierMatrix);
 
-static void  bezier_convert                (BezierSelect *, GDisplay *, int);
-static void  bezier_convert_points         (BezierSelect *, XPoint *, int);
-static void  bezier_convert_line           (link_ptr *, int, int, int, int);
-static link_ptr  bezier_insert_in_list     (link_ptr, int);
+static void  bezier_convert                (BezierSelect *, GDisplay *, int, int);
+static void  bezier_convert_points         (BezierSelect *, GdkPoint *, int);
+static void  bezier_convert_line           (GSList **, int, int, int, int);
+static GSList *  bezier_insert_in_list     (GSList *, int);
 
-static BezierMatrix basis = 
+static BezierMatrix basis =
 {
   { -1,  3, -3,  1 },
   {  3, -6,  3,  0 },
@@ -112,37 +106,46 @@ static BezierMatrix basis =
   {  1,  0,  0,  0 },
 };
 
+static SelectionOptions *bezier_options = NULL;
+
+
 Tool*
 tools_new_bezier_select ()
 {
   Tool * tool;
   BezierSelect * bezier_sel;
 
-  tool = xmalloc (sizeof (Tool));
+  /*  The tool options  */
+  if (!bezier_options)
+    bezier_options = create_selection_options (BEZIER_SELECT);
 
-  bezier_sel = xmalloc (sizeof (BezierSelect));
+  tool = g_malloc (sizeof (Tool));
+
+  bezier_sel = g_malloc (sizeof (BezierSelect));
 
   bezier_sel->num_points = 0;
-  bezier_sel->region = NULL;
+  bezier_sel->mask = NULL;
   bezier_sel->core = draw_core_new (bezier_select_draw);
   bezier_select_reset (bezier_sel);
-  
+
   tool->type = BEZIER_SELECT;
   tool->state = INACTIVE;
   tool->scroll_lock = 1;   /*  Do not allow scrolling  */
+  tool->auto_snap_to = TRUE;
   tool->private = (void *) bezier_sel;
   tool->button_press_func = bezier_select_button_press;
   tool->button_release_func = bezier_select_button_release;
   tool->motion_func = bezier_select_motion;
-  tool->arrow_keys_func = edit_sel_arrow_keys_func;
+  tool->arrow_keys_func = standard_arrow_keys_func;
+  tool->cursor_update_func = rect_select_cursor_update;
   tool->control_func = bezier_select_control;
+  tool->preserve = FALSE;
 
   return tool;
 }
 
 void
-tools_free_bezier_select (tool)
-     Tool * tool;
+tools_free_bezier_select (Tool *tool)
 {
   BezierSelect * bezier_sel;
 
@@ -154,32 +157,64 @@ tools_free_bezier_select (tool)
 
   bezier_select_reset (bezier_sel);
 
-  xfree (bezier_sel);
+  g_free (bezier_sel);
+}
+
+int
+bezier_select_load (void        *gdisp_ptr,
+		    BezierPoint *pts,
+		    int          num_pts,
+		    int          closed)
+{
+  GDisplay * gdisp;
+  Tool * tool;
+  BezierSelect * bezier_sel;
+
+  gdisp = (GDisplay *) gdisp_ptr;
+
+  /*  select the bezier tool  */
+  gtk_widget_activate (tool_widgets[tool_info[BEZIER_SELECT].toolbar_position]);
+  tool = active_tool;
+  tool->state = ACTIVE;
+  tool->gdisp_ptr = gdisp_ptr;
+  bezier_sel = (BezierSelect *) tool->private;
+
+  bezier_sel->points = pts;
+  bezier_sel->last_point = pts->prev;
+  bezier_sel->num_points = num_pts;
+  bezier_sel->closed = closed;
+  bezier_sel->state = BEZIER_EDIT;
+  bezier_sel->draw = BEZIER_DRAW_ALL;
+
+  bezier_convert (bezier_sel, tool->gdisp_ptr, SUBDIVIDE, NO);
+
+  draw_core_start (bezier_sel->core, gdisp->canvas->window, tool);
+
+  return 1;
 }
 
 static void
-bezier_select_reset (bezier_sel)
-     BezierSelect * bezier_sel;
+bezier_select_reset (BezierSelect *bezier_sel)
 {
   BezierPoint * points;
   BezierPoint * start_pt;
   BezierPoint * temp_pt;
-  
+
   if (bezier_sel->num_points > 0)
     {
       points = bezier_sel->points;
       start_pt = (bezier_sel->closed) ? (bezier_sel->points) : (NULL);
-      
+
       do {
 	temp_pt = points;
 	points = points->next;
 
-	xfree (temp_pt);
+	g_free (temp_pt);
       } while (points != start_pt);
     }
 
-  if (bezier_sel->region)
-    gregion_free (bezier_sel->region);
+  if (bezier_sel->mask)
+    channel_delete (bezier_sel->mask);
 
   bezier_sel->state = BEZIER_START;    /* we are starting the curve */
   bezier_sel->draw = BEZIER_DRAW_ALL;  /* draw everything by default */
@@ -189,15 +224,14 @@ bezier_select_reset (bezier_sel)
   bezier_sel->cur_control = NULL;
   bezier_sel->last_point = NULL;
   bezier_sel->num_points = 0;          /* intially there are no points */
-  bezier_sel->region = NULL;           /* empty region */
+  bezier_sel->mask = NULL;             /* empty mask */
   bezier_sel->scanlines = NULL;
 }
 
 static void
-bezier_select_button_press (tool, bevent, gdisp_ptr)
-     Tool * tool;
-     XButtonEvent * bevent;
-     XtPointer gdisp_ptr;
+bezier_select_button_press (Tool           *tool,
+			    GdkEventButton *bevent,
+			    gpointer        gdisp_ptr)
 {
   GDisplay *gdisp;
   BezierSelect *bezier_sel;
@@ -206,16 +240,22 @@ bezier_select_button_press (tool, bevent, gdisp_ptr)
   int grab_pointer;
   int op, replace;
   int x, y;
-  
+  int halfwidth, dummy;
+
   gdisp = (GDisplay *) gdisp_ptr;
   bezier_sel = tool->private;
   grab_pointer = 0;
 
   /*  If the tool was being used in another image...reset it  */
-  if (tool->state == ACTIVE && gdisp_ptr != tool->gdisp_ptr)
+  if (tool->state == ACTIVE && gdisp_ptr != tool->gdisp_ptr) {
+    draw_core_stop(bezier_sel->core, tool);
     bezier_select_reset (bezier_sel);
+  }
+  gdisplay_untransform_coords (gdisp, bevent->x, bevent->y, &x, &y, TRUE, 0);
 
-  gdisplay_untransform_coords (gdisp, bevent->x, bevent->y, &x, &y, True);
+  /* get halfwidth in image coord */
+  gdisplay_untransform_coords (gdisp, bevent->x + BEZIER_HALFWIDTH, 0, &halfwidth, &dummy, TRUE, 0);
+  halfwidth -= x;
 
   switch (bezier_sel->state)
     {
@@ -223,46 +263,52 @@ bezier_select_button_press (tool, bevent, gdisp_ptr)
       grab_pointer = 1;
       tool->state = ACTIVE;
       tool->gdisp_ptr = gdisp_ptr;
-      
-      if (!(bevent->state & ShiftMask) && !(bevent->state & ControlMask))
-	if (selection_point_inside (gdisp->select, gdisp_ptr, bevent->x, bevent->y))
+
+      if (bevent->state & GDK_MOD1_MASK)
+	{
+	  init_edit_selection (tool, gdisp_ptr, bevent, MaskTranslate);
+	  break;
+	}
+      else if (!(bevent->state & GDK_SHIFT_MASK) && !(bevent->state & GDK_CONTROL_MASK))
+	if (! (layer_is_floating_sel (gimage_get_active_layer (gdisp->gimage))) &&
+	    gdisplay_mask_value (gdisp, bevent->x, bevent->y) > HALF_WAY)
 	  {
-	    init_edit_selection (tool, gdisp->select, gdisp_ptr, bevent->x, bevent->y);
+	    init_edit_selection (tool, gdisp_ptr, bevent, MaskToLayerTranslate);
 	    break;
 	  }
-      
+
       bezier_sel->state = BEZIER_ADD;
       bezier_sel->draw = BEZIER_DRAW_CURRENT | BEZIER_DRAW_HANDLES;
 
       bezier_add_point (bezier_sel, BEZIER_ANCHOR, x, y);
       bezier_add_point (bezier_sel, BEZIER_CONTROL, x, y);
-      
-      draw_core_start (bezier_sel->core, XtWindow (gdisp->disp_image->canvas), tool);
+
+      draw_core_start (bezier_sel->core, gdisp->canvas->window, tool);
       break;
     case BEZIER_ADD:
       grab_pointer = 1;
-      
-      if (bezier_sel->cur_anchor && 
-	  bezier_check_point (bezier_sel->cur_anchor, x, y))
+
+      if (bezier_sel->cur_anchor &&
+	  bezier_check_point (bezier_sel->cur_anchor, x, y, halfwidth))
 	{
 	  break;
 	}
 
       if (bezier_sel->cur_anchor->next &&
-	  bezier_check_point (bezier_sel->cur_anchor->next, x, y))
+	  bezier_check_point (bezier_sel->cur_anchor->next, x, y, halfwidth))
 	{
 	  bezier_sel->cur_control = bezier_sel->cur_anchor->next;
 	  break;
 	}
-      
+
       if (bezier_sel->cur_anchor->prev &&
-	  bezier_check_point (bezier_sel->cur_anchor->prev, x, y))
+	  bezier_check_point (bezier_sel->cur_anchor->prev, x, y, halfwidth))
 	{
 	  bezier_sel->cur_control = bezier_sel->cur_anchor->prev;
 	  break;
 	}
-      
-      if (bezier_check_point (bezier_sel->points, x, y))
+
+      if (bezier_check_point (bezier_sel->points, x, y, halfwidth))
 	{
 	  bezier_sel->draw = BEZIER_DRAW_ALL;
 	  draw_core_pause (bezier_sel->core, tool);
@@ -272,7 +318,7 @@ bezier_select_button_press (tool, bevent, gdisp_ptr)
 	  bezier_sel->points->prev = bezier_sel->last_point;
 	  bezier_sel->cur_anchor = bezier_sel->points;
 	  bezier_sel->cur_control = bezier_sel->points->next;
-	  
+
 	  bezier_sel->closed = 1;
 	  bezier_sel->state = BEZIER_EDIT;
 	  bezier_sel->draw = BEZIER_DRAW_ALL;
@@ -303,13 +349,13 @@ bezier_select_button_press (tool, bevent, gdisp_ptr)
       /* unset the current anchor and control */
       bezier_sel->cur_anchor = NULL;
       bezier_sel->cur_control = NULL;
-	      
+
       points = bezier_sel->points;
       start_pt = bezier_sel->points;
-      
+
       /* find if the button press occurred on a point */
       do {
-	  if (bezier_check_point (points, x, y))
+	  if (bezier_check_point (points, x, y, halfwidth))
 	    {
 	      /* set the current anchor and control points */
 	      switch (points->type)
@@ -329,41 +375,55 @@ bezier_select_button_press (tool, bevent, gdisp_ptr)
 	      grab_pointer = 1;
 	      break;
 	    }
-	  
+
 	  points = points->next;
 	} while (points != start_pt);
 
-      if (!grab_pointer && gregion_point_inside (bezier_sel->region, x, y))
+      if (!grab_pointer && channel_value (bezier_sel->mask, x, y))
 	{
+	  /*  If we're antialiased, then recompute the
+	   *  mask...
+	   */
+	  if (bezier_options->antialias)
+	    bezier_convert (bezier_sel, tool->gdisp_ptr, SUBDIVIDE, YES);
+
 	  tool->state = INACTIVE;
 	  bezier_sel->draw = BEZIER_DRAW_CURVE;
 	  draw_core_resume (bezier_sel->core, tool);
-	  
+
 	  bezier_sel->draw = 0;
 	  draw_core_stop (bezier_sel->core, tool);
-	  
+
 	  replace = 0;
-	  if (bevent->state & ShiftMask)
+	  if ((bevent->state & GDK_SHIFT_MASK) && !(bevent->state & GDK_CONTROL_MASK))
 	    op = ADD;
-	  else if (bevent->state & ControlMask)
+	  else if ((bevent->state & GDK_CONTROL_MASK) && !(bevent->state & GDK_SHIFT_MASK))
 	    op = SUB;
+	  else if ((bevent->state & GDK_CONTROL_MASK) && (bevent->state & GDK_SHIFT_MASK))
+	    op = INTERSECT;
 	  else
 	    {
 	      op = ADD;
 	      replace = 1;
 	    }
-	  
+
 	  if (replace)
-	    selection_clear (gdisp->select, gdisp_ptr);
+	    gimage_mask_clear (gdisp->gimage);
 	  else
-	    selection_anchor (gdisp->select, gdisp_ptr);
-	  
-	  gregion_combine_region (gdisp->select->region,
-				  op, bezier_sel->region);
-	  
+	    gimage_mask_undo (gdisp->gimage);
+
+	  if (bezier_options->feather)
+	    channel_feather (bezier_sel->mask,
+			     gimage_get_mask (gdisp->gimage),
+			     bezier_options->feather_radius, op, 0, 0);
+	  else
+	    channel_combine_mask (gimage_get_mask (gdisp->gimage),
+				  bezier_sel->mask, op, 0, 0);
+
 	  bezier_select_reset (bezier_sel);
-	  
-	  selection_start (gdisp->select, 0, True);
+
+	  /*  show selection on all views  */
+	  gdisplays_flush ();
 	}
       else
 	{
@@ -375,16 +435,15 @@ bezier_select_button_press (tool, bevent, gdisp_ptr)
     }
 
   if (grab_pointer)
-    XGrabPointer (DISPLAY, XtWindow (gdisp->disp_image->canvas), False,
-		  Button1MotionMask | ButtonReleaseMask, GrabModeAsync, 
-		  GrabModeAsync, None, None, bevent->time);
+    gdk_pointer_grab (gdisp->canvas->window, FALSE,
+		      GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON_RELEASE_MASK,
+		      NULL, NULL, bevent->time);
 }
 
 static void
-bezier_select_button_release (tool, bevent, gdisp_ptr)
-     Tool * tool;
-     XButtonEvent * bevent;
-     XtPointer gdisp_ptr;
+bezier_select_button_release (Tool           *tool,
+			      GdkEventButton *bevent,
+			      gpointer        gdisp_ptr)
 {
   GDisplay * gdisp;
   BezierSelect *bezier_sel;
@@ -393,20 +452,20 @@ bezier_select_button_release (tool, bevent, gdisp_ptr)
   bezier_sel = tool->private;
   bezier_sel->state &= ~(BEZIER_DRAG);
 
-  XUngrabPointer (DISPLAY, bevent->time);
+  gdk_pointer_ungrab (bevent->time);
+  gdk_flush ();
 
   if (bezier_sel->closed)
-    bezier_convert (bezier_sel, tool->gdisp_ptr, SUBDIVIDE);
+    bezier_convert (bezier_sel, tool->gdisp_ptr, SUBDIVIDE, NO);
 }
 
 static void
-bezier_select_motion (tool, mevent, gdisp_ptr)
-     Tool * tool;
-     XMotionEvent * mevent;
-     XtPointer gdisp_ptr;
+bezier_select_motion (Tool           *tool,
+		      GdkEventMotion *mevent,
+		      gpointer        gdisp_ptr)
 {
   static int lastx, lasty;
-  
+
   GDisplay * gdisp;
   BezierSelect * bezier_sel;
   BezierPoint * anchor;
@@ -427,7 +486,7 @@ bezier_select_motion (tool, mevent, gdisp_ptr)
   bezier_sel->draw = BEZIER_DRAW_CURRENT | BEZIER_DRAW_HANDLES;
   draw_core_pause (bezier_sel->core, tool);
 
-  gdisplay_untransform_coords (gdisp, mevent->x, mevent->y, &x, &y, True);
+  gdisplay_untransform_coords (gdisp, mevent->x, mevent->y, &x, &y, TRUE, 0);
 
   /* If this is the first point then change the state and "remember" the point.
    */
@@ -438,14 +497,14 @@ bezier_select_motion (tool, mevent, gdisp_ptr)
       lasty = y;
     }
 
-  if (mevent->state & ControlMask)
+  if (mevent->state & GDK_CONTROL_MASK)
     {
       /* the control key is down ... move the current anchor point */
       /* we must also move the neighboring control points appropriately */
 
       offsetx = x - lastx;
       offsety = y - lasty;
-      
+
       bezier_offset_point (bezier_sel->cur_anchor, offsetx, offsety);
       bezier_offset_point (bezier_sel->cur_anchor->next, offsetx, offsety);
       bezier_offset_point (bezier_sel->cur_anchor->prev, offsetx, offsety);
@@ -453,7 +512,7 @@ bezier_select_motion (tool, mevent, gdisp_ptr)
   else
     {
       /* the control key is not down ... we move the current control point */
-      
+
       offsetx = x - bezier_sel->cur_control->x;
       offsety = y - bezier_sel->cur_control->y;
 
@@ -462,12 +521,12 @@ bezier_select_motion (tool, mevent, gdisp_ptr)
       /* if the shift key is not down then we align the opposite control */
       /* point...ie the opposite control point acts like a mirror of the */
       /* current control point */
-      
-      if (!(mevent->state & ShiftMask))
+
+      if (!(mevent->state & GDK_SHIFT_MASK))
 	{
 	  anchor = NULL;
 	  opposite_control = NULL;
-	  
+
 	  if (bezier_sel->cur_control->next)
 	    {
 	      if (bezier_sel->cur_control->next->type == BEZIER_ANCHOR)
@@ -492,13 +551,13 @@ bezier_select_motion (tool, mevent, gdisp_ptr)
 	    {
 	      offsetx = bezier_sel->cur_control->x - anchor->x;
 	      offsety = bezier_sel->cur_control->y - anchor->y;
-	      
+
 	      opposite_control->x = anchor->x - offsetx;
 	      opposite_control->y = anchor->y - offsety;
 	    }
 	}
     }
-  
+
   bezier_sel->draw = BEZIER_DRAW_CURRENT | BEZIER_DRAW_HANDLES;
   draw_core_resume (bezier_sel->core, tool);
 
@@ -507,15 +566,14 @@ bezier_select_motion (tool, mevent, gdisp_ptr)
 }
 
 static void
-bezier_select_control (tool, action, gdisp_ptr)
-     Tool * tool;
-     int action;
-     XtPointer gdisp_ptr;
+bezier_select_control (Tool     *tool,
+		       int       action,
+		       gpointer  gdisp_ptr)
 {
   BezierSelect * bezier_sel;
 
   bezier_sel = tool->private;
-  
+
   switch (action)
     {
     case PAUSE :
@@ -532,8 +590,7 @@ bezier_select_control (tool, action, gdisp_ptr)
 }
 
 static void
-bezier_select_draw (tool)
-     Tool * tool;
+bezier_select_draw (Tool *tool)
 {
   GDisplay * gdisp;
   BezierSelect * bezier_sel;
@@ -561,8 +618,9 @@ bezier_select_draw (tool)
   num_points = bezier_sel->num_points;
 
   while (points && num_points)
-   { 
-      gdisplay_transform_coords (gdisp, points->x, points->y, &points->sx, &points->sy);
+   {
+      gdisplay_transform_coords (gdisp, points->x, points->y,
+				 &points->sx, &points->sy, 0);
       points = points->next;
       num_points--;
     }
@@ -576,14 +634,14 @@ bezier_select_draw (tool)
 }
 
 static void
-bezier_add_point (bezier_sel, type, x, y)
-     BezierSelect * bezier_sel;
-     int type;
-     int x, y;
+bezier_add_point (BezierSelect *bezier_sel,
+		  int           type,
+		  int           x,
+		  int           y)
 {
   BezierPoint *newpt;
 
-  newpt = xmalloc (sizeof (BezierPoint));
+  newpt = g_malloc (sizeof (BezierPoint));
 
   newpt->type = type;
   newpt->x = x;
@@ -617,9 +675,9 @@ bezier_add_point (bezier_sel, type, x, y)
 }
 
 static void
-bezier_offset_point (pt, x, y)
-     BezierPoint * pt;
-     int x, y;
+bezier_offset_point (BezierPoint *pt,
+		     int          x,
+		     int          y)
 {
   if (pt)
     {
@@ -629,18 +687,19 @@ bezier_offset_point (pt, x, y)
 }
 
 static int
-bezier_check_point (pt, x, y)
-     BezierPoint * pt;
-     int x, y;
+bezier_check_point (BezierPoint *pt,
+		    int          x,
+		    int          y,
+		    int		 halfwidth)
 {
   int l, r, t, b;
-  
+
   if (pt)
     {
-      l = pt->x - BEZIER_HALFWIDTH;
-      r = pt->x + BEZIER_HALFWIDTH;
-      t = pt->y - BEZIER_HALFWIDTH;
-      b = pt->y + BEZIER_HALFWIDTH;
+      l = pt->x - halfwidth;
+      r = pt->x + halfwidth;
+      t = pt->y - halfwidth;
+      b = pt->y + halfwidth;
 
       return ((x >= l) && (x <= r) && (y >= t) && (y <= b));
     }
@@ -649,8 +708,7 @@ bezier_check_point (pt, x, y)
 }
 
 static void
-bezier_draw_curve (bezier_sel)
-     BezierSelect * bezier_sel;
+bezier_draw_curve (BezierSelect *bezier_sel)
 {
   BezierPoint * points;
   BezierPoint * start_pt;
@@ -661,12 +719,12 @@ bezier_draw_curve (bezier_sel)
   if (bezier_sel->closed)
     {
       start_pt = bezier_sel->points;
-      
+
       do {
-	bezier_draw_segment (bezier_sel, points, 
+	bezier_draw_segment (bezier_sel, points,
 			     SUBDIVIDE, SCREEN_COORDS,
 			     bezier_draw_segment_points);
-	
+
 	points = points->next;
 	points = points->next;
 	points = points->next;
@@ -675,13 +733,13 @@ bezier_draw_curve (bezier_sel)
   else
     {
       num_points = bezier_sel->num_points;
-      
+
       while (num_points >= 4)
 	{
-	  bezier_draw_segment (bezier_sel, points, 
+	  bezier_draw_segment (bezier_sel, points,
 			       SUBDIVIDE, SCREEN_COORDS,
 			       bezier_draw_segment_points);
-	  
+
 	  points = points->next;
 	  points = points->next;
 	  points = points->next;
@@ -691,8 +749,7 @@ bezier_draw_curve (bezier_sel)
 }
 
 static void
-bezier_draw_handles (bezier_sel)
-     BezierSelect * bezier_sel;
+bezier_draw_handles (BezierSelect *bezier_sel)
 {
   BezierPoint * points;
   int num_points;
@@ -701,7 +758,7 @@ bezier_draw_handles (bezier_sel)
   num_points = bezier_sel->num_points;
   if (num_points <= 0)
     return;
-  
+
   do {
     if (points == bezier_sel->cur_anchor)
       {
@@ -715,7 +772,7 @@ bezier_draw_handles (bezier_sel)
       {
 	bezier_draw_point (bezier_sel, points, 1);
       }
-    
+
     if (points) points = points->next;
     if (points) points = points->next;
     if (points) points = points->next;
@@ -724,8 +781,7 @@ bezier_draw_handles (bezier_sel)
 }
 
 static void
-bezier_draw_current (bezier_sel)
-     BezierSelect * bezier_sel;
+bezier_draw_current (BezierSelect *bezier_sel)
 {
   BezierPoint * points;
 
@@ -736,30 +792,29 @@ bezier_draw_current (bezier_sel)
   if (points) points = points->prev;
 
   if (points)
-    bezier_draw_segment (bezier_sel, points, 
+    bezier_draw_segment (bezier_sel, points,
 			 SUBDIVIDE, SCREEN_COORDS,
 			 bezier_draw_segment_points);
 
   if (points != bezier_sel->cur_anchor)
     {
       points = bezier_sel->cur_anchor;
-      
+
       if (points) points = points->next;
       if (points) points = points->next;
       if (points) points = points->next;
-      
+
       if (points)
-	bezier_draw_segment (bezier_sel, bezier_sel->cur_anchor, 
+	bezier_draw_segment (bezier_sel, bezier_sel->cur_anchor,
 			     SUBDIVIDE, SCREEN_COORDS,
 			     bezier_draw_segment_points);
     }
 }
 
 static void
-bezier_draw_point (bezier_sel, pt, fill)
-     BezierSelect * bezier_sel;
-     BezierPoint * pt;
-     int fill;
+bezier_draw_point (BezierSelect *bezier_sel,
+		   BezierPoint  *pt,
+		   int           fill)
 {
   if (pt)
     {
@@ -768,29 +823,29 @@ bezier_draw_point (bezier_sel, pt, fill)
 	case BEZIER_ANCHOR:
 	  if (fill)
 	    {
-	      XFillArc (DISPLAY, bezier_sel->core->win, bezier_sel->core->gc,
-			pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH, 
-			BEZIER_WIDTH, BEZIER_WIDTH, 0, 23040);
+	      gdk_draw_arc (bezier_sel->core->win, bezier_sel->core->gc, 1,
+			    pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH,
+			    BEZIER_WIDTH, BEZIER_WIDTH, 0, 23040);
 	    }
 	  else
 	    {
-	      XDrawArc (DISPLAY, bezier_sel->core->win, bezier_sel->core->gc,
-			pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH, 
-			BEZIER_WIDTH, BEZIER_WIDTH, 0, 23040);
+	      gdk_draw_arc (bezier_sel->core->win, bezier_sel->core->gc, 0,
+			    pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH,
+			    BEZIER_WIDTH, BEZIER_WIDTH, 0, 23040);
 	    }
 	  break;
 	case BEZIER_CONTROL:
 	  if (fill)
 	    {
-	      XFillRectangle (DISPLAY, bezier_sel->core->win, bezier_sel->core->gc,
-			      pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH, 
-			      BEZIER_WIDTH, BEZIER_WIDTH);
+	      gdk_draw_rectangle (bezier_sel->core->win, bezier_sel->core->gc, 1,
+				  pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH,
+				  BEZIER_WIDTH, BEZIER_WIDTH);
 	    }
 	  else
 	    {
-	      XDrawRectangle (DISPLAY, bezier_sel->core->win, bezier_sel->core->gc,
-			      pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH, 
-			      BEZIER_WIDTH, BEZIER_WIDTH);
+	      gdk_draw_rectangle (bezier_sel->core->win, bezier_sel->core->gc, 0,
+				  pt->sx - BEZIER_HALFWIDTH, pt->sy - BEZIER_HALFWIDTH,
+				  BEZIER_WIDTH, BEZIER_WIDTH);
 	    }
 	  break;
 	}
@@ -798,31 +853,29 @@ bezier_draw_point (bezier_sel, pt, fill)
 }
 
 static void
-bezier_draw_line (bezier_sel, pt1, pt2)
-     BezierSelect * bezier_sel;
-     BezierPoint * pt1;
-     BezierPoint * pt2;
+bezier_draw_line (BezierSelect *bezier_sel,
+		  BezierPoint  *pt1,
+		  BezierPoint  *pt2)
 {
   if (pt1 && pt2)
     {
-      XDrawLine (DISPLAY, bezier_sel->core->win, 
-		 bezier_sel->core->gc,
-		 pt1->sx, pt1->sy, pt2->sx, pt2->sy);
+      gdk_draw_line (bezier_sel->core->win,
+		     bezier_sel->core->gc,
+		     pt1->sx, pt1->sy, pt2->sx, pt2->sy);
     }
 }
 
 static void
-bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
-     BezierSelect * bezier_sel;
-     BezierPoint * points;
-     int subdivisions;
-     int space;
-     BezierPointsFunc points_func;
+bezier_draw_segment (BezierSelect     *bezier_sel,
+		     BezierPoint      *points,
+		     int               subdivisions,
+		     int               space,
+		     BezierPointsFunc  points_func)
 {
 #define ROUND(x)  ((int) ((x) + 0.5))
 
-  static XPoint xpoints[256];
-  static int nxpoints = 256;
+  static GdkPoint gdk_points[256];
+  static int npoints = 256;
 
   BezierMatrix geometry;
   BezierMatrix tmp1, tmp2;
@@ -842,12 +895,16 @@ bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
     {
       if (!points)
 	fatal_error ("bad bezier segment");
-      
+
       switch (space)
 	{
 	case IMAGE_COORDS:
 	  geometry[i][0] = points->x;
 	  geometry[i][1] = points->y;
+	  break;
+	case AA_IMAGE_COORDS:
+	  geometry[i][0] = points->x * SUPERSAMPLE;
+	  geometry[i][1] = points->y * SUPERSAMPLE;
 	  break;
 	case SCREEN_COORDS:
 	  geometry[i][0] = points->sx;
@@ -860,19 +917,19 @@ bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
 
       geometry[i][2] = 0;
       geometry[i][3] = 0;
-      
+
       points = points->next;
     }
 
   /* subdivide the curve n times */
   /* n can be adjusted to give a finer or coarser curve */
-  
+
   d = 1.0 / subdivisions;
   d2 = d * d;
   d3 = d * d * d;
 
   /* construct a temporary matrix for determining the forward diffencing deltas */
-  
+
   tmp2[0][0] = 0;     tmp2[0][1] = 0;     tmp2[0][2] = 0;    tmp2[0][3] = 1;
   tmp2[1][0] = d3;    tmp2[1][1] = d2;    tmp2[1][2] = d;    tmp2[1][3] = 0;
   tmp2[2][0] = 6*d3;  tmp2[2][1] = 2*d2;  tmp2[2][2] = 0;    tmp2[2][3] = 0;
@@ -899,10 +956,10 @@ bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
   lastx = x;
   lasty = y;
 
-  xpoints[0].x = lastx;
-  xpoints[0].y = lasty;
+  gdk_points[0].x = lastx;
+  gdk_points[0].y = lasty;
   index = 1;
-  
+
   /* loop over the curve */
   for (i = 0; i < subdivisions; i++)
     {
@@ -915,7 +972,7 @@ bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
       y += dy;
       dy += dy2;
       dy2 += dy3;
-      
+
       newx = ROUND (x);
       newy = ROUND (y);
 
@@ -923,14 +980,14 @@ bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
       if ((lastx != newx) || (lasty != newy))
 	{
 	  /* add the point to the point buffer */
-	  xpoints[index].x = newx;
-	  xpoints[index].y = newy;
+	  gdk_points[index].x = newx;
+	  gdk_points[index].y = newy;
 	  index++;
-	  
+
 	  /* if the point buffer is full put it to the screen and zero it out */
-	  if (index >= nxpoints)
+	  if (index >= npoints)
 	    {
-	      (* points_func) (bezier_sel, xpoints, index);
+	      (* points_func) (bezier_sel, gdk_points, index);
 	      index = 0;
 	    }
 	}
@@ -941,25 +998,22 @@ bezier_draw_segment (bezier_sel, points, subdivisions, space, points_func)
 
   /* if there are points in the buffer, then put them on the screen */
   if (index)
-    (* points_func) (bezier_sel, xpoints, index);
+    (* points_func) (bezier_sel, gdk_points, index);
 }
 
 static void
-bezier_draw_segment_points (bezier_sel, points, npoints)
-     BezierSelect * bezier_sel;
-     XPoint * points;
-     int npoints;
+bezier_draw_segment_points (BezierSelect *bezier_sel,
+			    GdkPoint     *points,
+			    int           npoints)
 {
-  XDrawPoints (DISPLAY, bezier_sel->core->win,
-	       bezier_sel->core->gc, points,
-	       npoints, CoordModeOrigin);
+  gdk_draw_points (bezier_sel->core->win,
+		   bezier_sel->core->gc, points, npoints);
 }
 
 static void
-bezier_compose (a, b, ab)
-     BezierMatrix a;
-     BezierMatrix b;
-     BezierMatrix ab;
+bezier_compose (BezierMatrix a,
+		BezierMatrix b,
+		BezierMatrix ab)
 {
   int i, j;
 
@@ -976,93 +1030,165 @@ bezier_compose (a, b, ab)
 }
 
 static int start_convert;
-static int extent, width;
+static int width, height;
 static int lastx;
 static int lasty;
 
 static void
-bezier_convert (bezier_sel, gdisp, subdivisions)
-     BezierSelect * bezier_sel;
-     GDisplay * gdisp;
-     int subdivisions;
+bezier_convert (BezierSelect *bezier_sel,
+		GDisplay     *gdisp,
+		int           subdivisions,
+		int           antialias)
 {
+  PixelRegion maskPR;
   BezierPoint * points;
   BezierPoint * start_pt;
-  link_ptr list;
-  int x, w;
-  int i;
-  
+  GSList * list;
+  unsigned char *buf, *b;
+  int draw_type;
+  int * vals, val;
+  int start, end;
+  int x, x2, w;
+  int i, j;
+
   if (!bezier_sel->closed)
     fatal_error ("tried to convert an open bezier curve");
 
-  /* destroy on previos region */
-  if (bezier_sel->region)
+  /* destroy previous mask */
+  if (bezier_sel->mask)
     {
-      gregion_free (bezier_sel->region);
-      bezier_sel->region = NULL;
+      channel_delete (bezier_sel->mask);
+      bezier_sel->mask = NULL;
     }
 
-  /* get the new regions maximum extents */
-  extent = gdisp->select->region->extent;
-  width = gdisp->select->region->width;
+  /* get the new mask's maximum extents */
+  if (antialias)
+    {
+      buf = (unsigned char *) g_malloc (width);
+      width = gdisp->gimage->width * SUPERSAMPLE;
+      height = gdisp->gimage->height * SUPERSAMPLE;
+      draw_type = AA_IMAGE_COORDS;
+      /* allocate value array  */
+      vals = (int *) g_malloc (sizeof (int) * width);
+    }
+  else
+    {
+      buf = NULL;
+      width = gdisp->gimage->width;
+      height = gdisp->gimage->height;
+      draw_type = IMAGE_COORDS;
+      vals = NULL;
+    }
 
-  /* create a new region */
-  bezier_sel->region = gregion_new (extent, width);
+  /* create a new mask */
+  bezier_sel->mask = channel_ref (channel_new_mask (gdisp->gimage->ID, 
+						    gdisp->gimage->width,
+						    gdisp->gimage->height));
 
   /* allocate room for the scanlines */
-  bezier_sel->scanlines = xmalloc (sizeof (link_ptr) * extent);
+  bezier_sel->scanlines = g_malloc (sizeof (GSList *) * height);
 
   /* zero out the scanlines */
-  for (i = 0; i < extent; i++)
+  for (i = 0; i < height; i++)
     bezier_sel->scanlines[i] = NULL;
 
   /* scan convert the curve */
   points = bezier_sel->points;
   start_pt = bezier_sel->points;
   start_convert = 1;
-  
+
   do {
-    bezier_draw_segment (bezier_sel, points, 
-			 subdivisions, IMAGE_COORDS, 
+    bezier_draw_segment (bezier_sel, points,
+			 subdivisions, draw_type,
 			 bezier_convert_points);
-    
+
+    /*  advance to the next segment  */
     points = points->next;
     points = points->next;
     points = points->next;
   } while (points != start_pt);
-  
-  bezier_convert_line (bezier_sel->scanlines, lastx, lasty,
-		       bezier_sel->points->x, bezier_sel->points->y);
 
-  for (i = 0; i < extent; i++)
+  if (antialias)
+    bezier_convert_line (bezier_sel->scanlines, lastx, lasty,
+			 bezier_sel->points->x * SUPERSAMPLE,
+			 bezier_sel->points->y * SUPERSAMPLE);
+  else
+    bezier_convert_line (bezier_sel->scanlines, lastx, lasty,
+			 bezier_sel->points->x, bezier_sel->points->y);
+
+  pixel_region_init (&maskPR, drawable_data (GIMP_DRAWABLE(bezier_sel->mask)), 
+		     0, 0,
+		     drawable_width (GIMP_DRAWABLE(bezier_sel->mask)),
+		     drawable_height (GIMP_DRAWABLE(bezier_sel->mask)), TRUE);
+  for (i = 0; i < height; i++)
     {
       list = bezier_sel->scanlines[i];
+
+      /*  zero the vals array  */
+      if (antialias && !(i % SUPERSAMPLE))
+	memset (vals, 0, width * sizeof (int));
+
       while (list)
         {
-          x = (int) list->data;
+          x = (long) list->data;
           list = list->next;
           if (!list)
-	    warning ("cannot properly scanline convert bezier curve: %d", x);
-          else 
+	    g_message ("cannot properly scanline convert bezier curve: %d", i);
+          else
             {
-              w = (int) list->data - x;
-              gregion_add_segment (bezier_sel->region, x, i, w, 255);
-              list = next_item (list);
+	      /*  bounds checking  */
+	      x = BOUNDS (x, 0, width);
+	      x2 = BOUNDS ((long) list->data, 0, width);
+
+	      w = x2 - x;
+
+	      if (!antialias)
+		channel_add_segment (bezier_sel->mask, x, i, w, 255);
+	      else
+		for (j = 0; j < w; j++)
+		  vals[j + x] += 255;
+
+              list = g_slist_next (list);
             }
         }
 
-      free_list (bezier_sel->scanlines[i]);
+      if (antialias && !((i+1) % SUPERSAMPLE))
+	{
+	  b = buf;
+	  start = 0;
+	  end = width;
+	  for (j = start; j < end; j += SUPERSAMPLE)
+	    {
+	      val = 0;
+	      for (x = 0; x < SUPERSAMPLE; x++)
+		val += vals[j + x];
+
+	      *b++ = (unsigned char) (val / SUPERSAMPLE2);
+	    }
+
+	  pixel_region_set_row (&maskPR, 0, (i / SUPERSAMPLE), 
+				drawable_width (GIMP_DRAWABLE(bezier_sel->mask)), buf);
+	}
+
+      g_slist_free (bezier_sel->scanlines[i]);
     }
-  
-  xfree (bezier_sel->scanlines);
+
+  if (antialias)
+    {
+      g_free (vals);
+      g_free (buf);
+    }
+
+  g_free (bezier_sel->scanlines);
   bezier_sel->scanlines = NULL;
+
+  channel_invalidate_bounds (bezier_sel->mask);
 }
 
 static void
-bezier_convert_points (bezier_sel, points, npoints)
-     BezierSelect * bezier_sel;
-     XPoint * points;
-     int npoints;
+bezier_convert_points (BezierSelect *bezier_sel,
+		       GdkPoint     *points,
+		       int           npoints)
 {
   int i;
 
@@ -1077,15 +1203,17 @@ bezier_convert_points (bezier_sel, points, npoints)
 			   points[i].x, points[i].y,
 			   points[i+1].x, points[i+1].y);
     }
-  
+
   lastx = points[npoints-1].x;
   lasty = points[npoints-1].y;
 }
 
 static void
-bezier_convert_line (scanlines, x1, y1, x2, y2)
-  link_ptr * scanlines;
-  int x1, y1, x2, y2;
+bezier_convert_line (GSList ** scanlines,
+		     int       x1,
+		     int       y1,
+		     int       x2,
+		     int       y2)
 {
   int dx, dy;
   int error, inc;
@@ -1097,15 +1225,15 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
 
   if (y1 > y2)
     {
-      tmp = y2; y2 = y1; y1 = tmp; 
-      tmp = x2; x2 = x1; x1 = tmp; 
+      tmp = y2; y2 = y1; y1 = tmp;
+      tmp = x2; x2 = x1; x1 = tmp;
     }
-  
+
   if (y1 < 0)
     {
       if (y2 < 0)
 	return;
-      
+
       if (x2 == x1)
 	{
 	  y1 = 0;
@@ -1118,20 +1246,20 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
 	}
     }
 
-  if (y2 >= extent)
+  if (y2 >= height)
     {
-      if (y1 >= extent)
+      if (y1 >= height)
 	return;
 
       if (x2 == x1)
 	{
-	  y2 = extent;
+	  y2 = height;
 	}
       else
 	{
 	  slope = (float) (y2 - y1) / (float) (x2 - x1);
-	  x2 = x1 + (extent - y1) / slope;
-	  y2 = extent;
+	  x2 = x1 + (height - y1) / slope;
+	  y2 = height;
 	}
     }
 
@@ -1140,7 +1268,7 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
 
   dx = x2 - x1;
   dy = y2 - y1;
-  
+
   scanlines = &scanlines[y1];
 
   if (((dx < 0) ? -dx : dx) > ((dy < 0) ? -dy : dy))
@@ -1154,7 +1282,7 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
         {
           inc = 1;
         }
-      
+
       error = -dx /2;
       while (x1 != x2)
         {
@@ -1165,7 +1293,7 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
 	      *scanlines = bezier_insert_in_list (*scanlines, x1);
 	      scanlines++;
             }
-          
+
           x1 += inc;
         }
     }
@@ -1181,12 +1309,12 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
         {
           inc = 1;
         }
-      
+
       while (y1++ < y2)
         {
 	  *scanlines = bezier_insert_in_list (*scanlines, x1);
 	  scanlines++;
-          
+
           error += dx;
           if (error > 0)
             {
@@ -1197,33 +1325,32 @@ bezier_convert_line (scanlines, x1, y1, x2, y2)
     }
 }
 
-static link_ptr
-bezier_insert_in_list (list, x)
-     link_ptr list;
-     int x;
+static GSList *
+bezier_insert_in_list (GSList * list,
+		       int      x)
 {
-  link_ptr orig = list;
-  link_ptr rest;
+  GSList * orig = list;
+  GSList * rest;
 
   if (!list)
-    return add_to_list (list, (void *) x);
+    return g_slist_prepend (list, (void *) ((long) x));
 
   while (list)
     {
-      rest = next_item (list);
-      if (x < (int) list->data)
+      rest = g_slist_next (list);
+      if (x < (long) list->data)
         {
-          rest = add_to_list (rest, list->data);
+          rest = g_slist_prepend (rest, list->data);
           list->next = rest;
-          list->data = (void *) x;
+          list->data = (void *) ((long) x);
           return orig;
         }
       else if (!rest)
         {
-          append_to_list (list, (void *) x);
+          g_slist_append (list, (void *) ((long) x));
           return orig;
         }
-      list = next_item (list);
+      list = g_slist_next (list);
     }
 
   return orig;

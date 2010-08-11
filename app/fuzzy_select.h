@@ -13,33 +13,25 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __FUZZY_SELECT_H__
 #define __FUZZY_SELECT_H__
 
 #include "gimage.h"
-#include "gregion.h"
-
-/*  fuzzy select action functions  */
-
-void          fuzzy_select_button_press      (Tool *, XButtonEvent *, XtPointer);
-void          fuzzy_select_button_release    (Tool *, XButtonEvent *, XtPointer);
-void          fuzzy_select_motion            (Tool *, XMotionEvent *, XtPointer);
-void          fuzzy_select_control           (Tool *, int, void *);
+#include "tools.h"
+#include "procedural_db.h"
 
 
 /*  fuzzy select functions  */
-
-XSegment *    fuzzy_select_calculate    (Tool *, void *, int *);
-void          fuzzy_select_draw         (Tool *);
-Tool *        tools_new_fuzzy_select    ();
-void          tools_free_fuzzy_select   (Tool *);
+Tool *        tools_new_fuzzy_select      (void);
+void          tools_free_fuzzy_select     (Tool *);
 
 
 /*  functions  */
-void          find_contiguous_region    (GRegion *, GImage *, int, int, 
-					 int, int, unsigned char *);
+Channel *     find_contiguous_region      (GImage *, GimpDrawable *, int, int, int, int, int);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord fuzzy_select_proc;
 
 #endif  /*  __FUZZY_SELECT_H__  */

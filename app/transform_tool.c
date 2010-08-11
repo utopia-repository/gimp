@@ -13,173 +13,193 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include "appenv.h"
-#include "autodialog.h"
 #include "gdisplay.h"
 #include "tools.h"
+#include "perspective_tool.h"
 #include "rotate_tool.h"
 #include "scale_tool.h"
 #include "shear_tool.h"
 #include "transform_tool.h"
 
-#define ROTATION    0
-#define SCALING     1
-#define SHEARING    2
+typedef struct _TransformOptions TransformOptions;
+
+struct _TransformOptions
+{
+  int         smoothing;
+  ToolType    type;
+};
 
 /*  local functions  */
-static void         transform_dialog_callback (int, int, void *, void *);
 static void         transform_change_type     (int);
 
 /*  Static variables  */
-static int          transform_type = ROTATION;
-int                 smoothing = 1;   /*  this variable is not static...  */
-
-static AutoDialog   transform_dlg = NULL;
-static long         type_value;
-static long         smoothing_value;
-static int          rotate_ID;
-static int          scale_ID;
-static int          shear_ID;
-static int          smoothing_ID;
+static TransformOptions *transform_options = NULL;
 
 
-int
-transform_tool_smoothing ()
+static void
+transform_toggle_update (GtkWidget *w,
+			 gpointer   data)
 {
-  return smoothing;
+  int *toggle_val;
+
+  toggle_val = (int *) data;
+
+  if (GTK_TOGGLE_BUTTON (w)->active)
+    *toggle_val = TRUE;
+  else
+    *toggle_val = FALSE;
 }
 
+static void
+transform_type_callback (GtkWidget *w,
+			 gpointer   client_data)
+{
+  transform_change_type ((long) client_data);
+}
+
+static TransformOptions *
+create_transform_options (void)
+{
+  TransformOptions *options;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  GtkWidget *radio_frame;
+  GtkWidget *radio_box;
+  GtkWidget *radio_button;
+  GtkWidget *smoothing_toggle;
+  GSList *group = NULL;
+  int i;
+  char *button_names[4] =
+  {
+    "Rotation",
+    "Scaling",
+    "Shearing",
+    "Perspective"
+  };
+
+  /*  the new options structure  */
+  options = (TransformOptions *) g_malloc (sizeof (TransformOptions));
+  options->smoothing = 1;
+  options->type = ROTATE;
+
+  /*  the main vbox  */
+  vbox = gtk_vbox_new (FALSE, 1);
+
+  /*  the main label  */
+  label = gtk_label_new ("Transform Tool Options");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  /*  the radio frame and box  */
+  radio_frame = gtk_frame_new ("Transform");
+  gtk_box_pack_start (GTK_BOX (vbox), radio_frame, FALSE, FALSE, 0);
+
+  radio_box = gtk_vbox_new (FALSE, 1);
+  gtk_container_add (GTK_CONTAINER (radio_frame), radio_box);
+
+  /*  the radio buttons  */
+  for (i = 0; i < 4; i++)
+    {
+      radio_button = gtk_radio_button_new_with_label (group, button_names[i]);
+      group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio_button));
+      gtk_box_pack_start (GTK_BOX (radio_box), radio_button, FALSE, FALSE, 0);
+      gtk_signal_connect (GTK_OBJECT (radio_button), "toggled",
+			  (GtkSignalFunc) transform_type_callback,
+			  (gpointer) ((long) ROTATE + i));
+      gtk_widget_show (radio_button);
+    }
+  gtk_widget_show (radio_box);
+  gtk_widget_show (radio_frame);
+
+  /*  the smoothing toggle button  */
+  smoothing_toggle = gtk_check_button_new_with_label ("Smoothing");
+  gtk_box_pack_start (GTK_BOX (vbox), smoothing_toggle, FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (smoothing_toggle), "toggled",
+		      (GtkSignalFunc) transform_toggle_update,
+		      &options->smoothing);
+  gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (smoothing_toggle),
+                      options->smoothing);
+  gtk_widget_show (smoothing_toggle);
+
+
+  /*  Register this selection options widget with the main tools options dialog  */
+  tools_register_options (ROTATE, vbox);
+  tools_register_options (SCALE, vbox);
+  tools_register_options (SHEAR, vbox);
+  tools_register_options (PERSPECTIVE, vbox);
+
+  return options;
+}
 
 Tool *
 tools_new_transform_tool ()
 {
-  switch (transform_type)
+  if (! transform_options)
+    transform_options = create_transform_options ();
+
+  switch (transform_options->type)
     {
-    case ROTATION :
+    case ROTATE:
       return tools_new_rotate_tool ();
       break;
-    case SCALING :
+    case SCALE:
       return tools_new_scale_tool ();
       break;
-    case SHEARING :
+    case SHEAR:
       return tools_new_shear_tool ();
+      break;
+    case PERSPECTIVE:
+      return tools_new_perspective_tool ();
       break;
     default :
       return NULL;
       break;
     }
-
 }
 
-
 void
-tools_free_transform_tool (tool)
-     Tool * tool;
+tools_free_transform_tool (Tool *tool)
 {
-  switch (transform_type)
+  switch (transform_options->type)
     {
-    case ROTATION :
+    case ROTATE:
       tools_free_rotate_tool (tool);
       break;
-    case SCALING :
+    case SCALE:
       tools_free_scale_tool (tool);
       break;
-    case SHEARING :
+    case SHEAR:
       tools_free_shear_tool (tool);
       break;
-    }
-  
-}
-
-
-void
-transform_tool_dialog ()
-{
-  int radio_ID;
-  int group_ID;
-  int frame_ID;
-  long button_set [3];
-
-  if (!transform_dlg)
-    {
-      transform_dlg = dialog_new ("Transformation Options", transform_dialog_callback, NULL);
-      
-      group_ID = dialog_new_item (transform_dlg, 0, GROUP_ROWS, NULL, NULL);
-
-      frame_ID = dialog_new_item (transform_dlg, group_ID, ITEM_FRAME, "Transform Type", NULL);
-
-      radio_ID = dialog_new_item (transform_dlg, frame_ID, (GROUP_ROWS | GROUP_RADIO), NULL, NULL);
-
-      type_value = transform_type;
-      button_set [0] = (type_value == ROTATION);
-      button_set [1] = (type_value == SCALING);
-      button_set [2] = (type_value == SHEARING);
-
-      rotate_ID = dialog_new_item (transform_dlg, radio_ID, ITEM_RADIO_BUTTON, "Rotation", NULL);
-      dialog_change_item (transform_dlg, rotate_ID, button_set);
-      scale_ID = dialog_new_item (transform_dlg, radio_ID, ITEM_RADIO_BUTTON, "Scaling", NULL);
-      dialog_change_item (transform_dlg, scale_ID, button_set + 1);
-      shear_ID = dialog_new_item (transform_dlg, radio_ID, ITEM_RADIO_BUTTON, "Shearing", NULL);
-      dialog_change_item (transform_dlg, shear_ID, button_set + 2);
-
-      smoothing_ID = dialog_new_item (transform_dlg, group_ID, 
-				      ITEM_CHECK_BUTTON, "Smoothing", NULL);
-      smoothing_value = smoothing;
-      dialog_change_item (transform_dlg, smoothing_ID, &smoothing_value);
-
-      dialog_show (transform_dlg);
-    }
-}
-
-
-static void
-transform_change_type (new_type)
-     int new_type;
-{
-  if (transform_type != new_type)
-    {
-      /*  change the type, free the old tool, create the new tool  */
-      transform_type = new_type;
-      
-      tools_select (TRANSFORM_TOOL);
-    }
-}
-
-
-static void
-transform_dialog_callback (dialog_ID, item_ID, client_data, call_data)
-     int dialog_ID, item_ID;
-     void *client_data, *call_data;
-{
-  switch (item_ID)
-    {
-    case OK_ID:
-      dialog_close (transform_dlg);
-      transform_dlg = NULL;
-      break;
-    case CANCEL_ID:
-      transform_type = type_value;
-      smoothing = smoothing_value;
-      dialog_close (transform_dlg);
-      transform_dlg = NULL;
+    case PERSPECTIVE:
+      tools_free_perspective_tool (tool);
       break;
     default:
-      if (item_ID == smoothing_ID)
-	smoothing = *((long*) call_data);
-      else if (item_ID == rotate_ID && *((long*) call_data))
-	transform_change_type (ROTATION);
-      else if (item_ID == scale_ID && *((long*) call_data))
-	transform_change_type (SCALING);
-      else if (item_ID == shear_ID && *((long*) call_data))
-	transform_change_type (SHEARING);
-
       break;
     }
 }
 
+static void
+transform_change_type (int new_type)
+{
+  if (transform_options->type != new_type)
+    {
+      /*  change the type, free the old tool, create the new tool  */
+      transform_options->type = new_type;
 
+      tools_select (transform_options->type);
+    }
+}
 
-
+int
+transform_tool_smoothing ()
+{
+  if (!transform_options)
+    return 1;
+  else
+    return transform_options->smoothing;
+}

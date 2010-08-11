@@ -13,16 +13,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef  __BLEND_H__
 #define  __BLEND_H__
 
 #include "tools.h"
+#include "procedural_db.h"
 
-void        blend_dialog      (void);
 Tool *      tools_new_blend   (void);
 void        tools_free_blend  (Tool *);
 
+/*  Procedure definition and marshalling function  */
+extern ProcRecord blend_proc;
 
 #endif  /*  __BLEND_H__  */

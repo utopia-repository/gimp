@@ -13,548 +13,725 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <stdlib.h>
 #include "appenv.h"
-#include "autodialog.h"
+#include "actionarea.h"
+#include "drawable.h"
+#include "floating_sel.h"
 #include "gdisplay.h"
+#include "gimage.h"
+#include "gimage_mask.h"
 #include "general.h"
 #include "global_edit.h"
-#include "linked.h"
-#include "selection.h"
+#include "interface.h"
+#include "layer.h"
+#include "paint_funcs.h"
+#include "tools.h"
 #include "undo.h"
-#include "widget.h"
+
+#include "tile_manager_pvt.h"
+#include "drawable_pvt.h"
 
 
-/*  Edit options stuff...  */
-static void         options_dialog_callback (int, int, void *, void *);
-
-/*  local variables  */
-
-/*  backups of the above variables  */
-static int          undo_levels_value;
-static int          undo_bytes_value;
-
-static AutoDialog   options_dlg = NULL;
-static int          undo_levels_ID;
-static int          undo_bytes_ID;
-
-
-/*  global done variable  */
-static int done = 0;
-
-
-/*  Dialog widgets  */
-Widget new_named = NULL;
-Widget get_named = NULL;
-
+/*  The named paste dialog  */
+typedef struct _PasteNamedDlg PasteNamedDlg;
+struct _PasteNamedDlg
+{
+  GtkWidget   *shell;
+  GtkWidget   *list;
+  int          paste_into;
+  GDisplay    *gdisp;
+};
 
 /*  The named buffer structure...  */
 typedef struct _named_buffer NamedBuffer;
 
 struct _named_buffer
 {
-  Selection *  select;
-  char *       name;
+  TileManager * buf;
+  char *        name;
 };
 
 
 /*  The named buffer list  */
-link_ptr named_buffers = NULL;
+GSList * named_buffers = NULL;
 
 /*  The global edit buffer  */
-Selection * global_select = NULL;
+TileManager * global_buf = NULL;
 
 
-static Selection *
-edit_copy_sel (select)
-     Selection * select;
+/*  Crop the buffer to the size of pixels with non-zero transparency */
+
+TileManager *
+crop_buffer (TileManager *tiles,
+	     int          border)
 {
-  Selection * new;
-  TempBuf * buf;
-
-  if (select->float_buf)
-    buf = temp_buf_copy (select->float_buf, NULL);
-  else
-    buf = NULL;
-
-  /*  Copy the items in the current selection to this new selection  */
-  new = selection_generic_new (gregion_copy (select->region, NULL),
-			       select->offset_x, select->offset_y, buf);
-
-  return new;
-}
-
-
-Selection *
-edit_cut (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  GDisplay * gdisp;
-  Selection * cut;
+  PixelRegion PR;
+  TileManager *new_tiles;
+  int bytes, alpha;
+  unsigned char * data;
+  int empty;
   int x1, y1, x2, y2;
-  int sm;   /*  selection margin  */
+  int x, y;
+  int ex, ey;
+  int found;
+  void * pr;
+  unsigned char black[MAX_CHANNELS] = { 0, 0, 0, 0 };
 
-  gdisp = (GDisplay *) gdisp_ptr;
+  bytes = tiles->levels[0].bpp;
+  alpha = bytes - 1;
 
-  if (!selection_find_bounds (gdisp->select, &x1, &y1, &x2, &y2))
-    return NULL;
+  /*  go through and calculate the bounds  */
+  x1 = tiles->levels[0].width;
+  y1 = tiles->levels[0].height;
+  x2 = 0;
+  y2 = 0;
 
-  /*  cut the selection out  */
-  selection_cut_floating (gdisp->select, (void *) gdisp->gimage);
-
-  /*  create a dummy selection structure  */
-  cut = selection_generic_new (gregion_new (gdisp->gimage->height, 
-					    gdisp->gimage->width),
-			       0, 0, NULL);
-
-  selection_swap (gdisp->select, cut);
-
-  /*  clear the orig buf in the cut buffer  */
-  if (cut->orig_buf)
+  pixel_region_init (&PR, tiles, 0, 0, x1, y1, FALSE);
+  for (pr = pixel_regions_register (1, &PR); pr != NULL; pr = pixel_regions_process (pr))
     {
-      temp_buf_free (cut->orig_buf);
-      cut->orig_buf = NULL;
+      data = PR.data + alpha;
+      ex = PR.x + PR.w;
+      ey = PR.y + PR.h;
+
+      for (y = PR.y; y < ey; y++)
+	{
+	  found = FALSE;
+	  for (x = PR.x; x < ex; x++, data+=bytes)
+	    if (*data)
+	      {
+		if (x < x1)
+		  x1 = x;
+		if (x > x2)
+		  x2 = x;
+		found = TRUE;
+	      }
+	  if (found)
+	    {
+	      if (y < y1)
+		y1 = y;
+	      if (y > y2)
+		y2 = y;
+	    }
+	}
     }
 
-  /*  If we can't push this cut operation onto the undo stack,
-      we must delete the old global_select structure           */
-  if (! undo_push_cut (gdisp->ID, global_select, cut, gdisp->select->fresh_cut))
-    selection_generic_free (global_select);
-  global_select = cut;
+  x2 = BOUNDS (x2 + 1, 0, tiles->levels[0].width);
+  y2 = BOUNDS (y2 + 1, 0, tiles->levels[0].height);
 
-  /* update the gdisplays  */
-  /*  Make sure to account for the fact that selection bounds extend 1 pixel extra  */
-  sm = UNSCALE (gdisp, 1);
-  if (sm < 1) sm = 1;
-  gdisplay_update (gdisp->gimage->ID, x1, y1, (x2 - x1 + sm), (y2 - y1 + sm), 0);
+  empty = (x1 == tiles->levels[0].width && y1 == tiles->levels[0].height);
 
-  return cut;
+  /*  If there are no visible pixels, return NULL */
+  if (empty)
+    new_tiles = NULL;
+  /*  If no cropping, return original buffer  */
+  else if (x1 == 0 && y1 == 0 && x2 == tiles->levels[0].width &&
+	   y2 == tiles->levels[0].height && border == 0)
+    new_tiles = tiles;
+  /*  Otherwise, crop the original area  */
+  else
+    {
+      PixelRegion srcPR, destPR;
+      int new_width, new_height;
+
+      new_width = (x2 - x1) + border * 2;
+      new_height = (y2 - y1) + border * 2;
+      new_tiles = tile_manager_new (new_width, new_height, bytes);
+
+      /*  If there is a border, make sure to clear the new tiles first  */
+      if (border)
+	{
+	  pixel_region_init (&destPR, new_tiles, 0, 0, new_width, border, TRUE);
+	  color_region (&destPR, black);
+	  pixel_region_init (&destPR, new_tiles, 0, border, border, (y2 - y1), TRUE);
+	  color_region (&destPR, black);
+	  pixel_region_init (&destPR, new_tiles, new_width - border, border, border, (y2 - y1), TRUE);
+	  color_region (&destPR, black);
+	  pixel_region_init (&destPR, new_tiles, 0, new_height - border, new_width, border, TRUE);
+	  color_region (&destPR, black);
+	}
+
+      pixel_region_init (&srcPR, tiles, x1, y1, (x2 - x1), (y2 - y1), FALSE);
+      pixel_region_init (&destPR, new_tiles, border, border, (x2 - x1), (y2 - y1), TRUE);
+
+      copy_region (&srcPR, &destPR);
+
+      new_tiles->x = x1;
+      new_tiles->y = y1;
+    }
+
+  return new_tiles;
 }
 
-
-Selection *
-edit_copy (gdisp_ptr)
-     void * gdisp_ptr;
+TileManager *
+edit_cut (GImage *gimage,
+	  GimpDrawable *drawable)
 {
-  GDisplay * gdisp;
-  Selection * copy;
-  TempBuf * buf;
-  int x1, y1, x2, y2;
+  TileManager *cut;
+  TileManager *cropped_cut;
+  int empty;
 
-  gdisp = (GDisplay *) gdisp_ptr;
-
-  if (!selection_find_bounds (gdisp->select, &x1, &y1, &x2, &y2))
+  if (!gimage || drawable == NULL)
     return NULL;
 
-  if (!gdisp->select->float_buf)
-    buf = temp_buf_load (NULL, gdisp->gimage, x1, y1, (x2 - x1), (y2 - y1));
+  /*  Start a group undo  */
+  undo_push_group_start (gimage, EDIT_CUT_UNDO);
+
+  /*  See if the gimage mask is empty  */
+  empty = gimage_mask_is_empty (gimage);
+
+  /*  Next, cut the mask portion from the gimage  */
+  cut = gimage_mask_extract (gimage, drawable, TRUE, FALSE);
+
+  /*  Only crop if the gimage mask wasn't empty  */
+  if (cut && empty == FALSE)
+    {
+      cropped_cut = crop_buffer (cut, 0);
+
+      if (cropped_cut != cut)
+	tile_manager_destroy (cut);
+    }
+  else if (cut)
+    cropped_cut = cut;
   else
-    buf = temp_buf_copy (gdisp->select->float_buf, NULL);
+    cropped_cut = NULL;
 
-  /*  Copy the items in the current selection to this new selection  */
-  copy = selection_generic_new (gregion_copy (gdisp->select->region, NULL),
-				0, 0, buf);
-			       
-  /*  If we can't push this copy operation onto the undo stack,
-      we must delete the old global_select structure           */
-  if (! undo_push_copy (gdisp->ID, global_select, copy))
-    selection_generic_free (global_select);
-  global_select = copy;
+  /*  end the group undo  */
+  undo_push_group_end (gimage);
 
-  return copy;
+  if (cropped_cut)
+    {
+      /*  Free the old global edit buffer  */
+      if (global_buf)
+	tile_manager_destroy (global_buf);
+      /*  Set the global edit buffer  */
+      global_buf = cropped_cut;
+
+      return cropped_cut;
+    }
+  else
+    return NULL;
 }
 
+TileManager *
+edit_copy (GImage *gimage,
+	   GimpDrawable *drawable)
+{
+  TileManager * copy;
+  TileManager * cropped_copy;
+  int empty;
+
+  if (!gimage || drawable == NULL)
+    return NULL;
+
+  /*  See if the gimage mask is empty  */
+  empty = gimage_mask_is_empty (gimage);
+
+  /*  First, copy the masked portion of the gimage  */
+  copy = gimage_mask_extract (gimage, drawable, FALSE, FALSE);
+
+  /*  Only crop if the gimage mask wasn't empty  */
+  if (copy && empty == FALSE)
+    {
+      cropped_copy = crop_buffer (copy, 0);
+
+      if (cropped_copy != copy)
+	tile_manager_destroy (copy);
+    }
+  else if (copy)
+    cropped_copy = copy;
+  else
+    cropped_copy = NULL;
+
+  if (cropped_copy)
+    {
+      /*  Free the old global edit buffer  */
+      if (global_buf)
+	tile_manager_destroy (global_buf);
+      /*  Set the global edit buffer  */
+      global_buf = cropped_copy;
+
+      return cropped_copy;
+    }
+  else
+    return NULL;
+}
 
 int
-edit_paste (gdisp_ptr, select)
-     void * gdisp_ptr;
-     Selection * select;
+edit_paste (GImage      *gimage,
+	    GimpDrawable *drawable,
+	    TileManager *paste,
+	    int          paste_into)
 {
-  GDisplay * gdisp;
-  Selection * paste;
-  TempBuf * buf = NULL;
+  Layer * float_layer;
   int x1, y1, x2, y2;
   int cx, cy;
 
-  if (!select)
+  /*  Make a new floating layer  */
+  float_layer = layer_from_tiles (gimage, drawable, paste, "Pasted Layer", OPAQUE_OPACITY, NORMAL);
+
+  if (float_layer)
+    {
+      /*  Start a group undo  */
+      undo_push_group_start (gimage, EDIT_PASTE_UNDO);
+
+      /*  Set the offsets to the center of the image  */
+      drawable_offsets ( (drawable), &cx, &cy);
+      drawable_mask_bounds ( (drawable), &x1, &y1, &x2, &y2);
+      cx += (x1 + x2) >> 1;
+      cy += (y1 + y2) >> 1;
+
+      GIMP_DRAWABLE(float_layer)->offset_x = cx - (GIMP_DRAWABLE(float_layer)->width >> 1);
+      GIMP_DRAWABLE(float_layer)->offset_y = cy - (GIMP_DRAWABLE(float_layer)->height >> 1);
+
+      /*  If there is a selection mask clear it--
+       *  this might not always be desired, but in general,
+       *  it seems like the correct behavior.
+       */
+      if (! gimage_mask_is_empty (gimage) && !paste_into)
+	channel_clear (gimage_get_mask (gimage));
+
+      /*  add a new floating selection  */
+      floating_sel_attach (float_layer, drawable);
+
+      /*  end the group undo  */
+      undo_push_group_end (gimage);
+
+      return GIMP_DRAWABLE(float_layer)->ID;
+    }
+  else
     return 0;
+}
+
+int
+edit_clear (GImage *gimage,
+	    GimpDrawable *drawable)
+{
+  TileManager *buf_tiles;
+  PixelRegion bufPR;
+  int x1, y1, x2, y2;
+  unsigned char col[MAX_CHANNELS];
+
+  if (!gimage || drawable == NULL)
+    return FALSE;
+
+  gimage_get_background (gimage, drawable, col);
+  if (drawable_has_alpha (drawable))
+    col [drawable_bytes (drawable) - 1] = OPAQUE_OPACITY;
+
+  drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
+
+  if (!(x2 - x1) || !(y2 - y1))
+    return FALSE;
+
+  buf_tiles = tile_manager_new ((x2 - x1), (y2 - y1), drawable_bytes (drawable));
+  pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), TRUE);
+  color_region (&bufPR, col);
+
+  pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), FALSE);
+  gimage_apply_image (gimage, drawable, &bufPR, 1, OPAQUE_OPACITY,
+		      ERASE_MODE, NULL, x1, y1);
+
+  /*  update the image  */
+  drawable_update (drawable, x1, y1, (x2 - x1), (y2 - y1));
+
+  /*  free the temporary tiles  */
+  tile_manager_destroy (buf_tiles);
+
+  return TRUE;
+}
+
+int
+edit_fill (GImage *gimage,
+	   GimpDrawable *drawable)
+{
+  TileManager *buf_tiles;
+  PixelRegion bufPR;
+  int x1, y1, x2, y2;
+  unsigned char col[MAX_CHANNELS];
+
+  if (!gimage || drawable == NULL)
+    return FALSE;
+
+  gimage_get_background (gimage, drawable, col);
+  if (drawable_has_alpha (drawable))
+    col [drawable_bytes (drawable) - 1] = OPAQUE_OPACITY;
+
+  drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
+
+  if (!(x2 - x1) || !(y2 - y1))
+    return FALSE;
+
+  buf_tiles = tile_manager_new ((x2 - x1), (y2 - y1), drawable_bytes (drawable));
+  pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), TRUE);
+  color_region (&bufPR, col);
+
+  pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), FALSE);
+  gimage_apply_image (gimage, drawable, &bufPR, 1, OPAQUE_OPACITY,
+		      NORMAL_MODE, NULL, x1, y1);
+
+  /*  update the image  */
+  drawable_update (drawable, x1, y1, (x2 - x1), (y2 - y1));
+
+  /*  free the temporary tiles  */
+  tile_manager_destroy (buf_tiles);
+
+  return TRUE;
+}
+
+int
+global_edit_cut (void *gdisp_ptr)
+{
+  GDisplay *gdisp;
+
+  /*  stop any active tool  */
+  gdisp = (GDisplay *) gdisp_ptr;
+  active_tool_control (HALT, gdisp_ptr);
+
+  if (!edit_cut (gdisp->gimage, gimage_active_drawable (gdisp->gimage)))
+    return FALSE;
+  else
+    {
+      /*  flush the display  */
+      gdisplays_flush ();
+      return TRUE;
+    }
+}
+
+int
+global_edit_copy (void *gdisp_ptr)
+{
+  GDisplay *gdisp;
 
   gdisp = (GDisplay *) gdisp_ptr;
 
-  /*  Find the center of the current selection or the image if there
-      is no current selection...  */
-  if (selection_find_bounds (gdisp->select, &x1, &y1, &x2, &y2))
-    {
-      cx = (x1 + x2) >> 1;
-      cy = (y1 + y2) >> 1;
-    }
+  if (!edit_copy (gdisp->gimage, gimage_active_drawable (gdisp->gimage)))
+    return FALSE;
   else
-    {
-      cx = gdisp->gimage->width >> 1;
-      cy = gdisp->gimage->height >> 1;
-    }
-
-  if (select->float_buf)
-    {
-      /*  We create a new float buf with the correct number of bytes  */
-      buf  = temp_buf_new (select->float_buf->width, select->float_buf->height,
-			   gdisp->gimage->bpp, 0, 0, NULL);
-      
-      /*  now copy the contents of the global buffer to the new one  */
-      temp_buf_copy (select->float_buf, buf);
-    }
-
-  gregion_find_bounds (select->region, &x1, &y1, &x2, &y2);
-  paste = selection_generic_new (gregion_copy (select->region, NULL),
-				 cx - ((x1 + x2) >> 1), cy - ((y1 + y2) >> 1), buf);
-
-  selection_replace (gdisp->select, gdisp, paste);
-
-  return 1;
+    return TRUE;
 }
 
-
-Boolean
-global_edit_cut (gdisp_ptr)
-     void * gdisp_ptr;
+int
+global_edit_paste (void *gdisp_ptr,
+		   int   paste_into)
 {
-  if (!edit_cut (gdisp_ptr))
-    return False;
+  GDisplay *gdisp;
+
+  /*  stop any active tool  */
+  gdisp = (GDisplay *) gdisp_ptr;
+  active_tool_control (HALT, gdisp_ptr);
+
+  if (!edit_paste (gdisp->gimage, gimage_active_drawable (gdisp->gimage), global_buf, paste_into))
+    return FALSE;
   else
-    return True;
+    {
+      /*  flush the display  */
+      gdisplays_flush ();
+      return TRUE;
+    }
 }
-
-
-Boolean
-global_edit_copy (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  if (edit_copy (gdisp_ptr))
-    return False;
-  else
-    return True;
-}
-
-
-Boolean
-global_edit_paste (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  if (edit_paste (gdisp_ptr, global_select))
-    return True;
-  else
-    return False;
-}
-
 
 void
 global_edit_free ()
 {
-  if (global_select)
-    selection_generic_free (global_select);
+  if (global_buf)
+    tile_manager_destroy (global_buf);
 
-  global_select = NULL;
+  global_buf = NULL;
 }
-
 
 /*********************************************/
 /*        Named buffer operations            */
 
-
-
-static NamedBuffer *
-find_named_buffer (name)
-     char * name;
+static void
+set_list_of_named_buffers (GtkWidget *list_widget)
 {
-  link_ptr list;
-  NamedBuffer * nb;
+  GSList *list;
+  NamedBuffer *nb;
+  GtkWidget *list_item;
 
-  if (!name) return NULL;
-
+  gtk_list_clear_items (GTK_LIST (list_widget), 0, -1);
   list = named_buffers;
+
   while (list)
     {
       nb = (NamedBuffer *) list->data;
-      if (! strcmp (nb->name, name))
-	return nb;
-      list = next_item (list);
-    }
-  return NULL;
+      list = g_slist_next (list);
 
+      list_item = gtk_list_item_new_with_label (nb->name);
+      gtk_container_add (GTK_CONTAINER (list_widget), list_item);
+      gtk_widget_show (list_item);
+      gtk_object_set_user_data (GTK_OBJECT (list_item), (gpointer) nb);
+    }
 }
 
+static void
+named_buffer_paste_foreach (GtkWidget *w,
+			    gpointer   client_data)
+{
+  PasteNamedDlg *pn_dlg;
+  NamedBuffer *nb;
+
+  if (w->state == GTK_STATE_SELECTED)
+    {
+      pn_dlg = (PasteNamedDlg *) client_data;
+      nb = (NamedBuffer *) gtk_object_get_user_data (GTK_OBJECT (w));
+      edit_paste (pn_dlg->gdisp->gimage,
+		  gimage_active_drawable (pn_dlg->gdisp->gimage),
+		  nb->buf, pn_dlg->paste_into);
+    }
+}
 
 static void
-set_list_of_named_buffers (listbox)
-     Widget listbox;
+named_buffer_paste_callback (GtkWidget *w,
+			     gpointer   client_data)
 {
-  XmString * str;
-  int size = 0, i;
-  link_ptr list;
+  PasteNamedDlg *pn_dlg;
+
+  pn_dlg = (PasteNamedDlg *) client_data;
+
+  gtk_container_foreach ((GtkContainer*) pn_dlg->list,
+			 named_buffer_paste_foreach, client_data);
+
+  /*  Destroy the box  */
+  gtk_widget_destroy (pn_dlg->shell);
+
+  g_free (pn_dlg);
+      
+  /*  flush the display  */
+  gdisplays_flush ();
+}
+
+static void
+named_buffer_delete_foreach (GtkWidget *w,
+			     gpointer   client_data)
+{
+  PasteNamedDlg *pn_dlg;
   NamedBuffer * nb;
 
-  list = named_buffers;
-
-  while (list)
+  if (w->state == GTK_STATE_SELECTED)
     {
-      size++;
-      list = next_item (list);
+      pn_dlg = (PasteNamedDlg *) client_data;
+      nb = (NamedBuffer *) gtk_object_get_user_data (GTK_OBJECT (w));
+      named_buffers = g_slist_remove (named_buffers, (void *) nb);
+      g_free (nb->name);
+      tile_manager_destroy (nb->buf);
+      g_free (nb);
     }
+}
+
+static void
+named_buffer_delete_callback (GtkWidget *w,
+			      gpointer   client_data)
+{
+  PasteNamedDlg *pn_dlg;
+
+  pn_dlg = (PasteNamedDlg *) client_data;
+  gtk_container_foreach ((GtkContainer*) pn_dlg->list,
+			 named_buffer_delete_foreach, client_data);
+  set_list_of_named_buffers (pn_dlg->list);
+}
+
+static void
+named_buffer_cancel_callback (GtkWidget *w,
+			      gpointer   client_data)
+{
+  PasteNamedDlg *pn_dlg;
+
+  pn_dlg = (PasteNamedDlg *) client_data;
+
+  /*  Destroy the box  */
+  gtk_widget_destroy (pn_dlg->shell);
+
+  g_free (pn_dlg);
+}
+
+static gint
+named_buffer_dialog_delete_callback (GtkWidget *w,
+				     GdkEvent  *e,
+				     gpointer   client_data)
+{
+  named_buffer_cancel_callback (w, client_data);
+
+  return TRUE;
+}
+
+static void
+named_buffer_paste_into_update (GtkWidget *w,
+				gpointer   client_data)
+{
+  PasteNamedDlg *pn_dlg;
+
+  pn_dlg = (PasteNamedDlg *) client_data;
+
+  if (GTK_TOGGLE_BUTTON (w)->active)
+    pn_dlg->paste_into = FALSE;
+  else
+    pn_dlg->paste_into = TRUE;
+}
+
+static void
+paste_named_buffer (GDisplay *gdisp)
+{
+  static ActionAreaItem action_items[3] =
+  {
+    { "Paste", named_buffer_paste_callback, NULL, NULL },
+    { "Delete", named_buffer_delete_callback, NULL, NULL },
+    { "Cancel", named_buffer_cancel_callback, NULL, NULL }
+  };
+  PasteNamedDlg *pn_dlg;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  GtkWidget *paste_into;
+  GtkWidget *listbox;
+
+  pn_dlg = (PasteNamedDlg *) g_malloc (sizeof (PasteNamedDlg));
+  pn_dlg->gdisp = gdisp;
+
+  pn_dlg->shell = gtk_dialog_new ();
+  gtk_window_set_wmclass (GTK_WINDOW (pn_dlg->shell), "paste_named_buffer", "Gimp");
+  gtk_window_set_title (GTK_WINDOW (pn_dlg->shell), "Paste Named Buffer");
+  gtk_window_position (GTK_WINDOW (pn_dlg->shell), GTK_WIN_POS_MOUSE);
+
+  gtk_signal_connect (GTK_OBJECT (pn_dlg->shell), "delete_event",
+		      GTK_SIGNAL_FUNC (named_buffer_dialog_delete_callback),
+		      pn_dlg);
+
+  vbox = gtk_vbox_new (FALSE, 1);
+  gtk_container_border_width (GTK_CONTAINER (vbox), 1);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (pn_dlg->shell)->vbox), vbox, TRUE, TRUE, 0);
+  gtk_widget_show (vbox);
+
+  label = gtk_label_new ("Select a buffer to paste:");
+  gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, FALSE, 0);
+  gtk_widget_show (label);
+
+  listbox = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (listbox),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_box_pack_start (GTK_BOX (vbox), listbox, TRUE, TRUE, 0);
+  gtk_widget_set_usize (listbox, 125, 150);
+  gtk_widget_show (listbox);
+
+  pn_dlg->list = gtk_list_new ();
+  gtk_list_set_selection_mode (GTK_LIST (pn_dlg->list), GTK_SELECTION_BROWSE);
+  gtk_container_add (GTK_CONTAINER (listbox), pn_dlg->list);
+  set_list_of_named_buffers (pn_dlg->list);
+  gtk_widget_show (pn_dlg->list);
+
+  paste_into = gtk_check_button_new_with_label ("Replace Current Selection");
+  gtk_box_pack_start (GTK_BOX (vbox), paste_into, FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (paste_into), "toggled",
+		      (GtkSignalFunc) named_buffer_paste_into_update,
+		      pn_dlg);
+  gtk_widget_show (paste_into);
+
+  action_items[0].user_data = pn_dlg;
+  action_items[1].user_data = pn_dlg;
+  action_items[2].user_data = pn_dlg;
+  build_action_area (GTK_DIALOG (pn_dlg->shell), action_items, 3, 0);
+
+  gtk_widget_show (pn_dlg->shell);
+}
+
+static void
+new_named_buffer (TileManager *tiles,
+		  char        *name)
+{
+  PixelRegion srcPR, destPR;
+  NamedBuffer *nb;
+
+  if (! tiles) return;
+
+  nb = (NamedBuffer *) g_malloc (sizeof (NamedBuffer));
+
+  nb->buf = tile_manager_new (tiles->levels[0].width, tiles->levels[0].height, tiles->levels[0].bpp);
+  pixel_region_init (&srcPR, tiles, 0, 0, tiles->levels[0].width, tiles->levels[0].height, FALSE);
+  pixel_region_init (&destPR, nb->buf, 0, 0, tiles->levels[0].width, tiles->levels[0].height, TRUE);
+  copy_region (&srcPR, &destPR);
+
+  nb->name = g_strdup ((char *) name);
+  named_buffers = g_slist_append (named_buffers, (void *) nb);
+}
+
+static void
+cut_named_buffer_callback (GtkWidget *w,
+			   gpointer   client_data,
+			   gpointer   call_data)
+{
+  TileManager *new_tiles;
+  GDisplay *gdisp;
+  char *name;
+
+  gdisp = (GDisplay *) client_data;
+  name = g_strdup ((char *) call_data);
   
-  str = (XmString *) xmalloc (size * sizeof (XmString));
-  list = named_buffers;
-  i = 0;
-  while (list)
-    {
-      nb = (NamedBuffer *) list->data;
-      str[i++] = XmStringCreateLocalized (nb->name);
-      list = next_item (list);
-    }
+  new_tiles = edit_cut (gdisp->gimage, gimage_active_drawable (gdisp->gimage));
+  if (new_tiles) 
+    new_named_buffer (new_tiles, name);
+  gdisplays_flush ();
+}
 
-  XtVaSetValues (listbox,
-		 XmNlistItems, str,
-		 XmNlistItemCount, size,
-		 XmNmustMatch, True,
-		 NULL);
+int
+named_edit_cut (void *gdisp_ptr)
+{
+  GDisplay *gdisp;
+
+  /*  stop any active tool  */
+  gdisp = (GDisplay *) gdisp_ptr;
+  active_tool_control (HALT, gdisp_ptr);
+
+  query_string_box ("Cut Named", "Enter a name for this buffer", NULL,
+		    cut_named_buffer_callback, gdisp);
+  return TRUE;
+}
+
+static void
+copy_named_buffer_callback (GtkWidget *w,
+			    gpointer   client_data,
+			    gpointer   call_data)
+{
+  TileManager *new_tiles;
+  GDisplay *gdisp;
+  char *name;
+
+  gdisp = (GDisplay *) client_data;
+  name = g_strdup ((char *) call_data);
   
-  for (i = 0; i < size; i++)
-    XmStringFree (str[i]);
-
-  xfree (str);
+  new_tiles = edit_copy (gdisp->gimage, gimage_active_drawable (gdisp->gimage));
+  if (new_tiles) 
+    new_named_buffer (new_tiles, name);
 }
 
-
-static void
-named_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+int
+named_edit_copy (void *gdisp_ptr)
 {
-  int * done;
-  XmSelectionBoxCallbackStruct * cbs = 
-    (XmSelectionBoxCallbackStruct *) call_data;
+  GDisplay *gdisp;
 
-  done = (int *) client_data;
-
-  *done = cbs->reason;
+  gdisp = (GDisplay *) gdisp_ptr;
+  
+  query_string_box ("Copy Named", "Enter a name for this buffer", NULL,
+		    copy_named_buffer_callback, gdisp);
+  return TRUE;
 }
 
-
-static void
-delete_callback (w, client_data, call_data)
-     Widget w;
-     XtPointer client_data;
-     XtPointer call_data;
+int
+named_edit_paste (void *gdisp_ptr)
 {
-  Widget dialog, text;
-  char * name;
-  NamedBuffer * nb;
+  paste_named_buffer ((GDisplay *) gdisp_ptr);
 
-  dialog = (Widget) client_data;
+  gdisplays_flush();
 
-  text = XmSelectionBoxGetChild (dialog, XmDIALOG_TEXT);
-
-  XtVaGetValues (text, XmNvalue, &name, NULL);
-
-  nb = find_named_buffer (name);
-
-  if (nb)
-    {
-      named_buffers = remove_from_list (named_buffers, (void *) nb);
-      xfree (nb->name);
-      selection_generic_free (nb->select);
-      xfree (nb);
-
-      set_list_of_named_buffers (dialog);
-    }
-
+  return TRUE;
 }
-
-
-static NamedBuffer *
-new_named_buffer ()
-{
-  NamedBuffer * new;
-  char * value;
-  Widget dialog;
-  XmString warning;
-
-  done        = 0;
-  new         = (NamedBuffer *) xmalloc (sizeof (NamedBuffer));
-  new->name   = NULL;
-  new->select = NULL;
-
-  /*  Create the dialog box to ask for a name  */
-  if (!new_named)
-    {
-      new_named = XmCreatePromptDialog (toplevel, "new_named", NULL, 0);
-      XtVaSetValues (new_named,
-		     XmNdialogStyle, XmDIALOG_FULL_APPLICATION_MODAL,
-		     XmNdefaultPosition, False,
-		     NULL);
-      XtUnmanageChild (XmSelectionBoxGetChild (new_named, XmDIALOG_HELP_BUTTON));
-      XtAddCallback (new_named, XmNokCallback, named_callback, (XtPointer) &done);
-      XtAddCallback (new_named, XmNcancelCallback, named_callback, (XtPointer) &done);
-      XtAddCallback (new_named, XmNmapCallback, map_dialog, NULL);
-    }
-
-  XtManageChild (new_named);
-  XtPopup (XtParent (new_named), XtGrabNone);
-
-  while (done == 0)
-    XtAppProcessEvent (app_context, XtIMAll);
-
-  XtPopdown (XtParent (new_named));
-
-  if (done == XmCR_CANCEL)
-    {
-      xfree (new);
-      return NULL;
-    }
-  else
-    {
-      XtVaGetValues (XmSelectionBoxGetChild (new_named, XmDIALOG_TEXT),
-		     XmNvalue, &value, NULL);
-      /*  if a buffer with the name already exists...  */
-      if (find_named_buffer (value))
-	{
-	  warning = XmStringCreateLocalized ("A buffer with that name already exists.");
-	  dialog = XmCreateWarningDialog (new_named, "Warning", NULL, 0);
-	  XtVaSetValues (dialog, XmNmessageString, warning, NULL);
-	  XtUnmanageChild (XmMessageBoxGetChild (dialog, XmDIALOG_HELP_BUTTON));
-	  XtUnmanageChild (XmMessageBoxGetChild (dialog, XmDIALOG_OK_BUTTON));
-
-	  XmStringFree (warning);
-	  XtManageChild (dialog);
-	  XtPopup (XtParent (dialog), XtGrabNone);
-	  xfree (new);
-	  return NULL;
-	}
-      else
-	{
-	  new->name = xstrdup (value);
-	  return new;
-	}
-    }
-}
-
-
-static NamedBuffer *
-get_named_buffer ()
-{
-  char * value;
-  XmString delete_title;
-  Widget button;
-
-  done = 0;
-
-  /*  create the dialog box to access the list of named buffers  */
-  if (! get_named)
-    {
-      get_named = XmCreateSelectionDialog (toplevel, "get_named", NULL, 0);
-      XtVaSetValues (get_named,
-		     XmNdialogStyle, XmDIALOG_FULL_APPLICATION_MODAL,
-		     XmNdefaultPosition, False,
-		     NULL);
-
-      /*  Change the apply button to delete */
-      delete_title = XmStringCreateLocalized ("Delete");
-      button = XmSelectionBoxGetChild (get_named, XmDIALOG_APPLY_BUTTON);
-      XtVaSetValues (button,
-		     XmNlabelString, delete_title,
-		     NULL);
-      XmStringFree (delete_title);
-
-      XtUnmanageChild (XmSelectionBoxGetChild (get_named, XmDIALOG_HELP_BUTTON));
-      XtAddCallback (get_named, XmNokCallback, named_callback, (XtPointer) &done);
-      XtAddCallback (get_named, XmNapplyCallback, delete_callback, (XtPointer) get_named);
-      XtAddCallback (get_named, XmNcancelCallback, named_callback, (XtPointer) &done);
-      XtAddCallback (get_named, XmNmapCallback, map_dialog, NULL);
-    }
-
-  set_list_of_named_buffers (get_named);
-
-  XtManageChild (get_named);
-  XtPopup (XtParent (get_named), XtGrabNone);
-
-  while (done == 0)
-    XtAppProcessEvent (app_context, XtIMAll);
-
-  XtPopdown (XtParent (get_named));
-
-  if (done == XmCR_CANCEL)
-    return NULL;
-  else
-    {
-      XtVaGetValues (XmSelectionBoxGetChild (get_named, XmDIALOG_TEXT),
-		     XmNvalue, &value, NULL);
-      return find_named_buffer (value);
-    }
-}
-
-
-Boolean
-named_edit_cut (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  Selection * new;
-  NamedBuffer * nb;
-
-  if (! (new = edit_cut (gdisp_ptr)))
-    return False;
-  else if ((nb = new_named_buffer ()))
-    {
-      nb->select = edit_copy_sel (new);
-      named_buffers = append_to_list (named_buffers, (void *) nb);
-      return True;
-    }
-  else
-    return False;
-}
-
-
-Boolean
-named_edit_copy (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  Selection * new;
-  NamedBuffer * nb;
-
-  if (! (new = edit_copy (gdisp_ptr)))
-    return False;
-  else if ((nb = new_named_buffer ()))
-    {
-      nb->select = edit_copy_sel (new);
-      named_buffers = append_to_list (named_buffers, (void *) nb);
-      return True;
-    }
-  else
-    return False;
-}
-
-
-Boolean
-named_edit_paste (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  NamedBuffer * nb;
-
-  if (! (nb = get_named_buffer ()))
-    return False;
-
-  if (edit_paste (gdisp_ptr, nb->select))
-    return True;
-  else
-    return False;
-}
-
 
 void
 named_buffers_free ()
 {
-  link_ptr list;
+  GSList *list;
   NamedBuffer * nb;
 
   list = named_buffers;
@@ -562,85 +739,12 @@ named_buffers_free ()
   while (list)
     {
       nb = (NamedBuffer *) list->data;
-      selection_generic_free (nb->select);
-      xfree (nb->name);
-      xfree (nb);
-      list = next_item (list);
+      tile_manager_destroy (nb->buf);
+      g_free (nb->name);
+      g_free (nb);
+      list = g_slist_next (list);
     }
 
-  free_list (named_buffers);
+  g_slist_free (named_buffers);
   named_buffers = NULL;
 }
-
-
-
-/*************************************************************/
-
-
-void
-edit_options (gdisp_ptr)
-     void * gdisp_ptr;
-{
-  int group_ID;
-  int colgroup_ID;
-  int rowgroup_ID;
-  int frame_ID;
-  char buf [32];
-
-  if (!options_dlg)
-    {
-      options_dlg = dialog_new ("Edit Options", options_dialog_callback, NULL);
-      dialog_new_item (options_dlg, 0, ITEM_LABEL, "Options", NULL);
-
-      group_ID = dialog_new_item (options_dlg, 0, GROUP_ROWS, NULL, NULL);
-      frame_ID = dialog_new_item (options_dlg, group_ID, ITEM_FRAME, "Undo", NULL);
-      rowgroup_ID = dialog_new_item (options_dlg, frame_ID, GROUP_ROWS, NULL, NULL);
-
-      colgroup_ID = dialog_new_item (options_dlg, rowgroup_ID, GROUP_COLUMNS, NULL, NULL);
-      dialog_new_item (options_dlg, colgroup_ID, ITEM_LABEL, "Levels of undo:", NULL);
-      sprintf (buf, "%d", app_data.levels_of_undo);
-      undo_levels_value = app_data.levels_of_undo;
-      undo_levels_ID = dialog_new_item (options_dlg, colgroup_ID, ITEM_TEXT, buf, NULL);
-
-      colgroup_ID = dialog_new_item (options_dlg, rowgroup_ID, GROUP_COLUMNS, NULL, NULL);
-      dialog_new_item (options_dlg, colgroup_ID, ITEM_LABEL, "Bytes of undo:", NULL);
-      sprintf (buf, "%d", app_data.bytes_of_undo);
-      undo_bytes_value = app_data.bytes_of_undo;
-      undo_bytes_ID = dialog_new_item (options_dlg, colgroup_ID, ITEM_TEXT, buf, NULL);
-
-      dialog_show (options_dlg);
-    }
-  
-}
-
-
-static void
-options_dialog_callback   (dialog_ID, item_ID, client_data, call_data)
-     int dialog_ID, item_ID;
-     void *client_data, *call_data;
-{
-  switch (item_ID)
-    {
-    case OK_ID:
-      dialog_close (options_dlg);
-      options_dlg = NULL;
-      break;
-    case CANCEL_ID:
-      dialog_close (options_dlg);
-      options_dlg = NULL;
-      app_data.levels_of_undo = undo_levels_value;
-      app_data.bytes_of_undo = undo_bytes_value;
-      break;
-    default:
-      if (item_ID == undo_levels_ID)
-	app_data.levels_of_undo = atoi ((char *) call_data);
-      if (item_ID == undo_bytes_ID)
-	app_data.bytes_of_undo = atoi ((char *) call_data);
-      break;
-    }
-
-}
-
-
-
-

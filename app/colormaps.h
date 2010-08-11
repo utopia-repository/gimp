@@ -13,38 +13,58 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #ifndef __COLORMAPS_H__
 #define __COLORMAPS_H__
 
-#include "gimage.h"             /* For the image types  */
+#include "gimage.h"               /* For the image types  */
 
-extern Colormap rgbcmap;	/* RGB colormap */
-extern XColor rgbpal[256];	/* palette associated with rgbcmap  */
-
-extern Colormap greycmap;	/* greyscale colormap */
-extern XColor greypal[256];	/* palette associated with greycmap  */
-
-extern unsigned char *red_shades;
-extern unsigned char *green_shades;
-extern unsigned char *blue_shades;
-
-extern unsigned int shades_r;   /*  shades of red in the RGB colormap  */
-extern unsigned int shades_g;   /*  shades of green in the RGB colormap  */
-extern unsigned int shades_b;   /*  shades of blue in the RGB colormap  */
-extern unsigned int shades_grey;/*  shades of grey in the greyscale colormap  */
-
-/*  Pixel values of black and white in the color and grey visuals  */
-extern Pixel color_black_pixel;
-extern Pixel color_white_pixel;
-extern Pixel grey_black_pixel;
-extern Pixel grey_white_pixel;
+/*  This is a macro for arranging the red, green, and blue components into
+ *  a value acceptable to the target X server
+ */
+#define COLOR_COMPOSE(r,g,b) (lookup_red [r] | lookup_green [g] | lookup_blue [b])
 
 
-Colormap	get_colormap (int);
-void		create_standard_colormaps ();
-void		free_standard_colormaps ();
+extern GdkVisual *g_visual;
+extern GdkColormap *g_cmap;
+
+/*  Pixel values of black and white  */
+extern gulong g_black_pixel;
+extern gulong g_gray_pixel;
+extern gulong g_white_pixel;
+extern gulong g_color_pixel;
+extern gulong g_normal_guide_pixel;
+extern gulong g_active_guide_pixel;
+
+/*  Foreground and Background colors  */
+extern gulong foreground_pixel;
+extern gulong background_pixel;
+
+/*  Old and New colors  */
+extern gulong old_color_pixel;
+extern gulong new_color_pixel;
+
+/*  Colormap entries reserved for color cycled marching ants--optional  */
+extern gulong  marching_ants_pixels[8];
+
+extern GtkDitherInfo *red_ordered_dither;
+extern GtkDitherInfo *green_ordered_dither;
+extern GtkDitherInfo *blue_ordered_dither;
+extern GtkDitherInfo *gray_ordered_dither;
+
+extern guchar ***ordered_dither_matrix;
+
+extern gulong *g_lookup_red;
+extern gulong *g_lookup_green;
+extern gulong *g_lookup_blue;
+
+extern gulong *color_pixel_vals;
+extern gulong *gray_pixel_vals;
+
+gulong get_color (int red, int green, int blue);
+void   store_color (gulong *pixel, int red, int green, int blue);
+void   get_standard_colormaps (void);
 
 
 #endif  /*  __COLORMAPS_H__  */

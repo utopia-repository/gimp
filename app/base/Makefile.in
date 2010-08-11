@@ -56,15 +56,14 @@ ARFLAGS = cru
 libappbase_a_AR = $(AR) $(ARFLAGS)
 libappbase_a_LIBADD =
 am_libappbase_a_OBJECTS = base.$(OBJEXT) base-enums.$(OBJEXT) \
-	boundary.$(OBJEXT) brush-scale.$(OBJEXT) \
-	color-balance.$(OBJEXT) colorize.$(OBJEXT) cpercep.$(OBJEXT) \
-	curves.$(OBJEXT) gimphistogram.$(OBJEXT) gimplut.$(OBJEXT) \
-	hue-saturation.$(OBJEXT) levels.$(OBJEXT) lut-funcs.$(OBJEXT) \
-	pixel-processor.$(OBJEXT) pixel-region.$(OBJEXT) \
-	pixel-surround.$(OBJEXT) siox.$(OBJEXT) temp-buf.$(OBJEXT) \
-	threshold.$(OBJEXT) tile.$(OBJEXT) tile-cache.$(OBJEXT) \
-	tile-manager.$(OBJEXT) tile-manager-crop.$(OBJEXT) \
-	tile-swap.$(OBJEXT)
+	boundary.$(OBJEXT) color-balance.$(OBJEXT) colorize.$(OBJEXT) \
+	cpercep.$(OBJEXT) curves.$(OBJEXT) gimphistogram.$(OBJEXT) \
+	gimplut.$(OBJEXT) hue-saturation.$(OBJEXT) levels.$(OBJEXT) \
+	lut-funcs.$(OBJEXT) pixel-processor.$(OBJEXT) \
+	pixel-region.$(OBJEXT) pixel-surround.$(OBJEXT) siox.$(OBJEXT) \
+	temp-buf.$(OBJEXT) threshold.$(OBJEXT) tile.$(OBJEXT) \
+	tile-cache.$(OBJEXT) tile-manager.$(OBJEXT) \
+	tile-manager-crop.$(OBJEXT) tile-swap.$(OBJEXT)
 libappbase_a_OBJECTS = $(am_libappbase_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -302,6 +301,7 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -335,8 +335,6 @@ POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PRINT_CFLAGS = @PRINT_CFLAGS@
-PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
@@ -458,8 +456,6 @@ libappbase_a_SOURCES = \
 	base-types.h		\
 	boundary.c		\
 	boundary.h		\
-	brush-scale.c		\
-	brush-scale.h		\
 	color-balance.c		\
 	color-balance.h		\
 	colorize.c		\
@@ -573,7 +569,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/base-enums.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/base.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/boundary.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/brush-scale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color-balance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cpercep.Po@am__quote@

@@ -22,10 +22,10 @@
 
 
 
-#define     <link linkend="GIMP-PARAM-STATIC-STRINGS:CAPS">GIMP_PARAM_STATIC_STRINGS</link>
-#define     <link linkend="GIMP-PARAM-READABLE:CAPS">GIMP_PARAM_READABLE</link>
-#define     <link linkend="GIMP-PARAM-WRITABLE:CAPS">GIMP_PARAM_WRITABLE</link>
-#define     <link linkend="GIMP-PARAM-READWRITE:CAPS">GIMP_PARAM_READWRITE</link>
+#define             <link linkend="GIMP-PARAM-STATIC-STRINGS:CAPS">GIMP_PARAM_STATIC_STRINGS</link>
+#define             <link linkend="GIMP-PARAM-READABLE:CAPS">GIMP_PARAM_READABLE</link>
+#define             <link linkend="GIMP-PARAM-WRITABLE:CAPS">GIMP_PARAM_WRITABLE</link>
+#define             <link linkend="GIMP-PARAM-READWRITE:CAPS">GIMP_PARAM_READWRITE</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -48,25 +48,25 @@
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GIMP-PARAM-STATIC-STRINGS:CAPS" role="macro"/>GIMP_PARAM_STATIC_STRINGS</title>
-<indexterm><primary>GIMP_PARAM_STATIC_STRINGS</primary></indexterm><programlisting>#define     GIMP_PARAM_STATIC_STRINGS</programlisting>
+<indexterm><primary>GIMP_PARAM_STATIC_STRINGS</primary></indexterm><programlisting>#define             GIMP_PARAM_STATIC_STRINGS</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-PARAM-READABLE:CAPS" role="macro"/>GIMP_PARAM_READABLE</title>
-<indexterm><primary>GIMP_PARAM_READABLE</primary></indexterm><programlisting>#define     GIMP_PARAM_READABLE</programlisting>
+<indexterm><primary>GIMP_PARAM_READABLE</primary></indexterm><programlisting>#define             GIMP_PARAM_READABLE</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-PARAM-WRITABLE:CAPS" role="macro"/>GIMP_PARAM_WRITABLE</title>
-<indexterm><primary>GIMP_PARAM_WRITABLE</primary></indexterm><programlisting>#define     GIMP_PARAM_WRITABLE</programlisting>
+<indexterm><primary>GIMP_PARAM_WRITABLE</primary></indexterm><programlisting>#define             GIMP_PARAM_WRITABLE</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="GIMP-PARAM-READWRITE:CAPS" role="macro"/>GIMP_PARAM_READWRITE</title>
-<indexterm><primary>GIMP_PARAM_READWRITE</primary></indexterm><programlisting>#define     GIMP_PARAM_READWRITE</programlisting>
+<indexterm><primary>GIMP_PARAM_READWRITE</primary></indexterm><programlisting>#define             GIMP_PARAM_READWRITE</programlisting>
 <para>
 Since: GIMP 2.4
 </para></refsect2>

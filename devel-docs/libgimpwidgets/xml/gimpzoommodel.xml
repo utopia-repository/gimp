@@ -22,24 +22,24 @@
 
 
 
-            <link linkend="GimpZoomModel-struct">GimpZoomModel</link>;
-enum        <link linkend="GimpZoomType">GimpZoomType</link>;
-<link linkend="GimpZoomModel">GimpZoomModel</link>* <link linkend="gimp-zoom-model-new">gimp_zoom_model_new</link>          (void);
-<link linkend="void">void</link>        <link linkend="gimp-zoom-model-set-range">gimp_zoom_model_set_range</link>       (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="gdouble">gdouble</link> min,
-                                             <link linkend="gdouble">gdouble</link> max);
-<link linkend="void">void</link>        <link linkend="gimp-zoom-model-zoom">gimp_zoom_model_zoom</link>            (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
-                                             <link linkend="gdouble">gdouble</link> scale);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-zoom-model-get-factor">gimp_zoom_model_get_factor</link>      (<link linkend="GimpZoomModel">GimpZoomModel</link> *model);
-<link linkend="void">void</link>        <link linkend="gimp-zoom-model-get-fraction">gimp_zoom_model_get_fraction</link>    (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="gint">gint</link> *numerator,
-                                             <link linkend="gint">gint</link> *denominator);
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-zoom-button-new">gimp_zoom_button_new</link>            (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
-                                             <link linkend="GtkIconSize">GtkIconSize</link> icon_size);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-zoom-model-zoom-step">gimp_zoom_model_zoom_step</link>       (<link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
-                                             <link linkend="gdouble">gdouble</link> scale);
+                    <link linkend="GimpZoomModel-struct">GimpZoomModel</link>;
+enum                <link linkend="GimpZoomType">GimpZoomType</link>;
+<link linkend="GimpZoomModel">GimpZoomModel</link>*      <link linkend="gimp-zoom-model-new">gimp_zoom_model_new</link>                 (void);
+<link linkend="void">void</link>                <link linkend="gimp-zoom-model-set-range">gimp_zoom_model_set_range</link>           (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="gdouble">gdouble</link> min,
+                                                         <link linkend="gdouble">gdouble</link> max);
+<link linkend="void">void</link>                <link linkend="gimp-zoom-model-zoom">gimp_zoom_model_zoom</link>                (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
+                                                         <link linkend="gdouble">gdouble</link> scale);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-zoom-model-get-factor">gimp_zoom_model_get_factor</link>          (<link linkend="GimpZoomModel">GimpZoomModel</link> *model);
+<link linkend="void">void</link>                <link linkend="gimp-zoom-model-get-fraction">gimp_zoom_model_get_fraction</link>        (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="gint">gint</link> *numerator,
+                                                         <link linkend="gint">gint</link> *denominator);
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-zoom-button-new">gimp_zoom_button_new</link>                (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
+                                                         <link linkend="GtkIconSize">GtkIconSize</link> icon_size);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-zoom-model-zoom-step">gimp_zoom_model_zoom_step</link>           (<link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
+                                                         <link linkend="gdouble">gdouble</link> scale);
 
 </synopsis>
 </refsynopsisdiv>
@@ -62,11 +62,11 @@ enum        <link linkend="GimpZoomType">GimpZoomType</link>;
 <title role="properties.title">Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpZoomModel--fraction">fraction</link>&quot;             <link linkend="gchararray">gchararray</link>            : Read
-  &quot;<link linkend="GimpZoomModel--maximum">maximum</link>&quot;              <link linkend="gdouble">gdouble</link>               : Read / Write
-  &quot;<link linkend="GimpZoomModel--minimum">minimum</link>&quot;              <link linkend="gdouble">gdouble</link>               : Read / Write
-  &quot;<link linkend="GimpZoomModel--percentage">percentage</link>&quot;           <link linkend="gchararray">gchararray</link>            : Read
-  &quot;<link linkend="GimpZoomModel--value">value</link>&quot;                <link linkend="gdouble">gdouble</link>               : Read / Write
+  &quot;<link linkend="GimpZoomModel--fraction">fraction</link>&quot;                 <link linkend="gchararray">gchararray</link>            : Read
+  &quot;<link linkend="GimpZoomModel--maximum">maximum</link>&quot;                  <link linkend="gdouble">gdouble</link>               : Read / Write
+  &quot;<link linkend="GimpZoomModel--minimum">minimum</link>&quot;                  <link linkend="gdouble">gdouble</link>               : Read / Write
+  &quot;<link linkend="GimpZoomModel--percentage">percentage</link>&quot;               <link linkend="gchararray">gchararray</link>            : Read
+  &quot;<link linkend="GimpZoomModel--value">value</link>&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write
 </synopsis>
 </refsect1>
 
@@ -74,10 +74,7 @@ enum        <link linkend="GimpZoomType">GimpZoomType</link>;
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpZoomModel-zoomed">zoomed</link>&quot;    <link linkend="void">void</link>        user_function      (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                            <link linkend="gdouble">gdouble</link>        old_factor,
-                                            <link linkend="gdouble">gdouble</link>        new_factor,
-                                            <link linkend="gpointer">gpointer</link>       user_data)       : Run last
+  &quot;<link linkend="GimpZoomModel-zoomed">zoomed</link>&quot;                                         : Run Last
 </synopsis>
 </refsect1>
 
@@ -115,7 +112,7 @@ enum        <link linkend="GimpZoomType">GimpZoomType</link>;
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-model-new" role="function"/>gimp_zoom_model_new ()</title>
-<indexterm><primary>gimp_zoom_model_new</primary></indexterm><programlisting><link linkend="GimpZoomModel">GimpZoomModel</link>* gimp_zoom_model_new          (void);</programlisting>
+<indexterm><primary>gimp_zoom_model_new</primary></indexterm><programlisting><link linkend="GimpZoomModel">GimpZoomModel</link>*      gimp_zoom_model_new                 (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpZoomModel"><type>GimpZoomModel</type></link>.</para>
 <para>
@@ -128,9 +125,9 @@ Since GIMP 2.4
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-model-set-range" role="function"/>gimp_zoom_model_set_range ()</title>
-<indexterm><primary>gimp_zoom_model_set_range</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_zoom_model_set_range       (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="gdouble">gdouble</link> min,
-                                             <link linkend="gdouble">gdouble</link> max);</programlisting>
+<indexterm><primary>gimp_zoom_model_set_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_zoom_model_set_range           (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="gdouble">gdouble</link> min,
+                                                         <link linkend="gdouble">gdouble</link> max);</programlisting>
 <para>
 Sets the allowed range of the <parameter>model</parameter>.
 </para>
@@ -151,9 +148,9 @@ Since GIMP 2.4</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-model-zoom" role="function"/>gimp_zoom_model_zoom ()</title>
-<indexterm><primary>gimp_zoom_model_zoom</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_zoom_model_zoom            (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
-                                             <link linkend="gdouble">gdouble</link> scale);</programlisting>
+<indexterm><primary>gimp_zoom_model_zoom</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_zoom_model_zoom                (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
+                                                         <link linkend="gdouble">gdouble</link> scale);</programlisting>
 <para>
 Since GIMP 2.4</para>
 <para>
@@ -171,7 +168,7 @@ Since GIMP 2.4</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-model-get-factor" role="function"/>gimp_zoom_model_get_factor ()</title>
-<indexterm><primary>gimp_zoom_model_get_factor</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_zoom_model_get_factor      (<link linkend="GimpZoomModel">GimpZoomModel</link> *model);</programlisting>
+<indexterm><primary>gimp_zoom_model_get_factor</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_zoom_model_get_factor          (<link linkend="GimpZoomModel">GimpZoomModel</link> *model);</programlisting>
 <para>
 Retrieves the current zoom factor of <parameter>model</parameter>.</para>
 <para>
@@ -187,9 +184,9 @@ Since GIMP 2.4
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-model-get-fraction" role="function"/>gimp_zoom_model_get_fraction ()</title>
-<indexterm><primary>gimp_zoom_model_get_fraction</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_zoom_model_get_fraction    (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="gint">gint</link> *numerator,
-                                             <link linkend="gint">gint</link> *denominator);</programlisting>
+<indexterm><primary>gimp_zoom_model_get_fraction</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_zoom_model_get_fraction        (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="gint">gint</link> *numerator,
+                                                         <link linkend="gint">gint</link> *denominator);</programlisting>
 <para>
 Retrieves the current zoom factor of <parameter>model</parameter> as a fraction.
 </para>
@@ -210,9 +207,9 @@ Since GIMP 2.4</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-button-new" role="function"/>gimp_zoom_button_new ()</title>
-<indexterm><primary>gimp_zoom_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_zoom_button_new            (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                             <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
-                                             <link linkend="GtkIconSize">GtkIconSize</link> icon_size);</programlisting>
+<indexterm><primary>gimp_zoom_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_zoom_button_new                (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                         <link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
+                                                         <link linkend="GtkIconSize">GtkIconSize</link> icon_size);</programlisting>
 <para>
 </para>
 <para>
@@ -234,8 +231,8 @@ Since GIMP 2.4
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-zoom-model-zoom-step" role="function"/>gimp_zoom_model_zoom_step ()</title>
-<indexterm><primary>gimp_zoom_model_zoom_step</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_zoom_model_zoom_step       (<link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
-                                             <link linkend="gdouble">gdouble</link> scale);</programlisting>
+<indexterm><primary>gimp_zoom_model_zoom_step</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_zoom_model_zoom_step           (<link linkend="GimpZoomType">GimpZoomType</link> zoom_type,
+                                                         <link linkend="gdouble">gdouble</link> scale);</programlisting>
 <para>
 Utility function to calculate a new scale factor.</para>
 <para>
@@ -257,25 +254,25 @@ Since GIMP 2.4
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpZoomModel--fraction"/>The &quot;<literal>fraction</literal>&quot; property</title>
-<indexterm><primary>GimpZoomModel:fraction</primary></indexterm><programlisting>  &quot;fraction&quot;             <link linkend="gchararray">gchararray</link>            : Read</programlisting>
+<indexterm><primary>GimpZoomModel:fraction</primary></indexterm><programlisting>  &quot;fraction&quot;                 <link linkend="gchararray">gchararray</link>            : Read</programlisting>
 <para></para><para>Default value: "1:1"</para>
 </refsect2>
 <refsect2><title><anchor id="GimpZoomModel--maximum"/>The &quot;<literal>maximum</literal>&quot; property</title>
-<indexterm><primary>GimpZoomModel:maximum</primary></indexterm><programlisting>  &quot;maximum&quot;              <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<indexterm><primary>GimpZoomModel:maximum</primary></indexterm><programlisting>  &quot;maximum&quot;                  <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: [0.00390625,256]</para>
 <para>Default value: 256</para>
 </refsect2>
 <refsect2><title><anchor id="GimpZoomModel--minimum"/>The &quot;<literal>minimum</literal>&quot; property</title>
-<indexterm><primary>GimpZoomModel:minimum</primary></indexterm><programlisting>  &quot;minimum&quot;              <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<indexterm><primary>GimpZoomModel:minimum</primary></indexterm><programlisting>  &quot;minimum&quot;                  <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: [0.00390625,256]</para>
 <para>Default value: 0.00390625</para>
 </refsect2>
 <refsect2><title><anchor id="GimpZoomModel--percentage"/>The &quot;<literal>percentage</literal>&quot; property</title>
-<indexterm><primary>GimpZoomModel:percentage</primary></indexterm><programlisting>  &quot;percentage&quot;           <link linkend="gchararray">gchararray</link>            : Read</programlisting>
+<indexterm><primary>GimpZoomModel:percentage</primary></indexterm><programlisting>  &quot;percentage&quot;               <link linkend="gchararray">gchararray</link>            : Read</programlisting>
 <para></para><para>Default value: "100%"</para>
 </refsect2>
 <refsect2><title><anchor id="GimpZoomModel--value"/>The &quot;<literal>value</literal>&quot; property</title>
-<indexterm><primary>GimpZoomModel:value</primary></indexterm><programlisting>  &quot;value&quot;                <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<indexterm><primary>GimpZoomModel:value</primary></indexterm><programlisting>  &quot;value&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: [0.00390625,256]</para>
 <para>Default value: 1</para>
 </refsect2>
@@ -285,10 +282,10 @@ Since GIMP 2.4
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpZoomModel-zoomed"/>The &quot;zoomed&quot; signal</title>
-<indexterm><primary>GimpZoomModel::zoomed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
-                                            <link linkend="gdouble">gdouble</link>        old_factor,
-                                            <link linkend="gdouble">gdouble</link>        new_factor,
-                                            <link linkend="gpointer">gpointer</link>       user_data)       : Run last</programlisting>
+<indexterm><primary>GimpZoomModel::zoomed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
+                                                        <link linkend="gdouble">gdouble</link>        old_factor,
+                                                        <link linkend="gdouble">gdouble</link>        new_factor,
+                                                        <link linkend="gpointer">gpointer</link>       user_data)       : Run Last</programlisting>
 <para>
 Emitted when the zoom factor of the zoom model changes.</para>
 <para>

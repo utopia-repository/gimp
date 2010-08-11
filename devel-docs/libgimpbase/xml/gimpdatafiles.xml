@@ -22,15 +22,15 @@
 
 
 
-            <link linkend="GimpDatafileData">GimpDatafileData</link>;
-<link linkend="void">void</link>        (<link linkend="GimpDatafileLoaderFunc">*GimpDatafileLoaderFunc</link>)       (const <link linkend="GimpDatafileData">GimpDatafileData</link> *file_data,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-datafiles-check-extension">gimp_datafiles_check_extension</link>  (const <link linkend="gchar">gchar</link> *filename,
-                                             const <link linkend="gchar">gchar</link> *extension);
-<link linkend="void">void</link>        <link linkend="gimp-datafiles-read-directories">gimp_datafiles_read_directories</link> (const <link linkend="gchar">gchar</link> *path_str,
-                                             <link linkend="GFileTest">GFileTest</link> flags,
-                                             <link linkend="GimpDatafileLoaderFunc">GimpDatafileLoaderFunc</link> loader_func,
-                                             <link linkend="gpointer">gpointer</link> user_data);
+                    <link linkend="GimpDatafileData">GimpDatafileData</link>;
+<link linkend="void">void</link>                (<link linkend="GimpDatafileLoaderFunc">*GimpDatafileLoaderFunc</link>)           (const <link linkend="GimpDatafileData">GimpDatafileData</link> *file_data,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-datafiles-check-extension">gimp_datafiles_check_extension</link>      (const <link linkend="gchar">gchar</link> *filename,
+                                                         const <link linkend="gchar">gchar</link> *extension);
+<link linkend="void">void</link>                <link linkend="gimp-datafiles-read-directories">gimp_datafiles_read_directories</link>     (const <link linkend="gchar">gchar</link> *path_str,
+                                                         <link linkend="GFileTest">GFileTest</link> flags,
+                                                         <link linkend="GimpDatafileLoaderFunc">GimpDatafileLoaderFunc</link> loader_func,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
 </synopsis>
 </refsynopsisdiv>
 
@@ -68,8 +68,8 @@ Functions to handle GIMP data files.
 </para></refsect2>
 <refsect2>
 <title><anchor id="GimpDatafileLoaderFunc" role="function"/>GimpDatafileLoaderFunc ()</title>
-<indexterm><primary>GimpDatafileLoaderFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpDatafileLoaderFunc)       (const <link linkend="GimpDatafileData">GimpDatafileData</link> *file_data,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpDatafileLoaderFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpDatafileLoaderFunc)           (const <link linkend="GimpDatafileData">GimpDatafileData</link> *file_data,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -84,8 +84,8 @@ Functions to handle GIMP data files.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-datafiles-check-extension" role="function"/>gimp_datafiles_check_extension ()</title>
-<indexterm><primary>gimp_datafiles_check_extension</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_datafiles_check_extension  (const <link linkend="gchar">gchar</link> *filename,
-                                             const <link linkend="gchar">gchar</link> *extension);</programlisting>
+<indexterm><primary>gimp_datafiles_check_extension</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_datafiles_check_extension      (const <link linkend="gchar">gchar</link> *filename,
+                                                         const <link linkend="gchar">gchar</link> *extension);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -102,10 +102,10 @@ Functions to handle GIMP data files.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-datafiles-read-directories" role="function"/>gimp_datafiles_read_directories ()</title>
-<indexterm><primary>gimp_datafiles_read_directories</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_datafiles_read_directories (const <link linkend="gchar">gchar</link> *path_str,
-                                             <link linkend="GFileTest">GFileTest</link> flags,
-                                             <link linkend="GimpDatafileLoaderFunc">GimpDatafileLoaderFunc</link> loader_func,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gimp_datafiles_read_directories</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_datafiles_read_directories     (const <link linkend="gchar">gchar</link> *path_str,
+                                                         <link linkend="GFileTest">GFileTest</link> flags,
+                                                         <link linkend="GimpDatafileLoaderFunc">GimpDatafileLoaderFunc</link> loader_func,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">

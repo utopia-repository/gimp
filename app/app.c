@@ -121,6 +121,7 @@ app_run (const gchar         *full_prog_name,
          const gchar         *session_name,
          const gchar         *batch_interpreter,
          const gchar        **batch_commands,
+         gboolean             as_new,
          gboolean             no_interface,
          gboolean             no_data,
          gboolean             no_fonts,
@@ -220,7 +221,12 @@ app_run (const gchar         *full_prog_name,
   /*  Load the images given on the command-line.
    */
   if (filenames)
-    file_open_from_command_line (gimp, filenames);
+    {
+      gint i;
+
+      for (i = 0; filenames[i] != NULL; i++)
+        file_open_from_command_line (gimp, filenames[i], as_new);
+    }
 
 #ifndef GIMP_CONSOLE_COMPILATION
   if (! no_interface)

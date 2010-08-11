@@ -22,9 +22,9 @@
 
 
 
-enum        <link linkend="GimpThumbFileType">GimpThumbFileType</link>;
-enum        <link linkend="GimpThumbSize">GimpThumbSize</link>;
-enum        <link linkend="GimpThumbState">GimpThumbState</link>;
+enum                <link linkend="GimpThumbFileType">GimpThumbFileType</link>;
+enum                <link linkend="GimpThumbSize">GimpThumbSize</link>;
+enum                <link linkend="GimpThumbState">GimpThumbState</link>;
 
 </synopsis>
 </refsynopsisdiv>

@@ -44,10 +44,11 @@ struct _GimpPlugInProcedure
 
   /*  common members  */
   gchar               *prog;
-  gchar               *locale_domain;
-  gchar               *help_domain;
+  GQuark               locale_domain;
+  GQuark               help_domain;
   gchar               *menu_label;
   GList               *menu_paths;
+  gchar               *label;
   GimpIconType         icon_type;
   gint                 icon_data_length;
   guint8              *icon_data;
@@ -103,7 +104,7 @@ gboolean      gimp_plug_in_procedure_add_menu_path   (GimpPlugInProcedure       
                                                       const gchar               *menu_path,
                                                       GError                   **error);
 
-gchar       * gimp_plug_in_procedure_get_label       (const GimpPlugInProcedure *proc);
+const gchar * gimp_plug_in_procedure_get_label       (GimpPlugInProcedure       *proc);
 const gchar * gimp_plug_in_procedure_get_blurb       (const GimpPlugInProcedure *proc);
 
 void          gimp_plug_in_procedure_set_icon        (GimpPlugInProcedure       *proc,

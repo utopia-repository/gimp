@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpvectors</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpundo.html" title="gimpundo">
 <link rel="next" href="libgimp-data.html" title="Data Objects">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-data.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2604128" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2598520" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2675972" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2685230" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpvectors"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2604128"></a><span class="refentrytitle">gimpvectors</span>
+<a name="id2598520"></a><span class="refentrytitle">gimpvectors</span>
 </h2>
 <p>gimpvectors</p>
 </td>
@@ -52,165 +52,160 @@
 
 
 
-gint32      <a href="libgimp-gimpvectors.html#gimp-vectors-new">gimp_vectors_new</a>                (gint32 image_ID,
-                                             const gchar *name);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-file">gimp_vectors_import_from_file</a>   (gint32 image_ID,
-                                             const gchar *filename,
-                                             gboolean merge,
-                                             gboolean scale,
-                                             gint *num_vectors,
-                                             gint32 **vectors_ids);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-string">gimp_vectors_import_from_string</a> (gint32 image_ID,
-                                             const gchar *string,
-                                             gint length,
-                                             gboolean merge,
-                                             gboolean scale,
-                                             gint *num_vectors,
-                                             gint32 **vectors_ids);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-is-valid">gimp_vectors_is_valid</a>           (gint32 vectors_ID);
-gint*       <a href="libgimp-gimpvectors.html#gimp-vectors-get-strokes">gimp_vectors_get_strokes</a>        (gint32 vectors_ID,
-                                             gint *num_strokes);
-gint32      <a href="libgimp-gimpvectors.html#gimp-vectors-get-image">gimp_vectors_get_image</a>          (gint32 vectors_ID);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-get-linked">gimp_vectors_get_linked</a>         (gint32 vectors_ID);
-gchar*      <a href="libgimp-gimpvectors.html#gimp-vectors-get-name">gimp_vectors_get_name</a>           (gint32 vectors_ID);
-gint        <a href="libgimp-gimpvectors.html#gimp-vectors-get-tattoo">gimp_vectors_get_tattoo</a>         (gint32 vectors_ID);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-get-visible">gimp_vectors_get_visible</a>        (gint32 vectors_ID);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-set-linked">gimp_vectors_set_linked</a>         (gint32 vectors_ID,
-                                             gboolean linked);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-set-name">gimp_vectors_set_name</a>           (gint32 vectors_ID,
-                                             const gchar *name);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-set-tattoo">gimp_vectors_set_tattoo</a>         (gint32 vectors_ID,
-                                             gint tattoo);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-set-visible">gimp_vectors_set_visible</a>        (gint32 vectors_ID,
-                                             gboolean visible);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-remove-stroke">gimp_vectors_remove_stroke</a>      (gint32 vectors_ID,
-                                             gint stroke_id);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-to-selection">gimp_vectors_to_selection</a>       (gint32 vectors_ID,
-                                             <a
+gint32              <a href="libgimp-gimpvectors.html#gimp-vectors-new">gimp_vectors_new</a>                    (gint32 image_ID,
+                                                         const gchar *name);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-file">gimp_vectors_import_from_file</a>       (gint32 image_ID,
+                                                         const gchar *filename,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-string">gimp_vectors_import_from_string</a>     (gint32 image_ID,
+                                                         const gchar *string,
+                                                         gint length,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-is-valid">gimp_vectors_is_valid</a>               (gint32 vectors_ID);
+gint*               <a href="libgimp-gimpvectors.html#gimp-vectors-get-strokes">gimp_vectors_get_strokes</a>            (gint32 vectors_ID,
+                                                         gint *num_strokes);
+gint32              <a href="libgimp-gimpvectors.html#gimp-vectors-get-image">gimp_vectors_get_image</a>              (gint32 vectors_ID);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-get-linked">gimp_vectors_get_linked</a>             (gint32 vectors_ID);
+gchar*              <a href="libgimp-gimpvectors.html#gimp-vectors-get-name">gimp_vectors_get_name</a>               (gint32 vectors_ID);
+gint                <a href="libgimp-gimpvectors.html#gimp-vectors-get-tattoo">gimp_vectors_get_tattoo</a>             (gint32 vectors_ID);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-get-visible">gimp_vectors_get_visible</a>            (gint32 vectors_ID);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-linked">gimp_vectors_set_linked</a>             (gint32 vectors_ID,
+                                                         gboolean linked);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-name">gimp_vectors_set_name</a>               (gint32 vectors_ID,
+                                                         const gchar *name);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-tattoo">gimp_vectors_set_tattoo</a>             (gint32 vectors_ID,
+                                                         gint tattoo);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-visible">gimp_vectors_set_visible</a>            (gint32 vectors_ID,
+                                                         gboolean visible);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-remove-stroke">gimp_vectors_remove_stroke</a>          (gint32 vectors_ID,
+                                                         gint stroke_id);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-to-selection">gimp_vectors_to_selection</a>           (gint32 vectors_ID,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                             gboolean antialias,
-                                             gboolean feather,
-                                             gdouble feather_radius_x,
-                                             gdouble feather_radius_y);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-attach">gimp_vectors_parasite_attach</a>    (gint32 vectors_ID,
-                                             const <a
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-attach">gimp_vectors_parasite_attach</a>        (gint32 vectors_ID,
+                                                         const <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-detach">gimp_vectors_parasite_detach</a>    (gint32 vectors_ID,
-                                             const gchar *name);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-detach">gimp_vectors_parasite_detach</a>        (gint32 vectors_ID,
+                                                         const gchar *name);
 <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>* <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-find">gimp_vectors_parasite_find</a>    (gint32 vectors_ID,
-                                             const gchar *name);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-list">gimp_vectors_parasite_list</a>      (gint32 vectors_ID,
-                                             gint *num_parasites,
-                                             gchar ***parasites);
-gint        <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-new-from-points">gimp_vectors_stroke_new_from_points</a>
-                                            (gint32 vectors_ID,
-                                             <a
+>GimpParasite</a>*       <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-find">gimp_vectors_parasite_find</a>          (gint32 vectors_ID,
+                                                         const gchar *name);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-list">gimp_vectors_parasite_list</a>          (gint32 vectors_ID,
+                                                         gint *num_parasites,
+                                                         gchar ***parasites);
+gint                <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-new-from-points">gimp_vectors_stroke_new_from_points</a> (gint32 vectors_ID,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
 >GimpVectorsStrokeType</a> type,
-                                             gint num_points,
-                                             const gdouble *controlpoints,
-                                             gboolean closed);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-close">gimp_vectors_stroke_close</a>       (gint32 vectors_ID,
-                                             gint stroke_id);
-gdouble     <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length">gimp_vectors_stroke_get_length</a>  (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble precision);
+                                                         gint num_points,
+                                                         const gdouble *controlpoints,
+                                                         gboolean closed);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-close">gimp_vectors_stroke_close</a>           (gint32 vectors_ID,
+                                                         gint stroke_id);
+gdouble             <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length">gimp_vectors_stroke_get_length</a>      (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble precision);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
->GimpVectorsStrokeType</a> <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-points">gimp_vectors_stroke_get_points</a>
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gint *num_points,
-                                             gdouble **controlpoints,
-                                             gboolean *closed);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-point-at-dist">gimp_vectors_stroke_get_point_at_dist</a>
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble dist,
-                                             gdouble precision,
-                                             gdouble *x_point,
-                                             gdouble *y_point,
-                                             gdouble *slope,
-                                             gboolean *valid);
-gdouble*    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate">gimp_vectors_stroke_interpolate</a> (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble precision,
-                                             gint *num_coords,
-                                             gboolean *closed);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-scale">gimp_vectors_stroke_scale</a>       (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble scale_x,
-                                             gdouble scale_y);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-translate">gimp_vectors_stroke_translate</a>   (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gint off_x,
-                                             gint off_y);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip">gimp_vectors_stroke_flip</a>        (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
-                                             gdouble axis);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip-free">gimp_vectors_stroke_flip_free</a>   (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x1,
-                                             gdouble y1,
-                                             gdouble x2,
-                                             gdouble y2);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-rotate">gimp_vectors_stroke_rotate</a>      (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble center_x,
-                                             gdouble center_y,
-                                             gdouble angle);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto">gimp_vectors_bezier_stroke_conicto</a>
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x0,
-                                             gdouble y0,
-                                             gdouble x1,
-                                             gdouble y1);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto">gimp_vectors_bezier_stroke_cubicto</a>
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x0,
-                                             gdouble y0,
-                                             gdouble x1,
-                                             gdouble y1,
-                                             gdouble x2,
-                                             gdouble y2);
-gboolean    <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-lineto">gimp_vectors_bezier_stroke_lineto</a>
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x0,
-                                             gdouble y0);
-gint        <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-ellipse">gimp_vectors_bezier_stroke_new_ellipse</a>
-                                            (gint32 vectors_ID,
-                                             gdouble x0,
-                                             gdouble y0,
-                                             gdouble radius_x,
-                                             gdouble radius_y,
-                                             gdouble angle);
-gint        <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-moveto">gimp_vectors_bezier_stroke_new_moveto</a>
-                                            (gint32 vectors_ID,
-                                             gdouble x0,
-                                             gdouble y0);
+>GimpVectorsStrokeType</a> <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-points">gimp_vectors_stroke_get_points</a>    (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gint *num_points,
+                                                         gdouble **controlpoints,
+                                                         gboolean *closed);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-point-at-dist">gimp_vectors_stroke_get_point_at_dist</a>
+                                                        (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble dist,
+                                                         gdouble precision,
+                                                         gdouble *x_point,
+                                                         gdouble *y_point,
+                                                         gdouble *slope,
+                                                         gboolean *valid);
+gdouble*            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate">gimp_vectors_stroke_interpolate</a>     (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble precision,
+                                                         gint *num_coords,
+                                                         gboolean *closed);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-scale">gimp_vectors_stroke_scale</a>           (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble scale_x,
+                                                         gdouble scale_y);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-translate">gimp_vectors_stroke_translate</a>       (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gint off_x,
+                                                         gint off_y);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip">gimp_vectors_stroke_flip</a>            (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
+                                                         gdouble axis);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip-free">gimp_vectors_stroke_flip_free</a>       (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-rotate">gimp_vectors_stroke_rotate</a>          (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble center_x,
+                                                         gdouble center_y,
+                                                         gdouble angle);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto">gimp_vectors_bezier_stroke_conicto</a>  (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto">gimp_vectors_bezier_stroke_cubicto</a>  (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2);
+gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-lineto">gimp_vectors_bezier_stroke_lineto</a>   (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x0,
+                                                         gdouble y0);
+gint                <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-ellipse">gimp_vectors_bezier_stroke_new_ellipse</a>
+                                                        (gint32 vectors_ID,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble radius_x,
+                                                         gdouble radius_y,
+                                                         gdouble angle);
+gint                <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-moveto">gimp_vectors_bezier_stroke_new_moveto</a>
+                                                        (gint32 vectors_ID,
+                                                         gdouble x0,
+                                                         gdouble y0);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675972"></a><h2>Description</h2>
+<a name="id2685230"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675986"></a><h2>Details</h2>
+<a name="id2685244"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2675995"></a><h3>
+<a name="id2685253"></a><h3>
 <a name="gimp-vectors-new"></a>gimp_vectors_new ()</h3>
-<a class="indexterm" name="id2676007"></a><pre class="programlisting">gint32      gimp_vectors_new                (gint32 image_ID,
-                                             const gchar *name);</pre>
+<a class="indexterm" name="id2685266"></a><pre class="programlisting">gint32              gimp_vectors_new                    (gint32 image_ID,
+                                                         const gchar *name);</pre>
 <p>
 Creates a new empty vectors object.
 </p>
@@ -241,19 +236,19 @@ using <a href="libgimp-gimpimage.html#gimp-image-add-vectors"><code class="funct
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676097"></a><h3>
+<a name="id2685358"></a><h3>
 <a name="gimp-vectors-import-from-file"></a>gimp_vectors_import_from_file ()</h3>
-<a class="indexterm" name="id2676110"></a><pre class="programlisting">gboolean    gimp_vectors_import_from_file   (gint32 image_ID,
-                                             const gchar *filename,
-                                             gboolean merge,
-                                             gboolean scale,
-                                             gint *num_vectors,
-                                             gint32 **vectors_ids);</pre>
+<a class="indexterm" name="id2685371"></a><pre class="programlisting">gboolean            gimp_vectors_import_from_file       (gint32 image_ID,
+                                                         const gchar *filename,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);</pre>
 <p>
 Import paths from an SVG file.
 </p>
@@ -304,20 +299,20 @@ than paths and basic shapes are ignored.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676267"></a><h3>
+<a name="id2685531"></a><h3>
 <a name="gimp-vectors-import-from-string"></a>gimp_vectors_import_from_string ()</h3>
-<a class="indexterm" name="id2676281"></a><pre class="programlisting">gboolean    gimp_vectors_import_from_string (gint32 image_ID,
-                                             const gchar *string,
-                                             gint length,
-                                             gboolean merge,
-                                             gboolean scale,
-                                             gint *num_vectors,
-                                             gint32 **vectors_ids);</pre>
+<a class="indexterm" name="id2685544"></a><pre class="programlisting">gboolean            gimp_vectors_import_from_string     (gint32 image_ID,
+                                                         const gchar *string,
+                                                         gint length,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);</pre>
 <p>
 Import paths from an SVG string.
 </p>
@@ -374,14 +369,14 @@ write scripts that generate SVG and feed it to GIMP.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676475"></a><h3>
+<a name="id2685740"></a><h3>
 <a name="gimp-vectors-is-valid"></a>gimp_vectors_is_valid ()</h3>
-<a class="indexterm" name="id2676487"></a><pre class="programlisting">gboolean    gimp_vectors_is_valid           (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2685752"></a><pre class="programlisting">gboolean            gimp_vectors_is_valid               (gint32 vectors_ID);</pre>
 <p>
 Returns TRUE if the vectors object is valid.
 </p>
@@ -407,15 +402,15 @@ an existing vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676552"></a><h3>
+<a name="id2685819"></a><h3>
 <a name="gimp-vectors-get-strokes"></a>gimp_vectors_get_strokes ()</h3>
-<a class="indexterm" name="id2676564"></a><pre class="programlisting">gint*       gimp_vectors_get_strokes        (gint32 vectors_ID,
-                                             gint *num_strokes);</pre>
+<a class="indexterm" name="id2685831"></a><pre class="programlisting">gint*               gimp_vectors_get_strokes            (gint32 vectors_ID,
+                                                         gint *num_strokes);</pre>
 <p>
 List the strokes associated with the passed path.
 </p>
@@ -446,14 +441,14 @@ path.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676648"></a><h3>
+<a name="id2685917"></a><h3>
 <a name="gimp-vectors-get-image"></a>gimp_vectors_get_image ()</h3>
-<a class="indexterm" name="id2676660"></a><pre class="programlisting">gint32      gimp_vectors_get_image          (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2685930"></a><pre class="programlisting">gint32              gimp_vectors_get_image              (gint32 vectors_ID);</pre>
 <p>
 Returns the vectors objects image.
 </p>
@@ -478,14 +473,14 @@ Returns the vectors objects image.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676722"></a><h3>
+<a name="id2685994"></a><h3>
 <a name="gimp-vectors-get-linked"></a>gimp_vectors_get_linked ()</h3>
-<a class="indexterm" name="id2676735"></a><pre class="programlisting">gboolean    gimp_vectors_get_linked         (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686006"></a><pre class="programlisting">gboolean            gimp_vectors_get_linked             (gint32 vectors_ID);</pre>
 <p>
 Gets the linked state of the vectors object.
 </p>
@@ -510,14 +505,14 @@ Gets the linked state of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676798"></a><h3>
+<a name="id2686072"></a><h3>
 <a name="gimp-vectors-get-name"></a>gimp_vectors_get_name ()</h3>
-<a class="indexterm" name="id2676810"></a><pre class="programlisting">gchar*      gimp_vectors_get_name           (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686084"></a><pre class="programlisting">gchar*              gimp_vectors_get_name               (gint32 vectors_ID);</pre>
 <p>
 Gets the name of the vectors object.
 </p>
@@ -542,14 +537,14 @@ Gets the name of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676873"></a><h3>
+<a name="id2686150"></a><h3>
 <a name="gimp-vectors-get-tattoo"></a>gimp_vectors_get_tattoo ()</h3>
-<a class="indexterm" name="id2676886"></a><pre class="programlisting">gint        gimp_vectors_get_tattoo         (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686162"></a><pre class="programlisting">gint                gimp_vectors_get_tattoo             (gint32 vectors_ID);</pre>
 <p>
 Get the tattoo of the vectors object.
 </p>
@@ -574,14 +569,14 @@ Get the tattoo state of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676948"></a><h3>
+<a name="id2686227"></a><h3>
 <a name="gimp-vectors-get-visible"></a>gimp_vectors_get_visible ()</h3>
-<a class="indexterm" name="id2676961"></a><pre class="programlisting">gboolean    gimp_vectors_get_visible        (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686239"></a><pre class="programlisting">gboolean            gimp_vectors_get_visible            (gint32 vectors_ID);</pre>
 <p>
 Gets the visibility of the vectors object.
 </p>
@@ -606,15 +601,15 @@ Gets the visibility of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677024"></a><h3>
+<a name="id2686305"></a><h3>
 <a name="gimp-vectors-set-linked"></a>gimp_vectors_set_linked ()</h3>
-<a class="indexterm" name="id2677036"></a><pre class="programlisting">gboolean    gimp_vectors_set_linked         (gint32 vectors_ID,
-                                             gboolean linked);</pre>
+<a class="indexterm" name="id2686317"></a><pre class="programlisting">gboolean            gimp_vectors_set_linked             (gint32 vectors_ID,
+                                                         gboolean linked);</pre>
 <p>
 Sets the linked state of the vectors object.
 </p>
@@ -644,15 +639,15 @@ Sets the linked state of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677118"></a><h3>
+<a name="id2686402"></a><h3>
 <a name="gimp-vectors-set-name"></a>gimp_vectors_set_name ()</h3>
-<a class="indexterm" name="id2677131"></a><pre class="programlisting">gboolean    gimp_vectors_set_name           (gint32 vectors_ID,
-                                             const gchar *name);</pre>
+<a class="indexterm" name="id2686414"></a><pre class="programlisting">gboolean            gimp_vectors_set_name               (gint32 vectors_ID,
+                                                         const gchar *name);</pre>
 <p>
 Sets the name of the vectors object.
 </p>
@@ -682,15 +677,15 @@ Sets the name of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677212"></a><h3>
+<a name="id2686498"></a><h3>
 <a name="gimp-vectors-set-tattoo"></a>gimp_vectors_set_tattoo ()</h3>
-<a class="indexterm" name="id2677225"></a><pre class="programlisting">gboolean    gimp_vectors_set_tattoo         (gint32 vectors_ID,
-                                             gint tattoo);</pre>
+<a class="indexterm" name="id2686510"></a><pre class="programlisting">gboolean            gimp_vectors_set_tattoo             (gint32 vectors_ID,
+                                                         gint tattoo);</pre>
 <p>
 Set the tattoo of the vectors object.
 </p>
@@ -720,15 +715,15 @@ Set the tattoo of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677306"></a><h3>
+<a name="id2686594"></a><h3>
 <a name="gimp-vectors-set-visible"></a>gimp_vectors_set_visible ()</h3>
-<a class="indexterm" name="id2677318"></a><pre class="programlisting">gboolean    gimp_vectors_set_visible        (gint32 vectors_ID,
-                                             gboolean visible);</pre>
+<a class="indexterm" name="id2686606"></a><pre class="programlisting">gboolean            gimp_vectors_set_visible            (gint32 vectors_ID,
+                                                         gboolean visible);</pre>
 <p>
 Sets the visibility of the vectors object.
 </p>
@@ -758,15 +753,15 @@ Sets the visibility of the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677400"></a><h3>
+<a name="id2686690"></a><h3>
 <a name="gimp-vectors-remove-stroke"></a>gimp_vectors_remove_stroke ()</h3>
-<a class="indexterm" name="id2677413"></a><pre class="programlisting">gboolean    gimp_vectors_remove_stroke      (gint32 vectors_ID,
-                                             gint stroke_id);</pre>
+<a class="indexterm" name="id2686704"></a><pre class="programlisting">gboolean            gimp_vectors_remove_stroke          (gint32 vectors_ID,
+                                                         gint stroke_id);</pre>
 <p>
 remove the stroke from a vectors object.
 </p>
@@ -796,21 +791,21 @@ Remove the stroke from a vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677494"></a><h3>
+<a name="id2686787"></a><h3>
 <a name="gimp-vectors-to-selection"></a>gimp_vectors_to_selection ()</h3>
-<a class="indexterm" name="id2677508"></a><pre class="programlisting">gboolean    gimp_vectors_to_selection       (gint32 vectors_ID,
-                                             <a
+<a class="indexterm" name="id2686800"></a><pre class="programlisting">gboolean            gimp_vectors_to_selection           (gint32 vectors_ID,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                             gboolean antialias,
-                                             gboolean feather,
-                                             gdouble feather_radius_x,
-                                             gdouble feather_radius_y);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y);</pre>
 <p>
 Transforms the specified vectors object into a selection
 </p>
@@ -861,15 +856,15 @@ selection of the image the vectors object belongs to.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677668"></a><h3>
+<a name="id2686964"></a><h3>
 <a name="gimp-vectors-parasite-attach"></a>gimp_vectors_parasite_attach ()</h3>
-<a class="indexterm" name="id2677682"></a><pre class="programlisting">gboolean    gimp_vectors_parasite_attach    (gint32 vectors_ID,
-                                             const <a
+<a class="indexterm" name="id2686978"></a><pre class="programlisting">gboolean            gimp_vectors_parasite_attach        (gint32 vectors_ID,
+                                                         const <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);</pre>
 <p>
@@ -902,15 +897,15 @@ return values.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677766"></a><h3>
+<a name="id2687064"></a><h3>
 <a name="gimp-vectors-parasite-detach"></a>gimp_vectors_parasite_detach ()</h3>
-<a class="indexterm" name="id2677780"></a><pre class="programlisting">gboolean    gimp_vectors_parasite_detach    (gint32 vectors_ID,
-                                             const gchar *name);</pre>
+<a class="indexterm" name="id2687079"></a><pre class="programlisting">gboolean            gimp_vectors_parasite_detach        (gint32 vectors_ID,
+                                                         const gchar *name);</pre>
 <p>
 Removes a parasite from a vectors object
 </p>
@@ -941,17 +936,17 @@ return values.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677864"></a><h3>
+<a name="id2687165"></a><h3>
 <a name="gimp-vectors-parasite-find"></a>gimp_vectors_parasite_find ()</h3>
-<a class="indexterm" name="id2677877"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2687178"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>* gimp_vectors_parasite_find    (gint32 vectors_ID,
-                                             const gchar *name);</pre>
+>GimpParasite</a>*       gimp_vectors_parasite_find          (gint32 vectors_ID,
+                                                         const gchar *name);</pre>
 <p>
 Look up a parasite in a vectors object
 </p>
@@ -982,16 +977,16 @@ vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677960"></a><h3>
+<a name="id2687263"></a><h3>
 <a name="gimp-vectors-parasite-list"></a>gimp_vectors_parasite_list ()</h3>
-<a class="indexterm" name="id2677973"></a><pre class="programlisting">gboolean    gimp_vectors_parasite_list      (gint32 vectors_ID,
-                                             gint *num_parasites,
-                                             gchar ***parasites);</pre>
+<a class="indexterm" name="id2687276"></a><pre class="programlisting">gboolean            gimp_vectors_parasite_list          (gint32 vectors_ID,
+                                                         gint *num_parasites,
+                                                         gchar ***parasites);</pre>
 <p>
 List all parasites.
 </p>
@@ -1026,21 +1021,20 @@ Returns a list of all currently attached parasites.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678074"></a><h3>
+<a name="id2687381"></a><h3>
 <a name="gimp-vectors-stroke-new-from-points"></a>gimp_vectors_stroke_new_from_points ()</h3>
-<a class="indexterm" name="id2678089"></a><pre class="programlisting">gint        gimp_vectors_stroke_new_from_points
-                                            (gint32 vectors_ID,
-                                             <a
+<a class="indexterm" name="id2687398"></a><pre class="programlisting">gint                gimp_vectors_stroke_new_from_points (gint32 vectors_ID,
+                                                         <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
 >GimpVectorsStrokeType</a> type,
-                                             gint num_points,
-                                             const gdouble *controlpoints,
-                                             gboolean closed);</pre>
+                                                         gint num_points,
+                                                         const gdouble *controlpoints,
+                                                         gboolean closed);</pre>
 <p>
 Adds a stroke of a given type to the vectors object.
 </p>
@@ -1092,15 +1086,15 @@ order CACCACCAC...</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678252"></a><h3>
+<a name="id2687569"></a><h3>
 <a name="gimp-vectors-stroke-close"></a>gimp_vectors_stroke_close ()</h3>
-<a class="indexterm" name="id2678269"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_close       (gint32 vectors_ID,
-                                             gint stroke_id);</pre>
+<a class="indexterm" name="id2687586"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_close           (gint32 vectors_ID,
+                                                         gint stroke_id);</pre>
 <p>
 closes the specified stroke.
 </p>
@@ -1130,16 +1124,16 @@ Closes the specified stroke.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678360"></a><h3>
+<a name="id2687680"></a><h3>
 <a name="gimp-vectors-stroke-get-length"></a>gimp_vectors_stroke_get_length ()</h3>
-<a class="indexterm" name="id2678376"></a><pre class="programlisting">gdouble     gimp_vectors_stroke_get_length  (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble precision);</pre>
+<a class="indexterm" name="id2687696"></a><pre class="programlisting">gdouble             gimp_vectors_stroke_get_length      (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble precision);</pre>
 <p>
 Measure the length of the given stroke.
 </p>
@@ -1174,21 +1168,20 @@ Measure the length of the given stroke.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678490"></a><h3>
+<a name="id2687813"></a><h3>
 <a name="gimp-vectors-stroke-get-points"></a>gimp_vectors_stroke_get_points ()</h3>
-<a class="indexterm" name="id2678507"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2687830"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
->GimpVectorsStrokeType</a> gimp_vectors_stroke_get_points
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gint *num_points,
-                                             gdouble **controlpoints,
-                                             gboolean *closed);</pre>
+>GimpVectorsStrokeType</a> gimp_vectors_stroke_get_points    (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gint *num_points,
+                                                         gdouble **controlpoints,
+                                                         gboolean *closed);</pre>
 <p>
 returns the control points of a stroke.
 </p>
@@ -1236,22 +1229,22 @@ control points.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678669"></a><h3>
+<a name="id2687995"></a><h3>
 <a name="gimp-vectors-stroke-get-point-at-dist"></a>gimp_vectors_stroke_get_point_at_dist ()</h3>
-<a class="indexterm" name="id2678686"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_get_point_at_dist
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble dist,
-                                             gdouble precision,
-                                             gdouble *x_point,
-                                             gdouble *y_point,
-                                             gdouble *slope,
-                                             gboolean *valid);</pre>
+<a class="indexterm" name="id2688012"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_get_point_at_dist
+                                                        (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble dist,
+                                                         gdouble precision,
+                                                         gdouble *x_point,
+                                                         gdouble *y_point,
+                                                         gdouble *slope,
+                                                         gboolean *valid);</pre>
 <p>
 Get point at a specified distance along the stroke.
 </p>
@@ -1316,18 +1309,18 @@ enough, a \"valid\" flag will be FALSE.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678914"></a><h3>
+<a name="id2688244"></a><h3>
 <a name="gimp-vectors-stroke-interpolate"></a>gimp_vectors_stroke_interpolate ()</h3>
-<a class="indexterm" name="id2678931"></a><pre class="programlisting">gdouble*    gimp_vectors_stroke_interpolate (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble precision,
-                                             gint *num_coords,
-                                             gboolean *closed);</pre>
+<a class="indexterm" name="id2688260"></a><pre class="programlisting">gdouble*            gimp_vectors_stroke_interpolate     (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble precision,
+                                                         gint *num_coords,
+                                                         gboolean *closed);</pre>
 <p>
 returns polygonal approximation of the stroke.
 </p>
@@ -1372,17 +1365,17 @@ returns polygonal approximation of the stroke.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679088"></a><h3>
+<a name="id2688421"></a><h3>
 <a name="gimp-vectors-stroke-scale"></a>gimp_vectors_stroke_scale ()</h3>
-<a class="indexterm" name="id2679105"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_scale       (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble scale_x,
-                                             gdouble scale_y);</pre>
+<a class="indexterm" name="id2688438"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_scale           (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble scale_x,
+                                                         gdouble scale_y);</pre>
 <p>
 scales the given stroke.
 </p>
@@ -1422,17 +1415,17 @@ Scale the given stroke.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679238"></a><h3>
+<a name="id2688575"></a><h3>
 <a name="gimp-vectors-stroke-translate"></a>gimp_vectors_stroke_translate ()</h3>
-<a class="indexterm" name="id2679255"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_translate   (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gint off_x,
-                                             gint off_y);</pre>
+<a class="indexterm" name="id2688591"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_translate       (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gint off_x,
+                                                         gint off_y);</pre>
 <p>
 translate the given stroke.
 </p>
@@ -1472,17 +1465,17 @@ Translate the given stroke.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679389"></a><h3>
+<a name="id2688729"></a><h3>
 <a name="gimp-vectors-stroke-flip"></a>gimp_vectors_stroke_flip ()</h3>
-<a class="indexterm" name="id2679405"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_flip        (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
-                                             gdouble axis);</pre>
+<a class="indexterm" name="id2688745"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_flip            (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
+                                                         gdouble axis);</pre>
 <p>
 flips the given stroke.
 </p>
@@ -1522,19 +1515,19 @@ Rotates the given stroke around given center by angle (in degrees).</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679541"></a><h3>
+<a name="id2688884"></a><h3>
 <a name="gimp-vectors-stroke-flip-free"></a>gimp_vectors_stroke_flip_free ()</h3>
-<a class="indexterm" name="id2679558"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_flip_free   (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x1,
-                                             gdouble y1,
-                                             gdouble x2,
-                                             gdouble y2);</pre>
+<a class="indexterm" name="id2688900"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_flip_free       (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2);</pre>
 <p>
 flips the given stroke about an arbitrary axis.
 </p>
@@ -1586,18 +1579,18 @@ axis passes.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679738"></a><h3>
+<a name="id2689085"></a><h3>
 <a name="gimp-vectors-stroke-rotate"></a>gimp_vectors_stroke_rotate ()</h3>
-<a class="indexterm" name="id2679755"></a><pre class="programlisting">gboolean    gimp_vectors_stroke_rotate      (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble center_x,
-                                             gdouble center_y,
-                                             gdouble angle);</pre>
+<a class="indexterm" name="id2689102"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_rotate          (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble center_x,
+                                                         gdouble center_y,
+                                                         gdouble angle);</pre>
 <p>
 rotates the given stroke.
 </p>
@@ -1642,20 +1635,19 @@ Rotates the given stroke around given center by angle (in degrees).</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679911"></a><h3>
+<a name="id2689261"></a><h3>
 <a name="gimp-vectors-bezier-stroke-conicto"></a>gimp_vectors_bezier_stroke_conicto ()</h3>
-<a class="indexterm" name="id2679929"></a><pre class="programlisting">gboolean    gimp_vectors_bezier_stroke_conicto
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x0,
-                                             gdouble y0,
-                                             gdouble x1,
-                                             gdouble y1);</pre>
+<a class="indexterm" name="id2689279"></a><pre class="programlisting">gboolean            gimp_vectors_bezier_stroke_conicto  (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1);</pre>
 <p>
 Extends a bezier stroke with a conic bezier spline.
 </p>
@@ -1707,22 +1699,21 @@ spline.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680109"></a><h3>
+<a name="id2689461"></a><h3>
 <a name="gimp-vectors-bezier-stroke-cubicto"></a>gimp_vectors_bezier_stroke_cubicto ()</h3>
-<a class="indexterm" name="id2680126"></a><pre class="programlisting">gboolean    gimp_vectors_bezier_stroke_cubicto
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x0,
-                                             gdouble y0,
-                                             gdouble x1,
-                                             gdouble y1,
-                                             gdouble x2,
-                                             gdouble y2);</pre>
+<a class="indexterm" name="id2689479"></a><pre class="programlisting">gboolean            gimp_vectors_bezier_stroke_cubicto  (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2);</pre>
 <p>
 Extends a bezier stroke with a cubic bezier spline.
 </p>
@@ -1782,18 +1773,17 @@ Extends a bezier stroke with a cubic bezier spline.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680348"></a><h3>
+<a name="id2689704"></a><h3>
 <a name="gimp-vectors-bezier-stroke-lineto"></a>gimp_vectors_bezier_stroke_lineto ()</h3>
-<a class="indexterm" name="id2680365"></a><pre class="programlisting">gboolean    gimp_vectors_bezier_stroke_lineto
-                                            (gint32 vectors_ID,
-                                             gint stroke_id,
-                                             gdouble x0,
-                                             gdouble y0);</pre>
+<a class="indexterm" name="id2689722"></a><pre class="programlisting">gboolean            gimp_vectors_bezier_stroke_lineto   (gint32 vectors_ID,
+                                                         gint stroke_id,
+                                                         gdouble x0,
+                                                         gdouble y0);</pre>
 <p>
 Extends a bezier stroke with a lineto.
 </p>
@@ -1833,20 +1823,20 @@ Extends a bezier stroke with a lineto.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680500"></a><h3>
+<a name="id2689859"></a><h3>
 <a name="gimp-vectors-bezier-stroke-new-ellipse"></a>gimp_vectors_bezier_stroke_new_ellipse ()</h3>
-<a class="indexterm" name="id2680516"></a><pre class="programlisting">gint        gimp_vectors_bezier_stroke_new_ellipse
-                                            (gint32 vectors_ID,
-                                             gdouble x0,
-                                             gdouble y0,
-                                             gdouble radius_x,
-                                             gdouble radius_y,
-                                             gdouble angle);</pre>
+<a class="indexterm" name="id2689875"></a><pre class="programlisting">gint                gimp_vectors_bezier_stroke_new_ellipse
+                                                        (gint32 vectors_ID,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble radius_x,
+                                                         gdouble radius_y,
+                                                         gdouble angle);</pre>
 <p>
 Adds a bezier stroke describing an ellipse the vectors object.
 </p>
@@ -1896,17 +1886,17 @@ Adds a bezier stroke describing an ellipse the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680697"></a><h3>
+<a name="id2690059"></a><h3>
 <a name="gimp-vectors-bezier-stroke-new-moveto"></a>gimp_vectors_bezier_stroke_new_moveto ()</h3>
-<a class="indexterm" name="id2680714"></a><pre class="programlisting">gint        gimp_vectors_bezier_stroke_new_moveto
-                                            (gint32 vectors_ID,
-                                             gdouble x0,
-                                             gdouble y0);</pre>
+<a class="indexterm" name="id2690076"></a><pre class="programlisting">gint                gimp_vectors_bezier_stroke_new_moveto
+                                                        (gint32 vectors_ID,
+                                                         gdouble x0,
+                                                         gdouble y0);</pre>
 <p>
 Adds a bezier stroke with a single moveto to the vectors object.
 </p>
@@ -1941,7 +1931,7 @@ Adds a bezier stroke with a single moveto to the vectors object.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>

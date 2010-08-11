@@ -22,26 +22,26 @@
 
 
 
-<link linkend="void">void</link>        <link linkend="gimp-enums-init">gimp_enums_init</link>                 (void);
-enum        <link linkend="GimpBrushApplicationMode">GimpBrushApplicationMode</link>;
-enum        <link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link>;
-enum        <link linkend="GimpConvertDitherType">GimpConvertDitherType</link>;
-enum        <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link>;
-enum        <link linkend="GimpConvolutionType">GimpConvolutionType</link>;
-enum        <link linkend="GimpConvolveType">GimpConvolveType</link>;
-enum        <link linkend="GimpFillType">GimpFillType</link>;
-enum        <link linkend="GimpGradientSegmentColor">GimpGradientSegmentColor</link>;
-enum        <link linkend="GimpGradientSegmentType">GimpGradientSegmentType</link>;
-enum        <link linkend="GimpHistogramChannel">GimpHistogramChannel</link>;
-enum        <link linkend="GimpHueRange">GimpHueRange</link>;
-enum        <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link>;
-enum        <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link>;
-enum        <link linkend="GimpMergeType">GimpMergeType</link>;
-enum        <link linkend="GimpOffsetType">GimpOffsetType</link>;
-enum        <link linkend="GimpOrientationType">GimpOrientationType</link>;
-enum        <link linkend="GimpRotationType">GimpRotationType</link>;
-enum        <link linkend="GimpSelectCriterion">GimpSelectCriterion</link>;
-const <link linkend="gchar">gchar</link>** <link linkend="gimp-enums-get-type-names">gimp_enums_get_type_names</link>     (<link linkend="gint">gint</link> *n_type_names);
+<link linkend="void">void</link>                <link linkend="gimp-enums-init">gimp_enums_init</link>                     (void);
+enum                <link linkend="GimpBrushApplicationMode">GimpBrushApplicationMode</link>;
+enum                <link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link>;
+enum                <link linkend="GimpConvertDitherType">GimpConvertDitherType</link>;
+enum                <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link>;
+enum                <link linkend="GimpConvolutionType">GimpConvolutionType</link>;
+enum                <link linkend="GimpConvolveType">GimpConvolveType</link>;
+enum                <link linkend="GimpFillType">GimpFillType</link>;
+enum                <link linkend="GimpGradientSegmentColor">GimpGradientSegmentColor</link>;
+enum                <link linkend="GimpGradientSegmentType">GimpGradientSegmentType</link>;
+enum                <link linkend="GimpHistogramChannel">GimpHistogramChannel</link>;
+enum                <link linkend="GimpHueRange">GimpHueRange</link>;
+enum                <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link>;
+enum                <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link>;
+enum                <link linkend="GimpMergeType">GimpMergeType</link>;
+enum                <link linkend="GimpOffsetType">GimpOffsetType</link>;
+enum                <link linkend="GimpOrientationType">GimpOrientationType</link>;
+enum                <link linkend="GimpRotationType">GimpRotationType</link>;
+enum                <link linkend="GimpSelectCriterion">GimpSelectCriterion</link>;
+const <link linkend="gchar">gchar</link>**       <link linkend="gimp-enums-get-type-names">gimp_enums_get_type_names</link>           (<link linkend="gint">gint</link> *n_type_names);
 
 </synopsis>
 </refsynopsisdiv>
@@ -66,7 +66,7 @@ Enums and definitions.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-enums-init" role="function" condition="since:GIMP 2.4"/>gimp_enums_init ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_enums_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enums_init                 (void);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_enums_init</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_enums_init                     (void);</programlisting>
 <para>
 This function makes sure all the enum types are registered
 with the GObject type system. This is intended for use by
@@ -76,7 +76,7 @@ as the normal plug-in initialization code will handle it
 implicitly.</para>
 <para>
 
-</para><para>Since  GIMP 2.4
+</para><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="GimpBrushApplicationMode" role="enum"/>enum GimpBrushApplicationMode</title>
@@ -330,7 +330,7 @@ implicitly.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enums-get-type-names" role="function" condition="since:GIMP 2.2"/>gimp_enums_get_type_names ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_enums_get_type_names</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>** gimp_enums_get_type_names     (<link linkend="gint">gint</link> *n_type_names);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_enums_get_type_names</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>**       gimp_enums_get_type_names           (<link linkend="gint">gint</link> *n_type_names);</programlisting>
 <para>
 This function gives access to the list of enums registered by libgimp.
 The returned array is static and must not be modified.</para>
@@ -343,7 +343,7 @@ The returned array is static and must not be modified.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> an array with type names
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

@@ -22,16 +22,15 @@
 
 
 
-<link linkend="gchar">gchar</link>**     <link linkend="gimp-buffers-get-list">gimp_buffers_get_list</link>           (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_buffers);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-buffer-rename">gimp_buffer_rename</link>              (const <link linkend="gchar">gchar</link> *buffer_name,
-                                             const <link linkend="gchar">gchar</link> *new_name);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-buffer-delete">gimp_buffer_delete</link>              (const <link linkend="gchar">gchar</link> *buffer_name);
-<link linkend="gint">gint</link>        <link linkend="gimp-buffer-get-width">gimp_buffer_get_width</link>           (const <link linkend="gchar">gchar</link> *buffer_name);
-<link linkend="gint">gint</link>        <link linkend="gimp-buffer-get-height">gimp_buffer_get_height</link>          (const <link linkend="gchar">gchar</link> *buffer_name);
-<link linkend="gint">gint</link>        <link linkend="gimp-buffer-get-bytes">gimp_buffer_get_bytes</link>           (const <link linkend="gchar">gchar</link> *buffer_name);
-<link linkend="GimpImageBaseType">GimpImageBaseType</link> <link linkend="gimp-buffer-get-image-type">gimp_buffer_get_image_type</link>
-                                            (const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gchar">gchar</link>**             <link linkend="gimp-buffers-get-list">gimp_buffers_get_list</link>               (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_buffers);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-buffer-rename">gimp_buffer_rename</link>                  (const <link linkend="gchar">gchar</link> *buffer_name,
+                                                         const <link linkend="gchar">gchar</link> *new_name);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-buffer-delete">gimp_buffer_delete</link>                  (const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gint">gint</link>                <link linkend="gimp-buffer-get-width">gimp_buffer_get_width</link>               (const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gint">gint</link>                <link linkend="gimp-buffer-get-height">gimp_buffer_get_height</link>              (const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="gint">gint</link>                <link linkend="gimp-buffer-get-bytes">gimp_buffer_get_bytes</link>               (const <link linkend="gchar">gchar</link> *buffer_name);
+<link linkend="GimpImageBaseType">GimpImageBaseType</link>   <link linkend="gimp-buffer-get-image-type">gimp_buffer_get_image_type</link>          (const <link linkend="gchar">gchar</link> *buffer_name);
 </synopsis>
 </refsynopsisdiv>
 
@@ -54,8 +53,8 @@
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-buffers-get-list" role="function" condition="since:GIMP 2.4"/>gimp_buffers_get_list ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffers_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_buffers_get_list           (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_buffers);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffers_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_buffers_get_list               (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_buffers);</programlisting>
 <para>
 Retrieve a complete listing of the available buffers.
 </para>
@@ -74,12 +73,12 @@ buffers.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The list of buffer names.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-buffer-rename" role="function" condition="since:GIMP 2.4"/>gimp_buffer_rename ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffer_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_buffer_rename              (const <link linkend="gchar">gchar</link> *buffer_name,
-                                             const <link linkend="gchar">gchar</link> *new_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffer_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_buffer_rename                  (const <link linkend="gchar">gchar</link> *buffer_name,
+                                                         const <link linkend="gchar">gchar</link> *new_name);</programlisting>
 <para>
 Renames a named buffer.
 </para>
@@ -97,11 +96,11 @@ This procedure renames a named buffer.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-buffer-delete" role="function" condition="since:GIMP 2.4"/>gimp_buffer_delete ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffer_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_buffer_delete              (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffer_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_buffer_delete                  (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
 <para>
 Deletes a named buffer.
 </para>
@@ -116,11 +115,11 @@ This procedure deletes a named buffer.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-buffer-get-width" role="function" condition="since:GIMP 2.4"/>gimp_buffer_get_width ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_width</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_buffer_get_width           (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_width</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_buffer_get_width               (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
 <para>
 Retrieves the specified buffer's width.
 </para>
@@ -135,11 +134,11 @@ This procedure retrieves the specified named buffer's width.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The buffer width.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-buffer-get-height" role="function" condition="since:GIMP 2.4"/>gimp_buffer_get_height ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_height</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_buffer_get_height          (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_height</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_buffer_get_height              (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
 <para>
 Retrieves the specified buffer's height.
 </para>
@@ -154,11 +153,11 @@ This procedure retrieves the specified named buffer's height.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The buffer height.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-buffer-get-bytes" role="function" condition="since:GIMP 2.4"/>gimp_buffer_get_bytes ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_bytes</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_buffer_get_bytes           (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_bytes</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_buffer_get_bytes               (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
 <para>
 Retrieves the specified buffer's bytes.
 </para>
@@ -173,12 +172,11 @@ This procedure retrieves the specified named buffer's bytes.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The buffer bpp.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-buffer-get-image-type" role="function" condition="since:GIMP 2.4"/>gimp_buffer_get_image_type ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_image_type</primary></indexterm><programlisting><link linkend="GimpImageBaseType">GimpImageBaseType</link> gimp_buffer_get_image_type
-                                            (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_buffer_get_image_type</primary></indexterm><programlisting><link linkend="GimpImageBaseType">GimpImageBaseType</link>   gimp_buffer_get_image_type          (const <link linkend="gchar">gchar</link> *buffer_name);</programlisting>
 <para>
 Retrieves the specified buffer's image type.
 </para>
@@ -193,7 +191,7 @@ This procedure retrieves the specified named buffer's image type.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The buffer image type.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

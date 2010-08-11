@@ -22,14 +22,14 @@
 
 
 
-            <link linkend="GimpFileEntry-struct">GimpFileEntry</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-file-entry-new">gimp_file_entry_new</link>             (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gboolean">gboolean</link> dir_only,
-                                             <link linkend="gboolean">gboolean</link> check_valid);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-file-entry-get-filename">gimp_file_entry_get_filename</link>    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);
-<link linkend="void">void</link>        <link linkend="gimp-file-entry-set-filename">gimp_file_entry_set_filename</link>    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
-                                             const <link linkend="gchar">gchar</link> *filename);
+                    <link linkend="GimpFileEntry-struct">GimpFileEntry</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-file-entry-new">gimp_file_entry_new</link>                 (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gboolean">gboolean</link> dir_only,
+                                                         <link linkend="gboolean">gboolean</link> check_valid);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-file-entry-get-filename">gimp_file_entry_get_filename</link>        (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);
+<link linkend="void">void</link>                <link linkend="gimp-file-entry-set-filename">gimp_file_entry_set_filename</link>        (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
+                                                         const <link linkend="gchar">gchar</link> *filename);
 
 </synopsis>
 </refsynopsisdiv>
@@ -66,9 +66,7 @@ GimpFileEntry implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpFileEntry-filename-changed">filename-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpFileEntry">GimpFileEntry</link> *arg0,
-                                            <link linkend="gpointer">gpointer</link>       user_data)      : Run first
+  &quot;<link linkend="GimpFileEntry-filename-changed">filename-changed</link>&quot;                               : Run First
 </synopsis>
 </refsect1>
 
@@ -108,10 +106,10 @@ will be emitted.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-entry-new" role="function" condition="deprecated:"/>gimp_file_entry_new ()</title>
-<indexterm role="deprecated"><primary>gimp_file_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_file_entry_new             (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gboolean">gboolean</link> dir_only,
-                                             <link linkend="gboolean">gboolean</link> check_valid);</programlisting>
+<indexterm role="deprecated"><primary>gimp_file_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_file_entry_new                 (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gboolean">gboolean</link> dir_only,
+                                                         <link linkend="gboolean">gboolean</link> check_valid);</programlisting>
 <warning><para><literal>gimp_file_entry_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 You should use <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link> instead.</para>
@@ -136,7 +134,7 @@ You should use <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-entry-get-filename" role="function" condition="deprecated:"/>gimp_file_entry_get_filename ()</title>
-<indexterm role="deprecated"><primary>gimp_file_entry_get_filename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_file_entry_get_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);</programlisting>
+<indexterm role="deprecated"><primary>gimp_file_entry_get_filename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_file_entry_get_filename        (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);</programlisting>
 <warning><para><literal>gimp_file_entry_get_filename</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>
@@ -151,8 +149,8 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-file-entry-set-filename" role="function" condition="deprecated:"/>gimp_file_entry_set_filename ()</title>
-<indexterm role="deprecated"><primary>gimp_file_entry_set_filename</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_file_entry_set_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
-                                             const <link linkend="gchar">gchar</link> *filename);</programlisting>
+<indexterm role="deprecated"><primary>gimp_file_entry_set_filename</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_file_entry_set_filename        (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
+                                                         const <link linkend="gchar">gchar</link> *filename);</programlisting>
 <warning><para><literal>gimp_file_entry_set_filename</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 If you specified <parameter>check_valid</parameter> as <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
@@ -174,8 +172,8 @@ name.</para>
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpFileEntry-filename-changed"/>The &quot;filename-changed&quot; signal</title>
-<indexterm><primary>GimpFileEntry::filename-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFileEntry">GimpFileEntry</link> *arg0,
-                                            <link linkend="gpointer">gpointer</link>       user_data)      : Run first</programlisting>
+<indexterm><primary>GimpFileEntry::filename-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpFileEntry">GimpFileEntry</link> *arg0,
+                                                        <link linkend="gpointer">gpointer</link>       user_data)      : Run First</programlisting>
 <para>
 This signal is emitted whenever the user changes the filename.</para>
 <para>

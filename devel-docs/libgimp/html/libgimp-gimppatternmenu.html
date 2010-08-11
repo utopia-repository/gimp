@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimppatternmenu</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimppalettemenu.html" title="gimppalettemenu">
 <link rel="next" href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpProcBrowserDialog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2573907" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566394" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2581889" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2722739" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppatternmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2573907"></a><span class="refentrytitle">gimppatternmenu</span>
+<a name="id2566394"></a><span class="refentrytitle">gimppatternmenu</span>
 </h2>
 <p>gimppatternmenu &#8212; A widget for selecting patterns.</p>
 </td>
@@ -52,31 +52,30 @@
 
 
 
-GtkWidget*  <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</a>  (const gchar *title,
-                                             const gchar *pattern_name,
-                                             <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                             gpointer data);
-void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</a>
-                                            (GtkWidget *widget);
-void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</a>  (GtkWidget *widget,
-                                             const gchar *pattern_name);
+GtkWidget*          <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</a>      (const gchar *title,
+                                                         const gchar *pattern_name,
+                                                         <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
+                                                         gpointer data);
+void                <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</a>    (GtkWidget *widget);
+void                <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</a>      (GtkWidget *widget,
+                                                         const gchar *pattern_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2581889"></a><h2>Description</h2>
+<a name="id2722739"></a><h2>Description</h2>
 <p>
 A widget for selecting patterns.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712643"></a><h2>Details</h2>
+<a name="id2722753"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2712653"></a><h3>
+<a name="id2722764"></a><h3>
 <a name="gimp-pattern-select-widget-new"></a>gimp_pattern_select_widget_new ()</h3>
-<a class="indexterm" name="id2712667"></a><pre class="programlisting">GtkWidget*  gimp_pattern_select_widget_new  (const gchar *title,
-                                             const gchar *pattern_name,
-                                             <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                             gpointer data);</pre>
+<a class="indexterm" name="id2722777"></a><pre class="programlisting">GtkWidget*          gimp_pattern_select_widget_new      (const gchar *title,
+                                                         const gchar *pattern_name,
+                                                         <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
+                                                         gpointer data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_pattern_select_widget_new</code> is deprecated and should not be used in newly-written code.</p>
@@ -121,10 +120,9 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711622"></a><h3>
+<a name="id2722184"></a><h3>
 <a name="gimp-pattern-select-widget-close"></a>gimp_pattern_select_widget_close ()</h3>
-<a class="indexterm" name="id2711636"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
-                                            (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2714343"></a><pre class="programlisting">void                gimp_pattern_select_widget_close    (GtkWidget *widget);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_pattern_select_widget_close</code> is deprecated and should not be used in newly-written code.</p>
@@ -145,10 +143,10 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711703"></a><h3>
+<a name="id2714410"></a><h3>
 <a name="gimp-pattern-select-widget-set"></a>gimp_pattern_select_widget_set ()</h3>
-<a class="indexterm" name="id2711716"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (GtkWidget *widget,
-                                             const gchar *pattern_name);</pre>
+<a class="indexterm" name="id2714423"></a><pre class="programlisting">void                gimp_pattern_select_widget_set      (GtkWidget *widget,
+                                                         const gchar *pattern_name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_pattern_select_widget_set</code> is deprecated and should not be used in newly-written code.</p>

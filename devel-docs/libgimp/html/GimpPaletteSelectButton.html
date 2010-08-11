@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpPaletteSelectButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">
 <link rel="next" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,24 +31,24 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpPatternSelectButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587181" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2571307" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2691321" class="shortcut">Description</a>
+                  <a href="#id2700993" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2582688" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2576550" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2684499" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2694262" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2684519" class="shortcut">Properties</a>
+                  <a href="#id2694282" class="shortcut">Properties</a>
                   &#160;|&#160;
-                  <a href="#id2684560" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2694323" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpPaletteSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2587181"></a><span class="refentrytitle">GimpPaletteSelectButton</span>
+<a name="id2571307"></a><span class="refentrytitle">GimpPaletteSelectButton</span>
 </h2>
 <p>GimpPaletteSelectButton</p>
 </td>
@@ -60,19 +60,19 @@
 
 
 
-            <a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton-struct">GimpPaletteSelectButton</a>;
-GtkWidget*  <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-new">gimp_palette_select_button_new</a>  (const gchar *title,
-                                             const gchar *palette_name);
-const gchar* <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette">gimp_palette_select_button_get_palette</a>
-                                            (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button);
-void        <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-set-palette">gimp_palette_select_button_set_palette</a>
-                                            (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button,
-                                             const gchar *palette_name);
+                    <a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton-struct">GimpPaletteSelectButton</a>;
+GtkWidget*          <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-new">gimp_palette_select_button_new</a>      (const gchar *title,
+                                                         const gchar *palette_name);
+const gchar*        <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette">gimp_palette_select_button_get_palette</a>
+                                                        (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button);
+void                <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-set-palette">gimp_palette_select_button_set_palette</a>
+                                                        (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button,
+                                                         const gchar *palette_name);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2582688"></a><h2>Object Hierarchy</h2>
+<a name="id2576550"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -87,52 +87,48 @@ void        <a href="GimpPaletteSelectButton.html#gimp-palette-select-button-set
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2684499"></a><h2>Implemented Interfaces</h2>
+<a name="id2694262"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPaletteSelectButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2684519"></a><h2>Properties</h2>
+<a name="id2694282"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name">palette-name</a>"         gchararray            : Read / Write
-  "<a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title">title</a>"                gchararray            : Read / Write / Construct Only
+  "<a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name">palette-name</a>"             gchararray            : Read / Write
+  "<a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title">title</a>"                    gchararray            : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2684560"></a><h2>Signals</h2>
+<a name="id2694323"></a><h2>Signals</h2>
 <pre class="synopsis">
 
-"<a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton-palette-set">palette-set</a>"
-            void        user_function      (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *widget,
-                                            gchar                   *palette_name,
-                                            gboolean                 dialog_closing,
-                                            gpointer                 user_data)           : Run first
+  "<a href="GimpPaletteSelectButton.html#GimpPaletteSelectButton-palette-set">palette-set</a>"                                    : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691321"></a><h2>Description</h2>
+<a name="id2700993"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691337"></a><h2>Details</h2>
+<a name="id2701008"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2691347"></a><h3>
+<a name="id2701019"></a><h3>
 <a name="GimpPaletteSelectButton-struct"></a>GimpPaletteSelectButton</h3>
-<a class="indexterm" name="id2691358"></a><pre class="programlisting">typedef struct _GimpPaletteSelectButton GimpPaletteSelectButton;</pre>
+<a class="indexterm" name="id2701030"></a><pre class="programlisting">typedef struct _GimpPaletteSelectButton GimpPaletteSelectButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691374"></a><h3>
+<a name="id2701046"></a><h3>
 <a name="gimp-palette-select-button-new"></a>gimp_palette_select_button_new ()</h3>
-<a class="indexterm" name="id2691388"></a><pre class="programlisting">GtkWidget*  gimp_palette_select_button_new  (const gchar *title,
-                                             const gchar *palette_name);</pre>
+<a class="indexterm" name="id2701059"></a><pre class="programlisting">GtkWidget*          gimp_palette_select_button_new      (const gchar *title,
+                                                         const gchar *palette_name);</pre>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a palette.  This widget is suitable for placement in a table in a
@@ -161,15 +157,15 @@ plug-in dialog.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2695842"></a><h3>
+<a name="id2704914"></a><h3>
 <a name="gimp-palette-select-button-get-palette"></a>gimp_palette_select_button_get_palette ()</h3>
-<a class="indexterm" name="id2695855"></a><pre class="programlisting">const gchar* gimp_palette_select_button_get_palette
-                                            (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button);</pre>
+<a class="indexterm" name="id2704927"></a><pre class="programlisting">const gchar*        gimp_palette_select_button_get_palette
+                                                        (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button);</pre>
 <p>
 Retrieves the name of currently selected palette.</p>
 <p>
@@ -191,16 +187,16 @@ Retrieves the name of currently selected palette.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2695930"></a><h3>
+<a name="id2705003"></a><h3>
 <a name="gimp-palette-select-button-set-palette"></a>gimp_palette_select_button_set_palette ()</h3>
-<a class="indexterm" name="id2695945"></a><pre class="programlisting">void        gimp_palette_select_button_set_palette
-                                            (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button,
-                                             const gchar *palette_name);</pre>
+<a class="indexterm" name="id2705019"></a><pre class="programlisting">void                gimp_palette_select_button_set_palette
+                                                        (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button,
+                                                         const gchar *palette_name);</pre>
 <p>
 Sets the current palette for the palette select button.</p>
 <p>
@@ -221,16 +217,16 @@ Sets the current palette for the palette select button.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.4
+<p class="since">Since  GIMP 2.4
 </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2696038"></a><h2>Property Details</h2>
+<a name="id2705114"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2693613"></a><h3>
+<a name="id2705124"></a><h3>
 <a name="GimpPaletteSelectButton--palette-name"></a>The "<code class="literal">palette-name</code>" property</h3>
-<a class="indexterm" name="id2693628"></a><pre class="programlisting">  "palette-name"         gchararray            : Read / Write</pre>
+<a class="indexterm" name="id2705140"></a><pre class="programlisting">  "palette-name"             gchararray            : Read / Write</pre>
 <p>
 The name of the currently selected palette.</p>
 <p>
@@ -242,9 +238,9 @@ The name of the currently selected palette.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2693662"></a><h3>
+<a name="id2693918"></a><h3>
 <a name="GimpPaletteSelectButton--title"></a>The "<code class="literal">title</code>" property</h3>
-<a class="indexterm" name="id2693676"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2693932"></a><pre class="programlisting">  "title"                    gchararray            : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the palette selection popup dialog.</p>
 <p>
@@ -256,14 +252,14 @@ The title to be used for the palette selection popup dialog.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693713"></a><h2>Signal Details</h2>
+<a name="id2693968"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2693723"></a><h3>
+<a name="id2693978"></a><h3>
 <a name="GimpPaletteSelectButton-palette-set"></a>The "palette-set" signal</h3>
-<a class="indexterm" name="id2693730"></a><pre class="programlisting">void        user_function                  (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *widget,
-                                            gchar                   *palette_name,
-                                            gboolean                 dialog_closing,
-                                            gpointer                 user_data)           : Run first</pre>
+<a class="indexterm" name="id2693986"></a><pre class="programlisting">void                user_function                      (<a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *widget,
+                                                        gchar                   *palette_name,
+                                                        gboolean                 dialog_closing,
+                                                        gpointer                 user_data)           : Run First</pre>
 <p>
 The ::palette-set signal is emitted when the user selects a palette.</p>
 <p>

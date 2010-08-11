@@ -22,14 +22,13 @@
 
 
 
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</link>  (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *pattern_name,
-                                             <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>        <link linkend="gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</link>
-                                            (<link linkend="GtkWidget">GtkWidget</link> *widget);
-<link linkend="void">void</link>        <link linkend="gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</link>  (<link linkend="GtkWidget">GtkWidget</link> *widget,
-                                             const <link linkend="gchar">gchar</link> *pattern_name);
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</link>      (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *pattern_name,
+                                                         <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>                <link linkend="gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</link>    (<link linkend="GtkWidget">GtkWidget</link> *widget);
+<link linkend="void">void</link>                <link linkend="gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</link>      (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                                         const <link linkend="gchar">gchar</link> *pattern_name);
 </synopsis>
 </refsynopsisdiv>
 
@@ -52,10 +51,10 @@ A widget for selecting patterns.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-pattern-select-widget-new" role="function" condition="deprecated:"/>gimp_pattern_select_widget_new ()</title>
-<indexterm role="deprecated"><primary>gimp_pattern_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_pattern_select_widget_new  (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *pattern_name,
-                                             <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm role="deprecated"><primary>gimp_pattern_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_pattern_select_widget_new      (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *pattern_name,
+                                                         <link linkend="GimpRunPatternCallback">GimpRunPatternCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <warning><para><literal>gimp_pattern_select_widget_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that completely controls the selection of
@@ -81,8 +80,7 @@ plug-in dialog.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pattern-select-widget-close" role="function" condition="deprecated:"/>gimp_pattern_select_widget_close ()</title>
-<indexterm role="deprecated"><primary>gimp_pattern_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pattern_select_widget_close
-                                            (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<indexterm role="deprecated"><primary>gimp_pattern_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_widget_close    (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <warning><para><literal>gimp_pattern_select_widget_close</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Closes the popup window associated with <parameter>widget</parameter>.</para>
@@ -95,8 +93,8 @@ Closes the popup window associated with <parameter>widget</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pattern-select-widget-set" role="function" condition="deprecated:"/>gimp_pattern_select_widget_set ()</title>
-<indexterm role="deprecated"><primary>gimp_pattern_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pattern_select_widget_set  (<link linkend="GtkWidget">GtkWidget</link> *widget,
-                                             const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
+<indexterm role="deprecated"><primary>gimp_pattern_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_widget_set      (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                                         const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
 <warning><para><literal>gimp_pattern_select_widget_set</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Sets the current pattern for the pattern select widget.  Calls the

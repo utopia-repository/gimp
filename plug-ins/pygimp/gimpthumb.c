@@ -24,7 +24,7 @@ static PyTypeObject *_PyGdkPixbuf_Type;
 
 
 /* ---------- forward type declarations ---------- */
-PyTypeObject PyGimpThumbnail_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpThumbnail_Type;
 
 #line 30 "gimpthumb.c"
 
@@ -37,19 +37,20 @@ _wrap_gimp_thumbnail_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpthumb.Thumbnail.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpthumb.Thumbnail.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpthumb.Thumbnail object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_thumbnail_set_uri(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -57,9 +58,11 @@ _wrap_gimp_thumbnail_set_uri(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "uri", NULL };
     char *uri;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpThumbnail.set_uri", kwlist, &uri))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.set_uri", kwlist, &uri))
         return NULL;
+    
     gimp_thumbnail_set_uri(GIMP_THUMBNAIL(self->obj), uri);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -72,9 +75,11 @@ _wrap_gimp_thumbnail_set_filename(PyGObject *self, PyObject *args, PyObject *kwa
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpThumbnail.set_filename", kwlist, &filename))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.set_filename", kwlist, &filename))
         return NULL;
+    
     ret = gimp_thumbnail_set_filename(GIMP_THUMBNAIL(self->obj), filename, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -89,9 +94,11 @@ _wrap_gimp_thumbnail_set_from_thumb(PyGObject *self, PyObject *args, PyObject *k
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpThumbnail.set_from_thumb", kwlist, &filename))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.set_from_thumb", kwlist, &filename))
         return NULL;
+    
     ret = gimp_thumbnail_set_from_thumb(GIMP_THUMBNAIL(self->obj), filename, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -103,7 +110,9 @@ _wrap_gimp_thumbnail_peek_image(PyGObject *self)
 {
     gint ret;
 
+    
     ret = gimp_thumbnail_peek_image(GIMP_THUMBNAIL(self->obj));
+    
     return pyg_enum_from_gtype(GIMP_TYPE_THUMB_STATE, ret);
 }
 
@@ -115,11 +124,13 @@ _wrap_gimp_thumbnail_peek_thumb(PyGObject *self, PyObject *args, PyObject *kwarg
     gint ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpThumbnail.peek_thumb", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.peek_thumb", kwlist, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumbnail_peek_thumb(GIMP_THUMBNAIL(self->obj), size);
+    
     return pyg_enum_from_gtype(GIMP_TYPE_THUMB_STATE, ret);
 }
 
@@ -131,11 +142,13 @@ _wrap_gimp_thumbnail_check_thumb(PyGObject *self, PyObject *args, PyObject *kwar
     gint ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpThumbnail.check_thumb", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.check_thumb", kwlist, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumbnail_check_thumb(GIMP_THUMBNAIL(self->obj), size);
+    
     return pyg_enum_from_gtype(GIMP_TYPE_THUMB_STATE, ret);
 }
 
@@ -148,11 +161,13 @@ _wrap_gimp_thumbnail_load_thumb(PyGObject *self, PyObject *args, PyObject *kwarg
     GError *error = NULL;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpThumbnail.load_thumb", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.load_thumb", kwlist, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumbnail_load_thumb(GIMP_THUMBNAIL(self->obj), size, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     /* pygobject_new handles NULL checking */
@@ -168,9 +183,11 @@ _wrap_gimp_thumbnail_save_thumb(PyGObject *self, PyObject *args, PyObject *kwarg
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!s:GimpThumbnail.save_thumb", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!s:GimpThumbnail.save_thumb", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
         return NULL;
+    
     ret = gimp_thumbnail_save_thumb(GIMP_THUMBNAIL(self->obj), GDK_PIXBUF(pixbuf->obj), software, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -186,9 +203,11 @@ _wrap_gimp_thumbnail_save_thumb_local(PyGObject *self, PyObject *args, PyObject 
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!s:GimpThumbnail.save_thumb_local", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!s:GimpThumbnail.save_thumb_local", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
         return NULL;
+    
     ret = gimp_thumbnail_save_thumb_local(GIMP_THUMBNAIL(self->obj), GDK_PIXBUF(pixbuf->obj), software, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -203,9 +222,11 @@ _wrap_gimp_thumbnail_save_failure(PyGObject *self, PyObject *args, PyObject *kwa
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpThumbnail.save_failure", kwlist, &software))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.save_failure", kwlist, &software))
         return NULL;
+    
     ret = gimp_thumbnail_save_failure(GIMP_THUMBNAIL(self->obj), software, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -215,7 +236,9 @@ _wrap_gimp_thumbnail_save_failure(PyGObject *self, PyObject *args, PyObject *kwa
 static PyObject *
 _wrap_gimp_thumbnail_delete_failure(PyGObject *self)
 {
+    
     gimp_thumbnail_delete_failure(GIMP_THUMBNAIL(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -227,11 +250,13 @@ _wrap_gimp_thumbnail_delete_others(PyGObject *self, PyObject *args, PyObject *kw
     PyObject *py_size = NULL;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpThumbnail.delete_others", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.delete_others", kwlist, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     gimp_thumbnail_delete_others(GIMP_THUMBNAIL(self->obj), size);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -241,67 +266,82 @@ _wrap_gimp_thumbnail_has_failed(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_thumbnail_has_failed(GIMP_THUMBNAIL(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
 
-static PyMethodDef _PyGimpThumbnail_methods[] = {
-    { "set_uri", (PyCFunction)_wrap_gimp_thumbnail_set_uri, METH_VARARGS|METH_KEYWORDS },
-    { "set_filename", (PyCFunction)_wrap_gimp_thumbnail_set_filename, METH_VARARGS|METH_KEYWORDS },
-    { "set_from_thumb", (PyCFunction)_wrap_gimp_thumbnail_set_from_thumb, METH_VARARGS|METH_KEYWORDS },
-    { "peek_image", (PyCFunction)_wrap_gimp_thumbnail_peek_image, METH_NOARGS },
-    { "peek_thumb", (PyCFunction)_wrap_gimp_thumbnail_peek_thumb, METH_VARARGS|METH_KEYWORDS },
-    { "check_thumb", (PyCFunction)_wrap_gimp_thumbnail_check_thumb, METH_VARARGS|METH_KEYWORDS },
-    { "load_thumb", (PyCFunction)_wrap_gimp_thumbnail_load_thumb, METH_VARARGS|METH_KEYWORDS },
-    { "save_thumb", (PyCFunction)_wrap_gimp_thumbnail_save_thumb, METH_VARARGS|METH_KEYWORDS },
-    { "save_thumb_local", (PyCFunction)_wrap_gimp_thumbnail_save_thumb_local, METH_VARARGS|METH_KEYWORDS },
-    { "save_failure", (PyCFunction)_wrap_gimp_thumbnail_save_failure, METH_VARARGS|METH_KEYWORDS },
-    { "delete_failure", (PyCFunction)_wrap_gimp_thumbnail_delete_failure, METH_NOARGS },
-    { "delete_others", (PyCFunction)_wrap_gimp_thumbnail_delete_others, METH_VARARGS|METH_KEYWORDS },
-    { "has_failed", (PyCFunction)_wrap_gimp_thumbnail_has_failed, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpThumbnail_methods[] = {
+    { "set_uri", (PyCFunction)_wrap_gimp_thumbnail_set_uri, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_filename", (PyCFunction)_wrap_gimp_thumbnail_set_filename, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_from_thumb", (PyCFunction)_wrap_gimp_thumbnail_set_from_thumb, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "peek_image", (PyCFunction)_wrap_gimp_thumbnail_peek_image, METH_NOARGS,
+      NULL },
+    { "peek_thumb", (PyCFunction)_wrap_gimp_thumbnail_peek_thumb, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "check_thumb", (PyCFunction)_wrap_gimp_thumbnail_check_thumb, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "load_thumb", (PyCFunction)_wrap_gimp_thumbnail_load_thumb, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "save_thumb", (PyCFunction)_wrap_gimp_thumbnail_save_thumb, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "save_thumb_local", (PyCFunction)_wrap_gimp_thumbnail_save_thumb_local, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "save_failure", (PyCFunction)_wrap_gimp_thumbnail_save_failure, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "delete_failure", (PyCFunction)_wrap_gimp_thumbnail_delete_failure, METH_NOARGS,
+      NULL },
+    { "delete_others", (PyCFunction)_wrap_gimp_thumbnail_delete_others, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "has_failed", (PyCFunction)_wrap_gimp_thumbnail_has_failed, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpThumbnail_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpThumbnail_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpthumb.Thumbnail",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpthumb.Thumbnail",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpThumbnail_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpThumbnail_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_thumbnail_new,		/* tp_init */
+    (initproc)_wrap_gimp_thumbnail_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -327,7 +367,7 @@ _wrap_gimp_thumb_init(PyObject *self, PyObject *args, PyObject *kwargs)
 
     return PyBool_FromLong(gimp_thumb_init(creator, thumb_basedir));
 }
-#line 331 "gimpthumb.c"
+#line 371 "gimpthumb.c"
 
 
 #line 37 "gimpthumb.override"
@@ -359,7 +399,7 @@ _wrap_gimp_thumb_find_thumb(PyGObject *self, PyObject *args, PyObject *kwargs)
     g_free(ret);
     return py_ret;
 }
-#line 363 "gimpthumb.c"
+#line 403 "gimpthumb.c"
 
 
 #line 67 "gimpthumb.override"
@@ -395,7 +435,7 @@ _wrap_gimp_thumb_file_test(PyGObject *self, PyObject *args, PyObject *kwargs)
                          PyLong_FromLongLong(mtime),
                          PyLong_FromLongLong(size));
 }
-#line 399 "gimpthumb.c"
+#line 439 "gimpthumb.c"
 
 
 static PyObject *
@@ -407,11 +447,13 @@ _wrap_gimp_thumb_name_from_uri(PyObject *self, PyObject *args, PyObject *kwargs)
     gchar *ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO:name_from_uri", kwlist, &uri, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:name_from_uri", kwlist, &uri, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumb_name_from_uri(uri, size);
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -429,11 +471,13 @@ _wrap_gimp_thumb_get_thumb_dir(PyObject *self, PyObject *args, PyObject *kwargs)
     const gchar *ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:get_thumb_dir", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:get_thumb_dir", kwlist, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumb_get_thumb_dir(size);
+    
     if (ret)
         return PyString_FromString(ret);
     Py_INCREF(Py_None);
@@ -449,11 +493,13 @@ _wrap_gimp_thumb_ensure_thumb_dir(PyObject *self, PyObject *args, PyObject *kwar
     GError *error = NULL;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:ensure_thumb_dir", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:ensure_thumb_dir", kwlist, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumb_ensure_thumb_dir(size, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -466,9 +512,11 @@ _wrap_gimp_thumbs_delete_for_uri(PyObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "uri", NULL };
     char *uri;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:delete_for_uri", kwlist, &uri))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:delete_for_uri", kwlist, &uri))
         return NULL;
+    
     gimp_thumbs_delete_for_uri(uri);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -482,11 +530,13 @@ _wrap_gimp_thumb_name_from_uri_local(PyObject *self, PyObject *args, PyObject *k
     gchar *ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO:name_from_uri_local", kwlist, &uri, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:name_from_uri_local", kwlist, &uri, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumb_name_from_uri_local(uri, size);
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -505,11 +555,13 @@ _wrap_gimp_thumb_get_thumb_dir_local(PyObject *self, PyObject *args, PyObject *k
     gchar *ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO:get_thumb_dir_local", kwlist, &dirname, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:get_thumb_dir_local", kwlist, &dirname, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumb_get_thumb_dir_local(dirname, size);
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -529,11 +581,13 @@ _wrap_gimp_thumb_ensure_thumb_dir_local(PyObject *self, PyObject *args, PyObject
     GError *error = NULL;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO:ensure_thumb_dir_local", kwlist, &dirname, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:ensure_thumb_dir_local", kwlist, &dirname, &py_size))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gint *)&size))
+    if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
+    
     ret = gimp_thumb_ensure_thumb_dir_local(dirname, size, &error);
+    
     if (pyg_error_check(&error))
         return NULL;
     return PyBool_FromLong(ret);
@@ -546,26 +600,39 @@ _wrap_gimp_thumbs_delete_for_uri_local(PyObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "uri", NULL };
     char *uri;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:delete_for_uri_local", kwlist, &uri))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:delete_for_uri_local", kwlist, &uri))
         return NULL;
+    
     gimp_thumbs_delete_for_uri_local(uri);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-PyMethodDef gimpthumb_functions[] = {
-    { "init", (PyCFunction)_wrap_gimp_thumb_init, METH_VARARGS|METH_KEYWORDS },
-    { "find_thumb", (PyCFunction)_wrap_gimp_thumb_find_thumb, METH_VARARGS|METH_KEYWORDS },
-    { "file_test", (PyCFunction)_wrap_gimp_thumb_file_test, METH_VARARGS|METH_KEYWORDS },
-    { "name_from_uri", (PyCFunction)_wrap_gimp_thumb_name_from_uri, METH_VARARGS|METH_KEYWORDS },
-    { "get_thumb_dir", (PyCFunction)_wrap_gimp_thumb_get_thumb_dir, METH_VARARGS|METH_KEYWORDS },
-    { "ensure_thumb_dir", (PyCFunction)_wrap_gimp_thumb_ensure_thumb_dir, METH_VARARGS|METH_KEYWORDS },
-    { "delete_for_uri", (PyCFunction)_wrap_gimp_thumbs_delete_for_uri, METH_VARARGS|METH_KEYWORDS },
-    { "name_from_uri_local", (PyCFunction)_wrap_gimp_thumb_name_from_uri_local, METH_VARARGS|METH_KEYWORDS },
-    { "get_thumb_dir_local", (PyCFunction)_wrap_gimp_thumb_get_thumb_dir_local, METH_VARARGS|METH_KEYWORDS },
-    { "ensure_thumb_dir_local", (PyCFunction)_wrap_gimp_thumb_ensure_thumb_dir_local, METH_VARARGS|METH_KEYWORDS },
-    { "delete_for_uri_local", (PyCFunction)_wrap_gimp_thumbs_delete_for_uri_local, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+const PyMethodDef gimpthumb_functions[] = {
+    { "init", (PyCFunction)_wrap_gimp_thumb_init, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "find_thumb", (PyCFunction)_wrap_gimp_thumb_find_thumb, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "file_test", (PyCFunction)_wrap_gimp_thumb_file_test, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "name_from_uri", (PyCFunction)_wrap_gimp_thumb_name_from_uri, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_thumb_dir", (PyCFunction)_wrap_gimp_thumb_get_thumb_dir, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "ensure_thumb_dir", (PyCFunction)_wrap_gimp_thumb_ensure_thumb_dir, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "delete_for_uri", (PyCFunction)_wrap_gimp_thumbs_delete_for_uri, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "name_from_uri_local", (PyCFunction)_wrap_gimp_thumb_name_from_uri_local, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_thumb_dir_local", (PyCFunction)_wrap_gimp_thumb_get_thumb_dir_local, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "ensure_thumb_dir_local", (PyCFunction)_wrap_gimp_thumb_ensure_thumb_dir_local, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "delete_for_uri_local", (PyCFunction)_wrap_gimp_thumbs_delete_for_uri_local, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 
@@ -589,36 +656,32 @@ gimpthumb_register_classes(PyObject *d)
     PyObject *module;
 
     if ((module = PyImport_ImportModule("gobject")) != NULL) {
-        PyObject *moddict = PyModule_GetDict(module);
-
-        _PyGObject_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "GObject");
+        _PyGObject_Type = (PyTypeObject *)PyObject_GetAttrString(module, "GObject");
         if (_PyGObject_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name GObject from gobject");
-            return;
+            return ;
         }
     } else {
         PyErr_SetString(PyExc_ImportError,
             "could not import gobject");
-        return;
+        return ;
     }
     if ((module = PyImport_ImportModule("gtk.gdk")) != NULL) {
-        PyObject *moddict = PyModule_GetDict(module);
-
-        _PyGdkPixbuf_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Pixbuf");
+        _PyGdkPixbuf_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Pixbuf");
         if (_PyGdkPixbuf_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Pixbuf from gtk.gdk");
-            return;
+            return ;
         }
     } else {
         PyErr_SetString(PyExc_ImportError,
             "could not import gtk.gdk");
-        return;
+        return ;
     }
 
 
-#line 622 "gimpthumb.c"
+#line 685 "gimpthumb.c"
     pygobject_register_class(d, "GimpThumbnail", GIMP_TYPE_THUMBNAIL, &PyGimpThumbnail_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_THUMBNAIL);
 }

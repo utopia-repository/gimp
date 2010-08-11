@@ -84,56 +84,56 @@ static PyTypeObject *_PyGtkCellRendererToggle_Type;
 
 
 /* ---------- forward type declarations ---------- */
-PyTypeObject PyGimpBrowser_Type;
-PyTypeObject PyGimpButton_Type;
-PyTypeObject PyGimpCellRendererColor_Type;
-PyTypeObject PyGimpCellRendererToggle_Type;
-PyTypeObject PyGimpChainButton_Type;
-PyTypeObject PyGimpColorArea_Type;
-PyTypeObject PyGimpColorButton_Type;
-PyTypeObject PyGimpColorDisplay_Type;
-PyTypeObject PyGimpColorDisplayStack_Type;
-PyTypeObject PyGimpColorHexEntry_Type;
-PyTypeObject PyGimpColorScale_Type;
-PyTypeObject PyGimpColorSelection_Type;
-PyTypeObject PyGimpColorSelector_Type;
-PyTypeObject PyGimpColorNotebook_Type;
-PyTypeObject PyGimpDialog_Type;
-PyTypeObject PyGimpEnumLabel_Type;
-PyTypeObject PyGimpFrame_Type;
-PyTypeObject PyGimpHintBox_Type;
-PyTypeObject PyGimpIntComboBox_Type;
-PyTypeObject PyGimpEnumComboBox_Type;
-PyTypeObject PyGimpIntStore_Type;
-PyTypeObject PyGimpEnumStore_Type;
-PyTypeObject PyGimpMemsizeEntry_Type;
-PyTypeObject PyGimpOffsetArea_Type;
-PyTypeObject PyGimpPageSelector_Type;
-PyTypeObject PyGimpPathEditor_Type;
-PyTypeObject PyGimpPickButton_Type;
-PyTypeObject PyGimpPreview_Type;
-PyTypeObject PyGimpAspectPreview_Type;
-PyTypeObject PyGimpPreviewArea_Type;
-PyTypeObject PyGimpProcBrowserDialog_Type;
-PyTypeObject PyGimpProgressBar_Type;
-PyTypeObject PyGimpResolutionEntry_Type;
-PyTypeObject PyGimpScrolledPreview_Type;
-PyTypeObject PyGimpDrawablePreview_Type;
-PyTypeObject PyGimpSelectButton_Type;
-PyTypeObject PyGimpPatternSelectButton_Type;
-PyTypeObject PyGimpPaletteSelectButton_Type;
-PyTypeObject PyGimpGradientSelectButton_Type;
-PyTypeObject PyGimpFontSelectButton_Type;
-PyTypeObject PyGimpBrushSelectButton_Type;
-PyTypeObject PyGimpSizeEntry_Type;
-PyTypeObject PyGimpUnitMenu_Type;
-PyTypeObject PyGimpZoomModel_Type;
-PyTypeObject PyGimpZoomPreview_Type;
-PyTypeObject PyGimpDrawableComboBox_Type;
-PyTypeObject PyGimpChannelComboBox_Type;
-PyTypeObject PyGimpLayerComboBox_Type;
-PyTypeObject PyGimpVectorsComboBox_Type;
-PyTypeObject PyGimpImageComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpBrowser_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpCellRendererColor_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpCellRendererToggle_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpChainButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorArea_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorDisplay_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorDisplayStack_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorHexEntry_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorScale_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorSelection_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorSelector_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpColorNotebook_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpDialog_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpEnumLabel_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpFrame_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpHintBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpIntComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpEnumComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpIntStore_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpEnumStore_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpMemsizeEntry_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpOffsetArea_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPageSelector_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPathEditor_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPickButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPreview_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpAspectPreview_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPreviewArea_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpProcBrowserDialog_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpProgressBar_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpResolutionEntry_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpScrolledPreview_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpDrawablePreview_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpSelectButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPatternSelectButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpPaletteSelectButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpGradientSelectButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpFontSelectButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpBrushSelectButton_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpSizeEntry_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpUnitMenu_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpZoomModel_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpZoomPreview_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpDrawableComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpChannelComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpLayerComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpVectorsComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpImageComboBox_Type;
 
 #line 139 "gimpui.c"
 
@@ -146,19 +146,20 @@ _wrap_gimp_browser_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.Browser.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.Browser.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.Browser object");
         return -1;
     }
-
     return 0;
 }
-
 
 #line 1133 "gimpui.override"
 static PyObject *
@@ -217,7 +218,7 @@ _wrap_gimp_browser_add_search_types(PyGObject *self, PyObject *args, PyObject *k
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 221 "gimpui.c"
+#line 222 "gimpui.c"
 
 
 static PyObject *
@@ -226,9 +227,11 @@ _wrap_gimp_browser_set_widget(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "widget", NULL };
     PyGObject *widget;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpBrowser.set_widget", kwlist, &PyGtkWidget_Type, &widget))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpBrowser.set_widget", kwlist, &PyGtkWidget_Type, &widget))
         return NULL;
+    
     gimp_browser_set_widget(GIMP_BROWSER(self->obj), GTK_WIDGET(widget->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -239,59 +242,64 @@ _wrap_gimp_browser_show_message(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "message", NULL };
     char *message;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpBrowser.show_message", kwlist, &message))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpBrowser.show_message", kwlist, &message))
         return NULL;
+    
     gimp_browser_show_message(GIMP_BROWSER(self->obj), message);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpBrowser_methods[] = {
-    { "add_search_types", (PyCFunction)_wrap_gimp_browser_add_search_types, METH_VARARGS|METH_KEYWORDS },
-    { "set_widget", (PyCFunction)_wrap_gimp_browser_set_widget, METH_VARARGS|METH_KEYWORDS },
-    { "show_message", (PyCFunction)_wrap_gimp_browser_show_message, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpBrowser_methods[] = {
+    { "add_search_types", (PyCFunction)_wrap_gimp_browser_add_search_types, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_widget", (PyCFunction)_wrap_gimp_browser_set_widget, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "show_message", (PyCFunction)_wrap_gimp_browser_show_message, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpBrowser_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpBrowser_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.Browser",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.Browser",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpBrowser_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpBrowser_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_browser_new,		/* tp_init */
+    (initproc)_wrap_gimp_browser_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -307,19 +315,20 @@ _wrap_gimp_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.Button.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.Button.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.Button object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_button_extended_clicked(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -328,59 +337,62 @@ _wrap_gimp_button_extended_clicked(PyGObject *self, PyObject *args, PyObject *kw
     PyObject *py_state = NULL;
     GdkModifierType state;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpButton.extended_clicked", kwlist, &py_state))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpButton.extended_clicked", kwlist, &py_state))
         return NULL;
-    if (pyg_flags_get_value(GDK_TYPE_MODIFIER_TYPE, py_state, (gint *)&state))
+    if (pyg_flags_get_value(GDK_TYPE_MODIFIER_TYPE, py_state, (gpointer)&state))
         return NULL;
+    
     gimp_button_extended_clicked(GIMP_BUTTON(self->obj), state);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpButton_methods[] = {
-    { "extended_clicked", (PyCFunction)_wrap_gimp_button_extended_clicked, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpButton_methods[] = {
+    { "extended_clicked", (PyCFunction)_wrap_gimp_button_extended_clicked, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.Button",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.Button",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -396,59 +408,60 @@ _wrap_gimp_cell_renderer_color_new(PyGObject *self, PyObject *args, PyObject *kw
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.CellRendererColor.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.CellRendererColor.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.CellRendererColor object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpCellRendererColor_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpCellRendererColor_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.CellRendererColor",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.CellRendererColor",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_cell_renderer_color_new,		/* tp_init */
+    (initproc)_wrap_gimp_cell_renderer_color_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -469,25 +482,25 @@ _wrap_gimp_cell_renderer_toggle_new(PyGObject *self, PyObject *args, PyObject *k
     char *prop_names[] = {"stock-id", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|O:gimpui.CellRendererToggle.__init__" , arg_names , &parsed_args[0] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|O:gimpui.CellRendererToggle.__init__" , arg_names , &parsed_args[0]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*1);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.CellRendererToggle object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_cell_renderer_toggle_clicked(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -497,59 +510,62 @@ _wrap_gimp_cell_renderer_toggle_clicked(PyGObject *self, PyObject *args, PyObjec
     PyObject *py_state = NULL;
     GdkModifierType state;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO:GimpCellRendererToggle.clicked", kwlist, &path, &py_state))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:GimpCellRendererToggle.clicked", kwlist, &path, &py_state))
         return NULL;
-    if (pyg_flags_get_value(GDK_TYPE_MODIFIER_TYPE, py_state, (gint *)&state))
+    if (pyg_flags_get_value(GDK_TYPE_MODIFIER_TYPE, py_state, (gpointer)&state))
         return NULL;
+    
     gimp_cell_renderer_toggle_clicked(GIMP_CELL_RENDERER_TOGGLE(self->obj), path, state);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpCellRendererToggle_methods[] = {
-    { "clicked", (PyCFunction)_wrap_gimp_cell_renderer_toggle_clicked, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpCellRendererToggle_methods[] = {
+    { "clicked", (PyCFunction)_wrap_gimp_cell_renderer_toggle_clicked, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpCellRendererToggle_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpCellRendererToggle_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.CellRendererToggle",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.CellRendererToggle",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpCellRendererToggle_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpCellRendererToggle_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_cell_renderer_toggle_new,		/* tp_init */
+    (initproc)_wrap_gimp_cell_renderer_toggle_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -560,7 +576,7 @@ PyTypeObject PyGimpCellRendererToggle_Type = {
 
 /* ----------- GimpChainButton ----------- */
 
-static int
+ static int
 _wrap_gimp_chain_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -570,25 +586,25 @@ _wrap_gimp_chain_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     char *prop_names[] = {"position", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "O:gimpui.ChainButton.__init__" , arg_names , &parsed_args[0] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:gimpui.ChainButton.__init__" , arg_names , &parsed_args[0]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*1);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ChainButton object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_chain_button_set_active(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -596,9 +612,11 @@ _wrap_gimp_chain_button_set_active(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "active", NULL };
     int active;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpChainButton.set_active", kwlist, &active))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpChainButton.set_active", kwlist, &active))
         return NULL;
+    
     gimp_chain_button_set_active(GIMP_CHAIN_BUTTON(self->obj), active);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -608,56 +626,60 @@ _wrap_gimp_chain_button_get_active(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_chain_button_get_active(GIMP_CHAIN_BUTTON(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
 
-static PyMethodDef _PyGimpChainButton_methods[] = {
-    { "set_active", (PyCFunction)_wrap_gimp_chain_button_set_active, METH_VARARGS|METH_KEYWORDS },
-    { "get_active", (PyCFunction)_wrap_gimp_chain_button_get_active, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpChainButton_methods[] = {
+    { "set_active", (PyCFunction)_wrap_gimp_chain_button_set_active, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_active", (PyCFunction)_wrap_gimp_chain_button_get_active, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpChainButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpChainButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ChainButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ChainButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpChainButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpChainButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_chain_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_chain_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -668,7 +690,7 @@ PyTypeObject PyGimpChainButton_Type = {
 
 /* ----------- GimpColorArea ----------- */
 
-static int
+ static int
 _wrap_gimp_color_area_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -678,25 +700,25 @@ _wrap_gimp_color_area_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     char *prop_names[] = {"color", "type", "drag-mask", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|OOO:gimpui.ColorArea.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] , &parsed_args[2] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OOO:gimpui.ColorArea.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] , &parsed_args[2]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*3);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ColorArea object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_color_area_set_color(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -705,7 +727,7 @@ _wrap_gimp_color_area_set_color(PyGObject *self, PyObject *args, PyObject *kwarg
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorArea.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorArea.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -713,7 +735,9 @@ _wrap_gimp_color_area_set_color(PyGObject *self, PyObject *args, PyObject *kwarg
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_area_set_color(GIMP_COLOR_AREA(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -725,7 +749,7 @@ _wrap_gimp_color_area_get_color(PyGObject *self, PyObject *args, PyObject *kwarg
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorArea.get_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorArea.get_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -733,7 +757,9 @@ _wrap_gimp_color_area_get_color(PyGObject *self, PyObject *args, PyObject *kwarg
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_area_get_color(GIMP_COLOR_AREA(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -743,7 +769,9 @@ _wrap_gimp_color_area_has_alpha(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_color_area_has_alpha(GIMP_COLOR_AREA(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
@@ -755,11 +783,13 @@ _wrap_gimp_color_area_set_type(PyGObject *self, PyObject *args, PyObject *kwargs
     PyObject *py_type = NULL;
     GimpColorAreaType type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorArea.set_type", kwlist, &py_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorArea.set_type", kwlist, &py_type))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gint *)&type))
+    if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gpointer)&type))
         return NULL;
+    
     gimp_color_area_set_type(GIMP_COLOR_AREA(self->obj), type);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -770,61 +800,68 @@ _wrap_gimp_color_area_set_draw_border(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "draw_border", NULL };
     int draw_border;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorArea.set_draw_border", kwlist, &draw_border))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorArea.set_draw_border", kwlist, &draw_border))
         return NULL;
+    
     gimp_color_area_set_draw_border(GIMP_COLOR_AREA(self->obj), draw_border);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorArea_methods[] = {
-    { "set_color", (PyCFunction)_wrap_gimp_color_area_set_color, METH_VARARGS|METH_KEYWORDS },
-    { "get_color", (PyCFunction)_wrap_gimp_color_area_get_color, METH_VARARGS|METH_KEYWORDS },
-    { "has_alpha", (PyCFunction)_wrap_gimp_color_area_has_alpha, METH_NOARGS },
-    { "set_type", (PyCFunction)_wrap_gimp_color_area_set_type, METH_VARARGS|METH_KEYWORDS },
-    { "set_draw_border", (PyCFunction)_wrap_gimp_color_area_set_draw_border, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorArea_methods[] = {
+    { "set_color", (PyCFunction)_wrap_gimp_color_area_set_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_color", (PyCFunction)_wrap_gimp_color_area_get_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "has_alpha", (PyCFunction)_wrap_gimp_color_area_has_alpha, METH_NOARGS,
+      NULL },
+    { "set_type", (PyCFunction)_wrap_gimp_color_area_set_type, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_draw_border", (PyCFunction)_wrap_gimp_color_area_set_draw_border, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorArea_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorArea_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorArea",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorArea",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorArea_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorArea_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_area_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_area_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -880,7 +917,7 @@ _wrap_gimp_color_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
                                 width, height);
     return 0;
 }
-#line 884 "gimpui.c"
+#line 921 "gimpui.c"
 
 
 static PyObject *
@@ -890,7 +927,7 @@ _wrap_gimp_color_button_set_color(PyGObject *self, PyObject *args, PyObject *kwa
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorButton.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorButton.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -898,7 +935,9 @@ _wrap_gimp_color_button_set_color(PyGObject *self, PyObject *args, PyObject *kwa
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_button_set_color(GIMP_COLOR_BUTTON(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -913,7 +952,7 @@ _wrap_gimp_color_button_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 917 "gimpui.c"
+#line 956 "gimpui.c"
 
 
 static PyObject *
@@ -921,7 +960,9 @@ _wrap_gimp_color_button_has_alpha(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_color_button_has_alpha(GIMP_COLOR_BUTTON(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
@@ -933,11 +974,13 @@ _wrap_gimp_color_button_set_type(PyGObject *self, PyObject *args, PyObject *kwar
     PyObject *py_type = NULL;
     GimpColorAreaType type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorButton.set_type", kwlist, &py_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorButton.set_type", kwlist, &py_type))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gint *)&type))
+    if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gpointer)&type))
         return NULL;
+    
     gimp_color_button_set_type(GIMP_COLOR_BUTTON(self->obj), type);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -947,7 +990,9 @@ _wrap_gimp_color_button_get_update(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_color_button_get_update(GIMP_COLOR_BUTTON(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
@@ -958,62 +1003,70 @@ _wrap_gimp_color_button_set_update(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "continuous", NULL };
     int continuous;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorButton.set_update", kwlist, &continuous))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorButton.set_update", kwlist, &continuous))
         return NULL;
+    
     gimp_color_button_set_update(GIMP_COLOR_BUTTON(self->obj), continuous);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorButton_methods[] = {
-    { "set_color", (PyCFunction)_wrap_gimp_color_button_set_color, METH_VARARGS|METH_KEYWORDS },
-    { "get_color", (PyCFunction)_wrap_gimp_color_button_get_color, METH_NOARGS },
-    { "has_alpha", (PyCFunction)_wrap_gimp_color_button_has_alpha, METH_NOARGS },
-    { "set_type", (PyCFunction)_wrap_gimp_color_button_set_type, METH_VARARGS|METH_KEYWORDS },
-    { "get_update", (PyCFunction)_wrap_gimp_color_button_get_update, METH_NOARGS },
-    { "set_update", (PyCFunction)_wrap_gimp_color_button_set_update, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorButton_methods[] = {
+    { "set_color", (PyCFunction)_wrap_gimp_color_button_set_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_color", (PyCFunction)_wrap_gimp_color_button_get_color, METH_NOARGS,
+      NULL },
+    { "has_alpha", (PyCFunction)_wrap_gimp_color_button_has_alpha, METH_NOARGS,
+      NULL },
+    { "set_type", (PyCFunction)_wrap_gimp_color_button_set_type, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_update", (PyCFunction)_wrap_gimp_color_button_get_update, METH_NOARGS,
+      NULL },
+    { "set_update", (PyCFunction)_wrap_gimp_color_button_set_update, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1031,7 +1084,7 @@ _wrap_gimp_color_display_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     PyObject *py_display_type = NULL;
     GType display_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorDisplay.__init__", kwlist, &py_display_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorDisplay.__init__", kwlist, &py_display_type))
         return -1;
     if ((display_type = pyg_type_from_object(py_display_type)) == 0)
         return -1;
@@ -1050,7 +1103,9 @@ _wrap_gimp_color_display_clone(PyGObject *self)
 {
     GimpColorDisplay *ret;
 
+    
     ret = gimp_color_display_clone(GIMP_COLOR_DISPLAY(self->obj));
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -1062,9 +1117,11 @@ _wrap_gimp_color_display_convert(PyGObject *self, PyObject *args, PyObject *kwar
     int buf_len, width, height, bpp, bpl;
     guchar *buf;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#iiii:GimpColorDisplay.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:GimpColorDisplay.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
         return NULL;
+    
     gimp_color_display_convert(GIMP_COLOR_DISPLAY(self->obj), buf, width, height, bpp, bpl);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1074,7 +1131,9 @@ _wrap_gimp_color_display_configure(PyGObject *self)
 {
     GtkWidget *ret;
 
+    
     ret = gimp_color_display_configure(GIMP_COLOR_DISPLAY(self->obj));
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -1082,7 +1141,9 @@ _wrap_gimp_color_display_configure(PyGObject *self)
 static PyObject *
 _wrap_gimp_color_display_configure_reset(PyGObject *self)
 {
+    
     gimp_color_display_configure_reset(GIMP_COLOR_DISPLAY(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1090,7 +1151,9 @@ _wrap_gimp_color_display_configure_reset(PyGObject *self)
 static PyObject *
 _wrap_gimp_color_display_changed(PyGObject *self)
 {
+    
     gimp_color_display_changed(GIMP_COLOR_DISPLAY(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1101,9 +1164,11 @@ _wrap_gimp_color_display_set_enabled(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "enabled", NULL };
     int enabled;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorDisplay.set_enabled", kwlist, &enabled))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorDisplay.set_enabled", kwlist, &enabled))
         return NULL;
+    
     gimp_color_display_set_enabled(GIMP_COLOR_DISPLAY(self->obj), enabled);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1113,61 +1178,70 @@ _wrap_gimp_color_display_get_enabled(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_color_display_get_enabled(GIMP_COLOR_DISPLAY(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
 
-static PyMethodDef _PyGimpColorDisplay_methods[] = {
-    { "clone", (PyCFunction)_wrap_gimp_color_display_clone, METH_NOARGS },
-    { "convert", (PyCFunction)_wrap_gimp_color_display_convert, METH_VARARGS|METH_KEYWORDS },
-    { "configure", (PyCFunction)_wrap_gimp_color_display_configure, METH_NOARGS },
-    { "configure_reset", (PyCFunction)_wrap_gimp_color_display_configure_reset, METH_NOARGS },
-    { "changed", (PyCFunction)_wrap_gimp_color_display_changed, METH_NOARGS },
-    { "set_enabled", (PyCFunction)_wrap_gimp_color_display_set_enabled, METH_VARARGS|METH_KEYWORDS },
-    { "get_enabled", (PyCFunction)_wrap_gimp_color_display_get_enabled, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorDisplay_methods[] = {
+    { "clone", (PyCFunction)_wrap_gimp_color_display_clone, METH_NOARGS,
+      NULL },
+    { "convert", (PyCFunction)_wrap_gimp_color_display_convert, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "configure", (PyCFunction)_wrap_gimp_color_display_configure, METH_NOARGS,
+      NULL },
+    { "configure_reset", (PyCFunction)_wrap_gimp_color_display_configure_reset, METH_NOARGS,
+      NULL },
+    { "changed", (PyCFunction)_wrap_gimp_color_display_changed, METH_NOARGS,
+      NULL },
+    { "set_enabled", (PyCFunction)_wrap_gimp_color_display_set_enabled, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_enabled", (PyCFunction)_wrap_gimp_color_display_get_enabled, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorDisplay_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorDisplay_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorDisplay",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorDisplay",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorDisplay_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorDisplay_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_display_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_display_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1178,31 +1252,34 @@ PyTypeObject PyGimpColorDisplay_Type = {
 
 /* ----------- GimpColorDisplayStack ----------- */
 
-static int
+ static int
 _wrap_gimp_color_display_stack_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.ColorDisplayStack.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.ColorDisplayStack.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ColorDisplayStack object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_color_display_stack_clone(PyGObject *self)
 {
     GimpColorDisplayStack *ret;
 
+    
     ret = gimp_color_display_stack_clone(GIMP_COLOR_DISPLAY_STACK(self->obj));
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -1210,7 +1287,9 @@ _wrap_gimp_color_display_stack_clone(PyGObject *self)
 static PyObject *
 _wrap_gimp_color_display_stack_changed(PyGObject *self)
 {
+    
     gimp_color_display_stack_changed(GIMP_COLOR_DISPLAY_STACK(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1221,9 +1300,11 @@ _wrap_gimp_color_display_stack_add(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpColorDisplayStack.add", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.add", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
+    
     gimp_color_display_stack_add(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1234,9 +1315,11 @@ _wrap_gimp_color_display_stack_remove(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpColorDisplayStack.remove", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.remove", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
+    
     gimp_color_display_stack_remove(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1247,9 +1330,11 @@ _wrap_gimp_color_display_stack_reorder_up(PyGObject *self, PyObject *args, PyObj
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpColorDisplayStack.reorder_up", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.reorder_up", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
+    
     gimp_color_display_stack_reorder_up(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1260,9 +1345,11 @@ _wrap_gimp_color_display_stack_reorder_down(PyGObject *self, PyObject *args, PyO
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpColorDisplayStack.reorder_down", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.reorder_down", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
+    
     gimp_color_display_stack_reorder_down(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1274,63 +1361,72 @@ _wrap_gimp_color_display_stack_convert(PyGObject *self, PyObject *args, PyObject
     int buf_len, width, height, bpp, bpl;
     guchar *buf;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#iiii:GimpColorDisplayStack.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:GimpColorDisplayStack.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
         return NULL;
+    
     gimp_color_display_stack_convert(GIMP_COLOR_DISPLAY_STACK(self->obj), buf, width, height, bpp, bpl);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorDisplayStack_methods[] = {
-    { "clone", (PyCFunction)_wrap_gimp_color_display_stack_clone, METH_NOARGS },
-    { "changed", (PyCFunction)_wrap_gimp_color_display_stack_changed, METH_NOARGS },
-    { "add", (PyCFunction)_wrap_gimp_color_display_stack_add, METH_VARARGS|METH_KEYWORDS },
-    { "remove", (PyCFunction)_wrap_gimp_color_display_stack_remove, METH_VARARGS|METH_KEYWORDS },
-    { "reorder_up", (PyCFunction)_wrap_gimp_color_display_stack_reorder_up, METH_VARARGS|METH_KEYWORDS },
-    { "reorder_down", (PyCFunction)_wrap_gimp_color_display_stack_reorder_down, METH_VARARGS|METH_KEYWORDS },
-    { "convert", (PyCFunction)_wrap_gimp_color_display_stack_convert, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorDisplayStack_methods[] = {
+    { "clone", (PyCFunction)_wrap_gimp_color_display_stack_clone, METH_NOARGS,
+      NULL },
+    { "changed", (PyCFunction)_wrap_gimp_color_display_stack_changed, METH_NOARGS,
+      NULL },
+    { "add", (PyCFunction)_wrap_gimp_color_display_stack_add, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "remove", (PyCFunction)_wrap_gimp_color_display_stack_remove, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "reorder_up", (PyCFunction)_wrap_gimp_color_display_stack_reorder_up, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "reorder_down", (PyCFunction)_wrap_gimp_color_display_stack_reorder_down, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "convert", (PyCFunction)_wrap_gimp_color_display_stack_convert, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorDisplayStack_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorDisplayStack_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorDisplayStack",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorDisplayStack",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorDisplayStack_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorDisplayStack_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_display_stack_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_display_stack_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1346,19 +1442,20 @@ _wrap_gimp_color_hex_entry_new(PyGObject *self, PyObject *args, PyObject *kwargs
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.ColorHexEntry.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.ColorHexEntry.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ColorHexEntry object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_color_hex_entry_set_color(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -1367,7 +1464,7 @@ _wrap_gimp_color_hex_entry_set_color(PyGObject *self, PyObject *args, PyObject *
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorHexEntry.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorHexEntry.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1375,7 +1472,9 @@ _wrap_gimp_color_hex_entry_set_color(PyGObject *self, PyObject *args, PyObject *
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_hex_entry_set_color(GIMP_COLOR_HEX_ENTRY(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1387,7 +1486,7 @@ _wrap_gimp_color_hex_entry_get_color(PyGObject *self, PyObject *args, PyObject *
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorHexEntry.get_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorHexEntry.get_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1395,56 +1494,60 @@ _wrap_gimp_color_hex_entry_get_color(PyGObject *self, PyObject *args, PyObject *
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_hex_entry_get_color(GIMP_COLOR_HEX_ENTRY(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorHexEntry_methods[] = {
-    { "set_color", (PyCFunction)_wrap_gimp_color_hex_entry_set_color, METH_VARARGS|METH_KEYWORDS },
-    { "get_color", (PyCFunction)_wrap_gimp_color_hex_entry_get_color, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorHexEntry_methods[] = {
+    { "set_color", (PyCFunction)_wrap_gimp_color_hex_entry_set_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_color", (PyCFunction)_wrap_gimp_color_hex_entry_get_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorHexEntry_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorHexEntry_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorHexEntry",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorHexEntry",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorHexEntry_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorHexEntry_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_hex_entry_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_hex_entry_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1493,7 +1596,7 @@ _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     
     return 0;
 }
-#line 1497 "gimpui.c"
+#line 1600 "gimpui.c"
 
 
 static PyObject *
@@ -1503,11 +1606,13 @@ _wrap_gimp_color_scale_set_channel(PyGObject *self, PyObject *args, PyObject *kw
     GimpColorSelectorChannel channel;
     PyObject *py_channel = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorScale.set_channel", kwlist, &py_channel))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorScale.set_channel", kwlist, &py_channel))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gint *)&channel))
+    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gpointer)&channel))
         return NULL;
+    
     gimp_color_scale_set_channel(GIMP_COLOR_SCALE(self->obj), channel);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1520,7 +1625,7 @@ _wrap_gimp_color_scale_set_color(PyGObject *self, PyObject *args, PyObject *kwar
     GimpHSV *hsv = NULL;
     GimpRGB *rgb = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO:GimpColorScale.set_color", kwlist, &py_rgb, &py_hsv))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:GimpColorScale.set_color", kwlist, &py_rgb, &py_hsv))
         return NULL;
     if (pyg_boxed_check(py_rgb, GIMP_TYPE_RGB))
         rgb = pyg_boxed_get(py_rgb, GimpRGB);
@@ -1534,56 +1639,60 @@ _wrap_gimp_color_scale_set_color(PyGObject *self, PyObject *args, PyObject *kwar
         PyErr_SetString(PyExc_TypeError, "hsv should be a GimpHSV");
         return NULL;
     }
+    
     gimp_color_scale_set_color(GIMP_COLOR_SCALE(self->obj), rgb, hsv);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorScale_methods[] = {
-    { "set_channel", (PyCFunction)_wrap_gimp_color_scale_set_channel, METH_VARARGS|METH_KEYWORDS },
-    { "set_color", (PyCFunction)_wrap_gimp_color_scale_set_color, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorScale_methods[] = {
+    { "set_channel", (PyCFunction)_wrap_gimp_color_scale_set_channel, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_color", (PyCFunction)_wrap_gimp_color_scale_set_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorScale_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorScale_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorScale",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorScale",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorScale_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorScale_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_scale_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_scale_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1599,19 +1708,20 @@ _wrap_gimp_color_selection_new(PyGObject *self, PyObject *args, PyObject *kwargs
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.ColorSelection.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.ColorSelection.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ColorSelection object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_color_selection_set_show_alpha(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -1619,9 +1729,11 @@ _wrap_gimp_color_selection_set_show_alpha(PyGObject *self, PyObject *args, PyObj
     static char *kwlist[] = { "show_alpha", NULL };
     int show_alpha;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorSelection.set_show_alpha", kwlist, &show_alpha))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelection.set_show_alpha", kwlist, &show_alpha))
         return NULL;
+    
     gimp_color_selection_set_show_alpha(GIMP_COLOR_SELECTION(self->obj), show_alpha);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1631,7 +1743,9 @@ _wrap_gimp_color_selection_get_show_alpha(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_color_selection_get_show_alpha(GIMP_COLOR_SELECTION(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
@@ -1643,7 +1757,7 @@ _wrap_gimp_color_selection_set_color(PyGObject *self, PyObject *args, PyObject *
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorSelection.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelection.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1651,7 +1765,9 @@ _wrap_gimp_color_selection_set_color(PyGObject *self, PyObject *args, PyObject *
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_selection_set_color(GIMP_COLOR_SELECTION(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1663,7 +1779,7 @@ _wrap_gimp_color_selection_get_color(PyGObject *self, PyObject *args, PyObject *
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorSelection.get_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelection.get_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1671,7 +1787,9 @@ _wrap_gimp_color_selection_get_color(PyGObject *self, PyObject *args, PyObject *
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_selection_get_color(GIMP_COLOR_SELECTION(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1683,7 +1801,7 @@ _wrap_gimp_color_selection_set_old_color(PyGObject *self, PyObject *args, PyObje
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorSelection.set_old_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelection.set_old_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1691,7 +1809,9 @@ _wrap_gimp_color_selection_set_old_color(PyGObject *self, PyObject *args, PyObje
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_selection_set_old_color(GIMP_COLOR_SELECTION(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1703,7 +1823,7 @@ _wrap_gimp_color_selection_get_old_color(PyGObject *self, PyObject *args, PyObje
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorSelection.get_old_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelection.get_old_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1711,7 +1831,9 @@ _wrap_gimp_color_selection_get_old_color(PyGObject *self, PyObject *args, PyObje
         PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
         return NULL;
     }
+    
     gimp_color_selection_get_old_color(GIMP_COLOR_SELECTION(self->obj), color);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1719,7 +1841,9 @@ _wrap_gimp_color_selection_get_old_color(PyGObject *self, PyObject *args, PyObje
 static PyObject *
 _wrap_gimp_color_selection_reset(PyGObject *self)
 {
+    
     gimp_color_selection_reset(GIMP_COLOR_SELECTION(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1727,62 +1851,72 @@ _wrap_gimp_color_selection_reset(PyGObject *self)
 static PyObject *
 _wrap_gimp_color_selection_color_changed(PyGObject *self)
 {
+    
     gimp_color_selection_color_changed(GIMP_COLOR_SELECTION(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorSelection_methods[] = {
-    { "set_show_alpha", (PyCFunction)_wrap_gimp_color_selection_set_show_alpha, METH_VARARGS|METH_KEYWORDS },
-    { "get_show_alpha", (PyCFunction)_wrap_gimp_color_selection_get_show_alpha, METH_NOARGS },
-    { "set_color", (PyCFunction)_wrap_gimp_color_selection_set_color, METH_VARARGS|METH_KEYWORDS },
-    { "get_color", (PyCFunction)_wrap_gimp_color_selection_get_color, METH_VARARGS|METH_KEYWORDS },
-    { "set_old_color", (PyCFunction)_wrap_gimp_color_selection_set_old_color, METH_VARARGS|METH_KEYWORDS },
-    { "get_old_color", (PyCFunction)_wrap_gimp_color_selection_get_old_color, METH_VARARGS|METH_KEYWORDS },
-    { "reset", (PyCFunction)_wrap_gimp_color_selection_reset, METH_NOARGS },
-    { "color_changed", (PyCFunction)_wrap_gimp_color_selection_color_changed, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorSelection_methods[] = {
+    { "set_show_alpha", (PyCFunction)_wrap_gimp_color_selection_set_show_alpha, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_show_alpha", (PyCFunction)_wrap_gimp_color_selection_get_show_alpha, METH_NOARGS,
+      NULL },
+    { "set_color", (PyCFunction)_wrap_gimp_color_selection_set_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_color", (PyCFunction)_wrap_gimp_color_selection_get_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_old_color", (PyCFunction)_wrap_gimp_color_selection_set_old_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_old_color", (PyCFunction)_wrap_gimp_color_selection_get_old_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "reset", (PyCFunction)_wrap_gimp_color_selection_reset, METH_NOARGS,
+      NULL },
+    { "color_changed", (PyCFunction)_wrap_gimp_color_selection_color_changed, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorSelection_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorSelection_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorSelection",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorSelection",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorSelection_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorSelection_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_selection_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_selection_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1803,7 +1937,7 @@ _wrap_gimp_color_selector_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     GimpColorSelectorChannel channel;
     GimpRGB *rgb = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OOOO:GimpColorSelector.__init__", kwlist, &py_selector_type, &py_rgb, &py_hsv, &py_channel))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OOOO:GimpColorSelector.__init__", kwlist, &py_selector_type, &py_rgb, &py_hsv, &py_channel))
         return -1;
     if ((selector_type = pyg_type_from_object(py_selector_type)) == 0)
         return -1;
@@ -1819,7 +1953,7 @@ _wrap_gimp_color_selector_new(PyGObject *self, PyObject *args, PyObject *kwargs)
         PyErr_SetString(PyExc_TypeError, "hsv should be a GimpHSV");
         return -1;
     }
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gint *)&channel))
+    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gpointer)&channel))
         return -1;
     self->obj = (GObject *)gimp_color_selector_new(selector_type, rgb, hsv, channel);
 
@@ -1837,9 +1971,11 @@ _wrap_gimp_color_selector_set_toggles_visible(PyGObject *self, PyObject *args, P
     static char *kwlist[] = { "visible", NULL };
     int visible;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorSelector.set_toggles_visible", kwlist, &visible))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelector.set_toggles_visible", kwlist, &visible))
         return NULL;
+    
     gimp_color_selector_set_toggles_visible(GIMP_COLOR_SELECTOR(self->obj), visible);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1850,9 +1986,11 @@ _wrap_gimp_color_selector_set_toggles_sensitive(PyGObject *self, PyObject *args,
     static char *kwlist[] = { "sensitive", NULL };
     int sensitive;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorSelector.set_toggles_sensitive", kwlist, &sensitive))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelector.set_toggles_sensitive", kwlist, &sensitive))
         return NULL;
+    
     gimp_color_selector_set_toggles_sensitive(GIMP_COLOR_SELECTOR(self->obj), sensitive);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1863,9 +2001,11 @@ _wrap_gimp_color_selector_set_show_alpha(PyGObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "show_alpha", NULL };
     int show_alpha;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpColorSelector.set_show_alpha", kwlist, &show_alpha))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelector.set_show_alpha", kwlist, &show_alpha))
         return NULL;
+    
     gimp_color_selector_set_show_alpha(GIMP_COLOR_SELECTOR(self->obj), show_alpha);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1878,7 +2018,7 @@ _wrap_gimp_color_selector_set_color(PyGObject *self, PyObject *args, PyObject *k
     GimpHSV *hsv = NULL;
     GimpRGB *rgb = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO:GimpColorSelector.set_color", kwlist, &py_rgb, &py_hsv))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:GimpColorSelector.set_color", kwlist, &py_rgb, &py_hsv))
         return NULL;
     if (pyg_boxed_check(py_rgb, GIMP_TYPE_RGB))
         rgb = pyg_boxed_get(py_rgb, GimpRGB);
@@ -1892,7 +2032,9 @@ _wrap_gimp_color_selector_set_color(PyGObject *self, PyObject *args, PyObject *k
         PyErr_SetString(PyExc_TypeError, "hsv should be a GimpHSV");
         return NULL;
     }
+    
     gimp_color_selector_set_color(GIMP_COLOR_SELECTOR(self->obj), rgb, hsv);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1904,11 +2046,13 @@ _wrap_gimp_color_selector_set_channel(PyGObject *self, PyObject *args, PyObject 
     GimpColorSelectorChannel channel;
     PyObject *py_channel = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpColorSelector.set_channel", kwlist, &py_channel))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelector.set_channel", kwlist, &py_channel))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gint *)&channel))
+    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gpointer)&channel))
         return NULL;
+    
     gimp_color_selector_set_channel(GIMP_COLOR_SELECTOR(self->obj), channel);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1916,7 +2060,9 @@ _wrap_gimp_color_selector_set_channel(PyGObject *self, PyObject *args, PyObject 
 static PyObject *
 _wrap_gimp_color_selector_color_changed(PyGObject *self)
 {
+    
     gimp_color_selector_color_changed(GIMP_COLOR_SELECTOR(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -1924,61 +2070,70 @@ _wrap_gimp_color_selector_color_changed(PyGObject *self)
 static PyObject *
 _wrap_gimp_color_selector_channel_changed(PyGObject *self)
 {
+    
     gimp_color_selector_channel_changed(GIMP_COLOR_SELECTOR(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpColorSelector_methods[] = {
-    { "set_toggles_visible", (PyCFunction)_wrap_gimp_color_selector_set_toggles_visible, METH_VARARGS|METH_KEYWORDS },
-    { "set_toggles_sensitive", (PyCFunction)_wrap_gimp_color_selector_set_toggles_sensitive, METH_VARARGS|METH_KEYWORDS },
-    { "set_show_alpha", (PyCFunction)_wrap_gimp_color_selector_set_show_alpha, METH_VARARGS|METH_KEYWORDS },
-    { "set_color", (PyCFunction)_wrap_gimp_color_selector_set_color, METH_VARARGS|METH_KEYWORDS },
-    { "set_channel", (PyCFunction)_wrap_gimp_color_selector_set_channel, METH_VARARGS|METH_KEYWORDS },
-    { "color_changed", (PyCFunction)_wrap_gimp_color_selector_color_changed, METH_NOARGS },
-    { "channel_changed", (PyCFunction)_wrap_gimp_color_selector_channel_changed, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorSelector_methods[] = {
+    { "set_toggles_visible", (PyCFunction)_wrap_gimp_color_selector_set_toggles_visible, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_toggles_sensitive", (PyCFunction)_wrap_gimp_color_selector_set_toggles_sensitive, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_show_alpha", (PyCFunction)_wrap_gimp_color_selector_set_show_alpha, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_color", (PyCFunction)_wrap_gimp_color_selector_set_color, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_channel", (PyCFunction)_wrap_gimp_color_selector_set_channel, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "color_changed", (PyCFunction)_wrap_gimp_color_selector_color_changed, METH_NOARGS,
+      NULL },
+    { "channel_changed", (PyCFunction)_wrap_gimp_color_selector_channel_changed, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorSelector_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorSelector_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorSelector",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorSelector",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorSelector_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorSelector_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_color_selector_new,		/* tp_init */
+    (initproc)_wrap_gimp_color_selector_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -1998,59 +2153,62 @@ _wrap_gimp_color_notebook_set_has_page(PyGObject *self, PyObject *args, PyObject
     GType page_type;
     GtkWidget *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Oi:GimpColorNotebook.set_has_page", kwlist, &py_page_type, &has_page))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Oi:GimpColorNotebook.set_has_page", kwlist, &py_page_type, &has_page))
         return NULL;
     if ((page_type = pyg_type_from_object(py_page_type)) == 0)
         return NULL;
+    
     ret = gimp_color_notebook_set_has_page(GIMP_COLOR_NOTEBOOK(self->obj), page_type, has_page);
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
 
-static PyMethodDef _PyGimpColorNotebook_methods[] = {
-    { "set_has_page", (PyCFunction)_wrap_gimp_color_notebook_set_has_page, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpColorNotebook_methods[] = {
+    { "set_has_page", (PyCFunction)_wrap_gimp_color_notebook_set_has_page, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpColorNotebook_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpColorNotebook_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ColorNotebook",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ColorNotebook",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpColorNotebook_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpColorNotebook_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)0,		/* tp_init */
+    (initproc)0,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2228,7 +2386,7 @@ _wrap_gimp_dialog_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 2232 "gimpui.c"
+#line 2390 "gimpui.c"
 
 
 static PyObject *
@@ -2239,9 +2397,11 @@ _wrap_gimp_dialog_add_button(PyGObject *self, PyObject *args, PyObject *kwargs)
     int response_id;
     GtkWidget *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "si:GimpDialog.add_button", kwlist, &button_text, &response_id))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"si:GimpDialog.add_button", kwlist, &button_text, &response_id))
         return NULL;
+    
     ret = gimp_dialog_add_button(GIMP_DIALOG(self->obj), button_text, response_id);
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -2251,7 +2411,9 @@ _wrap_gimp_dialog_run(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_dialog_run(GIMP_DIALOG(self->obj));
+    
     return PyInt_FromLong(ret);
 }
 
@@ -2263,55 +2425,58 @@ _wrap_gimp_window_set_transient(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 2267 "gimpui.c"
+#line 2429 "gimpui.c"
 
 
-static PyMethodDef _PyGimpDialog_methods[] = {
-    { "add_button", (PyCFunction)_wrap_gimp_dialog_add_button, METH_VARARGS|METH_KEYWORDS },
-    { "run", (PyCFunction)_wrap_gimp_dialog_run, METH_NOARGS },
-    { "set_transient", (PyCFunction)_wrap_gimp_window_set_transient, METH_VARARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpDialog_methods[] = {
+    { "add_button", (PyCFunction)_wrap_gimp_dialog_add_button, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "run", (PyCFunction)_wrap_gimp_dialog_run, METH_NOARGS,
+      NULL },
+    { "set_transient", (PyCFunction)_wrap_gimp_window_set_transient, METH_VARARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpDialog_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpDialog_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.Dialog",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.Dialog",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpDialog_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpDialog_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_dialog_new,		/* tp_init */
+    (initproc)_wrap_gimp_dialog_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2353,7 +2518,7 @@ _wrap_gimp_enum_label_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0; 
 }
-#line 2357 "gimpui.c"
+#line 2522 "gimpui.c"
 
 
 static PyObject *
@@ -2362,57 +2527,60 @@ _wrap_gimp_enum_label_set_value(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "value", NULL };
     int value;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpEnumLabel.set_value", kwlist, &value))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpEnumLabel.set_value", kwlist, &value))
         return NULL;
+    
     gimp_enum_label_set_value(GIMP_ENUM_LABEL(self->obj), value);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpEnumLabel_methods[] = {
-    { "set_value", (PyCFunction)_wrap_gimp_enum_label_set_value, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpEnumLabel_methods[] = {
+    { "set_value", (PyCFunction)_wrap_gimp_enum_label_set_value, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpEnumLabel_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpEnumLabel_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.EnumLabel",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.EnumLabel",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpEnumLabel_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpEnumLabel_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_enum_label_new,		/* tp_init */
+    (initproc)_wrap_gimp_enum_label_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2429,7 +2597,7 @@ _wrap_gimp_frame_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "label", NULL };
     char *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpFrame.__init__", kwlist, &label))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpFrame.__init__", kwlist, &label))
         return -1;
     self->obj = (GObject *)gimp_frame_new(label);
 
@@ -2441,45 +2609,45 @@ _wrap_gimp_frame_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     return 0;
 }
 
-PyTypeObject PyGimpFrame_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpFrame_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.Frame",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.Frame",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_frame_new,		/* tp_init */
+    (initproc)_wrap_gimp_frame_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2500,65 +2668,65 @@ _wrap_gimp_hint_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     char *prop_names[] = {"hint", "stock-id", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "O|O:gimpui.HintBox.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|O:gimpui.HintBox.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*2);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.HintBox object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpHintBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpHintBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.HintBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.HintBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_hint_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_hint_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2634,7 +2802,7 @@ _wrap_gimp_int_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 2638 "gimpui.c"
+#line 2806 "gimpui.c"
 
 
 #line 1109 "gimpui.override"
@@ -2660,7 +2828,7 @@ _wrap_gimp_int_combo_box_set_active(PyGObject *self, PyObject *args, PyObject *k
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 2664 "gimpui.c"
+#line 2832 "gimpui.c"
 
 
 #line 1096 "gimpui.override"
@@ -2675,54 +2843,56 @@ _wrap_gimp_int_combo_box_get_active(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 2679 "gimpui.c"
+#line 2847 "gimpui.c"
 
 
-static PyMethodDef _PyGimpIntComboBox_methods[] = {
-    { "set_active", (PyCFunction)_wrap_gimp_int_combo_box_set_active, METH_VARARGS|METH_KEYWORDS },
-    { "get_active", (PyCFunction)_wrap_gimp_int_combo_box_get_active, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpIntComboBox_methods[] = {
+    { "set_active", (PyCFunction)_wrap_gimp_int_combo_box_set_active, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_active", (PyCFunction)_wrap_gimp_int_combo_box_get_active, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpIntComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpIntComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.IntComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.IntComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpIntComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpIntComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_int_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_int_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2740,7 +2910,7 @@ _wrap_gimp_enum_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     PyObject *py_enum_type = NULL;
     GType enum_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpEnumComboBox.__init__", kwlist, &py_enum_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpEnumComboBox.__init__", kwlist, &py_enum_type))
         return -1;
     if ((enum_type = pyg_type_from_object(py_enum_type)) == 0)
         return -1;
@@ -2760,57 +2930,60 @@ _wrap_gimp_enum_combo_box_set_stock_prefix(PyGObject *self, PyObject *args, PyOb
     static char *kwlist[] = { "stock_prefix", NULL };
     char *stock_prefix;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpEnumComboBox.set_stock_prefix", kwlist, &stock_prefix))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpEnumComboBox.set_stock_prefix", kwlist, &stock_prefix))
         return NULL;
+    
     gimp_enum_combo_box_set_stock_prefix(GIMP_ENUM_COMBO_BOX(self->obj), stock_prefix);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpEnumComboBox_methods[] = {
-    { "set_stock_prefix", (PyCFunction)_wrap_gimp_enum_combo_box_set_stock_prefix, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpEnumComboBox_methods[] = {
+    { "set_stock_prefix", (PyCFunction)_wrap_gimp_enum_combo_box_set_stock_prefix, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpEnumComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpEnumComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.EnumComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.EnumComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpEnumComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpEnumComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_enum_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_enum_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2821,64 +2994,65 @@ PyTypeObject PyGimpEnumComboBox_Type = {
 
 /* ----------- GimpIntStore ----------- */
 
-static int
+ static int
 _wrap_gimp_int_store_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.IntStore.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.IntStore.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.IntStore object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpIntStore_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpIntStore_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.IntStore",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.IntStore",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_int_store_new,		/* tp_init */
+    (initproc)_wrap_gimp_int_store_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2896,7 +3070,7 @@ _wrap_gimp_enum_store_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     PyObject *py_enum_type = NULL;
     GType enum_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpEnumStore.__init__", kwlist, &py_enum_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpEnumStore.__init__", kwlist, &py_enum_type))
         return -1;
     if ((enum_type = pyg_type_from_object(py_enum_type)) == 0)
         return -1;
@@ -2916,57 +3090,60 @@ _wrap_gimp_enum_store_set_stock_prefix(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "stock_prefix", NULL };
     char *stock_prefix;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpEnumStore.set_stock_prefix", kwlist, &stock_prefix))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpEnumStore.set_stock_prefix", kwlist, &stock_prefix))
         return NULL;
+    
     gimp_enum_store_set_stock_prefix(GIMP_ENUM_STORE(self->obj), stock_prefix);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpEnumStore_methods[] = {
-    { "set_stock_prefix", (PyCFunction)_wrap_gimp_enum_store_set_stock_prefix, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpEnumStore_methods[] = {
+    { "set_stock_prefix", (PyCFunction)_wrap_gimp_enum_store_set_stock_prefix, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpEnumStore_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpEnumStore_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.EnumStore",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.EnumStore",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpEnumStore_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpEnumStore_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_enum_store_new,		/* tp_init */
+    (initproc)_wrap_gimp_enum_store_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -2984,7 +3161,7 @@ _wrap_gimp_memsize_entry_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     PyObject *py_value = NULL, *py_lower = NULL, *py_upper = NULL;
     guint64 value, lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!:GimpMemsizeEntry.__init__", kwlist, &PyLong_Type, &py_value, &PyLong_Type, &py_lower, &PyLong_Type, &py_upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!O!:GimpMemsizeEntry.__init__", kwlist, &PyLong_Type, &py_value, &PyLong_Type, &py_lower, &PyLong_Type, &py_upper))
         return -1;
     value = PyLong_AsUnsignedLongLong(py_value);
     lower = PyLong_AsUnsignedLongLong(py_lower);
@@ -3006,10 +3183,12 @@ _wrap_gimp_memsize_entry_set_value(PyGObject *self, PyObject *args, PyObject *kw
     PyObject *py_value = NULL;
     guint64 value;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpMemsizeEntry.set_value", kwlist, &PyLong_Type, &py_value))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpMemsizeEntry.set_value", kwlist, &PyLong_Type, &py_value))
         return NULL;
     value = PyLong_AsUnsignedLongLong(py_value);
+    
     gimp_memsize_entry_set_value(GIMP_MEMSIZE_ENTRY(self->obj), value);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3019,55 +3198,59 @@ _wrap_gimp_memsize_entry_get_value(PyGObject *self)
 {
     guint64 ret;
 
+    
     ret = gimp_memsize_entry_get_value(GIMP_MEMSIZE_ENTRY(self->obj));
+    
     return PyLong_FromUnsignedLongLong(ret);
 }
 
-static PyMethodDef _PyGimpMemsizeEntry_methods[] = {
-    { "set_value", (PyCFunction)_wrap_gimp_memsize_entry_set_value, METH_VARARGS|METH_KEYWORDS },
-    { "get_value", (PyCFunction)_wrap_gimp_memsize_entry_get_value, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpMemsizeEntry_methods[] = {
+    { "set_value", (PyCFunction)_wrap_gimp_memsize_entry_set_value, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_value", (PyCFunction)_wrap_gimp_memsize_entry_get_value, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpMemsizeEntry_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpMemsizeEntry_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.MemsizeEntry",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.MemsizeEntry",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpMemsizeEntry_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpMemsizeEntry_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_memsize_entry_new,		/* tp_init */
+    (initproc)_wrap_gimp_memsize_entry_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3084,7 +3267,7 @@ _wrap_gimp_offset_area_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "orig_width", "orig_height", NULL };
     int orig_width, orig_height;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpOffsetArea.__init__", kwlist, &orig_width, &orig_height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpOffsetArea.__init__", kwlist, &orig_width, &orig_height))
         return -1;
     self->obj = (GObject *)gimp_offset_area_new(orig_width, orig_height);
 
@@ -3102,9 +3285,11 @@ _wrap_gimp_offset_area_set_pixbuf(PyGObject *self, PyObject *args, PyObject *kwa
     static char *kwlist[] = { "pixbuf", NULL };
     PyGObject *pixbuf;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:GimpOffsetArea.set_pixbuf", kwlist, &PyGdkPixbuf_Type, &pixbuf))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpOffsetArea.set_pixbuf", kwlist, &PyGdkPixbuf_Type, &pixbuf))
         return NULL;
+    
     gimp_offset_area_set_pixbuf(GIMP_OFFSET_AREA(self->obj), GDK_PIXBUF(pixbuf->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3115,9 +3300,11 @@ _wrap_gimp_offset_area_set_size(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "width", "height", NULL };
     int width, height;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpOffsetArea.set_size", kwlist, &width, &height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpOffsetArea.set_size", kwlist, &width, &height))
         return NULL;
+    
     gimp_offset_area_set_size(GIMP_OFFSET_AREA(self->obj), width, height);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3128,59 +3315,64 @@ _wrap_gimp_offset_area_set_offsets(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "offset_x", "offset_y", NULL };
     int offset_x, offset_y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpOffsetArea.set_offsets", kwlist, &offset_x, &offset_y))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpOffsetArea.set_offsets", kwlist, &offset_x, &offset_y))
         return NULL;
+    
     gimp_offset_area_set_offsets(GIMP_OFFSET_AREA(self->obj), offset_x, offset_y);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpOffsetArea_methods[] = {
-    { "set_pixbuf", (PyCFunction)_wrap_gimp_offset_area_set_pixbuf, METH_VARARGS|METH_KEYWORDS },
-    { "set_size", (PyCFunction)_wrap_gimp_offset_area_set_size, METH_VARARGS|METH_KEYWORDS },
-    { "set_offsets", (PyCFunction)_wrap_gimp_offset_area_set_offsets, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpOffsetArea_methods[] = {
+    { "set_pixbuf", (PyCFunction)_wrap_gimp_offset_area_set_pixbuf, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_size", (PyCFunction)_wrap_gimp_offset_area_set_size, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_offsets", (PyCFunction)_wrap_gimp_offset_area_set_offsets, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpOffsetArea_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpOffsetArea_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.OffsetArea",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.OffsetArea",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpOffsetArea_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpOffsetArea_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_offset_area_new,		/* tp_init */
+    (initproc)_wrap_gimp_offset_area_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3196,19 +3388,20 @@ _wrap_gimp_page_selector_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.PageSelector.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.PageSelector.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.PageSelector object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_page_selector_set_n_pages(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -3216,9 +3409,11 @@ _wrap_gimp_page_selector_set_n_pages(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "n_pages", NULL };
     int n_pages;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPageSelector.set_n_pages", kwlist, &n_pages))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.set_n_pages", kwlist, &n_pages))
         return NULL;
+    
     gimp_page_selector_set_n_pages(GIMP_PAGE_SELECTOR(self->obj), n_pages);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3228,7 +3423,9 @@ _wrap_gimp_page_selector_get_n_pages(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_page_selector_get_n_pages(GIMP_PAGE_SELECTOR(self->obj));
+    
     return PyInt_FromLong(ret);
 }
 
@@ -3239,11 +3436,13 @@ _wrap_gimp_page_selector_set_target(PyGObject *self, PyObject *args, PyObject *k
     GimpPageSelectorTarget target;
     PyObject *py_target = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpPageSelector.set_target", kwlist, &py_target))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpPageSelector.set_target", kwlist, &py_target))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_PAGE_SELECTOR_TARGET, py_target, (gint *)&target))
+    if (pyg_enum_get_value(GIMP_TYPE_PAGE_SELECTOR_TARGET, py_target, (gpointer)&target))
         return NULL;
+    
     gimp_page_selector_set_target(GIMP_PAGE_SELECTOR(self->obj), target);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3253,7 +3452,9 @@ _wrap_gimp_page_selector_get_target(PyGObject *self)
 {
     gint ret;
 
+    
     ret = gimp_page_selector_get_target(GIMP_PAGE_SELECTOR(self->obj));
+    
     return pyg_enum_from_gtype(GIMP_TYPE_PAGE_SELECTOR_TARGET, ret);
 }
 
@@ -3264,9 +3465,11 @@ _wrap_gimp_page_selector_set_page_thumbnail(PyGObject *self, PyObject *args, PyO
     int page_no;
     PyGObject *thumbnail;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "iO!:GimpPageSelector.set_page_thumbnail", kwlist, &page_no, &PyGdkPixbuf_Type, &thumbnail))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iO!:GimpPageSelector.set_page_thumbnail", kwlist, &page_no, &PyGdkPixbuf_Type, &thumbnail))
         return NULL;
+    
     gimp_page_selector_set_page_thumbnail(GIMP_PAGE_SELECTOR(self->obj), page_no, GDK_PIXBUF(thumbnail->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3278,9 +3481,11 @@ _wrap_gimp_page_selector_get_page_thumbnail(PyGObject *self, PyObject *args, PyO
     int page_no;
     GdkPixbuf *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPageSelector.get_page_thumbnail", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.get_page_thumbnail", kwlist, &page_no))
         return NULL;
+    
     ret = gimp_page_selector_get_page_thumbnail(GIMP_PAGE_SELECTOR(self->obj), page_no);
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -3292,9 +3497,11 @@ _wrap_gimp_page_selector_set_page_label(PyGObject *self, PyObject *args, PyObjec
     int page_no;
     char *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "is:GimpPageSelector.set_page_label", kwlist, &page_no, &label))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"is:GimpPageSelector.set_page_label", kwlist, &page_no, &label))
         return NULL;
+    
     gimp_page_selector_set_page_label(GIMP_PAGE_SELECTOR(self->obj), page_no, label);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3306,9 +3513,11 @@ _wrap_gimp_page_selector_get_page_label(PyGObject *self, PyObject *args, PyObjec
     int page_no;
     gchar *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPageSelector.get_page_label", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.get_page_label", kwlist, &page_no))
         return NULL;
+    
     ret = gimp_page_selector_get_page_label(GIMP_PAGE_SELECTOR(self->obj), page_no);
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -3321,7 +3530,9 @@ _wrap_gimp_page_selector_get_page_label(PyGObject *self, PyObject *args, PyObjec
 static PyObject *
 _wrap_gimp_page_selector_select_all(PyGObject *self)
 {
+    
     gimp_page_selector_select_all(GIMP_PAGE_SELECTOR(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3329,7 +3540,9 @@ _wrap_gimp_page_selector_select_all(PyGObject *self)
 static PyObject *
 _wrap_gimp_page_selector_unselect_all(PyGObject *self)
 {
+    
     gimp_page_selector_unselect_all(GIMP_PAGE_SELECTOR(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3340,9 +3553,11 @@ _wrap_gimp_page_selector_select_page(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "page_no", NULL };
     int page_no;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPageSelector.select_page", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.select_page", kwlist, &page_no))
         return NULL;
+    
     gimp_page_selector_select_page(GIMP_PAGE_SELECTOR(self->obj), page_no);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3353,9 +3568,11 @@ _wrap_gimp_page_selector_unselect_page(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "page_no", NULL };
     int page_no;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPageSelector.unselect_page", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.unselect_page", kwlist, &page_no))
         return NULL;
+    
     gimp_page_selector_unselect_page(GIMP_PAGE_SELECTOR(self->obj), page_no);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3366,9 +3583,11 @@ _wrap_gimp_page_selector_page_is_selected(PyGObject *self, PyObject *args, PyObj
     static char *kwlist[] = { "page_no", NULL };
     int page_no, ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPageSelector.page_is_selected", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.page_is_selected", kwlist, &page_no))
         return NULL;
+    
     ret = gimp_page_selector_page_is_selected(GIMP_PAGE_SELECTOR(self->obj), page_no);
+    
     return PyBool_FromLong(ret);
 
 }
@@ -3379,9 +3598,11 @@ _wrap_gimp_page_selector_select_range(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "range", NULL };
     char *range;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpPageSelector.select_range", kwlist, &range))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPageSelector.select_range", kwlist, &range))
         return NULL;
+    
     gimp_page_selector_select_range(GIMP_PAGE_SELECTOR(self->obj), range);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3391,7 +3612,9 @@ _wrap_gimp_page_selector_get_selected_range(PyGObject *self)
 {
     gchar *ret;
 
+    
     ret = gimp_page_selector_get_selected_range(GIMP_PAGE_SELECTOR(self->obj));
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -3401,64 +3624,79 @@ _wrap_gimp_page_selector_get_selected_range(PyGObject *self)
     return Py_None;
 }
 
-static PyMethodDef _PyGimpPageSelector_methods[] = {
-    { "set_n_pages", (PyCFunction)_wrap_gimp_page_selector_set_n_pages, METH_VARARGS|METH_KEYWORDS },
-    { "get_n_pages", (PyCFunction)_wrap_gimp_page_selector_get_n_pages, METH_NOARGS },
-    { "set_target", (PyCFunction)_wrap_gimp_page_selector_set_target, METH_VARARGS|METH_KEYWORDS },
-    { "get_target", (PyCFunction)_wrap_gimp_page_selector_get_target, METH_NOARGS },
-    { "set_page_thumbnail", (PyCFunction)_wrap_gimp_page_selector_set_page_thumbnail, METH_VARARGS|METH_KEYWORDS },
-    { "get_page_thumbnail", (PyCFunction)_wrap_gimp_page_selector_get_page_thumbnail, METH_VARARGS|METH_KEYWORDS },
-    { "set_page_label", (PyCFunction)_wrap_gimp_page_selector_set_page_label, METH_VARARGS|METH_KEYWORDS },
-    { "get_page_label", (PyCFunction)_wrap_gimp_page_selector_get_page_label, METH_VARARGS|METH_KEYWORDS },
-    { "select_all", (PyCFunction)_wrap_gimp_page_selector_select_all, METH_NOARGS },
-    { "unselect_all", (PyCFunction)_wrap_gimp_page_selector_unselect_all, METH_NOARGS },
-    { "select_page", (PyCFunction)_wrap_gimp_page_selector_select_page, METH_VARARGS|METH_KEYWORDS },
-    { "unselect_page", (PyCFunction)_wrap_gimp_page_selector_unselect_page, METH_VARARGS|METH_KEYWORDS },
-    { "page_is_selected", (PyCFunction)_wrap_gimp_page_selector_page_is_selected, METH_VARARGS|METH_KEYWORDS },
-    { "select_range", (PyCFunction)_wrap_gimp_page_selector_select_range, METH_VARARGS|METH_KEYWORDS },
-    { "get_selected_range", (PyCFunction)_wrap_gimp_page_selector_get_selected_range, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpPageSelector_methods[] = {
+    { "set_n_pages", (PyCFunction)_wrap_gimp_page_selector_set_n_pages, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_n_pages", (PyCFunction)_wrap_gimp_page_selector_get_n_pages, METH_NOARGS,
+      NULL },
+    { "set_target", (PyCFunction)_wrap_gimp_page_selector_set_target, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_target", (PyCFunction)_wrap_gimp_page_selector_get_target, METH_NOARGS,
+      NULL },
+    { "set_page_thumbnail", (PyCFunction)_wrap_gimp_page_selector_set_page_thumbnail, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_page_thumbnail", (PyCFunction)_wrap_gimp_page_selector_get_page_thumbnail, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_page_label", (PyCFunction)_wrap_gimp_page_selector_set_page_label, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_page_label", (PyCFunction)_wrap_gimp_page_selector_get_page_label, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "select_all", (PyCFunction)_wrap_gimp_page_selector_select_all, METH_NOARGS,
+      NULL },
+    { "unselect_all", (PyCFunction)_wrap_gimp_page_selector_unselect_all, METH_NOARGS,
+      NULL },
+    { "select_page", (PyCFunction)_wrap_gimp_page_selector_select_page, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "unselect_page", (PyCFunction)_wrap_gimp_page_selector_unselect_page, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "page_is_selected", (PyCFunction)_wrap_gimp_page_selector_page_is_selected, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "select_range", (PyCFunction)_wrap_gimp_page_selector_select_range, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_selected_range", (PyCFunction)_wrap_gimp_page_selector_get_selected_range, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpPageSelector_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPageSelector_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.PageSelector",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.PageSelector",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpPageSelector_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpPageSelector_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_page_selector_new,		/* tp_init */
+    (initproc)_wrap_gimp_page_selector_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3475,7 +3713,7 @@ _wrap_gimp_path_editor_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "title", "path", NULL };
     char *title, *path;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ss:GimpPathEditor.__init__", kwlist, &title, &path))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:GimpPathEditor.__init__", kwlist, &title, &path))
         return -1;
     self->obj = (GObject *)gimp_path_editor_new(title, path);
 
@@ -3492,7 +3730,9 @@ _wrap_gimp_path_editor_get_path(PyGObject *self)
 {
     gchar *ret;
 
+    
     ret = gimp_path_editor_get_path(GIMP_PATH_EDITOR(self->obj));
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -3508,9 +3748,11 @@ _wrap_gimp_path_editor_set_path(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "path", NULL };
     char *path;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpPathEditor.set_path", kwlist, &path))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPathEditor.set_path", kwlist, &path))
         return NULL;
+    
     gimp_path_editor_set_path(GIMP_PATH_EDITOR(self->obj), path);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3520,7 +3762,9 @@ _wrap_gimp_path_editor_get_writable_path(PyGObject *self)
 {
     gchar *ret;
 
+    
     ret = gimp_path_editor_get_writable_path(GIMP_PATH_EDITOR(self->obj));
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -3536,9 +3780,11 @@ _wrap_gimp_path_editor_set_writable_path(PyGObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "path", NULL };
     char *path;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpPathEditor.set_writable_path", kwlist, &path))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPathEditor.set_writable_path", kwlist, &path))
         return NULL;
+    
     gimp_path_editor_set_writable_path(GIMP_PATH_EDITOR(self->obj), path);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3550,9 +3796,11 @@ _wrap_gimp_path_editor_get_dir_writable(PyGObject *self, PyObject *args, PyObjec
     char *directory;
     int ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpPathEditor.get_dir_writable", kwlist, &directory))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPathEditor.get_dir_writable", kwlist, &directory))
         return NULL;
+    
     ret = gimp_path_editor_get_dir_writable(GIMP_PATH_EDITOR(self->obj), directory);
+    
     return PyBool_FromLong(ret);
 
 }
@@ -3564,62 +3812,70 @@ _wrap_gimp_path_editor_set_dir_writable(PyGObject *self, PyObject *args, PyObjec
     char *directory;
     int writable;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "si:GimpPathEditor.set_dir_writable", kwlist, &directory, &writable))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"si:GimpPathEditor.set_dir_writable", kwlist, &directory, &writable))
         return NULL;
+    
     gimp_path_editor_set_dir_writable(GIMP_PATH_EDITOR(self->obj), directory, writable);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpPathEditor_methods[] = {
-    { "get_path", (PyCFunction)_wrap_gimp_path_editor_get_path, METH_NOARGS },
-    { "set_path", (PyCFunction)_wrap_gimp_path_editor_set_path, METH_VARARGS|METH_KEYWORDS },
-    { "get_writable_path", (PyCFunction)_wrap_gimp_path_editor_get_writable_path, METH_NOARGS },
-    { "set_writable_path", (PyCFunction)_wrap_gimp_path_editor_set_writable_path, METH_VARARGS|METH_KEYWORDS },
-    { "get_dir_writable", (PyCFunction)_wrap_gimp_path_editor_get_dir_writable, METH_VARARGS|METH_KEYWORDS },
-    { "set_dir_writable", (PyCFunction)_wrap_gimp_path_editor_set_dir_writable, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpPathEditor_methods[] = {
+    { "get_path", (PyCFunction)_wrap_gimp_path_editor_get_path, METH_NOARGS,
+      NULL },
+    { "set_path", (PyCFunction)_wrap_gimp_path_editor_set_path, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_writable_path", (PyCFunction)_wrap_gimp_path_editor_get_writable_path, METH_NOARGS,
+      NULL },
+    { "set_writable_path", (PyCFunction)_wrap_gimp_path_editor_set_writable_path, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_dir_writable", (PyCFunction)_wrap_gimp_path_editor_get_dir_writable, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_dir_writable", (PyCFunction)_wrap_gimp_path_editor_set_dir_writable, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpPathEditor_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPathEditor_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.PathEditor",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.PathEditor",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpPathEditor_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpPathEditor_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_path_editor_new,		/* tp_init */
+    (initproc)_wrap_gimp_path_editor_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3635,59 +3891,60 @@ _wrap_gimp_pick_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.PickButton.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.PickButton.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.PickButton object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpPickButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPickButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.PickButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.PickButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_pick_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_pick_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3704,9 +3961,11 @@ _wrap_gimp_preview_set_update(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "update", NULL };
     int update;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpPreview.set_update", kwlist, &update))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPreview.set_update", kwlist, &update))
         return NULL;
+    
     gimp_preview_set_update(GIMP_PREVIEW(self->obj), update);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3716,7 +3975,9 @@ _wrap_gimp_preview_get_update(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_preview_get_update(GIMP_PREVIEW(self->obj));
+    
     return PyBool_FromLong(ret);
 
 }
@@ -3727,9 +3988,11 @@ _wrap_gimp_preview_set_bounds(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "xmin", "ymin", "xmax", "ymax", NULL };
     int xmin, ymin, xmax, ymax;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "iiii:GimpPreview.set_bounds", kwlist, &xmin, &ymin, &xmax, &ymax))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iiii:GimpPreview.set_bounds", kwlist, &xmin, &ymin, &xmax, &ymax))
         return NULL;
+    
     gimp_preview_set_bounds(GIMP_PREVIEW(self->obj), xmin, ymin, xmax, ymax);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3739,7 +4002,9 @@ _wrap_gimp_preview_get_area(PyGObject *self)
 {
     GtkWidget *ret;
 
+    
     ret = gimp_preview_get_area(GIMP_PREVIEW(self->obj));
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -3747,7 +4012,9 @@ _wrap_gimp_preview_get_area(PyGObject *self)
 static PyObject *
 _wrap_gimp_preview_draw(PyGObject *self)
 {
+    
     gimp_preview_draw(GIMP_PREVIEW(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3759,9 +4026,11 @@ _wrap_gimp_preview_draw_buffer(PyGObject *self, PyObject *args, PyObject *kwargs
     int buffer_len, rowstride;
     guchar *buffer;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#i:GimpPreview.draw_buffer", kwlist, &buffer, &buffer_len, &rowstride))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#i:GimpPreview.draw_buffer", kwlist, &buffer, &buffer_len, &rowstride))
         return NULL;
+    
     gimp_preview_draw_buffer(GIMP_PREVIEW(self->obj), buffer, rowstride);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3769,7 +4038,9 @@ _wrap_gimp_preview_draw_buffer(PyGObject *self, PyObject *args, PyObject *kwargs
 static PyObject *
 _wrap_gimp_preview_invalidate(PyGObject *self)
 {
+    
     gimp_preview_invalidate(GIMP_PREVIEW(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3781,7 +4052,7 @@ _wrap_gimp_preview_set_default_cursor(PyGObject *self, PyObject *args, PyObject 
     PyObject *py_cursor;
     GdkCursor *cursor = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpPreview.set_default_cursor", kwlist, &py_cursor))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpPreview.set_default_cursor", kwlist, &py_cursor))
         return NULL;
     if (pyg_boxed_check(py_cursor, GDK_TYPE_CURSOR))
         cursor = pyg_boxed_get(py_cursor, GdkCursor);
@@ -3789,7 +4060,9 @@ _wrap_gimp_preview_set_default_cursor(PyGObject *self, PyObject *args, PyObject 
         PyErr_SetString(PyExc_TypeError, "cursor should be a GdkCursor");
         return NULL;
     }
+    
     gimp_preview_set_default_cursor(GIMP_PREVIEW(self->obj), cursor);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3799,63 +4072,74 @@ _wrap_gimp_preview_get_controls(PyGObject *self)
 {
     GtkWidget *ret;
 
+    
     ret = gimp_preview_get_controls(GIMP_PREVIEW(self->obj));
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
 
-static PyMethodDef _PyGimpPreview_methods[] = {
-    { "set_update", (PyCFunction)_wrap_gimp_preview_set_update, METH_VARARGS|METH_KEYWORDS },
-    { "get_update", (PyCFunction)_wrap_gimp_preview_get_update, METH_NOARGS },
-    { "set_bounds", (PyCFunction)_wrap_gimp_preview_set_bounds, METH_VARARGS|METH_KEYWORDS },
-    { "get_area", (PyCFunction)_wrap_gimp_preview_get_area, METH_NOARGS },
-    { "draw", (PyCFunction)_wrap_gimp_preview_draw, METH_NOARGS },
-    { "draw_buffer", (PyCFunction)_wrap_gimp_preview_draw_buffer, METH_VARARGS|METH_KEYWORDS },
-    { "invalidate", (PyCFunction)_wrap_gimp_preview_invalidate, METH_NOARGS },
-    { "set_default_cursor", (PyCFunction)_wrap_gimp_preview_set_default_cursor, METH_VARARGS|METH_KEYWORDS },
-    { "get_controls", (PyCFunction)_wrap_gimp_preview_get_controls, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpPreview_methods[] = {
+    { "set_update", (PyCFunction)_wrap_gimp_preview_set_update, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_update", (PyCFunction)_wrap_gimp_preview_get_update, METH_NOARGS,
+      NULL },
+    { "set_bounds", (PyCFunction)_wrap_gimp_preview_set_bounds, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_area", (PyCFunction)_wrap_gimp_preview_get_area, METH_NOARGS,
+      NULL },
+    { "draw", (PyCFunction)_wrap_gimp_preview_draw, METH_NOARGS,
+      NULL },
+    { "draw_buffer", (PyCFunction)_wrap_gimp_preview_draw_buffer, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "invalidate", (PyCFunction)_wrap_gimp_preview_invalidate, METH_NOARGS,
+      NULL },
+    { "set_default_cursor", (PyCFunction)_wrap_gimp_preview_set_default_cursor, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_controls", (PyCFunction)_wrap_gimp_preview_get_controls, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpPreview_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPreview_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.Preview",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.Preview",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpPreview_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpPreview_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)0,		/* tp_init */
+    (initproc)0,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3876,65 +4160,65 @@ _wrap_gimp_aspect_preview_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     char *prop_names[] = {"drawable", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "O:gimpui.AspectPreview.__init__" , arg_names , &parsed_args[0] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:gimpui.AspectPreview.__init__" , arg_names , &parsed_args[0]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*1);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.AspectPreview object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpAspectPreview_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpAspectPreview_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.AspectPreview",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.AspectPreview",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_aspect_preview_new,		/* tp_init */
+    (initproc)_wrap_gimp_aspect_preview_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -3945,24 +4229,25 @@ PyTypeObject PyGimpAspectPreview_Type = {
 
 /* ----------- GimpPreviewArea ----------- */
 
-static int
+ static int
 _wrap_gimp_preview_area_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.PreviewArea.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.PreviewArea.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.PreviewArea object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_preview_area_fill(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -3971,9 +4256,11 @@ _wrap_gimp_preview_area_fill(PyGObject *self, PyObject *args, PyObject *kwargs)
     int x, y, width, height;
     char red, green, blue;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "iiiiccc:GimpPreviewArea.fill", kwlist, &x, &y, &width, &height, &red, &green, &blue))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iiiiccc:GimpPreviewArea.fill", kwlist, &x, &y, &width, &height, &red, &green, &blue))
         return NULL;
+    
     gimp_preview_area_fill(GIMP_PREVIEW_AREA(self->obj), x, y, width, height, red, green, blue);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3984,9 +4271,11 @@ _wrap_gimp_preview_area_set_offsets(PyGObject *self, PyObject *args, PyObject *k
     static char *kwlist[] = { "x", "y", NULL };
     int x, y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpPreviewArea.set_offsets", kwlist, &x, &y))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpPreviewArea.set_offsets", kwlist, &x, &y))
         return NULL;
+    
     gimp_preview_area_set_offsets(GIMP_PREVIEW_AREA(self->obj), x, y);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -3998,9 +4287,11 @@ _wrap_gimp_preview_area_set_colormap(PyGObject *self, PyObject *args, PyObject *
     int colormap_len, num_colors;
     guchar *colormap;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#i:GimpPreviewArea.set_colormap", kwlist, &colormap, &colormap_len, &num_colors))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#i:GimpPreviewArea.set_colormap", kwlist, &colormap, &colormap_len, &num_colors))
         return NULL;
+    
     gimp_preview_area_set_colormap(GIMP_PREVIEW_AREA(self->obj), colormap, num_colors);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -4011,9 +4302,11 @@ _wrap_gimp_preview_area_set_max_size(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "width", "height", NULL };
     int width, height;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpPreviewArea.set_max_size", kwlist, &width, &height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpPreviewArea.set_max_size", kwlist, &width, &height))
         return NULL;
+    
     gimp_preview_area_set_max_size(GIMP_PREVIEW_AREA(self->obj), width, height);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -4025,7 +4318,7 @@ _wrap_gimp_preview_area_menu_popup(PyGObject *self, PyObject *args, PyObject *kw
     GdkEvent *event = NULL;
     PyObject *py_event;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:GimpPreviewArea.menu_popup", kwlist, &py_event))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpPreviewArea.menu_popup", kwlist, &py_event))
         return NULL;
     if (pyg_boxed_check(py_event, GDK_TYPE_EVENT))
         event = pyg_boxed_get(py_event, GdkEvent);
@@ -4033,59 +4326,66 @@ _wrap_gimp_preview_area_menu_popup(PyGObject *self, PyObject *args, PyObject *kw
         PyErr_SetString(PyExc_TypeError, "event should be a GdkEvent");
         return NULL;
     }
+    
     gimp_preview_area_menu_popup(GIMP_PREVIEW_AREA(self->obj), (GdkEventButton *)event);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpPreviewArea_methods[] = {
-    { "fill", (PyCFunction)_wrap_gimp_preview_area_fill, METH_VARARGS|METH_KEYWORDS },
-    { "set_offsets", (PyCFunction)_wrap_gimp_preview_area_set_offsets, METH_VARARGS|METH_KEYWORDS },
-    { "set_colormap", (PyCFunction)_wrap_gimp_preview_area_set_colormap, METH_VARARGS|METH_KEYWORDS },
-    { "set_max_size", (PyCFunction)_wrap_gimp_preview_area_set_max_size, METH_VARARGS|METH_KEYWORDS },
-    { "menu_popup", (PyCFunction)_wrap_gimp_preview_area_menu_popup, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpPreviewArea_methods[] = {
+    { "fill", (PyCFunction)_wrap_gimp_preview_area_fill, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_offsets", (PyCFunction)_wrap_gimp_preview_area_set_offsets, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_colormap", (PyCFunction)_wrap_gimp_preview_area_set_colormap, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_max_size", (PyCFunction)_wrap_gimp_preview_area_set_max_size, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "menu_popup", (PyCFunction)_wrap_gimp_preview_area_menu_popup, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpPreviewArea_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPreviewArea_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.PreviewArea",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.PreviewArea",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpPreviewArea_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpPreviewArea_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_preview_area_new,		/* tp_init */
+    (initproc)_wrap_gimp_preview_area_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4194,7 +4494,7 @@ _wrap_gimp_proc_browser_dialog_new(PyGObject *self, PyObject *args, PyObject *kw
                           "search", "", 0, self->obj);
     return 0;
 }
-#line 4198 "gimpui.c"
+#line 4498 "gimpui.c"
 
 
 static PyObject *
@@ -4202,7 +4502,9 @@ _wrap_gimp_proc_browser_dialog_get_selected(PyGObject *self)
 {
     gchar *ret;
 
+    
     ret = gimp_proc_browser_dialog_get_selected(GIMP_PROC_BROWSER_DIALOG(self->obj));
+    
     if (ret) {
         PyObject *py_ret = PyString_FromString(ret);
         g_free(ret);
@@ -4212,50 +4514,51 @@ _wrap_gimp_proc_browser_dialog_get_selected(PyGObject *self)
     return Py_None;
 }
 
-static PyMethodDef _PyGimpProcBrowserDialog_methods[] = {
-    { "get_selected", (PyCFunction)_wrap_gimp_proc_browser_dialog_get_selected, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpProcBrowserDialog_methods[] = {
+    { "get_selected", (PyCFunction)_wrap_gimp_proc_browser_dialog_get_selected, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpProcBrowserDialog_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpProcBrowserDialog_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ProcBrowserDialog",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ProcBrowserDialog",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpProcBrowserDialog_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpProcBrowserDialog_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_proc_browser_dialog_new,		/* tp_init */
+    (initproc)_wrap_gimp_proc_browser_dialog_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4271,59 +4574,60 @@ _wrap_gimp_progress_bar_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.ProgressBar.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.ProgressBar.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ProgressBar object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpProgressBar_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpProgressBar_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ProgressBar",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ProgressBar",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_progress_bar_new,		/* tp_init */
+    (initproc)_wrap_gimp_progress_bar_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4334,45 +4638,45 @@ PyTypeObject PyGimpProgressBar_Type = {
 
 /* ----------- GimpResolutionEntry ----------- */
 
-PyTypeObject PyGimpResolutionEntry_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpResolutionEntry_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ResolutionEntry",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ResolutionEntry",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)0,		/* tp_init */
+    (initproc)0,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4389,9 +4693,11 @@ _wrap_gimp_scrolled_preview_set_position(PyGObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "x", "y", NULL };
     int x, y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpScrolledPreview.set_position", kwlist, &x, &y))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpScrolledPreview.set_position", kwlist, &x, &y))
         return NULL;
+    
     gimp_scrolled_preview_set_position(GIMP_SCROLLED_PREVIEW(self->obj), x, y);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -4403,13 +4709,15 @@ _wrap_gimp_scrolled_preview_set_policy(PyGObject *self, PyObject *args, PyObject
     PyObject *py_hscrollbar_policy = NULL, *py_vscrollbar_policy = NULL;
     GtkPolicyType hscrollbar_policy, vscrollbar_policy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO:GimpScrolledPreview.set_policy", kwlist, &py_hscrollbar_policy, &py_vscrollbar_policy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:GimpScrolledPreview.set_policy", kwlist, &py_hscrollbar_policy, &py_vscrollbar_policy))
         return NULL;
-    if (pyg_enum_get_value(GTK_TYPE_POLICY_TYPE, py_hscrollbar_policy, (gint *)&hscrollbar_policy))
+    if (pyg_enum_get_value(GTK_TYPE_POLICY_TYPE, py_hscrollbar_policy, (gpointer)&hscrollbar_policy))
         return NULL;
-    if (pyg_enum_get_value(GTK_TYPE_POLICY_TYPE, py_vscrollbar_policy, (gint *)&vscrollbar_policy))
+    if (pyg_enum_get_value(GTK_TYPE_POLICY_TYPE, py_vscrollbar_policy, (gpointer)&vscrollbar_policy))
         return NULL;
+    
     gimp_scrolled_preview_set_policy(GIMP_SCROLLED_PREVIEW(self->obj), hscrollbar_policy, vscrollbar_policy);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -4417,7 +4725,9 @@ _wrap_gimp_scrolled_preview_set_policy(PyGObject *self, PyObject *args, PyObject
 static PyObject *
 _wrap_gimp_scrolled_preview_freeze(PyGObject *self)
 {
+    
     gimp_scrolled_preview_freeze(GIMP_SCROLLED_PREVIEW(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -4425,58 +4735,64 @@ _wrap_gimp_scrolled_preview_freeze(PyGObject *self)
 static PyObject *
 _wrap_gimp_scrolled_preview_thaw(PyGObject *self)
 {
+    
     gimp_scrolled_preview_thaw(GIMP_SCROLLED_PREVIEW(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpScrolledPreview_methods[] = {
-    { "set_position", (PyCFunction)_wrap_gimp_scrolled_preview_set_position, METH_VARARGS|METH_KEYWORDS },
-    { "set_policy", (PyCFunction)_wrap_gimp_scrolled_preview_set_policy, METH_VARARGS|METH_KEYWORDS },
-    { "freeze", (PyCFunction)_wrap_gimp_scrolled_preview_freeze, METH_NOARGS },
-    { "thaw", (PyCFunction)_wrap_gimp_scrolled_preview_thaw, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpScrolledPreview_methods[] = {
+    { "set_position", (PyCFunction)_wrap_gimp_scrolled_preview_set_position, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_policy", (PyCFunction)_wrap_gimp_scrolled_preview_set_policy, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "freeze", (PyCFunction)_wrap_gimp_scrolled_preview_freeze, METH_NOARGS,
+      NULL },
+    { "thaw", (PyCFunction)_wrap_gimp_scrolled_preview_thaw, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpScrolledPreview_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpScrolledPreview_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ScrolledPreview",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ScrolledPreview",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpScrolledPreview_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpScrolledPreview_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)0,		/* tp_init */
+    (initproc)0,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4497,65 +4813,65 @@ _wrap_gimp_drawable_preview_new(PyGObject *self, PyObject *args, PyObject *kwarg
     char *prop_names[] = {"drawable", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "O:gimpui.DrawablePreview.__init__" , arg_names , &parsed_args[0] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:gimpui.DrawablePreview.__init__" , arg_names , &parsed_args[0]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*1);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.DrawablePreview object");
         return -1;
     }
-
     return 0;
 }
 
-
-PyTypeObject PyGimpDrawablePreview_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpDrawablePreview_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.DrawablePreview",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.DrawablePreview",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    NULL,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)NULL, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_drawable_preview_new,		/* tp_init */
+    (initproc)_wrap_gimp_drawable_preview_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4569,55 +4885,58 @@ PyTypeObject PyGimpDrawablePreview_Type = {
 static PyObject *
 _wrap_gimp_select_button_close_popup(PyGObject *self)
 {
+    
     gimp_select_button_close_popup(GIMP_SELECT_BUTTON(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpSelectButton_methods[] = {
-    { "close_popup", (PyCFunction)_wrap_gimp_select_button_close_popup, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpSelectButton_methods[] = {
+    { "close_popup", (PyCFunction)_wrap_gimp_select_button_close_popup, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpSelectButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpSelectButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.SelectButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.SelectButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpSelectButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpSelectButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)0,		/* tp_init */
+    (initproc)0,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4628,7 +4947,7 @@ PyTypeObject PyGimpSelectButton_Type = {
 
 /* ----------- GimpPatternSelectButton ----------- */
 
-static int
+ static int
 _wrap_gimp_pattern_select_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -4638,32 +4957,34 @@ _wrap_gimp_pattern_select_button_new(PyGObject *self, PyObject *args, PyObject *
     char *prop_names[] = {"title", "pattern-name", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|OO:gimpui.PatternSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:gimpui.PatternSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*2);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.PatternSelectButton object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_pattern_select_button_get_pattern(PyGObject *self)
 {
     const gchar *ret;
 
+    
     ret = gimp_pattern_select_button_get_pattern(GIMP_PATTERN_SELECT_BUTTON(self->obj));
+    
     if (ret)
         return PyString_FromString(ret);
     Py_INCREF(Py_None);
@@ -4676,58 +4997,62 @@ _wrap_gimp_pattern_select_button_set_pattern(PyGObject *self, PyObject *args, Py
     static char *kwlist[] = { "pattern_name", NULL };
     char *pattern_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpPatternSelectButton.set_pattern", kwlist, &pattern_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPatternSelectButton.set_pattern", kwlist, &pattern_name))
         return NULL;
+    
     gimp_pattern_select_button_set_pattern(GIMP_PATTERN_SELECT_BUTTON(self->obj), pattern_name);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpPatternSelectButton_methods[] = {
-    { "get_pattern", (PyCFunction)_wrap_gimp_pattern_select_button_get_pattern, METH_NOARGS },
-    { "set_pattern", (PyCFunction)_wrap_gimp_pattern_select_button_set_pattern, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpPatternSelectButton_methods[] = {
+    { "get_pattern", (PyCFunction)_wrap_gimp_pattern_select_button_get_pattern, METH_NOARGS,
+      NULL },
+    { "set_pattern", (PyCFunction)_wrap_gimp_pattern_select_button_set_pattern, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpPatternSelectButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPatternSelectButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.PatternSelectButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.PatternSelectButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpPatternSelectButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpPatternSelectButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_pattern_select_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_pattern_select_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4738,7 +5063,7 @@ PyTypeObject PyGimpPatternSelectButton_Type = {
 
 /* ----------- GimpPaletteSelectButton ----------- */
 
-static int
+ static int
 _wrap_gimp_palette_select_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -4748,32 +5073,34 @@ _wrap_gimp_palette_select_button_new(PyGObject *self, PyObject *args, PyObject *
     char *prop_names[] = {"title", "palette-name", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|OO:gimpui.PaletteSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:gimpui.PaletteSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*2);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.PaletteSelectButton object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_palette_select_button_get_palette(PyGObject *self)
 {
     const gchar *ret;
 
+    
     ret = gimp_palette_select_button_get_palette(GIMP_PALETTE_SELECT_BUTTON(self->obj));
+    
     if (ret)
         return PyString_FromString(ret);
     Py_INCREF(Py_None);
@@ -4786,58 +5113,62 @@ _wrap_gimp_palette_select_button_set_palette(PyGObject *self, PyObject *args, Py
     static char *kwlist[] = { "palette_name", NULL };
     char *palette_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpPaletteSelectButton.set_palette", kwlist, &palette_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPaletteSelectButton.set_palette", kwlist, &palette_name))
         return NULL;
+    
     gimp_palette_select_button_set_palette(GIMP_PALETTE_SELECT_BUTTON(self->obj), palette_name);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpPaletteSelectButton_methods[] = {
-    { "get_palette", (PyCFunction)_wrap_gimp_palette_select_button_get_palette, METH_NOARGS },
-    { "set_palette", (PyCFunction)_wrap_gimp_palette_select_button_set_palette, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpPaletteSelectButton_methods[] = {
+    { "get_palette", (PyCFunction)_wrap_gimp_palette_select_button_get_palette, METH_NOARGS,
+      NULL },
+    { "set_palette", (PyCFunction)_wrap_gimp_palette_select_button_set_palette, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpPaletteSelectButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpPaletteSelectButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.PaletteSelectButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.PaletteSelectButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpPaletteSelectButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpPaletteSelectButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_palette_select_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_palette_select_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4848,7 +5179,7 @@ PyTypeObject PyGimpPaletteSelectButton_Type = {
 
 /* ----------- GimpGradientSelectButton ----------- */
 
-static int
+ static int
 _wrap_gimp_gradient_select_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -4858,32 +5189,34 @@ _wrap_gimp_gradient_select_button_new(PyGObject *self, PyObject *args, PyObject 
     char *prop_names[] = {"title", "gradient-name", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|OO:gimpui.GradientSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:gimpui.GradientSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*2);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.GradientSelectButton object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_gradient_select_button_get_gradient(PyGObject *self)
 {
     const gchar *ret;
 
+    
     ret = gimp_gradient_select_button_get_gradient(GIMP_GRADIENT_SELECT_BUTTON(self->obj));
+    
     if (ret)
         return PyString_FromString(ret);
     Py_INCREF(Py_None);
@@ -4896,58 +5229,62 @@ _wrap_gimp_gradient_select_button_set_gradient(PyGObject *self, PyObject *args, 
     static char *kwlist[] = { "gradient_name", NULL };
     char *gradient_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpGradientSelectButton.set_gradient", kwlist, &gradient_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpGradientSelectButton.set_gradient", kwlist, &gradient_name))
         return NULL;
+    
     gimp_gradient_select_button_set_gradient(GIMP_GRADIENT_SELECT_BUTTON(self->obj), gradient_name);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpGradientSelectButton_methods[] = {
-    { "get_gradient", (PyCFunction)_wrap_gimp_gradient_select_button_get_gradient, METH_NOARGS },
-    { "set_gradient", (PyCFunction)_wrap_gimp_gradient_select_button_set_gradient, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpGradientSelectButton_methods[] = {
+    { "get_gradient", (PyCFunction)_wrap_gimp_gradient_select_button_get_gradient, METH_NOARGS,
+      NULL },
+    { "set_gradient", (PyCFunction)_wrap_gimp_gradient_select_button_set_gradient, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpGradientSelectButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpGradientSelectButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.GradientSelectButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.GradientSelectButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpGradientSelectButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpGradientSelectButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_gradient_select_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_gradient_select_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -4958,7 +5295,7 @@ PyTypeObject PyGimpGradientSelectButton_Type = {
 
 /* ----------- GimpFontSelectButton ----------- */
 
-static int
+ static int
 _wrap_gimp_font_select_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -4968,32 +5305,34 @@ _wrap_gimp_font_select_button_new(PyGObject *self, PyObject *args, PyObject *kwa
     char *prop_names[] = {"title", "font-name", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|OO:gimpui.FontSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:gimpui.FontSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*2);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.FontSelectButton object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_font_select_button_get_font(PyGObject *self)
 {
     const gchar *ret;
 
+    
     ret = gimp_font_select_button_get_font(GIMP_FONT_SELECT_BUTTON(self->obj));
+    
     if (ret)
         return PyString_FromString(ret);
     Py_INCREF(Py_None);
@@ -5006,58 +5345,62 @@ _wrap_gimp_font_select_button_set_font(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "font_name", NULL };
     char *font_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s:GimpFontSelectButton.set_font", kwlist, &font_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpFontSelectButton.set_font", kwlist, &font_name))
         return NULL;
+    
     gimp_font_select_button_set_font(GIMP_FONT_SELECT_BUTTON(self->obj), font_name);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpFontSelectButton_methods[] = {
-    { "get_font", (PyCFunction)_wrap_gimp_font_select_button_get_font, METH_NOARGS },
-    { "set_font", (PyCFunction)_wrap_gimp_font_select_button_set_font, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpFontSelectButton_methods[] = {
+    { "get_font", (PyCFunction)_wrap_gimp_font_select_button_get_font, METH_NOARGS,
+      NULL },
+    { "set_font", (PyCFunction)_wrap_gimp_font_select_button_set_font, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpFontSelectButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpFontSelectButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.FontSelectButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.FontSelectButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpFontSelectButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpFontSelectButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_font_select_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_font_select_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -5068,7 +5411,7 @@ PyTypeObject PyGimpFontSelectButton_Type = {
 
 /* ----------- GimpBrushSelectButton ----------- */
 
-static int
+ static int
 _wrap_gimp_brush_select_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     GType obj_type = pyg_type_from_object((PyObject *) self);
@@ -5078,25 +5421,25 @@ _wrap_gimp_brush_select_button_new(PyGObject *self, PyObject *args, PyObject *kw
     char *prop_names[] = {"title", "brush-name", "brush-opacity", "brush-spacing", "brush-paint-mode", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "|OOOOO:gimpui.BrushSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] , &parsed_args[2] , &parsed_args[3] , &parsed_args[4] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OOOOO:gimpui.BrushSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1] , &parsed_args[2] , &parsed_args[3] , &parsed_args[4]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*5);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.BrushSelectButton object");
         return -1;
     }
-
     return 0;
 }
-
 
 #line 878 "gimpui.override"
 static PyObject *
@@ -5115,7 +5458,7 @@ _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
                          pyg_enum_from_gtype(GIMP_TYPE_LAYER_MODE_EFFECTS,
                                              paint_mode));
 }
-#line 5119 "gimpui.c"
+#line 5462 "gimpui.c"
 
 
 static PyObject *
@@ -5128,60 +5471,64 @@ _wrap_gimp_brush_select_button_set_brush(PyGObject *self, PyObject *args, PyObje
     PyObject *py_paint_mode = NULL;
     GimpLayerModeEffects paint_mode;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sdiO:GimpBrushSelectButton.set_brush", kwlist, &brush_name, &opacity, &spacing, &py_paint_mode))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sdiO:GimpBrushSelectButton.set_brush", kwlist, &brush_name, &opacity, &spacing, &py_paint_mode))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_LAYER_MODE_EFFECTS, py_paint_mode, (gint *)&paint_mode))
+    if (pyg_enum_get_value(GIMP_TYPE_LAYER_MODE_EFFECTS, py_paint_mode, (gpointer)&paint_mode))
         return NULL;
+    
     gimp_brush_select_button_set_brush(GIMP_BRUSH_SELECT_BUTTON(self->obj), brush_name, opacity, spacing, paint_mode);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyMethodDef _PyGimpBrushSelectButton_methods[] = {
-    { "get_brush", (PyCFunction)_wrap_gimp_brush_select_button_get_brush, METH_NOARGS },
-    { "set_brush", (PyCFunction)_wrap_gimp_brush_select_button_set_brush, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpBrushSelectButton_methods[] = {
+    { "get_brush", (PyCFunction)_wrap_gimp_brush_select_button_get_brush, METH_NOARGS,
+      NULL },
+    { "set_brush", (PyCFunction)_wrap_gimp_brush_select_button_set_brush, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpBrushSelectButton_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpBrushSelectButton_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.BrushSelectButton",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.BrushSelectButton",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpBrushSelectButton_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpBrushSelectButton_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_brush_select_button_new,		/* tp_init */
+    (initproc)_wrap_gimp_brush_select_button_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -5208,9 +5555,11 @@ _wrap_gimp_size_entry_add_field(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "value_spinbutton", "refval_spinbutton", NULL };
     PyGObject *value_spinbutton, *refval_spinbutton;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!:GimpSizeEntry.add_field", kwlist, &PyGtkSpinButton_Type, &value_spinbutton, &PyGtkSpinButton_Type, &refval_spinbutton))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!:GimpSizeEntry.add_field", kwlist, &PyGtkSpinButton_Type, &value_spinbutton, &PyGtkSpinButton_Type, &refval_spinbutton))
         return NULL;
+    
     gimp_size_entry_add_field(GIMP_SIZE_ENTRY(self->obj), GTK_SPIN_BUTTON(value_spinbutton->obj), GTK_SPIN_BUTTON(refval_spinbutton->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5224,9 +5573,11 @@ _wrap_gimp_size_entry_attach_label(PyGObject *self, PyObject *args, PyObject *kw
     GtkWidget *ret;
     double alignment;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "siid:GimpSizeEntry.attach_label", kwlist, &text, &row, &column, &alignment))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"siid:GimpSizeEntry.attach_label", kwlist, &text, &row, &column, &alignment))
         return NULL;
+    
     ret = gimp_size_entry_attach_label(GIMP_SIZE_ENTRY(self->obj), text, row, column, alignment);
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -5238,9 +5589,11 @@ _wrap_gimp_size_entry_set_resolution(PyGObject *self, PyObject *args, PyObject *
     int field, keep_size;
     double resolution;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "idi:GimpSizeEntry.set_resolution", kwlist, &field, &resolution, &keep_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idi:GimpSizeEntry.set_resolution", kwlist, &field, &resolution, &keep_size))
         return NULL;
+    
     gimp_size_entry_set_resolution(GIMP_SIZE_ENTRY(self->obj), field, resolution, keep_size);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5252,9 +5605,11 @@ _wrap_gimp_size_entry_set_size(PyGObject *self, PyObject *args, PyObject *kwargs
     int field;
     double lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "idd:GimpSizeEntry.set_size", kwlist, &field, &lower, &upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:GimpSizeEntry.set_size", kwlist, &field, &lower, &upper))
         return NULL;
+    
     gimp_size_entry_set_size(GIMP_SIZE_ENTRY(self->obj), field, lower, upper);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5266,9 +5621,11 @@ _wrap_gimp_size_entry_set_value_boundaries(PyGObject *self, PyObject *args, PyOb
     int field;
     double lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "idd:GimpSizeEntry.set_value_boundaries", kwlist, &field, &lower, &upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:GimpSizeEntry.set_value_boundaries", kwlist, &field, &lower, &upper))
         return NULL;
+    
     gimp_size_entry_set_value_boundaries(GIMP_SIZE_ENTRY(self->obj), field, lower, upper);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5280,9 +5637,11 @@ _wrap_gimp_size_entry_get_value(PyGObject *self, PyObject *args, PyObject *kwarg
     int field;
     double ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpSizeEntry.get_value", kwlist, &field))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.get_value", kwlist, &field))
         return NULL;
+    
     ret = gimp_size_entry_get_value(GIMP_SIZE_ENTRY(self->obj), field);
+    
     return PyFloat_FromDouble(ret);
 }
 
@@ -5293,9 +5652,11 @@ _wrap_gimp_size_entry_set_value(PyGObject *self, PyObject *args, PyObject *kwarg
     int field;
     double value;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "id:GimpSizeEntry.set_value", kwlist, &field, &value))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"id:GimpSizeEntry.set_value", kwlist, &field, &value))
         return NULL;
+    
     gimp_size_entry_set_value(GIMP_SIZE_ENTRY(self->obj), field, value);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5307,9 +5668,11 @@ _wrap_gimp_size_entry_set_refval_boundaries(PyGObject *self, PyObject *args, PyO
     int field;
     double lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "idd:GimpSizeEntry.set_refval_boundaries", kwlist, &field, &lower, &upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:GimpSizeEntry.set_refval_boundaries", kwlist, &field, &lower, &upper))
         return NULL;
+    
     gimp_size_entry_set_refval_boundaries(GIMP_SIZE_ENTRY(self->obj), field, lower, upper);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5320,9 +5683,11 @@ _wrap_gimp_size_entry_set_refval_digits(PyGObject *self, PyObject *args, PyObjec
     static char *kwlist[] = { "field", "digits", NULL };
     int field, digits;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:GimpSizeEntry.set_refval_digits", kwlist, &field, &digits))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpSizeEntry.set_refval_digits", kwlist, &field, &digits))
         return NULL;
+    
     gimp_size_entry_set_refval_digits(GIMP_SIZE_ENTRY(self->obj), field, digits);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5334,9 +5699,11 @@ _wrap_gimp_size_entry_get_refval(PyGObject *self, PyObject *args, PyObject *kwar
     int field;
     double ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpSizeEntry.get_refval", kwlist, &field))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.get_refval", kwlist, &field))
         return NULL;
+    
     ret = gimp_size_entry_get_refval(GIMP_SIZE_ENTRY(self->obj), field);
+    
     return PyFloat_FromDouble(ret);
 }
 
@@ -5347,9 +5714,11 @@ _wrap_gimp_size_entry_set_refval(PyGObject *self, PyObject *args, PyObject *kwar
     int field;
     double refval;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "id:GimpSizeEntry.set_refval", kwlist, &field, &refval))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"id:GimpSizeEntry.set_refval", kwlist, &field, &refval))
         return NULL;
+    
     gimp_size_entry_set_refval(GIMP_SIZE_ENTRY(self->obj), field, refval);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5360,9 +5729,11 @@ _wrap_gimp_size_entry_show_unit_menu(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "show", NULL };
     int show;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpSizeEntry.show_unit_menu", kwlist, &show))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.show_unit_menu", kwlist, &show))
         return NULL;
+    
     gimp_size_entry_show_unit_menu(GIMP_SIZE_ENTRY(self->obj), show);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5373,9 +5744,11 @@ _wrap_gimp_size_entry_set_pixel_digits(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "digits", NULL };
     int digits;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpSizeEntry.set_pixel_digits", kwlist, &digits))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.set_pixel_digits", kwlist, &digits))
         return NULL;
+    
     gimp_size_entry_set_pixel_digits(GIMP_SIZE_ENTRY(self->obj), digits);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5383,7 +5756,9 @@ _wrap_gimp_size_entry_set_pixel_digits(PyGObject *self, PyObject *args, PyObject
 static PyObject *
 _wrap_gimp_size_entry_grab_focus(PyGObject *self)
 {
+    
     gimp_size_entry_grab_focus(GIMP_SIZE_ENTRY(self->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5394,9 +5769,11 @@ _wrap_gimp_size_entry_set_activates_default(PyGObject *self, PyObject *args, PyO
     static char *kwlist[] = { "setting", NULL };
     int setting;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpSizeEntry.set_activates_default", kwlist, &setting))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.set_activates_default", kwlist, &setting))
         return NULL;
+    
     gimp_size_entry_set_activates_default(GIMP_SIZE_ENTRY(self->obj), setting);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5408,72 +5785,90 @@ _wrap_gimp_size_entry_get_help_widget(PyGObject *self, PyObject *args, PyObject 
     int field;
     GtkWidget *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpSizeEntry.get_help_widget", kwlist, &field))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.get_help_widget", kwlist, &field))
         return NULL;
+    
     ret = gimp_size_entry_get_help_widget(GIMP_SIZE_ENTRY(self->obj), field);
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
 
-static PyMethodDef _PyGimpSizeEntry_methods[] = {
-    { "add_field", (PyCFunction)_wrap_gimp_size_entry_add_field, METH_VARARGS|METH_KEYWORDS },
-    { "attach_label", (PyCFunction)_wrap_gimp_size_entry_attach_label, METH_VARARGS|METH_KEYWORDS },
-    { "set_resolution", (PyCFunction)_wrap_gimp_size_entry_set_resolution, METH_VARARGS|METH_KEYWORDS },
-    { "set_size", (PyCFunction)_wrap_gimp_size_entry_set_size, METH_VARARGS|METH_KEYWORDS },
-    { "set_value_boundaries", (PyCFunction)_wrap_gimp_size_entry_set_value_boundaries, METH_VARARGS|METH_KEYWORDS },
-    { "get_value", (PyCFunction)_wrap_gimp_size_entry_get_value, METH_VARARGS|METH_KEYWORDS },
-    { "set_value", (PyCFunction)_wrap_gimp_size_entry_set_value, METH_VARARGS|METH_KEYWORDS },
-    { "set_refval_boundaries", (PyCFunction)_wrap_gimp_size_entry_set_refval_boundaries, METH_VARARGS|METH_KEYWORDS },
-    { "set_refval_digits", (PyCFunction)_wrap_gimp_size_entry_set_refval_digits, METH_VARARGS|METH_KEYWORDS },
-    { "get_refval", (PyCFunction)_wrap_gimp_size_entry_get_refval, METH_VARARGS|METH_KEYWORDS },
-    { "set_refval", (PyCFunction)_wrap_gimp_size_entry_set_refval, METH_VARARGS|METH_KEYWORDS },
-    { "show_unit_menu", (PyCFunction)_wrap_gimp_size_entry_show_unit_menu, METH_VARARGS|METH_KEYWORDS },
-    { "set_pixel_digits", (PyCFunction)_wrap_gimp_size_entry_set_pixel_digits, METH_VARARGS|METH_KEYWORDS },
-    { "grab_focus", (PyCFunction)_wrap_gimp_size_entry_grab_focus, METH_NOARGS },
-    { "set_activates_default", (PyCFunction)_wrap_gimp_size_entry_set_activates_default, METH_VARARGS|METH_KEYWORDS },
-    { "get_help_widget", (PyCFunction)_wrap_gimp_size_entry_get_help_widget, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpSizeEntry_methods[] = {
+    { "add_field", (PyCFunction)_wrap_gimp_size_entry_add_field, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "attach_label", (PyCFunction)_wrap_gimp_size_entry_attach_label, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_resolution", (PyCFunction)_wrap_gimp_size_entry_set_resolution, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_size", (PyCFunction)_wrap_gimp_size_entry_set_size, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_value_boundaries", (PyCFunction)_wrap_gimp_size_entry_set_value_boundaries, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_value", (PyCFunction)_wrap_gimp_size_entry_get_value, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_value", (PyCFunction)_wrap_gimp_size_entry_set_value, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_refval_boundaries", (PyCFunction)_wrap_gimp_size_entry_set_refval_boundaries, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_refval_digits", (PyCFunction)_wrap_gimp_size_entry_set_refval_digits, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_refval", (PyCFunction)_wrap_gimp_size_entry_get_refval, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_refval", (PyCFunction)_wrap_gimp_size_entry_set_refval, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "show_unit_menu", (PyCFunction)_wrap_gimp_size_entry_show_unit_menu, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "set_pixel_digits", (PyCFunction)_wrap_gimp_size_entry_set_pixel_digits, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "grab_focus", (PyCFunction)_wrap_gimp_size_entry_grab_focus, METH_NOARGS,
+      NULL },
+    { "set_activates_default", (PyCFunction)_wrap_gimp_size_entry_set_activates_default, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_help_widget", (PyCFunction)_wrap_gimp_size_entry_get_help_widget, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpSizeEntry_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpSizeEntry_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.SizeEntry",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.SizeEntry",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpSizeEntry_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpSizeEntry_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)pygobject_no_constructor,		/* tp_init */
+    (initproc)pygobject_no_constructor,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -5490,9 +5885,11 @@ _wrap_gimp_unit_menu_set_pixel_digits(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "digits", NULL };
     int digits;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:GimpUnitMenu.set_pixel_digits", kwlist, &digits))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpUnitMenu.set_pixel_digits", kwlist, &digits))
         return NULL;
+    
     gimp_unit_menu_set_pixel_digits(GIMP_UNIT_MENU(self->obj), digits);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5502,55 +5899,59 @@ _wrap_gimp_unit_menu_get_pixel_digits(PyGObject *self)
 {
     int ret;
 
+    
     ret = gimp_unit_menu_get_pixel_digits(GIMP_UNIT_MENU(self->obj));
+    
     return PyInt_FromLong(ret);
 }
 
-static PyMethodDef _PyGimpUnitMenu_methods[] = {
-    { "set_pixel_digits", (PyCFunction)_wrap_gimp_unit_menu_set_pixel_digits, METH_VARARGS|METH_KEYWORDS },
-    { "get_pixel_digits", (PyCFunction)_wrap_gimp_unit_menu_get_pixel_digits, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpUnitMenu_methods[] = {
+    { "set_pixel_digits", (PyCFunction)_wrap_gimp_unit_menu_set_pixel_digits, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_pixel_digits", (PyCFunction)_wrap_gimp_unit_menu_get_pixel_digits, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpUnitMenu_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpUnitMenu_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.UnitMenu",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.UnitMenu",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpUnitMenu_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpUnitMenu_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)pygobject_no_constructor,		/* tp_init */
+    (initproc)pygobject_no_constructor,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -5561,24 +5962,25 @@ PyTypeObject PyGimpUnitMenu_Type = {
 
 /* ----------- GimpZoomModel ----------- */
 
-static int
+ static int
 _wrap_gimp_zoom_model_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, ":gimpui.ZoomModel.__init__", kwlist))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.ZoomModel.__init__",
+                                     kwlist))
         return -1;
 
     pygobject_constructv(self, 0, NULL);
-
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ZoomModel object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_zoom_model_set_range(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -5586,9 +5988,11 @@ _wrap_gimp_zoom_model_set_range(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "min", "max", NULL };
     double min, max;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "dd:GimpZoomModel.set_range", kwlist, &min, &max))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:GimpZoomModel.set_range", kwlist, &min, &max))
         return NULL;
+    
     gimp_zoom_model_set_range(GIMP_ZOOM_MODEL(self->obj), min, max);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5601,11 +6005,13 @@ _wrap_gimp_zoom_model_zoom(PyGObject *self, PyObject *args, PyObject *kwargs)
     double scale;
     GimpZoomType zoom_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Od:GimpZoomModel.zoom", kwlist, &py_zoom_type, &scale))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Od:GimpZoomModel.zoom", kwlist, &py_zoom_type, &scale))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_ZOOM_TYPE, py_zoom_type, (gint *)&zoom_type))
+    if (pyg_enum_get_value(GIMP_TYPE_ZOOM_TYPE, py_zoom_type, (gpointer)&zoom_type))
         return NULL;
+    
     gimp_zoom_model_zoom(GIMP_ZOOM_MODEL(self->obj), zoom_type, scale);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -5615,56 +6021,61 @@ _wrap_gimp_zoom_model_get_factor(PyGObject *self)
 {
     double ret;
 
+    
     ret = gimp_zoom_model_get_factor(GIMP_ZOOM_MODEL(self->obj));
+    
     return PyFloat_FromDouble(ret);
 }
 
-static PyMethodDef _PyGimpZoomModel_methods[] = {
-    { "set_range", (PyCFunction)_wrap_gimp_zoom_model_set_range, METH_VARARGS|METH_KEYWORDS },
-    { "zoom", (PyCFunction)_wrap_gimp_zoom_model_zoom, METH_VARARGS|METH_KEYWORDS },
-    { "get_factor", (PyCFunction)_wrap_gimp_zoom_model_get_factor, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpZoomModel_methods[] = {
+    { "set_range", (PyCFunction)_wrap_gimp_zoom_model_set_range, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "zoom", (PyCFunction)_wrap_gimp_zoom_model_zoom, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_factor", (PyCFunction)_wrap_gimp_zoom_model_get_factor, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpZoomModel_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpZoomModel_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ZoomModel",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ZoomModel",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpZoomModel_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpZoomModel_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_zoom_model_new,		/* tp_init */
+    (initproc)_wrap_gimp_zoom_model_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -5685,79 +6096,82 @@ _wrap_gimp_zoom_preview_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     char *prop_names[] = {"drawable", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,  "O:gimpui.ZoomPreview.__init__" , arg_names , &parsed_args[0] ))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:gimpui.ZoomPreview.__init__" , arg_names , &parsed_args[0]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*1);
-    if (!pyg_parse_constructor_args(obj_type, arg_names, prop_names,
-                                    params, &nparams, parsed_args))
+    if (!pyg_parse_constructor_args(obj_type, arg_names,
+                                    prop_names, params, 
+                                    &nparams, parsed_args))
         return -1;
     pygobject_constructv(self, nparams, params);
-
     for (i = 0; i < nparams; ++i)
         g_value_unset(&params[i].value);
     if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create %(typename)s object");
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.ZoomPreview object");
         return -1;
     }
-
     return 0;
 }
-
 
 static PyObject *
 _wrap_gimp_zoom_preview_get_factor(PyGObject *self)
 {
     double ret;
 
+    
     ret = gimp_zoom_preview_get_factor(GIMP_ZOOM_PREVIEW(self->obj));
+    
     return PyFloat_FromDouble(ret);
 }
 
-static PyMethodDef _PyGimpZoomPreview_methods[] = {
-    { "get_factor", (PyCFunction)_wrap_gimp_zoom_preview_get_factor, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpZoomPreview_methods[] = {
+    { "get_factor", (PyCFunction)_wrap_gimp_zoom_preview_get_factor, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpZoomPreview_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpZoomPreview_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ZoomPreview",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ZoomPreview",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpZoomPreview_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpZoomPreview_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_zoom_preview_new,		/* tp_init */
+    (initproc)_wrap_gimp_zoom_preview_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -5858,7 +6272,7 @@ _wrap_gimp_drawable_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5862 "gimpui.c"
+#line 6276 "gimpui.c"
 
 
 #line 152 "gimpui.override"
@@ -5885,7 +6299,7 @@ _wrap_gimp_drawable_combo_box_set_active_drawable(PyGObject *self, PyObject *arg
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 5889 "gimpui.c"
+#line 6303 "gimpui.c"
 
 
 #line 177 "gimpui.override"
@@ -5900,54 +6314,56 @@ _wrap_gimp_drawable_combo_box_get_active_drawable(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 5904 "gimpui.c"
+#line 6318 "gimpui.c"
 
 
-static PyMethodDef _PyGimpDrawableComboBox_methods[] = {
-    { "set_active_drawable", (PyCFunction)_wrap_gimp_drawable_combo_box_set_active_drawable, METH_VARARGS|METH_KEYWORDS },
-    { "get_active_drawable", (PyCFunction)_wrap_gimp_drawable_combo_box_get_active_drawable, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpDrawableComboBox_methods[] = {
+    { "set_active_drawable", (PyCFunction)_wrap_gimp_drawable_combo_box_set_active_drawable, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_active_drawable", (PyCFunction)_wrap_gimp_drawable_combo_box_get_active_drawable, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpDrawableComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpDrawableComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.DrawableComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.DrawableComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpDrawableComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpDrawableComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_drawable_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_drawable_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -6048,7 +6464,7 @@ _wrap_gimp_channel_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 6052 "gimpui.c"
+#line 6468 "gimpui.c"
 
 
 #line 281 "gimpui.override"
@@ -6075,7 +6491,7 @@ _wrap_gimp_channel_combo_box_set_active_channel(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6079 "gimpui.c"
+#line 6495 "gimpui.c"
 
 
 #line 306 "gimpui.override"
@@ -6090,54 +6506,56 @@ _wrap_gimp_channel_combo_box_get_active_channel(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6094 "gimpui.c"
+#line 6510 "gimpui.c"
 
 
-static PyMethodDef _PyGimpChannelComboBox_methods[] = {
-    { "set_active_channel", (PyCFunction)_wrap_gimp_channel_combo_box_set_active_channel, METH_VARARGS|METH_KEYWORDS },
-    { "get_active_channel", (PyCFunction)_wrap_gimp_channel_combo_box_get_active_channel, METH_NOARGS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpChannelComboBox_methods[] = {
+    { "set_active_channel", (PyCFunction)_wrap_gimp_channel_combo_box_set_active_channel, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_active_channel", (PyCFunction)_wrap_gimp_channel_combo_box_get_active_channel, METH_NOARGS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpChannelComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpChannelComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ChannelComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ChannelComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpChannelComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpChannelComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_channel_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_channel_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -6238,7 +6656,7 @@ _wrap_gimp_layer_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 6242 "gimpui.c"
+#line 6660 "gimpui.c"
 
 
 #line 435 "gimpui.override"
@@ -6253,7 +6671,7 @@ _wrap_gimp_layer_combo_box_get_active_layer(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6257 "gimpui.c"
+#line 6675 "gimpui.c"
 
 
 #line 410 "gimpui.override"
@@ -6280,54 +6698,56 @@ _wrap_gimp_layer_combo_box_set_active_layer(PyGObject *self, PyObject *args, PyO
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6284 "gimpui.c"
+#line 6702 "gimpui.c"
 
 
-static PyMethodDef _PyGimpLayerComboBox_methods[] = {
-    { "get_active_layer", (PyCFunction)_wrap_gimp_layer_combo_box_get_active_layer, METH_NOARGS },
-    { "set_active_layer", (PyCFunction)_wrap_gimp_layer_combo_box_set_active_layer, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpLayerComboBox_methods[] = {
+    { "get_active_layer", (PyCFunction)_wrap_gimp_layer_combo_box_get_active_layer, METH_NOARGS,
+      NULL },
+    { "set_active_layer", (PyCFunction)_wrap_gimp_layer_combo_box_set_active_layer, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpLayerComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpLayerComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.LayerComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.LayerComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpLayerComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpLayerComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_layer_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_layer_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -6428,7 +6848,7 @@ _wrap_gimp_vectors_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 6432 "gimpui.c"
+#line 6852 "gimpui.c"
 
 
 #line 564 "gimpui.override"
@@ -6443,7 +6863,7 @@ _wrap_gimp_vectors_combo_box_get_active_vectors(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6447 "gimpui.c"
+#line 6867 "gimpui.c"
 
 
 #line 539 "gimpui.override"
@@ -6470,54 +6890,56 @@ _wrap_gimp_vectors_combo_box_set_active_vectors(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6474 "gimpui.c"
+#line 6894 "gimpui.c"
 
 
-static PyMethodDef _PyGimpVectorsComboBox_methods[] = {
-    { "get_active_vectors", (PyCFunction)_wrap_gimp_vectors_combo_box_get_active_vectors, METH_NOARGS },
-    { "set_active_vectors", (PyCFunction)_wrap_gimp_vectors_combo_box_set_active_vectors, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpVectorsComboBox_methods[] = {
+    { "get_active_vectors", (PyCFunction)_wrap_gimp_vectors_combo_box_get_active_vectors, METH_NOARGS,
+      NULL },
+    { "set_active_vectors", (PyCFunction)_wrap_gimp_vectors_combo_box_set_active_vectors, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpVectorsComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpVectorsComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.VectorsComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.VectorsComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpVectorsComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpVectorsComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_vectors_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_vectors_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -6609,7 +7031,7 @@ _wrap_gimp_image_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 6613 "gimpui.c"
+#line 7035 "gimpui.c"
 
 
 #line 684 "gimpui.override"
@@ -6624,7 +7046,7 @@ _wrap_gimp_image_combo_box_get_active_image(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6628 "gimpui.c"
+#line 7050 "gimpui.c"
 
 
 #line 659 "gimpui.override"
@@ -6651,54 +7073,56 @@ _wrap_gimp_image_combo_box_set_active_image(PyGObject *self, PyObject *args, PyO
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6655 "gimpui.c"
+#line 7077 "gimpui.c"
 
 
-static PyMethodDef _PyGimpImageComboBox_methods[] = {
-    { "get_active_image", (PyCFunction)_wrap_gimp_image_combo_box_get_active_image, METH_NOARGS },
-    { "set_active_image", (PyCFunction)_wrap_gimp_image_combo_box_set_active_image, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGimpImageComboBox_methods[] = {
+    { "get_active_image", (PyCFunction)_wrap_gimp_image_combo_box_get_active_image, METH_NOARGS,
+      NULL },
+    { "set_active_image", (PyCFunction)_wrap_gimp_image_combo_box_set_active_image, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGimpImageComboBox_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGimpImageComboBox_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "gimpui.ImageComboBox",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "gimpui.ImageComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGimpImageComboBox_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpImageComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)_wrap_gimp_image_combo_box_new,		/* tp_init */
+    (initproc)_wrap_gimp_image_combo_box_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -6715,9 +7139,11 @@ _wrap_gimp_dialogs_show_help_button(PyObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "show", NULL };
     int show;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i:gimp_dialogs_show_help_button", kwlist, &show))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:gimp_dialogs_show_help_button", kwlist, &show))
         return NULL;
+    
     gimp_dialogs_show_help_button(show);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -6729,9 +7155,11 @@ _wrap_gimp_enum_stock_box_set_child_padding(PyObject *self, PyObject *args, PyOb
     PyGObject *stock_box;
     int xpad, ypad;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!ii:gimp_enum_stock_box_set_child_padding", kwlist, &PyGtkWidget_Type, &stock_box, &xpad, &ypad))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!ii:gimp_enum_stock_box_set_child_padding", kwlist, &PyGtkWidget_Type, &stock_box, &xpad, &ypad))
         return NULL;
+    
     gimp_enum_stock_box_set_child_padding(GTK_WIDGET(stock_box->obj), xpad, ypad);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -6745,7 +7173,7 @@ _wrap_gimp_int_store_lookup_by_value(PyObject *self, PyObject *args, PyObject *k
     PyObject *py_iter;
     GtkTreeIter *iter = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!iO:gimp_int_store_lookup_by_value", kwlist, &PyGtkTreeModel_Type, &model, &value, &py_iter))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!iO:gimp_int_store_lookup_by_value", kwlist, &PyGtkTreeModel_Type, &model, &value, &py_iter))
         return NULL;
     if (pyg_boxed_check(py_iter, GTK_TYPE_TREE_ITER))
         iter = pyg_boxed_get(py_iter, GtkTreeIter);
@@ -6753,7 +7181,9 @@ _wrap_gimp_int_store_lookup_by_value(PyObject *self, PyObject *args, PyObject *k
         PyErr_SetString(PyExc_TypeError, "iter should be a GtkTreeIter");
         return NULL;
     }
+    
     ret = gimp_int_store_lookup_by_value(GTK_TREE_MODEL(model->obj), value, iter);
+    
     return PyBool_FromLong(ret);
 
 }
@@ -6767,9 +7197,11 @@ _wrap_gimp_prop_coordinates_connect(PyObject *self, PyObject *args, PyObject *kw
     int ret;
     double xresolution, yresolution;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!sssO!O!dd:gimp_prop_coordinates_connect", kwlist, &PyGObject_Type, &config, &x_property_name, &y_property_name, &unit_property_name, &PyGtkWidget_Type, &sizeentry, &PyGtkWidget_Type, &chainbutton, &xresolution, &yresolution))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!sssO!O!dd:gimp_prop_coordinates_connect", kwlist, &PyGObject_Type, &config, &x_property_name, &y_property_name, &unit_property_name, &PyGtkWidget_Type, &sizeentry, &PyGtkWidget_Type, &chainbutton, &xresolution, &yresolution))
         return NULL;
+    
     ret = gimp_prop_coordinates_connect(G_OBJECT(config->obj), x_property_name, y_property_name, unit_property_name, GTK_WIDGET(sizeentry->obj), GTK_WIDGET(chainbutton->obj), xresolution, yresolution);
+    
     return PyBool_FromLong(ret);
 
 }
@@ -6781,9 +7213,11 @@ _wrap_gimp_int_radio_group_set_active(PyObject *self, PyObject *args, PyObject *
     PyGObject *radio_button;
     int item_data;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!i:gimp_int_radio_group_set_active", kwlist, &PyGtkRadioButton_Type, &radio_button, &item_data))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!i:gimp_int_radio_group_set_active", kwlist, &PyGtkRadioButton_Type, &radio_button, &item_data))
         return NULL;
+    
     gimp_int_radio_group_set_active(GTK_RADIO_BUTTON(radio_button->obj), item_data);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -6795,9 +7229,11 @@ _wrap_gimp_scale_entry_set_sensitive(PyObject *self, PyObject *args, PyObject *k
     PyGObject *adjustment;
     int sensitive;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!i:gimp_scale_entry_set_sensitive", kwlist, &PyGtkObject_Type, &adjustment, &sensitive))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!i:gimp_scale_entry_set_sensitive", kwlist, &PyGtkObject_Type, &adjustment, &sensitive))
         return NULL;
+    
     gimp_scale_entry_set_sensitive(GTK_OBJECT(adjustment->obj), sensitive);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -6809,9 +7245,11 @@ _wrap_gimp_scale_entry_set_logarithmic(PyObject *self, PyObject *args, PyObject 
     PyGObject *adjustment;
     int logarithmic;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!i:gimp_scale_entry_set_logarithmic", kwlist, &PyGtkObject_Type, &adjustment, &logarithmic))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!i:gimp_scale_entry_set_logarithmic", kwlist, &PyGtkObject_Type, &adjustment, &logarithmic))
         return NULL;
+    
     gimp_scale_entry_set_logarithmic(GTK_OBJECT(adjustment->obj), logarithmic);
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -6823,9 +7261,11 @@ _wrap_gimp_scale_entry_get_logarithmic(PyObject *self, PyObject *args, PyObject 
     PyGObject *adjustment;
     int ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:gimp_scale_entry_get_logarithmic", kwlist, &PyGtkObject_Type, &adjustment))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:gimp_scale_entry_get_logarithmic", kwlist, &PyGtkObject_Type, &adjustment))
         return NULL;
+    
     ret = gimp_scale_entry_get_logarithmic(GTK_OBJECT(adjustment->obj));
+    
     return PyBool_FromLong(ret);
 
 }
@@ -6836,9 +7276,11 @@ _wrap_gimp_toggle_button_sensitive_update(PyObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "toggle_button", NULL };
     PyGObject *toggle_button;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!:gimp_toggle_button_sensitive_update", kwlist, &PyGtkToggleButton_Type, &toggle_button))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:gimp_toggle_button_sensitive_update", kwlist, &PyGtkToggleButton_Type, &toggle_button))
         return NULL;
+    
     gimp_toggle_button_sensitive_update(GTK_TOGGLE_BUTTON(toggle_button->obj));
+    
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -6853,9 +7295,11 @@ _wrap_gimp_table_attach_aligned(PyObject *self, PyObject *args, PyObject *kwargs
     GtkWidget *ret;
     double xalign, yalign;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!iisddO!ii:gimp_table_attach_aligned", kwlist, &PyGtkTable_Type, &table, &column, &row, &label_text, &xalign, &yalign, &PyGtkWidget_Type, &widget, &colspan, &left_align))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!iisddO!ii:gimp_table_attach_aligned", kwlist, &PyGtkTable_Type, &table, &column, &row, &label_text, &xalign, &yalign, &PyGtkWidget_Type, &widget, &colspan, &left_align))
         return NULL;
+    
     ret = gimp_table_attach_aligned(GTK_TABLE(table->obj), column, row, label_text, xalign, yalign, GTK_WIDGET(widget->obj), colspan, left_align);
+    
     /* pygobject_new handles NULL checking */
     return pygobject_new((GObject *)ret);
 }
@@ -6868,27 +7312,40 @@ _wrap_gimp_zoom_model_zoom_step(PyObject *self, PyObject *args, PyObject *kwargs
     double scale, ret;
     GimpZoomType zoom_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Od:gimp_zoom_model_zoom_step", kwlist, &py_zoom_type, &scale))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Od:gimp_zoom_model_zoom_step", kwlist, &py_zoom_type, &scale))
         return NULL;
-    if (pyg_enum_get_value(GIMP_TYPE_ZOOM_TYPE, py_zoom_type, (gint *)&zoom_type))
+    if (pyg_enum_get_value(GIMP_TYPE_ZOOM_TYPE, py_zoom_type, (gpointer)&zoom_type))
         return NULL;
+    
     ret = gimp_zoom_model_zoom_step(zoom_type, scale);
+    
     return PyFloat_FromDouble(ret);
 }
 
-PyMethodDef gimpui_functions[] = {
-    { "gimp_dialogs_show_help_button", (PyCFunction)_wrap_gimp_dialogs_show_help_button, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_enum_stock_box_set_child_padding", (PyCFunction)_wrap_gimp_enum_stock_box_set_child_padding, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_int_store_lookup_by_value", (PyCFunction)_wrap_gimp_int_store_lookup_by_value, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_prop_coordinates_connect", (PyCFunction)_wrap_gimp_prop_coordinates_connect, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_int_radio_group_set_active", (PyCFunction)_wrap_gimp_int_radio_group_set_active, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_scale_entry_set_sensitive", (PyCFunction)_wrap_gimp_scale_entry_set_sensitive, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_scale_entry_set_logarithmic", (PyCFunction)_wrap_gimp_scale_entry_set_logarithmic, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_scale_entry_get_logarithmic", (PyCFunction)_wrap_gimp_scale_entry_get_logarithmic, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_toggle_button_sensitive_update", (PyCFunction)_wrap_gimp_toggle_button_sensitive_update, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_table_attach_aligned", (PyCFunction)_wrap_gimp_table_attach_aligned, METH_VARARGS|METH_KEYWORDS },
-    { "gimp_zoom_model_zoom_step", (PyCFunction)_wrap_gimp_zoom_model_zoom_step, METH_VARARGS|METH_KEYWORDS },
-    { NULL, NULL, 0 }
+const PyMethodDef gimpui_functions[] = {
+    { "gimp_dialogs_show_help_button", (PyCFunction)_wrap_gimp_dialogs_show_help_button, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_enum_stock_box_set_child_padding", (PyCFunction)_wrap_gimp_enum_stock_box_set_child_padding, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_int_store_lookup_by_value", (PyCFunction)_wrap_gimp_int_store_lookup_by_value, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_prop_coordinates_connect", (PyCFunction)_wrap_gimp_prop_coordinates_connect, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_int_radio_group_set_active", (PyCFunction)_wrap_gimp_int_radio_group_set_active, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_scale_entry_set_sensitive", (PyCFunction)_wrap_gimp_scale_entry_set_sensitive, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_scale_entry_set_logarithmic", (PyCFunction)_wrap_gimp_scale_entry_set_logarithmic, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_scale_entry_get_logarithmic", (PyCFunction)_wrap_gimp_scale_entry_get_logarithmic, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_toggle_button_sensitive_update", (PyCFunction)_wrap_gimp_toggle_button_sensitive_update, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_table_attach_aligned", (PyCFunction)_wrap_gimp_table_attach_aligned, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "gimp_zoom_model_zoom_step", (PyCFunction)_wrap_gimp_zoom_model_zoom_step, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 
@@ -6915,194 +7372,188 @@ gimpui_register_classes(PyObject *d)
     PyObject *module;
 
     if ((module = PyImport_ImportModule("gobject")) != NULL) {
-        PyObject *moddict = PyModule_GetDict(module);
-
-        _PyGObject_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "GObject");
+        _PyGObject_Type = (PyTypeObject *)PyObject_GetAttrString(module, "GObject");
         if (_PyGObject_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name GObject from gobject");
-            return;
+            return ;
         }
     } else {
         PyErr_SetString(PyExc_ImportError,
             "could not import gobject");
-        return;
+        return ;
     }
     if ((module = PyImport_ImportModule("gtk")) != NULL) {
-        PyObject *moddict = PyModule_GetDict(module);
-
-        _PyGtkObject_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Object");
+        _PyGtkObject_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Object");
         if (_PyGtkObject_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Object from gtk");
-            return;
+            return ;
         }
-        _PyGtkWidget_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Widget");
+        _PyGtkWidget_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Widget");
         if (_PyGtkWidget_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Widget from gtk");
-            return;
+            return ;
         }
-        _PyGtkDialog_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Dialog");
+        _PyGtkDialog_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Dialog");
         if (_PyGtkDialog_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Dialog from gtk");
-            return;
+            return ;
         }
-        _PyGtkWindow_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Window");
+        _PyGtkWindow_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Window");
         if (_PyGtkWindow_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Window from gtk");
-            return;
+            return ;
         }
-        _PyGtkLabel_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Label");
+        _PyGtkLabel_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Label");
         if (_PyGtkLabel_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Label from gtk");
-            return;
+            return ;
         }
-        _PyGtkButton_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Button");
+        _PyGtkButton_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Button");
         if (_PyGtkButton_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Button from gtk");
-            return;
+            return ;
         }
-        _PyGtkToggleButton_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "ToggleButton");
+        _PyGtkToggleButton_Type = (PyTypeObject *)PyObject_GetAttrString(module, "ToggleButton");
         if (_PyGtkToggleButton_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name ToggleButton from gtk");
-            return;
+            return ;
         }
-        _PyGtkRadioButton_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "RadioButton");
+        _PyGtkRadioButton_Type = (PyTypeObject *)PyObject_GetAttrString(module, "RadioButton");
         if (_PyGtkRadioButton_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name RadioButton from gtk");
-            return;
+            return ;
         }
-        _PyGtkSpinButton_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "SpinButton");
+        _PyGtkSpinButton_Type = (PyTypeObject *)PyObject_GetAttrString(module, "SpinButton");
         if (_PyGtkSpinButton_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name SpinButton from gtk");
-            return;
+            return ;
         }
-        _PyGtkEntry_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Entry");
+        _PyGtkEntry_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Entry");
         if (_PyGtkEntry_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Entry from gtk");
-            return;
+            return ;
         }
-        _PyGtkDrawingArea_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "DrawingArea");
+        _PyGtkDrawingArea_Type = (PyTypeObject *)PyObject_GetAttrString(module, "DrawingArea");
         if (_PyGtkDrawingArea_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name DrawingArea from gtk");
-            return;
+            return ;
         }
-        _PyGtkTable_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Table");
+        _PyGtkTable_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Table");
         if (_PyGtkTable_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Table from gtk");
-            return;
+            return ;
         }
-        _PyGtkFrame_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Frame");
+        _PyGtkFrame_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Frame");
         if (_PyGtkFrame_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Frame from gtk");
-            return;
+            return ;
         }
-        _PyGtkHBox_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "HBox");
+        _PyGtkHBox_Type = (PyTypeObject *)PyObject_GetAttrString(module, "HBox");
         if (_PyGtkHBox_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name HBox from gtk");
-            return;
+            return ;
         }
-        _PyGtkVBox_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "VBox");
+        _PyGtkVBox_Type = (PyTypeObject *)PyObject_GetAttrString(module, "VBox");
         if (_PyGtkVBox_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name VBox from gtk");
-            return;
+            return ;
         }
-        _PyGtkHPaned_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "HPaned");
+        _PyGtkHPaned_Type = (PyTypeObject *)PyObject_GetAttrString(module, "HPaned");
         if (_PyGtkHPaned_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name HPaned from gtk");
-            return;
+            return ;
         }
-        _PyGtkVPaned_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "VPaned");
+        _PyGtkVPaned_Type = (PyTypeObject *)PyObject_GetAttrString(module, "VPaned");
         if (_PyGtkVPaned_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name VPaned from gtk");
-            return;
+            return ;
         }
-        _PyGtkScale_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Scale");
+        _PyGtkScale_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Scale");
         if (_PyGtkScale_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Scale from gtk");
-            return;
+            return ;
         }
-        _PyGtkProgressBar_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "ProgressBar");
+        _PyGtkProgressBar_Type = (PyTypeObject *)PyObject_GetAttrString(module, "ProgressBar");
         if (_PyGtkProgressBar_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name ProgressBar from gtk");
-            return;
+            return ;
         }
-        _PyGtkOptionMenu_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "OptionMenu");
+        _PyGtkOptionMenu_Type = (PyTypeObject *)PyObject_GetAttrString(module, "OptionMenu");
         if (_PyGtkOptionMenu_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name OptionMenu from gtk");
-            return;
+            return ;
         }
-        _PyGtkComboBox_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "ComboBox");
+        _PyGtkComboBox_Type = (PyTypeObject *)PyObject_GetAttrString(module, "ComboBox");
         if (_PyGtkComboBox_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name ComboBox from gtk");
-            return;
+            return ;
         }
-        _PyGtkListStore_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "ListStore");
+        _PyGtkListStore_Type = (PyTypeObject *)PyObject_GetAttrString(module, "ListStore");
         if (_PyGtkListStore_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name ListStore from gtk");
-            return;
+            return ;
         }
-        _PyGtkTreeModel_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "TreeModel");
+        _PyGtkTreeModel_Type = (PyTypeObject *)PyObject_GetAttrString(module, "TreeModel");
         if (_PyGtkTreeModel_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name TreeModel from gtk");
-            return;
+            return ;
         }
-        _PyGtkCellRenderer_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "CellRenderer");
+        _PyGtkCellRenderer_Type = (PyTypeObject *)PyObject_GetAttrString(module, "CellRenderer");
         if (_PyGtkCellRenderer_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name CellRenderer from gtk");
-            return;
+            return ;
         }
-        _PyGtkCellRendererToggle_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "CellRendererToggle");
+        _PyGtkCellRendererToggle_Type = (PyTypeObject *)PyObject_GetAttrString(module, "CellRendererToggle");
         if (_PyGtkCellRendererToggle_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name CellRendererToggle from gtk");
-            return;
+            return ;
         }
     } else {
         PyErr_SetString(PyExc_ImportError,
             "could not import gtk");
-        return;
+        return ;
     }
     if ((module = PyImport_ImportModule("gtk.gdk")) != NULL) {
-        PyObject *moddict = PyModule_GetDict(module);
-
-        _PyGdkPixbuf_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "Pixbuf");
+        _PyGdkPixbuf_Type = (PyTypeObject *)PyObject_GetAttrString(module, "Pixbuf");
         if (_PyGdkPixbuf_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name Pixbuf from gtk.gdk");
-            return;
+            return ;
         }
     } else {
         PyErr_SetString(PyExc_ImportError,
             "could not import gtk.gdk");
-        return;
+        return ;
     }
 
 
-#line 7106 "gimpui.c"
+#line 7557 "gimpui.c"
     pygobject_register_class(d, "GimpBrowser", GIMP_TYPE_BROWSER, &PyGimpBrowser_Type, Py_BuildValue("(O)", &PyGtkHPaned_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_BROWSER);
     pygobject_register_class(d, "GimpButton", GIMP_TYPE_BUTTON, &PyGimpButton_Type, Py_BuildValue("(O)", &PyGtkButton_Type));

@@ -22,9 +22,9 @@
 
 
 
-enum        <link linkend="GimpThumbError">GimpThumbError</link>;
-#define     <link linkend="GIMP-THUMB-ERROR:CAPS">GIMP_THUMB_ERROR</link>
-<link linkend="GQuark">GQuark</link>      <link linkend="gimp-thumb-error-quark">gimp_thumb_error_quark</link>          (void);
+enum                <link linkend="GimpThumbError">GimpThumbError</link>;
+#define             <link linkend="GIMP-THUMB-ERROR:CAPS">GIMP_THUMB_ERROR</link>
+<link linkend="GQuark">GQuark</link>              <link linkend="gimp-thumb-error-quark">gimp_thumb_error_quark</link>              (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -84,7 +84,7 @@ Identifier for the libgimpthumb error domain.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-thumb-error-quark" role="function"/>gimp_thumb_error_quark ()</title>
-<indexterm><primary>gimp_thumb_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>      gimp_thumb_error_quark          (void);</programlisting>
+<indexterm><primary>gimp_thumb_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>              gimp_thumb_error_quark              (void);</programlisting>
 <para>
 This function is never called directly. Use <link linkend="GIMP-THUMB-ERROR:CAPS"><function>GIMP_THUMB_ERROR()</function></link> instead.</para>
 <para>

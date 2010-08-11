@@ -8,7 +8,7 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [3])
-m4_define([gimp_micro_version], [15])
+m4_define([gimp_micro_version], [16])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
@@ -41,7 +41,7 @@ m4_define([gimp_full_name], [GNU Image Manipulation Program])
 
 # required versions of other packages
 m4_define([glib_required_version], [2.12.3])
-m4_define([gtk_required_version], [2.8.17])
+m4_define([gtk_required_version], [2.10.6])
 m4_define([gdk_pixbuf_required_version], [gtk_required_version])
 m4_define([pangoft2_required_version], [1.12.2])
 m4_define([fontconfig_required_version], [2.2.0])
@@ -50,7 +50,7 @@ m4_define([gtkhtml2_required_version], [2.0.0])
 m4_define([alsa_required_version], [1.0.0])
 m4_define([rsvg_required_version], [2.8.0])
 m4_define([wmf_required_version], [0.2.8])
-m4_define([pygtk_required_version], [2.8.0])
+m4_define([pygtk_required_version], [2.10.4])
 m4_define([poppler_required_version], [0.3.1])
 m4_define([gnome_vfs_required_version], [2.10.0])
 m4_define([gnomeui_required_version], [2.10.0])
@@ -405,7 +405,7 @@ fi
 dnl Note to translators: you MUST have .po files in all 5 directories: po,
 dnl po-libgimp, po-plug-ins, po-python and po-script-fu before adding your
 dnl language code to ALL_LINGUAS.
-ALL_LINGUAS="ar bg ca cs da de dz el en_CA en_GB eo es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
+ALL_LINGUAS="ar bg ca cs da de dz el en_CA en_GB eo es et eu fi fr ga gl gu he hu hr id it ja km ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
 
 AC_PROG_INTLTOOL
 AM_GLIB_GNU_GETTEXT
@@ -1212,19 +1212,14 @@ AC_SUBST(LIBSVG)
 
 
 ####################################
-# Check for gtk+ 2.10 (for GtkPrint)
+# Allow to disable the print plug-in
 ####################################
 
-enable_print=no
+enable_print="no (disabled)"
 AC_ARG_WITH(print,[  --without-print         build without print support])
 
 if test "x$with_print" != xno; then
-  PKG_CHECK_MODULES(PRINT, gtk+-2.0 >= 2.9.3,
-    enable_print="yes",
-    AC_MSG_RESULT([no])
-    enable_print="no (gtk+ >= 2.9.3 not available)")
-else
-    enable_print="no (print support disabled)"
+    enable_print="yes"
 fi
 AM_CONDITIONAL(BUILD_PRINT, test "x$enable_print" == xyes)
 
@@ -1272,6 +1267,14 @@ fi
 uri_plugin=no
 gnome_vfs_modules="gnome-vfs-2.0 >= gnome_vfs_required_version"
 
+AC_ARG_WITH(gnomevfs,  [  --without-gnomevfs      build without gnomevfs support])
+
+have_gnomeui="no (disabled)"
+have_gnome_keyring="no (disabled)"
+have_gnomevfs="no (disabled)"
+
+if test x$with_gnomevfs != xno; then
+
 if $PKG_CONFIG --atleast-version=gnomeui_required_version libgnomeui-2.0; then
   have_gnomeui=yes
   gnome_vfs_modules="$gnome_vfs_modules libgnomeui-2.0"
@@ -1291,14 +1294,24 @@ PKG_CHECK_MODULES(URI_GNOME_VFS, $gnome_vfs_modules,
   AC_MSG_RESULT([no])
   have_gnomevfs="no (gnome-vfs-2.0 not found)")
 
+fi
+
 AM_CONDITIONAL(HAVE_GNOMEVFS, test x"$have_gnomevfs" = xyes)
 
 libcurl_modules="libcurl >= libcurl_required_version"
+
+AC_ARG_WITH(libcurl,  [  --without-libcurl       build without curl support])
+
+have_libcurl="no (disabled)"
+
+if test x$with_libcurl != xno; then
 
 PKG_CHECK_MODULES(URI_LIBCURL, $libcurl_modules,
   have_libcurl=yes,
   AC_MSG_RESULT([no])
   have_libcurl="no (libcurl not found)")
+
+fi
 
 AM_CONDITIONAL(HAVE_LIBCURL, test "x$have_libcurl" = xyes)
 
@@ -1447,10 +1460,18 @@ AM_CONDITIONAL(HAVE_DX_DINPUT, test $have_dx_dinput = yes)
 # Check for D-Bus GLib bindings
 ###############################
 
+AC_ARG_WITH(dbus,  [  --without-dbus          build without D-Bus support])
+
+have_dbus_glib="no (disabled)"
+
+if test x$with_dbus != xno; then
+
 PKG_CHECK_MODULES(DBUS_GLIB, dbus-glib-1 >= dbus_glib_required_version,
   have_dbus_glib=yes,
   AC_MSG_RESULT([no])
   have_dbus_glib=no)
+
+fi
 
 if test "x$have_dbus_glib" = xyes; then
   AC_PATH_PROG(DBUS_BINDING_TOOL, dbus-binding-tool, no)

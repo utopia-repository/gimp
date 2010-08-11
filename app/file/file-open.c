@@ -70,7 +70,8 @@
 #include "gimp-intl.h"
 
 
-static void  file_open_sanitize_image       (GimpImage    *image);
+static void  file_open_sanitize_image       (GimpImage    *image,
+                                             gboolean      as_new);
 static void  file_open_handle_color_profile (GimpImage    *image,
                                              GimpContext  *context,
                                              GimpProgress *progress,
@@ -85,6 +86,7 @@ file_open_image (Gimp                *gimp,
                  GimpProgress        *progress,
                  const gchar         *uri,
                  const gchar         *entered_filename,
+                 gboolean             as_new,
                  GimpPlugInProcedure *file_proc,
                  GimpRunMode          run_mode,
                  GimpPDBStatusType   *status,
@@ -158,7 +160,7 @@ file_open_image (Gimp                *gimp,
 
       if (image)
         {
-          file_open_sanitize_image (image);
+          file_open_sanitize_image (image, as_new);
 
           if (mime_type)
             *mime_type = file_proc->mime_type;
@@ -166,15 +168,17 @@ file_open_image (Gimp                *gimp,
       else
         {
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                       _("Plug-In returned SUCCESS but did not "
-                         "return an image"));
+                       _("%s plug-in returned SUCCESS but did not "
+                         "return an image"),
+                       gimp_plug_in_procedure_get_label (file_proc));
           *status = GIMP_PDB_EXECUTION_ERROR;
         }
     }
   else if (*status != GIMP_PDB_CANCEL)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("Plug-In could not open image"));
+                   _("%s plug-In could not open image"),
+                   gimp_plug_in_procedure_get_label (file_proc));
     }
 
   g_value_array_free (return_vals);
@@ -253,7 +257,7 @@ file_open_thumbnail (Gimp          *gimp,
 
           if (image)
             {
-              file_open_sanitize_image (image);
+              file_open_sanitize_image (image, FALSE);
 
               *mime_type = file_proc->mime_type;
 
@@ -277,11 +281,13 @@ file_open_with_display (Gimp               *gimp,
                         GimpContext        *context,
                         GimpProgress       *progress,
                         const gchar        *uri,
+                        gboolean            as_new,
                         GimpPDBStatusType  *status,
                         GError            **error)
 {
   return file_open_with_proc_and_display (gimp, context, progress,
-                                          uri, uri, NULL, status, error);
+                                          uri, uri, as_new, NULL,
+                                          status, error);
 }
 
 GimpImage *
@@ -290,6 +296,7 @@ file_open_with_proc_and_display (Gimp                *gimp,
                                  GimpProgress        *progress,
                                  const gchar         *uri,
                                  const gchar         *entered_filename,
+                                 gboolean             as_new,
                                  GimpPlugInProcedure *file_proc,
                                  GimpPDBStatusType   *status,
                                  GError             **error)
@@ -305,6 +312,7 @@ file_open_with_proc_and_display (Gimp                *gimp,
   image = file_open_image (gimp, context, progress,
                            uri,
                            entered_filename,
+                           as_new,
                            file_proc,
                            GIMP_RUN_INTERACTIVE,
                            status,
@@ -313,27 +321,30 @@ file_open_with_proc_and_display (Gimp                *gimp,
 
   if (image)
     {
-      GimpDocumentList *documents = GIMP_DOCUMENT_LIST (gimp->documents);
-      GimpImagefile    *imagefile;
-
       gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
 
-      imagefile = gimp_document_list_add_uri (documents, uri, mime_type);
-
-      /*  can only create a thumbnail if the passed uri and the
-       *  resulting image's uri match.
-       */
-      if (strcmp (uri, gimp_image_get_uri (image)) == 0)
+      if (! as_new)
         {
-          /*  no need to save a thumbnail if there's a good one already  */
-          if (! gimp_imagefile_check_thumbnail (imagefile))
-            {
-              gimp_imagefile_save_thumbnail (imagefile, mime_type, image);
-            }
-        }
+          GimpDocumentList *documents = GIMP_DOCUMENT_LIST (gimp->documents);
+          GimpImagefile    *imagefile;
 
-      if (gimp->config->save_document_history)
-        gimp_recent_list_add_uri (uri, mime_type);
+          imagefile = gimp_document_list_add_uri (documents, uri, mime_type);
+
+          /*  can only create a thumbnail if the passed uri and the
+           *  resulting image's uri match.
+           */
+          if (strcmp (uri, gimp_image_get_uri (image)) == 0)
+            {
+              /*  no need to save a thumbnail if there's a good one already  */
+              if (! gimp_imagefile_check_thumbnail (imagefile))
+                {
+                  gimp_imagefile_save_thumbnail (imagefile, mime_type, image);
+                }
+            }
+
+          if (gimp->config->save_document_history)
+            gimp_recent_list_add_uri (uri, mime_type);
+        }
 
       /*  the display owns the image now  */
       g_object_unref (image);
@@ -367,7 +378,7 @@ file_open_layers (Gimp                *gimp,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   new_image = file_open_image (gimp, context, progress,
-                               uri, uri,
+                               uri, uri, FALSE,
                                file_proc,
                                run_mode,
                                status, &mime_type, error);
@@ -460,63 +471,68 @@ file_open_layers (Gimp                *gimp,
 /*  This function is called for filenames passed on the command-line
  *  or from the D-Bus service.
  */
-void
-file_open_from_command_line (Gimp         *gimp,
-                             const gchar **uris)
+gboolean
+file_open_from_command_line (Gimp        *gimp,
+                             const gchar *filename,
+                             gboolean     as_new)
 {
-  gint i;
+  GError   *error   = NULL;
+  gchar    *uri;
+  gboolean  success = FALSE;
 
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (uris != NULL);
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+  g_return_val_if_fail (filename != NULL, FALSE);
 
-  for (i = 0; uris[i]; i++)
+  /* we accept URI or filename */
+  uri = file_utils_any_to_uri (gimp, filename, &error);
+
+  if (uri)
     {
-      GError *error = NULL;
-      gchar  *uri;
+      GimpImage         *image;
+      GimpPDBStatusType  status;
 
-      /* we accept URIs and filenames */
-      uri = file_utils_any_to_uri (gimp, uris[i], &error);
+      image = file_open_with_display (gimp,
+                                      gimp_get_user_context (gimp),
+                                      NULL,
+                                      uri, as_new,
+                                      &status, &error);
 
-      if (uri)
+      if (image)
         {
-          GimpImage         *image;
-          GimpPDBStatusType  status;
-
-          image = file_open_with_display (gimp,
-                                          gimp_get_user_context (gimp),
-                                          NULL,
-                                          uri,
-                                          &status, &error);
-
-          if (! image && status != GIMP_PDB_CANCEL)
-            {
-              gchar *filename = file_utils_uri_to_utf8_filename (uri);
-
-              g_message (_("Opening '%s' failed: %s"),
-                         filename, error->message);
-              g_clear_error (&error);
-
-              g_free (filename);
-            }
-
-          g_free (uri);
+          success = TRUE;
         }
-      else
+      else if (status != GIMP_PDB_CANCEL)
         {
-          g_printerr ("conversion filename -> uri failed: %s\n",
-                      error->message);
+          gchar *filename = file_utils_uri_to_utf8_filename (uri);
+
+          g_message (_("Opening '%s' failed: %s"), filename, error->message);
           g_clear_error (&error);
+
+          g_free (filename);
         }
+
+      g_free (uri);
     }
+  else
+    {
+      g_printerr ("conversion filename -> uri failed: %s\n",
+                  error->message);
+      g_clear_error (&error);
+    }
+
+  return success;
 }
 
 
 /*  private functions  */
 
-
 static void
-file_open_sanitize_image (GimpImage *image)
+file_open_sanitize_image (GimpImage *image,
+                          gboolean   as_new)
 {
+  if (as_new)
+    gimp_object_set_name (GIMP_OBJECT (image), NULL);
+
   /* clear all undo steps */
   gimp_image_undo_free (image);
 

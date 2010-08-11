@@ -53,32 +53,33 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* BOOLEAN:BOXED,POINTER (/tmp/dbus-binding-tool-c-marshallers.NUCVMT:1) */
-extern void dbus_glib_marshal_gimp_BOOLEAN__BOXED_POINTER (GClosure     *closure,
-                                                           GValue       *return_value,
-                                                           guint         n_param_values,
-                                                           const GValue *param_values,
-                                                           gpointer      invocation_hint,
-                                                           gpointer      marshal_data);
+/* BOOLEAN:STRING,POINTER,POINTER (/tmp/dbus-binding-tool-c-marshallers.FTL7QT:1) */
+extern void dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
+                                                                    GValue       *return_value,
+                                                                    guint         n_param_values,
+                                                                    const GValue *param_values,
+                                                                    gpointer      invocation_hint,
+                                                                    gpointer      marshal_data);
 void
-dbus_glib_marshal_gimp_BOOLEAN__BOXED_POINTER (GClosure     *closure,
-                                               GValue       *return_value,
-                                               guint         n_param_values,
-                                               const GValue *param_values,
-                                               gpointer      invocation_hint,
-                                               gpointer      marshal_data)
+dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
+                                                        GValue       *return_value,
+                                                        guint         n_param_values,
+                                                        const GValue *param_values,
+                                                        gpointer      invocation_hint,
+                                                        gpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__BOXED_POINTER) (gpointer     data1,
-                                                           gpointer     arg_1,
-                                                           gpointer     arg_2,
-                                                           gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED_POINTER callback;
+  typedef gboolean (*GMarshalFunc_BOOLEAN__STRING_POINTER_POINTER) (gpointer     data1,
+                                                                    gpointer     arg_1,
+                                                                    gpointer     arg_2,
+                                                                    gpointer     arg_3,
+                                                                    gpointer     data2);
+  register GMarshalFunc_BOOLEAN__STRING_POINTER_POINTER callback;
   register GCClosure *cc = (GCClosure*) closure;
   register gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
-  g_return_if_fail (n_param_values == 3);
+  g_return_if_fail (n_param_values == 4);
 
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
@@ -90,17 +91,18 @@ dbus_glib_marshal_gimp_BOOLEAN__BOXED_POINTER (GClosure     *closure,
       data1 = g_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
-  callback = (GMarshalFunc_BOOLEAN__BOXED_POINTER) (marshal_data ? marshal_data : cc->callback);
+  callback = (GMarshalFunc_BOOLEAN__STRING_POINTER_POINTER) (marshal_data ? marshal_data : cc->callback);
 
   v_return = callback (data1,
-                       g_marshal_value_peek_boxed (param_values + 1),
+                       g_marshal_value_peek_string (param_values + 1),
                        g_marshal_value_peek_pointer (param_values + 2),
+                       g_marshal_value_peek_pointer (param_values + 3),
                        data2);
 
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOLEAN:POINTER (/tmp/dbus-binding-tool-c-marshallers.NUCVMT:2) */
+/* BOOLEAN:POINTER (/tmp/dbus-binding-tool-c-marshallers.FTL7QT:2) */
 extern void dbus_glib_marshal_gimp_BOOLEAN__POINTER (GClosure     *closure,
                                                      GValue       *return_value,
                                                      guint         n_param_values,
@@ -151,15 +153,16 @@ G_END_DECLS
 
 #include <dbus/dbus-glib.h>
 static const DBusGMethodInfo dbus_glib_gimp_methods[] = {
-  { (GCallback) gimp_dbus_service_open, dbus_glib_marshal_gimp_BOOLEAN__BOXED_POINTER, 0 },
-  { (GCallback) gimp_dbus_service_activate, dbus_glib_marshal_gimp_BOOLEAN__POINTER, 31 },
+  { (GCallback) gimp_dbus_service_open, dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER, 0 },
+  { (GCallback) gimp_dbus_service_open_as_new, dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER, 49 },
+  { (GCallback) gimp_dbus_service_activate, dbus_glib_marshal_gimp_BOOLEAN__POINTER, 103 },
 };
 
 const DBusGObjectInfo dbus_glib_gimp_object_info = {
   0,
   dbus_glib_gimp_methods,
-  2,
-"org.gimp.GIMP\0Open\0S\0uri\0I\0as\0\0org.gimp.GIMP\0Activate\0S\0\0\0",
+  3,
+"org.gimp.GIMP.UI\0Open\0S\0uri\0I\0s\0success\0O\0F\0N\0b\0\0org.gimp.GIMP.UI\0OpenAsNew\0S\0uri\0I\0s\0success\0O\0F\0N\0b\0\0org.gimp.GIMP.UI\0Activate\0S\0\0\0",
 "\0",
 "\0"
 };

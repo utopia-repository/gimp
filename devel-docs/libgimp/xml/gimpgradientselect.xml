@@ -22,24 +22,24 @@
 
 
 
-<link linkend="void">void</link>        (<link linkend="GimpRunGradientCallback">*GimpRunGradientCallback</link>)      (const <link linkend="gchar">gchar</link> *gradient_name,
-                                             <link linkend="gint">gint</link> width,
-                                             const <link linkend="gdouble">gdouble</link> *grad_data,
-                                             <link linkend="gboolean">gboolean</link> dialog_closing,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-gradient-select-new">gimp_gradient_select_new</link>       (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *gradient_name,
-                                             <link linkend="gint">gint</link> sample_size,
-                                             <link linkend="GimpRunGradientCallback">GimpRunGradientCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>        <link linkend="gimp-gradient-select-destroy">gimp_gradient_select_destroy</link>    (const <link linkend="gchar">gchar</link> *gradient_callback);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-gradients-popup">gimp_gradients_popup</link>            (const <link linkend="gchar">gchar</link> *gradient_callback,
-                                             const <link linkend="gchar">gchar</link> *popup_title,
-                                             const <link linkend="gchar">gchar</link> *initial_gradient,
-                                             <link linkend="gint">gint</link> sample_size);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-gradients-close-popup">gimp_gradients_close_popup</link>      (const <link linkend="gchar">gchar</link> *gradient_callback);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-gradients-set-popup">gimp_gradients_set_popup</link>        (const <link linkend="gchar">gchar</link> *gradient_callback,
-                                             const <link linkend="gchar">gchar</link> *gradient_name);
+<link linkend="void">void</link>                (<link linkend="GimpRunGradientCallback">*GimpRunGradientCallback</link>)          (const <link linkend="gchar">gchar</link> *gradient_name,
+                                                         <link linkend="gint">gint</link> width,
+                                                         const <link linkend="gdouble">gdouble</link> *grad_data,
+                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gradient-select-new">gimp_gradient_select_new</link>            (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *gradient_name,
+                                                         <link linkend="gint">gint</link> sample_size,
+                                                         <link linkend="GimpRunGradientCallback">GimpRunGradientCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>                <link linkend="gimp-gradient-select-destroy">gimp_gradient_select_destroy</link>        (const <link linkend="gchar">gchar</link> *gradient_callback);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-gradients-popup">gimp_gradients_popup</link>                (const <link linkend="gchar">gchar</link> *gradient_callback,
+                                                         const <link linkend="gchar">gchar</link> *popup_title,
+                                                         const <link linkend="gchar">gchar</link> *initial_gradient,
+                                                         <link linkend="gint">gint</link> sample_size);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-gradients-close-popup">gimp_gradients_close_popup</link>          (const <link linkend="gchar">gchar</link> *gradient_callback);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-gradients-set-popup">gimp_gradients_set_popup</link>            (const <link linkend="gchar">gchar</link> *gradient_callback,
+                                                         const <link linkend="gchar">gchar</link> *gradient_name);
 </synopsis>
 </refsynopsisdiv>
 
@@ -62,11 +62,11 @@ Functions providing a gradient selection dialog.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpRunGradientCallback" role="function"/>GimpRunGradientCallback ()</title>
-<indexterm><primary>GimpRunGradientCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRunGradientCallback)      (const <link linkend="gchar">gchar</link> *gradient_name,
-                                             <link linkend="gint">gint</link> width,
-                                             const <link linkend="gdouble">gdouble</link> *grad_data,
-                                             <link linkend="gboolean">gboolean</link> dialog_closing,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpRunGradientCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunGradientCallback)          (const <link linkend="gchar">gchar</link> *gradient_name,
+                                                         <link linkend="gint">gint</link> width,
+                                                         const <link linkend="gdouble">gdouble</link> *grad_data,
+                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -90,11 +90,11 @@ Functions providing a gradient selection dialog.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-gradient-select-new" role="function"/>gimp_gradient_select_new ()</title>
-<indexterm><primary>gimp_gradient_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_gradient_select_new       (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *gradient_name,
-                                             <link linkend="gint">gint</link> sample_size,
-                                             <link linkend="GimpRunGradientCallback">GimpRunGradientCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm><primary>gimp_gradient_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gradient_select_new            (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *gradient_name,
+                                                         <link linkend="gint">gint</link> sample_size,
+                                                         <link linkend="GimpRunGradientCallback">GimpRunGradientCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -120,7 +120,7 @@ Functions providing a gradient selection dialog.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-gradient-select-destroy" role="function"/>gimp_gradient_select_destroy ()</title>
-<indexterm><primary>gimp_gradient_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_gradient_select_destroy    (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
+<indexterm><primary>gimp_gradient_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_gradient_select_destroy        (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -132,10 +132,10 @@ Functions providing a gradient selection dialog.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-gradients-popup" role="function"/>gimp_gradients_popup ()</title>
-<indexterm><primary>gimp_gradients_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_gradients_popup            (const <link linkend="gchar">gchar</link> *gradient_callback,
-                                             const <link linkend="gchar">gchar</link> *popup_title,
-                                             const <link linkend="gchar">gchar</link> *initial_gradient,
-                                             <link linkend="gint">gint</link> sample_size);</programlisting>
+<indexterm><primary>gimp_gradients_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_popup                (const <link linkend="gchar">gchar</link> *gradient_callback,
+                                                         const <link linkend="gchar">gchar</link> *popup_title,
+                                                         const <link linkend="gchar">gchar</link> *initial_gradient,
+                                                         <link linkend="gint">gint</link> sample_size);</programlisting>
 <para>
 Invokes the Gimp gradients selection.
 </para>
@@ -161,7 +161,7 @@ This procedure opens the gradient selection dialog.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-gradients-close-popup" role="function"/>gimp_gradients_close_popup ()</title>
-<indexterm><primary>gimp_gradients_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_gradients_close_popup      (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
+<indexterm><primary>gimp_gradients_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_close_popup          (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
 <para>
 Close the gradient selection dialog.
 </para>
@@ -178,8 +178,8 @@ This procedure closes an opened gradient selection dialog.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-gradients-set-popup" role="function"/>gimp_gradients_set_popup ()</title>
-<indexterm><primary>gimp_gradients_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_gradients_set_popup        (const <link linkend="gchar">gchar</link> *gradient_callback,
-                                             const <link linkend="gchar">gchar</link> *gradient_name);</programlisting>
+<indexterm><primary>gimp_gradients_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_set_popup            (const <link linkend="gchar">gchar</link> *gradient_callback,
+                                                         const <link linkend="gchar">gchar</link> *gradient_name);</programlisting>
 <para>
 Sets the current gradient in a gradient selection dialog.
 </para>

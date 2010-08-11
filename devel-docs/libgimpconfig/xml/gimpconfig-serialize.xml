@@ -22,18 +22,17 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-config-serialize-properties">gimp_config_serialize_properties</link>
-                                            (<link linkend="GimpConfig">GimpConfig</link> *config,
-                                             <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-config-serialize-changed-properties">gimp_config_serialize_changed_properties</link>
-                                            (<link linkend="GimpConfig">GimpConfig</link> *config,
-                                             <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-config-serialize-property">gimp_config_serialize_property</link>  (<link linkend="GimpConfig">GimpConfig</link> *config,
-                                             <link linkend="GParamSpec">GParamSpec</link> *param_spec,
-                                             <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-config-serialize-value">gimp_config_serialize_value</link>     (const <link linkend="GValue">GValue</link> *value,
-                                             <link linkend="GString">GString</link> *str,
-                                             <link linkend="gboolean">gboolean</link> escaped);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-serialize-properties">gimp_config_serialize_properties</link>    (<link linkend="GimpConfig">GimpConfig</link> *config,
+                                                         <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-serialize-changed-properties">gimp_config_serialize_changed_properties</link>
+                                                        (<link linkend="GimpConfig">GimpConfig</link> *config,
+                                                         <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-serialize-property">gimp_config_serialize_property</link>      (<link linkend="GimpConfig">GimpConfig</link> *config,
+                                                         <link linkend="GParamSpec">GParamSpec</link> *param_spec,
+                                                         <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-serialize-value">gimp_config_serialize_value</link>         (const <link linkend="GValue">GValue</link> *value,
+                                                         <link linkend="GString">GString</link> *str,
+                                                         <link linkend="gboolean">gboolean</link> escaped);
 </synopsis>
 </refsynopsisdiv>
 
@@ -57,9 +56,8 @@ Serializing interface for libgimpconfig.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-config-serialize-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_properties ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_properties
-                                            (<link linkend="GimpConfig">GimpConfig</link> *config,
-                                             <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_properties    (<link linkend="GimpConfig">GimpConfig</link> *config,
+                                                         <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
 <para>
 This function serializes a single object property to the <parameter>writer</parameter>.</para>
 <para>
@@ -74,13 +72,13 @@ This function serializes a single object property to the <parameter>writer</para
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-serialize-changed-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_changed_properties ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_changed_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_changed_properties
-                                            (<link linkend="GimpConfig">GimpConfig</link> *config,
-                                             <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_changed_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_changed_properties
+                                                        (<link linkend="GimpConfig">GimpConfig</link> *config,
+                                                         <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
 <para>
 This function writes all object properties that have been changed from
 their default values to the <parameter>writer</parameter>.</para>
@@ -96,13 +94,13 @@ their default values to the <parameter>writer</parameter>.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-serialize-property" role="function"/>gimp_config_serialize_property ()</title>
-<indexterm><primary>gimp_config_serialize_property</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_property  (<link linkend="GimpConfig">GimpConfig</link> *config,
-                                             <link linkend="GParamSpec">GParamSpec</link> *param_spec,
-                                             <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
+<indexterm><primary>gimp_config_serialize_property</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_property      (<link linkend="GimpConfig">GimpConfig</link> *config,
+                                                         <link linkend="GParamSpec">GParamSpec</link> *param_spec,
+                                                         <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -122,9 +120,9 @@ their default values to the <parameter>writer</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-config-serialize-value" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_value ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_value     (const <link linkend="GValue">GValue</link> *value,
-                                             <link linkend="GString">GString</link> *str,
-                                             <link linkend="gboolean">gboolean</link> escaped);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_value         (const <link linkend="GValue">GValue</link> *value,
+                                                         <link linkend="GString">GString</link> *str,
+                                                         <link linkend="gboolean">gboolean</link> escaped);</programlisting>
 <para>
 This utility function appends a string representation of <link linkend="GValue"><type>GValue</type></link> to <parameter>str</parameter>.</para>
 <para>
@@ -142,7 +140,7 @@ This utility function appends a string representation of <link linkend="GValue">
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.4
+</variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

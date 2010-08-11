@@ -22,15 +22,15 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-palettes-refresh">gimp_palettes_refresh</link>           (void);
-<link linkend="gchar">gchar</link>**     <link linkend="gimp-palettes-get-list">gimp_palettes_get_list</link>          (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_palettes);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-palettes-get-palette">gimp_palettes_get_palette</link>       (<link linkend="gint">gint</link> *num_colors);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-palettes-set-palette">gimp_palettes_set_palette</link>       (const <link linkend="gchar">gchar</link> *name);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-palettes-get-palette-entry">gimp_palettes_get_palette_entry</link> (const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> entry_num,
-                                             <link linkend="gint">gint</link> *num_colors,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-palettes-refresh">gimp_palettes_refresh</link>               (void);
+<link linkend="gchar">gchar</link>**             <link linkend="gimp-palettes-get-list">gimp_palettes_get_list</link>              (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_palettes);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-palettes-get-palette">gimp_palettes_get_palette</link>           (<link linkend="gint">gint</link> *num_colors);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-palettes-set-palette">gimp_palettes_set_palette</link>           (const <link linkend="gchar">gchar</link> *name);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-palettes-get-palette-entry">gimp_palettes_get_palette_entry</link>     (const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> entry_num,
+                                                         <link linkend="gint">gint</link> *num_colors,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);
 </synopsis>
 </refsynopsisdiv>
 
@@ -53,7 +53,7 @@ Operations related to palettes.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-palettes-refresh" role="function"/>gimp_palettes_refresh ()</title>
-<indexterm><primary>gimp_palettes_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palettes_refresh           (void);</programlisting>
+<indexterm><primary>gimp_palettes_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_palettes_refresh               (void);</programlisting>
 <para>
 Refreshes current palettes. This function always succeeds.
 </para>
@@ -68,8 +68,8 @@ palette path and updates the palette dialogs accordingly.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-palettes-get-list" role="function"/>gimp_palettes_get_list ()</title>
-<indexterm><primary>gimp_palettes_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_palettes_get_list          (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_palettes);</programlisting>
+<indexterm><primary>gimp_palettes_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_palettes_get_list              (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_palettes);</programlisting>
 <para>
 Retrieves a list of all of the available palettes
 </para>
@@ -91,7 +91,7 @@ Each name returned can be used as input to the command
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-palettes-get-palette" role="function" condition="deprecated:"/>gimp_palettes_get_palette ()</title>
-<indexterm role="deprecated"><primary>gimp_palettes_get_palette</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palettes_get_palette       (<link linkend="gint">gint</link> *num_colors);</programlisting>
+<indexterm role="deprecated"><primary>gimp_palettes_get_palette</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_palettes_get_palette           (<link linkend="gint">gint</link> *num_colors);</programlisting>
 <warning><para><literal>gimp_palettes_get_palette</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-get-palette"><function>gimp_context_get_palette()</function></link>
@@ -107,7 +107,7 @@ instead.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-palettes-set-palette" role="function" condition="deprecated:"/>gimp_palettes_set_palette ()</title>
-<indexterm role="deprecated"><primary>gimp_palettes_set_palette</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palettes_set_palette       (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="deprecated"><primary>gimp_palettes_set_palette</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_palettes_set_palette           (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_palettes_set_palette</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-set-palette"><function>gimp_context_set_palette()</function></link> instead.</para>
@@ -122,10 +122,10 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-palette"><func
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-palettes-get-palette-entry" role="function" condition="deprecated:"/>gimp_palettes_get_palette_entry ()</title>
-<indexterm role="deprecated"><primary>gimp_palettes_get_palette_entry</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palettes_get_palette_entry (const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> entry_num,
-                                             <link linkend="gint">gint</link> *num_colors,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm role="deprecated"><primary>gimp_palettes_get_palette_entry</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_palettes_get_palette_entry     (const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> entry_num,
+                                                         <link linkend="gint">gint</link> *num_colors,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <warning><para><literal>gimp_palettes_get_palette_entry</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-palette-entry-get-color"><function>gimp_palette_entry_get_color()</function></link>

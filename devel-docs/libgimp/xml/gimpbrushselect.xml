@@ -22,35 +22,35 @@
 
 
 
-<link linkend="void">void</link>        (<link linkend="GimpRunBrushCallback">*GimpRunBrushCallback</link>)         (const <link linkend="gchar">gchar</link> *brush_name,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             const <link linkend="guchar">guchar</link> *mask_data,
-                                             <link linkend="gboolean">gboolean</link> dialog_closing,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-brush-select-new">gimp_brush_select_new</link>          (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *brush_name,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                             <link linkend="GimpRunBrushCallback">GimpRunBrushCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>        <link linkend="gimp-brush-select-destroy">gimp_brush_select_destroy</link>       (const <link linkend="gchar">gchar</link> *brush_callback);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-popup">gimp_brushes_popup</link>              (const <link linkend="gchar">gchar</link> *brush_callback,
-                                             const <link linkend="gchar">gchar</link> *popup_title,
-                                             const <link linkend="gchar">gchar</link> *initial_brush,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-close-popup">gimp_brushes_close_popup</link>        (const <link linkend="gchar">gchar</link> *brush_callback);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-set-popup">gimp_brushes_set_popup</link>          (const <link linkend="gchar">gchar</link> *brush_callback,
-                                             const <link linkend="gchar">gchar</link> *brush_name,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
+<link linkend="void">void</link>                (<link linkend="GimpRunBrushCallback">*GimpRunBrushCallback</link>)             (const <link linkend="gchar">gchar</link> *brush_name,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         const <link linkend="guchar">guchar</link> *mask_data,
+                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-brush-select-new">gimp_brush_select_new</link>               (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *brush_name,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                                         <link linkend="GimpRunBrushCallback">GimpRunBrushCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>                <link linkend="gimp-brush-select-destroy">gimp_brush_select_destroy</link>           (const <link linkend="gchar">gchar</link> *brush_callback);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-popup">gimp_brushes_popup</link>                  (const <link linkend="gchar">gchar</link> *brush_callback,
+                                                         const <link linkend="gchar">gchar</link> *popup_title,
+                                                         const <link linkend="gchar">gchar</link> *initial_brush,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-close-popup">gimp_brushes_close_popup</link>            (const <link linkend="gchar">gchar</link> *brush_callback);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-set-popup">gimp_brushes_set_popup</link>              (const <link linkend="gchar">gchar</link> *brush_callback,
+                                                         const <link linkend="gchar">gchar</link> *brush_name,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
 </synopsis>
 </refsynopsisdiv>
 
@@ -73,15 +73,15 @@ Functions providing a brush selection dialog.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpRunBrushCallback" role="function"/>GimpRunBrushCallback ()</title>
-<indexterm><primary>GimpRunBrushCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRunBrushCallback)         (const <link linkend="gchar">gchar</link> *brush_name,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             const <link linkend="guchar">guchar</link> *mask_data,
-                                             <link linkend="gboolean">gboolean</link> dialog_closing,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpRunBrushCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunBrushCallback)             (const <link linkend="gchar">gchar</link> *brush_name,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         const <link linkend="guchar">guchar</link> *mask_data,
+                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -117,13 +117,13 @@ Functions providing a brush selection dialog.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-select-new" role="function"/>gimp_brush_select_new ()</title>
-<indexterm><primary>gimp_brush_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_brush_select_new          (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *brush_name,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
-                                             <link linkend="GimpRunBrushCallback">GimpRunBrushCallback</link> callback,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm><primary>gimp_brush_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_brush_select_new               (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *brush_name,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
+                                                         <link linkend="GimpRunBrushCallback">GimpRunBrushCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -155,7 +155,7 @@ Functions providing a brush selection dialog.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-select-destroy" role="function"/>gimp_brush_select_destroy ()</title>
-<indexterm><primary>gimp_brush_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_brush_select_destroy       (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
+<indexterm><primary>gimp_brush_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_destroy           (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -167,12 +167,12 @@ Functions providing a brush selection dialog.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-popup" role="function"/>gimp_brushes_popup ()</title>
-<indexterm><primary>gimp_brushes_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_popup              (const <link linkend="gchar">gchar</link> *brush_callback,
-                                             const <link linkend="gchar">gchar</link> *popup_title,
-                                             const <link linkend="gchar">gchar</link> *initial_brush,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
+<indexterm><primary>gimp_brushes_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_popup                  (const <link linkend="gchar">gchar</link> *brush_callback,
+                                                         const <link linkend="gchar">gchar</link> *popup_title,
+                                                         const <link linkend="gchar">gchar</link> *initial_brush,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
 <para>
 Invokes the Gimp brush selection.
 </para>
@@ -204,7 +204,7 @@ This procedure opens the brush selection dialog.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-close-popup" role="function"/>gimp_brushes_close_popup ()</title>
-<indexterm><primary>gimp_brushes_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_close_popup        (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
+<indexterm><primary>gimp_brushes_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_close_popup            (const <link linkend="gchar">gchar</link> *brush_callback);</programlisting>
 <para>
 Close the brush selection dialog.
 </para>
@@ -221,11 +221,11 @@ This procedure closes an opened brush selection dialog.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-set-popup" role="function"/>gimp_brushes_set_popup ()</title>
-<indexterm><primary>gimp_brushes_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_set_popup          (const <link linkend="gchar">gchar</link> *brush_callback,
-                                             const <link linkend="gchar">gchar</link> *brush_name,
-                                             <link linkend="gdouble">gdouble</link> opacity,
-                                             <link linkend="gint">gint</link> spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
+<indexterm><primary>gimp_brushes_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_popup              (const <link linkend="gchar">gchar</link> *brush_callback,
+                                                         const <link linkend="gchar">gchar</link> *brush_name,
+                                                         <link linkend="gdouble">gdouble</link> opacity,
+                                                         <link linkend="gint">gint</link> spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
 <para>
 Sets the current brush in a brush selection dialog.
 </para>

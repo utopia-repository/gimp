@@ -60,8 +60,7 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpactiongroup.$(OBJEXT) gimpactionview.$(OBJEXT) \
 	gimpblobeditor.$(OBJEXT) gimpbrusheditor.$(OBJEXT) \
 	gimpbrushfactoryview.$(OBJEXT) gimpbrushselect.$(OBJEXT) \
-	gimpbufferview.$(OBJEXT) gimpcellrendereraccel.$(OBJEXT) \
-	gimpcellrendererdashes.$(OBJEXT) \
+	gimpbufferview.$(OBJEXT) gimpcellrendererdashes.$(OBJEXT) \
 	gimpcellrendererviewable.$(OBJEXT) \
 	gimpchanneltreeview.$(OBJEXT) gimpclipboard.$(OBJEXT) \
 	gimpcolorbar.$(OBJEXT) gimpcolordialog.$(OBJEXT) \
@@ -374,6 +373,7 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -407,8 +407,6 @@ POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PRINT_CFLAGS = @PRINT_CFLAGS@
-PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
@@ -557,8 +555,6 @@ libappwidgets_a_sources = \
 	gimpbrushselect.h		\
 	gimpbufferview.c		\
 	gimpbufferview.h		\
-	gimpcellrendereraccel.c		\
-	gimpcellrendereraccel.h		\
 	gimpcellrendererdashes.c	\
 	gimpcellrendererdashes.h	\
 	gimpcellrendererviewable.c	\
@@ -906,7 +902,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushfactoryview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushselect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbufferview.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrendereraccel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrendererdashes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrendererviewable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchanneltreeview.Po@am__quote@

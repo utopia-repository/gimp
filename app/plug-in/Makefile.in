@@ -69,6 +69,7 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimppluginmanager-locale-domain.$(OBJEXT) \
 	gimppluginmanager-menu-branch.$(OBJEXT) \
 	gimppluginmanager-query.$(OBJEXT) \
+	gimppluginmanager-restore.$(OBJEXT) \
 	gimppluginprocedure.$(OBJEXT) gimppluginprocframe.$(OBJEXT) \
 	gimppluginshm.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
 	plug-in-params.$(OBJEXT) plug-in-rc.$(OBJEXT) \
@@ -310,6 +311,7 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -343,8 +345,6 @@ POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PRINT_CFLAGS = @PRINT_CFLAGS@
-PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
@@ -511,6 +511,8 @@ libappplug_in_a_SOURCES = \
 	gimppluginmanager-menu-branch.h		\
 	gimppluginmanager-query.c		\
 	gimppluginmanager-query.h		\
+	gimppluginmanager-restore.c		\
+	gimppluginmanager-restore.h		\
 	gimppluginprocedure.c			\
 	gimppluginprocedure.h			\
 	gimppluginprocframe.c			\
@@ -600,6 +602,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-locale-domain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-menu-branch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-query.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-restore.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocframe.Po@am__quote@

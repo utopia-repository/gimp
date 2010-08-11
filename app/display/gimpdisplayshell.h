@@ -34,22 +34,16 @@
 #define  SCREEN_YRES(s)   ((s)->dot_for_dot ? \
                            (s)->display->image->yresolution : (s)->monitor_yres)
 
-/* calculate scale factors (double) */
-#define  SCALEFACTOR_X(s) (gimp_zoom_model_get_factor ((s)->zoom) \
-                           * SCREEN_XRES(s) / (s)->display->image->xresolution)
-#define  SCALEFACTOR_Y(s) (gimp_zoom_model_get_factor ((s)->zoom) \
-                           * SCREEN_YRES(s) / (s)->display->image->yresolution)
-
 /* scale values */
-#define  SCALEX(s,x)      PROJ_ROUND ((x) * SCALEFACTOR_X(s))
-#define  SCALEY(s,y)      PROJ_ROUND ((y) * SCALEFACTOR_Y(s))
+#define  SCALEX(s,x)      PROJ_ROUND ((x) * (s)->scale_x)
+#define  SCALEY(s,y)      PROJ_ROUND ((y) * (s)->scale_y)
 
 /* unscale values */
-#define  UNSCALEX(s,x)    ((gint) ((x) / SCALEFACTOR_X(s)))
-#define  UNSCALEY(s,y)    ((gint) ((y) / SCALEFACTOR_Y(s)))
+#define  UNSCALEX(s,x)    ((gint) ((x) / (s)->scale_x))
+#define  UNSCALEY(s,y)    ((gint) ((y) / (s)->scale_y))
 /* (and float-returning versions) */
-#define  FUNSCALEX(s,x)   ((x) / SCALEFACTOR_X(s))
-#define  FUNSCALEY(s,y)   ((y) / SCALEFACTOR_Y(s))
+#define  FUNSCALEX(s,x)   ((x) / (s)->scale_x)
+#define  FUNSCALEY(s,y)   ((y) / (s)->scale_y)
 
 
 #define GIMP_TYPE_DISPLAY_SHELL            (gimp_display_shell_get_type ())
@@ -82,6 +76,9 @@ struct _GimpDisplayShell
 
   gint              offset_x;          /*  offset of display image into raw image  */
   gint              offset_y;
+
+  gdouble           scale_x;           /*  horizontal scale factor            */
+  gdouble           scale_y;           /*  vertical scale factor              */
 
   gdouble           last_scale;        /*  scale used when reverting zoom     */
   guint             last_scale_time;   /*  time when last_scale was set       */
@@ -199,6 +196,8 @@ GtkWidget * gimp_display_shell_new                 (GimpDisplay        *display,
                                                     GimpUIManager      *popup_manager);
 
 void        gimp_display_shell_reconnect           (GimpDisplayShell   *shell);
+
+void        gimp_display_shell_scale_changed       (GimpDisplayShell   *shell);
 
 void        gimp_display_shell_scaled              (GimpDisplayShell   *shell);
 void        gimp_display_shell_scrolled            (GimpDisplayShell   *shell);

@@ -145,6 +145,11 @@ gimp_source_tool_control (GimpTool       *tool,
 {
   GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
 
+  /*  chain up early so the draw tool can undraw the source marker
+   *  while we still know about source drawable and display
+   */
+  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
+
   switch (action)
     {
     case GIMP_TOOL_ACTION_PAUSE:
@@ -158,8 +163,6 @@ gimp_source_tool_control (GimpTool       *tool,
                     NULL);
       break;
     }
-
-  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
 
 static void
@@ -169,14 +172,11 @@ gimp_source_tool_button_press (GimpTool        *tool,
                                GdkModifierType  state,
                                GimpDisplay     *display)
 {
-  GimpPaintTool     *paint_tool  = GIMP_PAINT_TOOL (tool);
-  GimpSourceTool    *source_tool = GIMP_SOURCE_TOOL (tool);
-  GimpSourceCore    *source      = GIMP_SOURCE_CORE (paint_tool->core);
-  GimpSourceOptions *options     = GIMP_SOURCE_TOOL_GET_OPTIONS (tool);
+  GimpPaintTool  *paint_tool  = GIMP_PAINT_TOOL (tool);
+  GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
+  GimpSourceCore *source      = GIMP_SOURCE_CORE (paint_tool->core);
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
-
-  paint_tool->core->use_saved_proj = FALSE;
 
   if ((state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) == GDK_CONTROL_MASK)
     {
@@ -187,13 +187,6 @@ gimp_source_tool_button_press (GimpTool        *tool,
   else
     {
       source->set_source = FALSE;
-
-      if (options->use_source    &&
-          options->sample_merged &&
-          display == source_tool->src_display)
-        {
-          paint_tool->core->use_saved_proj = TRUE;
-        }
     }
 
   GIMP_TOOL_CLASS (parent_class)->button_press (tool, coords, time, state,
@@ -242,15 +235,12 @@ gimp_source_tool_modifier_key (GimpTool        *tool,
   GimpPaintTool     *paint_tool  = GIMP_PAINT_TOOL (tool);
   GimpSourceOptions *options     = GIMP_SOURCE_TOOL_GET_OPTIONS (tool);
 
-  if (! (state & GDK_BUTTON1_MASK))
+  if (options->use_source && key == GDK_CONTROL_MASK)
     {
-      if (options->use_source && key == GDK_CONTROL_MASK)
-        {
-          if (press)
-            paint_tool->status = source_tool->status_set_source;
-          else
-            paint_tool->status = source_tool->status_paint;
-        }
+      if (press)
+        paint_tool->status = source_tool->status_set_source;
+      else
+        paint_tool->status = source_tool->status_paint;
     }
 
   GIMP_TOOL_CLASS (parent_class)->modifier_key (tool, key, press, state,

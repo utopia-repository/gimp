@@ -48,9 +48,15 @@ colorsel_libadd = $(libgimpcolor) $(modules_libadd)
 cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(modules_libadd)
 controller_libadd = $(modules_libadd)
 
+if HAVE_LCMS
+libcolorsel_cmyk_la_SOURCES = colorsel_cmyk_lcms.c
+libcolorsel_cmyk_la_LIBADD = $(libgimpconfig) $(colorsel_libadd) $(LCMS_LIBS)
+else
 libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
-libcolorsel_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcolorsel_cmyk_la_LIBADD = $(colorsel_libadd)
+endif
+
+libcolorsel_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
 
 libcolorsel_triangle_la_SOURCES = colorsel_triangle.c
 libcolorsel_triangle_la_LDFLAGS = -avoid-version -module $(no_undefined)

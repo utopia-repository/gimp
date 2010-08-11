@@ -70,6 +70,8 @@
 
 /*  local function prototypes  */
 
+static void           gui_ungrab               (Gimp                *gimp);
+
 static void           gui_threads_enter        (Gimp                *gimp);
 static void           gui_threads_leave        (Gimp                *gimp);
 static void           gui_set_busy             (Gimp                *gimp);
@@ -99,6 +101,7 @@ static void           gui_free_progress        (Gimp                *gimp,
                                                 GimpProgress        *progress);
 static gboolean       gui_pdb_dialog_new       (Gimp                *gimp,
                                                 GimpContext         *context,
+                                                GimpProgress        *progress,
                                                 GimpContainer       *container,
                                                 const gchar         *title,
                                                 const gchar         *callback_name,
@@ -121,6 +124,7 @@ gui_vtable_init (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
+  gimp->gui.ungrab              = gui_ungrab;
   gimp->gui.threads_enter       = gui_threads_enter;
   gimp->gui.threads_leave       = gui_threads_leave;
   gimp->gui.set_busy            = gui_set_busy;
@@ -145,6 +149,18 @@ gui_vtable_init (Gimp *gimp)
 
 
 /*  private functions  */
+
+static void
+gui_ungrab (Gimp *gimp)
+{
+  GdkDisplay *display = gdk_display_get_default ();
+
+  if (display)
+    {
+      gdk_display_pointer_ungrab (display, GDK_CURRENT_TIME);
+      gdk_display_keyboard_ungrab (display, GDK_CURRENT_TIME);
+    }
+}
 
 static void
 gui_threads_enter (Gimp *gimp)
@@ -316,6 +332,7 @@ gui_free_progress (Gimp          *gimp,
 static gboolean
 gui_pdb_dialog_new (Gimp          *gimp,
                     GimpContext   *context,
+                    GimpProgress  *progress,
                     GimpContainer *container,
                     const gchar   *title,
                     const gchar   *callback_name,
@@ -398,6 +415,14 @@ gui_pdb_dialog_new (Gimp          *gimp,
           view = GIMP_PDB_DIALOG (dialog)->view;
           if (view)
             gimp_docked_set_show_button_bar (GIMP_DOCKED (view), FALSE);
+
+          if (progress)
+            {
+              guint32 window = gimp_progress_get_window (progress);
+
+              if (window)
+                gimp_window_set_transient_for (GTK_WINDOW (dialog), window);
+            }
 
           gtk_widget_show (dialog);
 

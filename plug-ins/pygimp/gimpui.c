@@ -18,7 +18,7 @@
 
 #define NO_IMPORT_PYGIMPCOLOR
 #include "pygimpcolor-api.h"
-#
+
 typedef struct {
     PyObject *constraint;
     PyObject *user_data;
@@ -773,35 +773,53 @@ PyTypeObject PyGimpColorArea_Type = {
 
 /* ----------- GimpColorButton ----------- */
 
+#line 624 "gimpui.override"
 static int
 _wrap_gimp_color_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-    static char *kwlist[] = { "title", "width", "height", "color", "type", NULL };
-    char *title;
-    int width, height;
+    gchar *title = NULL;
+    gint width = -1, height = -1;
+    PyObject *py_color = NULL, *py_type = NULL;
+    GimpRGB *color, default_color = { 0.0, 0.0, 0.0, 100.0 };
     GimpColorAreaType type;
-    PyObject *py_color, *py_type = NULL;
-    GimpRGB *color = NULL;
+    
+    static char *kwlist[] = { "title", "width", "height", "color", "type",
+                              NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "siiOO:GimpColorButton.__init__", kwlist, &title, &width, &height, &py_color, &py_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "|ziiOO:gimpui.ColorButton.__init__",
+                                     kwlist,
+                                     &title, &width, &height,
+                                     &py_color, &py_type))
         return -1;
-    if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
+
+    if (py_color == NULL || (PyObject*)py_color == Py_None)
+        color = &default_color;
+    else if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
     else {
-        PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB");
+        PyErr_SetString(PyExc_TypeError, "color should be a GimpRGB or None");
         return -1;
     }
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gint *)&type))
-        return -1;
-    self->obj = (GObject *)gimp_color_button_new(title, width, height, color, type);
 
-    if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create GimpColorButton object");
+    if (py_type == NULL || (PyObject*)py_type == Py_None)
+       type = GIMP_COLOR_AREA_FLAT;
+    else if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gint*)&type))
+       return -1;
+
+    if (pygobject_construct(self,
+                            "title", title,
+                            "type", type,
+                            "color", color,
+                            NULL))
         return -1;
-    }
-    pygobject_register_wrapper((PyObject *)self);
+
+    gtk_widget_set_size_request(GIMP_COLOR_BUTTON(self->obj)->color_area,
+                                width, height);
     return 0;
 }
+#line 822 "gimpui.c"
+
 
 static PyObject *
 _wrap_gimp_color_button_set_color(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -833,7 +851,7 @@ _wrap_gimp_color_button_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 837 "gimpui.c"
+#line 855 "gimpui.c"
 
 
 static PyObject *
@@ -1375,29 +1393,46 @@ PyTypeObject PyGimpColorHexEntry_Type = {
 
 /* ----------- GimpColorScale ----------- */
 
+#line 672 "gimpui.override"
 static int
 _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-    static char *kwlist[] = { "orientation", "channel", NULL };
+    PyObject *py_orientation, *py_channel;
     GtkOrientation orientation;
-    PyObject *py_orientation = NULL, *py_channel = NULL;
     GimpColorSelectorChannel channel;
+    GimpColorScale *scale;
+    GtkRange *range;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO:GimpColorScale.__init__", kwlist, &py_orientation, &py_channel))
-        return -1;
-    if (pyg_enum_get_value(GTK_TYPE_ORIENTATION, py_orientation, (gint *)&orientation))
-        return -1;
-    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gint *)&channel))
-        return -1;
-    self->obj = (GObject *)gimp_color_scale_new(orientation, channel);
+    static char *kwlist[] = { "orientation", "channel", NULL };
 
-    if (!self->obj) {
-        PyErr_SetString(PyExc_RuntimeError, "could not create GimpColorScale object");
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "OO:gimpui.ColorScale.__init__",
+                                     kwlist,
+                                     &py_orientation, &py_channel))
         return -1;
-    }
-    pygobject_register_wrapper((PyObject *)self);
+
+    if (pyg_enum_get_value(GTK_TYPE_ORIENTATION, py_orientation,
+                           (gint*)&orientation))
+        return -1;
+
+    if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, 
+                           (gint*)&channel))
+        return -1;
+
+    if (pygobject_construct(self, NULL))
+        return -1;
+
+    scale = GIMP_COLOR_SCALE(self->obj);
+    scale->channel = channel;
+
+    range = GTK_RANGE(scale);
+    range->orientation = orientation;
+    range->flippable   = (orientation == GTK_ORIENTATION_HORIZONTAL);
+    
     return 0;
 }
+#line 1435 "gimpui.c"
+
 
 static PyObject *
 _wrap_gimp_color_scale_set_channel(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -2108,7 +2143,7 @@ _wrap_gimp_dialog_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     for (i = 0; i < len; i += 2) {
         PyObject *text = PyTuple_GetItem(py_buttons, i);
         PyObject *id = PyTuple_GetItem(py_buttons, i + 1);
-        if (!PyString_Check(text)) {
+        if (!PyString_Check(text) && !PyUnicode_Check(text)) {
             gtk_object_destroy(GTK_OBJECT(self->obj));
             self->obj = NULL;
             PyErr_SetString(PyExc_RuntimeError,
@@ -2131,7 +2166,7 @@ _wrap_gimp_dialog_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 2135 "gimpui.c"
+#line 2170 "gimpui.c"
 
 
 static PyObject *
@@ -2158,18 +2193,21 @@ _wrap_gimp_dialog_run(PyGObject *self)
     return PyInt_FromLong(ret);
 }
 
+#line 615 "gimpui.override"
 static PyObject *
 _wrap_gimp_window_set_transient(PyGObject *self)
 {
-    gimp_window_set_transient(GIMP_DIALOG(self->obj));
+    gimp_window_set_transient(GTK_WINDOW(self->obj));
     Py_INCREF(Py_None);
     return Py_None;
 }
+#line 2205 "gimpui.c"
+
 
 static PyMethodDef _PyGimpDialog_methods[] = {
     { "add_button", (PyCFunction)_wrap_gimp_dialog_add_button, METH_VARARGS|METH_KEYWORDS },
     { "run", (PyCFunction)_wrap_gimp_dialog_run, METH_NOARGS },
-    { "set_transient", (PyCFunction)_wrap_gimp_window_set_transient, METH_NOARGS },
+    { "set_transient", (PyCFunction)_wrap_gimp_window_set_transient, METH_VARARGS },
     { NULL, NULL, 0 }
 };
 
@@ -4815,7 +4853,7 @@ _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
 			 pyg_enum_from_gtype(GIMP_TYPE_LAYER_MODE_EFFECTS,
 					     paint_mode));
 }
-#line 4819 "gimpui.c"
+#line 4857 "gimpui.c"
 
 
 static PyObject *
@@ -5548,7 +5586,7 @@ _wrap_gimp_drawable_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5552 "gimpui.c"
+#line 5590 "gimpui.c"
 
 
 PyTypeObject PyGimpDrawableComboBox_Type = {
@@ -5690,7 +5728,7 @@ _wrap_gimp_channel_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5694 "gimpui.c"
+#line 5732 "gimpui.c"
 
 
 PyTypeObject PyGimpChannelComboBox_Type = {
@@ -5832,7 +5870,7 @@ _wrap_gimp_layer_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5836 "gimpui.c"
+#line 5874 "gimpui.c"
 
 
 PyTypeObject PyGimpLayerComboBox_Type = {
@@ -5965,7 +6003,7 @@ _wrap_gimp_image_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 5969 "gimpui.c"
+#line 6007 "gimpui.c"
 
 
 PyTypeObject PyGimpImageComboBox_Type = {
@@ -6410,7 +6448,7 @@ gimpui_register_classes(PyObject *d)
     }
 
 
-#line 6414 "gimpui.c"
+#line 6452 "gimpui.c"
     pygobject_register_class(d, "GimpBrowser", GIMP_TYPE_BROWSER, &PyGimpBrowser_Type, Py_BuildValue("(O)", &PyGtkHPaned_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_BROWSER);
     pygobject_register_class(d, "GimpButton", GIMP_TYPE_BUTTON, &PyGimpButton_Type, Py_BuildValue("(O)", &PyGtkButton_Type));
@@ -6424,12 +6462,14 @@ gimpui_register_classes(PyObject *d)
     pygobject_register_class(d, "GimpColorArea", GIMP_TYPE_COLOR_AREA, &PyGimpColorArea_Type, Py_BuildValue("(O)", &PyGtkDrawingArea_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_COLOR_AREA);
     pygobject_register_class(d, "GimpColorButton", GIMP_TYPE_COLOR_BUTTON, &PyGimpColorButton_Type, Py_BuildValue("(O)", &PyGimpButton_Type));
+    pyg_set_object_has_new_constructor(GIMP_TYPE_COLOR_BUTTON);
     pygobject_register_class(d, "GimpColorDisplay", GIMP_TYPE_COLOR_DISPLAY, &PyGimpColorDisplay_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pygobject_register_class(d, "GimpColorDisplayStack", GIMP_TYPE_COLOR_DISPLAY_STACK, &PyGimpColorDisplayStack_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_COLOR_DISPLAY_STACK);
     pygobject_register_class(d, "GimpColorHexEntry", GIMP_TYPE_COLOR_HEX_ENTRY, &PyGimpColorHexEntry_Type, Py_BuildValue("(O)", &PyGtkEntry_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_COLOR_HEX_ENTRY);
     pygobject_register_class(d, "GimpColorScale", GIMP_TYPE_COLOR_SCALE, &PyGimpColorScale_Type, Py_BuildValue("(O)", &PyGtkScale_Type));
+    pyg_set_object_has_new_constructor(GIMP_TYPE_COLOR_SCALE);
     pygobject_register_class(d, "GimpColorSelection", GIMP_TYPE_COLOR_SELECTION, &PyGimpColorSelection_Type, Py_BuildValue("(O)", &PyGtkVBox_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_COLOR_SELECTION);
     pygobject_register_class(d, "GimpColorSelector", GIMP_TYPE_COLOR_SELECTOR, &PyGimpColorSelector_Type, Py_BuildValue("(O)", &PyGtkVBox_Type));

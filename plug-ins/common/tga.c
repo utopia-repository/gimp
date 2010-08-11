@@ -1,7 +1,7 @@
 /* The GIMP -- an image manipulation program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * $Id: tga.c,v 1.63 2006/06/27 12:38:37 neo Exp $
+ * $Id: tga.c,v 1.64 2006/09/12 11:45:58 neo Exp $
  * TrueVision Targa loading and saving file filter for the Gimp.
  * Targa code Copyright (C) 1997 Raphael FRANCOIS and Gordon Matzigkeit
  *
@@ -88,9 +88,6 @@
 #define SAVE_PROC      "file-tga-save"
 #define PLUG_IN_BINARY "tga"
 
-
-/* Round up a division to the nearest integer. */
-#define ROUNDUP_DIVIDE(n,d) (((n) + (d - 1)) / (d))
 
 typedef struct _TgaSaveVals
 {

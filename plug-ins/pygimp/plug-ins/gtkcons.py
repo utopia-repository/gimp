@@ -34,6 +34,11 @@ import pygtk
 pygtk.require('2.0')
 import gtk, pango
 
+from gimp import locale_directory
+import gettext
+t = gettext.translation('gimp20-python', locale_directory, fallback=True)
+_ = t.ugettext
+
 stdout = sys.stdout
 
 if not hasattr(sys, 'ps1'): sys.ps1 = '>>> '
@@ -160,7 +165,7 @@ class Console(gtk.VBox):
         self.prompt.show()
 
         if closer:
-            self.closer = gtk.Button("Close")
+            self.closer = gtk.Button(gtk.CLOSE)
             self.closer.connect("clicked", self.quit)
             self.inputbox.pack_end(self.closer, fill=False, expand=False)
             self.closer.show()
@@ -201,6 +206,7 @@ class Console(gtk.VBox):
                             'Copyright (C)\n' \
                             '1998 James Henstridge\n' \
                             '2004 John Finlay'
+
         greetings = (
             ('\n', self.subtitle),
             ('Python %s\n' % sys.version, self.title),
@@ -212,8 +218,9 @@ class Console(gtk.VBox):
         for greeting in greetings:
             self.buffer.insert_with_tags(iter, *greeting)
 
-        self.greetings = (('Gimp-Python Console - ', 'Title'),
-                          ('Interactive Python Development\n', 'Emphasis'))
+        self.greetings = ((_('Gimp-Python Console'), 'Title'),
+                          (' - ' + _('Interactive Python Development') + '\n',
+                           'Emphasis'))
 
         for greeting in self.greetings:
             self.buffer.insert_with_tags_by_name(iter, *greeting)

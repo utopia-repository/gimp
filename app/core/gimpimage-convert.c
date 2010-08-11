@@ -173,9 +173,6 @@
 #define HIST_G_ELEMS (1<<PRECISION_G)
 #define HIST_B_ELEMS (1<<PRECISION_B)
 
-#define MR (HIST_G_ELEMS*HIST_B_ELEMS)
-#define MG HIST_B_ELEMS
-
 #define BITS_IN_SAMPLE 8
 
 #define R_SHIFT  (BITS_IN_SAMPLE-PRECISION_R)
@@ -792,7 +789,7 @@ gimp_image_convert (GimpImage              *image,
 
       if (custom_palette->n_colors < 1)
         {
-          gimp_message (image->gimp, progress,
+          gimp_message (image->gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
                         _("Cannot convert image: palette is empty."));
           return;
         }
@@ -3294,10 +3291,26 @@ median_cut_pass2_nodestruct_dither_rgb (QuantizeObj *quantobj,
         {
           for (col = 0; col < srcPR.w; col++)
             {
-              if ((has_alpha && (alpha_dither ?
-                                 ((src[alpha_pix]) > (DM[(col+srcPR.x+offsetx)&DM_WIDTHMASK][(row+srcPR.y+offsety)&DM_HEIGHTMASK])) :
-                                 (src[alpha_pix] > 127)))
-                  || !has_alpha)
+              gboolean transparent = FALSE;
+
+              if (has_alpha)
+                {
+                  if (alpha_dither)
+                    {
+                      gint dither_x = (col + srcPR.x + offsetx) & DM_WIDTHMASK;
+                      gint dither_y = (row + srcPR.y + offsety) & DM_HEIGHTMASK;
+
+                      if ((src[alpha_pix]) < DM[dither_x][dither_y])
+                        transparent = TRUE;
+                    }
+                  else
+                    {
+                      if (src[alpha_pix] < 128)
+                        transparent = TRUE;
+                    }
+                }
+
+              if (! transparent)
                 {
                   if ((lastred == src[red_pix]) &&
                       (lastgreen == src[green_pix]) &&
@@ -4008,15 +4021,12 @@ delete_median_cut (QuantizeObj *quantobj)
 
 
 void
-gimp_image_convert_set_dither_matrix (gint       width,
-                                      gint       height,
-                                      guchar    *source)
+gimp_image_convert_set_dither_matrix (gint          width,
+                                      gint          height,
+                                      const guchar *source)
 {
-  gint   x;
-  gint   y;
-  gint   high_value;
-  gint   tmp;
-  gfloat scale;
+  gint x;
+  gint y;
 
   /* if source is invalid, restore the default matrix */
   if (source == NULL || width == 0 || height == 0)
@@ -4029,23 +4039,11 @@ gimp_image_convert_set_dither_matrix (gint       width,
   g_return_if_fail ((DM_WIDTH % width) == 0);
   g_return_if_fail ((DM_HEIGHT % height) == 0);
 
-  /* find maximum value in input */
-  high_value = 0;
-
-  for (x = 0; x < (width * height); x++)
-    {
-      if (source[x] > high_value)
-        high_value = source[x];
-    }
-
-  scale = 255.0 / (float)high_value;
-
   for (y = 0; y < DM_HEIGHT; y++)
     {
       for (x = 0; x < DM_WIDTH; x++)
         {
-          tmp = source[((x % width) * height) + (y % height)];
-          DM[x][y] = (guchar) (ROUND((float)tmp * scale));
+          DM[x][y] = source[((x % width) * height) + (y % height)];
        }
     }
 }

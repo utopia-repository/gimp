@@ -48,6 +48,7 @@
     <function name="GIMP_CONFIG_PARAM_IGNORE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS"/>
     <function name="GIMP_CONFIG_PARAM_FLAGS" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS"/>
     <function name="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS"/>
+    <function name="GIMP_CONFIG_INSTALL_PROP_BOXED()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS"/>
     <function name="GIMP_CONFIG_INSTALL_PROP_RGB()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS"/>
     <function name="GIMP_CONFIG_INSTALL_PROP_DOUBLE()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS"/>
     <function name="GIMP_CONFIG_INSTALL_PROP_RESOLUTION()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS"/>

@@ -8,7 +8,7 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [3])
-m4_define([gimp_micro_version], [11])
+m4_define([gimp_micro_version], [12])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
@@ -55,6 +55,7 @@ m4_define([poppler_required_version], [0.3.1])
 m4_define([gnome_vfs_required_version], [2.10.0])
 m4_define([gnomeui_required_version], [2.10.0])
 m4_define([gnome_keyring_required_version], [0.4.5])
+m4_define([libcurl_required_version], [7.15.5])
 
 
 AC_INIT([GIMP], [gimp_version],
@@ -386,10 +387,10 @@ fi
 # Internationalisation
 ######################
 
-dnl Note to translators: you MUST have .po files in all 4 directories: po,
-dnl po-libgimp, po-plug-ins, and po-script-fu before adding your language
-dnl code to ALL_LINGUAS
-ALL_LINGUAS="bg ca cs da de el en_CA en_GB es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
+dnl Note to translators: you MUST have .po files in all 5 directories: po,
+dnl po-libgimp, po-plug-ins, po-python and po-script-fu before adding your
+dnl language code to ALL_LINGUAS.
+ALL_LINGUAS="bg ca cs da de dz el en_CA en_GB es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
 
 AC_PROG_INTLTOOL
 AM_GLIB_GNU_GETTEXT
@@ -1228,30 +1229,40 @@ fi
 ###################################################################
 
 uri_plugin=no
-uri_modules="gnome-vfs-2.0 >= gnome_vfs_required_version"
+gnome_vfs_modules="gnome-vfs-2.0 >= gnome_vfs_required_version"
 
 if $PKG_CONFIG --atleast-version=gnomeui_required_version libgnomeui-2.0; then
   have_gnomeui=yes
-  uri_modules="$uri_modules libgnomeui-2.0"
+  gnome_vfs_modules="$gnome_vfs_modules libgnomeui-2.0"
 else
   have_gnomeui="no (libgnomeui-2.0 not found)"
 fi
 
 if $PKG_CONFIG --atleast-version=gnome_keyring_required_version gnome-keyring-1; then
   have_gnome_keyring=yes
-  uri_modules="$uri_modules gnome-keyring-1"
+  gnome_vfs_modules="$gnome_vfs_modules gnome-keyring-1"
 else
   have_gnome_keyring="no (gnome-keyring-1 not found)"
 fi
 
-PKG_CHECK_MODULES(URI, $uri_modules,
+PKG_CHECK_MODULES(URI_GNOME_VFS, $gnome_vfs_modules,
   have_gnomevfs=yes,
   have_gnomevfs="no (gnome-vfs-2.0 not found)")
 
 AM_CONDITIONAL(HAVE_GNOMEVFS, test x$have_gnomevfs = xyes)
 
+libcurl_modules="libcurl >= libcurl_required_version"
+
+PKG_CHECK_MODULES(URI_LIBCURL, $libcurl_modules,
+  have_libcurl=yes,
+  have_libcurl="no (libcurl not found)")
+
+AM_CONDITIONAL(HAVE_LIBCURL, test x$have_libcurl = xyes)
+
 if test "x$have_gnomevfs" = xyes; then
   uri_plugin="yes (using gnome-vfs)" 
+elif test x"$have_libcurl" = xyes; then
+  uri_plugin="yes (using libcurl)"
 elif test x"$os_win32" = xno; then
   uri_plugin="yes (using wget)"
 fi
@@ -1310,6 +1321,7 @@ if test "x$with_lcms" != xno; then
   ])
   if test $have_lcms = yes; then
     LCMS_LIBS="-llcms"
+    LCMS='lcms$(EXEEXT)'
   else
     have_lcms="no (lcms not found or unusable)"
   fi
@@ -1317,6 +1329,7 @@ else
   have_lcms="no (lcms support disabled)"
 fi
 
+AC_SUBST(LCMS)
 AC_SUBST(LCMS_LIBS)
 AM_CONDITIONAL(HAVE_LCMS, test $have_lcms = yes)
 
@@ -1815,6 +1828,7 @@ m4macros/Makefile
 po/Makefile.in
 po-libgimp/Makefile.in
 po-plug-ins/Makefile.in
+po-python/Makefile.in
 po-script-fu/Makefile.in
 po-tips/Makefile.in
 gimp-zip
@@ -1838,6 +1852,7 @@ AC_CONFIG_COMMANDS([chmod-scripts],
 
 AC_CONFIG_COMMANDS([sed-po-makefiles],
 [sed -e "/POTFILES =/r po-libgimp/POTFILES" po-libgimp/Makefile.in > po-libgimp/Makefile
+sed -e "/POTFILES =/r po-python/POTFILES" po-python/Makefile.in > po-python/Makefile
 sed -e "/POTFILES =/r po-plug-ins/POTFILES" po-plug-ins/Makefile.in > po-plug-ins/Makefile
 sed -e "/POTFILES =/r po-script-fu/POTFILES" po-script-fu/Makefile.in > po-script-fu/Makefile
 sed -e "/POTFILES =/r po-tips/POTFILES" po-tips/Makefile.in > po-tips/Makefile])
@@ -1856,6 +1871,7 @@ Extra Binaries:
 Optional Plug-Ins:
   Ascii Art:         $have_libaa
   Help Browser:      $have_gtkhtml2
+  LCMS:              $have_lcms
   JPEG:              $jpeg_ok
   MNG:               $have_libmng
   PDF:               $have_poppler
@@ -1865,7 +1881,8 @@ Optional Plug-Ins:
   Script-Fu:         $enable_script_fu
   SVG:               $have_librsvg
   TIFF:              $have_libtiff
-  MacOS X TWAIN:     $mac_twain_ok
+  TWAIN (MacOS X):   $mac_twain_ok
+  TWAIN (Win32):     $os_win32
   URI:               $uri_plugin
   Win Snap:          $os_win32
   WMF:               $have_libwmf
@@ -1883,4 +1900,3 @@ Optional Modules:
   Color Correction:  $have_lcms
   Soft Proof:        $have_lcms
 ]);
-

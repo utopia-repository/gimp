@@ -92,8 +92,16 @@ libcdisplay_proof_la_OBJECTS = $(am_libcdisplay_proof_la_OBJECTS)
 @HAVE_LCMS_TRUE@am_libcdisplay_proof_la_rpath = -rpath $(libdir)
 am__DEPENDENCIES_8 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_9 = $(am__DEPENDENCIES_8) $(am__DEPENDENCIES_6)
-libcolorsel_cmyk_la_DEPENDENCIES = $(am__DEPENDENCIES_9)
-am_libcolorsel_cmyk_la_OBJECTS = colorsel_cmyk.lo
+@HAVE_LCMS_FALSE@libcolorsel_cmyk_la_DEPENDENCIES =  \
+@HAVE_LCMS_FALSE@	$(am__DEPENDENCIES_9)
+@HAVE_LCMS_TRUE@libcolorsel_cmyk_la_DEPENDENCIES =  \
+@HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_9) \
+@HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_5)
+am__libcolorsel_cmyk_la_SOURCES_DIST = colorsel_cmyk.c \
+	colorsel_cmyk_lcms.c
+@HAVE_LCMS_FALSE@am_libcolorsel_cmyk_la_OBJECTS = colorsel_cmyk.lo
+@HAVE_LCMS_TRUE@am_libcolorsel_cmyk_la_OBJECTS =  \
+@HAVE_LCMS_TRUE@	colorsel_cmyk_lcms.lo
 libcolorsel_cmyk_la_OBJECTS = $(am_libcolorsel_cmyk_la_OBJECTS)
 libcolorsel_triangle_la_DEPENDENCIES = $(am__DEPENDENCIES_9)
 am_libcolorsel_triangle_la_OBJECTS = colorsel_triangle.lo
@@ -138,7 +146,7 @@ DIST_SOURCES = $(libcdisplay_colorblind_la_SOURCES) \
 	$(libcdisplay_gamma_la_SOURCES) \
 	$(libcdisplay_highcontrast_la_SOURCES) \
 	$(libcdisplay_lcms_la_SOURCES) $(libcdisplay_proof_la_SOURCES) \
-	$(libcolorsel_cmyk_la_SOURCES) \
+	$(am__libcolorsel_cmyk_la_SOURCES_DIST) \
 	$(libcolorsel_triangle_la_SOURCES) \
 	$(libcolorsel_water_la_SOURCES) \
 	$(libcontroller_linux_input_la_SOURCES) \
@@ -277,6 +285,8 @@ HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
+HAVE_LIBCURL_FALSE = @HAVE_LIBCURL_FALSE@
+HAVE_LIBCURL_TRUE = @HAVE_LIBCURL_TRUE@
 HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
@@ -321,6 +331,7 @@ INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
+LCMS = @LCMS@
 LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
@@ -418,8 +429,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URI_CFLAGS = @URI_CFLAGS@
-URI_LIBS = @URI_LIBS@
+URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
+URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
+URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
+URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
 USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
 USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
@@ -530,9 +543,11 @@ modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
 colorsel_libadd = $(libgimpcolor) $(modules_libadd)
 cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(modules_libadd)
 controller_libadd = $(modules_libadd)
-libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
+@HAVE_LCMS_FALSE@libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
+@HAVE_LCMS_TRUE@libcolorsel_cmyk_la_SOURCES = colorsel_cmyk_lcms.c
+@HAVE_LCMS_FALSE@libcolorsel_cmyk_la_LIBADD = $(colorsel_libadd)
+@HAVE_LCMS_TRUE@libcolorsel_cmyk_la_LIBADD = $(libgimpconfig) $(colorsel_libadd) $(LCMS_LIBS)
 libcolorsel_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcolorsel_cmyk_la_LIBADD = $(colorsel_libadd)
 libcolorsel_triangle_la_SOURCES = colorsel_triangle.c
 libcolorsel_triangle_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcolorsel_triangle_la_LIBADD = $(colorsel_libadd)
@@ -654,6 +669,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_lcms.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_proof.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_cmyk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_cmyk_lcms.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_triangle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_water.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller_linux_input.Plo@am__quote@

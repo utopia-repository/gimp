@@ -56,7 +56,6 @@ struct _Selection
   guint             index;            /*  index of current stipple pattern  */
   gint              paused;           /*  count of pause requests           */
   gboolean          visible;          /*  visility of the display shell     */
-  gboolean          recalc;           /*  flag to recalculate the selection */
   gboolean          hidden;           /*  is the selection hidden?          */
   gboolean          layer_hidden;     /*  is the layer boundary hidden?     */
   guint             timeout;          /*  timer for successive draws        */
@@ -67,8 +66,7 @@ struct _Selection
 
 /*  local function prototypes  */
 
-static void      selection_start          (Selection      *selection,
-                                           gboolean        recalc);
+static void      selection_start          (Selection      *selection);
 static void      selection_stop           (Selection      *selection);
 
 static void      selection_pause          (Selection      *selection);
@@ -118,7 +116,6 @@ gimp_display_shell_selection_init (GimpDisplayShell *shell)
 
   selection->shell        = shell;
   selection->visible      = TRUE;
-  selection->recalc       = TRUE;
   selection->hidden       = ! gimp_display_shell_get_show_selection (shell);
   selection->layer_hidden = ! gimp_display_shell_get_show_layer (shell);
 
@@ -174,7 +171,6 @@ gimp_display_shell_selection_control (GimpDisplayShell     *shell,
       switch (control)
         {
         case GIMP_SELECTION_OFF:
-          selection_stop (selection);
           selection_undraw (selection);
           break;
 
@@ -183,7 +179,7 @@ gimp_display_shell_selection_control (GimpDisplayShell     *shell,
           break;
 
         case GIMP_SELECTION_ON:
-          selection_start (selection, TRUE);
+          selection_start (selection);
           break;
 
         case GIMP_SELECTION_PAUSE:
@@ -214,7 +210,7 @@ gimp_display_shell_selection_set_hidden (GimpDisplayShell *shell,
 
           selection->hidden = hidden;
 
-          selection_start (selection, FALSE);
+          selection_start (selection);
         }
     }
 }
@@ -236,7 +232,7 @@ gimp_display_shell_selection_layer_set_hidden (GimpDisplayShell *shell,
 
           selection->layer_hidden = hidden;
 
-          selection_start (selection, FALSE);
+          selection_start (selection);
         }
     }
 }
@@ -245,12 +241,9 @@ gimp_display_shell_selection_layer_set_hidden (GimpDisplayShell *shell,
 /*  private functions  */
 
 static void
-selection_start (Selection *selection,
-                 gboolean   recalc)
+selection_start (Selection *selection)
 {
   selection_stop (selection);
-
-  selection->recalc = recalc;
 
   /*  If this selection is paused or invisible, do not start it  */
   if (selection->paused == 0 && selection->visible)
@@ -273,7 +266,8 @@ selection_stop (Selection *selection)
 static void
 selection_pause (Selection *selection)
 {
-  selection_stop (selection);
+  if (selection->paused == 0)
+    selection_stop (selection);
 
   selection->paused++;
 }
@@ -281,13 +275,10 @@ selection_pause (Selection *selection)
 static void
 selection_resume (Selection *selection)
 {
-  if (selection->paused == 1 && selection->visible)
-    {
-      selection->timeout = g_idle_add ((GSourceFunc) selection_start_timeout,
-                                       selection);
-    }
-
   selection->paused--;
+
+  if (selection->paused == 0)
+    selection_start (selection);
 }
 
 static void
@@ -358,11 +349,17 @@ selection_undraw (Selection *selection)
 {
   gint x1, y1, x2, y2;
 
-  /*  Find the bounds of the selection  */
+  selection_stop (selection);
+
   if (gimp_display_shell_mask_bounds (selection->shell, &x1, &y1, &x2, &y2))
     {
+      /* expose will restart the selection */
       gimp_display_shell_expose_area (selection->shell,
                                       x1, y1, (x2 - x1), (y2 - y1));
+    }
+  else
+    {
+      selection_start (selection);
     }
 }
 
@@ -380,6 +377,8 @@ selection_layer_draw (Selection *selection)
 static void
 selection_layer_undraw (Selection *selection)
 {
+  selection_stop (selection);
+
   if (selection->segs_layer != NULL && selection->num_segs_layer == 4)
     {
       gint x1 = selection->segs_layer[0].x1 - 1;
@@ -392,7 +391,7 @@ selection_layer_undraw (Selection *selection)
       gint x4 = selection->segs_layer[3].x2 - 1;
       gint y4 = selection->segs_layer[3].y2 - 1;
 
-      /*  expose the region  */
+      /*  expose the region, this will restart the selection  */
       gimp_display_shell_expose_area (selection->shell,
                                       x1, y1, (x2 - x1) + 1, (y3 - y1) + 1);
       gimp_display_shell_expose_area (selection->shell,
@@ -401,6 +400,10 @@ selection_layer_undraw (Selection *selection)
                                       x1, y4, (x2 - x1) + 1, (y2 - y4) + 1);
       gimp_display_shell_expose_area (selection->shell,
                                       x4, y3, (x2 - x4) + 1, (y4 - y3) + 1);
+    }
+  else
+    {
+      selection_start (selection);
     }
 }
 
@@ -670,13 +673,8 @@ selection_free_segs (Selection *selection)
 static gboolean
 selection_start_timeout (Selection *selection)
 {
-  if (selection->recalc)
-    {
-      selection_free_segs (selection);
-      selection_generate_segs (selection);
-
-      selection->recalc = FALSE;
-    }
+  selection_free_segs (selection);
+  selection_generate_segs (selection);
 
   selection->index = 0;
 
@@ -725,7 +723,7 @@ selection_set_visible (Selection *selection,
       selection->visible = visible;
 
       if (visible)
-        selection_start (selection, FALSE);
+        selection_start (selection);
       else
         selection_stop (selection);
     }

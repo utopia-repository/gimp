@@ -70,9 +70,9 @@ gimp_convolve_tool_register (GimpToolRegisterCallback  callback,
                 gimp_convolve_options_gui,
                 GIMP_PAINT_OPTIONS_CONTEXT_MASK,
                 "gimp-convolve-tool",
-                _("Convolve"),
-                _("Blur or Sharpen"),
-                N_("Con_volve"), "V",
+                _("Blur / Sharpen"),
+                _("Blur / Sharpen Tool: Selective blurring or unblurring using a brush"),
+                N_("Bl_ur / Sharpen"), "<shift>U",
                 NULL, GIMP_HELP_TOOL_CONVOLVE,
                 GIMP_STOCK_TOOL_BLUR,
                 data);
@@ -167,14 +167,14 @@ gimp_convolve_tool_status_update (GimpTool         *tool,
   switch (type)
     {
     case GIMP_BLUR_CONVOLVE:
-      paint_tool->status      = _("Click to blur.");
-      paint_tool->status_line = _("Click to blur the line.");
+      paint_tool->status      = _("Click to blur");
+      paint_tool->status_line = _("Click to blur the line");
       paint_tool->status_ctrl = _("%s to sharpen");
       break;
 
     case GIMP_SHARPEN_CONVOLVE:
-      paint_tool->status      = _("Click to sharpen.");
-      paint_tool->status_line = _("Click to sharpen the line.");
+      paint_tool->status      = _("Click to sharpen");
+      paint_tool->status_line = _("Click to sharpen the line");
       paint_tool->status_ctrl = _("%s to blur");
       break;
 

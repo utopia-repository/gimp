@@ -107,6 +107,11 @@ gimpprocbrowser_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
 am_gimpprocbrowser_la_OBJECTS = procbrowser.lo
 gimpprocbrowser_la_OBJECTS = $(am_gimpprocbrowser_la_OBJECTS)
+am__DEPENDENCIES_9 = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
+gimpthumb_la_DEPENDENCIES = $(am__DEPENDENCIES_9) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
+am_gimpthumb_la_OBJECTS = gimpthumbmodule.lo gimpthumb.lo
+gimpthumb_la_OBJECTS = $(am_gimpthumb_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -120,10 +125,10 @@ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(_gimpenums_la_SOURCES) $(_gimpui_la_SOURCES) \
 	$(gimp_la_SOURCES) $(gimpcolor_la_SOURCES) \
-	$(gimpprocbrowser_la_SOURCES)
+	$(gimpprocbrowser_la_SOURCES) $(gimpthumb_la_SOURCES)
 DIST_SOURCES = $(_gimpenums_la_SOURCES) $(_gimpui_la_SOURCES) \
 	$(gimp_la_SOURCES) $(gimpcolor_la_SOURCES) \
-	$(gimpprocbrowser_la_SOURCES)
+	$(gimpprocbrowser_la_SOURCES) $(gimpthumb_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-exec-recursive install-info-recursive \
@@ -269,6 +274,8 @@ HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
+HAVE_LIBCURL_FALSE = @HAVE_LIBCURL_FALSE@
+HAVE_LIBCURL_TRUE = @HAVE_LIBCURL_TRUE@
 HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
@@ -313,6 +320,7 @@ INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
+LCMS = @LCMS@
 LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
@@ -410,8 +418,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URI_CFLAGS = @URI_CFLAGS@
-URI_LIBS = @URI_LIBS@
+URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
+URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
+URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
+URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
 USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
 USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
@@ -496,6 +506,7 @@ libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libgimpthumb = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
 SUBDIRS = plug-ins
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @PLATFORM_WIN32_FALSE@path_separator = :
@@ -505,7 +516,7 @@ INCLUDES = -I$(top_srcdir) $(PYTHON_INCLUDES) $(PYGTK_CFLAGS) $(GTK_CFLAGS)
 pygimpbase = python
 pygimpdir = $(gimpplugindir)/$(pygimpbase)
 pygimp_LTLIBRARIES = gimp.la _gimpenums.la gimpcolor.la _gimpui.la \
-	gimpprocbrowser.la
+	gimpthumb.la gimpprocbrowser.la
 
 gimp_la_SOURCES = \
 	gimpmodule.c		\
@@ -517,6 +528,7 @@ gimp_la_SOURCES = \
 	pygimp-tile.c		\
 	pygimp.h		\
 	pygimp-api.h		\
+	pygimp-intl.h		\
 	pygimp-util.h
 
 gimp_la_LDFLAGS = -module -avoid-version $(no_undefined) \
@@ -578,6 +590,18 @@ _gimpui_la_LIBADD = \
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+gimpthumb_la_SOURCES = \
+	gimpthumbmodule.c \
+	gimpthumb.c
+
+gimpthumb_la_LDFLAGS = -module -avoid-version $(no_undefined) \
+	-export-symbols-regex initgimpthumb
+
+gimpthumb_la_LIBADD = \
+	$(libgimpthumb)		\
+	$(GDK_PIXBUF_LIBS)	\
+	$(PYLINK_LIBS)
+
 gimpprocbrowser_la_SOURCES = \
 	procbrowser.c
 
@@ -605,8 +629,13 @@ pygimp_PYTHON = \
 	gimpui.py
 
 pygimp_DATA = pygimp-logo.png
-codegen_files = gimpcolor-types.defs gimpenums-types.defs \
-	gimpui.defs gimpui.override
+codegen_files = \
+	gimpcolor-types.defs	\
+	gimpenums-types.defs	\
+	gimpthumb.defs		\
+	gimpthumb.override	\
+	gimpui.defs		\
+	gimpui.override
 
 pyenvdir = $(gimpplugindir)/environ
 pyinterpdir = $(gimpplugindir)/interpreters
@@ -617,7 +646,7 @@ EXTRA_DIST = \
 	$(codegen_files)	\
 	makefile.msc
 
-CLEANFILES = gimpui.c
+CLEANFILES = gimpui.c gimpthumb.c
 all: all-recursive
 
 .SUFFIXES:
@@ -688,6 +717,8 @@ gimpcolor.la: $(gimpcolor_la_OBJECTS) $(gimpcolor_la_DEPENDENCIES)
 	$(LINK) -rpath $(pygimpdir) $(gimpcolor_la_LDFLAGS) $(gimpcolor_la_OBJECTS) $(gimpcolor_la_LIBADD) $(LIBS)
 gimpprocbrowser.la: $(gimpprocbrowser_la_OBJECTS) $(gimpprocbrowser_la_DEPENDENCIES) 
 	$(LINK) -rpath $(pygimpdir) $(gimpprocbrowser_la_LDFLAGS) $(gimpprocbrowser_la_OBJECTS) $(gimpprocbrowser_la_LIBADD) $(LIBS)
+gimpthumb.la: $(gimpthumb_la_OBJECTS) $(gimpthumb_la_DEPENDENCIES) 
+	$(LINK) -rpath $(pygimpdir) $(gimpthumb_la_LDFLAGS) $(gimpthumb_la_OBJECTS) $(gimpthumb_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -698,6 +729,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolormodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumsmodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmodule.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthumb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpthumbmodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpui.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpuimodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procbrowser.Plo@am__quote@
@@ -1082,6 +1115,8 @@ uninstall-local:
 	rm -f '$(DESTDIR)$(pyenvfile)' '$(DESTDIR)$(pyinterpfile)'
 
 gimpui.c: gimpui.defs gimpui.override gimpcolor-types.defs gimpenums-types.defs
+
+gimpthumb.c: gimpthumb.defs gimpthumb.override
 
 .defs.c:
 	(cd $(srcdir) \

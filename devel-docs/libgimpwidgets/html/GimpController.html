@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpController</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="prev" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
@@ -33,24 +33,24 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2592579" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2593281" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2642622" class="shortcut">Description</a>
+                  <a href="#id2633398" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2642486" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2633262" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2642510" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2633286" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2642531" class="shortcut">Properties</a>
+                  <a href="#id2633307" class="shortcut">Properties</a>
                   &#160;|&#160;
-                  <a href="#id2642573" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2633349" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpController"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2592579"></a><span class="refentrytitle">GimpController</span>
+<a name="id2593281"></a><span class="refentrytitle">GimpController</span>
 </h2>
 <p>GimpController &#8212; Pluggable GIMP input controller modules.</p>
 </td>
@@ -81,7 +81,7 @@ gboolean    <a href="GimpController.html#gimp-controller-event">gimp_controller_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642486"></a><h2>Object Hierarchy</h2>
+<a name="id2633262"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -89,7 +89,7 @@ gboolean    <a href="GimpController.html#gimp-controller-event">gimp_controller_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642510"></a><h2>Implemented Interfaces</h2>
+<a name="id2633286"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpController implements
  <a
@@ -97,7 +97,7 @@ href="../libgimpconfig/libgimpconfig-GimpConfig.html#GimpConfigInterface"
 >GimpConfigInterface</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642531"></a><h2>Properties</h2>
+<a name="id2633307"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpController.html#GimpController--name">name</a>"                 gchararray            : Read / Write / Construct
@@ -105,7 +105,7 @@ href="../libgimpconfig/libgimpconfig-GimpConfig.html#GimpConfigInterface"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642573"></a><h2>Signals</h2>
+<a name="id2633349"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpController.html#GimpController-event">event</a>"     gboolean    user_function      (<a href="GimpController.html" title="GimpController">GimpController</a> *gimpcontroller,
@@ -114,17 +114,17 @@ href="../libgimpconfig/libgimpconfig-GimpConfig.html#GimpConfigInterface"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642622"></a><h2>Description</h2>
+<a name="id2633398"></a><h2>Description</h2>
 <p>
 An abstract interface for implementing arbitrary input controllers.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637992"></a><h2>Details</h2>
+<a name="id2630616"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2638002"></a><h3>
+<a name="id2630627"></a><h3>
 <a name="GimpControllerEventType"></a>enum GimpControllerEventType</h3>
-<a class="indexterm" name="id2638014"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2630638"></a><pre class="programlisting">typedef enum
 {
   GIMP_CONTROLLER_EVENT_TRIGGER,
   GIMP_CONTROLLER_EVENT_VALUE
@@ -136,9 +136,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638031"></a><h3>
+<a name="id2630655"></a><h3>
 <a name="GimpControllerEventAny"></a>GimpControllerEventAny</h3>
-<a class="indexterm" name="id2638042"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2630666"></a><pre class="programlisting">typedef struct {
   GimpControllerEventType  type;
   GimpController          *source;
   gint                     event_id;
@@ -150,9 +150,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638060"></a><h3>
+<a name="id2630684"></a><h3>
 <a name="GimpControllerEventTrigger"></a>GimpControllerEventTrigger</h3>
-<a class="indexterm" name="id2638071"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2630695"></a><pre class="programlisting">typedef struct {
   GimpControllerEventType  type;
   GimpController          *source;
   gint                     event_id;
@@ -164,9 +164,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638088"></a><h3>
+<a name="id2630713"></a><h3>
 <a name="GimpControllerEventValue"></a>GimpControllerEventValue</h3>
-<a class="indexterm" name="id2638100"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2630724"></a><pre class="programlisting">typedef struct {
   GimpControllerEventType  type;
   GimpController          *source;
   gint                     event_id;
@@ -179,9 +179,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638118"></a><h3>
+<a name="id2630742"></a><h3>
 <a name="GimpControllerEvent"></a>union GimpControllerEvent</h3>
-<a class="indexterm" name="id2638130"></a><pre class="programlisting">union GimpControllerEvent
+<a class="indexterm" name="id2630755"></a><pre class="programlisting">union GimpControllerEvent
 {
   GimpControllerEventType    type;
   GimpControllerEventAny     any;
@@ -195,18 +195,18 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638148"></a><h3>
+<a name="id2630773"></a><h3>
 <a name="GimpController-struct"></a>GimpController</h3>
-<a class="indexterm" name="id2638160"></a><pre class="programlisting">typedef struct _GimpController GimpController;</pre>
+<a class="indexterm" name="id2630784"></a><pre class="programlisting">typedef struct _GimpController GimpController;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638176"></a><h3>
+<a name="id2630801"></a><h3>
 <a name="gimp-controller-new"></a>gimp_controller_new ()</h3>
-<a class="indexterm" name="id2638189"></a><pre class="programlisting"><a href="GimpController.html" title="GimpController">GimpController</a>* gimp_controller_new         (GType controller_type);</pre>
+<a class="indexterm" name="id2630813"></a><pre class="programlisting"><a href="GimpController.html" title="GimpController">GimpController</a>* gimp_controller_new         (GType controller_type);</pre>
 <p>
 
 </p>
@@ -232,9 +232,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638245"></a><h3>
+<a name="id2630869"></a><h3>
 <a name="gimp-controller-get-n-events"></a>gimp_controller_get_n_events ()</h3>
-<a class="indexterm" name="id2639610"></a><pre class="programlisting">gint        gimp_controller_get_n_events    (<a href="GimpController.html" title="GimpController">GimpController</a> *controller);</pre>
+<a class="indexterm" name="id2630880"></a><pre class="programlisting">gint        gimp_controller_get_n_events    (<a href="GimpController.html" title="GimpController">GimpController</a> *controller);</pre>
 <p>
 
 </p>
@@ -260,9 +260,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639667"></a><h3>
+<a name="id2630937"></a><h3>
 <a name="gimp-controller-get-event-name"></a>gimp_controller_get_event_name ()</h3>
-<a class="indexterm" name="id2639678"></a><pre class="programlisting">const gchar* gimp_controller_get_event_name (<a href="GimpController.html" title="GimpController">GimpController</a> *controller,
+<a class="indexterm" name="id2630948"></a><pre class="programlisting">const gchar* gimp_controller_get_event_name (<a href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                              gint event_id);</pre>
 <p>
 
@@ -295,9 +295,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639756"></a><h3>
+<a name="id2631284"></a><h3>
 <a name="gimp-controller-get-event-blurb"></a>gimp_controller_get_event_blurb ()</h3>
-<a class="indexterm" name="id2639767"></a><pre class="programlisting">const gchar* gimp_controller_get_event_blurb
+<a class="indexterm" name="id2631297"></a><pre class="programlisting">const gchar* gimp_controller_get_event_blurb
                                             (<a href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                              gint event_id);</pre>
 <p>
@@ -331,9 +331,9 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639847"></a><h3>
+<a name="id2631377"></a><h3>
 <a name="gimp-controller-event"></a>gimp_controller_event ()</h3>
-<a class="indexterm" name="id2639858"></a><pre class="programlisting">gboolean    gimp_controller_event           (<a href="GimpController.html" title="GimpController">GimpController</a> *controller,
+<a class="indexterm" name="id2631388"></a><pre class="programlisting">gboolean    gimp_controller_event           (<a href="GimpController.html" title="GimpController">GimpController</a> *controller,
                                              const <a href="GimpController.html#GimpControllerEvent">GimpControllerEvent</a> *event);</pre>
 <p>
 
@@ -366,29 +366,29 @@ An abstract interface for implementing arbitrary input controllers.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2640870"></a><h2>Property Details</h2>
+<a name="id2631467"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2640881"></a><h3>
+<a name="id2631478"></a><h3>
 <a name="GimpController--name"></a>The "<code class="literal">name</code>" property</h3>
-<a class="indexterm" name="id2640895"></a><pre class="programlisting">  "name"                 gchararray            : Read / Write / Construct</pre>
+<a class="indexterm" name="id2631492"></a><pre class="programlisting">  "name"                 gchararray            : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: "Unnamed Controller"</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640919"></a><h3>
+<a name="id2631517"></a><h3>
 <a name="GimpController--state"></a>The "<code class="literal">state</code>" property</h3>
-<a class="indexterm" name="id2640933"></a><pre class="programlisting">  "state"                gchararray            : Read / Write / Construct</pre>
+<a class="indexterm" name="id2631530"></a><pre class="programlisting">  "state"                gchararray            : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: "Unknown"</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2640958"></a><h2>Signal Details</h2>
+<a name="id2631556"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2640969"></a><h3>
+<a name="id2631566"></a><h3>
 <a name="GimpController-event"></a>The "event" signal</h3>
-<a class="indexterm" name="id2640977"></a><pre class="programlisting">gboolean    user_function                  (<a href="GimpController.html" title="GimpController">GimpController</a> *gimpcontroller,
+<a class="indexterm" name="id2631574"></a><pre class="programlisting">gboolean    user_function                  (<a href="GimpController.html" title="GimpController">GimpController</a> *gimpcontroller,
                                             gpointer        arg1,
                                             gpointer        user_data)           : Run last</pre>
 <p>

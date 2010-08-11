@@ -56,8 +56,9 @@ am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
 am__uri_SOURCES_DIST = uri.c uri-backend.h uri-backend-wget.c \
-	uri-backend-gnomevfs.c
-@HAVE_GNOMEVFS_FALSE@am__objects_1 = uri-backend-wget.$(OBJEXT)
+	uri-backend-libcurl.c uri-backend-gnomevfs.c
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_FALSE@am__objects_1 = uri-backend-wget.$(OBJEXT)
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_TRUE@am__objects_1 = uri-backend-libcurl.$(OBJEXT)
 @HAVE_GNOMEVFS_TRUE@am__objects_1 = uri-backend-gnomevfs.$(OBJEXT)
 am_uri_OBJECTS = uri.$(OBJEXT) $(am__objects_1)
 uri_OBJECTS = $(am_uri_OBJECTS)
@@ -72,10 +73,13 @@ am__DEPENDENCIES_5 =  \
 am__DEPENDENCIES_6 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_7 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_8 =
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_TRUE@am__DEPENDENCIES_9 =  \
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_TRUE@	$(am__DEPENDENCIES_8)
+@HAVE_GNOMEVFS_TRUE@am__DEPENDENCIES_9 = $(am__DEPENDENCIES_8)
 uri_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_9) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -225,6 +229,8 @@ HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
+HAVE_LIBCURL_FALSE = @HAVE_LIBCURL_FALSE@
+HAVE_LIBCURL_TRUE = @HAVE_LIBCURL_TRUE@
 HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
@@ -269,6 +275,7 @@ INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
+LCMS = @LCMS@
 LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
@@ -366,8 +373,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URI_CFLAGS = @URI_CFLAGS@
-URI_LIBS = @URI_LIBS@
+URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
+URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
+URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
+URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
 USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
 USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
@@ -454,8 +463,15 @@ libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 @OS_WIN32_TRUE@mwindows = -mwindows
 AM_LDFLAGS = $(mwindows)
-@HAVE_GNOMEVFS_FALSE@backend_sources = uri-backend-wget.c
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_FALSE@backend_sources = uri-backend-wget.c
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_TRUE@backend_sources = uri-backend-libcurl.c
 @HAVE_GNOMEVFS_TRUE@backend_sources = uri-backend-gnomevfs.c
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_FALSE@backend_cflags = 
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_TRUE@backend_cflags = $(URI_LIBCURL_CFLAGS)
+@HAVE_GNOMEVFS_TRUE@backend_cflags = $(URI_GNOME_VFS_CFLAGS)
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_FALSE@backend_libs = 
+@HAVE_GNOMEVFS_FALSE@@HAVE_LIBCURL_TRUE@backend_libs = $(URI_LIBCURL_LIBS)
+@HAVE_GNOMEVFS_TRUE@backend_libs = $(URI_GNOME_VFS_LIBS)
 uri_SOURCES = \
 	uri.c			\
 	uri-backend.h		\
@@ -463,7 +479,7 @@ uri_SOURCES = \
 
 INCLUDES = \
 	-I$(top_srcdir)		\
-	$(URI_CFLAGS)		\
+	$(backend_cflags)	\
 	$(GTK_CFLAGS)		\
 	-I$(includedir)
 
@@ -475,7 +491,7 @@ LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
-	$(URI_LIBS)		\
+	$(backend_libs)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
@@ -552,6 +568,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uri-backend-gnomevfs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uri-backend-libcurl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uri-backend-wget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uri.Po@am__quote@
 

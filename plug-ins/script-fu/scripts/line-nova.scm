@@ -71,7 +71,7 @@
 
 (script-fu-register "script-fu-line-nova"
 		    _"Line _Nova..."
-		    "Line Nova. Draw lines with Foreground color from the center of image to the edges. 1st undo cancels bucket-fill. 2nd undo gets orignal selection."
+		    _"Fill a layer with rays emanating outward from its center using the FG color"
 		    "Shuji Narazaki <narazaki@gimp.org>"
 		    "Shuji Narazaki"
 		    "1997,1998"
@@ -81,7 +81,7 @@
 		    SF-ADJUSTMENT _"Number of lines"     '(200 40 1000 1 1 0 1)
 		    SF-ADJUSTMENT _"Sharpness (degrees)" '(1.0 0.0 10.0 0.1 1 1 1)
 		    SF-ADJUSTMENT _"Offset radius"       '(100 0 2000 1 1 0 1)
-		    SF-ADJUSTMENT _"Randomness"          '(30 0 2000 1 1 0 1))
+		    SF-ADJUSTMENT _"Randomness"          '(30 1 2000 1 1 0 1))
 
 (script-fu-menu-register "script-fu-line-nova"
 			 "<Image>/Filters/Render")

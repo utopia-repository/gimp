@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpdrawablecombobox</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="GimpZoomPreview.html" title="GimpZoomPreview">
@@ -32,20 +32,20 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpImageComboBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574064" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2628927" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2711596" class="shortcut">Description</a>
+                  <a href="#id2700280" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2710917" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2701421" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2711086" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2700210" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpDrawableComboBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2574064"></a><span class="refentrytitle">gimpdrawablecombobox</span>
+<a name="id2628927"></a><span class="refentrytitle">gimpdrawablecombobox</span>
 </h2>
 <p>gimpdrawablecombobox &#8212; A widget providing a popup menu of drawables.</p>
 </td>
@@ -73,7 +73,7 @@ GtkWidget*  <a href="GimpDrawableComboBox.html#gimp-layer-combo-box-new">gimp_la
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2710917"></a><h2>Object Hierarchy</h2>
+<a name="id2701421"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -118,7 +118,7 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711086"></a><h2>Implemented Interfaces</h2>
+<a name="id2700210"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpDrawableComboBox implements
  AtkImplementorIface,  GtkCellLayout and  GtkCellEditable.</p>
@@ -130,26 +130,26 @@ GimpLayerComboBox implements
  AtkImplementorIface,  GtkCellLayout and  GtkCellEditable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711596"></a><h2>Description</h2>
+<a name="id2700280"></a><h2>Description</h2>
 <p>
 A widget providing a popup menu of drawables.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711612"></a><h2>Details</h2>
+<a name="id2703119"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2711623"></a><h3>
+<a name="id2703130"></a><h3>
 <a name="GimpDrawableComboBox-struct"></a>GimpDrawableComboBox</h3>
-<a class="indexterm" name="id2711634"></a><pre class="programlisting">typedef struct _GimpDrawableComboBox GimpDrawableComboBox;</pre>
+<a class="indexterm" name="id2703141"></a><pre class="programlisting">typedef struct _GimpDrawableComboBox GimpDrawableComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711650"></a><h3>
+<a name="id2703157"></a><h3>
 <a name="GimpDrawableConstraintFunc"></a>GimpDrawableConstraintFunc ()</h3>
-<a class="indexterm" name="id2711662"></a><pre class="programlisting">gboolean    (*GimpDrawableConstraintFunc)   (gint32 image_id,
+<a class="indexterm" name="id2703168"></a><pre class="programlisting">gboolean    (*GimpDrawableConstraintFunc)   (gint32 image_id,
                                              gint32 drawable_id,
                                              gpointer data);</pre>
 <p>
@@ -189,9 +189,9 @@ A widget providing a popup menu of drawables.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711759"></a><h3>
+<a name="id2703265"></a><h3>
 <a name="gimp-drawable-combo-box-new"></a>gimp_drawable_combo_box_new ()</h3>
-<a class="indexterm" name="id2711773"></a><pre class="programlisting">GtkWidget*  gimp_drawable_combo_box_new     (<a href="GimpDrawableComboBox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+<a class="indexterm" name="id2703278"></a><pre class="programlisting">GtkWidget*  gimp_drawable_combo_box_new     (<a href="GimpDrawableComboBox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a
@@ -246,18 +246,18 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2709044"></a><h3>
+<a name="id2704626"></a><h3>
 <a name="GimpChannelComboBox-struct"></a>GimpChannelComboBox</h3>
-<a class="indexterm" name="id2709056"></a><pre class="programlisting">typedef struct _GimpChannelComboBox GimpChannelComboBox;</pre>
+<a class="indexterm" name="id2704638"></a><pre class="programlisting">typedef struct _GimpChannelComboBox GimpChannelComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2709072"></a><h3>
+<a name="id2704653"></a><h3>
 <a name="gimp-channel-combo-box-new"></a>gimp_channel_combo_box_new ()</h3>
-<a class="indexterm" name="id2709086"></a><pre class="programlisting">GtkWidget*  gimp_channel_combo_box_new      (<a href="GimpDrawableComboBox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+<a class="indexterm" name="id2704666"></a><pre class="programlisting">GtkWidget*  gimp_channel_combo_box_new      (<a href="GimpDrawableComboBox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a
@@ -298,18 +298,18 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2709216"></a><h3>
+<a name="id2704794"></a><h3>
 <a name="GimpLayerComboBox-struct"></a>GimpLayerComboBox</h3>
-<a class="indexterm" name="id2713184"></a><pre class="programlisting">typedef struct _GimpLayerComboBox GimpLayerComboBox;</pre>
+<a class="indexterm" name="id2704805"></a><pre class="programlisting">typedef struct _GimpLayerComboBox GimpLayerComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2713198"></a><h3>
+<a name="id2706177"></a><h3>
 <a name="gimp-layer-combo-box-new"></a>gimp_layer_combo_box_new ()</h3>
-<a class="indexterm" name="id2713211"></a><pre class="programlisting">GtkWidget*  gimp_layer_combo_box_new        (<a href="GimpDrawableComboBox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+<a class="indexterm" name="id2706189"></a><pre class="programlisting">GtkWidget*  gimp_layer_combo_box_new        (<a href="GimpDrawableComboBox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a

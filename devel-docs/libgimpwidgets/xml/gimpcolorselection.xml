@@ -42,6 +42,8 @@
 <link linkend="void">void</link>        <link linkend="gimp-color-selection-reset">gimp_color_selection_reset</link>      (<link linkend="GimpColorSelection">GimpColorSelection</link> *selection);
 <link linkend="void">void</link>        <link linkend="gimp-color-selection-color-changed">gimp_color_selection_color_changed</link>
                                             (<link linkend="GimpColorSelection">GimpColorSelection</link> *selection);
+<link linkend="void">void</link>        <link linkend="gimp-color-selection-set-config">gimp_color_selection_set_config</link> (<link linkend="GimpColorSelection">GimpColorSelection</link> *selection,
+                                             <link linkend="GimpColorConfig">GimpColorConfig</link> *config);
 
 </synopsis>
 </refsynopsisdiv>
@@ -73,6 +75,13 @@ GimpColorSelection implements
 </refsect1>
 
 
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpColorSelection--config">config</link>&quot;               <link linkend="GimpColorConfig">GimpColorConfig</link>       : Write
+</synopsis>
+</refsect1>
 
 <refsect1 role="signal_proto">
 <title role="signal_proto.title">Signals</title>
@@ -234,6 +243,30 @@ Emits the "color-changed" signal.</para>
 <listitem><simpara> A <link linkend="GimpColorSelection"><type>GimpColorSelection</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-color-selection-set-config" role="function" condition="since:GIMP 2.4"/>gimp_color_selection_set_config ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_color_selection_set_config</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_selection_set_config (<link linkend="GimpColorSelection">GimpColorSelection</link> *selection,
+                                             <link linkend="GimpColorConfig">GimpColorConfig</link> *config);</programlisting>
+<para>
+Sets the color management configuration to use with this color selection.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>selection</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+
+</refsect1>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2><title><anchor id="GimpColorSelection--config"/>The &quot;<literal>config</literal>&quot; property</title>
+<indexterm><primary>GimpColorSelection:config</primary></indexterm><programlisting>  &quot;config&quot;               <link linkend="GimpColorConfig">GimpColorConfig</link>       : Write</programlisting>
+<para></para></refsect2>
 
 </refsect1>
 

@@ -263,6 +263,11 @@ edit_paste_as_new_cmd_callback (GtkAction *action,
 
       g_object_unref (buffer);
     }
+  else
+    {
+      gimp_message (gimp, NULL, GIMP_MESSAGE_WARNING,
+                    _("There is no image data in the clipboard to paste."));
+    }
 }
 
 void
@@ -412,6 +417,12 @@ edit_paste (GimpDisplay *display,
 
           g_object_unref (buffer);
         }
+      else
+        {
+          gimp_message (display->image->gimp, G_OBJECT (display),
+                        GIMP_MESSAGE_WARNING,
+                        _("There is no image data in the clipboard to paste."));
+        }
     }
 }
 
@@ -427,7 +438,8 @@ cut_named_buffer_callback (GtkWidget   *widget,
 
   if (! drawable)
     {
-      g_message (_("There is no active layer or channel to cut from."));
+      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
+                    _("There is no active layer or channel to cut from."));
       return;
     }
 
@@ -453,7 +465,8 @@ copy_named_buffer_callback (GtkWidget   *widget,
 
   if (! drawable)
     {
-      g_message (_("There is no active layer or channel to copy from."));
+      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
+                    _("There is no active layer or channel to copy from."));
       return;
     }
 

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpDialog</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpColorSelection.html" title="GimpColorSelection">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpEnumStore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566552" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2559520" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2604210" class="shortcut">Description</a>
+                  <a href="#id2591707" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2568032" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2560307" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2568099" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2560375" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2604167" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2591664" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpDialog"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566552"></a><span class="refentrytitle">GimpDialog</span>
+<a name="id2559520"></a><span class="refentrytitle">GimpDialog</span>
 </h2>
 <p>GimpDialog &#8212; Constructors for <span class="type">GtkDialog</span>'s and action_areas as well as other
 dialog-related stuff.</p>
@@ -89,7 +89,7 @@ void        <a href="GimpDialog.html#gimp-dialogs-show-help-button">gimp_dialogs
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568032"></a><h2>Object Hierarchy</h2>
+<a name="id2560307"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -104,13 +104,13 @@ void        <a href="GimpDialog.html#gimp-dialogs-show-help-button">gimp_dialogs
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568099"></a><h2>Implemented Interfaces</h2>
+<a name="id2560375"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpDialog implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2604167"></a><h2>Properties</h2>
+<a name="id2591664"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpDialog.html#GimpDialog--help-func">help-func</a>"            gpointer              : Read / Write / Construct Only
@@ -118,26 +118,26 @@ GimpDialog implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2604210"></a><h2>Description</h2>
+<a name="id2591707"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2604226"></a><h2>Details</h2>
+<a name="id2591723"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2604237"></a><h3>
+<a name="id2591733"></a><h3>
 <a name="GimpDialog-struct"></a>GimpDialog</h3>
-<a class="indexterm" name="id2604250"></a><pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
+<a class="indexterm" name="id2591746"></a><pre class="programlisting">typedef struct _GimpDialog GimpDialog;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604265"></a><h3>
+<a name="id2591761"></a><h3>
 <a name="gimp-dialog-new"></a>gimp_dialog_new ()</h3>
-<a class="indexterm" name="id2604277"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new                 (const gchar *title,
+<a class="indexterm" name="id2591773"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new                 (const gchar *title,
                                              const gchar *role,
                                              GtkWidget *parent,
                                              GtkDialogFlags flags,
@@ -216,9 +216,9 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600776"></a><h3>
+<a name="id2595408"></a><h3>
 <a name="gimp-dialog-new-valist"></a>gimp_dialog_new_valist ()</h3>
-<a class="indexterm" name="id2600787"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new_valist          (const gchar *title,
+<a class="indexterm" name="id2595420"></a><pre class="programlisting">GtkWidget*  gimp_dialog_new_valist          (const gchar *title,
                                              const gchar *role,
                                              GtkWidget *parent,
                                              GtkDialogFlags flags,
@@ -293,9 +293,9 @@ action_area buttons see <code class="function">gtk_dialog_new_with_buttons()</co
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607757"></a><h3>
+<a name="id2600489"></a><h3>
 <a name="gimp-dialog-add-button"></a>gimp_dialog_add_button ()</h3>
-<a class="indexterm" name="id2607768"></a><pre class="programlisting">GtkWidget*  gimp_dialog_add_button          (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+<a class="indexterm" name="id2600500"></a><pre class="programlisting">GtkWidget*  gimp_dialog_add_button          (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                              const gchar *button_text,
                                              gint response_id);</pre>
 <p>
@@ -337,9 +337,9 @@ sets the RESPONSE_OK widget as the default response.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607888"></a><h3>
+<a name="id2600621"></a><h3>
 <a name="gimp-dialog-add-buttons"></a>gimp_dialog_add_buttons ()</h3>
-<a class="indexterm" name="id2607900"></a><pre class="programlisting">void        gimp_dialog_add_buttons         (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+<a class="indexterm" name="id2600632"></a><pre class="programlisting">void        gimp_dialog_add_buttons         (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                              ...);</pre>
 <p>
 This function is essentially the same as <code class="function">gtk_dialog_add_buttons()</code>
@@ -367,9 +367,9 @@ except it calls <a href="GimpDialog.html#gimp-dialog-add-button"><code class="fu
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607996"></a><h3>
+<a name="id2600729"></a><h3>
 <a name="gimp-dialog-add-buttons-valist"></a>gimp_dialog_add_buttons_valist ()</h3>
-<a class="indexterm" name="id2608009"></a><pre class="programlisting">void        gimp_dialog_add_buttons_valist  (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
+<a class="indexterm" name="id2600742"></a><pre class="programlisting">void        gimp_dialog_add_buttons_valist  (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog,
                                              va_list args);</pre>
 <p>
 This function is essentially the same as <a href="GimpDialog.html#gimp-dialog-add-buttons"><code class="function">gimp_dialog_add_buttons()</code></a>
@@ -397,9 +397,9 @@ except it takes a va_list instead of '...'</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608096"></a><h3>
+<a name="id2600828"></a><h3>
 <a name="gimp-dialog-run"></a>gimp_dialog_run ()</h3>
-<a class="indexterm" name="id2608108"></a><pre class="programlisting">gint        gimp_dialog_run                 (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);</pre>
+<a class="indexterm" name="id2600840"></a><pre class="programlisting">gint        gimp_dialog_run                 (<a href="GimpDialog.html" title="GimpDialog">GimpDialog</a> *dialog);</pre>
 <p>
 This function does exactly the same as <code class="function">gtk_dialog_run()</code> except it
 does not make the dialog modal while the <span class="type">GMainLoop</span> is running.</p>
@@ -426,9 +426,9 @@ does not make the dialog modal while the <span class="type">GMainLoop</span> is 
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608194"></a><h3>
+<a name="id2600926"></a><h3>
 <a name="gimp-dialogs-show-help-button"></a>gimp_dialogs_show_help_button ()</h3>
-<a class="indexterm" name="id2608209"></a><pre class="programlisting">void        gimp_dialogs_show_help_button   (gboolean show);</pre>
+<a class="indexterm" name="id2600942"></a><pre class="programlisting">void        gimp_dialogs_show_help_button   (gboolean show);</pre>
 <p>
 This function is for internal use only.</p>
 <p>
@@ -448,18 +448,18 @@ This function is for internal use only.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608267"></a><h2>Property Details</h2>
+<a name="id2600999"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2608277"></a><h3>
+<a name="id2601010"></a><h3>
 <a name="GimpDialog--help-func"></a>The "<code class="literal">help-func</code>" property</h3>
-<a class="indexterm" name="id2608291"></a><pre class="programlisting">  "help-func"            gpointer              : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2601024"></a><pre class="programlisting">  "help-func"            gpointer              : Read / Write / Construct Only</pre>
 <p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608312"></a><h3>
+<a name="id2601044"></a><h3>
 <a name="GimpDialog--help-id"></a>The "<code class="literal">help-id</code>" property</h3>
-<a class="indexterm" name="id2608327"></a><pre class="programlisting">  "help-id"              gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2601059"></a><pre class="programlisting">  "help-id"              gchararray            : Read / Write / Construct Only</pre>
 <p></p>
 <p>Default value: NULL</p>
 </div>

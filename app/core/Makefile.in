@@ -64,14 +64,16 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimp-units.$(OBJEXT) gimp-user-install.$(OBJEXT) \
 	gimp-utils.$(OBJEXT) gimparea.$(OBJEXT) gimpbrush.$(OBJEXT) \
 	gimpbrush-load.$(OBJEXT) gimpbrushclipboard.$(OBJEXT) \
-	gimpbrushgenerated.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
-	gimpbuffer.$(OBJEXT) gimpchannel.$(OBJEXT) \
-	gimpchannel-combine.$(OBJEXT) gimpchannel-select.$(OBJEXT) \
-	gimpcontainer.$(OBJEXT) gimpcontainer-filter.$(OBJEXT) \
-	gimpcontext.$(OBJEXT) gimpcoords.$(OBJEXT) \
-	gimpdashpattern.$(OBJEXT) gimpdata.$(OBJEXT) \
-	gimpdatafactory.$(OBJEXT) gimpdocumentlist.$(OBJEXT) \
-	gimpdrawable.$(OBJEXT) gimpdrawable-blend.$(OBJEXT) \
+	gimpbrushgenerated.$(OBJEXT) gimpbrushgenerated-load.$(OBJEXT) \
+	gimpbrushgenerated-save.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
+	gimpbrushpipe-load.$(OBJEXT) gimpbuffer.$(OBJEXT) \
+	gimpchannel.$(OBJEXT) gimpchannel-combine.$(OBJEXT) \
+	gimpchannel-select.$(OBJEXT) gimpcontainer.$(OBJEXT) \
+	gimpcontainer-filter.$(OBJEXT) gimpcontext.$(OBJEXT) \
+	gimpcoords.$(OBJEXT) gimpdashpattern.$(OBJEXT) \
+	gimpdata.$(OBJEXT) gimpdatafactory.$(OBJEXT) \
+	gimpdocumentlist.$(OBJEXT) gimpdrawable.$(OBJEXT) \
+	gimpdrawable-blend.$(OBJEXT) \
 	gimpdrawable-bucket-fill.$(OBJEXT) \
 	gimpdrawable-combine.$(OBJEXT) gimpdrawable-convert.$(OBJEXT) \
 	gimpdrawable-desaturate.$(OBJEXT) \
@@ -102,17 +104,18 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimplayer-floating-sel.$(OBJEXT) gimplayermask.$(OBJEXT) \
 	gimplist.$(OBJEXT) gimpobject.$(OBJEXT) \
 	gimppaintinfo.$(OBJEXT) gimppattern.$(OBJEXT) \
-	gimppatternclipboard.$(OBJEXT) gimppalette.$(OBJEXT) \
-	gimppalette-import.$(OBJEXT) gimpparamspecs.$(OBJEXT) \
-	gimpparamspecs-desc.$(OBJEXT) gimpparasitelist.$(OBJEXT) \
-	gimppdbprogress.$(OBJEXT) gimppickable.$(OBJEXT) \
-	gimppreviewcache.$(OBJEXT) gimpprogress.$(OBJEXT) \
-	gimpprojection.$(OBJEXT) gimpprojection-construct.$(OBJEXT) \
-	gimpscanconvert.$(OBJEXT) gimpselection.$(OBJEXT) \
-	gimpstrokedesc.$(OBJEXT) gimpstrokeoptions.$(OBJEXT) \
-	gimptemplate.$(OBJEXT) gimptoolinfo.$(OBJEXT) \
-	gimptooloptions.$(OBJEXT) gimpunit.$(OBJEXT) \
-	gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
+	gimppattern-load.$(OBJEXT) gimppatternclipboard.$(OBJEXT) \
+	gimppalette.$(OBJEXT) gimppalette-import.$(OBJEXT) \
+	gimppalette-load.$(OBJEXT) gimppalette-save.$(OBJEXT) \
+	gimpparamspecs.$(OBJEXT) gimpparamspecs-desc.$(OBJEXT) \
+	gimpparasitelist.$(OBJEXT) gimppdbprogress.$(OBJEXT) \
+	gimppickable.$(OBJEXT) gimppreviewcache.$(OBJEXT) \
+	gimpprogress.$(OBJEXT) gimpprojection.$(OBJEXT) \
+	gimpprojection-construct.$(OBJEXT) gimpscanconvert.$(OBJEXT) \
+	gimpselection.$(OBJEXT) gimpstrokedesc.$(OBJEXT) \
+	gimpstrokeoptions.$(OBJEXT) gimptemplate.$(OBJEXT) \
+	gimptoolinfo.$(OBJEXT) gimptooloptions.$(OBJEXT) \
+	gimpunit.$(OBJEXT) gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
 	gimpviewable.$(OBJEXT)
 am_libappcore_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libappcore_a_OBJECTS = $(am_libappcore_a_OBJECTS)
@@ -263,6 +266,8 @@ HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
+HAVE_LIBCURL_FALSE = @HAVE_LIBCURL_FALSE@
+HAVE_LIBCURL_TRUE = @HAVE_LIBCURL_TRUE@
 HAVE_LINUX_INPUT_FALSE = @HAVE_LINUX_INPUT_FALSE@
 HAVE_LINUX_INPUT_TRUE = @HAVE_LINUX_INPUT_TRUE@
 HAVE_MAC_TWAIN_FALSE = @HAVE_MAC_TWAIN_FALSE@
@@ -307,6 +312,7 @@ INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
+LCMS = @LCMS@
 LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
@@ -404,8 +410,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URI_CFLAGS = @URI_CFLAGS@
-URI_LIBS = @URI_LIBS@
+URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
+URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
+URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
+URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
 USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
 USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
@@ -538,8 +546,14 @@ libappcore_a_sources = \
 	gimpbrushclipboard.h		\
 	gimpbrushgenerated.c		\
 	gimpbrushgenerated.h		\
+	gimpbrushgenerated-load.c	\
+	gimpbrushgenerated-load.h	\
+	gimpbrushgenerated-save.c	\
+	gimpbrushgenerated-save.h	\
 	gimpbrushpipe.c			\
 	gimpbrushpipe.h			\
+	gimpbrushpipe-load.c		\
+	gimpbrushpipe-load.h		\
 	gimpbuffer.c			\
 	gimpbuffer.h			\
 	gimpchannel.c			\
@@ -681,12 +695,18 @@ libappcore_a_sources = \
 	gimppattern.c			\
 	gimppattern.h			\
 	gimppattern-header.h		\
+	gimppattern-load.c		\
+	gimppattern-load.h		\
 	gimppatternclipboard.c		\
 	gimppatternclipboard.h		\
 	gimppalette.c			\
 	gimppalette.h			\
 	gimppalette-import.c		\
 	gimppalette-import.h		\
+	gimppalette-load.c		\
+	gimppalette-load.h		\
+	gimppalette-save.c		\
+	gimppalette-save.h		\
 	gimpparamspecs.c		\
 	gimpparamspecs.h		\
 	gimpparamspecs-desc.c		\
@@ -813,7 +833,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-load.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushclipboard.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated-save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushpipe-load.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushpipe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbuffer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel-combine.Po@am__quote@
@@ -885,10 +908,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpobject.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette-import.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette-save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparamspecs-desc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparamspecs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparasitelist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppattern-load.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppattern.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppatternclipboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdbprogress.Po@am__quote@

@@ -30,6 +30,7 @@
 #define     <link linkend="GIMP-CONFIG-PARAM-IGNORE:CAPS">GIMP_CONFIG_PARAM_IGNORE</link>
 #define     <link linkend="GIMP-CONFIG-PARAM-FLAGS:CAPS">GIMP_CONFIG_PARAM_FLAGS</link>
 #define     <link linkend="GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS">GIMP_CONFIG_INSTALL_PROP_BOOLEAN</link>(class, id, name, blurb, default, flags)
+#define     <link linkend="GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS">GIMP_CONFIG_INSTALL_PROP_BOXED</link>  (class, id, name, blurb, boxed_type, flags)
 #define     <link linkend="GIMP-CONFIG-INSTALL-PROP-RGB:CAPS">GIMP_CONFIG_INSTALL_PROP_RGB</link>    (class, id, name, blurb, has_alpha, default, flags)
 #define     <link linkend="GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS">GIMP_CONFIG_INSTALL_PROP_DOUBLE</link> (class, id, name, blurb, min, max, default, flags)
 #define     <link linkend="GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS">GIMP_CONFIG_INSTALL_PROP_RESOLUTION</link>(class, id, name, blurb, default, flags)
@@ -130,6 +131,33 @@
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>default</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>flags</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS" role="macro"/>GIMP_CONFIG_INSTALL_PROP_BOXED()</title>
+<indexterm><primary>GIMP_CONFIG_INSTALL_PROP_BOXED</primary></indexterm><programlisting>#define     GIMP_CONFIG_INSTALL_PROP_BOXED(class, id, name, blurb, boxed_type, flags)</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>class</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>blurb</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>boxed_type</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>flags</parameter>&nbsp;:</term>

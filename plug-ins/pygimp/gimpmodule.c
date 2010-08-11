@@ -34,8 +34,8 @@
 
 #include <pygobject.h>
 
-/* maximum bits per pixel ... */
-#define MAX_BPP 4
+#include "pygimp-intl.h"
+
 
 PyObject *pygimp_error;
 
@@ -190,7 +190,7 @@ pygimp_main(PyObject *self, PyObject *args)
     int argc, i;
     char **argv;
     PyObject *ip, *qp, *query, *rp;
-	
+
     if (!PyArg_ParseTuple(args, "OOOO:main", &ip, &qp, &query, &rp))
 	return NULL;
 
@@ -719,6 +719,20 @@ pygimp_register_save_handler(PyObject *self, PyObject *args)
 	return NULL;
 
     gimp_register_save_handler(name, extensions, prefixes);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+pygimp_domain_register(PyObject *self, PyObject *args)
+{
+    char *name, *path = NULL;
+
+    if (!PyArg_ParseTuple(args, "s|s:domain_register", &name, &path))
+	return NULL;
+
+    gimp_plugin_domain_register(name, path);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -1498,6 +1512,7 @@ static struct PyMethodDef gimp_methods[] = {
     {"register_magic_load_handler",	(PyCFunction)pygimp_register_magic_load_handler,	METH_VARARGS},
     {"register_load_handler",	(PyCFunction)pygimp_register_load_handler,	METH_VARARGS},
     {"register_save_handler",	(PyCFunction)pygimp_register_save_handler,	METH_VARARGS},
+    {"domain_register",         (PyCFunction)pygimp_domain_register,	METH_VARARGS},
     {"menu_register",           (PyCFunction)pygimp_menu_register,	METH_VARARGS},
     {"gamma",	(PyCFunction)pygimp_gamma,	METH_NOARGS},
     {"install_cmap",	(PyCFunction)pygimp_install_cmap,	METH_NOARGS},
@@ -1632,6 +1647,12 @@ initgimp(void)
 
     init_pygobject();
     init_pygimpcolor();
+
+    /* initialize i18n support */
+    bindtextdomain (GETTEXT_PACKAGE "-python", gimp_locale_directory ());
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+    bind_textdomain_codeset (GETTEXT_PACKAGE "-python", "UTF-8");
+#endif
 
     /* set the default python encoding to utf-8 */
     PyUnicode_SetDefaultEncoding("utf-8");

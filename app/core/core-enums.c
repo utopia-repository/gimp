@@ -304,7 +304,7 @@ gimp_stroke_style_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_STROKE_STYLE_SOLID, N_("Solid"), NULL },
+    { GIMP_STROKE_STYLE_SOLID, N_("Solid color"), NULL },
     { GIMP_STROKE_STYLE_PATTERN, N_("Pattern"), NULL },
     { 0, NULL, NULL }
   };
@@ -1204,6 +1204,36 @@ gimp_select_criterion_get_type (void)
   if (! type)
     {
       type = g_enum_register_static ("GimpSelectCriterion", values);
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_message_severity_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_MESSAGE_INFO, "GIMP_MESSAGE_INFO", "info" },
+    { GIMP_MESSAGE_WARNING, "GIMP_MESSAGE_WARNING", "warning" },
+    { GIMP_MESSAGE_ERROR, "GIMP_MESSAGE_ERROR", "error" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_MESSAGE_INFO, N_("Message"), NULL },
+    { GIMP_MESSAGE_WARNING, N_("Warning"), NULL },
+    { GIMP_MESSAGE_ERROR, N_("Error"), NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpMessageSeverity", values);
       gimp_enum_set_value_descriptions (type, descs);
     }
 

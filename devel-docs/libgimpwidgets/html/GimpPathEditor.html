@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpPathEditor</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpPageSelector.html" title="GimpPageSelector">
@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpPickButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2559827" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2551991" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2612104" class="shortcut">Description</a>
+                  <a href="#id2611733" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2611955" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2611584" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2612016" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2611644" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2612037" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2611666" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpPathEditor"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2559827"></a><span class="refentrytitle">GimpPathEditor</span>
+<a name="id2551991"></a><span class="refentrytitle">GimpPathEditor</span>
 </h2>
 <p>GimpPathEditor &#8212; Widget for editing a file search path.</p>
 </td>
@@ -82,7 +82,7 @@ void        <a href="GimpPathEditor.html#gimp-path-editor-set-dir-writable">gimp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2611955"></a><h2>Object Hierarchy</h2>
+<a name="id2611584"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -96,13 +96,13 @@ void        <a href="GimpPathEditor.html#gimp-path-editor-set-dir-writable">gimp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2612016"></a><h2>Implemented Interfaces</h2>
+<a name="id2611644"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPathEditor implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2612037"></a><h2>Signals</h2>
+<a name="id2611666"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpPathEditor.html#GimpPathEditor-path-changed">path-changed</a>"
@@ -114,7 +114,7 @@ GimpPathEditor implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2612104"></a><h2>Description</h2>
+<a name="id2611733"></a><h2>Description</h2>
 <p>
 This widget is used to edit file search paths.
 </p>
@@ -133,20 +133,20 @@ the search path, the "path_changed" signal will be emitted.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2618413"></a><h2>Details</h2>
+<a name="id2607633"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2618424"></a><h3>
+<a name="id2607644"></a><h3>
 <a name="GimpPathEditor-struct"></a>GimpPathEditor</h3>
-<a class="indexterm" name="id2618436"></a><pre class="programlisting">typedef struct _GimpPathEditor GimpPathEditor;</pre>
+<a class="indexterm" name="id2607655"></a><pre class="programlisting">typedef struct _GimpPathEditor GimpPathEditor;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618452"></a><h3>
+<a name="id2607672"></a><h3>
 <a name="gimp-path-editor-new"></a>gimp_path_editor_new ()</h3>
-<a class="indexterm" name="id2618463"></a><pre class="programlisting">GtkWidget*  gimp_path_editor_new            (const gchar *title,
+<a class="indexterm" name="id2607683"></a><pre class="programlisting">GtkWidget*  gimp_path_editor_new            (const gchar *title,
                                              const gchar *path);</pre>
 <p>
 Creates a new <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a> widget.
@@ -183,9 +183,9 @@ The elements of the initial search path must be separated with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617882"></a><h3>
+<a name="id2607797"></a><h3>
 <a name="gimp-path-editor-get-path"></a>gimp_path_editor_get_path ()</h3>
-<a class="indexterm" name="id2617893"></a><pre class="programlisting">gchar*      gimp_path_editor_get_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre>
+<a class="indexterm" name="id2607808"></a><pre class="programlisting">gchar*      gimp_path_editor_get_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre>
 <p>
 The elements of the returned search path string are separated with the
 <span class="type">G_SEARCHPATH_SEPARATOR</span> character.
@@ -215,9 +215,9 @@ Note that you have to <code class="function">g_free()</code> the returned string
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617975"></a><h3>
+<a name="id2608402"></a><h3>
 <a name="gimp-path-editor-set-path"></a>gimp_path_editor_set_path ()</h3>
-<a class="indexterm" name="id2617986"></a><pre class="programlisting">void        gimp_path_editor_set_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
+<a class="indexterm" name="id2608413"></a><pre class="programlisting">void        gimp_path_editor_set_path       (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
                                              const gchar *path);</pre>
 <p>
 The elements of the initial search path must be separated with the
@@ -245,9 +245,9 @@ The elements of the initial search path must be separated with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618065"></a><h3>
+<a name="id2608492"></a><h3>
 <a name="gimp-path-editor-get-writable-path"></a>gimp_path_editor_get_writable_path ()</h3>
-<a class="indexterm" name="id2618077"></a><pre class="programlisting">gchar*      gimp_path_editor_get_writable_path
+<a class="indexterm" name="id2608506"></a><pre class="programlisting">gchar*      gimp_path_editor_get_writable_path
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor);</pre>
 <p>
 
@@ -274,9 +274,9 @@ The elements of the initial search path must be separated with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615006"></a><h3>
+<a name="id2608563"></a><h3>
 <a name="gimp-path-editor-set-writable-path"></a>gimp_path_editor_set_writable_path ()</h3>
-<a class="indexterm" name="id2615018"></a><pre class="programlisting">void        gimp_path_editor_set_writable_path
+<a class="indexterm" name="id2608577"></a><pre class="programlisting">void        gimp_path_editor_set_writable_path
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
                                              const gchar *path);</pre>
 <p>
@@ -304,9 +304,9 @@ The elements of the initial search path must be separated with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615086"></a><h3>
+<a name="id2608644"></a><h3>
 <a name="gimp-path-editor-get-dir-writable"></a>gimp_path_editor_get_dir_writable ()</h3>
-<a class="indexterm" name="id2615100"></a><pre class="programlisting">gboolean    gimp_path_editor_get_dir_writable
+<a class="indexterm" name="id2608658"></a><pre class="programlisting">gboolean    gimp_path_editor_get_dir_writable
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
                                              const gchar *directory);</pre>
 <p>
@@ -340,9 +340,9 @@ The elements of the initial search path must be separated with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615178"></a><h3>
+<a name="id2608737"></a><h3>
 <a name="gimp-path-editor-set-dir-writable"></a>gimp_path_editor_set_dir_writable ()</h3>
-<a class="indexterm" name="id2615192"></a><pre class="programlisting">void        gimp_path_editor_set_dir_writable
+<a class="indexterm" name="id2608751"></a><pre class="programlisting">void        gimp_path_editor_set_dir_writable
                                             (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *editor,
                                              const gchar *directory,
                                              gboolean writable);</pre>
@@ -377,11 +377,11 @@ The elements of the initial search path must be separated with the
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2615552"></a><h2>Signal Details</h2>
+<a name="id2608841"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2615563"></a><h3>
+<a name="id2608852"></a><h3>
 <a name="GimpPathEditor-path-changed"></a>The "path-changed" signal</h3>
-<a class="indexterm" name="id2615570"></a><pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
+<a class="indexterm" name="id2608860"></a><pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
                                             gpointer        user_data)      : Run first</pre>
 <p>
 This signal is emitted whenever the user adds, deletes, modifies
@@ -400,9 +400,9 @@ or reorders an element of the search path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615629"></a><h3>
+<a name="id2608918"></a><h3>
 <a name="GimpPathEditor-writable-changed"></a>The "writable-changed" signal</h3>
-<a class="indexterm" name="id2615638"></a><pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
+<a class="indexterm" name="id2608928"></a><pre class="programlisting">void        user_function                  (<a href="GimpPathEditor.html" title="GimpPathEditor">GimpPathEditor</a> *arg0,
                                             gpointer        user_data)      : Run first</pre>
 <p>
 This signal is emitted whenever the "writable" column of a directory
@@ -422,7 +422,7 @@ is changed, either by the user clicking on it or by calling
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2615710"></a><h2>See Also</h2>
+<a name="id2608999"></a><h2>See Also</h2>
 <p>
 <a href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a>
 </p>

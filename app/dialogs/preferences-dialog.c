@@ -1078,7 +1078,8 @@ prefs_color_button_add (GObject      *config,
                         gint          table_row,
                         GtkSizeGroup *group)
 {
-  GtkWidget *button = gimp_prop_color_button_new (config, property_name, title,
+  GtkWidget *button = gimp_prop_color_button_new (config, property_name,
+                                                  title,
                                                   60, 20,
                                                   GIMP_COLOR_AREA_FLAT);
 
@@ -1535,7 +1536,7 @@ prefs_dialog_new (Gimp       *gimp,
   table = prefs_table_new (3, GTK_CONTAINER (vbox2));
 
   prefs_enum_combo_box_add (object, "layer-preview-size", 0, 0,
-                            _("Default _layer & channel preview size:"),
+                            _("_Default layer & channel preview size:"),
                             GTK_TABLE (table), 0, size_group);
   prefs_enum_combo_box_add (object, "navigation-preview-size", 0, 0,
                             _("Na_vigation preview size:"),
@@ -1549,7 +1550,7 @@ prefs_dialog_new (Gimp       *gimp,
                           _("Show menu _mnemonics (access keys)"),
                           GTK_BOX (vbox2));
   prefs_check_button_add (object, "can-change-accels",
-                          _("Use _dynamic keyboard shortcuts"),
+                          _("_Use dynamic keyboard shortcuts"),
                           GTK_BOX (vbox2));
 
   button = prefs_button_add (GTK_STOCK_PREFERENCES,
@@ -1884,7 +1885,9 @@ prefs_dialog_new (Gimp       *gimp,
   {
     GtkWidget *combo;
 
-    combo = gimp_container_combo_box_new (gimp->templates, NULL, 16, 0);
+    combo = gimp_container_combo_box_new (gimp->templates,
+                                          gimp_get_user_context (gimp),
+                                          16, 0);
     gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                                _("_Template:"),  0.0, 0.5,
                                combo, 1, FALSE);
@@ -1919,6 +1922,7 @@ prefs_dialog_new (Gimp       *gimp,
 
   /*  Grid  */
   editor = gimp_grid_editor_new (core_config->default_grid,
+                                 gimp_get_user_context (gimp),
                                  core_config->default_image->xresolution,
                                  core_config->default_image->yresolution);
 
@@ -1973,6 +1977,16 @@ prefs_dialog_new (Gimp       *gimp,
                                "1:1",
                                _("Initial zoom _ratio:"),
                                GTK_TABLE (table), 0, size_group);
+
+  /*  Space Bar  */
+  vbox2 = prefs_frame_new (_("Space Bar"),
+                           GTK_CONTAINER (vbox), FALSE);
+
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+
+  prefs_enum_combo_box_add (object, "space-bar-action", 0, 0,
+                            _("_While space bar is pressed:"),
+                            GTK_TABLE (table), 0, size_group);
 
   /*  Mouse Pointers  */
   vbox2 = prefs_frame_new (_("Mouse Pointers"),

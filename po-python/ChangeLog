@@ -1,0 +1,29 @@
+2006-10-11  Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+	
+2006-10-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2006-10-02  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2006-09-27  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+
+2006-09-20  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2006-09-18  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Czech translation. Thanks for the infrastructure.
+
+2006-09-13  Sven Neumann  <sven@gimp.org>
+
+	* Added basic infrastructure for i18n of gimp-python. The initial
+	po files are based on po-script-fu.
+

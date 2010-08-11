@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpFontSelectButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">
@@ -32,26 +32,26 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpGradientSelectButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588909" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2558251" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2697649" class="shortcut">Description</a>
+                  <a href="#id2690683" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2688171" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2573088" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2686188" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2682077" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2686208" class="shortcut">Properties</a>
+                  <a href="#id2682097" class="shortcut">Properties</a>
                   &#160;|&#160;
-                  <a href="#id2686272" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2682161" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpFontSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2588909"></a><span class="refentrytitle">GimpFontSelectButton</span>
+<a name="id2558251"></a><span class="refentrytitle">GimpFontSelectButton</span>
 </h2>
-<p>GimpFontSelectButton &#8212; </p>
+<p>GimpFontSelectButton</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -73,7 +73,7 @@ void        <a href="GimpFontSelectButton.html#gimp-font-select-button-set-font"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2688171"></a><h2>Object Hierarchy</h2>
+<a name="id2573088"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -88,13 +88,13 @@ void        <a href="GimpFontSelectButton.html#gimp-font-select-button-set-font"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686188"></a><h2>Implemented Interfaces</h2>
+<a name="id2682077"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpFontSelectButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686208"></a><h2>Properties</h2>
+<a name="id2682097"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpFontSelectButton.html#GimpFontSelectButton--font-name">font-name</a>"            gchararray            : Read / Write
@@ -104,7 +104,7 @@ GimpFontSelectButton implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686272"></a><h2>Signals</h2>
+<a name="id2682161"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpFontSelectButton.html#GimpFontSelectButton-font-set">font-set</a>"  void        user_function      (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *widget,
@@ -118,26 +118,26 @@ GimpFontSelectButton implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697649"></a><h2>Description</h2>
+<a name="id2690683"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697664"></a><h2>Details</h2>
+<a name="id2690699"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2697675"></a><h3>
+<a name="id2690709"></a><h3>
 <a name="GimpFontSelectButton-struct"></a>GimpFontSelectButton</h3>
-<a class="indexterm" name="id2697686"></a><pre class="programlisting">typedef struct _GimpFontSelectButton GimpFontSelectButton;</pre>
+<a class="indexterm" name="id2690720"></a><pre class="programlisting">typedef struct _GimpFontSelectButton GimpFontSelectButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697702"></a><h3>
+<a name="id2690736"></a><h3>
 <a name="gimp-font-select-button-new"></a>gimp_font_select_button_new ()</h3>
-<a class="indexterm" name="id2697715"></a><pre class="programlisting">GtkWidget*  gimp_font_select_button_new     (const gchar *title,
+<a class="indexterm" name="id2690749"></a><pre class="programlisting">GtkWidget*  gimp_font_select_button_new     (const gchar *title,
                                              const gchar *font_name);</pre>
 <p>
 Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
@@ -175,9 +175,9 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2697823"></a><h3>
+<a name="id2690857"></a><h3>
 <a name="gimp-font-select-button-get-font"></a>gimp_font_select_button_get_font ()</h3>
-<a class="indexterm" name="id2697836"></a><pre class="programlisting">const gchar* gimp_font_select_button_get_font
+<a class="indexterm" name="id2690871"></a><pre class="programlisting">const gchar* gimp_font_select_button_get_font
                                             (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *button);</pre>
 <p>
 Retrieves the name of currently selected font.</p>
@@ -207,9 +207,9 @@ Retrieves the name of currently selected font.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688461"></a><h3>
+<a name="id2679152"></a><h3>
 <a name="gimp-font-select-button-set-font"></a>gimp_font_select_button_set_font ()</h3>
-<a class="indexterm" name="id2688474"></a><pre class="programlisting">void        gimp_font_select_button_set_font
+<a class="indexterm" name="id2679165"></a><pre class="programlisting">void        gimp_font_select_button_set_font
                                             (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *button,
                                              const gchar *font_name);</pre>
 <p>
@@ -239,11 +239,11 @@ Sets the current font for the font select button.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2688566"></a><h2>Property Details</h2>
+<a name="id2679257"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2688576"></a><h3>
+<a name="id2679267"></a><h3>
 <a name="GimpFontSelectButton--font-name"></a>The "<code class="literal">font-name</code>" property</h3>
-<a class="indexterm" name="id2688591"></a><pre class="programlisting">  "font-name"            gchararray            : Read / Write</pre>
+<a class="indexterm" name="id2679281"></a><pre class="programlisting">  "font-name"            gchararray            : Read / Write</pre>
 <p>
 The name of the currently selected font.</p>
 <p>
@@ -255,9 +255,9 @@ The name of the currently selected font.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688624"></a><h3>
+<a name="id2679314"></a><h3>
 <a name="GimpFontSelectButton--title"></a>The "<code class="literal">title</code>" property</h3>
-<a class="indexterm" name="id2688638"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2679328"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the font selection popup dialog.</p>
 <p>
@@ -269,9 +269,9 @@ The title to be used for the font selection popup dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688673"></a><h3>
+<a name="id2679362"></a><h3>
 <a name="GimpFontSelectButton--font-name"></a>The "<code class="literal">font-name</code>" property</h3>
-<a class="indexterm" name="id2688689"></a><pre class="programlisting">  "font-name"            gchararray            : Read / Write</pre>
+<a class="indexterm" name="id2679376"></a><pre class="programlisting">  "font-name"            gchararray            : Read / Write</pre>
 <p>
 The name of the currently selected font.</p>
 <p>
@@ -283,9 +283,9 @@ The name of the currently selected font.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688722"></a><h3>
+<a name="id2679409"></a><h3>
 <a name="GimpFontSelectButton--title"></a>The "<code class="literal">title</code>" property</h3>
-<a class="indexterm" name="id2688736"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2679423"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the font selection popup dialog.</p>
 <p>
@@ -297,11 +297,11 @@ The title to be used for the font selection popup dialog.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2688771"></a><h2>Signal Details</h2>
+<a name="id2679458"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2688782"></a><h3>
+<a name="id2679468"></a><h3>
 <a name="GimpFontSelectButton-font-set"></a>The "font-set" signal</h3>
-<a class="indexterm" name="id2688791"></a><pre class="programlisting">void        user_function                  (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *widget,
+<a class="indexterm" name="id2679476"></a><pre class="programlisting">void        user_function                  (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *widget,
                                             gchar                *font_name,
                                             gboolean              dialog_closing,
                                             gpointer              user_data)           : Run first</pre>
@@ -343,9 +343,9 @@ The ::font-set signal is emitted when the user selects a font.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2699704"></a><h3>
+<a name="id2692688"></a><h3>
 <a name="GimpFontSelectButton-font-set"></a>The "font-set" signal</h3>
-<a class="indexterm" name="id2699712"></a><pre class="programlisting">void        user_function                  (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *widget,
+<a class="indexterm" name="id2692695"></a><pre class="programlisting">void        user_function                  (<a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a> *widget,
                                             gchar                *font_name,
                                             gboolean              dialog_closing,
                                             gpointer              user_data)           : Run first</pre>

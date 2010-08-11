@@ -58,7 +58,8 @@
 static void     gimp_image_map_tool_finalize   (GObject          *object);
 
 static gboolean gimp_image_map_tool_initialize (GimpTool         *tool,
-                                                GimpDisplay      *display);
+                                                GimpDisplay      *display,
+                                                GError          **error);
 static void     gimp_image_map_tool_control    (GimpTool         *tool,
                                                 GimpToolAction    action,
                                                 GimpDisplay      *display);
@@ -178,14 +179,13 @@ gimp_image_map_tool_finalize (GObject *object)
 #define RESPONSE_RESET 1
 
 static gboolean
-gimp_image_map_tool_initialize (GimpTool    *tool,
-                                GimpDisplay *display)
+gimp_image_map_tool_initialize (GimpTool     *tool,
+                                GimpDisplay  *display,
+                                GError      **error)
 {
   GimpImageMapTool *image_map_tool = GIMP_IMAGE_MAP_TOOL (tool);
-  GimpToolInfo     *tool_info;
+  GimpToolInfo     *tool_info      = tool->tool_info;
   GimpDrawable     *drawable;
-
-  tool_info = tool->tool_info;
 
   /*  set display so the dialog can be hidden on display destruction  */
   tool->display = display;
@@ -387,12 +387,12 @@ gimp_image_map_tool_pick_color (GimpColorTool *color_tool,
   gint              off_x, off_y;
 
   gimp_item_offsets (GIMP_ITEM (tool->drawable), &off_x, &off_y);
-  x -= off_x;
-  y -= off_y;
 
   *sample_type = gimp_drawable_type (tool->drawable);
 
-  return gimp_pickable_pick_color (GIMP_PICKABLE (tool->image_map), x, y,
+  return gimp_pickable_pick_color (GIMP_PICKABLE (tool->image_map),
+                                   x - off_x,
+                                   y - off_y,
                                    color_tool->options->sample_average,
                                    color_tool->options->average_radius,
                                    color, color_index);
@@ -482,6 +482,7 @@ gimp_image_map_tool_response (GtkWidget        *widget,
             gimp_image_map_tool_map (image_map_tool);
 
           gimp_image_map_commit (image_map_tool->image_map);
+          g_object_unref (image_map_tool->image_map);
           image_map_tool->image_map = NULL;
 
           gimp_tool_control_set_preserve (tool->control, FALSE);
@@ -501,6 +502,7 @@ gimp_image_map_tool_response (GtkWidget        *widget,
           gimp_tool_control_set_preserve (tool->control, TRUE);
 
           gimp_image_map_abort (image_map_tool->image_map);
+          g_object_unref (image_map_tool->image_map);
           image_map_tool->image_map = NULL;
 
           gimp_tool_control_set_preserve (tool->control, FALSE);
@@ -582,10 +584,11 @@ gimp_image_map_tool_load_save (GimpImageMapTool *tool,
         _("Could not open '%s' for writing: %s") :
         _("Could not open '%s' for reading: %s");
 
-      gimp_show_message_dialog (tool->shell, GTK_MESSAGE_ERROR,
-                                format,
-                                gimp_filename_to_utf8 (filename),
-                                g_strerror (errno));
+      gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (tool->shell),
+                    GIMP_MESSAGE_ERROR,
+                    format,
+                    gimp_filename_to_utf8 (filename),
+                    g_strerror (errno));
       return;
     }
 
@@ -599,10 +602,11 @@ gimp_image_map_tool_load_save (GimpImageMapTool *tool,
     }
   else if (! gimp_image_map_tool_settings_load (tool, file, &error))
     {
-      gimp_show_message_dialog (tool->shell, GTK_MESSAGE_ERROR,
-                                _("Error reading '%s': %s"),
-                                gimp_filename_to_utf8 (filename),
-                                error->message);
+      gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (tool->shell),
+                    GIMP_MESSAGE_ERROR,
+                    _("Error reading '%s': %s"),
+                    gimp_filename_to_utf8 (filename),
+                    error->message);
       g_error_free (error);
     }
 

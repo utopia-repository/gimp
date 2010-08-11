@@ -416,7 +416,7 @@ yellow-blue. Negative values increase the amount of the former,
 positive values increase the amount of the latter. Color balance can
 be controlled with the 'transfer_mode' setting, which allows
 shadows, midtones, and highlights in an image to be affected
-differently. The 'preserve_lum' parameter, if TRUE, ensures that the
+differently. The 'preserve-lum' parameter, if TRUE, ensures that the
 luminosity of each pixel remains fixed.</para>
 <para>
 
@@ -554,7 +554,7 @@ Modify hue, lightness, and saturation in the specified drawable.
 </para>
 <para>
 This procedures allows the hue, lightness, and saturation in the
-specified drawable to be modified. The 'hue_range' parameter
+specified drawable to be modified. The 'hue-range' parameter
 provides the capability to limit range of affected hues.</para>
 <para>
 

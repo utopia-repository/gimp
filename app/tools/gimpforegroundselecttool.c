@@ -141,7 +141,7 @@ gimp_foreground_select_tool_register (GimpToolRegisterCallback  callback,
                 GIMP_CONTEXT_FOREGROUND_MASK | GIMP_CONTEXT_BACKGROUND_MASK,
                 "gimp-foreground-select-tool",
                 _("Foreground Select"),
-                _("Extract foreground objects"),
+                _("Foreground Select Tool: Select a region containing foreground objects"),
                 N_("F_oreground Select"), NULL,
                 NULL, GIMP_HELP_TOOL_FOREGROUND_SELECT,
                 GIMP_STOCK_TOOL_FOREGROUND_SELECT,
@@ -180,7 +180,7 @@ gimp_foreground_select_tool_init (GimpForegroundSelectTool *fg_select)
 {
   GimpTool *tool = GIMP_TOOL (fg_select);
 
-  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+  gimp_tool_control_set_scroll_lock (tool->control, FALSE);
   gimp_tool_control_set_preserve    (tool->control, FALSE);
   gimp_tool_control_set_dirty_mask  (tool->control, GIMP_DIRTY_IMAGE_SIZE);
   gimp_tool_control_set_tool_cursor (tool->control,
@@ -341,18 +341,15 @@ gimp_foreground_select_tool_modifier_key (GimpTool        *tool,
                                           GdkModifierType  state,
                                           GimpDisplay     *display)
 {
-  if (! (state & GDK_BUTTON1_MASK))
+  if (key == GDK_CONTROL_MASK)
     {
-      if (key == GDK_CONTROL_MASK)
-        {
-          GimpForegroundSelectOptions *options;
+      GimpForegroundSelectOptions *options;
 
-          options = GIMP_FOREGROUND_SELECT_TOOL_GET_OPTIONS (tool);
+      options = GIMP_FOREGROUND_SELECT_TOOL_GET_OPTIONS (tool);
 
-          g_object_set (options,
-                        "background", ! options->background,
-                        NULL);
-        }
+      g_object_set (options,
+                    "background", ! options->background,
+                    NULL);
     }
 }
 

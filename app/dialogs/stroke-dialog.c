@@ -39,7 +39,6 @@
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpviewabledialog.h"
 #include "widgets/gimpstrokeeditor.h"
-#include "widgets/gimpwidgets-utils.h"
 
 #include "stroke-dialog.h"
 
@@ -91,7 +90,8 @@ stroke_dialog_new (GimpItem    *item,
 
   desc = gimp_stroke_desc_new (context->gimp, context);
 
-  saved_desc = g_object_get_data (G_OBJECT (context), "saved-stroke-desc");
+  saved_desc = g_object_get_data (G_OBJECT (context->gimp),
+                                  "saved-stroke-desc");
 
   if (saved_desc)
     gimp_config_sync (G_OBJECT (saved_desc), G_OBJECT (desc), 0);
@@ -215,7 +215,8 @@ stroke_dialog_new (GimpItem    *item,
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
 
-    combo = gimp_container_combo_box_new (image->gimp->paint_info_list, NULL,
+    combo = gimp_container_combo_box_new (image->gimp->paint_info_list,
+                                          context,
                                           16, 0);
     gimp_container_view_select_item (GIMP_CONTAINER_VIEW (combo),
                                      GIMP_VIEWABLE (desc->paint_info));
@@ -250,7 +251,7 @@ stroke_dialog_response (GtkWidget  *widget,
   desc = g_object_get_data (G_OBJECT (dialog), "gimp-stroke-desc");
 
   image   = gimp_item_get_image (item);
-  context = gimp_get_user_context (image->gimp);
+  context = GIMP_VIEWABLE_DIALOG (dialog)->context;
 
   switch (response_id)
     {
@@ -277,13 +278,14 @@ stroke_dialog_response (GtkWidget  *widget,
 
         if (! drawable)
           {
-            gimp_show_message_dialog (widget, GTK_MESSAGE_WARNING,
-                                      _("There is no active layer or channel "
-                                        "to stroke to."));
+            gimp_message (context->gimp, G_OBJECT (widget),
+                          GIMP_MESSAGE_WARNING,
+                          _("There is no active layer or channel "
+                            "to stroke to."));
             return;
           }
 
-        saved_desc = g_object_get_data (G_OBJECT (context),
+        saved_desc = g_object_get_data (G_OBJECT (context->gimp),
                                         "saved-stroke-desc");
 
         if (saved_desc)
@@ -293,7 +295,7 @@ stroke_dialog_response (GtkWidget  *widget,
 
         gimp_config_sync (G_OBJECT (desc), G_OBJECT (saved_desc), 0);
 
-        g_object_set_data_full (G_OBJECT (context), "saved-stroke-desc",
+        g_object_set_data_full (G_OBJECT (context->gimp), "saved-stroke-desc",
                                 saved_desc,
                                 (GDestroyNotify) g_object_unref);
 

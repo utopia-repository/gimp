@@ -236,7 +236,7 @@ The elements of the initial search path must be separated with the
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpPathEditor-path-changed"/>The &quot;path-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpPathEditor-path-changed"/>The <literal>&quot;path-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpPathEditor::path-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>        user_data)      : Run First</programlisting>
 <para>
@@ -247,7 +247,7 @@ or reorders an element of the search path.</para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpPathEditor-writable-changed"/>The &quot;writable-changed&quot; signal</title>
+</variablelist></refsect2><refsect2><title><anchor id="GimpPathEditor-writable-changed"/>The <literal>&quot;writable-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpPathEditor::writable-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>        user_data)      : Run First</programlisting>
 <para>
@@ -273,4 +273,6 @@ is changed, either by the user clicking on it or by calling
 </para>
 </refsect1>
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

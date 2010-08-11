@@ -156,9 +156,7 @@ Copy a layer.
 <para>
 This procedure copies the specified layer and returns the copy. The
 newly copied layer is for use within the original layer's image. It
-should not be subsequently added to any other image. If you create
-a copy of the background layer, remember to add an alpha channel
-before you add the new layer to the image.</para>
+should not be subsequently added to any other image.</para>
 <para>
 
 </para><variablelist role="params">
@@ -802,4 +800,6 @@ to a specific drawable.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

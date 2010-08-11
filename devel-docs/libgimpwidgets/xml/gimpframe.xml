@@ -105,11 +105,11 @@ the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</para>
 </refsect1>
 <refsect1 role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
-<refsect2><title><anchor id="GimpFrame--label-bold"/>The &quot;<literal>label-bold</literal>&quot; style property</title>
+<refsect2><title><anchor id="GimpFrame--label-bold"/>The <literal>&quot;label-bold&quot;</literal> style property</title>
 <indexterm><primary>GimpFrame:label-bold</primary></indexterm><programlisting>  &quot;label-bold&quot;               <link linkend="gboolean">gboolean</link>              : Read</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2><title><anchor id="GimpFrame--label-spacing"/>The &quot;<literal>label-spacing</literal>&quot; style property</title>
+<refsect2><title><anchor id="GimpFrame--label-spacing"/>The <literal>&quot;label-spacing&quot;</literal> style property</title>
 <indexterm><primary>GimpFrame:label-spacing</primary></indexterm><programlisting>  &quot;label-spacing&quot;            <link linkend="gint">gint</link>                  : Read</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 6</para>
@@ -120,4 +120,6 @@ the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

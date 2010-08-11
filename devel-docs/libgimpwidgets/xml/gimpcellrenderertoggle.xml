@@ -127,11 +127,11 @@ Emits the "clicked" signal from a <link linkend="GimpCellRendererToggle"><type>G
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpCellRendererToggle--stock-id"/>The &quot;<literal>stock-id</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpCellRendererToggle--stock-id"/>The <literal>&quot;stock-id&quot;</literal> property</title>
 <indexterm><primary>GimpCellRendererToggle:stock-id</primary></indexterm><programlisting>  &quot;stock-id&quot;                 <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpCellRendererToggle--stock-size"/>The &quot;<literal>stock-size</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpCellRendererToggle--stock-size"/>The <literal>&quot;stock-size&quot;</literal> property</title>
 <indexterm><primary>GimpCellRendererToggle:stock-size</primary></indexterm><programlisting>  &quot;stock-size&quot;               <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 4</para>
@@ -141,7 +141,7 @@ Emits the "clicked" signal from a <link linkend="GimpCellRendererToggle"><type>G
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpCellRendererToggle-clicked"/>The &quot;clicked&quot; signal</title>
+<refsect2><title><anchor id="GimpCellRendererToggle-clicked"/>The <literal>&quot;clicked&quot;</literal> signal</title>
 <indexterm><primary>GimpCellRendererToggle::clicked</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpCellRendererToggle">GimpCellRendererToggle</link> *gimpcellrenderertoggle,
                                                         <link linkend="gchar">gchar</link>                  *arg1,
                                                         <link linkend="GdkModifierType">GdkModifierType</link>         arg2,
@@ -166,4 +166,6 @@ Emits the "clicked" signal from a <link linkend="GimpCellRendererToggle"><type>G
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

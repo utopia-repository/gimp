@@ -78,7 +78,8 @@ jpeg_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
 	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
 	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
-	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_jpegqual_OBJECTS = jpeg-quality.$(OBJEXT) jpegqual.$(OBJEXT)
 jpegqual_OBJECTS = $(am_jpegqual_OBJECTS)
 jpegqual_DEPENDENCIES = $(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
@@ -510,6 +511,7 @@ jpeg_LDADD = \
 	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBJPEG)		\
+	$(LIBLCMS)		\
 	$(GTK_LIBS)		\
 	$(EXIF_LIBS)		\
 	$(RT_LIBS)		\

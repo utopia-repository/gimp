@@ -131,6 +131,7 @@
                                                          <link linkend="gdouble">gdouble</link> upper_limit);
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-prop-size-entry-new">gimp_prop_size_entry_new</link>            (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
+                                                         <link linkend="gboolean">gboolean</link> property_is_pixel,
                                                          const <link linkend="gchar">gchar</link> *unit_property_name,
                                                          const <link linkend="gchar">gchar</link> *unit_format,
                                                          <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</link> update_policy,
@@ -939,6 +940,7 @@ Since GIMP 2.4
 <title><anchor id="gimp-prop-size-entry-new" role="function"/>gimp_prop_size_entry_new ()</title>
 <indexterm><primary>gimp_prop_size_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_size_entry_new            (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
+                                                         <link linkend="gboolean">gboolean</link> property_is_pixel,
                                                          const <link linkend="gchar">gchar</link> *unit_property_name,
                                                          const <link linkend="gchar">gchar</link> *unit_format,
                                                          <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</link> update_policy,
@@ -957,6 +959,10 @@ entry holding two values.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>property_name</parameter>&nbsp;:</term>
 <listitem><simpara>      Name of int or double property.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property_is_pixel</parameter>&nbsp;:</term>
+<listitem><simpara>  When <link linkend="TRUE:CAPS"><literal>TRUE</literal></link>, the property value is in pixels,
+                     and in the selected unit otherwise.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>unit_property_name</parameter>&nbsp;:</term>
 <listitem><simpara> Name of unit property.
@@ -1135,4 +1141,6 @@ Since GIMP 2.4
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

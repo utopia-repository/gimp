@@ -62,6 +62,9 @@ gimp_image_set_colormap (GimpImage    *image,
   if (push_undo)
     gimp_image_undo_push_image_colormap (image, _("Set Colormap"));
 
+  if (image->cmap)
+    memset (image->cmap, 0, GIMP_IMAGE_COLORMAP_SIZE);
+
   if (cmap)
     {
       if (! image->cmap)
@@ -69,7 +72,7 @@ gimp_image_set_colormap (GimpImage    *image,
 
       memcpy (image->cmap, cmap, n_colors * 3);
     }
-  else
+  else if (! image->base_type == GIMP_INDEXED)
     {
       if (image->cmap)
         g_free (image->cmap);

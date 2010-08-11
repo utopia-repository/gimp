@@ -139,7 +139,7 @@ Iterate over the <parameter>model</parameter> looking for <parameter>value</para
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpIntStore--user-data-type"/>The &quot;<literal>user-data-type</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpIntStore--user-data-type"/>The <literal>&quot;user-data-type&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpIntStore:user-data-type</primary></indexterm><programlisting>  &quot;user-data-type&quot;           <link linkend="GType">GType</link>                 : Read / Write / Construct Only</programlisting>
 <para>
 Allows to set the <link linkend="GType"><type>GType</type></link> for the GIMP_INT_STORE_USER_DATA column.
@@ -159,4 +159,6 @@ handle ref-counting of your user data.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

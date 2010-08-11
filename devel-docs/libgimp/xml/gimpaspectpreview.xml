@@ -114,7 +114,7 @@ the scroll offset.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpAspectPreview--drawable"/>The &quot;<literal>drawable</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpAspectPreview--drawable"/>The <literal>&quot;drawable&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpAspectPreview:drawable</primary></indexterm><programlisting>  &quot;drawable&quot;                 <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para>
 </para>
@@ -129,4 +129,6 @@ the scroll offset.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

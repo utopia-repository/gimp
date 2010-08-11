@@ -63,6 +63,7 @@ static const gchar * const authors[] =
   "Stefan Röllin",
   "Guillermo S. Romero",
   "Michael Schumacher",
+  "Peter Sikking",
   "Ted Shaneyfelt",
   "Jernej Simončič",
   "Manish Singh",
@@ -83,6 +84,7 @@ static const gchar * const authors[] =
 static const gchar * const artists[] =
 {
   "Lapo Calamandrei",
+  "Paul Davey",
   "Karl La Rocca",
   "Andreas Nilsson",
   "Carol Spears",

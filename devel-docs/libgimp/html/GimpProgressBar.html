@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimppixbuf.html" title="gimppixbuf">
 <link rel="next" href="libgimp-gimpmenu.html" title="gimpmenu">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,20 +31,20 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601041" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2613693" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2733584" class="shortcut">Description</a>
+                  <a href="#id2735291" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2582113" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2629469" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2678253" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2590569" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpProgressBar"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2601041"></a><span class="refentrytitle">GimpProgressBar</span>
+<a name="id2613693"></a><span class="refentrytitle">GimpProgressBar</span>
 </h2>
 <p>GimpProgressBar &#8212; A widget providing a progress bar.</p>
 </td>
@@ -58,65 +58,65 @@
 
                     <a class="link" href="GimpProgressBar.html#GimpProgressBar-struct">GimpProgressBar</a>;
 <a
-href="../gtk/GtkWidget.html"
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a>*          <a class="link" href="GimpProgressBar.html#gimp-progress-bar-new">gimp_progress_bar_new</a>               (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2582113"></a><h2>Object Hierarchy</h2>
+<a name="id2629469"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="../gtk/GtkObject.html"
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="../gtk/GtkWidget.html"
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="../gtk/GtkProgress.html"
+href="/usr/share/gtk-doc/html/gtk/GtkProgress.html"
 >GtkProgress</a>
                            +----<a
-href="../gtk/GtkProgressBar.html"
+href="/usr/share/gtk-doc/html/gtk/GtkProgressBar.html"
 >GtkProgressBar</a>
                                  +----GimpProgressBar
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678253"></a><h2>Implemented Interfaces</h2>
+<a name="id2590569"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpProgressBar implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2733584"></a><h2>Description</h2>
+<a name="id2735291"></a><h2>Description</h2>
 <p>
 A widget providing a progress bar that automatically redirects any progress
 calls to itself.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2733602"></a><h2>Details</h2>
+<a name="id2735307"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2733612"></a><h3>
+<a name="id2735317"></a><h3>
 <a name="GimpProgressBar-struct"></a>GimpProgressBar</h3>
-<a class="indexterm" name="id2733623"></a><pre class="programlisting">typedef struct _GimpProgressBar GimpProgressBar;</pre>
+<a class="indexterm" name="id2735329"></a><pre class="programlisting">typedef struct _GimpProgressBar GimpProgressBar;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2733639"></a><h3>
+<a name="id2735344"></a><h3>
 <a name="gimp-progress-bar-new"></a>gimp_progress_bar_new ()</h3>
-<a class="indexterm" name="id2733652"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
+<a class="indexterm" name="id2735357"></a><pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a>*          gimp_progress_bar_new               (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpProgressBar.html" title="GimpProgressBar"><span class="type">GimpProgressBar</span></a> widget.</p>
@@ -135,6 +135,11 @@ Creates a new <a class="link" href="GimpProgressBar.html" title="GimpProgressBar
 <p class="since">Since  GIMP 2.2
 </p>
 </div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2735411"></a><div class="refsect2" lang="en"><a name="id2735412"></a></div>
+<hr>
+<div class="refsect2" lang="en"><a name="id2735413"></a></div>
 </div>
 </div>
 </body>

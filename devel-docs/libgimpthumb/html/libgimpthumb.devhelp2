@@ -39,6 +39,8 @@
     <keyword type="" name="The &quot;image-uri&quot; property" link="GimpThumbnail.html#GimpThumbnail--image-uri"/>
     <keyword type="" name="The &quot;image-width&quot; property" link="GimpThumbnail.html#GimpThumbnail--image-width"/>
     <keyword type="" name="The &quot;thumb-state&quot; property" link="GimpThumbnail.html#GimpThumbnail--thumb-state"/>
+    <keyword type="" name="" link="GimpThumbnail.html#id2619195"/>
+    <keyword type="" name="" link="GimpThumbnail.html#id2619196"/>
     <keyword type="function" name="gimp_thumb_init ()" link="libgimpthumb-gimpthumb-utils.html#gimp-thumb-init"/>
     <keyword type="function" name="gimp_thumb_find_thumb ()" link="libgimpthumb-gimpthumb-utils.html#gimp-thumb-find-thumb"/>
     <keyword type="function" name="gimp_thumb_file_test ()" link="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test"/>
@@ -50,11 +52,17 @@
     <keyword type="function" name="gimp_thumb_ensure_thumb_dir_local ()" link="libgimpthumb-gimpthumb-utils.html#gimp-thumb-ensure-thumb-dir-local" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_thumb_get_thumb_dir_local ()" link="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir-local" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_thumbs_delete_for_uri_local ()" link="libgimpthumb-gimpthumb-utils.html#gimp-thumbs-delete-for-uri-local" since="GIMP 2.2"/>
+    <keyword type="" name="" link="libgimpthumb-gimpthumb-utils.html#id2619848"/>
+    <keyword type="" name="" link="libgimpthumb-gimpthumb-utils.html#id2619849"/>
     <keyword type="enum" name="enum GimpThumbFileType" link="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType"/>
     <keyword type="enum" name="enum GimpThumbSize" link="libgimpthumb-gimpthumb-enums.html#GimpThumbSize"/>
     <keyword type="enum" name="enum GimpThumbState" link="libgimpthumb-gimpthumb-enums.html#GimpThumbState"/>
+    <keyword type="" name="" link="libgimpthumb-gimpthumb-enums.html#id2574072"/>
+    <keyword type="" name="" link="libgimpthumb-gimpthumb-enums.html#id2574073"/>
     <keyword type="enum" name="enum GimpThumbError" link="libgimpthumb-gimpthumb-error.html#GimpThumbError"/>
     <keyword type="macro" name="GIMP_THUMB_ERROR" link="libgimpthumb-gimpthumb-error.html#GIMP-THUMB-ERROR:CAPS"/>
     <keyword type="function" name="gimp_thumb_error_quark ()" link="libgimpthumb-gimpthumb-error.html#gimp-thumb-error-quark"/>
+    <keyword type="" name="" link="libgimpthumb-gimpthumb-error.html#id2611167"/>
+    <keyword type="" name="" link="libgimpthumb-gimpthumb-error.html#id2611168"/>
   </functions>
 </book>

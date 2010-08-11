@@ -44,18 +44,18 @@
 
 typedef struct
 {
-  GtkWidget     *dialog;
+  GtkWidget  *dialog;
 
-  GtkWidget     *table;
-  GtkWidget    **widgets;
+  GtkWidget  *table;
+  GtkWidget **widgets;
 
-  GtkWidget     *progress_label;
-  GtkWidget     *progress_bar;
+  GtkWidget  *progress_label;
+  GtkWidget  *progress_bar;
 
-  gchar         *title;
-  gchar         *last_command;
-  gint           command_count;
-  gint           consec_command_count;
+  gchar      *title;
+  gchar      *last_command;
+  gint        command_count;
+  gint        consec_command_count;
 } SFInterface;
 
 
@@ -815,7 +815,7 @@ script_fu_ok (SFScript *script)
           arg_value->sfa_value =
             g_strdup (gtk_entry_get_text (GTK_ENTRY (widget)));
 
-          escaped = g_strescape (arg_value->sfa_value, NULL);
+          escaped = script_fu_strescape (arg_value->sfa_value);
           g_string_append_printf (s, "\"%s\"", escaped);
           g_free (escaped);
           break;
@@ -837,7 +837,7 @@ script_fu_ok (SFScript *script)
                                                              &start, &end,
                                                              FALSE);
 
-            escaped = g_strescape (arg_value->sfa_value, NULL);
+            escaped = script_fu_strescape (arg_value->sfa_value);
             g_string_append_printf (s, "\"%s\"", escaped);
             g_free (escaped);
           }
@@ -851,7 +851,7 @@ script_fu_ok (SFScript *script)
 
         case SF_FILENAME:
         case SF_DIRNAME:
-          escaped = g_strescape (arg_value->sfa_file.filename, NULL);
+          escaped = script_fu_strescape (arg_value->sfa_file.filename);
           g_string_append_printf (s, "\"%s\"", escaped);
           g_free (escaped);
           break;

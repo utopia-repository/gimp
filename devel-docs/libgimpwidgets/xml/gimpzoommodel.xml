@@ -253,25 +253,25 @@ Since GIMP 2.4
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpZoomModel--fraction"/>The &quot;<literal>fraction</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomModel--fraction"/>The <literal>&quot;fraction&quot;</literal> property</title>
 <indexterm><primary>GimpZoomModel:fraction</primary></indexterm><programlisting>  &quot;fraction&quot;                 <link linkend="gchararray">gchararray</link>            : Read</programlisting>
 <para></para><para>Default value: "1:1"</para>
 </refsect2>
-<refsect2><title><anchor id="GimpZoomModel--maximum"/>The &quot;<literal>maximum</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomModel--maximum"/>The <literal>&quot;maximum&quot;</literal> property</title>
 <indexterm><primary>GimpZoomModel:maximum</primary></indexterm><programlisting>  &quot;maximum&quot;                  <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: [0.00390625,256]</para>
 <para>Default value: 256</para>
 </refsect2>
-<refsect2><title><anchor id="GimpZoomModel--minimum"/>The &quot;<literal>minimum</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomModel--minimum"/>The <literal>&quot;minimum&quot;</literal> property</title>
 <indexterm><primary>GimpZoomModel:minimum</primary></indexterm><programlisting>  &quot;minimum&quot;                  <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: [0.00390625,256]</para>
 <para>Default value: 0.00390625</para>
 </refsect2>
-<refsect2><title><anchor id="GimpZoomModel--percentage"/>The &quot;<literal>percentage</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomModel--percentage"/>The <literal>&quot;percentage&quot;</literal> property</title>
 <indexterm><primary>GimpZoomModel:percentage</primary></indexterm><programlisting>  &quot;percentage&quot;               <link linkend="gchararray">gchararray</link>            : Read</programlisting>
 <para></para><para>Default value: "100%"</para>
 </refsect2>
-<refsect2><title><anchor id="GimpZoomModel--value"/>The &quot;<literal>value</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomModel--value"/>The <literal>&quot;value&quot;</literal> property</title>
 <indexterm><primary>GimpZoomModel:value</primary></indexterm><programlisting>  &quot;value&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: [0.00390625,256]</para>
 <para>Default value: 1</para>
@@ -281,7 +281,7 @@ Since GIMP 2.4
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpZoomModel-zoomed"/>The &quot;zoomed&quot; signal</title>
+<refsect2><title><anchor id="GimpZoomModel-zoomed"/>The <literal>&quot;zoomed&quot;</literal> signal</title>
 <indexterm><primary>GimpZoomModel::zoomed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpZoomModel">GimpZoomModel</link> *model,
                                                         <link linkend="gdouble">gdouble</link>        old_factor,
                                                         <link linkend="gdouble">gdouble</link>        new_factor,
@@ -307,4 +307,6 @@ Emitted when the zoom factor of the zoom model changes.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

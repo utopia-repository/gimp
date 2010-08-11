@@ -174,7 +174,7 @@ Checks the state of the <link linkend="GimpChainButton"><type>GimpChainButton</t
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpChainButton--position"/>The &quot;<literal>position</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpChainButton--position"/>The <literal>&quot;position&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpChainButton:position</primary></indexterm><programlisting>  &quot;position&quot;                 <link linkend="GimpChainPosition">GimpChainPosition</link>     : Read / Write / Construct Only</programlisting>
 <para>
 The position in which the chain button will be used.</para>
@@ -189,7 +189,7 @@ The position in which the chain button will be used.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpChainButton-toggled"/>The &quot;toggled&quot; signal</title>
+<refsect2><title><anchor id="GimpChainButton-toggled"/>The <literal>&quot;toggled&quot;</literal> signal</title>
 <indexterm><primary>GimpChainButton::toggled</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpChainButton">GimpChainButton</link> *gimpchainbutton,
                                                         <link linkend="gpointer">gpointer</link>         user_data)            : Run First</programlisting>
 <para>
@@ -213,4 +213,6 @@ up two GimpSizeEntries (see <link linkend="GimpSizeEntry"><type>GimpSizeEntry</t
 </para>
 </refsect1>
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

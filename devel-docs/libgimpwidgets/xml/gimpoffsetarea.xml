@@ -173,7 +173,7 @@ is being offset.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpOffsetArea-offsets-changed"/>The &quot;offsets-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpOffsetArea-offsets-changed"/>The <literal>&quot;offsets-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpOffsetArea::offsets-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *gimpoffsetarea,
                                                         <link linkend="gint">gint</link>            arg1,
                                                         <link linkend="gint">gint</link>            arg2,
@@ -198,4 +198,6 @@ is being offset.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

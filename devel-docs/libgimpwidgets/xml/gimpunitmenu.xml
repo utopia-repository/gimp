@@ -248,7 +248,7 @@ here. You should do this after attaching your spinbuttons.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpUnitMenu-unit-changed"/>The &quot;unit-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpUnitMenu-unit-changed"/>The <literal>&quot;unit-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpUnitMenu::unit-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpUnitMenu">GimpUnitMenu</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>      user_data)      : Run First</programlisting>
 <para>
@@ -276,4 +276,6 @@ the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>.</para>
 </para>
 </refsect1>
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -443,11 +443,11 @@ the checkerboard pattern that the <parameter>area</parameter> uses to visualize 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpPreviewArea--check-size"/>The &quot;<literal>check-size</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpPreviewArea--check-size"/>The <literal>&quot;check-size&quot;</literal> property</title>
 <indexterm><primary>GimpPreviewArea:check-size</primary></indexterm><programlisting>  &quot;check-size&quot;               <link linkend="GimpCheckSize">GimpCheckSize</link>         : Read / Write</programlisting>
 <para></para><para>Default value: GIMP_CHECK_SIZE_MEDIUM_CHECKS</para>
 </refsect2>
-<refsect2><title><anchor id="GimpPreviewArea--check-type"/>The &quot;<literal>check-type</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpPreviewArea--check-type"/>The <literal>&quot;check-type&quot;</literal> property</title>
 <indexterm><primary>GimpPreviewArea:check-type</primary></indexterm><programlisting>  &quot;check-type&quot;               <link linkend="GimpCheckType">GimpCheckType</link>         : Read / Write</programlisting>
 <para></para><para>Default value: GIMP_CHECK_TYPE_GRAY_CHECKS</para>
 </refsect2>
@@ -457,4 +457,6 @@ the checkerboard pattern that the <parameter>area</parameter> uses to visualize 
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool">
 <link rel="next" href="libgimp-gimptools.html" title="gimptools">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimptools.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2612984" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2603966" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2679251" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2686406" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptile"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2612984"></a><span class="refentrytitle">gimptile</span>
+<a name="id2603966"></a><span class="refentrytitle">gimptile</span>
 </h2>
 <p>gimptile &#8212; Functions for working with tiles.</p>
 </td>
@@ -57,30 +57,30 @@ void                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref">g
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref-zero">gimp_tile_ref_zero</a>                  (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-unref">gimp_tile_unref</a>                     (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> dirty);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-flush">gimp_tile_flush</a>                     (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size">gimp_tile_cache_size</a>                (<a
-href="../glib/glib-Basic-Types.html#gulong"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
 >gulong</a> kilobytes);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles">gimp_tile_cache_ntiles</a>              (<a
-href="../glib/glib-Basic-Types.html#gulong"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
 >gulong</a> ntiles);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679251"></a><h2>Description</h2>
+<a name="id2686406"></a><h2>Description</h2>
 <p>
 Functions for working with tiles.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679266"></a><h2>Details</h2>
+<a name="id2686421"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2679277"></a><h3>
+<a name="id2686432"></a><h3>
 <a name="GimpTile"></a>GimpTile</h3>
-<a class="indexterm" name="id2679289"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2686444"></a><pre class="programlisting">typedef struct {
   guint         ewidth;     /* the effective width of the tile */
   guint         eheight;    /* the effective height of the tile */
   guint         bpp;        /* the bytes per pixel (1, 2, 3 or 4 ) */
@@ -98,9 +98,9 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679314"></a><h3>
+<a name="id2684240"></a><h3>
 <a name="gimp-tile-ref"></a>gimp_tile_ref ()</h3>
-<a class="indexterm" name="id2679326"></a><pre class="programlisting">void                gimp_tile_ref                       (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
+<a class="indexterm" name="id2684251"></a><pre class="programlisting">void                gimp_tile_ref                       (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
 <p>
 
 </p>
@@ -117,9 +117,9 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686691"></a><h3>
+<a name="id2684296"></a><h3>
 <a name="gimp-tile-ref-zero"></a>gimp_tile_ref_zero ()</h3>
-<a class="indexterm" name="id2686702"></a><pre class="programlisting">void                gimp_tile_ref_zero                  (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
+<a class="indexterm" name="id2684308"></a><pre class="programlisting">void                gimp_tile_ref_zero                  (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
 <p>
 
 </p>
@@ -136,11 +136,11 @@ Functions for working with tiles.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686747"></a><h3>
+<a name="id2684353"></a><h3>
 <a name="gimp-tile-unref"></a>gimp_tile_unref ()</h3>
-<a class="indexterm" name="id2686758"></a><pre class="programlisting">void                gimp_tile_unref                     (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
+<a class="indexterm" name="id2683730"></a><pre class="programlisting">void                gimp_tile_unref                     (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> dirty);</pre>
 <p>
 
@@ -165,9 +165,9 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686825"></a><h3>
+<a name="id2683796"></a><h3>
 <a name="gimp-tile-flush"></a>gimp_tile_flush ()</h3>
-<a class="indexterm" name="id2686836"></a><pre class="programlisting">void                gimp_tile_flush                     (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
+<a class="indexterm" name="id2683808"></a><pre class="programlisting">void                gimp_tile_flush                     (<a class="link" href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre>
 <p>
 
 </p>
@@ -184,10 +184,10 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686882"></a><h3>
+<a name="id2683853"></a><h3>
 <a name="gimp-tile-cache-size"></a>gimp_tile_cache_size ()</h3>
-<a class="indexterm" name="id2686893"></a><pre class="programlisting">void                gimp_tile_cache_size                (<a
-href="../glib/glib-Basic-Types.html#gulong"
+<a class="indexterm" name="id2683864"></a><pre class="programlisting">void                gimp_tile_cache_size                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
 >gulong</a> kilobytes);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. The tile cache
@@ -207,10 +207,10 @@ and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685675"></a><h3>
+<a name="id2683924"></a><h3>
 <a name="gimp-tile-cache-ntiles"></a>gimp_tile_cache_ntiles ()</h3>
-<a class="indexterm" name="id2685686"></a><pre class="programlisting">void                gimp_tile_cache_ntiles              (<a
-href="../glib/glib-Basic-Types.html#gulong"
+<a class="indexterm" name="id2683935"></a><pre class="programlisting">void                gimp_tile_cache_ntiles              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
 >gulong</a> ntiles);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. This function
@@ -235,6 +235,11 @@ shadow tiles.</p>
 </tr></tbody>
 </table></div>
 </div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685657"></a><div class="refsect2" lang="en"><a name="id2685658"></a></div>
+<hr>
+<div class="refsect2" lang="en"><a name="id2685660"></a></div>
 </div>
 </div>
 </body>

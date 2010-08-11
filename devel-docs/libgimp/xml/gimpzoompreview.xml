@@ -223,7 +223,7 @@ Returns the <link linkend="GimpZoomModel"><type>GimpZoomModel</type></link> the 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpZoomPreview--drawable"/>The &quot;<literal>drawable</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomPreview--drawable"/>The <literal>&quot;drawable&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpZoomPreview:drawable</primary></indexterm><programlisting>  &quot;drawable&quot;                 <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para>
 The drawable the <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link> is attached to.</para>
@@ -232,7 +232,7 @@ The drawable the <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></l
 </para><para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpZoomPreview--model"/>The &quot;<literal>model</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpZoomPreview--model"/>The <literal>&quot;model&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpZoomPreview:model</primary></indexterm><programlisting>  &quot;model&quot;                    <link linkend="GimpZoomModel">GimpZoomModel</link>         : Read / Write / Construct Only</programlisting>
 <para>
 The <link linkend="GimpZoomModel"><type>GimpZoomModel</type></link> used by this <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link>.</para>
@@ -247,4 +247,6 @@ The <link linkend="GimpZoomModel"><type>GimpZoomModel</type></link> used by this
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

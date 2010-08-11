@@ -715,7 +715,7 @@ can use this function to get a pointer to the spinbuttons.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpSizeEntry-refval-changed"/>The &quot;refval-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpSizeEntry-refval-changed"/>The <literal>&quot;refval-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpSizeEntry::refval-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
@@ -727,7 +727,7 @@ can use this function to get a pointer to the spinbuttons.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpSizeEntry-unit-changed"/>The &quot;unit-changed&quot; signal</title>
+</variablelist></refsect2><refsect2><title><anchor id="GimpSizeEntry-unit-changed"/>The <literal>&quot;unit-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpSizeEntry::unit-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
@@ -739,7 +739,7 @@ can use this function to get a pointer to the spinbuttons.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpSizeEntry-value-changed"/>The &quot;value-changed&quot; signal</title>
+</variablelist></refsect2><refsect2><title><anchor id="GimpSizeEntry-value-changed"/>The <literal>&quot;value-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpSizeEntry::value-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
@@ -768,4 +768,6 @@ can use this function to get a pointer to the spinbuttons.</para>
 </para>
 </refsect1>
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

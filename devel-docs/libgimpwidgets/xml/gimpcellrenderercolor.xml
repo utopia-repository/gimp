@@ -89,15 +89,15 @@ Creates a <link linkend="GtkCellRenderer"><type>GtkCellRenderer</type></link> th
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpCellRendererColor--color"/>The &quot;<literal>color</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpCellRendererColor--color"/>The <literal>&quot;color&quot;</literal> property</title>
 <indexterm><primary>GimpCellRendererColor:color</primary></indexterm><programlisting>  &quot;color&quot;                    <link linkend="GimpRGB">GimpRGB</link>               : Read / Write</programlisting>
 <para></para></refsect2>
-<refsect2><title><anchor id="GimpCellRendererColor--icon-size"/>The &quot;<literal>icon-size</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpCellRendererColor--icon-size"/>The <literal>&quot;icon-size&quot;</literal> property</title>
 <indexterm><primary>GimpCellRendererColor:icon-size</primary></indexterm><programlisting>  &quot;icon-size&quot;                <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpCellRendererColor--opaque"/>The &quot;<literal>opaque</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpCellRendererColor--opaque"/>The <literal>&quot;opaque&quot;</literal> property</title>
 <indexterm><primary>GimpCellRendererColor:opaque</primary></indexterm><programlisting>  &quot;opaque&quot;                   <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
@@ -107,4 +107,6 @@ Creates a <link linkend="GtkCellRenderer"><type>GtkCellRenderer</type></link> th
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

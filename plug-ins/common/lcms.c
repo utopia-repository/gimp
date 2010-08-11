@@ -114,7 +114,8 @@ static cmsHPROFILE  lcms_image_get_profile       (GimpColorConfig *config,
                                                   guchar          *checksum);
 static gboolean     lcms_image_set_profile       (gint32           image,
                                                   cmsHPROFILE      profile,
-                                                  const gchar     *filename);
+                                                  const gchar     *filename,
+                                                  gboolean         undo_group);
 static gboolean     lcms_image_apply_profile     (gint32           image,
                                                   cmsHPROFILE      src_profile,
                                                   cmsHPROFILE      dest_profile,
@@ -329,10 +330,10 @@ run (const gchar      *name,
   GimpRunMode               run_mode = GIMP_RUN_NONINTERACTIVE;
   gint32                    image    = -1;
   const gchar              *filename = NULL;
-  GimpColorRenderingIntent  intent   = GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL;
-  gboolean                  bpc      = FALSE;
   GimpColorConfig          *config   = NULL;
   gboolean                  dont_ask = FALSE;
+  GimpColorRenderingIntent  intent;
+  gboolean                  bpc;
   static GimpParam          values[6];
 
   INIT_I18N ();
@@ -356,6 +357,13 @@ run (const gchar      *name,
 
   if (proc != PROC_FILE_INFO)
     config = gimp_get_color_configuration ();
+
+  if (config)
+    intent = config->display_intent;
+  else
+    intent = GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL;
+
+  bpc = (intent == GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC);
 
   switch (proc)
     {
@@ -520,11 +528,11 @@ lcms_icc_set (GimpColorConfig *config,
 
   if (filename)
     {
-      success = lcms_image_set_profile (image, NULL, filename);
+      success = lcms_image_set_profile (image, NULL, filename, TRUE);
     }
   else
     {
-      success = lcms_image_set_profile (image, NULL, config->rgb_profile);
+      success = lcms_image_set_profile (image, NULL, config->rgb_profile, TRUE);
     }
 
   return success ? GIMP_PDB_SUCCESS : GIMP_PDB_EXECUTION_ERROR;
@@ -772,7 +780,8 @@ lcms_image_get_profile (GimpColorConfig *config,
 static gboolean
 lcms_image_set_profile (gint32       image,
                         cmsHPROFILE  profile,
-                        const gchar *filename)
+                        const gchar *filename,
+                        gboolean     undo_group)
 {
   g_return_val_if_fail (image != -1, FALSE);
 
@@ -811,7 +820,8 @@ lcms_image_set_profile (gint32       image,
             }
         }
 
-      gimp_image_undo_group_start (image);
+      if (undo_group)
+        gimp_image_undo_group_start (image);
 
       parasite = gimp_parasite_new ("icc-profile",
                                     GIMP_PARASITE_PERSISTENT |
@@ -826,14 +836,16 @@ lcms_image_set_profile (gint32       image,
     }
   else
     {
-      gimp_image_undo_group_start (image);
+      if (undo_group)
+        gimp_image_undo_group_start (image);
 
       gimp_image_parasite_detach (image, "icc-profile");
     }
 
   gimp_image_parasite_detach (image, "icc-profile-name");
 
-  gimp_image_undo_group_end (image);
+  if (undo_group)
+    gimp_image_undo_group_end (image);
 
   return TRUE;
 }
@@ -850,7 +862,7 @@ lcms_image_apply_profile (gint32                    image,
 
   gimp_image_undo_group_start (image);
 
-  if (! lcms_image_set_profile (image, dest_profile, filename))
+  if (! lcms_image_set_profile (image, dest_profile, filename, FALSE))
     {
       return FALSE;
     }
@@ -949,7 +961,7 @@ lcms_image_transform_rgb (gint32                    image,
                                           dest_profile, format,
                                           intent,
                                           bpc ?
-                                          cmsFLAGS_WHITEBLACKCOMPENSATION : 0);
+                                          cmsFLAGS_BLACKPOINTCOMPENSATION : 0);
 
           last_format = format;
         }
@@ -990,7 +1002,7 @@ lcms_image_transform_indexed (gint32                    image,
   transform = cmsCreateTransform (src_profile,  TYPE_RGB_8,
                                   dest_profile, TYPE_RGB_8,
                                   intent,
-                                  bpc ? cmsFLAGS_WHITEBLACKCOMPENSATION : 0);
+                                  bpc ? cmsFLAGS_BLACKPOINTCOMPENSATION : 0);
 
   if (transform)
     {
@@ -1547,7 +1559,8 @@ lcms_dialog (GimpColorConfig *config,
                                                 filename,
                                                 values->intent, values->bpc);
           else
-            success = lcms_image_set_profile (image, dest_profile, filename);
+            success = lcms_image_set_profile (image,
+                                              dest_profile, filename, TRUE);
         }
       else
         {

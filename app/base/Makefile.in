@@ -64,7 +64,8 @@ am_libappbase_a_OBJECTS = base.$(OBJEXT) base-enums.$(OBJEXT) \
 	temp-buf.$(OBJEXT) threshold.$(OBJEXT) tile.$(OBJEXT) \
 	tile-cache.$(OBJEXT) tile-manager.$(OBJEXT) \
 	tile-manager-crop.$(OBJEXT) tile-manager-preview.$(OBJEXT) \
-	tile-pyramid.$(OBJEXT) tile-swap.$(OBJEXT)
+	tile-pyramid.$(OBJEXT) tile-rowhints.$(OBJEXT) \
+	tile-swap.$(OBJEXT)
 libappbase_a_OBJECTS = $(am_libappbase_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -505,6 +506,8 @@ libappbase_a_SOURCES = \
 	tile-manager-private.h	\
 	tile-pyramid.c		\
 	tile-pyramid.h		\
+	tile-rowhints.c		\
+	tile-rowhints.h		\
 	tile-swap.c		\
 	tile-swap.h
 
@@ -597,6 +600,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-manager-preview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-manager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-pyramid.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-rowhints.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile-swap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tile.Po@am__quote@
 

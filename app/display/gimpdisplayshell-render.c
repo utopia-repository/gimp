@@ -31,6 +31,8 @@
 #include "base/tile-manager.h"
 #include "base/tile.h"
 
+#include "config/gimpdisplayconfig.h"
+
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
@@ -45,18 +47,14 @@
 #include "gimpdisplayshell-filter.h"
 #include "gimpdisplayshell-render.h"
 
-#define GIMP_DISPLAY_ZOOM_FAST      1 << 0  /* use the fastest possible code
+#define GIMP_DISPLAY_ZOOM_FAST     (1 << 0) /* use the fastest possible code
                                                path trading quality for speed
                                              */
-#define GIMP_DISPLAY_ZOOM_PIXEL_AA  1 << 1  /* provide AA edges when zooming in
+#define GIMP_DISPLAY_ZOOM_PIXEL_AA (1 << 1) /* provide AA edges when zooming in
                                                on the actual pixels (in current
                                                code only enables it between
                                                100% and 200% zoom)
                                              */
-
-/* The default settings are debatable, and perhaps this should even somehow be
- * configurable by the user. */
-static gint gimp_zoom_quality = GIMP_DISPLAY_ZOOM_PIXEL_AA;
 
 typedef struct _RenderInfo  RenderInfo;
 
@@ -79,23 +77,29 @@ struct _RenderInfo
   gint              dest_bpl;
   gint              dest_width;
 
+  gint              zoom_quality;
+
   /* Bresenham helpers */
   gint              x_dest_inc; /* amount to increment for each dest. pixel  */
   gint              x_src_dec;  /* amount to decrement for each source pixel */
-  gint              dx_start;   /* pixel fraction for first pixel            */
+  gint64            dx_start;   /* pixel fraction for first pixel            */
 
   gint              y_dest_inc;
   gint              y_src_dec;
-  gint              dy_start;
+  gint64            dy_start;
 
-  gint              dy;
+  gint              footprint_x;
+  gint              footprint_y;
+  gint              footshift_x;
+  gint              footshift_y;
+
+  gint64            dy;
 };
 
 static void  gimp_display_shell_render_info_scale   (RenderInfo       *info,
                                                      GimpDisplayShell *shell,
-                                                     TileManager      *src_tiles,
-                                                     gdouble           scale_x,
-                                                     gdouble           scale_y);
+                                                     TileManager      *tiles,
+                                                     gint              level);
 
 static void  gimp_display_shell_render_setup_notify (GObject          *config,
                                                      GParamSpec       *param_spec,
@@ -176,12 +180,12 @@ gimp_display_shell_render_setup_notify (GObject    *config,
 
 /*  Render Image functions  */
 
-static void           render_image_rgb_a        (RenderInfo *info);
-static void           render_image_gray_a       (RenderInfo *info);
+static void           render_image_rgb_a         (RenderInfo       *info);
+static void           render_image_gray_a        (RenderInfo       *info);
 
-static const guint  * render_image_init_alpha   (gint        mult);
+static const guint  * render_image_init_alpha    (gint              mult);
 
-static const guchar * render_image_tile_fault   (RenderInfo *info);
+static const guchar * render_image_tile_fault    (RenderInfo       *info);
 
 
 static void  gimp_display_shell_render_highlight (GimpDisplayShell *shell,
@@ -210,12 +214,15 @@ gimp_display_shell_render (GimpDisplayShell *shell,
                            GdkRectangle     *highlight)
 {
   GimpProjection *projection;
+  GimpImage      *image;
   RenderInfo      info;
   GimpImageType   type;
 
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
   g_return_if_fail (w > 0 && h > 0);
 
-  projection = shell->display->image->projection;
+  image = shell->display->image;
+  projection = image->projection;
 
   /* Initialize RenderInfo with values that don't change during the
    * call of this function.
@@ -231,12 +238,25 @@ gimp_display_shell_render (GimpDisplayShell *shell,
   info.dest_bpl   = info.dest_bpp * GIMP_RENDER_BUF_WIDTH;
   info.dest_width = info.dest_bpp * info.w;
 
+  switch (GIMP_DISPLAY_CONFIG (image->gimp->config)->zoom_quality)
+    {
+    case GIMP_ZOOM_QUALITY_LOW:
+      info.zoom_quality = GIMP_DISPLAY_ZOOM_FAST;
+      break;
+
+    case GIMP_ZOOM_QUALITY_HIGH:
+      info.zoom_quality = GIMP_DISPLAY_ZOOM_PIXEL_AA;
+      break;
+    }
+
   if (GIMP_IMAGE_TYPE_HAS_ALPHA (gimp_projection_get_image_type (projection)))
     {
       gdouble opacity = gimp_projection_get_opacity (projection);
 
       info.alpha = render_image_init_alpha (opacity * 255.999);
     }
+
+
 
   /* Setup RenderInfo for rendering a GimpProjection level. */
   {
@@ -249,11 +269,7 @@ gimp_display_shell_render (GimpDisplayShell *shell,
 
     src_tiles = gimp_projection_get_tiles_at_level (projection, level);
 
-    gimp_display_shell_render_info_scale (&info,
-                                          shell,
-                                          src_tiles,
-                                          shell->scale_x * (1 << level),
-                                          shell->scale_y * (1 << level));
+    gimp_display_shell_render_info_scale (&info, shell, src_tiles, level);
   }
 
   /* Currently, only RGBA and GRAYA projection types are used - the rest
@@ -297,14 +313,8 @@ gimp_display_shell_render (GimpDisplayShell *shell,
     {
       TileManager *src_tiles = gimp_drawable_get_tiles (shell->mask);
 
-      /* The mask does not (yet) have an image pyramid, use the base scale of
-       * the shell.
-       */
-      gimp_display_shell_render_info_scale (&info,
-                                            shell,
-                                            src_tiles,
-                                            shell->scale_x,
-                                            shell->scale_y);
+      /* The mask does not (yet) have an image pyramid, use 0 as level, */
+      gimp_display_shell_render_info_scale (&info, shell, src_tiles, 0);
 
       gimp_display_shell_render_mask (shell, &info);
     }
@@ -488,8 +498,8 @@ render_image_gray_a (RenderInfo *info)
 
       for (x = info->x; x < xe; x++)
         {
-          guint a = alpha[src[ALPHA_G_PIX]];
-          guint val;
+          const guint a = alpha[src[ALPHA_G_PIX]];
+          guchar      val;
 
           if (dark_light & 0x1)
             val = gimp_render_blend_dark_check[(a | src[GRAY_PIX])];
@@ -545,26 +555,22 @@ render_image_rgb_a (RenderInfo *info)
 
       for (x = info->x; x < xe; x++)
         {
-          guint r, g, b, a = alpha[src[ALPHA_PIX]];
+          const guint a = alpha[src[ALPHA_PIX]];
 
           if (dark_light & 0x1)
             {
-              r = gimp_render_blend_dark_check[(a | src[RED_PIX])];
-              g = gimp_render_blend_dark_check[(a | src[GREEN_PIX])];
-              b = gimp_render_blend_dark_check[(a | src[BLUE_PIX])];
+              dest[0] = gimp_render_blend_dark_check[(a | src[RED_PIX])];
+              dest[1] = gimp_render_blend_dark_check[(a | src[GREEN_PIX])];
+              dest[2] = gimp_render_blend_dark_check[(a | src[BLUE_PIX])];
             }
           else
             {
-              r = gimp_render_blend_light_check[(a | src[RED_PIX])];
-              g = gimp_render_blend_light_check[(a | src[GREEN_PIX])];
-              b = gimp_render_blend_light_check[(a | src[BLUE_PIX])];
+              dest[0] = gimp_render_blend_light_check[(a | src[RED_PIX])];
+              dest[1] = gimp_render_blend_light_check[(a | src[GREEN_PIX])];
+              dest[2] = gimp_render_blend_light_check[(a | src[BLUE_PIX])];
             }
 
           src += 4;
-
-          dest[0] = r;
-          dest[1] = g;
-          dest[2] = b;
           dest += 3;
 
           if (((x + 1) & check_mod) == 0)
@@ -580,44 +586,71 @@ render_image_rgb_a (RenderInfo *info)
       info->src_y += info->dy / info->y_src_dec;
       info->dy     = info->dy % info->y_src_dec;
 
-      info->src = render_image_tile_fault (info);
+      if (info->src_y >= 0)
+        info->src = render_image_tile_fault (info);
     }
 }
 
 static void
 gimp_display_shell_render_info_scale (RenderInfo       *info,
                                       GimpDisplayShell *shell,
-                                      TileManager      *src_tiles,
-                                      gdouble           scale_x,
-                                      gdouble           scale_y)
+                                      TileManager      *tiles,
+                                      gint              level)
 {
-  info->src_tiles = src_tiles;
+  info->src_tiles = tiles;
 
   /* We must reset info->dest because this member is modified in render
    * functions.
    */
   info->dest     = shell->render_buf;
 
-  info->scalex   = scale_x;
-  info->scaley   = scale_y;
+  info->scalex   = shell->scale_x * (1 << level);
+  info->scaley   = shell->scale_y * (1 << level);
 
   info->src_y    = (gdouble) info->y / info->scaley;
 
   /* use Bresenham like stepping */
-  info->x_dest_inc = tile_manager_width (src_tiles);
-  info->x_src_dec  = ceil (tile_manager_width (src_tiles) * info->scalex);
+  info->x_dest_inc = shell->x_dest_inc;
+  info->x_src_dec  = shell->x_src_dec << level;
 
-  info->dx_start   = info->x_dest_inc * info->x + info->x_dest_inc/2;
+  info->dx_start   = ((gint64) info->x_dest_inc) * info->x + info->x_dest_inc/2;
   info->src_x      = info->dx_start / info->x_src_dec;
   info->dx_start   = info->dx_start % info->x_src_dec;
 
   /* same for y */
-  info->y_dest_inc = tile_manager_height (src_tiles);
-  info->y_src_dec  = ceil (tile_manager_height (src_tiles) * info->scaley);
+  info->y_dest_inc = shell->y_dest_inc;
+  info->y_src_dec  = shell->y_src_dec << level;
 
-  info->dy_start   = info->y_dest_inc * info->y + info->y_dest_inc/2;
+  info->dy_start   = ((gint64) info->y_dest_inc * info->y) + info->y_dest_inc/2;
   info->src_y      = info->dy_start / info->y_src_dec;
   info->dy_start   = info->dy_start % info->y_src_dec;
+
+  /* make sure that the footprint is in the range 256..512 */
+  info->footprint_x = info->x_src_dec;
+  info->footshift_x = 0;
+  while (info->footprint_x > 512)
+    {
+      info->footprint_x >>= 1;
+      info->footshift_x --;
+    }
+  while (info->footprint_x < 256)
+    {
+      info->footprint_x <<= 1;
+      info->footshift_x ++;
+    }
+
+  info->footprint_y = info->y_src_dec;
+  info->footshift_y = 0;
+  while (info->footprint_y > 512)
+    {
+      info->footprint_y >>= 1;
+      info->footshift_y --;
+    }
+  while (info->footprint_y < 256)
+    {
+      info->footprint_y <<= 1;
+      info->footshift_y ++;
+    }
 }
 
 static const guint *
@@ -626,10 +659,10 @@ render_image_init_alpha (gint mult)
   static guint *alpha_mult = NULL;
   static gint   alpha_val  = -1;
 
-  gint i;
-
   if (alpha_val != mult)
     {
+      gint i;
+
       if (!alpha_mult)
         alpha_mult = g_new (guint, 256);
 
@@ -642,26 +675,25 @@ render_image_init_alpha (gint mult)
 }
 
 static inline void
-box_filter (guint          left_weight,
-            guint          center_weight,
-            guint          right_weight,
-            guint          top_weight,
-            guint          middle_weight,
-            guint          bottom_weight,
-            guint          sum,
+box_filter (const guint    left_weight,
+            const guint    center_weight,
+            const guint    right_weight,
+            const guint    top_weight,
+            const guint    middle_weight,
+            const guint    bottom_weight,
             const guchar **src,   /* the 9 surrounding source pixels */
             guchar        *dest,
-            gint           bpp)
+            const gint     bpp)
 {
+  const guint sum = ((left_weight + center_weight + right_weight) *
+                     (top_weight + middle_weight + bottom_weight)) >> 8;
+
   switch (bpp)
     {
-      gint i;
-
-      guint a;
       case 4:
 #define ALPHA 3
         {
-          const guint factors[9] =
+          guint factors[9] =
             {
               (src[1][ALPHA] * top_weight)    >> 8,
               (src[4][ALPHA] * middle_weight) >> 8,
@@ -674,61 +706,15 @@ box_filter (guint          left_weight,
               (src[6][ALPHA] * bottom_weight) >> 8
             };
 
-          a = (center_weight * (factors[0] + factors[1] + factors[2]) +
-               right_weight  * (factors[3] + factors[4] + factors[5]) +
-               left_weight   * (factors[6] + factors[7] + factors[8]));
+          guint a = (center_weight * (factors[0] + factors[1] + factors[2]) +
+                     right_weight  * (factors[3] + factors[4] + factors[5]) +
+                     left_weight   * (factors[6] + factors[7] + factors[8]));
 
-          dest[ALPHA] = a / sum;
-
-          for (i = 0; i <= ALPHA; i++)
+          if (a)
             {
-              if (a)
-                {
-                  dest[i] = ((center_weight * (factors[0] * src[1][i] +
-                                               factors[1] * src[4][i] +
-                                               factors[2] * src[7][i]) +
+              gint i;
 
-                              right_weight  * (factors[3] * src[2][i] +
-                                               factors[4] * src[5][i] +
-                                               factors[5] * src[8][i]) +
-
-                              left_weight   * (factors[6] * src[0][i] +
-                                               factors[7] * src[3][i] +
-                                               factors[8] * src[6][i])
-                             ) / a) & 0xff;
-                }
-            }
-        }
-#undef ALPHA
-        break;
-      case 2:
-#define ALPHA 1
-
-        /* NOTE: this is a copy and paste of the code above, the ALPHA changes
-         * the behavior in all needed ways. */
-        {
-          const guint factors[9] =
-            {
-              (src[1][ALPHA] * top_weight)    >> 8,
-              (src[4][ALPHA] * middle_weight) >> 8,
-              (src[7][ALPHA] * bottom_weight) >> 8,
-              (src[2][ALPHA] * top_weight)    >> 8,
-              (src[5][ALPHA] * middle_weight) >> 8,
-              (src[8][ALPHA] * bottom_weight) >> 8,
-              (src[0][ALPHA] * top_weight)    >> 8,
-              (src[3][ALPHA] * middle_weight) >> 8,
-              (src[6][ALPHA] * bottom_weight) >> 8
-            };
-
-          a = (center_weight * (factors[0] + factors[1] + factors[2]) +
-               right_weight  * (factors[3] + factors[4] + factors[5]) +
-               left_weight   * (factors[6] + factors[7] + factors[8]));
-
-          dest[ALPHA] = a / sum;
-
-          for (i = 0; i <= ALPHA; i++)
-            {
-              if (a)
+              for (i = 0; i < ALPHA; i++)
                 {
                   dest[i] = ((center_weight * (factors[0] * src[1][i] +
                                                factors[1] * src[4][i] +
@@ -743,12 +729,74 @@ box_filter (guint          left_weight,
                                                factors[8] * src[6][i])
                               ) / a) & 0xff;
                 }
+
+              dest[ALPHA] = a / sum;
+            }
+          else
+            {
+              dest[ALPHA] = 0;
             }
         }
 #undef ALPHA
         break;
+
+      case 2:
+#define ALPHA 1
+
+        /* NOTE: this is a copy and paste of the code above, ALPHA changes
+         *       the behavior in all needed ways.
+         */
+        {
+          guint factors[9] =
+            {
+              (src[1][ALPHA] * top_weight)    >> 8,
+              (src[4][ALPHA] * middle_weight) >> 8,
+              (src[7][ALPHA] * bottom_weight) >> 8,
+              (src[2][ALPHA] * top_weight)    >> 8,
+              (src[5][ALPHA] * middle_weight) >> 8,
+              (src[8][ALPHA] * bottom_weight) >> 8,
+              (src[0][ALPHA] * top_weight)    >> 8,
+              (src[3][ALPHA] * middle_weight) >> 8,
+              (src[6][ALPHA] * bottom_weight) >> 8
+            };
+
+          guint a = (center_weight * (factors[0] + factors[1] + factors[2]) +
+                     right_weight  * (factors[3] + factors[4] + factors[5]) +
+                     left_weight   * (factors[6] + factors[7] + factors[8]));
+
+          if (a)
+            {
+              gint i;
+
+              for (i = 0; i < ALPHA; i++)
+                {
+                  dest[i] = ((center_weight * (factors[0] * src[1][i] +
+                                               factors[1] * src[4][i] +
+                                               factors[2] * src[7][i]) +
+
+                              right_weight  * (factors[3] * src[2][i] +
+                                               factors[4] * src[5][i] +
+                                               factors[5] * src[8][i]) +
+
+                              left_weight   * (factors[6] * src[0][i] +
+                                               factors[7] * src[3][i] +
+                                               factors[8] * src[6][i])
+                              ) / a) & 0xff;
+                }
+
+              dest[ALPHA] = a / sum;
+            }
+          else
+            {
+              dest[ALPHA] = 0;
+            }
+        }
+#undef ALPHA
+        break;
+
       default:
         g_warning ("bpp=%i not implemented as box filter", bpp);
+        break;
     }
 }
 
@@ -781,10 +829,6 @@ render_image_tile_fault (RenderInfo *info)
   gint          src_x;
   gint          skipped;
 
-  guint         footprint_x;
-  guint         footprint_y;
-  guint         foosum;
-
   guint         left_weight;
   guint         center_weight;
   guint         right_weight;
@@ -796,11 +840,11 @@ render_image_tile_fault (RenderInfo *info)
   guint         source_width;
   guint         source_height;
 
-  source_width = tile_manager_width (info->src_tiles);
+  source_width  = tile_manager_width (info->src_tiles);
   source_height = tile_manager_height (info->src_tiles);
 
   /* dispatch to fast path functions on special conditions */
-  if ((gimp_zoom_quality & GIMP_DISPLAY_ZOOM_FAST)
+  if ((info->zoom_quality & GIMP_DISPLAY_ZOOM_FAST)
 
       /* use nearest neighbour for exact levels */
       || (info->scalex == 1.0 &&
@@ -809,7 +853,7 @@ render_image_tile_fault (RenderInfo *info)
       /* or when we're larger than 1.0 and not using any AA */
       || (info->shell->scale_x > 1.0 &&
           info->shell->scale_y > 1.0 &&
-          (!(gimp_zoom_quality & GIMP_DISPLAY_ZOOM_PIXEL_AA)))
+          (! (info->zoom_quality & GIMP_DISPLAY_ZOOM_PIXEL_AA)))
 
       /* or at any point when both scale factors are greater or equal to 200% */
       || (info->shell->scale_x >= 2.0 &&
@@ -835,14 +879,18 @@ render_image_tile_fault (RenderInfo *info)
       return render_image_tile_fault_one_row (info);
     }
 
-  footprint_y = info->y_src_dec;
-  footprint_x = info->x_src_dec;
+  top_weight    = MAX (info->footprint_y / 2,
+                       info->footshift_y > 0 ? info->dy << info->footshift_y
+                                             : info->dy >> -info->footshift_y)
+                  - (info->footshift_y > 0 ? info->dy << info->footshift_y
+                                           : info->dy >> -info->footshift_y);
 
-  foosum = footprint_x * footprint_y;
+  bottom_weight = MAX (info->footprint_y / 2,
+                       info->footshift_y > 0 ? info->dy << info->footshift_y
+                                             : info->dy >> -info->footshift_y)
+                  - info->footprint_y / 2;
 
-  top_weight    = MAX (footprint_y / 2, info->dy) - info->dy;
-  bottom_weight = MAX (info->dy, footprint_y / 2) - footprint_y / 2;
-  middle_weight = footprint_y - top_weight - bottom_weight;
+  middle_weight = info->footprint_y - top_weight - bottom_weight;
 
   tile[4] = tile_manager_get_tile (info->src_tiles,
                                    info->src_x, info->src_y,
@@ -967,24 +1015,35 @@ render_image_tile_fault (RenderInfo *info)
   do
     {
       /* we're dealing with unsigneds here, be extra careful */
-      left_weight  = MAX (footprint_x / 2, dx) - dx;
-      right_weight = MAX (dx, footprint_x / 2) - footprint_x / 2;
-      center_weight = footprint_x - left_weight - right_weight;
+      left_weight  = MAX (info->footprint_x / 2,
+                          info->footshift_x > 0 ? dx << info->footshift_x
+                                                : dx >> -info->footshift_x)
+                     - (info->footshift_x > 0 ? dx << info->footshift_x
+                                              : dx >> -info->footshift_x);
+
+      right_weight = MAX (info->footprint_x / 2,
+                          info->footshift_x > 0 ? dx << info->footshift_x
+                                                : dx >> -info->footshift_x)
+                     - info->footprint_x / 2;
+
+      center_weight = info->footprint_x - left_weight - right_weight;
 
       if (src_x + 1 >= source_width)
         {
-           src[2]=src[1];
-           src[5]=src[4];
-           src[8]=src[7];
+           src[2] = src[1];
+           src[5] = src[4];
+           src[8] = src[7];
         }
+
       if (info->src_y + 1 >= source_height)
         {
-           src[6]=src[3];
-           src[7]=src[4];
-           src[8]=src[5];
+           src[6] = src[3];
+           src[7] = src[4];
+           src[8] = src[5];
         }
+
       box_filter (left_weight, center_weight, right_weight,
-                  top_weight, middle_weight, bottom_weight, foosum,
+                  top_weight, middle_weight, bottom_weight,
                   src, dest, bpp);
 
       dest += bpp;
@@ -1215,7 +1274,7 @@ render_image_tile_fault_nearest (RenderInfo *info)
   gint          tilex;
   gint          bpp;
   gint          src_x;
-  gint          dx;
+  gint64        dx;
 
   tile = tile_manager_get_tile (info->src_tiles,
                                 info->src_x, info->src_y, TRUE, FALSE);
@@ -1236,7 +1295,7 @@ render_image_tile_fault_nearest (RenderInfo *info)
 
   do
     {
-      const guchar *s     = src;
+      const guchar *s = src;
       gint          skipped;
 
       switch (bpp)
@@ -1305,10 +1364,6 @@ render_image_tile_fault_one_row (RenderInfo *info)
   gint          src_x;
   gint          skipped;
 
-  guint         footprint_x;
-  guint         footprint_y;
-  guint         foosum;
-
   guint         left_weight;
   guint         center_weight;
   guint         right_weight;
@@ -1321,13 +1376,18 @@ render_image_tile_fault_one_row (RenderInfo *info)
 
   source_width = tile_manager_width (info->src_tiles);
 
-  footprint_y = info->y_src_dec;
-  footprint_x = info->x_src_dec;
-  foosum      = footprint_x * footprint_y;
+  top_weight    = MAX (info->footprint_y / 2,
+                       info->footshift_y > 0 ? info->dy << info->footshift_y
+                                             : info->dy >> -info->footshift_y)
+                  - (info->footshift_y > 0 ? info->dy << info->footshift_y
+                                           : info->dy >> -info->footshift_y);
 
-  top_weight    = MAX (footprint_y / 2, info->dy) - info->dy;
-  bottom_weight = MAX (info->dy, footprint_y / 2) - footprint_y / 2;
-  middle_weight = footprint_y - top_weight - bottom_weight;
+  bottom_weight = MAX (info->footprint_y / 2,
+                       info->footshift_y > 0 ? info->dy << info->footshift_y
+                                             : info->dy >> -info->footshift_y)
+                  - info->footprint_y / 2;
+
+  middle_weight = info->footprint_y - top_weight - bottom_weight;
 
   tile[0] = tile_manager_get_tile (info->src_tiles,
                                    info->src_x, info->src_y, TRUE, FALSE);
@@ -1406,18 +1466,28 @@ render_image_tile_fault_one_row (RenderInfo *info)
 
   do
     {
-      left_weight  = MAX (footprint_x / 2, dx) - dx;
-      right_weight = MAX (dx, footprint_x / 2) - footprint_x / 2;
-      center_weight = footprint_x - left_weight - right_weight;
+      left_weight  = MAX (info->footprint_x / 2,
+                          info->footshift_x > 0 ? dx << info->footshift_x
+                                                : dx >> -info->footshift_x)
+                     - (info->footshift_x > 0 ? dx << info->footshift_x
+                                              : dx >> -info->footshift_x);
+
+      right_weight = MAX (info->footprint_x / 2,
+                          info->footshift_x > 0 ? dx << info->footshift_x
+                                                : dx >> -info->footshift_x)
+                     - info->footprint_x / 2;
+
+      center_weight = info->footprint_x - left_weight - right_weight;
 
       if (src_x + 1 >= source_width)
         {
-          src[2]=src[1];
-          src[5]=src[4];
-          src[8]=src[7];
+          src[2] = src[1];
+          src[5] = src[4];
+          src[8] = src[7];
         }
+
       box_filter (left_weight, center_weight, right_weight,
-                  top_weight, middle_weight, bottom_weight, foosum,
+                  top_weight, middle_weight, bottom_weight,
                   src, dest, bpp);
 
       dest += bpp;

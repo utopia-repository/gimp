@@ -113,12 +113,12 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 </refsect1>
 <refsect1 role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
-<refsect2><title><anchor id="GimpColorNotebook--tab-border"/>The &quot;<literal>tab-border</literal>&quot; style property</title>
+<refsect2><title><anchor id="GimpColorNotebook--tab-border"/>The <literal>&quot;tab-border&quot;</literal> style property</title>
 <indexterm><primary>GimpColorNotebook:tab-border</primary></indexterm><programlisting>  &quot;tab-border&quot;               <link linkend="gint">gint</link>                  : Read</programlisting>
 <para>Width of the border around the tab contents.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorNotebook--tab-icon-size"/>The &quot;<literal>tab-icon-size</literal>&quot; style property</title>
+<refsect2><title><anchor id="GimpColorNotebook--tab-icon-size"/>The <literal>&quot;tab-icon-size&quot;</literal> style property</title>
 <indexterm><primary>GimpColorNotebook:tab-icon-size</primary></indexterm><programlisting>  &quot;tab-icon-size&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read</programlisting>
 <para>Size for icons displayed in the tab.</para><para>Default value: GTK_ICON_SIZE_BUTTON</para>
 </refsect2>
@@ -128,4 +128,6 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

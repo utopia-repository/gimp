@@ -118,6 +118,9 @@
 /* Define to 1 if you have the isfinite function. */
 #undef HAVE_ISFINITE
 
+/* Define to 1 if lcms is available */
+#undef HAVE_LCMS
+
 /* Define to 1 if the lcms header must be included as lcms/lcms.h */
 #undef HAVE_LCMS_LCMS_H
 

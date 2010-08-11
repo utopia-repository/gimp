@@ -171,7 +171,7 @@ name.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpFileEntry-filename-changed"/>The &quot;filename-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpFileEntry-filename-changed"/>The <literal>&quot;filename-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpFileEntry::filename-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpFileEntry">GimpFileEntry</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>       user_data)      : Run First</programlisting>
 <para>
@@ -192,4 +192,6 @@ This signal is emitted whenever the user changes the filename.</para>
 </para>
 </refsect1>
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -417,7 +417,7 @@ if they need to add controls to this area.</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpPreview--update"/>The &quot;<literal>update</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpPreview--update"/>The <literal>&quot;update&quot;</literal> property</title>
 <indexterm><primary>GimpPreview:update</primary></indexterm><programlisting>  &quot;update&quot;                   <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
@@ -425,7 +425,7 @@ if they need to add controls to this area.</para>
 </refsect1>
 <refsect1 role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
-<refsect2><title><anchor id="GimpPreview--size"/>The &quot;<literal>size</literal>&quot; style property</title>
+<refsect2><title><anchor id="GimpPreview--size"/>The <literal>&quot;size&quot;</literal> style property</title>
 <indexterm><primary>GimpPreview:size</primary></indexterm><programlisting>  &quot;size&quot;                     <link linkend="gint">gint</link>                  : Read</programlisting>
 <para></para><para>Allowed values: [1,1024]</para>
 <para>Default value: 200</para>
@@ -435,7 +435,7 @@ if they need to add controls to this area.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpPreview-invalidated"/>The &quot;invalidated&quot; signal</title>
+<refsect2><title><anchor id="GimpPreview-invalidated"/>The <literal>&quot;invalidated&quot;</literal> signal</title>
 <indexterm><primary>GimpPreview::invalidated</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
                                                         <link linkend="gpointer">gpointer</link>     user_data)        : Run First</programlisting>
 <para>
@@ -452,4 +452,6 @@ if they need to add controls to this area.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

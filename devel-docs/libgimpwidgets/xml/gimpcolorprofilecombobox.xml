@@ -219,7 +219,7 @@ with the given <parameter>label</parameter> (or <parameter>filename</parameter> 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpColorProfileComboBox--dialog"/>The &quot;<literal>dialog</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorProfileComboBox--dialog"/>The <literal>&quot;dialog&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorProfileComboBox:dialog</primary></indexterm><programlisting>  &quot;dialog&quot;                   <link linkend="GtkDialog">GtkDialog</link>             : Read / Write / Construct Only</programlisting>
 <para>
 <link linkend="GtkDialog"><type>GtkDialog</type></link> to present when the user selects the
@@ -229,7 +229,7 @@ with the given <parameter>label</parameter> (or <parameter>filename</parameter> 
 </para><para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorProfileComboBox--model"/>The &quot;<literal>model</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorProfileComboBox--model"/>The <literal>&quot;model&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorProfileComboBox:model</primary></indexterm><programlisting>  &quot;model&quot;                    <link linkend="GimpColorProfileStore">GimpColorProfileStore</link>  : Read / Write</programlisting>
 <para>
 Overrides the "model" property of the <link linkend="GtkComboBox"><type>GtkComboBox</type></link> class.
@@ -246,4 +246,6 @@ Overrides the "model" property of the <link linkend="GtkComboBox"><type>GtkCombo
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

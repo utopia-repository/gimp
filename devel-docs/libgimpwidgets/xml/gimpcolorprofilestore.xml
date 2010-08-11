@@ -137,7 +137,7 @@ the user).</para>
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpColorProfileStore--history"/>The &quot;<literal>history</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpColorProfileStore--history"/>The <literal>&quot;history&quot;</literal> property</title>
 <indexterm role="GIMP 2.4"><primary>GimpColorProfileStore:history</primary></indexterm><programlisting>  &quot;history&quot;                  <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
 <para>
 Filename of the color history used to populate the profile store.</para>
@@ -153,4 +153,6 @@ Filename of the color history used to populate the profile store.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

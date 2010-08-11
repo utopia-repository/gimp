@@ -53,6 +53,11 @@ enum                <link linkend="GimpAspectType">GimpAspectType</link>;
 <link linkend="void">void</link>                <link linkend="gimp-number-pair-entry-set-user-override">gimp_number_pair_entry_set_user_override</link>
                                                         (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *entry,
                                                          <link linkend="gboolean">gboolean</link> user_override);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-number-pair-entry-get-default-text">gimp_number_pair_entry_get_default_text</link>
+                                                        (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *entry);
+<link linkend="void">void</link>                <link linkend="gimp-number-pair-entry-set-default-text">gimp_number_pair_entry_set_default_text</link>
+                                                        (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *entry,
+                                                         const <link linkend="gchar">gchar</link> *string);
 
 </synopsis>
 </refsynopsisdiv>
@@ -90,6 +95,7 @@ GimpNumberPairEntry implements
   &quot;<link linkend="GimpNumberPairEntry--aspect">aspect</link>&quot;                   <link linkend="GimpAspectType">GimpAspectType</link>        : Read / Write
   &quot;<link linkend="GimpNumberPairEntry--default-left-number">default-left-number</link>&quot;      <link linkend="gdouble">gdouble</link>               : Read / Write
   &quot;<link linkend="GimpNumberPairEntry--default-right-number">default-right-number</link>&quot;     <link linkend="gdouble">gdouble</link>               : Read / Write
+  &quot;<link linkend="GimpNumberPairEntry--default-text">default-text</link>&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write
   &quot;<link linkend="GimpNumberPairEntry--left-number">left-number</link>&quot;              <link linkend="gdouble">gdouble</link>               : Read / Write
   &quot;<link linkend="GimpNumberPairEntry--max-valid-value">max-valid-value</link>&quot;          <link linkend="gdouble">gdouble</link>               : Read / Write
   &quot;<link linkend="GimpNumberPairEntry--min-valid-value">min-valid-value</link>&quot;          <link linkend="gdouble">gdouble</link>               : Read / Write
@@ -385,58 +391,105 @@ mode, setting default values will not affect the active values.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
+<refsect2>
+<title><anchor id="gimp-number-pair-entry-get-default-text" role="function" condition="since:GIMP 2.4"/>gimp_number_pair_entry_get_default_text ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_number_pair_entry_get_default_text</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_number_pair_entry_get_default_text
+                                                        (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *entry);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<listitem><simpara>  A <link linkend="GimpNumberPairEntry"><type>GimpNumberPairEntry</type></link> widget.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the string manully set to be shown, or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if values are
+         shown in a normal fashion.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-number-pair-entry-set-default-text" role="function" condition="since:GIMP 2.4"/>gimp_number_pair_entry_set_default_text ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_number_pair_entry_set_default_text</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_number_pair_entry_set_default_text
+                                                        (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *entry,
+                                                         const <link linkend="gchar">gchar</link> *string);</programlisting>
+<para>
+Causes the entry to show a given string when in automatic mode,
+instead of the default numbers. The only thing this does is making
+the <link linkend="GimpNumberPairEntry"><type>GimpNumberPairEntry</type></link> showing this string, the internal state
+and API calls are not affected.
+</para>
+<para>
+Set the default string to <link linkend="NULL:CAPS"><literal>NULL</literal></link> to display default values as
+normal.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<listitem><simpara>  A <link linkend="GimpNumberPairEntry"><type>GimpNumberPairEntry</type></link> widget.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>string</parameter>&nbsp;:</term>
+<listitem><simpara> Default string.
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.4
+</para></refsect2>
 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpNumberPairEntry--allow-simplification"/>The &quot;<literal>allow-simplification</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--allow-simplification"/>The <literal>&quot;allow-simplification&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:allow-simplification</primary></indexterm><programlisting>  &quot;allow-simplification&quot;     <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Whether to allow simplification.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--aspect"/>The &quot;<literal>aspect</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--aspect"/>The <literal>&quot;aspect&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:aspect</primary></indexterm><programlisting>  &quot;aspect&quot;                   <link linkend="GimpAspectType">GimpAspectType</link>        : Read / Write</programlisting>
 <para></para><para>Default value: GIMP_ASPECT_SQUARE</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--default-left-number"/>The &quot;<literal>default-left-number</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--default-left-number"/>The <literal>&quot;default-left-number&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:default-left-number</primary></indexterm><programlisting>  &quot;default-left-number&quot;      <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 100</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--default-right-number"/>The &quot;<literal>default-right-number</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--default-right-number"/>The <literal>&quot;default-right-number&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:default-right-number</primary></indexterm><programlisting>  &quot;default-right-number&quot;     <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 100</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--left-number"/>The &quot;<literal>left-number</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--default-text"/>The <literal>&quot;default-text&quot;</literal> property</title>
+<indexterm><primary>GimpNumberPairEntry:default-text</primary></indexterm><programlisting>  &quot;default-text&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<para>String to show when in automatic mode.</para><para>Default value: NULL</para>
+</refsect2>
+<refsect2><title><anchor id="GimpNumberPairEntry--left-number"/>The <literal>&quot;left-number&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:left-number</primary></indexterm><programlisting>  &quot;left-number&quot;              <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 100</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--max-valid-value"/>The &quot;<literal>max-valid-value</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--max-valid-value"/>The <literal>&quot;max-valid-value&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:max-valid-value</primary></indexterm><programlisting>  &quot;max-valid-value&quot;          <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Maximum value valid when parsing input.</para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 1.79769e+308</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--min-valid-value"/>The &quot;<literal>min-valid-value</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--min-valid-value"/>The <literal>&quot;min-valid-value&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:min-valid-value</primary></indexterm><programlisting>  &quot;min-valid-value&quot;          <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Minimum value valid when parsing input.</para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 2.22507e-308</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--ratio"/>The &quot;<literal>ratio</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--ratio"/>The <literal>&quot;ratio&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:ratio</primary></indexterm><programlisting>  &quot;ratio&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--right-number"/>The &quot;<literal>right-number</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--right-number"/>The <literal>&quot;right-number&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:right-number</primary></indexterm><programlisting>  &quot;right-number&quot;             <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: &gt;= G_MINDOUBLE</para>
 <para>Default value: 100</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--separators"/>The &quot;<literal>separators</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--separators"/>The <literal>&quot;separators&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:separators</primary></indexterm><programlisting>  &quot;separators&quot;               <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
 <para>A string of valid separators.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2><title><anchor id="GimpNumberPairEntry--user-override"/>The &quot;<literal>user-override</literal>&quot; property</title>
+<refsect2><title><anchor id="GimpNumberPairEntry--user-override"/>The <literal>&quot;user-override&quot;</literal> property</title>
 <indexterm><primary>GimpNumberPairEntry:user-override</primary></indexterm><programlisting>  &quot;user-override&quot;            <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Whether the widget is in 'user override' mode.</para><para>Default value: FALSE</para>
 </refsect2>
@@ -445,7 +498,7 @@ mode, setting default values will not affect the active values.</para>
 
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpNumberPairEntry-numbers-changed"/>The &quot;numbers-changed&quot; signal</title>
+<refsect2><title><anchor id="GimpNumberPairEntry-numbers-changed"/>The <literal>&quot;numbers-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpNumberPairEntry::numbers-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *gimpnumberpairentry,
                                                         <link linkend="gpointer">gpointer</link>             user_data)                : Run First</programlisting>
 <para>
@@ -457,7 +510,7 @@ mode, setting default values will not affect the active values.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpNumberPairEntry-ratio-changed"/>The &quot;ratio-changed&quot; signal</title>
+</variablelist></refsect2><refsect2><title><anchor id="GimpNumberPairEntry-ratio-changed"/>The <literal>&quot;ratio-changed&quot;</literal> signal</title>
 <indexterm><primary>GimpNumberPairEntry::ratio-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpNumberPairEntry">GimpNumberPairEntry</link> *gimpnumberpairentry,
                                                         <link linkend="gpointer">gpointer</link>             user_data)                : Run First</programlisting>
 <para>
@@ -474,4 +527,6 @@ mode, setting default values will not affect the active values.</para>
 
 
 
+
+<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

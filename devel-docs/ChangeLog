@@ -1,3 +1,32 @@
+2007-10-22  Sven Neumann  <sven@gimp.org>
+
+	* devel-docs/app/app-sections.txt: updated.
+
+2007-10-18  Raphaël Quinet  <raphael@gimp.org>
+
+	* parasites.txt: updated, re-ordered the list to have first the
+	global parasites, then image parasites, then layer parasites.
+
+2007-10-17  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml: regenerated.
+
+2007-10-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: updated.
+
+	* libgimpwidgets/tmpl/gimpnumberpairentry.sgml: regenerated.
+
+2007-10-09  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt
+	* app/app-docs.sgml: updated.
+
+2007-10-01  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt
+	* app/app-docs.sgml: updated.
+
 2007-09-21  Sven Neumann  <sven@gimp.org>
 
 	* libgimp/libgimp-sections.txt: added gimp_layer_flatten.

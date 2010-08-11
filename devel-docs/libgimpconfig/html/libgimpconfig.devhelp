@@ -31,15 +31,23 @@
     <function name="gimp_config_duplicate ()" link="libgimpconfig-GimpConfig.html#gimp-config-duplicate"/>
     <function name="gimp_config_is_equal_to ()" link="libgimpconfig-GimpConfig.html#gimp-config-is-equal-to"/>
     <function name="gimp_config_reset ()" link="libgimpconfig-GimpConfig.html#gimp-config-reset"/>
+    <function name="" link="libgimpconfig-GimpConfig.html#id2617023"/>
+    <function name="" link="libgimpconfig-GimpConfig.html#id2617024"/>
     <function name="gimp_config_deserialize_properties ()" link="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties"/>
     <function name="gimp_config_deserialize_property ()" link="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property"/>
+    <function name="" link="libgimpconfig-gimpconfig-deserialize.html#id2574329"/>
+    <function name="" link="libgimpconfig-gimpconfig-deserialize.html#id2574330"/>
     <function name="gimp_config_serialize_properties ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-properties"/>
     <function name="gimp_config_serialize_changed_properties ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-changed-properties"/>
     <function name="gimp_config_serialize_property ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property"/>
     <function name="gimp_config_serialize_value ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value"/>
+    <function name="" link="libgimpconfig-gimpconfig-serialize.html#id2614435"/>
+    <function name="" link="libgimpconfig-gimpconfig-serialize.html#id2614436"/>
     <function name="enum GimpConfigError" link="libgimpconfig-GimpConfigError.html#GimpConfigError"/>
     <function name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"/>
     <function name="gimp_config_error_quark ()" link="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"/>
+    <function name="" link="libgimpconfig-GimpConfigError.html#id2585798"/>
+    <function name="" link="libgimpconfig-GimpConfigError.html#id2585799"/>
     <function name="GIMP_CONFIG_PARAM_SERIALIZE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS"/>
     <function name="GIMP_CONFIG_PARAM_AGGREGATE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS"/>
     <function name="GIMP_CONFIG_PARAM_RESTART" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS"/>
@@ -62,6 +70,8 @@
     <function name="GIMP_CONFIG_INSTALL_PROP_UNIT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS"/>
     <function name="GIMP_CONFIG_INSTALL_PROP_OBJECT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS"/>
     <function name="GIMP_CONFIG_INSTALL_PROP_POINTER()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS"/>
+    <function name="" link="libgimpconfig-gimpconfig-params.html#id2621461"/>
+    <function name="" link="libgimpconfig-gimpconfig-params.html#id2621462"/>
     <function name="enum GimpConfigPathType" link="libgimpconfig-gimpconfig-path.html#GimpConfigPathType"/>
     <function name="gimp_param_spec_config_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path"/>
     <function name="gimp_param_spec_config_path_type ()" link="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path-type"/>
@@ -70,11 +80,15 @@
     <function name="gimp_config_build_writable_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path"/>
     <function name="gimp_config_build_plug_in_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path"/>
     <function name="GIMP_VALUE_HOLDS_CONFIG_PATH()" link="libgimpconfig-gimpconfig-path.html#GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS"/>
+    <function name="" link="libgimpconfig-gimpconfig-path.html#id2621544"/>
+    <function name="" link="libgimpconfig-gimpconfig-path.html#id2621545"/>
     <function name="gimp_config_diff ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-diff"/>
     <function name="gimp_config_sync ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-sync"/>
     <function name="gimp_config_reset_properties ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-reset-properties"/>
     <function name="gimp_config_reset_property ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-reset-property"/>
     <function name="gimp_config_string_append_escaped ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-string-append-escaped"/>
+    <function name="" link="libgimpconfig-gimpconfig-utils.html#id2622308"/>
+    <function name="" link="libgimpconfig-gimpconfig-utils.html#id2622309"/>
     <function name="GimpConfigWriter" link="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter"/>
     <function name="gimp_config_writer_new_file ()" link="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-file"/>
     <function name="gimp_config_writer_new_fd ()" link="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-fd"/>
@@ -91,6 +105,8 @@
     <function name="gimp_config_writer_revert ()" link="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-revert"/>
     <function name="gimp_config_writer_close ()" link="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-close"/>
     <function name="gimp_config_writer_finish ()" link="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-finish"/>
+    <function name="" link="libgimpconfig-GimpConfigWriter.html#id2626112"/>
+    <function name="" link="libgimpconfig-GimpConfigWriter.html#id2626113"/>
     <function name="gimp_scanner_new_file ()" link="libgimpconfig-GimpScanner.html#gimp-scanner-new-file"/>
     <function name="gimp_scanner_new_string ()" link="libgimpconfig-GimpScanner.html#gimp-scanner-new-string"/>
     <function name="gimp_scanner_destroy ()" link="libgimpconfig-GimpScanner.html#gimp-scanner-destroy"/>
@@ -103,6 +119,8 @@
     <function name="gimp_scanner_parse_float ()" link="libgimpconfig-GimpScanner.html#gimp-scanner-parse-float"/>
     <function name="gimp_scanner_parse_color ()" link="libgimpconfig-GimpScanner.html#gimp-scanner-parse-color"/>
     <function name="gimp_scanner_parse_matrix2 ()" link="libgimpconfig-GimpScanner.html#gimp-scanner-parse-matrix2"/>
+    <function name="" link="libgimpconfig-GimpScanner.html#id2626997"/>
+    <function name="" link="libgimpconfig-GimpScanner.html#id2626998"/>
     <function name="GimpColorConfig" link="GimpColorConfig.html#GimpColorConfig-struct"/>
     <function name="enum GimpColorManagementMode" link="GimpColorConfig.html#GimpColorManagementMode"/>
     <function name="enum GimpColorRenderingIntent" link="GimpColorConfig.html#GimpColorRenderingIntent"/>
@@ -112,8 +130,12 @@
     <function name="The &quot;display-profile-from-gdk&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk"/>
     <function name="The &quot;display-rendering-intent&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-rendering-intent"/>
     <function name="The &quot;mode&quot; property" link="GimpColorConfig.html#GimpColorConfig--mode"/>
+    <function name="The &quot;out-of-gamut-color&quot; property" link="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color"/>
     <function name="The &quot;printer-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--printer-profile"/>
     <function name="The &quot;rgb-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--rgb-profile"/>
+    <function name="The &quot;simulation-gamut-check&quot; property" link="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check"/>
     <function name="The &quot;simulation-rendering-intent&quot; property" link="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent"/>
+    <function name="" link="GimpColorConfig.html#id2598498"/>
+    <function name="" link="GimpColorConfig.html#id2598499"/>
   </functions>
 </book>

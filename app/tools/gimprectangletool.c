@@ -1896,8 +1896,8 @@ gimp_rectangle_tool_update_handle_sizes (GimpRectangleTool *rectangle)
  * gimp_rectangle_tool_scale_has_changed:
  * @rectangle_tool: A #GimpRectangleTool.
  *
- * Returns %TRUE if the scale that was used to calculate handle sizes
- * is not the same as the current shell scale.
+ * Returns: %TRUE if the scale that was used to calculate handle sizes
+ *          is not the same as the current shell scale.
  */
 static gboolean
 gimp_rectangle_tool_scale_has_changed (GimpRectangleTool *rectangle_tool)
@@ -1939,6 +1939,54 @@ gimp_rectangle_tool_start (GimpRectangleTool *rectangle,
                                 _("Rectangle: "), 0, " x ", 0, NULL);
 
   gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), tool->display);
+
+  if (options_private->fixed_width_entry)
+    {
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options_private->fixed_width_entry),
+                                      0, display->image->xresolution, FALSE);
+      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options_private->fixed_width_entry),
+                                0, 0, display->image->width);
+    }
+
+  if (options_private->fixed_height_entry)
+    {
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options_private->fixed_height_entry),
+                                      0, display->image->yresolution, FALSE);
+      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options_private->fixed_height_entry),
+                                0, 0, display->image->height);
+    }
+
+  if (options_private->x_entry)
+    {
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options_private->x_entry),
+                                      0, display->image->xresolution, FALSE);
+      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options_private->x_entry),
+                                0, 0, display->image->width);
+    }
+
+  if (options_private->y_entry)
+    {
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options_private->y_entry),
+                                      0, display->image->yresolution, FALSE);
+      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options_private->y_entry),
+                                0, 0, display->image->height);
+    }
+
+  if (options_private->width_entry)
+    {
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options_private->width_entry),
+                                      0, display->image->xresolution, FALSE);
+      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options_private->width_entry),
+                                0, 0, display->image->width);
+    }
+
+  if (options_private->height_entry)
+    {
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options_private->height_entry),
+                                      0, display->image->yresolution, FALSE);
+      gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options_private->height_entry),
+                                0, 0, display->image->height);
+    }
 
   if (options_private->auto_shrink_button)
     {
@@ -2059,8 +2107,8 @@ gimp_rectangle_tool_update_options (GimpRectangleTool *rectangle,
                                    rectangle);
 
   g_object_set (options,
-                "x0", x,
-                "y0", y,
+                "x", x,
+                "y", y,
                 NULL);
 
   g_object_set (options,
@@ -2146,21 +2194,21 @@ gimp_rectangle_tool_options_notify (GimpRectangleOptions *options,
   if (! GIMP_TOOL (rectangle)->display)
     return;
 
-  if (! strcmp (pspec->name, "x0"))
+  if (! strcmp (pspec->name, "x"))
     {
-      if (private->x1 != options_private->x0)
+      if (private->x1 != options_private->x)
         gimp_rectangle_tool_synthesize_motion (rectangle,
                                                RECT_MOVING,
-                                               options_private->x0,
+                                               options_private->x,
                                                private->y1);
     }
-  else if (! strcmp (pspec->name, "y0"))
+  else if (! strcmp (pspec->name, "y"))
     {
-      if (private->y1 != options_private->y0)
+      if (private->y1 != options_private->y)
         gimp_rectangle_tool_synthesize_motion (rectangle,
                                                RECT_MOVING,
                                                private->x1,
-                                               options_private->y0);
+                                               options_private->y);
     }
   else if (! strcmp (pspec->name, "width"))
     {
@@ -2210,6 +2258,95 @@ gimp_rectangle_tool_options_notify (GimpRectangleOptions *options,
                                                  RECT_RESIZING_BOTTOM,
                                                  private->x2,
                                                  y2);
+        }
+    }
+  else if (! strcmp (pspec->name, "desired-fixed-size-width"))
+    {
+      /* We are only interested in when width and height swaps, so
+       * it's enough to only check e.g. for width.
+       */
+
+      GimpTool *tool   = GIMP_TOOL (rectangle);
+      gint      width  = private->x2 - private->x1;
+      gint      height = private->y2 - private->y1;
+
+      /* Depending on a bunch of conditions, we might want to
+       * immedieately switch width and height of the pending
+       * rectangle.
+       */
+      if (options_private->fixed_rule_active                   &&
+          tool->display                              != NULL   &&
+          tool->button_press_state                   == 0      &&
+          tool->active_modifier_state                == 0      &&
+          options_private->desired_fixed_size_width  == height &&
+          options_private->desired_fixed_size_height == width)
+        {
+          gdouble x = private->x1;
+          gdouble y = private->y1;
+
+          gimp_rectangle_tool_synthesize_motion (rectangle,
+                                                 RECT_RESIZING_LOWER_RIGHT,
+                                                 private->x2,
+                                                 private->y2);
+
+          /* For some reason these needs to be set separately... */
+          g_object_set (options,
+                        "x", x,
+                        NULL);
+          g_object_set (options,
+                        "y", y,
+                        NULL);
+        }
+    }
+  else if (! strcmp (pspec->name, "aspect-numerator"))
+    {
+      /* We are only interested in when numerator and denominator
+       * swaps, so it's enough to only check e.g. for numerator.
+       */
+
+      GimpTool *tool              = GIMP_TOOL (rectangle);
+      double    width             = private->x2 - private->x1;
+      double    height            = private->y2 - private->y1;
+      gdouble   new_inverse_ratio = options_private->aspect_denominator /
+                                    options_private->aspect_numerator;
+      gdouble   lower_ratio;
+      gdouble   higher_ratio;
+
+      /* The ratio of the Fixed: Aspect ratio rule and the pending
+       * rectangle is very rarely exactly the same so use an
+       * interval. For small rectangles the below code will
+       * automatically yield a more generous accepted ratio interval
+       * which is exactly what we want.
+       */
+      if (width > height && height > 1.0)
+        {
+          lower_ratio  = width / (height + 1.0);
+          higher_ratio = width / (height - 1.0);
+        }
+      else
+        {
+          lower_ratio  = (width - 1.0) / height;
+          higher_ratio = (width + 1.0) / height;
+        }
+
+      /* Depending on a bunch of conditions, we might want to
+       * immedieately switch width and height of the pending
+       * rectangle.
+       */
+      if (options_private->fixed_rule_active               &&
+          tool->display               != NULL              &&
+          tool->button_press_state    == 0                 &&
+          tool->active_modifier_state == 0                 &&
+          lower_ratio                 <  new_inverse_ratio &&
+          higher_ratio                >  new_inverse_ratio)
+        {
+          gdouble new_x2 = private->x1 + private->y2 - private->y1;
+          gdouble new_y2 = private->y1 + private->x2 - private->x1;
+
+          gimp_rectangle_tool_synthesize_motion (rectangle,
+                                                 RECT_RESIZING_LOWER_RIGHT,
+                                                 new_x2,
+                                                 new_y2);
         }
     }
   else if (! strcmp (pspec->name, "highlight"))
@@ -3267,24 +3404,24 @@ gimp_rectangle_tool_apply_aspect (GimpRectangleTool *rectangle_tool,
       return;
 
     case SIDE_TO_RESIZE_LEFT:
-      private->x1 = private->x2 - aspect * current_h;
+      private->x1 = ROUND (private->x2 - aspect * current_h);
       break;
 
     case SIDE_TO_RESIZE_RIGHT:
-      private->x2 = private->x1 + aspect * current_h;
+      private->x2 = ROUND (private->x1 + aspect * current_h);
       break;
 
     case SIDE_TO_RESIZE_TOP:
-      private->y1 = private->y2 - current_w / aspect;
+      private->y1 = ROUND (private->y2 - current_w / aspect);
       break;
 
     case SIDE_TO_RESIZE_BOTTOM:
-      private->y2 = private->y1 + current_w / aspect;
+      private->y2 = ROUND (private->y1 + current_w / aspect);
       break;
 
     case SIDE_TO_RESIZE_TOP_AND_BOTTOM_SYMMETRICALLY:
       {
-        gint correct_h = current_w / aspect;
+        gint correct_h = ROUND (current_w / aspect);
 
         private->y1 = private->center_y_on_fixed_center - correct_h / 2;
         private->y2 = private->y1 + correct_h;
@@ -3293,7 +3430,7 @@ gimp_rectangle_tool_apply_aspect (GimpRectangleTool *rectangle_tool,
 
     case SIDE_TO_RESIZE_LEFT_AND_RIGHT_SYMMETRICALLY:
       {
-        gint correct_w = current_h * aspect;
+        gint correct_w = ROUND (current_h * aspect);
 
         private->x1 = private->center_x_on_fixed_center - correct_w / 2;
         private->x2 = private->x1 + correct_w;

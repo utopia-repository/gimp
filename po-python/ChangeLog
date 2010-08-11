@@ -1,3 +1,38 @@
+2007-10-22  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Anas Husseini.
+
+2007-10-22  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+	* ru.po: Updated Russian translation.
+
+2007-10-18  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2007-10-16  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.skip: added app/widgets/gimpcolorselectorpalette.c
+	Fixes bug #487153.
+
+2007-10-11  Matic Žgur  <mr.zgur@gmail.com>
+
+	* sl.po: Updated Slovenian translation by Martin Srebotnjak and
+	Nedeljko Grabant.
+
+2007-09-29  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2007-09-25  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+	* ru.po: Updated Russian translation.
+
+2007-09-24  Matic Zgur  <mr.zgur@gmail.com>
+
+	* sl.po: Updated Slovenian translation by Martin Srebotnjak and
+	Nedeljko Grabant.
+
 2007-09-17  Sven Neumann  <sven@gimp.org>
 
 	* km.po: updated Kmer translation (bug #420417).

@@ -134,6 +134,9 @@ gimp_image_prop_view_init (GimpImagePropView *view)
   view->filename_label =
     gimp_image_prop_view_add_label (table, row++, _("File Name:"));
 
+  gtk_label_set_ellipsize (GTK_LABEL (view->filename_label),
+                           PANGO_ELLIPSIZE_MIDDLE);
+
   view->filesize_label =
     gimp_image_prop_view_add_label (table, row++, _("File Size:"));
 
@@ -292,8 +295,10 @@ gimp_image_prop_view_add_label (GtkTable    *table,
                         "yalign",     0.5,
                         "selectable", TRUE,
                         NULL);
+
   gtk_table_attach (table, label,
-                    1, 2, row, row + 1, GTK_FILL, GTK_FILL, 0, 0);
+                    1, 2, row, row + 1, GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
+
   gtk_widget_show (label);
 
   return label;
@@ -317,7 +322,7 @@ gimp_image_prop_view_label_set_filename (GtkWidget *label,
 
   if (uri)
     {
-      gchar *name = file_utils_uri_display_basename (uri);
+      gchar *name = file_utils_uri_display_name (uri);
 
       gtk_label_set_text (GTK_LABEL (label), name);
       g_free (name);
@@ -325,6 +330,7 @@ gimp_image_prop_view_label_set_filename (GtkWidget *label,
   else
     {
       gtk_label_set_text (GTK_LABEL (label), NULL);
+      gimp_help_set_help_data (gtk_widget_get_parent (label), NULL, NULL);
     }
 }
 

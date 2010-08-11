@@ -91,6 +91,8 @@ static void     gimp_levels_tool_color_picked   (GimpColorTool     *color_tool,
 
 static void     gimp_levels_tool_map            (GimpImageMapTool  *image_map_tool);
 static void     gimp_levels_tool_dialog         (GimpImageMapTool  *image_map_tool);
+static void     gimp_levels_tool_dialog_unmap   (GtkWidget         *dialog,
+                                                 GimpLevelsTool    *tool);
 static void     gimp_levels_tool_reset          (GimpImageMapTool  *image_map_tool);
 static gboolean gimp_levels_tool_settings_load  (GimpImageMapTool  *image_mao_tool,
                                                  gpointer           fp,
@@ -222,10 +224,8 @@ gimp_levels_tool_initialize (GimpTool     *tool,
                              GimpDisplay  *display,
                              GError      **error)
 {
-  GimpLevelsTool *l_tool = GIMP_LEVELS_TOOL (tool);
-  GimpDrawable   *drawable;
-
-  drawable = gimp_image_active_drawable (display->image);
+  GimpLevelsTool *l_tool   = GIMP_LEVELS_TOOL (tool);
+  GimpDrawable   *drawable = gimp_image_get_active_drawable (display->image);
 
   if (! drawable)
     return FALSE;
@@ -625,6 +625,19 @@ gimp_levels_tool_dialog (GimpImageMapTool *image_map_tool)
                                               HIGH_INPUT | ALL_CHANNELS);
   gtk_box_pack_start (GTK_BOX (hbbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
+
+  g_signal_connect (image_map_tool->shell, "unmap",
+                    G_CALLBACK (gimp_levels_tool_dialog_unmap),
+                    tool);
+}
+
+static void
+gimp_levels_tool_dialog_unmap (GtkWidget      *dialog,
+                               GimpLevelsTool *tool)
+{
+  if (tool->active_picker)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tool->active_picker),
+                                  FALSE);
 }
 
 static void

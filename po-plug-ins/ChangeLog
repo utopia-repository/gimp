@@ -1,3 +1,40 @@
+2007-07-24  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: removed plug-ins/metadata/interface.c.
+
+2007-07-08  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation by Francisco Vila.
+
+2007-07-05  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-07-05  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed a typo.
+
+2007-06-30 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: italian revision by Alessandro Falappa.
+
+2007-06-27  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.skip: skip plug-ins/metadata/interface.c and files in
+	plug-ins/imagemap which are generated from bison.
+
+2007-06-18  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: italian update.
+
+2007-06-18  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-06-14  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Updated Macedonian translation.
+
 2007-05-30  Jakub Friedl  <jfriedl@suse.cz>
 
 	* cs.po: Updated Czech translation.

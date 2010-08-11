@@ -29,16 +29,21 @@
 
 #define EPSILON 0.0001
 
+#define INT_MULT(a,b,t)  ((t) = (a) * (b) + 0x80, ((((t) >> 8) + (t)) >> 8))
+#define INT_BLEND(a,b,alpha,tmp)  (INT_MULT((a) - (b), alpha, tmp) + (b))
 
-static cairo_surface_t * create_surface   (guchar          *pixels,
-                                           gint             width,
-                                           gint             height,
-                                           gint             rowstride);
+
+static cairo_surface_t * create_surface_from_rgb  (guchar          *pixels,
+                                                   gint             width,
+                                                   gint             height);
+static cairo_surface_t * create_surface_from_rgba (guchar          *pixels,
+                                                   gint             width,
+                                                   gint             height);
 
 #if 0
-static void              draw_info_header (GtkPrintContext *context,
-                                           cairo_t         *cr,
-                                           PrintData       *data);
+static void              draw_info_header         (GtkPrintContext *context,
+                                                   cairo_t         *cr,
+                                                   PrintData       *data);
 #endif
 
 
@@ -46,38 +51,26 @@ gboolean
 draw_page_cairo (GtkPrintContext *context,
                  PrintData       *data)
 {
-  gint              tile_height = gimp_tile_height ();
-  gint32            image_id    = data->image_id;
-  gint32            drawable_id = data->drawable_id;
+  const gint        tile_height = gimp_tile_height ();
   GimpDrawable     *drawable;
   GimpPixelRgn      region;
   cairo_t          *cr;
+  cairo_surface_t  *surface     = NULL;
+  guchar           *pixels;
   gdouble           cr_width;
   gdouble           cr_height;
   gdouble           cr_dpi_x;
   gdouble           cr_dpi_y;
   gint              width;
   gint              height;
-  gint              rowstride;
   gint              y;
   gdouble           scale_x;
   gdouble           scale_y;
-  gdouble           x0 = 0;
-  gdouble           y0 = 0;
-  guchar           *pixels;
-  cairo_surface_t  *surface;
 
-  /* export the image */
-  gimp_export_image (&image_id, &drawable_id, NULL,
-                     GIMP_EXPORT_CAN_HANDLE_RGB   |
-                     GIMP_EXPORT_CAN_HANDLE_ALPHA |
-                     GIMP_EXPORT_NEEDS_ALPHA);
-
-  drawable = gimp_drawable_get (drawable_id);
+  drawable = gimp_drawable_get (data->drawable_id);
 
   width     = drawable->width;
   height    = drawable->height;
-  rowstride = drawable->bpp * width;
 
   cr = gtk_print_context_get_cairo_context (context);
 
@@ -88,9 +81,6 @@ draw_page_cairo (GtkPrintContext *context,
 
   scale_x = cr_dpi_x / data->xres;
   scale_y = cr_dpi_y / data->yres;
-
-  cairo_set_source_rgb (cr, 1, 1, 1);
-  cairo_paint (cr);
 
 #if 0
   /* print header if it is requested */
@@ -105,15 +95,14 @@ draw_page_cairo (GtkPrintContext *context,
     }
 #endif
 
-  x0 = (cr_width - scale_x * width) / 2;
-  y0 = (cr_height - scale_y * height) / 2;
-
-  cairo_translate (cr, x0, y0);
+  cairo_translate (cr,
+                   data->offset_x / cr_dpi_x * 72.0,
+                   data->offset_y / cr_dpi_y * 72.0);
   cairo_scale (cr, scale_x, scale_y);
 
   gimp_pixel_rgn_init (&region, drawable, 0, 0, width, height, FALSE, FALSE);
 
-  pixels = g_new (guchar, MIN (height, tile_height) * rowstride);
+  pixels = g_new (guchar, MIN (height, tile_height) * 4 * width);
 
   for (y = 0; y < height; y += tile_height)
     {
@@ -121,7 +110,15 @@ draw_page_cairo (GtkPrintContext *context,
 
       gimp_pixel_rgn_get_rect (&region, pixels, 0, y, width, h);
 
-      surface = create_surface (pixels, width, h, rowstride);
+      switch (drawable->bpp)
+        {
+        case 3:
+          surface = create_surface_from_rgb (pixels, width, h);
+          break;
+        case 4:
+          surface = create_surface_from_rgba (pixels, width, h);
+          break;
+        }
 
       cairo_set_source_surface (cr, surface, 0, y);
 
@@ -137,31 +134,43 @@ draw_page_cairo (GtkPrintContext *context,
 
   gimp_drawable_detach (drawable);
 
-  if (image_id != data->image_id)
-    gimp_image_delete (image_id);
-
   return TRUE;
 }
 
 static cairo_surface_t *
-create_surface (guchar *pixels,
-                gint    width,
-                gint    height,
-                gint    rowstride)
+create_surface_from_rgb (guchar *pixels,
+                         gint    width,
+                         gint    height)
 {
-  guint32 *cairo_data = (guint32 *) pixels;
-  guchar  *p;
-  gint     len;
-  gint     i;
+  guint32      *cairo_data = (guint32 *) pixels;
+  const guchar *p;
+  gsize         len;
+  gint          i;
 
-  /* knock pixels into the shape requested by cairo:
-   *
-   *  CAIRO_FORMAT_ARGB32:
-   *  each pixel is a 32-bit quantity, with alpha in the upper 8 bits,
-   *  then red, then green, then blue. The 32-bit quantities are
-   *  stored native-endian. Pre-multiplied alpha is used.
-   *
-   */
+  len = width * height;
+
+  for (i = len - 1, p = pixels + 3 * len - 1; i >= 0; i--)
+    {
+      guint32 b = *p--;
+      guint32 g = *p--;
+      guint32 r = *p--;
+
+      cairo_data[i] = 0xFF000000 | (r << 16) | (g << 8) | b;
+    }
+
+  return cairo_image_surface_create_for_data (pixels, CAIRO_FORMAT_RGB24,
+                                              width, height, 4 * width);
+}
+
+static cairo_surface_t *
+create_surface_from_rgba (guchar *pixels,
+                          gint    width,
+                          gint    height)
+{
+  guint32      *cairo_data = (guint32 *) pixels;
+  const guchar *p;
+  gsize         len;
+  gsize         i;
 
   len = width * height;
 
@@ -174,18 +183,20 @@ create_surface (guchar *pixels,
 
       if (a != 255)
         {
-          gdouble alpha = a / 255.0;
+          guint32 tmp;
 
-          r *= alpha;
-          g *= alpha;
-          b *= alpha;
+          /* composite on a white background */
+
+          r = INT_BLEND (r, 255, a, tmp);
+          g = INT_BLEND (g, 255, a, tmp);
+          b = INT_BLEND (b, 255, a, tmp);
         }
 
-      cairo_data[i] = (a << 24) + (r << 16) + (g << 8) + b;
+      cairo_data[i] = 0xFF000000 | (r << 16) | (g << 8) | b;
     }
 
-  return cairo_image_surface_create_for_data (pixels, CAIRO_FORMAT_ARGB32,
-                                              width, height, rowstride);
+  return cairo_image_surface_create_for_data (pixels, CAIRO_FORMAT_RGB24,
+                                              width, height, 4 * width);
 }
 
 #if 0

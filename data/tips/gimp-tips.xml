@@ -47,7 +47,7 @@
     <welcome xml:lang="ne"><big>जीएनयु छवि परिचालन कार्यक्रममा स्वागत छ !</big></welcome>
     <welcome xml:lang="nl"><big>Welkom bij de GNU Image Manipulation Program!</big></welcome>
     <welcome xml:lang="pa"><big> ਜੈਮਪ (ਗਨੂ ਇਮੈਜ ਮੈਨੂਪੂਲੇਸ਼ਨ ਪ੍ਰੋਗਰਾਮ) ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ!</big></welcome>
-    <welcome xml:lang="pl"><big>Witaj w programie GIMP - GNU Image Manipulation Program!</big></welcome>
+    <welcome xml:lang="pl"><big>Witamy w programie GIMP - GNU Image Manipulation Program!</big></welcome>
     <welcome xml:lang="ru"><big>Добро пожаловать в GIMP !</big></welcome>
     <welcome xml:lang="sk"><big>Víta vás GNU program na prácu s obrázkami GIMP!</big></welcome>
     <welcome xml:lang="uk"><big>Ласкаво просимо до GIMP!</big></welcome>
@@ -93,6 +93,11 @@
 
   <tip level="beginner">
     <thetip>You can get context-sensitive help for most of GIMP's features by pressing the F1 key at any time. This also works inside the menus.</thetip>
+    <thetip xml:lang="dz">ཁྱོད་ཀྱིས་སྐབས་དོན་- ཚོར་ཅན་གྲོགས་རམ་འདི་ དུས་ཚོད་ནམ་རང་འབད་རུང་ ཨེཕ་༡་ལྡེ་མིག་དེ་ཨེབ་པའི་ཐོག་ལས་ ཇི་ཨའི་ཨེམ་པི་གི་ཁྱད་རྣམ་ཚུ་མང་ཤོས་ཀྱི་དོན་ལུ་ འཐོབ་ཚུགས། འདི་གིས་དཀར་ཆག་ནང་ལུ་ཡང་ལཱ་འབད་བཏུབ་ཨིན།</thetip>
+    <thetip xml:lang="es">Puede obtener ayuda sensible al contexto para la mayoría de las características de GIMP pulsando la tecla F1 en cualquier momento. Esto también funciona dentro de los menús.</thetip>
+    <thetip xml:lang="it">È possibile ottenere un aiuto sensibile al contesto per la maggior parte delle funzioni di GIMP premendo F1 in qualsiasi istante. Funziona anche all'interno dei menu.</thetip>
+    <thetip xml:lang="mk">Можете да добиете помош при тековна работа за поевеќето елементи на ГИМП со притискање на F1 копчето во било кое време. Ова исто така работи и внатре во менијата.</thetip>
+    <thetip xml:lang="pl">Pomoc do wielu narzędzi i efektów programu GIMP, dostępna jest po naciśnięciu klawisza F1. Dostępna jest ona również w menu. </thetip>
   </tip>
   <tip level="beginner">
     <thetip>GIMP uses layers to let you organize your image. Think of them as a stack of slides or filters, such that looking through them you see a composite of their contents.</thetip>
@@ -220,6 +225,7 @@
     <thetip xml:lang="gl">A maioría dos complementos funciona na capa actual da imaxe coa que está a traballar. Nalgúns casos, será preciso xuntar todas as capas (Imaxe&#8594;Aplanar imaxe) se quere que o complemento funcione sobre toda a imaxe.</thetip>
     <thetip xml:lang="hu">A legtöbb bővítmény az aktuális kép aktuális rétegén végez műveletet. Bizonyos esetekben össze kell fésülni az összes réteget ("Kép→Egy réteggé lapítás" menüpont) ahhoz, hogy a bővítmény a teljes képet feldolgozza.</thetip>
     <thetip xml:lang="it">La maggior parte dei plug-in lavora sul livello attivo dell'immagine corrente. In alcuni casi è necessario unire tutti i livelli (Immagine-&gt;Appiattisci immagine) se vuoi che i plug-in agiscano sull'intera immagine.</thetip>
+    <thetip xml:lang="mk">Повеќето додатоци работат на тековниот слој од тековната слика. Во некои случаи, ќе морате да ги слепите сите слоеви(Слика-&gt;Израмни слика) ако сакате додатокот да работи на целата слика.</thetip>
     <thetip xml:lang="nb">De fleste programtilleggene bruker det gjeldende laget på det gjeldende bildet. I noen tilfeller vil du være nødt til å slå sammen alle lagene (Bilde→Flat ut bilde) hvis du vil at programtillegget skal brukes på hele bildet.</thetip>
     <thetip xml:lang="pl">Większość wtyczek wykonuje operacje tylko na aktywnej warstwie. Jeśli operacja dotyczyć ma wszystkich warstw, przed jej wykonaniem należy połączyć wszystkie warstwy w jedną ("Obraz&gt;Spłaszcz obraz").</thetip>
   </tip>
@@ -257,8 +263,9 @@
     <thetip xml:lang="gl">Non todos os efectos se poden aplicar a todos os tipos de imaxe. Unha entrada de menú gris indica esta situación. É posible que precise cambiar o modo de imaxe a RGB (Imaxe->Modo,->RGB), engadir unha canle alfa (Capa->Transparencia->Engadir canle alfa) ou alisala (Imaxe->Alisar imaxe).</thetip>
     <thetip xml:lang="hu">A kép típusától függően elképzelhető, hogy nem minden effektus alkalmazható arra. Ha nem alkalmazható, azt a megfelelő menübejegyzés szürkítése (inaktív állapota) jelzi. Ilyenkor szükség lehet a kép módjának RGB-re való módosítására ("Kép→Mód→RGB" menüpont), alfa-csatorna felvételére ("Réteg→Átlátszóság→Alfa-csatorna hozzáadása" menüpont) vagy a kép lapítására ("Kép→Egy réteggé lapítás" menüpont).</thetip>
     <thetip xml:lang="it">Non tutti gli effetti possono essere applicati ad ogni tipo di immagine. In caso di impossibilità la corrispondente voce del menu sarà resa in grigetto. Per risolvere il problema, basta cambiare la modalità immagine in RGB (Immagine-&gt;Modalità-&gt;RGB), aggiungere un canale alfa (Livelli-&gt;Trasparenze-&gt;Aggiungi canale alfa) o appiattire l'immagine (Immagine-&gt;Appiattisci immagine).</thetip>
+    <thetip xml:lang="mk">Не можат сите ефекти да се применат на сите видови слики. Ова е означено од сивиот нанос во менито. Можеби ќе морате да го промените режимот на сликата во RGB (Слика-&gt;Режим-&gt;RGB), да додадете алфа-канал (Слој-&gt;Додај Алфа канал) или да ја израмните (Слика-&gt;Израмни слика).</thetip>
     <thetip xml:lang="nb">Ikke alle effekter kan gjøres på alle typer bilder. Dette vises med en menyoppføring som er grået ut. Du kan være nødt til å endre bildet til RGB (Bilde→Modus→RGB), legge til en alfakanal (Lag→Gjennomsiktighet→Legg til alfakanal) eller flate det ut (Bilde→Flat ut bilde).</thetip>
-    <thetip xml:lang="pl">Nie wszystkie efekty mogą być wykorzystywane na obrazach dowolnych typów. Efekty, których nie można użyć na bieżącym obrazie, są wyszarzone w menu. Aby ich użyć, należy zmienić tryb obrazu na RGB ("Obraz&gt;Tryb&gt;RGB"), dodać kanał alfa ("Warstwa&gt;Przezroczystość&gt;Dodaj kanał alfa") lub też spłaszczyć obraz ("Obraz&gt;Spłaszcz obraz").</thetip>
+    <thetip xml:lang="pl">Nie wszystkie efekty mogą być wykorzystywane na obrazach dowolnych typów. Efekty, których nie można użyć na bieżącym obrazie, są w menu szare. Aby ich użyć, należy zmienić tryb obrazu na RGB ("Obraz&gt;Tryb&gt;RGB"), dodać kanał alfa ("Warstwa&gt;Przezroczystość&gt;Dodaj kanał alfa") lub spłaszczyć obraz ("Obraz&gt;Spłaszcz obraz").</thetip>
   </tip>
 
 
@@ -280,6 +287,7 @@
     <thetip xml:lang="gl">Pode arrastrar e soltar moitas cousas no GIMP. Por exemplo, ao arrastrar unha cor da caixa de ferramentas ou dunha paleta de cores e soltala nunha imaxe, encherá a selección actual con  esa cor.</thetip>
     <thetip xml:lang="hu">A GIMP-ben sokféle művelet elvégezhető húzással. Ha például áthúz egy színt az eszköztárról vagy egy színpalettáról egy képre, akkor a kijelölés kitöltésre kerül azzal a színnel.</thetip>
     <thetip xml:lang="it">È possibile trascinare molte cose con GIMP. Per esempio, trascinando un colore dalla finestra degli strumenti o da una tavolozza e rilasciandolo nell'immagine si riempirà la selezione corrente con quel colore.</thetip>
+    <thetip xml:lang="mk">Можете да влечете и испуштате многу работи во ГИМП. На пример, со влечење на боја од алатникот или од палетата на бои и со испуштање врз сликата, ќе ја исполни активната слика или селекција со избраната боја.</thetip>
     <thetip xml:lang="nb">Du kan dra og slippe mange ting i GIMP. For eksempel: Det å dra en farge fra verktøykassen eller fra en fargepalett, og slippe det i et bilde, vil fylle utvalget med den valgte fargen.</thetip>
     <thetip xml:lang="pl">W programie GIMP możesz przeciągać i upuszczać myszą wiele rzeczy. Np. przeciągnięcie koloru z narzędziówki (lub z palety kolorów) i upuszczenie go na obrazie spowoduje wypełnienie aktywnej warstwy (lub zaznaczenia) kolorem.</thetip>
   </tip>
@@ -288,12 +296,16 @@
     <thetip xml:lang="ar">يمكنك استخدام زر الفأرة الأوسط لتحريك الصورة (أو اضغط باستمرار زر <tt>المسافة</tt> أثناء تحريكك للفأرة).</thetip>
     <thetip xml:lang="ca">Podeu utilitzar el botó del mig del ratolí per a desplaçar la imatge (o opcionalment podeu prémer la <tt>barra d'espai</tt> mentre moveu el ratolí).</thetip>
     <thetip xml:lang="de">Passt das Bild nicht vollständig in das Fenster, kann der Ausschnitt mit der mittleren Maustaste verschoben werden (oder drücken Sie die Leertaste und bewegen Sie die Maus).</thetip>
+    <thetip xml:lang="dz">གཟུགས་བརྙན་གྱི་མཐའ་སྐོར་ཏེ་པཱན་འབད་ནིའི་དོན་ལུ་  ཁྱོད་ཀྱིས་བར་ན་གི་མའུསུ་ཨེབ་རྟ་འདི་ལག་ལེན་འཐབ་ཆོག་(ཡང་ན་གདམ་ཁ་ཅན་གྱི་ཐོག་ལས་ <tt>བར་སྟོང་ཕྲ་རིང་</tt> འདི་ཁྱོད་ཀྱིས་མཱའུསི་སྤོ་བཤུད་འབད་བའི་སྐབས་འཆང་་)།</thetip>
     <thetip xml:lang="en_GB">You can use the middle mouse button to pan around the image (or optionally hold <tt>Spacebar</tt> while you move the mouse).</thetip>
+    <thetip xml:lang="es">Puede usar el botón central del ratón para moverse por la imagen (opcionalmente, mantenga pulsada la <tt>barra espaciadora</tt> mientras mueve el ratón).</thetip>
     <thetip xml:lang="fr">Vous pouvez utiliser le bouton du milieu de la souris pour vous déplacer dans l'image (ou optionnellement maintenir <tt>ESPACE</tt> tandis que vous déplacez la souris).</thetip>
     <thetip xml:lang="gl">Pode empregar o botón central do rato para se desprazar pola imaxe (outra opción é premer e manter a tecla <tt>Espazo</tt> mentres move o rato).</thetip>
     <thetip xml:lang="hu">A képben való mozgásra használható a középső egérgomb (vagy az egér mozgatása közben a <tt>Szóköz</tt> billentyű lenyomva tartása).</thetip>
+    <thetip xml:lang="it">È possibile usare il tasto centrale del mouse per muoversi nell'immagine (oppure mantenendo premuta la <tt>barra spaziatrice</tt> mentre si muove il mouse).</thetip>
+    <thetip xml:lang="mk">Можете ка го користите средното копче од глушецот да се движите околу сликата (или по можност држете притиснато <tt>Space</tt> додека го движите глушецот)</thetip>
     <thetip xml:lang="nb">Du kan bruke midterste musknapp for å bevege deg rundt i bildet (eller alternativt holde nede mellomromsknappen mens du flytter musen.</thetip>
-    <thetip xml:lang="pl">Jeśli obraz jest większy od okna, do przewijania go możesz użyć środkowego przycisku myszy (lub przytrzymaj <tt>Spację</tt> kiedy będziesz przesuwał myszkę) .</thetip>
+    <thetip xml:lang="pl">Jeśli obraz jest większy od okna, do przewijania myszką obrazu, można użyć środkowego przycisku (lub przytrzymując <tt>Spację</tt>).</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>Click and drag on a ruler to place a guide on an image. All dragged selections will snap to the guides. You can remove guides by dragging them off the image with the Move tool.</thetip>
@@ -324,7 +336,7 @@
     <thetip xml:lang="ne">मार्गदर्शकलाई छविमा राख्न रुलरलाई क्लिक गरी तान्निहोस्। सबै तानिएका चयन मार्गदर्शकमा सटाइनेछ। तपाईँले मार्गदर्शकलाई सार्ने उपकरण छविबाट बाहिर तानेर हटाउन सक्नुहुन्छ।</thetip>
     <thetip xml:lang="nl">Klik en sleep een lineaal om een hulplijn op de afbeelding te plaatsen. Alle gesleepte selecties zullen uitlijnen met de hulplijnen.U kunt hulplijnen verwijderen door ze met het verplaatsingsgereedschap van de afbeelding af te slepen.</thetip>
     <thetip xml:lang="pa">ਪ੍ਰਤੀਬਿੰਬ ਉੱਪਰ ਸਹਾਇਕ ਸਥਾਪਿਤ ਕਰਨ ਲਈ ਪੈਮਾਨੇ ਨੂੰ ਕਲਿਕ ਕਰੋ ਤੇ ਖਿੱਚੋ।ਸਾਰੀਆਂ ਖਿਚੀਆਂ ਚੋਣਾਂ ਸਹਾਇਕ ਵਿੱਚ ਸ਼ਾਮਿਲ ਹੋ ਜਾਣਗੀਆਂ।ਤੁਸੀਂ Move ਸੰਦ ਨਾਲ ਪ੍ਰਤੀਬਿੰਬ ਵਿਚੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ ਸਹਾਇਕ ਨੂੰ ਹਟਾ ਸਕਦੇ ਹੋ।</thetip>
-    <thetip xml:lang="pl">Aby umieścić na obrazie prowadnicę, należy kliknąć linijkę i przeciągnąć ją w wybrane miejsce obrazu. Przy wszystkich operacjach wykonywanych z użyciem myszki wskaźnik będzie przyciągany do prowadnic. Aby usunąć prowadnicę, wystarczy wybrać narzędzie przesuwania, a następnie przeciągnąć prowadnicę poza obraz.</thetip>
+    <thetip xml:lang="pl">Aby umieścić na obrazie prowadnicę, należy kliknąć linijkę i przeciągnąć ją w wybrane miejsce obrazu. Przy wszystkich operacjach wykonywanych z użyciem myszki wskaźnik będzie przyciągany do prowadnic. Aby usunąć prowadnicę, wystarczy, a następnie przeciągnąć prowadnicę narzędziem "Przesunięcie"poza obraz.</thetip>
     <thetip xml:lang="ru">Чтобы поместить направляющую на изображение, нажмите на линейку и потяните. Все перемещаемые выделенные области будут «прилипать» к направляющим. Чтобы убрать направляющие, воспользуйтесь инструментом «Перемещение».</thetip>
     <thetip xml:lang="sk">Kliknutím a potiahnutím na pravítko umiestnite do obrázka vodítko.Všetky ťahané výbery budú pritiahnuté k týmto vodítkam. Vodítka môže odstrániť tak, že pomocou nástroja Presun ich vytiahnete mimo plochu obrázka.</thetip>
     <thetip xml:lang="sv">Klicka på en linjal och drag den för att placera en hjälplinje på en bild. Alla markeringar som dras kommer att fästas vid hjälplinjerna. Du kan ta bort hjälplinjer genom att dra dem utanför bilden med flyttverktyget.</thetip>
@@ -506,8 +518,9 @@
     <thetip xml:lang="gl">Pode axustar ou mover unha selección ao empregar <tt>Alt</tt>-e arrastrar. Se isto fai que a ventá se mova, o seu xestor de ventás xa está a usar a tecla <tt>Alt</tt>.</thetip>
     <thetip xml:lang="hu">Kijelölés átalakítása és áthelyezése az <tt>Alt</tt> billentyű nyomva tartásával végzett húzással lehetséges. Ha ez a kombináció az ablakot mozdítja el, akkor az ablakkezelő már használja ezt a kombinációt.</thetip>
     <thetip xml:lang="it">Puoi regolare o spostare una selezione premendo <tt>Alt</tt> e trascinando. Se si dovesse muovere la finestra, vuol dire che il tuo window manager usa già il tasto <tt>Alt</tt>.</thetip>
+    <thetip xml:lang="mk">Можете да ја прилагодите или поместите селекцијата со користење на <tt>Alt</tt>-повлечи. Ако ова прави да се поместува прозорецот, акцијата веќе го користи копчето <tt>Alt</tt>.</thetip>
     <thetip xml:lang="nb">Du kan justere og endre posisjon for et utvalg ved å bruke <tt>Alt</tt>-dra. Hvis dette gjør at vinduet flyttes, bruker vinduhåndtereren din <tt>Alt</tt>-knappen til andre ting.</thetip>
-    <thetip xml:lang="pl">Możesz ustawić lub przesunąć zaznaczenie, przeciągając je z klawiszem <tt>Alt</tt>. Jeśli to powoduje przesunięcie okna, spróbuj użyć jednocześnie klawiszy <tt>Shift+Alt</tt>.</thetip>
+    <thetip xml:lang="pl">Można ustawiać lub przesuwać zaznaczenie, przeciągając je z klawiszem <tt>Alt</tt>. Jeśli to powoduje przesunięcie okna, spróbuj użyć jednocześnie klawiszy <tt>Shift+Alt</tt>.</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can draw simple squares or circles using Edit→Stroke Selection. It strokes the edge of your current selection. More complex shapes can be drawn using the Path tool or with Filters→Render→Gfig.</thetip>
@@ -524,8 +537,9 @@
     <thetip xml:lang="gl">Pode debuxar círculos ou cadrados sinxelos ao usar Editar&#8594;Selección de trazo. Isto traza a marxe da súa selección actual. Pódense debuxar unhas formas máis complexas ao usar a ferramenta de camiño ou con Filtros&#8594;Renderizar&#8594;Gfig.</thetip>
     <thetip xml:lang="hu">Egyszerű négyzeteket és köröket rajzolhat a "Szerkesztés→Kijelölés körberajzolása" menüponttal. Ez a funkció megrajzolja az aktuális kijelölés határvonalait. A bonyolultabb alakzatok elkészíthetők az útvonaleszközzel vagy a "Szűrők→Megjelenítés→GFig" menüponttal.</thetip>
     <thetip xml:lang="it">Usando Modifica-&gt;Disegna selezione potrai disegnare semplici quadrati o cerchi tracciando la selezione corrente con il pennello attivo. Forme più complesse possono essere disegnate con lo strumento tracciati o con Filtri-&gt;Render-&gt;Gfig.</thetip>
+    <thetip xml:lang="mk">Можете да цртате едноставни квадрати или кругови со користење на Уреди-&gt;Исцртај селекција. Тоа го исцртува работ на вашата тековна селекција. По комплексни форми можат да се цртат со користење на алатката Патека или со Филтри-&gt;Исцртај-&gt;Gfig.</thetip>
     <thetip xml:lang="nb">Du kan tegne enkle firkanter eller sirkler med Rediger→Strek opp utvalg. Det vil streke opp kantene på utvalget ditt. Mer komplekse former kan bli tegnet ved å bruke baneverktøyet eller med Filter→Rendring→Gfig.</thetip>
-    <thetip xml:lang="pl">"Edycja -&gt; Ry_suj wzdłuż zaznaczenia..." pozwala na rysowanie bieżącym pędzlem krzywych wzdłuż krawędzi zaznaczenia. Bardziej złożone figury uzyskasz, używając opcji "Filtry -&gt; Renderowanie -&gt; Gfigury" lub narzędzia "Ścieżki".</thetip>
+    <thetip xml:lang="pl">"Edycja -&gt; Rysuj wzdłuż zaznaczenia..." pozwala na rysowanie bieżącym pędzlem krzywych wzdłuż krawędzi zaznaczenia. Bardziej złożone figury uzyskasz, używając opcji "Filtry -&gt; Renderowanie -&gt; Gfigury" lub narzędzia "Ścieżki".</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>If you stroke a path (Edit→Stroke Path), the paint tools can be used with their current settings. You can use the Paintbrush in gradient mode or even the Eraser or the Smudge tool.</thetip>
@@ -542,8 +556,9 @@
     <thetip xml:lang="gl">Se deseña un camiño (Editar->Trazar camiño), as ferramentas de pintura poden empregarse coa súa configuración actual. Pode utilizar o pincel en modo de gradación ou mesmo a goma ou a ferramenta de esborrar. Ferramenta.</thetip>
     <thetip xml:lang="hu">Egy útvonal körberajzoltatásakor ("Szerkesztés→Útvonal körberajzolása" menüpont) a festőeszközök az aktuális beállításaik szerint használhatók. Használhatja az Ecset eszközt például színátmenet-módban, vagy akár a Radír vagy a Maszatolás eszközt is.</thetip>
     <thetip xml:lang="it">Per delineare un tracciato (Modifica-&gt;Disegna tracciato), si possono usare anche gli strumenti di disegno con le loro impostazioni correnti. Si può usare il Pennello nella modalità gradiente oppure la Gomma o lo strumento Sfumino.</thetip>
+    <thetip xml:lang="mk">Ако исцртате патека (Уреди-&gt;Исцртај патека), можат да се користат алатките за цртање со нивните тековни поставки. Можете да ја користите Четката за цртање во режим на нијансирање или дури и Бришачот или алатката за флеки.</thetip>
     <thetip xml:lang="nb">Hvis du streker opp en bane (Rediger→Strek opp bane), kan tegneverktøyene bli brukt med de gjeldende innstillingene. Du kan bruke luftpensel i graderingsmodus eller til og med sletteverktøyet og utsmøringsverktøyet.</thetip>
-    <thetip xml:lang="pl">Podczas rysowania wzdłuż ścieżki ("Edycja&gt;_Rysuj wzdłuż ścieżki...") możliwe jest użycie dowolnego narzędzia rysowania z jego bieżącymi ustawieniami. Można więc pociągnąć ścieżkę "pędzlem" w trybie gradientu, "gumką" lub "rozsmarowywaniem".</thetip>
+    <thetip xml:lang="pl">Podczas rysowania wzdłuż ścieżki ("Edycja&gt;Rysuj wzdłuż ścieżki...") możliwe jest użycie dowolnego narzędzia rysowania z jego bieżącymi ustawieniami. Można więc pociągnąć ścieżkę "pędzlem" w trybie gradientu, "gumką" lub "rozsmarowywaniem".</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can create and edit complex selections using the Path tool. The Paths dialog allows you to work on multiple paths and to convert them to selections.</thetip>
@@ -638,8 +653,9 @@
     <thetip xml:lang="gl">Pode gardar unha selección nunha canle (Selección->Gardar en canle) e despois modificar esta canle con calquera ferramenta de pintura. Se emprega os botóns do diálogo de canles, pode activar a visibilidade desta canle nova ou convertela nunha selección.</thetip>
     <thetip xml:lang="hu">Elmenthet egy kijelölést csatornába ("Kijelölés→Mentés csatornába" menüpont), majd módosíthatja a csatornát bármely festőeszközzel. A Csatornák párbeszédablak gombjainak segítségével átkapcsolhatja az új csatorna láthatóságát, vagy kijelöléssé alakíthatja a csatornát.</thetip>
     <thetip xml:lang="it">Puoi salvare una selezione in un canale (Seleziona-&gt;Salva in Canale) e poi modificare il canale con gli strumenti di disegno. Con i pulsanti presenti nella finestra di dialogo Canali, puoi rendere visibile o invisibile il nuovo canale o convertirlo in una selezione.</thetip>
+    <thetip xml:lang="mk">Можете да ја зачувате селекцијата во канал (Избери-&gt;Зачувај во канал) и потоа да го промените овој канал со било која алатка за цртање. Со користење на копчињата во дијалогот Канали, можете да ја префрлате видливоста на овој нов канал или да го претворите во селекција.</thetip>
     <thetip xml:lang="nb">Du kan lagre et utvalg til en kanal (Velg→Lagre til kanal) og så endre denne kanalen med tegneverktøy. Ved å bruke knappene i kanalmenyen, kan du slå av og på synlighet for denne nye kanalen eller konvertere den til et utvalg.</thetip>
-    <thetip xml:lang="pl">Możesz zapisać zaznaczenie do kanału (Zaznaczenie&gt;Zapisz do kanału) i modyfikować je dowolnym narzędziem malarskim. Przyciskami w oknie "Kanały" możesz ustawić widoczność kanału lub przekonwertować go na zaznaczenie.</thetip>
+    <thetip xml:lang="pl">Można zapisywać zaznaczenie do kanału (Zaznaczenie&gt;Zapisz do kanału) i modyfikować je dowolnym narzędziem malarskim. Przyciskami w oknie "Kanały" możesz ustawić widoczność kanału lub przekonwertować go na zaznaczenie.</thetip>
   </tip>
 
 
@@ -679,8 +695,9 @@
     <thetip xml:lang="gl">Se a súa pantalla está moi desordenada, pode premer <tt>Tab</tt> varias veces nunha ventá de imaxe para ocultar ou mostrar a barra de ferramentas e outros diálogos.</thetip>
     <thetip xml:lang="hu">Ha zsúfolt a képernyő, akkor nyomja le a <tt>Tab</tt> billentyűt egy képablakban - ezzel a módszerrel váltogatni lehet az eszköztár és egyéb párbeszédablakok elrejtése és megjelenítése között.</thetip>
     <thetip xml:lang="it">Se lo schermo è troppo affollato, premi il tasto <tt>Tab</tt> più volte nella finestra dell'immagine per nascondere o mostrare la barra degli strumenti o le altre finestre di dialogo.</thetip>
+    <thetip xml:lang="mk">Ако вашиот екран е пренатрупан, можете да го притиснете копчето <tt>Tab</tt> во прозорецот на сликата служи да ги скрие/прикаже алатниците или другите дијалози.</thetip>
     <thetip xml:lang="nb">Hvis skjermen din er veldig rotete, kan du trykke <tt>Tab</tt> i et bildevindu for å skjule eller vise verktøykassen og andre menyvinduer.</thetip>
-    <thetip xml:lang="pl">Jeśli na ekranie jest zbyt mało miejsca, można ukryć część okien przyciskając  klawisz <tt>Tab</tt>. Każde przyciśnięcie spowoduje ukrycie lub wyświetlenie okien dialogowych lub narzędziówki.</thetip>
+    <thetip xml:lang="pl">Jeśli na ekranie jest zbyt mało miejsca, można ukryć część okien przyciskając klawisz <tt>Tab</tt>. Każde przyciśnięcie spowoduje ukrycie/wyświetlenie okien dialogowych lub narzędziówki.</thetip>
   </tip>
   <tip level="advanced">
     <thetip><tt>Shift</tt>-click on the eye icon in the Layers dialog to hide all layers but that one. <tt>Shift</tt>-click again to show all layers.</thetip>
@@ -742,6 +759,7 @@
     <thetip xml:lang="gl">Ao premer <tt>Ctrl</tt>- e na previsualización da máscara de capa no diálogo de capas, actívase o efecto da máscara de capa. Ao premer <tt>Alt</tt>- na previsualización da máscara de capa no diálogo de capas, actívase a vista da máscara directamente.</thetip>
     <thetip xml:lang="hu">A Rétegek párbeszédablakban a rétegmaszk hatásának átkapcsolásához kattintson a rétegmaszk előnézetére a <tt>Ctrl</tt> billentyűt nyomva tartva. Ha a maszk közvetlen megtekintését szeretné átkapcsolni, akkor a Rétegek párbeszédablakban az <tt>Alt</tt> billentyűt lenyomva tartva kattintson a rétegmaszk előnézetére.</thetip>
     <thetip xml:lang="it"><tt>Ctrl</tt>-clic sull'anteprima della maschera di livello nella finestra di dialogo Livelli abilita/disabilita l'effetto della maschera di livello. <tt>Alt</tt>-clic sull'anteprima nella finestra di dialogo dei Livelli abilita/disabilita la visualizzazione diretta della maschera.</thetip>
+    <thetip xml:lang="mk"><tt>Ctrl</tt>- и клик на прегледот на маската на слојот, во дијалогот за слоеви го префрла ефектот на маската на слојот. <tt>Alt</tt> и клик на прегледот на маската на слојот во дијалојот за слоеви го менува видикот директно на маската.</thetip>
     <thetip xml:lang="nb"><tt>Ctrl</tt>-klikk på lagmaskens forhåndsvisning i lagmenyen slår på og av effekten av lagmasken. <tt>Alt</tt>-klikk vil slå på og av visning av masken direkte.</thetip>
     <thetip xml:lang="pl"><tt>Ctrl</tt> i kliknięcie na podglądzie warstwy maski w oknie "Warstwy", przełącza efekt warstwy maski. <tt>Alt</tt> i kliknięcie na podglądzie warstwy maski w oknie "Warstwy", przełącza podgląd maski.</thetip>
   </tip>
@@ -760,6 +778,7 @@
     <thetip xml:lang="gl">Pode empregar <tt>Ctrl</tt>-<tt>Tab</tt> para alternar entre todas as capas dunha imaxe (se o seu administrador de ventás non bloquea estas teclas...)</thetip>
     <thetip xml:lang="hu">A kép rétegei közt való váltogatáshoz használható a <tt>Ctrl</tt>+<tt>Tab</tt> billentyűkombináció, amennyiben az ablakkezelő nem használja a kombinációt más célra.</thetip>
     <thetip xml:lang="it">Puoi usare <tt>Ctrl</tt>-<tt>Tab</tt> per spostarti tra tutti i livelli di un'immagine (a meno che questi tasti non vengano usati dal window manager ...).</thetip>
+    <thetip xml:lang="mk">Можете да користите <tt>Ctrl</tt>-<tt>Tab</tt> за да кружите низ сите слоеви во сликата (ако вашиот управувач, веќе не ги резервирал со прозорци тие копчиња...).</thetip>
     <thetip xml:lang="nb">Du kan bruke <tt>Ctrl</tt>-<tt>Tab</tt> for å bytte mellom lagene i et bilde (hvis ikke vindubehandleren allerede bruker denne kombinasjonen).</thetip>
     <thetip xml:lang="pl">Pomiędzy warstwami obrazu możesz przełączać się przy użyciu klawiszy <tt>Alt</tt>-<tt>Tab</tt> (o ile nie przechwyci jej twój menedżer okien).</thetip>
   </tip>
@@ -773,11 +792,12 @@
     <thetip xml:lang="dz"><tt>Ctrl</tt>-གདོང་གཞིའི་ཚོས་གཞི་གི་ཚབ་ལུ་རྒྱབ་གཞི་ཚོས་གཞི་ལག་ལེན་འཐབ་ནི་ལུ་   བ་ཀེཊི་བཀང་བའི་ལག་ཆས་དང་ཅིག་ཁར་ཨེབ་གཏང་འབད།  ཆ་འདྲ་བ་འབད་ <tt>Ctrl</tt>- ཚོས་གཞི་འདེམས་བྱེད་ལག་ཆས་དང་ཅིག་ཁར་ཨེབ་གཏང་འབད་མི་དེ་གིས་  གདོང་གཞི་ཚོས་གཞིའི་ཚབ་ལུ་རྒྱབ་གཞི་ཚོས་གཞི་འདི་  གཞི་སྒྲིག་འབདཝ་ཨིན།</thetip>
     <thetip xml:lang="en_GB"><tt>Ctrl</tt>-click with the Bucket Fill tool to have it use the background colour instead of the foreground colour. Similarly, <tt>Ctrl</tt>-clicking with the eyedropper tool sets the background colour instead of the foreground colour.</thetip>
     <thetip xml:lang="eo">Per <tt>Strkl</tt>-alklako kun la aktivita ilo de Pleniga Koloro, iĝos utiligata fona koloro anstataŭ malfona koloro. Simile per <tt>Strkl</tt>-alklako kun eltirilo, iĝos utiligata fona koloro anstataŭ malfona koloro.</thetip>
-    <thetip xml:lang="es">Presione <tt>Ctrl</tt> y pulse con la herramienta de «Cubo de Relleno» para que ésta utilice el color de fondo en lugar del color de frente. De forma similar, presione <tt>Ctrl</tt> y pulse con la herramienta «Cuentagotas» para establecer el color de fondo en lugar del color de frente.</thetip>
+    <thetip xml:lang="es">Presione <tt>Ctrl</tt> y pulse con la herramienta de «Cubo de relleno» para que ésta utilice el color de fondo en lugar del color de frente. De forma similar, presione <tt>Ctrl</tt> y pulse con la herramienta «Cuentagotas» para establecer el color de fondo en lugar del color de frente.</thetip>
     <thetip xml:lang="fr">Un <tt>CTRL</tt>+clic avec l'outil de remplissage et il utilisera la couleur d'arrière-plan au lieu de la couleur de premier-plan. De façon similaire, un <tt>CTRL</tt>+clic avec l'outil pipette capturera la couleur d'arrière-plan au lieu de la couleur de premier-plan.</thetip>
     <thetip xml:lang="gl">Prema <tt>Ctrl</tt> e a ferramenta da lata de recheo para que esta empregue a cor do fondo en lugar da cor do primeiro plano. De xeito semellante, ao premer <tt>Ctrl</tt>-e a ferramenta de contagotas establece a cor de fondo en lugar da cor do primeiro plano.</thetip>
     <thetip xml:lang="hu">A Kitöltés eszköz használata az előtérszín helyett a háttérszínnel: kattintás közben tartsa nyomva a <tt>Ctrl</tt> billentyűt. Hasonlóképpen: ha a Színpipetta eszközzel az előtérszín helyett a háttérszínt szeretné beállítani, akkor a <tt>Ctrl</tt> billentyűt lenyomva tartva végezze a kattintást.</thetip>
     <thetip xml:lang="it">Premendo <tt>Ctrl</tt>-clic con lo strumento di Riempimento Colore, sarà utilizzato il colore di sfondo invece di quello in primo piano. Similmente, <tt>Ctrl</tt>-clic con lo strumento di prelievo colore imposterà il colore di sfondo invece che di primo piano.</thetip>
+    <thetip xml:lang="mk"><tt>Ctrl</tt>- и клик со алатката Пополнување со боја, ќе може да ја користите бојата на позадината наместо бојата на предниот план. Со пипетата кога избирате боја, избирате од позадината не од бојата на предниот план. </thetip>
     <thetip xml:lang="nb"><tt>Ctrl</tt>-klikk med malingspannverktøyet for å få det til å bruke bakgrunnsfargen i stedet for forgrunnsfargen. På samme måte vil <tt>Ctrl</tt>-klikk med fargevelgeren velge bakgrunnsfargen i stedet for forgrunnsfargen.</thetip>
     <thetip xml:lang="pl"><tt>Ctrl</tt> i kliknięcie na "Wypełnienie kubełkiem", powoduje że do wypełnienia zostanie użyty kolor tła, zamiast koloru pierwszoplanowego. Podobnie <tt>Ctrl</tt> i kliknięcie na "Kroplomierzu" ustawia kolor tła zamiast koloru pierwszoplanowego.</thetip>
   </tip>
@@ -873,8 +893,9 @@
     <thetip xml:lang="gl">Se algunha das súas fotos escaneadas non tiver cor suficiente, pode mellorar facilmente o seu intervalo de ton co botón &quot;Auto&quot; na ferramenta de niveis (Cores->Niveis). Se existe o predominio dunha cor, pode corrixilo coa ferramente de curvas (Cores->Curvas).</thetip>
     <thetip xml:lang="hu">Ha bizonyos szkennelt fényképek nem eléggé színesek, akkor a színtartományuk bővíthető a Szintek eszköz (Színek→Szintek menüpont) &quot;Automatikus&quot; gombjával. Ha a színek aránya nem megfelelő, akkor a Görbék eszközzel (Színek→Görbék menüpont) végezhető el a javítás.</thetip>
     <thetip xml:lang="it">Se le tue foto appena digitalizzate appaiono un po' sbiadite, puoi facilmente migliorare l'intervallo tonale con il pulsante &quot;Auto&quot; nello strumento Livelli (Colori-&gt;Livelli). Se sono presenti delle dominanti di colore puoi correggerle con lo strumento Curve (Colori-&gt;Curve).</thetip>
+    <thetip xml:lang="mk">Ако некои од вашите скенирани фотографии немаат доволно боја, можете лесно да го поправите нивниот тоналитет на бои со &quot;Авто&quot; копчето во алатката Слоеви (Слој-&gt;Бои-&gt;Слоеви). Ако има било какво претопување на некои бои, можете да ги поправите со алатката Криви (Слој-&gt;Бои-&gt;Криви).</thetip>
     <thetip xml:lang="nb">Hvis noen av dine skannede fotografier ikke har nok farge, kan du enkelt forbedre fargespekteret med «auto»-knappen i nivåverktøytet (Farger→Nivåer). Hvis det er noen ujevnheter kan du rette dem med kurveverktøytet (Farger→Kurver).</thetip>
-    <thetip xml:lang="pl">Jeśli zeskanowane zdjęcia są mało kolorowe, można poprawić ich kolorystykę korzystając z narzędzia "Poziomy..." ("Warstwa&gt;Kolory&gt;Poziomy..."), klikająć przycisk "Automatycznie". Występowanie zniekształceń kolorów (ang. color cast) można skorygować za pomocą narzędzia "Krzywe" ("Warstwa&gt;Kolory&gt;Krzywe...").</thetip>
+    <thetip xml:lang="pl">Jeśli zeskanowane zdjęcia są mało kolorowe, można poprawić ich kolorystykę korzystając z narzędzia "Poziomy..." ("Warstwa&gt;Kolory&gt;Poziomy..."), klikająć przycisk "Automatycznie". Zniekształcenia kolorów (ang. color cast) można skorygować za pomocą narzędzia "Krzywe" ("Warstwa&gt;Kolory&gt;Krzywe...").</thetip>
   </tip>
 
 

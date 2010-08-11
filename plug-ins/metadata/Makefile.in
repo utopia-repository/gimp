@@ -57,42 +57,36 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS) $(noinst_PROGRAMS)
-am_metadata_OBJECTS = metadata.$(OBJEXT) interface.$(OBJEXT) \
-	base64.$(OBJEXT) xmp-model.$(OBJEXT) xmp-parse.$(OBJEXT) \
-	xmp-encode.$(OBJEXT) xmp-schemas.$(OBJEXT)
+am_metadata_OBJECTS = metadata.$(OBJEXT) base64.$(OBJEXT) \
+	xmp-model.$(OBJEXT) xmp-parse.$(OBJEXT) xmp-encode.$(OBJEXT) \
+	xmp-schemas.$(OBJEXT)
 metadata_OBJECTS = $(am_metadata_OBJECTS)
 metadata_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =  \
-	$(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_2 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_3 =  \
 	$(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_4 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_5 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_6 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_7 =
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_4 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_5 =
 metadata_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_7)
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_5)
 am_testbase64_OBJECTS = base64.$(OBJEXT) testbase64.$(OBJEXT)
 testbase64_OBJECTS = $(am_testbase64_OBJECTS)
 testbase64_LDADD = $(LDADD)
 testbase64_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_7)
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_5)
 am_xmpdump_OBJECTS = xmpdump.$(OBJEXT) base64.$(OBJEXT) \
 	xmp-parse.$(OBJEXT)
 xmpdump_OBJECTS = $(am_xmpdump_OBJECTS)
 xmpdump_LDADD = $(LDADD)
 xmpdump_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_7)
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_5)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -228,8 +222,6 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -385,6 +377,7 @@ RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -491,8 +484,6 @@ AM_LDFLAGS = $(mwindows)
 metadata_SOURCES = \
 	metadata.c	\
 	metadata.h	\
-	interface.h	\
-	interface.c	\
 	base64.h	\
 	base64.c	\
 	xmp-model.h	\
@@ -518,14 +509,12 @@ INCLUDES = \
 	-I$(includedir)
 
 LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(libgimpmath)		\
-	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
+	$(libgimp)	\
+	$(libgimpcolor)	\
+	$(libgimpbase)	\
+	$(libgimpmath)	\
+	$(GTK_LIBS)	\
+	$(RT_LIBS)	\
 	$(INTLLIBS)
 
 
@@ -622,7 +611,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/base64.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testbase64.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmp-encode.Po@am__quote@

@@ -110,24 +110,12 @@ tile_set_rowhint (Tile        *tile,
 Tile *
 tile_new (gint bpp)
 {
-  Tile *tile = g_slice_new (Tile);
+  Tile *tile = g_slice_new0 (Tile);
 
-  tile->ref_count   = 0;
-  tile->write_count = 0;
-  tile->share_count = 0;
-  tile->dirty       = FALSE;
-  tile->valid       = FALSE;
-  tile->data        = NULL;
   tile->ewidth      = TILE_WIDTH;
   tile->eheight     = TILE_HEIGHT;
   tile->bpp         = bpp;
-  tile->swap_num    = 1;
   tile->swap_offset = -1;
-  tile->tlink       = NULL;
-  tile->next        = NULL;
-  tile->prev        = NULL;
-  tile->listhead    = NULL;
-  tile->rowhint     = NULL;
 
 #ifdef TILE_PROFILING
   tile_count++;
@@ -171,7 +159,7 @@ tile_lock (Tile *tile)
   if (! tile->valid)
     {
       /* an invalid tile should never be shared, so this should work */
-      tile_manager_validate ((TileManager *) tile->tlink->tm, tile);
+      tile_manager_validate (tile->tlink->tm, tile);
     }
 }
 
@@ -321,12 +309,6 @@ tile_is_valid (Tile *tile)
 }
 
 void
-tile_mark_valid (Tile *tile)
-{
-  tile->valid = TRUE;
-}
-
-void
 tile_attach (Tile *tile,
              void *tm,
              gint  tile_num)
@@ -336,7 +318,7 @@ tile_attach (Tile *tile,
   if ((tile->share_count > 0) && (! tile->valid))
     {
       /* trying to share invalid tiles is problematic, not to mention silly */
-      tile_manager_validate ((TileManager *) tile->tlink->tm, tile);
+      tile_manager_validate (tile->tlink->tm, tile);
     }
 
   tile->share_count++;

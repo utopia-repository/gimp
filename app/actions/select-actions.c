@@ -40,7 +40,7 @@
 
 static const GimpActionEntry select_actions[] =
 {
-  { "selection-editor-popup", GIMP_STOCK_TOOL_RECT_SELECT,
+  { "selection-popup", GIMP_STOCK_TOOL_RECT_SELECT,
     N_("Selection Editor Menu"), NULL, NULL, NULL,
     GIMP_HELP_SELECTION_DIALOG },
 
@@ -139,7 +139,7 @@ select_actions_update (GimpActionGroup *group,
 
   if (image)
     {
-      drawable = gimp_image_active_drawable (image);
+      drawable = gimp_image_get_active_drawable (image);
 
       fs  = (gimp_image_floating_sel (image) != NULL);
       sel = ! gimp_channel_is_empty (gimp_image_get_mask (image));

@@ -11,8 +11,8 @@ G_BEGIN_DECLS
 
 #define GIMP_MAJOR_VERSION                              (2)
 #define GIMP_MINOR_VERSION                              (3)
-#define GIMP_MICRO_VERSION                              (18)
-#define GIMP_VERSION                                    "2.3.18"
+#define GIMP_MICRO_VERSION                              (19)
+#define GIMP_VERSION                                    "2.3.19"
 #define GIMP_API_VERSION                                "2.0"
 #define GIMP_CHECK_VERSION(major, minor, micro) \
     (GIMP_MAJOR_VERSION > (major) || \

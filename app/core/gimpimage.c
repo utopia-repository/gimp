@@ -71,7 +71,7 @@
 
 
 #ifdef DEBUG
-#define TRC(x) printf x
+#define TRC(x) g_printerr x
 #else
 #define TRC(x)
 #endif
@@ -121,6 +121,8 @@ enum
 
 /*  local function prototypes  */
 
+static void     gimp_color_managed_iface_init    (GimpColorManagedInterface *iface);
+
 static GObject *gimp_image_constructor           (GType           type,
                                                   guint           n_params,
                                                   GObjectConstructParam *params);
@@ -148,7 +150,8 @@ static gchar  * gimp_image_get_description       (GimpViewable   *viewable,
                                                   gchar         **tooltip);
 static void     gimp_image_real_colormap_changed (GimpImage      *image,
                                                   gint            color_index);
-static void     gimp_image_real_flush            (GimpImage      *image);
+static void     gimp_image_real_flush            (GimpImage      *image,
+                                                  gboolean        invalidate_preview);
 
 static void     gimp_image_mask_update           (GimpDrawable   *drawable,
                                                   gint            x,
@@ -183,6 +186,9 @@ static void     gimp_image_channel_name_changed  (GimpChannel    *channel,
 static void     gimp_image_channel_color_changed (GimpChannel    *channel,
                                                   GimpImage      *image);
 
+const guint8 *  gimp_image_get_icc_profile       (GimpColorManaged *managed,
+                                                  gsize            *len);
+
 
 static const gint valid_combinations[][MAX_CHANNELS + 1] =
 {
@@ -201,7 +207,9 @@ static const gint valid_combinations[][MAX_CHANNELS + 1] =
 };
 
 
-G_DEFINE_TYPE (GimpImage, gimp_image, GIMP_TYPE_VIEWABLE)
+G_DEFINE_TYPE_WITH_CODE (GimpImage, gimp_image, GIMP_TYPE_VIEWABLE,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_COLOR_MANAGED,
+                                                gimp_color_managed_iface_init))
 
 #define parent_class gimp_image_parent_class
 
@@ -465,8 +473,9 @@ gimp_image_class_init (GimpImageClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpImageClass, flush),
                   NULL, NULL,
-                  gimp_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  gimp_marshal_VOID__BOOLEAN,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_BOOLEAN);
 
   object_class->constructor           = gimp_image_constructor;
   object_class->set_property          = gimp_image_set_property;
@@ -542,6 +551,12 @@ gimp_image_class_init (GimpImageClass *klass)
                                                       G_PARAM_CONSTRUCT));
 
   gimp_image_color_hash_init ();
+}
+
+static void
+gimp_color_managed_iface_init (GimpColorManagedInterface *iface)
+{
+  iface->get_icc_profile = gimp_image_get_icc_profile;
 }
 
 static void
@@ -655,8 +670,9 @@ gimp_image_init (GimpImage *image)
 
   image->preview               = NULL;
 
-  image->flush_accum.alpha_changed = FALSE;
-  image->flush_accum.mask_changed  = FALSE;
+  image->flush_accum.alpha_changed       = FALSE;
+  image->flush_accum.mask_changed        = FALSE;
+  image->flush_accum.preview_invalidated = FALSE;
 }
 
 static GObject *
@@ -1105,12 +1121,12 @@ gimp_image_real_colormap_changed (GimpImage *image,
       gimp_image_update (image, 0, 0, image->width, image->height);
 
       gimp_image_invalidate_layer_previews (image);
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
     }
 }
 
 static void
-gimp_image_real_flush (GimpImage *image)
+gimp_image_real_flush (GimpImage *image,
+                       gboolean   invalidate_preview)
 {
   if (image->flush_accum.alpha_changed)
     {
@@ -1122,6 +1138,14 @@ gimp_image_real_flush (GimpImage *image)
     {
       gimp_image_mask_changed (image);
       image->flush_accum.mask_changed = FALSE;
+    }
+
+  if (image->flush_accum.preview_invalidated)
+    {
+      /*  don't invalidate the preview here, the projection does this when
+       *  it is completely constructed.
+       */
+      image->flush_accum.preview_invalidated = FALSE;
     }
 }
 
@@ -1156,7 +1180,6 @@ gimp_image_drawable_update (GimpDrawable *drawable,
       y += offset_y;
 
       gimp_image_update (image, x, y, width, height);
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
     }
 }
 
@@ -1173,7 +1196,6 @@ gimp_image_drawable_visibility (GimpItem  *item,
                      offset_x, offset_y,
                      gimp_item_width (item),
                      gimp_item_height (item));
-  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
 }
 
 static void
@@ -1668,7 +1690,6 @@ gimp_image_set_component_visible (GimpImage       *image,
                      channel);
 
       gimp_image_update (image, 0, 0, image->width, image->height);
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
     }
 }
 
@@ -1715,6 +1736,8 @@ gimp_image_update (GimpImage *image,
 
   g_signal_emit (image, gimp_image_signals[UPDATE], 0,
                  x, y, width, height);
+
+  image->flush_accum.preview_invalidated = TRUE;
 }
 
 void
@@ -1959,7 +1982,8 @@ gimp_image_flush (GimpImage *image)
 {
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  g_signal_emit (image, gimp_image_signals[FLUSH], 0);
+  g_signal_emit (image, gimp_image_signals[FLUSH], 0,
+                 image->flush_accum.preview_invalidated);
 }
 
 
@@ -2313,20 +2337,20 @@ gimp_image_parasite_attach (GimpImage          *image,
    */
   copy = *parasite;
 
-  /* only set the dirty bit manually if we can be saved and the new
-     parasite differs from the current one and we aren't undoable */
+  /*  only set the dirty bit manually if we can be saved and the new
+   *  parasite differs from the current one and we aren't undoable
+   */
   if (gimp_parasite_is_undoable (&copy))
     gimp_image_undo_push_image_parasite (image,
                                          _("Attach Parasite to Image"),
                                          &copy);
 
   /*  We used to push an cantundo on te stack here. This made the undo stack
-      unusable (NULL on the stack) and prevented people from undoing after a
-      save (since most save plug-ins attach an undoable comment parasite).
-      Now we simply attach the parasite without pushing an undo. That way it's
-      undoable but does not block the undo system.   --Sven
+   *  unusable (NULL on the stack) and prevented people from undoing after a
+   *  save (since most save plug-ins attach an undoable comment parasite).
+   *  Now we simply attach the parasite without pushing an undo. That way
+   *  it's undoable but does not block the undo system.   --Sven
    */
-
   gimp_parasite_list_add (image->parasites, &copy);
 
   if (gimp_parasite_has_flag (&copy, GIMP_PARASITE_ATTACH_PARENT))
@@ -2337,6 +2361,9 @@ gimp_image_parasite_attach (GimpImage          *image,
 
   g_signal_emit (image, gimp_image_signals[PARASITE_ATTACHED], 0,
                  parasite->name);
+
+  if (strcmp (parasite->name, "icc-profile") == 0)
+    gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (image));
 }
 
 void
@@ -2360,6 +2387,9 @@ gimp_image_parasite_detach (GimpImage   *image,
 
   g_signal_emit (image, gimp_image_signals[PARASITE_DETACHED], 0,
                  name);
+
+  if (strcmp (name, "icc-profile") == 0)
+    gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (image));
 }
 
 
@@ -2479,7 +2509,7 @@ gimp_image_get_vectors (const GimpImage *image)
 }
 
 GimpDrawable *
-gimp_image_active_drawable (const GimpImage *image)
+gimp_image_get_active_drawable (const GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
@@ -3120,7 +3150,6 @@ gimp_image_position_layer (GimpImage   *image,
                          off_x, off_y,
                          gimp_item_width  (GIMP_ITEM (layer)),
                          gimp_item_height (GIMP_ITEM (layer)));
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
     }
 
   return TRUE;
@@ -3372,7 +3401,6 @@ gimp_image_position_channel (GimpImage   *image,
                          off_x, off_y,
                          gimp_item_width  (GIMP_ITEM (channel)),
                          gimp_item_height (GIMP_ITEM (channel)));
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (image));
     }
 
   return TRUE;
@@ -3683,7 +3711,7 @@ gimp_image_coords_in_active_pickable (GimpImage        *image,
     }
   else
     {
-      GimpDrawable *drawable = gimp_image_active_drawable (image);
+      GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
       if (drawable)
         {
@@ -3735,4 +3763,22 @@ gimp_image_invalidate_channel_previews (GimpImage *image)
   gimp_container_foreach (image->channels,
                           (GFunc) gimp_viewable_invalidate_preview,
                           NULL);
+}
+
+const guint8 *
+gimp_image_get_icc_profile (GimpColorManaged *managed,
+                            gsize            *len)
+{
+  const GimpParasite *parasite;
+
+  parasite = gimp_image_parasite_find (GIMP_IMAGE (managed), "icc-profile");
+
+  if (parasite)
+    {
+      *len = gimp_parasite_data_size (parasite);
+
+      return gimp_parasite_data (parasite);
+    }
+
+  return NULL;
 }

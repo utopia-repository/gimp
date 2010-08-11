@@ -124,7 +124,7 @@ static void       gimp_selection_shrink        (GimpChannel     *channel,
                                                 gboolean         edge_lock,
                                                 gboolean         push_undo);
 
-static void       gimp_selection_validate      (TileManager     *tm,
+static void       gimp_selection_validate_tile (TileManager     *tm,
                                                 Tile            *tile);
 
 
@@ -353,7 +353,7 @@ gimp_selection_boundary (GimpChannel     *channel,
 
       return TRUE;
     }
-  else if ((drawable = gimp_image_active_drawable (image)) &&
+  else if ((drawable = gimp_image_get_active_drawable (image)) &&
            GIMP_IS_CHANNEL (drawable))
     {
       /*  Otherwise, return the boundary...if a channel is active  */
@@ -502,8 +502,8 @@ gimp_selection_shrink (GimpChannel *channel,
 }
 
 static void
-gimp_selection_validate (TileManager *tm,
-                         Tile        *tile)
+gimp_selection_validate_tile (TileManager *tm,
+                              Tile        *tile)
 {
   /*  Set the contents of the tile to empty  */
   memset (tile_data_pointer (tile, 0, 0),
@@ -536,9 +536,9 @@ gimp_selection_new (GimpImage *image,
   channel->x2          = width;
   channel->y2          = height;
 
-  /*  Set the validate procedure  */
   tile_manager_set_validate_proc (GIMP_DRAWABLE (channel)->tiles,
-                                  gimp_selection_validate);
+                                  (TileValidateProc) gimp_selection_validate_tile,
+                                  NULL);
 
   return channel;
 }

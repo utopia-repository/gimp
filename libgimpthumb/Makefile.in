@@ -76,8 +76,8 @@ libgimpthumb_2_0_la_OBJECTS = $(am_libgimpthumb_2_0_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
 gimp_thumbnail_list_SOURCES = gimp-thumbnail-list.c
 gimp_thumbnail_list_OBJECTS = gimp-thumbnail-list.$(OBJEXT)
-am__DEPENDENCIES_3 = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
-gimp_thumbnail_list_DEPENDENCIES = $(am__DEPENDENCIES_3)
+gimp_thumbnail_list_DEPENDENCIES =  \
+	libgimpthumb-$(GIMP_API_VERSION).la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -215,8 +215,6 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -372,6 +370,7 @@ RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -468,19 +467,18 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
-libgimpthumb = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
 @OS_WIN32_TRUE@gimpthumb_def = gimpthumb.def
 @OS_WIN32_TRUE@libgimpthumb_export_symbols = -export-symbols gimpthumb.def
 @MS_LIB_AVAILABLE_TRUE@noinst_DATA = gimpthumb-$(GIMP_API_VERSION).lib
 libgimpthumbincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpthumb
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"LibGimpThumb\"	\
-	@GTHREAD_CFLAGS@
+	-DG_LOG_DOMAIN=\"LibGimpThumb\"
 
 INCLUDES = \
 	-I$(top_srcdir)		\
 	$(GDK_PIXBUF_CFLAGS)	\
+	$(GLIB_CFLAGS)		\
 	-I$(includedir)
 
 EXTRA_DIST = \
@@ -515,7 +513,7 @@ libgimpthumb_2_0_la_LDFLAGS = \
 
 libgimpthumb_2_0_la_LIBADD = $(libgimpmath) $(GDK_PIXBUF_LIBS)
 gimp_thumbnail_list_SURCES = gimp-thumbnail-list.c
-gimp_thumbnail_list_LDADD = $(libgimpthumb)
+gimp_thumbnail_list_LDADD = libgimpthumb-$(GIMP_API_VERSION).la
 
 #
 # rules to generate built sources

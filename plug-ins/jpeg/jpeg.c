@@ -329,84 +329,10 @@ run (const gchar      *name,
 
 #endif /* HAVE_EXIF */
 
-      jsvals.quality        = DEFAULT_QUALITY;
-      jsvals.smoothing      = DEFAULT_SMOOTHING;
-      jsvals.optimize       = DEFAULT_OPTIMIZE;
-      jsvals.progressive    = DEFAULT_PROGRESSIVE;
-      jsvals.baseline       = DEFAULT_BASELINE;
-      jsvals.subsmp         = DEFAULT_SUBSMP;
-      jsvals.restart        = DEFAULT_RESTART;
-      jsvals.dct            = DEFAULT_DCT;
-      jsvals.preview        = DEFAULT_PREVIEW;
-      jsvals.save_exif      = DEFAULT_EXIF;
-      jsvals.save_thumbnail = DEFAULT_THUMBNAIL;
-      jsvals.save_xmp       = DEFAULT_XMP;
-
-#ifdef HAVE_EXIF
-
-      if (exif_data && (exif_data->data))
-        jsvals.save_thumbnail = TRUE;
-
-#endif /* HAVE_EXIF */
+      load_save_defaults ();
 
       switch (run_mode)
         {
-        case GIMP_RUN_INTERACTIVE:
-          /*  Possibly retrieve data  */
-          gimp_get_data (SAVE_PROC, &jsvals);
-
-          /* load up the previously used values */
-          parasite = gimp_image_parasite_find (orig_image_ID,
-                                               "jpeg-save-options");
-          if (parasite)
-            {
-              const JpegSaveVals *save_vals = gimp_parasite_data (parasite);
-
-              jsvals.quality        = save_vals->quality;
-              jsvals.smoothing      = save_vals->smoothing;
-              jsvals.optimize       = save_vals->optimize;
-              jsvals.progressive    = save_vals->progressive;
-              jsvals.baseline       = save_vals->baseline;
-              jsvals.subsmp         = save_vals->subsmp;
-              jsvals.restart        = save_vals->restart;
-              jsvals.dct            = save_vals->dct;
-              jsvals.preview        = save_vals->preview;
-              jsvals.save_exif      = save_vals->save_exif;
-              jsvals.save_thumbnail = save_vals->save_thumbnail;
-              jsvals.save_xmp       = save_vals->save_xmp;
-
-              gimp_parasite_free (parasite);
-            }
-
-          if (jsvals.preview)
-            {
-              /* we freeze undo saving so that we can avoid sucking up
-               * tile cache with our unneeded preview steps. */
-              gimp_image_undo_freeze (image_ID);
-
-              undo_touched = TRUE;
-            }
-
-          /* prepare for the preview */
-          image_ID_global = image_ID;
-          orig_image_ID_global = orig_image_ID;
-          drawable_ID_global = drawable_ID;
-
-          /*  First acquire information with a dialog  */
-          err = save_dialog ();
-
-          if (undo_touched)
-            {
-              /* thaw undo saving and flush the displays to have them
-               * reflect the current shortcuts */
-              gimp_image_undo_thaw (image_ID);
-              gimp_displays_flush ();
-            }
-
-          if (!err)
-            status = GIMP_PDB_CANCEL;
-          break;
-
         case GIMP_RUN_NONINTERACTIVE:
           /*  Make sure all the arguments are there!  */
           /*  pw - added two more progressive and comment */
@@ -447,32 +373,74 @@ run (const gchar      *name,
             }
           break;
 
+        case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           /*  Possibly retrieve data  */
           gimp_get_data (SAVE_PROC, &jsvals);
 
+          /* load up the previously used values */
           parasite = gimp_image_parasite_find (orig_image_ID,
                                                "jpeg-save-options");
           if (parasite)
             {
               const JpegSaveVals *save_vals = gimp_parasite_data (parasite);
 
-              jsvals.quality     = save_vals->quality;
-              jsvals.smoothing   = save_vals->smoothing;
-              jsvals.optimize    = save_vals->optimize;
-              jsvals.progressive = save_vals->progressive;
-              jsvals.baseline    = save_vals->baseline;
-              jsvals.subsmp      = save_vals->subsmp;
-              jsvals.restart     = save_vals->restart;
-              jsvals.dct         = save_vals->dct;
-              jsvals.preview     = FALSE;
+              jsvals.quality        = save_vals->quality;
+              jsvals.smoothing      = save_vals->smoothing;
+              jsvals.optimize       = save_vals->optimize;
+              jsvals.progressive    = save_vals->progressive;
+              jsvals.baseline       = save_vals->baseline;
+              jsvals.subsmp         = save_vals->subsmp;
+              jsvals.restart        = save_vals->restart;
+              jsvals.dct            = save_vals->dct;
+              jsvals.preview        = save_vals->preview;
+              jsvals.save_exif      = save_vals->save_exif;
+              jsvals.save_thumbnail = save_vals->save_thumbnail;
+              jsvals.save_xmp       = save_vals->save_xmp;
 
               gimp_parasite_free (parasite);
             }
+          else
+            {
+              /* We are called with GIMP_RUN_WITH_LAST_VALS but this image
+               * doesn't have a "jpeg-save-options" parasite. It's better
+               * to prompt the user with a dialog now so that she has control
+               * over the JPEG encoding parameters.
+               */
+              run_mode = GIMP_RUN_INTERACTIVE;
+            }
           break;
+        }
 
-        default:
-          break;
+      if (run_mode == GIMP_RUN_INTERACTIVE)
+        {
+          if (jsvals.preview)
+            {
+              /* we freeze undo saving so that we can avoid sucking up
+               * tile cache with our unneeded preview steps. */
+              gimp_image_undo_freeze (image_ID);
+
+              undo_touched = TRUE;
+            }
+
+          /* prepare for the preview */
+          image_ID_global = image_ID;
+          orig_image_ID_global = orig_image_ID;
+          drawable_ID_global = drawable_ID;
+
+          /*  First acquire information with a dialog  */
+          err = save_dialog ();
+
+          if (undo_touched)
+            {
+              /* thaw undo saving and flush the displays to have them
+               * reflect the current shortcuts */
+              gimp_image_undo_thaw (image_ID);
+              gimp_displays_flush ();
+            }
+
+          if (!err)
+            status = GIMP_PDB_CANCEL;
         }
 
       if (status == GIMP_PDB_SUCCESS)
@@ -550,18 +518,6 @@ my_error_exit (j_common_ptr cinfo)
   longjmp (myerr->setjmp_buffer, 1);
 }
 
-void
-my_emit_message (j_common_ptr cinfo,
-                 int          msg_level)
-{
-  if (msg_level == -1)
-    {
-      /*  disable loading of EXIF data  */
-      cinfo->client_data = GINT_TO_POINTER (TRUE);
-
-      (*cinfo->err->output_message) (cinfo);
-    }
-}
 
 void
 my_output_message (j_common_ptr cinfo)
@@ -569,18 +525,5 @@ my_output_message (j_common_ptr cinfo)
   gchar  buffer[JMSG_LENGTH_MAX + 1];
 
   (*cinfo->err->format_message)(cinfo, buffer);
-
-  if (GPOINTER_TO_INT (cinfo->client_data))
-    {
-      gchar *msg = g_strconcat (buffer,
-                                "\n\n",
-                                _("EXIF data will be ignored."),
-                                NULL);
-      g_message (msg);
-      g_free (msg);
-    }
-  else
-    {
-      g_message (buffer);
-    }
+  g_message (buffer);
 }

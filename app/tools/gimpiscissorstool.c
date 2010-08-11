@@ -772,7 +772,7 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
               if (iscissors->livewire->points)
                 g_ptr_array_free (iscissors->livewire->points, TRUE);
 
-              g_free (iscissors->livewire);
+              g_slice_free (ICurve, iscissors->livewire);
 
               iscissors->livewire = NULL;
             }
@@ -895,6 +895,7 @@ iscissors_draw_curve (GimpDrawTool *draw_tool,
     }
 
   gimp_draw_tool_draw_lines (draw_tool, points, len, FALSE, FALSE);
+
   g_free (points);
 }
 
@@ -1705,24 +1706,23 @@ find_optimal_path (TileManager *gradient_map,
 /* Called to fill in a newly referenced tile in the gradient map */
 static void
 gradmap_tile_validate (TileManager *tm,
-                       Tile        *tile)
+                       Tile        *tile,
+                       GimpImage   *image)
 {
   static gboolean first_gradient = TRUE;
 
-  GimpImage    *image = tile_manager_get_user_data (tm);
   GimpPickable *pickable;
   Tile         *srctile;
-  PixelRegion   srcPR, destPR;
+  PixelRegion   srcPR;
+  PixelRegion   destPR;
   gint          x, y;
   gint          dw, dh;
   gint          sw, sh;
   gint          i, j;
   gint          b;
   gfloat        gradient;
-  guint8       *gradmap;
   guint8       *tiledata;
-  guint8       *datah, *datav;
-  gint8         hmax, vmax;
+  guint8       *gradmap;
 
   if (first_gradient)
     {
@@ -1732,12 +1732,13 @@ gradmap_tile_validate (TileManager *tm,
       for (i = 0; i < GRADIENT_SEARCH; i++)
         for (j = 0; j < GRADIENT_SEARCH; j++)
           distance_weights[i * GRADIENT_SEARCH + j] =
-            1.0 / (1 + sqrt (SQR(i - radius) + SQR(j - radius)));
+            1.0 / (1 + sqrt (SQR (i - radius) + SQR (j - radius)));
 
       first_gradient = FALSE;
     }
 
   tile_manager_get_tile_coordinates (tm, tile, &x, &y);
+
   dw = tile_ewidth (tile);
   dh = tile_eheight (tile);
 
@@ -1748,7 +1749,7 @@ gradmap_tile_validate (TileManager *tm,
   /* get corresponding tile in the image */
   srctile = tile_manager_get_tile (gimp_pickable_get_tiles (pickable),
                                    x, y, TRUE, FALSE);
-  if (!srctile)
+  if (! srctile)
     return;
 
   sw = tile_ewidth (srctile);
@@ -1760,55 +1761,64 @@ gradmap_tile_validate (TileManager *tm,
                           MIN (dw, sw),
                           0, 0, MIN (dw, sw), MIN (dh, sh));
 
+
   /* XXX tile edges? */
 
   /*  Blur the source to get rid of noise  */
-  destPR.rowstride = TILE_WIDTH * 4;
-  destPR.data      = maxgrad_conv0;
+  pixel_region_init_data (&destPR, maxgrad_conv0, 4, TILE_WIDTH * 4,
+                          0, 0, srcPR.w, srcPR.h);
   convolve_region (&srcPR, &destPR, blur_32, 3, 32, GIMP_NORMAL_CONVOL, FALSE);
 
-  /*  Set the "src" temp buf up as the new source Pixel Region  */
-  srcPR.rowstride = destPR.rowstride;
-  srcPR.data      = destPR.data;
+  /*  Use the blurred region as the new source pixel region  */
+  pixel_region_init_data (&srcPR, maxgrad_conv0, 4, TILE_WIDTH * 4,
+                          0, 0, srcPR.w, srcPR.h);
 
   /*  Get the horizontal derivative  */
-  destPR.data = maxgrad_conv1;
+  pixel_region_init_data (&destPR, maxgrad_conv1, 4, TILE_WIDTH * 4,
+                          0, 0, srcPR.w, srcPR.h);
   convolve_region (&srcPR, &destPR, horz_deriv, 3, 1, GIMP_NEGATIVE_CONVOL,
                    FALSE);
 
   /*  Get the vertical derivative  */
-  destPR.data = maxgrad_conv2;
+  pixel_region_init_data (&destPR, maxgrad_conv2, 4, TILE_WIDTH * 4,
+                          0, 0, srcPR.w, srcPR.h);
   convolve_region (&srcPR, &destPR, vert_deriv, 3, 1, GIMP_NEGATIVE_CONVOL,
                    FALSE);
 
   /* calculate overall gradient */
   tiledata = tile_data_pointer (tile, 0, 0);
+
   for (i = 0; i < srcPR.h; i++)
     {
-      datah = maxgrad_conv1 + srcPR.rowstride*i;
-      datav = maxgrad_conv2 + srcPR.rowstride*i;
+      const guint8 *datah = maxgrad_conv1 + srcPR.rowstride * i;
+      const guint8 *datav = maxgrad_conv2 + srcPR.rowstride * i;
+
       gradmap = tiledata + tile_ewidth (tile) * COST_WIDTH * i;
 
       for (j = 0; j < srcPR.w; j++)
         {
-          hmax = datah[0] - 128;
-          vmax = datav[0] - 128;
+          gint8 hmax = datah[0] - 128;
+          gint8 vmax = datav[0] - 128;
+
           for (b = 1; b < srcPR.bytes; b++)
             {
-              if (abs (datah[b] - 128) > abs (hmax)) hmax = datah[b] - 128;
-              if (abs (datav[b] - 128) > abs (vmax)) vmax = datav[b] - 128;
+              if (abs (datah[b] - 128) > abs (hmax))
+                hmax = datah[b] - 128;
+
+              if (abs (datav[b] - 128) > abs (vmax))
+                vmax = datav[b] - 128;
             }
 
           if (i == 0 || j == 0 || i == srcPR.h-1 || j == srcPR.w-1)
-          {
-              gradmap[j*COST_WIDTH] = 0;
-              gradmap[j*COST_WIDTH + 1] = 255;
+            {
+              gradmap[j * COST_WIDTH + 0] = 0;
+              gradmap[j * COST_WIDTH + 1] = 255;
               goto contin;
-          }
+            }
 
-          /* 1 byte absolute magitude first */
-          gradient = sqrt(SQR(hmax) + SQR(vmax));
-          gradmap[j*COST_WIDTH] = gradient * 255 / MAX_GRADIENT;
+          /* 1 byte absolute magnitude first */
+          gradient = sqrt (SQR (hmax) + SQR (vmax));
+          gradmap[j * COST_WIDTH] = gradient * 255 / MAX_GRADIENT;
 
           /* then 1 byte direction */
           if (gradient > MIN_GRADIENT)
@@ -1818,16 +1828,18 @@ gradmap_tile_validate (TileManager *tm,
               if (!hmax)
                 direction = (vmax > 0) ? G_PI_2 : -G_PI_2;
               else
-                direction = atan ((double) vmax / (double) hmax);
+                direction = atan ((gdouble) vmax / (gdouble) hmax);
 
               /* Scale the direction from between 0 and 254,
                *  corresponding to -PI/2, PI/2 255 is reserved for
-               *  directionless pixels */
-              gradmap[j*COST_WIDTH + 1] =
+               *  d9irectionless pixels */
+              gradmap[j * COST_WIDTH + 1] =
                 (guint8) (254 * (direction + G_PI_2) / G_PI);
             }
           else
-            gradmap[j*COST_WIDTH + 1] = 255; /* reserved for weak gradient */
+            {
+              gradmap[j * COST_WIDTH + 1] = 255; /* reserved for weak gradient */
+            }
 
         contin:
           datah += srcPR.bytes;
@@ -1845,8 +1857,10 @@ gradient_map_new (GimpImage *image)
 
   tm = tile_manager_new (image->width, image->height,
                          sizeof (guint8) * COST_WIDTH);
-  tile_manager_set_user_data (tm, image);
-  tile_manager_set_validate_proc (tm, gradmap_tile_validate);
+
+  tile_manager_set_validate_proc (tm,
+                                  (TileValidateProc) gradmap_tile_validate,
+                                  image);
 
   return tm;
 }
@@ -1863,13 +1877,12 @@ find_max_gradient (GimpIscissorsTool *iscissors,
   gint         endx, endy;
   gint         sx, sy, cx, cy;
   gint         x1, y1, x2, y2;
-  void        *pr;
-  guint8      *gradient;
-  gfloat       g, max_gradient;
+  gpointer     pr;
+  gfloat       max_gradient;
 
   /* Initialise the gradient map tile manager for this image if we
    * don't already have one. */
-  if (!iscissors->gradient_map)
+  if (! iscissors->gradient_map)
     iscissors->gradient_map = gradient_map_new (image);
 
   radius = GRADIENT_SEARCH >> 1;
@@ -1900,17 +1913,23 @@ find_max_gradient (GimpIscissorsTool *iscissors,
     {
       endx = srcPR.x + srcPR.w;
       endy = srcPR.y + srcPR.h;
+
       for (i = srcPR.y; i < endy; i++)
         {
-          gradient = srcPR.data + srcPR.rowstride * (i - srcPR.y);
+          const guint8 *gradient = srcPR.data + srcPR.rowstride * (i - srcPR.y);
+
           for (j = srcPR.x; j < endx; j++)
             {
-              g = *gradient;
+              gfloat g = *gradient;
+
               gradient += COST_WIDTH;
+
               g *= distance_weights [(i-y1) * GRADIENT_SEARCH + (j-x1)];
+
               if (g > max_gradient)
                 {
                   max_gradient = g;
+
                   *x = j;
                   *y = i;
                 }

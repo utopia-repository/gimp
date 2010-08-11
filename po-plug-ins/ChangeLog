@@ -1,3 +1,86 @@
+2006-02-08  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated german translation.
+
+2006-02-08  Roman Joost	<romanofski@gimp.org>
+
+	* de.po: fixed little typo in URL to http://docs.gimp.org, which
+	was spotted by Matthias Hembrock
+
+2006-02-06  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-02-06  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-02-03  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-28  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-26  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-01-26  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-26  Funda Wang  <fundawang@linux.net.cn>
+
+	* zh_CN.po: Updated Simplified Chinese translation.
+
+2006-01-25  Funda Wang  <fundwang@linux.net.cn>
+
+	* POTFILES.in: Added missing files.
+
+2006-01-24  Benoît Dejean  <benoit@placenet.org>
+
+	* fr.po: Updated French translation.
+
+2006-01-22  Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+	
+2006-01-15  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-01-15  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-11  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-10  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-01-09  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-01-09  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2006-01-07  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2005-12-31  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
 2005-12-28  Marcel Telka  <marcel@telka.sk>
 
 	* sk.po: Updated Slovak translation.

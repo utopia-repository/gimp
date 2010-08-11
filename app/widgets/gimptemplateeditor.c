@@ -91,7 +91,7 @@ gimp_template_editor_class_init (GimpTemplateEditorClass *klass)
   g_object_class_install_property (object_class, PROP_TEMPLATE,
                                    g_param_spec_object ("template", NULL, NULL,
                                                         GIMP_TYPE_TEMPLATE,
-                                                        G_PARAM_READWRITE |
+                                                        GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
@@ -531,6 +531,7 @@ gimp_template_editor_new (GimpTemplate *template,
       button = gimp_viewable_button_new (editor->stock_id_container,
                                          editor->stock_id_context,
                                          GIMP_VIEW_TYPE_LIST,
+                                         GIMP_VIEW_SIZE_SMALL,
                                          GIMP_VIEW_SIZE_SMALL, 0,
                                          NULL, NULL, NULL, NULL);
       gimp_viewable_button_set_view_type (GIMP_VIEWABLE_BUTTON (button),

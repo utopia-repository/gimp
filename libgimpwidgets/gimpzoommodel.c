@@ -53,16 +53,17 @@ enum
   PROP_PERCENTAGE
 };
 
-typedef struct _GimpZoomModelPrivate GimpZoomModelPrivate;
 
-struct _GimpZoomModelPrivate
+typedef struct
 {
   gdouble  value;
   gdouble  minimum;
   gdouble  maximum;
-};
+} GimpZoomModelPrivate;
 
-#define GIMP_ZOOM_MODEL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GIMP_TYPE_ZOOM_MODEL, GimpZoomModelPrivate))
+#define GIMP_ZOOM_MODEL_GET_PRIVATE(obj) \
+  ((GimpZoomModelPrivate *) ((GimpZoomModel *) (obj))->priv)
+
 
 static void  gimp_zoom_model_set_property (GObject      *object,
                                            guint         property_id,
@@ -110,30 +111,30 @@ gimp_zoom_model_class_init (GimpZoomModelClass *klass)
                                                         "Zoom factor", NULL,
                                                         ZOOM_MIN, ZOOM_MAX,
                                                         1.0,
-                                                        G_PARAM_READWRITE));
+                                                        GIMP_PARAM_READWRITE));
   g_object_class_install_property (object_class, PROP_MINIMUM,
                                    g_param_spec_double ("minimum",
                                                         "Lower limit for the zoom factor", NULL,
                                                         ZOOM_MIN, ZOOM_MAX,
                                                         ZOOM_MIN,
-                                                        G_PARAM_READWRITE));
+                                                        GIMP_PARAM_READWRITE));
   g_object_class_install_property (object_class, PROP_MAXIMUM,
                                    g_param_spec_double ("maximum",
                                                         "Upper limit for the zoom factor", NULL,
                                                         ZOOM_MIN, ZOOM_MAX,
                                                         ZOOM_MAX,
-                                                        G_PARAM_READWRITE));
+                                                        GIMP_PARAM_READWRITE));
 
   g_object_class_install_property (object_class, PROP_FRACTION,
                                    g_param_spec_string ("fraction",
                                                         "The zoom factor expressed as a fraction", NULL,
                                                         "1:1",
-                                                        G_PARAM_READABLE));
+                                                        GIMP_PARAM_READABLE));
   g_object_class_install_property (object_class, PROP_PERCENTAGE,
                                    g_param_spec_string ("percentage",
                                                         "The zoom factor expressed as a percentage", NULL,
                                                         "100%",
-                                                        G_PARAM_READABLE));
+                                                        GIMP_PARAM_READABLE));
 
   g_type_class_add_private (object_class, sizeof (GimpZoomModelPrivate));
 }
@@ -141,7 +142,13 @@ gimp_zoom_model_class_init (GimpZoomModelClass *klass)
 static void
 gimp_zoom_model_init (GimpZoomModel *model)
 {
-  GimpZoomModelPrivate *priv = GIMP_ZOOM_MODEL_GET_PRIVATE (model);
+  GimpZoomModelPrivate *priv;
+
+  model->priv = G_TYPE_INSTANCE_GET_PRIVATE (model,
+                                             GIMP_TYPE_ZOOM_MODEL,
+                                             GimpZoomModelPrivate);
+
+  priv = GIMP_ZOOM_MODEL_GET_PRIVATE (model);
 
   priv->value   = 1.0;
   priv->minimum = ZOOM_MIN;

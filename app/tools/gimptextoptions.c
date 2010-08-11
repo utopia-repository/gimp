@@ -62,7 +62,10 @@ enum
   PROP_JUSTIFICATION,
   PROP_INDENTATION,
   PROP_LINE_SPACING,
-  PROP_LETTER_SPACING
+  PROP_LETTER_SPACING,
+
+  PROP_FONT_VIEW_TYPE,
+  PROP_FONT_VIEW_SIZE
 };
 
 
@@ -103,58 +106,73 @@ gimp_text_options_class_init (GimpTextOptionsClass *klass)
   GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_UNIT,
                                  "font-size-unit", NULL,
                                  TRUE, FALSE, GIMP_UNIT_PIXEL,
-                                 0);
+                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FONT_SIZE,
                                    "font-size", NULL,
                                    0.0, 8192.0, 18.0,
-                                   0);
+                                   GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_HINTING,
                                     "hinting",
                                     N_("Hinting alters the font outline to "
                                        "produce a crisp bitmap at small "
                                        "sizes"),
                                     TRUE,
-                                    0);
+                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_AUTOHINT,
                                     "autohint",
                                     N_("If available, hints from the font are "
                                        "used but you may prefer to always use "
                                        "the automatic hinter"),
                                     FALSE,
-                                    0);
+                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,
                                     "antialias", NULL,
                                     TRUE,
-                                    0);
+                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_LANGUAGE,
                                    "language", NULL,
                                    (const gchar *) gtk_get_default_language (),
-                                   0);
+                                   GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_BASE_DIR,
                                 "base-direction", NULL,
                                  GIMP_TYPE_TEXT_DIRECTION,
                                  GIMP_TEXT_DIRECTION_LTR,
-                                 0);
+                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_JUSTIFICATION,
                                 "justify", NULL,
                                  GIMP_TYPE_TEXT_JUSTIFICATION,
                                  GIMP_TEXT_JUSTIFY_LEFT,
-                                 0);
+                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_INDENTATION,
                                    "indent",
                                    N_("Indentation of the first line"),
                                    -8192.0, 8192.0, 0.0,
+                                   GIMP_PARAM_STATIC_STRINGS |
                                    GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LINE_SPACING,
                                    "line-spacing",
                                    N_("Adjust line spacing"),
                                    -8192.0, 8192.0, 0.0,
+                                   GIMP_PARAM_STATIC_STRINGS |
                                    GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_LETTER_SPACING,
                                    "letter-spacing",
                                    N_("Adjust letter spacing"),
                                    -8192.0, 8192.0, 0.0,
+                                   GIMP_PARAM_STATIC_STRINGS |
                                    GIMP_CONFIG_PARAM_DEFAULTS);
+
+  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FONT_VIEW_TYPE,
+                                 "font-view-type", NULL,
+                                 GIMP_TYPE_VIEW_TYPE,
+                                 GIMP_VIEW_TYPE_LIST,
+                                 GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_FONT_VIEW_SIZE,
+                                "font-view-size", NULL,
+                                GIMP_VIEW_SIZE_TINY,
+                                GIMP_VIEWABLE_MAX_BUTTON_SIZE,
+                                GIMP_VIEW_SIZE_SMALL,
+                                GIMP_PARAM_STATIC_STRINGS);
 }
 
 static void
@@ -206,6 +224,14 @@ gimp_text_options_get_property (GObject    *object,
     case PROP_LETTER_SPACING:
       g_value_set_double (value, options->letter_spacing);
       break;
+
+    case PROP_FONT_VIEW_TYPE:
+      g_value_set_enum (value, options->font_view_type);
+      break;
+    case PROP_FONT_VIEW_SIZE:
+      g_value_set_int (value, options->font_view_size);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -256,6 +282,14 @@ gimp_text_options_set_property (GObject      *object,
     case PROP_LETTER_SPACING:
       options->letter_spacing = g_value_get_double (value);
       break;
+
+    case PROP_FONT_VIEW_TYPE:
+      options->font_view_type = g_value_get_enum (value);
+      break;
+    case PROP_FONT_VIEW_SIZE:
+      options->font_view_size = g_value_get_int (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -392,7 +426,8 @@ gimp_text_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  hbox = gimp_font_box_new (NULL, GIMP_CONTEXT (tool_options), 2);
+  hbox = gimp_prop_font_box_new (NULL, GIMP_CONTEXT (tool_options), 2,
+                                 "font-view-type", "font-view-size");
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Font:"), 0.0, 0.5,
                              hbox, 2, FALSE);

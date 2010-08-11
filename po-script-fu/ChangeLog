@@ -1,3 +1,32 @@
+2006-02-08  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated german translation.
+
+2006-02-06  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-01-30  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-24  Benoît Dejean  <benoit@placenet.org>
+
+	* fr.po: Updated French translation.
+
+2006-01-09  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by "Last-Translator: Olle Niit olle@paalalinn.com\n".
+
+2006-01-03  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2005-12-29  Roman Joost <romanofski@gimp.org>
+
+        * de.po: fixed incorrect and inconsistent translation for 'button'
+
 2005-12-22  Artur Flinta  <aflinta@cvs.gnome.org>
 
 	* pl.po: Updated Polish translation by GNOME PL Team.

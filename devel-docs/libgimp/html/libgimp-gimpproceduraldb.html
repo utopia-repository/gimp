@@ -93,18 +93,18 @@ gint        <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-s
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560998"></a><h2>Description</h2>
+<a name="id2551119"></a><h2>Description</h2>
 <p>
 Functions for querying and changing procedural database (PDB) entries.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561010"></a><h2>Details</h2>
+<a name="id2551132"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2561016"></a><h3>
+<a name="id2561838"></a><h3>
 <a name="gimp-procedural-db-temp-name"></a>gimp_procedural_db_temp_name ()</h3>
-<a class="indexterm" name="id2561025"></a><pre class="programlisting">gchar*      gimp_procedural_db_temp_name    (void);</pre>
+<a class="indexterm" name="id2561847"></a><pre class="programlisting">gchar*      gimp_procedural_db_temp_name    (void);</pre>
 <p>
 Generates a unique temporary PDB name.
 </p>
@@ -127,9 +127,9 @@ dialogs to generate a PDB entry name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561072"></a><h3>
+<a name="id2561893"></a><h3>
 <a name="gimp-procedural-db-proc-info"></a>gimp_procedural_db_proc_info ()</h3>
-<a class="indexterm" name="id2561081"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_info    (const gchar *procedure,
+<a class="indexterm" name="id2561902"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_info    (const gchar *procedure,
                                              gchar **blurb,
                                              gchar **help,
                                              gchar **author,
@@ -235,9 +235,9 @@ about each input argument and return value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2515345"></a><h3>
+<a name="id2558999"></a><h3>
 <a name="gimp-procedural-db-get-data"></a>gimp_procedural_db_get_data ()</h3>
-<a class="indexterm" name="id2515354"></a><pre class="programlisting">gboolean    gimp_procedural_db_get_data     (const gchar *identifier,
+<a class="indexterm" name="id2559009"></a><pre class="programlisting">gboolean    gimp_procedural_db_get_data     (const gchar *identifier,
                                              gpointer data);</pre>
 <p>
 Returns data associated with the specified identifier.
@@ -276,9 +276,9 @@ the identifier
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2515442"></a><h3>
+<a name="id2559097"></a><h3>
 <a name="gimp-procedural-db-set-data"></a>gimp_procedural_db_set_data ()</h3>
-<a class="indexterm" name="id2515452"></a><pre class="programlisting">gboolean    gimp_procedural_db_set_data     (const gchar *identifier,
+<a class="indexterm" name="id2559106"></a><pre class="programlisting">gboolean    gimp_procedural_db_set_data     (const gchar *identifier,
                                              gpointer data,
                                              guint32 bytes);</pre>
 <p>
@@ -323,9 +323,9 @@ identifier. The data may be subsequently retrieved by a call to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568986"></a><h3>
+<a name="id2569616"></a><h3>
 <a name="gimp-procedural-db-dump"></a>gimp_procedural_db_dump ()</h3>
-<a class="indexterm" name="id2568994"></a><pre class="programlisting">gboolean    gimp_procedural_db_dump         (const gchar *filename);</pre>
+<a class="indexterm" name="id2569625"></a><pre class="programlisting">gboolean    gimp_procedural_db_dump         (const gchar *filename);</pre>
 <p>
 Dumps the current contents of the procedural database
 </p>
@@ -358,9 +358,9 @@ script, which generates a texinfo document.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569056"></a><h3>
+<a name="id2569687"></a><h3>
 <a name="gimp-procedural-db-query"></a>gimp_procedural_db_query ()</h3>
-<a class="indexterm" name="id2569065"></a><pre class="programlisting">gboolean    gimp_procedural_db_query        (const gchar *name,
+<a class="indexterm" name="id2569695"></a><pre class="programlisting">gboolean    gimp_procedural_db_query        (const gchar *name,
                                              const gchar *blurb,
                                              const gchar *help,
                                              const gchar *author,
@@ -457,9 +457,9 @@ entries is 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569293"></a><h3>
+<a name="id2569923"></a><h3>
 <a name="gimp-procedural-db-proc-arg"></a>gimp_procedural_db_proc_arg ()</h3>
-<a class="indexterm" name="id2569302"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_arg     (const gchar *procedure,
+<a class="indexterm" name="id2569932"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_arg     (const gchar *procedure,
                                              gint arg_num,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
@@ -520,9 +520,9 @@ argument. The argument type, name, and a description are retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569439"></a><h3>
+<a name="id2570069"></a><h3>
 <a name="gimp-procedural-db-proc-val"></a>gimp_procedural_db_proc_val ()</h3>
-<a class="indexterm" name="id2569448"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_val     (const gchar *procedure,
+<a class="indexterm" name="id2570078"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_val     (const gchar *procedure,
                                              gint val_num,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
@@ -584,9 +584,9 @@ retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569586"></a><h3>
+<a name="id2570216"></a><h3>
 <a name="gimp-procedural-db-get-data-size"></a>gimp_procedural_db_get_data_size ()</h3>
-<a class="indexterm" name="id2569596"></a><pre class="programlisting">gint        gimp_procedural_db_get_data_size
+<a class="indexterm" name="id2570227"></a><pre class="programlisting">gint        gimp_procedural_db_get_data_size
                                             (const gchar *identifier);</pre>
 <p>
 Returns size of data associated with the specified identifier.

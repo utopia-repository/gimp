@@ -28,6 +28,8 @@
                                             (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
                                              <link linkend="GtkPolicyType">GtkPolicyType</link> hscrollbar_policy,
                                              <link linkend="GtkPolicyType">GtkPolicyType</link> vscrollbar_policy);
+<link linkend="void">void</link>        <link linkend="gimp-scrolled-preview-freeze">gimp_scrolled_preview_freeze</link>    (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);
+<link linkend="void">void</link>        <link linkend="gimp-scrolled-preview-thaw">gimp_scrolled_preview_thaw</link>      (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);
 
 </synopsis>
 </refsynopsisdiv>
@@ -118,6 +120,42 @@ A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>vscrollbar_policy</parameter>&nbsp;:</term>
 <listitem><simpara> policy for vertical scrollbar
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-scrolled-preview-freeze"/>gimp_scrolled_preview_freeze ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_freeze</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scrolled_preview_freeze    (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);</programlisting>
+<para>
+While the <parameter>preview</parameter> is frozen, it is not going to redraw itself in
+response to scroll events.
+</para>
+<para>
+This function should only be used to implement widgets derived from
+<link linkend="GimpScrolledPreview"><type>GimpScrolledPreview</type></link>. There is no point in calling this from a plug-in.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpScrolledPreview"><type>GimpScrolledPreview</type></link>
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-scrolled-preview-thaw"/>gimp_scrolled_preview_thaw ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_thaw</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scrolled_preview_thaw      (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);</programlisting>
+<para>
+While the <parameter>preview</parameter> is frozen, it is not going to redraw itself in
+response to scroll events.
+</para>
+<para>
+This function should only be used to implement widgets derived from
+<link linkend="GimpScrolledPreview"><type>GimpScrolledPreview</type></link>. There is no point in calling this from a plug-in.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpScrolledPreview"><type>GimpScrolledPreview</type></link>
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>

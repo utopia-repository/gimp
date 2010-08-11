@@ -1,4 +1,4 @@
-/* -*- Mode: C; c-basic-offset: 4 -*- 
+/* -*- Mode: C; c-basic-offset: 4 -*-
     Gimp-Python - allows the writing of Gimp plugins in Python.
     Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
 
@@ -284,8 +284,8 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 	case GIMP_PDB_BOUNDARY:
 	    value = PyInt_FromLong(params[i].data.d_boundary);
 	    break;
-	case GIMP_PDB_PATH:
-	    value = PyInt_FromLong(params[i].data.d_path);
+	case GIMP_PDB_VECTORS:
+	    value = PyInt_FromLong(params[i].data.d_vectors);
 	    break;
 	case GIMP_PDB_PARASITE:
 	    value = pygimp_parasite_new(gimp_parasite_copy(
@@ -513,9 +513,9 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	    check(!PyInt_Check(item));
 	    ret[i].data.d_boundary = PyInt_AsLong(item);
 	    break;
-	case GIMP_PDB_PATH:
+	case GIMP_PDB_VECTORS:
 	    check(!PyInt_Check(item));
-	    ret[i].data.d_path = PyInt_AsLong(item);
+	    ret[i].data.d_vectors = PyInt_AsLong(item);
 	    break;
 	case GIMP_PDB_PARASITE:
 	    /* can't do anything, since size of GimpParasite is not known */
@@ -796,7 +796,7 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
     }
 
     gimp_destroy_params(params, self->nparams);
-    
+
     if (!ret) {
 	PyErr_SetString(pygimp_error, "no status returned");
 #if PG_DEBUG >= 1

@@ -46,7 +46,7 @@ enum        <a href="GimpColorConfig.html#GimpColorFileOpenBehaviour">GimpColorF
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2545552"></a><h2>Object Hierarchy</h2>
+<a name="id2522587"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -54,13 +54,13 @@ enum        <a href="GimpColorConfig.html#GimpColorFileOpenBehaviour">GimpColorF
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2516737"></a><h2>Implemented Interfaces</h2>
+<a name="id2546483"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorConfig implements
  <a href="libgimpconfig-GimpConfig.html#GimpConfigInterface">GimpConfigInterface</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2527166"></a><h2>Properties</h2>
+<a name="id2563661"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpColorConfig.html#GimpColorConfig--cmyk-profile">cmyk-profile</a>"         GimpConfigPath        : Read / Write / Construct
@@ -75,26 +75,26 @@ GimpColorConfig implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2527286"></a><h2>Description</h2>
+<a name="id2563781"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2564860"></a><h2>Details</h2>
+<a name="id2565239"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2564866"></a><h3>
+<a name="id2565245"></a><h3>
 <a name="GimpColorConfig-struct"></a>GimpColorConfig</h3>
-<a class="indexterm" name="id2564875"></a><pre class="programlisting">typedef struct _GimpColorConfig GimpColorConfig;</pre>
+<a class="indexterm" name="id2565254"></a><pre class="programlisting">typedef struct _GimpColorConfig GimpColorConfig;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564892"></a><h3>
+<a name="id2565270"></a><h3>
 <a name="GimpColorManagementMode"></a>enum GimpColorManagementMode</h3>
-<a class="indexterm" name="id2564900"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2565279"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_MANAGEMENT_OFF,       /*&lt; desc="No color management"   &gt;*/
   GIMP_COLOR_MANAGEMENT_DISPLAY,   /*&lt; desc="Color managed display" &gt;*/
@@ -107,9 +107,9 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564920"></a><h3>
+<a name="id2565299"></a><h3>
 <a name="GimpColorRenderingIntent"></a>enum GimpColorRenderingIntent</h3>
-<a class="indexterm" name="id2564929"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2565308"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
   GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
@@ -123,9 +123,9 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564951"></a><h3>
+<a name="id2565329"></a><h3>
 <a name="GimpColorFileOpenBehaviour"></a>enum GimpColorFileOpenBehaviour</h3>
-<a class="indexterm" name="id2564960"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2565338"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_FILE_OPEN_ASK,         /*&lt; desc="Ask"                       &gt;*/
   GIMP_COLOR_FILE_OPEN_LEAVE,       /*&lt; desc="Use embedded profile"      &gt;*/
@@ -138,9 +138,9 @@ GimpColorConfig implements
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2564982"></a><h2>Properties</h2>
+<a name="id2565360"></a><h2>Properties</h2>
 <div class="refsect2" lang="en">
-<a name="id2564988"></a><h3>
+<a name="id2565366"></a><h3>
 <a name="GimpColorConfig--cmyk-profile"></a>The "<code class="literal">cmyk-profile</code>" property</h3>
 <pre class="programlisting">  "cmyk-profile"         GimpConfigPath        : Read / Write / Construct</pre>
 <p>The CMYK color profile used to convert between RGB and CMYK.</p>
@@ -148,7 +148,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2524392"></a><h3>
+<a name="id2560642"></a><h3>
 <a name="GimpColorConfig--display-module"></a>The "<code class="literal">display-module</code>" property</h3>
 <pre class="programlisting">  "display-module"       gchararray            : Read / Write / Construct</pre>
 <p></p>
@@ -156,7 +156,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2524426"></a><h3>
+<a name="id2560676"></a><h3>
 <a name="GimpColorConfig--display-profile"></a>The "<code class="literal">display-profile</code>" property</h3>
 <pre class="programlisting">  "display-profile"      GimpConfigPath        : Read / Write / Construct</pre>
 <p>The color profile of your (primary) monitor.</p>
@@ -164,7 +164,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2524463"></a><h3>
+<a name="id2560712"></a><h3>
 <a name="GimpColorConfig--display-profile-from-gdk"></a>The "<code class="literal">display-profile-from-gdk</code>" property</h3>
 <pre class="programlisting">  "display-profile-from-gdk" gboolean              : Read / Write / Construct</pre>
 <p>When enabled, the GIMP will try to use the display color profile from the windowing system. The configured monitor profile is then only used as a fallback.</p>
@@ -172,7 +172,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2524501"></a><h3>
+<a name="id2560750"></a><h3>
 <a name="GimpColorConfig--display-rendering-intent"></a>The "<code class="literal">display-rendering-intent</code>" property</h3>
 <pre class="programlisting">  "display-rendering-intent" <a href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
 <p>Sets how colors are mapped for your display.</p>
@@ -180,7 +180,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564149"></a><h3>
+<a name="id2564709"></a><h3>
 <a name="GimpColorConfig--mode"></a>The "<code class="literal">mode</code>" property</h3>
 <pre class="programlisting">  "mode"                 <a href="GimpColorConfig.html#GimpColorManagementMode">GimpColorManagementMode</a>  : Read / Write / Construct</pre>
 <p>Mode of operation for color management.</p>
@@ -188,7 +188,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564182"></a><h3>
+<a name="id2564743"></a><h3>
 <a name="GimpColorConfig--printer-profile"></a>The "<code class="literal">printer-profile</code>" property</h3>
 <pre class="programlisting">  "printer-profile"      GimpConfigPath        : Read / Write / Construct</pre>
 <p>The color profile used for simulating a printed version (softproof).</p>
@@ -196,7 +196,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564219"></a><h3>
+<a name="id2564779"></a><h3>
 <a name="GimpColorConfig--rgb-profile"></a>The "<code class="literal">rgb-profile</code>" property</h3>
 <pre class="programlisting">  "rgb-profile"          GimpConfigPath        : Read / Write / Construct</pre>
 <p>The default RGB workspace color profile.</p>
@@ -204,7 +204,7 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564255"></a><h3>
+<a name="id2564814"></a><h3>
 <a name="GimpColorConfig--simulation-rendering-intent"></a>The "<code class="literal">simulation-rendering-intent</code>" property</h3>
 <pre class="programlisting">  "simulation-rendering-intent" <a href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
 <p>Sets how colors are converted from workspace to the print simulation device.</p>

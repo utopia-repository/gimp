@@ -337,7 +337,8 @@ This procedure returns the process ID of the currently running gimp.</para>
   gint32            d_drawable;
   gint32            d_selection;
   gint32            d_boundary;
-  gint32            d_path;
+  gint32            d_path; /* deprecated */
+  gint32            d_vectors;
   gint32            d_unit;
   GimpParasite      d_parasite;
   gint32            d_tattoo;

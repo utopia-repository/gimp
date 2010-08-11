@@ -31,37 +31,13 @@
 
 #include "pdb/procedural_db.h"
 
+#include "about.h"
+
 #include "about-dialog.h"
 #include "authors.h"
 
 #include "gimp-intl.h"
 
-
-#define COPYRIGHT \
-  "Copyright (C) 1995-2005\n" \
-  "Spencer Kimball, Peter Mattis and the GIMP Development Team"
-
-/* FIXME: let GTK+ do the wrapping (requires GTK+ 2.8) */
-#define LICENSE \
-  "This program is free software; you can redistribute it and/or modify\n" \
-  "it under the terms of the GNU General Public License as published by\n" \
-  "the Free Software Foundation; either version 2 of the License, or\n"    \
-  "(at your option) any later version.\n"                                  \
-  "\n"                                                                     \
-  "This program is distributed in the hope that it will be useful,\n"      \
-  "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"       \
-  "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"                 \
-  "See the GNU General Public License for more details.\n"                 \
-  "\n"                                                                     \
-  "You should have received a copy of the GNU General Public License\n"    \
-  "along with this program; if not, write to the Free Software\n"          \
-  "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA."
-
-#define NAME           "GIMP"
-#define COMMENTS       _("GNU Image Manipulation Program")
-
-#define WEBSITE        "http://www.gimp.org/"
-#define WEBSITE_LABEL  _("Visit the GIMP website")
 
 #define PDB_URL_LOAD   "plug-in-web-browser"
 
@@ -139,13 +115,14 @@ about_dialog_create (GimpContext *context)
       widget = g_object_new (GTK_TYPE_ABOUT_DIALOG,
                              "role",               "about-dialog",
                              "window-position",    GTK_WIN_POS_CENTER,
-                             "name",               NAME,
+                             "name",               GIMP_ACRONYM,
                              "version",            GIMP_VERSION,
-                             "copyright",          COPYRIGHT,
-                             "comments",           COMMENTS,
-                             "license",            LICENSE,
-                             "website",            WEBSITE,
-                             "website-label",      WEBSITE_LABEL,
+                             "copyright",          GIMP_COPYRIGHT,
+                             "comments",           GIMP_NAME,
+                             "license",            GIMP_LICENSE,
+                             "wrap-license",       TRUE,
+                             "website",            "http://www.gimp.org/",
+                             "website-label",      _("Visit the GIMP website"),
                              "authors",            authors,
                              "artists",            artists,
                              "documenters",        documenters,

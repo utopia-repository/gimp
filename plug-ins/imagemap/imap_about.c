@@ -38,12 +38,13 @@ do_about_dialog(void)
        const gchar* authors[] = {"Maurits Rijk (m.rijk@chello.nl)", NULL};
 
        dialog = gtk_about_dialog_new ();
-       gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (dialog), "Imagemap plug-in");
+       gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (dialog),
+                                  "Image Map Plug-In");
        gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), "2.3");
        gtk_about_dialog_set_copyright (GTK_ABOUT_DIALOG (dialog),
                                        _("Copyright(c) 1999-2005 by Maurits Rijk"));
        gtk_about_dialog_set_authors (GTK_ABOUT_DIALOG (dialog), authors);
-       gtk_about_dialog_set_license (GTK_ABOUT_DIALOG (dialog), 
+       gtk_about_dialog_set_license (GTK_ABOUT_DIALOG (dialog),
                                      _("Released under the GNU General Public License"));
 
        g_signal_connect (dialog, "destroy",

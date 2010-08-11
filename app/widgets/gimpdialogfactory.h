@@ -37,11 +37,11 @@ typedef enum
 
 typedef GtkWidget * (* GimpDialogNewFunc)     (GimpDialogFactory      *factory,
                                                GimpContext            *context,
-                                               gint                    preview_size);
+                                               gint                    view_size);
 typedef GtkWidget * (* GimpDialogConstructor) (GimpDialogFactory      *factory,
                                                GimpDialogFactoryEntry *entry,
                                                GimpContext            *context,
-                                               gint                    preview_size);
+                                               gint                    view_size);
 
 
 struct _GimpDialogFactoryEntry
@@ -53,7 +53,7 @@ struct _GimpDialogFactoryEntry
   gchar             *help_id;
 
   GimpDialogNewFunc  new_func;
-  gint               preview_size;
+  gint               view_size;
 
   gboolean           singleton;
   gboolean           session_managed;
@@ -116,7 +116,7 @@ void        gimp_dialog_factory_register_entry    (GimpDialogFactory *factory,
                                                    const gchar       *stock_id,
                                                    const gchar       *help_id,
 						   GimpDialogNewFunc  new_func,
-                                                   gint               preview_size,
+                                                   gint               view_size,
 						   gboolean           singleton,
 						   gboolean           session_managed,
 						   gboolean           remember_size,
@@ -132,16 +132,16 @@ GimpSessionInfo * gimp_dialog_factory_find_session_info
 GtkWidget * gimp_dialog_factory_dialog_new        (GimpDialogFactory *factory,
                                                    GdkScreen         *screen,
 						   const gchar       *identifier,
-                                                   gint               preview_size,
+                                                   gint               view_size,
                                                    gboolean           present);
 GtkWidget * gimp_dialog_factory_dialog_raise      (GimpDialogFactory *factory,
                                                    GdkScreen         *screen,
 						   const gchar       *identifiers,
-                                                   gint               preview_size);
+                                                   gint               view_size);
 GtkWidget * gimp_dialog_factory_dockable_new      (GimpDialogFactory *factory,
 						   GimpDock          *dock,
 						   const gchar       *identifier,
-                                                   gint               preview_size);
+                                                   gint               view_size);
 GtkWidget * gimp_dialog_factory_dock_new          (GimpDialogFactory *factory,
                                                    GdkScreen         *screen);
 
@@ -153,13 +153,14 @@ void        gimp_dialog_factory_add_foreign       (GimpDialogFactory *factory,
 void        gimp_dialog_factory_remove_dialog     (GimpDialogFactory *factory,
 						   GtkWidget         *dialog);
 
+void        gimp_dialog_factory_show_toolbox      (GimpDialogFactory *toolbox_factory);
+
+
 void        gimp_dialog_factories_session_save    (GimpConfigWriter  *writer);
 void        gimp_dialog_factories_session_restore (void);
 void        gimp_dialog_factories_session_clear   (void);
 
-void        gimp_dialog_factories_toggle          (GimpDialogFactory *toolbox_factory,
-                                                   gboolean           ensure_visibility);
-
+void        gimp_dialog_factories_toggle          (void);
 void        gimp_dialog_factories_set_busy        (void);
 void        gimp_dialog_factories_unset_busy      (void);
 

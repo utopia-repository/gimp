@@ -59,11 +59,13 @@ href="../gtk/gtk-Standard-Enumerations.html#GtkPolicyType"
                                              <a
 href="../gtk/gtk-Standard-Enumerations.html#GtkPolicyType"
 >GtkPolicyType</a> vscrollbar_policy);
+void        <a href="GimpScrolledPreview.html#gimp-scrolled-preview-freeze">gimp_scrolled_preview_freeze</a>    (<a href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a> *preview);
+void        <a href="GimpScrolledPreview.html#gimp-scrolled-preview-thaw">gimp_scrolled_preview_thaw</a>      (<a href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a> *preview);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578516"></a><h2>Object Hierarchy</h2>
+<a name="id2565926"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -87,32 +89,32 @@ href="../gtk/GtkVBox.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2589426"></a><h2>Implemented Interfaces</h2>
+<a name="id2565982"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpScrolledPreview implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2589443"></a><h2>Description</h2>
+<a name="id2565999"></a><h2>Description</h2>
 <p>
 A widget providing a <a href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> enhanced by scrolling capabilities.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2589460"></a><h2>Details</h2>
+<a name="id2567092"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2589467"></a><h3>
+<a name="id2567099"></a><h3>
 <a name="GimpScrolledPreview-struct"></a>GimpScrolledPreview</h3>
-<a class="indexterm" name="id2589476"></a><pre class="programlisting">typedef struct _GimpScrolledPreview GimpScrolledPreview;</pre>
+<a class="indexterm" name="id2567108"></a><pre class="programlisting">typedef struct _GimpScrolledPreview GimpScrolledPreview;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2580406"></a><h3>
+<a name="id2567124"></a><h3>
 <a name="gimp-scrolled-preview-set-position"></a>gimp_scrolled_preview_set_position ()</h3>
-<a class="indexterm" name="id2580414"></a><pre class="programlisting">void        gimp_scrolled_preview_set_position
+<a class="indexterm" name="id2567133"></a><pre class="programlisting">void        gimp_scrolled_preview_set_position
                                             (<a href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a> *preview,
                                              gint x,
                                              gint y);</pre>
@@ -149,9 +151,9 @@ A widget providing a <a href="GimpPreview.html" title="GimpPreview"><span class=
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2518417"></a><h3>
+<a name="id2575290"></a><h3>
 <a name="gimp-scrolled-preview-set-policy"></a>gimp_scrolled_preview_set_policy ()</h3>
-<a class="indexterm" name="id2518426"></a><pre class="programlisting">void        gimp_scrolled_preview_set_policy
+<a class="indexterm" name="id2575299"></a><pre class="programlisting">void        gimp_scrolled_preview_set_policy
                                             (<a href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a> *preview,
                                              <a
 href="../gtk/gtk-Standard-Enumerations.html#GtkPolicyType"
@@ -186,6 +188,60 @@ href="../gtk/gtk-Standard-Enumerations.html#GtkPolicyType"
 </td>
 </tr>
 </tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2581228"></a><h3>
+<a name="gimp-scrolled-preview-freeze"></a>gimp_scrolled_preview_freeze ()</h3>
+<a class="indexterm" name="id2581239"></a><pre class="programlisting">void        gimp_scrolled_preview_freeze    (<a href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a> *preview);</pre>
+<p>
+While the <em class="parameter"><code>preview</code></em> is frozen, it is not going to redraw itself in
+response to scroll events.
+</p>
+<p>
+This function should only be used to implement widgets derived from
+<a href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a>. There is no point in calling this from a plug-in.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>preview</code></em>&#160;:</span></td>
+<td> a <a href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a>
+</td>
+</tr></tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2586847"></a><h3>
+<a name="gimp-scrolled-preview-thaw"></a>gimp_scrolled_preview_thaw ()</h3>
+<a class="indexterm" name="id2586857"></a><pre class="programlisting">void        gimp_scrolled_preview_thaw      (<a href="GimpScrolledPreview.html" title="GimpScrolledPreview">GimpScrolledPreview</a> *preview);</pre>
+<p>
+While the <em class="parameter"><code>preview</code></em> is frozen, it is not going to redraw itself in
+response to scroll events.
+</p>
+<p>
+This function should only be used to implement widgets derived from
+<a href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a>. There is no point in calling this from a plug-in.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>preview</code></em>&#160;:</span></td>
+<td> a <a href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a>
+</td>
+</tr></tbody>
 </table></div>
 <p>Since  GIMP 2.4
 </p>

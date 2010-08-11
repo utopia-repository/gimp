@@ -1,3 +1,95 @@
+2006-02-07  Sven Neumann  <sven@gimp.org>
+
+	* de.po: minor update.
+
+2006-02-06  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-01-27  Karine Delvare  <kdelvare@nerim.net>
+
+	* fr.po: fixed spelling error.
+
+2006-01-26  Funda Wang  <fundawang@linux.net.cn>
+
+	* zh_CN.po: Updated Simplified Chinese translation.
+
+2006-01-25  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in
+	* POTFILES.skip: moved files to the skip list. These were left out
+	intentionally.
+
+2006-01-25  Funda Wang  <fundawang@linux.net.cn>
+
+	* POTFILES.in, POTFILES.skip: Added missing files.
+
+2006-01-24  Benoît Dejean  <benoit@placenet.org>
+
+	* fr.po: Updated French translation.
+
+2006-01-23  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+	
+2006-01-22  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-17  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-01-17  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated.
+
+2006-01-15  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-01-15  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2006-01-15  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-01-10  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Victor Dachev <vdachev@gmail.com>
+
+2006-01-09  Priit Laes  <plaes@cvs.gnome.org>
+
+	* et.po: Translation updated by Olle Niit.
+
+2006-01-04  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-01-03  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2005-12-30  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-12-29  Roman Joost <romanofski@gimp.org>
+
+        * de.po: fixed incorrect and inconsistent translation for 'button'
+
+2005-12-29  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-12-28  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added app/about.h.
+
 2005-12-26  Hendrik Richter  <hendi@gnome-de.org>
 
 	* de.po: Updated German translation.

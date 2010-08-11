@@ -27,7 +27,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: megawidget.c,v 1.1.1.1 1997/11/24 22:05:18 sopwith Exp $ */
+ * $Id: megawidget.c,v 1.1.1.1.8.1 1999/03/29 19:39:30 yosh Exp $ */
 
 /* Functions added by Xavier Bouchoux (Xavier.Bouchoux@ensimag.imag.fr)
  *  mw_value_radio_group_new()
@@ -42,6 +42,8 @@
  */
 
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <gtk/gtk.h>
 #include <libgimp/gimp.h>
 

@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.3 from Makefile.am
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
 
-# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -11,7 +11,7 @@
 # PARTICULAR PURPOSE.
 
 
-SHELL = /bin/sh
+SHELL = @SHELL@
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -32,7 +32,7 @@ mandir = @mandir@
 includedir = @includedir@
 oldincludedir = /usr/include
 
-DISTDIR =
+DESTDIR =
 
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -46,7 +46,7 @@ AUTOMAKE = @AUTOMAKE@
 AUTOHEADER = @AUTOHEADER@
 
 INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 transform = @program_transform_name@
@@ -60,9 +60,12 @@ POST_UNINSTALL = :
 host_alias = @host_alias@
 host_triplet = @host@
 AA = @AA@
+AS = @AS@
 CC = @CC@
 CPP = @CPP@
+DLLTOOL = @DLLTOOL@
 EMACS = @EMACS@
+GIMPDOCS = @GIMPDOCS@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
 GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
@@ -101,6 +104,7 @@ PNG = @PNG@
 RANLIB = @RANLIB@
 SENDMAIL = @SENDMAIL@
 TIFF = @TIFF@
+USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 WEBBROWSER = @WEBBROWSER@
 XD = @XD@
@@ -113,73 +117,17 @@ gimpplugindir = @gimpplugindir@
 
 patterndatadir = $(gimpdatadir)/patterns
 
-brushdata =
-gradientdata =
-palettedata =
-patterndata =
+brushdata = 
+gradientdata = 
+palettedata = 
+patterndata = 
 
 patterndata_DATA = @patterndata@
 
-EXTRA_DATA =
 EXTRA_DIST = $(patterndata_DATA)
 
-FILES	=\
-    3dgreen.pat \
-    Craters.pat \
-    Moonfoot.pat \
-    amethyst.pat \
-    bark.pat \
-    blue.pat \
-    bluegrid.pat \
-    bluesquares.pat \
-    blueweb.pat \
-    brick.pat \
-    burlap.pat \
-    burlwood.pat \
-    choc_swirl.pat \
-    corkboard.pat \
-    cracked.pat    \
-    crinklepaper.pat \
-    electric.pat \
-    fibers.pat	\
-    granite1.pat \
-    ground1.pat \
-    ice.pat \
-    java.pat \
-    leather.pat \
-    leaves.pat \
-    leopard.pat \
-    lightning.pat \
-    marble1.pat \
-    marble2.pat \
-    marble3.pat \
-    nops.pat \
-    paper.pat \
-    parque1.pat \
-    parque2.pat \
-    parque3.pat \
-    pastel.pat \
-    pine.pat \
-    pink_marble.pat \
-    pool.pat \
-    qube1.pat \
-    rain.pat \
-    recessed.pat \
-    redcube.pat \
-    rock.pat \
-    sky.pat \
-    slate.pat \
-    sm_squares.pat \
-    starfield.pat \
-    stone33.pat   \
-    terra.pat \
-    walnut.pat \
-    warning.pat \
-    wood1.pat \
-    wood2.pat \
-    wood3.pat \
-    wood4.pat \
-    wood5.pat 
+FILES =      3dgreen.pat     Craters.pat     Moonfoot.pat     amethyst.pat     bark.pat     blue.pat     bluegrid.pat     bluesquares.pat     blueweb.pat     brick.pat     burlap.pat     burlwood.pat     choc_swirl.pat     corkboard.pat     cracked.pat        crinklepaper.pat     electric.pat     fibers.pat	    granite1.pat     ground1.pat     ice.pat     java.pat     leather.pat     leaves.pat     leopard.pat     lightning.pat     marble1.pat     marble2.pat     marble3.pat     nops.pat     paper.pat     parque1.pat     parque2.pat     parque3.pat     pastel.pat     pine.pat     pink_marble.pat     pool.pat     qube1.pat     rain.pat     recessed.pat     redcube.pat     rock.pat     sky.pat     slate.pat     sm_squares.pat     starfield.pat     stone33.pat       terra.pat     walnut.pat     warning.pat     wood1.pat     wood2.pat     wood3.pat     wood4.pat     wood5.pat 
+
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h
 CONFIG_CLEAN_FILES = 
@@ -191,11 +139,10 @@ DIST_COMMON =  Makefile.am Makefile.in
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
-GZIP = --best
-all: Makefile $(DATA)
-
+GZIP_ENV = --best
+all: all-redirect
 .SUFFIXES:
-$(srcdir)/Makefile.in: @MAINT@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps data/patterns/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -232,61 +179,74 @@ subdir = data/patterns
 distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
-	  test -f $(distdir)/$$file \
-	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
-	  || cp -p $$d/$$file $(distdir)/$$file; \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
 	done
-info:
-dvi:
-check: all
-	$(MAKE)
-installcheck:
-install-exec: 
-	@$(NORMAL_INSTALL)
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
 
-install-data: install-patterndataDATA
-	@$(NORMAL_INSTALL)
+install-data-am: install-patterndataDATA
+install-data: install-data-am
 
-install: install-exec install-data all
-	@:
-
-uninstall: uninstall-patterndataDATA
-
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-patterndataDATA
+uninstall: uninstall-am
+all-am: Makefile $(DATA)
+all-redirect: all-am
 install-strip:
-	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs:
-	$(mkinstalldirs)  $(DATADIR)$(patterndatadir)
+	$(mkinstalldirs)  $(DESTDIR)$(patterndatadir)
 
 
 mostlyclean-generic:
-	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
-	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
-	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 
 maintainer-clean-generic:
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-mostlyclean:  mostlyclean-generic
+mostlyclean-am:  mostlyclean-generic
 
-clean:  clean-generic mostlyclean
+mostlyclean: mostlyclean-am
 
-distclean:  distclean-generic clean
-	-rm -f config.status
+clean-am:  clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-generic clean-am
 	-rm -f libtool
 
-maintainer-clean:  maintainer-clean-generic distclean
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-generic distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
+maintainer-clean: maintainer-clean-am
+
 .PHONY: uninstall-patterndataDATA install-patterndataDATA tags distdir \
-info dvi installcheck install-exec install-data install uninstall all \
-installdirs mostlyclean-generic distclean-generic clean-generic \
+info-am info dvi-am dvi check check-am installcheck-am installcheck \
+install-exec-am install-exec install-data-am install-data install-am \
+install uninstall-am uninstall all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 

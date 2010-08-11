@@ -47,6 +47,7 @@
  */
 
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -1661,6 +1662,107 @@ typedef struct
   gint transparent;
 } _GdkPixmapColor;
 
+static gchar*
+my_gdk_pixmap_skip_whitespaces (gchar *buffer)
+{
+  gint32 index = 0;
+
+  while (buffer[index] != 0 && (buffer[index] == 0x20 || buffer[index] == 0x09))
+    index++;
+
+  return &buffer[index];
+}
+
+static gchar*
+my_gdk_pixmap_skip_string (gchar *buffer)
+{
+  gint32 index = 0;
+
+  while (buffer[index] != 0 && buffer[index] != 0x20 && buffer[index] != 0x09)
+    index++;
+
+  return &buffer[index];
+}
+
+/* Xlib crashed ince at a color name lengths around 125 */
+#define MAX_COLOR_LEN 120
+
+static gchar*
+my_gdk_pixmap_extract_color (gchar *buffer)
+{
+  gint counter, numnames;
+  gchar *ptr = NULL, ch, temp[128];
+  gchar color[MAX_COLOR_LEN], *retcol;
+  gint space;
+
+  counter = 0;
+  while (ptr == NULL)
+    {
+      if (buffer[counter] == 'c')
+        {
+          ch = buffer[counter + 1];
+          if (ch == 0x20 || ch == 0x09)
+            ptr = &buffer[counter + 1];
+        }
+      else if (buffer[counter] == 0)
+        return NULL;
+
+      counter++;
+    }
+
+  ptr = my_gdk_pixmap_skip_whitespaces (ptr);
+
+  if (ptr[0] == 0)
+    return NULL;
+  else if (ptr[0] == '#')
+    {
+      counter = 1;
+      while (ptr[counter] != 0 && 
+             ((ptr[counter] >= '0' && ptr[counter] <= '9') ||
+              (ptr[counter] >= 'a' && ptr[counter] <= 'f') ||
+              (ptr[counter] >= 'A' && ptr[counter] <= 'F')))
+        counter++;
+
+      retcol = g_new (gchar, counter+1);
+      strncpy (retcol, ptr, counter);
+
+      retcol[counter] = 0;
+      
+      return retcol;
+    }
+
+  color[0] = 0;
+  numnames = 0;
+
+  space = MAX_COLOR_LEN - 1;
+  while (space > 0)
+    {
+      sscanf (ptr, "%127s", temp);
+
+      if (((gint)ptr[0] == 0) ||
+          (strcmp ("s", temp) == 0) || (strcmp ("m", temp) == 0) ||
+          (strcmp ("g", temp) == 0) || (strcmp ("g4", temp) == 0))
+        {
+          break;
+        }
+      else
+        {
+          if (numnames > 0)
+            {
+              space -= 1;
+              strcat (color, " ");
+            }
+          strncat (color, temp, space);
+          space -= MIN (space, strlen (temp));
+          ptr = my_gdk_pixmap_skip_string (ptr);
+          ptr = my_gdk_pixmap_skip_whitespaces (ptr);
+          numnames++;
+        }
+    }
+
+  retcol = g_strdup (color);
+  return retcol;
+}
 
 GdkPixmap*
 my_gdk_pixmap_create_from_xpm_d (GdkWindow  *window,
@@ -1704,7 +1806,7 @@ my_gdk_pixmap_create_from_xpm_d (GdkWindow  *window,
       if (color_name != NULL)
 	g_free (color_name);
 
-      color_name = (gchar *)gdk_pixmap_extract_color (&buffer[cpp]);
+      color_name = (gchar *)my_gdk_pixmap_extract_color (&buffer[cpp]);
 
       if (color_name != NULL)
 	{
@@ -3427,8 +3529,8 @@ brush_page()
 
   list = gtk_list_new ();
   gtk_list_set_selection_mode (GTK_LIST (list), GTK_SELECTION_SINGLE);
-  gtk_container_add (GTK_CONTAINER (scrolled_win), list);
-  gtk_widget_show (list);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_win),
+					 list);
   gtk_table_attach(GTK_TABLE(table), list_frame, 0, 4, 1, 5, GTK_FILL|GTK_EXPAND , GTK_FILL|GTK_EXPAND, 0, 0);
 
   /* Get brush list and insert in table */
@@ -4191,7 +4293,7 @@ add_objects_list ()
   gfig_gtk_list = list = gtk_list_new ();
   /* gtk_list_set_selection_mode (GTK_LIST (list), GTK_SELECTION_MULTIPLE); */
   gtk_list_set_selection_mode (GTK_LIST (list), GTK_SELECTION_BROWSE);
-  gtk_container_add (GTK_CONTAINER (scrolled_win), list);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_win),						 list);
   gtk_widget_show (list);
 
   /* Load saved objects */
@@ -4257,44 +4359,6 @@ gfig_pos_enable(GtkWidget *widget, gpointer data)
   gtk_widget_set_sensitive(GTK_WIDGET(y_pos_label),enable);
 }
 
-void
-my_gtk_label_set2 (GtkLabel *label,
-               const char *str)
-{
-  gtk_label_set(label,str);
-  gtk_container_need_resize (GTK_CONTAINER (gtk_widget_get_toplevel (GTK_WIDGET(label))));
-}
-
-void
-my_gtk_label_set (GtkLabel *label,
-               const char *str)
-{
-  char* p;
-  g_return_if_fail (label != NULL);
-  g_return_if_fail (GTK_IS_LABEL (label));
-  g_return_if_fail (str != NULL);
-  if (label->label)
-    g_free (label->label);
-  label->label = g_strdup (str);
-  if (label->row)
-    g_slist_free (label->row);
-  label->row = NULL;
-  label->row = g_slist_append (label->row, label->label);
-  p = label->label;
-  while ((p = strchr(p, '\n')))
-    label->row = g_slist_append (label->row, ++p);
-  if (GTK_WIDGET_VISIBLE (label))
-    {
-      gdk_window_clear_area (GTK_WIDGET (label)->window,
-			     GTK_WIDGET (label)->allocation.x,
-			     GTK_WIDGET (label)->allocation.y,
-			     GTK_WIDGET (label)->allocation.width,
-			     GTK_WIDGET (label)->allocation.height);  
-      gtk_widget_draw(GTK_WIDGET(label),NULL);
-    }
-}      
-
-
 static void
 gfig_pos_update_labels(gpointer data)
 {
@@ -4308,14 +4372,14 @@ gfig_pos_update_labels(gpointer data)
   else
     sprintf(buf," X:  %.3d ",x_pos_val);
 
-  my_gtk_label_set(GTK_LABEL(x_pos_label),buf);
+  gtk_label_set_text(GTK_LABEL(x_pos_label),buf);
 
   if(y_pos_val < 0)
     sprintf(buf," Y:%.3d ",y_pos_val);
   else
     sprintf(buf," Y:  %.3d ",y_pos_val);
 
-  my_gtk_label_set(GTK_LABEL(y_pos_label),buf);
+  gtk_label_set_text(GTK_LABEL(y_pos_label),buf);
 }
 
 static void
@@ -4345,7 +4409,7 @@ gfig_obj_size_update(gint sz)
   static gchar buf[256];
   
   sprintf(buf,"%6d",sz);
-  my_gtk_label_set(GTK_LABEL(obj_size_label),buf);
+  gtk_label_set(GTK_LABEL(obj_size_label),buf);
 }  
 
 static GtkWidget *

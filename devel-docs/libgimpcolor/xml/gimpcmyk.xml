@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpCMYK</refname>
 <refpurpose>Definitions and Functions relating to CMYK colors.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimpcolor-GimpCMYK.synopsis" role="synopsis">
@@ -53,7 +52,7 @@
                                                          <link linkend="guchar">guchar</link> *yellow,
                                                          <link linkend="guchar">guchar</link> *black,
                                                          <link linkend="guchar">guchar</link> *alpha);
-#define             <link linkend="GIMP-TYPE-CMYK:CAPS">GIMP_TYPE_CMYK</link>
+#define             <link linkend="GIMP-TYPE-CMYK--CAPS">GIMP_TYPE_CMYK</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -76,16 +75,15 @@ Definitions and Functions relating to CMYK colors.
 <title role="details.title">Details</title>
 <refsect2 id="GimpCMYK" role="struct">
 <title>GimpCMYK</title>
-<indexterm zone="GimpCMYK"><primary>GimpCMYK</primary></indexterm><programlisting>typedef struct {
+<indexterm zone="GimpCMYK"><primary sortas="GimpCMYK">GimpCMYK</primary></indexterm><programlisting>typedef struct {
   gdouble c, m, y, k, a;
 } GimpCMYK;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-cmyk-set" role="function">
 <title>gimp_cmyk_set ()</title>
-<indexterm zone="gimp-cmyk-set"><primary>gimp_cmyk_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set                       (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+<indexterm zone="gimp-cmyk-set"><primary sortas="gimp_cmyk_set">gimp_cmyk_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set                       (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="gdouble">gdouble</link> cyan,
                                                          <link linkend="gdouble">gdouble</link> magenta,
                                                          <link linkend="gdouble">gdouble</link> yellow,
@@ -94,27 +92,26 @@ Definitions and Functions relating to CMYK colors.
 Very basic initialiser for the internal <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure. Channel
 values are doubles in the range 0 to 1.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>cmyk</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cmyk</parameter>&#160;:</term>
 <listitem><simpara>    A <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure which will hold the specified CMYK value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan</parameter>&#160;:</term>
 <listitem><simpara>    The Cyan channel of the CMYK value
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta</parameter>&#160;:</term>
 <listitem><simpara> The Magenta channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow</parameter>&#160;:</term>
 <listitem><simpara>  The Yellow channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>black</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>black</parameter>&#160;:</term>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-cmyk-set-uchar" role="function">
 <title>gimp_cmyk_set_uchar ()</title>
-<indexterm zone="gimp-cmyk-set-uchar"><primary>gimp_cmyk_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set_uchar                 (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+<indexterm zone="gimp-cmyk-set-uchar"><primary sortas="gimp_cmyk_set_uchar">gimp_cmyk_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_set_uchar                 (<link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="guchar">guchar</link> cyan,
                                                          <link linkend="guchar">guchar</link> magenta,
                                                          <link linkend="guchar">guchar</link> yellow,
@@ -123,27 +120,26 @@ values are doubles in the range 0 to 1.</para>
 The same as <link linkend="gimp-cmyk-set"><function>gimp_cmyk_set()</function></link>, except that channel values are
 unsigned chars in the range 0 to 255.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>cmyk</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cmyk</parameter>&#160;:</term>
 <listitem><simpara>    A <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure which will hold the specified CMYK value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan</parameter>&#160;:</term>
 <listitem><simpara>    The Cyan channel of the CMYK value
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta</parameter>&#160;:</term>
 <listitem><simpara> The Magenta channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow</parameter>&#160;:</term>
 <listitem><simpara>  The Yellow channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>black</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>black</parameter>&#160;:</term>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-cmyk-get-uchar" role="function">
 <title>gimp_cmyk_get_uchar ()</title>
-<indexterm zone="gimp-cmyk-get-uchar"><primary>gimp_cmyk_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_get_uchar                 (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
+<indexterm zone="gimp-cmyk-get-uchar"><primary sortas="gimp_cmyk_get_uchar">gimp_cmyk_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyk_get_uchar                 (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyk,
                                                          <link linkend="guchar">guchar</link> *cyan,
                                                          <link linkend="guchar">guchar</link> *magenta,
                                                          <link linkend="guchar">guchar</link> *yellow,
@@ -152,27 +148,26 @@ unsigned chars in the range 0 to 255.</para>
 Retrieve individual channel values from a <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure. Channel
 values are pointers to unsigned chars in the range 0 to 255.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>cmyk</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cmyk</parameter>&#160;:</term>
 <listitem><simpara>    A <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure which will hold the specified CMYK value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan</parameter>&#160;:</term>
 <listitem><simpara>    The Cyan channel of the CMYK value
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta</parameter>&#160;:</term>
 <listitem><simpara> The Magenta channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow</parameter>&#160;:</term>
 <listitem><simpara>  The Yellow channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>black</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>black</parameter>&#160;:</term>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-cmyka-set" role="function">
 <title>gimp_cmyka_set ()</title>
-<indexterm zone="gimp-cmyka-set"><primary>gimp_cmyka_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set                      (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
+<indexterm zone="gimp-cmyka-set"><primary sortas="gimp_cmyka_set">gimp_cmyka_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set                      (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
                                                          <link linkend="gdouble">gdouble</link> cyan,
                                                          <link linkend="gdouble">gdouble</link> magenta,
                                                          <link linkend="gdouble">gdouble</link> yellow,
@@ -182,30 +177,29 @@ values are pointers to unsigned chars in the range 0 to 255.</para>
 Initialiser for the internal <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure. Channel values are
 doubles in the range 0 to 1.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>cmyka</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cmyka</parameter>&#160;:</term>
 <listitem><simpara>   A <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure which will hold the specified CMYKA value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan</parameter>&#160;:</term>
 <listitem><simpara>    The Cyan channel of the CMYK value
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta</parameter>&#160;:</term>
 <listitem><simpara> The Magenta channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow</parameter>&#160;:</term>
 <listitem><simpara>  The Yellow channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>black</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>black</parameter>&#160;:</term>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>alpha</parameter>&#160;:</term>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-cmyka-set-uchar" role="function">
 <title>gimp_cmyka_set_uchar ()</title>
-<indexterm zone="gimp-cmyka-set-uchar"><primary>gimp_cmyka_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set_uchar                (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
+<indexterm zone="gimp-cmyka-set-uchar"><primary sortas="gimp_cmyka_set_uchar">gimp_cmyka_set_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_set_uchar                (<link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
                                                          <link linkend="guchar">guchar</link> cyan,
                                                          <link linkend="guchar">guchar</link> magenta,
                                                          <link linkend="guchar">guchar</link> yellow,
@@ -215,30 +209,29 @@ doubles in the range 0 to 1.</para>
 The same as <link linkend="gimp-cmyka-set"><function>gimp_cmyka_set()</function></link>, except that channel values are
 unsigned chars in the range 0 to 255.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>cmyka</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cmyka</parameter>&#160;:</term>
 <listitem><simpara>   A <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure which will hold the specified CMYKA value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan</parameter>&#160;:</term>
 <listitem><simpara>    The Cyan channel of the CMYK value
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta</parameter>&#160;:</term>
 <listitem><simpara> The Magenta channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow</parameter>&#160;:</term>
 <listitem><simpara>  The Yellow channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>black</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>black</parameter>&#160;:</term>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>alpha</parameter>&#160;:</term>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-cmyka-get-uchar" role="function">
 <title>gimp_cmyka_get_uchar ()</title>
-<indexterm zone="gimp-cmyka-get-uchar"><primary>gimp_cmyka_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_get_uchar                (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
+<indexterm zone="gimp-cmyka-get-uchar"><primary sortas="gimp_cmyka_get_uchar">gimp_cmyka_get_uchar</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cmyka_get_uchar                (const <link linkend="GimpCMYK">GimpCMYK</link> *cmyka,
                                                          <link linkend="guchar">guchar</link> *cyan,
                                                          <link linkend="guchar">guchar</link> *magenta,
                                                          <link linkend="guchar">guchar</link> *yellow,
@@ -248,33 +241,31 @@ unsigned chars in the range 0 to 255.</para>
 Retrieve individual channel values from a <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure.
 Channel values are pointers to unsigned chars in the range 0 to 255.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>cmyka</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cmyka</parameter>&#160;:</term>
 <listitem><simpara>   A <link linkend="GimpCMYK"><type>GimpCMYK</type></link> structure which will hold the specified CMYKA value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>cyan</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>cyan</parameter>&#160;:</term>
 <listitem><simpara>    The Cyan channel of the CMYK value
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>magenta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>magenta</parameter>&#160;:</term>
 <listitem><simpara> The Magenta channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yellow</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yellow</parameter>&#160;:</term>
 <listitem><simpara>  The Yellow channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>black</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>black</parameter>&#160;:</term>
 <listitem><simpara>   The blacK channel
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>alpha</parameter>&#160;:</term>
 <listitem><simpara>   The Alpha channel
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="GIMP-TYPE-CMYK:CAPS" role="macro">
+<refsect2 id="GIMP-TYPE-CMYK--CAPS" role="macro">
 <title>GIMP_TYPE_CMYK</title>
-<indexterm zone="GIMP-TYPE-CMYK:CAPS"><primary>GIMP_TYPE_CMYK</primary></indexterm><programlisting>#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
+<indexterm zone="GIMP-TYPE-CMYK--CAPS"><primary sortas="GIMP_TYPE_CMYK">GIMP_TYPE_CMYK</primary></indexterm><programlisting>#define GIMP_TYPE_CMYK       (gimp_cmyk_get_type ())
 </programlisting>
 <para>
-
 </para></refsect2>
 
 </refsect1>

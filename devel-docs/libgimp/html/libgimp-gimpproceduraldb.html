@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpproceduraldb</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpplugin.html" title="gimpplugin">
 <link rel="next" href="libgimp-gimpprogress.html" title="gimpprogress">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpproceduraldb.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpproceduraldb">
 <a name="libgimp-gimpproceduraldb"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpproceduraldb.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -183,15 +183,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *identifier);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpproceduraldb.description"></a><h2>Description</h2>
 <p>
 Functions for querying and changing procedural database (PDB) entries.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpproceduraldb.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_temp_name ()">
 <a name="gimp-procedural-db-temp-name"></a><h3>gimp_procedural_db_temp_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -214,7 +214,7 @@ guaranteed to be unique.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_get_data ()">
 <a name="gimp-procedural-db-get-data"></a><h3>gimp_procedural_db_get_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -256,7 +256,7 @@ the identifier
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_set_data ()">
 <a name="gimp-procedural-db-set-data"></a><h3>gimp_procedural_db_set_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -305,7 +305,7 @@ identifier. The data may be subsequently retrieved by a call to
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_dump ()">
 <a name="gimp-procedural-db-dump"></a><h3>gimp_procedural_db_dump ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -338,7 +338,7 @@ provided for each registered procedure.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_query ()">
 <a name="gimp-procedural-db-query"></a><h3>gimp_procedural_db_query ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -445,7 +445,7 @@ entries is 0.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_proc_exists ()">
 <a name="gimp-procedural-db-proc-exists"></a><h3>gimp_procedural_db_proc_exists ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -479,7 +479,7 @@ the procedural database.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_proc_info ()">
 <a name="gimp-procedural-db-proc-info"></a><h3>gimp_procedural_db_proc_info ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -591,7 +591,7 @@ about each input argument and return value.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_proc_arg ()">
 <a name="gimp-procedural-db-proc-arg"></a><h3>gimp_procedural_db_proc_arg ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -656,7 +656,7 @@ argument. The argument type, name, and a description are retrieved.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_proc_val ()">
 <a name="gimp-procedural-db-proc-val"></a><h3>gimp_procedural_db_proc_val ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -722,7 +722,7 @@ retrieved.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_procedural_db_get_data_size ()">
 <a name="gimp-procedural-db-get-data-size"></a><h3>gimp_procedural_db_get_data_size ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"

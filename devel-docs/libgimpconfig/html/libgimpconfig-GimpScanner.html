@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpscanner</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfigWriter.html" title="gimpconfigwriter">
 <link rel="next" href="GimpColorConfig.html" title="GimpColorConfig">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorConfig.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpconfig-GimpScanner.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpconfig-GimpScanner.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpconfig-GimpScanner.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpconfig-GimpScanner.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpscanner">
 <a name="libgimpconfig-GimpScanner"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,12 +41,12 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpconfig-GimpScanner.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GScanner"
->GScanner</a>*           <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()">gimp_scanner_new_file</a>               (const <a
+>GScanner</a> *          <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file" title="gimp_scanner_new_file ()">gimp_scanner_new_file</a>               (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          <a
@@ -52,7 +54,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 >GError</a> **error);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GScanner"
->GScanner</a>*           <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()">gimp_scanner_new_string</a>             (const <a
+>GScanner</a> *          <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string" title="gimp_scanner_new_string ()">gimp_scanner_new_string</a>             (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *text,
                                                          <a
@@ -105,7 +107,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GSc
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> length,
-                                                         guint8 **dest);
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
+>guint8</a> **dest);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-int" title="gimp_scanner_parse_int ()">gimp_scanner_parse_int</a>              (<a
@@ -140,19 +144,18 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 >GimpMatrix2</a> *dest);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpconfig-GimpScanner.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpconfig-GimpScanner.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_new_file ()">
 <a name="gimp-scanner-new-file"></a><h3>gimp_scanner_new_file ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GScanner"
->GScanner</a>*           gimp_scanner_new_file               (const <a
+>GScanner</a> *          gimp_scanner_new_file               (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
                                                          <a
@@ -161,7 +164,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -184,15 +186,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_new_string ()">
 <a name="gimp-scanner-new-string"></a><h3>gimp_scanner_new_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GScanner"
->GScanner</a>*           gimp_scanner_new_string             (const <a
+>GScanner</a> *          gimp_scanner_new_string             (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *text,
                                                          <a
@@ -204,7 +205,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -232,11 +232,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_destroy ()">
 <a name="gimp-scanner-destroy"></a><h3>gimp_scanner_destroy ()</h3>
 <pre class="programlisting">void                gimp_scanner_destroy                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GScanner"
@@ -244,7 +243,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GSc
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -254,11 +252,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GSc
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_token ()">
 <a name="gimp-scanner-parse-token"></a><h3>gimp_scanner_parse_token ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -271,7 +268,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GTo
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -294,11 +290,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GTo
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_identifier ()">
 <a name="gimp-scanner-parse-identifier"></a><h3>gimp_scanner_parse_identifier ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -311,7 +306,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -334,11 +328,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_string ()">
 <a name="gimp-scanner-parse-string"></a><h3>gimp_scanner_parse_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -351,7 +344,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -374,11 +366,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_string_no_validate ()">
 <a name="gimp-scanner-parse-string-no-validate"></a><h3>gimp_scanner_parse_string_no_validate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -392,7 +383,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -415,11 +405,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_data ()">
 <a name="gimp-scanner-parse-data"></a><h3>gimp_scanner_parse_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -429,11 +418,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GSc
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> length,
-                                                         guint8 **dest);</pre>
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
+>guint8</a> **dest);</pre>
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -461,11 +451,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_int ()">
 <a name="gimp-scanner-parse-int"></a><h3>gimp_scanner_parse_int ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -478,7 +467,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -501,11 +489,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_float ()">
 <a name="gimp-scanner-parse-float"></a><h3>gimp_scanner_parse_float ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -518,7 +505,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -541,11 +527,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_color ()">
 <a name="gimp-scanner-parse-color"></a><h3>gimp_scanner_parse_color ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -558,7 +543,6 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -581,11 +565,10 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scanner_parse_matrix2 ()">
 <a name="gimp-scanner-parse-matrix2"></a><h3>gimp_scanner_parse_matrix2 ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -598,7 +581,6 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -621,13 +603,12 @@ href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

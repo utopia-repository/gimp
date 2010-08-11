@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpselection</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpregioniterator.html" title="gimpregioniterator">
 <link rel="next" href="libgimp-gimptextlayer.html" title="gimptextlayer">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpselection.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpselection">
 <a name="libgimp-gimpselection"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpselection.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -193,15 +193,15 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpselection.description"></a><h2>Description</h2>
 <p>
 Functions for manipulating selections.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpselection.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_bounds ()">
 <a name="gimp-selection-bounds"></a><h3>gimp_selection_bounds ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -279,7 +279,7 @@ pixel. This means the width of the selection can be calculated as
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_all ()">
 <a name="gimp-selection-all"></a><h3>gimp_selection_all ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -311,7 +311,7 @@ image. Every pixel in the selection channel is set to 255.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_none ()">
 <a name="gimp-selection-none"></a><h3>gimp_selection_none ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -343,14 +343,14 @@ selection channel is set to 0.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_clear ()">
 <a name="gimp-selection-clear"></a><h3>gimp_selection_clear ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_selection_clear                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_selection_clear</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -375,7 +375,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpselection.ht
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_is_empty ()">
 <a name="gimp-selection-is-empty"></a><h3>gimp_selection_is_empty ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -407,7 +407,7 @@ is empty.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_float ()">
 <a name="gimp-selection-float"></a><h3>gimp_selection_float ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -467,7 +467,7 @@ positioning of the new floating selection.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_load ()">
 <a name="gimp-selection-load"></a><h3>gimp_selection_load ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -498,7 +498,7 @@ This procedure loads the specified channel into the selection mask.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_save ()">
 <a name="gimp-selection-save"></a><h3>gimp_selection_save ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -531,7 +531,7 @@ image's list of channels.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_value ()">
 <a name="gimp-selection-value"></a><h3>gimp_selection_value ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -579,7 +579,7 @@ coordinates. If the coordinates lie out of bounds, 0 is returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_grow ()">
 <a name="gimp-selection-grow"></a><h3>gimp_selection_grow ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -619,7 +619,7 @@ boundary in all directions by the specified pixel amount.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_shrink ()">
 <a name="gimp-selection-shrink"></a><h3>gimp_selection_shrink ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -660,7 +660,7 @@ of pixels.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_invert ()">
 <a name="gimp-selection-invert"></a><h3>gimp_selection_invert ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -692,7 +692,7 @@ selection channel, its new value is calculated as (255 - old-value).</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_feather ()">
 <a name="gimp-selection-feather"></a><h3>gimp_selection_feather ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -732,7 +732,7 @@ using a gaussian blur.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_sharpen ()">
 <a name="gimp-selection-sharpen"></a><h3>gimp_selection_sharpen ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -766,7 +766,7 @@ might exist in the selection mask's boundary.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_border ()">
 <a name="gimp-selection-border"></a><h3>gimp_selection_border ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -807,7 +807,7 @@ selection at every point within the specified radius.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_translate ()">
 <a name="gimp-selection-translate"></a><h3>gimp_selection_translate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -858,7 +858,7 @@ because of this call are lost.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_layer_alpha ()">
 <a name="gimp-selection-layer-alpha"></a><h3>gimp_selection_layer_alpha ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -894,7 +894,7 @@ alpha channel is considered opaque.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_selection_combine ()">
 <a name="gimp-selection-combine"></a><h3>gimp_selection_combine ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

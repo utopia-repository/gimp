@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpColorNotebook</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
 <link rel="prev" href="GimpColorSelector.html" title="GimpColorSelector">
 <link rel="next" href="GimpColorScales.html" title="GimpColorScales">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -34,17 +34,19 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorScales.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#GimpColorNotebook.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#GimpColorNotebook.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#GimpColorNotebook.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#GimpColorNotebook.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                   | 
-                  <a href="#GimpColorNotebook.style-properties" class="shortcut">Style Properties</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#GimpColorNotebook.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#GimpColorNotebook.description" class="shortcut">Description</a>
+                 | 
+                <a href="#GimpColorNotebook.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#GimpColorNotebook.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                 | 
+                <a href="#GimpColorNotebook.style-properties" class="shortcut">Style Properties</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpColorNotebook">
 <a name="GimpColorNotebook"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -53,13 +55,13 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpColorNotebook.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpColorNotebook.html#GimpColorNotebook-struct" title="GimpColorNotebook">GimpColorNotebook</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpColorNotebook.html#gimp-color-notebook-set-has-page" title="gimp_color_notebook_set_has_page ()">gimp_color_notebook_set_has_page</a>    (<a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="GimpColorNotebook.html#gimp-color-notebook-set-has-page" title="gimp_color_notebook_set_has_page ()">gimp_color_notebook_set_has_page</a>    (<a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
                                                          <a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
 >GType</a> page_type,
@@ -68,7 +70,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 >gboolean</a> has_page);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpColorNotebook.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -78,65 +80,66 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkBox.html"
 >GtkBox</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkVBox.html"
 >GtkVBox</a>
                                        +----<a class="link" href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
                                              +----GimpColorNotebook
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpColorNotebook.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorNotebook implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface and  <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
+>GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Style Properties">
 <a name="GimpColorNotebook.style-properties"></a><h2>Style Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpColorNotebook.html#GimpColorNotebook--tab-border" title='The "tab-border" style property'>tab-border</a>"               <a
+  "<a class="link" href="GimpColorNotebook.html#GimpColorNotebook--s-tab-border" title='The "tab-border" style property'>tab-border</a>"               <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a>                  : Read
-  "<a class="link" href="GimpColorNotebook.html#GimpColorNotebook--tab-icon-size" title='The "tab-icon-size" style property'>tab-icon-size</a>"            <a
-href="/usr/share/gtk-doc/html/gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
+  "<a class="link" href="GimpColorNotebook.html#GimpColorNotebook--s-tab-icon-size" title='The "tab-icon-size" style property'>tab-icon-size</a>"            <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Themeable-Stock-Images.html#GtkIconSize"
 >GtkIconSize</a>           : Read
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpColorNotebook.description"></a><h2>Description</h2>
 <p>
 The <a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a> widget is an implementation of a <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>.
 It serves as a container for <span class="type">GimpColorSelectors</span>.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpColorNotebook.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpColorNotebook">
 <a name="GimpColorNotebook-struct"></a><h3>GimpColorNotebook</h3>
 <pre class="programlisting">typedef struct _GimpColorNotebook GimpColorNotebook;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_notebook_set_has_page ()">
 <a name="gimp-color-notebook-set-has-page"></a><h3>gimp_color_notebook_set_has_page ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_color_notebook_set_has_page    (<a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_color_notebook_set_has_page    (<a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook">GimpColorNotebook</a> *notebook,
                                                          <a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
 >GType</a> page_type,
@@ -147,7 +150,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 This function adds and removed pages to / from a <a class="link" href="GimpColorNotebook.html" title="GimpColorNotebook"><span class="type">GimpColorNotebook</span></a>.
 The <em class="parameter"><code>page_type</code></em> passed must be a <a class="link" href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> subtype.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -172,12 +174,12 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new page widget, if <em class="parameter"><code>has_page</code></em> was <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><span class="type">TRUE</span></a>, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><span class="type">NULL</span></a>
               if <em class="parameter"><code>has_page</code></em> was <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><span class="type">FALSE</span></a>.
 </td>
 </tr>
@@ -185,10 +187,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Style Property Details">
 <a name="GimpColorNotebook.style-property-details"></a><h2>Style Property Details</h2>
-<div class="refsect2" lang="en">
-<a name="GimpColorNotebook--tab-border"></a><h3>The <code class="literal">"tab-border"</code> style property</h3>
+<div class="refsect2" title='The "tab-border" style property'>
+<a name="GimpColorNotebook--s-tab-border"></a><h3>The <code class="literal">"tab-border"</code> style property</h3>
 <pre class="programlisting">  "tab-border"               <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a>                  : Read</pre>
@@ -197,10 +199,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 0</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GimpColorNotebook--tab-icon-size"></a><h3>The <code class="literal">"tab-icon-size"</code> style property</h3>
+<div class="refsect2" title='The "tab-icon-size" style property'>
+<a name="GimpColorNotebook--s-tab-icon-size"></a><h3>The <code class="literal">"tab-icon-size"</code> style property</h3>
 <pre class="programlisting">  "tab-icon-size"            <a
-href="/usr/share/gtk-doc/html/gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Themeable-Stock-Images.html#GtkIconSize"
 >GtkIconSize</a>           : Read</pre>
 <p>Size for icons displayed in the tab.</p>
 <p>Default value: GTK_ICON_SIZE_BUTTON</p>
@@ -209,6 +211,6 @@ href="/usr/share/gtk-doc/html/gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

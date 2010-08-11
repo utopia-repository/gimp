@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpconfig-iface</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
 <link rel="next" href="libgimpconfig-gimpconfig-deserialize.html" title="gimpconfig-deserialize">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -26,17 +26,19 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-deserialize.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpconfig-GimpConfig.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpconfig-GimpConfig.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#libgimpconfig-GimpConfig.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#libgimpconfig-GimpConfig.prerequisites" class="shortcut">Prerequisites</a>
-                   | 
-                  <a href="#libgimpconfig-GimpConfig.implementations" class="shortcut">Known Implementations</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpconfig-GimpConfig.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpconfig-GimpConfig.description" class="shortcut">Description</a>
+                 | 
+                <a href="#libgimpconfig-GimpConfig.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#libgimpconfig-GimpConfig.prerequisites" class="shortcut">Prerequisites</a>
+                 | 
+                <a href="#libgimpconfig-GimpConfig.implementations" class="shortcut">Known Implementations</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpconfig-iface">
 <a name="libgimpconfig-GimpConfig"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -45,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpconfig-GimpConfig.synopsis"></a><h2>Synopsis</h2>
 <a name="GimpConfigInterface"></a><pre class="synopsis">
                     <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a>;
@@ -79,7 +81,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 >gpointer</a> data);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-string" title="gimp_config_serialize_to_string ()">gimp_config_serialize_to_string</a>     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+>gchar</a> *             <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-string" title="gimp_config_serialize_to_string ()">gimp_config_serialize_to_string</a>     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
@@ -138,14 +140,14 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 >GParamFlags</a> flags);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="libgimpconfig-GimpConfig.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   GInterface
    +----GimpConfigInterface
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Prerequisites">
 <a name="libgimpconfig-GimpConfig.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 GimpConfigInterface requires
@@ -153,38 +155,35 @@ GimpConfigInterface requires
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Known Implementations">
 <a name="libgimpconfig-GimpConfig.implementations"></a><h2>Known Implementations</h2>
 <p>
 GimpConfigInterface is implemented by
  <a class="link" href="GimpColorConfig.html" title="GimpColorConfig">GimpColorConfig</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpconfig-GimpConfig.description"></a><h2>Description</h2>
 <p>
 High-level API functions for libgimpconfig.
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpconfig-GimpConfig.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpConfig">
 <a name="GimpConfig"></a><h3>GimpConfig</h3>
 <pre class="programlisting">typedef struct _GimpConfig GimpConfig;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpConfigInterface">
 <a name="GimpConfigInterface-struct"></a><h3>GimpConfigInterface</h3>
 <pre class="programlisting">typedef struct _GimpConfigInterface GimpConfigInterface;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_serialize_to_file ()">
 <a name="gimp-config-serialize-to-file"></a><h3>gimp_config_serialize_to_file ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -210,7 +209,6 @@ by <em class="parameter"><code>filename</code></em>. If a file with that name al
 overwritten. Basically this function opens <em class="parameter"><code>filename</code></em> for you and
 calls the serialize function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -250,20 +248,19 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if serialization succeeded, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_serialize_to_fd ()">
 <a name="gimp-config-serialize-to-fd"></a><h3>gimp_config_serialize_to_fd ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -278,7 +275,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 Serializes the object properties of <em class="parameter"><code>config</code></em> to the given file
 descriptor.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -303,31 +299,29 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if serialization succeeded, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_serialize_to_string ()">
 <a name="gimp-config-serialize-to-string"></a><h3>gimp_config_serialize_to_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_config_serialize_to_string     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+>gchar</a> *             gimp_config_serialize_to_string     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Serializes the object properties of <em class="parameter"><code>config</code></em> to a string.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -352,11 +346,10 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_deserialize_file ()">
 <a name="gimp-config-deserialize-file"></a><h3>gimp_config_deserialize_file ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -378,7 +371,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GSc
 ><span class="type">GScanner</span></a> for you and calls the
 deserialize function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -408,20 +400,19 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if deserialization succeeded, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_deserialize_string ()">
 <a name="gimp-config-deserialize-string"></a><h3>gimp_config_deserialize_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -445,7 +436,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Lexical-Scanner.html#GSc
 ><span class="type">GScanner</span></a> for you and calls the deserialize
 function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -480,20 +470,19 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if deserialization succeeded, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_deserialize_return ()">
 <a name="gimp-config-deserialize-return"></a><h3>gimp_config_deserialize_return ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -509,7 +498,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -537,11 +525,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_duplicate ()">
 <a name="gimp-config-duplicate"></a><h3>gimp_config_duplicate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -552,7 +539,6 @@ properties. The default implementation of the <a class="link" href="libgimpconfi
 only works for objects that are completely defined by their
 properties.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -572,11 +558,10 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_is_equal_to ()">
 <a name="gimp-config-is-equal-to"></a><h3>gimp_config_is_equal_to ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -588,7 +573,6 @@ Compares the two objects. The default implementation of the
 works for objects that are completely defined by their
 properties.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -610,18 +594,17 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the two objects are equal.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_reset ()">
 <a name="gimp-config-reset"></a><h3>gimp_config_reset ()</h3>
 <pre class="programlisting">void                gimp_config_reset                   (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);</pre>
 <p>
@@ -629,7 +612,6 @@ Resets the object to its default state. The default implementation of the
 <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a> only works for objects that are completely defined by
 their properties.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -641,11 +623,10 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_copy ()">
 <a name="gimp-config-copy"></a><h3>gimp_config_copy ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -662,7 +643,6 @@ that have all <em class="parameter"><code>flags</code></em> set. Differing value
 <p>
 Properties marked as "construct-only" are not touched.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -689,22 +669,21 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if <em class="parameter"><code>dest</code></em> was modified, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.6
-</p>
+<p class="since">Since GIMP 2.6</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

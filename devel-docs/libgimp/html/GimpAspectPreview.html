@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpAspectPreview</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="GimpDrawablePreview.html" title="GimpDrawablePreview">
 <link rel="next" href="GimpZoomPreview.html" title="GimpZoomPreview">
@@ -44,7 +44,7 @@
                 <a href="#GimpAspectPreview.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpAspectPreview">
 <a name="GimpAspectPreview"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -53,19 +53,19 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpAspectPreview.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpAspectPreview.html#GimpAspectPreview-struct" title="GimpAspectPreview">GimpAspectPreview</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *         <a class="link" href="GimpAspectPreview.html#gimp-aspect-preview-new" title="gimp_aspect_preview_new ()">gimp_aspect_preview_new</a>             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> *toggle);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpAspectPreview.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -75,19 +75,19 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkBox.html"
 >GtkBox</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkVBox.html"
 >GtkVBox</a>
                                        +----<a
 href="../libgimpwidgets/GimpPreview.html"
@@ -95,15 +95,17 @@ href="../libgimpwidgets/GimpPreview.html"
                                              +----GimpAspectPreview
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpAspectPreview.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpAspectPreview implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface and  <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
+>GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Properties">
 <a name="GimpAspectPreview.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpAspectPreview.html#GimpAspectPreview--drawable" title='The "drawable" property'>drawable</a>"                 <a
@@ -111,25 +113,25 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 >gpointer</a>              : Read / Write / Construct Only
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpAspectPreview.description"></a><h2>Description</h2>
 <p>
 A widget providing a preview with fixed aspect ratio.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpAspectPreview.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpAspectPreview">
 <a name="GimpAspectPreview-struct"></a><h3>GimpAspectPreview</h3>
 <pre class="programlisting">typedef struct _GimpAspectPreview GimpAspectPreview;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_aspect_preview_new ()">
 <a name="gimp-aspect-preview-new"></a><h3>gimp_aspect_preview_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *         gimp_aspect_preview_new             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -168,9 +170,9 @@ the scroll offset.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Property Details">
 <a name="GimpAspectPreview.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "drawable" property'>
 <a name="GimpAspectPreview--drawable"></a><h3>The <code class="literal">"drawable"</code> property</h3>
 <pre class="programlisting">  "drawable"                 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"

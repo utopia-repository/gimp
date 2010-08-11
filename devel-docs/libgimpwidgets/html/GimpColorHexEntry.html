@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpColorHexEntry</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpColorButton.html" title="GimpColorButton">
 <link rel="next" href="GimpColorScale.html" title="GimpColorScale">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -34,17 +34,19 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorScale.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#GimpColorHexEntry.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#GimpColorHexEntry.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#GimpColorHexEntry.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#GimpColorHexEntry.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                   | 
-                  <a href="#GimpColorHexEntry.signals" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#GimpColorHexEntry.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#GimpColorHexEntry.description" class="shortcut">Description</a>
+                 | 
+                <a href="#GimpColorHexEntry.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#GimpColorHexEntry.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                 | 
+                <a href="#GimpColorHexEntry.signals" class="shortcut">Signals</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpColorHexEntry">
 <a name="GimpColorHexEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -53,13 +55,13 @@
 </td>
 <td valign="top" align="right"><img src="gimp-color-hex-entry.png"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpColorHexEntry.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-struct" title="GimpColorHexEntry">GimpColorHexEntry</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-new" title="gimp_color_hex_entry_new ()">gimp_color_hex_entry_new</a>            (void);
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-new" title="gimp_color_hex_entry_new ()">gimp_color_hex_entry_new</a>            (void);
 void                <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-set-color" title="gimp_color_hex_entry_set_color ()">gimp_color_hex_entry_set_color</a>      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -70,7 +72,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpColorHexEntry.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -80,60 +82,58 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkEntry.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkEntry.html"
 >GtkEntry</a>
                            +----GimpColorHexEntry
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpColorHexEntry.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorHexEntry implements
- AtkImplementorIface,  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>,  <a
-href="/usr/share/gtk-doc/html/gtk/GtkEditable.html"
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface,  <a
+href="http://library.gnome.org/devel/gtk/unstable/GtkEditable.html"
 >GtkEditable</a> and  <a
-href="/usr/share/gtk-doc/html/gtk/GtkCellEditable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkCellEditable.html"
 >GtkCellEditable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signals">
 <a name="GimpColorHexEntry.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-color-changed" title='The "color-changed" signal'>color-changed</a>"                                  : Run First
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpColorHexEntry.description"></a><h2>Description</h2>
 <p>
 Widget for entering a color's hex triplet.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpColorHexEntry.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpColorHexEntry">
 <a name="GimpColorHexEntry-struct"></a><h3>GimpColorHexEntry</h3>
 <pre class="programlisting">typedef struct _GimpColorHexEntry GimpColorHexEntry;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_hex_entry_new ()">
 <a name="gimp-color-hex-entry-new"></a><h3>gimp_color_hex_entry_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_color_hex_entry_new            (void);</pre>
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_color_hex_entry_new            (void);</pre>
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -144,11 +144,10 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_hex_entry_set_color ()">
 <a name="gimp-color-hex-entry-set-color"></a><h3>gimp_color_hex_entry_set_color ()</h3>
 <pre class="programlisting">void                gimp_color_hex_entry_set_color      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
                                                          const <a
@@ -159,7 +158,6 @@ Sets the color displayed by a <a class="link" href="GimpColorHexEntry.html" titl
 is different to the previously set color, the "color-changed"
 signal is emitted.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -178,11 +176,10 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_hex_entry_get_color ()">
 <a name="gimp-color-hex-entry-get-color"></a><h3>gimp_color_hex_entry_get_color ()</h3>
 <pre class="programlisting">void                gimp_color_hex_entry_get_color      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
                                                          <a
@@ -191,7 +188,6 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 <p>
 Retrieves the color value displayed by a <a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -210,20 +206,18 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signal Details">
 <a name="GimpColorHexEntry.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "color-changed" signal'>
 <a name="GimpColorHexEntry-color-changed"></a><h3>The <code class="literal">"color-changed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *gimpcolorhexentry,
                                                         <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a>           user_data)              : Run First</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -231,7 +225,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpcolorhexentry</code></em> :</span></p></td>
 <td>the object which received the signal.
-
 </td>
 </tr>
 <tr>
@@ -245,6 +238,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

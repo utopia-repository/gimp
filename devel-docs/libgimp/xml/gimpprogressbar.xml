@@ -42,7 +42,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpProgressBar implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
+ <link linkend="GtkBuildable">GtkBuildable</link> and  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
 </refsect1>
 
 

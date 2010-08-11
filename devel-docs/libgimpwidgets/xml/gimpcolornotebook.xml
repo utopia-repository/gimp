@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpColorNotebook</refname>
 <refpurpose>A <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="GimpColorNotebook.synopsis" role="synopsis">
@@ -20,7 +19,7 @@
 
 <synopsis>
                     <link linkend="GimpColorNotebook-struct">GimpColorNotebook</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-color-notebook-set-has-page">gimp_color_notebook_set_has_page</link>    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-color-notebook-set-has-page">gimp_color_notebook_set_has_page</link>    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
                                                          <link linkend="GType">GType</link> page_type,
                                                          <link linkend="gboolean">gboolean</link> has_page);
 </synopsis>
@@ -39,7 +38,6 @@
                                        +----<link linkend="GimpColorSelector">GimpColorSelector</link>
                                              +----GimpColorNotebook
 </synopsis>
-
 </refsect1>
 
 
@@ -48,16 +46,15 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorNotebook implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
-
+ <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkOrientable">GtkOrientable</link>.</para>
 </refsect1>
 
 
 <refsect1 id="GimpColorNotebook.style-properties" role="style_properties">
 <title role="style_properties.title">Style Properties</title>
 <synopsis>
-  &quot;<link linkend="GimpColorNotebook--tab-border">tab-border</link>&quot;               <link linkend="gint">gint</link>                  : Read
-  &quot;<link linkend="GimpColorNotebook--tab-icon-size">tab-icon-size</link>&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read
+  &quot;<link linkend="GimpColorNotebook--s-tab-border">tab-border</link>&quot;               <link linkend="gint">gint</link>                  : Read
+  &quot;<link linkend="GimpColorNotebook--s-tab-icon-size">tab-icon-size</link>&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read
 </synopsis>
 </refsect1>
 
@@ -75,48 +72,45 @@ It serves as a container for <link linkend="GimpColorSelectors"><type>GimpColorS
 <title role="details.title">Details</title>
 <refsect2 id="GimpColorNotebook-struct" role="struct">
 <title>GimpColorNotebook</title>
-<indexterm zone="GimpColorNotebook-struct"><primary>GimpColorNotebook</primary></indexterm><programlisting>typedef struct _GimpColorNotebook GimpColorNotebook;</programlisting>
+<indexterm zone="GimpColorNotebook-struct"><primary sortas="GimpColorNotebook">GimpColorNotebook</primary></indexterm><programlisting>typedef struct _GimpColorNotebook GimpColorNotebook;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-color-notebook-set-has-page" role="function">
 <title>gimp_color_notebook_set_has_page ()</title>
-<indexterm zone="gimp-color-notebook-set-has-page"><primary>gimp_color_notebook_set_has_page</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_notebook_set_has_page    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
+<indexterm zone="gimp-color-notebook-set-has-page"><primary sortas="gimp_color_notebook_set_has_page">gimp_color_notebook_set_has_page</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_color_notebook_set_has_page    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
                                                          <link linkend="GType">GType</link> page_type,
                                                          <link linkend="gboolean">gboolean</link> has_page);</programlisting>
 <para>
 This function adds and removed pages to / from a <link linkend="GimpColorNotebook"><type>GimpColorNotebook</type></link>.
 The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> subtype.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>notebook</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>notebook</parameter>&#160;:</term>
 <listitem><simpara>  A <link linkend="GimpColorNotebook"><type>GimpColorNotebook</type></link> widget.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>page_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>page_type</parameter>&#160;:</term>
 <listitem><simpara> The <link linkend="GType"><type>GType</type></link> of the notebook page to add or remove.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>has_page</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>has_page</parameter>&#160;:</term>
 <listitem><simpara>  Whether the page should be added or removed.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new page widget, if <parameter>has_page</parameter> was <link linkend="TRUE:CAPS"><type>TRUE</type></link>, or <link linkend="NULL:CAPS"><type>NULL</type></link>
-              if <parameter>has_page</parameter> was <link linkend="FALSE:CAPS"><type>FALSE</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The new page widget, if <parameter>has_page</parameter> was <link linkend="TRUE--CAPS"><type>TRUE</type></link>, or <link linkend="NULL--CAPS"><type>NULL</type></link>
+              if <parameter>has_page</parameter> was <link linkend="FALSE--CAPS"><type>FALSE</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1 id="GimpColorNotebook.style-property-details" role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
-<refsect2 id="GimpColorNotebook--tab-border"><title>The <literal>&quot;tab-border&quot;</literal> style property</title>
-<indexterm zone="GimpColorNotebook--tab-border"><primary>GimpColorNotebook:tab-border</primary></indexterm><programlisting>  &quot;tab-border&quot;               <link linkend="gint">gint</link>                  : Read</programlisting>
+<refsect2 id="GimpColorNotebook--s-tab-border" role="property"><title>The <literal>&quot;tab-border&quot;</literal> style property</title>
+<indexterm zone="GimpColorNotebook--s-tab-border"><primary sortas="GimpColorNotebook:tab-border">GimpColorNotebook:tab-border</primary></indexterm><programlisting>  &quot;tab-border&quot;               <link linkend="gint">gint</link>                  : Read</programlisting>
 <para>Width of the border around the tab contents.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2 id="GimpColorNotebook--tab-icon-size"><title>The <literal>&quot;tab-icon-size&quot;</literal> style property</title>
-<indexterm zone="GimpColorNotebook--tab-icon-size"><primary>GimpColorNotebook:tab-icon-size</primary></indexterm><programlisting>  &quot;tab-icon-size&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read</programlisting>
+<refsect2 id="GimpColorNotebook--s-tab-icon-size" role="property"><title>The <literal>&quot;tab-icon-size&quot;</literal> style property</title>
+<indexterm zone="GimpColorNotebook--s-tab-icon-size"><primary sortas="GimpColorNotebook:tab-icon-size">GimpColorNotebook:tab-icon-size</primary></indexterm><programlisting>  &quot;tab-icon-size&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read</programlisting>
 <para>Size for icons displayed in the tab.</para><para>Default value: GTK_ICON_SIZE_BUTTON</para>
 </refsect2>
-
 </refsect1>
 
 

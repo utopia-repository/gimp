@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimppaths</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimplayer.html" title="gimplayer">
 <link rel="next" href="libgimp-gimppixelfetcher.html" title="gimppixelfetcher">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimppaths.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimppaths">
 <a name="libgimp-gimppaths"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimppaths.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -217,15 +217,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 >gboolean</a> scale);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimppaths.description"></a><h2>Description</h2>
 <p>
 Operations related to paths.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimppaths.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_list ()">
 <a name="gimp-path-list"></a><h3>gimp_path_list ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -235,7 +235,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> *num_paths);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_list</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -265,7 +265,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpimage.html#g
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_get_points ()">
 <a name="gimp-path-get-points"></a><h3>gimp_path_get_points ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -284,7 +284,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> **points_pairs);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_points</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -330,14 +330,14 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_get_current ()">
 <a name="gimp-path-get-current"></a><h3>gimp_path_get_current ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_path_get_current               (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_current</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -363,7 +363,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_set_current ()">
 <a name="gimp-path-set-current"></a><h3>gimp_path_set_current ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -373,7 +373,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_current</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -404,7 +404,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_set_points ()">
 <a name="gimp-path-set-points"></a><h3>gimp_path_set_points ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -423,7 +423,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *points_pairs);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_points</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -469,14 +469,14 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_stroke_current ()">
 <a name="gimp-path-stroke-current"></a><h3>gimp_path_stroke_current ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_path_stroke_current            (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_stroke_current</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -502,7 +502,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_get_point_at_dist ()">
 <a name="gimp-path-get-point-at-dist"></a><h3>gimp_path_get_point_at_dist ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -518,7 +518,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *slope);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_point_at_dist</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -559,7 +559,7 @@ This procedure is deprecated! Use
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_get_tattoo ()">
 <a name="gimp-path-get-tattoo"></a><h3>gimp_path_get_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -569,7 +569,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_tattoo</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -599,7 +599,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_get_path_by_tattoo ()">
 <a name="gimp-get-path-by-tattoo"></a><h3>gimp_get_path_by_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -609,7 +609,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> tattoo);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_get_path_by_tattoo</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -640,7 +640,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_delete ()">
 <a name="gimp-path-delete"></a><h3>gimp_path_delete ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -650,7 +650,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_delete</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -681,7 +681,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_get_locked ()">
 <a name="gimp-path-get-locked"></a><h3>gimp_path_get_locked ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -691,7 +691,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_locked</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -721,7 +721,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_set_locked ()">
 <a name="gimp-path-set-locked"></a><h3>gimp_path_set_locked ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -734,7 +734,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> locked);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_locked</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -769,7 +769,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_set_tattoo ()">
 <a name="gimp-path-set-tattoo"></a><h3>gimp_path_set_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -782,7 +782,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> tattovalue);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_tattoo</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -817,7 +817,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_to_selection ()">
 <a name="gimp-path-to-selection"></a><h3>gimp_path_to_selection ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -842,7 +842,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_to_selection</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -898,7 +898,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_path_import ()">
 <a name="gimp-path-import"></a><h3>gimp_path_import ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -914,7 +914,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> scale);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_import</code> is deprecated and should not be used in newly-written code.</p>
 </div>

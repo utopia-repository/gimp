@@ -1,4 +1,4 @@
-/* $Id: maze.c 25324 2008-03-31 18:38:29Z mitch $
+/* $Id$
  * This is a plug-in for GIMP.
  * It draws mazes...
  *

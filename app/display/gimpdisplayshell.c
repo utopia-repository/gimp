@@ -703,6 +703,8 @@ gimp_display_shell_style_set (GtkWidget *widget,
 
   gtk_window_set_geometry_hints (GTK_WINDOW (widget), NULL,
                                  &geometry, geometry_mask);
+
+  gimp_dialog_factory_set_has_min_size (GTK_WINDOW (widget), TRUE);
 }
 
 static void
@@ -1374,6 +1376,7 @@ gimp_display_shell_empty (GimpDisplayShell *shell)
 
   gimp_display_shell_expose_full (shell);
 
+  gtk_window_unmaximize (GTK_WINDOW (shell));
   gtk_window_resize (GTK_WINDOW (shell), width, height);
 
   /*  update the ui managers  */

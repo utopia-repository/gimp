@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-ruler-get-position"><link linkend="gimp-ruler-get-position">gimp_ruler_get_position</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-ruler-get-range"><link linkend="gimp-ruler-get-range">gimp_ruler_get_range</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-ruler-get-unit"><link linkend="gimp-ruler-get-unit">gimp_ruler_get_unit</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-ruler-new"><link linkend="gimp-ruler-new">gimp_ruler_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-ruler-set-position"><link linkend="gimp-ruler-set-position">gimp_ruler_set_position</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-ruler-set-range"><link linkend="gimp-ruler-set-range">gimp_ruler_set_range</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

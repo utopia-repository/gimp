@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-cell-renderer-color-new"><link linkend="gimp-cell-renderer-color-new">gimp_cell_renderer_color_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-cell-renderer-toggle-clicked"><link linkend="gimp-cell-renderer-toggle-clicked">gimp_cell_renderer_toggle_clicked</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-cell-renderer-toggle-new"><link linkend="gimp-cell-renderer-toggle-new">gimp_cell_renderer_toggle_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-color-hex-entry-get-color"><link linkend="gimp-color-hex-entry-get-color">gimp_color_hex_entry_get_color</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-color-hex-entry-new"><link linkend="gimp-color-hex-entry-new">gimp_color_hex_entry_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-color-hex-entry-set-color"><link linkend="gimp-color-hex-entry-set-color">gimp_color_hex_entry_set_color</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-dialogs-show-help-button"><link linkend="gimp-dialogs-show-help-button">gimp_dialogs_show_help_button</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-frame-new"><link linkend="gimp-frame-new">gimp_frame_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-append"><link linkend="gimp-int-combo-box-append">gimp_int_combo_box_append</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-connect"><link linkend="gimp-int-combo-box-connect">gimp_int_combo_box_connect</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-get-active"><link linkend="gimp-int-combo-box-get-active">gimp_int_combo_box_get_active</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-new"><link linkend="gimp-int-combo-box-new">gimp_int_combo_box_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-new-array"><link linkend="gimp-int-combo-box-new-array">gimp_int_combo_box_new_array</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-new-valist"><link linkend="gimp-int-combo-box-new-valist">gimp_int_combo_box_new_valist</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-prepend"><link linkend="gimp-int-combo-box-prepend">gimp_int_combo_box_prepend</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-combo-box-set-active"><link linkend="gimp-int-combo-box-set-active">gimp_int_combo_box_set_active</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-store-lookup-by-value"><link linkend="gimp-int-store-lookup-by-value">gimp_int_store_lookup_by_value</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-store-new"><link linkend="gimp-int-store-new">gimp_int_store_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-label-set-attributes"><link linkend="gimp-label-set-attributes">gimp_label_set_attributes</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-offset-area-set-pixbuf"><link linkend="gimp-offset-area-set-pixbuf">gimp_offset_area_set_pixbuf</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-area-menu-popup"><link linkend="gimp-preview-area-menu-popup">gimp_preview_area_menu_popup</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-area-set-max-size"><link linkend="gimp-preview-area-set-max-size">gimp_preview_area_set_max_size</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-area-set-offsets"><link linkend="gimp-preview-area-set-offsets">gimp_preview_area_set_offsets</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-draw"><link linkend="gimp-preview-draw">gimp_preview_draw</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-draw-buffer"><link linkend="gimp-preview-draw-buffer">gimp_preview_draw_buffer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-get-position"><link linkend="gimp-preview-get-position">gimp_preview_get_position</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-get-size"><link linkend="gimp-preview-get-size">gimp_preview_get_size</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-get-update"><link linkend="gimp-preview-get-update">gimp_preview_get_update</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-invalidate"><link linkend="gimp-preview-invalidate">gimp_preview_invalidate</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-set-bounds"><link linkend="gimp-preview-set-bounds">gimp_preview_set_bounds</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-set-default-cursor"><link linkend="gimp-preview-set-default-cursor">gimp_preview_set_default_cursor</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-preview-set-update"><link linkend="gimp-preview-set-update">gimp_preview_set_update</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-scale-entry-get-logarithmic"><link linkend="gimp-scale-entry-get-logarithmic">gimp_scale_entry_get_logarithmic</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-scale-entry-set-logarithmic"><link linkend="gimp-scale-entry-set-logarithmic">gimp_scale_entry_set_logarithmic</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

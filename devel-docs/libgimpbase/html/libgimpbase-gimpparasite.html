@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpparasite</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimprectangle.html" title="gimprectangle">
 <link rel="next" href="libgimpbase-gimpparasiteio.html" title="gimpparasiteio">
@@ -32,7 +32,7 @@
                 <a href="#libgimpbase-gimpparasite.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpparasite">
 <a name="libgimpbase-gimpparasite"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,7 +41,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpbase-gimpparasite.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite">GimpParasite</a>;
@@ -121,15 +121,15 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 #define             <a class="link" href="libgimpbase-gimpparasite.html#GIMP-VALUE-HOLDS-PARASITE--CAPS" title="GIMP_VALUE_HOLDS_PARASITE()">GIMP_VALUE_HOLDS_PARASITE</a>           (value)
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpbase-gimpparasite.description"></a><h2>Description</h2>
 <p>
 Arbitrary pieces of data which can be attached to various GIMP objects.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpbase-gimpparasite.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpParasite">
 <a name="GimpParasite"></a><h3>GimpParasite</h3>
 <pre class="programlisting">typedef struct {
   gchar    *name;   /* The name of the parasite. USE A UNIQUE PREFIX! */
@@ -143,7 +143,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_new ()">
 <a name="gimp-parasite-new"></a><h3>gimp_parasite_new ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite">GimpParasite</a> *      gimp_parasite_new                   (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -191,7 +191,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstp
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_free ()">
 <a name="gimp-parasite-free"></a><h3>gimp_parasite_free ()</h3>
 <pre class="programlisting">void                gimp_parasite_free                  (<a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
@@ -206,7 +206,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstp
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_copy ()">
 <a name="gimp-parasite-copy"></a><h3>gimp_parasite_copy ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite">GimpParasite</a> *      gimp_parasite_copy                  (const <a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite">GimpParasite</a> *parasite);</pre>
 <p>
@@ -228,7 +228,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstp
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_compare ()">
 <a name="gimp-parasite-compare"></a><h3>gimp_parasite_compare ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -258,7 +258,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_is_type ()">
 <a name="gimp-parasite-is-type"></a><h3>gimp_parasite_is_type ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -290,7 +290,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_is_persistent ()">
 <a name="gimp-parasite-is-persistent"></a><h3>gimp_parasite_is_persistent ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -314,7 +314,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_is_undoable ()">
 <a name="gimp-parasite-is-undoable"></a><h3>gimp_parasite_is_undoable ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -338,7 +338,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_has_flag ()">
 <a name="gimp-parasite-has-flag"></a><h3>gimp_parasite_has_flag ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -370,7 +370,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_flags ()">
 <a name="gimp-parasite-flags"></a><h3>gimp_parasite_flags ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
@@ -394,7 +394,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_name ()">
 <a name="gimp-parasite-name"></a><h3>gimp_parasite_name ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -418,7 +418,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_data ()">
 <a name="gimp-parasite-data"></a><h3>gimp_parasite_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstpointer"
@@ -442,7 +442,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstp
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_data_size ()">
 <a name="gimp-parasite-data-size"></a><h3>gimp_parasite_data_size ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
@@ -466,7 +466,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_PERSISTENT">
 <a name="GIMP-PARASITE-PERSISTENT--CAPS"></a><h3>GIMP_PARASITE_PERSISTENT</h3>
 <pre class="programlisting">#define GIMP_PARASITE_PERSISTENT 1
 </pre>
@@ -474,7 +474,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_UNDOABLE">
 <a name="GIMP-PARASITE-UNDOABLE--CAPS"></a><h3>GIMP_PARASITE_UNDOABLE</h3>
 <pre class="programlisting">#define GIMP_PARASITE_UNDOABLE   2
 </pre>
@@ -482,7 +482,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_ATTACH_PARENT">
 <a name="GIMP-PARASITE-ATTACH-PARENT--CAPS"></a><h3>GIMP_PARASITE_ATTACH_PARENT</h3>
 <pre class="programlisting">#define GIMP_PARASITE_ATTACH_PARENT     (0x80 &lt;&lt; 8)
 </pre>
@@ -490,7 +490,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_PARENT_PERSISTENT">
 <a name="GIMP-PARASITE-PARENT-PERSISTENT--CAPS"></a><h3>GIMP_PARASITE_PARENT_PERSISTENT</h3>
 <pre class="programlisting">#define GIMP_PARASITE_PARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 8)
 </pre>
@@ -498,7 +498,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_PARENT_UNDOABLE">
 <a name="GIMP-PARASITE-PARENT-UNDOABLE--CAPS"></a><h3>GIMP_PARASITE_PARENT_UNDOABLE</h3>
 <pre class="programlisting">#define GIMP_PARASITE_PARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 8)
 </pre>
@@ -506,7 +506,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_ATTACH_GRANDPARENT">
 <a name="GIMP-PARASITE-ATTACH-GRANDPARENT--CAPS"></a><h3>GIMP_PARASITE_ATTACH_GRANDPARENT</h3>
 <pre class="programlisting">#define GIMP_PARASITE_ATTACH_GRANDPARENT     (0x80 &lt;&lt; 16)
 </pre>
@@ -514,7 +514,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_GRANDPARENT_PERSISTENT">
 <a name="GIMP-PARASITE-GRANDPARENT-PERSISTENT--CAPS"></a><h3>GIMP_PARASITE_GRANDPARENT_PERSISTENT</h3>
 <pre class="programlisting">#define GIMP_PARASITE_GRANDPARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 16)
 </pre>
@@ -522,7 +522,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_PARASITE_GRANDPARENT_UNDOABLE">
 <a name="GIMP-PARASITE-GRANDPARENT-UNDOABLE--CAPS"></a><h3>GIMP_PARASITE_GRANDPARENT_UNDOABLE</h3>
 <pre class="programlisting">#define GIMP_PARASITE_GRANDPARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 16)
 </pre>
@@ -530,7 +530,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_TYPE_PARASITE">
 <a name="GIMP-TYPE-PARASITE--CAPS"></a><h3>GIMP_TYPE_PARASITE</h3>
 <pre class="programlisting">#define GIMP_TYPE_PARASITE               (gimp_parasite_get_type ())
 </pre>
@@ -538,7 +538,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_TYPE_PARAM_PARASITE">
 <a name="GIMP-TYPE-PARAM-PARASITE--CAPS"></a><h3>GIMP_TYPE_PARAM_PARASITE</h3>
 <pre class="programlisting">#define GIMP_TYPE_PARAM_PARASITE           (gimp_param_parasite_get_type ())
 </pre>
@@ -546,7 +546,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_IS_PARAM_SPEC_PARASITE()">
 <a name="GIMP-IS-PARAM-SPEC-PARASITE--CAPS"></a><h3>GIMP_IS_PARAM_SPEC_PARASITE()</h3>
 <pre class="programlisting">#define GIMP_IS_PARAM_SPEC_PARASITE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_PARASITE))
 </pre>
@@ -562,7 +562,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#glong"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_param_spec_parasite ()">
 <a name="gimp-param-spec-parasite"></a><h3>gimp_param_spec_parasite ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
@@ -612,7 +612,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_VALUE_HOLDS_PARASITE()">
 <a name="GIMP-VALUE-HOLDS-PARASITE--CAPS"></a><h3>GIMP_VALUE_HOLDS_PARASITE()</h3>
 <pre class="programlisting">#define GIMP_VALUE_HOLDS_PARASITE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_PARASITE))
 </pre>
@@ -628,7 +628,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libgimpbase-gimpparasite.see-also"></a><h2>See Also</h2>
 <p>
 <a

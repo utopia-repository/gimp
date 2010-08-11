@@ -1,4 +1,4 @@
-/* $Id: maze-utils.c 25324 2008-03-31 18:38:29Z mitch $
+/* $Id$
  * These routines are useful for working with GIMP and need not be
  * specific to plug-in-maze.
  *

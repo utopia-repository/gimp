@@ -13,7 +13,6 @@
 <refname>GimpHelpUI</refname>
 <refpurpose>Functions for setting <link linkend="GtkTooltips"><type>GtkTooltips</type></link> and help identifier used by GIMP help
 system.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimpwidgets-GimpHelpUI.synopsis" role="synopsis">
@@ -22,7 +21,7 @@ system.</refpurpose>
 <synopsis>
 <link linkend="void">void</link>                (<link linkend="GimpHelpFunc">*GimpHelpFunc</link>)                     (const <link linkend="gchar">gchar</link> *help_id,
                                                          <link linkend="gpointer">gpointer</link> help_data);
-#define             <link linkend="GIMP-HELP-ID:CAPS">GIMP_HELP_ID</link>
+#define             <link linkend="GIMP-HELP-ID--CAPS">GIMP_HELP_ID</link>
 <link linkend="void">void</link>                <link linkend="gimp-help-enable-tooltips">gimp_help_enable_tooltips</link>           (void);
 <link linkend="void">void</link>                <link linkend="gimp-help-disable-tooltips">gimp_help_disable_tooltips</link>          (void);
 <link linkend="void">void</link>                <link linkend="gimp-standard-help-func">gimp_standard_help_func</link>             (const <link linkend="gchar">gchar</link> *help_id,
@@ -52,7 +51,6 @@ system.</refpurpose>
 <refsect1 id="libgimpwidgets-GimpHelpUI.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -60,23 +58,20 @@ system.</refpurpose>
 <title role="details.title">Details</title>
 <refsect2 id="GimpHelpFunc" role="function">
 <title>GimpHelpFunc ()</title>
-<indexterm zone="GimpHelpFunc"><primary>GimpHelpFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpHelpFunc)                     (const <link linkend="gchar">gchar</link> *help_id,
+<indexterm zone="GimpHelpFunc"><primary sortas="GimpHelpFunc">GimpHelpFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpHelpFunc)                     (const <link linkend="gchar">gchar</link> *help_id,
                                                          <link linkend="gpointer">gpointer</link> help_data);</programlisting>
 <para>
 This is the prototype for all functions you pass as <parameter>help_func</parameter> to the
 various GIMP dialog constructors like <link linkend="gimp-dialog-new"><function>gimp_dialog_new()</function></link>,
 <link linkend="gimp-query-int-box"><function>gimp_query_int_box()</function></link> etc.
 </para>
-
 <para>
 Help IDs are textual identifiers the help system uses to figure which
 page to display.
 </para>
-
 <para>
 All these dialog constructors functions call <link linkend="gimp-help-connect"><function>gimp_help_connect()</function></link>.
 </para>
-
 <para>
 In most cases it will be ok to use <link linkend="gimp-standard-help-func"><function>gimp_standard_help_func()</function></link> which does
 nothing but passing the <parameter>help_id</parameter> string to <link linkend="gimp-help"><function>gimp_help()</function></link>. If your
@@ -84,25 +79,23 @@ plug-in needs some more sophisticated help handling you can provide
 your own <parameter>help_func</parameter> which has to call <link linkend="gimp-help"><function>gimp_help()</function></link> to actually display
 the help.
 </para><variablelist role="params">
-<varlistentry><term><parameter>help_id</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_id</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_data</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="GIMP-HELP-ID:CAPS" role="macro">
+<refsect2 id="GIMP-HELP-ID--CAPS" role="macro">
 <title>GIMP_HELP_ID</title>
-<indexterm zone="GIMP-HELP-ID:CAPS"><primary>GIMP_HELP_ID</primary></indexterm><programlisting>#define GIMP_HELP_ID (gimp_help_id_quark ())
+<indexterm zone="GIMP-HELP-ID--CAPS"><primary sortas="GIMP_HELP_ID">GIMP_HELP_ID</primary></indexterm><programlisting>#define GIMP_HELP_ID (gimp_help_id_quark ())
 </programlisting>
 <para>
 Since: GIMP 2.2
 </para></refsect2>
 <refsect2 id="gimp-help-enable-tooltips" role="function">
 <title>gimp_help_enable_tooltips ()</title>
-<indexterm zone="gimp-help-enable-tooltips"><primary>gimp_help_enable_tooltips</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_enable_tooltips           (void);</programlisting>
+<indexterm zone="gimp-help-enable-tooltips"><primary sortas="gimp_help_enable_tooltips">gimp_help_enable_tooltips</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_enable_tooltips           (void);</programlisting>
 <para>
 Enable tooltips to be shown in the GIMP user interface.
 </para>
@@ -112,11 +105,10 @@ function is called for you from <link linkend="gimp-ui-init"><function>gimp_ui_i
 the user setting from the GIMP preferences dialog is respected in
 all plug-in dialogs.</para>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-help-disable-tooltips" role="function">
 <title>gimp_help_disable_tooltips ()</title>
-<indexterm zone="gimp-help-disable-tooltips"><primary>gimp_help_disable_tooltips</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_disable_tooltips          (void);</programlisting>
+<indexterm zone="gimp-help-disable-tooltips"><primary sortas="gimp_help_disable_tooltips">gimp_help_disable_tooltips</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_disable_tooltips          (void);</programlisting>
 <para>
 Disable tooltips to be shown in the GIMP user interface.
 </para>
@@ -126,28 +118,26 @@ function is called for you from <link linkend="gimp-ui-init"><function>gimp_ui_i
 the user setting from the GIMP preferences dialog is respected in
 all plug-in dialogs.</para>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-standard-help-func" role="function">
 <title>gimp_standard_help_func ()</title>
-<indexterm zone="gimp-standard-help-func"><primary>gimp_standard_help_func</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_standard_help_func             (const <link linkend="gchar">gchar</link> *help_id,
+<indexterm zone="gimp-standard-help-func"><primary sortas="gimp_standard_help_func">gimp_standard_help_func</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_standard_help_func             (const <link linkend="gchar">gchar</link> *help_id,
                                                          <link linkend="gpointer">gpointer</link> help_data);</programlisting>
 <para>
 This is the standard GIMP help function which does nothing but calling
 <link linkend="gimp-help"><function>gimp_help()</function></link>. It is the right function to use in almost all cases.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>help_id</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_id</parameter>&#160;:</term>
 <listitem><simpara>   A unique help identifier.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_data</parameter>&#160;:</term>
 <listitem><simpara> The <parameter>help_data</parameter> passed to <link linkend="gimp-help-connect"><function>gimp_help_connect()</function></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-help-connect" role="function">
 <title>gimp_help_connect ()</title>
-<indexterm zone="gimp-help-connect"><primary>gimp_help_connect</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_connect                   (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<indexterm zone="gimp-help-connect"><primary sortas="gimp_help_connect">gimp_help_connect</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_connect                   (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                                          <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
                                                          const <link linkend="gchar">gchar</link> *help_id,
                                                          <link linkend="gpointer">gpointer</link> help_data);</programlisting>
@@ -156,25 +146,24 @@ Note that this function is automatically called by all libgimp dialog
 constructors. You only have to call it for windows/dialogs you created
 "manually".</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>widget</parameter>&#160;:</term>
 <listitem><simpara> The widget you want to connect the help accelerator for. Will
          be a <link linkend="GtkWindow"><type>GtkWindow</type></link> in most cases.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_func</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_func</parameter>&#160;:</term>
 <listitem><simpara> The function which will be called if the user presses "F1".
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_id</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_id</parameter>&#160;:</term>
 <listitem><simpara>   The <parameter>help_id</parameter> which will be passed to <parameter>help_func</parameter>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_data</parameter>&#160;:</term>
 <listitem><simpara> The <parameter>help_data</parameter> pointer which will be passed to <parameter>help_func</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-help-set-help-data" role="function">
 <title>gimp_help_set_help_data ()</title>
-<indexterm zone="gimp-help-set-help-data"><primary>gimp_help_set_help_data</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_set_help_data             (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<indexterm zone="gimp-help-set-help-data"><primary sortas="gimp_help_set_help_data">gimp_help_set_help_data</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_set_help_data             (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                                          const <link linkend="gchar">gchar</link> *tooltip,
                                                          const <link linkend="gchar">gchar</link> *help_id);</programlisting>
 <para>
@@ -183,25 +172,24 @@ elements in the GIMP user interface should, if possible, also have
 a <parameter>help_id</parameter> set for context-sensitive help.
 </para>
 <para>
-This function can be called with <link linkend="NULL:CAPS"><type>NULL</type></link> for <parameter>tooltip</parameter>. Use this feature
+This function can be called with <link linkend="NULL--CAPS"><type>NULL</type></link> for <parameter>tooltip</parameter>. Use this feature
 if you want to set a help link for a widget which shouldn't have
 a visible tooltip.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>widget</parameter>&#160;:</term>
 <listitem><simpara>  The <link linkend="GtkWidget"><type>GtkWidget</type></link> you want to set a <parameter>tooltip</parameter> and/or <parameter>help_id</parameter> for.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>tooltip</parameter>&nbsp;:</term>
-<listitem><simpara> The text for this widget's tooltip (or <link linkend="NULL:CAPS"><literal>NULL</literal></link>).
+<varlistentry><term><parameter>tooltip</parameter>&#160;:</term>
+<listitem><simpara> The text for this widget's tooltip (or <link linkend="NULL--CAPS"><literal>NULL</literal></link>).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_id</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_id</parameter>&#160;:</term>
 <listitem><simpara> The <parameter>help_id</parameter> for the <link linkend="GtkTipsQuery"><type>GtkTipsQuery</type></link> tooltips inspector.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-help-set-help-data-with-markup" role="function" condition="since:GIMP 2.6">
 <title>gimp_help_set_help_data_with_markup ()</title>
-<indexterm zone="gimp-help-set-help-data-with-markup" role="GIMP 2.6"><primary>gimp_help_set_help_data_with_markup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_set_help_data_with_markup (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<indexterm zone="gimp-help-set-help-data-with-markup" role="GIMP 2.6"><primary sortas="gimp_help_set_help_data_with_markup">gimp_help_set_help_data_with_markup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_set_help_data_with_markup (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                                          const <link linkend="gchar">gchar</link> *tooltip,
                                                          const <link linkend="gchar">gchar</link> *help_id);</programlisting>
 <para>
@@ -209,22 +197,20 @@ Just like <link linkend="gimp-help-set-help-data"><function>gimp_help_set_help_d
 is marked up with
 <link linkend="PangoMarkupFormat">Pango text markup language</link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>widget</parameter>&#160;:</term>
 <listitem><simpara>  The <link linkend="GtkWidget"><type>GtkWidget</type></link> you want to set a <parameter>tooltip</parameter> and/or <parameter>help_id</parameter> for.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>tooltip</parameter>&nbsp;:</term>
-<listitem><simpara> The markup for this widget's tooltip (or <link linkend="NULL:CAPS"><literal>NULL</literal></link>).
+<varlistentry><term><parameter>tooltip</parameter>&#160;:</term>
+<listitem><simpara> The markup for this widget's tooltip (or <link linkend="NULL--CAPS"><literal>NULL</literal></link>).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>help_id</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>help_id</parameter>&#160;:</term>
 <listitem><simpara> The <parameter>help_id</parameter> for the <link linkend="GtkTipsQuery"><type>GtkTipsQuery</type></link> tooltips inspector.
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.6
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.6</para></refsect2>
 <refsect2 id="gimp-context-help" role="function">
 <title>gimp_context_help ()</title>
-<indexterm zone="gimp-context-help"><primary>gimp_context_help</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_context_help                   (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<indexterm zone="gimp-context-help"><primary sortas="gimp_context_help">gimp_context_help</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_context_help                   (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <para>
 This function invokes the context help inspector.
 </para>
@@ -239,9 +225,8 @@ be displayed. Otherwise the help system will ascend the widget hierarchy
 until it finds an attached <parameter>help_id</parameter> string (which should be the
 case at least for every window/dialog).</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>widget</parameter>&#160;:</term>
 <listitem><simpara> Any <link linkend="GtkWidget"><type>GtkWidget</type></link> on the screen.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

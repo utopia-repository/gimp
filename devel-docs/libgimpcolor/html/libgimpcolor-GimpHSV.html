@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpHSV</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpRGB.html" title="GimpRGB">
 <link rel="next" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="index" href="libgimpcolor-index.html" title="Index">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpCMYK.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpcolor-GimpHSV.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpcolor-GimpHSV.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpcolor-GimpHSV.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpcolor-GimpHSV.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpHSV">
 <a name="libgimpcolor-GimpHSV"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,7 +41,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpcolor-GimpHSV.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a>;
@@ -68,41 +70,39 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> alpha);
-#define             <a class="link" href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS" title="GIMP_TYPE_HSV">GIMP_TYPE_HSV</a>
-#define             <a class="link" href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS" title="GIMP_TYPE_HSL">GIMP_TYPE_HSL</a>
+#define             <a class="link" href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV--CAPS" title="GIMP_TYPE_HSV">GIMP_TYPE_HSV</a>
+#define             <a class="link" href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL--CAPS" title="GIMP_TYPE_HSL">GIMP_TYPE_HSL</a>
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpcolor-GimpHSV.description"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to HSV colors.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpcolor-GimpHSV.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpHSV">
 <a name="GimpHSV"></a><h3>GimpHSV</h3>
 <pre class="programlisting">typedef struct {
   gdouble h, s, v, a;
 } GimpHSV;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpHSL">
 <a name="GimpHSL"></a><h3>GimpHSL</h3>
 <pre class="programlisting">typedef struct {
   gdouble h, s, l, a;
 } GimpHSL;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_hsv_set ()">
 <a name="gimp-hsv-set"></a><h3>gimp_hsv_set ()</h3>
 <pre class="programlisting">void                gimp_hsv_set                        (<a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsv,
                                                          <a
@@ -115,7 +115,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> value);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -138,33 +137,28 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_hsv_clamp ()">
 <a name="gimp-hsv-clamp"></a><h3>gimp_hsv_clamp ()</h3>
 <pre class="programlisting">void                gimp_hsv_clamp                      (<a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsv);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>hsv</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_hsva_set ()">
 <a name="gimp-hsva-set"></a><h3>gimp_hsva_set ()</h3>
 <pre class="programlisting">void                gimp_hsva_set                       (<a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsva,
                                                          <a
@@ -180,7 +174,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> alpha);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -208,35 +201,31 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <tr>
 <td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-TYPE-HSV:CAPS"></a><h3>GIMP_TYPE_HSV</h3>
+<div class="refsect2" title="GIMP_TYPE_HSV">
+<a name="GIMP-TYPE-HSV--CAPS"></a><h3>GIMP_TYPE_HSV</h3>
 <pre class="programlisting">#define GIMP_TYPE_HSV       (gimp_hsv_get_type ())
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-TYPE-HSL:CAPS"></a><h3>GIMP_TYPE_HSL</h3>
+<div class="refsect2" title="GIMP_TYPE_HSL">
+<a name="GIMP-TYPE-HSL--CAPS"></a><h3>GIMP_TYPE_HSL</h3>
 <pre class="programlisting">#define GIMP_TYPE_HSL       (gimp_hsl_get_type ())
 </pre>
 <p>
-
 </p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpBrowser</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="next" href="GimpButton.html" title="GimpButton">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -34,17 +34,19 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#GimpBrowser.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#GimpBrowser.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#GimpBrowser.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#GimpBrowser.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                   | 
-                  <a href="#GimpBrowser.signals" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#GimpBrowser.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#GimpBrowser.description" class="shortcut">Description</a>
+                 | 
+                <a href="#GimpBrowser.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#GimpBrowser.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                 | 
+                <a href="#GimpBrowser.signals" class="shortcut">Signals</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpBrowser">
 <a name="GimpBrowser"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -53,13 +55,13 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpBrowser.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpBrowser.html#GimpBrowser-struct" title="GimpBrowser">GimpBrowser</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpBrowser.html#gimp-browser-new" title="gimp_browser_new ()">gimp_browser_new</a>                    (void);
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="GimpBrowser.html#gimp-browser-new" title="gimp_browser_new ()">gimp_browser_new</a>                    (void);
 void                <a class="link" href="GimpBrowser.html#gimp-browser-add-search-types" title="gimp_browser_add_search_types ()">gimp_browser_add_search_types</a>       (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -70,7 +72,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
                                                          ...);
 void                <a class="link" href="GimpBrowser.html#gimp-browser-set-widget" title="gimp_browser_set_widget ()">gimp_browser_set_widget</a>             (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget);
 void                <a class="link" href="GimpBrowser.html#gimp-browser-show-message" title="gimp_browser_show_message ()">gimp_browser_show_message</a>           (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
@@ -78,7 +80,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *message);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpBrowser.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -88,62 +90,61 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkPaned.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkPaned.html"
 >GtkPaned</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkHPaned.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHPaned.html"
 >GtkHPaned</a>
                                        +----GimpBrowser
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpBrowser.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpBrowser implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface and  <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
+>GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signals">
 <a name="GimpBrowser.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpBrowser.html#GimpBrowser-search" title='The "search" signal'>search</a>"                                         : Run Last
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpBrowser.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpBrowser.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpBrowser">
 <a name="GimpBrowser-struct"></a><h3>GimpBrowser</h3>
 <pre class="programlisting">typedef struct _GimpBrowser GimpBrowser;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_browser_new ()">
 <a name="gimp-browser-new"></a><h3>gimp_browser_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_browser_new                    (void);</pre>
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_browser_new                    (void);</pre>
 <p>
 Create a new <a class="link" href="GimpBrowser.html" title="GimpBrowser"><span class="type">GimpBrowser</span></a> widget.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -154,11 +155,10 @@ Create a new <a class="link" href="GimpBrowser.html" title="GimpBrowser"><span c
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_browser_add_search_types ()">
 <a name="gimp-browser-add-search-types"></a><h3>gimp_browser_add_search_types ()</h3>
 <pre class="programlisting">void                gimp_browser_add_search_types       (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
@@ -170,10 +170,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
                                                          ...);</pre>
 <p>
 Populates the <a
-href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkComboBox.html"
 ><span class="type">GtkComboBox</span></a> with search types.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -196,26 +195,24 @@ href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
 <td>              a <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>-terminated list of more labels and ids.
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_browser_set_widget ()">
 <a name="gimp-browser-set-widget"></a><h3>gimp_browser_set_widget ()</h3>
 <pre class="programlisting">void                gimp_browser_set_widget             (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget);</pre>
 <p>
 Sets the widget to appear on the right side of the <em class="parameter"><code>browser</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -228,17 +225,16 @@ Sets the widget to appear on the right side of the <em class="parameter"><code>b
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
 <td>  a <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 ><span class="type">GtkWidget</span></a>
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_browser_show_message ()">
 <a name="gimp-browser-show-message"></a><h3>gimp_browser_show_message ()</h3>
 <pre class="programlisting">void                gimp_browser_show_message           (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
@@ -247,13 +243,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>
 Displays <em class="parameter"><code>message</code></em> in the right side of the <em class="parameter"><code>browser</code></em>. Unless the right
 side already contains a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>, the widget previously added with
 <a class="link" href="GimpBrowser.html#gimp-browser-set-widget" title="gimp_browser_set_widget ()"><code class="function">gimp_browser_set_widget()</code></a> is removed and replaced by a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -270,13 +265,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signal Details">
 <a name="GimpBrowser.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "search" signal'>
 <a name="GimpBrowser-search"></a><h3>The <code class="literal">"search"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *gimpbrowser,
                                                         <a
@@ -289,7 +283,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a>     user_data)        : Run Last</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -307,7 +300,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <tr>
 <td><p><span class="term"><em class="parameter"><code>arg2</code></em> :</span></p></td>
 <td>
-
 </td>
 </tr>
 <tr>
@@ -321,6 +313,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

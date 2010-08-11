@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpconfig-path</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-gimpconfig-params.html" title="gimpconfig-params">
 <link rel="next" href="libgimpconfig-gimpconfig-utils.html" title="gimpconfig-utils">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpconfig-gimpconfig-path.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpconfig-gimpconfig-path.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpconfig-gimpconfig-path.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpconfig-gimpconfig-path.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpconfig-path">
 <a name="libgimpconfig-gimpconfig-path"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,13 +41,13 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpconfig-gimpconfig-path.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>;
 <a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a>*         <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path" title="gimp_param_spec_config_path ()">gimp_param_spec_config_path</a>         (const <a
+>GParamSpec</a> *        <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path" title="gimp_param_spec_config_path ()">gimp_param_spec_config_path</a>         (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          const <a
@@ -66,7 +68,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 >GParamSpec</a> *pspec);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()">gimp_config_path_expand</a>             (const <a
+>gchar</a> *             <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()">gimp_config_path_expand</a>             (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *path,
                                                          <a
@@ -77,31 +79,30 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 >GError</a> **error);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path" title="gimp_config_build_data_path ()">gimp_config_build_data_path</a>         (const <a
+>gchar</a> *             <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path" title="gimp_config_build_data_path ()">gimp_config_build_data_path</a>         (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path" title="gimp_config_build_writable_path ()">gimp_config_build_writable_path</a>     (const <a
+>gchar</a> *             <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path" title="gimp_config_build_writable_path ()">gimp_config_build_writable_path</a>     (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path" title="gimp_config_build_plug_in_path ()">gimp_config_build_plug_in_path</a>      (const <a
+>gchar</a> *             <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path" title="gimp_config_build_plug_in_path ()">gimp_config_build_plug_in_path</a>      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
-#define             <a class="link" href="libgimpconfig-gimpconfig-path.html#GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS" title="GIMP_VALUE_HOLDS_CONFIG_PATH()">GIMP_VALUE_HOLDS_CONFIG_PATH</a>        (value)
+#define             <a class="link" href="libgimpconfig-gimpconfig-path.html#GIMP-VALUE-HOLDS-CONFIG-PATH--CAPS" title="GIMP_VALUE_HOLDS_CONFIG_PATH()">GIMP_VALUE_HOLDS_CONFIG_PATH</a>        (value)
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpconfig-gimpconfig-path.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpconfig-gimpconfig-path.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="enum GimpConfigPathType">
 <a name="GimpConfigPathType"></a><h3>enum GimpConfigPathType</h3>
 <pre class="programlisting">typedef enum
 {
@@ -112,15 +113,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 } GimpConfigPathType;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_param_spec_config_path ()">
 <a name="gimp-param-spec-config-path"></a><h3>gimp_param_spec_config_path ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a>*         gimp_param_spec_config_path         (const <a
+>GParamSpec</a> *        gimp_param_spec_config_path         (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name,
                                                          const <a
@@ -143,7 +143,6 @@ See <a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#g-param-spec-internal"
 ><code class="function">g_param_spec_internal()</code></a> for more information.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -190,11 +189,10 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_param_spec_config_path_type ()">
 <a name="gimp-param-spec-config-path-type"></a><h3>gimp_param_spec_config_path_type ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>  gimp_param_spec_config_path_type    (<a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
@@ -203,7 +201,6 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 Tells whether the path param encodes a filename,
 dir name, or list of file or dir names.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -223,15 +220,14 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_path_expand ()">
 <a name="gimp-config-path-expand"></a><h3>gimp_config_path_expand ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_config_path_expand             (const <a
+>gchar</a> *             gimp_config_path_expand             (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *path,
                                                          <a
@@ -249,7 +245,6 @@ is used for the gimprc). This function does the variable
 substitution for you and can also attempt to convert to the
 filesystem encoding.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -277,15 +272,14 @@ filesystem encoding.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_build_data_path ()">
 <a name="gimp-config-build-data-path"></a><h3>gimp_config_build_data_path ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_config_build_data_path         (const <a
+>gchar</a> *             gimp_config_build_data_path         (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
 <p>
@@ -301,7 +295,6 @@ href="../libgimpbase/libgimpbase-gimpenv.html#gimp-path-parse"
 As it is in the gimprc notation, you first need to expand and
 recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()"><code class="function">gimp_config_path_expand()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -319,15 +312,14 @@ recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-co
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_build_writable_path ()">
 <a name="gimp-config-build-writable-path"></a><h3>gimp_config_build_writable_path ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_config_build_writable_path     (const <a
+>gchar</a> *             gimp_config_build_writable_path     (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
 <p>
@@ -342,7 +334,6 @@ href="../libgimpbase/libgimpbase-gimpenv.html#gimp-path-parse"
 As it is in the gimprc notation, you first need to expand and
 recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()"><code class="function">gimp_config_path_expand()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -360,15 +351,14 @@ recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-co
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_build_plug_in_path ()">
 <a name="gimp-config-build-plug-in-path"></a><h3>gimp_config_build_plug_in_path ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_config_build_plug_in_path      (const <a
+>gchar</a> *             gimp_config_build_plug_in_path      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);</pre>
 <p>
@@ -384,7 +374,6 @@ href="../libgimpbase/libgimpbase-gimpenv.html#gimp-path-parse"
 As it is in the gimprc notation, you first need to expand and
 recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()"><code class="function">gimp_config_path_expand()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -402,24 +391,20 @@ recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-co
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS"></a><h3>GIMP_VALUE_HOLDS_CONFIG_PATH()</h3>
+<div class="refsect2" title="GIMP_VALUE_HOLDS_CONFIG_PATH()">
+<a name="GIMP-VALUE-HOLDS-CONFIG-PATH--CAPS"></a><h3>GIMP_VALUE_HOLDS_CONFIG_PATH()</h3>
 <pre class="programlisting">#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
 </pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr></tbody>
 </table></div>
@@ -428,6 +413,6 @@ recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-co
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

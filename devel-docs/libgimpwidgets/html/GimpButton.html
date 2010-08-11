@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpBrowser.html" title="GimpBrowser">
 <link rel="next" href="GimpChainButton.html" title="GimpChainButton">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -34,41 +34,43 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpChainButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#GimpButton.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#GimpButton.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#GimpButton.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#GimpButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                   | 
-                  <a href="#GimpButton.signals" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#GimpButton.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#GimpButton.description" class="shortcut">Description</a>
+                 | 
+                <a href="#GimpButton.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#GimpButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                 | 
+                <a href="#GimpButton.signals" class="shortcut">Signals</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpButton">
 <a name="GimpButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpButton.top_of_page"></a>GimpButton</span></h2>
 <p>GimpButton — A <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkButton.html"
 ><span class="type">GtkButton</span></a> with a little extra functionality.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-button.png"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpButton.html#GimpButton-struct" title="GimpButton">GimpButton</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpButton.html#gimp-button-new" title="gimp_button_new ()">gimp_button_new</a>                     (void);
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="GimpButton.html#gimp-button-new" title="gimp_button_new ()">gimp_button_new</a>                     (void);
 void                <a class="link" href="GimpButton.html#gimp-button-extended-clicked" title="gimp_button_extended_clicked ()">gimp_button_extended_clicked</a>        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
                                                          <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkModifierType"
 >GdkModifierType</a> state);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -78,67 +80,67 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkBin.html"
 >GtkBin</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkButton.html"
 >GtkButton</a>
                                        +----GimpButton
                                              +----<a class="link" href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a>
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpButton implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface and  <a
+href="http://library.gnome.org/devel/gtk/unstable/GtkActivatable.html"
+>GtkActivatable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signals">
 <a name="GimpButton.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpButton.html#GimpButton-extended-clicked" title='The "extended-clicked" signal'>extended-clicked</a>"                               : Run First
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpButton.description"></a><h2>Description</h2>
 <p>
 <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkButton.html"
 ><span class="type">GtkButton</span></a> widget that allows
 to distinguish a normal click from a click that was performed with
 modifier keys pressed.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpButton.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpButton">
 <a name="GimpButton-struct"></a><h3>GimpButton</h3>
 <pre class="programlisting">typedef struct _GimpButton GimpButton;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_button_new ()">
 <a name="gimp-button-new"></a><h3>gimp_button_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_button_new                     (void);</pre>
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_button_new                     (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> widget.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -150,16 +152,15 @@ Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span cl
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_button_extended_clicked ()">
 <a name="gimp-button-extended-clicked"></a><h3>gimp_button_extended_clicked ()</h3>
 <pre class="programlisting">void                gimp_button_extended_clicked        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
                                                          <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkModifierType"
 >GdkModifierType</a> state);</pre>
 <p>
 Emits the button's "extended_clicked" signal.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -178,19 +179,18 @@ Emits the button's "extended_clicked" signal.</p>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signal Details">
 <a name="GimpButton.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "extended-clicked" signal'>
 <a name="GimpButton-extended-clicked"></a><h3>The <code class="literal">"extended-clicked"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>     *gimpbutton,
                                                         <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkModifierType"
 >GdkModifierType</a> arg1,
                                                         <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a>        user_data)       : Run First</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -203,7 +203,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <tr>
 <td><p><span class="term"><em class="parameter"><code>arg1</code></em> :</span></p></td>
 <td>the state of modifier keys when the button was clicked
-
 </td>
 </tr>
 <tr>
@@ -217,6 +216,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

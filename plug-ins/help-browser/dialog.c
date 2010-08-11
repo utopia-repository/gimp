@@ -301,9 +301,7 @@ browser_dialog_open (const gchar *plug_in_binary)
                     G_CALLBACK (view_key_press),
                     NULL);
 
-#if HAVE_WEBKIT_ZOOM_API
   webkit_web_view_set_zoom_level (WEBKIT_WEB_VIEW (view), data.zoom);
-#endif
 
   g_signal_connect (view, "title-changed",
                     G_CALLBACK (title_changed),
@@ -334,7 +332,7 @@ browser_dialog_load (const gchar *uri)
 {
   g_return_if_fail (uri != NULL);
 
-  webkit_web_view_open (WEBKIT_WEB_VIEW (view), uri);
+  webkit_web_view_load_uri (WEBKIT_WEB_VIEW (view), uri);
 
   select_index (uri);
 
@@ -705,11 +703,9 @@ ui_manager_new (GtkWidget *window)
                                      "    <separator />"
                                      "    <menuitem action=\"find\" />"
                                      "    <menuitem action=\"find-again\" />"
-#ifdef HAVE_WEBKIT_ZOOM_API
                                      "    <separator />"
                                      "    <menuitem action=\"zoom-in\" />"
                                      "    <menuitem action=\"zoom-out\" />"
-#endif
                                      "    <separator />"
                                      "    <menuitem action=\"close\" />"
                                      "  </popup>"
@@ -857,18 +853,14 @@ static void
 zoom_in_callback (GtkAction *action,
                   gpointer   data)
 {
-#ifdef HAVE_WEBKIT_ZOOM_API
   webkit_web_view_zoom_in (WEBKIT_WEB_VIEW (view));
-#endif
 }
 
 static void
 zoom_out_callback (GtkAction *action,
                    gpointer   data)
 {
-#ifdef HAVE_WEBKIT_ZOOM_API
   webkit_web_view_zoom_out (WEBKIT_WEB_VIEW (view));
-#endif
 }
 
 static void
@@ -886,27 +878,30 @@ close_callback (GtkAction *action,
 }
 
 static void
-menu_callback (GtkWidget            *menu,
-               WebKitWebHistoryItem *item)
+menu_callback (GtkWidget *menu,
+               gpointer   data)
 {
-  browser_dialog_load (webkit_web_history_item_get_uri (item));
+  gint steps = GPOINTER_TO_INT (data);
+
+  webkit_web_view_go_back_or_forward (WEBKIT_WEB_VIEW (view), steps);
 }
 
-/*  this function unrefs the items and frees the list  */
 static GtkWidget *
-build_menu (GList *items)
+build_menu (const GList *items,
+            gboolean     back)
 {
-  GtkWidget *menu;
-  GList     *list;
+  GtkWidget   *menu;
+  const GList *iter;
+  gint         steps;
 
   if (! items)
     return NULL;
 
   menu = gtk_menu_new ();
 
-  for (list = items; list; list = g_list_next (list))
+  for (iter = items, steps = 1; iter; iter = g_list_next (iter), steps++)
     {
-      WebKitWebHistoryItem *item = list->data;
+      WebKitWebHistoryItem *item = iter->data;
       const gchar          *title;
 
       title = webkit_web_history_item_get_title (item);
@@ -918,15 +913,11 @@ build_menu (GList *items)
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
           gtk_widget_show (menu_item);
 
-          g_signal_connect_object (menu_item, "activate",
-                                   G_CALLBACK (menu_callback),
-                                   item, 0);
-
-          g_object_unref (item);
+          g_signal_connect (menu_item, "activate",
+                            G_CALLBACK (menu_callback),
+                            GINT_TO_POINTER (back ? - steps : steps));
         }
     }
-
-  g_list_free (items);
 
   return menu;
 }
@@ -950,12 +941,12 @@ update_actions (void)
 
   if (back_forward_list)
     {
-      GList *list;
+      const GList *list;
 
       list = webkit_web_back_forward_list_get_back_list_with_limit (back_forward_list,
                                                                     12);
       gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (button_prev),
-                                     build_menu (list));
+                                     build_menu (list, TRUE));
     }
   else
     {
@@ -971,12 +962,12 @@ update_actions (void)
 
   if (back_forward_list)
     {
-      GList *list;
+      const GList *list;
 
       list = webkit_web_back_forward_list_get_forward_list_with_limit (back_forward_list,
                                                                        12);
       gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (button_next),
-                                     build_menu (list));
+                                     build_menu (list, FALSE));
     }
   else
     {
@@ -1039,12 +1030,8 @@ dialog_unmap (GtkWidget *window,
   data.paned_position = gtk_paned_get_position (GTK_PANED (paned));
   data.show_index     = GTK_WIDGET_VISIBLE (sidebar);
 
-#ifdef HAVE_WEBKIT_ZOOM_API
   data.zoom = (view ?
                webkit_web_view_get_zoom_level (WEBKIT_WEB_VIEW (view)) : 1.0);
-#else
-  data.zoom = 1.0;
-#endif
 
   gimp_set_data (GIMP_HELP_BROWSER_DIALOG_DATA, &data, sizeof (data));
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-matrix3-is-affine"><link linkend="gimp-matrix3-is-affine">gimp_matrix3_is_affine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-param-spec-matrix2"><link linkend="gimp-param-spec-matrix2">gimp_param_spec_matrix2</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

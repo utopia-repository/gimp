@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="GIMP Config Library Reference Manual" link="index.html" author="" name="libgimpconfig" version="2">
+<book xmlns="http://www.devhelp.net/book" title="GIMP Config Library Reference Manual" link="index.html" author="" name="libgimpconfig" version="2" language="c">
   <chapters>
     <sub name="GIMP Config Library" link="libgimpconfig.html">
       <sub name="Object Hierarchy" link="libgimpconfig-hierarchy.html"/>
@@ -41,30 +41,30 @@
     <keyword type="function" name="gimp_config_serialize_property_by_name ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property-by-name" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_config_serialize_value ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value" since="GIMP 2.4"/>
     <keyword type="enum" name="enum GimpConfigError" link="libgimpconfig-GimpConfigError.html#GimpConfigError"/>
-    <keyword type="macro" name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR--CAPS"/>
     <keyword type="function" name="gimp_config_error_quark ()" link="libgimpconfig-GimpConfigError.html#gimp-config-error-quark" since="GIMP 2.4"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_SERIALIZE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_AGGREGATE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_RESTART" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_CONFIRM" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_DEFAULTS" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_IGNORE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_PARAM_FLAGS" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOXED()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_RGB()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_DOUBLE()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_RESOLUTION()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_ENUM()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-ENUM:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_INT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-INT:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_MATRIX2()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MATRIX2:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_MEMSIZE()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MEMSIZE:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_PATH()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-PATH:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_STRING()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-STRING:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_UINT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UINT:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_UNIT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_OBJECT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS"/>
-    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_POINTER()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_SERIALIZE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_AGGREGATE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_RESTART" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-RESTART--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_CONFIRM" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-CONFIRM--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_DEFAULTS" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_IGNORE" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-IGNORE--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_PARAM_FLAGS" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-FLAGS--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOOLEAN()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_BOXED()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_RGB()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_DOUBLE()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_RESOLUTION()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_ENUM()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-ENUM--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_INT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-INT--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_MATRIX2()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MATRIX2--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_MEMSIZE()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MEMSIZE--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_PATH()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-PATH--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_STRING()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-STRING--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_UINT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UINT--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_UNIT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_OBJECT()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT--CAPS"/>
+    <keyword type="macro" name="GIMP_CONFIG_INSTALL_PROP_POINTER()" link="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER--CAPS"/>
     <keyword type="enum" name="enum GimpConfigPathType" link="libgimpconfig-gimpconfig-path.html#GimpConfigPathType"/>
     <keyword type="function" name="gimp_param_spec_config_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_param_spec_config_path_type ()" link="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path-type" since="GIMP 2.4"/>
@@ -72,7 +72,7 @@
     <keyword type="function" name="gimp_config_build_data_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_build_writable_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_build_plug_in_path ()" link="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path" since="GIMP 2.4"/>
-    <keyword type="macro" name="GIMP_VALUE_HOLDS_CONFIG_PATH()" link="libgimpconfig-gimpconfig-path.html#GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS"/>
+    <keyword type="macro" name="GIMP_VALUE_HOLDS_CONFIG_PATH()" link="libgimpconfig-gimpconfig-path.html#GIMP-VALUE-HOLDS-CONFIG-PATH--CAPS"/>
     <keyword type="function" name="gimp_config_diff ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-diff" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_sync ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-sync" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_reset_properties ()" link="libgimpconfig-gimpconfig-utils.html#gimp-config-reset-properties" since="GIMP 2.4"/>
@@ -109,16 +109,16 @@
     <keyword type="struct" name="GimpColorConfig" link="GimpColorConfig.html#GimpColorConfig-struct"/>
     <keyword type="enum" name="enum GimpColorManagementMode" link="GimpColorConfig.html#GimpColorManagementMode"/>
     <keyword type="enum" name="enum GimpColorRenderingIntent" link="GimpColorConfig.html#GimpColorRenderingIntent"/>
-    <keyword type="" name="The &quot;cmyk-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--cmyk-profile"/>
-    <keyword type="" name="The &quot;display-module&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-module"/>
-    <keyword type="" name="The &quot;display-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-profile"/>
-    <keyword type="" name="The &quot;display-profile-from-gdk&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk"/>
-    <keyword type="" name="The &quot;display-rendering-intent&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-rendering-intent"/>
-    <keyword type="" name="The &quot;mode&quot; property" link="GimpColorConfig.html#GimpColorConfig--mode"/>
-    <keyword type="" name="The &quot;out-of-gamut-color&quot; property" link="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color"/>
-    <keyword type="" name="The &quot;printer-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--printer-profile"/>
-    <keyword type="" name="The &quot;rgb-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--rgb-profile"/>
-    <keyword type="" name="The &quot;simulation-gamut-check&quot; property" link="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check"/>
-    <keyword type="" name="The &quot;simulation-rendering-intent&quot; property" link="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent"/>
+    <keyword type="property" name="The &quot;cmyk-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--cmyk-profile"/>
+    <keyword type="property" name="The &quot;display-module&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-module"/>
+    <keyword type="property" name="The &quot;display-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-profile"/>
+    <keyword type="property" name="The &quot;display-profile-from-gdk&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk"/>
+    <keyword type="property" name="The &quot;display-rendering-intent&quot; property" link="GimpColorConfig.html#GimpColorConfig--display-rendering-intent"/>
+    <keyword type="property" name="The &quot;mode&quot; property" link="GimpColorConfig.html#GimpColorConfig--mode"/>
+    <keyword type="property" name="The &quot;out-of-gamut-color&quot; property" link="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color"/>
+    <keyword type="property" name="The &quot;printer-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--printer-profile"/>
+    <keyword type="property" name="The &quot;rgb-profile&quot; property" link="GimpColorConfig.html#GimpColorConfig--rgb-profile"/>
+    <keyword type="property" name="The &quot;simulation-gamut-check&quot; property" link="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check"/>
+    <keyword type="property" name="The &quot;simulation-rendering-intent&quot; property" link="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent"/>
   </functions>
 </book>

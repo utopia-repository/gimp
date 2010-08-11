@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpunit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpsignal.html" title="gimpsignal">
 <link rel="next" href="libgimpbase-gimputils.html" title="gimputils">
@@ -32,7 +32,7 @@
                 <a href="#libgimpbase-gimpunit.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpunit">
 <a name="libgimpbase-gimpunit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -42,7 +42,7 @@ user-defined units.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpbase-gimpunit.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimpbase-gimpunit.html#GimpUnit" title="enum GimpUnit">GimpUnit</a>;
@@ -129,16 +129,16 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 #define             <a class="link" href="libgimpbase-gimpunit.html#GIMP-VALUE-HOLDS-UNIT--CAPS" title="GIMP_VALUE_HOLDS_UNIT()">GIMP_VALUE_HOLDS_UNIT</a>               (value)
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpbase-gimpunit.description"></a><h2>Description</h2>
 <p>
 Provides a collection of predefined units and functions for creating
 user-defined units.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpbase-gimpunit.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="enum GimpUnit">
 <a name="GimpUnit"></a><h3>enum GimpUnit</h3>
 <pre class="programlisting">typedef enum /*&lt; skip &gt;*/
 {
@@ -158,7 +158,7 @@ user-defined units.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_number_of_units ()">
 <a name="gimp-unit-get-number-of-units"></a><h3>gimp_unit_get_number_of_units ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -177,7 +177,7 @@ Returns the number of units which are known to the <a class="link" href="libgimp
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_number_of_built_in_units ()">
 <a name="gimp-unit-get-number-of-built-in-units"></a><h3>gimp_unit_get_number_of_built_in_units ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -199,7 +199,7 @@ Returns the number of <a class="link" href="libgimpbase-gimpunit.html#GimpUnit" 
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_new ()">
 <a name="gimp-unit-new"></a><h3>gimp_unit_new ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpbase-gimpunit.html#GimpUnit" title="enum GimpUnit">GimpUnit</a>            gimp_unit_new                       (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -282,7 +282,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_deletion_flag ()">
 <a name="gimp-unit-get-deletion-flag"></a><h3>gimp_unit_get_deletion_flag ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -308,7 +308,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_set_deletion_flag ()">
 <a name="gimp-unit-set-deletion-flag"></a><h3>gimp_unit_set_deletion_flag ()</h3>
 <pre class="programlisting">void                gimp_unit_set_deletion_flag         (<a class="link" href="libgimpbase-gimpunit.html#GimpUnit" title="enum GimpUnit">GimpUnit</a> unit,
                                                          <a
@@ -343,7 +343,7 @@ ignored.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_factor ()">
 <a name="gimp-unit-get-factor"></a><h3>gimp_unit_get_factor ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -375,7 +375,7 @@ Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.</
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_digits ()">
 <a name="gimp-unit-get-digits"></a><h3>gimp_unit_get_digits ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -405,7 +405,7 @@ Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.</
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_identifier ()">
 <a name="gimp-unit-get-identifier"></a><h3>gimp_unit_get_identifier ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -431,7 +431,7 @@ This is an unstranslated string and must not be changed or freed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_symbol ()">
 <a name="gimp-unit-get-symbol"></a><h3>gimp_unit_get_symbol ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -460,7 +460,7 @@ NOTE: This string must not be changed or freed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_abbreviation ()">
 <a name="gimp-unit-get-abbreviation"></a><h3>gimp_unit_get_abbreviation ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -490,7 +490,7 @@ NOTE: This string must not be changed or freed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_singular ()">
 <a name="gimp-unit-get-singular"></a><h3>gimp_unit_get_singular ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -520,7 +520,7 @@ NOTE: This string must not be changed or freed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_get_plural ()">
 <a name="gimp-unit-get-plural"></a><h3>gimp_unit_get_plural ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -550,7 +550,7 @@ NOTE: This string must not be changed or freed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_TYPE_UNIT">
 <a name="GIMP-TYPE-UNIT--CAPS"></a><h3>GIMP_TYPE_UNIT</h3>
 <pre class="programlisting">#define GIMP_TYPE_UNIT               (gimp_unit_get_type ())
 </pre>
@@ -563,7 +563,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_TYPE_PARAM_UNIT">
 <a name="GIMP-TYPE-PARAM-UNIT--CAPS"></a><h3>GIMP_TYPE_PARAM_UNIT</h3>
 <pre class="programlisting">#define GIMP_TYPE_PARAM_UNIT              (gimp_param_unit_get_type ())
 </pre>
@@ -571,7 +571,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_IS_PARAM_SPEC_UNIT()">
 <a name="GIMP-IS-PARAM-SPEC-UNIT--CAPS"></a><h3>GIMP_IS_PARAM_SPEC_UNIT()</h3>
 <pre class="programlisting">#define GIMP_IS_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_UNIT))
 </pre>
@@ -587,7 +587,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_param_spec_unit ()">
 <a name="gimp-param-spec-unit"></a><h3>gimp_param_spec_unit ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
@@ -670,7 +670,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_VALUE_HOLDS_UNIT()">
 <a name="GIMP-VALUE-HOLDS-UNIT--CAPS"></a><h3>GIMP_VALUE_HOLDS_UNIT()</h3>
 <pre class="programlisting">#define GIMP_VALUE_HOLDS_UNIT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_UNIT))
 </pre>
@@ -686,7 +686,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libgimpbase-gimpunit.see-also"></a><h2>See Also</h2>
 <p>
 <a

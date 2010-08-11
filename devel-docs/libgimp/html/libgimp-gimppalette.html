@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimppalette</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpgradients.html" title="gimpgradients">
 <link rel="next" href="libgimp-gimppalettes.html" title="gimppalettes">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimppalette.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimppalette">
 <a name="libgimp-gimppalette"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimppalette.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -201,15 +201,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *name);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimppalette.description"></a><h2>Description</h2>
 <p>
 Functions operating on a single palette.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimppalette.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_new ()">
 <a name="gimp-palette-new"></a><h3>gimp_palette_new ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -242,7 +242,7 @@ This procedure creates a new, uninitialized palette</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_duplicate ()">
 <a name="gimp-palette-duplicate"></a><h3>gimp_palette_duplicate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -275,7 +275,7 @@ This procedure creates an identical palette by a different name</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_rename ()">
 <a name="gimp-palette-rename"></a><h3>gimp_palette_rename ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -316,7 +316,7 @@ This procedure renames a palette</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_delete ()">
 <a name="gimp-palette-delete"></a><h3>gimp_palette_delete ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -349,7 +349,7 @@ This procedure deletes a palette</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_get_info ()">
 <a name="gimp-palette-get-info"></a><h3>gimp_palette_get_info ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -391,7 +391,7 @@ This includes the name, and the number of colors.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_get_colors ()">
 <a name="gimp-palette-get-colors"></a><h3>gimp_palette_get_colors ()</h3>
 <pre class="programlisting"><a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -432,7 +432,7 @@ This procedure retrieves all color entries of the specified palette.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_get_columns ()">
 <a name="gimp-palette-get-columns"></a><h3>gimp_palette_get_columns ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -466,7 +466,7 @@ the palette is being displayed.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_set_columns ()">
 <a name="gimp-palette-set-columns"></a><h3>gimp_palette_set_columns ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -509,7 +509,7 @@ if the palette is writable. The maximum allowed value is 64.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_add_entry ()">
 <a name="gimp-palette-add-entry"></a><h3>gimp_palette_add_entry ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -567,7 +567,7 @@ error if the entry palette does not exist.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_delete_entry ()">
 <a name="gimp-palette-delete-entry"></a><h3>gimp_palette_delete_entry ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -609,7 +609,7 @@ returns an error if the entry palette does not exist.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_entry_get_color ()">
 <a name="gimp-palette-entry-get-color"></a><h3>gimp_palette_entry_get_color ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -660,7 +660,7 @@ exist.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_entry_set_color ()">
 <a name="gimp-palette-entry-set-color"></a><h3>gimp_palette_entry_set_color ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -711,7 +711,7 @@ exist.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_entry_get_name ()">
 <a name="gimp-palette-entry-get-name"></a><h3>gimp_palette_entry_get_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -762,7 +762,7 @@ exist.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_entry_set_name ()">
 <a name="gimp-palette-entry-set-name"></a><h3>gimp_palette_entry_set_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -813,14 +813,14 @@ exist.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_get_foreground ()">
 <a name="gimp-palette-get-foreground"></a><h3>gimp_palette_get_foreground ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_palette_get_foreground         (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_get_foreground</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -850,14 +850,14 @@ blending, and bucket fill.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_get_background ()">
 <a name="gimp-palette-get-background"></a><h3>gimp_palette_get_background ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_palette_get_background         (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_get_background</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -887,14 +887,14 @@ erasing (with non-alpha images), and image filling.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_set_foreground ()">
 <a name="gimp-palette-set-foreground"></a><h3>gimp_palette_set_foreground ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_palette_set_foreground         (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_set_foreground</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -924,14 +924,14 @@ and bucket fill will use the new value.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_set_background ()">
 <a name="gimp-palette-set-background"></a><h3>gimp_palette_set_background ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_palette_set_background         (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_set_background</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -962,12 +962,12 @@ value.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_set_default_colors ()">
 <a name="gimp-palette-set-default-colors"></a><h3>gimp_palette_set_default_colors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_palette_set_default_colors     (void);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_set_default_colors</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -990,12 +990,12 @@ colors to their initial default values, black and white.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_swap_colors ()">
 <a name="gimp-palette-swap-colors"></a><h3>gimp_palette_swap_colors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_palette_swap_colors            (void);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_swap_colors</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -1018,7 +1018,7 @@ color and vice versa.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_palette_is_editable ()">
 <a name="gimp-palette-is-editable"></a><h3>gimp_palette_is_editable ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

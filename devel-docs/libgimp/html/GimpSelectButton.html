@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpSelectButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="next" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">
@@ -42,7 +42,7 @@
                 <a href="#GimpSelectButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpSelectButton">
 <a name="GimpSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -51,14 +51,14 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpSelectButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpSelectButton.html#GimpSelectButton-struct" title="GimpSelectButton">GimpSelectButton</a>;
 void                <a class="link" href="GimpSelectButton.html#gimp-select-button-close-popup" title="gimp_select_button_close_popup ()">gimp_select_button_close_popup</a>      (<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a> *button);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -68,19 +68,19 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkBox.html"
 >GtkBox</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
 >GtkHBox</a>
                                        +----GimpSelectButton
                                              +----<a class="link" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a>
@@ -90,29 +90,31 @@ href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
                                              +----<a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a>
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpSelectButton implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface and  <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
+>GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpSelectButton.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpSelectButton.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpSelectButton">
 <a name="GimpSelectButton-struct"></a><h3>GimpSelectButton</h3>
 <pre class="programlisting">typedef struct _GimpSelectButton GimpSelectButton;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_select_button_close_popup ()">
 <a name="gimp-select-button-close-popup"></a><h3>gimp_select_button_close_popup ()</h3>
 <pre class="programlisting">void                gimp_select_button_close_popup      (<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a> *button);</pre>
 <p>

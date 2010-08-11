@@ -1,4 +1,4 @@
-/* $Id: maze-algorithms.c 25324 2008-03-31 18:38:29Z mitch $
+/* $Id$
  * Contains routines for generating mazes, somewhat intertwined with
  * Gimp plug-in-maze specific stuff.
  *

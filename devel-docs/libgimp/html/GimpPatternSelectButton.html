@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpPatternSelectButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">
 <link rel="next" href="libgimp-gimpbrushselect.html" title="gimpbrushselect">
@@ -46,7 +46,7 @@
                 <a href="#GimpPatternSelectButton.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpPatternSelectButton">
 <a name="GimpPatternSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -55,12 +55,12 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpPatternSelectButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpPatternSelectButton.html#GimpPatternSelectButton-struct" title="GimpPatternSelectButton">GimpPatternSelectButton</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *         <a class="link" href="GimpPatternSelectButton.html#gimp-pattern-select-button-new" title="gimp_pattern_select_button_new ()">gimp_pattern_select_button_new</a>      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *title,
@@ -78,7 +78,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *pattern_name);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="GimpPatternSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -88,33 +88,35 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkBox.html"
 >GtkBox</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
 >GtkHBox</a>
                                        +----<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
                                              +----GimpPatternSelectButton
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Implemented Interfaces">
 <a name="GimpPatternSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPatternSelectButton implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  AtkImplementorIface and  <a
+href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
+>GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Properties">
 <a name="GimpPatternSelectButton.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpPatternSelectButton.html#GimpPatternSelectButton--pattern-name" title='The "pattern-name" property'>pattern-name</a>"             <a
@@ -125,30 +127,30 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>*                : Read / Write / Construct Only
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signals">
 <a name="GimpPatternSelectButton.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpPatternSelectButton.html#GimpPatternSelectButton-pattern-set" title='The "pattern-set" signal'>pattern-set</a>"                                    : Run First
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="GimpPatternSelectButton.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="GimpPatternSelectButton.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpPatternSelectButton">
 <a name="GimpPatternSelectButton-struct"></a><h3>GimpPatternSelectButton</h3>
 <pre class="programlisting">typedef struct _GimpPatternSelectButton GimpPatternSelectButton;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pattern_select_button_new ()">
 <a name="gimp-pattern-select-button-new"></a><h3>gimp_pattern_select_button_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *         gimp_pattern_select_button_new      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *title,
@@ -157,7 +159,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *pattern_name);</pre>
 <p>
 Creates a new <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> that completely controls the selection of
 a pattern.  This widget is suitable for placement in a table in a
 plug-in dialog.</p>
@@ -183,7 +185,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> that you can use in your UI.
 
 </td>
@@ -193,7 +195,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pattern_select_button_get_pattern ()">
 <a name="gimp-pattern-select-button-get-pattern"></a><h3>gimp_pattern_select_button_get_pattern ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -222,7 +224,7 @@ Retrieves the name of currently selected pattern.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pattern_select_button_set_pattern ()">
 <a name="gimp-pattern-select-button-set-pattern"></a><h3>gimp_pattern_select_button_set_pattern ()</h3>
 <pre class="programlisting">void                gimp_pattern_select_button_set_pattern
                                                         (<a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *button,
@@ -253,9 +255,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 <p class="since">Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Property Details">
 <a name="GimpPatternSelectButton.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "pattern-name" property'>
 <a name="GimpPatternSelectButton--pattern-name"></a><h3>The <code class="literal">"pattern-name"</code> property</h3>
 <pre class="programlisting">  "pattern-name"             <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -268,7 +270,7 @@ The name of the currently selected pattern.</p>
 <p>Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "title" property'>
 <a name="GimpPatternSelectButton--title"></a><h3>The <code class="literal">"title"</code> property</h3>
 <pre class="programlisting">  "title"                    <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -281,9 +283,9 @@ The title to be used for the pattern selection popup dialog.</p>
 <p>Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signal Details">
 <a name="GimpPatternSelectButton.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "pattern-set" signal'>
 <a name="GimpPatternSelectButton-pattern-set"></a><h3>The <code class="literal">"pattern-set"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *widget,
                                                         <a

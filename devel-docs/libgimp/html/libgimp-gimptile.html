@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimptile</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool">
 <link rel="next" href="libgimp-gimptools.html" title="gimptools">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimptile.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimptile">
 <a name="libgimp-gimptile"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimptile.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>;
@@ -66,15 +66,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
 >gulong</a> ntiles);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimptile.description"></a><h2>Description</h2>
 <p>
 Functions for working with tiles.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimptile.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpTile">
 <a name="GimpTile"></a><h3>GimpTile</h3>
 <pre class="programlisting">typedef struct {
   guint         ewidth;     /* the effective width of the tile */
@@ -92,7 +92,7 @@ Functions for working with tiles.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_ref ()">
 <a name="gimp-tile-ref"></a><h3>gimp_tile_ref ()</h3>
 <pre class="programlisting">void                gimp_tile_ref                       (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);</pre>
 <p>
@@ -107,7 +107,7 @@ Functions for working with tiles.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_ref_zero ()">
 <a name="gimp-tile-ref-zero"></a><h3>gimp_tile_ref_zero ()</h3>
 <pre class="programlisting">void                gimp_tile_ref_zero                  (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);</pre>
 <p>
@@ -122,7 +122,7 @@ Functions for working with tiles.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_unref ()">
 <a name="gimp-tile-unref"></a><h3>gimp_tile_unref ()</h3>
 <pre class="programlisting">void                gimp_tile_unref                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile,
                                                          <a
@@ -147,7 +147,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_flush ()">
 <a name="gimp-tile-flush"></a><h3>gimp_tile_flush ()</h3>
 <pre class="programlisting">void                gimp_tile_flush                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);</pre>
 <p>
@@ -162,7 +162,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_cache_size ()">
 <a name="gimp-tile-cache-size"></a><h3>gimp_tile_cache_size ()</h3>
 <pre class="programlisting">void                gimp_tile_cache_size                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
@@ -183,7 +183,7 @@ and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_cache_ntiles ()">
 <a name="gimp-tile-cache-ntiles"></a><h3>gimp_tile_cache_ntiles ()</h3>
 <pre class="programlisting">void                gimp_tile_cache_ntiles              (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"

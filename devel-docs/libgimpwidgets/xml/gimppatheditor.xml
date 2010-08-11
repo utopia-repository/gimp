@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpPathEditor</refname>
 <refpurpose>Widget for editing a file search path.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="GimpPathEditor.synopsis" role="synopsis">
@@ -20,12 +19,12 @@
 
 <synopsis>
                     <link linkend="GimpPathEditor-struct">GimpPathEditor</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-path-editor-new">gimp_path_editor_new</link>                (const <link linkend="gchar">gchar</link> *title,
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-path-editor-new">gimp_path_editor_new</link>                (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *path);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-path-editor-get-path">gimp_path_editor_get_path</link>           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);
+<link linkend="gchar">gchar</link> *             <link linkend="gimp-path-editor-get-path">gimp_path_editor_get_path</link>           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);
 <link linkend="void">void</link>                <link linkend="gimp-path-editor-set-path">gimp_path_editor_set_path</link>           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
                                                          const <link linkend="gchar">gchar</link> *path);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-path-editor-get-writable-path">gimp_path_editor_get_writable_path</link>  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);
+<link linkend="gchar">gchar</link> *             <link linkend="gimp-path-editor-get-writable-path">gimp_path_editor_get_writable_path</link>  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);
 <link linkend="void">void</link>                <link linkend="gimp-path-editor-set-writable-path">gimp_path_editor_set_writable_path</link>  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
                                                          const <link linkend="gchar">gchar</link> *path);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-path-editor-get-dir-writable">gimp_path_editor_get_dir_writable</link>   (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
@@ -48,7 +47,6 @@
                                  +----<link linkend="GtkVBox">GtkVBox</link>
                                        +----GimpPathEditor
 </synopsis>
-
 </refsect1>
 
 
@@ -57,8 +55,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPathEditor implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
-
+ <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkOrientable">GtkOrientable</link>.</para>
 </refsect1>
 
 
@@ -96,133 +93,117 @@ the search path, the "path_changed" signal will be emitted.
 <title role="details.title">Details</title>
 <refsect2 id="GimpPathEditor-struct" role="struct">
 <title>GimpPathEditor</title>
-<indexterm zone="GimpPathEditor-struct"><primary>GimpPathEditor</primary></indexterm><programlisting>typedef struct _GimpPathEditor GimpPathEditor;</programlisting>
+<indexterm zone="GimpPathEditor-struct"><primary sortas="GimpPathEditor">GimpPathEditor</primary></indexterm><programlisting>typedef struct _GimpPathEditor GimpPathEditor;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-path-editor-new" role="function">
 <title>gimp_path_editor_new ()</title>
-<indexterm zone="gimp-path-editor-new"><primary>gimp_path_editor_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_path_editor_new                (const <link linkend="gchar">gchar</link> *title,
+<indexterm zone="gimp-path-editor-new"><primary sortas="gimp_path_editor_new">gimp_path_editor_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_path_editor_new                (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *path);</programlisting>
 <para>
 Creates a new <link linkend="GimpPathEditor"><type>GimpPathEditor</type></link> widget.
 </para>
 <para>
 The elements of the initial search path must be separated with the
-<link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>title</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>title</parameter>&#160;:</term>
 <listitem><simpara> The title of the <link linkend="GtkFileChooser"><type>GtkFileChooser</type></link> dialog which can be popped up.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
 <listitem><simpara>  The initial search path.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpPathEditor"><type>GimpPathEditor</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A pointer to the new <link linkend="GimpPathEditor"><type>GimpPathEditor</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-path-editor-get-path" role="function">
 <title>gimp_path_editor_get_path ()</title>
-<indexterm zone="gimp-path-editor-get-path"><primary>gimp_path_editor_get_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_path_editor_get_path           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);</programlisting>
+<indexterm zone="gimp-path-editor-get-path"><primary sortas="gimp_path_editor_get_path">gimp_path_editor_get_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             gimp_path_editor_get_path           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);</programlisting>
 <para>
 The elements of the returned search path string are separated with the
-<link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.
 </para>
 <para>
 Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>editor</parameter>&#160;:</term>
 <listitem><simpara> The path editor you want to get the search path from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The search path the user has selected in the path editor.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The search path the user has selected in the path editor.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-path-editor-set-path" role="function">
 <title>gimp_path_editor_set_path ()</title>
-<indexterm zone="gimp-path-editor-set-path"><primary>gimp_path_editor_set_path</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_editor_set_path           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
+<indexterm zone="gimp-path-editor-set-path"><primary sortas="gimp_path_editor_set_path">gimp_path_editor_set_path</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_editor_set_path           (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
                                                          const <link linkend="gchar">gchar</link> *path);</programlisting>
 <para>
 The elements of the initial search path must be separated with the
-<link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link> character.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>editor</parameter>&#160;:</term>
 <listitem><simpara> The path editor you want to set the search path from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
 <listitem><simpara>   The new path to set.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-path-editor-get-writable-path" role="function">
 <title>gimp_path_editor_get_writable_path ()</title>
-<indexterm zone="gimp-path-editor-get-writable-path"><primary>gimp_path_editor_get_writable_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_path_editor_get_writable_path  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);</programlisting>
+<indexterm zone="gimp-path-editor-get-writable-path"><primary sortas="gimp_path_editor_get_writable_path">gimp_path_editor_get_writable_path</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             gimp_path_editor_get_writable_path  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>editor</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-path-editor-set-writable-path" role="function">
 <title>gimp_path_editor_set_writable_path ()</title>
-<indexterm zone="gimp-path-editor-set-writable-path"><primary>gimp_path_editor_set_writable_path</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_editor_set_writable_path  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
+<indexterm zone="gimp-path-editor-set-writable-path"><primary sortas="gimp_path_editor_set_writable_path">gimp_path_editor_set_writable_path</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_editor_set_writable_path  (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
                                                          const <link linkend="gchar">gchar</link> *path);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>editor</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-path-editor-get-dir-writable" role="function">
 <title>gimp_path_editor_get_dir_writable ()</title>
-<indexterm zone="gimp-path-editor-get-dir-writable"><primary>gimp_path_editor_get_dir_writable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_editor_get_dir_writable   (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
+<indexterm zone="gimp-path-editor-get-dir-writable"><primary sortas="gimp_path_editor_get_dir_writable">gimp_path_editor_get_dir_writable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_path_editor_get_dir_writable   (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
                                                          const <link linkend="gchar">gchar</link> *directory);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>editor</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>directory</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>directory</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-path-editor-set-dir-writable" role="function">
 <title>gimp_path_editor_set_dir_writable ()</title>
-<indexterm zone="gimp-path-editor-set-dir-writable"><primary>gimp_path_editor_set_dir_writable</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_editor_set_dir_writable   (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
+<indexterm zone="gimp-path-editor-set-dir-writable"><primary sortas="gimp_path_editor_set_dir_writable">gimp_path_editor_set_dir_writable</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_editor_set_dir_writable   (<link linkend="GimpPathEditor">GimpPathEditor</link> *editor,
                                                          const <link linkend="gchar">gchar</link> *directory,
                                                          <link linkend="gboolean">gboolean</link> writable);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>editor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>editor</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>directory</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>directory</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>writable</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>writable</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
@@ -230,28 +211,26 @@ The elements of the initial search path must be separated with the
 
 <refsect1 id="GimpPathEditor.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2 id="GimpPathEditor-path-changed"><title>The <literal>&quot;path-changed&quot;</literal> signal</title>
-<indexterm zone="GimpPathEditor-path-changed"><primary>GimpPathEditor::path-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
+<refsect2 id="GimpPathEditor-path-changed" role="signal"><title>The <literal>&quot;path-changed&quot;</literal> signal</title>
+<indexterm zone="GimpPathEditor-path-changed"><primary sortas="GimpPathEditor::path-changed">GimpPathEditor::path-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>        user_data)      : Run First</programlisting>
 <para>
 This signal is emitted whenever the user adds, deletes, modifies
 or reorders an element of the search path.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2 id="GimpPathEditor-writable-changed"><title>The <literal>&quot;writable-changed&quot;</literal> signal</title>
-<indexterm zone="GimpPathEditor-writable-changed"><primary>GimpPathEditor::writable-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
+</variablelist></refsect2><refsect2 id="GimpPathEditor-writable-changed" role="signal"><title>The <literal>&quot;writable-changed&quot;</literal> signal</title>
+<indexterm zone="GimpPathEditor-writable-changed"><primary sortas="GimpPathEditor::writable-changed">GimpPathEditor::writable-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPathEditor">GimpPathEditor</link> *arg0,
                                                         <link linkend="gpointer">gpointer</link>        user_data)      : Run First</programlisting>
 <para>
 This signal is emitted whenever the "writable" column of a directory
 is changed, either by the user clicking on it or by calling
 <link linkend="gimp-path-editor-set-dir-writable"><function>gimp_path_editor_set_dir_writable()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 </refsect1>
@@ -263,7 +242,7 @@ is changed, either by the user clicking on it or by calling
 <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link>
 </para>
 <para>
-<link linkend="G-SEARCHPATH-SEPARATOR:CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link>
+<link linkend="G-SEARCHPATH-SEPARATOR--CAPS"><type>G_SEARCHPATH_SEPARATOR</type></link>
 </para>
 </refsect1>
 

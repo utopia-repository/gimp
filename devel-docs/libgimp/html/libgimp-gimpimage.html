@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpimage</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpguides.html" title="gimpguides">
 <link rel="next" href="libgimp-gimplayer.html" title="gimplayer">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpimage.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpimage">
 <a name="libgimp-gimpimage"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpimage.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -727,16 +727,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> vectors_ID);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpimage.description"></a><h2>Description</h2>
 <p>
 Operations on complete images: creation, resizing/rescaling,
 and operations involving multiple layers.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpimage.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_list ()">
 <a name="gimp-image-list"></a><h3>gimp_image_list ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -767,7 +767,7 @@ This procedure returns the list of images currently open in GIMP.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_new ()">
 <a name="gimp-image-new"></a><h3>gimp_image_new ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -819,7 +819,7 @@ as an argument will fail. Layers can be created using the
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_duplicate ()">
 <a name="gimp-image-duplicate"></a><h3>gimp_image_duplicate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -851,7 +851,7 @@ channels, and image information.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_delete ()">
 <a name="gimp-image-delete"></a><h3>gimp_image_delete ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -887,7 +887,7 @@ the image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_is_valid ()">
 <a name="gimp-image-is-valid"></a><h3>gimp_image_is_valid ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -921,7 +921,7 @@ an existing image.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_base_type ()">
 <a name="gimp-image-base-type"></a><h3>gimp_image_base_type ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageBaseType"
@@ -953,7 +953,7 @@ must be of this subtype, but can have an optional alpha channel.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_width ()">
 <a name="gimp-image-width"></a><h3>gimp_image_width ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -985,7 +985,7 @@ of any of the layers in this image. This is the \"canvas\" width.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_height ()">
 <a name="gimp-image-height"></a><h3>gimp_image_height ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1017,14 +1017,14 @@ of any of the layers in this image. This is the \"canvas\" height.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_free_shadow ()">
 <a name="gimp-image-free-shadow"></a><h3>gimp_image_free_shadow ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_image_free_shadow              (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_image_free_shadow</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -1050,7 +1050,7 @@ instead.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_flip ()">
 <a name="gimp-image-flip"></a><h3>gimp_image_flip ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1087,7 +1087,7 @@ This procedure flips (mirrors) the image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_rotate ()">
 <a name="gimp-image-rotate"></a><h3>gimp_image_rotate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1124,7 +1124,7 @@ This procedure rotates the image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_resize ()">
 <a name="gimp-image-resize"></a><h3>gimp_image_resize ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1193,7 +1193,7 @@ offsets.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_resize_to_layers ()">
 <a name="gimp-image-resize-to-layers"></a><h3>gimp_image_resize_to_layers ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1229,7 +1229,7 @@ image are repositioned to the new image area.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_scale ()">
 <a name="gimp-image-scale"></a><h3>gimp_image_scale ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1280,7 +1280,7 @@ is used.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_scale_full ()">
 <a name="gimp-image-scale-full"></a><h3>gimp_image_scale_full ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1341,7 +1341,7 @@ specify the interpolation method explicitly.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_crop ()">
 <a name="gimp-image-crop"></a><h3>gimp_image_crop ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1409,7 +1409,7 @@ range, an error is returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_layers ()">
 <a name="gimp-image-get-layers"></a><h3>gimp_image_get_layers ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1449,7 +1449,7 @@ image. The order of layers is from topmost to bottommost.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_channels ()">
 <a name="gimp-image-get-channels"></a><h3>gimp_image_get_channels ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1490,7 +1490,7 @@ masks. The order is from topmost to bottommost.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_active_drawable ()">
 <a name="gimp-image-get-active-drawable"></a><h3>gimp_image_get_active_drawable ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1526,7 +1526,7 @@ is the active drawable.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_floating_sel ()">
 <a name="gimp-image-get-floating-sel"></a><h3>gimp_image_get_floating_sel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1558,7 +1558,7 @@ If it doesn't exist, -1 is returned as the layer ID.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_floating_sel_attached_to ()">
 <a name="gimp-image-floating-sel-attached-to"></a><h3>gimp_image_floating_sel_attached_to ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1591,7 +1591,7 @@ the drawable ID.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_pick_color ()">
 <a name="gimp-image-pick-color"></a><h3>gimp_image_pick_color ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1688,7 +1688,7 @@ a merged sampling, the supplied drawable is ignored.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_pick_correlate_layer ()">
 <a name="gimp-image-pick-correlate-layer"></a><h3>gimp_image_pick_correlate_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1739,7 +1739,7 @@ layer is found.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_add_layer ()">
 <a name="gimp-image-add-layer"></a><h3>gimp_image_add_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1789,7 +1789,7 @@ with the image base type.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_remove_layer ()">
 <a name="gimp-image-remove-layer"></a><h3>gimp_image_remove_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1832,7 +1832,7 @@ layer.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_raise_layer ()">
 <a name="gimp-image-raise-layer"></a><h3>gimp_image_raise_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1873,7 +1873,7 @@ it.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_lower_layer ()">
 <a name="gimp-image-lower-layer"></a><h3>gimp_image_lower_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1914,7 +1914,7 @@ it.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_raise_layer_to_top ()">
 <a name="gimp-image-raise-layer-to-top"></a><h3>gimp_image_raise_layer_to_top ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1955,7 +1955,7 @@ it.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_lower_layer_to_bottom ()">
 <a name="gimp-image-lower-layer-to-bottom"></a><h3>gimp_image_lower_layer_to_bottom ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1997,7 +1997,7 @@ it.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_layer_position ()">
 <a name="gimp-image-get-layer-position"></a><h3>gimp_image_get_layer_position ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2040,7 +2040,7 @@ error is returned.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_add_channel ()">
 <a name="gimp-image-add-channel"></a><h3>gimp_image_add_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2089,7 +2089,7 @@ the top of the channel stack.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_remove_channel ()">
 <a name="gimp-image-remove-channel"></a><h3>gimp_image_remove_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2129,7 +2129,7 @@ channel doesn't exist, an error is returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_raise_channel ()">
 <a name="gimp-image-raise-channel"></a><h3>gimp_image_raise_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2170,7 +2170,7 @@ above it.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_lower_channel ()">
 <a name="gimp-image-lower-channel"></a><h3>gimp_image_lower_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2211,7 +2211,7 @@ below it.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_channel_position ()">
 <a name="gimp-image-get-channel-position"></a><h3>gimp_image_get_channel_position ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2254,7 +2254,7 @@ an error is returned.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_flatten ()">
 <a name="gimp-image-flatten"></a><h3>gimp_image_flatten ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -2288,7 +2288,7 @@ discarded, and the resulting image is stripped of its alpha channel.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_merge_visible_layers ()">
 <a name="gimp-image-merge-visible-layers"></a><h3>gimp_image_merge_visible_layers ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -2330,7 +2330,7 @@ final layer to the size of the bottommost layer.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_merge_down ()">
 <a name="gimp-image-merge-down"></a><h3>gimp_image_merge_down ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -2381,7 +2381,7 @@ bottommost layer.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_clean_all ()">
 <a name="gimp-image-clean-all"></a><h3>gimp_image_clean_all ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2417,7 +2417,7 @@ call this function themselves after saving the image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_is_dirty ()">
 <a name="gimp-image-is-dirty"></a><h3>gimp_image_is_dirty ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2451,7 +2451,7 @@ after calling a save procedure to make the image clean.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_active_layer ()">
 <a name="gimp-image-get-active-layer"></a><h3>gimp_image_get_active_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -2484,7 +2484,7 @@ mask is active, then this will return the associated layer.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_active_layer ()">
 <a name="gimp-image-set-active-layer"></a><h3>gimp_image_set_active_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2526,7 +2526,7 @@ procedure will return an execution error.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_active_channel ()">
 <a name="gimp-image-get-active-channel"></a><h3>gimp_image_get_active_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -2558,7 +2558,7 @@ otherwise, -1.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_active_channel ()">
 <a name="gimp-image-set-active-channel"></a><h3>gimp_image_set_active_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2600,7 +2600,7 @@ this procedure will return an execution error.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_unset_active_channel ()">
 <a name="gimp-image-unset-active-channel"></a><h3>gimp_image_unset_active_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2634,7 +2634,7 @@ existing active channel.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_selection ()">
 <a name="gimp-image-get-selection"></a><h3>gimp_image_get_selection ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -2666,7 +2666,7 @@ represented as a channel internally.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_component_active ()">
 <a name="gimp-image-get-component-active"></a><h3>gimp_image_get_component_active ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2708,7 +2708,7 @@ component is not valid for the image type, an error is returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_component_active ()">
 <a name="gimp-image-set-component-active"></a><h3>gimp_image_set_component_active ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2758,7 +2758,7 @@ component is not valid for the image type, an error is returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_component_visible ()">
 <a name="gimp-image-get-component-visible"></a><h3>gimp_image_get_component_visible ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2801,7 +2801,7 @@ returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_component_visible ()">
 <a name="gimp-image-set-component-visible"></a><h3>gimp_image_set_component_visible ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2851,7 +2851,7 @@ component is not valid for the image type, an error is returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_filename ()">
 <a name="gimp-image-get-filename"></a><h3>gimp_image_get_filename ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -2886,7 +2886,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_filename ()">
 <a name="gimp-image-set-filename"></a><h3>gimp_image_set_filename ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2926,7 +2926,7 @@ should be in the filesystem encoding.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_name ()">
 <a name="gimp-image-get-name"></a><h3>gimp_image_get_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -2957,7 +2957,7 @@ This procedure returns the specified image's name.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_resolution ()">
 <a name="gimp-image-get-resolution"></a><h3>gimp_image_get_resolution ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3005,7 +3005,7 @@ inch. This value is independent of any of the layers in this image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_resolution ()">
 <a name="gimp-image-set-resolution"></a><h3>gimp_image_set_resolution ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3054,7 +3054,7 @@ No scaling or resizing is performed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_unit ()">
 <a name="gimp-image-get-unit"></a><h3>gimp_image_get_unit ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
@@ -3088,7 +3088,7 @@ and a description of the unit system.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_unit ()">
 <a name="gimp-image-set-unit"></a><h3>gimp_image_set_unit ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3131,7 +3131,7 @@ system.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_tattoo_state ()">
 <a name="gimp-image-set-tattoo-state"></a><h3>gimp_image_set_tattoo_state ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3181,7 +3181,7 @@ that all is OK.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_tattoo_state ()">
 <a name="gimp-image-get-tattoo-state"></a><h3>gimp_image_get_tattoo_state ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -3214,7 +3214,7 @@ Using this function at other times will produce unexpected results.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_layer_by_tattoo ()">
 <a name="gimp-image-get-layer-by-tattoo"></a><h3>gimp_image_get_layer_by_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -3254,7 +3254,7 @@ specified image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_channel_by_tattoo ()">
 <a name="gimp-image-get-channel-by-tattoo"></a><h3>gimp_image_get_channel_by_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -3294,7 +3294,7 @@ specified image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_cmap ()">
 <a name="gimp-image-get-cmap"></a><h3>gimp_image_get_cmap ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
@@ -3304,7 +3304,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> *num_colors);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_image_get_cmap</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -3334,7 +3334,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpimage.html#g
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_cmap ()">
 <a name="gimp-image-set-cmap"></a><h3>gimp_image_set_cmap ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3347,7 +3347,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_colors);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_image_set_cmap</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -3382,7 +3382,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpimage.html#g
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_colormap ()">
 <a name="gimp-image-get-colormap"></a><h3>gimp_image_get_colormap ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
@@ -3423,7 +3423,7 @@ is not of base type INDEXED, this pointer will be NULL.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_colormap ()">
 <a name="gimp-image-set-colormap"></a><h3>gimp_image_set_colormap ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3473,7 +3473,7 @@ in the \"cmap\" array.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_vectors ()">
 <a name="gimp-image-get-vectors"></a><h3>gimp_image_get_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -3515,7 +3515,7 @@ specified image.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_vectors_by_tattoo ()">
 <a name="gimp-image-get-vectors-by-tattoo"></a><h3>gimp_image_get_vectors_by_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -3557,7 +3557,7 @@ specified image.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_thumbnail_data ()">
 <a name="gimp-image-get-thumbnail-data"></a><h3>gimp_image_get_thumbnail_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
@@ -3607,7 +3607,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_parasite_find ()">
 <a name="gimp-image-parasite-find"></a><h3>gimp_image_parasite_find ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
@@ -3647,7 +3647,7 @@ image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_parasite_list ()">
 <a name="gimp-image-parasite-list"></a><h3>gimp_image_parasite_list ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3694,7 +3694,7 @@ Returns a list of all currently attached parasites.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_parasite_attach ()">
 <a name="gimp-image-parasite-attach"></a><h3>gimp_image_parasite_attach ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3734,7 +3734,7 @@ values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_parasite_detach ()">
 <a name="gimp-image-parasite-detach"></a><h3>gimp_image_parasite_detach ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3774,7 +3774,7 @@ values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_attach_new_parasite ()">
 <a name="gimp-image-attach-new-parasite"></a><h3>gimp_image_attach_new_parasite ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3846,7 +3846,7 @@ See Also: <a class="link" href="libgimp-gimpimage.html#gimp-image-parasite-attac
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_add_vectors ()">
 <a name="gimp-image-add-vectors"></a><h3>gimp_image_add_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3895,7 +3895,7 @@ object is inserted at the top of the vectors stack.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_remove_vectors ()">
 <a name="gimp-image-remove-vectors"></a><h3>gimp_image_remove_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -3937,7 +3937,7 @@ path doesn't exist, an error is returned.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_active_vectors ()">
 <a name="gimp-image-get-active-vectors"></a><h3>gimp_image_get_active_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -3968,7 +3968,7 @@ If there is an active path, its ID will be returned, otherwise, -1.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_set_active_vectors ()">
 <a name="gimp-image-set-active-vectors"></a><h3>gimp_image_set_active_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -4007,7 +4007,7 @@ If the path exists, it is set as the active path in the image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_lower_vectors ()">
 <a name="gimp-image-lower-vectors"></a><h3>gimp_image_lower_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -4050,7 +4050,7 @@ below it.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_raise_vectors ()">
 <a name="gimp-image-raise-vectors"></a><h3>gimp_image_raise_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -4093,7 +4093,7 @@ above it.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_lower_vectors_to_bottom ()">
 <a name="gimp-image-lower-vectors-to-bottom"></a><h3>gimp_image_lower_vectors_to_bottom ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -4137,7 +4137,7 @@ vectors below it.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_raise_vectors_to_top ()">
 <a name="gimp-image-raise-vectors-to-top"></a><h3>gimp_image_raise_vectors_to_top ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -4181,7 +4181,7 @@ above it.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_image_get_vectors_position ()">
 <a name="gimp-image-get-vectors-position"></a><h3>gimp_image_get_vectors_position ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"

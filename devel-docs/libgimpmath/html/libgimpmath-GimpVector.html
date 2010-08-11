@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpVector</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
 <link rel="next" href="libgimpmath-GimpMD5.html" title="GimpMD5">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="index" href="libgimpmath-index.html" title="Index">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Math Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpmath-GimpMD5.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpmath-GimpVector.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpmath-GimpVector.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpmath-GimpVector.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpmath-GimpVector.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpVector">
 <a name="libgimpmath-GimpVector"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,7 +41,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpmath-GimpVector.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>;
@@ -247,16 +249,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *p);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpmath-GimpVector.description"></a><h2>Description</h2>
 <p>
 Utilities to set up and manipulate vectors.
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpmath-GimpVector.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpVector2">
 <a name="GimpVector2"></a><h3>GimpVector2</h3>
 <pre class="programlisting">typedef struct {
   gdouble x, y;
@@ -267,7 +268,7 @@ A two dimensional vector.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpVector3">
 <a name="GimpVector3"></a><h3>GimpVector3</h3>
 <pre class="programlisting">typedef struct {
   gdouble x, y, z;
@@ -278,7 +279,7 @@ A three dimensional vector.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpVector4">
 <a name="GimpVector4"></a><h3>GimpVector4</h3>
 <pre class="programlisting">typedef struct {
   gdouble x, y, z, w;
@@ -289,7 +290,7 @@ A four dimensional vector.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_new ()">
 <a name="gimp-vector2-new"></a><h3>gimp_vector2_new ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_new                    (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -300,7 +301,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2"><span class="type">GimpVector2</span></a> of coordinates <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -324,7 +324,7 @@ Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_set ()">
 <a name="gimp-vector2-set"></a><h3>gimp_vector2_set ()</h3>
 <pre class="programlisting">void                gimp_vector2_set                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
                                                          <a
@@ -336,7 +336,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> to <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -360,7 +359,7 @@ Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> t
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_length ()">
 <a name="gimp-vector2-length"></a><h3>gimp_vector2_length ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -368,7 +367,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Computes the length of a 2D vector.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -387,7 +385,7 @@ Computes the length of a 2D vector.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_length_val ()">
 <a name="gimp-vector2-length-val"></a><h3>gimp_vector2_length_val ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -396,7 +394,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length" title="gimp_vector2_length ()"><code class="function">gimp_vector2_length()</code></a> but the
 vector is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -415,7 +412,7 @@ vector is passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_mul ()">
 <a name="gimp-vector2-mul"></a><h3>gimp_vector2_mul ()</h3>
 <pre class="programlisting">void                gimp_vector2_mul                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
                                                          <a
@@ -425,7 +422,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that this
 is equivalent to multiplying the vectors length by <em class="parameter"><code>factor</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -444,7 +440,7 @@ is equivalent to multiplying the vectors length by <em class="parameter"><code>f
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_mul_val ()">
 <a name="gimp-vector2-mul-val"></a><h3>gimp_vector2_mul_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_mul_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector,
                                                          <a
@@ -454,7 +450,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-mul" title="gimp_vector2_mul ()"><code class="function">gimp_vector2_mul()</code></a> but the vector is
 passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -478,14 +473,13 @@ passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_normalize ()">
 <a name="gimp-vector2-normalize"></a><h3>gimp_vector2_normalize ()</h3>
 <pre class="programlisting">void                gimp_vector2_normalize              (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);</pre>
 <p>
 Normalizes the <em class="parameter"><code>vector</code></em> so the length of the <em class="parameter"><code>vector</code></em> is 1.0. The nul
 vector will not be changed.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -497,14 +491,13 @@ vector will not be changed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_normalize_val ()">
 <a name="gimp-vector2-normalize-val"></a><h3>gimp_vector2_normalize_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_normalize_val          (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-normalize" title="gimp_vector2_normalize ()"><code class="function">gimp_vector2_normalize()</code></a> but the
 vector is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -524,13 +517,12 @@ direction but with a length of 1.0.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_neg ()">
 <a name="gimp-vector2-neg"></a><h3>gimp_vector2_neg ()</h3>
 <pre class="programlisting">void                gimp_vector2_neg                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);</pre>
 <p>
 Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its coordinates).</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -542,14 +534,13 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_neg_val ()">
 <a name="gimp-vector2-neg-val"></a><h3>gimp_vector2_neg_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_neg_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-neg" title="gimp_vector2_neg ()"><code class="function">gimp_vector2_neg()</code></a> but the vector
 is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -568,7 +559,7 @@ is passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_add ()">
 <a name="gimp-vector2-add"></a><h3>gimp_vector2_add ()</h3>
 <pre class="programlisting">void                gimp_vector2_add                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *result,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
@@ -577,7 +568,6 @@ is passed by value rather than by reference.</p>
 Computes the sum of two 2D vectors. The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2"><span class="type">GimpVector2</span></a> is
 stored in <em class="parameter"><code>result</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -601,7 +591,7 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_add_val ()">
 <a name="gimp-vector2-add-val"></a><h3>gimp_vector2_add_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_add_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);</pre>
@@ -609,7 +599,6 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-add" title="gimp_vector2_add ()"><code class="function">gimp_vector2_add()</code></a> but the vectors
 are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -633,7 +622,7 @@ are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_sub ()">
 <a name="gimp-vector2-sub"></a><h3>gimp_vector2_sub ()</h3>
 <pre class="programlisting">void                gimp_vector2_sub                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *result,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
@@ -642,7 +631,6 @@ are passed by value rather than by reference.</p>
 Computes the difference of two 2D vectors (<em class="parameter"><code>vector1</code></em> minus <em class="parameter"><code>vector2</code></em>).
 The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2"><span class="type">GimpVector2</span></a> is stored in <em class="parameter"><code>result</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -666,7 +654,7 @@ The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" tit
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_sub_val ()">
 <a name="gimp-vector2-sub-val"></a><h3>gimp_vector2_sub_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_sub_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);</pre>
@@ -674,7 +662,6 @@ The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" tit
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-sub" title="gimp_vector2_sub ()"><code class="function">gimp_vector2_sub()</code></a> but the vectors
 are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -698,7 +685,7 @@ are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_inner_product ()">
 <a name="gimp-vector2-inner-product"></a><h3>gimp_vector2_inner_product ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -708,7 +695,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 Computes the inner (dot) product of two 2D vectors.
 This product is zero if and only if the two vectors are orthognal.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -732,7 +718,7 @@ This product is zero if and only if the two vectors are orthognal.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_inner_product_val ()">
 <a name="gimp-vector2-inner-product-val"></a><h3>gimp_vector2_inner_product_val ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -742,7 +728,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product" title="gimp_vector2_inner_product ()"><code class="function">gimp_vector2_inner_product()</code></a> but the
 vectors are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -766,7 +751,7 @@ vectors are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_cross_product ()">
 <a name="gimp-vector2-cross-product"></a><h3>gimp_vector2_cross_product ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_cross_product          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector2);</pre>
@@ -780,7 +765,6 @@ vector.
 Note that in 2D, this function is useful to test if two vectors are
 parallel or not, or to compute the area spawned by two vectors.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -804,7 +788,7 @@ parallel or not, or to compute the area spawned by two vectors.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_cross_product_val ()">
 <a name="gimp-vector2-cross-product-val"></a><h3>gimp_vector2_cross_product_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_cross_product_val      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);</pre>
@@ -812,7 +796,6 @@ parallel or not, or to compute the area spawned by two vectors.</p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-cross-product" title="gimp_vector2_cross_product ()"><code class="function">gimp_vector2_cross_product()</code></a> but the
 vectors are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -836,7 +819,7 @@ vectors are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_rotate ()">
 <a name="gimp-vector2-rotate"></a><h3>gimp_vector2_rotate ()</h3>
 <pre class="programlisting">void                gimp_vector2_rotate                 (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
                                                          <a
@@ -845,7 +828,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <em class="parameter"><code>alpha</code></em> radians.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -864,7 +846,7 @@ Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector2_rotate_val ()">
 <a name="gimp-vector2-rotate-val"></a><h3>gimp_vector2_rotate_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_rotate_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector,
                                                          <a
@@ -874,7 +856,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-rotate" title="gimp_vector2_rotate ()"><code class="function">gimp_vector2_rotate()</code></a> but the vector
 is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -899,7 +880,7 @@ radians.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_new ()">
 <a name="gimp-vector3-new"></a><h3>gimp_vector3_new ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_new                    (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -913,7 +894,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3"><span class="type">GimpVector3</span></a> of coordinate <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -942,7 +922,7 @@ Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_set ()">
 <a name="gimp-vector3-set"></a><h3>gimp_vector3_set ()</h3>
 <pre class="programlisting">void                gimp_vector3_set                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
                                                          <a
@@ -957,7 +937,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em> to <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -986,7 +965,7 @@ Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_length ()">
 <a name="gimp-vector3-length"></a><h3>gimp_vector3_length ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -994,7 +973,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>
 Computes the length of a 3D vector.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1013,7 +991,7 @@ Computes the length of a 3D vector.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_length_val ()">
 <a name="gimp-vector3-length-val"></a><h3>gimp_vector3_length_val ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -1022,7 +1000,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length" title="gimp_vector3_length ()"><code class="function">gimp_vector3_length()</code></a> but the vector
 is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1041,7 +1018,7 @@ is passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_mul ()">
 <a name="gimp-vector3-mul"></a><h3>gimp_vector3_mul ()</h3>
 <pre class="programlisting">void                gimp_vector3_mul                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
                                                          <a
@@ -1051,7 +1028,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that
 this is equivalent to multiplying the vectors length by <em class="parameter"><code>factor</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1070,7 +1046,7 @@ this is equivalent to multiplying the vectors length by <em class="parameter"><c
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_mul_val ()">
 <a name="gimp-vector3-mul-val"></a><h3>gimp_vector3_mul_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_mul_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector,
                                                          <a
@@ -1080,7 +1056,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-mul" title="gimp_vector3_mul ()"><code class="function">gimp_vector3_mul()</code></a> but the vector is
 passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1104,14 +1079,13 @@ passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_normalize ()">
 <a name="gimp-vector3-normalize"></a><h3>gimp_vector3_normalize ()</h3>
 <pre class="programlisting">void                gimp_vector3_normalize              (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);</pre>
 <p>
 Normalizes the <em class="parameter"><code>vector</code></em> so the length of the <em class="parameter"><code>vector</code></em> is 1.0. The nul
 vector will not be changed.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1123,14 +1097,13 @@ vector will not be changed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_normalize_val ()">
 <a name="gimp-vector3-normalize-val"></a><h3>gimp_vector3_normalize_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_normalize_val          (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-normalize" title="gimp_vector3_normalize ()"><code class="function">gimp_vector3_normalize()</code></a> but the
 vector is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1150,13 +1123,12 @@ direction but with a length of 1.0.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_neg ()">
 <a name="gimp-vector3-neg"></a><h3>gimp_vector3_neg ()</h3>
 <pre class="programlisting">void                gimp_vector3_neg                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);</pre>
 <p>
 Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its coordinates).</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1168,14 +1140,13 @@ Negates the <em class="parameter"><code>vector</code></em> (i.e. negate all its 
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_neg_val ()">
 <a name="gimp-vector3-neg-val"></a><h3>gimp_vector3_neg_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_neg_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-neg" title="gimp_vector3_neg ()"><code class="function">gimp_vector3_neg()</code></a> but the vector
 is passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1194,7 +1165,7 @@ is passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_add ()">
 <a name="gimp-vector3-add"></a><h3>gimp_vector3_add ()</h3>
 <pre class="programlisting">void                gimp_vector3_add                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *result,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
@@ -1203,7 +1174,6 @@ is passed by value rather than by reference.</p>
 Computes the sum of two 3D vectors. The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3"><span class="type">GimpVector3</span></a> is
 stored in <em class="parameter"><code>result</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1227,7 +1197,7 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_add_val ()">
 <a name="gimp-vector3-add-val"></a><h3>gimp_vector3_add_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_add_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);</pre>
@@ -1235,7 +1205,6 @@ stored in <em class="parameter"><code>result</code></em>.</p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-add" title="gimp_vector3_add ()"><code class="function">gimp_vector3_add()</code></a> but the vectors
 are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1259,7 +1228,7 @@ are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_sub ()">
 <a name="gimp-vector3-sub"></a><h3>gimp_vector3_sub ()</h3>
 <pre class="programlisting">void                gimp_vector3_sub                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *result,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
@@ -1268,7 +1237,6 @@ are passed by value rather than by reference.</p>
 Computes the difference of two 3D vectors (<em class="parameter"><code>vector1</code></em> minus <em class="parameter"><code>vector2</code></em>).
 The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3"><span class="type">GimpVector3</span></a> is stored in <em class="parameter"><code>result</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1292,7 +1260,7 @@ The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" tit
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_sub_val ()">
 <a name="gimp-vector3-sub-val"></a><h3>gimp_vector3_sub_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_sub_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);</pre>
@@ -1300,7 +1268,6 @@ The resulting <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" tit
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-sub" title="gimp_vector3_sub ()"><code class="function">gimp_vector3_sub()</code></a> but the vectors
 are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1324,7 +1291,7 @@ are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_inner_product ()">
 <a name="gimp-vector3-inner-product"></a><h3>gimp_vector3_inner_product ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -1334,7 +1301,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 Computes the inner (dot) product of two 3D vectors. This product
 is zero if and only if the two vectors are orthognal.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1358,7 +1324,7 @@ is zero if and only if the two vectors are orthognal.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_inner_product_val ()">
 <a name="gimp-vector3-inner-product-val"></a><h3>gimp_vector3_inner_product_val ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -1368,7 +1334,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product" title="gimp_vector3_inner_product ()"><code class="function">gimp_vector3_inner_product()</code></a> but the
 vectors are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1392,7 +1357,7 @@ vectors are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_cross_product ()">
 <a name="gimp-vector3-cross-product"></a><h3>gimp_vector3_cross_product ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_cross_product          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector2);</pre>
@@ -1406,7 +1371,6 @@ vector.
 This function can be used to compute the normal of the plane
 defined by <em class="parameter"><code>vector1</code></em> and <em class="parameter"><code>vector2</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1430,7 +1394,7 @@ defined by <em class="parameter"><code>vector1</code></em> and <em class="parame
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_cross_product_val ()">
 <a name="gimp-vector3-cross-product-val"></a><h3>gimp_vector3_cross_product_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_cross_product_val      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);</pre>
@@ -1438,7 +1402,6 @@ defined by <em class="parameter"><code>vector1</code></em> and <em class="parame
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-cross-product" title="gimp_vector3_cross_product ()"><code class="function">gimp_vector3_cross_product()</code></a> but the
 vectors are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1462,7 +1425,7 @@ vectors are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_rotate ()">
 <a name="gimp-vector3-rotate"></a><h3>gimp_vector3_rotate ()</h3>
 <pre class="programlisting">void                gimp_vector3_rotate                 (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
                                                          <a
@@ -1484,7 +1447,6 @@ expect a vector to be rotated around X, and then around Y, you will
 have to call this function twice. Also, it is often wise to call
 this function with only one of <em class="parameter"><code>alpha</code></em>, <em class="parameter"><code>beta</code></em> and <em class="parameter"><code>gamma</code></em> non-zero.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1513,7 +1475,7 @@ this function with only one of <em class="parameter"><code>alpha</code></em>, <e
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector3_rotate_val ()">
 <a name="gimp-vector3-rotate-val"></a><h3>gimp_vector3_rotate_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_rotate_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector,
                                                          <a
@@ -1529,7 +1491,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-rotate" title="gimp_vector3_rotate ()"><code class="function">gimp_vector3_rotate()</code></a> but the vectors
 are passed by value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1563,7 +1524,7 @@ are passed by value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector_2d_to_3d ()">
 <a name="gimp-vector-2d-to-3d"></a><h3>gimp_vector_2d_to_3d ()</h3>
 <pre class="programlisting">void                gimp_vector_2d_to_3d                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1595,7 +1556,6 @@ In other words, this computes the projection of the point (<em class="parameter"
 to the plane z = <em class="parameter"><code>p-&gt;z</code></em> (parallel to XY), from the <em class="parameter"><code>vp</code></em> point of view
 through the screen (<em class="parameter"><code>sx</code></em>, <em class="parameter"><code>sy</code></em>)-&gt;(<em class="parameter"><code>sx</code></em> + <em class="parameter"><code>w</code></em>, <em class="parameter"><code>sy</code></em> + <em class="parameter"><code>h</code></em>)</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1644,7 +1604,7 @@ through the screen (<em class="parameter"><code>sx</code></em>, <em class="param
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector_2d_to_3d_val ()">
 <a name="gimp-vector-2d-to-3d-val"></a><h3>gimp_vector_2d_to_3d_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector_2d_to_3d_val            (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1671,7 +1631,6 @@ This function is identical to <a class="link" href="libgimpmath-GimpVector.html#
 position of the <em class="parameter"><code>observer</code></em> and the resulting point <em class="parameter"><code>p</code></em> are passed by
 value rather than by reference.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1725,7 +1684,7 @@ value rather than by reference.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_vector_3d_to_2d ()">
 <a name="gimp-vector-3d-to-2d"></a><h3>gimp_vector_3d_to_2d ()</h3>
 <pre class="programlisting">void                gimp_vector_3d_to_2d                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1756,7 +1715,6 @@ observer is passed in vp.
 <p>
 This is basically the opposite of <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-2d-to-3d" title="gimp_vector_2d_to_3d ()"><code class="function">gimp_vector_2d_to_3d()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1805,7 +1763,7 @@ This is basically the opposite of <a class="link" href="libgimpmath-GimpVector.h
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libgimpmath-GimpVector.see-also"></a><h2>See Also</h2>
 <p>
 <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a>
@@ -1817,6 +1775,6 @@ This is basically the opposite of <a class="link" href="libgimpmath-GimpVector.h
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

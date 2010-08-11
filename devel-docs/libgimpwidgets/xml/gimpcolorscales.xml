@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpColorScales</refname>
 <refpurpose>A <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link> implementation.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="GimpColorScales.synopsis" role="synopsis">
@@ -36,7 +35,6 @@
                                        +----<link linkend="GimpColorSelector">GimpColorSelector</link>
                                              +----GimpColorScales
 </synopsis>
-
 </refsect1>
 
 
@@ -45,8 +43,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorScales implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
-
+ <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkOrientable">GtkOrientable</link>.</para>
 </refsect1>
 
 
@@ -66,9 +63,8 @@ HSV and RGB color channels.
 <title role="details.title">Details</title>
 <refsect2 id="GimpColorScales-struct" role="struct">
 <title>GimpColorScales</title>
-<indexterm zone="GimpColorScales-struct"><primary>GimpColorScales</primary></indexterm><programlisting>typedef struct _GimpColorScales GimpColorScales;</programlisting>
+<indexterm zone="GimpColorScales-struct"><primary sortas="GimpColorScales">GimpColorScales</primary></indexterm><programlisting>typedef struct _GimpColorScales GimpColorScales;</programlisting>
 <para>
-
 </para></refsect2>
 
 </refsect1>

@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpcolor</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpchannel.html" title="gimpchannel">
 <link rel="next" href="libgimp-gimpconvert.html" title="gimpconvert">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpcolor.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpcolor">
 <a name="libgimp-gimpcolor"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpcolor.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -242,15 +242,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> high_threshold);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpcolor.description"></a><h2>Description</h2>
 <p>
 Functions for manipulating color, including curves and histograms.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpcolor.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_brightness_contrast ()">
 <a name="gimp-brightness-contrast"></a><h3>gimp_brightness_contrast ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -299,7 +299,7 @@ are defined between -127 and 127.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_levels ()">
 <a name="gimp-levels"></a><h3>gimp_levels ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -387,14 +387,14 @@ grayscale images. It will not operate on indexed drawables.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_levels_auto ()">
 <a name="gimp-levels-auto"></a><h3>gimp_levels_auto ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_levels_auto                    (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_levels_auto</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -419,7 +419,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcolor.html#g
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_levels_stretch ()">
 <a name="gimp-levels-stretch"></a><h3>gimp_levels_stretch ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -454,7 +454,7 @@ not operate on indexed drawables.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_posterize ()">
 <a name="gimp-posterize"></a><h3>gimp_posterize ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -494,7 +494,7 @@ intensity channel to the specified 'levels' parameter.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_desaturate ()">
 <a name="gimp-desaturate"></a><h3>gimp_desaturate ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -526,7 +526,7 @@ This procedure only works on drawables of type RGB color.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_desaturate_full ()">
 <a name="gimp-desaturate-full"></a><h3>gimp_desaturate_full ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -570,7 +570,7 @@ of type RGB color.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_equalize ()">
 <a name="gimp-equalize"></a><h3>gimp_equalize ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -616,7 +616,7 @@ adjusted based on the histogram for the entire image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_invert ()">
 <a name="gimp-invert"></a><h3>gimp_invert ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -650,7 +650,7 @@ valid for this operation.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_curves_spline ()">
 <a name="gimp-curves-spline"></a><h3>gimp_curves_spline ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -709,7 +709,7 @@ to explicitly modify intensity levels.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_curves_explicit ()">
 <a name="gimp-curves-explicit"></a><h3>gimp_curves_explicit ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -768,7 +768,7 @@ Catmull Rom splines.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_balance ()">
 <a name="gimp-color-balance"></a><h3>gimp_color_balance ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -846,7 +846,7 @@ luminosity of each pixel remains fixed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_colorize ()">
 <a name="gimp-colorize"></a><h3>gimp_colorize ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -906,7 +906,7 @@ grayscale or indexed drawables.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_histogram ()">
 <a name="gimp-histogram"></a><h3>gimp_histogram ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1020,7 +1020,7 @@ pixels with transparent alpha values will not be counted.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_hue_saturation ()">
 <a name="gimp-hue-saturation"></a><h3>gimp_hue_saturation ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1083,7 +1083,7 @@ provides the capability to limit range of affected hues.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_threshold ()">
 <a name="gimp-threshold"></a><h3>gimp_threshold ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

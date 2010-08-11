@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpAdaptiveSupersample</refname>
 <refpurpose>Functions to perform adaptive supersampling on an area.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimpcolor-GimpAdaptiveSupersample.synopsis" role="synopsis">
@@ -65,79 +64,70 @@ Functions to perform adaptive supersampling on an area.
 <title role="details.title">Details</title>
 <refsect2 id="GimpProgressFunc" role="function">
 <title>GimpProgressFunc ()</title>
-<indexterm zone="GimpProgressFunc"><primary>GimpProgressFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpProgressFunc)                 (<link linkend="gint">gint</link> min,
+<indexterm zone="GimpProgressFunc"><primary sortas="GimpProgressFunc">GimpProgressFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpProgressFunc)                 (<link linkend="gint">gint</link> min,
                                                          <link linkend="gint">gint</link> max,
                                                          <link linkend="gint">gint</link> current,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>min</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>min</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>max</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>max</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>current</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>current</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="GimpPutPixelFunc" role="function">
 <title>GimpPutPixelFunc ()</title>
-<indexterm zone="GimpPutPixelFunc"><primary>GimpPutPixelFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpPutPixelFunc)                 (<link linkend="gint">gint</link> x,
+<indexterm zone="GimpPutPixelFunc"><primary sortas="GimpPutPixelFunc">GimpPutPixelFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpPutPixelFunc)                 (<link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y,
                                                          <link linkend="GimpRGB">GimpRGB</link> *color,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>x</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>y</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="GimpRenderFunc" role="function">
 <title>GimpRenderFunc ()</title>
-<indexterm zone="GimpRenderFunc"><primary>GimpRenderFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRenderFunc)                   (<link linkend="gdouble">gdouble</link> x,
+<indexterm zone="GimpRenderFunc"><primary sortas="GimpRenderFunc">GimpRenderFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRenderFunc)                   (<link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="GimpRGB">GimpRGB</link> *color,
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>x</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>y</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-adaptive-supersample-area" role="function">
 <title>gimp_adaptive_supersample_area ()</title>
-<indexterm zone="gimp-adaptive-supersample-area"><primary>gimp_adaptive_supersample_area</primary></indexterm><programlisting><link linkend="gulong">gulong</link>              gimp_adaptive_supersample_area      (<link linkend="gint">gint</link> x1,
+<indexterm zone="gimp-adaptive-supersample-area"><primary sortas="gimp_adaptive_supersample_area">gimp_adaptive_supersample_area</primary></indexterm><programlisting><link linkend="gulong">gulong</link>              gimp_adaptive_supersample_area      (<link linkend="gint">gint</link> x1,
                                                          <link linkend="gint">gint</link> y1,
                                                          <link linkend="gint">gint</link> x2,
                                                          <link linkend="gint">gint</link> y2,
@@ -150,47 +140,44 @@ Functions to perform adaptive supersampling on an area.
                                                          <link linkend="GimpProgressFunc">GimpProgressFunc</link> progress_func,
                                                          <link linkend="gpointer">gpointer</link> progress_data);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>x1</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>x1</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>y1</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>y1</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>x2</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>x2</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>y2</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>y2</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>max_depth</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>max_depth</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>threshold</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>threshold</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>render_func</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>render_func</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>render_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>render_data</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>put_pixel_func</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>put_pixel_func</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>put_pixel_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>put_pixel_data</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>progress_func</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>progress_func</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>progress_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>progress_data</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

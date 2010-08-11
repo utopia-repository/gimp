@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpconfig-error</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="prev" href="libgimpconfig-gimpconfig-serialize.html" title="gimpconfig-serialize">
 <link rel="next" href="libgimpconfig-gimpconfig-params.html" title="gimpconfig-params">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part I. GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-params.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpconfig-GimpConfigError.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpconfig-GimpConfigError.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpconfig-GimpConfigError.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpconfig-GimpConfigError.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpconfig-error">
 <a name="libgimpconfig-GimpConfigError"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,25 +41,24 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpconfig-GimpConfigError.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimpconfig-GimpConfigError.html#GimpConfigError" title="enum GimpConfigError">GimpConfigError</a>;
-#define             <a class="link" href="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS" title="GIMP_CONFIG_ERROR">GIMP_CONFIG_ERROR</a>
+#define             <a class="link" href="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR--CAPS" title="GIMP_CONFIG_ERROR">GIMP_CONFIG_ERROR</a>
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
 >GQuark</a>              <a class="link" href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark" title="gimp_config_error_quark ()">gimp_config_error_quark</a>             (void);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpconfig-GimpConfigError.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpconfig-GimpConfigError.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="enum GimpConfigError">
 <a name="GimpConfigError"></a><h3>enum GimpConfigError</h3>
 <pre class="programlisting">typedef enum
 {
@@ -69,28 +70,25 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
 } GimpConfigError;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-CONFIG-ERROR:CAPS"></a><h3>GIMP_CONFIG_ERROR</h3>
+<div class="refsect2" title="GIMP_CONFIG_ERROR">
+<a name="GIMP-CONFIG-ERROR--CAPS"></a><h3>GIMP_CONFIG_ERROR</h3>
 <pre class="programlisting">#define GIMP_CONFIG_ERROR (gimp_config_error_quark ())
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_config_error_quark ()">
 <a name="gimp-config-error-quark"></a><h3>gimp_config_error_quark ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
 >GQuark</a>              gimp_config_error_quark             (void);</pre>
 <p>
-This function is never called directly. Use <a class="link" href="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS" title="GIMP_CONFIG_ERROR"><code class="function">GIMP_CONFIG_ERROR()</code></a> instead.</p>
+This function is never called directly. Use <a class="link" href="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR--CAPS" title="GIMP_CONFIG_ERROR"><code class="function">GIMP_CONFIG_ERROR()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -103,13 +101,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

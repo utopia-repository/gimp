@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpfileops</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpedit.html" title="gimpedit">
 <link rel="next" href="libgimp-gimpfloatingsel.html" title="gimpfloatingsel">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpfileops.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpfileops">
 <a name="libgimp-gimpfileops"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpfileops.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -170,15 +170,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *thumb_proc);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpfileops.description"></a><h2>Description</h2>
 <p>
 File operations (load, save, etc.)
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpfileops.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_temp_name ()">
 <a name="gimp-temp-name"></a><h3>gimp_temp_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -210,7 +210,7 @@ user's gimprc.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_file_load ()">
 <a name="gimp-file-load"></a><h3>gimp_file_load ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -263,7 +263,7 @@ will not look like a URL.\"</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_file_load_layer ()">
 <a name="gimp-file-load-layer"></a><h3>gimp_file_load_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -314,7 +314,7 @@ needs to be added to the existing image with <a class="link" href="libgimp-gimpi
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_file_load_layers ()">
 <a name="gimp-file-load-layers"></a><h3>gimp_file_load_layers ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -373,7 +373,7 @@ needs to be added to the existing image with <a class="link" href="libgimp-gimpi
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_file_save ()">
 <a name="gimp-file-save"></a><h3>gimp_file_save ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -441,7 +441,7 @@ fetch a URL, and the full pathname will not look like a URL.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_file_save_thumbnail ()">
 <a name="gimp-file-save-thumbnail"></a><h3>gimp_file_save_thumbnail ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -485,7 +485,7 @@ explicitely save a thumbnail with a file.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_register_magic_load_handler ()">
 <a name="gimp-register-magic-load-handler"></a><h3>gimp_register_magic_load_handler ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -541,7 +541,7 @@ of a particular file format using magic file information.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_register_load_handler ()">
 <a name="gimp-register-load-handler"></a><h3>gimp_register_load_handler ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -589,7 +589,7 @@ of a particular file format.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_register_save_handler ()">
 <a name="gimp-register-save-handler"></a><h3>gimp_register_save_handler ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -637,7 +637,7 @@ in a particular file format.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_register_file_handler_mime ()">
 <a name="gimp-register-file-handler-mime"></a><h3>gimp_register_file_handler_mime ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -680,7 +680,7 @@ procedure.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_register_thumbnail_loader ()">
 <a name="gimp-register-thumbnail-loader"></a><h3>gimp_register_thumbnail_loader ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

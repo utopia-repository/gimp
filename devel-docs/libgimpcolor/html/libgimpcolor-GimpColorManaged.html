@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpColorManaged</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpColorSpace.html" title="GimpColorSpace">
 <link rel="next" href="libgimpcolor-GimpAdaptiveSupersample.html" title="GimpAdaptiveSupersample">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="index" href="libgimpcolor-index.html" title="Index">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpAdaptiveSupersample.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpcolor-GimpColorManaged.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpcolor-GimpColorManaged.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpcolor-GimpColorManaged.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpcolor-GimpColorManaged.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpColorManaged">
 <a name="libgimpcolor-GimpColorManaged"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,33 +41,35 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpcolor-GimpColorManaged.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a>;
                     <a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManagedInterface" title="GimpColorManagedInterface">GimpColorManagedInterface</a>;
-const guint8*       <a class="link" href="libgimpcolor-GimpColorManaged.html#gimp-color-managed-get-icc-profile" title="gimp_color_managed_get_icc_profile ()">gimp_color_managed_get_icc_profile</a>  (<a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a> *managed,
-                                                         gsize *len);
+const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
+>guint8</a> *      <a class="link" href="libgimpcolor-GimpColorManaged.html#gimp-color-managed-get-icc-profile" title="gimp_color_managed_get_icc_profile ()">gimp_color_managed_get_icc_profile</a>  (<a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a> *managed,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"
+>gsize</a> *len);
 void                <a class="link" href="libgimpcolor-GimpColorManaged.html#gimp-color-managed-profile-changed" title="gimp_color_managed_profile_changed ()">gimp_color_managed_profile_changed</a>  (<a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a> *managed);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpcolor-GimpColorManaged.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpcolor-GimpColorManaged.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpColorManaged">
 <a name="GimpColorManaged"></a><h3>GimpColorManaged</h3>
 <pre class="programlisting">typedef struct _GimpColorManaged GimpColorManaged;</pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpColorManagedInterface">
 <a name="GimpColorManagedInterface"></a><h3>GimpColorManagedInterface</h3>
 <pre class="programlisting">typedef struct {
   GTypeInterface  base_iface;
@@ -79,18 +83,20 @@ void                <a class="link" href="libgimpcolor-GimpColorManaged.html#gim
 } GimpColorManagedInterface;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_managed_get_icc_profile ()">
 <a name="gimp-color-managed-get-icc-profile"></a><h3>gimp_color_managed_get_icc_profile ()</h3>
-<pre class="programlisting">const guint8*       gimp_color_managed_get_icc_profile  (<a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a> *managed,
-                                                         gsize *len);</pre>
+<pre class="programlisting">const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
+>guint8</a> *      gimp_color_managed_get_icc_profile  (<a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a> *managed,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"
+>gsize</a> *len);</pre>
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -114,17 +120,15 @@ void                <a class="link" href="libgimpcolor-GimpColorManaged.html#gim
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_managed_profile_changed ()">
 <a name="gimp-color-managed-profile-changed"></a><h3>gimp_color_managed_profile_changed ()</h3>
 <pre class="programlisting">void                gimp_color_managed_profile_changed  (<a class="link" href="libgimpcolor-GimpColorManaged.html#GimpColorManaged" title="GimpColorManaged">GimpColorManaged</a> *managed);</pre>
 <p>
 Emits the "profile-changed" signal.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -134,13 +138,12 @@ Emits the "profile-changed" signal.</p>
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

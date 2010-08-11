@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>C</title>
+<indexentry><primaryie linkends="CLAMP0255--CAPS"><link linkend="CLAMP0255--CAPS">CLAMP0255</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="GimpMatrix2"><link linkend="GimpMatrix2">GimpMatrix2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpMatrix3"><link linkend="GimpMatrix3">GimpMatrix3</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpMatrix4"><link linkend="GimpMatrix4">GimpMatrix4</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpVector2"><link linkend="GimpVector2">GimpVector2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpVector3"><link linkend="GimpVector3">GimpVector3</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpVector4"><link linkend="GimpVector4">GimpVector4</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-deg-to-rad"><link linkend="gimp-deg-to-rad">gimp_deg_to_rad</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-IS-PARAM-SPEC-MATRIX2--CAPS"><link linkend="GIMP-IS-PARAM-SPEC-MATRIX2--CAPS">GIMP_IS_PARAM_SPEC_MATRIX2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix2-identity"><link linkend="gimp-matrix2-identity">gimp_matrix2_identity</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix2-mult"><link linkend="gimp-matrix2-mult">gimp_matrix2_mult</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-affine"><link linkend="gimp-matrix3-affine">gimp_matrix3_affine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-determinant"><link linkend="gimp-matrix3-determinant">gimp_matrix3_determinant</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-identity"><link linkend="gimp-matrix3-identity">gimp_matrix3_identity</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-invert"><link linkend="gimp-matrix3-invert">gimp_matrix3_invert</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-is-affine"><link linkend="gimp-matrix3-is-affine">gimp_matrix3_is_affine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-is-diagonal"><link linkend="gimp-matrix3-is-diagonal">gimp_matrix3_is_diagonal</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-is-identity"><link linkend="gimp-matrix3-is-identity">gimp_matrix3_is_identity</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-is-simple"><link linkend="gimp-matrix3-is-simple">gimp_matrix3_is_simple</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-mult"><link linkend="gimp-matrix3-mult">gimp_matrix3_mult</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-rotate"><link linkend="gimp-matrix3-rotate">gimp_matrix3_rotate</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-scale"><link linkend="gimp-matrix3-scale">gimp_matrix3_scale</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-transform-point"><link linkend="gimp-matrix3-transform-point">gimp_matrix3_transform_point</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-translate"><link linkend="gimp-matrix3-translate">gimp_matrix3_translate</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-xshear"><link linkend="gimp-matrix3-xshear">gimp_matrix3_xshear</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix3-yshear"><link linkend="gimp-matrix3-yshear">gimp_matrix3_yshear</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-matrix4-to-deg"><link linkend="gimp-matrix4-to-deg">gimp_matrix4_to_deg</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-md5-get-digest"><link linkend="gimp-md5-get-digest">gimp_md5_get_digest</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-param-spec-matrix2"><link linkend="gimp-param-spec-matrix2">gimp_param_spec_matrix2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rad-to-deg"><link linkend="gimp-rad-to-deg">gimp_rad_to_deg</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-TYPE-MATRIX2--CAPS"><link linkend="GIMP-TYPE-MATRIX2--CAPS">GIMP_TYPE_MATRIX2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-TYPE-PARAM-MATRIX2--CAPS"><link linkend="GIMP-TYPE-PARAM-MATRIX2--CAPS">GIMP_TYPE_PARAM_MATRIX2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-VALUE-HOLDS-MATRIX2--CAPS"><link linkend="GIMP-VALUE-HOLDS-MATRIX2--CAPS">GIMP_VALUE_HOLDS_MATRIX2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-add"><link linkend="gimp-vector2-add">gimp_vector2_add</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-add-val"><link linkend="gimp-vector2-add-val">gimp_vector2_add_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-cross-product"><link linkend="gimp-vector2-cross-product">gimp_vector2_cross_product</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-cross-product-val"><link linkend="gimp-vector2-cross-product-val">gimp_vector2_cross_product_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-inner-product"><link linkend="gimp-vector2-inner-product">gimp_vector2_inner_product</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-inner-product-val"><link linkend="gimp-vector2-inner-product-val">gimp_vector2_inner_product_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-length"><link linkend="gimp-vector2-length">gimp_vector2_length</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-length-val"><link linkend="gimp-vector2-length-val">gimp_vector2_length_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-mul"><link linkend="gimp-vector2-mul">gimp_vector2_mul</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-mul-val"><link linkend="gimp-vector2-mul-val">gimp_vector2_mul_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-neg"><link linkend="gimp-vector2-neg">gimp_vector2_neg</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-neg-val"><link linkend="gimp-vector2-neg-val">gimp_vector2_neg_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-new"><link linkend="gimp-vector2-new">gimp_vector2_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-normalize"><link linkend="gimp-vector2-normalize">gimp_vector2_normalize</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-normalize-val"><link linkend="gimp-vector2-normalize-val">gimp_vector2_normalize_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-rotate"><link linkend="gimp-vector2-rotate">gimp_vector2_rotate</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-rotate-val"><link linkend="gimp-vector2-rotate-val">gimp_vector2_rotate_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-set"><link linkend="gimp-vector2-set">gimp_vector2_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-sub"><link linkend="gimp-vector2-sub">gimp_vector2_sub</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector2-sub-val"><link linkend="gimp-vector2-sub-val">gimp_vector2_sub_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-add"><link linkend="gimp-vector3-add">gimp_vector3_add</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-add-val"><link linkend="gimp-vector3-add-val">gimp_vector3_add_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-cross-product"><link linkend="gimp-vector3-cross-product">gimp_vector3_cross_product</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-cross-product-val"><link linkend="gimp-vector3-cross-product-val">gimp_vector3_cross_product_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-inner-product"><link linkend="gimp-vector3-inner-product">gimp_vector3_inner_product</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-inner-product-val"><link linkend="gimp-vector3-inner-product-val">gimp_vector3_inner_product_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-length"><link linkend="gimp-vector3-length">gimp_vector3_length</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-length-val"><link linkend="gimp-vector3-length-val">gimp_vector3_length_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-mul"><link linkend="gimp-vector3-mul">gimp_vector3_mul</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-mul-val"><link linkend="gimp-vector3-mul-val">gimp_vector3_mul_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-neg"><link linkend="gimp-vector3-neg">gimp_vector3_neg</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-neg-val"><link linkend="gimp-vector3-neg-val">gimp_vector3_neg_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-new"><link linkend="gimp-vector3-new">gimp_vector3_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-normalize"><link linkend="gimp-vector3-normalize">gimp_vector3_normalize</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-normalize-val"><link linkend="gimp-vector3-normalize-val">gimp_vector3_normalize_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-rotate"><link linkend="gimp-vector3-rotate">gimp_vector3_rotate</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-rotate-val"><link linkend="gimp-vector3-rotate-val">gimp_vector3_rotate_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-set"><link linkend="gimp-vector3-set">gimp_vector3_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-sub"><link linkend="gimp-vector3-sub">gimp_vector3_sub</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector3-sub-val"><link linkend="gimp-vector3-sub-val">gimp_vector3_sub_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector-2d-to-3d"><link linkend="gimp-vector-2d-to-3d">gimp_vector_2d_to_3d</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector-2d-to-3d-val"><link linkend="gimp-vector-2d-to-3d-val">gimp_vector_2d_to_3d_val</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vector-3d-to-2d"><link linkend="gimp-vector-3d-to-2d">gimp_vector_3d_to_2d</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>M</title>
+<indexentry><primaryie linkends="MAX255--CAPS"><link linkend="MAX255--CAPS">MAX255</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>R</title>
+<indexentry><primaryie linkends="RINT--CAPS"><link linkend="RINT--CAPS">RINT</link></primaryie></indexentry>
+<indexentry><primaryie linkends="ROUND--CAPS"><link linkend="ROUND--CAPS">ROUND</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>S</title>
+<indexentry><primaryie linkends="SQR--CAPS"><link linkend="SQR--CAPS">SQR</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

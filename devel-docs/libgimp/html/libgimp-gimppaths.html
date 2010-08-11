@@ -48,53 +48,171 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimppaths.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-gchar**             <a class="link" href="libgimp-gimppaths.html#gimp-path-list" title="gimp_path_list ()">gimp_path_list</a>                      (gint32 image_ID,
-                                                         gint *num_paths);
-gint                <a class="link" href="libgimp-gimppaths.html#gimp-path-get-points" title="gimp_path_get_points ()">gimp_path_get_points</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint *path_closed,
-                                                         gint *num_path_point_details,
-                                                         gdouble **points_pairs);
-gchar*              <a class="link" href="libgimp-gimppaths.html#gimp-path-get-current" title="gimp_path_get_current ()">gimp_path_get_current</a>               (gint32 image_ID);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-current" title="gimp_path_set_current ()">gimp_path_set_current</a>               (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-points" title="gimp_path_set_points ()">gimp_path_set_points</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint ptype,
-                                                         gint num_path_points,
-                                                         const gdouble *points_pairs);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-stroke-current" title="gimp_path_stroke_current ()">gimp_path_stroke_current</a>            (gint32 image_ID);
-gint                <a class="link" href="libgimp-gimppaths.html#gimp-path-get-point-at-dist" title="gimp_path_get_point_at_dist ()">gimp_path_get_point_at_dist</a>         (gint32 image_ID,
-                                                         gdouble distance,
-                                                         gint *y_point,
-                                                         gdouble *slope);
-gint                <a class="link" href="libgimp-gimppaths.html#gimp-path-get-tattoo" title="gimp_path_get_tattoo ()">gimp_path_get_tattoo</a>                (gint32 image_ID,
-                                                         const gchar *name);
-gchar*              <a class="link" href="libgimp-gimppaths.html#gimp-get-path-by-tattoo" title="gimp_get_path_by_tattoo ()">gimp_get_path_by_tattoo</a>             (gint32 image_ID,
-                                                         gint tattoo);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-delete" title="gimp_path_delete ()">gimp_path_delete</a>                    (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-get-locked" title="gimp_path_get_locked ()">gimp_path_get_locked</a>                (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-locked" title="gimp_path_set_locked ()">gimp_path_set_locked</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gboolean locked);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-tattoo" title="gimp_path_set_tattoo ()">gimp_path_set_tattoo</a>                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint tattovalue);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-to-selection" title="gimp_path_to_selection ()">gimp_path_to_selection</a>              (gint32 image_ID,
-                                                         const gchar *name,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             <a class="link" href="libgimp-gimppaths.html#gimp-path-list" title="gimp_path_list ()">gimp_path_list</a>                      (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *num_paths);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimppaths.html#gimp-path-get-points" title="gimp_path_get_points ()">gimp_path_get_points</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *path_closed,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *num_path_point_details,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> **points_pairs);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimppaths.html#gimp-path-get-current" title="gimp_path_get_current ()">gimp_path_get_current</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-current" title="gimp_path_set_current ()">gimp_path_set_current</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-points" title="gimp_path_set_points ()">gimp_path_set_points</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> ptype,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> num_path_points,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *points_pairs);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-stroke-current" title="gimp_path_stroke_current ()">gimp_path_stroke_current</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimppaths.html#gimp-path-get-point-at-dist" title="gimp_path_get_point_at_dist ()">gimp_path_get_point_at_dist</a>         (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> distance,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *y_point,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *slope);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimppaths.html#gimp-path-get-tattoo" title="gimp_path_get_tattoo ()">gimp_path_get_tattoo</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimppaths.html#gimp-get-path-by-tattoo" title="gimp_get_path_by_tattoo ()">gimp_get_path_by_tattoo</a>             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> tattoo);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-delete" title="gimp_path_delete ()">gimp_path_delete</a>                    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-get-locked" title="gimp_path_get_locked ()">gimp_path_get_locked</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-locked" title="gimp_path_set_locked ()">gimp_path_set_locked</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> locked);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-set-tattoo" title="gimp_path_set_tattoo ()">gimp_path_set_tattoo</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> tattovalue);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-to-selection" title="gimp_path_to_selection ()">gimp_path_to_selection</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> op,
-                                                         gboolean antialias,
-                                                         gboolean feather,
-                                                         gdouble feather_radius_x,
-                                                         gdouble feather_radius_y);
-gboolean            <a class="link" href="libgimp-gimppaths.html#gimp-path-import" title="gimp_path_import ()">gimp_path_import</a>                    (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> antialias,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> feather,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_x,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_y);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppaths.html#gimp-path-import" title="gimp_path_import ()">gimp_path_import</a>                    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> merge,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> scale);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -107,8 +225,14 @@ Operations related to paths.
 <a name="libgimp-gimppaths.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-path-list"></a><h3>gimp_path_list ()</h3>
-<pre class="programlisting">gchar**             gimp_path_list                      (gint32 image_ID,
-                                                         gint *num_paths);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             gimp_path_list                      (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *num_paths);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_list</code> is deprecated and should not be used in newly-written code.</p>
@@ -142,11 +266,23 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpimage.html#g
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-get-points"></a><h3>gimp_path_get_points ()</h3>
-<pre class="programlisting">gint                gimp_path_get_points                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint *path_closed,
-                                                         gint *num_path_point_details,
-                                                         gdouble **points_pairs);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_path_get_points                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *path_closed,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *num_path_point_details,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> **points_pairs);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_points</code> is deprecated and should not be used in newly-written code.</p>
@@ -196,7 +332,11 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-get-current"></a><h3>gimp_path_get_current ()</h3>
-<pre class="programlisting">gchar*              gimp_path_get_current               (gint32 image_ID);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_path_get_current               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_current</code> is deprecated and should not be used in newly-written code.</p>
@@ -226,8 +366,14 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-set-current"></a><h3>gimp_path_set_current ()</h3>
-<pre class="programlisting">gboolean            gimp_path_set_current               (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_set_current               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_current</code> is deprecated and should not be used in newly-written code.</p>
@@ -262,11 +408,23 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-set-points"></a><h3>gimp_path_set_points ()</h3>
-<pre class="programlisting">gboolean            gimp_path_set_points                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint ptype,
-                                                         gint num_path_points,
-                                                         const gdouble *points_pairs);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_set_points                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> ptype,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> num_path_points,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *points_pairs);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_points</code> is deprecated and should not be used in newly-written code.</p>
@@ -316,7 +474,11 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-stroke-current"></a><h3>gimp_path_stroke_current ()</h3>
-<pre class="programlisting">gboolean            gimp_path_stroke_current            (gint32 image_ID);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_stroke_current            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_stroke_current</code> is deprecated and should not be used in newly-written code.</p>
@@ -346,10 +508,20 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-get-point-at-dist"></a><h3>gimp_path_get_point_at_dist ()</h3>
-<pre class="programlisting">gint                gimp_path_get_point_at_dist         (gint32 image_ID,
-                                                         gdouble distance,
-                                                         gint *y_point,
-                                                         gdouble *slope);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_path_get_point_at_dist         (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> distance,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *y_point,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *slope);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_point_at_dist</code> is deprecated and should not be used in newly-written code.</p>
@@ -394,8 +566,14 @@ This procedure is deprecated! Use
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-get-tattoo"></a><h3>gimp_path_get_tattoo ()</h3>
-<pre class="programlisting">gint                gimp_path_get_tattoo                (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_path_get_tattoo                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_tattoo</code> is deprecated and should not be used in newly-written code.</p>
@@ -429,8 +607,14 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-get-path-by-tattoo"></a><h3>gimp_get_path_by_tattoo ()</h3>
-<pre class="programlisting">gchar*              gimp_get_path_by_tattoo             (gint32 image_ID,
-                                                         gint tattoo);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_get_path_by_tattoo             (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> tattoo);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_get_path_by_tattoo</code> is deprecated and should not be used in newly-written code.</p>
@@ -465,8 +649,14 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-delete"></a><h3>gimp_path_delete ()</h3>
-<pre class="programlisting">gboolean            gimp_path_delete                    (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_delete                    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_delete</code> is deprecated and should not be used in newly-written code.</p>
@@ -501,8 +691,14 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-get-locked"></a><h3>gimp_path_get_locked ()</h3>
-<pre class="programlisting">gboolean            gimp_path_get_locked                (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_get_locked                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_locked</code> is deprecated and should not be used in newly-written code.</p>
@@ -536,9 +732,17 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-set-locked"></a><h3>gimp_path_set_locked ()</h3>
-<pre class="programlisting">gboolean            gimp_path_set_locked                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gboolean locked);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_set_locked                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> locked);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_locked</code> is deprecated and should not be used in newly-written code.</p>
@@ -577,9 +781,17 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-set-tattoo"></a><h3>gimp_path_set_tattoo ()</h3>
-<pre class="programlisting">gboolean            gimp_path_set_tattoo                (gint32 image_ID,
-                                                         const gchar *name,
-                                                         gint tattovalue);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_set_tattoo                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> tattovalue);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_set_tattoo</code> is deprecated and should not be used in newly-written code.</p>
@@ -618,15 +830,29 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpvectors.html
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-to-selection"></a><h3>gimp_path_to_selection ()</h3>
-<pre class="programlisting">gboolean            gimp_path_to_selection              (gint32 image_ID,
-                                                         const gchar *name,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_to_selection              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> op,
-                                                         gboolean antialias,
-                                                         gboolean feather,
-                                                         gdouble feather_radius_x,
-                                                         gdouble feather_radius_y);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> antialias,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> feather,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_x,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_y);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_to_selection</code> is deprecated and should not be used in newly-written code.</p>
@@ -686,10 +912,20 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-path-import"></a><h3>gimp_path_import ()</h3>
-<pre class="programlisting">gboolean            gimp_path_import                    (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_path_import                    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> merge,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> scale);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_import</code> is deprecated and should not be used in newly-written code.</p>

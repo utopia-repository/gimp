@@ -609,7 +609,7 @@ uninstall-am: uninstall-menudataDATA
 	ps ps-am uninstall uninstall-am uninstall-menudataDATA
 
 
-%.xml: %.xml.in $(srcdir)/menus.xsl dialogs-menuitems.xml
+%.xml: %.xml.in $(top_srcdir)/configure.in $(srcdir)/menus.xsl dialogs-menuitems.xml
 @HAVE_XSLTPROC_TRUE@	$(XSLTPROC) --xinclude $(DEBUG_MENU_PARAMS) $(srcdir)/menus.xsl $< > $(@) || rm -f $(@)
 @HAVE_XSLTPROC_FALSE@	@echo "*** xsltproc is required to build the menus XML files ***"; exit 1;
 

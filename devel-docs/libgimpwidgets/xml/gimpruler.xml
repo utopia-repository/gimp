@@ -72,6 +72,12 @@ GimpRuler implements
   &quot;<link linkend="GimpRuler--upper">upper</link>&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write
 </synopsis>
 </refsect1>
+<refsect1 id="GimpRuler.style-properties" role="style_properties">
+<title role="style_properties.title">Style Properties</title>
+<synopsis>
+  &quot;<link linkend="GimpRuler--font-scale">font-scale</link>&quot;               <link linkend="gdouble">gdouble</link>               : Read
+</synopsis>
+</refsect1>
 
 
 
@@ -252,6 +258,15 @@ See <link linkend="gimp-ruler-set-range"><function>gimp_ruler_set_range()</funct
 <refsect2 id="GimpRuler--upper"><title>The <literal>&quot;upper&quot;</literal> property</title>
 <indexterm zone="GimpRuler--upper"><primary>GimpRuler:upper</primary></indexterm><programlisting>  &quot;upper&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Upper limit of ruler.</para><para>Default value: 0</para>
+</refsect2>
+
+</refsect1>
+<refsect1 id="GimpRuler.style-property-details" role="style_properties_details">
+<title role="style_properties_details.title">Style Property Details</title>
+<refsect2 id="GimpRuler--font-scale"><title>The <literal>&quot;font-scale&quot;</literal> style property</title>
+<indexterm zone="GimpRuler--font-scale"><primary>GimpRuler:font-scale</primary></indexterm><programlisting>  &quot;font-scale&quot;               <link linkend="gdouble">gdouble</link>               : Read</programlisting>
+<para></para><para>Allowed values: &gt;= 0</para>
+<para>Default value: 0.833333</para>
 </refsect2>
 
 </refsect1>

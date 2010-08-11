@@ -327,6 +327,7 @@
     <function name="The &quot;position&quot; property" link="GimpRuler.html#GimpRuler--position"/>
     <function name="The &quot;unit&quot; property" link="GimpRuler.html#GimpRuler--unit"/>
     <function name="The &quot;upper&quot; property" link="GimpRuler.html#GimpRuler--upper"/>
+    <function name="The &quot;font-scale&quot; style property" link="GimpRuler.html#GimpRuler--font-scale"/>
     <function name="GimpScrolledPreview" link="GimpScrolledPreview.html#GimpScrolledPreview-struct"/>
     <function name="gimp_scrolled_preview_set_position ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-position"/>
     <function name="gimp_scrolled_preview_set_policy ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy"/>

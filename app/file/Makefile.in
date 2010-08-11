@@ -385,7 +385,6 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_LIBRARIES = libappfile.a
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-File\"
 
@@ -395,9 +394,9 @@ INCLUDES = \
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
-	$(GLIB_CFLAGS)		\
 	-I$(includedir)
 
+noinst_LIBRARIES = libappfile.a
 libappfile_a_SOURCES = \
 	file-open.c		\
 	file-open.h		\

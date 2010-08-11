@@ -475,6 +475,7 @@
 <ANCHOR id="GimpRuler.object-hierarchy" href="libgimpwidgets/GimpRuler.html#GimpRuler.object-hierarchy">
 <ANCHOR id="GimpRuler.implemented-interfaces" href="libgimpwidgets/GimpRuler.html#GimpRuler.implemented-interfaces">
 <ANCHOR id="GimpRuler.properties" href="libgimpwidgets/GimpRuler.html#GimpRuler.properties">
+<ANCHOR id="GimpRuler.style-properties" href="libgimpwidgets/GimpRuler.html#GimpRuler.style-properties">
 <ANCHOR id="GimpRuler.description" href="libgimpwidgets/GimpRuler.html#GimpRuler.description">
 <ANCHOR id="GimpRuler.details" href="libgimpwidgets/GimpRuler.html#GimpRuler.details">
 <ANCHOR id="GimpRuler-struct" href="libgimpwidgets/GimpRuler.html#GimpRuler-struct">
@@ -492,6 +493,8 @@
 <ANCHOR id="GimpRuler--position" href="libgimpwidgets/GimpRuler.html#GimpRuler--position">
 <ANCHOR id="GimpRuler--unit" href="libgimpwidgets/GimpRuler.html#GimpRuler--unit">
 <ANCHOR id="GimpRuler--upper" href="libgimpwidgets/GimpRuler.html#GimpRuler--upper">
+<ANCHOR id="GimpRuler.style-property-details" href="libgimpwidgets/GimpRuler.html#GimpRuler.style-property-details">
+<ANCHOR id="GimpRuler--font-scale" href="libgimpwidgets/GimpRuler.html#GimpRuler--font-scale">
 <ANCHOR id="GimpScrolledPreview" href="libgimpwidgets/GimpScrolledPreview.html">
 <ANCHOR id="GimpScrolledPreview.synopsis" href="libgimpwidgets/GimpScrolledPreview.html#GimpScrolledPreview.synopsis">
 <ANCHOR id="GimpScrolledPreview.object-hierarchy" href="libgimpwidgets/GimpScrolledPreview.html#GimpScrolledPreview.object-hierarchy">

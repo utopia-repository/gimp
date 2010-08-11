@@ -49,57 +49,117 @@
                     <a class="link" href="GimpThumbnail.html#GimpThumbnail-struct" title="GimpThumbnail">GimpThumbnail</a>;
 <a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a>*      <a class="link" href="GimpThumbnail.html#gimp-thumbnail-new" title="gimp_thumbnail_new ()">gimp_thumbnail_new</a>                  (void);
 void                <a class="link" href="GimpThumbnail.html#gimp-thumbnail-set-uri" title="gimp_thumbnail_set_uri ()">gimp_thumbnail_set_uri</a>              (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *uri);
-gboolean            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-set-filename" title="gimp_thumbnail_set_filename ()">gimp_thumbnail_set_filename</a>         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *filename,
-                                                         GError **error);
-gboolean            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-set-from-thumb" title="gimp_thumbnail_set_from_thumb ()">gimp_thumbnail_set_from_thumb</a>       (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *filename,
-                                                         GError **error);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-set-filename" title="gimp_thumbnail_set_filename ()">gimp_thumbnail_set_filename</a>         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-set-from-thumb" title="gimp_thumbnail_set_from_thumb ()">gimp_thumbnail_set_from_thumb</a>       (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
 <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbState" title="enum GimpThumbState">GimpThumbState</a>      <a class="link" href="GimpThumbnail.html#gimp-thumbnail-peek-image" title="gimp_thumbnail_peek_image ()">gimp_thumbnail_peek_image</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail);
 <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbState" title="enum GimpThumbState">GimpThumbState</a>      <a class="link" href="GimpThumbnail.html#gimp-thumbnail-peek-thumb" title="gimp_thumbnail_peek_thumb ()">gimp_thumbnail_peek_thumb</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
 <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbState" title="enum GimpThumbState">GimpThumbState</a>      <a class="link" href="GimpThumbnail.html#gimp-thumbnail-check-thumb" title="gimp_thumbnail_check_thumb ()">gimp_thumbnail_check_thumb</a>          (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
-GdkPixbuf*          <a class="link" href="GimpThumbnail.html#gimp-thumbnail-load-thumb" title="gimp_thumbnail_load_thumb ()">gimp_thumbnail_load_thumb</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+<a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*          <a class="link" href="GimpThumbnail.html#gimp-thumbnail-load-thumb" title="gimp_thumbnail_load_thumb ()">gimp_thumbnail_load_thumb</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size,
-                                                         GError **error);
-gboolean            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb" title="gimp_thumbnail_save_thumb ()">gimp_thumbnail_save_thumb</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         GdkPixbuf *pixbuf,
-                                                         const gchar *software,
-                                                         GError **error);
-gboolean            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb-local" title="gimp_thumbnail_save_thumb_local ()">gimp_thumbnail_save_thumb_local</a>     (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         GdkPixbuf *pixbuf,
-                                                         const gchar *software,
-                                                         GError **error);
-gboolean            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-failure" title="gimp_thumbnail_save_failure ()">gimp_thumbnail_save_failure</a>         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *software,
-                                                         GError **error);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb" title="gimp_thumbnail_save_thumb ()">gimp_thumbnail_save_thumb</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         <a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a> *pixbuf,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *software,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb-local" title="gimp_thumbnail_save_thumb_local ()">gimp_thumbnail_save_thumb_local</a>     (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         <a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a> *pixbuf,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *software,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-failure" title="gimp_thumbnail_save_failure ()">gimp_thumbnail_save_failure</a>         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *software,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
 void                <a class="link" href="GimpThumbnail.html#gimp-thumbnail-delete-failure" title="gimp_thumbnail_delete_failure ()">gimp_thumbnail_delete_failure</a>       (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail);
 void                <a class="link" href="GimpThumbnail.html#gimp-thumbnail-delete-others" title="gimp_thumbnail_delete_others ()">gimp_thumbnail_delete_others</a>        (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
-gboolean            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-has-failed" title="gimp_thumbnail_has_failed ()">gimp_thumbnail_has_failed</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpThumbnail.html#gimp-thumbnail-has-failed" title="gimp_thumbnail_has_failed ()">gimp_thumbnail_has_failed</a>           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpThumbnail.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
    +----GimpThumbnail
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpThumbnail.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-filesize" title='The "image-filesize" property'>image-filesize</a>"           gint64                : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-height" title='The "image-height" property'>image-height</a>"             gint                  : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-mimetype" title='The "image-mimetype" property'>image-mimetype</a>"           gchar*                : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-mtime" title='The "image-mtime" property'>image-mtime</a>"              gint64                : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-num-layers" title='The "image-num-layers" property'>image-num-layers</a>"         gint                  : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-filesize" title='The "image-filesize" property'>image-filesize</a>"           <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"
+>gint64</a>                : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-height" title='The "image-height" property'>image-height</a>"             <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-mimetype" title='The "image-mimetype" property'>image-mimetype</a>"           <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-mtime" title='The "image-mtime" property'>image-mtime</a>"              <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"
+>gint64</a>                : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-num-layers" title='The "image-num-layers" property'>image-num-layers</a>"         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write
   "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-state" title='The "image-state" property'>image-state</a>"              <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbState" title="enum GimpThumbState">GimpThumbState</a>        : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-type" title='The "image-type" property'>image-type</a>"               gchar*                : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-uri" title='The "image-uri" property'>image-uri</a>"                gchar*                : Read / Write
-  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-width" title='The "image-width" property'>image-width</a>"              gint                  : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-type" title='The "image-type" property'>image-type</a>"               <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-uri" title='The "image-uri" property'>image-uri</a>"                <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write
+  "<a class="link" href="GimpThumbnail.html#GimpThumbnail--image-width" title='The "image-width" property'>image-width</a>"              <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write
   "<a class="link" href="GimpThumbnail.html#GimpThumbnail--thumb-state" title='The "thumb-state" property'>thumb-state</a>"              <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbState" title="enum GimpThumbState">GimpThumbState</a>        : Read / Write
 </pre>
 </div>
@@ -141,7 +201,9 @@ Creates a new <a class="link" href="GimpThumbnail.html" title="GimpThumbnail"><s
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-set-uri"></a><h3>gimp_thumbnail_set_uri ()</h3>
 <pre class="programlisting">void                gimp_thumbnail_set_uri              (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *uri);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri);</pre>
 <p>
 Sets the location of the image file associated with the <span class="type">thumbnail</span>.
 </p>
@@ -169,9 +231,15 @@ All informations stored in the <a class="link" href="GimpThumbnail.html" title="
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-set-filename"></a><h3>gimp_thumbnail_set_filename ()</h3>
-<pre class="programlisting">gboolean            gimp_thumbnail_set_filename         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *filename,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumbnail_set_filename         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Sets the location of the image file associated with the <span class="type">thumbnail</span>.</p>
 <p>
@@ -197,8 +265,12 @@ Sets the location of the image file associated with the <span class="type">thumb
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if the filename was successfully set,
-              <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the filename was successfully set,
+              <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 </td>
 </tr>
 </tbody>
@@ -207,9 +279,15 @@ Sets the location of the image file associated with the <span class="type">thumb
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-set-from-thumb"></a><h3>gimp_thumbnail_set_from_thumb ()</h3>
-<pre class="programlisting">gboolean            gimp_thumbnail_set_from_thumb       (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *filename,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumbnail_set_from_thumb       (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 This function tries to load the thumbnail file pointed to by
 <em class="parameter"><code>filename</code></em> and retrieves the URI of the original image file from
@@ -242,7 +320,11 @@ directory that contain a valid Thumb::URI tag.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if the pixbuf could be loaded, <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the pixbuf could be loaded, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 </td>
 </tr>
 </tbody>
@@ -352,9 +434,13 @@ with the <em class="parameter"><code>thumbnail</code></em>.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-load-thumb"></a><h3>gimp_thumbnail_load_thumb ()</h3>
-<pre class="programlisting">GdkPixbuf*          gimp_thumbnail_load_thumb           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a>*          gimp_thumbnail_load_thumb           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size,
-                                                         GError **error);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Attempts to load a thumbnail preview for the image associated with
 <em class="parameter"><code>thumbnail</code></em>. Before you use this function you need need to set an
@@ -392,7 +478,9 @@ In order to verify if the preview is uptodate, you should check the
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a preview pixbuf or <code class="literal">NULL</code> if no thumbnail was found
+<td> a preview pixbuf or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if no thumbnail was found
 </td>
 </tr>
 </tbody>
@@ -401,10 +489,18 @@ In order to verify if the preview is uptodate, you should check the
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-save-thumb"></a><h3>gimp_thumbnail_save_thumb ()</h3>
-<pre class="programlisting">gboolean            gimp_thumbnail_save_thumb           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         GdkPixbuf *pixbuf,
-                                                         const gchar *software,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumbnail_save_thumb           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         <a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a> *pixbuf,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *software,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Saves a preview thumbnail for the image associated with <em class="parameter"><code>thumbnail</code></em>.
 to the global thumbnail repository.
@@ -433,7 +529,9 @@ set in order to be stored with the preview image.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pixbuf</code></em> :</span></p></td>
-<td> a <span class="type">GdkPixbuf</span> representing the preview thumbnail
+<td> a <a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+><span class="type">GdkPixbuf</span></a> representing the preview thumbnail
 </td>
 </tr>
 <tr>
@@ -448,8 +546,12 @@ set in order to be stored with the preview image.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if a thumbnail was successfully written,
-              <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if a thumbnail was successfully written,
+              <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 </td>
 </tr>
 </tbody>
@@ -458,10 +560,18 @@ set in order to be stored with the preview image.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-save-thumb-local"></a><h3>gimp_thumbnail_save_thumb_local ()</h3>
-<pre class="programlisting">gboolean            gimp_thumbnail_save_thumb_local     (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         GdkPixbuf *pixbuf,
-                                                         const gchar *software,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumbnail_save_thumb_local     (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         <a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+>GdkPixbuf</a> *pixbuf,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *software,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Saves a preview thumbnail for the image associated with <em class="parameter"><code>thumbnail</code></em>
 to the local thumbnail repository. Local thumbnails have been added
@@ -483,7 +593,9 @@ apply here as well.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pixbuf</code></em> :</span></p></td>
-<td> a <span class="type">GdkPixbuf</span> representing the preview thumbnail
+<td> a <a
+href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
+><span class="type">GdkPixbuf</span></a> representing the preview thumbnail
 </td>
 </tr>
 <tr>
@@ -498,8 +610,12 @@ apply here as well.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if a thumbnail was successfully written,
-              <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if a thumbnail was successfully written,
+              <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>
@@ -511,9 +627,15 @@ apply here as well.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-save-failure"></a><h3>gimp_thumbnail_save_failure ()</h3>
-<pre class="programlisting">gboolean            gimp_thumbnail_save_failure         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
-                                                         const gchar *software,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumbnail_save_failure         (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *software,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Saves a failure thumbnail for the image associated with
 <em class="parameter"><code>thumbnail</code></em>. This is an empty pixbuf that indicates that an attempt
@@ -542,8 +664,12 @@ prevent the software from further attempts to create this thumbnail.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if a failure thumbnail was successfully written,
-              <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if a failure thumbnail was successfully written,
+              <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 </td>
 </tr>
 </tbody>
@@ -605,7 +731,9 @@ delete thumbnails.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-thumbnail-has-failed"></a><h3>gimp_thumbnail_has_failed ()</h3>
-<pre class="programlisting">gboolean            gimp_thumbnail_has_failed           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumbnail_has_failed           (<a class="link" href="GimpThumbnail.html" title="GimpThumbnail">GimpThumbnail</a> *thumbnail);</pre>
 <p>
 Checks if a valid failure thumbnail for the given thumbnail exists
 in the global thumbnail repository. This may be the case even if
@@ -629,7 +757,9 @@ valid failure thumbnail exists.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if a failure thumbnail exists or
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if a failure thumbnail exists or
 
 </td>
 </tr>
@@ -643,7 +773,9 @@ valid failure thumbnail exists.</p>
 <a name="GimpThumbnail.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-filesize"></a><h3>The <code class="literal">"image-filesize"</code> property</h3>
-<pre class="programlisting">  "image-filesize"           gint64                : Read / Write</pre>
+<pre class="programlisting">  "image-filesize"           <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"
+>gint64</a>                : Read / Write</pre>
 <p>Size of the image file in bytes.</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
@@ -651,7 +783,9 @@ valid failure thumbnail exists.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-height"></a><h3>The <code class="literal">"image-height"</code> property</h3>
-<pre class="programlisting">  "image-height"             gint                  : Read / Write</pre>
+<pre class="programlisting">  "image-height"             <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write</pre>
 <p>Height of the image in pixels.</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
@@ -659,14 +793,18 @@ valid failure thumbnail exists.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-mimetype"></a><h3>The <code class="literal">"image-mimetype"</code> property</h3>
-<pre class="programlisting">  "image-mimetype"           gchar*                : Read / Write</pre>
+<pre class="programlisting">  "image-mimetype"           <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write</pre>
 <p>Image mimetype.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-mtime"></a><h3>The <code class="literal">"image-mtime"</code> property</h3>
-<pre class="programlisting">  "image-mtime"              gint64                : Read / Write</pre>
+<pre class="programlisting">  "image-mtime"              <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"
+>gint64</a>                : Read / Write</pre>
 <p>Modification time of the image file in seconds since the Epoch.</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
@@ -674,7 +812,9 @@ valid failure thumbnail exists.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-num-layers"></a><h3>The <code class="literal">"image-num-layers"</code> property</h3>
-<pre class="programlisting">  "image-num-layers"         gint                  : Read / Write</pre>
+<pre class="programlisting">  "image-num-layers"         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write</pre>
 <p>The number of layers in the image.</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
@@ -689,21 +829,27 @@ valid failure thumbnail exists.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-type"></a><h3>The <code class="literal">"image-type"</code> property</h3>
-<pre class="programlisting">  "image-type"               gchar*                : Read / Write</pre>
+<pre class="programlisting">  "image-type"               <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write</pre>
 <p>String describing the type of the image format.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-uri"></a><h3>The <code class="literal">"image-uri"</code> property</h3>
-<pre class="programlisting">  "image-uri"                gchar*                : Read / Write</pre>
+<pre class="programlisting">  "image-uri"                <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write</pre>
 <p>URI of the image file.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpThumbnail--image-width"></a><h3>The <code class="literal">"image-width"</code> property</h3>
-<pre class="programlisting">  "image-width"              gint                  : Read / Write</pre>
+<pre class="programlisting">  "image-width"              <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write</pre>
 <p>Width of the image in pixels.</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>

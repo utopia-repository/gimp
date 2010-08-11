@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpfonts.html" title="gimpfonts">
 <link rel="next" href="libgimp-gimpgradients.html" title="gimpgradients">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradients.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570078" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2579540" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2675261" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2676034" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradient"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2570078"></a><span class="refentrytitle">gimpgradient</span>
+<a name="id2579540"></a><span class="refentrytitle">gimpgradient</span>
 </h2>
 <p>gimpgradient &#8212; Functions operating on a single gradient.</p>
 </td>
@@ -49,151 +49,142 @@
 
 
 
-gchar*      <a href="libgimp-gimpgradient.html#gimp-gradient-new">gimp_gradient_new</a>               (const gchar *name);
-gchar*      <a href="libgimp-gimpgradient.html#gimp-gradient-duplicate">gimp_gradient_duplicate</a>         (const gchar *name);
-gchar*      <a href="libgimp-gimpgradient.html#gimp-gradient-rename">gimp_gradient_rename</a>            (const gchar *name,
-                                             const gchar *new_name);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-delete">gimp_gradient_delete</a>            (const gchar *name);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples">gimp_gradient_get_uniform_samples</a>
-                                            (const gchar *name,
-                                             gint num_samples,
-                                             gboolean reverse,
-                                             gint *num_color_samples,
-                                             gdouble **color_samples);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-get-custom-samples">gimp_gradient_get_custom_samples</a>
-                                            (const gchar *name,
-                                             gint num_samples,
-                                             const gdouble *positions,
-                                             gboolean reverse,
-                                             gint *num_color_samples,
-                                             gdouble **color_samples);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-color">gimp_gradient_segment_get_left_color</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a
+gchar*              <a href="libgimp-gimpgradient.html#gimp-gradient-new">gimp_gradient_new</a>                   (const gchar *name);
+gchar*              <a href="libgimp-gimpgradient.html#gimp-gradient-duplicate">gimp_gradient_duplicate</a>             (const gchar *name);
+gchar*              <a href="libgimp-gimpgradient.html#gimp-gradient-rename">gimp_gradient_rename</a>                (const gchar *name,
+                                                         const gchar *new_name);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-delete">gimp_gradient_delete</a>                (const gchar *name);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples">gimp_gradient_get_uniform_samples</a>   (const gchar *name,
+                                                         gint num_samples,
+                                                         gboolean reverse,
+                                                         gint *num_color_samples,
+                                                         gdouble **color_samples);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-get-custom-samples">gimp_gradient_get_custom_samples</a>    (const gchar *name,
+                                                         gint num_samples,
+                                                         const gdouble *positions,
+                                                         gboolean reverse,
+                                                         gint *num_color_samples,
+                                                         gdouble **color_samples);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-color">gimp_gradient_segment_get_left_color</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble *opacity);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-left-color">gimp_gradient_segment_set_left_color</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             const <a
+                                                         gdouble *opacity);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-left-color">gimp_gradient_segment_set_left_color</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble opacity);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-right-color">gimp_gradient_segment_get_right_color</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a
+                                                         gdouble opacity);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-right-color">gimp_gradient_segment_get_right_color</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble *opacity);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-right-color">gimp_gradient_segment_set_right_color</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             const <a
+                                                         gdouble *opacity);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-right-color">gimp_gradient_segment_set_right_color</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble opacity);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-pos">gimp_gradient_segment_get_left_pos</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble *pos);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-left-pos">gimp_gradient_segment_set_left_pos</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble pos,
-                                             gdouble *final_pos);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-middle-pos">gimp_gradient_segment_get_middle_pos</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble *pos);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-middle-pos">gimp_gradient_segment_set_middle_pos</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble pos,
-                                             gdouble *final_pos);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-right-pos">gimp_gradient_segment_get_right_pos</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble *pos);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-right-pos">gimp_gradient_segment_set_right_pos</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble pos,
-                                             gdouble *final_pos);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-blending-function">gimp_gradient_segment_get_blending_function</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> *blend_func);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-coloring-type">gimp_gradient_segment_get_coloring_type</a>
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> *coloring_type);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-set-blending-function">gimp_gradient_segment_range_set_blending_function</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> blending_function);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-set-coloring-type">gimp_gradient_segment_range_set_coloring_type</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> coloring_type);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-flip">gimp_gradient_segment_range_flip</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-replicate">gimp_gradient_segment_range_replicate</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             gint replicate_times);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-split-midpoint">gimp_gradient_segment_range_split_midpoint</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-split-uniform">gimp_gradient_segment_range_split_uniform</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             gint split_parts);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-delete">gimp_gradient_segment_range_delete</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-redistribute-handles">gimp_gradient_segment_range_redistribute_handles</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-blend-colors">gimp_gradient_segment_range_blend_colors</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);
-gboolean    <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-blend-opacity">gimp_gradient_segment_range_blend_opacity</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);
-gdouble     <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-move">gimp_gradient_segment_range_move</a>
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             gdouble delta,
-                                             gboolean control_compress);
+                                                         gdouble opacity);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-pos">gimp_gradient_segment_get_left_pos</a>  (const gchar *name,
+                                                         gint segment,
+                                                         gdouble *pos);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-left-pos">gimp_gradient_segment_set_left_pos</a>  (const gchar *name,
+                                                         gint segment,
+                                                         gdouble pos,
+                                                         gdouble *final_pos);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-middle-pos">gimp_gradient_segment_get_middle_pos</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         gdouble *pos);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-middle-pos">gimp_gradient_segment_set_middle_pos</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         gdouble pos,
+                                                         gdouble *final_pos);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-right-pos">gimp_gradient_segment_get_right_pos</a> (const gchar *name,
+                                                         gint segment,
+                                                         gdouble *pos);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-set-right-pos">gimp_gradient_segment_set_right_pos</a> (const gchar *name,
+                                                         gint segment,
+                                                         gdouble pos,
+                                                         gdouble *final_pos);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-blending-function">gimp_gradient_segment_get_blending_function</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> *blend_func);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-get-coloring-type">gimp_gradient_segment_get_coloring_type</a>
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> *coloring_type);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-set-blending-function">gimp_gradient_segment_range_set_blending_function</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> blending_function);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-set-coloring-type">gimp_gradient_segment_range_set_coloring_type</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> coloring_type);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-flip">gimp_gradient_segment_range_flip</a>    (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-replicate">gimp_gradient_segment_range_replicate</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         gint replicate_times);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-split-midpoint">gimp_gradient_segment_range_split_midpoint</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-split-uniform">gimp_gradient_segment_range_split_uniform</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         gint split_parts);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-delete">gimp_gradient_segment_range_delete</a>  (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-redistribute-handles">gimp_gradient_segment_range_redistribute_handles</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-blend-colors">gimp_gradient_segment_range_blend_colors</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);
+gboolean            <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-blend-opacity">gimp_gradient_segment_range_blend_opacity</a>
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);
+gdouble             <a href="libgimp-gimpgradient.html#gimp-gradient-segment-range-move">gimp_gradient_segment_range_move</a>    (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         gdouble delta,
+                                                         gboolean control_compress);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675261"></a><h2>Description</h2>
+<a name="id2676034"></a><h2>Description</h2>
 <p>
 Functions operating on a single gradient.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675275"></a><h2>Details</h2>
+<a name="id2676048"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2675284"></a><h3>
+<a name="id2676058"></a><h3>
 <a name="gimp-gradient-new"></a>gimp_gradient_new ()</h3>
-<a class="indexterm" name="id2675297"></a><pre class="programlisting">gchar*      gimp_gradient_new               (const gchar *name);</pre>
+<a class="indexterm" name="id2676071"></a><pre class="programlisting">gchar*              gimp_gradient_new                   (const gchar *name);</pre>
 <p>
 Creates a new gradient
 </p>
@@ -218,14 +209,14 @@ This procedure creates a new, uninitialized gradient</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2675365"></a><h3>
+<a name="id2676143"></a><h3>
 <a name="gimp-gradient-duplicate"></a>gimp_gradient_duplicate ()</h3>
-<a class="indexterm" name="id2675378"></a><pre class="programlisting">gchar*      gimp_gradient_duplicate         (const gchar *name);</pre>
+<a class="indexterm" name="id2676156"></a><pre class="programlisting">gchar*              gimp_gradient_duplicate             (const gchar *name);</pre>
 <p>
 Duplicates a gradient
 </p>
@@ -250,15 +241,15 @@ This procedure creates an identical gradient by a different name</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2675447"></a><h3>
+<a name="id2676227"></a><h3>
 <a name="gimp-gradient-rename"></a>gimp_gradient_rename ()</h3>
-<a class="indexterm" name="id2675461"></a><pre class="programlisting">gchar*      gimp_gradient_rename            (const gchar *name,
-                                             const gchar *new_name);</pre>
+<a class="indexterm" name="id2676241"></a><pre class="programlisting">gchar*              gimp_gradient_rename                (const gchar *name,
+                                                         const gchar *new_name);</pre>
 <p>
 Rename a gradient
 </p>
@@ -288,14 +279,14 @@ This procedure renames a gradient</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2675550"></a><h3>
+<a name="id2676333"></a><h3>
 <a name="gimp-gradient-delete"></a>gimp_gradient_delete ()</h3>
-<a class="indexterm" name="id2675564"></a><pre class="programlisting">gboolean    gimp_gradient_delete            (const gchar *name);</pre>
+<a class="indexterm" name="id2676347"></a><pre class="programlisting">gboolean            gimp_gradient_delete                (const gchar *name);</pre>
 <p>
 Deletes a gradient
 </p>
@@ -320,19 +311,18 @@ This procedure deletes a gradient</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2675632"></a><h3>
+<a name="id2676417"></a><h3>
 <a name="gimp-gradient-get-uniform-samples"></a>gimp_gradient_get_uniform_samples ()</h3>
-<a class="indexterm" name="id2675646"></a><pre class="programlisting">gboolean    gimp_gradient_get_uniform_samples
-                                            (const gchar *name,
-                                             gint num_samples,
-                                             gboolean reverse,
-                                             gint *num_color_samples,
-                                             gdouble **color_samples);</pre>
+<a class="indexterm" name="id2676432"></a><pre class="programlisting">gboolean            gimp_gradient_get_uniform_samples   (const gchar *name,
+                                                         gint num_samples,
+                                                         gboolean reverse,
+                                                         gint *num_color_samples,
+                                                         gdouble **color_samples);</pre>
 <p>
 Sample the specified in uniform parts.
 </p>
@@ -383,20 +373,19 @@ the colors at positions { 0.0, 0.5, 1.0 }.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2675809"></a><h3>
+<a name="id2676597"></a><h3>
 <a name="gimp-gradient-get-custom-samples"></a>gimp_gradient_get_custom_samples ()</h3>
-<a class="indexterm" name="id2675825"></a><pre class="programlisting">gboolean    gimp_gradient_get_custom_samples
-                                            (const gchar *name,
-                                             gint num_samples,
-                                             const gdouble *positions,
-                                             gboolean reverse,
-                                             gint *num_color_samples,
-                                             gdouble **color_samples);</pre>
+<a class="indexterm" name="id2676610"></a><pre class="programlisting">gboolean            gimp_gradient_get_custom_samples    (const gchar *name,
+                                                         gint num_samples,
+                                                         const gdouble *positions,
+                                                         gboolean reverse,
+                                                         gint *num_color_samples,
+                                                         gdouble **color_samples);</pre>
 <p>
 Sample the spacified gradient in custom positions.
 </p>
@@ -451,20 +440,20 @@ correspond to the RGBA values for each sample.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676010"></a><h3>
+<a name="id2676797"></a><h3>
 <a name="gimp-gradient-segment-get-left-color"></a>gimp_gradient_segment_get_left_color ()</h3>
-<a class="indexterm" name="id2676026"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_color
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a
+<a class="indexterm" name="id2676813"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_left_color
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble *opacity);</pre>
+                                                         gdouble *opacity);</pre>
 <p>
 Retrieves the left endpoint color of the specified gradient and
 segment
@@ -506,20 +495,20 @@ segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676163"></a><h3>
+<a name="id2676952"></a><h3>
 <a name="gimp-gradient-segment-set-left-color"></a>gimp_gradient_segment_set_left_color ()</h3>
-<a class="indexterm" name="id2676179"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_color
-                                            (const gchar *name,
-                                             gint segment,
-                                             const <a
+<a class="indexterm" name="id2676968"></a><pre class="programlisting">gboolean            gimp_gradient_segment_set_left_color
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble opacity);</pre>
+                                                         gdouble opacity);</pre>
 <p>
 Retrieves the left endpoint color of the specified gradient and
 segment
@@ -561,20 +550,20 @@ segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676316"></a><h3>
+<a name="id2677108"></a><h3>
 <a name="gimp-gradient-segment-get-right-color"></a>gimp_gradient_segment_get_right_color ()</h3>
-<a class="indexterm" name="id2676332"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_color
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a
+<a class="indexterm" name="id2677124"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_right_color
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble *opacity);</pre>
+                                                         gdouble *opacity);</pre>
 <p>
 Retrieves the right endpoint color of the specified gradient and
 segment
@@ -616,20 +605,20 @@ segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676470"></a><h3>
+<a name="id2677264"></a><h3>
 <a name="gimp-gradient-segment-set-right-color"></a>gimp_gradient_segment_set_right_color ()</h3>
-<a class="indexterm" name="id2676486"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_color
-                                            (const gchar *name,
-                                             gint segment,
-                                             const <a
+<a class="indexterm" name="id2677280"></a><pre class="programlisting">gboolean            gimp_gradient_segment_set_right_color
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             gdouble opacity);</pre>
+                                                         gdouble opacity);</pre>
 <p>
 Retrieves the right endpoint color of the specified gradient and
 segment
@@ -671,17 +660,16 @@ segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676623"></a><h3>
+<a name="id2677420"></a><h3>
 <a name="gimp-gradient-segment-get-left-pos"></a>gimp_gradient_segment_get_left_pos ()</h3>
-<a class="indexterm" name="id2676639"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_pos
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble *pos);</pre>
+<a class="indexterm" name="id2677436"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_left_pos  (const gchar *name,
+                                                         gint segment,
+                                                         gdouble *pos);</pre>
 <p>
 Retrieves the left endpoint position of the specified gradient and
 segment
@@ -718,18 +706,17 @@ segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676754"></a><h3>
+<a name="id2677552"></a><h3>
 <a name="gimp-gradient-segment-set-left-pos"></a>gimp_gradient_segment_set_left_pos ()</h3>
-<a class="indexterm" name="id2676770"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_pos
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble pos,
-                                             gdouble *final_pos);</pre>
+<a class="indexterm" name="id2677569"></a><pre class="programlisting">gboolean            gimp_gradient_segment_set_left_pos  (const gchar *name,
+                                                         gint segment,
+                                                         gdouble pos,
+                                                         gdouble *final_pos);</pre>
 <p>
 Sets the left endpoint position of the specified gradient and
 segment
@@ -774,17 +761,17 @@ position.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676909"></a><h3>
+<a name="id2677709"></a><h3>
 <a name="gimp-gradient-segment-get-middle-pos"></a>gimp_gradient_segment_get_middle_pos ()</h3>
-<a class="indexterm" name="id2676925"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_middle_pos
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble *pos);</pre>
+<a class="indexterm" name="id2677725"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_middle_pos
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         gdouble *pos);</pre>
 <p>
 Retrieves the middle point position of the specified gradient and
 segment
@@ -821,18 +808,18 @@ segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677040"></a><h3>
+<a name="id2677843"></a><h3>
 <a name="gimp-gradient-segment-set-middle-pos"></a>gimp_gradient_segment_set_middle_pos ()</h3>
-<a class="indexterm" name="id2677056"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_middle_pos
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble pos,
-                                             gdouble *final_pos);</pre>
+<a class="indexterm" name="id2677859"></a><pre class="programlisting">gboolean            gimp_gradient_segment_set_middle_pos
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         gdouble pos,
+                                                         gdouble *final_pos);</pre>
 <p>
 Sets the middle point position of the specified gradient and segment
 </p>
@@ -875,17 +862,16 @@ final position.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677194"></a><h3>
+<a name="id2677975"></a><h3>
 <a name="gimp-gradient-segment-get-right-pos"></a>gimp_gradient_segment_get_right_pos ()</h3>
-<a class="indexterm" name="id2677211"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_pos
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble *pos);</pre>
+<a class="indexterm" name="id2677990"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_right_pos (const gchar *name,
+                                                         gint segment,
+                                                         gdouble *pos);</pre>
 <p>
 Retrieves the right endpoint position of the specified gradient and
 segment
@@ -922,18 +908,17 @@ specified segment of the specified gradient.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677325"></a><h3>
+<a name="id2678095"></a><h3>
 <a name="gimp-gradient-segment-set-right-pos"></a>gimp_gradient_segment_set_right_pos ()</h3>
-<a class="indexterm" name="id2677342"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_pos
-                                            (const gchar *name,
-                                             gint segment,
-                                             gdouble pos,
-                                             gdouble *final_pos);</pre>
+<a class="indexterm" name="id2678110"></a><pre class="programlisting">gboolean            gimp_gradient_segment_set_right_pos (const gchar *name,
+                                                         gint segment,
+                                                         gdouble pos,
+                                                         gdouble *final_pos);</pre>
 <p>
 Sets the right endpoint position of the specified gradient and
 segment
@@ -978,17 +963,17 @@ the final position.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677451"></a><h3>
+<a name="id2678238"></a><h3>
 <a name="gimp-gradient-segment-get-blending-function"></a>gimp_gradient_segment_get_blending_function ()</h3>
-<a class="indexterm" name="id2677466"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_blending_function
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> *blend_func);</pre>
+<a class="indexterm" name="id2678254"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_blending_function
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> *blend_func);</pre>
 <p>
 Retrieves the gradient segment's blending function
 </p>
@@ -1024,17 +1009,17 @@ specified gradient name and segment index.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677571"></a><h3>
+<a name="id2678361"></a><h3>
 <a name="gimp-gradient-segment-get-coloring-type"></a>gimp_gradient_segment_get_coloring_type ()</h3>
-<a class="indexterm" name="id2677585"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_coloring_type
-                                            (const gchar *name,
-                                             gint segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> *coloring_type);</pre>
+<a class="indexterm" name="id2678376"></a><pre class="programlisting">gboolean            gimp_gradient_segment_get_coloring_type
+                                                        (const gchar *name,
+                                                         gint segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> *coloring_type);</pre>
 <p>
 Retrieves the gradient segment's coloring type
 </p>
@@ -1070,18 +1055,18 @@ specified gradient name and segment index.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677690"></a><h3>
+<a name="id2678483"></a><h3>
 <a name="gimp-gradient-segment-range-set-blending-function"></a>gimp_gradient_segment_range_set_blending_function ()</h3>
-<a class="indexterm" name="id2677706"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_blending_function
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> blending_function);</pre>
+<a class="indexterm" name="id2678499"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_set_blending_function
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> blending_function);</pre>
 <p>
 Change the blending function of a segments range
 </p>
@@ -1122,18 +1107,18 @@ the specified blending function.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677831"></a><h3>
+<a name="id2678627"></a><h3>
 <a name="gimp-gradient-segment-range-set-coloring-type"></a>gimp_gradient_segment_range_set_coloring_type ()</h3>
-<a class="indexterm" name="id2677846"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_coloring_type
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> coloring_type);</pre>
+<a class="indexterm" name="id2678642"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_set_coloring_type
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> coloring_type);</pre>
 <p>
 Change the coloring type of a segments range
 </p>
@@ -1174,17 +1159,16 @@ specified coloring type.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677971"></a><h3>
+<a name="id2678770"></a><h3>
 <a name="gimp-gradient-segment-range-flip"></a>gimp_gradient_segment_range_flip ()</h3>
-<a class="indexterm" name="id2677985"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_flip
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);</pre>
+<a class="indexterm" name="id2678784"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_flip    (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);</pre>
 <p>
 Flip the segment range
 </p>
@@ -1219,18 +1203,18 @@ This function flips a segment range.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678089"></a><h3>
+<a name="id2678890"></a><h3>
 <a name="gimp-gradient-segment-range-replicate"></a>gimp_gradient_segment_range_replicate ()</h3>
-<a class="indexterm" name="id2678104"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_replicate
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             gint replicate_times);</pre>
+<a class="indexterm" name="id2678905"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_replicate
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         gint replicate_times);</pre>
 <p>
 Replicate the segment range
 </p>
@@ -1272,17 +1256,17 @@ of it will appear in equal widths.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678231"></a><h3>
+<a name="id2679034"></a><h3>
 <a name="gimp-gradient-segment-range-split-midpoint"></a>gimp_gradient_segment_range_split_midpoint ()</h3>
-<a class="indexterm" name="id2678246"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_midpoint
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);</pre>
+<a class="indexterm" name="id2679050"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_split_midpoint
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);</pre>
 <p>
 Splits each segment in the segment range at midpoint
 </p>
@@ -1318,18 +1302,18 @@ midpoint.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678351"></a><h3>
+<a name="id2679157"></a><h3>
 <a name="gimp-gradient-segment-range-split-uniform"></a>gimp_gradient_segment_range_split_uniform ()</h3>
-<a class="indexterm" name="id2678367"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_uniform
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             gint split_parts);</pre>
+<a class="indexterm" name="id2679173"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_split_uniform
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         gint split_parts);</pre>
 <p>
 Splits each segment in the segment range uniformly
 </p>
@@ -1370,17 +1354,16 @@ according to the number of times specified by the parameter.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678493"></a><h3>
+<a name="id2679302"></a><h3>
 <a name="gimp-gradient-segment-range-delete"></a>gimp_gradient_segment_range_delete ()</h3>
-<a class="indexterm" name="id2678508"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_delete
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);</pre>
+<a class="indexterm" name="id2679317"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_delete  (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);</pre>
 <p>
 Delete the segment range
 </p>
@@ -1415,17 +1398,17 @@ This function deletes a segment range.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678611"></a><h3>
+<a name="id2679422"></a><h3>
 <a name="gimp-gradient-segment-range-redistribute-handles"></a>gimp_gradient_segment_range_redistribute_handles ()</h3>
-<a class="indexterm" name="id2678626"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_redistribute_handles
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);</pre>
+<a class="indexterm" name="id2679437"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_redistribute_handles
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);</pre>
 <p>
 Uniformly redistribute the segment range's handles
 </p>
@@ -1461,17 +1444,17 @@ range of the specified gradient, so they'll be evenly spaced.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678733"></a><h3>
+<a name="id2679547"></a><h3>
 <a name="gimp-gradient-segment-range-blend-colors"></a>gimp_gradient_segment_range_blend_colors ()</h3>
-<a class="indexterm" name="id2678748"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_colors
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);</pre>
+<a class="indexterm" name="id2679562"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_blend_colors
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);</pre>
 <p>
 Blend the colors of the segment range.
 </p>
@@ -1508,17 +1491,17 @@ will be uniform across the range.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678855"></a><h3>
+<a name="id2679671"></a><h3>
 <a name="gimp-gradient-segment-range-blend-opacity"></a>gimp_gradient_segment_range_blend_opacity ()</h3>
-<a class="indexterm" name="id2678871"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_opacity
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment);</pre>
+<a class="indexterm" name="id2679687"></a><pre class="programlisting">gboolean            gimp_gradient_segment_range_blend_opacity
+                                                        (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment);</pre>
 <p>
 Blend the opacity of the segment range.
 </p>
@@ -1555,19 +1538,18 @@ will be uniform across the range.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678977"></a><h3>
+<a name="id2679796"></a><h3>
 <a name="gimp-gradient-segment-range-move"></a>gimp_gradient_segment_range_move ()</h3>
-<a class="indexterm" name="id2678991"></a><pre class="programlisting">gdouble     gimp_gradient_segment_range_move
-                                            (const gchar *name,
-                                             gint start_segment,
-                                             gint end_segment,
-                                             gdouble delta,
-                                             gboolean control_compress);</pre>
+<a class="indexterm" name="id2679810"></a><pre class="programlisting">gdouble             gimp_gradient_segment_range_move    (const gchar *name,
+                                                         gint start_segment,
+                                                         gint end_segment,
+                                                         gdouble delta,
+                                                         gboolean control_compress);</pre>
 <p>
 Move the position of an entire segment range by a delta.
 </p>
@@ -1614,7 +1596,7 @@ control points of the neighboring segments.</p>
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 </div>

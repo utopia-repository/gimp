@@ -22,65 +22,65 @@
 
 
 
-            <link linkend="GimpPixelRgn">GimpPixelRgn</link>;
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-init">gimp_pixel_rgn_init</link>             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="gint">gint</link> dirty,
-                                             <link linkend="gint">gint</link> shadow);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-resize">gimp_pixel_rgn_resize</link>           (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-get-pixel">gimp_pixel_rgn_get_pixel</link>        (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-get-row">gimp_pixel_rgn_get_row</link>          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-get-col">gimp_pixel_rgn_get_col</link>          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> height);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-get-rect">gimp_pixel_rgn_get_rect</link>         (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-set-pixel">gimp_pixel_rgn_set_pixel</link>        (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-set-row">gimp_pixel_rgn_set_row</link>          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-set-col">gimp_pixel_rgn_set_col</link>          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> height);
-<link linkend="void">void</link>        <link linkend="gimp-pixel-rgn-set-rect">gimp_pixel_rgn_set_rect</link>         (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height);
-<link linkend="gpointer">gpointer</link>    <link linkend="gimp-pixel-rgns-register">gimp_pixel_rgns_register</link>        (<link linkend="gint">gint</link> nrgns,
-                                             ...);
-<link linkend="gpointer">gpointer</link>    <link linkend="gimp-pixel-rgns-register2">gimp_pixel_rgns_register2</link>       (<link linkend="gint">gint</link> nrgns,
-                                             <link linkend="GimpPixelRgn">GimpPixelRgn</link> **prs);
-<link linkend="gpointer">gpointer</link>    <link linkend="gimp-pixel-rgns-process">gimp_pixel_rgns_process</link>         (<link linkend="gpointer">gpointer</link> pri_ptr);
+                    <link linkend="GimpPixelRgn">GimpPixelRgn</link>;
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-init">gimp_pixel_rgn_init</link>                 (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="gint">gint</link> dirty,
+                                                         <link linkend="gint">gint</link> shadow);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-resize">gimp_pixel_rgn_resize</link>               (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-get-pixel">gimp_pixel_rgn_get_pixel</link>            (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-get-row">gimp_pixel_rgn_get_row</link>              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-get-col">gimp_pixel_rgn_get_col</link>              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> height);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-get-rect">gimp_pixel_rgn_get_rect</link>             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-set-pixel">gimp_pixel_rgn_set_pixel</link>            (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-set-row">gimp_pixel_rgn_set_row</link>              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-set-col">gimp_pixel_rgn_set_col</link>              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> height);
+<link linkend="void">void</link>                <link linkend="gimp-pixel-rgn-set-rect">gimp_pixel_rgn_set_rect</link>             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height);
+<link linkend="gpointer">gpointer</link>            <link linkend="gimp-pixel-rgns-register">gimp_pixel_rgns_register</link>            (<link linkend="gint">gint</link> nrgns,
+                                                         ...);
+<link linkend="gpointer">gpointer</link>            <link linkend="gimp-pixel-rgns-register2">gimp_pixel_rgns_register2</link>           (<link linkend="gint">gint</link> nrgns,
+                                                         <link linkend="GimpPixelRgn">GimpPixelRgn</link> **prs);
+<link linkend="gpointer">gpointer</link>            <link linkend="gimp-pixel-rgns-process">gimp_pixel_rgns_process</link>             (<link linkend="gpointer">gpointer</link> pri_ptr);
 </synopsis>
 </refsynopsisdiv>
 
@@ -122,14 +122,14 @@ fast ways of accessing and modifying portions of a drawable.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-init" role="function"/>gimp_pixel_rgn_init ()</title>
-<indexterm><primary>gimp_pixel_rgn_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_init             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height,
-                                             <link linkend="gint">gint</link> dirty,
-                                             <link linkend="gint">gint</link> shadow);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_init</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_init                 (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height,
+                                                         <link linkend="gint">gint</link> dirty,
+                                                         <link linkend="gint">gint</link> shadow);</programlisting>
 <para>
 Initialize the pixel region pointed by <parameter>pr</parameter> with the specified parameters.
 </para>
@@ -203,11 +203,11 @@ The <parameter>dirty</parameter> and <parameter>shadow</parameter> flags can be 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-resize" role="function"/>gimp_pixel_rgn_resize ()</title>
-<indexterm><primary>gimp_pixel_rgn_resize</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_resize           (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_resize</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_resize               (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height);</programlisting>
 <para>
 Change the position and size of a previously initialized pixel region.</para>
 <para>
@@ -233,10 +233,10 @@ Change the position and size of a previously initialized pixel region.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-get-pixel" role="function"/>gimp_pixel_rgn_get_pixel ()</title>
-<indexterm><primary>gimp_pixel_rgn_get_pixel</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_pixel        (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_get_pixel</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_get_pixel            (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y);</programlisting>
 <para>
 Fill the buffer pointed by <parameter>buf</parameter> with the value of the pixel at (<parameter>x</parameter>, <parameter>y</parameter>)
 in the region <parameter>pr</parameter>. <parameter>buf</parameter> should be large enough to hold the pixel value
@@ -261,11 +261,11 @@ rgb drawable and 4 <link linkend="guchar"><type>guchar</type></link> for rgb wit
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-get-row" role="function"/>gimp_pixel_rgn_get_row ()</title>
-<indexterm><primary>gimp_pixel_rgn_get_row</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_row          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_get_row</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_get_row              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width);</programlisting>
 <para>
 Get several pixels of a region in a row. This function fills the buffer
 <parameter>buf</parameter> with the values of the pixels from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</parameter>+<parameter>width</parameter>-1, <parameter>y</parameter>).
@@ -291,11 +291,11 @@ Get several pixels of a region in a row. This function fills the buffer
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-get-col" role="function"/>gimp_pixel_rgn_get_col ()</title>
-<indexterm><primary>gimp_pixel_rgn_get_col</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_col          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> height);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_get_col</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_get_col              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> height);</programlisting>
 <para>
 Get several pixels of a region's column. This function fills the buffer
 <parameter>buf</parameter> with the values of the pixels from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</parameter>, <parameter>y</parameter>+<parameter>height</parameter>-1).
@@ -321,12 +321,12 @@ Get several pixels of a region's column. This function fills the buffer
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-get-rect" role="function"/>gimp_pixel_rgn_get_rect ()</title>
-<indexterm><primary>gimp_pixel_rgn_get_rect</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_get_rect         (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_get_rect</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_get_rect             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height);</programlisting>
 <para>
 Get all the pixel values from the rectangle defined by <parameter>x</parameter>, <parameter>y</parameter>, <parameter>width</parameter> and
 <parameter>height</parameter>. This function fills the buffer <parameter>buf</parameter> with the values of the pixels
@@ -356,10 +356,10 @@ from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</para
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-set-pixel" role="function"/>gimp_pixel_rgn_set_pixel ()</title>
-<indexterm><primary>gimp_pixel_rgn_set_pixel</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_pixel        (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_set_pixel</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_set_pixel            (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y);</programlisting>
 <para>
 Set the pixel at (<parameter>x</parameter>, <parameter>y</parameter>) to the values from <parameter>buf</parameter>.</para>
 <para>
@@ -380,11 +380,11 @@ Set the pixel at (<parameter>x</parameter>, <parameter>y</parameter>) to the val
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-set-row" role="function"/>gimp_pixel_rgn_set_row ()</title>
-<indexterm><primary>gimp_pixel_rgn_set_row</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_row          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_set_row</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_set_row              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width);</programlisting>
 <para>
 Set several pixels of a region in a row. This function draws the pixels
 from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</parameter>+<parameter>width</parameter>-1, <parameter>y</parameter>) using the values of the buffer <parameter>buf</parameter>.
@@ -410,11 +410,11 @@ from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</para
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-set-col" role="function"/>gimp_pixel_rgn_set_col ()</title>
-<indexterm><primary>gimp_pixel_rgn_set_col</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_col          (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> height);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_set_col</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_set_col              (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> height);</programlisting>
 <para>
 Set several pixels of a region's column. This function draws the pixels
 from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</parameter>, <parameter>y</parameter>+<parameter>height</parameter>-1) using the values from the buffer <parameter>buf</parameter>.
@@ -440,12 +440,12 @@ from (<parameter>x</parameter>, <parameter>y</parameter>) to (<parameter>x</para
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgn-set-rect" role="function"/>gimp_pixel_rgn_set_rect ()</title>
-<indexterm><primary>gimp_pixel_rgn_set_rect</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_pixel_rgn_set_rect         (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
-                                             const <link linkend="guchar">guchar</link> *buf,
-                                             <link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="gint">gint</link> width,
-                                             <link linkend="gint">gint</link> height);</programlisting>
+<indexterm><primary>gimp_pixel_rgn_set_rect</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixel_rgn_set_rect             (<link linkend="GimpPixelRgn">GimpPixelRgn</link> *pr,
+                                                         const <link linkend="guchar">guchar</link> *buf,
+                                                         <link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="gint">gint</link> width,
+                                                         <link linkend="gint">gint</link> height);</programlisting>
 <para>
 Set all the pixel of the rectangle defined by <parameter>x</parameter>, <parameter>y</parameter>, <parameter>width</parameter> and
 <parameter>height</parameter>. This function draws the rectangle from (<parameter>x</parameter>, <parameter>y</parameter>) to
@@ -475,8 +475,8 @@ Set all the pixel of the rectangle defined by <parameter>x</parameter>, <paramet
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgns-register" role="function"/>gimp_pixel_rgns_register ()</title>
-<indexterm><primary>gimp_pixel_rgns_register</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_pixel_rgns_register        (<link linkend="gint">gint</link> nrgns,
-                                             ...);</programlisting>
+<indexterm><primary>gimp_pixel_rgns_register</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>            gimp_pixel_rgns_register            (<link linkend="gint">gint</link> nrgns,
+                                                         ...);</programlisting>
 <para>
 This is the varargs version of <link linkend="gimp-pixel-rgns-register2"><type>gimp_pixel_rgns_register2</type></link>.</para>
 <para>
@@ -493,8 +493,8 @@ This is the varargs version of <link linkend="gimp-pixel-rgns-register2"><type>g
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgns-register2" role="function"/>gimp_pixel_rgns_register2 ()</title>
-<indexterm><primary>gimp_pixel_rgns_register2</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_pixel_rgns_register2       (<link linkend="gint">gint</link> nrgns,
-                                             <link linkend="GimpPixelRgn">GimpPixelRgn</link> **prs);</programlisting>
+<indexterm><primary>gimp_pixel_rgns_register2</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>            gimp_pixel_rgns_register2           (<link linkend="gint">gint</link> nrgns,
+                                                         <link linkend="GimpPixelRgn">GimpPixelRgn</link> **prs);</programlisting>
 <para>
 It takes a number of initialized regions of the same size and provides a
 pixel region iterator the iterator can be used to iterate over the
@@ -522,7 +522,7 @@ This function has to be used together with gimp_pixel_rgns_process in a loop.</p
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-pixel-rgns-process" role="function"/>gimp_pixel_rgns_process ()</title>
-<indexterm><primary>gimp_pixel_rgns_process</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_pixel_rgns_process         (<link linkend="gpointer">gpointer</link> pri_ptr);</programlisting>
+<indexterm><primary>gimp_pixel_rgns_process</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>            gimp_pixel_rgns_process             (<link linkend="gpointer">gpointer</link> pri_ptr);</programlisting>
 <para>
 This function update the regions registered previously with one of the
 <link linkend="gimp-pixel-rgns-register"><type>gimp_pixel_rgns_register</type></link>* functions to their next tile.</para>

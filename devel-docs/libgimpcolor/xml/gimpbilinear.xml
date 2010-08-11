@@ -22,30 +22,30 @@
 
 
 
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-bilinear">gimp_bilinear</link>                   (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="gdouble">gdouble</link> *values);
-<link linkend="guchar">guchar</link>      <link linkend="gimp-bilinear-8">gimp_bilinear_8</link>                 (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guchar">guchar</link> *values);
-<link linkend="guint16">guint16</link>     <link linkend="gimp-bilinear-16">gimp_bilinear_16</link>                (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guint16">guint16</link> *values);
-<link linkend="guint32">guint32</link>     <link linkend="gimp-bilinear-32">gimp_bilinear_32</link>                (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guint32">guint32</link> *values);
-<link linkend="GimpRGB">GimpRGB</link>     <link linkend="gimp-bilinear-rgb">gimp_bilinear_rgb</link>               (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *values);
-<link linkend="GimpRGB">GimpRGB</link>     <link linkend="gimp-bilinear-rgba">gimp_bilinear_rgba</link>              (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *values);
-<link linkend="void">void</link>        <link linkend="gimp-bilinear-pixels-8">gimp_bilinear_pixels_8</link>          (<link linkend="guchar">guchar</link> *dest,
-                                             <link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guint">guint</link> bpp,
-                                             <link linkend="gboolean">gboolean</link> has_alpha,
-                                             <link linkend="guchar">guchar</link> **values);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-bilinear">gimp_bilinear</link>                       (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="gdouble">gdouble</link> *values);
+<link linkend="guchar">guchar</link>              <link linkend="gimp-bilinear-8">gimp_bilinear_8</link>                     (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guchar">guchar</link> *values);
+<link linkend="guint16">guint16</link>             <link linkend="gimp-bilinear-16">gimp_bilinear_16</link>                    (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guint16">guint16</link> *values);
+<link linkend="guint32">guint32</link>             <link linkend="gimp-bilinear-32">gimp_bilinear_32</link>                    (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guint32">guint32</link> *values);
+<link linkend="GimpRGB">GimpRGB</link>             <link linkend="gimp-bilinear-rgb">gimp_bilinear_rgb</link>                   (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *values);
+<link linkend="GimpRGB">GimpRGB</link>             <link linkend="gimp-bilinear-rgba">gimp_bilinear_rgba</link>                  (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *values);
+<link linkend="void">void</link>                <link linkend="gimp-bilinear-pixels-8">gimp_bilinear_pixels_8</link>              (<link linkend="guchar">guchar</link> *dest,
+                                                         <link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guint">guint</link> bpp,
+                                                         <link linkend="gboolean">gboolean</link> has_alpha,
+                                                         <link linkend="guchar">guchar</link> **values);
 </synopsis>
 </refsynopsisdiv>
 
@@ -68,9 +68,9 @@
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-bilinear" role="function"/>gimp_bilinear ()</title>
-<indexterm><primary>gimp_bilinear</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_bilinear                   (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="gdouble">gdouble</link> *values);</programlisting>
+<indexterm><primary>gimp_bilinear</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_bilinear                       (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="gdouble">gdouble</link> *values);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -90,9 +90,9 @@
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-bilinear-8" role="function"/>gimp_bilinear_8 ()</title>
-<indexterm><primary>gimp_bilinear_8</primary></indexterm><programlisting><link linkend="guchar">guchar</link>      gimp_bilinear_8                 (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guchar">guchar</link> *values);</programlisting>
+<indexterm><primary>gimp_bilinear_8</primary></indexterm><programlisting><link linkend="guchar">guchar</link>              gimp_bilinear_8                     (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guchar">guchar</link> *values);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -112,9 +112,9 @@
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-bilinear-16" role="function"/>gimp_bilinear_16 ()</title>
-<indexterm><primary>gimp_bilinear_16</primary></indexterm><programlisting><link linkend="guint16">guint16</link>     gimp_bilinear_16                (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guint16">guint16</link> *values);</programlisting>
+<indexterm><primary>gimp_bilinear_16</primary></indexterm><programlisting><link linkend="guint16">guint16</link>             gimp_bilinear_16                    (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guint16">guint16</link> *values);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -134,9 +134,9 @@
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-bilinear-32" role="function"/>gimp_bilinear_32 ()</title>
-<indexterm><primary>gimp_bilinear_32</primary></indexterm><programlisting><link linkend="guint32">guint32</link>     gimp_bilinear_32                (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guint32">guint32</link> *values);</programlisting>
+<indexterm><primary>gimp_bilinear_32</primary></indexterm><programlisting><link linkend="guint32">guint32</link>             gimp_bilinear_32                    (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guint32">guint32</link> *values);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -156,9 +156,9 @@
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-bilinear-rgb" role="function"/>gimp_bilinear_rgb ()</title>
-<indexterm><primary>gimp_bilinear_rgb</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>     gimp_bilinear_rgb               (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
+<indexterm><primary>gimp_bilinear_rgb</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>             gimp_bilinear_rgb                   (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -178,9 +178,9 @@
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-bilinear-rgba" role="function"/>gimp_bilinear_rgba ()</title>
-<indexterm><primary>gimp_bilinear_rgba</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>     gimp_bilinear_rgba              (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
+<indexterm><primary>gimp_bilinear_rgba</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>             gimp_bilinear_rgba                  (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -200,12 +200,12 @@
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-bilinear-pixels-8" role="function"/>gimp_bilinear_pixels_8 ()</title>
-<indexterm><primary>gimp_bilinear_pixels_8</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_bilinear_pixels_8          (<link linkend="guchar">guchar</link> *dest,
-                                             <link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="guint">guint</link> bpp,
-                                             <link linkend="gboolean">gboolean</link> has_alpha,
-                                             <link linkend="guchar">guchar</link> **values);</programlisting>
+<indexterm><primary>gimp_bilinear_pixels_8</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_bilinear_pixels_8              (<link linkend="guchar">guchar</link> *dest,
+                                                         <link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="guint">guint</link> bpp,
+                                                         <link linkend="gboolean">gboolean</link> has_alpha,
+                                                         <link linkend="guchar">guchar</link> **values);</programlisting>
 <para>
 Computes bilinear interpolation of four pixels.
 </para>

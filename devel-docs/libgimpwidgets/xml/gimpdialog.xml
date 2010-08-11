@@ -23,25 +23,25 @@ dialog-related stuff.</refpurpose>
 
 
 
-            <link linkend="GimpDialog-struct">GimpDialog</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-dialog-new">gimp_dialog_new</link>                 (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *role,
-                                             <link linkend="GtkWidget">GtkWidget</link> *parent,
-                                             <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
-                                             <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
-                                             const <link linkend="gchar">gchar</link> *help_id,
-                                             ...);
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-dialog-new-valist">gimp_dialog_new_valist</link>          (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *role,
-                                             <link linkend="GtkWidget">GtkWidget</link> *parent,
-                                             <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
-                                             <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
-                                             const <link linkend="gchar">gchar</link> *help_id,
-                                             <link linkend="va-list">va_list</link> args);
-<link linkend="void">void</link>        <link linkend="gimp-dialog-add-buttons-valist">gimp_dialog_add_buttons_valist</link>  (<link linkend="GimpDialog">GimpDialog</link> *dialog,
-                                             <link linkend="va-list">va_list</link> args);
-<link linkend="gint">gint</link>        <link linkend="gimp-dialog-run">gimp_dialog_run</link>                 (<link linkend="GimpDialog">GimpDialog</link> *dialog);
-<link linkend="void">void</link>        <link linkend="gimp-dialogs-show-help-button">gimp_dialogs_show_help_button</link>   (<link linkend="gboolean">gboolean</link> show);
+                    <link linkend="GimpDialog-struct">GimpDialog</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-dialog-new">gimp_dialog_new</link>                     (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *role,
+                                                         <link linkend="GtkWidget">GtkWidget</link> *parent,
+                                                         <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
+                                                         <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
+                                                         const <link linkend="gchar">gchar</link> *help_id,
+                                                         ...);
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-dialog-new-valist">gimp_dialog_new_valist</link>              (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *role,
+                                                         <link linkend="GtkWidget">GtkWidget</link> *parent,
+                                                         <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
+                                                         <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
+                                                         const <link linkend="gchar">gchar</link> *help_id,
+                                                         <link linkend="va-list">va_list</link> args);
+<link linkend="void">void</link>                <link linkend="gimp-dialog-add-buttons-valist">gimp_dialog_add_buttons_valist</link>      (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+                                                         <link linkend="va-list">va_list</link> args);
+<link linkend="gint">gint</link>                <link linkend="gimp-dialog-run">gimp_dialog_run</link>                     (<link linkend="GimpDialog">GimpDialog</link> *dialog);
+<link linkend="void">void</link>                <link linkend="gimp-dialogs-show-help-button">gimp_dialogs_show_help_button</link>       (<link linkend="gboolean">gboolean</link> show);
 
 </synopsis>
 </refsynopsisdiv>
@@ -78,8 +78,8 @@ GimpDialog implements
 <title role="properties.title">Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
-  &quot;<link linkend="GimpDialog--help-id">help-id</link>&quot;              <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
+  &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
+  &quot;<link linkend="GimpDialog--help-id">help-id</link>&quot;                  <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
@@ -102,13 +102,13 @@ GimpDialog implements
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-dialog-new" role="function"/>gimp_dialog_new ()</title>
-<indexterm><primary>gimp_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_dialog_new                 (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *role,
-                                             <link linkend="GtkWidget">GtkWidget</link> *parent,
-                                             <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
-                                             <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
-                                             const <link linkend="gchar">gchar</link> *help_id,
-                                             ...);</programlisting>
+<indexterm><primary>gimp_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_new                     (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *role,
+                                                         <link linkend="GtkWidget">GtkWidget</link> *parent,
+                                                         <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
+                                                         <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
+                                                         const <link linkend="gchar">gchar</link> *help_id,
+                                                         ...);</programlisting>
 <para>
 Creates a new <parameter>GimpDialog</parameter> widget.
 </para>
@@ -151,13 +151,13 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-dialog-new-valist" role="function"/>gimp_dialog_new_valist ()</title>
-<indexterm><primary>gimp_dialog_new_valist</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_dialog_new_valist          (const <link linkend="gchar">gchar</link> *title,
-                                             const <link linkend="gchar">gchar</link> *role,
-                                             <link linkend="GtkWidget">GtkWidget</link> *parent,
-                                             <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
-                                             <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
-                                             const <link linkend="gchar">gchar</link> *help_id,
-                                             <link linkend="va-list">va_list</link> args);</programlisting>
+<indexterm><primary>gimp_dialog_new_valist</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_new_valist              (const <link linkend="gchar">gchar</link> *title,
+                                                         const <link linkend="gchar">gchar</link> *role,
+                                                         <link linkend="GtkWidget">GtkWidget</link> *parent,
+                                                         <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
+                                                         <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
+                                                         const <link linkend="gchar">gchar</link> *help_id,
+                                                         <link linkend="va-list">va_list</link> args);</programlisting>
 <para>
 Creates a new <parameter>GimpDialog</parameter> widget. If a GtkWindow is specified as
 <parameter>parent</parameter> then the dialog will be made transient for this window.
@@ -196,8 +196,8 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-dialog-add-buttons-valist" role="function"/>gimp_dialog_add_buttons_valist ()</title>
-<indexterm><primary>gimp_dialog_add_buttons_valist</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_dialog_add_buttons_valist  (<link linkend="GimpDialog">GimpDialog</link> *dialog,
-                                             <link linkend="va-list">va_list</link> args);</programlisting>
+<indexterm><primary>gimp_dialog_add_buttons_valist</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialog_add_buttons_valist      (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+                                                         <link linkend="va-list">va_list</link> args);</programlisting>
 <para>
 This function is essentially the same as <link linkend="gtk-dialog-add-buttons"><function>gtk_dialog_add_buttons()</function></link>
 except it takes a va_list instead of '...'</para>
@@ -213,7 +213,7 @@ except it takes a va_list instead of '...'</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-dialog-run" role="function"/>gimp_dialog_run ()</title>
-<indexterm><primary>gimp_dialog_run</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_dialog_run                 (<link linkend="GimpDialog">GimpDialog</link> *dialog);</programlisting>
+<indexterm><primary>gimp_dialog_run</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_dialog_run                     (<link linkend="GimpDialog">GimpDialog</link> *dialog);</programlisting>
 <para>
 This function does exactly the same as <link linkend="gtk-dialog-run"><function>gtk_dialog_run()</function></link> except it
 does not make the dialog modal while the <link linkend="GMainLoop"><type>GMainLoop</type></link> is running.</para>
@@ -228,7 +228,7 @@ does not make the dialog modal while the <link linkend="GMainLoop"><type>GMainLo
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-dialogs-show-help-button" role="function" condition="since:GIMP 2.2"/>gimp_dialogs_show_help_button ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_dialogs_show_help_button</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_dialogs_show_help_button   (<link linkend="gboolean">gboolean</link> show);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_dialogs_show_help_button</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialogs_show_help_button       (<link linkend="gboolean">gboolean</link> show);</programlisting>
 <para>
 This function is for internal use only.</para>
 <para>
@@ -237,17 +237,17 @@ This function is for internal use only.</para>
 <varlistentry><term><parameter>show</parameter>&nbsp;:</term>
 <listitem><simpara> whether a help button should be added when creating a GimpDialog
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpDialog--help-func"/>The &quot;<literal>help-func</literal>&quot; property</title>
-<indexterm><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;            <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
+<indexterm><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para></para></refsect2>
 <refsect2><title><anchor id="GimpDialog--help-id"/>The &quot;<literal>help-id</literal>&quot; property</title>
-<indexterm><primary>GimpDialog:help-id</primary></indexterm><programlisting>  &quot;help-id&quot;              <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<indexterm><primary>GimpDialog:help-id</primary></indexterm><programlisting>  &quot;help-id&quot;                  <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
 <para></para><para>Default value: NULL</para>
 </refsect2>
 

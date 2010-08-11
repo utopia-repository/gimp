@@ -22,10 +22,10 @@
 
 
 
-<link linkend="void">void</link>        (<link linkend="GimpSignalHandlerFunc">*GimpSignalHandlerFunc</link>)        (<link linkend="gint">gint</link> signum);
-<link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> <link linkend="gimp-signal-private">gimp_signal_private</link>   (<link linkend="gint">gint</link> signum,
-                                             <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> handler,
-                                             <link linkend="gint">gint</link> flags);
+<link linkend="void">void</link>                (<link linkend="GimpSignalHandlerFunc">*GimpSignalHandlerFunc</link>)            (<link linkend="gint">gint</link> signum);
+<link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> <link linkend="gimp-signal-private">gimp_signal_private</link>               (<link linkend="gint">gint</link> signum,
+                                                         <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> handler,
+                                                         <link linkend="gint">gint</link> flags);
 </synopsis>
 </refsynopsisdiv>
 
@@ -49,7 +49,7 @@ Portable signal handling.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpSignalHandlerFunc" role="function"/>GimpSignalHandlerFunc ()</title>
-<indexterm><primary>GimpSignalHandlerFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpSignalHandlerFunc)        (<link linkend="gint">gint</link> signum);</programlisting>
+<indexterm><primary>GimpSignalHandlerFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpSignalHandlerFunc)            (<link linkend="gint">gint</link> signum);</programlisting>
 <para>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
@@ -65,9 +65,9 @@ special values defined by your system's signal.h header file (like
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-signal-private" role="function"/>gimp_signal_private ()</title>
-<indexterm><primary>gimp_signal_private</primary></indexterm><programlisting><link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> gimp_signal_private   (<link linkend="gint">gint</link> signum,
-                                             <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> handler,
-                                             <link linkend="gint">gint</link> flags);</programlisting>
+<indexterm><primary>gimp_signal_private</primary></indexterm><programlisting><link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> gimp_signal_private               (<link linkend="gint">gint</link> signum,
+                                                         <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> handler,
+                                                         <link linkend="gint">gint</link> flags);</programlisting>
 <para>
 This function furnishes a workalike for signal(2) but
 which internally invokes sigaction(2) after certain

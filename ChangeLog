@@ -1,3 +1,70 @@
+2007-05-26  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.15 release.
+
+2007-05-25  Sven Neumann  <sven@gimp.org>
+
+	* gimptool-2.0.in: include -lgimpmodule-2.0 in the --libs output.
+
+2007-05-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/imagemap/imap_cmd_move_sash.c (sash_move): applied
+	patch from Kevin Hurewitz that fixes resizing an area while being
+	zoomed in (bug #439222).
+
+2007-05-18  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* libgimpwidgets/gimpintstore.c (gimp_int_store_add_empty): if we
+	free the iter with gtk_tree_iter_free() we must also allocate it
+	with gtk_tree_iter_copy() or gslice will explode.
+
+2007-05-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-preview.c
+	(gimp_display_shell_draw_tri_row)
+	(gimp_display_shell_draw_tri_row_mask): don't call gdk_draw_pixbuf()
+	with a zero width. Fixes bug #349483.
+
+2007-05-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* gimptool-2.0.in: define datarootdir before datadir (bug #436386).
+
+2007-04-29  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* configure.in: Added "oc" (Occitan) to ALL_LINGUAS.
+
+2007-04-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/sunras.c (set_color_table): guard against a
+	possible stack overflow.
+
+2007-04-26  Roozbeh Pournader  <roozbeh@farsiweb.info>
+
+	* configure.in: Added 'fa' (Persian) to ALL_LINGUAS.
+
+2007-04-26  Mukund Sivaraman  <muks@mukund.org>
+
+        * plug-ins/gfig/gfig-dobject.c: properly parse files with CRLF
+        line-endings which were created in the past in Windows. Fixes
+        a part of bug #346988.
+
+        * plug-ins/gfig/gfig.c: open files in binary mode so that the same
+        line-endings are used on all platforms.
+
+2007-04-26  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.15, interface_age 15.
+
 2007-04-18  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.14 release.

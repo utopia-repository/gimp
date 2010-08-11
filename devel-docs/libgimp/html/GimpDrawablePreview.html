@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="GimpAspectPreview.html" title="GimpAspectPreview">
 <link rel="next" href="libgimp-gimpdrawablecombobox.html" title="gimpdrawablecombobox">
-<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -28,20 +28,20 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdrawablecombobox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2596237" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2567733" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2682467" class="shortcut">Description</a>
+                  <a href="#id2685975" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2682377" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2685884" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2682447" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+                  <a href="#id2685955" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpDrawablePreview"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2596237"></a><span class="refentrytitle">GimpDrawablePreview</span>
+<a name="id2567733"></a><span class="refentrytitle">GimpDrawablePreview</span>
 </h2>
 <p>GimpDrawablePreview &#8212; A widget providing a preview of a <a href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a>.</p>
 </td>
@@ -53,19 +53,17 @@
 
 
 
-            <a href="GimpDrawablePreview.html#GimpDrawablePreview-struct">GimpDrawablePreview</a>;
-GtkWidget*  <a href="GimpDrawablePreview.html#gimp-drawable-preview-new">gimp_drawable_preview_new</a>       (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
-                                             gboolean *toggle);
-<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>* <a href="GimpDrawablePreview.html#gimp-drawable-preview-get-drawable">gimp_drawable_preview_get_drawable</a>
-                                            (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview);
-void        <a href="GimpDrawablePreview.html#gimp-drawable-preview-draw-region">gimp_drawable_preview_draw_region</a>
-                                            (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview,
-                                             const <a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *region);
+                    <a href="GimpDrawablePreview.html#GimpDrawablePreview-struct">GimpDrawablePreview</a>;
+GtkWidget*          <a href="GimpDrawablePreview.html#gimp-drawable-preview-new">gimp_drawable_preview_new</a>           (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+                                                         gboolean *toggle);
+<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>*       <a href="GimpDrawablePreview.html#gimp-drawable-preview-get-drawable">gimp_drawable_preview_get_drawable</a>  (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview);
+void                <a href="GimpDrawablePreview.html#gimp-drawable-preview-draw-region">gimp_drawable_preview_draw_region</a>   (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview,
+                                                         const <a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *region);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682377"></a><h2>Object Hierarchy</h2>
+<a name="id2685884"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -85,33 +83,33 @@ href="../libgimpwidgets/libgimpwidgets-GimpScrolledPreview.html#GimpScrolledPrev
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682447"></a><h2>Implemented Interfaces</h2>
+<a name="id2685955"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpDrawablePreview implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682467"></a><h2>Description</h2>
+<a name="id2685975"></a><h2>Description</h2>
 <p>
 A widget providing a preview of a <a href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a>.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682489"></a><h2>Details</h2>
+<a name="id2685997"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2682500"></a><h3>
+<a name="id2684881"></a><h3>
 <a name="GimpDrawablePreview-struct"></a>GimpDrawablePreview</h3>
-<a class="indexterm" name="id2682511"></a><pre class="programlisting">typedef struct _GimpDrawablePreview GimpDrawablePreview;</pre>
+<a class="indexterm" name="id2684893"></a><pre class="programlisting">typedef struct _GimpDrawablePreview GimpDrawablePreview;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682527"></a><h3>
+<a name="id2684908"></a><h3>
 <a name="gimp-drawable-preview-new"></a>gimp_drawable_preview_new ()</h3>
-<a class="indexterm" name="id2682540"></a><pre class="programlisting">GtkWidget*  gimp_drawable_preview_new       (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
-                                             gboolean *toggle);</pre>
+<a class="indexterm" name="id2684922"></a><pre class="programlisting">GtkWidget*          gimp_drawable_preview_new           (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+                                                         gboolean *toggle);</pre>
 <p>
 Creates a new <a href="GimpDrawablePreview.html" title="GimpDrawablePreview"><span class="type">GimpDrawablePreview</span></a> widget for <em class="parameter"><code>drawable</code></em>. If
 updating the preview takes considerable time, you will want to
@@ -143,15 +141,14 @@ data. For convenience you can pass a pointer to the <span class="type">gboolean<
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2684155"></a><h3>
+<a name="id2685066"></a><h3>
 <a name="gimp-drawable-preview-get-drawable"></a>gimp_drawable_preview_get_drawable ()</h3>
-<a class="indexterm" name="id2684168"></a><pre class="programlisting"><a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>* gimp_drawable_preview_get_drawable
-                                            (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview);</pre>
+<a class="indexterm" name="id2685080"></a><pre class="programlisting"><a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>*       gimp_drawable_preview_get_drawable  (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview);</pre>
 <p>
 </p>
 <p>
@@ -174,16 +171,15 @@ data. For convenience you can pass a pointer to the <span class="type">gboolean<
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2684253"></a><h3>
+<a name="id2686434"></a><h3>
 <a name="gimp-drawable-preview-draw-region"></a>gimp_drawable_preview_draw_region ()</h3>
-<a class="indexterm" name="id2684266"></a><pre class="programlisting">void        gimp_drawable_preview_draw_region
-                                            (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview,
-                                             const <a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *region);</pre>
+<a class="indexterm" name="id2686447"></a><pre class="programlisting">void                gimp_drawable_preview_draw_region   (<a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a> *preview,
+                                                         const <a href="libgimp-gimppixelrgn.html#GimpPixelRgn">GimpPixelRgn</a> *region);</pre>
 <p>
 </p>
 <p>
@@ -204,7 +200,7 @@ data. For convenience you can pass a pointer to the <span class="type">gboolean<
 </tr>
 </tbody>
 </table></div>
-<p>Since  GIMP 2.2
+<p class="since">Since  GIMP 2.2
 </p>
 </div>
 </div>

@@ -22,17 +22,17 @@
 
 
 
-            <link linkend="GimpHSV">GimpHSV</link>;
-<link linkend="void">void</link>        <link linkend="gimp-hsv-set">gimp_hsv_set</link>                    (<link linkend="GimpHSV">GimpHSV</link> *hsv,
-                                             <link linkend="gdouble">gdouble</link> hue,
-                                             <link linkend="gdouble">gdouble</link> saturation,
-                                             <link linkend="gdouble">gdouble</link> value);
-<link linkend="void">void</link>        <link linkend="gimp-hsv-clamp">gimp_hsv_clamp</link>                  (<link linkend="GimpHSV">GimpHSV</link> *hsv);
-<link linkend="void">void</link>        <link linkend="gimp-hsva-set">gimp_hsva_set</link>                   (<link linkend="GimpHSV">GimpHSV</link> *hsva,
-                                             <link linkend="gdouble">gdouble</link> hue,
-                                             <link linkend="gdouble">gdouble</link> saturation,
-                                             <link linkend="gdouble">gdouble</link> value,
-                                             <link linkend="gdouble">gdouble</link> alpha);
+                    <link linkend="GimpHSV">GimpHSV</link>;
+<link linkend="void">void</link>                <link linkend="gimp-hsv-set">gimp_hsv_set</link>                        (<link linkend="GimpHSV">GimpHSV</link> *hsv,
+                                                         <link linkend="gdouble">gdouble</link> hue,
+                                                         <link linkend="gdouble">gdouble</link> saturation,
+                                                         <link linkend="gdouble">gdouble</link> value);
+<link linkend="void">void</link>                <link linkend="gimp-hsv-clamp">gimp_hsv_clamp</link>                      (<link linkend="GimpHSV">GimpHSV</link> *hsv);
+<link linkend="void">void</link>                <link linkend="gimp-hsva-set">gimp_hsva_set</link>                       (<link linkend="GimpHSV">GimpHSV</link> *hsva,
+                                                         <link linkend="gdouble">gdouble</link> hue,
+                                                         <link linkend="gdouble">gdouble</link> saturation,
+                                                         <link linkend="gdouble">gdouble</link> value,
+                                                         <link linkend="gdouble">gdouble</link> alpha);
 </synopsis>
 </refsynopsisdiv>
 
@@ -64,10 +64,10 @@ Definitions and Functions relating to HSV colors.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-hsv-set" role="function"/>gimp_hsv_set ()</title>
-<indexterm><primary>gimp_hsv_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_set                    (<link linkend="GimpHSV">GimpHSV</link> *hsv,
-                                             <link linkend="gdouble">gdouble</link> hue,
-                                             <link linkend="gdouble">gdouble</link> saturation,
-                                             <link linkend="gdouble">gdouble</link> value);</programlisting>
+<indexterm><primary>gimp_hsv_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsv_set                        (<link linkend="GimpHSV">GimpHSV</link> *hsv,
+                                                         <link linkend="gdouble">gdouble</link> hue,
+                                                         <link linkend="gdouble">gdouble</link> saturation,
+                                                         <link linkend="gdouble">gdouble</link> value);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -88,7 +88,7 @@ Definitions and Functions relating to HSV colors.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-hsv-clamp" role="function"/>gimp_hsv_clamp ()</title>
-<indexterm><primary>gimp_hsv_clamp</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsv_clamp                  (<link linkend="GimpHSV">GimpHSV</link> *hsv);</programlisting>
+<indexterm><primary>gimp_hsv_clamp</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsv_clamp                      (<link linkend="GimpHSV">GimpHSV</link> *hsv);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -100,11 +100,11 @@ Definitions and Functions relating to HSV colors.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-hsva-set" role="function"/>gimp_hsva_set ()</title>
-<indexterm><primary>gimp_hsva_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_hsva_set                   (<link linkend="GimpHSV">GimpHSV</link> *hsva,
-                                             <link linkend="gdouble">gdouble</link> hue,
-                                             <link linkend="gdouble">gdouble</link> saturation,
-                                             <link linkend="gdouble">gdouble</link> value,
-                                             <link linkend="gdouble">gdouble</link> alpha);</programlisting>
+<indexterm><primary>gimp_hsva_set</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_hsva_set                       (<link linkend="GimpHSV">GimpHSV</link> *hsva,
+                                                         <link linkend="gdouble">gdouble</link> hue,
+                                                         <link linkend="gdouble">gdouble</link> saturation,
+                                                         <link linkend="gdouble">gdouble</link> value,
+                                                         <link linkend="gdouble">gdouble</link> alpha);</programlisting>
 <para>
 
 </para><variablelist role="params">

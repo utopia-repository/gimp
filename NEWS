@@ -6,6 +6,18 @@ here. New features are being added in the HEAD branch that will be
 released as GIMP version 2.4.
 
 
+Bugs fixed in GIMP 2.2.15
+=========================
+
+- fixed parsing of GFig files with CRLF line endings (bug #346988)
+- guard against a possible stack overflow in the Sunras loader (bug #433902)
+- fixed definition of datarootdir in gimptool-2.0 (bug #436386)
+- fixed Perspective tool crash on Mac OS X (bug #349483)
+- fixed area resizing in the Image Map plug-in (bug #439222)
+- added missing library in gimptool-2.0 --libs output
+- added new localizations: Occitan and Persian
+
+
 Bugs fixed in GIMP 2.2.14
 =========================
 
@@ -34,7 +46,7 @@ Bugs fixed in GIMP 2.2.14
 - improved robustness of transform tool preview code (bug #420595)
 - improved forward compatibility of XCF loader (bug #316207)
 - don't crash in the Compressor plug-in if files can't be opened (bug #422444)
-- fixed sensitivity of input fields in the Lighting plug-in #359833
+- fixed sensitivity of input fields in the Lighting plug-in (bug #359833)
 
 
 Bugs fixed in GIMP 2.2.13

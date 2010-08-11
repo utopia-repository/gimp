@@ -22,20 +22,20 @@
 
 
 
-            <link linkend="GimpColorArea-struct">GimpColorArea</link>;
-enum        <link linkend="GimpColorAreaType">GimpColorAreaType</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-color-area-new">gimp_color_area_new</link>             (const <link linkend="GimpRGB">GimpRGB</link> *color,
-                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type,
-                                             <link linkend="GdkModifierType">GdkModifierType</link> drag_mask);
-<link linkend="void">void</link>        <link linkend="gimp-color-area-set-color">gimp_color_area_set_color</link>       (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);
-<link linkend="void">void</link>        <link linkend="gimp-color-area-get-color">gimp_color_area_get_color</link>       (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-color-area-has-alpha">gimp_color_area_has_alpha</link>       (<link linkend="GimpColorArea">GimpColorArea</link> *area);
-<link linkend="void">void</link>        <link linkend="gimp-color-area-set-type">gimp_color_area_set_type</link>        (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);
-<link linkend="void">void</link>        <link linkend="gimp-color-area-set-draw-border">gimp_color_area_set_draw_border</link> (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             <link linkend="gboolean">gboolean</link> draw_border);
+                    <link linkend="GimpColorArea-struct">GimpColorArea</link>;
+enum                <link linkend="GimpColorAreaType">GimpColorAreaType</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-color-area-new">gimp_color_area_new</link>                 (const <link linkend="GimpRGB">GimpRGB</link> *color,
+                                                         <link linkend="GimpColorAreaType">GimpColorAreaType</link> type,
+                                                         <link linkend="GdkModifierType">GdkModifierType</link> drag_mask);
+<link linkend="void">void</link>                <link linkend="gimp-color-area-set-color">gimp_color_area_set_color</link>           (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="void">void</link>                <link linkend="gimp-color-area-get-color">gimp_color_area_get_color</link>           (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-color-area-has-alpha">gimp_color_area_has_alpha</link>           (<link linkend="GimpColorArea">GimpColorArea</link> *area);
+<link linkend="void">void</link>                <link linkend="gimp-color-area-set-type">gimp_color_area_set_type</link>            (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);
+<link linkend="void">void</link>                <link linkend="gimp-color-area-set-draw-border">gimp_color_area_set_draw_border</link>     (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         <link linkend="gboolean">gboolean</link> draw_border);
 
 </synopsis>
 </refsynopsisdiv>
@@ -70,9 +70,7 @@ GimpColorArea implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpColorArea-color-changed">color-changed</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpColorArea">GimpColorArea</link> *gimpcolorarea,
-                                            <link linkend="gpointer">gpointer</link>       user_data)          : Run first
+  &quot;<link linkend="GimpColorArea-color-changed">color-changed</link>&quot;                                  : Run First
 </synopsis>
 </refsect1>
 
@@ -106,9 +104,9 @@ GimpColorArea implements
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-area-new" role="function"/>gimp_color_area_new ()</title>
-<indexterm><primary>gimp_color_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_area_new             (const <link linkend="GimpRGB">GimpRGB</link> *color,
-                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type,
-                                             <link linkend="GdkModifierType">GdkModifierType</link> drag_mask);</programlisting>
+<indexterm><primary>gimp_color_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_area_new                 (const <link linkend="GimpRGB">GimpRGB</link> *color,
+                                                         <link linkend="GimpColorAreaType">GimpColorAreaType</link> type,
+                                                         <link linkend="GdkModifierType">GdkModifierType</link> drag_mask);</programlisting>
 <para>
 Creates a new <link linkend="GimpColorArea"><type>GimpColorArea</type></link> widget.
 </para>
@@ -132,8 +130,8 @@ DND. If the color changes, the "color_changed" signal is emitted.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-area-set-color" role="function"/>gimp_color_area_set_color ()</title>
-<indexterm><primary>gimp_color_area_set_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_area_set_color       (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm><primary>gimp_color_area_set_color</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_area_set_color           (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Sets <parameter>area</parameter> to a different <parameter>color</parameter>.</para>
 <para>
@@ -148,8 +146,8 @@ Sets <parameter>area</parameter> to a different <parameter>color</parameter>.</p
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-area-get-color" role="function"/>gimp_color_area_get_color ()</title>
-<indexterm><primary>gimp_color_area_get_color</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_area_get_color       (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<indexterm><primary>gimp_color_area_get_color</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_area_get_color           (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
 Retrieves the current color of the <parameter>area</parameter>.</para>
 <para>
@@ -164,7 +162,7 @@ Retrieves the current color of the <parameter>area</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-area-has-alpha" role="function"/>gimp_color_area_has_alpha ()</title>
-<indexterm><primary>gimp_color_area_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_area_has_alpha       (<link linkend="GimpColorArea">GimpColorArea</link> *area);</programlisting>
+<indexterm><primary>gimp_color_area_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_color_area_has_alpha           (<link linkend="GimpColorArea">GimpColorArea</link> *area);</programlisting>
 <para>
 Checks whether the <parameter>area</parameter> shows transparency information. This is determined
 via the <parameter>area</parameter>'s <link linkend="GimpColorAreaType"><type>GimpColorAreaType</type></link>.</para>
@@ -179,8 +177,8 @@ via the <parameter>area</parameter>'s <link linkend="GimpColorAreaType"><type>Gi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-area-set-type" role="function"/>gimp_color_area_set_type ()</title>
-<indexterm><primary>gimp_color_area_set_type</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_area_set_type        (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);</programlisting>
+<indexterm><primary>gimp_color_area_set_type</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_area_set_type            (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         <link linkend="GimpColorAreaType">GimpColorAreaType</link> type);</programlisting>
 <para>
 Allows to change the type of <parameter>area</parameter>. The <link linkend="GimpColorAreaType"><type>GimpColorAreaType</type></link> determines
 whether the widget shows transparency information and chooses the size of
@@ -197,8 +195,8 @@ the checkerboard used to do that.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-color-area-set-draw-border" role="function"/>gimp_color_area_set_draw_border ()</title>
-<indexterm><primary>gimp_color_area_set_draw_border</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_area_set_draw_border (<link linkend="GimpColorArea">GimpColorArea</link> *area,
-                                             <link linkend="gboolean">gboolean</link> draw_border);</programlisting>
+<indexterm><primary>gimp_color_area_set_draw_border</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_area_set_draw_border     (<link linkend="GimpColorArea">GimpColorArea</link> *area,
+                                                         <link linkend="gboolean">gboolean</link> draw_border);</programlisting>
 <para>
 The <parameter>area</parameter> can draw a thin border in the foreground color around
 itself.  This function allows to toggle this behaviour on and
@@ -219,8 +217,8 @@ off. The default is not draw a border.</para>
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorArea-color-changed"/>The &quot;color-changed&quot; signal</title>
-<indexterm><primary>GimpColorArea::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorArea">GimpColorArea</link> *gimpcolorarea,
-                                            <link linkend="gpointer">gpointer</link>       user_data)          : Run first</programlisting>
+<indexterm><primary>GimpColorArea::color-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorArea">GimpColorArea</link> *gimpcolorarea,
+                                                        <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
 
 </para><variablelist role="params">

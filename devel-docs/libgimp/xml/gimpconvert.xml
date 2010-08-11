@@ -22,15 +22,15 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-convert-rgb">gimp_image_convert_rgb</link>          (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-convert-grayscale">gimp_image_convert_grayscale</link>    (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-convert-indexed">gimp_image_convert_indexed</link>      (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="GimpConvertDitherType">GimpConvertDitherType</link> dither_type,
-                                             <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link> palette_type,
-                                             <link linkend="gint">gint</link> num_cols,
-                                             <link linkend="gboolean">gboolean</link> alpha_dither,
-                                             <link linkend="gboolean">gboolean</link> remove_unused,
-                                             const <link linkend="gchar">gchar</link> *palette);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-convert-rgb">gimp_image_convert_rgb</link>              (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-convert-grayscale">gimp_image_convert_grayscale</link>        (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-convert-indexed">gimp_image_convert_indexed</link>          (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="GimpConvertDitherType">GimpConvertDitherType</link> dither_type,
+                                                         <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link> palette_type,
+                                                         <link linkend="gint">gint</link> num_cols,
+                                                         <link linkend="gboolean">gboolean</link> alpha_dither,
+                                                         <link linkend="gboolean">gboolean</link> remove_unused,
+                                                         const <link linkend="gchar">gchar</link> *palette);
 </synopsis>
 </refsynopsisdiv>
 
@@ -54,7 +54,7 @@ Conversions between RGB, indexed, and grayscale modes.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-image-convert-rgb" role="function"/>gimp_image_convert_rgb ()</title>
-<indexterm><primary>gimp_image_convert_rgb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_convert_rgb          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_convert_rgb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_convert_rgb              (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Convert specified image to RGB color
 </para>
@@ -74,7 +74,7 @@ indexed image.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-convert-grayscale" role="function"/>gimp_image_convert_grayscale ()</title>
-<indexterm><primary>gimp_image_convert_grayscale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_convert_grayscale    (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm><primary>gimp_image_convert_grayscale</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_convert_grayscale        (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Convert specified image to grayscale (256 intensity levels)
 </para>
@@ -93,13 +93,13 @@ type GIMP_RGB or GIMP_INDEXED.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-image-convert-indexed" role="function"/>gimp_image_convert_indexed ()</title>
-<indexterm><primary>gimp_image_convert_indexed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_convert_indexed      (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="GimpConvertDitherType">GimpConvertDitherType</link> dither_type,
-                                             <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link> palette_type,
-                                             <link linkend="gint">gint</link> num_cols,
-                                             <link linkend="gboolean">gboolean</link> alpha_dither,
-                                             <link linkend="gboolean">gboolean</link> remove_unused,
-                                             const <link linkend="gchar">gchar</link> *palette);</programlisting>
+<indexterm><primary>gimp_image_convert_indexed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_convert_indexed          (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="GimpConvertDitherType">GimpConvertDitherType</link> dither_type,
+                                                         <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link> palette_type,
+                                                         <link linkend="gint">gint</link> num_cols,
+                                                         <link linkend="gboolean">gboolean</link> alpha_dither,
+                                                         <link linkend="gboolean">gboolean</link> remove_unused,
+                                                         const <link linkend="gchar">gchar</link> *palette);</programlisting>
 <para>
 Convert specified image to and Indexed image
 </para>

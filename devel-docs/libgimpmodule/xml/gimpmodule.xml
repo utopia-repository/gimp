@@ -22,33 +22,32 @@
 
 
 
-            <link linkend="GimpModule-struct">GimpModule</link>;
-            <link linkend="GimpModuleInfo">GimpModuleInfo</link>;
-enum        <link linkend="GimpModuleState">GimpModuleState</link>;
-const <link linkend="GimpModuleInfo">GimpModuleInfo</link>* (<link linkend="GimpModuleQueryFunc">*GimpModuleQueryFunc</link>)
-                                            (<link linkend="GTypeModule">GTypeModule</link> *module);
-<link linkend="gboolean">gboolean</link>    (<link linkend="GimpModuleRegisterFunc">*GimpModuleRegisterFunc</link>)       (<link linkend="GTypeModule">GTypeModule</link> *module);
-#define     <link linkend="GIMP-MODULE-ABI-VERSION:CAPS">GIMP_MODULE_ABI_VERSION</link>
-#define     <link linkend="GIMP-MODULE-PARAM-SERIALIZE:CAPS">GIMP_MODULE_PARAM_SERIALIZE</link>
-<link linkend="GimpModule">GimpModule</link>* <link linkend="gimp-module-new">gimp_module_new</link>                 (const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gboolean">gboolean</link> load_inhibit,
-                                             <link linkend="gboolean">gboolean</link> verbose);
-<link linkend="void">void</link>        <link linkend="gimp-module-modified">gimp_module_modified</link>            (<link linkend="GimpModule">GimpModule</link> *module);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-module-query-module">gimp_module_query_module</link>        (<link linkend="GimpModule">GimpModule</link> *module);
-<link linkend="void">void</link>        <link linkend="gimp-module-set-load-inhibit">gimp_module_set_load_inhibit</link>    (<link linkend="GimpModule">GimpModule</link> *module,
-                                             <link linkend="gboolean">gboolean</link> load_inhibit);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-module-state-name">gimp_module_state_name</link>         (<link linkend="GimpModuleState">GimpModuleState</link> state);
-<link linkend="GType">GType</link>       <link linkend="gimp-module-register-enum">gimp_module_register_enum</link>       (<link linkend="GTypeModule">GTypeModule</link> *module,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             const <link linkend="GEnumValue">GEnumValue</link> *const _static_values);
-<link linkend="GimpModuleInfo">GimpModuleInfo</link>* <link linkend="gimp-module-info-new">gimp_module_info_new</link>        (<link linkend="guint32">guint32</link> abi_version,
-                                             const <link linkend="gchar">gchar</link> *purpose,
-                                             const <link linkend="gchar">gchar</link> *author,
-                                             const <link linkend="gchar">gchar</link> *version,
-                                             const <link linkend="gchar">gchar</link> *copyright,
-                                             const <link linkend="gchar">gchar</link> *date);
-<link linkend="GimpModuleInfo">GimpModuleInfo</link>* <link linkend="gimp-module-info-copy">gimp_module_info_copy</link>       (const <link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);
-<link linkend="void">void</link>        <link linkend="gimp-module-info-free">gimp_module_info_free</link>           (<link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);
+                    <link linkend="GimpModule-struct">GimpModule</link>;
+                    <link linkend="GimpModuleInfo">GimpModuleInfo</link>;
+enum                <link linkend="GimpModuleState">GimpModuleState</link>;
+const <link linkend="GimpModuleInfo">GimpModuleInfo</link>* (<link linkend="GimpModuleQueryFunc">*GimpModuleQueryFunc</link>)            (<link linkend="GTypeModule">GTypeModule</link> *module);
+<link linkend="gboolean">gboolean</link>            (<link linkend="GimpModuleRegisterFunc">*GimpModuleRegisterFunc</link>)           (<link linkend="GTypeModule">GTypeModule</link> *module);
+#define             <link linkend="GIMP-MODULE-ABI-VERSION:CAPS">GIMP_MODULE_ABI_VERSION</link>
+#define             <link linkend="GIMP-MODULE-PARAM-SERIALIZE:CAPS">GIMP_MODULE_PARAM_SERIALIZE</link>
+<link linkend="GimpModule">GimpModule</link>*         <link linkend="gimp-module-new">gimp_module_new</link>                     (const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gboolean">gboolean</link> load_inhibit,
+                                                         <link linkend="gboolean">gboolean</link> verbose);
+<link linkend="void">void</link>                <link linkend="gimp-module-modified">gimp_module_modified</link>                (<link linkend="GimpModule">GimpModule</link> *module);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-module-query-module">gimp_module_query_module</link>            (<link linkend="GimpModule">GimpModule</link> *module);
+<link linkend="void">void</link>                <link linkend="gimp-module-set-load-inhibit">gimp_module_set_load_inhibit</link>        (<link linkend="GimpModule">GimpModule</link> *module,
+                                                         <link linkend="gboolean">gboolean</link> load_inhibit);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-module-state-name">gimp_module_state_name</link>              (<link linkend="GimpModuleState">GimpModuleState</link> state);
+<link linkend="GType">GType</link>               <link linkend="gimp-module-register-enum">gimp_module_register_enum</link>           (<link linkend="GTypeModule">GTypeModule</link> *module,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         const <link linkend="GEnumValue">GEnumValue</link> *const _static_values);
+<link linkend="GimpModuleInfo">GimpModuleInfo</link>*     <link linkend="gimp-module-info-new">gimp_module_info_new</link>                (<link linkend="guint32">guint32</link> abi_version,
+                                                         const <link linkend="gchar">gchar</link> *purpose,
+                                                         const <link linkend="gchar">gchar</link> *author,
+                                                         const <link linkend="gchar">gchar</link> *version,
+                                                         const <link linkend="gchar">gchar</link> *copyright,
+                                                         const <link linkend="gchar">gchar</link> *date);
+<link linkend="GimpModuleInfo">GimpModuleInfo</link>*     <link linkend="gimp-module-info-copy">gimp_module_info_copy</link>               (const <link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);
+<link linkend="void">void</link>                <link linkend="gimp-module-info-free">gimp_module_info_free</link>               (<link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);
 
 </synopsis>
 </refsynopsisdiv>
@@ -80,8 +79,7 @@ GimpModule implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpModule-modified">modified</link>&quot;  <link linkend="void">void</link>        user_function      (<link linkend="GimpModule">GimpModule</link> *gimpmodule,
-                                            <link linkend="gpointer">gpointer</link>    user_data)       : Run first
+  &quot;<link linkend="GimpModule-modified">modified</link>&quot;                                       : Run First
 </synopsis>
 </refsect1>
 
@@ -209,8 +207,7 @@ The possible states a <link linkend="GimpModule"><type>GimpModule</type></link> 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="GimpModuleQueryFunc" role="function"/>GimpModuleQueryFunc ()</title>
-<indexterm><primary>GimpModuleQueryFunc</primary></indexterm><programlisting>const <link linkend="GimpModuleInfo">GimpModuleInfo</link>* (*GimpModuleQueryFunc)
-                                            (<link linkend="GTypeModule">GTypeModule</link> *module);</programlisting>
+<indexterm><primary>GimpModuleQueryFunc</primary></indexterm><programlisting>const <link linkend="GimpModuleInfo">GimpModuleInfo</link>* (*GimpModuleQueryFunc)            (<link linkend="GTypeModule">GTypeModule</link> *module);</programlisting>
 <para>
 The signature of the query function a loadable GIMP module must
 implement.  In the module, the function must be called
@@ -232,7 +229,7 @@ the module will just return a pointer to a constant structure).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="GimpModuleRegisterFunc" role="function"/>GimpModuleRegisterFunc ()</title>
-<indexterm><primary>GimpModuleRegisterFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*GimpModuleRegisterFunc)       (<link linkend="GTypeModule">GTypeModule</link> *module);</programlisting>
+<indexterm><primary>GimpModuleRegisterFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            (*GimpModuleRegisterFunc)           (<link linkend="GTypeModule">GTypeModule</link> *module);</programlisting>
 <para>
 The signature of the register function a loadable GIMP module must
 implement.  In the module, the function must be called
@@ -270,9 +267,9 @@ are compiled against.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-new" role="function"/>gimp_module_new ()</title>
-<indexterm><primary>gimp_module_new</primary></indexterm><programlisting><link linkend="GimpModule">GimpModule</link>* gimp_module_new                 (const <link linkend="gchar">gchar</link> *filename,
-                                             <link linkend="gboolean">gboolean</link> load_inhibit,
-                                             <link linkend="gboolean">gboolean</link> verbose);</programlisting>
+<indexterm><primary>gimp_module_new</primary></indexterm><programlisting><link linkend="GimpModule">GimpModule</link>*         gimp_module_new                     (const <link linkend="gchar">gchar</link> *filename,
+                                                         <link linkend="gboolean">gboolean</link> load_inhibit,
+                                                         <link linkend="gboolean">gboolean</link> verbose);</programlisting>
 <para>
 Creates a new <link linkend="GimpModule"><type>GimpModule</type></link> instance.</para>
 <para>
@@ -292,7 +289,7 @@ Creates a new <link linkend="GimpModule"><type>GimpModule</type></link> instance
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-modified" role="function"/>gimp_module_modified ()</title>
-<indexterm><primary>gimp_module_modified</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_module_modified            (<link linkend="GimpModule">GimpModule</link> *module);</programlisting>
+<indexterm><primary>gimp_module_modified</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_module_modified                (<link linkend="GimpModule">GimpModule</link> *module);</programlisting>
 <para>
 Emits the "modified" signal. Call it whenever you have modified the module
 manually (which you shouldn't do).</para>
@@ -305,7 +302,7 @@ manually (which you shouldn't do).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-query-module" role="function"/>gimp_module_query_module ()</title>
-<indexterm><primary>gimp_module_query_module</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_module_query_module        (<link linkend="GimpModule">GimpModule</link> *module);</programlisting>
+<indexterm><primary>gimp_module_query_module</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_module_query_module            (<link linkend="GimpModule">GimpModule</link> *module);</programlisting>
 <para>
 Queries the module without actually registering any of the types it
 may implement. After successful query, the <parameter>info</parameter> field of the
@@ -321,8 +318,8 @@ may implement. After successful query, the <parameter>info</parameter> field of 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-set-load-inhibit" role="function"/>gimp_module_set_load_inhibit ()</title>
-<indexterm><primary>gimp_module_set_load_inhibit</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_module_set_load_inhibit    (<link linkend="GimpModule">GimpModule</link> *module,
-                                             <link linkend="gboolean">gboolean</link> load_inhibit);</programlisting>
+<indexterm><primary>gimp_module_set_load_inhibit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_module_set_load_inhibit        (<link linkend="GimpModule">GimpModule</link> *module,
+                                                         <link linkend="gboolean">gboolean</link> load_inhibit);</programlisting>
 <para>
 Sets the <parameter>load_inhibit</parameter> property if the module. Emits "modified".</para>
 <para>
@@ -337,7 +334,7 @@ Sets the <parameter>load_inhibit</parameter> property if the module. Emits "modi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-state-name" role="function"/>gimp_module_state_name ()</title>
-<indexterm><primary>gimp_module_state_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_module_state_name         (<link linkend="GimpModuleState">GimpModuleState</link> state);</programlisting>
+<indexterm><primary>gimp_module_state_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_module_state_name              (<link linkend="GimpModuleState">GimpModuleState</link> state);</programlisting>
 <para>
 Returns the translated textual representation of a <link linkend="GimpModuleState"><type>GimpModuleState</type></link>.
 The returned string must not be freed.</para>
@@ -352,9 +349,9 @@ The returned string must not be freed.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-register-enum" role="function"/>gimp_module_register_enum ()</title>
-<indexterm><primary>gimp_module_register_enum</primary></indexterm><programlisting><link linkend="GType">GType</link>       gimp_module_register_enum       (<link linkend="GTypeModule">GTypeModule</link> *module,
-                                             const <link linkend="gchar">gchar</link> *name,
-                                             const <link linkend="GEnumValue">GEnumValue</link> *const _static_values);</programlisting>
+<indexterm><primary>gimp_module_register_enum</primary></indexterm><programlisting><link linkend="GType">GType</link>               gimp_module_register_enum           (<link linkend="GTypeModule">GTypeModule</link> *module,
+                                                         const <link linkend="gchar">gchar</link> *name,
+                                                         const <link linkend="GEnumValue">GEnumValue</link> *const _static_values);</programlisting>
 <para>
 Registers an enum similar to <link linkend="g-enum-register-static"><function>g_enum_register_static()</function></link> but for
 modules. This function should actually live in GLib but since
@@ -376,12 +373,12 @@ there's no such API, it is provided here.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-info-new" role="function"/>gimp_module_info_new ()</title>
-<indexterm><primary>gimp_module_info_new</primary></indexterm><programlisting><link linkend="GimpModuleInfo">GimpModuleInfo</link>* gimp_module_info_new        (<link linkend="guint32">guint32</link> abi_version,
-                                             const <link linkend="gchar">gchar</link> *purpose,
-                                             const <link linkend="gchar">gchar</link> *author,
-                                             const <link linkend="gchar">gchar</link> *version,
-                                             const <link linkend="gchar">gchar</link> *copyright,
-                                             const <link linkend="gchar">gchar</link> *date);</programlisting>
+<indexterm><primary>gimp_module_info_new</primary></indexterm><programlisting><link linkend="GimpModuleInfo">GimpModuleInfo</link>*     gimp_module_info_new                (<link linkend="guint32">guint32</link> abi_version,
+                                                         const <link linkend="gchar">gchar</link> *purpose,
+                                                         const <link linkend="gchar">gchar</link> *author,
+                                                         const <link linkend="gchar">gchar</link> *version,
+                                                         const <link linkend="gchar">gchar</link> *copyright,
+                                                         const <link linkend="gchar">gchar</link> *date);</programlisting>
 <para>
 Creates a newly allocated <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct.</para>
 <para>
@@ -410,7 +407,7 @@ Creates a newly allocated <link linkend="GimpModuleInfo"><type>GimpModuleInfo</t
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-info-copy" role="function"/>gimp_module_info_copy ()</title>
-<indexterm><primary>gimp_module_info_copy</primary></indexterm><programlisting><link linkend="GimpModuleInfo">GimpModuleInfo</link>* gimp_module_info_copy       (const <link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);</programlisting>
+<indexterm><primary>gimp_module_info_copy</primary></indexterm><programlisting><link linkend="GimpModuleInfo">GimpModuleInfo</link>*     gimp_module_info_copy               (const <link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);</programlisting>
 <para>
 Copies a <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struct.</para>
 <para>
@@ -424,7 +421,7 @@ Copies a <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link> struc
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-module-info-free" role="function"/>gimp_module_info_free ()</title>
-<indexterm><primary>gimp_module_info_free</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_module_info_free           (<link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);</programlisting>
+<indexterm><primary>gimp_module_info_free</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_module_info_free               (<link linkend="GimpModuleInfo">GimpModuleInfo</link> *info);</programlisting>
 <para>
 Frees the passed <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></link>.</para>
 <para>
@@ -440,8 +437,8 @@ Frees the passed <link linkend="GimpModuleInfo"><type>GimpModuleInfo</type></lin
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpModule-modified"/>The &quot;modified&quot; signal</title>
-<indexterm><primary>GimpModule::modified</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModule">GimpModule</link> *gimpmodule,
-                                            <link linkend="gpointer">gpointer</link>    user_data)       : Run first</programlisting>
+<indexterm><primary>GimpModule::modified</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpModule">GimpModule</link> *gimpmodule,
+                                                        <link linkend="gpointer">gpointer</link>    user_data)       : Run First</programlisting>
 <para>
 
 </para><variablelist role="params">

@@ -22,53 +22,53 @@
 
 
 
-#define     <link linkend="GIMP-PROTOCOL-VERSION:CAPS">GIMP_PROTOCOL_VERSION</link>
-            <link linkend="GPConfig">GPConfig</link>;
-            <link linkend="GPTileReq">GPTileReq</link>;
-            <link linkend="GPTileAck">GPTileAck</link>;
-            <link linkend="GPTileData">GPTileData</link>;
-            <link linkend="GPParam">GPParam</link>;
-            <link linkend="GPParamDef">GPParamDef</link>;
-            <link linkend="GPProcRun">GPProcRun</link>;
-            <link linkend="GPProcReturn">GPProcReturn</link>;
-            <link linkend="GPProcInstall">GPProcInstall</link>;
-            <link linkend="GPProcUninstall">GPProcUninstall</link>;
-<link linkend="void">void</link>        <link linkend="gp-init">gp_init</link>                         (void);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-has-init-write">gp_has_init_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-quit-write">gp_quit_write</link>                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-config-write">gp_config_write</link>                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPConfig">GPConfig</link> *config,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-tile-req-write">gp_tile_req_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPTileReq">GPTileReq</link> *tile_req,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-tile-ack-write">gp_tile_ack_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-tile-data-write">gp_tile_data_write</link>              (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPTileData">GPTileData</link> *tile_data,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-run-write">gp_proc_run_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-return-write">gp_proc_return_write</link>            (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-temp-proc-run-write">gp_temp_proc_run_write</link>          (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-temp-proc-return-write">gp_temp_proc_return_write</link>       (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-install-write">gp_proc_install_write</link>           (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcInstall">GPProcInstall</link> *proc_install,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-proc-uninstall-write">gp_proc_uninstall_write</link>         (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcUninstall">GPProcUninstall</link> *proc_uninstall,
-                                             <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="gboolean">gboolean</link>    <link linkend="gp-extension-ack-write">gp_extension_ack_write</link>          (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);
+#define             <link linkend="GIMP-PROTOCOL-VERSION:CAPS">GIMP_PROTOCOL_VERSION</link>
+                    <link linkend="GPConfig">GPConfig</link>;
+                    <link linkend="GPTileReq">GPTileReq</link>;
+                    <link linkend="GPTileAck">GPTileAck</link>;
+                    <link linkend="GPTileData">GPTileData</link>;
+                    <link linkend="GPParam">GPParam</link>;
+                    <link linkend="GPParamDef">GPParamDef</link>;
+                    <link linkend="GPProcRun">GPProcRun</link>;
+                    <link linkend="GPProcReturn">GPProcReturn</link>;
+                    <link linkend="GPProcInstall">GPProcInstall</link>;
+                    <link linkend="GPProcUninstall">GPProcUninstall</link>;
+<link linkend="void">void</link>                <link linkend="gp-init">gp_init</link>                             (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-has-init-write">gp_has_init_write</link>                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-quit-write">gp_quit_write</link>                       (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-config-write">gp_config_write</link>                     (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPConfig">GPConfig</link> *config,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-tile-req-write">gp_tile_req_write</link>                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPTileReq">GPTileReq</link> *tile_req,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-tile-ack-write">gp_tile_ack_write</link>                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-tile-data-write">gp_tile_data_write</link>                  (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPTileData">GPTileData</link> *tile_data,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-proc-run-write">gp_proc_run_write</link>                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-proc-return-write">gp_proc_return_write</link>                (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-temp-proc-run-write">gp_temp_proc_run_write</link>              (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-temp-proc-return-write">gp_temp_proc_return_write</link>           (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-proc-install-write">gp_proc_install_write</link>               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcInstall">GPProcInstall</link> *proc_install,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-proc-uninstall-write">gp_proc_uninstall_write</link>             (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcUninstall">GPProcUninstall</link> *proc_uninstall,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gp-extension-ack-write">gp_extension_ack_write</link>              (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
 </synopsis>
 </refsynopsisdiv>
 
@@ -270,14 +270,14 @@ The communication protocol between GIMP and it's plug-ins.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gp-init" role="function"/>gp_init ()</title>
-<indexterm><primary>gp_init</primary></indexterm><programlisting><link linkend="void">void</link>        gp_init                         (void);</programlisting>
+<indexterm><primary>gp_init</primary></indexterm><programlisting><link linkend="void">void</link>                gp_init                             (void);</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="gp-has-init-write" role="function"/>gp_has_init_write ()</title>
-<indexterm><primary>gp_has_init_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_has_init_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_has_init_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_has_init_write                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -294,8 +294,8 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-quit-write" role="function"/>gp_quit_write ()</title>
-<indexterm><primary>gp_quit_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_quit_write                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_quit_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_quit_write                       (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -312,9 +312,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-config-write" role="function"/>gp_config_write ()</title>
-<indexterm><primary>gp_config_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_config_write                 (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPConfig">GPConfig</link> *config,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_config_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_config_write                     (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPConfig">GPConfig</link> *config,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -334,9 +334,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-tile-req-write" role="function"/>gp_tile_req_write ()</title>
-<indexterm><primary>gp_tile_req_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_tile_req_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPTileReq">GPTileReq</link> *tile_req,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_tile_req_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_tile_req_write                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPTileReq">GPTileReq</link> *tile_req,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -356,8 +356,8 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-tile-ack-write" role="function"/>gp_tile_ack_write ()</title>
-<indexterm><primary>gp_tile_ack_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_tile_ack_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_tile_ack_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_tile_ack_write                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -374,9 +374,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-tile-data-write" role="function"/>gp_tile_data_write ()</title>
-<indexterm><primary>gp_tile_data_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_tile_data_write              (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPTileData">GPTileData</link> *tile_data,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_tile_data_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_tile_data_write                  (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPTileData">GPTileData</link> *tile_data,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -396,9 +396,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-proc-run-write" role="function"/>gp_proc_run_write ()</title>
-<indexterm><primary>gp_proc_run_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_run_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_proc_run_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_proc_run_write                   (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -418,9 +418,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-proc-return-write" role="function"/>gp_proc_return_write ()</title>
-<indexterm><primary>gp_proc_return_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_return_write            (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_proc_return_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_proc_return_write                (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -440,9 +440,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-temp-proc-run-write" role="function"/>gp_temp_proc_run_write ()</title>
-<indexterm><primary>gp_temp_proc_run_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_temp_proc_run_write          (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcRun">GPProcRun</link> *proc_run,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_temp_proc_run_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_temp_proc_run_write              (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcRun">GPProcRun</link> *proc_run,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -462,9 +462,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-temp-proc-return-write" role="function"/>gp_temp_proc_return_write ()</title>
-<indexterm><primary>gp_temp_proc_return_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_temp_proc_return_write       (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_temp_proc_return_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_temp_proc_return_write           (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcReturn">GPProcReturn</link> *proc_return,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -484,9 +484,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-proc-install-write" role="function"/>gp_proc_install_write ()</title>
-<indexterm><primary>gp_proc_install_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_install_write           (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcInstall">GPProcInstall</link> *proc_install,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_proc_install_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_proc_install_write               (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcInstall">GPProcInstall</link> *proc_install,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -506,9 +506,9 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-proc-uninstall-write" role="function"/>gp_proc_uninstall_write ()</title>
-<indexterm><primary>gp_proc_uninstall_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_proc_uninstall_write         (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="GPProcUninstall">GPProcUninstall</link> *proc_uninstall,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_proc_uninstall_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_proc_uninstall_write             (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="GPProcUninstall">GPProcUninstall</link> *proc_uninstall,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -528,8 +528,8 @@ The communication protocol between GIMP and it's plug-ins.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gp-extension-ack-write" role="function"/>gp_extension_ack_write ()</title>
-<indexterm><primary>gp_extension_ack_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gp_extension_ack_write          (<link linkend="GIOChannel">GIOChannel</link> *channel,
-                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>gp_extension_ack_write</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gp_extension_ack_write              (<link linkend="GIOChannel">GIOChannel</link> *channel,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">

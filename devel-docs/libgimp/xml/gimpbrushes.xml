@@ -22,28 +22,27 @@
 
 
 
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-refresh">gimp_brushes_refresh</link>            (void);
-<link linkend="gchar">gchar</link>**     <link linkend="gimp-brushes-get-list">gimp_brushes_get_list</link>           (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_brushes);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-brushes-get-brush">gimp_brushes_get_brush</link>          (<link linkend="gint">gint</link> *width,
-                                             <link linkend="gint">gint</link> *height,
-                                             <link linkend="gint">gint</link> *spacing);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-set-brush">gimp_brushes_set_brush</link>          (const <link linkend="gchar">gchar</link> *name);
-<link linkend="gdouble">gdouble</link>     <link linkend="gimp-brushes-get-opacity">gimp_brushes_get_opacity</link>        (void);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-set-opacity">gimp_brushes_set_opacity</link>        (<link linkend="gdouble">gdouble</link> opacity);
-<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> <link linkend="gimp-brushes-get-paint-mode">gimp_brushes_get_paint_mode</link>
-                                            (void);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-set-paint-mode">gimp_brushes_set_paint_mode</link>     (<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
-<link linkend="gint">gint</link>        <link linkend="gimp-brushes-get-spacing">gimp_brushes_get_spacing</link>        (void);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-brushes-set-spacing">gimp_brushes_set_spacing</link>        (<link linkend="gint">gint</link> spacing);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-brushes-get-brush-data">gimp_brushes_get_brush_data</link>     (const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gdouble">gdouble</link> *opacity,
-                                             <link linkend="gint">gint</link> *spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> *paint_mode,
-                                             <link linkend="gint">gint</link> *width,
-                                             <link linkend="gint">gint</link> *height,
-                                             <link linkend="gint">gint</link> *length,
-                                             <link linkend="guint8">guint8</link> **mask_data);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-refresh">gimp_brushes_refresh</link>                (void);
+<link linkend="gchar">gchar</link>**             <link linkend="gimp-brushes-get-list">gimp_brushes_get_list</link>               (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_brushes);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-brushes-get-brush">gimp_brushes_get_brush</link>              (<link linkend="gint">gint</link> *width,
+                                                         <link linkend="gint">gint</link> *height,
+                                                         <link linkend="gint">gint</link> *spacing);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-set-brush">gimp_brushes_set_brush</link>              (const <link linkend="gchar">gchar</link> *name);
+<link linkend="gdouble">gdouble</link>             <link linkend="gimp-brushes-get-opacity">gimp_brushes_get_opacity</link>            (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-set-opacity">gimp_brushes_set_opacity</link>            (<link linkend="gdouble">gdouble</link> opacity);
+<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> <link linkend="gimp-brushes-get-paint-mode">gimp_brushes_get_paint_mode</link>        (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-set-paint-mode">gimp_brushes_set_paint_mode</link>         (<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
+<link linkend="gint">gint</link>                <link linkend="gimp-brushes-get-spacing">gimp_brushes_get_spacing</link>            (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-brushes-set-spacing">gimp_brushes_set_spacing</link>            (<link linkend="gint">gint</link> spacing);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-brushes-get-brush-data">gimp_brushes_get_brush_data</link>         (const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gdouble">gdouble</link> *opacity,
+                                                         <link linkend="gint">gint</link> *spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> *paint_mode,
+                                                         <link linkend="gint">gint</link> *width,
+                                                         <link linkend="gint">gint</link> *height,
+                                                         <link linkend="gint">gint</link> *length,
+                                                         <link linkend="guint8">guint8</link> **mask_data);
 </synopsis>
 </refsynopsisdiv>
 
@@ -66,7 +65,7 @@ Functions related to getting and setting brushes.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-brushes-refresh" role="function"/>gimp_brushes_refresh ()</title>
-<indexterm><primary>gimp_brushes_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_refresh            (void);</programlisting>
+<indexterm><primary>gimp_brushes_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_refresh                (void);</programlisting>
 <para>
 Refresh current brushes. This function always succeeds.
 </para>
@@ -81,8 +80,8 @@ path and updates the brush dialogs accordingly.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-get-list" role="function"/>gimp_brushes_get_list ()</title>
-<indexterm><primary>gimp_brushes_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_brushes_get_list           (const <link linkend="gchar">gchar</link> *filter,
-                                             <link linkend="gint">gint</link> *num_brushes);</programlisting>
+<indexterm><primary>gimp_brushes_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_brushes_get_list               (const <link linkend="gchar">gchar</link> *filter,
+                                                         <link linkend="gint">gint</link> *num_brushes);</programlisting>
 <para>
 Retrieve a complete listing of the available brushes.
 </para>
@@ -104,9 +103,9 @@ Each name returned can be used as input to the
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-get-brush" role="function" condition="deprecated:"/>gimp_brushes_get_brush ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_get_brush</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brushes_get_brush          (<link linkend="gint">gint</link> *width,
-                                             <link linkend="gint">gint</link> *height,
-                                             <link linkend="gint">gint</link> *spacing);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_get_brush</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_brushes_get_brush              (<link linkend="gint">gint</link> *width,
+                                                         <link linkend="gint">gint</link> *height,
+                                                         <link linkend="gint">gint</link> *spacing);</programlisting>
 <warning><para><literal>gimp_brushes_get_brush</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-get-brush"><function>gimp_context_get_brush()</function></link> instead.</para>
@@ -127,7 +126,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-get-brush"><functi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-set-brush" role="function" condition="deprecated:"/>gimp_brushes_set_brush ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_set_brush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_set_brush          (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_set_brush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_brush              (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_brushes_set_brush</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-set-brush"><function>gimp_context_set_brush()</function></link> instead.</para>
@@ -142,7 +141,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-brush"><functi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-get-opacity" role="function" condition="deprecated:"/>gimp_brushes_get_opacity ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_brushes_get_opacity        (void);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_brushes_get_opacity            (void);</programlisting>
 <warning><para><literal>gimp_brushes_get_opacity</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-get-opacity"><function>gimp_context_get_opacity()</function></link> instead.</para>
@@ -154,7 +153,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-get-opacity"><func
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-set-opacity" role="function" condition="deprecated:"/>gimp_brushes_set_opacity ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_set_opacity        (<link linkend="gdouble">gdouble</link> opacity);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_opacity            (<link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <warning><para><literal>gimp_brushes_set_opacity</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-set-opacity"><function>gimp_context_set_opacity()</function></link> instead.</para>
@@ -169,8 +168,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-opacity"><func
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-get-paint-mode" role="function" condition="deprecated:"/>gimp_brushes_get_paint_mode ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_get_paint_mode</primary></indexterm><programlisting><link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> gimp_brushes_get_paint_mode
-                                            (void);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_get_paint_mode</primary></indexterm><programlisting><link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> gimp_brushes_get_paint_mode        (void);</programlisting>
 <warning><para><literal>gimp_brushes_get_paint_mode</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure isdeprecated! Use <link linkend="gimp-context-get-paint-mode"><function>gimp_context_get_paint_mode()</function></link> instead.</para>
@@ -182,7 +180,7 @@ This procedure isdeprecated! Use <link linkend="gimp-context-get-paint-mode"><fu
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-set-paint-mode" role="function" condition="deprecated:"/>gimp_brushes_set_paint_mode ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_set_paint_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_set_paint_mode     (<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_set_paint_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_paint_mode         (<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
 <warning><para><literal>gimp_brushes_set_paint_mode</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-set-paint-mode"><function>gimp_context_set_paint_mode()</function></link> instead.</para>
@@ -197,7 +195,7 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-paint-mode"><f
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-get-spacing" role="function" condition="deprecated:"/>gimp_brushes_get_spacing ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_get_spacing</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_brushes_get_spacing        (void);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_get_spacing</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_brushes_get_spacing            (void);</programlisting>
 <warning><para><literal>gimp_brushes_get_spacing</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-brush-get-spacing"><function>gimp_brush_get_spacing()</function></link> instead.</para>
@@ -209,7 +207,7 @@ This procedure is deprecated! Use <link linkend="gimp-brush-get-spacing"><functi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-set-spacing" role="function" condition="deprecated:"/>gimp_brushes_set_spacing ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brushes_set_spacing        (<link linkend="gint">gint</link> spacing);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_brushes_set_spacing            (<link linkend="gint">gint</link> spacing);</programlisting>
 <warning><para><literal>gimp_brushes_set_spacing</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-brush-set-spacing"><function>gimp_brush_set_spacing()</function></link> instead.</para>
@@ -224,14 +222,14 @@ This procedure is deprecated! Use <link linkend="gimp-brush-set-spacing"><functi
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-brushes-get-brush-data" role="function" condition="deprecated:"/>gimp_brushes_get_brush_data ()</title>
-<indexterm role="deprecated"><primary>gimp_brushes_get_brush_data</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brushes_get_brush_data     (const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gdouble">gdouble</link> *opacity,
-                                             <link linkend="gint">gint</link> *spacing,
-                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> *paint_mode,
-                                             <link linkend="gint">gint</link> *width,
-                                             <link linkend="gint">gint</link> *height,
-                                             <link linkend="gint">gint</link> *length,
-                                             <link linkend="guint8">guint8</link> **mask_data);</programlisting>
+<indexterm role="deprecated"><primary>gimp_brushes_get_brush_data</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_brushes_get_brush_data         (const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gdouble">gdouble</link> *opacity,
+                                                         <link linkend="gint">gint</link> *spacing,
+                                                         <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> *paint_mode,
+                                                         <link linkend="gint">gint</link> *width,
+                                                         <link linkend="gint">gint</link> *height,
+                                                         <link linkend="gint">gint</link> *length,
+                                                         <link linkend="guint8">guint8</link> **mask_data);</programlisting>
 <warning><para><literal>gimp_brushes_get_brush_data</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-brush-get-pixels"><function>gimp_brush_get_pixels()</function></link> instead.</para>

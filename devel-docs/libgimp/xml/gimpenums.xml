@@ -22,39 +22,39 @@
 
 
 
-enum        <link linkend="GimpAddMaskType">GimpAddMaskType</link>;
-enum        <link linkend="GimpBlendMode">GimpBlendMode</link>;
-enum        <link linkend="GimpBrushApplicationMode">GimpBrushApplicationMode</link>;
-enum        <link linkend="GimpBucketFillMode">GimpBucketFillMode</link>;
-enum        <link linkend="GimpChannelOps">GimpChannelOps</link>;
-enum        <link linkend="GimpChannelType">GimpChannelType</link>;
-enum        <link linkend="GimpCloneType">GimpCloneType</link>;
-enum        <link linkend="GimpConvertDitherType">GimpConvertDitherType</link>;
-enum        <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link>;
-enum        <link linkend="GimpConvolutionType">GimpConvolutionType</link>;
-enum        <link linkend="GimpConvolveType">GimpConvolveType</link>;
-enum        <link linkend="GimpDodgeBurnType">GimpDodgeBurnType</link>;
-enum        <link linkend="GimpFillType">GimpFillType</link>;
-enum        <link linkend="GimpGradientSegmentColor">GimpGradientSegmentColor</link>;
-enum        <link linkend="GimpGradientSegmentType">GimpGradientSegmentType</link>;
-enum        <link linkend="GimpGradientType">GimpGradientType</link>;
-enum        <link linkend="GimpHistogramChannel">GimpHistogramChannel</link>;
-enum        <link linkend="GimpHueRange">GimpHueRange</link>;
-enum        <link linkend="GimpIconType">GimpIconType</link>;
-enum        <link linkend="GimpInterpolationType">GimpInterpolationType</link>;
-enum        <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link>;
-enum        <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link>;
-enum        <link linkend="GimpMergeType">GimpMergeType</link>;
-enum        <link linkend="GimpOffsetType">GimpOffsetType</link>;
-enum        <link linkend="GimpOrientationType">GimpOrientationType</link>;
-enum        <link linkend="GimpPaintApplicationMode">GimpPaintApplicationMode</link>;
-enum        <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
-enum        <link linkend="GimpRotationType">GimpRotationType</link>;
-enum        <link linkend="GimpRunMode">GimpRunMode</link>;
-enum        <link linkend="GimpSizeType">GimpSizeType</link>;
-enum        <link linkend="GimpTransferMode">GimpTransferMode</link>;
-enum        <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
-const <link linkend="gchar">gchar</link>** <link linkend="gimp-enums-get-type-names">gimp_enums_get_type_names</link>     (<link linkend="gint">gint</link> *n_type_names);
+enum                <link linkend="GimpAddMaskType">GimpAddMaskType</link>;
+enum                <link linkend="GimpBlendMode">GimpBlendMode</link>;
+enum                <link linkend="GimpBrushApplicationMode">GimpBrushApplicationMode</link>;
+enum                <link linkend="GimpBucketFillMode">GimpBucketFillMode</link>;
+enum                <link linkend="GimpChannelOps">GimpChannelOps</link>;
+enum                <link linkend="GimpChannelType">GimpChannelType</link>;
+enum                <link linkend="GimpCloneType">GimpCloneType</link>;
+enum                <link linkend="GimpConvertDitherType">GimpConvertDitherType</link>;
+enum                <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link>;
+enum                <link linkend="GimpConvolutionType">GimpConvolutionType</link>;
+enum                <link linkend="GimpConvolveType">GimpConvolveType</link>;
+enum                <link linkend="GimpDodgeBurnType">GimpDodgeBurnType</link>;
+enum                <link linkend="GimpFillType">GimpFillType</link>;
+enum                <link linkend="GimpGradientSegmentColor">GimpGradientSegmentColor</link>;
+enum                <link linkend="GimpGradientSegmentType">GimpGradientSegmentType</link>;
+enum                <link linkend="GimpGradientType">GimpGradientType</link>;
+enum                <link linkend="GimpHistogramChannel">GimpHistogramChannel</link>;
+enum                <link linkend="GimpHueRange">GimpHueRange</link>;
+enum                <link linkend="GimpIconType">GimpIconType</link>;
+enum                <link linkend="GimpInterpolationType">GimpInterpolationType</link>;
+enum                <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link>;
+enum                <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link>;
+enum                <link linkend="GimpMergeType">GimpMergeType</link>;
+enum                <link linkend="GimpOffsetType">GimpOffsetType</link>;
+enum                <link linkend="GimpOrientationType">GimpOrientationType</link>;
+enum                <link linkend="GimpPaintApplicationMode">GimpPaintApplicationMode</link>;
+enum                <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
+enum                <link linkend="GimpRotationType">GimpRotationType</link>;
+enum                <link linkend="GimpRunMode">GimpRunMode</link>;
+enum                <link linkend="GimpSizeType">GimpSizeType</link>;
+enum                <link linkend="GimpTransferMode">GimpTransferMode</link>;
+enum                <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
+const <link linkend="gchar">gchar</link>**       <link linkend="gimp-enums-get-type-names">gimp_enums_get_type_names</link>           (<link linkend="gint">gint</link> *n_type_names);
 
 </synopsis>
 </refsynopsisdiv>
@@ -504,7 +504,7 @@ Enums and definitions.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-enums-get-type-names" role="function" condition="since:GIMP 2.2"/>gimp_enums_get_type_names ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_enums_get_type_names</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>** gimp_enums_get_type_names     (<link linkend="gint">gint</link> *n_type_names);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_enums_get_type_names</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>**       gimp_enums_get_type_names           (<link linkend="gint">gint</link> *n_type_names);</programlisting>
 <para>
 This function gives access to the list of enums registered by libgimp.
 The returned array is static and must not be modified.</para>
@@ -517,7 +517,7 @@ The returned array is static and must not be modified.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> an array with type names
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

@@ -22,10 +22,10 @@
 
 
 
-            <link linkend="GimpButton-struct">GimpButton</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-button-new">gimp_button_new</link>                 (void);
-<link linkend="void">void</link>        <link linkend="gimp-button-extended-clicked">gimp_button_extended_clicked</link>    (<link linkend="GimpButton">GimpButton</link> *button,
-                                             <link linkend="GdkModifierType">GdkModifierType</link> state);
+                    <link linkend="GimpButton-struct">GimpButton</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-button-new">gimp_button_new</link>                     (void);
+<link linkend="void">void</link>                <link linkend="gimp-button-extended-clicked">gimp_button_extended_clicked</link>        (<link linkend="GimpButton">GimpButton</link> *button,
+                                                         <link linkend="GdkModifierType">GdkModifierType</link> state);
 
 </synopsis>
 </refsynopsisdiv>
@@ -63,10 +63,7 @@ GimpButton implements
 <title role="signal_proto.title">Signals</title>
 <synopsis>
 
-&quot;<link linkend="GimpButton-extended-clicked">extended-clicked</link>&quot;
-            <link linkend="void">void</link>        user_function      (<link linkend="GimpButton">GimpButton</link>      *gimpbutton,
-                                            <link linkend="GdkModifierType">GdkModifierType</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link>         user_data)       : Run first
+  &quot;<link linkend="GimpButton-extended-clicked">extended-clicked</link>&quot;                               : Run First
 </synopsis>
 </refsect1>
 
@@ -90,7 +87,7 @@ modifier keys pressed.
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-button-new" role="function"/>gimp_button_new ()</title>
-<indexterm><primary>gimp_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_button_new                 (void);</programlisting>
+<indexterm><primary>gimp_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_button_new                     (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpButton"><type>GimpButton</type></link> widget.</para>
 <para>
@@ -101,8 +98,8 @@ Creates a new <link linkend="GimpButton"><type>GimpButton</type></link> widget.<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-button-extended-clicked" role="function"/>gimp_button_extended_clicked ()</title>
-<indexterm><primary>gimp_button_extended_clicked</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_button_extended_clicked    (<link linkend="GimpButton">GimpButton</link> *button,
-                                             <link linkend="GdkModifierType">GdkModifierType</link> state);</programlisting>
+<indexterm><primary>gimp_button_extended_clicked</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_button_extended_clicked        (<link linkend="GimpButton">GimpButton</link> *button,
+                                                         <link linkend="GdkModifierType">GdkModifierType</link> state);</programlisting>
 <para>
 Emits the button's "extended_clicked" signal.</para>
 <para>
@@ -121,9 +118,9 @@ Emits the button's "extended_clicked" signal.</para>
 <refsect1 role="signals">
 <title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpButton-extended-clicked"/>The &quot;extended-clicked&quot; signal</title>
-<indexterm><primary>GimpButton::extended-clicked</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpButton">GimpButton</link>      *gimpbutton,
-                                            <link linkend="GdkModifierType">GdkModifierType</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link>         user_data)       : Run first</programlisting>
+<indexterm><primary>GimpButton::extended-clicked</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpButton">GimpButton</link>     *gimpbutton,
+                                                        <link linkend="GdkModifierType">GdkModifierType</link> arg1,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)       : Run First</programlisting>
 <para>
 
 </para><variablelist role="params">

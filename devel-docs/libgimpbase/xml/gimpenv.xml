@@ -22,20 +22,20 @@
 
 
 
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-directory">gimp_directory</link>                 (void);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-personal-rc-file">gimp_personal_rc_file</link>           (const <link linkend="gchar">gchar</link> *basename);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-data-directory">gimp_data_directory</link>            (void);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-locale-directory">gimp_locale_directory</link>          (void);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-plug-in-directory">gimp_plug_in_directory</link>         (void);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-sysconf-directory">gimp_sysconf_directory</link>         (void);
-const <link linkend="gchar">gchar</link>* <link linkend="gimp-gtkrc">gimp_gtkrc</link>                     (void);
-<link linkend="GList">GList</link>*      <link linkend="gimp-path-parse">gimp_path_parse</link>                 (const <link linkend="gchar">gchar</link> *path,
-                                             <link linkend="gint">gint</link> max_paths,
-                                             <link linkend="gboolean">gboolean</link> check,
-                                             <link linkend="GList">GList</link> **check_failed);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-path-to-str">gimp_path_to_str</link>                (<link linkend="GList">GList</link> *path);
-<link linkend="void">void</link>        <link linkend="gimp-path-free">gimp_path_free</link>                  (<link linkend="GList">GList</link> *path);
-<link linkend="gchar">gchar</link>*      <link linkend="gimp-path-get-user-writable-dir">gimp_path_get_user_writable_dir</link> (<link linkend="GList">GList</link> *path);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-directory">gimp_directory</link>                      (void);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-personal-rc-file">gimp_personal_rc_file</link>               (const <link linkend="gchar">gchar</link> *basename);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-data-directory">gimp_data_directory</link>                 (void);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-locale-directory">gimp_locale_directory</link>               (void);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-plug-in-directory">gimp_plug_in_directory</link>              (void);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-sysconf-directory">gimp_sysconf_directory</link>              (void);
+const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gtkrc">gimp_gtkrc</link>                          (void);
+<link linkend="GList">GList</link>*              <link linkend="gimp-path-parse">gimp_path_parse</link>                     (const <link linkend="gchar">gchar</link> *path,
+                                                         <link linkend="gint">gint</link> max_paths,
+                                                         <link linkend="gboolean">gboolean</link> check,
+                                                         <link linkend="GList">GList</link> **check_failed);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-path-to-str">gimp_path_to_str</link>                    (<link linkend="GList">GList</link> *path);
+<link linkend="void">void</link>                <link linkend="gimp-path-free">gimp_path_free</link>                      (<link linkend="GList">GList</link> *path);
+<link linkend="gchar">gchar</link>*              <link linkend="gimp-path-get-user-writable-dir">gimp_path_get_user_writable_dir</link>     (<link linkend="GList">GList</link> *path);
 </synopsis>
 </refsynopsisdiv>
 
@@ -59,7 +59,7 @@ configuration files.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-directory" role="function"/>gimp_directory ()</title>
-<indexterm><primary>gimp_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_directory                 (void);</programlisting>
+<indexterm><primary>gimp_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_directory                      (void);</programlisting>
 <para>
 Returns the user-specific GIMP settings directory. If the
 environment variable GIMP2_DIRECTORY exists, it is used. If it is
@@ -89,7 +89,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-personal-rc-file" role="function"/>gimp_personal_rc_file ()</title>
-<indexterm><primary>gimp_personal_rc_file</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_personal_rc_file           (const <link linkend="gchar">gchar</link> *basename);</programlisting>
+<indexterm><primary>gimp_personal_rc_file</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_personal_rc_file               (const <link linkend="gchar">gchar</link> *basename);</programlisting>
 <para>
 Returns the name of a file in the user-specific GIMP settings directory.
 </para>
@@ -109,7 +109,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-data-directory" role="function"/>gimp_data_directory ()</title>
-<indexterm><primary>gimp_data_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_data_directory            (void);</programlisting>
+<indexterm><primary>gimp_data_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_data_directory                 (void);</programlisting>
 <para>
 Returns the top directory for GIMP data. If the environment
 variable GIMP2_DATADIR exists, that is used.  It should be an
@@ -130,7 +130,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-locale-directory" role="function"/>gimp_locale_directory ()</title>
-<indexterm><primary>gimp_locale_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_locale_directory          (void);</programlisting>
+<indexterm><primary>gimp_locale_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_locale_directory               (void);</programlisting>
 <para>
 Returns the top directory for GIMP locale files. If the environment
 variable GIMP2_LOCALEDIR exists, that is used.  It should be an
@@ -151,7 +151,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-plug-in-directory" role="function"/>gimp_plug_in_directory ()</title>
-<indexterm><primary>gimp_plug_in_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_plug_in_directory         (void);</programlisting>
+<indexterm><primary>gimp_plug_in_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_plug_in_directory              (void);</programlisting>
 <para>
 Returns the top directory for GIMP plug_ins and modules. If the
 environment variable GIMP2_PLUGINDIR exists, that is used.  It
@@ -172,7 +172,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-sysconf-directory" role="function"/>gimp_sysconf_directory ()</title>
-<indexterm><primary>gimp_sysconf_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_sysconf_directory         (void);</programlisting>
+<indexterm><primary>gimp_sysconf_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_sysconf_directory              (void);</programlisting>
 <para>
 Returns the top directory for GIMP config files. If the environment
 variable GIMP2_SYSCONFDIR exists, that is used.  It should be an
@@ -193,7 +193,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-gtkrc" role="function"/>gimp_gtkrc ()</title>
-<indexterm><primary>gimp_gtkrc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_gtkrc                     (void);</programlisting>
+<indexterm><primary>gimp_gtkrc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gtkrc                          (void);</programlisting>
 <para>
 Returns the name of the GIMP's application-specific gtkrc file.
 </para>
@@ -210,10 +210,10 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-path-parse" role="function"/>gimp_path_parse ()</title>
-<indexterm><primary>gimp_path_parse</primary></indexterm><programlisting><link linkend="GList">GList</link>*      gimp_path_parse                 (const <link linkend="gchar">gchar</link> *path,
-                                             <link linkend="gint">gint</link> max_paths,
-                                             <link linkend="gboolean">gboolean</link> check,
-                                             <link linkend="GList">GList</link> **check_failed);</programlisting>
+<indexterm><primary>gimp_path_parse</primary></indexterm><programlisting><link linkend="GList">GList</link>*              gimp_path_parse                     (const <link linkend="gchar">gchar</link> *path,
+                                                         <link linkend="gint">gint</link> max_paths,
+                                                         <link linkend="gboolean">gboolean</link> check,
+                                                         <link linkend="GList">GList</link> **check_failed);</programlisting>
 <para>
 </para>
 <para>
@@ -237,7 +237,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-path-to-str" role="function"/>gimp_path_to_str ()</title>
-<indexterm><primary>gimp_path_to_str</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_path_to_str                (<link linkend="GList">GList</link> *path);</programlisting>
+<indexterm><primary>gimp_path_to_str</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_path_to_str                    (<link linkend="GList">GList</link> *path);</programlisting>
 <para>
 </para>
 <para>
@@ -251,7 +251,7 @@ is on Windows).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-path-free" role="function"/>gimp_path_free ()</title>
-<indexterm><primary>gimp_path_free</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_path_free                  (<link linkend="GList">GList</link> *path);</programlisting>
+<indexterm><primary>gimp_path_free</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_path_free                      (<link linkend="GList">GList</link> *path);</programlisting>
 <para>
 This function frees the memory allocated for the list and the strings
 it contains.</para>
@@ -264,7 +264,7 @@ it contains.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-path-get-user-writable-dir" role="function"/>gimp_path_get_user_writable_dir ()</title>
-<indexterm><primary>gimp_path_get_user_writable_dir</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_path_get_user_writable_dir (<link linkend="GList">GList</link> *path);</programlisting>
+<indexterm><primary>gimp_path_get_user_writable_dir</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_path_get_user_writable_dir     (<link linkend="GList">GList</link> *path);</programlisting>
 <para>
 Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>
 <para>

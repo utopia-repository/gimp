@@ -22,30 +22,30 @@
 
 
 
-<link linkend="void">void</link>        (<link linkend="GimpProgressFunc">*GimpProgressFunc</link>)             (<link linkend="gint">gint</link> min,
-                                             <link linkend="gint">gint</link> max,
-                                             <link linkend="gint">gint</link> current,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>        (<link linkend="GimpPutPixelFunc">*GimpPutPixelFunc</link>)             (<link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>        (<link linkend="GimpRenderFunc">*GimpRenderFunc</link>)               (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color,
-                                             <link linkend="gpointer">gpointer</link> data);
-<link linkend="gulong">gulong</link>      <link linkend="gimp-adaptive-supersample-area">gimp_adaptive_supersample_area</link>  (<link linkend="gint">gint</link> x1,
-                                             <link linkend="gint">gint</link> y1,
-                                             <link linkend="gint">gint</link> x2,
-                                             <link linkend="gint">gint</link> y2,
-                                             <link linkend="gint">gint</link> max_depth,
-                                             <link linkend="gdouble">gdouble</link> threshold,
-                                             <link linkend="GimpRenderFunc">GimpRenderFunc</link> render_func,
-                                             <link linkend="gpointer">gpointer</link> render_data,
-                                             <link linkend="GimpPutPixelFunc">GimpPutPixelFunc</link> put_pixel_func,
-                                             <link linkend="gpointer">gpointer</link> put_pixel_data,
-                                             <link linkend="GimpProgressFunc">GimpProgressFunc</link> progress_func,
-                                             <link linkend="gpointer">gpointer</link> progress_data);
+<link linkend="void">void</link>                (<link linkend="GimpProgressFunc">*GimpProgressFunc</link>)                 (<link linkend="gint">gint</link> min,
+                                                         <link linkend="gint">gint</link> max,
+                                                         <link linkend="gint">gint</link> current,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>                (<link linkend="GimpPutPixelFunc">*GimpPutPixelFunc</link>)                 (<link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>                (<link linkend="GimpRenderFunc">*GimpRenderFunc</link>)                   (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color,
+                                                         <link linkend="gpointer">gpointer</link> data);
+<link linkend="gulong">gulong</link>              <link linkend="gimp-adaptive-supersample-area">gimp_adaptive_supersample_area</link>      (<link linkend="gint">gint</link> x1,
+                                                         <link linkend="gint">gint</link> y1,
+                                                         <link linkend="gint">gint</link> x2,
+                                                         <link linkend="gint">gint</link> y2,
+                                                         <link linkend="gint">gint</link> max_depth,
+                                                         <link linkend="gdouble">gdouble</link> threshold,
+                                                         <link linkend="GimpRenderFunc">GimpRenderFunc</link> render_func,
+                                                         <link linkend="gpointer">gpointer</link> render_data,
+                                                         <link linkend="GimpPutPixelFunc">GimpPutPixelFunc</link> put_pixel_func,
+                                                         <link linkend="gpointer">gpointer</link> put_pixel_data,
+                                                         <link linkend="GimpProgressFunc">GimpProgressFunc</link> progress_func,
+                                                         <link linkend="gpointer">gpointer</link> progress_data);
 </synopsis>
 </refsynopsisdiv>
 
@@ -68,10 +68,10 @@ Functions to perform adaptive supersampling on an area.
 <title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpProgressFunc" role="function"/>GimpProgressFunc ()</title>
-<indexterm><primary>GimpProgressFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpProgressFunc)             (<link linkend="gint">gint</link> min,
-                                             <link linkend="gint">gint</link> max,
-                                             <link linkend="gint">gint</link> current,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm><primary>GimpProgressFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpProgressFunc)                 (<link linkend="gint">gint</link> min,
+                                                         <link linkend="gint">gint</link> max,
+                                                         <link linkend="gint">gint</link> current,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -92,10 +92,10 @@ Functions to perform adaptive supersampling on an area.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="GimpPutPixelFunc" role="function"/>GimpPutPixelFunc ()</title>
-<indexterm><primary>GimpPutPixelFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpPutPixelFunc)             (<link linkend="gint">gint</link> x,
-                                             <link linkend="gint">gint</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm><primary>GimpPutPixelFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpPutPixelFunc)                 (<link linkend="gint">gint</link> x,
+                                                         <link linkend="gint">gint</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -116,10 +116,10 @@ Functions to perform adaptive supersampling on an area.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="GimpRenderFunc" role="function"/>GimpRenderFunc ()</title>
-<indexterm><primary>GimpRenderFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRenderFunc)               (<link linkend="gdouble">gdouble</link> x,
-                                             <link linkend="gdouble">gdouble</link> y,
-                                             <link linkend="GimpRGB">GimpRGB</link> *color,
-                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
+<indexterm><primary>GimpRenderFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRenderFunc)                   (<link linkend="gdouble">gdouble</link> x,
+                                                         <link linkend="gdouble">gdouble</link> y,
+                                                         <link linkend="GimpRGB">GimpRGB</link> *color,
+                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -140,18 +140,18 @@ Functions to perform adaptive supersampling on an area.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-adaptive-supersample-area" role="function"/>gimp_adaptive_supersample_area ()</title>
-<indexterm><primary>gimp_adaptive_supersample_area</primary></indexterm><programlisting><link linkend="gulong">gulong</link>      gimp_adaptive_supersample_area  (<link linkend="gint">gint</link> x1,
-                                             <link linkend="gint">gint</link> y1,
-                                             <link linkend="gint">gint</link> x2,
-                                             <link linkend="gint">gint</link> y2,
-                                             <link linkend="gint">gint</link> max_depth,
-                                             <link linkend="gdouble">gdouble</link> threshold,
-                                             <link linkend="GimpRenderFunc">GimpRenderFunc</link> render_func,
-                                             <link linkend="gpointer">gpointer</link> render_data,
-                                             <link linkend="GimpPutPixelFunc">GimpPutPixelFunc</link> put_pixel_func,
-                                             <link linkend="gpointer">gpointer</link> put_pixel_data,
-                                             <link linkend="GimpProgressFunc">GimpProgressFunc</link> progress_func,
-                                             <link linkend="gpointer">gpointer</link> progress_data);</programlisting>
+<indexterm><primary>gimp_adaptive_supersample_area</primary></indexterm><programlisting><link linkend="gulong">gulong</link>              gimp_adaptive_supersample_area      (<link linkend="gint">gint</link> x1,
+                                                         <link linkend="gint">gint</link> y1,
+                                                         <link linkend="gint">gint</link> x2,
+                                                         <link linkend="gint">gint</link> y2,
+                                                         <link linkend="gint">gint</link> max_depth,
+                                                         <link linkend="gdouble">gdouble</link> threshold,
+                                                         <link linkend="GimpRenderFunc">GimpRenderFunc</link> render_func,
+                                                         <link linkend="gpointer">gpointer</link> render_data,
+                                                         <link linkend="GimpPutPixelFunc">GimpPutPixelFunc</link> put_pixel_func,
+                                                         <link linkend="gpointer">gpointer</link> put_pixel_data,
+                                                         <link linkend="GimpProgressFunc">GimpProgressFunc</link> progress_func,
+                                                         <link linkend="gpointer">gpointer</link> progress_data);</programlisting>
 <para>
 
 </para><variablelist role="params">

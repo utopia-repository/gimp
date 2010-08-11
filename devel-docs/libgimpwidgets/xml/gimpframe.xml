@@ -22,8 +22,8 @@
 
 
 
-            <link linkend="GimpFrame-struct">GimpFrame</link>;
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-frame-new">gimp_frame_new</link>                  (const <link linkend="gchar">gchar</link> *label);
+                    <link linkend="GimpFrame-struct">GimpFrame</link>;
+<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-frame-new">gimp_frame_new</link>                      (const <link linkend="gchar">gchar</link> *label);
 
 </synopsis>
 </refsynopsisdiv>
@@ -59,8 +59,8 @@ GimpFrame implements
 <title role="style_properties.title">Style Properties</title>
 <synopsis>
 
-  &quot;<link linkend="GimpFrame--label-bold">label-bold</link>&quot;           <link linkend="gboolean">gboolean</link>              : Read
-  &quot;<link linkend="GimpFrame--label-spacing">label-spacing</link>&quot;        <link linkend="gint">gint</link>                  : Read
+  &quot;<link linkend="GimpFrame--label-bold">label-bold</link>&quot;               <link linkend="gboolean">gboolean</link>              : Read
+  &quot;<link linkend="GimpFrame--label-spacing">label-spacing</link>&quot;            <link linkend="gint">gint</link>                  : Read
 </synopsis>
 </refsect1>
 
@@ -83,7 +83,7 @@ A widget providing a HIG-compliant subclass of <link linkend="GtkFrame"><type>Gt
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-frame-new" role="function" condition="since:GIMP 2.2"/>gimp_frame_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_frame_new                  (const <link linkend="gchar">gchar</link> *label);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_frame_new                      (const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
 Creates a <link linkend="GimpFrame"><type>GimpFrame</type></link> widget. A <link linkend="GimpFrame"><type>GimpFrame</type></link> is a HIG-compliant
 variant of <link linkend="GtkFrame"><type>GtkFrame</type></link>. It doesn't render a frame at all but
@@ -99,18 +99,18 @@ the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpFrame"><type>GimpFrame</type></link> widget
 
 </simpara></listitem></varlistentry>
-</variablelist><para>Since  GIMP 2.2
+</variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>
 <refsect1 role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
 <refsect2><title><anchor id="GimpFrame--label-bold"/>The &quot;<literal>label-bold</literal>&quot; style property</title>
-<indexterm><primary>GimpFrame:label-bold</primary></indexterm><programlisting>  &quot;label-bold&quot;           <link linkend="gboolean">gboolean</link>              : Read</programlisting>
+<indexterm><primary>GimpFrame:label-bold</primary></indexterm><programlisting>  &quot;label-bold&quot;               <link linkend="gboolean">gboolean</link>              : Read</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
 <refsect2><title><anchor id="GimpFrame--label-spacing"/>The &quot;<literal>label-spacing</literal>&quot; style property</title>
-<indexterm><primary>GimpFrame:label-spacing</primary></indexterm><programlisting>  &quot;label-spacing&quot;        <link linkend="gint">gint</link>                  : Read</programlisting>
+<indexterm><primary>GimpFrame:label-spacing</primary></indexterm><programlisting>  &quot;label-spacing&quot;            <link linkend="gint">gint</link>                  : Read</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 6</para>
 </refsect2>

@@ -102,7 +102,7 @@ static void
 init_slib_version (void)
 {
   setvar (cintern ("*slib-version*"),
-	  cintern ("$Id: slib.c,v 1.16.2.1 2005/01/11 09:42:35 neo Exp $"),
+	  cintern ("$Id: slib.c,v 1.16.2.2 2005/12/12 23:09:37 schumaml Exp $"),
 	  NIL);
 }
 
@@ -1130,7 +1130,7 @@ gen_intern (char *name, long copyp)
       n = obarray_dim;
       cname = name;
       while ((c = *cname++))
-	hash = ((hash * 17) ^ c) % n;
+	hash = ((hash * 17) ^ (unsigned char)c) % n;
       sl = obarray[hash];
     }
   else

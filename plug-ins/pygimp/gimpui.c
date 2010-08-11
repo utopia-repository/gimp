@@ -6772,7 +6772,7 @@ _wrap_gimp_palette_select_button_new(PyGObject *self, PyObject *args, PyObject *
     char *prop_names[] = {"title", "palette-name", NULL };
     guint nparams, i;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|O:gimpui.PaletteSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|OO:gimpui.PaletteSelectButton.__init__" , arg_names , &parsed_args[0] , &parsed_args[1]))
         return -1;
 
     memset(params, 0, sizeof(GParameter)*2);

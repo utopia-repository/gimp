@@ -1,3 +1,184 @@
+2009-01-01  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.6.4 release.
+
+2009-01-01  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 565223 – Perspective transformation jagged edges / comb effect
+
+	* app/core/gimp-transform-region.c: reverted the code change, but
+	not the cleanups, from commit r26786.
+
+2008-12-28  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpgegltool.c (gimp_param_spec_duplicate): fixed
+	handling of GEGL minor version number in compile-time check.
+
+2008-12-28  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpgegltool.c (gimp_param_spec_duplicate): fixed typo
+	in GEGL version number check.
+
+2008-12-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 563985 – jpg save dialog: "cancel" is treated like "commit"
+	for settings
+
+	* plug-ins/file-jpeg/jpeg.c (run): only attach the comment and
+	settings to the image if the save was successful.
+
+2008-12-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 564087 – Using clone tool on a layer with a part out of canvas
+	causes crashes
+
+	* app/paint/gimppaintcore.c (gimp_paint_core_paste): intersect the
+	rectangle with the extents of the saved projection.
+
+2008-12-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 564593 – crash when the drawable is changed while a color
+	tools is active
+
+	* app/core/gimpdrawable-shadow.c (gimp_drawable_merge_shadow_tiles):
+	keep a reference to the shadow tiles because it might otherwise be
+	free'd under our feet.
+
+2008-12-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 564869 – GIMP crashes on selecting Tools->GEGL operation
+
+	* app/tools/gimptool.c (gimp_tool_initialize): check if the tool
+	has set an error.
+
+2008-12-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 565138 – python-fu-foggify does not check if image is in rgb mode
+
+	* plug-ins/pygimp/plug-ins/foggify.py (foggify): fixed handling of
+	grayscale images.
+
+2008-12-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 563130 – Hue selection mode does not cross the 0-360 degrees line
+
+	* app/core/gimpimage-contiguous-region.c (pixel_difference):
+	applied patch from Daniel Hornung.
+
+2008-12-04  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 563179 – Scrollbars not resized when we extend the canvas size
+
+	* app/display/gimpdisplayshell-handlers.c
+	(gimp_display_shell_size_changed_detailed_handler): Add explicit
+	call to gimp_display_shell_scroll_clamp_and_update() at the end to
+	make sure it is called.
+
+2008-12-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* tools/pdbgen/pdb/convert.pdb: fixed an error in the documentation
+	of the gimp-image-convert-rgb procedure.
+
+	* app/pdb/convert-cmds.c
+	* libgimp/gimpconvert_pdb.c: regenerated.
+
+2008-12-03  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimagemap.c (gimp_image_map_apply): when compiling
+	against GEGL from trunk, use "gegl:translate" instead of "shift".
+
+2008-11-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 562459 – PF_PALETTE: 'TypeError' when used in a plugin that is
+	registered in <Image>
+
+	* plug-ins/pygimp/gimpui.defs (gimp_palette_select_button_new):
+	the 'title' parameter is optional.
+
+2008-11-27  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 562427 – Compilation with --as-needed
+
+	* app/Makefile.am (gimp_console_2_7_LDADD): add $(GLIB_LIBS) so
+	libgthread gets pulled in explicitely.
+
+2008-11-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 562386 – PF_SLIDER and PF_SPINNER 'Step' values do not change
+	consistently...
+
+	* plug-ins/pygimp/gimpfu.py (SliderEntry): set the precision on
+	the slider just as we do it for the spin-button.
+
+2008-11-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/pygimp/gimpfu.py (SpinnerEntry): let SpinnerEntry
+	return a float instead of trying to convert the value to an int.
+
+2008-11-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 562386 – PF_SLIDER and PF_SPINNER 'Step' values do not change
+	consistently...
+
+	* plug-ins/pygimp/gimpfu.py (SpinnerEntry): initialize the
+	spin-button the way that gtk_spin_button_new_with_range() is
+	implemented.
+
+2008-11-26  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 562366 – Default image dimensions are not correctly
+	transferred in the file/new dialog box
+
+	* app/dialogs/preferences-dialog.c
+	(prefs_template_select_callback): We need to copy the template in
+	the same way as in the New Image dialog.
+
+	* app/dialogs/image-new-dialog.c (image_new_dialog_set): ... and
+	when we copy the template to the New Image dialog.
+
+2008-11-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 561899 – GIMP can't save to mounted filesystem if file exists
+
+	* plug-ins/file-uri/uri-backend-gvfs.c (copy_uri): pass the
+	G_FILE_COPY_OVERWRITE flag to g_file_copy().
+
+2008-11-21  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.6.4 (interface age 4).
+
 2008-11-21  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.6.3 release.

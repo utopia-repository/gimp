@@ -87,6 +87,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -414,11 +416,16 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 themedatadir = $(gimpdatadir)/themes/Default/images/preferences
 PREFS_IMAGES = \
+	color-management-22.png		\
 	color-management.png		\
+	controllers-22.png			\
 	controllers.png			\
 	default-comment.png		\
+	default-grid-22.png		\
 	default-grid.png		\
+	display-22.png			\
 	display.png			\
+	environment-22.png			\
 	environment.png			\
 	folders-brushes-22.png		\
 	folders-brushes.png		\
@@ -443,20 +450,24 @@ PREFS_IMAGES = \
 	folders-tool-plug-ins-22.png	\
 	folders-tool-plug-ins.png	\
 	folders-tools-22.png		\
+	folders-22.png			\
 	folders.png			\
 	help-system.png			\
+	image-title-22.png			\
 	image-title.png			\
 	image-windows-22.png		\
 	image-windows.png		\
+	input-devices-22.png		\
 	input-devices.png		\
 	interface-22.png		\
 	interface.png			\
-	monitor-22.png			\
-	monitor.png			\
+	new-image-22.png			\
 	new-image.png			\
+	session-22.png			\
 	session.png			\
 	theme-22.png			\
 	theme.png			\
+	tool-options-22.png		\
 	tool-options.png		\
 	toolbox-22.png			\
 	toolbox.png			\

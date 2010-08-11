@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpgradient">
 <refmeta>
-<refentrytitle id="top_of_page">gimpgradient</refentrytitle>
+<refentrytitle role="top_of_page">gimpgradient</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -157,15 +157,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions operating on a single gradient.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-gradient-new" role="function" condition="since:GIMP 2.2"/>gimp_gradient_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_gradient_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_gradient_new               (const <link linkend="gchar">gchar</link> *name);</programlisting>
@@ -393,11 +393,11 @@ segment of the specified gradient.</para>
                                              const <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
-Retrieves the left endpoint color of the specified segment
+Sets the left endpoint color of the specified segment
 </para>
 <para>
-This procedure retrieves the left endpoint color of the specified
-segment of the specified gradient.</para>
+This procedure sets the left endpoint color of the specified segment
+of the specified gradient.</para>
 <para>
 
 </para><variablelist role="params">
@@ -459,10 +459,10 @@ segment of the specified gradient.</para>
                                              const <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
-Retrieves the right endpoint color of the specified segment
+Sets the right endpoint color of the specified segment
 </para>
 <para>
-This procedure retrieves the right endpoint color of the specified
+This procedure sets the right endpoint color of the specified
 segment of the specified gradient.</para>
 <para>
 

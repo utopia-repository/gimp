@@ -26,6 +26,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -41,6 +42,7 @@
 #include "core/gimpdrawable-histogram.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagemap.h"
+#include "core/gimpprogress.h"
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimpcolorbar.h"
@@ -70,60 +72,61 @@
 
 /*  local function prototypes  */
 
-static void     gimp_curves_tool_finalize       (GObject          *object);
+static void     gimp_curves_tool_finalize       (GObject           *object);
 
-static gboolean gimp_curves_tool_initialize     (GimpTool         *tool,
-                                                 GimpDisplay      *display);
-static void     gimp_curves_tool_button_release (GimpTool         *tool,
-                                                 GimpCoords       *coords,
-                                                 guint32           time,
-                                                 GdkModifierType   state,
-                                                 GimpDisplay      *display);
-static gboolean gimp_curves_tool_key_press      (GimpTool         *tool,
-                                                 GdkEventKey      *kevent,
-                                                 GimpDisplay      *display);
-static void     gimp_curves_tool_oper_update    (GimpTool         *tool,
-                                                 GimpCoords       *coords,
-                                                 GdkModifierType   state,
-                                                 gboolean          proximity,
-                                                 GimpDisplay      *display);
+static gboolean gimp_curves_tool_initialize     (GimpTool          *tool,
+                                                 GimpDisplay       *display);
+static void     gimp_curves_tool_button_release (GimpTool          *tool,
+                                                 GimpCoords        *coords,
+                                                 guint32            time,
+                                                 GdkModifierType    state,
+                                                 GimpDisplay       *display);
+static gboolean gimp_curves_tool_key_press      (GimpTool          *tool,
+                                                 GdkEventKey       *kevent,
+                                                 GimpDisplay       *display);
+static void     gimp_curves_tool_oper_update    (GimpTool          *tool,
+                                                 GimpCoords        *coords,
+                                                 GdkModifierType    state,
+                                                 gboolean           proximity,
+                                                 GimpDisplay       *display);
 
-static void     gimp_curves_tool_color_picked   (GimpColorTool    *color_tool,
+static void     gimp_curves_tool_color_picked   (GimpColorTool     *color_tool,
                                                  GimpColorPickState pick_state,
-                                                 GimpImageType     sample_type,
-                                                 GimpRGB          *color,
-                                                 gint              color_index);
-static void     gimp_curves_tool_map            (GimpImageMapTool *image_map_tool);
-static void     gimp_curves_tool_dialog         (GimpImageMapTool *image_map_tool);
-static void     gimp_curves_tool_reset          (GimpImageMapTool *image_map_tool);
-static gboolean gimp_curves_tool_settings_load  (GimpImageMapTool *image_map_tool,
-                                                 gpointer          fp);
-static gboolean gimp_curves_tool_settings_save  (GimpImageMapTool *image_map_tool,
-                                                 gpointer          fp);
+                                                 GimpImageType      sample_type,
+                                                 GimpRGB           *color,
+                                                 gint               color_index);
+static void     gimp_curves_tool_map            (GimpImageMapTool  *image_map_tool);
+static void     gimp_curves_tool_dialog         (GimpImageMapTool  *image_map_tool);
+static void     gimp_curves_tool_reset          (GimpImageMapTool  *image_map_tool);
+static gboolean gimp_curves_tool_settings_load  (GimpImageMapTool  *image_map_tool,
+                                                 gpointer           fp,
+                                                 GError           **error);
+static gboolean gimp_curves_tool_settings_save  (GimpImageMapTool  *image_map_tool,
+                                                 gpointer           fp);
 
-static void     curves_add_point                (GimpCurvesTool   *tool,
-                                                 gint              channel);
-static gboolean curves_key_press                (GimpCurvesTool   *tool,
-                                                 GdkEventKey      *kevent);
-static void     curves_update                   (GimpCurvesTool   *tool,
-                                                 gint              update);
+static void     curves_add_point                (GimpCurvesTool    *tool,
+                                                 gint               channel);
+static gboolean curves_key_press                (GimpCurvesTool    *tool,
+                                                 GdkEventKey       *kevent);
+static void     curves_update                   (GimpCurvesTool    *tool,
+                                                 gint               update);
 
-static void     curves_channel_callback         (GtkWidget        *widget,
-                                                 GimpCurvesTool   *tool);
-static void     curves_channel_reset_callback   (GtkWidget        *widget,
-                                                 GimpCurvesTool   *tool);
+static void     curves_channel_callback         (GtkWidget         *widget,
+                                                 GimpCurvesTool    *tool);
+static void     curves_channel_reset_callback   (GtkWidget         *widget,
+                                                 GimpCurvesTool    *tool);
 
-static gboolean curves_menu_sensitivity         (gint              value,
-                                                 gpointer          data);
+static gboolean curves_menu_sensitivity         (gint               value,
+                                                 gpointer           data);
 
-static void     curves_curve_type_callback      (GtkWidget        *widget,
-                                                 GimpCurvesTool   *tool);
-static gboolean curves_graph_events             (GtkWidget        *widget,
-                                                 GdkEvent         *event,
-                                                 GimpCurvesTool   *tool);
-static gboolean curves_graph_expose             (GtkWidget        *widget,
-                                                 GdkEventExpose   *eevent,
-                                                 GimpCurvesTool   *tool);
+static void     curves_curve_type_callback      (GtkWidget         *widget,
+                                                 GimpCurvesTool    *tool);
+static gboolean curves_graph_events             (GtkWidget         *widget,
+                                                 GdkEvent          *event,
+                                                 GimpCurvesTool    *tool);
+static gboolean curves_graph_expose             (GtkWidget         *widget,
+                                                 GdkEventExpose    *eevent,
+                                                 GimpCurvesTool    *tool);
 
 
 G_DEFINE_TYPE (GimpCurvesTool, gimp_curves_tool, GIMP_TYPE_IMAGE_MAP_TOOL)
@@ -250,7 +253,8 @@ gimp_curves_tool_initialize (GimpTool    *tool,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_message (_("Curves for indexed layers cannot be adjusted."));
+      gimp_message (display->image->gimp, GIMP_PROGRESS (display),
+                    _("Curves for indexed layers cannot be adjusted."));
       return FALSE;
     }
 
@@ -271,7 +275,7 @@ gimp_curves_tool_initialize (GimpTool    *tool,
 
   /*  always pick colors  */
   gimp_color_tool_enable (GIMP_COLOR_TOOL (tool),
-                          GIMP_COLOR_OPTIONS (tool->tool_info->tool_options));
+                          GIMP_COLOR_TOOL_GET_OPTIONS (tool));
 
   gimp_int_combo_box_set_sensitivity (GIMP_INT_COMBO_BOX (c_tool->channel_menu),
                                       curves_menu_sensitivity, c_tool, NULL);
@@ -531,8 +535,8 @@ gimp_curves_tool_map (GimpImageMapTool *image_map_tool)
 static void
 gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
 {
-  GimpCurvesTool  *tool = GIMP_CURVES_TOOL (image_map_tool);
-  GimpToolOptions *tool_options;
+  GimpCurvesTool  *tool         = GIMP_CURVES_TOOL (image_map_tool);
+  GimpToolOptions *tool_options = GIMP_TOOL_GET_OPTIONS (image_map_tool);
   GtkListStore    *store;
   GtkWidget       *vbox;
   GtkWidget       *vbox2;
@@ -546,8 +550,6 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
   GtkWidget       *button;
   GtkWidget       *bar;
   gint             padding;
-
-  tool_options = GIMP_TOOL (tool)->tool_info->tool_options;
 
   vbox = image_map_tool->main_vbox;
 
@@ -738,8 +740,9 @@ gimp_curves_tool_reset (GimpImageMapTool *image_map_tool)
 }
 
 static gboolean
-gimp_curves_tool_settings_load (GimpImageMapTool *image_map_tool,
-                                gpointer          fp)
+gimp_curves_tool_settings_load (GimpImageMapTool  *image_map_tool,
+                                gpointer           fp,
+                                GError           **error)
 {
   GimpCurvesTool *tool = GIMP_CURVES_TOOL (image_map_tool);
   FILE           *file = fp;
@@ -749,11 +752,13 @@ gimp_curves_tool_settings_load (GimpImageMapTool *image_map_tool,
   gint            index[5][CURVES_NUM_POINTS];
   gint            value[5][CURVES_NUM_POINTS];
 
-  if (! fgets (buf, sizeof (buf), file))
-    return FALSE;
-
-  if (strcmp (buf, "# GIMP Curves File\n") != 0)
-    return FALSE;
+  if (! fgets (buf, sizeof (buf), file) ||
+      strcmp (buf, "# GIMP Curves File\n") != 0)
+    {
+      g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+                   _("not a GIMP Levels file"));
+      return FALSE;
+    }
 
   for (i = 0; i < 5; i++)
     {
@@ -764,6 +769,8 @@ gimp_curves_tool_settings_load (GimpImageMapTool *image_map_tool,
             {
               /*  FIXME: should have a helpful error message here  */
               g_printerr ("fields != 2");
+              g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+                           _("parse error"));
               return FALSE;
             }
         }
@@ -1048,7 +1055,7 @@ curves_graph_events (GtkWidget      *widget,
 
       tool->grabbed = TRUE;
 
-      new_cursor = GDK_TCROSS;
+      curves_set_cursor (tool, GDK_TCROSS);
 
       switch (tool->curves->curve_type[tool->channel])
         {
@@ -1096,9 +1103,9 @@ curves_graph_events (GtkWidget      *widget,
       if (bevent->button != 1)
         return TRUE;
 
-      new_cursor = GDK_FLEUR;
       tool->grabbed = FALSE;
 
+      curves_set_cursor (tool, GDK_FLEUR);
       gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
 
       return TRUE;

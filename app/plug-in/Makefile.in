@@ -64,10 +64,12 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimppluginmanager-data.$(OBJEXT) \
 	gimppluginmanager-file.$(OBJEXT) \
 	gimppluginmanager-help-domain.$(OBJEXT) \
+	gimppluginmanager-history.$(OBJEXT) \
 	gimppluginmanager-locale-domain.$(OBJEXT) \
 	gimppluginmanager-menu-branch.$(OBJEXT) \
 	gimppluginmanager-query.$(OBJEXT) \
-	gimppluginprocframe.$(OBJEXT) gimppluginshm.$(OBJEXT) \
+	gimppluginprocedure.$(OBJEXT) gimppluginprocframe.$(OBJEXT) \
+	gimppluginshm.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
 	plug-in-def.$(OBJEXT) plug-in-params.$(OBJEXT) \
 	plug-in-rc.$(OBJEXT)
 libappplug_in_a_OBJECTS = $(am_libappplug_in_a_OBJECTS)
@@ -111,6 +113,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -478,16 +482,22 @@ libappplug_in_a_SOURCES = \
 	gimppluginmanager-file.h		\
 	gimppluginmanager-help-domain.c		\
 	gimppluginmanager-help-domain.h		\
+	gimppluginmanager-history.c		\
+	gimppluginmanager-history.h		\
 	gimppluginmanager-locale-domain.c	\
 	gimppluginmanager-locale-domain.h	\
 	gimppluginmanager-menu-branch.c		\
 	gimppluginmanager-menu-branch.h		\
 	gimppluginmanager-query.c		\
 	gimppluginmanager-query.h		\
+	gimppluginprocedure.c			\
+	gimppluginprocedure.h			\
 	gimppluginprocframe.c			\
 	gimppluginprocframe.h			\
 	gimppluginshm.c				\
 	gimppluginshm.h				\
+	gimptemporaryprocedure.c		\
+	gimptemporaryprocedure.h		\
 	\
 	plug-in-def.c				\
 	plug-in-def.h				\
@@ -562,12 +572,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-data.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-file.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-help-domain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-locale-domain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-menu-branch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-query.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocframe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginshm.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemporaryprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-def.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-enums.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-params.Po@am__quote@

@@ -25,7 +25,7 @@ static void
 init_sliba_version (void)
 {
   setvar (cintern ("*sliba-version*"),
-          cintern ("$Id: sliba.c,v 1.20 2006/05/08 20:01:14 simon Exp $"),
+          cintern ("$Id: sliba.c,v 1.21 2006/08/17 06:49:24 neo Exp $"),
           NIL);
 }
 
@@ -320,7 +320,7 @@ aref1 (LISP a, LISP i)
     case tc_byte_array:
       if (k >= a->storage_as.string.dim)
         my_err ("index too large", i);
-      return (flocons ((double) a->storage_as.string.data[k]));
+      return (flocons ((guint8) a->storage_as.string.data[k]));
     case tc_double_array:
       if (k >= a->storage_as.double_array.dim)
         my_err ("index too large", i);

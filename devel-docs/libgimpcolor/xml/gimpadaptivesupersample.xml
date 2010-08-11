@@ -4,7 +4,7 @@
 
 <refentry id="libgimpcolor-GimpAdaptiveSupersample">
 <refmeta>
-<refentrytitle id="top_of_page">GimpAdaptiveSupersample</refentrytitle>
+<refentrytitle role="top_of_page">GimpAdaptiveSupersample</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -57,15 +57,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions to perform adaptive supersampling on an area.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpProgressFunc" role="function"/>GimpProgressFunc ()</title>
 <indexterm><primary>GimpProgressFunc</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpProgressFunc)             (<link linkend="gint">gint</link> min,

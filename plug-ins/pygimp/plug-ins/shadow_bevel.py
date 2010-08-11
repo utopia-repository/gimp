@@ -53,23 +53,24 @@ def shadow_bevel(img, drawable, blur, bevel, do_shadow, drop_x, drop_y):
     # enable undo again
     img.undo_group_end()
 
+
 register(
-    "shadow_bevel",
-    "Add a drop shadow to a layer, and optionally bevel it.",
-    "Add a drop shadow to a layer, and optionally bevel it.",
+    "python-fu-shadow-bevel",
+    "Add a drop shadow to a layer, and optionally bevel it",
+    "Add a drop shadow to a layer, and optionally bevel it",
     "James Henstridge",
     "James Henstridge",
     "1999",
-    "<Image>/Filters/Light and Shadow/Shadow/_Drop Shadow and Bevel...",
+    "_Drop Shadow and Bevel...",
     "RGBA, GRAYA",
     [
         (PF_SLIDER, "blur",   "Shadow blur", 6, (1, 30, 1)),
         (PF_BOOL,   "bevel",  "Bevel the image", True),
         (PF_BOOL,   "shadow", "Make a drop shadow", True),
-        (PF_INT,    "drop_x", "Drop shadow X displacement", 3),
-        (PF_INT,    "drop_y", "Drop shadow Y displacement", 6)
+        (PF_INT,    "drop-x", "Drop shadow X displacement", 3),
+        (PF_INT,    "drop-y", "Drop shadow Y displacement", 6)
     ],
     [],
-    shadow_bevel)
+    shadow_bevel, menu="<Image>/Filters/Light and Shadow/Shadow")
 
 main()

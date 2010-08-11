@@ -111,6 +111,7 @@
     <function name="enum GimpOffsetType" link="libgimp-gimpenums.html#GimpOffsetType"/>
     <function name="enum GimpOrientationType" link="libgimp-gimpenums.html#GimpOrientationType"/>
     <function name="enum GimpRotationType" link="libgimp-gimpenums.html#GimpRotationType"/>
+    <function name="enum GimpSelectCriterion" link="libgimp-gimpenums.html#GimpSelectCriterion"/>
     <function name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names"/>
     <function name="GIMPVAR" link="libgimp-gimp.html#GIMPVAR:CAPS"/>
     <function name="gimp_version ()" link="libgimp-gimp.html#gimp-version"/>
@@ -265,6 +266,7 @@
     <function name="gimp_image_convert_rgb ()" link="libgimp-gimpconvert.html#gimp-image-convert-rgb"/>
     <function name="gimp_image_convert_grayscale ()" link="libgimp-gimpconvert.html#gimp-image-convert-grayscale"/>
     <function name="gimp_image_convert_indexed ()" link="libgimp-gimpconvert.html#gimp-image-convert-indexed"/>
+    <function name="gimp_image_convert_set_dither_matrix ()" link="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix"/>
     <function name="gimp_display_new ()" link="libgimp-gimpdisplay.html#gimp-display-new"/>
     <function name="gimp_display_delete ()" link="libgimp-gimpdisplay.html#gimp-display-delete"/>
     <function name="gimp_display_get_window_handle ()" link="libgimp-gimpdisplay.html#gimp-display-get-window-handle"/>
@@ -567,18 +569,21 @@
     <function name="gimp_airbrush ()" link="libgimp-gimptools.html#gimp-airbrush"/>
     <function name="gimp_airbrush_default ()" link="libgimp-gimptools.html#gimp-airbrush-default"/>
     <function name="gimp_by_color_select ()" link="libgimp-gimptools.html#gimp-by-color-select"/>
+    <function name="gimp_by_color_select_full ()" link="libgimp-gimptools.html#gimp-by-color-select-full"/>
     <function name="gimp_clone ()" link="libgimp-gimptools.html#gimp-clone"/>
     <function name="gimp_clone_default ()" link="libgimp-gimptools.html#gimp-clone-default"/>
     <function name="gimp_convolve ()" link="libgimp-gimptools.html#gimp-convolve"/>
     <function name="gimp_convolve_default ()" link="libgimp-gimptools.html#gimp-convolve-default"/>
     <function name="gimp_dodgeburn ()" link="libgimp-gimptools.html#gimp-dodgeburn"/>
     <function name="gimp_dodgeburn_default ()" link="libgimp-gimptools.html#gimp-dodgeburn-default"/>
+    <function name="gimp_edit_bucket_fill_full ()" link="libgimp-gimptools.html#gimp-edit-bucket-fill-full"/>
     <function name="gimp_ellipse_select ()" link="libgimp-gimptools.html#gimp-ellipse-select"/>
     <function name="gimp_eraser ()" link="libgimp-gimptools.html#gimp-eraser"/>
     <function name="gimp_eraser_default ()" link="libgimp-gimptools.html#gimp-eraser-default"/>
     <function name="gimp_flip ()" link="libgimp-gimptools.html#gimp-flip"/>
     <function name="gimp_free_select ()" link="libgimp-gimptools.html#gimp-free-select"/>
     <function name="gimp_fuzzy_select ()" link="libgimp-gimptools.html#gimp-fuzzy-select"/>
+    <function name="gimp_fuzzy_select_full ()" link="libgimp-gimptools.html#gimp-fuzzy-select-full"/>
     <function name="gimp_paintbrush ()" link="libgimp-gimptools.html#gimp-paintbrush"/>
     <function name="gimp_paintbrush_default ()" link="libgimp-gimptools.html#gimp-paintbrush-default"/>
     <function name="gimp_pencil ()" link="libgimp-gimptools.html#gimp-pencil"/>
@@ -608,6 +613,7 @@
     <function name="gimp_vectors_set_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-set-tattoo"/>
     <function name="gimp_vectors_set_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-set-visible"/>
     <function name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes"/>
+    <function name="gimp_vectors_to_selection ()" link="libgimp-gimpvectors.html#gimp-vectors-to-selection"/>
     <function name="gimp_vectors_parasite_attach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-attach"/>
     <function name="gimp_vectors_parasite_detach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-detach"/>
     <function name="gimp_vectors_parasite_find ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-find"/>
@@ -819,10 +825,13 @@
     <function name="The &quot;drawable&quot; property" link="GimpAspectPreview.html#GimpAspectPreview--drawable"/>
     <function name="GimpZoomPreview" link="GimpZoomPreview.html#GimpZoomPreview-struct"/>
     <function name="gimp_zoom_preview_new ()" link="GimpZoomPreview.html#gimp-zoom-preview-new"/>
+    <function name="gimp_zoom_preview_new_with_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-new-with-model"/>
     <function name="gimp_zoom_preview_get_source ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-source"/>
     <function name="gimp_zoom_preview_get_drawable ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-drawable"/>
     <function name="gimp_zoom_preview_get_factor ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-factor"/>
+    <function name="gimp_zoom_preview_get_model ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-model"/>
     <function name="The &quot;drawable&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--drawable"/>
+    <function name="The &quot;model&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--model"/>
     <function name="GimpDrawableComboBox" link="GimpDrawableComboBox.html#GimpDrawableComboBox-struct"/>
     <function name="GimpDrawableConstraintFunc ()" link="GimpDrawableComboBox.html#GimpDrawableConstraintFunc"/>
     <function name="gimp_drawable_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-drawable-combo-box-new"/>
@@ -837,6 +846,7 @@
     <function name="gimp_image_get_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-image-get-thumbnail"/>
     <function name="gimp_drawable_get_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail"/>
     <function name="gimp_drawable_get_sub_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail"/>
+    <function name="gimp_layer_new_from_pixbuf ()" link="libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf"/>
     <function name="GimpProgressBar" link="GimpProgressBar.html#GimpProgressBar-struct"/>
     <function name="gimp_progress_bar_new ()" link="GimpProgressBar.html#gimp-progress-bar-new"/>
     <function name="GimpConstraintFunc ()" link="libgimp-gimpmenu.html#GimpConstraintFunc"/>

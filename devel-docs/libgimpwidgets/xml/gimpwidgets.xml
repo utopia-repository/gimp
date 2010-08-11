@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-GimpWidgets">
 <refmeta>
-<refentrytitle id="top_of_page">GimpWidgets</refentrytitle>
+<refentrytitle role="top_of_page">GimpWidgets</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -16,8 +16,8 @@ helper functions.</refpurpose>
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -162,15 +162,15 @@ helper functions.</refpurpose>
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-radio-group-new" role="function"/>gimp_radio_group_new ()</title>
 <indexterm><primary>gimp_radio_group_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_radio_group_new            (<link linkend="gboolean">gboolean</link> in_frame,

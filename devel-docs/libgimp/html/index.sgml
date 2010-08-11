@@ -17,6 +17,7 @@
 <ANCHOR id="GimpOffsetType" href="libgimp/libgimp-gimpenums.html#GimpOffsetType">
 <ANCHOR id="GimpOrientationType" href="libgimp/libgimp-gimpenums.html#GimpOrientationType">
 <ANCHOR id="GimpRotationType" href="libgimp/libgimp-gimpenums.html#GimpRotationType">
+<ANCHOR id="GimpSelectCriterion" href="libgimp/libgimp-gimpenums.html#GimpSelectCriterion">
 <ANCHOR id="gimp-enums-get-type-names" href="libgimp/libgimp-gimpenums.html#gimp-enums-get-type-names">
 <ANCHOR id="libgimp-gimp" href="libgimp/libgimp-gimp.html">
 <ANCHOR id="GIMPVAR:CAPS" href="libgimp/libgimp-gimp.html#GIMPVAR:CAPS">
@@ -183,6 +184,7 @@
 <ANCHOR id="gimp-image-convert-rgb" href="libgimp/libgimp-gimpconvert.html#gimp-image-convert-rgb">
 <ANCHOR id="gimp-image-convert-grayscale" href="libgimp/libgimp-gimpconvert.html#gimp-image-convert-grayscale">
 <ANCHOR id="gimp-image-convert-indexed" href="libgimp/libgimp-gimpconvert.html#gimp-image-convert-indexed">
+<ANCHOR id="gimp-image-convert-set-dither-matrix" href="libgimp/libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix">
 <ANCHOR id="libgimp-gimpdisplay" href="libgimp/libgimp-gimpdisplay.html">
 <ANCHOR id="gimp-display-new" href="libgimp/libgimp-gimpdisplay.html#gimp-display-new">
 <ANCHOR id="gimp-display-delete" href="libgimp/libgimp-gimpdisplay.html#gimp-display-delete">
@@ -503,18 +505,21 @@
 <ANCHOR id="gimp-airbrush" href="libgimp/libgimp-gimptools.html#gimp-airbrush">
 <ANCHOR id="gimp-airbrush-default" href="libgimp/libgimp-gimptools.html#gimp-airbrush-default">
 <ANCHOR id="gimp-by-color-select" href="libgimp/libgimp-gimptools.html#gimp-by-color-select">
+<ANCHOR id="gimp-by-color-select-full" href="libgimp/libgimp-gimptools.html#gimp-by-color-select-full">
 <ANCHOR id="gimp-clone" href="libgimp/libgimp-gimptools.html#gimp-clone">
 <ANCHOR id="gimp-clone-default" href="libgimp/libgimp-gimptools.html#gimp-clone-default">
 <ANCHOR id="gimp-convolve" href="libgimp/libgimp-gimptools.html#gimp-convolve">
 <ANCHOR id="gimp-convolve-default" href="libgimp/libgimp-gimptools.html#gimp-convolve-default">
 <ANCHOR id="gimp-dodgeburn" href="libgimp/libgimp-gimptools.html#gimp-dodgeburn">
 <ANCHOR id="gimp-dodgeburn-default" href="libgimp/libgimp-gimptools.html#gimp-dodgeburn-default">
+<ANCHOR id="gimp-edit-bucket-fill-full" href="libgimp/libgimp-gimptools.html#gimp-edit-bucket-fill-full">
 <ANCHOR id="gimp-ellipse-select" href="libgimp/libgimp-gimptools.html#gimp-ellipse-select">
 <ANCHOR id="gimp-eraser" href="libgimp/libgimp-gimptools.html#gimp-eraser">
 <ANCHOR id="gimp-eraser-default" href="libgimp/libgimp-gimptools.html#gimp-eraser-default">
 <ANCHOR id="gimp-flip" href="libgimp/libgimp-gimptools.html#gimp-flip">
 <ANCHOR id="gimp-free-select" href="libgimp/libgimp-gimptools.html#gimp-free-select">
 <ANCHOR id="gimp-fuzzy-select" href="libgimp/libgimp-gimptools.html#gimp-fuzzy-select">
+<ANCHOR id="gimp-fuzzy-select-full" href="libgimp/libgimp-gimptools.html#gimp-fuzzy-select-full">
 <ANCHOR id="gimp-paintbrush" href="libgimp/libgimp-gimptools.html#gimp-paintbrush">
 <ANCHOR id="gimp-paintbrush-default" href="libgimp/libgimp-gimptools.html#gimp-paintbrush-default">
 <ANCHOR id="gimp-pencil" href="libgimp/libgimp-gimptools.html#gimp-pencil">
@@ -546,6 +551,7 @@
 <ANCHOR id="gimp-vectors-set-tattoo" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-set-tattoo">
 <ANCHOR id="gimp-vectors-set-visible" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-set-visible">
 <ANCHOR id="gimp-vectors-get-strokes" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-get-strokes">
+<ANCHOR id="gimp-vectors-to-selection" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-to-selection">
 <ANCHOR id="gimp-vectors-parasite-attach" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-parasite-attach">
 <ANCHOR id="gimp-vectors-parasite-detach" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-parasite-detach">
 <ANCHOR id="gimp-vectors-parasite-find" href="libgimp/libgimp-gimpvectors.html#gimp-vectors-parasite-find">
@@ -782,10 +788,13 @@
 <ANCHOR id="GimpZoomPreview" href="libgimp/GimpZoomPreview.html">
 <ANCHOR id="GimpZoomPreview-struct" href="libgimp/GimpZoomPreview.html#GimpZoomPreview-struct">
 <ANCHOR id="gimp-zoom-preview-new" href="libgimp/GimpZoomPreview.html#gimp-zoom-preview-new">
+<ANCHOR id="gimp-zoom-preview-new-with-model" href="libgimp/GimpZoomPreview.html#gimp-zoom-preview-new-with-model">
 <ANCHOR id="gimp-zoom-preview-get-source" href="libgimp/GimpZoomPreview.html#gimp-zoom-preview-get-source">
 <ANCHOR id="gimp-zoom-preview-get-drawable" href="libgimp/GimpZoomPreview.html#gimp-zoom-preview-get-drawable">
 <ANCHOR id="gimp-zoom-preview-get-factor" href="libgimp/GimpZoomPreview.html#gimp-zoom-preview-get-factor">
+<ANCHOR id="gimp-zoom-preview-get-model" href="libgimp/GimpZoomPreview.html#gimp-zoom-preview-get-model">
 <ANCHOR id="GimpZoomPreview--drawable" href="libgimp/GimpZoomPreview.html#GimpZoomPreview--drawable">
+<ANCHOR id="GimpZoomPreview--model" href="libgimp/GimpZoomPreview.html#GimpZoomPreview--model">
 <ANCHOR id="GimpDrawableComboBox" href="libgimp/GimpDrawableComboBox.html">
 <ANCHOR id="GimpChannelComboBox" href="libgimp/GimpDrawableComboBox.html#GimpChannelComboBox">
 <ANCHOR id="GimpLayerComboBox" href="libgimp/GimpDrawableComboBox.html#GimpLayerComboBox">
@@ -805,6 +814,7 @@
 <ANCHOR id="gimp-image-get-thumbnail" href="libgimp/libgimp-gimppixbuf.html#gimp-image-get-thumbnail">
 <ANCHOR id="gimp-drawable-get-thumbnail" href="libgimp/libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail">
 <ANCHOR id="gimp-drawable-get-sub-thumbnail" href="libgimp/libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail">
+<ANCHOR id="gimp-layer-new-from-pixbuf" href="libgimp/libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf">
 <ANCHOR id="GimpProgressBar" href="libgimp/GimpProgressBar.html">
 <ANCHOR id="GimpProgressBar-struct" href="libgimp/GimpProgressBar.html#GimpProgressBar-struct">
 <ANCHOR id="gimp-progress-bar-new" href="libgimp/GimpProgressBar.html#gimp-progress-bar-new">

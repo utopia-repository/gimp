@@ -594,6 +594,45 @@ gimp_rotation_type_get_type (void)
   return type;
 }
 
+GType
+gimp_select_criterion_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_SELECT_CRITERION_COMPOSITE, "GIMP_SELECT_CRITERION_COMPOSITE", "composite" },
+    { GIMP_SELECT_CRITERION_R, "GIMP_SELECT_CRITERION_R", "r" },
+    { GIMP_SELECT_CRITERION_G, "GIMP_SELECT_CRITERION_G", "g" },
+    { GIMP_SELECT_CRITERION_B, "GIMP_SELECT_CRITERION_B", "b" },
+    { GIMP_SELECT_CRITERION_H, "GIMP_SELECT_CRITERION_H", "h" },
+    { GIMP_SELECT_CRITERION_S, "GIMP_SELECT_CRITERION_S", "s" },
+    { GIMP_SELECT_CRITERION_V, "GIMP_SELECT_CRITERION_V", "v" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_SELECT_CRITERION_COMPOSITE, "GIMP_SELECT_CRITERION_COMPOSITE", NULL },
+    { GIMP_SELECT_CRITERION_R, "GIMP_SELECT_CRITERION_R", NULL },
+    { GIMP_SELECT_CRITERION_G, "GIMP_SELECT_CRITERION_G", NULL },
+    { GIMP_SELECT_CRITERION_B, "GIMP_SELECT_CRITERION_B", NULL },
+    { GIMP_SELECT_CRITERION_H, "GIMP_SELECT_CRITERION_H", NULL },
+    { GIMP_SELECT_CRITERION_S, "GIMP_SELECT_CRITERION_S", NULL },
+    { GIMP_SELECT_CRITERION_V, "GIMP_SELECT_CRITERION_V", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpSelectCriterion", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
 
 /* Generated data ends here */
 
@@ -642,6 +681,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_repeat_mode_get_type,
   gimp_rotation_type_get_type,
   gimp_run_mode_get_type,
+  gimp_select_criterion_get_type,
   gimp_size_type_get_type,
   gimp_stack_trace_mode_get_type,
   gimp_transfer_mode_get_type,
@@ -690,6 +730,7 @@ static const gchar * const type_names[] =
   "GimpRepeatMode",
   "GimpRotationType",
   "GimpRunMode",
+  "GimpSelectCriterion",
   "GimpSizeType",
   "GimpStackTraceMode",
   "GimpTransferMode",

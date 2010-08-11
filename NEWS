@@ -7,12 +7,44 @@ This is the development branch of GIMP. Here's where all the shiny
 new stuff is being done that will one day be released as GIMP 2.4.
 
 
+Changes in GIMP 2.3.11
+======================
+
+- depend on newer versions of glib, gtk+ and pango and use some of the new
+  features in these libraries
+- made Ctrl-P the default shortcut for Print
+- show progress when loading/saving XCF files
+- added support for 16/32 bit bitmaps and alpha channel to the BMP plug-in
+- if possible, detect the number of CPUs
+- allow to disable the build of the Script-Fu extension
+- many improvements to the Python bindings and the pygimp user interface
+- made message dialogs transient for the progress window
+- added PDB API for creating a selection from vectors
+- further improved status bar messages for tools
+- derive ByColorSelect and FuzzySelect tools from a common base class
+- finer control over select-by-color functionality
+- minor optimizations in the drawing code
+- abstract brush outline drawing into the common base class GimpBrushTool
+- store sample points in XCF files
+- added extended PDB API for selection procedures
+- added convenience API to libgimp that creates a layer from a GdkPixbuf
+- added midpoint handles to Scale tool for scaling with fixed width or height
+- let color picker tools select a matching color in the Palette Editor
+- allow to use foreground and background color in gradients
+- added first draft of a new Healing Brush tool
+- abstract clone tool functionality into the common base class GimpSourceTool
+- improvements to the new selection tools
+- don't wake up the gimp every so often
+- added GimpHintBox widget to libgimpwidgets
+- bug fixes and code cleanup
+
+
 Changes in GIMP 2.3.10
 ======================
 
 - added support for a registration color in the Decompose plug-in
 - the Align tool now also aligns to guides
-- allow use CSS color notation in Script-Fu
+- allow use of CSS color notation in Script-Fu
 - more work on the new selection tools
 - let Fractal Explorer work on grayscale and give it a larger preview
 - speed up Value Invert plug-in

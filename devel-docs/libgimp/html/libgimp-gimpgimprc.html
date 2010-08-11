@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpgimprc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpcontext.html" title="gimpcontext">
 <link rel="next" href="libgimp-gimphelp.html" title="gimphelp">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -32,21 +32,23 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimphelp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570119" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2567140" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgimprc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpgimprc</span></h2>
+<h2>
+<a name="id2570119"></a><span class="refentrytitle">gimpgimprc</span>
+</h2>
 <p>gimpgimprc &#8212; Interactions with settings from .gimprc.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -66,18 +68,18 @@ gchar*      <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2567140"></a><h2>Description</h2>
 <p>
 Interactions with settings from .gimprc.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2567156"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2552341"></a><h3>
+<a name="id2567167"></a><h3>
 <a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3>
-<a class="indexterm" name="id2552353"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
+<a class="indexterm" name="id2567179"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
 </p>
@@ -114,9 +116,9 @@ to be issued on gimprc parsing and will not be queryable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2545465"></a><h3>
+<a name="id2599271"></a><h3>
 <a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3>
-<a class="indexterm" name="id2545478"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
+<a class="indexterm" name="id2599284"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
                                              const gchar *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
@@ -156,9 +158,9 @@ will accept _only_ string values in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2545577"></a><h3>
+<a name="id2599383"></a><h3>
 <a name="gimp-get-color-configuration"></a>gimp_get_color_configuration ()</h3>
-<a class="indexterm" name="id2551952"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2599396"></a><pre class="programlisting"><a
 href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>* gimp_get_color_configuration
                                             (void);</pre>
@@ -185,9 +187,9 @@ href="../libgimpconfig/GimpColorConfig.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552007"></a><h3>
+<a name="id2579162"></a><h3>
 <a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3>
-<a class="indexterm" name="id2552018"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
+<a class="indexterm" name="id2579173"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
 </p>
@@ -208,9 +210,9 @@ Returns a copy of the default image comment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552063"></a><h3>
+<a name="id2579218"></a><h3>
 <a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3>
-<a class="indexterm" name="id2552074"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
+<a class="indexterm" name="id2579229"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
 </p>
@@ -231,9 +233,9 @@ Returns a copy of the list of modules which should not be loaded.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2566909"></a><h3>
+<a name="id2599969"></a><h3>
 <a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3>
-<a class="indexterm" name="id2566920"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
+<a class="indexterm" name="id2599981"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
                                              gdouble *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
@@ -272,9 +274,9 @@ reasonable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567009"></a><h3>
+<a name="id2600070"></a><h3>
 <a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3>
-<a class="indexterm" name="id2567021"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
+<a class="indexterm" name="id2600082"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
 <p>
 Get the directory of the current GUI theme.
 </p>

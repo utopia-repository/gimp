@@ -285,6 +285,16 @@ GIMP_FRAME_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>gimphintbox</FILE>
+<TITLE>GimpHintBox</TITLE>
+gimp_hint_box_new
+<SUBSECTION Standard>
+GimpHintBoxClass
+GIMP_TYPE_HINT_BOX
+gimp_hint_box_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gimppageselector</FILE>
 <TITLE>GimpPageSelector</TITLE>
 GimpPageSelector
@@ -502,6 +512,8 @@ GIMP_OFFSET_AREA_GET_CLASS
 GimpDialog
 gimp_dialog_new
 gimp_dialog_new_valist
+gimp_dialog_add_button
+gimp_dialog_add_buttons
 gimp_dialog_add_buttons_valist
 gimp_dialog_run
 gimp_dialogs_show_help_button
@@ -699,6 +711,7 @@ GIMP_STOCK_TOOL_FLIP
 GIMP_STOCK_TOOL_FOREGROUND_SELECT
 GIMP_STOCK_TOOL_FREE_SELECT
 GIMP_STOCK_TOOL_FUZZY_SELECT
+GIMP_STOCK_TOOL_HEAL
 GIMP_STOCK_TOOL_HUE_SATURATION
 GIMP_STOCK_TOOL_INK
 GIMP_STOCK_TOOL_ISCISSORS

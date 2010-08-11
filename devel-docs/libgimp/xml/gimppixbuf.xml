@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppixbuf">
 <refmeta>
-<refentrytitle id="top_of_page">gimppixbuf</refentrytitle>
+<refentrytitle role="top_of_page">gimppixbuf</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,6 +39,13 @@ enum        <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link>
                                              <link linkend="gint">gint</link> dest_width,
                                              <link linkend="gint">gint</link> dest_height,
                                              <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link> alpha);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-layer-new-from-pixbuf">gimp_layer_new_from_pixbuf</link>      (<link linkend="gint32">gint32</link> image_ID,
+                                             const <link linkend="gchar">gchar</link> *name,
+                                             <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
+                                             <link linkend="gdouble">gdouble</link> opacity,
+                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode,
+                                             <link linkend="gdouble">gdouble</link> progress_start,
+                                             <link linkend="gdouble">gdouble</link> progress_end);
 </synopsis>
 </refsynopsisdiv>
 
@@ -50,15 +57,15 @@ enum        <link linkend="GimpPixbufTransparency">GimpPixbufTransparency</link>
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Get a thumbnail pixbuf for a drawable or image.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpPixbufTransparency" role="enum"/>enum GimpPixbufTransparency</title>
 <indexterm><primary>GimpPixbufTransparency</primary></indexterm><programlisting>typedef enum
@@ -87,10 +94,10 @@ The thumbnail will be not larger than the requested size.</para>
 <listitem><simpara> the image ID
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>width</parameter>&nbsp;:</term>
-<listitem><simpara>    the requested thumbnail width  (&lt;= 512 pixels)
+<listitem><simpara>    the requested thumbnail width  (&lt;= 1024 pixels)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>height</parameter>&nbsp;:</term>
-<listitem><simpara>   the requested thumbnail height (&lt;= 512 pixels)
+<listitem><simpara>   the requested thumbnail height (&lt;= 1024 pixels)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
 <listitem><simpara>    how to handle an alpha channel
@@ -117,10 +124,10 @@ size.</para>
 <listitem><simpara> the drawable ID
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>width</parameter>&nbsp;:</term>
-<listitem><simpara>       the requested thumbnail width  (&lt;= 512 pixels)
+<listitem><simpara>       the requested thumbnail width  (&lt;= 1024 pixels)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>height</parameter>&nbsp;:</term>
-<listitem><simpara>      the requested thumbnail height (&lt;= 512 pixels)
+<listitem><simpara>      the requested thumbnail height (&lt;= 1024 pixels)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
 <listitem><simpara>       how to handle an alpha channel
@@ -163,10 +170,10 @@ size.</para>
 <listitem><simpara>  the height of the area
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dest_width</parameter>&nbsp;:</term>
-<listitem><simpara>  the requested thumbnail width  (&lt;= 512 pixels)
+<listitem><simpara>  the requested thumbnail width  (&lt;= 1024 pixels)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dest_height</parameter>&nbsp;:</term>
-<listitem><simpara> the requested thumbnail height (&lt;= 512 pixels)
+<listitem><simpara> the requested thumbnail height (&lt;= 1024 pixels)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>alpha</parameter>&nbsp;:</term>
 <listitem><simpara>       how to handle an alpha channel
@@ -175,6 +182,56 @@ size.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-layer-new-from-pixbuf" role="function" condition="since:GIMP 2.4"/>gimp_layer_new_from_pixbuf ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_layer_new_from_pixbuf</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_layer_new_from_pixbuf      (<link linkend="gint32">gint32</link> image_ID,
+                                             const <link linkend="gchar">gchar</link> *name,
+                                             <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
+                                             <link linkend="gdouble">gdouble</link> opacity,
+                                             <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode,
+                                             <link linkend="gdouble">gdouble</link> progress_start,
+                                             <link linkend="gdouble">gdouble</link> progress_end);</programlisting>
+<para>
+Create a new layer from a <link linkend="GdkPixbuf"><literal>GdkPixbuf</literal></link>.
+</para>
+<para>
+This procedure creates a new layer from the given <link linkend="GdkPixbuf"><literal>GdkPixbuf</literal></link>.  The
+image has to be an RGB image and just like with <link linkend="gimp-layer-new"><function>gimp_layer_new()</function></link>
+you will still need to add the layer to it.
+</para>
+<para>
+If you pass <parameter>progress_end</parameter> &gt; <parameter>progress_start</parameter> to this function,
+@<link linkend="gimp-progress-update"><function>gimp_progress_update()</function></link> will be called for. You have to call
+@<link linkend="gimp-progress-init"><function>gimp_progress_init()</function></link> beforehand.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The RGB image to which to add the layer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> The layer name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pixbuf</parameter>&nbsp;:</term>
+<listitem><simpara> A GdkPixbuf.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>opacity</parameter>&nbsp;:</term>
+<listitem><simpara> The layer opacity.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara> The layer combination mode.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>progress_start</parameter>&nbsp;:</term>
+<listitem><simpara> start of progress
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>progress_end</parameter>&nbsp;:</term>
+<listitem><simpara> end of progress
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created layer.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

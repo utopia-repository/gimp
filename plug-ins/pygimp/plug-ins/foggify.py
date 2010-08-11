@@ -20,7 +20,7 @@
 from gimpfu import *
 import time
 
-def python_foggify(img, layer, name, colour, turbulence, opacity):
+def foggify(img, layer, name, colour, turbulence, opacity):
     img.undo_group_start()
 
     fog = gimp.Layer(img, name, layer.width, layer.height, RGBA_IMAGE,
@@ -45,13 +45,13 @@ def python_foggify(img, layer, name, colour, turbulence, opacity):
     img.undo_group_end()
 
 register(
-    "python_fu_foggify",
+    "python-fu-foggify",
     "Add a layer of fog to the image",
     "Add a layer of fog to the image",
     "James Henstridge",
     "James Henstridge",
     "1999",
-    "<Image>/Filters/Render/Clouds/Add _Fog...",
+    "Add _Fog...",
     "RGB*, GRAY*",
     [
         (PF_STRING, "name", "The new layer name", "Clouds"),
@@ -60,6 +60,6 @@ register(
         (PF_SLIDER, "opacity", "The opacity", 100, (0, 100, 1)),
     ],
     [],
-    python_foggify)
+    foggify, menu="<Image>/Filters/Render/Clouds")
 
 main()

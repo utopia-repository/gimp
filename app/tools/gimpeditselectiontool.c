@@ -198,7 +198,8 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
   shell = GIMP_DISPLAY_SHELL (display->shell);
 
   /*  Make a check to see if it should be a floating selection translation  */
-  if (edit_mode == GIMP_TRANSLATE_MODE_MASK_TO_LAYER &&
+  if ((edit_mode == GIMP_TRANSLATE_MODE_MASK_TO_LAYER ||
+       edit_mode == GIMP_TRANSLATE_MODE_MASK_COPY_TO_LAYER) &&
       gimp_image_floating_sel (display->image))
     {
       edit_mode = GIMP_TRANSLATE_MODE_FLOATING_SEL;
@@ -431,7 +432,7 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
   tool_manager_push_tool (display->image->gimp, GIMP_TOOL (edit_select));
 
   /*  pause the current selection  */
-  gimp_display_shell_selection_visibility (shell, GIMP_SELECTION_PAUSE);
+  gimp_display_shell_selection_control (shell, GIMP_SELECTION_PAUSE);
 
   /* initialize the statusbar display */
   gimp_tool_push_status_coords (GIMP_TOOL (edit_select), display,
@@ -453,7 +454,7 @@ gimp_edit_selection_tool_button_release (GimpTool        *tool,
   GimpItem              *active_item;
 
   /*  resume the current selection  */
-  gimp_display_shell_selection_visibility (shell, GIMP_SELECTION_RESUME);
+  gimp_display_shell_selection_control (shell, GIMP_SELECTION_RESUME);
 
   gimp_tool_pop_status (tool, display);
 
@@ -1253,7 +1254,8 @@ gimp_edit_selection_tool_key_press (GimpTool    *tool,
   if (push_undo)
     gimp_image_undo_group_end (display->image);
   else
-    gimp_undo_refresh_preview (undo);
+    gimp_undo_refresh_preview (undo,
+                               gimp_get_user_context (display->image->gimp));
 
   gimp_image_flush (display->image);
 

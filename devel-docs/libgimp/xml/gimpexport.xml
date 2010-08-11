@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpexport">
 <refmeta>
-<refentrytitle id="top_of_page">gimpexport</refentrytitle>
+<refentrytitle role="top_of_page">gimpexport</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,8 +39,8 @@ enum        <link linkend="GimpExportReturn">GimpExportReturn</link>;
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 This function should be called by all save_plugins unless they are
 able to save all image formats the GIMP knows about. It takes care
@@ -57,8 +57,8 @@ as it will most probably have to open a dialog.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpExportCapabilities" role="enum"/>enum GimpExportCapabilities</title>
 <indexterm><primary>GimpExportCapabilities</primary></indexterm><programlisting>typedef enum

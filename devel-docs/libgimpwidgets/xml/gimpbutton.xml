@@ -4,7 +4,7 @@
 
 <refentry id="GimpButton">
 <refmeta>
-<refentrytitle id="top_of_page">GimpButton</refentrytitle>
+<refentrytitle role="top_of_page">GimpButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -30,8 +30,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -49,8 +49,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -59,8 +59,8 @@ GimpButton implements
 
 
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpButton-extended-clicked">extended-clicked</link>&quot;
@@ -71,8 +71,8 @@ GimpButton implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 <link linkend="GimpButton"><type>GimpButton</type></link> adds an extra signal to the <link linkend="GtkButton"><type>GtkButton</type></link> widget that allows
 to distinguish a normal click from a click that was performed with
@@ -80,8 +80,8 @@ modifier keys pressed.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpButton-struct" role="struct"/>GimpButton</title>
 <indexterm><primary>GimpButton</primary></indexterm><programlisting>typedef struct _GimpButton GimpButton;</programlisting>
@@ -118,8 +118,8 @@ Emits the button's "extended_clicked" signal.</para>
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpButton-extended-clicked"/>The &quot;extended-clicked&quot; signal</title>
 <indexterm><primary>GimpButton::extended-clicked</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpButton">GimpButton</link>      *gimpbutton,
                                             <link linkend="GdkModifierType">GdkModifierType</link> *arg1,

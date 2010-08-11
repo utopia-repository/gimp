@@ -240,7 +240,7 @@ gimp_gradient_select_button_new (const gchar *title,
 }
 
 /**
- * gimp_gradient_select_button_get_gradient_name:
+ * gimp_gradient_select_button_get_gradient:
  * @button: A #GimpGradientSelectButton
  *
  * Retrieves the name of currently selected gradient.
@@ -249,7 +249,7 @@ gimp_gradient_select_button_new (const gchar *title,
  *
  * Since: GIMP 2.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 gimp_gradient_select_button_get_gradient (GimpGradientSelectButton *button)
 {
   GimpGradientSelectButtonPrivate *priv;

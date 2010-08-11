@@ -881,10 +881,9 @@ sub image_add_layer {
     $blurb = 'Add the specified layer to the image.';
 
     $help = <<'HELP';
-This procedure adds the specified layer to the image at the given position. If
-the position is specified as -1, then the layer is inserted at the top of the
-layer stack. If the layer to be added has no alpha channel, it must be added at
-position 0. The layer type must be compatible with the image base type.
+This procedure adds the specified layer to the image at the given position.
+If the position is specified as -1, then the layer is inserted above the
+active layer. The layer type must be compatible with the image base type.
 HELP
 
     &std_pdb_misc;
@@ -2095,8 +2094,9 @@ HELP
       ! FINITE (yresolution) ||
       yresolution < GIMP_MIN_RESOLUTION || yresolution > GIMP_MAX_RESOLUTION)
     {
-      g_message (_("Image resolution is out of bounds, "
-                   "using the default resolution instead."));
+      gimp_message (gimp, progress,
+                    _("Image resolution is out of bounds, "
+                      "using the default resolution instead."));
       success = FALSE;
     }
   else
@@ -2374,7 +2374,7 @@ HELP
     width  = MAX (1, (height * dwidth) / dheight);
 
   if (image->gimp->config->layer_previews)
-    buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (image),
+    buf = gimp_viewable_get_new_preview (GIMP_VIEWABLE (image), context,
                                          width, height);
   else
     buf = gimp_viewable_get_dummy_preview (GIMP_VIEWABLE (image),

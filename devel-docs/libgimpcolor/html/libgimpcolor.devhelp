@@ -63,9 +63,12 @@
     <function name="gimp_value_get_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-get-rgb"/>
     <function name="gimp_value_set_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-set-rgb"/>
     <function name="GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
+    <function name="GimpHSL" link="libgimpcolor-GimpHSV.html#GimpHSL"/>
     <function name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
     <function name="gimp_hsv_clamp ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-clamp"/>
     <function name="gimp_hsva_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsva-set"/>
+    <function name="GIMP_TYPE_HSV" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS"/>
+    <function name="GIMP_TYPE_HSL" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS"/>
     <function name="GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
     <function name="gimp_cmyk_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set"/>
     <function name="gimp_cmyk_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set-uchar"/>
@@ -73,7 +76,7 @@
     <function name="gimp_cmyka_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set"/>
     <function name="gimp_cmyka_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-set-uchar"/>
     <function name="gimp_cmyka_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyka-get-uchar"/>
-    <function name="GimpHSL" link="libgimpcolor-GimpColorSpace.html#GimpHSL"/>
+    <function name="GIMP_TYPE_CMYK" link="libgimpcolor-GimpCMYK.html#GIMP-TYPE-CMYK:CAPS"/>
     <function name="gimp_rgb_to_hsv ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv"/>
     <function name="gimp_rgb_to_hsl ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl"/>
     <function name="gimp_rgb_to_cmyk ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk"/>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppaletteselect">
 <refmeta>
-<refentrytitle id="top_of_page">gimppaletteselect</refentrytitle>
+<refentrytitle role="top_of_page">gimppaletteselect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -47,15 +47,15 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-palette-select-new
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions providing a palette selection dialog.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpRunPaletteCallback" role="function"/>GimpRunPaletteCallback ()</title>
 <indexterm><primary>GimpRunPaletteCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRunPaletteCallback)       (const <link linkend="gchar">gchar</link> *palette_name,

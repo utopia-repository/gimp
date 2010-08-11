@@ -38,6 +38,7 @@
 
 #include "plug-in/gimppluginmanager.h"
 #include "plug-in/gimppluginmanager-data.h"
+#include "plug-in/gimppluginmanager-history.h"
 
 #include "pdb/gimpprocedure.h"
 
@@ -60,6 +61,12 @@
 
 
 /*  local function prototypes  */
+
+static void  plug_in_procedure_execute     (GimpPlugInProcedure *procedure,
+                                            Gimp                *gimp,
+                                            GimpDisplay         *display,
+                                            GValueArray         *args,
+                                            gint                 n_args);
 
 static gint  plug_in_collect_data_args     (GtkAction   *action,
                                             GimpObject  *object,
@@ -156,44 +163,23 @@ plug_in_run_cmd_callback (GtkAction           *action,
         }
       else
         {
-          GimpImage *image;
-
           display = action_data_get_display (data);
 
-          if (display)
-            image = display->image;
-          else
-            image = NULL;
-
-          n_args = plug_in_collect_drawable_args (action, image,
+          n_args = plug_in_collect_drawable_args (action,
+                                                  display ?
+                                                  display->image : NULL,
                                                   args, n_args);
         }
       break;
 
-    default:
-      g_error ("Unknown procedure type.");
+    case GIMP_INTERNAL:
+      g_warning ("Unhandled procedure type.");
       n_args = -1;
+      break;
     }
 
   if (n_args >= 1)
-    {
-      gimp_value_array_truncate (args, n_args);
-
-      /* run the plug-in procedure */
-      gimp_procedure_execute_async (procedure,
-                                    gimp, gimp_get_user_context (gimp),
-                                    GIMP_PROGRESS (display), args,
-                                    GIMP_OBJECT (display));
-
-      /* remember only "standard" plug-ins */
-      if (procedure->proc_type == GIMP_PLUGIN                 &&
-          procedure->num_args  >= 3                           &&
-          GIMP_IS_PARAM_SPEC_IMAGE_ID    (procedure->args[1]) &&
-          GIMP_IS_PARAM_SPEC_DRAWABLE_ID (procedure->args[2]))
-        {
-          gimp_plug_in_manager_set_last_plug_in (gimp->plug_in_manager, proc);
-        }
-    }
+    plug_in_procedure_execute (proc, gimp, display, args, n_args);
 
   g_value_array_free (args);
 }
@@ -203,40 +189,32 @@ plug_in_repeat_cmd_callback (GtkAction *action,
                              gint       value,
                              gpointer   data)
 {
-  GimpProcedure *procedure;
-  Gimp          *gimp;
-  GimpDisplay   *display;
-  GimpDrawable  *drawable;
-  gboolean       interactive = TRUE;
+  GimpPlugInProcedure *procedure;
+  Gimp                *gimp;
+  GimpDisplay         *display;
+  gboolean             interactive = TRUE;
   return_if_no_gimp (gimp, data);
   return_if_no_display (display, data);
-
-  drawable = gimp_image_active_drawable (display->image);
-  if (! drawable)
-    return;
 
   if (strcmp (gtk_action_get_name (action), "plug-in-repeat") == 0)
     interactive = FALSE;
 
-  procedure = g_slist_nth_data (gimp->plug_in_manager->last_plug_ins, value);
+  procedure = gimp_plug_in_manager_history_nth (gimp->plug_in_manager, value);
 
   if (procedure)
     {
-      GValueArray *args = gimp_procedure_get_arguments (procedure);
+      GValueArray *args;
+      gint         n_args;
 
-      g_value_set_int         (&args->values[0],
-                               interactive ?
-                               GIMP_RUN_INTERACTIVE : GIMP_RUN_WITH_LAST_VALS);
-      gimp_value_set_image    (&args->values[1], display->image);
-      gimp_value_set_drawable (&args->values[2], drawable);
+      args = gimp_procedure_get_arguments (GIMP_PROCEDURE (procedure));
 
-      gimp_value_array_truncate (args, 3);
+      g_value_set_int (&args->values[0],
+                       interactive ?
+                       GIMP_RUN_INTERACTIVE : GIMP_RUN_WITH_LAST_VALS);
 
-      /* run the plug-in procedure */
-      gimp_procedure_execute_async (procedure, gimp,
-                                    gimp_get_user_context (gimp),
-                                    GIMP_PROGRESS (display), args,
-                                    GIMP_OBJECT (display));
+      n_args = plug_in_collect_drawable_args (action, display->image, args, 1);
+
+      plug_in_procedure_execute (procedure, gimp, display, args, n_args);
 
       g_value_array_free (args);
     }
@@ -277,6 +255,29 @@ plug_in_reset_all_cmd_callback (GtkAction *action,
 
 
 /*  private functions  */
+
+static void
+plug_in_procedure_execute (GimpPlugInProcedure *procedure,
+                           Gimp                *gimp,
+                           GimpDisplay         *display,
+                           GValueArray         *args,
+                           gint                 n_args)
+{
+  gimp_value_array_truncate (args, n_args);
+
+  /* run the plug-in procedure */
+  gimp_procedure_execute_async (GIMP_PROCEDURE (procedure), gimp,
+                                gimp_get_user_context (gimp),
+                                GIMP_PROGRESS (display), args,
+                                GIMP_OBJECT (display));
+
+  /* remember only image plug-ins */
+  if (GIMP_PROCEDURE (procedure)->num_args  >= 2  &&
+      GIMP_IS_PARAM_SPEC_IMAGE_ID (GIMP_PROCEDURE (procedure)->args[1]))
+    {
+      gimp_plug_in_manager_history_add (gimp->plug_in_manager, procedure);
+    }
+}
 
 static gint
 plug_in_collect_data_args (GtkAction   *action,

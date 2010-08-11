@@ -57,9 +57,9 @@
 #include "core/gimpprogress.h"
 
 #include "pdb/gimppdb.h"
-#include "pdb/gimppluginprocedure.h"
 
 #include "plug-in/gimppluginmanager.h"
+#include "plug-in/gimppluginprocedure.h"
 
 #include "file-open.h"
 #include "file-utils.h"
@@ -98,14 +98,11 @@ file_open_image (Gimp                *gimp,
   *status = GIMP_PDB_EXECUTION_ERROR;
 
   if (! file_proc)
-    file_proc = file_utils_find_proc (gimp->plug_in_manager->load_procs, uri);
+    file_proc = file_utils_find_proc (gimp->plug_in_manager->load_procs,
+                                      uri, error);
 
   if (! file_proc)
-    {
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("Unknown file type"));
-      return NULL;
-    }
+    return NULL;
 
   filename = file_utils_filename_from_uri (uri);
 
@@ -203,7 +200,8 @@ file_open_thumbnail (Gimp          *gimp,
   *image_width  = 0;
   *image_height = 0;
 
-  file_proc = file_utils_find_proc (gimp->plug_in_manager->load_procs, uri);
+  file_proc = file_utils_find_proc (gimp->plug_in_manager->load_procs,
+                                    uri, NULL);
 
   if (! file_proc || ! file_proc->thumb_loader)
     return NULL;
@@ -250,8 +248,10 @@ file_open_thumbnail (Gimp          *gimp,
 
               *mime_type = file_proc->mime_type;
 
+#ifdef GIMP_UNSTABLE
               g_printerr ("opened thumbnail at %d x %d\n",
                           image->width, image->height);
+#endif
             }
         }
 

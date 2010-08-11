@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-GimpPropWidgets">
 <refmeta>
-<refentrytitle id="top_of_page">GimpPropWidgets</refentrytitle>
+<refentrytitle role="top_of_page">GimpPropWidgets</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -158,15 +158,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-prop-check-button-new" role="function"/>gimp_prop_check_button_new ()</title>
 <indexterm><primary>gimp_prop_check_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_prop_check_button_new      (<link linkend="GObject">GObject</link> *config,

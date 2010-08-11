@@ -291,6 +291,7 @@ select_stroke_cmd_callback (GtkAction *action,
     }
 
   dialog = stroke_dialog_new (GIMP_ITEM (gimp_image_get_mask (image)),
+                              action_data_get_context (data),
                               _("Stroke Selection"),
                               GIMP_STOCK_SELECTION_STROKE,
                               GIMP_HELP_SELECTION_STROKE,
@@ -443,7 +444,7 @@ select_shrink_callback (GtkWidget *widget,
   radius_x = radius_y = select_shrink_pixels = ROUND (size);
 
   select_shrink_edge_lock =
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
+    ! gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
 
   if (unit != GIMP_UNIT_PIXEL)
     {

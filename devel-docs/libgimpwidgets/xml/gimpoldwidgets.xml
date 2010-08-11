@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-gimpoldwidgets">
 <refmeta>
-<refentrytitle id="top_of_page">gimpoldwidgets</refentrytitle>
+<refentrytitle role="top_of_page">gimpoldwidgets</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -65,15 +65,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 These functions are not defined if you <link linkend="define"><type>define</type></link> GIMP_DISABLE_DEPRECATED.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-int-option-menu-new" role="function" condition="deprecated:"/>gimp_int_option_menu_new ()</title>
 <indexterm role="deprecated"><primary>gimp_int_option_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_option_menu_new        (<link linkend="gboolean">gboolean</link> menu_only,

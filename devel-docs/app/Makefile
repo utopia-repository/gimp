@@ -84,6 +84,8 @@ BUILD_PRINT_FALSE =
 BUILD_PRINT_TRUE = #
 BUILD_PYTHON_FALSE = #
 BUILD_PYTHON_TRUE = 
+BUILD_SCRIPT_FU_FALSE = #
+BUILD_SCRIPT_FU_TRUE = 
 BUILD_XJT_FALSE = #
 BUILD_XJT_TRUE = 
 CATALOGS =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
@@ -92,7 +94,7 @@ CC = gcc
 CCAS = gcc
 CCASFLAGS = -g -O2
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -Wall
+CFLAGS = -g -O2 -Wall -Wdeclaration-after-statement
 CPP = gcc -E
 CPPFLAGS =  -DGIMP_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DPANGO_DISABLE_DEPRECATED -DGDK_MULTIHEAD_SAFE -DGTK_MULTIHEAD_SAFE
 CXX = g++
@@ -132,24 +134,24 @@ FREETYPE_LIBS = -lfreetype -lz
 GDK_PIXBUF_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GDK_PIXBUF_CSOURCE = /usr/bin/gdk-pixbuf-csource
 GDK_PIXBUF_LIBS = -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-GDK_PIXBUF_REQUIRED_VERSION = 2.8.8
+GDK_PIXBUF_REQUIRED_VERSION = 2.8.17
 GETTEXT_PACKAGE = gimp20
 GIMPINSTALL = 
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.3
-GIMP_BINARY_AGE = 310
+GIMP_BINARY_AGE = 311
 GIMP_DATA_VERSION = 2.0
 GIMP_FULL_NAME = GNU Image Manipulation Program
 GIMP_INTERFACE_AGE = 0
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 10
+GIMP_MICRO_VERSION = 11
 GIMP_MINOR_VERSION = 3
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.3.10
+GIMP_REAL_VERSION = 2.3.11
 GIMP_REMOTE = gimp-remote-2.3$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_TOOL_VERSION = 2.0
@@ -157,12 +159,12 @@ GIMP_UNSTABLE = yes
 GIMP_UNSTABLE_FALSE = #
 GIMP_UNSTABLE_TRUE = 
 GIMP_USER_VERSION = 2.3
-GIMP_VERSION = 2.3.10
+GIMP_VERSION = 2.3.11
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
 GLIB_MKENUMS = glib-mkenums
-GLIB_REQUIRED_VERSION = 2.8.2
+GLIB_REQUIRED_VERSION = 2.10.2
 GMODULE_NO_EXPORT_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GMODULE_NO_EXPORT_LIBS = -lgmodule-2.0 -ldl -lglib-2.0  
 GMOFILES =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
@@ -172,14 +174,14 @@ GREP = /bin/grep
 GTHREAD_CFLAGS = -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GTHREAD_LIBS = -pthread -lgthread-2.0 -lglib-2.0  
 GTKDOC_REQUIRED_VERSION = 1.0
-GTKHTML2_CFLAGS = -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
-GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lz -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+GTKHTML2_CFLAGS = -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
+GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GTKHTML2_REQUIRED_VERSION = 2.0.0
-GTK_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+GTK_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
 GTK_DOC_USE_LIBTOOL_FALSE = #
 GTK_DOC_USE_LIBTOOL_TRUE = 
 GTK_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-GTK_REQUIRED_VERSION = 2.8.8
+GTK_REQUIRED_VERSION = 2.8.17
 HAVE_FINITE = 
 HAVE_GLIBC_REGEX = 
 HAVE_GLIBC_REGEX_FALSE = #
@@ -248,14 +250,14 @@ LIBSCREENSHOT =   -lSM -lICE -lX11 -lXmu -lXt
 LIBSVG = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 LIBTIFF = -ltiff
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
-LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -L/usr/X11R6/lib -lSM -lICE -lX11 -lexpat -ljpeg -lpng -lz -lm
+LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -lX11 -lexpat -ljpeg -lpng -lz -lm
 LIBXMU =   -lSM -lICE -lX11 -lXmu -lXt
 LIBXPM =   -lSM -lICE -lX11 -lXpm
 LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 310:0:310
+LT_VERSION_INFO = 311:0:311
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -276,12 +278,12 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.3.10
+PACKAGE_STRING = GIMP 2.3.11
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.3.10
+PACKAGE_VERSION = 2.3.11
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-PANGOFT2_REQUIRED_VERSION = 1.10.0
+PANGOFT2_REQUIRED_VERSION = 1.12.2
 PATHSEP = :
 PATH_SEPARATOR = :
 PERL = /usr/bin/perl
@@ -310,10 +312,10 @@ PYGTK_LIBS = -lgobject-2.0 -lglib-2.0
 PYLINK_LIBS = 
 PYTHON = /usr/bin/python
 PYTHON_EXEC_PREFIX = ${exec_prefix}
-PYTHON_INCLUDES = -I/usr/include/python2.3
+PYTHON_INCLUDES = -I/usr/include/python2.4
 PYTHON_PLATFORM = linux2
 PYTHON_PREFIX = ${prefix}
-PYTHON_VERSION = 2.3
+PYTHON_VERSION = 2.4
 RANLIB = ranlib
 RSVG_REQUIRED_VERSION = 2.8.0
 RT_LIBS = 
@@ -330,12 +332,12 @@ SVG_CFLAGS = -I/usr/include/librsvg-2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.
 SVG_LIBS = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 SYMPREFIX = 
 TIFF = tiff$(EXEEXT)
-URI_CFLAGS = -pthread -DORBIT2=1 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gconf/2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/libbonoboui-2.0 -I/usr/include/gnome-keyring-1 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/libxml2  
-URI_LIBS = -pthread -lgnomeui-2 -lSM -lICE -lbonoboui-2 -lxml2 -lz -lgnomecanvas-2 -lgnome-2 -lpopt -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgnomevfs-2 -lbonobo-2 -lgconf-2 -lgobject-2.0 -lbonobo-activation -lORBit-2 -lm -lgmodule-2.0 -ldl -lgthread-2.0 -lgnome-keyring -lglib-2.0  
+URI_CFLAGS = -pthread -DORBIT2=1 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gconf/2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/libbonoboui-2.0 -I/usr/include/gnome-keyring-1 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/libpng12 -I/usr/include/libxml2  
+URI_LIBS = -pthread -lgnomeui-2 -lSM -lICE -lbonoboui-2 -lxml2 -lgnomecanvas-2 -lgnome-2 -lpopt -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgnomevfs-2 -lbonobo-2 -lgconf-2 -lgobject-2.0 -lbonobo-activation -lORBit-2 -lm -lgmodule-2.0 -ldl -lgthread-2.0 -lgnome-keyring -lglib-2.0  
 USE_BINRELOC_FALSE = 
 USE_BINRELOC_TRUE = #
 USE_NLS = yes
-VERSION = 2.3.10
+VERSION = 2.3.11
 WINDRES = :
 WITH_PDBGEN_FALSE = #
 WITH_PDBGEN_TRUE = 
@@ -403,8 +405,8 @@ pkgpythondir = ${pythondir}/gimp
 prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
-pyexecdir = ${exec_prefix}/lib/python2.3/site-packages
-pythondir = ${prefix}/lib/python2.3/site-packages
+pyexecdir = ${exec_prefix}/lib/python2.4/site-packages
+pythondir = ${prefix}/lib/python2.4/site-packages
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 sysconfdir = ${prefix}/etc
@@ -711,6 +713,9 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 all-local: html-build.stamp
+#all-local:
+
+docs: html-build.stamp
 
 #### scan ####
 
@@ -745,7 +750,7 @@ tmpl.stamp: tmpl-build.stamp
 
 #### xml ####
 
-sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(srcdir)/tmpl/*.sgml $(expand_content_files)
+sgml-build.stamp: tmpl.stamp $(HFILE_GLOB) $(CFILE_GLOB) $(DOC_MODULE)-sections.txt $(srcdir)/tmpl/*.sgml $(expand_content_files)
 	@echo 'gtk-doc: Building XML'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && \
@@ -767,7 +772,6 @@ html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	@echo 'gtk-doc: Fixing cross-references' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 	touch html-build.stamp
-#all-local:
 
 ##############
 
@@ -814,7 +818,7 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	  cp $(srcdir)/$(DOC_MODULE).types $(distdir)/$(DOC_MODULE).types; \
 	fi
 
-.PHONY : dist-hook-local
+.PHONY : dist-hook-local docs
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -264,7 +264,7 @@ gradient_delete_invoker (GimpProcedure     *procedure,
 
           if (! success)
             {
-              g_message (error->message);
+              gimp_message (gimp, progress, error->message);
               g_clear_error (&error);
             }
         }
@@ -314,7 +314,8 @@ gradient_get_uniform_samples_invoker (GimpProcedure     *procedure,
             {
               GimpRGB color;
 
-              seg = gimp_gradient_get_color_at (gradient, seg, pos, reverse, &color);
+              seg = gimp_gradient_get_color_at (gradient, context, seg,
+                                                pos, reverse, &color);
 
               *sample++ = color.r;
               *sample++ = color.g;
@@ -378,7 +379,8 @@ gradient_get_custom_samples_invoker (GimpProcedure     *procedure,
             {
               GimpRGB color;
 
-              seg = gimp_gradient_get_color_at (gradient, seg, *positions,
+              seg = gimp_gradient_get_color_at (gradient, context,
+                                                seg, *positions,
                                                 reverse, &color);
 
               *sample++ = color.r;
@@ -1072,7 +1074,7 @@ gradient_segment_range_split_midpoint_invoker (GimpProcedure     *procedure,
 
       if (start_seg && GIMP_DATA (gradient)->writable)
         {
-          gimp_gradient_segment_range_split_midpoint (gradient,
+          gimp_gradient_segment_range_split_midpoint (gradient, context,
                                                       start_seg, end_seg,
                                                       NULL, NULL);
         }
@@ -1112,7 +1114,7 @@ gradient_segment_range_split_uniform_invoker (GimpProcedure     *procedure,
 
       if (start_seg && GIMP_DATA (gradient)->writable)
         {
-          gimp_gradient_segment_range_split_uniform (gradient,
+          gimp_gradient_segment_range_split_uniform (gradient, context,
                                                      start_seg, end_seg,
                                                      split_parts,
                                                      NULL, NULL);
@@ -1629,8 +1631,8 @@ register_gradient_procs (GimpPDB *pdb)
   gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradient-segment-set-left-color");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-gradient-segment-set-left-color",
-                                     "Retrieves the left endpoint color of the specified segment",
-                                     "This procedure retrieves the left endpoint color of the specified segment of the specified gradient.",
+                                     "Sets the left endpoint color of the specified segment",
+                                     "This procedure sets the left endpoint color of the specified segment of the specified gradient.",
                                      "Shlomi Fish <shlomif@iglu.org.il>",
                                      "Shlomi Fish",
                                      "2003",
@@ -1713,8 +1715,8 @@ register_gradient_procs (GimpPDB *pdb)
   gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-gradient-segment-set-right-color");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-gradient-segment-set-right-color",
-                                     "Retrieves the right endpoint color of the specified segment",
-                                     "This procedure retrieves the right endpoint color of the specified segment of the specified gradient.",
+                                     "Sets the right endpoint color of the specified segment",
+                                     "This procedure sets the right endpoint color of the specified segment of the specified gradient.",
                                      "Shlomi Fish <shlomif@iglu.org.il>",
                                      "Shlomi Fish",
                                      "2003",

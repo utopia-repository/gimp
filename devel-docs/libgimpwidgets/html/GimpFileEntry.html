@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpFileEntry</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpEnumLabel.html" title="GimpEnumLabel">
 <link rel="next" href="GimpFrame.html" title="GimpFrame">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -33,25 +33,29 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpFrame.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582255" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a>
+                  <a href="#id2604785" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2607283" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#signal_proto" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2607344" class="shortcut">Implemented Interfaces</a>
+                  &#160;|&#160;
+                  <a href="#id2604742" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpFileEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpFileEntry</span></h2>
+<h2>
+<a name="id2582255"></a><span class="refentrytitle">GimpFileEntry</span>
+</h2>
 <p>GimpFileEntry &#8212; Widget for entering a filename.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-file-entry.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -68,7 +72,7 @@ void        <a href="GimpFileEntry.html#gimp-file-entry-set-filename">gimp_file_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
+<a name="id2607283"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -82,13 +86,13 @@ void        <a href="GimpFileEntry.html#gimp-file-entry-set-filename">gimp_file_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
+<a name="id2607344"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpFileEntry implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="signal_proto"></a><h2>Signals</h2>
+<a name="id2604742"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpFileEntry.html#GimpFileEntry-filename-changed">filename-changed</a>"
@@ -97,7 +101,7 @@ GimpFileEntry implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2604785"></a><h2>Description</h2>
 <p>
 This widget is used to enter filenames or directories.
 </p>
@@ -120,11 +124,11 @@ will be emitted.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2604872"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2529646"></a><h3>
+<a name="id2604883"></a><h3>
 <a name="GimpFileEntry-struct"></a>GimpFileEntry</h3>
-<a class="indexterm" name="id2529657"></a><pre class="programlisting">typedef struct _GimpFileEntry GimpFileEntry;</pre>
+<a class="indexterm" name="id2604895"></a><pre class="programlisting">typedef struct _GimpFileEntry GimpFileEntry;</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpFileEntry</code> is deprecated and should not be used in newly-written code.</p>
@@ -135,9 +139,9 @@ will be emitted.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557323"></a><h3>
+<a name="id2560721"></a><h3>
 <a name="gimp-file-entry-new"></a>gimp_file_entry_new ()</h3>
-<a class="indexterm" name="id2557338"></a><pre class="programlisting">GtkWidget*  gimp_file_entry_new             (const gchar *title,
+<a class="indexterm" name="id2560735"></a><pre class="programlisting">GtkWidget*  gimp_file_entry_new             (const gchar *title,
                                              const gchar *filename,
                                              gboolean dir_only,
                                              gboolean check_valid);</pre>
@@ -189,9 +193,9 @@ You should use <span class="type">GtkFileChooserButton</span> instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557514"></a><h3>
+<a name="id2560912"></a><h3>
 <a name="gimp-file-entry-get-filename"></a>gimp_file_entry_get_filename ()</h3>
-<a class="indexterm" name="id2557528"></a><pre class="programlisting">gchar*      gimp_file_entry_get_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);</pre>
+<a class="indexterm" name="id2560925"></a><pre class="programlisting">gchar*      gimp_file_entry_get_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_file_entry_get_filename</code> is deprecated and should not be used in newly-written code.</p>
@@ -221,9 +225,9 @@ Note that you have to <code class="function">g_free()</code> the returned string
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572448"></a><h3>
+<a name="id2603809"></a><h3>
 <a name="gimp-file-entry-set-filename"></a>gimp_file_entry_set_filename ()</h3>
-<a class="indexterm" name="id2572461"></a><pre class="programlisting">void        gimp_file_entry_set_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
+<a class="indexterm" name="id2603823"></a><pre class="programlisting">void        gimp_file_entry_set_filename    (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *entry,
                                              const gchar *filename);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -256,11 +260,11 @@ name.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="signals"></a><h2>Signal Details</h2>
+<a name="id2603942"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2572590"></a><h3>
+<a name="id2603953"></a><h3>
 <a name="GimpFileEntry-filename-changed"></a>The "filename-changed" signal</h3>
-<a class="indexterm" name="id2572600"></a><pre class="programlisting">void        user_function                  (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *arg0,
+<a class="indexterm" name="id2603963"></a><pre class="programlisting">void        user_function                  (<a href="GimpFileEntry.html" title="GimpFileEntry">GimpFileEntry</a> *arg0,
                                             gpointer       user_data)      : Run first</pre>
 <p>
 This signal is emitted whenever the user changes the filename.</p>
@@ -278,7 +282,7 @@ This signal is emitted whenever the user changes the filename.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2572659"></a><h2>See Also</h2>
+<a name="id2604022"></a><h2>See Also</h2>
 <p>
 <a href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a>
 </p>

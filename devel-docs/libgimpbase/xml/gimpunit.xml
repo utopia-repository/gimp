@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpunit">
 <refmeta>
-<refentrytitle id="top_of_page">gimpunit</refentrytitle>
+<refentrytitle role="top_of_page">gimpunit</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -16,8 +16,8 @@ user-defined units.</refpurpose>
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -67,8 +67,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-unit-get-plural">g
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Provides a collection of predefined units and functions for creating
 user-defined units.
@@ -76,8 +76,8 @@ user-defined units.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpUnit" role="enum"/>enum GimpUnit</title>
 <indexterm><primary>GimpUnit</primary></indexterm><programlisting>typedef enum /*&lt; skip &gt;*/

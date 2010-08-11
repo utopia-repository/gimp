@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimppalettes</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimppalette.html" title="gimppalette">
 <link rel="next" href="libgimp-gimppattern.html" title="gimppattern">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -32,21 +32,23 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppattern.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566554" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2685097" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppalettes"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimppalettes</span></h2>
+<h2>
+<a name="id2566554"></a><span class="refentrytitle">gimppalettes</span>
+</h2>
 <p>gimppalettes &#8212; Operations related to palettes.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -65,17 +67,17 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2685097"></a><h2>Description</h2>
 <p>
 Operations related to palettes.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2685112"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2653058"></a><h3>
+<a name="id2685123"></a><h3>
 <a name="gimp-palettes-refresh"></a>gimp_palettes_refresh ()</h3>
-<a class="indexterm" name="id2653069"></a><pre class="programlisting">gboolean    gimp_palettes_refresh           (void);</pre>
+<a class="indexterm" name="id2685134"></a><pre class="programlisting">gboolean    gimp_palettes_refresh           (void);</pre>
 <p>
 Refreshes current palettes. This function always succeeds.
 </p>
@@ -97,9 +99,9 @@ palette path and updates the palette dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653112"></a><h3>
+<a name="id2685177"></a><h3>
 <a name="gimp-palettes-get-list"></a>gimp_palettes_get_list ()</h3>
-<a class="indexterm" name="id2653123"></a><pre class="programlisting">gchar**     gimp_palettes_get_list          (const gchar *filter,
+<a class="indexterm" name="id2685189"></a><pre class="programlisting">gchar**     gimp_palettes_get_list          (const gchar *filter,
                                              gint *num_palettes);</pre>
 <p>
 Retrieves a list of all of the available palettes
@@ -137,9 +139,9 @@ Each name returned can be used as input to the command
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629566"></a><h3>
+<a name="id2669738"></a><h3>
 <a name="gimp-palettes-get-palette"></a>gimp_palettes_get_palette ()</h3>
-<a class="indexterm" name="id2629580"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette       (gint *num_colors);</pre>
+<a class="indexterm" name="id2669751"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette       (gint *num_colors);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_get_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -170,9 +172,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629659"></a><h3>
+<a name="id2687487"></a><h3>
 <a name="gimp-palettes-set-palette"></a>gimp_palettes_set_palette ()</h3>
-<a class="indexterm" name="id2629672"></a><pre class="programlisting">gboolean    gimp_palettes_set_palette       (const gchar *name);</pre>
+<a class="indexterm" name="id2687501"></a><pre class="programlisting">gboolean    gimp_palettes_set_palette       (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_set_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -202,9 +204,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629751"></a><h3>
+<a name="id2687580"></a><h3>
 <a name="gimp-palettes-get-palette-entry"></a>gimp_palettes_get_palette_entry ()</h3>
-<a class="indexterm" name="id2629765"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette_entry (const gchar *name,
+<a class="indexterm" name="id2687593"></a><pre class="programlisting">gchar*      gimp_palettes_get_palette_entry (const gchar *name,
                                              gint entry_num,
                                              gint *num_colors,
                                              <a

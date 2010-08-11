@@ -4,7 +4,7 @@
 
 <refentry id="GimpCellRendererColor">
 <refmeta>
-<refentrytitle id="top_of_page">GimpCellRendererColor</refentrytitle>
+<refentrytitle role="top_of_page">GimpCellRendererColor</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -29,8 +29,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -46,8 +46,8 @@
 
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpCellRendererColor--color">color</link>&quot;                <link linkend="GimpRGB">GimpRGB</link>               : Read / Write
@@ -58,15 +58,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpCellRendererColor-struct" role="struct"/>GimpCellRendererColor</title>
 <indexterm><primary>GimpCellRendererColor</primary></indexterm><programlisting>typedef struct _GimpCellRendererColor GimpCellRendererColor;</programlisting>
@@ -89,8 +89,8 @@ Creates a <link linkend="GtkCellRenderer"><type>GtkCellRenderer</type></link> th
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpCellRendererColor--color"/>The &quot;<literal>color</literal>&quot; property</title>
 <indexterm><primary>GimpCellRendererColor:color</primary></indexterm><programlisting>  &quot;color&quot;                <link linkend="GimpRGB">GimpRGB</link>               : Read / Write</programlisting>
 <para></para></refsect2>

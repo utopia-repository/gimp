@@ -62,13 +62,14 @@ am__objects_2 = gimp-paint.$(OBJEXT) gimpairbrush.$(OBJEXT) \
 	gimpconvolve.$(OBJEXT) gimpconvolveoptions.$(OBJEXT) \
 	gimpdodgeburn.$(OBJEXT) gimpdodgeburnoptions.$(OBJEXT) \
 	gimperaser.$(OBJEXT) gimperaseroptions.$(OBJEXT) \
-	gimpink.$(OBJEXT) gimpink-blob.$(OBJEXT) \
+	gimpheal.$(OBJEXT) gimpink.$(OBJEXT) gimpink-blob.$(OBJEXT) \
 	gimpink-undo.$(OBJEXT) gimpinkoptions.$(OBJEXT) \
 	gimppaintcore.$(OBJEXT) gimppaintcore-stroke.$(OBJEXT) \
 	gimppaintcore-undo.$(OBJEXT) gimppaintoptions.$(OBJEXT) \
 	gimppencil.$(OBJEXT) gimppenciloptions.$(OBJEXT) \
 	gimppaintbrush.$(OBJEXT) gimpsmudge.$(OBJEXT) \
-	gimpsmudgeoptions.$(OBJEXT)
+	gimpsmudgeoptions.$(OBJEXT) gimpsourcecore.$(OBJEXT) \
+	gimpsourceoptions.$(OBJEXT)
 am_libapppaint_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libapppaint_a_OBJECTS = $(am_libapppaint_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -111,6 +112,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -477,6 +480,8 @@ libapppaint_a_sources = \
 	gimperaser.h		\
 	gimperaseroptions.c	\
 	gimperaseroptions.h	\
+	gimpheal.c		\
+	gimpheal.h		\
 	gimpink.c		\
 	gimpink.h		\
 	gimpink-blob.c		\
@@ -502,7 +507,11 @@ libapppaint_a_sources = \
 	gimpsmudge.c		\
 	gimpsmudge.h		\
 	gimpsmudgeoptions.c	\
-	gimpsmudgeoptions.h
+	gimpsmudgeoptions.h	\
+	gimpsourcecore.c	\
+	gimpsourcecore.h	\
+	gimpsourceoptions.c	\
+	gimpsourceoptions.h
 
 libapppaint_a_built_sources = paint-enums.c
 libapppaint_a_SOURCES = $(libapppaint_a_built_sources) $(libapppaint_a_sources)
@@ -573,6 +582,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdodgeburnoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimperaser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimperaseroptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpheal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpink-blob.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpink-undo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpink.Po@am__quote@
@@ -586,6 +596,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppenciloptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsmudge.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsmudgeoptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsourcecore.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsourceoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paint-enums.Po@am__quote@
 
 .c.o:

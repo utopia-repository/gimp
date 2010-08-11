@@ -27,10 +27,12 @@
 #include "base/gimplut.h"
 #include "base/lut-funcs.h"
 
+#include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagemap.h"
+#include "core/gimpprogress.h"
 
 #include "widgets/gimphelp-ids.h"
 
@@ -161,7 +163,8 @@ gimp_brightness_contrast_tool_initialize (GimpTool    *tool,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_message (_("Brightness-Contrast does not operate on indexed layers."));
+      gimp_message (display->image->gimp, GIMP_PROGRESS (display),
+                    _("Brightness-Contrast does not operate on indexed layers."));
       return FALSE;
     }
 

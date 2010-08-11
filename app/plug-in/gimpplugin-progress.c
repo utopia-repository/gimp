@@ -30,11 +30,11 @@
 #include "core/gimpprogress.h"
 
 #include "pdb/gimppdb.h"
-#include "pdb/gimptemporaryprocedure.h"
 
 #include "gimpplugin.h"
 #include "gimpplugin-progress.h"
 #include "gimppluginmanager.h"
+#include "gimptemporaryprocedure.h"
 
 
 /*  local function prototypes  */
@@ -271,33 +271,6 @@ gimp_plug_in_progress_cancel (GimpPlugIn  *plug_in,
   g_return_val_if_fail (progress_callback != NULL, FALSE);
 
   return FALSE;
-}
-
-void
-gimp_plug_in_progress_message (GimpPlugIn  *plug_in,
-                               const gchar *message)
-{
-  GimpPlugInProcFrame *proc_frame;
-  gchar               *domain;
-
-  g_return_if_fail (GIMP_IS_PLUG_IN (plug_in));
-  g_return_if_fail (message != NULL);
-
-  proc_frame = gimp_plug_in_get_proc_frame (plug_in);
-
-  domain = gimp_plug_in_get_undo_desc (plug_in);
-
-  if (proc_frame->progress)
-    {
-      gimp_progress_message (proc_frame->progress,
-                             plug_in->manager->gimp, domain, message);
-    }
-  else
-    {
-      gimp_message (plug_in->manager->gimp, domain, message);
-    }
-
-  g_free (domain);
 }
 
 

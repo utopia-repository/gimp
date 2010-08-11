@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpconfig-error</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
 <link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-gimpconfig-serialize.html" title="gimpconfig-serialize">
 <link rel="next" href="libgimpconfig-gimpconfig-params.html" title="gimpconfig-params">
-<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -25,21 +25,23 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-params.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566069" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2555901" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-GimpConfigError"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpconfig-error</span></h2>
+<h2>
+<a name="id2566069"></a><span class="refentrytitle">gimpconfig-error</span>
+</h2>
 <p>gimpconfig-error &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="synopsis"></a><h2>Synopsis</h2>
+<h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -50,17 +52,17 @@ GQuark      <a href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="desc"></a><h2>Description</h2>
+<a name="id2555901"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="details"></a><h2>Details</h2>
+<a name="id2556207"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2537979"></a><h3>
+<a name="id2556218"></a><h3>
 <a name="GimpConfigError"></a>enum GimpConfigError</h3>
-<a class="indexterm" name="id2537994"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2556235"></a><pre class="programlisting">typedef enum
 {
   GIMP_CONFIG_ERROR_OPEN,         /*  open failed                            */
   GIMP_CONFIG_ERROR_OPEN_ENOENT,  /*  file does not exist                    */
@@ -75,9 +77,9 @@ GQuark      <a href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538017"></a><h3>
+<a name="id2556258"></a><h3>
 <a name="GIMP-CONFIG-ERROR:CAPS"></a>GIMP_CONFIG_ERROR</h3>
-<a class="indexterm" name="id2538028"></a><pre class="programlisting">#define GIMP_CONFIG_ERROR (gimp_config_error_quark ())
+<a class="indexterm" name="id2556269"></a><pre class="programlisting">#define GIMP_CONFIG_ERROR (gimp_config_error_quark ())
 </pre>
 <p>
 
@@ -85,9 +87,9 @@ GQuark      <a href="libgimpconfig-GimpConfigError.html#gimp-config-error-quark"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538045"></a><h3>
+<a name="id2556286"></a><h3>
 <a name="gimp-config-error-quark"></a>gimp_config_error_quark ()</h3>
-<a class="indexterm" name="id2538058"></a><pre class="programlisting">GQuark      gimp_config_error_quark         (void);</pre>
+<a class="indexterm" name="id2556299"></a><pre class="programlisting">GQuark      gimp_config_error_quark         (void);</pre>
 <p>
 This function is never called directly. Use <a href="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"><code class="function">GIMP_CONFIG_ERROR()</code></a> instead.</p>
 <p>

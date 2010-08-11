@@ -91,6 +91,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -419,7 +421,6 @@ target_alias = @target_alias@
 pluginexecdir = $(gimpplugindir)/plug-ins
 scripts = \
 	colorxhtml.py		\
-	clothify.py		\
 	foggify.py		\
 	gimpcons.py		\
 	happy-valley-relief.py	\
@@ -428,12 +429,13 @@ scripts = \
 	palette-to-gradient.py	\
 	pdbbrowse.py		\
 	py-slice.py		\
-	shadow_bevel.py		\
-	whirlpinch.py
+	shadow_bevel.py
 
 test_scripts = \
 	benchmark-foreground-extract.py	\
-	sphere.py
+	clothify.py		\
+	sphere.py		\
+	whirlpinch.py
 
 @GIMP_UNSTABLE_FALSE@pluginexec_SCRIPTS = $(scripts)
 @GIMP_UNSTABLE_TRUE@pluginexec_SCRIPTS = $(scripts) $(test_scripts)

@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpparasiteio">
 <refmeta>
-<refentrytitle id="top_of_page">gimpparasiteio</refentrytitle>
+<refentrytitle role="top_of_page">gimpparasiteio</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -38,16 +38,16 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Utility functions to (de)serialize certain C structures to/from <link linkend="GimpParasite"><type>GimpParasite</type></link>'s.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GIMP-PIXPIPE-MAXDIM:CAPS" role="macro"/>GIMP_PIXPIPE_MAXDIM</title>
 <indexterm><primary>GIMP_PIXPIPE_MAXDIM</primary></indexterm><programlisting>#define GIMP_PIXPIPE_MAXDIM 4

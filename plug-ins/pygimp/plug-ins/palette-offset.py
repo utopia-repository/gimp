@@ -42,11 +42,8 @@ def palette_offset(palette, amount, forward):
     return palette
 
 
-def query_palette_offset():
-    pdb.gimp_plugin_menu_register("python-fu-palette-offset", "<Palettes>")
-
 register(
-    "python_fu_palette_offset",
+    "python-fu-palette-offset",
     "Offsets a given palette",
     "palette_offset (palette, amount_to_offset) -> modified_palette",
     "Joao S. O. Bueno Calligaris, Carol Spears",
@@ -56,12 +53,11 @@ register(
     "",
     [
      (PF_PALETTE, "palette", "Name of palette to offset", ""),
-     (PF_INT,     "amount",  "Amount of colors to offset", ""),
+     (PF_INT,     "amount",  "Amount of colors to offset", 1),
      (PF_BOOL,    "forward", "Offset the palette forward?", True)
     ],
-    [(PF_PALETTE, "new_palette", "Name of offset palette.")],
-    palette_offset,
-    on_query=query_palette_offset)
+    [(PF_PALETTE, "new-palette", "Name of offset palette.")],
+    palette_offset, menu="<Palettes>")
 
 
 main ()

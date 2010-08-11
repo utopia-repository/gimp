@@ -23,6 +23,7 @@
 
 #include <glib-object.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 
 #include "core-types.h"
@@ -34,7 +35,6 @@
 
 #include "paint-funcs/paint-funcs.h"
 
-#include "gimp-utils.h"
 #include "gimpcontext.h"
 #include "gimpcontainer.h"
 #include "gimpdrawable-convert.h"
@@ -1104,7 +1104,7 @@ gimp_layer_new_from_region (PixelRegion          *region,
 
   if (! new_layer)
     {
-      g_message ("gimp_layer_new_from_region: could not allocate new layer");
+      g_warning ("%s: could not allocate new layer", G_STRFUNC);
       return NULL;
     }
 

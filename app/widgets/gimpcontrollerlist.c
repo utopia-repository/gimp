@@ -50,6 +50,7 @@
 #include "gimppropwidgets.h"
 #include "gimpuimanager.h"
 #include "gimpviewabledialog.h"
+#include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
@@ -331,6 +332,9 @@ gimp_controller_list_constructor (GType                  type,
   gimp_container_view_set_container (GIMP_CONTAINER_VIEW (list->dest),
                                      gimp_controllers_get_list (list->gimp));
 
+  gimp_container_view_set_context (GIMP_CONTAINER_VIEW (list->dest),
+                                   gimp_get_user_context (list->gimp));
+
   return object;
 }
 
@@ -505,17 +509,21 @@ gimp_controller_list_add_clicked (GtkWidget          *button,
   if (list->src_gtype == GIMP_TYPE_CONTROLLER_KEYBOARD &&
       gimp_controllers_get_keyboard (list->gimp) != NULL)
     {
-      g_message (_("There can only be one active keyboard controller.\n\n"
-                   "You already have a keyboard controller in your list "
-                   "of active controllers."));
+      gimp_show_message_dialog (button, GTK_MESSAGE_WARNING,
+                                _("There can only be one active keyboard "
+                                  "controller.\n\n"
+                                  "You already have a keyboard controller in "
+                                  "your list of active controllers."));
       return;
     }
   else if (list->src_gtype == GIMP_TYPE_CONTROLLER_WHEEL &&
            gimp_controllers_get_wheel (list->gimp) != NULL)
     {
-      g_message (_("There can only be one active wheel controller.\n\n"
-                   "You already have a wheel controller in your list "
-                   "of active controllers."));
+      gimp_show_message_dialog (button, GTK_MESSAGE_WARNING,
+                                _("There can only be one active wheel "
+                                  "controller.\n\n"
+                                  "You already have a wheel controller in "
+                                  "your list of active controllers."));
       return;
     }
 
@@ -621,7 +629,7 @@ gimp_controller_list_edit_clicked (GtkWidget          *button,
       return;
     }
 
-  dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (list->dest_info),
+  dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (list->dest_info), NULL, /* FIXME */
                                      _("Configure Controller"),
                                      "gimp-controller-editor-dialog",
                                      GTK_STOCK_EDIT,

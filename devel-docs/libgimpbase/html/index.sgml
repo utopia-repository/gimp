@@ -92,6 +92,8 @@
 <ANCHOR id="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS" href="libgimpbase/libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS">
 <ANCHOR id="gimp-param-spec-memsize" href="libgimpbase/libgimpbase-gimpmemsize.html#gimp-param-spec-memsize">
 <ANCHOR id="GIMP-VALUE-HOLDS-MEMSIZE:CAPS" href="libgimpbase/libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS">
+<ANCHOR id="libgimpbase-gimprectangle" href="libgimpbase/libgimpbase-gimprectangle.html">
+<ANCHOR id="gimp-rectangle-intersect" href="libgimpbase/libgimpbase-gimprectangle.html#gimp-rectangle-intersect">
 <ANCHOR id="libgimpbase-gimpparasite" href="libgimpbase/libgimpbase-gimpparasite.html">
 <ANCHOR id="GimpParasite" href="libgimpbase/libgimpbase-gimpparasite.html#GimpParasite">
 <ANCHOR id="gimp-parasite-new" href="libgimpbase/libgimpbase-gimpparasite.html#gimp-parasite-new">

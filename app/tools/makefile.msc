@@ -32,6 +32,7 @@ OBJECTS = \
 	gimpblendoptions.obj \
 	gimpblendtool.obj \
 	gimpbrightnesscontrasttool.obj \
+	gimpbrushtool.obj \
 	gimpbucketfilloptions.obj \
 	gimpbucketfilltool.obj \
 	gimpbycolorselecttool.obj \
@@ -57,6 +58,7 @@ OBJECTS = \
 	gimpforegroundselecttool.obj \
 	gimpfreeselecttool.obj \
 	gimpfuzzyselecttool.obj \
+	gimphealtool.obj \
 	gimphistogramoptions.obj \
 	gimphuesaturationtool.obj \
 	gimpimagemapoptions.obj \
@@ -71,8 +73,6 @@ OBJECTS = \
 	gimpmeasuretool.obj \
 	gimpmoveoptions.obj \
 	gimpmovetool.obj \
-	gimpnewrectselectoptions.obj \
-	gimpnewrectselecttool.obj \
 	gimppaintbrushtool.obj \
 	gimppaintoptions-gui.obj \
 	gimppainttool.obj \
@@ -81,7 +81,9 @@ OBJECTS = \
 	gimpposterizetool.obj \
 	gimprectangleoptions.obj \
 	gimprectangletool.obj \
-	gimprectselecttool.obj \
+	gimprectangleselectoptions.obj \
+	gimprectangleselecttool.obj \
+	gimpregionselecttool.obj \
 	gimprotatetool.obj \
 	gimpscaletool.obj \
 	gimpselectionoptions.obj \

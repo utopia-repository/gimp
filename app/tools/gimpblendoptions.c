@@ -27,7 +27,6 @@
 
 #include "core/gimp.h"
 #include "core/gimpdatafactory.h"
-#include "core/gimptoolinfo.h"
 
 #include "widgets/gimpwidgets-utils.h"
 
@@ -200,13 +199,11 @@ GtkWidget *
 gimp_blend_options_gui (GimpToolOptions *tool_options)
 {
   GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox;
+  GtkWidget *vbox   = gimp_paint_options_gui (tool_options);
   GtkWidget *table;
   GtkWidget *frame;
   GtkWidget *combo;
   GtkWidget *button;
-
-  vbox = gimp_paint_options_gui (tool_options);
 
   table = g_object_get_data (G_OBJECT (vbox), GIMP_PAINT_OPTIONS_TABLE_KEY);
 

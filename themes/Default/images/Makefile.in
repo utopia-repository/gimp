@@ -96,6 +96,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -685,6 +687,8 @@ STOCK_TOOL_IMAGES = \
 	tools/stock-tool-fuzzy-select-22.png		\
 	tools/stock-tool-hue-saturation-16.png		\
 	tools/stock-tool-hue-saturation-22.png		\
+	tools/stock-tool-heal-16.png			\
+	tools/stock-tool-heal-22.png			\
 	tools/stock-tool-ink-16.png			\
 	tools/stock-tool-ink-22.png			\
 	tools/stock-tool-iscissors-16.png		\

@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpvectors">
 <refmeta>
-<refentrytitle id="top_of_page">gimpvectors</refentrytitle>
+<refentrytitle role="top_of_page">gimpvectors</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,6 +39,12 @@
                                              <link linkend="gboolean">gboolean</link> visible);
 <link linkend="gint">gint</link>*       <link linkend="gimp-vectors-get-strokes">gimp_vectors_get_strokes</link>        (<link linkend="gint32">gint32</link> vectors_ID,
                                              <link linkend="gint">gint</link> *num_strokes);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-vectors-to-selection">gimp_vectors_to_selection</link>       (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gboolean">gboolean</link> feather,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-vectors-parasite-attach">gimp_vectors_parasite_attach</link>    (<link linkend="gint32">gint32</link> vectors_ID,
                                              const <link linkend="GimpParasite">GimpParasite</link> *parasite);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-vectors-parasite-detach">gimp_vectors_parasite_detach</link>    (<link linkend="gint32">gint32</link> vectors_ID,
@@ -119,15 +125,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-vectors-get-image" role="function" condition="since:GIMP 2.4"/>gimp_vectors_get_image ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_vectors_get_image</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_vectors_get_image          (<link linkend="gint32">gint32</link> vectors_ID);</programlisting>
@@ -359,6 +365,46 @@ path.</para>
 <listitem><simpara> The number of strokes returned.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> List of the strokes belonging to the path.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-vectors-to-selection" role="function" condition="since:GIMP 2.4"/>gimp_vectors_to_selection ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_vectors_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_vectors_to_selection       (<link linkend="gint32">gint32</link> vectors_ID,
+                                             <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gboolean">gboolean</link> feather,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_x,
+                                             <link linkend="gdouble">gdouble</link> feather_radius_y);</programlisting>
+<para>
+Transforms the specified vectors object into a selection
+</para>
+<para>
+This procedure renders the desired vectors object into the current
+selection of the image the vectors object belongs to.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>vectors_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The vectors object to render to the selection.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>operation</parameter>&nbsp;:</term>
+<listitem><simpara> The desired operation with current selection.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>antialias</parameter>&nbsp;:</term>
+<listitem><simpara> Antialias selection.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather</parameter>&nbsp;:</term>
+<listitem><simpara> Feather selection.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather_radius_x</parameter>&nbsp;:</term>
+<listitem><simpara> Feather radius x.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>feather_radius_y</parameter>&nbsp;:</term>
+<listitem><simpara> Feather radius y.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4

@@ -33,7 +33,7 @@
 
 
 /*
- * these enums that are registered with the type system
+ * these enums are registered with the type system
  */
 
 
@@ -481,6 +481,20 @@ typedef enum
 } GimpOffsetType;
 
 
+#define GIMP_TYPE_GRADIENT_COLOR (gimp_gradient_color_get_type ())
+
+GType gimp_gradient_color_get_type (void) G_GNUC_CONST;
+
+typedef enum  /*< pdb-skip >*/
+{
+  GIMP_GRADIENT_COLOR_FIXED,
+  GIMP_GRADIENT_COLOR_FOREGROUND,
+  GIMP_GRADIENT_COLOR_FOREGROUND_TRANSPARENT,
+  GIMP_GRADIENT_COLOR_BACKGROUND,
+  GIMP_GRADIENT_COLOR_BACKGROUND_TRANSPARENT
+} GimpGradientColor;
+
+
 #define GIMP_TYPE_GRADIENT_SEGMENT_TYPE (gimp_gradient_segment_type_get_type ())
 
 GType gimp_gradient_segment_type_get_type (void) G_GNUC_CONST;
@@ -529,6 +543,22 @@ typedef enum
   GIMP_CLIP_TO_BOTTOM_LAYER,
   GIMP_FLATTEN_IMAGE
 } GimpMergeType;
+
+
+#define GIMP_TYPE_SELECT_CRITERION (gimp_select_criterion_get_type ())
+
+GType gimp_select_criterion_get_type (void) G_GNUC_CONST;
+
+typedef enum 
+{
+  GIMP_SELECT_CRITERION_COMPOSITE,  /*< desc="Composite"  >*/
+  GIMP_SELECT_CRITERION_R,          /*< desc="Red"        >*/
+  GIMP_SELECT_CRITERION_G,          /*< desc="Green"      >*/
+  GIMP_SELECT_CRITERION_B,          /*< desc="Blue"       >*/
+  GIMP_SELECT_CRITERION_H,          /*< desc="Hue"        >*/
+  GIMP_SELECT_CRITERION_S,          /*< desc="Saturation" >*/
+  GIMP_SELECT_CRITERION_V           /*< desc="Value"      >*/
+} GimpSelectCriterion;
 
 
 /*

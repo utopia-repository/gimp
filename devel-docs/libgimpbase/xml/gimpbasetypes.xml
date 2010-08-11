@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpbasetypes">
 <refmeta>
-<refentrytitle id="top_of_page">gimpbasetypes</refentrytitle>
+<refentrytitle role="top_of_page">gimpbasetypes</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -50,15 +50,15 @@ const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* <link linkend="gimp-fl
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Translation between gettext translation domain identifier and GType.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpEnumDesc" role="struct"/>GimpEnumDesc</title>
 <indexterm><primary>GimpEnumDesc</primary></indexterm><programlisting>typedef struct {

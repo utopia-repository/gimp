@@ -28,7 +28,6 @@
 #include "core/gimpchannel-select.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer-floating-sel.h"
-#include "core/gimptoolinfo.h"
 
 #include "widgets/gimphelp-ids.h"
 
@@ -197,10 +196,7 @@ gimp_free_select_tool_button_release (GimpTool        *tool,
                                       GdkModifierType  state,
                                       GimpDisplay     *display)
 {
-  GimpFreeSelectTool   *free_sel = GIMP_FREE_SELECT_TOOL (tool);
-  GimpSelectionOptions *options;
-
-  options  = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  GimpFreeSelectTool *free_sel = GIMP_FREE_SELECT_TOOL (tool);
 
   gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
@@ -277,17 +273,11 @@ static void
 gimp_free_select_tool_draw (GimpDrawTool *draw_tool)
 {
   GimpFreeSelectTool *free_sel = GIMP_FREE_SELECT_TOOL (draw_tool);
-  gint                i;
 
-  for (i = 1; i < free_sel->num_points; i++)
-    {
-      gimp_draw_tool_draw_line (draw_tool,
-                                free_sel->points[i - 1].x,
-                                free_sel->points[i - 1].y,
-                                free_sel->points[i].x,
-                                free_sel->points[i].y,
-                                FALSE);
-    }
+  gimp_draw_tool_draw_lines (draw_tool,
+                             (const gdouble *) free_sel->points,
+                             free_sel->num_points,
+                             FALSE, FALSE);
 }
 
 
@@ -310,10 +300,8 @@ static void
 gimp_free_select_tool_real_select (GimpFreeSelectTool *free_sel,
                                    GimpDisplay        *display)
 {
-  GimpTool             *tool = GIMP_TOOL (free_sel);
-  GimpSelectionOptions *options;
-
-  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  GimpTool             *tool    = GIMP_TOOL (free_sel);
+  GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (free_sel);
 
   gimp_channel_select_polygon (gimp_image_get_mask (display->image),
                                Q_("command|Free Select"),
@@ -323,7 +311,8 @@ gimp_free_select_tool_real_select (GimpFreeSelectTool *free_sel,
                                options->antialias,
                                options->feather,
                                options->feather_radius,
-                               options->feather_radius);
+                               options->feather_radius,
+                               TRUE);
 }
 
 static void

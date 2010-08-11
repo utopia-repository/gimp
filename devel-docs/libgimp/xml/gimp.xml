@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimp">
 <refmeta>
-<refentrytitle id="top_of_page">gimp</refentrytitle>
+<refentrytitle role="top_of_page">gimp</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -16,8 +16,8 @@ all other GIMP Library headers.</refpurpose>
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -92,7 +92,7 @@ union       <link linkend="GimpParamData">GimpParamData</link>;
 <link linkend="guint">guint</link>       <link linkend="gimp-tile-width">gimp_tile_width</link>                 (void);
 <link linkend="guint">guint</link>       <link linkend="gimp-tile-height">gimp_tile_height</link>                (void);
 <link linkend="gint">gint</link>        <link linkend="gimp-shm-ID">gimp_shm_ID</link>                     (void);
-const <link linkend="guchar">guchar</link>* <link linkend="gimp-shm-addr">gimp_shm_addr</link>                 (void);
+<link linkend="guchar">guchar</link>*     <link linkend="gimp-shm-addr">gimp_shm_addr</link>                   (void);
 <link linkend="gdouble">gdouble</link>     <link linkend="gimp-gamma">gimp_gamma</link>                      (void);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-install-cmap">gimp_install_cmap</link>               (void);
 <link linkend="gint">gint</link>        <link linkend="gimp-min-colors">gimp_min_colors</link>                 (void);
@@ -128,8 +128,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-get-progname">gimp
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.
@@ -137,8 +137,8 @@ all other GIMP Library headers.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GIMPVAR:CAPS" role="macro"/>GIMPVAR</title>
 <indexterm><primary>GIMPVAR</primary></indexterm><programlisting>#define     GIMPVAR</programlisting>
@@ -752,7 +752,7 @@ given at Plug-In config time.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-shm-addr" role="function"/>gimp_shm_addr ()</title>
-<indexterm><primary>gimp_shm_addr</primary></indexterm><programlisting>const <link linkend="guchar">guchar</link>* gimp_shm_addr                 (void);</programlisting>
+<indexterm><primary>gimp_shm_addr</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*     gimp_shm_addr                   (void);</programlisting>
 <para>
 Returns the address of the shared memory segment used for passing
 tile data between the GIMP core and the Plug-In. This is a constant

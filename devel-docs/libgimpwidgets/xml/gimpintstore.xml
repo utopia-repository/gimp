@@ -4,7 +4,7 @@
 
 <refentry id="GimpIntStore">
 <refmeta>
-<refentrytitle id="top_of_page">GimpIntStore</refentrytitle>
+<refentrytitle role="top_of_page">GimpIntStore</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -32,8 +32,8 @@ enum        <link linkend="GimpIntStoreColumns">GimpIntStoreColumns</link>;
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -46,8 +46,8 @@ enum        <link linkend="GimpIntStoreColumns">GimpIntStoreColumns</link>;
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpIntStore implements
  <link linkend="GtkTreeModel">GtkTreeModel</link>,  <link linkend="GtkTreeDragSource">GtkTreeDragSource</link>,  <link linkend="GtkTreeDragDest">GtkTreeDragDest</link> and  <link linkend="GtkTreeSortable">GtkTreeSortable</link>.</para>
@@ -58,15 +58,15 @@ GimpIntStore implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 A model for integer based name-value pairs (e.g. enums)
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpIntStore-struct" role="struct"/>GimpIntStore</title>
 <indexterm><primary>GimpIntStore</primary></indexterm><programlisting>typedef struct _GimpIntStore GimpIntStore;</programlisting>

@@ -16,6 +16,7 @@
 <ANCHOR id="gimp-chain-button-new" href="libgimpwidgets/GimpChainButton.html#gimp-chain-button-new">
 <ANCHOR id="gimp-chain-button-set-active" href="libgimpwidgets/GimpChainButton.html#gimp-chain-button-set-active">
 <ANCHOR id="gimp-chain-button-get-active" href="libgimpwidgets/GimpChainButton.html#gimp-chain-button-get-active">
+<ANCHOR id="GimpChainButton--position" href="libgimpwidgets/GimpChainButton.html#GimpChainButton--position">
 <ANCHOR id="GimpChainButton-toggled" href="libgimpwidgets/GimpChainButton.html#GimpChainButton-toggled">
 <ANCHOR id="GimpColorArea" href="libgimpwidgets/GimpColorArea.html">
 <ANCHOR id="GimpColorArea-struct" href="libgimpwidgets/GimpColorArea.html#GimpColorArea-struct">
@@ -72,6 +73,8 @@
 <ANCHOR id="GimpDialog-struct" href="libgimpwidgets/GimpDialog.html#GimpDialog-struct">
 <ANCHOR id="gimp-dialog-new" href="libgimpwidgets/GimpDialog.html#gimp-dialog-new">
 <ANCHOR id="gimp-dialog-new-valist" href="libgimpwidgets/GimpDialog.html#gimp-dialog-new-valist">
+<ANCHOR id="gimp-dialog-add-button" href="libgimpwidgets/GimpDialog.html#gimp-dialog-add-button">
+<ANCHOR id="gimp-dialog-add-buttons" href="libgimpwidgets/GimpDialog.html#gimp-dialog-add-buttons">
 <ANCHOR id="gimp-dialog-add-buttons-valist" href="libgimpwidgets/GimpDialog.html#gimp-dialog-add-buttons-valist">
 <ANCHOR id="gimp-dialog-run" href="libgimpwidgets/GimpDialog.html#gimp-dialog-run">
 <ANCHOR id="gimp-dialogs-show-help-button" href="libgimpwidgets/GimpDialog.html#gimp-dialogs-show-help-button">
@@ -105,6 +108,8 @@
 <ANCHOR id="gimp-frame-new" href="libgimpwidgets/GimpFrame.html#gimp-frame-new">
 <ANCHOR id="GimpFrame--label-bold" href="libgimpwidgets/GimpFrame.html#GimpFrame--label-bold">
 <ANCHOR id="GimpFrame--label-spacing" href="libgimpwidgets/GimpFrame.html#GimpFrame--label-spacing">
+<ANCHOR id="libgimpwidgets-GimpHintBox" href="libgimpwidgets/libgimpwidgets-GimpHintBox.html">
+<ANCHOR id="gimp-hint-box-new" href="libgimpwidgets/libgimpwidgets-GimpHintBox.html#gimp-hint-box-new">
 <ANCHOR id="GimpIntComboBox" href="libgimpwidgets/GimpIntComboBox.html">
 <ANCHOR id="GimpIntComboBox-struct" href="libgimpwidgets/GimpIntComboBox.html#GimpIntComboBox-struct">
 <ANCHOR id="GimpIntSensitivityFunc" href="libgimpwidgets/GimpIntComboBox.html#GimpIntSensitivityFunc">
@@ -533,6 +538,7 @@
 <ANCHOR id="GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-FREE-SELECT:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FREE-SELECT:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS">
+<ANCHOR id="GIMP-STOCK-TOOL-HEAL:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HEAL:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HUE-SATURATION:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-INK:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-INK:CAPS">
 <ANCHOR id="GIMP-STOCK-TOOL-ISCISSORS:CAPS" href="libgimpwidgets/libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ISCISSORS:CAPS">

@@ -68,8 +68,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 am__objects_1 = gimpbasetypes.lo gimpbase-private.lo gimpchecks.lo \
 	gimpcpuaccel.lo gimpdatafiles.lo gimpenv.lo gimpmemsize.lo \
-	gimpparasite.lo gimpparasiteio.lo gimpprotocol.lo gimpreloc.lo \
-	gimpsignal.lo gimpunit.lo gimputils.lo gimpwire.lo
+	gimpparasite.lo gimpparasiteio.lo gimpprotocol.lo \
+	gimprectangle.lo gimpreloc.lo gimpsignal.lo gimpunit.lo \
+	gimputils.lo gimpwire.lo
 am__objects_2 = gimpbaseenums.lo
 am_libgimpbase_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpbase_2_0_la_OBJECTS = $(am_libgimpbase_2_0_la_OBJECTS)
@@ -119,6 +120,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -505,6 +508,8 @@ libgimpbase_sources = \
 	gimpparasiteio.h	\
 	gimpprotocol.c		\
 	gimpprotocol.h		\
+	gimprectangle.c		\
+	gimprectangle.h		\
 	gimpreloc.c		\
 	gimpreloc.h		\
 	gimpsignal.c            \
@@ -536,6 +541,7 @@ libgimpbaseinclude_HEADERS = \
 	gimpmemsize.h		\
 	gimpparasite.h		\
 	gimpparasiteio.h	\
+	gimprectangle.h		\
 	gimpsignal.h		\
 	gimpunit.h		\
 	gimputils.h
@@ -649,6 +655,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparasite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparasiteio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprotocol.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpreloc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsignal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunit.Plo@am__quote@

@@ -43,16 +43,22 @@ libappplug_in_a_SOURCES = \
 	gimppluginmanager-file.h		\
 	gimppluginmanager-help-domain.c		\
 	gimppluginmanager-help-domain.h		\
+	gimppluginmanager-history.c		\
+	gimppluginmanager-history.h		\
 	gimppluginmanager-locale-domain.c	\
 	gimppluginmanager-locale-domain.h	\
 	gimppluginmanager-menu-branch.c		\
 	gimppluginmanager-menu-branch.h		\
 	gimppluginmanager-query.c		\
 	gimppluginmanager-query.h		\
+	gimppluginprocedure.c			\
+	gimppluginprocedure.h			\
 	gimppluginprocframe.c			\
 	gimppluginprocframe.h			\
 	gimppluginshm.c				\
 	gimppluginshm.h				\
+	gimptemporaryprocedure.c		\
+	gimptemporaryprocedure.h		\
 	\
 	plug-in-def.c				\
 	plug-in-def.h				\

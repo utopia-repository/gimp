@@ -19,6 +19,7 @@
       <sub name="GimpEnumLabel" link="GimpEnumLabel.html"/>
       <sub name="GimpFileEntry" link="GimpFileEntry.html"/>
       <sub name="GimpFrame" link="GimpFrame.html"/>
+      <sub name="GimpHintBox" link="libgimpwidgets-GimpHintBox.html"/>
       <sub name="GimpIntComboBox" link="GimpIntComboBox.html"/>
       <sub name="GimpIntStore" link="GimpIntStore.html"/>
       <sub name="GimpMemsizeEntry" link="GimpMemsizeEntry.html"/>
@@ -82,6 +83,7 @@
     <function name="gimp_chain_button_new ()" link="GimpChainButton.html#gimp-chain-button-new"/>
     <function name="gimp_chain_button_set_active ()" link="GimpChainButton.html#gimp-chain-button-set-active"/>
     <function name="gimp_chain_button_get_active ()" link="GimpChainButton.html#gimp-chain-button-get-active"/>
+    <function name="The &quot;position&quot; property" link="GimpChainButton.html#GimpChainButton--position"/>
     <function name="The &quot;toggled&quot; signal" link="GimpChainButton.html#GimpChainButton-toggled"/>
     <function name="GimpColorArea" link="GimpColorArea.html#GimpColorArea-struct"/>
     <function name="enum GimpColorAreaType" link="GimpColorArea.html#GimpColorAreaType"/>
@@ -132,6 +134,8 @@
     <function name="GimpDialog" link="GimpDialog.html#GimpDialog-struct"/>
     <function name="gimp_dialog_new ()" link="GimpDialog.html#gimp-dialog-new"/>
     <function name="gimp_dialog_new_valist ()" link="GimpDialog.html#gimp-dialog-new-valist"/>
+    <function name="gimp_dialog_add_button ()" link="GimpDialog.html#gimp-dialog-add-button"/>
+    <function name="gimp_dialog_add_buttons ()" link="GimpDialog.html#gimp-dialog-add-buttons"/>
     <function name="gimp_dialog_add_buttons_valist ()" link="GimpDialog.html#gimp-dialog-add-buttons-valist"/>
     <function name="gimp_dialog_run ()" link="GimpDialog.html#gimp-dialog-run"/>
     <function name="gimp_dialogs_show_help_button ()" link="GimpDialog.html#gimp-dialogs-show-help-button"/>
@@ -160,6 +164,7 @@
     <function name="gimp_frame_new ()" link="GimpFrame.html#gimp-frame-new"/>
     <function name="The &quot;label-bold&quot; style property" link="GimpFrame.html#GimpFrame--label-bold"/>
     <function name="The &quot;label-spacing&quot; style property" link="GimpFrame.html#GimpFrame--label-spacing"/>
+    <function name="gimp_hint_box_new ()" link="libgimpwidgets-GimpHintBox.html#gimp-hint-box-new"/>
     <function name="GimpIntComboBox" link="GimpIntComboBox.html#GimpIntComboBox-struct"/>
     <function name="GimpIntSensitivityFunc ()" link="GimpIntComboBox.html#GimpIntSensitivityFunc"/>
     <function name="gimp_int_combo_box_new ()" link="GimpIntComboBox.html#gimp-int-combo-box-new"/>
@@ -555,6 +560,7 @@
     <function name="GIMP_STOCK_TOOL_FOREGROUND_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS"/>
     <function name="GIMP_STOCK_TOOL_FREE_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FREE-SELECT:CAPS"/>
     <function name="GIMP_STOCK_TOOL_FUZZY_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS"/>
+    <function name="GIMP_STOCK_TOOL_HEAL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HEAL:CAPS"/>
     <function name="GIMP_STOCK_TOOL_HUE_SATURATION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HUE-SATURATION:CAPS"/>
     <function name="GIMP_STOCK_TOOL_INK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-INK:CAPS"/>
     <function name="GIMP_STOCK_TOOL_ISCISSORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ISCISSORS:CAPS"/>

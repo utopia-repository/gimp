@@ -135,24 +135,6 @@ pixel_region_resize (PixelRegion *PR,
   PR->h = h;
 }
 
-
-/* request that tiles within a region be fetched asynchronously */
-void
-pixel_region_get_async (PixelRegion *PR,
-                        gint         ulx,
-                        gint         uly,
-                        gint         lrx,
-                        gint         lry)
-{
-  gint x;
-  gint y;
-
-  for (y = uly; y < lry; y += TILE_HEIGHT)
-    for (x = ulx; x < lrx; x += TILE_WIDTH)
-      tile_manager_get_async (PR->tiles, x, y);
-}
-
-
 void
 pixel_region_get_row (PixelRegion *PR,
                       gint         x,
@@ -168,18 +150,16 @@ pixel_region_get_row (PixelRegion *PR,
   gint    boundary;
   gint    b;
   gint    npixels;
-  gint    tilebpp;
+  gint    bpp;
 
   end = x + w;
 
-  pixel_region_get_async (PR, x, y, end, y);
-
-  tilebpp = tile_manager_bpp (PR->tiles);
-  inc = subsample * tilebpp;
+  bpp = tile_manager_bpp (PR->tiles);
+  inc = subsample * bpp;
 
   if (subsample == 1)
     {
-      read_pixel_data (PR->tiles, x, y, end-1, y, data, tilebpp);
+      read_pixel_data (PR->tiles, x, y, end - 1, y, data, bpp);
     }
   else
     {
@@ -195,7 +175,7 @@ pixel_region_get_row (PixelRegion *PR,
           boundary = x + npixels;
           for ( ; x < boundary; x += subsample)
             {
-              for (b = 0; b < tilebpp; b++)
+              for (b = 0; b < bpp; b++)
                 *data++ = tile_data[b];
 
               tile_data += inc;
@@ -206,21 +186,16 @@ pixel_region_get_row (PixelRegion *PR,
 }
 
 void
-pixel_region_set_row (PixelRegion *PR,
-                      gint         x,
-                      gint         y,
-                      gint         w,
-                      guchar      *data)
+pixel_region_set_row (PixelRegion  *PR,
+                      gint          x,
+                      gint          y,
+                      gint          w,
+                      const guchar *data)
 {
-  gint    end;
-  gint    bpp;
+  gint end = x + w;
+  gint bpp = tile_manager_bpp (PR->tiles);
 
-  end = x + w;
-  bpp = tile_manager_bpp (PR->tiles);
-
-  pixel_region_get_async (PR, x, y, end, y);
-
-  write_pixel_data (PR->tiles, x, y, end-1, y, data, bpp);
+  write_pixel_data (PR->tiles, x, y, end - 1, y, data, bpp);
 }
 
 
@@ -234,17 +209,14 @@ pixel_region_get_col (PixelRegion *PR,
 {
   Tile   *tile;
   guchar *tile_data;
-  gint    tilebpp;
+  gint    bpp;
   gint    inc;
   gint    end;
   gint    boundary;
   gint    b;
 
   end = y + h;
-
-  pixel_region_get_async (PR, x, y, x, end);
-
-  tilebpp = tile_manager_bpp (PR->tiles);
+  bpp = tile_manager_bpp (PR->tiles);
 
   while (y < end)
     {
@@ -255,11 +227,11 @@ pixel_region_get_col (PixelRegion *PR,
       if (boundary > end) /* make sure we don't write past the end */
         boundary = end;
 
-      inc = subsample * tilebpp * tile_ewidth (tile);
+      inc = subsample * bpp * tile_ewidth (tile);
 
       for ( ; y < boundary; y += subsample)
         {
-          for (b = 0; b < tilebpp; b++)
+          for (b = 0; b < bpp; b++)
             *data++ = tile_data[b];
 
           tile_data += inc;
@@ -271,22 +243,16 @@ pixel_region_get_col (PixelRegion *PR,
 
 
 void
-pixel_region_set_col (PixelRegion *PR,
-                      gint         x,
-                      gint         y,
-                      gint         h,
-                      guchar      *data)
+pixel_region_set_col (PixelRegion  *PR,
+                      gint          x,
+                      gint          y,
+                      gint          h,
+                      const guchar *data)
 {
-  gint    tilebpp;
-  gint    end;
+  gint end = y + h;
+  gint bpp = tile_manager_bpp (PR->tiles);
 
-  end = y + h;
-
-  pixel_region_get_async (PR, x, y, x, end);
-
-  tilebpp = tile_manager_bpp (PR->tiles);
-
-  write_pixel_data (PR->tiles, x, y, x, end-1, data, tilebpp);
+  write_pixel_data (PR->tiles, x, y, x, end-1, data, bpp);
 }
 
 gboolean

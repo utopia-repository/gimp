@@ -78,6 +78,8 @@ static gboolean    about_dialog_anim_expose   (GtkWidget       *widget,
 static void        about_dialog_reshuffle     (GimpAboutDialog *dialog);
 static gboolean    about_dialog_timer         (gpointer         data);
 
+static void        about_dialog_add_message   (GtkWidget       *vbox);
+
 
 GtkWidget *
 about_dialog_create (GimpContext *context)
@@ -148,7 +150,10 @@ about_dialog_create (GimpContext *context)
       children = gtk_container_get_children (GTK_CONTAINER (container));
 
       if (GTK_IS_VBOX (children->data))
-        about_dialog_add_animation (children->data, dialog);
+        {
+          about_dialog_add_animation (children->data, dialog);
+          about_dialog_add_message (children->data);
+        }
       else
         g_warning ("%s: ooops, no vbox in this container?", G_STRLOC);
 
@@ -585,3 +590,20 @@ about_dialog_timer (gpointer data)
   /* else keep the current timeout */
   return TRUE;
 }
+
+static void
+about_dialog_add_message (GtkWidget *vbox)
+{
+#ifdef GIMP_UNSTABLE
+  GtkWidget *label;
+
+  label = gtk_label_new (_("This is an unstable development release."));
+  gimp_label_set_attributes (GTK_LABEL (label),
+                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                             -1);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  gtk_box_reorder_child (GTK_BOX (vbox), label, 2);
+  gtk_widget_show (label);
+#endif
+}
+

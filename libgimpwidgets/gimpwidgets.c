@@ -542,7 +542,9 @@ gimp_scale_entry_new_internal (gboolean     color_scale,
 
   if (tooltip)
     {
-      ebox = gtk_event_box_new ();
+      ebox = g_object_new (GTK_TYPE_EVENT_BOX,
+                           "visible-window", FALSE,
+                           NULL);
       gtk_table_attach (GTK_TABLE (table), ebox,
                         column, column + 1, row, row + 1,
                         GTK_FILL, GTK_FILL, 0, 0);
@@ -1082,7 +1084,7 @@ gimp_coordinates_callback (GtkWidget           *widget,
                   gcd->last_x = new_x;
                   new_y = (new_x * gcd->orig_y) / gcd->orig_x;
 
-                  g_signal_stop_emission_by_name (widget, "value-changed");
+/*                   g_signal_stop_emission_by_name (widget, "value-changed"); */
                   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1,
                                               new_y);
                   gcd->last_y
@@ -1093,7 +1095,7 @@ gimp_coordinates_callback (GtkWidget           *widget,
                   gcd->last_y = new_y;
                   new_x = (new_y * gcd->orig_x) / gcd->orig_y;
 
-                  g_signal_stop_emission_by_name (widget, "value-changed");
+/*                   g_signal_stop_emission_by_name (widget, "value-changed"); */
                   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0,
                                               new_x);
                   gcd->last_x
@@ -1107,7 +1109,7 @@ gimp_coordinates_callback (GtkWidget           *widget,
             {
               new_y = new_x;
 
-              g_signal_stop_emission_by_name (widget, "value-changed");
+/*               g_signal_stop_emission_by_name (widget, "value-changed"); */
               gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1, new_x);
               gcd->last_y = gcd->last_x
                 = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
@@ -1116,7 +1118,7 @@ gimp_coordinates_callback (GtkWidget           *widget,
             {
               new_x = new_y;
 
-              g_signal_stop_emission_by_name (widget, "value-changed");
+/*               g_signal_stop_emission_by_name (widget, "value-changed"); */
               gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0, new_y);
               gcd->last_x = gcd->last_y
                 = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);

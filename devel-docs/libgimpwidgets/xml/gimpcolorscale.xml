@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorScale">
 <refmeta>
-<refentrytitle id="top_of_page">GimpColorScale</refentrytitle>
+<refentrytitle role="top_of_page">GimpColorScale</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -34,8 +34,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -51,8 +51,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorScale implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -63,15 +63,15 @@ GimpColorScale implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpColorScale-struct" role="struct"/>GimpColorScale</title>
 <indexterm><primary>GimpColorScale</primary></indexterm><programlisting>typedef struct _GimpColorScale GimpColorScale;</programlisting>

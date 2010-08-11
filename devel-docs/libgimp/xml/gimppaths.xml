@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppaths">
 <refmeta>
-<refentrytitle id="top_of_page">gimppaths</refentrytitle>
+<refentrytitle role="top_of_page">gimppaths</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -83,15 +83,15 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Operations related to paths.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-path-list" role="function" condition="deprecated:"/>gimp_path_list ()</title>
 <indexterm role="deprecated"><primary>gimp_path_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_path_list                  (<link linkend="gint32">gint32</link> image_ID,
@@ -383,19 +383,18 @@ This procedure is deprecated! Use <link linkend="gimp-vectors-set-tattoo"><funct
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-path-to-selection" role="function"/>gimp_path_to_selection ()</title>
-<indexterm><primary>gimp_path_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_path_to_selection          (<link linkend="gint32">gint32</link> image_ID,
+<title><anchor id="gimp-path-to-selection" role="function" condition="deprecated:"/>gimp_path_to_selection ()</title>
+<indexterm role="deprecated"><primary>gimp_path_to_selection</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_path_to_selection          (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="GimpChannelOps">GimpChannelOps</link> op,
                                              <link linkend="gboolean">gboolean</link> antialias,
                                              <link linkend="gboolean">gboolean</link> feather,
                                              <link linkend="gdouble">gdouble</link> feather_radius_x,
                                              <link linkend="gdouble">gdouble</link> feather_radius_y);</programlisting>
+<warning><para><literal>gimp_path_to_selection</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
-Transforms the active path into a selection
-</para>
-<para>
-This procedure renders the desired path into the current selection.</para>
+This procedure is deprecated! Use <link linkend="gimp-vectors-to-selection"><function>gimp_vectors_to_selection()</function></link>
+instead.</para>
 <para>
 
 </para><variablelist role="params">

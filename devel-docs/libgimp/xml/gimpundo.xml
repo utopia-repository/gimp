@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpundo">
 <refmeta>
-<refentrytitle id="top_of_page">gimpundo</refentrytitle>
+<refentrytitle role="top_of_page">gimpundo</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -40,16 +40,16 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Control of undo/redo.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-image-undo-group-start" role="function"/>gimp_image_undo_group_start ()</title>
 <indexterm><primary>gimp_image_undo_group_start</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_undo_group_start     (<link linkend="gint32">gint32</link> image_ID);</programlisting>

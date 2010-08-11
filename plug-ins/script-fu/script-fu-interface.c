@@ -34,7 +34,6 @@
 
 
 #define RESPONSE_RESET         1
-#define RESPONSE_ABOUT         2
 
 #define TEXT_WIDTH           100
 #define COLOR_SAMPLE_WIDTH    60
@@ -240,6 +239,8 @@ script_fu_interface (SFScript *script)
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   g_signal_connect (dialog, "response",
                     G_CALLBACK (script_fu_response),
                     script);
@@ -253,7 +254,7 @@ script_fu_interface (SFScript *script)
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                      vbox, FALSE, FALSE, 0);
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   /*  The argument table  */

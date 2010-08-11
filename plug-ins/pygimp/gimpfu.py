@@ -45,11 +45,11 @@ A typical gimpfu plugin would look like this:
               "author",
               "copyright",
               "year",
-              "<Image>/Somewhere/My plugin",
+              "My plugin",
               "*",
               [(PF_STRING, "arg", "The argument", "default-value")],
               [],
-              plugin_func)
+              plugin_func, menu="<Image>/Somewhere")
   main()
 
 The call to "from gimpfu import *" will import all the gimp constants into
@@ -109,6 +109,8 @@ PF_GRADIENT    = 1007
 PF_RADIO       = 1008
 PF_TEXT        = 1009
 PF_PALETTE     = 1010
+PF_FILENAME    = 1011
+PF_DIRNAME     = 1012
 
 _type_mapping = {
     PF_INT8        : PDB_INT8,
@@ -140,31 +142,33 @@ _type_mapping = {
     PF_RADIO       : PDB_STRING,
     PF_TEXT        : PDB_STRING,
     PF_PALETTE     : PDB_STRING,
+    PF_FILENAME    : PDB_STRING,
+    PF_DIRNAME     : PDB_STRING,
 }
 
 _registered_plugins_ = {}
 
-def register(func_name, blurb, help, author, copyright, date, menupath,
-                 imagetypes, params, results, function,
+def register(proc_name, blurb, help, author, copyright, date, label,
+                 imagetypes, params, results, function, menu=None,
                  on_query=None, on_run=None):
     '''This is called to register a new plugin.'''
 
     # First perform some sanity checks on the data
     def letterCheck(str):
-        allowed = _string.letters + _string.digits + '_'
+        allowed = _string.letters + _string.digits + '_' + '-'
         for ch in str:
             if not ch in allowed:
-                    return 0
+		return 0
         else:
             return 1
 
-    if not letterCheck(func_name):
-        raise error, "function name contains illegal characters"
+    if not letterCheck(proc_name):
+        raise error, "procedure name contains illegal characters"
 
     for ent in params:
         if len(ent) < 4:
             raise error, ("parameter definition must contain at least 4 "
-                        "elements (%s given: %s)" % (len(ent), ent))
+                          "elements (%s given: %s)" % (len(ent), ent))
 
         if type(ent[0]) != int:
             raise error, "parameter types must be integers"
@@ -175,7 +179,7 @@ def register(func_name, blurb, help, author, copyright, date, menupath,
     for ent in results:
         if len(ent) < 3:
             raise error, ("result definition must contain at least 3 elements "
-                        "(%s given: %s)" % (len(ent), ent))
+                          "(%s given: %s)" % (len(ent), ent))
 
         if type(ent[0]) != type(42):
             raise error, "result types must be integers"
@@ -185,25 +189,36 @@ def register(func_name, blurb, help, author, copyright, date, menupath,
 
     plugin_type = PLUGIN
 
-    if not func_name[:7] == 'python_' and \
-       not func_name[:10] == 'extension_' and \
-       not func_name[:8] == 'plug_in_' and \
-       not func_name[:5] == 'file_':
-           func_name = 'python_fu_' + func_name
+    if not proc_name[:7] == 'python-' and \
+       not proc_name[:7] == 'python_' and \
+       not proc_name[:10] == 'extension-' and \
+       not proc_name[:10] == 'extension_' and \
+       not proc_name[:8] == 'plug-in-' and \
+       not proc_name[:8] == 'plug_in_' and \
+       not proc_name[:5] == 'file-' and \
+       not proc_name[:5] == 'file_':
+           proc_name = 'python-fu-' + proc_name
 
-    _registered_plugins_[func_name] = (blurb, help, author, copyright,
-                                       date, menupath, imagetypes,
+    # if menu is not given, derive it from label
+    if menu is None and label:
+        fields = _string.split(label, '/')
+        if fields:
+            label = fields.pop()
+            menu = _string.join(fields, '/')
+
+    _registered_plugins_[proc_name] = (blurb, help, author, copyright,
+                                       date, label, imagetypes,
                                        plugin_type, params, results,
-                                       function, on_query, on_run)
+                                       function, menu, on_query, on_run)
 
 file_params = [(PDB_STRING, "filename", "The name of the file"),
-               (PDB_STRING, "raw_filename", "The name of the file")]
+               (PDB_STRING, "raw-filename", "The name of the file")]
 
 def _query():
     for plugin in _registered_plugins_.keys():
         (blurb, help, author, copyright, date,
-         menupath, imagetypes, plugin_type,
-         params, results, function,
+         label, imagetypes, plugin_type,
+         params, results, function, menu,
          on_query, on_run) = _registered_plugins_[plugin]
 
         def make_params(params):
@@ -211,36 +226,39 @@ def _query():
 
         params = make_params(params)
         # add the run mode argument ...
-        params.insert(0, (PDB_INT32, "run_mode",
+        params.insert(0, (PDB_INT32, "run-mode",
                                      "Interactive, Non-Interactive"))
+
         if plugin_type == PLUGIN:
-            if menupath is None:
+            if menu is None:
                 pass
-            elif menupath[:7] == '<Load>/':
+            elif menu[:6] == '<Load>':
                 params[1:1] = file_params
-            elif menupath[:10] != '<Toolbox>/':
+            elif menu[:7] == '<Image>' or menu[:6] == '<Save>':
                 params.insert(1, (PDB_IMAGE, "image",
                                   "The image to work on"))
                 params.insert(2, (PDB_DRAWABLE, "drawable",
                                   "The drawable to work on"))
-                if menupath[:7] == '<Save>/':
+                if menu[:6] == '<Save>':
                     params[3:3] = file_params
 
         results = make_params(results)
         gimp.install_procedure(plugin, blurb, help, author, copyright,
-                               date, menupath, imagetypes, plugin_type,
+                               date, label, imagetypes, plugin_type,
                                params, results)
+        if menu:
+            gimp.menu_register(plugin, menu)
         if on_query:
             on_query()
 
-def _get_defaults(func_name):
+def _get_defaults(proc_name):
     import gimpshelf
     (blurb, help, author, copyright, date,
-     menupath, imagetypes, plugin_type,
-     params, results, function,
-     on_query, on_run) = _registered_plugins_[func_name]
+     menu, imagetypes, plugin_type,
+     params, results, function, menu,
+     on_query, on_run) = _registered_plugins_[proc_name]
 
-    key = "python-fu-save--" + func_name
+    key = "python-fu-save--" + proc_name
 
     if gimpshelf.shelf.has_key(key):
         return gimpshelf.shelf[key]
@@ -248,17 +266,17 @@ def _get_defaults(func_name):
         # return the default values
         return [x[3] for x in params]
 
-def _set_defaults(func_name, defaults):
+def _set_defaults(proc_name, defaults):
     import gimpshelf
 
-    key = "python-fu-save--" + func_name
+    key = "python-fu-save--" + proc_name
     gimpshelf.shelf[key] = defaults
 
-def _interact(func_name, start_params):
+def _interact(proc_name, start_params):
     (blurb, help, author, copyright, date,
-     menupath, imagetypes, plugin_type,
-     params, results, function,
-     on_query, on_run) = _registered_plugins_[func_name]
+     menu, imagetypes, plugin_type,
+     params, results, function, menu,
+     on_query, on_run) = _registered_plugins_[proc_name]
 
     def run_script(run_params):
         params = start_params + tuple(run_params)
@@ -271,12 +289,11 @@ def _interact(func_name, start_params):
     import pygtk
     pygtk.require('2.0')
 
-    import gtk
     import gimpui
+    import gtk
+#    import pango
 
-    gtk.rc_parse(gimp.gtkrc())
-
-    defaults = _get_defaults(func_name)
+    defaults = _get_defaults(proc_name)
 
     class EntryValueError(Exception):
         pass
@@ -388,7 +405,7 @@ def _interact(func_name, start_params):
         def __init__(self, default=0, items=(("Yes", 1), ("No", 0))):
             gtk.Frame.__init__(self)
 
-            box = gtk.VBox(False, 5)
+            box = gtk.VBox(False, 6)
             self.add(box)
             box.show()
 
@@ -412,6 +429,34 @@ def _interact(func_name, start_params):
         def get_value(self):
             return self.active_value
 
+    def FileSelector(default=''):
+       if default and default.endswith('/'):
+           selector = DirnameSelector
+           if default == '/': default = ''
+       else:
+           selector = FilenameSelector
+       return selector(default)
+
+    class FilenameSelector(gtk.FileChooserButton):
+        def __init__(self, default='', save_mode=False):
+            gtk.FileChooserButton.__init__(self, "Python-Fu File Selection")
+            self.set_action(gtk.FILE_CHOOSER_ACTION_OPEN)
+            if default:
+                self.set_filename(default)
+
+        def get_value(self):
+            return self.get_filename()
+
+    class DirnameSelector(gtk.FileChooserButton):
+        def __init__(self, default=''):
+            gtk.FileChooserButton.__init__(self, "Python-Fu Folder Selection")
+            self.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+            if default:
+                self.set_filename(default)
+
+        def get_value(self):
+            return self.get_filename()
+
     _edit_mapping = {
             PF_INT8        : IntEntry,
             PF_INT16       : IntEntry,
@@ -423,7 +468,7 @@ def _interact(func_name, start_params):
             #PF_INT32ARRAY  : ArrayEntry,
             #PF_FLOATARRAY  : ArrayEntry,
             #PF_STRINGARRAY : ArrayEntry,
-            PF_COLOUR      : gimpui.ColourSelector,
+            PF_COLOUR      : gimpui.ColorSelector,
             PF_REGION      : IntEntry,  # should handle differently ...
             PF_IMAGE       : gimpui.ImageSelector,
             PF_LAYER       : gimpui.LayerSelector,
@@ -436,7 +481,9 @@ def _interact(func_name, start_params):
             PF_RADIO       : RadioEntry,
 
             PF_FONT        : gimpui.FontSelector,
-            PF_FILE        : gimpui.FileSelector,
+            PF_FILE        : FileSelector,
+            PF_FILENAME    : FilenameSelector,
+            PF_DIRNAME     : DirnameSelector,
             PF_BRUSH       : gimpui.BrushSelector,
             PF_PATTERN     : gimpui.PatternSelector,
             PF_GRADIENT    : gimpui.GradientSelector,
@@ -447,41 +494,37 @@ def _interact(func_name, start_params):
     if on_run:
         on_run()
 
-    need_progress = menupath and menupath[:8] != '<Image>/'
-
     tooltips = gtk.Tooltips()
 
-    dialog = gtk.Dialog(func_name, None, 0,
-                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                        gtk.STOCK_OK, gtk.RESPONSE_OK))
+    dialog = gimpui.Dialog(proc_name, 'python-fu', None, 0, None, proc_name,
+                           (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                            gtk.STOCK_OK, gtk.RESPONSE_OK))
 
-    hbox = gtk.HBox(False, 5)
-    hbox.set_border_width(5)
-    dialog.vbox.pack_start(hbox, expand=False)
-    hbox.show()
+    dialog.set_alternative_button_order((gtk.RESPONSE_OK, gtk.RESPONSE_CANCEL))
 
-    table = gtk.Table(len(params), 2, False)
-    table.set_border_width(5)
-    table.set_row_spacings(4)
-    table.set_col_spacings(10)
-    hbox.pack_end(table, expand=False)
-    table.show()
+    dialog.set_transient()
 
-    vbox = gtk.VBox(False, 10)
-    hbox.pack_start(vbox, expand=False)
+    vbox = gtk.VBox(False, 12)
+    vbox.set_border_width(12)
+    dialog.vbox.pack_start(vbox)
     vbox.show()
 
-    label = gtk.Label(blurb)
-    label.set_line_wrap(True)
-    label.set_justify(gtk.JUSTIFY_LEFT)
-    label.set_size_request(100, -1)
-    vbox.pack_start(label, expand=False)
-    label.show()
+    if blurb:
+        box = gimpui.HintBox(blurb)
+        vbox.pack_start(box, expand=False)
+        box.show()
 
-    progress_callback = None
+    table = gtk.Table(len(params), 2, False)
+    table.set_row_spacings(6)
+    table.set_col_spacings(6)
+    vbox.pack_start(table, expand=False)
+    table.show()
 
     def response(dlg, id):
         if id == gtk.RESPONSE_OK:
+            dlg.set_response_sensitive(gtk.RESPONSE_OK, False)
+            dlg.set_response_sensitive(gtk.RESPONSE_CANCEL, False)
+
             params = []
 
             try:
@@ -490,11 +533,8 @@ def _interact(func_name, start_params):
             except EntryValueError:
                 error_dialog(dialog, 'Invalid input for "%s"' % wid.desc)
             else:
-                _set_defaults(func_name, params)
+                _set_defaults(proc_name, params)
                 dialog.res = run_script(params)
-
-        if progress_callback:
-            gimp.progress_uninstall(progress_callback)
 
         gtk.main_quit()
 
@@ -529,58 +569,24 @@ def _interact(func_name, start_params):
         wid.desc = desc
         edit_wids.append(wid)
 
-    if need_progress:
-        frame = gtk.Frame("Script Progress")
-        frame.set_border_width(5)
-        dialog.vbox.pack_start(frame)
-        frame.show()
+    progress_vbox = gtk.VBox(False, 6)
+    vbox.pack_end(progress_vbox, expand=False)
+    progress_vbox.show()
 
-        vbox = gtk.VBox(False, 5)
-        vbox.set_border_width(5)
-        frame.add(vbox)
-        vbox.show()
+    progress = gimpui.ProgressBar()
+    progress_vbox.pack_start(progress)
+    progress.show()
 
-        progress_label = gtk.Label("(none)")
-        progress_label.set_alignment(0.0, 0.5)
-        vbox.pack_start(progress_label)
-        progress_label.show()
+#    progress_label = gtk.Label()
+#    progress_label.set_alignment(0.0, 0.5)
+#    progress_label.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
 
-        progress = gtk.ProgressBar()
-        progress.set_text(" ")
-        vbox.pack_start(progress)
-        progress.show()
+#    attrs = pango.AttrList()
+#    attrs.insert(pango.AttrStyle(pango.STYLE_ITALIC, 0, -1))
+#    progress_label.set_attributes(attrs)
 
-        def progress_update(message=-1, fraction=None):
-            if message == -1:
-                pass
-            elif message:
-                progress.set_text(message)
-            else:
-                progress.set_text(" ")
-
-            if fraction is not None:
-		if fraction < 0:
-		    progress.pulse()
-		else:
-		    progress.set_fraction(fraction)
-
-            while gtk.events_pending():
-                gtk.main_iteration()
-
-        def progress_start(message, cancelable):
-            progress_update(message, 0.0)
-
-        def progress_end():
-            progress_update(None, 0.0)
-
-        def progress_text(message):
-            progress_update(message)
-
-        def progress_value(percentage):
-            progress_update(fraction=percentage)
-
-        progress_callback = gimp.progress_install(progress_start, progress_end,
-                                                  progress_text, progress_value)
+#    progress_vbox.pack_start(progress_label)
+#    progress_label.show()
 
     tooltips.enable()
     dialog.show()
@@ -595,18 +601,18 @@ def _interact(func_name, start_params):
         dialog.destroy()
         raise CancelError
 
-def _run(func_name, params):
+def _run(proc_name, params):
     run_mode = params[0]
-    plugin_type = _registered_plugins_[func_name][7]
-    menupath = _registered_plugins_[func_name][5]
-    func = _registered_plugins_[func_name][10]
+    plugin_type = _registered_plugins_[proc_name][7]
+    func = _registered_plugins_[proc_name][10]
+    menu = _registered_plugins_[proc_name][11]
 
-    if plugin_type == PLUGIN and menupath and menupath[:10] != '<Toolbox>/':
-        if menupath[:7] == '<Save>/':
-            end = 5
-        else:
-            end = 3
-
+    if plugin_type == PLUGIN and menu[:7] == '<Image>':
+        end = 3
+        start_params = params[1:end]
+        extra_params = params[end:]
+    elif plugin_type == PLUGIN and menu[:6] == '<Save>':
+        end = 5
         start_params = params[1:end]
         extra_params = params[end:]
     else:
@@ -615,12 +621,12 @@ def _run(func_name, params):
 
     if run_mode == RUN_INTERACTIVE:
         try:
-            res = _interact(func_name, start_params)
+            res = _interact(proc_name, start_params)
         except CancelError:
             return
     else:
         if run_mode == RUN_WITH_LAST_VALS:
-            extra_params = _get_defaults(func_name)
+            extra_params = _get_defaults(proc_name)
 
         params = start_params + tuple(extra_params)
         res = apply(func, params)

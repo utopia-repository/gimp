@@ -1,3 +1,53 @@
+2006-09-07  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types
+	* tools/widgets.c: added GimpHintBox and GIMP_STOCK_HEAL_TOOL.
+
+	* libgimpwidgets/images/*.png: updated screenshots.
+
+	* libgimpwidgets/tmpl/gimphintbox.sgml: new file.
+
+	* libgimpwidgets/tmpl/gimpstock.sgml: added GIMP_STOCK_HEAL_TOOL.
+
+2006-09-01  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpbase/libgimpbase-sections.txt: updated.
+
+	* libgimpbase/tmpl/gimprectangle.sgml: added.
+
+	* libgimp/tmpl/gimpenums.sgml
+	* libgimp/tmpl/gimppixbuf.sgml
+	* libgimp/tmpl/gimptools.sgml: regenerated.
+
+2006-09-01  Sven Neumann  <sven@gimp.org>
+
+	* Makefile.am (EXTRA_DIST): added vbr.txt.
+
+2006-09-01  Michael Natterer  <mitch@gimp.org>
+
+	* ggr.txt: updated for the new fields in the gradient files.
+
+2006-08-31  Dave Neary  <bolsh@gimp.org>
+
+	* Makefile.am (EXTRA_DIST)
+	* xcf.txt: added draft for XCF spec contributed by Henning Makholm.
+
+2006-08-24  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* vbr.txt: added new description of the VBR file format.
+
+2006-08-09  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpcolor/libgimpcolor-sections.txt
+	* libgimpwidgets/libgimpwidgets-sections.txt: added new symbols.
+
+	* tools/widgets.c: undef GIMP_DISABLE_DEPRECATED.
+
 2006-06-28  Sven Neumann  <sven@gimp.org>
 
 	* libgimp/libgimp.types: added missing type.

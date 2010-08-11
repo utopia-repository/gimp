@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpenums">
 <refmeta>
-<refentrytitle id="top_of_page">gimpenums</refentrytitle>
+<refentrytitle role="top_of_page">gimpenums</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -40,6 +40,7 @@ enum        <link linkend="GimpMergeType">GimpMergeType</link>;
 enum        <link linkend="GimpOffsetType">GimpOffsetType</link>;
 enum        <link linkend="GimpOrientationType">GimpOrientationType</link>;
 enum        <link linkend="GimpRotationType">GimpRotationType</link>;
+enum        <link linkend="GimpSelectCriterion">GimpSelectCriterion</link>;
 const <link linkend="gchar">gchar</link>** <link linkend="gimp-enums-get-type-names">gimp_enums_get_type_names</link>     (<link linkend="gint">gint</link> *n_type_names);
 
 </synopsis>
@@ -53,16 +54,16 @@ const <link linkend="gchar">gchar</link>** <link linkend="gimp-enums-get-type-na
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Enums and definitions.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-enums-init" role="function" condition="since:GIMP 2.4"/>gimp_enums_init ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enums_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enums_init                 (void);</programlisting>
@@ -307,6 +308,22 @@ implicitly.</para>
   GIMP_ROTATE_180,
   GIMP_ROTATE_270
 } GimpRotationType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpSelectCriterion" role="enum"/>enum GimpSelectCriterion</title>
+<indexterm><primary>GimpSelectCriterion</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_SELECT_CRITERION_COMPOSITE,
+  GIMP_SELECT_CRITERION_R,
+  GIMP_SELECT_CRITERION_G,
+  GIMP_SELECT_CRITERION_B,
+  GIMP_SELECT_CRITERION_H,
+  GIMP_SELECT_CRITERION_S,
+  GIMP_SELECT_CRITERION_V
+} GimpSelectCriterion;
 </programlisting>
 <para>
 

@@ -87,6 +87,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -413,13 +415,14 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 gimpsysconf_DATA = \
+	controllerrc	\
 	gimprc		\
 	gtkrc		\
-	templaterc	\
-	unitrc		\
+	menurc		\
 	ps-menurc	\
 	sessionrc	\
-	controllerrc
+	templaterc	\
+	unitrc
 
 EXTRA_DIST = \
 	$(gimpsysconf_DATA)

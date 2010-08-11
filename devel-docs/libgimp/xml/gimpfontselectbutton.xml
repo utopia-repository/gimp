@@ -4,7 +4,7 @@
 
 <refentry id="GimpFontSelectButton">
 <refmeta>
-<refentrytitle id="top_of_page">GimpFontSelectButton</refentrytitle>
+<refentrytitle role="top_of_page">GimpFontSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -34,8 +34,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-font-select-button
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -53,8 +53,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-font-select-button
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpFontSelectButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -62,8 +62,8 @@ GimpFontSelectButton implements
 </refsect1>
 
 
-<refsect1 id="properties">
-<title id="properties.title">Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpFontSelectButton--font-name">font-name</link>&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write
@@ -73,8 +73,8 @@ GimpFontSelectButton implements
 </synopsis>
 </refsect1>
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpFontSelectButton-font-set">font-set</link>&quot;  <link linkend="void">void</link>        user_function      (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
@@ -89,15 +89,15 @@ GimpFontSelectButton implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpFontSelectButton-struct" role="struct"/>GimpFontSelectButton</title>
 <indexterm><primary>GimpFontSelectButton</primary></indexterm><programlisting>typedef struct _GimpFontSelectButton GimpFontSelectButton;</programlisting>
@@ -163,8 +163,8 @@ Sets the current font for the font select button.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 id="property_details">
-<title id="property_details.title">Property Details</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpFontSelectButton--font-name"/>The &quot;<literal>font-name</literal>&quot; property</title>
 <indexterm role="GIMP 2.4"><primary>GimpFontSelectButton:font-name</primary></indexterm><programlisting>  &quot;font-name&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>
@@ -208,8 +208,8 @@ The title to be used for the font selection popup dialog.</para>
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpFontSelectButton-font-set"/>The &quot;font-set&quot; signal</title>
 <indexterm role="GIMP 2.4"><primary>GimpFontSelectButton::font-set</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
                                             <link linkend="gchar">gchar</link>                *font_name,

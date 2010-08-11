@@ -29,9 +29,10 @@
 #include "core/gimpchannel.h"
 #include "core/gimpimage.h"
 #include "core/gimppickable.h"
-#include "core/gimptoolinfo.h"
 
 #include "display/gimpdisplay.h"
+
+#include "widgets/gimpwidgets-utils.h"
 
 #include "gimpeditselectiontool.h"
 #include "gimpselectiontool.h"
@@ -115,42 +116,54 @@ gimp_selection_tool_modifier_key (GimpTool        *tool,
   GimpSelectionTool    *selection_tool = GIMP_SELECTION_TOOL (tool);
   GimpSelectionOptions *options;
 
-  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  if (state & GDK_BUTTON1_MASK)
+    return;
 
-  if (key == GDK_SHIFT_MASK || key == GDK_CONTROL_MASK)
+  options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+
+  if (key == GDK_SHIFT_MASK   ||
+      key == GDK_CONTROL_MASK ||
+      key == GDK_MOD1_MASK)
     {
       SelectOps button_op = options->operation;
 
-      if (press)
+      if (state & GDK_MOD1_MASK)
         {
-          if (key == (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)))
-            {
-              /*  first modifier pressed  */
-
-              selection_tool->saved_op = options->operation;
-            }
+          button_op = selection_tool->saved_op;
         }
       else
         {
-          if (! (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)))
+          if (press)
             {
-              /*  last modifier released  */
+              if (key == (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)))
+                {
+                  /*  first modifier pressed  */
 
-              button_op = selection_tool->saved_op;
+                  selection_tool->saved_op = options->operation;
+                }
             }
-        }
+          else
+            {
+              if (! (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)))
+                {
+                  /*  last modifier released  */
 
-      if ((state & GDK_CONTROL_MASK) && (state & GDK_SHIFT_MASK))
-        {
-          button_op = SELECTION_INTERSECT;
-        }
-      else if (state & GDK_SHIFT_MASK)
-        {
-          button_op = SELECTION_ADD;
-        }
-      else if (state & GDK_CONTROL_MASK)
-        {
-          button_op = SELECTION_SUBTRACT;
+                  button_op = selection_tool->saved_op;
+                }
+            }
+
+          if ((state & GDK_CONTROL_MASK) && (state & GDK_SHIFT_MASK))
+            {
+              button_op = SELECTION_INTERSECT;
+            }
+          else if (state & GDK_SHIFT_MASK)
+            {
+              button_op = SELECTION_ADD;
+            }
+          else if (state & GDK_CONTROL_MASK)
+            {
+              button_op = SELECTION_SUBTRACT;
+            }
         }
 
       if (button_op != options->operation)
@@ -170,31 +183,36 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
   GimpSelectionTool    *selection_tool = GIMP_SELECTION_TOOL (tool);
   GimpSelectionOptions *options;
   GimpChannel          *selection;
+  GimpDrawable         *drawable;
   GimpLayer            *layer;
   GimpLayer            *floating_sel;
   gboolean              move_layer        = FALSE;
   gboolean              move_floating_sel = FALSE;
+  gboolean              selection_empty;
 
-  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+  options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
 
   selection    = gimp_image_get_mask (display->image);
+  drawable     = gimp_image_active_drawable (display->image);
   layer        = gimp_image_pick_correlate_layer (display->image,
                                                   coords->x, coords->y);
   floating_sel = gimp_image_floating_sel (display->image);
 
-  if (layer)
+  if (drawable)
     {
       if (floating_sel)
         {
           if (layer == floating_sel)
             move_floating_sel = TRUE;
         }
-      else if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
-                                             coords->x, coords->y))
+      else if (gimp_drawable_mask_intersect (drawable,
+                                             NULL, NULL, NULL, NULL))
         {
           move_layer = TRUE;
         }
     }
+
+  selection_empty = gimp_channel_is_empty (selection);
 
   if (selection_tool->allow_move &&
       (state & GDK_MOD1_MASK) && (state & GDK_CONTROL_MASK) && move_layer)
@@ -207,7 +225,7 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
       selection_tool->op = SELECTION_MOVE_COPY; /* move a copy of the selection */
     }
   else if (selection_tool->allow_move &&
-           (state & GDK_MOD1_MASK) && ! gimp_channel_is_empty (selection))
+           (state & GDK_MOD1_MASK) && ! selection_empty)
     {
       selection_tool->op = SELECTION_MOVE_MASK; /* move the selection mask */
     }
@@ -242,36 +260,83 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
 
   if (proximity)
     {
-      const gchar *status = NULL;
+      gchar           *status      = NULL;
+      gboolean         free_status = FALSE;
+      GdkModifierType  modifiers   = (GDK_SHIFT_MASK | GDK_CONTROL_MASK);
 
-      if (! gimp_enum_get_value (GIMP_TYPE_CHANNEL_OPS, selection_tool->op,
-                                 NULL, NULL, &status, NULL))
+      if (! selection_empty)
+        modifiers |= GDK_MOD1_MASK;
+
+      switch (selection_tool->op)
         {
-          switch (selection_tool->op)
+        case SELECTION_REPLACE:
+          if (! selection_empty)
             {
-            case SELECTION_MOVE_MASK:
-              status = _("Move the selection mask");
-              break;
-
-            case SELECTION_MOVE:
-              status = _("Move the selected pixels");
-              break;
-
-            case SELECTION_MOVE_COPY:
-              status = _("Move a copy of the selected pixels");
-              break;
-
-            case SELECTION_ANCHOR:
-              status = _("Anchor the floating selection");
-              break;
-
-            default:
-              g_return_if_reached ();
+              status = gimp_suggest_modifiers (_("Click-Drag to replace the "
+                                                 "current selection."),
+                                               modifiers & ~state,
+                                               NULL, NULL, NULL);
+              free_status = TRUE;
             }
+          else
+            status = _("Click-Drag to create a new selection.");
+          break;
+
+        case SELECTION_ADD:
+          status = gimp_suggest_modifiers (_("Click-Drag to add to the "
+                                             "current selection."),
+                                           modifiers
+                                           & ~(state | GDK_SHIFT_MASK),
+                                           NULL, NULL, NULL);
+          free_status = TRUE;
+          break;
+
+        case SELECTION_SUBTRACT:
+          status = gimp_suggest_modifiers (_("Click-Drag to subtract from the "
+                                             "current selection."),
+                                           modifiers
+                                           & ~(state | GDK_CONTROL_MASK),
+                                           NULL, NULL, NULL);
+          free_status = TRUE;
+          break;
+
+        case SELECTION_INTERSECT:
+          status = gimp_suggest_modifiers (_("Click-Drag to intersect with "
+                                             "the current selection."),
+                                           modifiers & ~state,
+                                           NULL, NULL, NULL);
+          free_status = TRUE;
+          break;
+
+        case SELECTION_MOVE_MASK:
+          status = gimp_suggest_modifiers (_("Click-Drag to move the "
+                                             "selection mask."),
+                                           modifiers & ~state,
+                                           NULL, NULL, NULL);
+          free_status = TRUE;
+          break;
+
+        case SELECTION_MOVE:
+          status = _("Click-Drag to move the selected pixels.");
+          break;
+
+        case SELECTION_MOVE_COPY:
+          status = _("Click-Drag to move a copy of the selected pixels.");
+          break;
+
+        case SELECTION_ANCHOR:
+          status = _("Click to anchor the floating selection.");
+          break;
+
+        default:
+          g_return_if_reached ();
         }
 
       if (status)
         gimp_tool_push_status (tool, display, status);
+
+      if (free_status)
+        g_free (status);
     }
 }
 

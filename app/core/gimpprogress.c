@@ -218,7 +218,7 @@ gimp_progress_get_window (GimpProgress *progress)
   return 0;
 }
 
-void
+gboolean
 gimp_progress_message (GimpProgress *progress,
                        Gimp         *gimp,
                        const gchar  *domain,
@@ -226,14 +226,18 @@ gimp_progress_message (GimpProgress *progress,
 {
   GimpProgressInterface *progress_iface;
 
-  g_return_if_fail (GIMP_IS_PROGRESS (progress));
+  g_return_val_if_fail (GIMP_IS_PROGRESS (progress), FALSE);
 
   progress_iface = GIMP_PROGRESS_GET_INTERFACE (progress);
 
   if (progress_iface->message)
-    progress_iface->message (progress, gimp, domain, message);
-  else
-    gimp_message (gimp, domain, message);
+    {
+      progress_iface->message (progress, gimp, domain, message);
+
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 void

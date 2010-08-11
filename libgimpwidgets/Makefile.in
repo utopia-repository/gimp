@@ -79,13 +79,13 @@ am__objects_2 = gimpwidgets.lo gimpbrowser.lo gimpbutton.lo \
 	gimpcolorselect.lo gimpcolorselection.lo gimpcontroller.lo \
 	gimpdialog.lo gimpenumstore.lo gimpenumcombobox.lo \
 	gimpenumlabel.lo gimpfileentry.lo gimpframe.lo gimphelpui.lo \
-	gimpintcombobox.lo gimpintstore.lo gimpmemsizeentry.lo \
-	gimpoldwidgets.lo gimpoffsetarea.lo gimppageselector.lo \
-	gimppatheditor.lo gimppickbutton.lo gimppixmap.lo \
-	gimppreview.lo gimppreviewarea.lo gimppropwidgets.lo \
-	gimpquerybox.lo gimpresolutionentry.lo gimpscrolledpreview.lo \
-	gimpsizeentry.lo gimpstock.lo gimpunitmenu.lo gimpzoommodel.lo \
-	gimpwidgets-private.lo
+	gimphintbox.lo gimpintcombobox.lo gimpintstore.lo \
+	gimpmemsizeentry.lo gimpoldwidgets.lo gimpoffsetarea.lo \
+	gimppageselector.lo gimppatheditor.lo gimppickbutton.lo \
+	gimppixmap.lo gimppreview.lo gimppreviewarea.lo \
+	gimppropwidgets.lo gimpquerybox.lo gimpresolutionentry.lo \
+	gimpscrolledpreview.lo gimpsizeentry.lo gimpstock.lo \
+	gimpunitmenu.lo gimpzoommodel.lo gimpwidgets-private.lo
 am_libgimpwidgets_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpwidgets_2_0_la_OBJECTS = $(am_libgimpwidgets_2_0_la_OBJECTS)
 am_test_preview_area_OBJECTS = test-preview-area.$(OBJEXT)
@@ -137,6 +137,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -536,6 +538,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpframe.h		\
 	gimphelpui.c		\
 	gimphelpui.h		\
+	gimphintbox.c		\
+	gimphintbox.h		\
 	gimpintcombobox.c	\
 	gimpintcombobox.h	\
 	gimpintstore.c		\
@@ -617,6 +621,7 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpfileentry.h		\
 	gimpframe.h		\
 	gimphelpui.h		\
+	gimphintbox.h		\
 	gimpintcombobox.h	\
 	gimpintstore.h		\
 	gimpmemsizeentry.h	\
@@ -781,6 +786,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfileentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpframe.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelpui.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphintbox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpintcombobox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpintstore.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmemsizeentry.Plo@am__quote@

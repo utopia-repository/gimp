@@ -48,16 +48,14 @@ typedef enum
   GIMP_RECTANGLE_GUIDE_GOLDEN         /*< desc="Golden sections" >*/
 } GimpRectangleGuide;
 
-
-#define GIMP_TYPE_CROP_MODE (gimp_crop_mode_get_type ())
-
-GType gimp_crop_mode_get_type (void) G_GNUC_CONST;
+GType gimp_rectangle_constraint_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_CROP_MODE_CROP,   /*< desc="Crop"   >*/
-  GIMP_CROP_MODE_RESIZE  /*< desc="Resize" >*/
-} GimpCropMode;
+  GIMP_RECTANGLE_CONSTRAIN_NONE,      /*< desc="No constraint"   >*/
+  GIMP_RECTANGLE_CONSTRAIN_IMAGE,     /*< desc="Image bounds"    >*/
+  GIMP_RECTANGLE_CONSTRAIN_DRAWABLE   /*< desc="Drawable bounds" >*/
+} GimpRectangleConstraint;
 
 
 #define GIMP_TYPE_RECT_SELECT_MODE (gimp_rect_select_mode_get_type ())
@@ -174,6 +172,10 @@ typedef enum /*< skip >*/
   TRANSFORM_HANDLE_NE, /* north east */
   TRANSFORM_HANDLE_SW, /* south west */
   TRANSFORM_HANDLE_SE, /* south east */
+  TRANSFORM_HANDLE_N,  /* north      */
+  TRANSFORM_HANDLE_S,  /* south      */
+  TRANSFORM_HANDLE_E,  /* east       */
+  TRANSFORM_HANDLE_W,  /* west       */
   TRANSFORM_HANDLE_CENTER
 } TransformAction;
 

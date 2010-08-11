@@ -1,3 +1,65 @@
+2006-09-05  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>, et al.
+
+2006-08-30  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+	
+	* ru.po: Updated Russian translation by
+	Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+2006-08-23  Clytie Siddall <clytie@riverland.net.au>
+
+	* vi.po: Updated Vietnamese translation.
+
+2006-08-18  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Updated Macedonian translation.
+
+2006-08-11  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-08-08  Inaki Larranaga  <dooteo@euskalgnu.org>
+
+	* eu.po: Fixed some typos.
+
+2006-08-04  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed Czech translation.
+
+2006-07-31  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed Czech translation.
+
+2006-07-28  Francisco Javier F. Serrador  <serrador@openshine.com>
+
+	* es.po: Updated Spanish translation.
+
+2006-06-27  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Fixed Czech typos/language problems.
+
+2006-07-26  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation
+
+2006-07-21  Francisco Javier F. Serrador  <serrador@openshine.com>
+
+	* es.po: Updated Spanish translation.
+
+2006-07-19  Inaki Larranaga  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2006-07-14  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation
+
+2006-07-12  Hendrik Richter  <hendrikr@gnome.org>
+
+	* de.po: Updated German translation.
+
 2006-06-29  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Updated Finnish translation.

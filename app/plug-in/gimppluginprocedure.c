@@ -27,15 +27,14 @@
 
 #include "libgimpbase/gimpbase.h"
 
-#include "pdb-types.h"
+#include "plug-in-types.h"
 
 #include "core/gimp.h"
 #include "core/gimpmarshal.h"
 #include "core/gimpparamspecs.h"
 
 #define __YES_I_NEED_GIMP_PLUG_IN_MANAGER_CALL__
-#include "plug-in/gimppluginmanager-call.h"
-
+#include "gimppluginmanager-call.h"
 #include "gimppluginprocedure.h"
 
 #include "gimp-intl.h"
@@ -816,6 +815,7 @@ gimp_plug_in_procedure_set_mime_type (GimpPlugInProcedure *proc,
 
   if (proc->mime_type)
     g_free (proc->mime_type);
+
   proc->mime_type = g_strdup (mime_type);
 }
 
@@ -827,5 +827,6 @@ gimp_plug_in_procedure_set_thumb_loader (GimpPlugInProcedure *proc,
 
   if (proc->thumb_loader)
     g_free (proc->thumb_loader);
+
   proc->thumb_loader = g_strdup (thumb_loader);
 }

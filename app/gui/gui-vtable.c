@@ -45,8 +45,6 @@
 #include "widgets/gimpbrushselect.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdocked.h"
-#include "widgets/gimperrorconsole.h"
-#include "widgets/gimperrordialog.h"
 #include "widgets/gimpfontselect.h"
 #include "widgets/gimpgradientselect.h"
 #include "widgets/gimphelp.h"
@@ -66,8 +64,7 @@
 
 #include "menus/menus.h"
 
-#include "dialogs/dialogs.h"
-
+#include "gui-message.h"
 #include "themes.h"
 
 
@@ -77,9 +74,6 @@ static void           gui_threads_enter        (Gimp                *gimp);
 static void           gui_threads_leave        (Gimp                *gimp);
 static void           gui_set_busy             (Gimp                *gimp);
 static void           gui_unset_busy           (Gimp                *gimp);
-static void           gui_message              (Gimp                *gimp,
-                                                const gchar         *domain,
-                                                const gchar         *message);
 static void           gui_help                 (Gimp                *gimp,
                                                 const gchar         *help_domain,
                                                 const gchar         *help_id);
@@ -131,7 +125,7 @@ gui_vtable_init (Gimp *gimp)
   gimp->gui.threads_leave       = gui_threads_leave;
   gimp->gui.set_busy            = gui_set_busy;
   gimp->gui.unset_busy          = gui_unset_busy;
-  gimp->gui.message             = gui_message;
+  gimp->gui.show_message        = gui_message;
   gimp->gui.help                = gui_help;
   gimp->gui.get_program_class   = gui_get_program_class;
   gimp->gui.get_display_name    = gui_get_display_name;
@@ -183,66 +177,6 @@ gui_unset_busy (Gimp *gimp)
 }
 
 static void
-gui_message (Gimp        *gimp,
-             const gchar *domain,
-             const gchar *message)
-{
-  switch (gimp->message_handler)
-    {
-    case GIMP_ERROR_CONSOLE:
-      {
-        GtkWidget *dockable;
-
-        dockable = gimp_dialog_factory_dialog_raise (global_dock_factory,
-                                                     gdk_screen_get_default (),
-                                                     "gimp-error-console", -1);
-
-        if (dockable)
-          {
-            GimpErrorConsole *console;
-
-            console = GIMP_ERROR_CONSOLE (GTK_BIN (dockable)->child);
-
-            gimp_error_console_add (console,
-                                    GIMP_STOCK_WARNING, domain, message);
-
-            return;
-          }
-
-        gimp->message_handler = GIMP_MESSAGE_BOX;
-      }
-      /*  fallthru  */
-
-    case GIMP_MESSAGE_BOX:
-      {
-        GtkWidget *dialog;
-
-        dialog = gimp_dialog_factory_dialog_new (global_dialog_factory,
-                                                 gdk_screen_get_default (),
-                                                 "gimp-error-dialog", -1,
-                                                 FALSE);
-
-        if (dialog)
-          {
-            gimp_error_dialog_add (GIMP_ERROR_DIALOG (dialog),
-                                   GIMP_STOCK_WARNING, domain, message);
-
-            gtk_window_present (GTK_WINDOW (dialog));
-
-            return;
-          }
-
-        gimp->message_handler = GIMP_CONSOLE;
-      }
-      /*  fallthru  */
-
-    case GIMP_CONSOLE:
-      g_printerr ("%s: %s\n\n", domain, message);
-      break;
-    }
-}
-
-void
 gui_help (Gimp        *gimp,
           const gchar *help_domain,
           const gchar *help_id)

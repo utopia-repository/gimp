@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorNotebook">
 <refmeta>
-<refentrytitle id="top_of_page">GimpColorNotebook</refentrytitle>
+<refentrytitle role="top_of_page">GimpColorNotebook</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -31,8 +31,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -50,8 +50,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorNotebook implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -59,8 +59,8 @@ GimpColorNotebook implements
 </refsect1>
 
 
-<refsect1 id="style_properties">
-<title id="style_properties.title">Style Properties</title>
+<refsect1 role="style_properties">
+<title role="style_properties.title">Style Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpColorNotebook--tab-border">tab-border</link>&quot;           <link linkend="gint">gint</link>                  : Read
@@ -70,16 +70,16 @@ GimpColorNotebook implements
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 The <link linkend="GimpColorNotebook"><type>GimpColorNotebook</type></link> widget is an implementation of a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link>.
 It serves as a container for <link linkend="GimpColorSelectors"><type>GimpColorSelectors</type></link>.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpColorNotebook-struct" role="struct"/>GimpColorNotebook</title>
 <indexterm><primary>GimpColorNotebook</primary></indexterm><programlisting>typedef struct _GimpColorNotebook GimpColorNotebook;</programlisting>
@@ -113,8 +113,8 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 </variablelist></refsect2>
 
 </refsect1>
-<refsect1 id="style_properties_details">
-<title id="style_properties_details.title">Style Property Details</title>
+<refsect1 role="style_properties_details">
+<title role="style_properties_details.title">Style Property Details</title>
 <refsect2><title><anchor id="GimpColorNotebook--tab-border"/>The &quot;<literal>tab-border</literal>&quot; style property</title>
 <indexterm><primary>GimpColorNotebook:tab-border</primary></indexterm><programlisting>  &quot;tab-border&quot;           <link linkend="gint">gint</link>                  : Read</programlisting>
 <para>Width of the border around the tab contents.</para><para>Allowed values: &gt;= 0</para>

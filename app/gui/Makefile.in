@@ -56,8 +56,8 @@ ARFLAGS = cru
 libappgui_a_AR = $(AR) $(ARFLAGS)
 libappgui_a_LIBADD =
 am_libappgui_a_OBJECTS = color-history.$(OBJEXT) gui.$(OBJEXT) \
-	gui-vtable.$(OBJEXT) session.$(OBJEXT) splash.$(OBJEXT) \
-	themes.$(OBJEXT)
+	gui-message.$(OBJEXT) gui-vtable.$(OBJEXT) session.$(OBJEXT) \
+	splash.$(OBJEXT) themes.$(OBJEXT)
 libappgui_a_OBJECTS = $(am_libappgui_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -99,6 +99,8 @@ BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
 BUILD_PRINT_TRUE = @BUILD_PRINT_TRUE@
 BUILD_PYTHON_FALSE = @BUILD_PYTHON_FALSE@
 BUILD_PYTHON_TRUE = @BUILD_PYTHON_TRUE@
+BUILD_SCRIPT_FU_FALSE = @BUILD_SCRIPT_FU_FALSE@
+BUILD_SCRIPT_FU_TRUE = @BUILD_SCRIPT_FU_TRUE@
 BUILD_XJT_FALSE = @BUILD_XJT_FALSE@
 BUILD_XJT_TRUE = @BUILD_XJT_TRUE@
 CATALOGS = @CATALOGS@
@@ -442,6 +444,8 @@ libappgui_a_SOURCES = \
 	color-history.h		\
 	gui.c			\
 	gui.h			\
+	gui-message.c		\
+	gui-message.h		\
 	gui-vtable.c		\
 	gui-vtable.h		\
 	gui-types.h		\
@@ -501,6 +505,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color-history.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui-message.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui-vtable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session.Po@am__quote@

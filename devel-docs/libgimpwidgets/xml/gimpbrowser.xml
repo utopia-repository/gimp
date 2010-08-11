@@ -4,7 +4,7 @@
 
 <refentry id="GimpBrowser">
 <refmeta>
-<refentrytitle id="top_of_page">GimpBrowser</refentrytitle>
+<refentrytitle role="top_of_page">GimpBrowser</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -36,8 +36,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -54,8 +54,8 @@
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpBrowser implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -64,8 +64,8 @@ GimpBrowser implements
 
 
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpBrowser-search">search</link>&quot;    <link linkend="void">void</link>        user_function      (<link linkend="GimpBrowser">GimpBrowser</link> *gimpbrowser,
@@ -76,15 +76,15 @@ GimpBrowser implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpBrowser-struct" role="struct"/>GimpBrowser</title>
 <indexterm><primary>GimpBrowser</primary></indexterm><programlisting>typedef struct _GimpBrowser GimpBrowser;</programlisting>
@@ -168,8 +168,8 @@ side already contains a <link linkend="GtkLabel"><type>GtkLabel</type></link>, t
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpBrowser-search"/>The &quot;search&quot; signal</title>
 <indexterm><primary>GimpBrowser::search</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpBrowser">GimpBrowser</link> *gimpbrowser,
                                             <link linkend="gchar">gchar</link>       *arg1,

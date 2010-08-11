@@ -4,7 +4,7 @@
 
 <refentry id="libgimpconfig-GimpConfig">
 <refmeta>
-<refentrytitle id="top_of_page">gimpconfig-iface</refentrytitle>
+<refentrytitle role="top_of_page">gimpconfig-iface</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 <anchor id="GimpConfigInterface"/>
 <synopsis>
 
@@ -55,8 +55,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GInterface">GInterface</link>
@@ -65,8 +65,8 @@
 
 </refsect1>
 
-<refsect1 id="prerequisites">
-<title id="prerequisites.title">Prerequisites</title>
+<refsect1 role="prerequisites">
+<title role="prerequisites.title">Prerequisites</title>
 <para>
 GimpConfigInterface requires
  <link linkend="GObject">GObject</link>.</para>
@@ -75,8 +75,8 @@ GimpConfigInterface requires
 
 
 
-<refsect1 id="implementations">
-<title id="implementations.title">Known Implementations</title>
+<refsect1 role="implementations">
+<title role="implementations.title">Known Implementations</title>
 <para>
 GimpConfigInterface is implemented by
  <link linkend="GimpColorConfig">GimpColorConfig</link>.</para>
@@ -86,16 +86,16 @@ GimpConfigInterface is implemented by
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 High-level API functions for libgimpconfig.
 
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpConfig" role="struct"/>GimpConfig</title>
 <indexterm><primary>GimpConfig</primary></indexterm><programlisting>typedef struct _GimpConfig GimpConfig;</programlisting>

@@ -29,7 +29,9 @@
 
 #include "config/gimprc.h"
 
-#include "pdb/gimp-pdb.h"
+#include "pdb/gimppdb.h"
+#include "pdb/gimp-pdb-compat.h"
+#include "pdb/internal_procs.h"
 
 #include "plug-in/gimppluginmanager.h"
 
@@ -67,6 +69,7 @@
 #include "gimppattern.h"
 #include "gimppatternclipboard.h"
 #include "gimpparasitelist.h"
+#include "gimpprogress.h"
 #include "gimptemplate.h"
 #include "gimptoolinfo.h"
 
@@ -221,7 +224,7 @@ gimp_init (Gimp *gimp)
   gimp->gradient_factory    = NULL;
   gimp->palette_factory     = NULL;
 
-  gimp_pdb_initialize (gimp);
+  gimp->pdb                 = gimp_pdb_new (gimp);
 
   xcf_init (gimp);
 
@@ -304,7 +307,11 @@ gimp_finalize (GObject *object)
 
   xcf_exit (gimp);
 
-  gimp_pdb_exit (gimp);
+  if (gimp->pdb)
+    {
+      g_object_unref (gimp->pdb);
+      gimp->pdb = NULL;
+    }
 
   if (gimp->brush_factory)
     {
@@ -585,7 +592,8 @@ gimp_real_initialize (Gimp               *gimp,
 
   /*  register all internal procedures  */
   status_callback (NULL, _("Internal Procedures"), 0.2);
-  gimp_pdb_init_procs (gimp);
+  internal_procs_init (gimp->pdb);
+  gimp_pdb_compat_procs_register (gimp->pdb, gimp->pdb_compat_mode);
 
   gimp_plug_in_manager_initialize (gimp->plug_in_manager, status_callback);
 
@@ -967,4 +975,23 @@ gimp_get_user_context (Gimp *gimp)
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   return gimp->user_context;
+}
+
+void
+gimp_message (Gimp         *gimp,
+              GimpProgress *progress,
+              const gchar  *format,
+              ...)
+{
+  va_list  args;
+  gchar   *message;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+
+  va_start (args, format);
+  message = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  gimp_show_message (gimp, progress, NULL, message);
 }

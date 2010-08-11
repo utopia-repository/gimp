@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpgradient.html" title="gimpgradient">
 <link rel="next" href="libgimp-gimppalette.html" title="gimppalette">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpgradient.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-data.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppalette.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2539871" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2632482" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradients"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpgradients</span></h2>
+<h2>
+<a name="id2539871"></a><span class="refentrytitle">gimpgradients</span>
+</h2>
 <p>gimpgradients &#8212; Operations related to gradients.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -60,18 +68,18 @@ gchar*      <a href="libgimp-gimpgradients.html#gimp-gradients-get-gradient-data
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2620449"></a><h2>Description</h2>
+<a name="id2632482"></a><h2>Description</h2>
 <p>
 Operations related to gradients.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2620460"></a><h2>Details</h2>
+<a name="id2632497"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2621314"></a><h3>
+<a name="id2632508"></a><h3>
 <a name="gimp-gradients-refresh"></a>gimp_gradients_refresh ()</h3>
-<a class="indexterm" name="id2621323"></a><pre class="programlisting">gboolean    gimp_gradients_refresh          (void);</pre>
+<a class="indexterm" name="id2632519"></a><pre class="programlisting">gboolean    gimp_gradients_refresh          (void);</pre>
 <p>
 Refresh current gradients. This function always succeeds.
 </p>
@@ -93,9 +101,9 @@ gradient path and updates the gradient dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621368"></a><h3>
+<a name="id2632563"></a><h3>
 <a name="gimp-gradients-get-list"></a>gimp_gradients_get_list ()</h3>
-<a class="indexterm" name="id2621376"></a><pre class="programlisting">gchar**     gimp_gradients_get_list         (const gchar *filter,
+<a class="indexterm" name="id2632574"></a><pre class="programlisting">gchar**     gimp_gradients_get_list         (const gchar *filter,
                                              gint *num_gradients);</pre>
 <p>
 Retrieve the list of loaded gradients.
@@ -133,9 +141,9 @@ to set the active gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621463"></a><h3>
+<a name="id2631176"></a><h3>
 <a name="gimp-gradients-get-gradient"></a>gimp_gradients_get_gradient ()</h3>
-<a class="indexterm" name="id2623441"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient     (void);</pre>
+<a class="indexterm" name="id2631189"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient     (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradients_get_gradient</code> is deprecated and should not be used in newly-written code.</p>
@@ -157,9 +165,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623501"></a><h3>
+<a name="id2631249"></a><h3>
 <a name="gimp-gradients-set-gradient"></a>gimp_gradients_set_gradient ()</h3>
-<a class="indexterm" name="id2623510"></a><pre class="programlisting">gboolean    gimp_gradients_set_gradient     (const gchar *name);</pre>
+<a class="indexterm" name="id2631263"></a><pre class="programlisting">gboolean    gimp_gradients_set_gradient     (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_gradients_set_gradient</code> is deprecated and should not be used in newly-written code.</p>
@@ -189,9 +197,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623589"></a><h3>
+<a name="id2631342"></a><h3>
 <a name="gimp-gradients-sample-uniform"></a>gimp_gradients_sample_uniform ()</h3>
-<a class="indexterm" name="id2623598"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_uniform   (gint num_samples,
+<a class="indexterm" name="id2631355"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_uniform   (gint num_samples,
                                              gboolean reverse);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -229,9 +237,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622250"></a><h3>
+<a name="id2630074"></a><h3>
 <a name="gimp-gradients-sample-custom"></a>gimp_gradients_sample_custom ()</h3>
-<a class="indexterm" name="id2622259"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_custom    (gint num_samples,
+<a class="indexterm" name="id2630087"></a><pre class="programlisting">gdouble*    gimp_gradients_sample_custom    (gint num_samples,
                                              const gdouble *positions,
                                              gboolean reverse);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -276,9 +284,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622383"></a><h3>
+<a name="id2630214"></a><h3>
 <a name="gimp-gradients-get-gradient-data"></a>gimp_gradients_get_gradient_data ()</h3>
-<a class="indexterm" name="id2622394"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient_data
+<a class="indexterm" name="id2630230"></a><pre class="programlisting">gchar*      gimp_gradients_get_gradient_data
                                             (const gchar *name,
                                              gint sample_size,
                                              gboolean reverse,
@@ -338,9 +346,5 @@ This procedure is deprecated! Use
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpgradient.html"><b>&lt;&lt;&#160;gimpgradient</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimppalette.html"><b>gimppalette&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

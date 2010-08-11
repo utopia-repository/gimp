@@ -4,16 +4,19 @@
 
 <refentry id="GimpThumbnail">
 <refmeta>
-<refentrytitle>GimpThumbnail</refentrytitle>
+<refentrytitle role="top_of_page">GimpThumbnail</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPTHUMB Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpThumbnail</refname><refpurpose>The GimpThumbnail object</refpurpose>
+<refname>GimpThumbnail</refname>
+<refpurpose>The GimpThumbnail object</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -56,8 +59,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -70,8 +73,8 @@
 
 
 
-<refsect1>
-<title>Properties</title>
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpThumbnail--image-filesize">image-filesize</link>&quot;       <link linkend="gint64">gint64</link>                : Read / Write
@@ -89,24 +92,24 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpThumbnail-struct"/>GimpThumbnail</title>
+<title><anchor id="GimpThumbnail-struct" role="struct"/>GimpThumbnail</title>
 <indexterm><primary>GimpThumbnail</primary></indexterm><programlisting>typedef struct _GimpThumbnail GimpThumbnail;</programlisting>
 <para>
 All members of <link linkend="GimpThumbnail"><type>GimpThumbnail</type></link> are private and should only be accessed
 using object properties.
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-new"/>gimp_thumbnail_new ()</title>
+<title><anchor id="gimp-thumbnail-new" role="function"/>gimp_thumbnail_new ()</title>
 <indexterm><primary>gimp_thumbnail_new</primary></indexterm><programlisting><link linkend="GimpThumbnail">GimpThumbnail</link>* gimp_thumbnail_new           (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpThumbnail"><type>GimpThumbnail</type></link> object.</para>
@@ -117,7 +120,7 @@ Creates a new <link linkend="GimpThumbnail"><type>GimpThumbnail</type></link> ob
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-set-uri"/>gimp_thumbnail_set_uri ()</title>
+<title><anchor id="gimp-thumbnail-set-uri" role="function"/>gimp_thumbnail_set_uri ()</title>
 <indexterm><primary>gimp_thumbnail_set_uri</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_set_uri          (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
@@ -136,7 +139,7 @@ All informations stored in the <link linkend="GimpThumbnail"><type>GimpThumbnail
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-set-filename"/>gimp_thumbnail_set_filename ()</title>
+<title><anchor id="gimp-thumbnail-set-filename" role="function"/>gimp_thumbnail_set_filename ()</title>
 <indexterm><primary>gimp_thumbnail_set_filename</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_set_filename     (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              <link linkend="GError">GError</link> **error);</programlisting>
@@ -154,12 +157,12 @@ Sets the location of the image file associated with the <link linkend="thumbnail
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara> return location for possible errors
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the filename was successfully set,
-              <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the filename was successfully set,
+              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-set-from-thumb"/>gimp_thumbnail_set_from_thumb ()</title>
+<title><anchor id="gimp-thumbnail-set-from-thumb" role="function"/>gimp_thumbnail_set_from_thumb ()</title>
 <indexterm><primary>gimp_thumbnail_set_from_thumb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_set_from_thumb   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              <link linkend="GError">GError</link> **error);</programlisting>
@@ -184,11 +187,11 @@ directory that contain a valid Thumb::URI tag.</para>
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara> return location for possible errors
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the pixbuf could be loaded, <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the pixbuf could be loaded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-peek-image"/>gimp_thumbnail_peek_image ()</title>
+<title><anchor id="gimp-thumbnail-peek-image" role="function"/>gimp_thumbnail_peek_image ()</title>
 <indexterm><primary>gimp_thumbnail_peek_image</primary></indexterm><programlisting><link linkend="GimpThumbState">GimpThumbState</link> gimp_thumbnail_peek_image    (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
 <para>
 Checks the image file associated with the <parameter>thumbnail</parameter> and updates
@@ -203,7 +206,7 @@ information such as state, filesize and modification time.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-peek-thumb"/>gimp_thumbnail_peek_thumb ()</title>
+<title><anchor id="gimp-thumbnail-peek-thumb" role="function"/>gimp_thumbnail_peek_thumb ()</title>
 <indexterm><primary>gimp_thumbnail_peek_thumb</primary></indexterm><programlisting><link linkend="GimpThumbState">GimpThumbState</link> gimp_thumbnail_peek_thumb    (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
@@ -229,7 +232,7 @@ thumbnail pixbuf, use <link linkend="gimp-thumbnail-check-thumb"><function>gimp_
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-check-thumb"/>gimp_thumbnail_check_thumb ()</title>
+<title><anchor id="gimp-thumbnail-check-thumb" role="function" condition="since:GIMP 2.2"/>gimp_thumbnail_check_thumb ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_thumbnail_check_thumb</primary></indexterm><programlisting><link linkend="GimpThumbState">GimpThumbState</link> gimp_thumbnail_check_thumb   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
@@ -251,7 +254,7 @@ with the <parameter>thumbnail</parameter>.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-load-thumb"/>gimp_thumbnail_load_thumb ()</title>
+<title><anchor id="gimp-thumbnail-load-thumb" role="function"/>gimp_thumbnail_load_thumb ()</title>
 <indexterm><primary>gimp_thumbnail_load_thumb</primary></indexterm><programlisting><link linkend="GdkPixbuf">GdkPixbuf</link>*  gimp_thumbnail_load_thumb       (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size,
                                              <link linkend="GError">GError</link> **error);</programlisting>
@@ -281,11 +284,11 @@ In order to verify if the preview is uptodate, you should check the
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara> return location for possible errors
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a preview pixbuf or <literal>NULL</literal> if no thumbnail was found
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a preview pixbuf or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if no thumbnail was found
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-save-thumb"/>gimp_thumbnail_save_thumb ()</title>
+<title><anchor id="gimp-thumbnail-save-thumb" role="function"/>gimp_thumbnail_save_thumb ()</title>
 <indexterm><primary>gimp_thumbnail_save_thumb</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_save_thumb       (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
                                              const <link linkend="gchar">gchar</link> *software,
@@ -320,12 +323,12 @@ set in order to be stored with the preview image.</para>
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara> return location for possible errors
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if a thumbnail was successfully written,
-              <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if a thumbnail was successfully written,
+              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-save-thumb-local"/>gimp_thumbnail_save_thumb_local ()</title>
+<title><anchor id="gimp-thumbnail-save-thumb-local" role="function" condition="since:GIMP 2.2"/>gimp_thumbnail_save_thumb_local ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_thumbnail_save_thumb_local</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_save_thumb_local (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf,
                                              const <link linkend="gchar">gchar</link> *software,
@@ -353,14 +356,14 @@ apply here as well.</para>
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara> return location for possible errors
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if a thumbnail was successfully written,
-              <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if a thumbnail was successfully written,
+              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-save-failure"/>gimp_thumbnail_save_failure ()</title>
+<title><anchor id="gimp-thumbnail-save-failure" role="function"/>gimp_thumbnail_save_failure ()</title>
 <indexterm><primary>gimp_thumbnail_save_failure</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_save_failure     (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              const <link linkend="gchar">gchar</link> *software,
                                              <link linkend="GError">GError</link> **error);</programlisting>
@@ -381,12 +384,12 @@ prevent the software from further attempts to create this thumbnail.</para>
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara> return location for possible errors
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if a failure thumbnail was successfully written,
-              <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if a failure thumbnail was successfully written,
+              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-delete-failure"/>gimp_thumbnail_delete_failure ()</title>
+<title><anchor id="gimp-thumbnail-delete-failure" role="function" condition="since:GIMP 2.2"/>gimp_thumbnail_delete_failure ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_thumbnail_delete_failure</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_delete_failure   (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
 <para>
 Removes a failure thumbnail if one exists. This function should be
@@ -400,7 +403,7 @@ used after a thumbnail has been successfully created.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-delete-others"/>gimp_thumbnail_delete_others ()</title>
+<title><anchor id="gimp-thumbnail-delete-others" role="function" condition="since:GIMP 2.2"/>gimp_thumbnail_delete_others ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_thumbnail_delete_others</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_thumbnail_delete_others    (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail,
                                              <link linkend="GimpThumbSize">GimpThumbSize</link> size);</programlisting>
 <para>
@@ -421,12 +424,12 @@ delete thumbnails.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-thumbnail-has-failed"/>gimp_thumbnail_has_failed ()</title>
+<title><anchor id="gimp-thumbnail-has-failed" role="function" condition="since:GIMP 2.2"/>gimp_thumbnail_has_failed ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_thumbnail_has_failed</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_thumbnail_has_failed       (<link linkend="GimpThumbnail">GimpThumbnail</link> *thumbnail);</programlisting>
 <para>
 Checks if a valid failure thumbnail for the given thumbnail exists
 in the global thumbnail repository. This may be the case even if
-<link linkend="gimp-thumbnail-peek-thumb"><function>gimp_thumbnail_peek_thumb()</function></link> doesn't return <literal>GIMP_THUMB_STATE_FAILED</literal>
+<link linkend="gimp-thumbnail-peek-thumb"><function>gimp_thumbnail_peek_thumb()</function></link> doesn't return <link linkend="GIMP-THUMB-STATE-FAILED:CAPS"><literal>GIMP_THUMB_STATE_FAILED</literal></link>
 since there might be a real thumbnail and a failure thumbnail for
 the same image file.
 </para>
@@ -439,58 +442,58 @@ valid failure thumbnail exists.</para>
 <varlistentry><term><parameter>thumbnail</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpThumbnail"><type>GimpThumbnail</type></link> object
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if a failure thumbnail exists or
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if a failure thumbnail exists or
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>
-<refsect1>
-<title>Properties</title>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpThumbnail--image-filesize"/>The &quot;<literal>image-filesize</literal>&quot; property</title>
-<programlisting>  &quot;image-filesize&quot;       <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-filesize</primary></indexterm><programlisting>  &quot;image-filesize&quot;       <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
 <para>Size of the image file in bytes.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-height"/>The &quot;<literal>image-height</literal>&quot; property</title>
-<programlisting>  &quot;image-height&quot;         <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-height</primary></indexterm><programlisting>  &quot;image-height&quot;         <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>Height of the image in pixels.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-mimetype"/>The &quot;<literal>image-mimetype</literal>&quot; property</title>
-<programlisting>  &quot;image-mimetype&quot;       <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-mimetype</primary></indexterm><programlisting>  &quot;image-mimetype&quot;       <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>Image mimetype.</para><para>Default value: NULL</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-mtime"/>The &quot;<literal>image-mtime</literal>&quot; property</title>
-<programlisting>  &quot;image-mtime&quot;          <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-mtime</primary></indexterm><programlisting>  &quot;image-mtime&quot;          <link linkend="gint64">gint64</link>                : Read / Write</programlisting>
 <para>Modification time of the image file in seconds since the Epoch.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-num-layers"/>The &quot;<literal>image-num-layers</literal>&quot; property</title>
-<programlisting>  &quot;image-num-layers&quot;     <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-num-layers</primary></indexterm><programlisting>  &quot;image-num-layers&quot;     <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>The number of layers in the image.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-state"/>The &quot;<literal>image-state</literal>&quot; property</title>
-<programlisting>  &quot;image-state&quot;          <link linkend="GimpThumbState">GimpThumbState</link>        : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-state</primary></indexterm><programlisting>  &quot;image-state&quot;          <link linkend="GimpThumbState">GimpThumbState</link>        : Read / Write</programlisting>
 <para>State of the image associated to the thumbnail object.</para><para>Default value: GIMP_THUMB_STATE_UNKNOWN</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-type"/>The &quot;<literal>image-type</literal>&quot; property</title>
-<programlisting>  &quot;image-type&quot;           <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-type</primary></indexterm><programlisting>  &quot;image-type&quot;           <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>String describing the type of the image format.</para><para>Default value: NULL</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-uri"/>The &quot;<literal>image-uri</literal>&quot; property</title>
-<programlisting>  &quot;image-uri&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-uri</primary></indexterm><programlisting>  &quot;image-uri&quot;            <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
 <para>URI of the image file.</para><para>Default value: NULL</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--image-width"/>The &quot;<literal>image-width</literal>&quot; property</title>
-<programlisting>  &quot;image-width&quot;          <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:image-width</primary></indexterm><programlisting>  &quot;image-width&quot;          <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>Width of the image in pixels.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
 <refsect2><title><anchor id="GimpThumbnail--thumb-state"/>The &quot;<literal>thumb-state</literal>&quot; property</title>
-<programlisting>  &quot;thumb-state&quot;          <link linkend="GimpThumbState">GimpThumbState</link>        : Read / Write</programlisting>
+<indexterm><primary>GimpThumbnail:thumb-state</primary></indexterm><programlisting>  &quot;thumb-state&quot;          <link linkend="GimpThumbState">GimpThumbState</link>        : Read / Write</programlisting>
 <para>State of the thumbnail file.</para><para>Default value: GIMP_THUMB_STATE_UNKNOWN</para>
 </refsect2>
 

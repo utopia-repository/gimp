@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpbrush">
 <refmeta>
-<refentrytitle>gimpbrush</refentrytitle>
+<refentrytitle role="top_of_page">gimpbrush</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpbrush</refname><refpurpose>Functions operating on a single brush.</refpurpose>
+<refname>gimpbrush</refname>
+<refpurpose>Functions operating on a single brush.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -53,17 +56,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 Functions operating on a single brush.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-brush-new"/>gimp_brush_new ()</title>
+<title><anchor id="gimp-brush-new" role="function" condition="since:GIMP 2.2"/>gimp_brush_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_new                  (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a new brush
@@ -82,7 +85,7 @@ This procedure creates a new, uninitialized brush</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-duplicate"/>gimp_brush_duplicate ()</title>
+<title><anchor id="gimp-brush-duplicate" role="function" condition="since:GIMP 2.2"/>gimp_brush_duplicate ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_duplicate            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Duplicates a brush
@@ -101,7 +104,7 @@ This procedure creates an identical brush by a different name</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-rename"/>gimp_brush_rename ()</title>
+<title><anchor id="gimp-brush-rename" role="function" condition="since:GIMP 2.2"/>gimp_brush_rename ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_brush_rename               (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *new_name);</programlisting>
 <para>
@@ -124,7 +127,7 @@ This procedure renames a brush</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-delete"/>gimp_brush_delete ()</title>
+<title><anchor id="gimp-brush-delete" role="function" condition="since:GIMP 2.2"/>gimp_brush_delete ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_delete               (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Deletes a brush
@@ -143,7 +146,7 @@ This procedure deletes a brush</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-get-info"/>gimp_brush_get_info ()</title>
+<title><anchor id="gimp-brush-get-info" role="function" condition="since:GIMP 2.2"/>gimp_brush_get_info ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_info             (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
@@ -179,7 +182,7 @@ includes the brush name, and the brush extents (width and height).</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-get-pixels"/>gimp_brush_get_pixels ()</title>
+<title><anchor id="gimp-brush-get-pixels" role="function" condition="since:GIMP 2.2"/>gimp_brush_get_pixels ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_pixels           (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
@@ -231,7 +234,7 @@ includes the brush extents (width and height) and its pixels data.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-get-spacing"/>gimp_brush_get_spacing ()</title>
+<title><anchor id="gimp-brush-get-spacing" role="function" condition="since:GIMP 2.2"/>gimp_brush_get_spacing ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_get_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_get_spacing          (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *spacing);</programlisting>
 <para>
@@ -256,7 +259,7 @@ percentage of the maximum of the width and height of the mask.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-brush-set-spacing"/>gimp_brush_set_spacing ()</title>
+<title><anchor id="gimp-brush-set-spacing" role="function" condition="since:GIMP 2.2"/>gimp_brush_set_spacing ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_brush_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_set_spacing          (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> spacing);</programlisting>
 <para>

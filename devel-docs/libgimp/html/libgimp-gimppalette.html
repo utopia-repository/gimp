@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpgradients.html" title="gimpgradients">
 <link rel="next" href="libgimp-gimppalettes.html" title="gimppalettes">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpgradients.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-data.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppalettes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2536762" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2639247" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppalette"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimppalette</span></h2>
+<h2>
+<a name="id2536762"></a><span class="refentrytitle">gimppalette</span>
+</h2>
 <p>gimppalette &#8212; Functions operating on a single palette.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -89,17 +97,17 @@ gboolean    <a href="libgimp-gimppalette.html#gimp-palette-swap-colors">gimp_pal
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2629936"></a><h2>Description</h2>
+<a name="id2639247"></a><h2>Description</h2>
 <p>
 Functions operating on a single palette.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2629947"></a><h2>Details</h2>
+<a name="id2639262"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2629953"></a><h3>
+<a name="id2639273"></a><h3>
 <a name="gimp-palette-new"></a>gimp_palette_new ()</h3>
-<a class="indexterm" name="id2629963"></a><pre class="programlisting">gchar*      gimp_palette_new                (const gchar *name);</pre>
+<a class="indexterm" name="id2630407"></a><pre class="programlisting">gchar*      gimp_palette_new                (const gchar *name);</pre>
 <p>
 Creates a new palette
 </p>
@@ -131,9 +139,9 @@ This procedure creates a new, uninitialized palette</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621858"></a><h3>
+<a name="id2630476"></a><h3>
 <a name="gimp-palette-duplicate"></a>gimp_palette_duplicate ()</h3>
-<a class="indexterm" name="id2621867"></a><pre class="programlisting">gchar*      gimp_palette_duplicate          (const gchar *name);</pre>
+<a class="indexterm" name="id2630489"></a><pre class="programlisting">gchar*      gimp_palette_duplicate          (const gchar *name);</pre>
 <p>
 Duplicates a palette
 </p>
@@ -165,9 +173,9 @@ This procedure creates an identical palette by a different name</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621936"></a><h3>
+<a name="id2630558"></a><h3>
 <a name="gimp-palette-rename"></a>gimp_palette_rename ()</h3>
-<a class="indexterm" name="id2621946"></a><pre class="programlisting">gchar*      gimp_palette_rename             (const gchar *name,
+<a class="indexterm" name="id2630573"></a><pre class="programlisting">gchar*      gimp_palette_rename             (const gchar *name,
                                              const gchar *new_name);</pre>
 <p>
 Rename a palette
@@ -206,9 +214,9 @@ This procedure renames a palette</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622035"></a><h3>
+<a name="id2630662"></a><h3>
 <a name="gimp-palette-delete"></a>gimp_palette_delete ()</h3>
-<a class="indexterm" name="id2622046"></a><pre class="programlisting">gboolean    gimp_palette_delete             (const gchar *name);</pre>
+<a class="indexterm" name="id2630677"></a><pre class="programlisting">gboolean    gimp_palette_delete             (const gchar *name);</pre>
 <p>
 Deletes a palette
 </p>
@@ -240,9 +248,9 @@ This procedure deletes a palette</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622113"></a><h3>
+<a name="id2630745"></a><h3>
 <a name="gimp-palette-get-info"></a>gimp_palette_get_info ()</h3>
-<a class="indexterm" name="id2622122"></a><pre class="programlisting">gboolean    gimp_palette_get_info           (const gchar *name,
+<a class="indexterm" name="id2630758"></a><pre class="programlisting">gboolean    gimp_palette_get_info           (const gchar *name,
                                              gint *num_colors);</pre>
 <p>
 Retrieve information about the specified palette.
@@ -282,9 +290,9 @@ This includes the name, and the number of colors.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622215"></a><h3>
+<a name="id2641409"></a><h3>
 <a name="gimp-palette-add-entry"></a>gimp_palette_add_entry ()</h3>
-<a class="indexterm" name="id2622224"></a><pre class="programlisting">gboolean    gimp_palette_add_entry          (const gchar *name,
+<a class="indexterm" name="id2641423"></a><pre class="programlisting">gboolean    gimp_palette_add_entry          (const gchar *name,
                                              const gchar *entry_name,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -340,9 +348,9 @@ error if the entry palette does not exist.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2632129"></a><h3>
+<a name="id2641556"></a><h3>
 <a name="gimp-palette-delete-entry"></a>gimp_palette_delete_entry ()</h3>
-<a class="indexterm" name="id2632138"></a><pre class="programlisting">gboolean    gimp_palette_delete_entry       (const gchar *name,
+<a class="indexterm" name="id2641570"></a><pre class="programlisting">gboolean    gimp_palette_delete_entry       (const gchar *name,
                                              gint entry_num);</pre>
 <p>
 Deletes a palette entry from the specified palette.
@@ -382,9 +390,9 @@ returns an error if the entry palette does not exist.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2632230"></a><h3>
+<a name="id2641662"></a><h3>
 <a name="gimp-palette-entry-get-color"></a>gimp_palette_entry_get_color ()</h3>
-<a class="indexterm" name="id2632239"></a><pre class="programlisting">gboolean    gimp_palette_entry_get_color    (const gchar *name,
+<a class="indexterm" name="id2641676"></a><pre class="programlisting">gboolean    gimp_palette_entry_get_color    (const gchar *name,
                                              gint entry_num,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -434,9 +442,9 @@ exist.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2632353"></a><h3>
+<a name="id2641789"></a><h3>
 <a name="gimp-palette-entry-set-color"></a>gimp_palette_entry_set_color ()</h3>
-<a class="indexterm" name="id2632362"></a><pre class="programlisting">gboolean    gimp_palette_entry_set_color    (const gchar *name,
+<a class="indexterm" name="id2641803"></a><pre class="programlisting">gboolean    gimp_palette_entry_set_color    (const gchar *name,
                                              gint entry_num,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
@@ -486,9 +494,9 @@ exist.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2632476"></a><h3>
+<a name="id2641917"></a><h3>
 <a name="gimp-palette-entry-get-name"></a>gimp_palette_entry_get_name ()</h3>
-<a class="indexterm" name="id2632485"></a><pre class="programlisting">gboolean    gimp_palette_entry_get_name     (const gchar *name,
+<a class="indexterm" name="id2641930"></a><pre class="programlisting">gboolean    gimp_palette_entry_get_name     (const gchar *name,
                                              gint entry_num,
                                              gchar **entry_name);</pre>
 <p>
@@ -536,9 +544,9 @@ exist.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2632598"></a><h3>
+<a name="id2642044"></a><h3>
 <a name="gimp-palette-entry-set-name"></a>gimp_palette_entry_set_name ()</h3>
-<a class="indexterm" name="id2632607"></a><pre class="programlisting">gboolean    gimp_palette_entry_set_name     (const gchar *name,
+<a class="indexterm" name="id2642058"></a><pre class="programlisting">gboolean    gimp_palette_entry_set_name     (const gchar *name,
                                              gint entry_num,
                                              const gchar *entry_name);</pre>
 <p>
@@ -586,9 +594,9 @@ exist.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636484"></a><h3>
+<a name="id2646189"></a><h3>
 <a name="gimp-palette-get-foreground"></a>gimp_palette_get_foreground ()</h3>
-<a class="indexterm" name="id2636492"></a><pre class="programlisting">gboolean    gimp_palette_get_foreground     (<a
+<a class="indexterm" name="id2646201"></a><pre class="programlisting">gboolean    gimp_palette_get_foreground     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -625,9 +633,9 @@ blending, and bucket fill.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636564"></a><h3>
+<a name="id2646273"></a><h3>
 <a name="gimp-palette-get-background"></a>gimp_palette_get_background ()</h3>
-<a class="indexterm" name="id2636573"></a><pre class="programlisting">gboolean    gimp_palette_get_background     (<a
+<a class="indexterm" name="id2646286"></a><pre class="programlisting">gboolean    gimp_palette_get_background     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -664,9 +672,9 @@ erasing (with non-alpha images), and image filling.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636652"></a><h3>
+<a name="id2646358"></a><h3>
 <a name="gimp-palette-set-foreground"></a>gimp_palette_set_foreground ()</h3>
-<a class="indexterm" name="id2636662"></a><pre class="programlisting">gboolean    gimp_palette_set_foreground     (const <a
+<a class="indexterm" name="id2646371"></a><pre class="programlisting">gboolean    gimp_palette_set_foreground     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -703,9 +711,9 @@ and bucket fill will use the new value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636741"></a><h3>
+<a name="id2646450"></a><h3>
 <a name="gimp-palette-set-background"></a>gimp_palette_set_background ()</h3>
-<a class="indexterm" name="id2636751"></a><pre class="programlisting">gboolean    gimp_palette_set_background     (const <a
+<a class="indexterm" name="id2646464"></a><pre class="programlisting">gboolean    gimp_palette_set_background     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -743,9 +751,9 @@ value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636830"></a><h3>
+<a name="id2646522"></a><h3>
 <a name="gimp-palette-set-default-colors"></a>gimp_palette_set_default_colors ()</h3>
-<a class="indexterm" name="id2636841"></a><pre class="programlisting">gboolean    gimp_palette_set_default_colors (void);</pre>
+<a class="indexterm" name="id2646534"></a><pre class="programlisting">gboolean    gimp_palette_set_default_colors (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_set_default_colors</code> is deprecated and should not be used in newly-written code.</p>
@@ -772,9 +780,9 @@ colors to their initial default values, black and white.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636902"></a><h3>
+<a name="id2646589"></a><h3>
 <a name="gimp-palette-swap-colors"></a>gimp_palette_swap_colors ()</h3>
-<a class="indexterm" name="id2636910"></a><pre class="programlisting">gboolean    gimp_palette_swap_colors        (void);</pre>
+<a class="indexterm" name="id2646601"></a><pre class="programlisting">gboolean    gimp_palette_swap_colors        (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palette_swap_colors</code> is deprecated and should not be used in newly-written code.</p>
@@ -801,9 +809,5 @@ color and vice versa.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpgradients.html"><b>&lt;&lt;&#160;gimpgradients</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimppalettes.html"><b>gimppalettes&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

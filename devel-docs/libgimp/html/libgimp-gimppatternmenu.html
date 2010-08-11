@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -6,7 +7,7 @@
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimppalettemenu.html" title="gimppalettemenu">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,17 +19,25 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimppalettemenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
-</tr></table>
+<td>&#160;</td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2559814" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2658727" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppatternmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimppatternmenu</span></h2>
+<h2>
+<a name="id2559814"></a><span class="refentrytitle">gimppatternmenu</span>
+</h2>
 <p>gimppatternmenu &#8212; A widget for selecting patterns.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -39,43 +48,33 @@
 
 
 
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</a>  (const gchar *title,
+GtkWidget*  <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</a>  (const gchar *title,
                                              const gchar *pattern_name,
                                              <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
                                              gpointer data);
 void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</a>
-                                            (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);
-void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</a>  (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+                                            (GtkWidget *widget);
+void        <a href="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</a>  (GtkWidget *widget,
                                              const gchar *pattern_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2645379"></a><h2>Description</h2>
+<a name="id2658727"></a><h2>Description</h2>
 <p>
 A widget for selecting patterns.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2645390"></a><h2>Details</h2>
+<a name="id2658743"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2645396"></a><h3>
+<a name="id2658753"></a><h3>
 <a name="gimp-pattern-select-widget-new"></a>gimp_pattern_select_widget_new ()</h3>
-<a class="indexterm" name="id2645405"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_pattern_select_widget_new  (const gchar *title,
+<a class="indexterm" name="id2658764"></a><pre class="programlisting">GtkWidget*  gimp_pattern_select_widget_new  (const gchar *title,
                                              const gchar *pattern_name,
                                              <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
                                              gpointer data);</pre>
 <p>
-Creates a new <a
-href="../gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> that completely controls the selection of
+Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a pattern. This widget is suitable for placement in a table in a
 plug-in dialog.</p>
 <p>
@@ -111,9 +110,7 @@ plug-in dialog.</p>
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> that you can use in your UI.
+<td> A <span class="type">GtkWidget</span> that you can use in your UI.
 </td>
 </tr>
 </tbody>
@@ -121,12 +118,10 @@ href="../gtk/GtkWidget.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648639"></a><h3>
+<a name="id2659535"></a><h3>
 <a name="gimp-pattern-select-widget-close"></a>gimp_pattern_select_widget_close ()</h3>
-<a class="indexterm" name="id2648648"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
-                                            (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);</pre>
+<a class="indexterm" name="id2659546"></a><pre class="programlisting">void        gimp_pattern_select_widget_close
+                                            (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -144,11 +139,9 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648703"></a><h3>
+<a name="id2659601"></a><h3>
 <a name="gimp-pattern-select-widget-set"></a>gimp_pattern_select_widget_set ()</h3>
-<a class="indexterm" name="id2648712"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+<a class="indexterm" name="id2659612"></a><pre class="programlisting">void        gimp_pattern_select_widget_set  (GtkWidget *widget,
                                              const gchar *pattern_name);</pre>
 <p>
 Sets the current pattern for the pattern select widget.  Calls the
@@ -177,9 +170,5 @@ callback function if one was supplied in the call to
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimppalettemenu.html"><b>&lt;&lt;&#160;gimppalettemenu</b></a></td>
-<td align="right"></td>
-</tr></table>
 </body>
 </html>

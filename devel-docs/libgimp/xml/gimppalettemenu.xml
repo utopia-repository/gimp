@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimppalettemenu">
 <refmeta>
-<refentrytitle>gimppalettemenu</refentrytitle>
+<refentrytitle role="top_of_page">gimppalettemenu</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimppalettemenu</refname><refpurpose>A widget for selecting palettes.</refpurpose>
+<refname>gimppalettemenu</refname>
+<refpurpose>A widget for selecting palettes.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -38,17 +41,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 A widget for selecting palettes.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-palette-select-widget-new"/>gimp_palette_select_widget_new ()</title>
+<title><anchor id="gimp-palette-select-widget-new" role="function" condition="since:GIMP 2.2"/>gimp_palette_select_widget_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_palette_select_widget_new  (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *palette_name,
                                              <link linkend="GimpRunPaletteCallback">GimpRunPaletteCallback</link> callback,
@@ -61,7 +64,7 @@ plug-in dialog.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>title</parameter>&nbsp;:</term>
-<listitem><simpara>        Title of the dialog to use or <literal>NULL</literal> means to use the default
+<listitem><simpara>        Title of the dialog to use or <link linkend="NULL:CAPS"><literal>NULL</literal></link> means to use the default
                title.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>palette_name</parameter>&nbsp;:</term>
@@ -79,7 +82,7 @@ plug-in dialog.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-select-widget-close"/>gimp_palette_select_widget_close ()</title>
+<title><anchor id="gimp-palette-select-widget-close" role="function" condition="since:GIMP 2.2"/>gimp_palette_select_widget_close ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_close
                                             (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <para>
@@ -93,7 +96,7 @@ Closes the popup window associated with <parameter>widget</parameter>.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-select-widget-set"/>gimp_palette_select_widget_set ()</title>
+<title><anchor id="gimp-palette-select-widget-set" role="function" condition="since:GIMP 2.2"/>gimp_palette_select_widget_set ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_set  (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                              const <link linkend="gchar">gchar</link> *palette_name);</programlisting>
 <para>
@@ -107,7 +110,7 @@ callback function if one was supplied in the call to
 <listitem><simpara>       A palette select widget.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>palette_name</parameter>&nbsp;:</term>
-<listitem><simpara> Palette name to set; <literal>NULL</literal> means no change.
+<listitem><simpara> Palette name to set; <link linkend="NULL:CAPS"><literal>NULL</literal></link> means no change.
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>

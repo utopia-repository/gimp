@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpexport.html" title="gimpexport">
 <link rel="next" href="GimpDrawablePreview.html" title="GimpDrawablePreview">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -19,18 +20,29 @@
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpexport.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpDrawablePreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2527748" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2651204" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#id2651507" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#id2651184" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpAspectPreview"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpAspectPreview</span></h2>
+<h2>
+<a name="id2527748"></a><span class="refentrytitle">GimpAspectPreview</span>
+</h2>
 <p>GimpAspectPreview &#8212; A widget providing a preview with fixed aspect ratio.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -42,34 +54,22 @@
 
 
             <a href="GimpAspectPreview.html#GimpAspectPreview-struct">GimpAspectPreview</a>;
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="GimpAspectPreview.html#gimp-aspect-preview-new">gimp_aspect_preview_new</a>         (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+GtkWidget*  <a href="GimpAspectPreview.html#gimp-aspect-preview-new">gimp_aspect_preview_new</a>         (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
                                              gboolean *toggle);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2519712"></a><h2>Object Hierarchy</h2>
+<a name="id2651507"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
    +----GInitiallyUnowned
-         +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="../gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="../gtk/GtkBox.html"
->GtkBox</a>
-                                 +----<a
-href="../gtk/GtkVBox.html"
->GtkVBox</a>
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GtkVBox
                                        +----<a
 href="../libgimpwidgets/GimpPreview.html"
 >GimpPreview</a>
@@ -77,34 +77,32 @@ href="../libgimpwidgets/GimpPreview.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642334"></a><h2>Implemented Interfaces</h2>
+<a name="id2651184"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpAspectPreview implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642350"></a><h2>Description</h2>
+<a name="id2651204"></a><h2>Description</h2>
 <p>
 A widget providing a preview with fixed aspect ratio.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642362"></a><h2>Details</h2>
+<a name="id2651220"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2642368"></a><h3>
+<a name="id2651231"></a><h3>
 <a name="GimpAspectPreview-struct"></a>GimpAspectPreview</h3>
-<a class="indexterm" name="id2642377"></a><pre class="programlisting">typedef struct _GimpAspectPreview GimpAspectPreview;</pre>
+<a class="indexterm" name="id2651242"></a><pre class="programlisting">typedef struct _GimpAspectPreview GimpAspectPreview;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642392"></a><h3>
+<a name="id2651258"></a><h3>
 <a name="gimp-aspect-preview-new"></a>gimp_aspect_preview_new ()</h3>
-<a class="indexterm" name="id2642401"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_aspect_preview_new         (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a class="indexterm" name="id2651269"></a><pre class="programlisting">GtkWidget*  gimp_aspect_preview_new         (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
                                              gboolean *toggle);</pre>
 <p>
 
@@ -137,9 +135,5 @@ href="../gtk/GtkWidget.html"
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpexport.html"><b>&lt;&lt;&#160;gimpexport</b></a></td>
-<td align="right"><a accesskey="n" href="GimpDrawablePreview.html"><b>GimpDrawablePreview&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

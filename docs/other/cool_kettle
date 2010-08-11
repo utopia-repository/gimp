@@ -1,0 +1,11 @@
+Pete, check out cool_kettle.jpg in my home directory.     
+I started with a graphic I rendered with povray.  I cut out the kettle
+superbly using the bezier select tool, inverted the selection, filled to
+black, inverted selection again, cropped the kettle, greyscaled it.
+then I took dendrite.gif, blurred it to un-GIFify it, scaled it to the size
+of the kettle, duplicated it and cleared the duplicated image to black.
+Then I did a composite of the dendrite & black image using the kettle as
+the mask.  Then I blended that result with the greyscale kettle.  Then
+I added the result of the previous composite to the result.  
+
+It looks like it was painted with laser light.  neat FX!

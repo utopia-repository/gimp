@@ -1,0 +1,78 @@
+This is the original document we (spencer and peter) wrote the night
+we decided to write the GIMP. It's kinda cool to see how close we
+came to this early target. Many of the details have changed, but the
+overall functionallity seems to be intact. The only major component
+that was left out is the scripting language.
+
+--------------------------------------------------------------------
+
+Manifesto:
+ To provide rudimentary image manipulation and processing.
+
+
+Philosophy:
+ Make something we want to use. (Nothing extraneous).
+ User interface efficiency is of primary importance.
+ No eye candy!
+ Program can be run completely autonomously from its GUI through
+ a scripting language.
+
+Nots:
+ An image authoring system.
+
+
+Functionality:
+
+ 1. File formats.
+ 2. Image specifics.
+ 3. Channel operations. 
+ 4. Tools. (Text, pen, etc...)
+ 5. Plug-in filters.
+ 6. Keyboard only control.
+ 7. Color. (RGB, CMYK)
+ 8. Resizing.
+ 9. Selection. (Lasso, magic wand, etc...)
+*10. Macros.
+ 11. Zoom.
+
+
+File Formats
+ Implement xpm reading/writing.
+ Easy addition of file format extensions.
+
+
+Image Specifics
+ Image paradigm. A window on the screen is essentially a viewport
+ into world space, so multiple windows can look into the same world
+ space.
+
+ Internally, world space will be represented by an XImage data structure.
+
+
+Color
+ Child window for color selection.
+
+ Basic Components:
+  RGB sliders.
+  Foreground/Background.
+  Interactive color display.
+  Current RGB under pointer.
+
+
+User Interface
+ Toolbox w/ menus and status bar.
+ Separate child windows for color selection and tools.
+ Child windows for each image.
+ Image selection through direct specification via the pointer.
+ Current pointer location displayed in main window.
+
+
+Channel Operations
+ Will be implemented as a generalization of filters.
+ Shared memory will be used to communicate between application
+  and extensions.
+
+
+ToDo
+ Main application toolbox w/ skeleton menus.
+ Filter message passing system.

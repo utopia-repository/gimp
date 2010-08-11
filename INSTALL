@@ -1,0 +1,240 @@
+These are the installation instructions for the GIMP.
+
+To compile the GIMP
+-------------------
+
+WARNING: Do not remake the `configure' script using autoconf. The
+  script has been created using a modified version of autoconf that
+  knows how to handle the `--motif-includes' and `--motif-libraries'
+  command line options.
+
+1. Configure the GIMP for your system. In the directory that this file
+is in type `./configure'. If you're using `csh' on an old version of
+System V, you might need to type `sh configure' instead to prevent
+`csh' from trying to execute `configure' itself.
+
+The `configure' shell script attempts to guess correct values for
+various system-dependent variables used during compilation, and crates
+the Makefile and a configuration header file (`config.h').
+
+If the `configure' script fails for some reason and you know it
+shouldn't then you should probably examine the output file
+`config.log' for error messages. For instance, if you have motif, but
+the configure script says it can't find the library, then you can
+check the `config.log' file to find out what went wrong with the test.
+
+On some systems, the `configure' script may be unable to find the X11
+include and library directories. These may be specified as arguments
+to the `configure' script. For example:
+
+ configure --x-includes="/usr/X11/include" --x-libraries="/usr/X11/lib"
+
+This specifies that the directory "/usr/X11/include" contains the X11
+include files and the directory "/usr/X11/lib" contains the X11
+libraries. This specification is only necessary if the `configure'
+script cannot find them automatically. (The `configure' script will
+emit a warning if it fails to locate them).
+
+It is also possible to specify the Motif include and library
+directories as arguments using a similar format.
+
+ configure --motif-includes="/usr/X11/include" --motif-libraries="/usr/X11/lib"
+
+This is only necessary if your installation of Motif is in a separate
+directory structure from your installation of X11. For instance, X11
+may be installed in "/usr/X11", while Motif is installed in "/usr/Motif".
+
+
+  Requirements
+  ------------
+
+  - The GIMP requires the operating system to support shared memory. 
+  That is, the `shmget', `shmat' and `shmctl' system calls must exist. 
+  On several systems we've encountered, the shared memory is
+  configurable. See the section on shared memory at the end of this
+  document.
+
+  - The GIMP requires X11 R5 or R6. (Actually, it may work on R4, but we
+  have not had a chance to test it). The GIMP currently requires that the X
+  shared memory extension header files be present. The X-server does not
+  actually need to support shared memory and this is only a temporary
+  situation until we integrate the configure information with the source
+  code.
+
+  - The GIMP requires Motif 1.2 or above. (This is another case where we
+  aren't sure it requires v1.2 or above, but we have only been able to
+  test it on v1.2 and above).
+
+
+  If Configuration Fails
+  ----------------------
+
+  If automatic configuration fails you will have to edit the makefiles by
+  hand. The GIMP comes with 3 standard `Makefiles' and a standard
+  `config.h'. These are the files `Makefile.std', `app/Makefile.std',
+  `plug-ins/Makefile.std' and `config.h.std'. You will need to copy them
+  to the files `Makefile', `app/Makefile', `plug-ins/Makefile' and
+  `config.h' respectively. Each file should be examined for anything
+  that needs to be changed. For the most part the makefiles should be
+  ok. The items that might need to be changed are the include and
+  library include directories and the compiler to be used. 
+
+
+2. Configure the plug-ins for your system. In the `plug-ins' directory
+you will need to manually edit the Makefile. (This is temporary until
+we fix `configure'.) Currently, 2 makefiles exist in the `plug-ins'
+directory, `Makefile.make' and `Makefile.gmake'. One is for use with
+BSD make (Makefile.make) and the other is for use with GNU make
+(Makefile.gmake).
+
+The plug-ins are a vital and necessary part of the GIMP. For example,
+all file operations take place through plug-ins. The file format
+plug-ins are the most likely to cause problems when compiling.
+
+The basic difficulty in compiling file format plug-ins is that they
+depend on various libraries to provide their functionality. For
+example, the `jpeg' file format plug-in uses the wonderful
+`libjpeg'. The `png' file format plug-in uses `libpng' and `libgz'
+(zlib). These libraries may already exist on your system or you may
+have to download them (See the next section for pointers to source).
+
+
+  Dependencies
+  ------------
+
+  - `gif' requires no extra libraries. 
+
+  - `jpeg' requires the `libjpeg' library, either v5 or v6. `libjpeg' is
+  available from: ftp://ftp.uu.net/graphics/jpeg. Compiling `libjpeg' is
+  straight forward. In fact, it is one of the easiest packages to
+  compile that I've ever encountered. (No troubles what so ever in
+  compilation on several different systems).
+
+  - `png' requires the `libpng' library and the `libgz'
+  library. (Actually, it only requires `libpng' which requires
+  `libgz'). `libpng' is available from: ftp://ftp.uu.net/graphics/png
+  and ftp://ftp.group42.com/pub/png. `libgz' (zlib) is available from:
+  ftp://ftp.uu.net/graphics/png. (Note: version 0.71 of libpng is known
+  to work...later versions may work but there are no guarantees.)
+
+  - `tiff' requires the `libtiff' library. `libtiff' is available from:
+  ftp://ftp.uu.net/graphics/tiff.
+
+  - `xpm' requires the `libXpm' libray and the `libX11' library. If
+  you have X11 running then you almost definately have `libX11' and
+  probably have `libXpm'. `libXpm' is also available from:
+  ftp://ftp.x.org/contrib. 
+
+3. Install the `gimprc' file in your home directory. This involves
+moving (or copying) the `gimprc' file that comes with the GIMP into
+your home directory and renaming it `.gimprc'. The GIMP needs to be
+able to find this file in order to load or save any images. You may
+also need to edit certain paths specified in the file. Such as the
+"plug-in-path" and the "swap-path". Doing so should be
+self-explanatory (as the file is heavily commented) or you can refer
+to the GIMP documentation.
+
+
+Compiling Tips
+--------------
+
+This section contains tips for compiling under certains systems. The
+tips come from us and from you. So if you compile the GIMP on a new
+system send us a note explaining any problems and, if possible
+solutions, and we will include it here.
+
+
+  Linux
+  -----
+
+  This is the development system for the GIMP. We've had no problem
+  compiling it under kernel v1.2.13 (a.out) with Moo-Tiff. Other people
+  have reported similar success with ELF systems and Metrolink's
+  Motif.  
+
+  HPUX
+  ----
+
+  Using gcc and gmake we've had no troubles compiling under HPUX on
+  some HP 9000 715/80's and 712/80's.
+
+  Solaris
+  -------
+
+  SunOS
+  -----
+
+  IRIX
+  ----
+
+  AIX
+  ---
+
+
+Shared Memory
+-------------
+
+Shared memory is a means of communicating large pieces of information
+between separate processes. Basically, UNIX restricts one process from
+examining or modifying another processes memory. Shared memory is a
+means by which a process can allocate a piece of memory which is
+viewable by other processes. However, some systems restrict the size
+of a piece of shared memory and/or the number of pieces of shared
+memory that may exist at any one time.
+
+If you have one of the following systems then you can read what we
+have had to do to adjust the shared memory configuration. (Note: you
+may have to ask your system administrator to make these
+changes...unless, of course, you are the system administrator).
+
+  Linux
+  -----
+
+  Linux is a free POSIX operating system for IBM PCs and
+  compatibles. By default, the kernel is configured with a maximum
+  shared memory segment size of 3.98 megs. This is probably large enough
+  for most users, but if you need to work with large images (larger than
+  1024x1024), then you will need to increase this value. It is easily
+  done by anyone who has recompiled their kernel before. In the
+  "include/linux/shm.h" header file in the kernel source tree, change
+  the value of `SHMMAX' to a larger value. The largest possible value is
+  `0x2000000'. (The current value is `0x3fa000'). This change will make
+  it possible for shared memory segments to be up to 32 megs in
+  size. (Which would be an RGB image of 2890x2890). I'm not sure what,
+  if any, side effects this may have. But I have made this change and
+  have experienced no negatives effects...yet.
+
+
+  Solaris
+  -------
+
+  By default Solaris restricts both the maximum size of a shared
+  memory segment and the number of shared memory segments to
+  ridiculously small values. To change these values you must edit the
+  "/etc/system" file. The lines in question refer to setting the symsys
+  values. Specifically the following changes have worked well for us:
+
+   set shmsys:shminfo_shmmax = 0x2000000
+   set shmsys:shminfo_shmmni = 0x1000
+   set shmsys:shminfo_shmseg = 0x100
+
+  This sets the maximum shared memory segment size to 32 megs and the
+  number of shared memory segments to 256.
+
+
+  HPUX
+  ----
+
+  HP seems to have very reasonable limits for shared memory.  We have
+  had no problems with the default values.
+
+  SGI IRIX
+  --------
+
+  Like HP, seems reasonable.
+
+  SUNOS
+  -----
+
+  The default values are too low for useful work.  They can be set
+  by recompiling the kernel.  (Need precise details here)

@@ -1,0 +1,76 @@
+The GIMP: the General Image Manipulation Program
+------------------------------------------------
+
+The GIMP is designed to provide an intuitive graphical interface to a
+variety of image editing operations. Here is a list of the GIMP's 
+major features:
+
+ Image viewing
+ -------------
+
+   *  Supports 8, 15, 16 and 24 bit color.
+   *  Ordered and Floyd-Steinberg dithering for 8 bit displays.
+   *  View images as rgb color, grayscale or indexed color.
+   *  Simultaneously edit multiple images.
+   *  Zoom and pan in real-time.
+   *  GIF, JPEG, PNG, TIFF and XPM support.
+
+ Image editing
+ -------------
+
+   *  Selection tools including rectangle, ellipse, free, fuzzy, bezier 
+      and intelligent.
+   *  Transformation tools including rotate, scale, shear and flip.
+   *  Painting tools including bucket, brush, airbrush, clone, convolve,
+      blend and text.
+   *  Effects filters (such as blur, edge detect).
+   *  Channel & color operations (such as add, composite, decompose).
+   *  Plug-ins which allow for the easy addition of new file formats and
+      new effect filters.
+   *  Multiple undo/redo.
+
+
+Requirements
+------------
+
+ *  The operating system must support shared memory. 
+ *  X11 R5 or R6. (Actually, it may work on R4, but we have not had a
+    chance to test it).
+ *  The X-server must support the X shared memory extension. (The
+    X-server does not actually need to support shared memory so this is
+    only a temporary situation until we integrate the configure
+    information with the source code).
+ *  Motif 1.2 or above.
+
+The GIMP has been tested (and developed) on the following operating
+systems: Linux 1.2.13, Solaris 2.4, HPUX 9.05, SGI IRIX.
+
+Currently, the biggest restriction to running the GIMP is the Motif
+requirement. We will release a statically linked binary for several
+systems soon (including Linux). 
+
+
+URLs
+----
+
+http://www.xcf.berkeley.edu/~gimp
+ftp://ftp.xcf.berkeley.edu/pub/gimp
+mailto:gimp@xcf.berkeley.edu
+
+
+Brought to you by
+-----------------
+
+  Spencer Kimball (spencer@xcf.berkeley.edu)
+  Peter Mattis (petm@xcf.berkeley.edu)
+
+
+NOTE
+----
+
+This software is currently a beta release. This means that we haven't
+implemented all of the features we think are required for a full,
+unqualified release. There are undoubtedly bugs we haven't found yet
+just waiting to surface given the right conditions. If you run across
+one of these, please send mail to gimp@xcf.berkeley.edu with
+precise details on how it can be reproduced.

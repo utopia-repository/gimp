@@ -1,0 +1,86 @@
+Painting Tools
+
+The GIMP currently offers eight painting methods.  Only four of these
+are applied using brushes, but they all fit into the painting tools
+classification because their function is to "add" to an image.  The
+other tools such as "elliptical selection" or "flip horizontal" select
+or modify existing image features.  The set of painting tools
+currently implemented is by no means the limit.  In fact, two painting
+tools are currently underway (smudge & burn/dodge) and others are
+planned.  The tools as of this release are: color picker, paint
+bucket, paint brush, air brush, clone, convolve, blend, and text.
+
+
+Color Picker
+
+This tool is used to divine the exact numerical representation of a
+pixel's color and to add selected colors to the "palette".  The
+"palette" is a dialog which contains a selection of colors represented
+by square areas.  In practice, this dialog is intended to work like a
+painter's palette, where colors can be prepared and easily selected.
+When using the color picker, clicking in an image pops up a dialog
+with information about the color of the pixel directly under the
+cursor.  Dragging the mouse with the button still pressed causes the
+information dialog to dynamically update its values.  For an RGB
+image, there are three values corresponding to the red, green, and
+blue components of the pixel's color.  For an indexed image, there are
+four values: red, green, blue, and an index into the image's colormap.
+For a grayscale image, there is only one value representing the
+intensity.
+
+If the color palette dialog box is currently displayed, the other
+important feature of the color picker is operative.  When the left
+mouse button is initially pressed with the tool, a new square is
+created in the palette dialog box and filled with the color of the
+initial pixel.  As the mouse is dragged, the color preview window in
+the upper-right hand portion of the palette dialog is dynamically
+updated to reflect the pixel color currently under the cursor.  When
+the color--as indicated by the color preview window and the
+information dialog's values--is satisfactory, releasing the left mouse
+button confirms the addition of the color to the palette.  The new
+color becomes the active color for either the foreground or
+background, depending on which was selected.
+
+
+Paint Bucket
+
+The paint bucket provides a mechanism for filling areas of an image
+with one color.  To apply the tool, position the cursor and click the
+left mouse button.  When the button is released, the tool's action is
+taken.  the paint bucket has two modes of operation: it can be applied to
+selected regions and to unselected regions.  When applied to a
+selected region, such as a selection made with the "rectangular
+select" tool, it fills the entire selected region with the foreground
+color.  However, it's operation is similar to that of the "fuzzy
+select" tool when it is applied to a point not currently selected.  In
+this case, it does a fuzzy seed fill (see fuzzy select) from the
+target pixel outwards until it reaches a specified maximum threshold
+of color difference.  This threshold can be modified by double
+clicking the paint bucket tool.  A scale widget entitled "Fuzzy
+Threshold" can be set from 0 to 255.  A value of 0 will fill only to
+contiguous of pixels of the exact same color.  A value of 255 will
+fill to contiguous pixels that differ from the target by no more than
+255--that is, it will fill the entire image.  Values in between
+generally make more sense; the default threshold is set to 15.
+
+The other option presented in the paint bucket dialog box is
+a measure of the tool's opacity.  The opacity can be set to a value
+between 0 and 100 percent.  At 0, the paint being applied by the
+bucket is invisible and nothing changes in the image as we can see
+right through the paint.  At 100, nothing of the original image now
+under paint is visible, as the paint applied is completely opaque.  A
+value of 50, however results in affected pixels receiving values
+midway between their original values and the color of the applied
+paint.
+
+
+Paint Brush
+
+The paint brush is probably the most familiar of the painting tools.
+Its function is self-explanatory.  It provides the facility for
+painting to an image with a specified color.  The manner in which the
+color is applied to the image is chiefly determined by the currently
+active brush and the other options defined in the "brush selection"
+dialog.  Sharply defined brush shapes result in the paint brush
+essentially becoming a "pencil tool", which is why pencil is not a
+separate tool.  

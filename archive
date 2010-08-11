@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Usage: archive <archive_name>
+
+STAMP="stamp"
+FILES=`find . -newer $STAMP -type f -print | grep -v ".*\.o" | grep -v ".*~" | grep -v ".*\.a" | grep -v "\.depend"` 
+TARFILES=""
+
+for FOO in $FILES
+do
+	if (test ! -x $FOO)
+	then
+		TARFILES="$TARFILES $FOO"
+	fi
+done
+
+tar cvf - $TARFILES | gzip -9 > $1

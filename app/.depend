@@ -1,0 +1,214 @@
+main.o: main.c ../config.h appenv.h memutils.h brushes.h linked.h temp_buf.h \
+  callbacks.h fileops.h resource.h interface.h widget.h gimage.h gimprc.h \
+  gdisplay.h gdither.h timer.h gximage.h selection.h autodialog.h dialog_types.h \
+  gregion.h workprocs.h cursorutil.h plug_in.h msg.h progress.h errors.h
+errors.o: errors.c callbacks.h errors.h
+actionarea.o: actionarea.c appenv.h memutils.h actionarea.h
+app-procs.o: app-procs.c appenv.h memutils.h brushes.h linked.h temp_buf.h \
+  gdisplay.h gdither.h gimage.h timer.h gximage.h selection.h autodialog.h \
+  dialog_types.h gregion.h colormaps.h global_edit.h plug_in.h msg.h progress.h \
+  undo.h visual.h paint_funcs.h palette.h color_select.h image_buf.h widget.h
+buildmenu.o: buildmenu.c appenv.h memutils.h buildmenu.h widget.h
+callbacks.o: callbacks.c appenv.h memutils.h autodialog.h dialog_types.h \
+  linked.h brushes.h temp_buf.h gdisplay_ops.h gdisplay.h gdither.h gimage.h \
+  timer.h gximage.h selection.h gregion.h callbacks.h colormaps.h general.h \
+  global_edit.h info_window.h palette.h color_select.h image_buf.h tools.h \
+  view_ops.h widget.h undo.h
+color_select.o: color_select.c appenv.h memutils.h actionarea.h color_select.h \
+  image_buf.h colormaps.h gimage.h linked.h errors.h visual.h
+fileops.o: fileops.c appenv.h memutils.h errors.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h general.h fileops.h widget.h workprocs.h plug_in.h msg.h progress.h \
+  buildmenu.h
+gimprc.o: gimprc.c appenv.h memutils.h errors.h fileops.h general.h gimprc.h \
+  linked.h plug_in.h autodialog.h dialog_types.h msg.h progress.h
+menus.o: menus.c appenv.h memutils.h callbacks.h colormaps.h gimage.h linked.h \
+  fileops.h menus.h buildmenu.h scale.h gdisplay.h gdither.h timer.h gximage.h \
+  selection.h autodialog.h dialog_types.h temp_buf.h gregion.h tools.h
+interface.o: interface.c appenv.h memutils.h interface.h widget.h
+palette.o: palette.c appenv.h memutils.h actionarea.h buildmenu.h colormaps.h \
+  gimage.h linked.h errors.h palette.h color_select.h image_buf.h visual.h
+widget.o: widget.c appenv.h memutils.h callbacks.h widget.h menus.h buildmenu.h \
+  visual.h gimage.h linked.h general.h errors.h pixmaps.h
+colormaps.o: colormaps.c appenv.h memutils.h general.h visual.h colormaps.h \
+  gimage.h linked.h
+disp-callbacks.o: disp-callbacks.c appenv.h memutils.h scale.h gdisplay.h \
+  gdither.h gimage.h linked.h timer.h gximage.h selection.h autodialog.h \
+  dialog_types.h temp_buf.h gregion.h scroll.h general.h disp-callbacks.h \
+  tools.h
+gconvert.o: gconvert.c appenv.h memutils.h gconvert.h gdisplay.h gdither.h \
+  gimage.h linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h \
+  temp_buf.h gregion.h colormaps.h visual.h
+gdither.o: gdither.c appenv.h memutils.h errors.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h scale.h colormaps.h
+gimage.o: gimage.c appenv.h memutils.h general.h gimage.h linked.h widget.h \
+  errors.h plug_in.h autodialog.h dialog_types.h msg.h progress.h undo.h
+gdisplay.o: gdisplay.c appenv.h memutils.h linked.h status.h colormaps.h \
+  gimage.h cursorutil.h gdisplay.h gdither.h timer.h gximage.h selection.h \
+  autodialog.h dialog_types.h temp_buf.h gregion.h gdisplay_ops.h gconvert.h \
+  general.h disp-callbacks.h scale.h scroll.h tools.h undo.h visual.h widget.h \
+  workprocs.h
+gdisplay_ops.o: gdisplay_ops.c appenv.h memutils.h colormaps.h gimage.h \
+  linked.h cursorutil.h disp-callbacks.h fileops.h gconvert.h gdisplay.h \
+  gdither.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h gdisplay_ops.h scale.h widget.h
+gximage.o: gximage.c appenv.h memutils.h gximage.h visual.h errors.h
+image_buf.o: image_buf.c appenv.h memutils.h errors.h gconvert.h gdisplay.h \
+  gdither.h gimage.h linked.h timer.h gximage.h selection.h autodialog.h \
+  dialog_types.h temp_buf.h gregion.h image_buf.h visual.h
+info_dialog.o: info_dialog.c appenv.h memutils.h info_dialog.h linked.h
+info_window.o: info_window.c appenv.h memutils.h colormaps.h gimage.h linked.h \
+  info_window.h gdisplay.h gdither.h timer.h gximage.h selection.h autodialog.h \
+  dialog_types.h temp_buf.h gregion.h general.h widget.h visual.h
+scale.o: scale.c appenv.h memutils.h gdisplay.h gdither.h gimage.h linked.h \
+  timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h gregion.h \
+  gdisplay_ops.h scale.h tools.h visual.h
+scroll.o: scroll.c appenv.h memutils.h scale.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h scroll.h cursorutil.h
+shadow_ops.o: shadow_ops.c appenv.h memutils.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h paint_funcs.h shadow_ops.h undo.h
+status.o: status.c appenv.h memutils.h widget.h status.h
+view_ops.o: view_ops.c appenv.h memutils.h gdither.h gimage.h linked.h timer.h \
+  colormaps.h gdisplay.h gximage.h selection.h autodialog.h dialog_types.h \
+  temp_buf.h gregion.h general.h view_ops.h widget.h
+visual.o: visual.c appenv.h memutils.h visual.h errors.h
+workprocs.o: workprocs.c appenv.h memutils.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h workprocs.h cursorutil.h tools.h
+cursorutil.o: cursorutil.c appenv.h memutils.h cursorutil.h
+general.o: general.c general.h memutils.h
+linked.o: linked.c linked.h memutils.h
+memutils.o: memutils.c appenv.h memutils.h errors.h linked.h
+progress.o: progress.c appenv.h memutils.h actionarea.h errors.h progress.h \
+  widget.h
+timer.o: timer.c errors.h timer.h
+plug_in.o: plug_in.c appenv.h memutils.h autodialog.h dialog_types.h linked.h \
+  errors.h fileops.h general.h gdisplay.h gdither.h gimage.h timer.h gximage.h \
+  selection.h temp_buf.h gregion.h gimprc.h menus.h buildmenu.h palette.h \
+  color_select.h image_buf.h plug_in.h msg.h progress.h shadow_ops.h widget.h
+autodialog.o: autodialog.c appenv.h memutils.h buildmenu.h errors.h \
+  autodialog.h dialog_types.h linked.h general.h gimage.h widget.h
+bezier_select.o: bezier_select.c appenv.h memutils.h bezier_select.h tools.h \
+  errors.h gdisplay.h gdither.h gimage.h linked.h timer.h gximage.h selection.h \
+  autodialog.h dialog_types.h temp_buf.h gregion.h draw_core.h edit_selection.h
+boundary.o: boundary.c appenv.h memutils.h errors.h gdisplay.h gdither.h \
+  gimage.h linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h \
+  temp_buf.h gregion.h
+crop.o: crop.c appenv.h memutils.h actionarea.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h crop.h draw_core.h tools.h info_dialog.h
+draw_core.o: draw_core.c appenv.h memutils.h draw_core.h tools.h
+global_edit.o: global_edit.c appenv.h memutils.h autodialog.h dialog_types.h \
+  linked.h gdisplay.h gdither.h gimage.h timer.h gximage.h selection.h temp_buf.h \
+  gregion.h general.h global_edit.h undo.h widget.h
+gregion.o: gregion.c appenv.h memutils.h errors.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h paint_funcs.h
+edit_selection.o: edit_selection.c appenv.h memutils.h draw_core.h tools.h \
+  edit_selection.h selection.h autodialog.h dialog_types.h linked.h temp_buf.h \
+  gregion.h gdisplay.h gdither.h gimage.h timer.h gximage.h undo.h
+ellipse_select.o: ellipse_select.c appenv.h memutils.h gdisplay.h gdither.h \
+  gimage.h linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h \
+  temp_buf.h gregion.h ellipse_select.h edit_selection.h rect_selectP.h \
+  draw_core.h tools.h
+flip_tool.o: flip_tool.c appenv.h memutils.h flip_tool.h tools.h gdisplay.h \
+  gdither.h gimage.h linked.h timer.h gximage.h selection.h autodialog.h \
+  dialog_types.h temp_buf.h gregion.h transform_core.h info_dialog.h \
+  draw_core.h
+free_select.o: free_select.c appenv.h memutils.h draw_core.h tools.h errors.h \
+  gdisplay.h gdither.h gimage.h linked.h timer.h gximage.h selection.h \
+  autodialog.h dialog_types.h temp_buf.h gregion.h free_select.h \
+  edit_selection.h
+fuzzy_select.o: fuzzy_select.c appenv.h memutils.h boundary.h gregion.h \
+  linked.h draw_core.h tools.h edit_selection.h selection.h autodialog.h \
+  dialog_types.h temp_buf.h fuzzy_select.h gimage.h gdisplay.h gdither.h timer.h \
+  gximage.h
+iscissors.o: iscissors.c appenv.h memutils.h draw_core.h tools.h errors.h \
+  gdisplay.h gdither.h gimage.h linked.h timer.h gximage.h selection.h \
+  autodialog.h dialog_types.h temp_buf.h gregion.h iscissors.h edit_selection.h \
+  paint_funcs.h gdisplay_ops.h
+rect_select.o: rect_select.c appenv.h memutils.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h rect_select.h edit_selection.h
+rotate_tool.o: rotate_tool.c appenv.h memutils.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h info_dialog.h palette.h color_select.h image_buf.h rotate_tool.h \
+  tools.h transform_core.h draw_core.h
+scale_tool.o: scale_tool.c appenv.h memutils.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h info_dialog.h scale_tool.h tools.h transform_core.h draw_core.h
+selection.o: selection.c appenv.h memutils.h boundary.h gregion.h linked.h \
+  colormaps.h gimage.h errors.h gdisplay.h gdither.h timer.h gximage.h \
+  selection.h autodialog.h dialog_types.h temp_buf.h gdisplay_ops.h \
+  global_edit.h paint_funcs.h palette.h color_select.h image_buf.h undo.h
+shear_tool.o: shear_tool.c appenv.h memutils.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h info_dialog.h palette.h color_select.h image_buf.h shear_tool.h \
+  tools.h transform_core.h draw_core.h
+temp_buf.o: temp_buf.c appenv.h memutils.h errors.h gdisplay.h gdither.h \
+  gimage.h linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h \
+  temp_buf.h gregion.h general.h gimprc.h paint_funcs.h
+text_tool.o: text_tool.c appenv.h memutils.h actionarea.h colormaps.h gimage.h \
+  linked.h edit_selection.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h errors.h gdisplay.h gdither.h timer.h gximage.h general.h \
+  global_edit.h palette.h color_select.h image_buf.h text_tool.h tools.h \
+  visual.h widget.h
+tools.o: tools.c appenv.h memutils.h airbrush.h tools.h bezier_select.h blend.h \
+  bucket_fill.h clone.h color_picker.h convolve.h crop.h draw_core.h \
+  cursorutil.h gdisplay.h gdither.h gimage.h linked.h timer.h gximage.h \
+  selection.h autodialog.h dialog_types.h temp_buf.h gregion.h ellipse_select.h \
+  flip_tool.h free_select.h fuzzy_select.h iscissors.h paintbrush.h \
+  rect_select.h text_tool.h transform_tool.h widget.h
+transform_core.o: transform_core.c appenv.h memutils.h gdisplay.h gdither.h \
+  gimage.h linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h \
+  temp_buf.h gregion.h info_dialog.h palette.h color_select.h image_buf.h \
+  transform_core.h draw_core.h tools.h undo.h
+transform_tool.o: transform_tool.c appenv.h memutils.h autodialog.h \
+  dialog_types.h linked.h gdisplay.h gdither.h gimage.h timer.h gximage.h \
+  selection.h temp_buf.h gregion.h tools.h rotate_tool.h scale_tool.h \
+  shear_tool.h transform_tool.h
+undo.o: undo.c appenv.h memutils.h errors.h gdisplay.h gdither.h gimage.h \
+  linked.h timer.h gximage.h selection.h autodialog.h dialog_types.h temp_buf.h \
+  gregion.h tools.h undo.h paint_funcs.h transform_core.h info_dialog.h \
+  draw_core.h
+airbrush.o: airbrush.c appenv.h memutils.h autodialog.h dialog_types.h linked.h \
+  brushes.h temp_buf.h errors.h gdisplay.h gdither.h gimage.h timer.h gximage.h \
+  selection.h gregion.h paint_funcs.h paint_core.h draw_core.h tools.h palette.h \
+  color_select.h image_buf.h airbrush.h
+blend.o: blend.c appenv.h memutils.h autodialog.h dialog_types.h linked.h \
+  blend.h tools.h fuzzy_select.h gimage.h gregion.h gdisplay.h gdither.h timer.h \
+  gximage.h selection.h temp_buf.h paint_funcs.h palette.h color_select.h \
+  image_buf.h undo.h
+brushes.o: brushes.c appenv.h memutils.h brushes.h linked.h temp_buf.h \
+  brush_header.h brush_select.h image_buf.h buildmenu.h errors.h general.h \
+  gimprc.h menus.h
+brush_select.o: brush_select.c appenv.h memutils.h actionarea.h brushes.h \
+  linked.h temp_buf.h brush_select.h image_buf.h buildmenu.h colormaps.h \
+  gimage.h errors.h gconvert.h gdisplay.h gdither.h timer.h gximage.h selection.h \
+  autodialog.h dialog_types.h gregion.h paint_funcs.h visual.h
+bucket_fill.o: bucket_fill.c appenv.h memutils.h autodialog.h dialog_types.h \
+  linked.h bucket_fill.h tools.h fuzzy_select.h gimage.h gregion.h gdisplay.h \
+  gdither.h timer.h gximage.h selection.h temp_buf.h paint_funcs.h palette.h \
+  color_select.h image_buf.h undo.h
+clone.o: clone.c appenv.h memutils.h autodialog.h dialog_types.h linked.h \
+  brushes.h temp_buf.h errors.h gdisplay.h gdither.h gimage.h timer.h gximage.h \
+  selection.h gregion.h paint_funcs.h paint_core.h draw_core.h tools.h clone.h
+color_picker.o: color_picker.c appenv.h memutils.h autodialog.h dialog_types.h \
+  linked.h color_picker.h tools.h gdisplay.h gdither.h gimage.h timer.h gximage.h \
+  selection.h temp_buf.h gregion.h info_dialog.h palette.h color_select.h \
+  image_buf.h
+convolve.o: convolve.c appenv.h memutils.h autodialog.h dialog_types.h linked.h \
+  brushes.h temp_buf.h errors.h convolve.h tools.h gdisplay.h gdither.h gimage.h \
+  timer.h gximage.h selection.h gregion.h paint_funcs.h paint_core.h draw_core.h
+paintbrush.o: paintbrush.c appenv.h memutils.h autodialog.h dialog_types.h \
+  linked.h brushes.h temp_buf.h errors.h gdisplay.h gdither.h gimage.h timer.h \
+  gximage.h selection.h gregion.h paint_funcs.h paint_core.h draw_core.h tools.h \
+  palette.h color_select.h image_buf.h paintbrush.h
+paint_core.o: paint_core.c appenv.h memutils.h brushes.h linked.h temp_buf.h \
+  errors.h gdisplay.h gdither.h gimage.h timer.h gximage.h selection.h \
+  autodialog.h dialog_types.h gregion.h paint_funcs.h paint_core.h draw_core.h \
+  tools.h undo.h
+paint_funcs.o: paint_funcs.c paint_funcs.h memutils.h

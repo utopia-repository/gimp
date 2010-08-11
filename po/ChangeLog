@@ -1,3 +1,39 @@
+2007-12-15  Maxim Dziumanenko <dziumanenko@gmail.com>
+
+	* uk.po: Updated Ukrainian translation.
+
+2007-12-09  Changwoo Ryu  <cwryu@debian.org>
+
+	* ko.po: Updated Korean translation by Choi, Ji-Hui.
+
+2007-12-08  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech Translation.
+
+2007-12-03  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician Translation by Mancomun.
+
+2007-11-26  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: fixed italian translation
+
+2007-11-25  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Fixed German translation.
+
+2007-11-21  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2007-11-21  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated German translation.
+
+2007-11-21  Gil Forcada  <gforcada@svn.gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
 2007-11-12  Daniel Nylander <po@danielnylander.se>
 
 	* sv.po: Updated Swedish translation.
@@ -69,7 +105,7 @@
 
 2007-10-19  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
-        * es.po: Updated Spanish translation by Francisco Vila
+	* es.po: Updated Spanish translation by Francisco Vila
 
 2007-10-18  Priit Laes  <plaes@svn.gnome.org>
 

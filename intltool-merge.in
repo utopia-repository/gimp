@@ -35,7 +35,7 @@
 ## Release information
 my $PROGRAM = "intltool-merge";
 my $PACKAGE = "intltool";
-my $VERSION = "0.36.2";
+my $VERSION = "0.36.3";
 
 ## Loaded modules
 use strict; 
@@ -292,10 +292,9 @@ sub gather_po_files
             {
                 next if /^#/;
 
-                if (/([-a-zA-Z_@.]+)\n/)
+                for my $lang (split)
                 {
-                    my $lang = $1;
-
+                    chomp ($lang);
                     my $po_file = $PO_DIR . "/" . $lang . ".po";
                     if (-e $po_file) {
                         $po_files_by_lang{$lang} = $po_file;
@@ -576,6 +575,7 @@ sub entity_encode_int_minimalist
     return "&amp;" if $_ == 38;
     return "&apos;" if $_ == 39;
     return "&lt;" if $_ == 60;
+    return "&gt;" if $_ == 62;
     return chr $_;
 }
 
@@ -1076,14 +1076,25 @@ sub xml_merge_output
             close OUTPUT;
             print "CREATED $lang/$OUTFILE\n" unless $QUIET_ARG;
         }
-    } 
-    open OUTPUT, ">$OUTFILE" or die "Cannot open $OUTFILE: $!\n";
-    binmode (OUTPUT) if $^O eq 'MSWin32';
-    my $tree = readXml($FILE);
-    print_header($FILE, \*OUTPUT);
-    parseTree(\*OUTPUT, $tree);
-    close OUTPUT;
-    print "CREATED $OUTFILE\n" unless $QUIET_ARG;
+        if ( ! -d "C" ) {
+            mkdir "C" or -d "C" or die "Cannot create subdirectory C: $!\n";
+        }
+        open OUTPUT, ">C/$OUTFILE" or die "Cannot open C/$OUTFILE: $!\n";
+        binmode (OUTPUT) if $^O eq 'MSWin32';
+        my $tree = readXml($FILE);
+        print_header($FILE, \*OUTPUT);
+        parseTree(\*OUTPUT, $tree);
+        close OUTPUT;
+        print "CREATED C/$OUTFILE\n" unless $QUIET_ARG;
+    } else {
+        open OUTPUT, ">$OUTFILE" or die "Cannot open $OUTFILE: $!\n";
+        binmode (OUTPUT) if $^O eq 'MSWin32';
+        my $tree = readXml($FILE);
+        print_header($FILE, \*OUTPUT);
+        parseTree(\*OUTPUT, $tree);
+        close OUTPUT;
+        print "CREATED $OUTFILE\n" unless $QUIET_ARG;
+    }
 }
 
 sub keys_merge_translations

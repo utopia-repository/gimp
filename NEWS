@@ -6,6 +6,14 @@ here. New features are being added in the HEAD branch that will be
 released as GIMP version 2.4.
 
 
+Bugs fixed in GIMP 2.2.17
+=========================
+
+- fixed regression in PSD load plug-in (bug #456042)
+- fixed crash when loading a corrupt PSD file (bug #327444)
+- work around for Pango appending " Not-Rotated" to font names 
+
+
 Bugs fixed in GIMP 2.2.16
 =========================
 

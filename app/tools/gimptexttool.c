@@ -28,7 +28,6 @@
 
 #include <gtk/gtk.h>
 
-#include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -42,7 +41,6 @@
 #include "core/gimplayer-floating-sel.h"
 #include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
-#include "core/gimpundo.h"
 #include "core/gimpundostack.h"
 
 #include "text/gimptext.h"
@@ -50,12 +48,12 @@
 #include "text/gimptextlayer.h"
 #include "text/gimptextundo.h"
 
+#include "vectors/gimpvectors-warp.h"
+
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimptexteditor.h"
 #include "widgets/gimpviewabledialog.h"
-
-#include "vectors/gimpvectors-warp.h"
 
 #include "display/gimpdisplay.h"
 
@@ -543,15 +541,12 @@ gimp_text_tool_apply (GimpTextTool *text_tool)
 
           if (text_undo->pspec == pspec)
             {
-              guint now = time (NULL);
-
-              if (now >= undo->time &&
-                  now - undo->time < TEXT_UNDO_TIMEOUT)
+              if (gimp_undo_get_age (undo) < TEXT_UNDO_TIMEOUT)
                 {
                   GimpTool *tool = GIMP_TOOL (text_tool);
 
                   push_undo = FALSE;
-                  undo->time = now;
+                  gimp_undo_reset_age (undo);
                   gimp_undo_refresh_preview (undo,
                                              GIMP_CONTEXT (gimp_tool_get_options (tool)));
                 }

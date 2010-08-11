@@ -75,7 +75,7 @@ am__objects_2 = gimp-tools.$(OBJEXT) tools-utils.$(OBJEXT) \
 	gimpfreeselecttool.$(OBJEXT) \
 	gimpforegroundselectoptions.$(OBJEXT) \
 	gimpforegroundselecttool.$(OBJEXT) \
-	gimpforegroundselecttool-undo.$(OBJEXT) \
+	gimpforegroundselecttoolundo.$(OBJEXT) \
 	gimpfuzzyselecttool.$(OBJEXT) gimphealtool.$(OBJEXT) \
 	gimphistogramoptions.$(OBJEXT) gimphuesaturationtool.$(OBJEXT) \
 	gimpimagemapoptions.$(OBJEXT) gimpimagemaptool.$(OBJEXT) \
@@ -99,7 +99,7 @@ am__objects_2 = gimp-tools.$(OBJEXT) tools-utils.$(OBJEXT) \
 	gimpthresholdtool.$(OBJEXT) gimptool.$(OBJEXT) \
 	gimptoolcontrol.$(OBJEXT) gimptooloptions-gui.$(OBJEXT) \
 	gimptransformoptions.$(OBJEXT) gimptransformtool.$(OBJEXT) \
-	gimptransformtool-undo.$(OBJEXT) gimpvectoroptions.$(OBJEXT) \
+	gimptransformtoolundo.$(OBJEXT) gimpvectoroptions.$(OBJEXT) \
 	gimpvectortool.$(OBJEXT)
 am_libapptools_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libapptools_a_OBJECTS = $(am_libapptools_a_OBJECTS)
@@ -245,6 +245,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -555,8 +559,8 @@ libapptools_a_sources = \
 	gimpforegroundselectoptions.h	\
 	gimpforegroundselecttool.c	\
 	gimpforegroundselecttool.h	\
-	gimpforegroundselecttool-undo.c	\
-	gimpforegroundselecttool-undo.h	\
+	gimpforegroundselecttoolundo.c	\
+	gimpforegroundselecttoolundo.h	\
 	gimpfuzzyselecttool.c		\
 	gimpfuzzyselecttool.h		\
 	gimphealtool.c			\
@@ -643,8 +647,8 @@ libapptools_a_sources = \
 	gimptransformoptions.h     	\
 	gimptransformtool.c		\
 	gimptransformtool.h		\
-	gimptransformtool-undo.c	\
-	gimptransformtool-undo.h	\
+	gimptransformtoolundo.c		\
+	gimptransformtoolundo.h		\
 	gimpvectoroptions.c		\
 	gimpvectoroptions.h		\
 	gimpvectortool.c		\
@@ -749,8 +753,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpflipoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfliptool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpforegroundselectoptions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpforegroundselecttool-undo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpforegroundselecttool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpforegroundselecttoolundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfreeselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfuzzyselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphealtool.Po@am__quote@
@@ -794,8 +798,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptoolcontrol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptooloptions-gui.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptransformoptions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptransformtool-undo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptransformtool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptransformtoolundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectoroptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectortool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tool_manager.Po@am__quote@

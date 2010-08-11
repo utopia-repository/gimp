@@ -22,18 +22,13 @@
 
 #include <gtk/gtk.h>
 
-#include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
 #include "core/gimp-transform-utils.h"
-#include "core/gimpimage.h"
-#include "core/gimpdrawable-transform.h"
 
 #include "widgets/gimphelp-ids.h"
-
-#include "display/gimpdisplay.h"
 
 #include "gimpsheartool.h"
 #include "gimptoolcontrol.h"
@@ -112,7 +107,6 @@ gimp_shear_tool_init (GimpShearTool *shear_tool)
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_SHEAR);
 
   tr_tool->undo_desc     = Q_("command|Shear");
-  tr_tool->shell_desc    = _("Shearing Information");
   tr_tool->progress_text = _("Shearing");
 
   tr_tool->use_grid      = TRUE;

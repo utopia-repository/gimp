@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpProgressBar.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589616" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2604064" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2701607" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2702687" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppixbuf"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2589616"></a><span class="refentrytitle">gimppixbuf</span>
+<a name="id2604064"></a><span class="refentrytitle">gimppixbuf</span>
 </h2>
 <p>gimppixbuf &#8212; Get a thumbnail pixbuf for a drawable or image.</p>
 </td>
@@ -79,17 +79,17 @@ gint32      <a href="libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf">gimp_la
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2701607"></a><h2>Description</h2>
+<a name="id2702687"></a><h2>Description</h2>
 <p>
 Get a thumbnail pixbuf for a drawable or image.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2704675"></a><h2>Details</h2>
+<a name="id2706246"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2704685"></a><h3>
+<a name="id2706257"></a><h3>
 <a name="GimpPixbufTransparency"></a>enum GimpPixbufTransparency</h3>
-<a class="indexterm" name="id2704696"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2706268"></a><pre class="programlisting">typedef enum
 {
   GIMP_PIXBUF_KEEP_ALPHA,
   GIMP_PIXBUF_SMALL_CHECKS,
@@ -102,9 +102,9 @@ Get a thumbnail pixbuf for a drawable or image.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2704713"></a><h3>
+<a name="id2706285"></a><h3>
 <a name="gimp-image-get-thumbnail"></a>gimp_image_get_thumbnail ()</h3>
-<a class="indexterm" name="id2704726"></a><pre class="programlisting">GdkPixbuf*  gimp_image_get_thumbnail        (gint32 image_ID,
+<a class="indexterm" name="id2706298"></a><pre class="programlisting">GdkPixbuf*  gimp_image_get_thumbnail        (gint32 image_ID,
                                              gint width,
                                              gint height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre>
@@ -150,9 +150,9 @@ The thumbnail will be not larger than the requested size.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2705477"></a><h3>
+<a name="id2709494"></a><h3>
 <a name="gimp-drawable-get-thumbnail"></a>gimp_drawable_get_thumbnail ()</h3>
-<a class="indexterm" name="id2705490"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_thumbnail     (gint32 drawable_ID,
+<a class="indexterm" name="id2709507"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_thumbnail     (gint32 drawable_ID,
                                              gint width,
                                              gint height,
                                              <a href="libgimp-gimppixbuf.html#GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre>
@@ -199,9 +199,9 @@ size.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2705632"></a><h3>
+<a name="id2709649"></a><h3>
 <a name="gimp-drawable-get-sub-thumbnail"></a>gimp_drawable_get_sub_thumbnail ()</h3>
-<a class="indexterm" name="id2705645"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_sub_thumbnail (gint32 drawable_ID,
+<a class="indexterm" name="id2709662"></a><pre class="programlisting">GdkPixbuf*  gimp_drawable_get_sub_thumbnail (gint32 drawable_ID,
                                              gint src_x,
                                              gint src_y,
                                              gint src_width,
@@ -272,9 +272,9 @@ size.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708752"></a><h3>
+<a name="id2706713"></a><h3>
 <a name="gimp-layer-new-from-pixbuf"></a>gimp_layer_new_from_pixbuf ()</h3>
-<a class="indexterm" name="id2708765"></a><pre class="programlisting">gint32      gimp_layer_new_from_pixbuf      (gint32 image_ID,
+<a class="indexterm" name="id2706727"></a><pre class="programlisting">gint32      gimp_layer_new_from_pixbuf      (gint32 image_ID,
                                              const gchar *name,
                                              GdkPixbuf *pixbuf,
                                              gdouble opacity,

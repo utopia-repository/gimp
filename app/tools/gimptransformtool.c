@@ -33,7 +33,6 @@
 #include "base/tile-manager.h"
 
 #include "core/gimp.h"
-#include "core/gimpchannel.h"
 #include "core/gimpcontext.h"
 #include "core/gimpdrawable-transform.h"
 #include "core/gimpimage.h"
@@ -51,7 +50,6 @@
 
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimptooldialog.h"
-#include "widgets/gimpviewabledialog.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
@@ -61,7 +59,7 @@
 #include "gimptoolcontrol.h"
 #include "gimptransformoptions.h"
 #include "gimptransformtool.h"
-#include "gimptransformtool-undo.h"
+#include "gimptransformtoolundo.h"
 
 #include "gimp-intl.h"
 
@@ -72,85 +70,86 @@
 
 /*  local function prototypes  */
 
-static GObject * gimp_transform_tool_constructor   (GType              type,
-                                                    guint              n_params,
-                                                    GObjectConstructParam *params);
-static void     gimp_transform_tool_finalize       (GObject           *object);
+static GObject * gimp_transform_tool_constructor (GType                  type,
+                                                  guint                  n_params,
+                                                  GObjectConstructParam *params);
+static void   gimp_transform_tool_finalize       (GObject               *object);
 
-static gboolean gimp_transform_tool_initialize     (GimpTool          *tool,
-                                                    GimpDisplay       *display,
-                                                    GError           **error);
-static void     gimp_transform_tool_control        (GimpTool          *tool,
-                                                    GimpToolAction     action,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_button_press   (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    guint32            time,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_button_release (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    guint32            time,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_motion         (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    guint32            time,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static gboolean gimp_transform_tool_key_press      (GimpTool          *tool,
-                                                    GdkEventKey       *kevent,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_modifier_key   (GimpTool          *tool,
-                                                    GdkModifierType    key,
-                                                    gboolean           press,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_oper_update    (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    GdkModifierType    state,
-                                                    gboolean           proximity,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_cursor_update  (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
+static gboolean gimp_transform_tool_initialize   (GimpTool              *tool,
+                                                  GimpDisplay           *display,
+                                                  GError               **error);
+static void   gimp_transform_tool_control        (GimpTool              *tool,
+                                                  GimpToolAction         action,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_button_press   (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_button_release (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpButtonReleaseType  release_type,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_motion         (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static gboolean gimp_transform_tool_key_press    (GimpTool              *tool,
+                                                  GdkEventKey           *kevent,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_modifier_key   (GimpTool              *tool,
+                                                  GdkModifierType        key,
+                                                  gboolean               press,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_oper_update    (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  GdkModifierType        state,
+                                                  gboolean               proximity,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_cursor_update  (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
 
-static void     gimp_transform_tool_draw           (GimpDrawTool      *draw_tool);
+static void   gimp_transform_tool_draw           (GimpDrawTool          *draw_tool);
 
-static void     gimp_transform_tool_dialog_update  (GimpTransformTool *tr_tool);
+static void   gimp_transform_tool_dialog_update  (GimpTransformTool     *tr_tool);
 
 static TileManager *
-                gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
-                                                    GimpItem          *item,
-                                                    gboolean           mask_empty,
-                                                    GimpDisplay       *display);
+              gimp_transform_tool_real_transform (GimpTransformTool     *tr_tool,
+                                                  GimpItem              *item,
+                                                  gboolean               mask_empty,
+                                                  GimpDisplay           *display);
 
-static void     gimp_transform_tool_halt           (GimpTransformTool *tr_tool);
-static void     gimp_transform_tool_bounds         (GimpTransformTool *tr_tool,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_dialog         (GimpTransformTool *tr_tool);
-static void     gimp_transform_tool_prepare        (GimpTransformTool *tr_tool,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_doit           (GimpTransformTool *tr_tool,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_transform_bounding_box (GimpTransformTool *tr_tool);
-static void     gimp_transform_tool_grid_recalc    (GimpTransformTool *tr_tool);
+static void   gimp_transform_tool_halt           (GimpTransformTool     *tr_tool);
+static void   gimp_transform_tool_bounds         (GimpTransformTool     *tr_tool,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_dialog         (GimpTransformTool     *tr_tool);
+static void   gimp_transform_tool_prepare        (GimpTransformTool     *tr_tool,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_doit           (GimpTransformTool     *tr_tool,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_transform_bounding_box (GimpTransformTool *tr_tool);
+static void   gimp_transform_tool_grid_recalc    (GimpTransformTool     *tr_tool);
 
-static void     gimp_transform_tool_handles_recalc (GimpTransformTool *tr_tool,
-                                                    GimpDisplay       *display);
-static void     gimp_transform_tool_force_expose_preview (GimpTransformTool *tr_tool);
+static void   gimp_transform_tool_handles_recalc (GimpTransformTool     *tr_tool,
+                                                  GimpDisplay           *display);
+static void   gimp_transform_tool_force_expose_preview (GimpTransformTool *tr_tool);
 
-static void     gimp_transform_tool_response       (GtkWidget         *widget,
-                                                    gint               response_id,
-                                                    GimpTransformTool *tr_tool);
+static void   gimp_transform_tool_response       (GtkWidget             *widget,
+                                                  gint                   response_id,
+                                                  GimpTransformTool     *tr_tool);
 
-static void     gimp_transform_tool_notify_type    (GimpTransformOptions *options,
-                                                    GParamSpec           *pspec,
-                                                    GimpTransformTool    *tr_tool);
-static void     gimp_transform_tool_notify_preview (GimpTransformOptions *options,
-                                                    GParamSpec           *pspec,
-                                                    GimpTransformTool    *tr_tool);
+static void   gimp_transform_tool_notify_type    (GimpTransformOptions  *options,
+                                                  GParamSpec            *pspec,
+                                                  GimpTransformTool     *tr_tool);
+static void   gimp_transform_tool_notify_preview (GimpTransformOptions  *options,
+                                                  GParamSpec            *pspec,
+                                                  GimpTransformTool     *tr_tool);
 
 
 G_DEFINE_TYPE (GimpTransformTool, gimp_transform_tool, GIMP_TYPE_DRAW_TOOL)
@@ -165,28 +164,28 @@ gimp_transform_tool_class_init (GimpTransformToolClass *klass)
   GimpToolClass     *tool_class   = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_class   = GIMP_DRAW_TOOL_CLASS (klass);
 
-  object_class->constructor  = gimp_transform_tool_constructor;
-  object_class->finalize     = gimp_transform_tool_finalize;
+  object_class->constructor       = gimp_transform_tool_constructor;
+  object_class->finalize          = gimp_transform_tool_finalize;
 
-  tool_class->initialize     = gimp_transform_tool_initialize;
-  tool_class->control        = gimp_transform_tool_control;
-  tool_class->button_press   = gimp_transform_tool_button_press;
-  tool_class->button_release = gimp_transform_tool_button_release;
-  tool_class->motion         = gimp_transform_tool_motion;
-  tool_class->key_press      = gimp_transform_tool_key_press;
-  tool_class->modifier_key   = gimp_transform_tool_modifier_key;
+  tool_class->initialize          = gimp_transform_tool_initialize;
+  tool_class->control             = gimp_transform_tool_control;
+  tool_class->button_press        = gimp_transform_tool_button_press;
+  tool_class->button_release      = gimp_transform_tool_button_release;
+  tool_class->motion              = gimp_transform_tool_motion;
+  tool_class->key_press           = gimp_transform_tool_key_press;
+  tool_class->modifier_key        = gimp_transform_tool_modifier_key;
   tool_class->active_modifier_key = gimp_transform_tool_modifier_key;
-  tool_class->oper_update    = gimp_transform_tool_oper_update;
-  tool_class->cursor_update  = gimp_transform_tool_cursor_update;
+  tool_class->oper_update         = gimp_transform_tool_oper_update;
+  tool_class->cursor_update       = gimp_transform_tool_cursor_update;
 
-  draw_class->draw           = gimp_transform_tool_draw;
+  draw_class->draw                = gimp_transform_tool_draw;
 
-  klass->dialog              = NULL;
-  klass->dialog_update       = NULL;
-  klass->prepare             = NULL;
-  klass->motion              = NULL;
-  klass->recalc              = NULL;
-  klass->transform           = gimp_transform_tool_real_transform;
+  klass->dialog                   = NULL;
+  klass->dialog_update            = NULL;
+  klass->prepare                  = NULL;
+  klass->motion                   = NULL;
+  klass->recalc                   = NULL;
+  klass->transform                = gimp_transform_tool_real_transform;
 }
 
 static void
@@ -233,7 +232,6 @@ gimp_transform_tool_init (GimpTransformTool *tr_tool)
 
   tr_tool->undo_desc        = NULL;
 
-  tr_tool->shell_desc       = NULL;
   tr_tool->progress_text    = _("Transforming");
   tr_tool->dialog           = NULL;
 }
@@ -410,11 +408,12 @@ gimp_transform_tool_button_press (GimpTool        *tool,
 }
 
 static void
-gimp_transform_tool_button_release (GimpTool        *tool,
-                                    GimpCoords      *coords,
-                                    guint32          time,
-                                    GdkModifierType  state,
-                                    GimpDisplay     *display)
+gimp_transform_tool_button_release (GimpTool              *tool,
+                                    GimpCoords            *coords,
+                                    guint32                time,
+                                    GdkModifierType        state,
+                                    GimpButtonReleaseType  release_type,
+                                    GimpDisplay           *display)
 {
   GimpTransformTool *tr_tool = GIMP_TRANSFORM_TOOL (tool);
   gint               i;
@@ -423,8 +422,7 @@ gimp_transform_tool_button_release (GimpTool        *tool,
   if (tr_tool->function == TRANSFORM_CREATING && tr_tool->use_grid)
     return;
 
-  /*  if the 3rd button isn't pressed, transform the selected mask  */
-  if (! (state & GDK_BUTTON3_MASK))
+  if (release_type != GIMP_BUTTON_RELEASE_CANCEL)
     {
       /* Shift-clicking is another way to approve the transform  */
       if ((state & GDK_SHIFT_MASK) || ! tr_tool->use_grid)
@@ -1147,6 +1145,7 @@ gimp_transform_tool_doit (GimpTransformTool *tr_tool,
   GimpTool             *tool        = GIMP_TOOL (tr_tool);
   GimpTransformOptions *options     = GIMP_TRANSFORM_TOOL_GET_OPTIONS (tool);
   GimpContext          *context     = GIMP_CONTEXT (options);
+  GimpDisplayShell     *shell       = GIMP_DISPLAY_SHELL (display->shell);
   GimpItem             *active_item = NULL;
   TileManager          *new_tiles;
   const gchar          *message     = NULL;
@@ -1180,13 +1179,12 @@ gimp_transform_tool_doit (GimpTransformTool *tr_tool,
 
   mask_empty = gimp_channel_is_empty (gimp_image_get_mask (display->image));
 
-  if (gimp_display_shell_get_show_transform (GIMP_DISPLAY_SHELL (display->shell)))
+  if (gimp_display_shell_get_show_transform (shell))
     {
-      gimp_display_shell_set_show_transform (GIMP_DISPLAY_SHELL (display->shell),
-                                             FALSE);
+      gimp_display_shell_set_show_transform (shell, FALSE);
 
       /* get rid of preview artifacts left outside the drawable's area */
-      gimp_transform_tool_expose_preview (tr_tool);
+      gtk_widget_queue_draw (shell->canvas);
     }
 
   gimp_set_busy (display->image->gimp);
@@ -1280,11 +1278,11 @@ gimp_transform_tool_doit (GimpTransformTool *tr_tool,
    */
   tool->drawable = gimp_image_active_drawable (display->image);
 
-  gimp_transform_tool_push_undo (display->image, NULL,
-                                 tool->ID,
-                                 G_TYPE_FROM_INSTANCE (tool),
-                                 tr_tool->old_trans_info,
-                                 NULL);
+  gimp_image_undo_push (display->image, GIMP_TYPE_TRANSFORM_TOOL_UNDO,
+                        GIMP_UNDO_TRANSFORM, NULL,
+                        0,
+                        "transform-tool", tr_tool,
+                        NULL);
 
   /*  push the undo group end  */
   gimp_image_undo_group_end (display->image);
@@ -1665,7 +1663,7 @@ gimp_transform_tool_dialog (GimpTransformTool *tr_tool)
 
   tr_tool->dialog = gimp_tool_dialog_new (tool_info,
                                           NULL /* tool->display->shell */,
-                                          tr_tool->shell_desc,
+                                          tool_info->blurb,
                                           GIMP_STOCK_RESET, RESPONSE_RESET,
                                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                           stock_id,         GTK_RESPONSE_OK,

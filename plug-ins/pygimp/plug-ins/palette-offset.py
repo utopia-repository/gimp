@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #    This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ register(
     "",
     [
      (PF_PALETTE, "palette", _("Palette"), ""),
-     (PF_INT,     "amount",  _("Offset"),  1),
+     (PF_INT,     "amount",  _("Off_set"),  1),
     ],
     [(PF_PALETTE, "new-palette", "Result")],
     palette_offset,

@@ -20,7 +20,7 @@
 #define __CORE_TYPES_H__
 
 
-#include "libgimpmath/gimpmath.h"
+#include "libgimpmath/gimpmathtypes.h"
 #include "libgimpmodule/gimpmoduletypes.h"
 #include "libgimpthumb/gimpthumb-types.h"
 
@@ -109,11 +109,24 @@ typedef struct _GimpLayerMask       GimpLayerMask;
 
 /*  undo objects  */
 
-typedef struct _GimpUndo            GimpUndo;
-typedef struct _GimpItemUndo        GimpItemUndo;
-typedef struct _GimpDrawableUndo    GimpDrawableUndo;
-typedef struct _GimpUndoStack       GimpUndoStack;
-typedef struct _GimpUndoAccumulator GimpUndoAccumulator;
+typedef struct _GimpUndo              GimpUndo;
+typedef struct _GimpImageUndo         GimpImageUndo;
+typedef struct _GimpItemUndo          GimpItemUndo;
+typedef struct _GimpItemPropUndo      GimpItemPropUndo;
+typedef struct _GimpChannelUndo       GimpChannelUndo;
+typedef struct _GimpChannelPropUndo   GimpChannelPropUndo;
+typedef struct _GimpDrawableUndo      GimpDrawableUndo;
+typedef struct _GimpDrawableModUndo   GimpDrawableModUndo;
+typedef struct _GimpLayerMaskUndo     GimpLayerMaskUndo;
+typedef struct _GimpLayerMaskPropUndo GimpLayerMaskPropUndo;
+typedef struct _GimpLayerUndo         GimpLayerUndo;
+typedef struct _GimpLayerPropUndo     GimpLayerPropUndo;
+typedef struct _GimpMaskUndo          GimpMaskUndo;
+typedef struct _GimpGuideUndo         GimpGuideUndo;
+typedef struct _GimpSamplePointUndo   GimpSamplePointUndo;
+typedef struct _GimpFloatingSelUndo   GimpFloatingSelUndo;
+typedef struct _GimpUndoStack         GimpUndoStack;
+typedef struct _GimpUndoAccumulator   GimpUndoAccumulator;
 
 
 /*  misc objects  */
@@ -128,6 +141,7 @@ typedef struct _GimpInterpreterDB   GimpInterpreterDB;
 typedef struct _GimpParasiteList    GimpParasiteList;
 typedef struct _GimpPdbProgress     GimpPdbProgress;
 typedef struct _GimpProjection      GimpProjection;
+typedef struct _GimpSubProgress     GimpSubProgress;
 typedef struct _GimpStrokeDesc      GimpStrokeDesc;
 /* typedef struct _GimpTemplate     GimpTemplate; in config-types.h */
 
@@ -152,18 +166,15 @@ typedef struct _GimpScanConvert     GimpScanConvert;
 
 /*  functions  */
 
-typedef void       (* GimpInitStatusFunc)   (const gchar         *text1,
-                                             const gchar         *text2,
-                                             gdouble              percentage);
+typedef void     (* GimpInitStatusFunc)   (const gchar      *text1,
+                                           const gchar      *text2,
+                                           gdouble           percentage);
 
-typedef gboolean   (* GimpObjectFilterFunc) (const GimpObject    *object,
-                                             gpointer             user_data);
+typedef gboolean (* GimpObjectFilterFunc) (const GimpObject *object,
+                                           gpointer          user_data);
 
-typedef gboolean   (* GimpUndoPopFunc)      (GimpUndo            *undo,
-                                             GimpUndoMode         undo_mode,
-                                             GimpUndoAccumulator *accum);
-typedef void       (* GimpUndoFreeFunc)     (GimpUndo            *undo,
-                                             GimpUndoMode         undo_mode);
+typedef gint64   (* GimpMemsizeFunc)      (gpointer          instance,
+                                           gint64           *gui_size);
 
 
 /*  structs  */

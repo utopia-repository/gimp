@@ -20,7 +20,6 @@
 
 #include <gtk/gtk.h>
 
-#include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -96,8 +95,7 @@ gimp_perspective_tool_init (GimpPerspectiveTool *perspective_tool)
                                      GIMP_TOOL_CURSOR_PERSPECTIVE);
 
   tr_tool->undo_desc     = Q_("command|Perspective");
-  tr_tool->shell_desc    = _("Perspective Transform Information");
-  tr_tool->progress_text = _("Perspective");
+  tr_tool->progress_text = _("Perspective transformation");
 
   tr_tool->use_grid      = TRUE;
   tr_tool->use_handles   = TRUE;

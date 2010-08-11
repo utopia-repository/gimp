@@ -79,9 +79,10 @@
 #define GRAD_SCROLLBAR_STEP_SIZE 0.05
 #define GRAD_SCROLLBAR_PAGE_SIZE 0.75
 
-#define GRAD_VIEW_WIDTH     128
-#define GRAD_VIEW_HEIGHT     96
-#define GRAD_CONTROL_HEIGHT  10
+#define GRAD_VIEW_WIDTH          128
+#define GRAD_VIEW_HEIGHT          96
+#define GRAD_CONTROL_HEIGHT       14
+#define GRAD_CURRENT_COLOR_WIDTH  64
 
 #define GRAD_MOVE_TIME 150 /* ms between mouse click and detection of movement in gradient control */
 
@@ -156,9 +157,8 @@ static gboolean  view_events                      (GtkWidget          *widget,
 static void      view_set_hint                    (GimpGradientEditor *editor,
                                                    gint                x);
 
-static void      view_set_foreground              (GimpGradientEditor *editor,
-                                                   gint                x);
-static void      view_set_background              (GimpGradientEditor *editor,
+static void      view_pick_color                  (GimpGradientEditor *editor,
+                                                   GimpColorPickMode   mode,
                                                    gint                x);
 
 /* Gradient control functions */
@@ -294,6 +294,9 @@ gimp_gradient_editor_init (GimpGradientEditor *editor)
   GtkWidget *vbox;
   GtkWidget *hbox;
   GtkWidget *button;
+  GimpRGB    transp;
+
+  gimp_rgba_set (&transp, 0.0, 0.0, 0.0, 0.0);
 
   /* Frame for gradient view and gradient control */
   frame = gtk_frame_new (NULL);
@@ -383,13 +386,29 @@ gimp_gradient_editor_init (GimpGradientEditor *editor)
   gtk_box_pack_start (GTK_BOX (editor), editor->scrollbar, FALSE, FALSE, 0);
   gtk_widget_show (editor->scrollbar);
 
-  /* Instant update toggle */
+  /* Box for current color and instant update toggle */
   editor->instant_update = TRUE;
 
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
+  /* Frame showing current active color */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
+  gtk_widget_show (frame);
+
+  editor->current_color = gimp_color_area_new (&transp,
+                                               GIMP_COLOR_AREA_SMALL_CHECKS,
+                                               GDK_BUTTON1_MASK |
+                                               GDK_BUTTON2_MASK);
+  gtk_container_add (GTK_CONTAINER (frame), editor->current_color);
+  gtk_widget_set_size_request (editor->current_color,
+                               GRAD_CURRENT_COLOR_WIDTH, -1);
+  gtk_widget_show (editor->current_color);
+
+  /* Instant update toggle */
   button = gtk_check_button_new_with_label (_("Instant update"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
                                 editor->instant_update);
@@ -767,7 +786,7 @@ gradient_editor_scrollbar_update (GtkAdjustment      *adjustment,
   str1 = g_strdup_printf (_("Zoom factor: %d:1"),
                           editor->zoom_factor);
 
-  str2 = g_strdup_printf (_("Displaying [%0.6f, %0.6f]"),
+  str2 = g_strdup_printf (_("Displaying [%0.4f, %0.4f]"),
                           adjustment->value,
                           adjustment->value + adjustment->page_size);
 
@@ -815,7 +834,6 @@ gradient_editor_set_hint (GimpGradientEditor *editor,
   gtk_label_set_text (GTK_LABEL (editor->hint_label2), str2);
   gtk_label_set_text (GTK_LABEL (editor->hint_label3), str3);
   gtk_label_set_text (GTK_LABEL (editor->hint_label4), str4);
-
 }
 
 
@@ -849,10 +867,11 @@ view_events (GtkWidget          *widget,
 
             if (editor->view_button_down)
               {
-                if (mevent->state & GDK_CONTROL_MASK)
-                  view_set_background (editor, x);
-                else
-                  view_set_foreground (editor, x);
+                view_pick_color (editor,
+                                 (mevent->state & GDK_CONTROL_MASK) ?
+                                 GIMP_COLOR_PICK_MODE_BACKGROUND :
+                                 GIMP_COLOR_PICK_MODE_FOREGROUND,
+                                 x);
               }
             else
               {
@@ -873,10 +892,12 @@ view_events (GtkWidget          *widget,
           case 1:
             editor->view_last_x = x;
             editor->view_button_down = TRUE;
-            if (bevent->state & GDK_CONTROL_MASK)
-              view_set_background (editor, x);
-            else
-              view_set_foreground (editor, x);
+
+            view_pick_color (editor,
+                             (bevent->state & GDK_CONTROL_MASK) ?
+                             GIMP_COLOR_PICK_MODE_BACKGROUND :
+                             GIMP_COLOR_PICK_MODE_FOREGROUND,
+                             x);
             break;
 
           case 3:
@@ -944,10 +965,12 @@ view_events (GtkWidget          *widget,
 
           editor->view_last_x = x;
           editor->view_button_down = FALSE;
-          if (bevent->state & GDK_CONTROL_MASK)
-            view_set_background (editor, x);
-          else
-            view_set_foreground (editor, x);
+
+          view_pick_color (editor,
+                           (bevent->state & GDK_CONTROL_MASK) ?
+                           GIMP_COLOR_PICK_MODE_BACKGROUND :
+                           GIMP_COLOR_PICK_MODE_FOREGROUND,
+                           x);
           break;
         }
       break;
@@ -964,9 +987,9 @@ view_set_hint (GimpGradientEditor *editor,
                gint                x)
 {
   GimpDataEditor *data_editor = GIMP_DATA_EDITOR (editor);
-  gdouble         xpos;
   GimpRGB         rgb;
   GimpHSV         hsv;
+  gdouble         xpos;
   gchar          *str1;
   gchar          *str2;
   gchar          *str3;
@@ -978,16 +1001,18 @@ view_set_hint (GimpGradientEditor *editor,
                               data_editor->context, NULL,
                               xpos, FALSE, &rgb);
 
+  gimp_color_area_set_color (GIMP_COLOR_AREA (editor->current_color), &rgb);
+
   gimp_rgb_to_hsv (&rgb, &hsv);
 
-  str1 = g_strdup_printf (_("Position: %0.6f"), xpos);
+  str1 = g_strdup_printf (_("Position: %0.4f"), xpos);
   str2 = g_strdup_printf (_("RGB (%0.3f, %0.3f, %0.3f)"),
                           rgb.r, rgb.g, rgb.b);
-  str3 = g_strdup_printf (_("HSV (%0.3f, %0.3f, %0.3f)"),
-                          hsv.h * 360.0, hsv.s, hsv.v);
-  str4 = g_strdup_printf (_("Luminance: %0.3f    Opacity: %0.3f"),
-                          GIMP_RGB_LUMINANCE (rgb.r, rgb.g, rgb.b), rgb.a);
-
+  str3 = g_strdup_printf (_("HSV (%0.1f, %0.1f, %0.1f)"),
+                          hsv.h * 360.0, hsv.s * 100.0, hsv.v * 100.0);
+  str4 = g_strdup_printf (_("Luminance: %0.1f    Opacity: %0.1f"),
+                          GIMP_RGB_LUMINANCE (rgb.r, rgb.g, rgb.b) * 100.0,
+                          rgb.a * 100.0);
 
   gradient_editor_set_hint (editor, str1, str2, str3, str4);
 
@@ -998,24 +1023,23 @@ view_set_hint (GimpGradientEditor *editor,
 }
 
 static void
-view_set_foreground (GimpGradientEditor *editor,
-                     gint                x)
+view_pick_color (GimpGradientEditor *editor,
+                 GimpColorPickMode   mode,
+                 gint                x)
 {
-  GimpGradient *gradient;
-  GimpRGB       color;
-  gdouble       xpos;
-  gchar        *str2;
-  gchar        *str3;
-
-  gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
+  GimpDataEditor *data_editor = GIMP_DATA_EDITOR (editor);
+  GimpRGB         color;
+  gdouble         xpos;
+  gchar          *str2;
+  gchar          *str3;
 
   xpos = control_calc_g_pos (editor, x);
 
-  gimp_gradient_get_color_at (gradient,
-                              GIMP_DATA_EDITOR (editor)->context,
-                              NULL, xpos, FALSE, &color);
+  gimp_gradient_get_color_at (GIMP_GRADIENT (data_editor->data),
+                              data_editor->context, NULL,
+                              xpos, FALSE, &color);
 
-  gimp_context_set_foreground (GIMP_DATA_EDITOR (editor)->context, &color);
+  gimp_color_area_set_color (GIMP_COLOR_AREA (editor->current_color), &color);
 
   str2 = g_strdup_printf (_("RGB (%d, %d, %d)"),
                           (gint) (color.r * 255.0),
@@ -1024,43 +1048,20 @@ view_set_foreground (GimpGradientEditor *editor,
 
   str3 = g_strdup_printf ("(%0.3f, %0.3f, %0.3f)", color.r, color.g, color.b);
 
-  gradient_editor_set_hint (editor,
-                            _("Foreground color set to:"), str2, str3, NULL);
+  if (mode == GIMP_COLOR_PICK_MODE_FOREGROUND)
+    {
+      gimp_context_set_foreground (data_editor->context, &color);
 
-  g_free (str2);
-  g_free (str3);
-}
+      gradient_editor_set_hint (editor, _("Foreground color set to:"),
+                                str2, str3, NULL);
+    }
+  else
+    {
+      gimp_context_set_background (data_editor->context, &color);
 
-static void
-view_set_background (GimpGradientEditor *editor,
-                     gint                x)
-{
-  GimpGradient *gradient;
-  GimpRGB       color;
-  gdouble       xpos;
-  gchar        *str2;
-  gchar        *str3;
-
-  gradient = GIMP_GRADIENT (GIMP_DATA_EDITOR (editor)->data);
-
-  xpos = control_calc_g_pos (editor, x);
-
-  gimp_gradient_get_color_at (gradient,
-                              GIMP_DATA_EDITOR (editor)->context,
-                              NULL, xpos, FALSE, &color);
-
-  gimp_context_set_background (GIMP_DATA_EDITOR (editor)->context, &color);
-
-  str2 = g_strdup_printf (_("RGB (%d, %d, %d)"),
-                          (gint) (color.r * 255.0),
-                          (gint) (color.g * 255.0),
-                          (gint) (color.b * 255.0));
-
-  str3 = g_strdup_printf (_("(%0.3f, %0.3f, %0.3f)"),
-                          color.r, color.g, color.b);
-
-  gradient_editor_set_hint (editor,
-                            _("Background color set to:"), str2, str3, NULL);
+      gradient_editor_set_hint (editor, _("Background color set to:"),
+                                str2, str3, NULL);
+    }
 
   g_free (str2);
   g_free (str3);
@@ -1555,7 +1556,7 @@ control_motion (GimpGradientEditor *editor,
                                editor->control_sel_r,
                                seg, pos);
 
-      str = g_strdup_printf (_("Handle position: %0.6f"), seg->left);
+      str = g_strdup_printf (_("Handle position: %0.4f"), seg->left);
       break;
 
     case GRAD_DRAG_MIDDLE:
@@ -1563,7 +1564,7 @@ control_motion (GimpGradientEditor *editor,
 
       gimp_gradient_segment_set_middle_pos (gradient, seg, pos);
 
-      str = g_strdup_printf (_("Handle position: %0.6f"), seg->middle);
+      str = g_strdup_printf (_("Handle position: %0.4f"), seg->middle);
       break;
 
     case GRAD_DRAG_ALL:
@@ -1580,7 +1581,7 @@ control_motion (GimpGradientEditor *editor,
 
       editor->control_last_gx += delta;
 
-      str = g_strdup_printf (_("Distance: %0.6f"),
+      str = g_strdup_printf (_("Distance: %0.4f"),
                              editor->control_last_gx -
                              editor->control_orig_pos);
       break;

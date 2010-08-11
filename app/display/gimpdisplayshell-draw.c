@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpmath/gimpmath.h"
 
 #include "display-types.h"
 
@@ -28,9 +29,8 @@
 #include "core/gimpgrid.h"
 #include "core/gimpguide.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-guides.h"
-#include "core/gimpimage-sample-points.h"
 #include "core/gimplist.h"
+#include "core/gimpsamplepoint.h"
 
 #include "vectors/gimpstroke.h"
 #include "vectors/gimpvectors.h"

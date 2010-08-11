@@ -23,6 +23,7 @@
 
 
             <link linkend="GimpRatioEntry-struct">GimpRatioEntry</link>;
+enum        <link linkend="GimpAspectType">GimpAspectType</link>;
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-ratio-entry-new">gimp_ratio_entry_new</link>            (void);
 <link linkend="void">void</link>        <link linkend="gimp-ratio-entry-set-fraction">gimp_ratio_entry_set_fraction</link>   (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry,
                                              <link linkend="gdouble">gdouble</link> numerator,
@@ -33,6 +34,9 @@
 <link linkend="void">void</link>        <link linkend="gimp-ratio-entry-set-ratio">gimp_ratio_entry_set_ratio</link>      (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry,
                                              <link linkend="gdouble">gdouble</link> ratio);
 <link linkend="gdouble">gdouble</link>     <link linkend="gimp-ratio-entry-get-ratio">gimp_ratio_entry_get_ratio</link>      (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry);
+<link linkend="void">void</link>        <link linkend="gimp-ratio-entry-set-aspect">gimp_ratio_entry_set_aspect</link>     (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry,
+                                             <link linkend="GimpAspectType">GimpAspectType</link> aspect);
+<link linkend="GimpAspectType">GimpAspectType</link> <link linkend="gimp-ratio-entry-get-aspect">gimp_ratio_entry_get_aspect</link>  (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry);
 
 </synopsis>
 </refsynopsisdiv>
@@ -66,6 +70,7 @@ GimpRatioEntry implements
 <title role="properties.title">Properties</title>
 <synopsis>
 
+  &quot;<link linkend="GimpRatioEntry--aspect">aspect</link>&quot;               <link linkend="GimpAspectType">GimpAspectType</link>        : Read / Write
   &quot;<link linkend="GimpRatioEntry--denominator">denominator</link>&quot;          <link linkend="gdouble">gdouble</link>               : Read / Write
   &quot;<link linkend="GimpRatioEntry--numerator">numerator</link>&quot;            <link linkend="gdouble">gdouble</link>               : Read / Write
   &quot;<link linkend="GimpRatioEntry--ratio">ratio</link>&quot;                <link linkend="gdouble">gdouble</link>               : Read / Write
@@ -95,6 +100,18 @@ GimpRatioEntry implements
 <refsect2>
 <title><anchor id="GimpRatioEntry-struct" role="struct"/>GimpRatioEntry</title>
 <indexterm><primary>GimpRatioEntry</primary></indexterm><programlisting>typedef struct _GimpRatioEntry GimpRatioEntry;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpAspectType" role="enum"/>enum GimpAspectType</title>
+<indexterm><primary>GimpAspectType</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_ASPECT_SQUARE,    /*&lt; desc="Square"    &gt;*/
+  GIMP_ASPECT_PORTRAIT,  /*&lt; desc="Portrait"  &gt;*/
+  GIMP_ASPECT_LANDSCAPE  /*&lt; desc="Landscape" &gt;*/
+} GimpAspectType;
+</programlisting>
 <para>
 
 </para></refsect2>
@@ -203,10 +220,48 @@ Retrieves the ratio value displayed by a <link linkend="GimpRatioEntry"><type>Gi
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
+<refsect2>
+<title><anchor id="gimp-ratio-entry-set-aspect" role="function" condition="since:GIMP 2.4"/>gimp_ratio_entry_set_aspect ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_ratio_entry_set_aspect</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_ratio_entry_set_aspect     (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry,
+                                             <link linkend="GimpAspectType">GimpAspectType</link> aspect);</programlisting>
+<para>
+Sets the aspect of the ratio by swapping the numerator and denominator
+(or setting them to 1.0 in case that <parameter>aspect</parameter> is <link linkend="GIMP-ASPECT-SQUARE:CAPS"><literal>GIMP_ASPECT_SQUARE</literal></link>).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpRatioEntry"><type>GimpRatioEntry</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>aspect</parameter>&nbsp;:</term>
+<listitem><simpara> the new aspect
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-ratio-entry-get-aspect" role="function" condition="since:GIMP 2.4"/>gimp_ratio_entry_get_aspect ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_ratio_entry_get_aspect</primary></indexterm><programlisting><link linkend="GimpAspectType">GimpAspectType</link> gimp_ratio_entry_get_aspect  (<link linkend="GimpRatioEntry">GimpRatioEntry</link> *entry);</programlisting>
+<para>
+Gets the aspect of the ratio displayed by a <link linkend="GimpRatioEntry"><type>GimpRatioEntry</type></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpRatioEntry"><type>GimpRatioEntry</type></link> widget
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The entry's current aspect.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
 
 </refsect1>
 <refsect1 role="property_details">
 <title role="property_details.title">Property Details</title>
+<refsect2><title><anchor id="GimpRatioEntry--aspect"/>The &quot;<literal>aspect</literal>&quot; property</title>
+<indexterm><primary>GimpRatioEntry:aspect</primary></indexterm><programlisting>  &quot;aspect&quot;               <link linkend="GimpAspectType">GimpAspectType</link>        : Read / Write</programlisting>
+<para></para><para>Default value: GIMP_ASPECT_SQUARE</para>
+</refsect2>
 <refsect2><title><anchor id="GimpRatioEntry--denominator"/>The &quot;<literal>denominator</literal>&quot; property</title>
 <indexterm><primary>GimpRatioEntry:denominator</primary></indexterm><programlisting>  &quot;denominator&quot;          <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para></para><para>Allowed values: &gt;= G_MINDOUBLE</para>

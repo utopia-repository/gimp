@@ -1,3 +1,77 @@
+2007-03-08  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-03-06  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2007-03-01  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-02-26  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-02-25  Ole Laursen  <olau@hardworking.dk>
+
+	* da.po: Updated Danish translation.
+
+2007-02-23 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-02-20  Tor Lillqvist  <tml@novell.com>
+
+	* POTFILES.in: Add modules/controller_dx_dinput.c.
+
+2007-02-17  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2007-02-14  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation by Raymond Ostertag, Jonathan
+	Ernst and Stéphane Raimbault.
+
+2007-02-13 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-02-09  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2007-02-05  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation, fixed bug 402715
+
+2007-02-03  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2007-01-30 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-01-30 Marco Ciampa <ciampix@libero.it>
+
+	* eo.po: updated Esperanto translation.
+
+2007-01-29 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-01-25  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-01-24  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
 2007-01-22  Jakub Friedl  <jfriedl@suse.cz>
 
 	* cs.po: Updated Czech translation.

@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -61,8 +62,8 @@ typedef struct
 } FgSelectStroke;
 
 
-static GObject * gimp_foreground_select_tool_constructor (GType                  type,
-                                                          guint                  n_params,
+static GObject * gimp_foreground_select_tool_constructor (GType            type,
+                                                          guint            n_params,
                                                           GObjectConstructParam *params);
 static void   gimp_foreground_select_tool_finalize       (GObject         *object);
 
@@ -95,6 +96,7 @@ static void   gimp_foreground_select_tool_button_release (GimpTool        *tool,
                                                           GimpCoords      *coords,
                                                           guint32          time,
                                                           GdkModifierType  state,
+                                                          GimpButtonReleaseType release_type,
                                                           GimpDisplay     *display);
 static void   gimp_foreground_select_tool_motion         (GimpTool        *tool,
                                                           GimpCoords      *coords,
@@ -451,11 +453,12 @@ gimp_foreground_select_tool_button_press (GimpTool        *tool,
 }
 
 static void
-gimp_foreground_select_tool_button_release (GimpTool        *tool,
-                                            GimpCoords      *coords,
-                                            guint32          time,
-                                            GdkModifierType  state,
-                                            GimpDisplay     *display)
+gimp_foreground_select_tool_button_release (GimpTool              *tool,
+                                            GimpCoords            *coords,
+                                            guint32                time,
+                                            GdkModifierType        state,
+                                            GimpButtonReleaseType  release_type,
+                                            GimpDisplay           *display)
 {
   GimpForegroundSelectTool *fg_select = GIMP_FOREGROUND_SELECT_TOOL (tool);
 
@@ -479,6 +482,7 @@ gimp_foreground_select_tool_button_release (GimpTool        *tool,
     {
       GIMP_TOOL_CLASS (parent_class)->button_release (tool,
                                                       coords, time, state,
+                                                      release_type,
                                                       display);
     }
 }

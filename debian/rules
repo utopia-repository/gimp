@@ -40,7 +40,7 @@ clean::
 common-install-impl::
 	# Remove compiled python files from the distribution, this is done in
 	# postrm
-	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec xargs rm '{}' ';'
+	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
 
 	rm debian/tmp/usr/lib/gimp/2.0/plug-ins/uri
 	dh_movefiles

@@ -23,7 +23,6 @@ libappdialogs_a_sources = \
 	\
 	about-dialog.c			\
 	about-dialog.h			\
-	authors.h			\
 	channel-options-dialog.c	\
 	channel-options-dialog.h	\
 	convert-dialog.c		\
@@ -100,7 +99,9 @@ EXTRA_DIST = \
 	makefile.msc
 
 
-authors.h: $(top_srcdir)/authors.xml
+$(srcdir)/about-dialog.c: authors.h
+
+authors.h: $(top_srcdir)/authors.xml authors.xsl
 if HAVE_XSLTPROC
 	$(XSLTPROC) authors.xsl $< > $(@) || rm -f $(@)
 endif

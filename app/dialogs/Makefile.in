@@ -220,6 +220,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -479,7 +483,6 @@ libappdialogs_a_sources = \
 	\
 	about-dialog.c			\
 	about-dialog.h			\
-	authors.h			\
 	channel-options-dialog.c	\
 	channel-options-dialog.h	\
 	convert-dialog.c		\
@@ -836,7 +839,9 @@ uninstall-am: uninstall-info-am
 	uninstall-info-am
 
 
-authors.h: $(top_srcdir)/authors.xml
+$(srcdir)/about-dialog.c: authors.h
+
+authors.h: $(top_srcdir)/authors.xml authors.xsl
 @HAVE_XSLTPROC_TRUE@	$(XSLTPROC) authors.xsl $< > $(@) || rm -f $(@)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

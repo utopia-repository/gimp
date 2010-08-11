@@ -69,7 +69,8 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpbrushgenerated-save.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
 	gimpbrushpipe-load.$(OBJEXT) gimpbuffer.$(OBJEXT) \
 	gimpchannel.$(OBJEXT) gimpchannel-combine.$(OBJEXT) \
-	gimpchannel-select.$(OBJEXT) gimpcontainer.$(OBJEXT) \
+	gimpchannel-select.$(OBJEXT) gimpchannelpropundo.$(OBJEXT) \
+	gimpchannelundo.$(OBJEXT) gimpcontainer.$(OBJEXT) \
 	gimpcontainer-filter.$(OBJEXT) gimpcontext.$(OBJEXT) \
 	gimpcoords.$(OBJEXT) gimpdashpattern.$(OBJEXT) \
 	gimpdata.$(OBJEXT) gimpdatafactory.$(OBJEXT) \
@@ -83,12 +84,13 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpdrawable-histogram.$(OBJEXT) gimpdrawable-invert.$(OBJEXT) \
 	gimpdrawable-levels.$(OBJEXT) gimpdrawable-offset.$(OBJEXT) \
 	gimpdrawable-preview.$(OBJEXT) gimpdrawable-stroke.$(OBJEXT) \
-	gimpdrawable-transform.$(OBJEXT) gimpdrawableundo.$(OBJEXT) \
+	gimpdrawable-transform.$(OBJEXT) gimpdrawablemodundo.$(OBJEXT) \
+	gimpdrawableundo.$(OBJEXT) gimpfloatingselundo.$(OBJEXT) \
 	gimpgradient.$(OBJEXT) gimpgradient-load.$(OBJEXT) \
 	gimpgradient-save.$(OBJEXT) gimpgrid.$(OBJEXT) \
-	gimpguide.$(OBJEXT) gimpimage.$(OBJEXT) \
-	gimpimage-arrange.$(OBJEXT) gimpimage-colorhash.$(OBJEXT) \
-	gimpimage-colormap.$(OBJEXT) \
+	gimpguide.$(OBJEXT) gimpguideundo.$(OBJEXT) \
+	gimpimage.$(OBJEXT) gimpimage-arrange.$(OBJEXT) \
+	gimpimage-colorhash.$(OBJEXT) gimpimage-colormap.$(OBJEXT) \
 	gimpimage-contiguous-region.$(OBJEXT) \
 	gimpimage-convert.$(OBJEXT) gimpimage-crop.$(OBJEXT) \
 	gimpimage-duplicate.$(OBJEXT) gimpimage-flip.$(OBJEXT) \
@@ -99,12 +101,15 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpimage-resize.$(OBJEXT) gimpimage-rotate.$(OBJEXT) \
 	gimpimage-sample-points.$(OBJEXT) gimpimage-scale.$(OBJEXT) \
 	gimpimage-snap.$(OBJEXT) gimpimage-undo.$(OBJEXT) \
-	gimpimage-undo-push.$(OBJEXT) gimpimagefile.$(OBJEXT) \
-	gimpimagemap.$(OBJEXT) gimpitem.$(OBJEXT) \
-	gimpitem-linked.$(OBJEXT) gimpitem-preview.$(OBJEXT) \
+	gimpimage-undo-push.$(OBJEXT) gimpimageundo.$(OBJEXT) \
+	gimpimagefile.$(OBJEXT) gimpimagemap.$(OBJEXT) \
+	gimpitem.$(OBJEXT) gimpitem-linked.$(OBJEXT) \
+	gimpitem-preview.$(OBJEXT) gimpitempropundo.$(OBJEXT) \
 	gimpitemundo.$(OBJEXT) gimplayer.$(OBJEXT) \
 	gimplayer-floating-sel.$(OBJEXT) gimplayermask.$(OBJEXT) \
-	gimplist.$(OBJEXT) gimpobject.$(OBJEXT) \
+	gimplayermaskpropundo.$(OBJEXT) gimplayermaskundo.$(OBJEXT) \
+	gimplayerpropundo.$(OBJEXT) gimplayerundo.$(OBJEXT) \
+	gimplist.$(OBJEXT) gimpmaskundo.$(OBJEXT) gimpobject.$(OBJEXT) \
 	gimppaintinfo.$(OBJEXT) gimppattern.$(OBJEXT) \
 	gimppattern-load.$(OBJEXT) gimppatternclipboard.$(OBJEXT) \
 	gimppalette.$(OBJEXT) gimppalette-import.$(OBJEXT) \
@@ -113,12 +118,13 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpparasitelist.$(OBJEXT) gimppdbprogress.$(OBJEXT) \
 	gimppickable.$(OBJEXT) gimppreviewcache.$(OBJEXT) \
 	gimpprogress.$(OBJEXT) gimpprojection.$(OBJEXT) \
-	gimpprojection-construct.$(OBJEXT) gimpscanconvert.$(OBJEXT) \
+	gimpprojection-construct.$(OBJEXT) gimpsamplepoint.$(OBJEXT) \
+	gimpsamplepointundo.$(OBJEXT) gimpscanconvert.$(OBJEXT) \
 	gimpselection.$(OBJEXT) gimpstrokedesc.$(OBJEXT) \
-	gimpstrokeoptions.$(OBJEXT) gimptemplate.$(OBJEXT) \
-	gimptoolinfo.$(OBJEXT) gimptooloptions.$(OBJEXT) \
-	gimptoolpresets.$(OBJEXT) gimpunit.$(OBJEXT) \
-	gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
+	gimpstrokeoptions.$(OBJEXT) gimpsubprogress.$(OBJEXT) \
+	gimptemplate.$(OBJEXT) gimptoolinfo.$(OBJEXT) \
+	gimptooloptions.$(OBJEXT) gimptoolpresets.$(OBJEXT) \
+	gimpunit.$(OBJEXT) gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
 	gimpviewable.$(OBJEXT)
 am_libappcore_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libappcore_a_OBJECTS = $(am_libappcore_a_OBJECTS)
@@ -264,6 +270,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -576,6 +586,10 @@ libappcore_a_sources = \
 	gimpchannel-combine.h		\
 	gimpchannel-select.c		\
 	gimpchannel-select.h		\
+	gimpchannelpropundo.c		\
+	gimpchannelpropundo.h		\
+	gimpchannelundo.c		\
+	gimpchannelundo.h		\
 	gimpcontainer.c			\
 	gimpcontainer.h			\
 	gimpcontainer-filter.c		\
@@ -622,18 +636,24 @@ libappcore_a_sources = \
 	gimpdrawable-stroke.h		\
 	gimpdrawable-transform.c	\
 	gimpdrawable-transform.h	\
+	gimpdrawablemodundo.c		\
+	gimpdrawablemodundo.h		\
 	gimpdrawableundo.c		\
 	gimpdrawableundo.h		\
+	gimpfloatingselundo.c		\
+	gimpfloatingselundo.h		\
 	gimpgradient.c			\
 	gimpgradient.h			\
 	gimpgradient-load.c		\
 	gimpgradient-load.h		\
 	gimpgradient-save.c		\
 	gimpgradient-save.h		\
-	gimpgrid.c                      \
-	gimpgrid.h                      \
-	gimpguide.c                     \
-	gimpguide.h                     \
+	gimpgrid.c			\
+	gimpgrid.h			\
+	gimpguide.c			\
+	gimpguide.h			\
+	gimpguideundo.c			\
+	gimpguideundo.h			\
 	gimpimage.c			\
 	gimpimage.h			\
 	gimpimage-arrange.c		\
@@ -684,6 +704,8 @@ libappcore_a_sources = \
 	gimpimage-undo.h		\
 	gimpimage-undo-push.c		\
 	gimpimage-undo-push.h		\
+	gimpimageundo.c			\
+	gimpimageundo.h			\
 	gimpimagefile.c			\
 	gimpimagefile.h			\
 	gimpimagemap.c			\
@@ -694,6 +716,8 @@ libappcore_a_sources = \
 	gimpitem-linked.h		\
 	gimpitem-preview.c		\
 	gimpitem-preview.h		\
+	gimpitempropundo.c		\
+	gimpitempropundo.h		\
 	gimpitemundo.c			\
 	gimpitemundo.h			\
 	gimplayer.c			\
@@ -702,8 +726,18 @@ libappcore_a_sources = \
 	gimplayer-floating-sel.h	\
 	gimplayermask.c			\
 	gimplayermask.h			\
+	gimplayermaskpropundo.c		\
+	gimplayermaskpropundo.h		\
+	gimplayermaskundo.c		\
+	gimplayermaskundo.h		\
+	gimplayerpropundo.c		\
+	gimplayerpropundo.h		\
+	gimplayerundo.c			\
+	gimplayerundo.h			\
 	gimplist.c			\
 	gimplist.h			\
+	gimpmaskundo.c			\
+	gimpmaskundo.h			\
 	gimpobject.c			\
 	gimpobject.h			\
 	gimppaintinfo.c			\
@@ -741,6 +775,10 @@ libappcore_a_sources = \
 	gimpprojection.h		\
 	gimpprojection-construct.c	\
 	gimpprojection-construct.h	\
+	gimpsamplepoint.c		\
+	gimpsamplepoint.h		\
+	gimpsamplepointundo.c		\
+	gimpsamplepointundo.h		\
 	gimpscanconvert.c		\
 	gimpscanconvert.h		\
 	gimpselection.c			\
@@ -749,6 +787,8 @@ libappcore_a_sources = \
 	gimpstrokedesc.h		\
 	gimpstrokeoptions.c		\
 	gimpstrokeoptions.h		\
+	gimpsubprogress.c		\
+	gimpsubprogress.h		\
 	gimptemplate.c			\
 	gimptemplate.h			\
 	gimptoolinfo.c			\
@@ -862,6 +902,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel-combine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel-select.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannelpropundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannelundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainer-filter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontext.Po@am__quote@
@@ -885,12 +927,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-stroke.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-transform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawablemodundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawableundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfloatingselundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradient-load.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradient-save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradient.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgrid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpguide.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpguideundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-arrange.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-colorhash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-colormap.Po@am__quote@
@@ -917,15 +962,22 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagefile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagemap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-linked.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-preview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitempropundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitemundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayer-floating-sel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayermask.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayermaskpropundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayermaskundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayerpropundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayerundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmarshal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmaskundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpobject.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette-import.Po@am__quote@
@@ -944,10 +996,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprojection-construct.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprojection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsamplepoint.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsamplepointundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscanconvert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstrokedesc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstrokeoptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsubprogress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemplate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptoolinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptooloptions.Po@am__quote@

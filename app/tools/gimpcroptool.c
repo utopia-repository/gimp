@@ -40,42 +40,44 @@
 #include "gimp-intl.h"
 
 
-static void     gimp_crop_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface);
+static void   gimp_crop_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface);
 
-static GObject *gimp_crop_tool_constructor         (GType              type,
-                                                    guint              n_params,
-                                                    GObjectConstructParam *params);
-static void     gimp_crop_tool_control             (GimpTool          *tool,
-                                                    GimpToolAction     action,
-                                                    GimpDisplay       *display);
+static GObject * gimp_crop_tool_constructor      (GType                  type,
+                                                  guint                  n_params,
+                                                  GObjectConstructParam *params);
+static void   gimp_crop_tool_control             (GimpTool              *tool,
+                                                  GimpToolAction         action,
+                                                  GimpDisplay           *display);
+static void   gimp_crop_tool_button_press        (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static void   gimp_crop_tool_button_release      (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpButtonReleaseType  release_type,
+                                                  GimpDisplay           *display);
+static void   gimp_crop_tool_active_modifier_key (GimpTool              *tool,
+                                                  GdkModifierType        key,
+                                                  gboolean               press,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static void   gimp_crop_tool_cursor_update       (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
 
-static void     gimp_crop_tool_button_press        (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    guint32            time,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static void     gimp_crop_tool_button_release      (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    guint32            time,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static void     gimp_crop_tool_active_modifier_key (GimpTool          *tool,
-                                                    GdkModifierType    key,
-                                                    gboolean           press,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static void     gimp_crop_tool_cursor_update       (GimpTool          *tool,
-                                                    GimpCoords        *coords,
-                                                    GdkModifierType    state,
-                                                    GimpDisplay       *display);
-static gboolean gimp_crop_tool_execute             (GimpRectangleTool *rectangle,
-                                                    gint               x,
-                                                    gint               y,
-                                                    gint               w,
-                                                    gint               h);
-static void     gimp_crop_tool_notify_layer_only   (GimpCropOptions   *options,
-                                                    GParamSpec        *pspec,
-                                                    GimpTool          *tool);
+static gboolean   gimp_crop_tool_execute         (GimpRectangleTool     *rectangle,
+                                                  gint                   x,
+                                                  gint                   y,
+                                                  gint                   w,
+                                                  gint                   h);
+
+static void   gimp_crop_tool_notify_layer_only   (GimpCropOptions       *options,
+                                                  GParamSpec            *pspec,
+                                                  GimpTool              *tool);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpCropTool, gimp_crop_tool, GIMP_TYPE_DRAW_TOOL,
@@ -138,10 +140,12 @@ gimp_crop_tool_rectangle_tool_iface_init (GimpRectangleToolInterface *iface)
 static void
 gimp_crop_tool_init (GimpCropTool *crop_tool)
 {
-  GimpTool           *tool      = GIMP_TOOL (crop_tool);
-  GimpRectangleTool  *rect_tool = GIMP_RECTANGLE_TOOL (crop_tool);
+  GimpTool          *tool      = GIMP_TOOL (crop_tool);
+  GimpRectangleTool *rect_tool = GIMP_RECTANGLE_TOOL (crop_tool);
 
+  gimp_tool_control_set_wants_click (tool->control, TRUE);
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_CROP);
+
   gimp_rectangle_tool_set_constraint (rect_tool, TRUE);
 }
 
@@ -204,15 +208,17 @@ gimp_crop_tool_button_press (GimpTool        *tool,
 }
 
 static void
-gimp_crop_tool_button_release (GimpTool        *tool,
-                               GimpCoords      *coords,
-                               guint32          time,
-                               GdkModifierType  state,
-                               GimpDisplay     *display)
+gimp_crop_tool_button_release (GimpTool              *tool,
+                               GimpCoords            *coords,
+                               guint32                time,
+                               GdkModifierType        state,
+                               GimpButtonReleaseType  release_type,
+                               GimpDisplay           *display)
 {
-  gimp_tool_push_status (tool, display, _("Click or press enter to crop"));
+  gimp_tool_push_status (tool, display, _("Click or press Enter to crop"));
 
-  gimp_rectangle_tool_button_release (tool, coords, time, state, display);
+  gimp_rectangle_tool_button_release (tool, coords, time, state, release_type,
+                                      display);
 }
 
 static void

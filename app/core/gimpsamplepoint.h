@@ -16,13 +16,31 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIMP_FOREGROUND_SELECT_TOOL_UNDO_H__
-#define __GIMP_FOREGROUND_SELECT_TOOL_UNDO_H__
+#ifndef __GIMP_SAMPLE_POINT_H__
+#define __GIMP_SAMPLE_POINT_H__
 
 
-gboolean   gimp_foreground_select_tool_push_undo (GimpImage   *image,
-                                                  const gchar *undo_desc,
-                                                  gint         tool_ID);
+#define GIMP_SAMPLE_POINT_DRAW_SIZE 10
 
 
-#endif  /* __GIMP_FOREGROUND_SELECT_TOOL_UNDO_H__ */
+#define GIMP_TYPE_SAMPLE_POINT (gimp_sample_point_get_type ())
+
+
+struct _GimpSamplePoint
+{
+  gint     ref_count;
+  guint32  sample_point_ID;
+  gint     x;
+  gint     y;
+};
+
+
+GType             gimp_sample_point_get_type (void) G_GNUC_CONST;
+
+GimpSamplePoint * gimp_sample_point_new      (guint32          sample_point_ID);
+
+GimpSamplePoint * gimp_sample_point_ref      (GimpSamplePoint *sample_point);
+void              gimp_sample_point_unref    (GimpSamplePoint *sample_point);
+
+
+#endif /* __GIMP_SAMPLE_POINT_H__ */

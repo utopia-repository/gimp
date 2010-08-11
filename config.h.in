@@ -76,6 +76,9 @@
 /* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
 #undef HAVE_DOPRNT
 
+/* Define to 1 if you have DirectX DirectInput headers and libraries */
+#undef HAVE_DX_DINPUT
+
 /* Define to 1 if libexif is available */
 #undef HAVE_EXIF
 
@@ -120,6 +123,9 @@
 
 /* Define to 1 if you have the `asound' library (-lasound). */
 #undef HAVE_LIBASOUND
+
+/* Define to 1 if libhal is available */
+#undef HAVE_LIBHAL
 
 /* Define to 1 if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL
@@ -212,6 +218,9 @@
 
 /* Define to 1 if you have the `vprintf' function. */
 #undef HAVE_VPRINTF
+
+/* Define to 1 if you have the <X11/extensions/shape.h> header file. */
+#undef HAVE_X11_EXTENSIONS_SHAPE_H
 
 /* Define to 1 if you have the <X11/Xmu/WinUtil.h> header file. */
 #undef HAVE_X11_XMU_WINUTIL_H

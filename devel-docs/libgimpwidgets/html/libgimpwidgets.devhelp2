@@ -33,6 +33,7 @@
       <sub name="GimpRatioEntry" link="GimpRatioEntry.html"/>
       <sub name="GimpScrolledPreview" link="GimpScrolledPreview.html"/>
       <sub name="GimpSizeEntry" link="GimpSizeEntry.html"/>
+      <sub name="GimpStringComboBox" link="GimpStringComboBox.html"/>
       <sub name="GimpUnitMenu" link="GimpUnitMenu.html"/>
     </sub>
     <sub name="Cell Renderers for GtkTreeView" link="libgimpwidgets-cell-renderers.html">
@@ -266,11 +267,15 @@
     <keyword type="" name="The &quot;size&quot; style property" link="GimpPreview.html#GimpPreview--size"/>
     <keyword type="" name="The &quot;invalidated&quot; signal" link="GimpPreview.html#GimpPreview-invalidated"/>
     <keyword type="struct" name="GimpRatioEntry" link="GimpRatioEntry.html#GimpRatioEntry-struct"/>
+    <keyword type="enum" name="enum GimpAspectType" link="GimpRatioEntry.html#GimpAspectType"/>
     <keyword type="function" name="gimp_ratio_entry_new ()" link="GimpRatioEntry.html#gimp-ratio-entry-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_ratio_entry_set_fraction ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-fraction" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_ratio_entry_get_fraction ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-fraction" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_ratio_entry_set_ratio ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-ratio" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_ratio_entry_get_ratio ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-ratio" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_ratio_entry_set_aspect ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-aspect" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_ratio_entry_get_aspect ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-aspect" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;aspect&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--aspect"/>
     <keyword type="" name="The &quot;denominator&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--denominator"/>
     <keyword type="" name="The &quot;numerator&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--numerator"/>
     <keyword type="" name="The &quot;ratio&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--ratio"/>
@@ -305,6 +310,13 @@
     <keyword type="" name="The &quot;refval-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-refval-changed"/>
     <keyword type="" name="The &quot;unit-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-unit-changed"/>
     <keyword type="" name="The &quot;value-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-value-changed"/>
+    <keyword type="struct" name="GimpStringComboBox" link="GimpStringComboBox.html#GimpStringComboBox-struct"/>
+    <keyword type="function" name="gimp_string_combo_box_new ()" link="GimpStringComboBox.html#gimp-string-combo-box-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_string_combo_box_set_active ()" link="GimpStringComboBox.html#gimp-string-combo-box-set-active" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_string_combo_box_get_active ()" link="GimpStringComboBox.html#gimp-string-combo-box-get-active" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;ellipsize&quot; property" link="GimpStringComboBox.html#GimpStringComboBox--ellipsize"/>
+    <keyword type="" name="The &quot;id-column&quot; property" link="GimpStringComboBox.html#GimpStringComboBox--id-column"/>
+    <keyword type="" name="The &quot;label-column&quot; property" link="GimpStringComboBox.html#GimpStringComboBox--label-column"/>
     <keyword type="struct" name="GimpUnitMenu" link="GimpUnitMenu.html#GimpUnitMenu-struct"/>
     <keyword type="function" name="gimp_unit_menu_new ()" link="GimpUnitMenu.html#gimp-unit-menu-new"/>
     <keyword type="function" name="gimp_unit_menu_set_unit ()" link="GimpUnitMenu.html#gimp-unit-menu-set-unit"/>
@@ -611,34 +623,35 @@
     <keyword type="function" name="gimp_enum_stock_box_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_stock_box_new_with_range ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_stock_box_set_child_padding ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set-child-padding" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_prop_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new"/>
     <keyword type="function" name="gimp_prop_boolean_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-combo-box-new"/>
     <keyword type="function" name="gimp_prop_boolean_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-radio-frame-new"/>
-    <keyword type="function" name="gimp_prop_expander_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-expander-new"/>
-    <keyword type="function" name="gimp_prop_hscale_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-hscale-new"/>
-    <keyword type="function" name="gimp_prop_int_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-int-combo-box-new"/>
-    <keyword type="function" name="gimp_prop_enum_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-combo-box-new"/>
-    <keyword type="function" name="gimp_prop_enum_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-check-button-new"/>
-    <keyword type="function" name="gimp_prop_enum_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-label-new"/>
-    <keyword type="function" name="gimp_prop_enum_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new"/>
-    <keyword type="function" name="gimp_prop_enum_radio_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-box-new"/>
-    <keyword type="function" name="gimp_prop_enum_stock_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-stock-box-new"/>
-    <keyword type="function" name="gimp_prop_spin_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-spin-button-new"/>
-    <keyword type="function" name="gimp_prop_scale_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-scale-entry-new"/>
-    <keyword type="function" name="gimp_prop_opacity_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-opacity-entry-new"/>
-    <keyword type="function" name="gimp_prop_memsize_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-memsize-entry-new"/>
-    <keyword type="function" name="gimp_prop_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-label-new"/>
+    <keyword type="function" name="gimp_prop_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new"/>
+    <keyword type="function" name="gimp_prop_color_area_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-color-area-new"/>
+    <keyword type="function" name="gimp_prop_coordinates_connect ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-connect"/>
+    <keyword type="function" name="gimp_prop_coordinates_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new"/>
     <keyword type="function" name="gimp_prop_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new"/>
-    <keyword type="function" name="gimp_prop_text_buffer_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new"/>
+    <keyword type="function" name="gimp_prop_enum_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-check-button-new"/>
+    <keyword type="function" name="gimp_prop_enum_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-combo-box-new"/>
+    <keyword type="function" name="gimp_prop_enum_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-label-new"/>
+    <keyword type="function" name="gimp_prop_enum_radio_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-box-new"/>
+    <keyword type="function" name="gimp_prop_enum_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new"/>
+    <keyword type="function" name="gimp_prop_enum_stock_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-stock-box-new"/>
+    <keyword type="function" name="gimp_prop_expander_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-expander-new"/>
     <keyword type="function" name="gimp_prop_file_chooser_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new"/>
     <keyword type="function" name="gimp_prop_file_chooser_button_new_with_dialog ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new-with-dialog"/>
+    <keyword type="function" name="gimp_prop_hscale_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-hscale-new"/>
+    <keyword type="function" name="gimp_prop_int_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-int-combo-box-new"/>
+    <keyword type="function" name="gimp_prop_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-label-new"/>
+    <keyword type="function" name="gimp_prop_memsize_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-memsize-entry-new"/>
+    <keyword type="function" name="gimp_prop_opacity_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-opacity-entry-new"/>
     <keyword type="function" name="gimp_prop_path_editor_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new"/>
+    <keyword type="function" name="gimp_prop_scale_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-scale-entry-new"/>
     <keyword type="function" name="gimp_prop_size_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new"/>
-    <keyword type="function" name="gimp_prop_coordinates_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new"/>
-    <keyword type="function" name="gimp_prop_coordinates_connect ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-connect"/>
-    <keyword type="function" name="gimp_prop_color_area_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-color-area-new"/>
-    <keyword type="function" name="gimp_prop_unit_menu_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new"/>
+    <keyword type="function" name="gimp_prop_spin_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-spin-button-new"/>
     <keyword type="function" name="gimp_prop_stock_image_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-new"/>
+    <keyword type="function" name="gimp_prop_string_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-string-combo-box-new"/>
+    <keyword type="function" name="gimp_prop_text_buffer_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new"/>
+    <keyword type="function" name="gimp_prop_unit_menu_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new"/>
     <keyword type="function" name="gimp_radio_group_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new"/>
     <keyword type="function" name="gimp_radio_group_new2 ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2"/>
     <keyword type="function" name="gimp_radio_group_set_active ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active"/>

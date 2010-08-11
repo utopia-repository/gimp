@@ -33,16 +33,16 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-deprecated.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2637146" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2570489" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2666633" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2668176" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2637146"></a><span class="refentrytitle">GimpWidgets</span>
+<a name="id2570489"></a><span class="refentrytitle">GimpWidgets</span>
 </h2>
 <p>GimpWidgets &#8212; A collection of convenient widget constructors, standard callbacks and
 helper functions.</p>
@@ -188,17 +188,17 @@ void        <a href="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes">
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666633"></a><h2>Description</h2>
+<a name="id2668176"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666649"></a><h2>Details</h2>
+<a name="id2668192"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2666660"></a><h3>
+<a name="id2668203"></a><h3>
 <a name="gimp-radio-group-new"></a>gimp_radio_group_new ()</h3>
-<a class="indexterm" name="id2666671"></a><pre class="programlisting">GtkWidget*  gimp_radio_group_new            (gboolean in_frame,
+<a class="indexterm" name="id2668214"></a><pre class="programlisting">GtkWidget*  gimp_radio_group_new            (gboolean in_frame,
                                              const gchar *frame_title,
                                              ...);</pre>
 <p>
@@ -235,9 +235,9 @@ a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2666844"></a><h3>
+<a name="id2668387"></a><h3>
 <a name="gimp-radio-group-new2"></a>gimp_radio_group_new2 ()</h3>
-<a class="indexterm" name="id2666855"></a><pre class="programlisting">GtkWidget*  gimp_radio_group_new2           (gboolean in_frame,
+<a class="indexterm" name="id2668398"></a><pre class="programlisting">GtkWidget*  gimp_radio_group_new2           (gboolean in_frame,
                                              const gchar *frame_title,
                                              GCallback radio_button_callback,
                                              gpointer radio_button_callback_data,
@@ -297,9 +297,9 @@ a <span class="type">GtkFrame</span> or <span class="type">GtkVbox</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667112"></a><h3>
+<a name="id2668655"></a><h3>
 <a name="gimp-radio-group-set-active"></a>gimp_radio_group_set_active ()</h3>
-<a class="indexterm" name="id2667124"></a><pre class="programlisting">void        gimp_radio_group_set_active     (GtkRadioButton *radio_button,
+<a class="indexterm" name="id2668667"></a><pre class="programlisting">void        gimp_radio_group_set_active     (GtkRadioButton *radio_button,
                                              gpointer item_data);</pre>
 <p>
 Calls <code class="function">gtk_toggle_button_set_active()</code> with the radio button that was
@@ -325,9 +325,9 @@ created with a matching <em class="parameter"><code>item_data</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667226"></a><h3>
+<a name="id2668769"></a><h3>
 <a name="gimp-int-radio-group-new"></a>gimp_int_radio_group_new ()</h3>
-<a class="indexterm" name="id2667237"></a><pre class="programlisting">GtkWidget*  gimp_int_radio_group_new        (gboolean in_frame,
+<a class="indexterm" name="id2668780"></a><pre class="programlisting">GtkWidget*  gimp_int_radio_group_new        (gboolean in_frame,
                                              const gchar *frame_title,
                                              GCallback radio_button_callback,
                                              gpointer radio_button_callback_data,
@@ -390,9 +390,9 @@ group).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667511"></a><h3>
+<a name="id2669054"></a><h3>
 <a name="gimp-int-radio-group-set-active"></a>gimp_int_radio_group_set_active ()</h3>
-<a class="indexterm" name="id2667525"></a><pre class="programlisting">void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
+<a class="indexterm" name="id2669068"></a><pre class="programlisting">void        gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
                                              gint item_data);</pre>
 <p>
 Calls <code class="function">gtk_toggle_button_set_active()</code> with the radio button that was created
@@ -420,9 +420,9 @@ of pointers.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667643"></a><h3>
+<a name="id2669186"></a><h3>
 <a name="gimp-spin-button-new"></a>gimp_spin_button_new ()</h3>
-<a class="indexterm" name="id2667654"></a><pre class="programlisting">GtkWidget*  gimp_spin_button_new            (GtkObject **adjustment,
+<a class="indexterm" name="id2669197"></a><pre class="programlisting">GtkWidget*  gimp_spin_button_new            (GtkObject **adjustment,
                                              gdouble value,
                                              gdouble lower,
                                              gdouble upper,
@@ -497,9 +497,9 @@ entered.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2667939"></a><h3>
+<a name="id2669482"></a><h3>
 <a name="GIMP-SCALE-ENTRY-LABEL:CAPS"></a>GIMP_SCALE_ENTRY_LABEL()</h3>
-<a class="indexterm" name="id2667950"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_LABEL(adj)</pre>
+<a class="indexterm" name="id2669493"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_LABEL(adj)</pre>
 <p>
 Returns the scale_entry's <span class="type">GtkLabel</span>.
 </p>
@@ -516,9 +516,9 @@ Returns the scale_entry's <span class="type">GtkLabel</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668008"></a><h3>
+<a name="id2669551"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SCALE:CAPS"></a>GIMP_SCALE_ENTRY_SCALE()</h3>
-<a class="indexterm" name="id2668019"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SCALE(adj)</pre>
+<a class="indexterm" name="id2669562"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SCALE(adj)</pre>
 <p>
 Returns the scale_entry's <span class="type">GtkHScale</span>.
 </p>
@@ -535,9 +535,9 @@ Returns the scale_entry's <span class="type">GtkHScale</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603714"></a><h3>
+<a name="id2669620"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS"></a>GIMP_SCALE_ENTRY_SCALE_ADJ()</h3>
-<a class="indexterm" name="id2668073"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SCALE_ADJ(adj)</pre>
+<a class="indexterm" name="id2669633"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SCALE_ADJ(adj)</pre>
 <p>
 Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span class="type">GtkHScale</span>.
 </p>
@@ -554,9 +554,9 @@ Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668132"></a><h3>
+<a name="id2669698"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SPINBUTTON:CAPS"></a>GIMP_SCALE_ENTRY_SPINBUTTON()</h3>
-<a class="indexterm" name="id2668144"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SPINBUTTON(adj)</pre>
+<a class="indexterm" name="id2669712"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SPINBUTTON(adj)</pre>
 <p>
 Returns the scale_entry's <span class="type">GtkSpinButton</span>.
 </p>
@@ -573,9 +573,9 @@ Returns the scale_entry's <span class="type">GtkSpinButton</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668196"></a><h3>
+<a name="id2669770"></a><h3>
 <a name="GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS"></a>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()</h3>
-<a class="indexterm" name="id2668210"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj)</pre>
+<a class="indexterm" name="id2669784"></a><pre class="programlisting">#define     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj)</pre>
 <p>
 Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span class="type">GtkSpinButton</span>.
 </p>
@@ -592,9 +592,9 @@ Returns the <span class="type">GtkAdjustment</span> of the scale_entry's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668269"></a><h3>
+<a name="id2669850"></a><h3>
 <a name="gimp-scale-entry-new"></a>gimp_scale_entry_new ()</h3>
-<a class="indexterm" name="id2668279"></a><pre class="programlisting">GtkObject*  gimp_scale_entry_new            (GtkTable *table,
+<a class="indexterm" name="id2669862"></a><pre class="programlisting">GtkObject*  gimp_scale_entry_new            (GtkTable *table,
                                              gint column,
                                              gint row,
                                              const gchar *text,
@@ -719,9 +719,9 @@ attaches them to a 3-column <span class="type">GtkTable</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668776"></a><h3>
+<a name="id2670351"></a><h3>
 <a name="gimp-scale-entry-set-sensitive"></a>gimp_scale_entry_set_sensitive ()</h3>
-<a class="indexterm" name="id2668788"></a><pre class="programlisting">void        gimp_scale_entry_set_sensitive  (GtkObject *adjustment,
+<a class="indexterm" name="id2670363"></a><pre class="programlisting">void        gimp_scale_entry_set_sensitive  (GtkObject *adjustment,
                                              gboolean sensitive);</pre>
 <p>
 Sets the sensitivity of the scale_entry's <span class="type">GtkLabel</span>, <span class="type">GtkHScale</span> and
@@ -748,9 +748,9 @@ Sets the sensitivity of the scale_entry's <span class="type">GtkLabel</span>, <s
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2668900"></a><h3>
+<a name="id2670475"></a><h3>
 <a name="gimp-scale-entry-set-logarithmic"></a>gimp_scale_entry_set_logarithmic ()</h3>
-<a class="indexterm" name="id2668915"></a><pre class="programlisting">void        gimp_scale_entry_set_logarithmic
+<a class="indexterm" name="id2670489"></a><pre class="programlisting">void        gimp_scale_entry_set_logarithmic
                                             (GtkObject *adjustment,
                                              gboolean logarithmic);</pre>
 <p>
@@ -782,9 +782,9 @@ adjustment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669003"></a><h3>
+<a name="id2670577"></a><h3>
 <a name="gimp-scale-entry-get-logarithmic"></a>gimp_scale_entry_get_logarithmic ()</h3>
-<a class="indexterm" name="id2669017"></a><pre class="programlisting">gboolean    gimp_scale_entry_get_logarithmic
+<a class="indexterm" name="id2670592"></a><pre class="programlisting">gboolean    gimp_scale_entry_get_logarithmic
                                             (GtkObject *adjustment);</pre>
 <p>
 </p>
@@ -813,9 +813,9 @@ adjustment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669108"></a><h3>
+<a name="id2670683"></a><h3>
 <a name="gimp-color-scale-entry-new"></a>gimp_color_scale_entry_new ()</h3>
-<a class="indexterm" name="id2669120"></a><pre class="programlisting">GtkObject*  gimp_color_scale_entry_new      (GtkTable *table,
+<a class="indexterm" name="id2670694"></a><pre class="programlisting">GtkObject*  gimp_color_scale_entry_new      (GtkTable *table,
                                              gint column,
                                              gint row,
                                              const gchar *text,
@@ -919,9 +919,9 @@ This function creates a <span class="type">GtkLabel</span>, a <a href="GimpColor
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669508"></a><h3>
+<a name="id2671083"></a><h3>
 <a name="GIMP-RANDOM-SEED-SPINBUTTON:CAPS"></a>GIMP_RANDOM_SEED_SPINBUTTON()</h3>
-<a class="indexterm" name="id2669521"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_SPINBUTTON(hbox)</pre>
+<a class="indexterm" name="id2671096"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_SPINBUTTON(hbox)</pre>
 <p>
 Returns the random_seed's <span class="type">GtkSpinButton</span>.
 </p>
@@ -938,9 +938,9 @@ Returns the random_seed's <span class="type">GtkSpinButton</span>.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669573"></a><h3>
+<a name="id2671148"></a><h3>
 <a name="GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS"></a>GIMP_RANDOM_SEED_SPINBUTTON_ADJ()</h3>
-<a class="indexterm" name="id2669586"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)</pre>
+<a class="indexterm" name="id2671161"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)</pre>
 <p>
 Returns the <span class="type">GtkAdjustment</span> of the random_seed's <span class="type">GtkSpinButton</span>.
 </p>
@@ -957,9 +957,9 @@ Returns the <span class="type">GtkAdjustment</span> of the random_seed's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669645"></a><h3>
+<a name="id2671220"></a><h3>
 <a name="GIMP-RANDOM-SEED-TOGGLE:CAPS"></a>GIMP_RANDOM_SEED_TOGGLE()</h3>
-<a class="indexterm" name="id2669658"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_TOGGLE(hbox)</pre>
+<a class="indexterm" name="id2671233"></a><pre class="programlisting">#define     GIMP_RANDOM_SEED_TOGGLE(hbox)</pre>
 <p>
 
 </p>
@@ -976,9 +976,9 @@ Returns the <span class="type">GtkAdjustment</span> of the random_seed's <span c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669688"></a><h3>
+<a name="id2671263"></a><h3>
 <a name="gimp-random-seed-new"></a>gimp_random_seed_new ()</h3>
-<a class="indexterm" name="id2669699"></a><pre class="programlisting">GtkWidget*  gimp_random_seed_new            (guint32 *seed,
+<a class="indexterm" name="id2671273"></a><pre class="programlisting">GtkWidget*  gimp_random_seed_new            (guint32 *seed,
                                              gboolean *random_seed);</pre>
 <p>
 Creates a widget that allows the user to control how the random number
@@ -1011,9 +1011,9 @@ generator is initialized.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669795"></a><h3>
+<a name="id2671370"></a><h3>
 <a name="GIMP-COORDINATES-CHAINBUTTON:CAPS"></a>GIMP_COORDINATES_CHAINBUTTON()</h3>
-<a class="indexterm" name="id2669808"></a><pre class="programlisting">#define     GIMP_COORDINATES_CHAINBUTTON(sizeentry)</pre>
+<a class="indexterm" name="id2671382"></a><pre class="programlisting">#define     GIMP_COORDINATES_CHAINBUTTON(sizeentry)</pre>
 <p>
 Returns the <a href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> which is attached to the <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
@@ -1030,9 +1030,9 @@ Returns the <a href="GimpChainButton.html" title="GimpChainButton"><span class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2669867"></a><h3>
+<a name="id2671441"></a><h3>
 <a name="gimp-coordinates-new"></a>gimp_coordinates_new ()</h3>
-<a class="indexterm" name="id2669877"></a><pre class="programlisting">GtkWidget*  gimp_coordinates_new            (<a
+<a class="indexterm" name="id2671452"></a><pre class="programlisting">GtkWidget*  gimp_coordinates_new            (<a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
                                              const gchar *unit_format,
@@ -1193,9 +1193,9 @@ two fields' values or the ratio between them.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670478"></a><h3>
+<a name="id2672045"></a><h3>
 <a name="gimp-pixmap-button-new"></a>gimp_pixmap_button_new ()</h3>
-<a class="indexterm" name="id2670494"></a><pre class="programlisting">GtkWidget*  gimp_pixmap_button_new          (gchar **xpm_data,
+<a class="indexterm" name="id2672057"></a><pre class="programlisting">GtkWidget*  gimp_pixmap_button_new          (gchar **xpm_data,
                                              const gchar *text);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1230,9 +1230,9 @@ and an optional <span class="type">GtkLabel</span>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670628"></a><h3>
+<a name="id2672177"></a><h3>
 <a name="gimp-toggle-button-sensitive-update"></a>gimp_toggle_button_sensitive_update ()</h3>
-<a class="indexterm" name="id2670643"></a><pre class="programlisting">void        gimp_toggle_button_sensitive_update
+<a class="indexterm" name="id2672191"></a><pre class="programlisting">void        gimp_toggle_button_sensitive_update
                                             (GtkToggleButton *toggle_button);</pre>
 <p>
 If you attached a pointer to a <span class="type">GtkWidget</span> with <code class="function">g_object_set_data()</code> and
@@ -1263,9 +1263,9 @@ button's inverse "active" state by attaching widgets with the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670741"></a><h3>
+<a name="id2672280"></a><h3>
 <a name="gimp-toggle-button-update"></a>gimp_toggle_button_update ()</h3>
-<a class="indexterm" name="id2670756"></a><pre class="programlisting">void        gimp_toggle_button_update       (GtkWidget *widget,
+<a class="indexterm" name="id2672295"></a><pre class="programlisting">void        gimp_toggle_button_update       (GtkWidget *widget,
                                              gpointer data);</pre>
 <p>
 Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update"><code class="function">gimp_toggle_button_sensitive_update()</code></a>.</p>
@@ -1291,9 +1291,9 @@ Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-togg
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670862"></a><h3>
+<a name="id2672401"></a><h3>
 <a name="gimp-radio-button-update"></a>gimp_radio_button_update ()</h3>
-<a class="indexterm" name="id2670876"></a><pre class="programlisting">void        gimp_radio_button_update        (GtkWidget *widget,
+<a class="indexterm" name="id2672415"></a><pre class="programlisting">void        gimp_radio_button_update        (GtkWidget *widget,
                                              gpointer data);</pre>
 <p>
 Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update"><code class="function">gimp_toggle_button_sensitive_update()</code></a>.</p>
@@ -1319,9 +1319,9 @@ Note that this function calls <a href="libgimpwidgets-GimpWidgets.html#gimp-togg
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2670979"></a><h3>
+<a name="id2672518"></a><h3>
 <a name="gimp-int-adjustment-update"></a>gimp_int_adjustment_update ()</h3>
-<a class="indexterm" name="id2670994"></a><pre class="programlisting">void        gimp_int_adjustment_update      (GtkAdjustment *adjustment,
+<a class="indexterm" name="id2672533"></a><pre class="programlisting">void        gimp_int_adjustment_update      (GtkAdjustment *adjustment,
                                              gpointer data);</pre>
 <p>
 Note that the <span class="type">GtkAdjustment</span>'s value (which is a <span class="type">gdouble</span>) will be
@@ -1350,9 +1350,9 @@ href="../libgimpmath/libgimpmath-GimpMath.html#RINT:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671110"></a><h3>
+<a name="id2672649"></a><h3>
 <a name="gimp-uint-adjustment-update"></a>gimp_uint_adjustment_update ()</h3>
-<a class="indexterm" name="id2671125"></a><pre class="programlisting">void        gimp_uint_adjustment_update     (GtkAdjustment *adjustment,
+<a class="indexterm" name="id2672664"></a><pre class="programlisting">void        gimp_uint_adjustment_update     (GtkAdjustment *adjustment,
                                              gpointer data);</pre>
 <p>
 Note that the <span class="type">GtkAdjustment</span>'s value (which is a <span class="type">gdouble</span>) will be rounded
@@ -1379,9 +1379,9 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671239"></a><h3>
+<a name="id2672778"></a><h3>
 <a name="gimp-float-adjustment-update"></a>gimp_float_adjustment_update ()</h3>
-<a class="indexterm" name="id2671253"></a><pre class="programlisting">void        gimp_float_adjustment_update    (GtkAdjustment *adjustment,
+<a class="indexterm" name="id2672792"></a><pre class="programlisting">void        gimp_float_adjustment_update    (GtkAdjustment *adjustment,
                                              gpointer data);</pre>
 <p>
 </p>
@@ -1407,9 +1407,9 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671346"></a><h3>
+<a name="id2672885"></a><h3>
 <a name="gimp-double-adjustment-update"></a>gimp_double_adjustment_update ()</h3>
-<a class="indexterm" name="id2671360"></a><pre class="programlisting">void        gimp_double_adjustment_update   (GtkAdjustment *adjustment,
+<a class="indexterm" name="id2672899"></a><pre class="programlisting">void        gimp_double_adjustment_update   (GtkAdjustment *adjustment,
                                              gpointer data);</pre>
 <p>
 </p>
@@ -1435,9 +1435,9 @@ with (<span class="type">guint</span>) (value + 0.5).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671452"></a><h3>
+<a name="id2672992"></a><h3>
 <a name="gimp-unit-menu-update"></a>gimp_unit_menu_update ()</h3>
-<a class="indexterm" name="id2671466"></a><pre class="programlisting">void        gimp_unit_menu_update           (GtkWidget *widget,
+<a class="indexterm" name="id2673005"></a><pre class="programlisting">void        gimp_unit_menu_update           (GtkWidget *widget,
                                              gpointer data);</pre>
 <p>
 This callback can set the number of decimal digits of an arbitrary number
@@ -1472,9 +1472,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671587"></a><h3>
+<a name="id2673126"></a><h3>
 <a name="gimp-table-attach-aligned"></a>gimp_table_attach_aligned ()</h3>
-<a class="indexterm" name="id2671602"></a><pre class="programlisting">GtkWidget*  gimp_table_attach_aligned       (GtkTable *table,
+<a class="indexterm" name="id2673141"></a><pre class="programlisting">GtkWidget*  gimp_table_attach_aligned       (GtkTable *table,
                                              gint column,
                                              gint row,
                                              const gchar *label_text,
@@ -1548,9 +1548,9 @@ attached starting at (<em class="parameter"><code>column</code></em> + 1) in thi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2671909"></a><h3>
+<a name="id2673448"></a><h3>
 <a name="gimp-label-set-attributes"></a>gimp_label_set_attributes ()</h3>
-<a class="indexterm" name="id2671926"></a><pre class="programlisting">void        gimp_label_set_attributes       (GtkLabel *label,
+<a class="indexterm" name="id2673465"></a><pre class="programlisting">void        gimp_label_set_attributes       (GtkLabel *label,
                                              ...);</pre>
 <p>
 Sets Pango attributes on a <span class="type">GtkLabel</span> in a more convenient way than

@@ -94,6 +94,7 @@ void        gimp_rectangle_tool_button_release      (GimpTool                *to
                                                      GimpCoords              *coords,
                                                      guint32                  time,
                                                      GdkModifierType          state,
+                                                     GimpButtonReleaseType    release_type,
                                                      GimpDisplay             *display);
 void        gimp_rectangle_tool_motion              (GimpTool                *tool,
                                                      GimpCoords              *coords,
@@ -126,7 +127,6 @@ void        gimp_rectangle_tool_set_constraint      (GimpRectangleTool       *re
 GimpRectangleFunction gimp_rectangle_tool_get_function (GimpRectangleTool    *rectangle);
 void        gimp_rectangle_tool_set_function        (GimpRectangleTool       *rectangle,
                                                      GimpRectangleFunction    function);
-gboolean    gimp_rectangle_tool_no_movement         (GimpRectangleTool       *rectangle);
 void        gimp_rectangle_tool_get_press_coords    (GimpRectangleTool       *rectangle,
                                                      gint                    *pressx_ptr,
                                                      gint                    *pressy_ptr);

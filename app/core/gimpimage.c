@@ -58,6 +58,7 @@
 #include "gimpparasitelist.h"
 #include "gimppickable.h"
 #include "gimpprojection.h"
+#include "gimpsamplepoint.h"
 #include "gimpselection.h"
 #include "gimptemplate.h"
 #include "gimpundostack.h"
@@ -916,7 +917,7 @@ gimp_image_finalize (GObject *object)
   if (image->sample_points)
     {
       g_list_foreach (image->sample_points,
-                      (GFunc) gimp_image_sample_point_unref, NULL);
+                      (GFunc) gimp_sample_point_unref, NULL);
       g_list_free (image->sample_points);
       image->sample_points = NULL;
     }
@@ -2813,7 +2814,7 @@ gimp_image_add_layer (GimpImage *image,
   old_has_alpha = gimp_image_has_alpha (image);
 
   gimp_image_undo_push_layer_add (image, _("Add Layer"),
-                                  layer, 0, active_layer);
+                                  layer, active_layer);
 
   gimp_item_set_image (GIMP_ITEM (layer), image);
 
@@ -3156,7 +3157,7 @@ gimp_image_add_channel (GimpImage   *image,
   active_channel = gimp_image_get_active_channel (image);
 
   gimp_image_undo_push_channel_add (image, _("Add Channel"),
-                                    channel, 0, active_channel);
+                                    channel, active_channel);
 
   gimp_item_set_image (GIMP_ITEM (channel), image);
 
@@ -3408,7 +3409,7 @@ gimp_image_add_vectors (GimpImage   *image,
   active_vectors = gimp_image_get_active_vectors (image);
 
   gimp_image_undo_push_vectors_add (image, _("Add Path"),
-                                    vectors, 0, active_vectors);
+                                    vectors, active_vectors);
 
   gimp_item_set_image (GIMP_ITEM (vectors), image);
 

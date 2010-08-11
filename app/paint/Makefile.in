@@ -63,9 +63,9 @@ am__objects_2 = gimp-paint.$(OBJEXT) gimpairbrush.$(OBJEXT) \
 	gimpdodgeburn.$(OBJEXT) gimpdodgeburnoptions.$(OBJEXT) \
 	gimperaser.$(OBJEXT) gimperaseroptions.$(OBJEXT) \
 	gimpheal.$(OBJEXT) gimpink.$(OBJEXT) gimpink-blob.$(OBJEXT) \
-	gimpink-undo.$(OBJEXT) gimpinkoptions.$(OBJEXT) \
+	gimpinkoptions.$(OBJEXT) gimpinkundo.$(OBJEXT) \
 	gimppaintcore.$(OBJEXT) gimppaintcore-stroke.$(OBJEXT) \
-	gimppaintcore-undo.$(OBJEXT) gimppaintoptions.$(OBJEXT) \
+	gimppaintcoreundo.$(OBJEXT) gimppaintoptions.$(OBJEXT) \
 	gimppencil.$(OBJEXT) gimppenciloptions.$(OBJEXT) \
 	gimppaintbrush.$(OBJEXT) gimpperspectiveclone.$(OBJEXT) \
 	gimpperspectivecloneoptions.$(OBJEXT) gimpsmudge.$(OBJEXT) \
@@ -215,6 +215,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -499,16 +503,16 @@ libapppaint_a_sources = \
 	gimpink.h			\
 	gimpink-blob.c			\
 	gimpink-blob.h			\
-	gimpink-undo.c			\
-	gimpink-undo.h			\
 	gimpinkoptions.c		\
 	gimpinkoptions.h		\
+	gimpinkundo.c			\
+	gimpinkundo.h			\
 	gimppaintcore.c			\
 	gimppaintcore.h			\
 	gimppaintcore-stroke.c		\
 	gimppaintcore-stroke.h		\
-	gimppaintcore-undo.c		\
-	gimppaintcore-undo.h		\
+	gimppaintcoreundo.c		\
+	gimppaintcoreundo.h		\
 	gimppaintoptions.c		\
 	gimppaintoptions.h		\
 	gimppencil.c			\
@@ -601,13 +605,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimperaseroptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpheal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpink-blob.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpink-undo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpink.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinkoptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinkundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintbrush.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintcore-stroke.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintcore-undo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintcore.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintcoreundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppencil.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppenciloptions.Po@am__quote@

@@ -82,10 +82,11 @@
 #include "gimpplugin-message.h"
 #include "gimpplugin-progress.h"
 #include "gimpplugindebug.h"
+#include "gimpplugindef.h"
 #include "gimppluginmanager.h"
+#include "gimppluginmanager-help-domain.h"
 #include "gimppluginmanager-locale-domain.h"
 #include "gimptemporaryprocedure.h"
-#include "plug-in-def.h"
 #include "plug-in-params.h"
 
 #include "gimp-intl.h"
@@ -243,6 +244,12 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
   setmode (my_write[0], _O_BINARY);
   setmode (my_read[1], _O_BINARY);
   setmode (my_write[1], _O_BINARY);
+#endif
+
+#ifdef G_OS_WIN32
+  /* Prevent the plug-in from inheriting our ends of the pipes */
+  SetHandleInformation ((HANDLE) _get_osfhandle (my_read[0]), HANDLE_FLAG_INHERIT, 0);
+  SetHandleInformation ((HANDLE) _get_osfhandle (my_write[1]), HANDLE_FLAG_INHERIT, 0);
 #endif
 
   plug_in->my_read   = g_io_channel_unix_new (my_read[0]);
@@ -830,14 +837,7 @@ gimp_plug_in_get_undo_desc (GimpPlugIn *plug_in)
     proc = GIMP_PLUG_IN_PROCEDURE (proc_frame->procedure);
 
   if (proc)
-    {
-      const gchar *domain;
-
-      domain = gimp_plug_in_manager_get_locale_domain (plug_in->manager,
-                                                       plug_in->prog, NULL);
-
-      undo_desc = gimp_plug_in_procedure_get_label (proc, domain);
-    }
+    undo_desc = gimp_plug_in_procedure_get_label (proc);
 
   if (! undo_desc)
     undo_desc = g_strdup (gimp_object_get_name (GIMP_OBJECT (plug_in)));
@@ -928,8 +928,31 @@ void
 gimp_plug_in_add_temp_proc (GimpPlugIn             *plug_in,
                             GimpTemporaryProcedure *proc)
 {
+  GimpPlugInProcedure *overridden;
+  const gchar         *locale_domain;
+  const gchar         *help_domain;
+
   g_return_if_fail (GIMP_IS_PLUG_IN (plug_in));
   g_return_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (proc));
+
+  overridden = gimp_plug_in_procedure_find (plug_in->temp_procedures,
+                                            GIMP_OBJECT (proc)->name);
+
+  if (overridden)
+    gimp_plug_in_remove_temp_proc (plug_in,
+                                   GIMP_TEMPORARY_PROCEDURE (overridden));
+
+  locale_domain = gimp_plug_in_manager_get_locale_domain (plug_in->manager,
+                                                          plug_in->prog,
+                                                          NULL);
+  help_domain = gimp_plug_in_manager_get_help_domain (plug_in->manager,
+                                                      plug_in->prog,
+                                                      NULL);
+
+  gimp_plug_in_procedure_set_locale_domain (GIMP_PLUG_IN_PROCEDURE (proc),
+                                            locale_domain);
+  gimp_plug_in_procedure_set_help_domain (GIMP_PLUG_IN_PROCEDURE (proc),
+                                          help_domain);
 
   plug_in->temp_procedures = g_slist_prepend (plug_in->temp_procedures,
                                               g_object_ref (proc));

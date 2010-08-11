@@ -35,18 +35,6 @@ typedef enum
 } GimpActiveColor;
 
 
-#define GIMP_TYPE_ASPECT_TYPE (gimp_aspect_type_get_type ())
-
-GType gimp_aspect_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_ASPECT_SQUARE,
-  GIMP_ASPECT_PORTRAIT,       /*< desc="Portrait"  >*/
-  GIMP_ASPECT_LANDSCAPE       /*< desc="Landscape" >*/
-} GimpAspectType;
-
-
 #define GIMP_TYPE_COLOR_DIALOG_STATE (gimp_color_dialog_state_get_type ())
 
 GType gimp_color_dialog_state_get_type (void) G_GNUC_CONST;
@@ -70,6 +58,19 @@ typedef enum
   GIMP_COLOR_FRAME_MODE_HSV,    /*< desc="HSV"   >*/
   GIMP_COLOR_FRAME_MODE_CMYK    /*< desc="CMYK"  >*/
 } GimpColorFrameMode;
+
+
+#define GIMP_TYPE_COLOR_PICK_MODE (gimp_color_pick_mode_get_type ())
+
+GType gimp_color_pick_mode_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_COLOR_PICK_MODE_NONE,       /*< desc="Pick only"            >*/
+  GIMP_COLOR_PICK_MODE_FOREGROUND, /*< desc="Set foreground color" >*/
+  GIMP_COLOR_PICK_MODE_BACKGROUND, /*< desc="Set background color" >*/
+  GIMP_COLOR_PICK_MODE_PALETTE     /*< desc="Add to palette"       >*/
+} GimpColorPickMode;
 
 
 #define GIMP_TYPE_COLOR_PICK_STATE (gimp_color_pick_state_get_type ())

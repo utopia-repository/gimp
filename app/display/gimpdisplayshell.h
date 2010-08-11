@@ -83,6 +83,11 @@ struct _GimpDisplayShell
   gint              offset_x;          /*  offset of display image into raw image  */
   gint              offset_y;
 
+  gdouble           last_scale;        /*  scale used when reverting zoom     */
+  guint             last_scale_time;   /*  time when last_scale was set       */
+  gint              last_offset_x;     /*  offsets used when reverting zoom   */
+  gint              last_offset_y;
+
   gint              disp_width;        /*  width of drawing area              */
   gint              disp_height;       /*  height of drawing area             */
   gint              disp_xoffset;

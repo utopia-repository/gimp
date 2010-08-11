@@ -25,8 +25,17 @@ cdisplay_lcms_module = libcdisplay_lcms.la
 cdisplay_proof_module = libcdisplay_proof.la
 endif
 
+if PLATFORM_WIN32
+else
+controller_midi_module = libcontroller_midi.la
+endif
+
 if HAVE_LINUX_INPUT
 controller_linux_input_module = libcontroller_linux_input.la
+endif
+
+if HAVE_DX_DINPUT
+controller_dx_dinput_module = libcontroller_dx_dinput.la
 endif
 
 lib_LTLIBRARIES = \
@@ -38,8 +47,9 @@ lib_LTLIBRARIES = \
 	libcdisplay_highcontrast.la	\
 	$(cdisplay_lcms_module)		\
 	$(cdisplay_proof_module)	\
-	libcontroller_midi.la		\
-	$(controller_linux_input_module)
+	$(controller_midi_module)	\
+	$(controller_linux_input_module)\
+	$(controller_dx_dinput_module)
 
 
 modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
@@ -86,9 +96,23 @@ libcdisplay_proof_la_SOURCES = cdisplay_proof.c
 libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcdisplay_proof_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)
 
-libcontroller_linux_input_la_SOURCES = controller_linux_input.c
+libcontroller_linux_input_la_SOURCES = \
+	gimpinputdevicestore.c	\
+	gimpinputdevicestore.h	\
+	controller_linux_input.c
+libcontroller_linux_input_la_CFLAGS = $(DBUS_GLIB_CFLAGS) $(HAL_CFLAGS)
 libcontroller_linux_input_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcontroller_linux_input_la_LIBADD = $(controller_libadd)
+libcontroller_linux_input_la_LIBADD = \
+	$(controller_libadd) $(DBUS_GLIB_LIBS) $(HAL_LIBS)
+
+libcontroller_dx_dinput_la_SOURCES = \
+	gimpinputdevicestore.c	\
+	gimpinputdevicestore.h	\
+	controller_dx_dinput.c
+# Use -Wl to avoid libtool lossage
+libcontroller_dx_dinput_la_LDFLAGS = -avoid-version -module $(no_undefined) -Wl,-ldinput8 -Wl,-ldxguid
+libcontroller_dx_dinput_la_LIBADD = \
+	$(controller_libadd) -lrpcrt4
 
 libcontroller_midi_la_SOURCES = controller_midi.c
 libcontroller_midi_la_CFLAGS = $(ALSA_CFLAGS)

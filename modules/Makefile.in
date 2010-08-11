@@ -111,8 +111,18 @@ libcolorsel_water_la_DEPENDENCIES = $(am__DEPENDENCIES_9)
 am_libcolorsel_water_la_OBJECTS = colorsel_water.lo
 libcolorsel_water_la_OBJECTS = $(am_libcolorsel_water_la_OBJECTS)
 am__DEPENDENCIES_10 = $(am__DEPENDENCIES_6)
-libcontroller_linux_input_la_DEPENDENCIES = $(am__DEPENDENCIES_10)
-am_libcontroller_linux_input_la_OBJECTS = controller_linux_input.lo
+libcontroller_dx_dinput_la_DEPENDENCIES = $(am__DEPENDENCIES_10)
+am_libcontroller_dx_dinput_la_OBJECTS = gimpinputdevicestore.lo \
+	controller_dx_dinput.lo
+libcontroller_dx_dinput_la_OBJECTS =  \
+	$(am_libcontroller_dx_dinput_la_OBJECTS)
+@HAVE_DX_DINPUT_TRUE@am_libcontroller_dx_dinput_la_rpath = -rpath \
+@HAVE_DX_DINPUT_TRUE@	$(libdir)
+libcontroller_linux_input_la_DEPENDENCIES = $(am__DEPENDENCIES_10) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_5)
+am_libcontroller_linux_input_la_OBJECTS =  \
+	libcontroller_linux_input_la-gimpinputdevicestore.lo \
+	libcontroller_linux_input_la-controller_linux_input.lo
 libcontroller_linux_input_la_OBJECTS =  \
 	$(am_libcontroller_linux_input_la_OBJECTS)
 @HAVE_LINUX_INPUT_TRUE@am_libcontroller_linux_input_la_rpath = -rpath \
@@ -122,6 +132,8 @@ libcontroller_midi_la_DEPENDENCIES = $(am__DEPENDENCIES_10) \
 am_libcontroller_midi_la_OBJECTS =  \
 	libcontroller_midi_la-controller_midi.lo
 libcontroller_midi_la_OBJECTS = $(am_libcontroller_midi_la_OBJECTS)
+@PLATFORM_WIN32_FALSE@am_libcontroller_midi_la_rpath = -rpath \
+@PLATFORM_WIN32_FALSE@	$(libdir)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -140,6 +152,7 @@ SOURCES = $(libcdisplay_colorblind_la_SOURCES) \
 	$(libcolorsel_cmyk_la_SOURCES) \
 	$(libcolorsel_triangle_la_SOURCES) \
 	$(libcolorsel_water_la_SOURCES) \
+	$(libcontroller_dx_dinput_la_SOURCES) \
 	$(libcontroller_linux_input_la_SOURCES) \
 	$(libcontroller_midi_la_SOURCES)
 DIST_SOURCES = $(libcdisplay_colorblind_la_SOURCES) \
@@ -149,6 +162,7 @@ DIST_SOURCES = $(libcdisplay_colorblind_la_SOURCES) \
 	$(am__libcolorsel_cmyk_la_SOURCES_DIST) \
 	$(libcolorsel_triangle_la_SOURCES) \
 	$(libcolorsel_water_la_SOURCES) \
+	$(libcontroller_dx_dinput_la_SOURCES) \
 	$(libcontroller_linux_input_la_SOURCES) \
 	$(libcontroller_midi_la_SOURCES)
 ETAGS = etags
@@ -280,6 +294,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -533,7 +551,9 @@ EXTRA_DIST = \
 
 @HAVE_LCMS_TRUE@cdisplay_lcms_module = libcdisplay_lcms.la
 @HAVE_LCMS_TRUE@cdisplay_proof_module = libcdisplay_proof.la
+@PLATFORM_WIN32_FALSE@controller_midi_module = libcontroller_midi.la
 @HAVE_LINUX_INPUT_TRUE@controller_linux_input_module = libcontroller_linux_input.la
+@HAVE_DX_DINPUT_TRUE@controller_dx_dinput_module = libcontroller_dx_dinput.la
 lib_LTLIBRARIES = \
 	libcolorsel_cmyk.la		\
 	libcolorsel_triangle.la		\
@@ -543,8 +563,9 @@ lib_LTLIBRARIES = \
 	libcdisplay_highcontrast.la	\
 	$(cdisplay_lcms_module)		\
 	$(cdisplay_proof_module)	\
-	libcontroller_midi.la		\
-	$(controller_linux_input_module)
+	$(controller_midi_module)	\
+	$(controller_linux_input_module)\
+	$(controller_dx_dinput_module)
 
 modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
 colorsel_libadd = $(libgimpcolor) $(modules_libadd)
@@ -576,9 +597,26 @@ libcdisplay_lcms_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)
 libcdisplay_proof_la_SOURCES = cdisplay_proof.c
 libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcdisplay_proof_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)
-libcontroller_linux_input_la_SOURCES = controller_linux_input.c
+libcontroller_linux_input_la_SOURCES = \
+	gimpinputdevicestore.c	\
+	gimpinputdevicestore.h	\
+	controller_linux_input.c
+
+libcontroller_linux_input_la_CFLAGS = $(DBUS_GLIB_CFLAGS) $(HAL_CFLAGS)
 libcontroller_linux_input_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcontroller_linux_input_la_LIBADD = $(controller_libadd)
+libcontroller_linux_input_la_LIBADD = \
+	$(controller_libadd) $(DBUS_GLIB_LIBS) $(HAL_LIBS)
+
+libcontroller_dx_dinput_la_SOURCES = \
+	gimpinputdevicestore.c	\
+	gimpinputdevicestore.h	\
+	controller_dx_dinput.c
+
+# Use -Wl to avoid libtool lossage
+libcontroller_dx_dinput_la_LDFLAGS = -avoid-version -module $(no_undefined) -Wl,-ldinput8 -Wl,-ldxguid
+libcontroller_dx_dinput_la_LIBADD = \
+	$(controller_libadd) -lrpcrt4
+
 libcontroller_midi_la_SOURCES = controller_midi.c
 libcontroller_midi_la_CFLAGS = $(ALSA_CFLAGS)
 libcontroller_midi_la_LDFLAGS = -avoid-version -module $(no_undefined)
@@ -659,10 +697,12 @@ libcolorsel_triangle.la: $(libcolorsel_triangle_la_OBJECTS) $(libcolorsel_triang
 	$(LINK) -rpath $(libdir) $(libcolorsel_triangle_la_LDFLAGS) $(libcolorsel_triangle_la_OBJECTS) $(libcolorsel_triangle_la_LIBADD) $(LIBS)
 libcolorsel_water.la: $(libcolorsel_water_la_OBJECTS) $(libcolorsel_water_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(libcolorsel_water_la_LDFLAGS) $(libcolorsel_water_la_OBJECTS) $(libcolorsel_water_la_LIBADD) $(LIBS)
+libcontroller_dx_dinput.la: $(libcontroller_dx_dinput_la_OBJECTS) $(libcontroller_dx_dinput_la_DEPENDENCIES) 
+	$(LINK) $(am_libcontroller_dx_dinput_la_rpath) $(libcontroller_dx_dinput_la_LDFLAGS) $(libcontroller_dx_dinput_la_OBJECTS) $(libcontroller_dx_dinput_la_LIBADD) $(LIBS)
 libcontroller_linux_input.la: $(libcontroller_linux_input_la_OBJECTS) $(libcontroller_linux_input_la_DEPENDENCIES) 
 	$(LINK) $(am_libcontroller_linux_input_la_rpath) $(libcontroller_linux_input_la_LDFLAGS) $(libcontroller_linux_input_la_OBJECTS) $(libcontroller_linux_input_la_LIBADD) $(LIBS)
 libcontroller_midi.la: $(libcontroller_midi_la_OBJECTS) $(libcontroller_midi_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libcontroller_midi_la_LDFLAGS) $(libcontroller_midi_la_OBJECTS) $(libcontroller_midi_la_LIBADD) $(LIBS)
+	$(LINK) $(am_libcontroller_midi_la_rpath) $(libcontroller_midi_la_LDFLAGS) $(libcontroller_midi_la_OBJECTS) $(libcontroller_midi_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -679,7 +719,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_cmyk_lcms.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_triangle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_water.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller_linux_input.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller_dx_dinput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinputdevicestore.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_midi_la-controller_midi.Plo@am__quote@
 
 .c.o:
@@ -702,6 +745,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+libcontroller_linux_input_la-gimpinputdevicestore.lo: gimpinputdevicestore.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -MT libcontroller_linux_input_la-gimpinputdevicestore.lo -MD -MP -MF "$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Tpo" -c -o libcontroller_linux_input_la-gimpinputdevicestore.lo `test -f 'gimpinputdevicestore.c' || echo '$(srcdir)/'`gimpinputdevicestore.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Tpo" "$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Plo"; else rm -f "$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gimpinputdevicestore.c' object='libcontroller_linux_input_la-gimpinputdevicestore.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -c -o libcontroller_linux_input_la-gimpinputdevicestore.lo `test -f 'gimpinputdevicestore.c' || echo '$(srcdir)/'`gimpinputdevicestore.c
+
+libcontroller_linux_input_la-controller_linux_input.lo: controller_linux_input.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -MT libcontroller_linux_input_la-controller_linux_input.lo -MD -MP -MF "$(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Tpo" -c -o libcontroller_linux_input_la-controller_linux_input.lo `test -f 'controller_linux_input.c' || echo '$(srcdir)/'`controller_linux_input.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Tpo" "$(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Plo"; else rm -f "$(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='controller_linux_input.c' object='libcontroller_linux_input_la-controller_linux_input.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -c -o libcontroller_linux_input_la-controller_linux_input.lo `test -f 'controller_linux_input.c' || echo '$(srcdir)/'`controller_linux_input.c
 
 libcontroller_midi_la-controller_midi.lo: controller_midi.c
 @am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_midi_la_CFLAGS) $(CFLAGS) -MT libcontroller_midi_la-controller_midi.lo -MD -MP -MF "$(DEPDIR)/libcontroller_midi_la-controller_midi.Tpo" -c -o libcontroller_midi_la-controller_midi.lo `test -f 'controller_midi.c' || echo '$(srcdir)/'`controller_midi.c; \

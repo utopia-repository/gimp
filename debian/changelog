@@ -1,3 +1,13 @@
+gimp (2.3.15) experimental; urgency=low
+
+  * New upstream release
+    - Fixes Select->Border on selections around edge of images
+      (Closes: #381515)
+    - Work around buggy clipboard managers (Closes: #411285)
+  * Fix invocation of find in debian/rules (Closes: #411052)
+
+ -- Ari Pollak <ari@debian.org>  Sat, 17 Feb 2007 14:35:56 -0500
+
 gimp (2.3.14-3) experimental; urgency=low
 
   * 02_xor-to-invert.patch:

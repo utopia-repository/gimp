@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfonts.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2575846" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591883" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2661420" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2664055" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrushes"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2575846"></a><span class="refentrytitle">gimpbrushes</span>
+<a name="id2591883"></a><span class="refentrytitle">gimpbrushes</span>
 </h2>
 <p>gimpbrushes &#8212; Functions for manipulating brushes.</p>
 </td>
@@ -77,17 +77,17 @@ gchar*      <a href="libgimp-gimpbrushes.html#gimp-brushes-get-brush-data">gimp_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2661420"></a><h2>Description</h2>
+<a name="id2664055"></a><h2>Description</h2>
 <p>
 Functions related to getting and setting brushes.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2661436"></a><h2>Details</h2>
+<a name="id2664071"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2661447"></a><h3>
+<a name="id2664081"></a><h3>
 <a name="gimp-brushes-refresh"></a>gimp_brushes_refresh ()</h3>
-<a class="indexterm" name="id2661458"></a><pre class="programlisting">gboolean    gimp_brushes_refresh            (void);</pre>
+<a class="indexterm" name="id2664092"></a><pre class="programlisting">gboolean    gimp_brushes_refresh            (void);</pre>
 <p>
 Refresh current brushes. This function always succeeds.
 </p>
@@ -108,9 +108,9 @@ path and updates the brush dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2661502"></a><h3>
+<a name="id2664137"></a><h3>
 <a name="gimp-brushes-get-list"></a>gimp_brushes_get_list ()</h3>
-<a class="indexterm" name="id2661514"></a><pre class="programlisting">gchar**     gimp_brushes_get_list           (const gchar *filter,
+<a class="indexterm" name="id2664148"></a><pre class="programlisting">gchar**     gimp_brushes_get_list           (const gchar *filter,
                                              gint *num_brushes);</pre>
 <p>
 Retrieve a complete listing of the available brushes.
@@ -145,9 +145,9 @@ Each name returned can be used as input to the
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2660513"></a><h3>
+<a name="id2664244"></a><h3>
 <a name="gimp-brushes-get-brush"></a>gimp_brushes_get_brush ()</h3>
-<a class="indexterm" name="id2660527"></a><pre class="programlisting">gchar*      gimp_brushes_get_brush          (gint *width,
+<a class="indexterm" name="id2664257"></a><pre class="programlisting">gchar*      gimp_brushes_get_brush          (gint *width,
                                              gint *height,
                                              gint *spacing);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -187,9 +187,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2660647"></a><h3>
+<a name="id2663295"></a><h3>
 <a name="gimp-brushes-set-brush"></a>gimp_brushes_set_brush ()</h3>
-<a class="indexterm" name="id2660661"></a><pre class="programlisting">gboolean    gimp_brushes_set_brush          (const gchar *name);</pre>
+<a class="indexterm" name="id2663309"></a><pre class="programlisting">gboolean    gimp_brushes_set_brush          (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_set_brush</code> is deprecated and should not be used in newly-written code.</p>
@@ -217,9 +217,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2663174"></a><h3>
+<a name="id2663388"></a><h3>
 <a name="gimp-brushes-get-opacity"></a>gimp_brushes_get_opacity ()</h3>
-<a class="indexterm" name="id2663188"></a><pre class="programlisting">gdouble     gimp_brushes_get_opacity        (void);</pre>
+<a class="indexterm" name="id2663401"></a><pre class="programlisting">gdouble     gimp_brushes_get_opacity        (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_get_opacity</code> is deprecated and should not be used in newly-written code.</p>
@@ -240,9 +240,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2663248"></a><h3>
+<a name="id2663461"></a><h3>
 <a name="gimp-brushes-set-opacity"></a>gimp_brushes_set_opacity ()</h3>
-<a class="indexterm" name="id2663261"></a><pre class="programlisting">gboolean    gimp_brushes_set_opacity        (gdouble opacity);</pre>
+<a class="indexterm" name="id2663475"></a><pre class="programlisting">gboolean    gimp_brushes_set_opacity        (gdouble opacity);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_set_opacity</code> is deprecated and should not be used in newly-written code.</p>
@@ -270,9 +270,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2663340"></a><h3>
+<a name="id2663554"></a><h3>
 <a name="gimp-brushes-get-paint-mode"></a>gimp_brushes_get_paint_mode ()</h3>
-<a class="indexterm" name="id2663354"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_brushes_get_paint_mode
+<a class="indexterm" name="id2663567"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_brushes_get_paint_mode
                                             (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -294,9 +294,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2663414"></a><h3>
+<a name="id2663627"></a><h3>
 <a name="gimp-brushes-set-paint-mode"></a>gimp_brushes_set_paint_mode ()</h3>
-<a class="indexterm" name="id2662162"></a><pre class="programlisting">gboolean    gimp_brushes_set_paint_mode     (<a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
+<a class="indexterm" name="id2665610"></a><pre class="programlisting">gboolean    gimp_brushes_set_paint_mode     (<a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_set_paint_mode</code> is deprecated and should not be used in newly-written code.</p>
@@ -324,9 +324,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpcontext.html#gimp-context
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2662240"></a><h3>
+<a name="id2665688"></a><h3>
 <a name="gimp-brushes-get-spacing"></a>gimp_brushes_get_spacing ()</h3>
-<a class="indexterm" name="id2662254"></a><pre class="programlisting">gint        gimp_brushes_get_spacing        (void);</pre>
+<a class="indexterm" name="id2665701"></a><pre class="programlisting">gint        gimp_brushes_get_spacing        (void);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_get_spacing</code> is deprecated and should not be used in newly-written code.</p>
@@ -347,9 +347,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpbrush.html#gimp-brush-get
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2662314"></a><h3>
+<a name="id2665761"></a><h3>
 <a name="gimp-brushes-set-spacing"></a>gimp_brushes_set_spacing ()</h3>
-<a class="indexterm" name="id2662327"></a><pre class="programlisting">gboolean    gimp_brushes_set_spacing        (gint spacing);</pre>
+<a class="indexterm" name="id2665775"></a><pre class="programlisting">gboolean    gimp_brushes_set_spacing        (gint spacing);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_brushes_set_spacing</code> is deprecated and should not be used in newly-written code.</p>
@@ -377,9 +377,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpbrush.html#gimp-brush-set
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2662406"></a><h3>
+<a name="id2665854"></a><h3>
 <a name="gimp-brushes-get-brush-data"></a>gimp_brushes_get_brush_data ()</h3>
-<a class="indexterm" name="id2662420"></a><pre class="programlisting">gchar*      gimp_brushes_get_brush_data     (const gchar *name,
+<a class="indexterm" name="id2665867"></a><pre class="programlisting">gchar*      gimp_brushes_get_brush_data     (const gchar *name,
                                              gdouble *opacity,
                                              gint *spacing,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> *paint_mode,

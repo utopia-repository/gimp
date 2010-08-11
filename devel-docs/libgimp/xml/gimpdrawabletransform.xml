@@ -201,7 +201,7 @@
 <title>Details</title>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-flip-simple"/>gimp_drawable_transform_flip_simple ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_flip_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_flip_simple
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_flip_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_flip_simple
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> flip_type,
                                              <link linkend="gboolean">gboolean</link> auto_center,
@@ -245,7 +245,7 @@ created and flipped drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-flip"/>gimp_drawable_transform_flip ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_flip</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_flip    (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_flip</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_flip    (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
                                              <link linkend="gdouble">gdouble</link> x1,
@@ -309,7 +309,7 @@ transform.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-flip-default"/>gimp_drawable_transform_flip_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_flip_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_flip_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_flip_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_flip_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
@@ -355,7 +355,7 @@ uses no interpolation/supersampling at all, or default values
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-perspective"/>gimp_drawable_transform_perspective ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_perspective</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_perspective
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_perspective</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_perspective
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
@@ -442,7 +442,7 @@ to have been projected via a perspective transform.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-perspective-default"/>gimp_drawable_transform_perspective_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_perspective_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_perspective_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_perspective_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_perspective_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
@@ -505,7 +505,7 @@ which uses no interpolation/supersampling at all, or default values
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-rotate-simple"/>gimp_drawable_transform_rotate_simple ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_rotate_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_rotate_simple
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_rotate_simple</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_rotate_simple
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpRotationType">GimpRotationType</link> rotate_type,
                                              <link linkend="gboolean">gboolean</link> auto_center,
@@ -552,7 +552,7 @@ this will be the newly created and rotated drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-rotate"/>gimp_drawable_transform_rotate ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_rotate  (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_rotate  (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> angle,
                                              <link linkend="gboolean">gboolean</link> auto_center,
                                              <link linkend="gint">gint</link> center_x,
@@ -614,7 +614,7 @@ this will be the newly created and rotated drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-rotate-default"/>gimp_drawable_transform_rotate_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_rotate_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_rotate_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_rotate_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_rotate_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> angle,
                                              <link linkend="gboolean">gboolean</link> auto_center,
@@ -661,7 +661,7 @@ which uses no interpolation/supersampling at all, or default values
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-scale"/>gimp_drawable_transform_scale ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_scale</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_scale   (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_scale</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_scale   (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
                                              <link linkend="gdouble">gdouble</link> x1,
@@ -722,7 +722,7 @@ this will be the newly created and scaled drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-scale-default"/>gimp_drawable_transform_scale_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_scale_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_scale_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_scale_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_scale_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> x0,
                                              <link linkend="gdouble">gdouble</link> y0,
@@ -768,7 +768,7 @@ uses no interpolation/supersampling at all, or default values
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-shear"/>gimp_drawable_transform_shear ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_shear</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_shear   (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_shear</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_shear   (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                              <link linkend="gdouble">gdouble</link> magnitude,
                                              <link linkend="GimpTransformDirection">GimpTransformDirection</link> transform_direction,
@@ -825,7 +825,7 @@ indicates the extent (in pixels) to shear by.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-shear-default"/>gimp_drawable_transform_shear_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_shear_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_shear_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_shear_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_shear_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                              <link linkend="gdouble">gdouble</link> magnitude,
@@ -864,7 +864,7 @@ uses no interpolation/supersampling at all, or default values
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-2d"/>gimp_drawable_transform_2d ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_2d</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_2d      (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_2d</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_2d      (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> source_x,
                                              <link linkend="gdouble">gdouble</link> source_y,
                                              <link linkend="gdouble">gdouble</link> scale_x,
@@ -940,7 +940,7 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-2d-default"/>gimp_drawable_transform_2d_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_2d_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_2d_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_2d_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_2d_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> source_x,
                                              <link linkend="gdouble">gdouble</link> source_y,
@@ -998,7 +998,7 @@ uses no interpolation/supersampling at all, or default values
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-matrix"/>gimp_drawable_transform_matrix ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_matrix</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_matrix  (<link linkend="gint32">gint32</link> drawable_ID,
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_matrix</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_matrix  (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> coeff_0_0,
                                              <link linkend="gdouble">gdouble</link> coeff_0_1,
                                              <link linkend="gdouble">gdouble</link> coeff_0_2,
@@ -1080,7 +1080,7 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-transform-matrix-default"/>gimp_drawable_transform_matrix_default ()</title>
-<indexterm role="GIMP"><primary>gimp_drawable_transform_matrix_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_matrix_default
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_transform_matrix_default</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_drawable_transform_matrix_default
                                             (<link linkend="gint32">gint32</link> drawable_ID,
                                              <link linkend="gdouble">gdouble</link> coeff_0_0,
                                              <link linkend="gdouble">gdouble</link> coeff_0_1,

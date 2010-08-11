@@ -2,15 +2,35 @@
 
 
 
-gint32      <a href="libgimp-gimpdisplay.html#gimp-display-new">gimp_display_new</a>                (gint32 image_ID);
-gboolean    <a href="libgimp-gimpdisplay.html#gimp-display-delete">gimp_display_delete</a>             (gint32 display_ID);
-gboolean    <a href="libgimp-gimpdisplay.html#gimp-displays-flush">gimp_displays_flush</a>             (void);
-gboolean    <a href="libgimp-gimpdisplay.html#gimp-displays-reconnect">gimp_displays_reconnect</a>         (gint32 old_image_ID,
-                                             gint32 new_image_ID);
-</pre></div><div class="refsect1" lang="en"><a name="id2597172"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>      <a href="libgimp-gimpdisplay.html#gimp-display-new">gimp_display_new</a>                (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpdisplay.html#gimp-display-delete">gimp_display_delete</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpdisplay.html#gimp-displays-flush">gimp_displays_flush</a>             (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimpdisplay.html#gimp-displays-reconnect">gimp_displays_reconnect</a>         (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> old_image_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> new_image_ID);
+</pre></div><div class="refsect1" lang="en"><a name="id2581994"></a><h2>Description</h2><p>
 Functions to create, delete and flush new displays (views) on an image.
 
-</p></div><div class="refsect1" lang="en"><a name="id2597183"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2597188"></a><h3><a name="gimp-display-new"></a>gimp_display_new ()</h3><a class="indexterm" name="id2597196"></a><pre class="programlisting">gint32      gimp_display_new                (gint32 image_ID);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2582005"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2582010"></a><h3><a name="gimp-display-new"></a>gimp_display_new ()</h3><a class="indexterm" name="id2582018"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>      gimp_display_new                (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID);</pre><p>
 Create a new display for the specified image.
 </p><p>
 Creates a new display for the specified image. If the image already
@@ -21,7 +41,11 @@ This procedure only makes sense for use with the GIMP UI.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>image_ID</tt></i> :</span></td><td> The image.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The new display.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2597253"></a><h3><a name="gimp-display-delete"></a>gimp_display_delete ()</h3><a class="indexterm" name="id2597261"></a><pre class="programlisting">gboolean    gimp_display_delete             (gint32 display_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2582075"></a><h3><a name="gimp-display-delete"></a>gimp_display_delete ()</h3><a class="indexterm" name="id2582083"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_display_delete             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> display_ID);</pre><p>
 Delete the specified display.
 </p><p>
 This procedure removes the specified display. If this is the last
@@ -30,7 +54,9 @@ deleted also.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>display_ID</tt></i> :</span></td><td> The display to delete.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593908"></a><h3><a name="gimp-displays-flush"></a>gimp_displays_flush ()</h3><a class="indexterm" name="id2593916"></a><pre class="programlisting">gboolean    gimp_displays_flush             (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594643"></a><h3><a name="gimp-displays-flush"></a>gimp_displays_flush ()</h3><a class="indexterm" name="id2594652"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_displays_flush             (void);</pre><p>
 Flush all internal changes to the user interface
 </p><p>
 This procedure takes no arguments and returns nothing except a
@@ -39,8 +65,14 @@ manipulations to the user interface. It should be called whenever
 appropriate.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2593955"></a><h3><a name="gimp-displays-reconnect"></a>gimp_displays_reconnect ()</h3><a class="indexterm" name="id2593963"></a><pre class="programlisting">gboolean    gimp_displays_reconnect         (gint32 old_image_ID,
-                                             gint32 new_image_ID);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2594690"></a><h3><a name="gimp-displays-reconnect"></a>gimp_displays_reconnect ()</h3><a class="indexterm" name="id2594698"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_displays_reconnect         (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> old_image_ID,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> new_image_ID);</pre><p>
 Reconnect displays from one image to another image.
 </p><p>
 This procedure connects all displays of the old_image to the

@@ -49,7 +49,7 @@ A widget for selecting palettes.
 <title>Details</title>
 <refsect2>
 <title><anchor id="gimp-palette-select-widget-new"/>gimp_palette_select_widget_new ()</title>
-<indexterm role="GIMP"><primary>gimp_palette_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_palette_select_widget_new  (const <link linkend="gchar">gchar</link> *title,
+<indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_palette_select_widget_new  (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *palette_name,
                                              <link linkend="GimpRunPaletteCallback">GimpRunPaletteCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -80,7 +80,7 @@ plug-in dialog.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-select-widget-close"/>gimp_palette_select_widget_close ()</title>
-<indexterm role="GIMP"><primary>gimp_palette_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_close
+<indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_close
                                             (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <para>
 Closes the popup window associated with <parameter>widget</parameter>.</para>
@@ -94,7 +94,7 @@ Closes the popup window associated with <parameter>widget</parameter>.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-select-widget-set"/>gimp_palette_select_widget_set ()</title>
-<indexterm role="GIMP"><primary>gimp_palette_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_set  (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<indexterm role="GIMP 2.2"><primary>gimp_palette_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_palette_select_widget_set  (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                              const <link linkend="gchar">gchar</link> *palette_name);</programlisting>
 <para>
 Sets the current palette for the palette select widget.  Calls the

@@ -1,3 +1,34 @@
+2005-05-06  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Minor improvements
+
+2005-01-02  Roman Joost	<romanofski@gimp.org>
+	
+	* de.po: fixed ambigious mnemonics for "Bild" and "Bearbeiten"
+	menuitems spotted by Christian Theune
+
+2005-04-29  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Minor fix.
+
+2005-04-26  Sven Neumann  <sven@gimp.org>
+
+	* ko.po: marked an invallid translation as fuzzy (invalid
+	according to msgfmt).
+
+2005-04-26  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation. Fixed some problems.
+
+2005-04-25  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
+
+	* ru.po: Updated Russian translation
+	from Russian team <gnome-cyr@gnome.org>.
+
+2005-04-22  Changwoo Ryu  <cwryu@debian.org>
+
+	* ko.po: Updated Korean translation by Dongsu Jang.
+
 2005-04-09  Vincent van Adrighem  <adrighem@gnome.org>
 
 	* nl.po: Translation updated by Tino Meinen.

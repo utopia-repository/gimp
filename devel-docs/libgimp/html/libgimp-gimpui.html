@@ -3,15 +3,25 @@ Interface Library headers.</p></td><td valign="top" align="right"></td></tr></ta
 
 
 
-void        <a href="libgimp-gimpui.html#gimp-ui-init">gimp_ui_init</a>                    (const gchar *prog_name,
-                                             gboolean preview);
-</pre></div><div class="refsect1" lang="en"><a name="id2634527"></a><h2>Description</h2><p>
+void        <a href="libgimp-gimpui.html#gimp-ui-init">gimp_ui_init</a>                    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *prog_name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> preview);
+</pre></div><div class="refsect1" lang="en"><a name="id2658426"></a><h2>Description</h2><p>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
 
-</p></div><div class="refsect1" lang="en"><a name="id2552188"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2552193"></a><h3><a name="gimp-ui-init"></a>gimp_ui_init ()</h3><a class="indexterm" name="id2663248"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
-                                             gboolean preview);</pre><p>
-This function initializes GTK+ with <tt class="function">gtk_init()</tt> and initializes GDK's
+</p></div><div class="refsect1" lang="en"><a name="id2633333"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2633338"></a><h3><a name="gimp-ui-init"></a>gimp_ui_init ()</h3><a class="indexterm" name="id2656598"></a><pre class="programlisting">void        gimp_ui_init                    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *prog_name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> preview);</pre><p>
+This function initializes GTK+ with <a
+href="../gtk/gtk-General.html#gtk-init"
+><tt class="function">gtk_init()</tt></a> and initializes GDK's
 image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
 </p><p>
@@ -19,13 +29,33 @@ The GIMP's colormap policy can be determinded by the user with the
 gimprc variables <i class="parameter"><tt>min_colors</tt></i> and <i class="parameter"><tt>install_cmap</tt></i>.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>prog_name</tt></i> :</span></td><td> The name of the plug-in which will be passed as argv[0] to
-            <tt class="function">gtk_init()</tt>. It's a convention to use the name of the
+            <a
+href="../gtk/gtk-General.html#gtk-init"
+><tt class="function">gtk_init()</tt></a>. It's a convention to use the name of the
             executable and _not_ the PDB procedure name or something.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>preview</tt></i> :</span></td><td>   This parameter is unused and exists for historical
             reasons only.
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2663333"></a><h2>See Also</h2><p>
-<tt class="function">gtk_init()</tt>, <tt class="function">gdk_set_use_xshm()</tt>, <tt class="function">gdk_rgb_set_min_colors()</tt>,
-<tt class="function">gdk_rgb_set_install()</tt>, <tt class="function">gdk_rgb_get_visual()</tt>, <tt class="function">gdk_rgb_get_cmap()</tt>,
-<tt class="function">gtk_widget_set_default_visual()</tt>, <tt class="function">gtk_widget_set_default_colormap()</tt>,
-<tt class="function">gtk_preview_set_gamma()</tt>.
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2656684"></a><h2>See Also</h2><p>
+<a
+href="../gtk/gtk-General.html#gtk-init"
+><tt class="function">gtk_init()</tt></a>, <a
+href="../gdk/gdk-General.html#gdk-set-use-xshm"
+><tt class="function">gdk_set_use_xshm()</tt></a>, <a
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-set-min-colors"
+><tt class="function">gdk_rgb_set_min_colors()</tt></a>,
+<a
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-set-install"
+><tt class="function">gdk_rgb_set_install()</tt></a>, <a
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-get-visual"
+><tt class="function">gdk_rgb_get_visual()</tt></a>, <a
+href="../gdk/gdk-GdkRGB.html#gdk-rgb-get-cmap"
+><tt class="function">gdk_rgb_get_cmap()</tt></a>,
+<a
+href="../gtk/GtkWidget.html#gtk-widget-set-default-visual"
+><tt class="function">gtk_widget_set_default_visual()</tt></a>, <a
+href="../gtk/GtkWidget.html#gtk-widget-set-default-colormap"
+><tt class="function">gtk_widget_set_default_colormap()</tt></a>,
+<a
+href="../gtk/GtkPreview.html#gtk-preview-set-gamma"
+><tt class="function">gtk_preview_set_gamma()</tt></a>.
 </p></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimpui-hierarchy.html"><b>&lt;&lt; Object Hierarchy</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimpexport.html"><b>gimpexport &gt;&gt;</b></a></td></tr></table></body></html>

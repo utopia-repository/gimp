@@ -83,7 +83,7 @@ You can restrict the <link linkend="GimpFileSelection"><type>GimpFileSelection</
 the filename listbox of the <link linkend="GtkFileSelection"><type>GtkFileSelection</type></link> dialog will be hidden.
 </para>
 <para>
-If you specify <parameter>check_valid</parameter> as <link linkend="TRUE--CAPS"><type>TRUE</type></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
+If you specify <parameter>check_valid</parameter> as <link linkend="TRUE:CAPS"><type>TRUE</type></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
 the entered filename will be checked for validity and a pixmap will be
 shown which indicates if the file exists or not.
 </para>

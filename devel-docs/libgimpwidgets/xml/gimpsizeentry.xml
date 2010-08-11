@@ -142,7 +142,7 @@ specify the <link linkend="GimpUnit"><type>GimpUnit</type></link> of the display
 </para>
 <para>
 For each field, there can be one or two <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>'s to enter
-"value" and "reference value". If you specify <parameter>show_refval</parameter> as <link linkend="FALSE--CAPS"><type>FALSE</type></link>
+"value" and "reference value". If you specify <parameter>show_refval</parameter> as <link linkend="FALSE:CAPS"><type>FALSE</type></link>
 in <link linkend="gimp-size-entry-new"><function>gimp_size_entry_new()</function></link> there will be only one <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link> and the
 <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> will contain an item for selecting GIMP_UNIT_PIXEL.
 </para>
@@ -331,11 +331,11 @@ Sets the resolution (in dpi) for field # <parameter>field</parameter> of the <li
 </para>
 <para>
 The <parameter>resolution</parameter> passed will be clamped to fit in
-[<link linkend="GIMP-MIN-RESOLUTION--CAPS"><type>GIMP_MIN_RESOLUTION</type></link>..<link linkend="GIMP-MAX-RESOLUTION--CAPS"><type>GIMP_MAX_RESOLUTION</type></link>].
+[<link linkend="GIMP-MIN-RESOLUTION:CAPS"><type>GIMP_MIN_RESOLUTION</type></link>..<link linkend="GIMP-MAX-RESOLUTION:CAPS"><type>GIMP_MAX_RESOLUTION</type></link>].
 </para>
 <para>
 This function does nothing if the <link linkend="GimpSizeEntryUpdatePolicy"><type>GimpSizeEntryUpdatePolicy</type></link> specified in
-<link linkend="gimp-size-entry-new"><function>gimp_size_entry_new()</function></link> doesn't equal to <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE--CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link>.</para>
+<link linkend="gimp-size-entry-new"><function>gimp_size_entry_new()</function></link> doesn't equal to <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -525,8 +525,8 @@ Sets the decimal digits of field # <parameter>field</parameter> of the <link lin
 </para>
 <para>
 If you don't specify this value explicitly, the reference value's number
-of digits will equal to 0 for <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE--CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link> and to 2 for
-<link linkend="GIMP-SIZE-ENTRY-UPDATE-RESOLUTION--CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_RESOLUTION</type></link>.</para>
+of digits will equal to 0 for <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_SIZE</type></link> and to 2 for
+<link linkend="GIMP-SIZE-ENTRY-UPDATE-RESOLUTION:CAPS"><type>GIMP_SIZE_ENTRY_UPDATE_RESOLUTION</type></link>.</para>
 <para>
 
 </para><variablelist role="params">

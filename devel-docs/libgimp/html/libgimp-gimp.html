@@ -4,7 +4,9 @@ all other GIMP Library headers.</p></td><td valign="top" align="right"></td></tr
 
 
 #define     <a href="libgimp-gimp.html#GIMPVAR:CAPS">GIMPVAR</a>
-gchar*      <a href="libgimp-gimp.html#gimp-version">gimp_version</a>                    (void);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      <a href="libgimp-gimp.html#gimp-version">gimp_version</a>                    (void);
 extern      const guint <a href="libgimp-gimp.html#gimp-major-version">gimp_major_version</a>;
 extern      const guint <a href="libgimp-gimp.html#gimp-minor-version">gimp_minor_version</a>;
 extern      const guint <a href="libgimp-gimp.html#gimp-micro-version">gimp_micro_version</a>;
@@ -14,10 +16,16 @@ extern      const guint <a href="libgimp-gimp.html#gimp-micro-version">gimp_micr
 void        (<a href="libgimp-gimp.html#GimpInitProc">*GimpInitProc</a>)                 (void);
 void        (<a href="libgimp-gimp.html#GimpQuitProc">*GimpQuitProc</a>)                 (void);
 void        (<a href="libgimp-gimp.html#GimpQueryProc">*GimpQueryProc</a>)                (void);
-void        (<a href="libgimp-gimp.html#GimpRunProc">*GimpRunProc</a>)                  (const gchar *name,
-                                             gint n_params,
+void        (<a href="libgimp-gimp.html#GimpRunProc">*GimpRunProc</a>)                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
                                              const <a href="libgimp-gimp.html#GimpParam">GimpParam</a> *param,
-                                             gint *n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *n_return_vals,
                                              <a href="libgimp-gimp.html#GimpParam">GimpParam</a> **return_vals);
             <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a>;
             <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a>;
@@ -25,133 +33,255 @@ void        (<a href="libgimp-gimp.html#GimpRunProc">*GimpRunProc</a>)          
 union       <a href="libgimp-gimp.html#GimpParamData">GimpParamData</a>;
             <a href="libgimp-gimp.html#GimpParam">GimpParam</a>;
 #define     <a href="libgimp-gimp.html#MAIN:CAPS">MAIN</a>                            ()
-gint        <a href="libgimp-gimp.html#gimp-main">gimp_main</a>                       (const <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a> *info,
-                                             gint argc,
-                                             gchar *argv[]);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        <a href="libgimp-gimp.html#gimp-main">gimp_main</a>                       (const <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a> *info,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> argc,
+                                             <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *argv[]);
 void        <a href="libgimp-gimp.html#gimp-quit">gimp_quit</a>                       (void);
-void        <a href="libgimp-gimp.html#gimp-install-procedure">gimp_install_procedure</a>          (const gchar *name,
-                                             const gchar *blurb,
-                                             const gchar *help,
-                                             const gchar *author,
-                                             const gchar *copyright,
-                                             const gchar *date,
-                                             const gchar *menu_label,
-                                             const gchar *image_types,
+void        <a href="libgimp-gimp.html#gimp-install-procedure">gimp_install_procedure</a>          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *menu_label,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *image_types,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> type,
-                                             gint n_params,
-                                             gint n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_return_vals,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *params,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *return_vals);
-void        <a href="libgimp-gimp.html#gimp-install-temp-proc">gimp_install_temp_proc</a>          (const gchar *name,
-                                             const gchar *blurb,
-                                             const gchar *help,
-                                             const gchar *author,
-                                             const gchar *copyright,
-                                             const gchar *date,
-                                             const gchar *menu_label,
-                                             const gchar *image_types,
+void        <a href="libgimp-gimp.html#gimp-install-temp-proc">gimp_install_temp_proc</a>          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *menu_label,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *image_types,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> type,
-                                             gint n_params,
-                                             gint n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_return_vals,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *params,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *return_vals,
                                              <a href="libgimp-gimp.html#GimpRunProc">GimpRunProc</a> run_proc);
-void        <a href="libgimp-gimp.html#gimp-uninstall-temp-proc">gimp_uninstall_temp_proc</a>        (const gchar *name);
-<a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  <a href="libgimp-gimp.html#gimp-run-procedure">gimp_run_procedure</a>              (const gchar *name,
-                                             gint *n_return_vals,
+void        <a href="libgimp-gimp.html#gimp-uninstall-temp-proc">gimp_uninstall_temp_proc</a>        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  <a href="libgimp-gimp.html#gimp-run-procedure">gimp_run_procedure</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *n_return_vals,
                                              ...);
-<a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  <a href="libgimp-gimp.html#gimp-run-procedure2">gimp_run_procedure2</a>             (const gchar *name,
-                                             gint *n_return_vals,
-                                             gint n_params,
+<a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  <a href="libgimp-gimp.html#gimp-run-procedure2">gimp_run_procedure2</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
                                              const <a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params);
 void        <a href="libgimp-gimp.html#gimp-destroy-params">gimp_destroy_params</a>             (<a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params,
-                                             gint n_params);
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params);
 void        <a href="libgimp-gimp.html#gimp-destroy-paramdefs">gimp_destroy_paramdefs</a>          (<a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *paramdefs,
-                                             gint n_params);
-guint       <a href="libgimp-gimp.html#gimp-tile-width">gimp_tile_width</a>                 (void);
-guint       <a href="libgimp-gimp.html#gimp-tile-height">gimp_tile_height</a>                (void);
-gint        <a href="libgimp-gimp.html#gimp-shm-ID">gimp_shm_ID</a>                     (void);
-guchar*     <a href="libgimp-gimp.html#gimp-shm-addr">gimp_shm_addr</a>                   (void);
-gdouble     <a href="libgimp-gimp.html#gimp-gamma">gimp_gamma</a>                      (void);
-gboolean    <a href="libgimp-gimp.html#gimp-install-cmap">gimp_install_cmap</a>               (void);
-gint        <a href="libgimp-gimp.html#gimp-min-colors">gimp_min_colors</a>                 (void);
-gboolean    <a href="libgimp-gimp.html#gimp-show-tool-tips">gimp_show_tool_tips</a>             (void);
-gboolean    <a href="libgimp-gimp.html#gimp-show-help-button">gimp_show_help_button</a>           (void);
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params);
+<a
+href="../glib/glib-Basic-Types.html#guint"
+>guint</a>       <a href="libgimp-gimp.html#gimp-tile-width">gimp_tile_width</a>                 (void);
+<a
+href="../glib/glib-Basic-Types.html#guint"
+>guint</a>       <a href="libgimp-gimp.html#gimp-tile-height">gimp_tile_height</a>                (void);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        <a href="libgimp-gimp.html#gimp-shm-ID">gimp_shm_ID</a>                     (void);
+<a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a>*     <a href="libgimp-gimp.html#gimp-shm-addr">gimp_shm_addr</a>                   (void);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>     <a href="libgimp-gimp.html#gimp-gamma">gimp_gamma</a>                      (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimp.html#gimp-install-cmap">gimp_install_cmap</a>               (void);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        <a href="libgimp-gimp.html#gimp-min-colors">gimp_min_colors</a>                 (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimp.html#gimp-show-tool-tips">gimp_show_tool_tips</a>             (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimp.html#gimp-show-help-button">gimp_show_help_button</a>           (void);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
 >GimpCheckSize</a> <a href="libgimp-gimp.html#gimp-check-size">gimp_check_size</a>               (void);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
 >GimpCheckType</a> <a href="libgimp-gimp.html#gimp-check-type">gimp_check_type</a>               (void);
-gint32      <a href="libgimp-gimp.html#gimp-default-display">gimp_default_display</a>            (void);
-const gchar* <a href="libgimp-gimp.html#gimp-wm-class">gimp_wm_class</a>                  (void);
-const gchar* <a href="libgimp-gimp.html#gimp-display-name">gimp_display_name</a>              (void);
-gint        <a href="libgimp-gimp.html#gimp-monitor-number">gimp_monitor_number</a>             (void);
-const gchar* <a href="libgimp-gimp.html#gimp-get-progname">gimp_get_progname</a>              (void);
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>      <a href="libgimp-gimp.html#gimp-default-display">gimp_default_display</a>            (void);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* <a href="libgimp-gimp.html#gimp-wm-class">gimp_wm_class</a>                  (void);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* <a href="libgimp-gimp.html#gimp-display-name">gimp_display_name</a>              (void);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        <a href="libgimp-gimp.html#gimp-monitor-number">gimp_monitor_number</a>             (void);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* <a href="libgimp-gimp.html#gimp-get-progname">gimp_get_progname</a>              (void);
 void        <a href="libgimp-gimp.html#gimp-extension-enable">gimp_extension_enable</a>           (void);
 void        <a href="libgimp-gimp.html#gimp-extension-ack">gimp_extension_ack</a>              (void);
-void        <a href="libgimp-gimp.html#gimp-extension-process">gimp_extension_process</a>          (guint timeout);
+void        <a href="libgimp-gimp.html#gimp-extension-process">gimp_extension_process</a>          (<a
+href="../glib/glib-Basic-Types.html#guint"
+>guint</a> timeout);
 <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>* <a href="libgimp-gimp.html#gimp-parasite-find">gimp_parasite_find</a>            (const gchar *name);
-gboolean    <a href="libgimp-gimp.html#gimp-parasite-list">gimp_parasite_list</a>              (gint *num_parasites,
-                                             gchar ***parasites);
-gboolean    <a href="libgimp-gimp.html#gimp-parasite-attach">gimp_parasite_attach</a>            (<a
+>GimpParasite</a>* <a href="libgimp-gimp.html#gimp-parasite-find">gimp_parasite_find</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimp.html#gimp-parasite-list">gimp_parasite_list</a>              (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_parasites,
+                                             <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> ***parasites);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimp.html#gimp-parasite-attach">gimp_parasite_attach</a>            (<a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);
-gboolean    <a href="libgimp-gimp.html#gimp-parasite-detach">gimp_parasite_detach</a>            (const gchar *name);
-void        <a href="libgimp-gimp.html#gimp-attach-new-parasite">gimp_attach_new_parasite</a>        (const gchar *name,
-                                             gint flags,
-                                             gint size,
-                                             gconstpointer data);
-</pre></div><div class="refsect1" lang="en"><a name="id2469824"></a><h2>Description</h2><p>
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    <a href="libgimp-gimp.html#gimp-parasite-detach">gimp_parasite_detach</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+void        <a href="libgimp-gimp.html#gimp-attach-new-parasite">gimp_attach_new_parasite</a>        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> flags,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> size,
+                                             <a
+href="../glib/glib-Basic-Types.html#gconstpointer"
+>gconstpointer</a> data);
+</pre></div><div class="refsect1" lang="en"><a name="id2558958"></a><h2>Description</h2><p>
 Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.
 
-</p></div><div class="refsect1" lang="en"><a name="id2469836"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2469841"></a><h3><a name="GIMPVAR:CAPS"></a>GIMPVAR</h3><a class="indexterm" name="id2586343"></a><pre class="programlisting">#define     GIMPVAR</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2558970"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2558975"></a><h3><a name="GIMPVAR:CAPS"></a>GIMPVAR</h3><a class="indexterm" name="id2585477"></a><pre class="programlisting">#define     GIMPVAR</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586353"></a><h3><a name="gimp-version"></a>gimp_version ()</h3><a class="indexterm" name="id2586361"></a><pre class="programlisting">gchar*      gimp_version                    (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585487"></a><h3><a name="gimp-version"></a>gimp_version ()</h3><a class="indexterm" name="id2585495"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*      gimp_version                    (void);</pre><p>
 Returns the host gimp version.
 </p><p>
 This procedure returns the version number of the currently running
 gimp.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The gimp version.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586397"></a><h3><a name="gimp-major-version"></a>gimp_major_version</h3><a class="indexterm" name="id2586406"></a><pre class="programlisting">extern const guint gimp_major_version;
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585532"></a><h3><a name="gimp-major-version"></a>gimp_major_version</h3><a class="indexterm" name="id2585540"></a><pre class="programlisting">extern const guint gimp_major_version;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586415"></a><h3><a name="gimp-minor-version"></a>gimp_minor_version</h3><a class="indexterm" name="id2586424"></a><pre class="programlisting">extern const guint gimp_minor_version;
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585550"></a><h3><a name="gimp-minor-version"></a>gimp_minor_version</h3><a class="indexterm" name="id2585558"></a><pre class="programlisting">extern const guint gimp_minor_version;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586433"></a><h3><a name="gimp-micro-version"></a>gimp_micro_version</h3><a class="indexterm" name="id2586442"></a><pre class="programlisting">extern const guint gimp_micro_version;
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585568"></a><h3><a name="gimp-micro-version"></a>gimp_micro_version</h3><a class="indexterm" name="id2585576"></a><pre class="programlisting">extern const guint gimp_micro_version;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586451"></a><h3><a name="gimp-get-data"></a>gimp_get_data</h3><a class="indexterm" name="id2586460"></a><pre class="programlisting">#define gimp_get_data         gimp_procedural_db_get_data
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585586"></a><h3><a name="gimp-get-data"></a>gimp_get_data</h3><a class="indexterm" name="id2585594"></a><pre class="programlisting">#define gimp_get_data         gimp_procedural_db_get_data
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586470"></a><h3><a name="gimp-get-data-size"></a>gimp_get_data_size</h3><a class="indexterm" name="id2586479"></a><pre class="programlisting">#define gimp_get_data_size    gimp_procedural_db_get_data_size
+</p></div><hr><div class="refsect2" lang="en"><a name="id2466512"></a><h3><a name="gimp-get-data-size"></a>gimp_get_data_size</h3><a class="indexterm" name="id2546544"></a><pre class="programlisting">#define gimp_get_data_size    gimp_procedural_db_get_data_size
 </pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586503"></a><h3><a name="gimp-set-data"></a>gimp_set_data</h3><a class="indexterm" name="id2586512"></a><pre class="programlisting">#define gimp_set_data         gimp_procedural_db_set_data
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2566217"></a><h3><a name="gimp-set-data"></a>gimp_set_data</h3><a class="indexterm" name="id2532930"></a><pre class="programlisting">#define gimp_set_data         gimp_procedural_db_set_data
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586522"></a><h3><a name="GimpInitProc"></a>GimpInitProc ()</h3><a class="indexterm" name="id2586531"></a><pre class="programlisting">void        (*GimpInitProc)                 (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2577273"></a><h3><a name="GimpInitProc"></a>GimpInitProc ()</h3><a class="indexterm" name="id2539731"></a><pre class="programlisting">void        (*GimpInitProc)                 (void);</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586545"></a><h3><a name="GimpQuitProc"></a>GimpQuitProc ()</h3><a class="indexterm" name="id2586554"></a><pre class="programlisting">void        (*GimpQuitProc)                 (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2466482"></a><h3><a name="GimpQuitProc"></a>GimpQuitProc ()</h3><a class="indexterm" name="id2531681"></a><pre class="programlisting">void        (*GimpQuitProc)                 (void);</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586568"></a><h3><a name="GimpQueryProc"></a>GimpQueryProc ()</h3><a class="indexterm" name="id2586577"></a><pre class="programlisting">void        (*GimpQueryProc)                (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585610"></a><h3><a name="GimpQueryProc"></a>GimpQueryProc ()</h3><a class="indexterm" name="id2585617"></a><pre class="programlisting">void        (*GimpQueryProc)                (void);</pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586591"></a><h3><a name="GimpRunProc"></a>GimpRunProc ()</h3><a class="indexterm" name="id2586600"></a><pre class="programlisting">void        (*GimpRunProc)                  (const gchar *name,
-                                             gint n_params,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585630"></a><h3><a name="GimpRunProc"></a>GimpRunProc ()</h3><a class="indexterm" name="id2585638"></a><pre class="programlisting">void        (*GimpRunProc)                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
                                              const <a href="libgimp-gimp.html#GimpParam">GimpParam</a> *param,
-                                             gint *n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *n_return_vals,
                                              <a href="libgimp-gimp.html#GimpParam">GimpParam</a> **return_vals);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>
@@ -161,7 +291,7 @@ gimp.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>return_vals</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586702"></a><h3><a name="GimpPlugInInfo"></a>GimpPlugInInfo</h3><a class="indexterm" name="id2586711"></a><pre class="programlisting">typedef struct {
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585733"></a><h3><a name="GimpPlugInInfo"></a>GimpPlugInInfo</h3><a class="indexterm" name="id2585740"></a><pre class="programlisting">typedef struct {
   /* called when the gimp application initially starts up */
   GimpInitProc  init_proc;
 
@@ -181,14 +311,14 @@ gimp.</p><p>
 } GimpPlugInInfo;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586729"></a><h3><a name="GimpParamDef"></a>GimpParamDef</h3><a class="indexterm" name="id2586737"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585758"></a><h3><a name="GimpParamDef"></a>GimpParamDef</h3><a class="indexterm" name="id2585766"></a><pre class="programlisting">typedef struct {
   GimpPDBArgType  type;
   gchar          *name;
   gchar          *description;
 } GimpParamDef;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586749"></a><h3><a name="GimpParamRegion"></a>GimpParamRegion</h3><a class="indexterm" name="id2586757"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585777"></a><h3><a name="GimpParamRegion"></a>GimpParamRegion</h3><a class="indexterm" name="id2585785"></a><pre class="programlisting">typedef struct {
   gint32 x;
   gint32 y;
   gint32 width;
@@ -196,7 +326,7 @@ gimp.</p><p>
 } GimpParamRegion;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586769"></a><h3><a name="GimpParamData"></a>union GimpParamData</h3><a class="indexterm" name="id2586777"></a><pre class="programlisting">union GimpParamData
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585796"></a><h3><a name="GimpParamData"></a>union GimpParamData</h3><a class="indexterm" name="id2585804"></a><pre class="programlisting">union GimpParamData
 {
   gint32            d_int32;
   gint16            d_int16;
@@ -226,22 +356,28 @@ gimp.</p><p>
 };
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2560108"></a><h3><a name="GimpParam"></a>GimpParam</h3><a class="indexterm" name="id2563258"></a><pre class="programlisting">typedef struct {
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585827"></a><h3><a name="GimpParam"></a>GimpParam</h3><a class="indexterm" name="id2585834"></a><pre class="programlisting">typedef struct {
   GimpPDBArgType type;
   GimpParamData  data;
 } GimpParam;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2529771"></a><h3><a name="MAIN:CAPS"></a>MAIN()</h3><a class="indexterm" name="id2555298"></a><pre class="programlisting">#define     MAIN()</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585845"></a><h3><a name="MAIN:CAPS"></a>MAIN()</h3><a class="indexterm" name="id2585853"></a><pre class="programlisting">#define     MAIN()</pre><p>
 A macro that expands to the appropriate <tt class="function">main()</tt> function for the
 platform being compiled for.
 </p><p>
 To use this macro, simply place a line that contains just the code
 <a href="libgimp-gimp.html#MAIN:CAPS"><tt class="function">MAIN()</tt></a> at the toplevel of your file.  No semicolon should be used.</p><p>
     
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586816"></a><h3><a name="gimp-main"></a>gimp_main ()</h3><a class="indexterm" name="id2586824"></a><pre class="programlisting">gint        gimp_main                       (const <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a> *info,
-                                             gint argc,
-                                             gchar *argv[]);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2585883"></a><h3><a name="gimp-main"></a>gimp_main ()</h3><a class="indexterm" name="id2585891"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        gimp_main                       (const <a href="libgimp-gimp.html#GimpPlugInInfo">GimpPlugInInfo</a> *info,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> argc,
+                                             <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *argv[]);</pre><p>
 The main procedure that must be called with the PLUG_IN_INFO structure
 and the 'argc' and 'argv' that are passed to "main".</p><p>
 
@@ -249,23 +385,43 @@ and the 'argc' and 'argv' that are passed to "main".</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>argc</tt></i> :</span></td><td> the number of arguments
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>argv</tt></i> :</span></td><td> the arguments
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586902"></a><h3><a name="gimp-quit"></a>gimp_quit ()</h3><a class="indexterm" name="id2586909"></a><pre class="programlisting">void        gimp_quit                       (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2585975"></a><h3><a name="gimp-quit"></a>gimp_quit ()</h3><a class="indexterm" name="id2585983"></a><pre class="programlisting">void        gimp_quit                       (void);</pre><p>
 Forcefully causes the gimp library to exit and close down its
 connection to main gimp application. This function never returns.</p><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2586928"></a><h3><a name="gimp-install-procedure"></a>gimp_install_procedure ()</h3><a class="indexterm" name="id2586935"></a><pre class="programlisting">void        gimp_install_procedure          (const gchar *name,
-                                             const gchar *blurb,
-                                             const gchar *help,
-                                             const gchar *author,
-                                             const gchar *copyright,
-                                             const gchar *date,
-                                             const gchar *menu_label,
-                                             const gchar *image_types,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2586003"></a><h3><a name="gimp-install-procedure"></a>gimp_install_procedure ()</h3><a class="indexterm" name="id2586012"></a><pre class="programlisting">void        gimp_install_procedure          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *menu_label,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *image_types,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> type,
-                                             gint n_params,
-                                             gint n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_return_vals,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *params,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *return_vals);</pre><p>
 Installs a new procedure with the PDB (procedural database).
@@ -323,19 +479,39 @@ that will be automatically started on each GIMP startup.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>n_return_vals</tt></i> :</span></td><td> the number of return values the procedure returns.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>        the procedure's parameters.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>return_vals</tt></i> :</span></td><td>   the procedure's return values.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587352"></a><h3><a name="gimp-install-temp-proc"></a>gimp_install_temp_proc ()</h3><a class="indexterm" name="id2587360"></a><pre class="programlisting">void        gimp_install_temp_proc          (const gchar *name,
-                                             const gchar *blurb,
-                                             const gchar *help,
-                                             const gchar *author,
-                                             const gchar *copyright,
-                                             const gchar *date,
-                                             const gchar *menu_label,
-                                             const gchar *image_types,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586437"></a><h3><a name="gimp-install-temp-proc"></a>gimp_install_temp_proc ()</h3><a class="indexterm" name="id2586445"></a><pre class="programlisting">void        gimp_install_temp_proc          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *help,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *author,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *copyright,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *date,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *menu_label,
+                                             const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *image_types,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> type,
-                                             gint n_params,
-                                             gint n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_return_vals,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *params,
                                              const <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *return_vals,
                                              <a href="libgimp-gimp.html#GimpRunProc">GimpRunProc</a> run_proc);</pre><p>
@@ -375,13 +551,19 @@ details.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>        the procedure's parameters.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>return_vals</tt></i> :</span></td><td>   the procedure's return values.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>run_proc</tt></i> :</span></td><td>      the function to call for executing the procedure.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587698"></a><h3><a name="gimp-uninstall-temp-proc"></a>gimp_uninstall_temp_proc ()</h3><a class="indexterm" name="id2587706"></a><pre class="programlisting">void        gimp_uninstall_temp_proc        (const gchar *name);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586783"></a><h3><a name="gimp-uninstall-temp-proc"></a>gimp_uninstall_temp_proc ()</h3><a class="indexterm" name="id2586791"></a><pre class="programlisting">void        gimp_uninstall_temp_proc        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre><p>
 Uninstalls a temporary procedure which has previously been
 installed using <a href="libgimp-gimp.html#gimp-install-temp-proc"><tt class="function">gimp_install_temp_proc()</tt></a>.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> the procedure's name
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587752"></a><h3><a name="gimp-run-procedure"></a>gimp_run_procedure ()</h3><a class="indexterm" name="id2587760"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure              (const gchar *name,
-                                             gint *n_return_vals,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586837"></a><h3><a name="gimp-run-procedure"></a>gimp_run_procedure ()</h3><a class="indexterm" name="id2586845"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *n_return_vals,
                                              ...);</pre><p>
 This function calls a GIMP procedure and returns its return values.
 </p><p>
@@ -395,9 +577,15 @@ and passes them to <a href="libgimp-gimp.html#gimp-run-procedure2"><tt class="fu
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>n_return_vals</tt></i> :</span></td><td> return location for the number of return values
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>...</tt></i> :</span></td><td>       list of procedure parameters
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the procedure's return values.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587860"></a><h3><a name="gimp-run-procedure2"></a>gimp_run_procedure2 ()</h3><a class="indexterm" name="id2587868"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure2             (const gchar *name,
-                                             gint *n_return_vals,
-                                             gint n_params,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2586945"></a><h3><a name="gimp-run-procedure2"></a>gimp_run_procedure2 ()</h3><a class="indexterm" name="id2586954"></a><pre class="programlisting"><a href="libgimp-gimp.html#GimpParam">GimpParam</a>*  gimp_run_procedure2             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *n_return_vals,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params,
                                              const <a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params);</pre><p>
 This function calls a GIMP procedure and returns its return values.</p><p>
 
@@ -406,48 +594,64 @@ This function calls a GIMP procedure and returns its return values.</p><p>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>n_params</tt></i> :</span></td><td>      the number of parameters the procedure takes.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>        the procedure's parameters array.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the procedure's return values.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587969"></a><h3><a name="gimp-destroy-params"></a>gimp_destroy_params ()</h3><a class="indexterm" name="id2587978"></a><pre class="programlisting">void        gimp_destroy_params             (<a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params,
-                                             gint n_params);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587054"></a><h3><a name="gimp-destroy-params"></a>gimp_destroy_params ()</h3><a class="indexterm" name="id2587063"></a><pre class="programlisting">void        gimp_destroy_params             (<a href="libgimp-gimp.html#GimpParam">GimpParam</a> *params,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params);</pre><p>
 Destroys a <a href="libgimp-gimp.html#GimpParam"><span class="type">GimpParam</span></a> array as returned by <a href="libgimp-gimp.html#gimp-run-procedure"><tt class="function">gimp_run_procedure()</tt></a></p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>params</tt></i> :</span></td><td>   the <a href="libgimp-gimp.html#GimpParam"><span class="type">GimpParam</span></a> array to destroy
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>n_params</tt></i> :</span></td><td> the number of elements in the array
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588049"></a><h3><a name="gimp-destroy-paramdefs"></a>gimp_destroy_paramdefs ()</h3><a class="indexterm" name="id2588058"></a><pre class="programlisting">void        gimp_destroy_paramdefs          (<a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *paramdefs,
-                                             gint n_params);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587134"></a><h3><a name="gimp-destroy-paramdefs"></a>gimp_destroy_paramdefs ()</h3><a class="indexterm" name="id2587143"></a><pre class="programlisting">void        gimp_destroy_paramdefs          (<a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> *paramdefs,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> n_params);</pre><p>
 Destroys a <a href="libgimp-gimp.html#GimpParamDef"><span class="type">GimpParamDef</span></a> array as returned by <tt class="function">gimp_query_procedure()</tt></p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>paramdefs</tt></i> :</span></td><td> the <a href="libgimp-gimp.html#GimpParamDef"><span class="type">GimpParamDef</span></a> array to destroy
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>n_params</tt></i> :</span></td><td>  the number of elements in the array
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588129"></a><h3><a name="gimp-tile-width"></a>gimp_tile_width ()</h3><a class="indexterm" name="id2588138"></a><pre class="programlisting">guint       gimp_tile_width                 (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587214"></a><h3><a name="gimp-tile-width"></a>gimp_tile_width ()</h3><a class="indexterm" name="id2587223"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#guint"
+>guint</a>       gimp_tile_width                 (void);</pre><p>
 Returns the tile_width the GIMP is using. This is a constant value
 given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the tile_width
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588171"></a><h3><a name="gimp-tile-height"></a>gimp_tile_height ()</h3><a class="indexterm" name="id2588180"></a><pre class="programlisting">guint       gimp_tile_height                (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587256"></a><h3><a name="gimp-tile-height"></a>gimp_tile_height ()</h3><a class="indexterm" name="id2587265"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#guint"
+>guint</a>       gimp_tile_height                (void);</pre><p>
 Returns the tile_height the GIMP is using. This is a constant value
 given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the tile_height
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588213"></a><h3><a name="gimp-shm-ID"></a>gimp_shm_ID ()</h3><a class="indexterm" name="id2588221"></a><pre class="programlisting">gint        gimp_shm_ID                     (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587298"></a><h3><a name="gimp-shm-ID"></a>gimp_shm_ID ()</h3><a class="indexterm" name="id2587306"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        gimp_shm_ID                     (void);</pre><p>
 Returns the shared memory ID used for passing tile data between the GIMP
 core and the Plug-In. This is a constant value
 given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the shared memory ID
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588256"></a><h3><a name="gimp-shm-addr"></a>gimp_shm_addr ()</h3><a class="indexterm" name="id2588264"></a><pre class="programlisting">guchar*     gimp_shm_addr                   (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587341"></a><h3><a name="gimp-shm-addr"></a>gimp_shm_addr ()</h3><a class="indexterm" name="id2587349"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a>*     gimp_shm_addr                   (void);</pre><p>
 Returns the address of the shared memory segment used for passing
 tile data between the GIMP core and the Plug-In. This is a constant
 value given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the shared memory address
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588298"></a><h3><a name="gimp-gamma"></a>gimp_gamma ()</h3><a class="indexterm" name="id2588307"></a><pre class="programlisting">gdouble     gimp_gamma                      (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587384"></a><h3><a name="gimp-gamma"></a>gimp_gamma ()</h3><a class="indexterm" name="id2587392"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>     gimp_gamma                      (void);</pre><p>
 Returns the global gamma value the GIMP and all its Plug-Ins should
 use. This is a constant value given at Plug-In config time.
 </p><p>
 NOTE: this feature is unimplemented.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the gamma value
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588344"></a><h3><a name="gimp-install-cmap"></a>gimp_install_cmap ()</h3><a class="indexterm" name="id2588352"></a><pre class="programlisting">gboolean    gimp_install_cmap               (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587429"></a><h3><a name="gimp-install-cmap"></a>gimp_install_cmap ()</h3><a class="indexterm" name="id2587437"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_install_cmap               (void);</pre><p>
 Returns whether or not the Plug-In should allocate an own colormap
 when running on an 8 bit display. This is a constant value given at
 Plug-In config time.
@@ -455,7 +659,9 @@ Plug-In config time.
 See also: <a href="libgimp-gimp.html#gimp-min-colors"><tt class="function">gimp_min_colors()</tt></a></p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the install_cmap boolean
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588394"></a><h3><a name="gimp-min-colors"></a>gimp_min_colors ()</h3><a class="indexterm" name="id2588403"></a><pre class="programlisting">gint        gimp_min_colors                 (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587479"></a><h3><a name="gimp-min-colors"></a>gimp_min_colors ()</h3><a class="indexterm" name="id2587488"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        gimp_min_colors                 (void);</pre><p>
 Returns the minimum number of colors to use when allocating an own
 colormap on 8 bit displays. This is a constant value given at
 Plug-In config time.
@@ -463,19 +669,23 @@ Plug-In config time.
 See also: <a href="libgimp-gimp.html#gimp-install-cmap"><tt class="function">gimp_install_cmap()</tt></a></p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the minimum number of colors to allocate
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588445"></a><h3><a name="gimp-show-tool-tips"></a>gimp_show_tool_tips ()</h3><a class="indexterm" name="id2588454"></a><pre class="programlisting">gboolean    gimp_show_tool_tips             (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587530"></a><h3><a name="gimp-show-tool-tips"></a>gimp_show_tool_tips ()</h3><a class="indexterm" name="id2587539"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_show_tool_tips             (void);</pre><p>
 Returns whether or not the Plug-In should show tooltips. This is a
 constant value given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the show_tool_tips boolean
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588486"></a><h3><a name="gimp-show-help-button"></a>gimp_show_help_button ()</h3><a class="indexterm" name="id2588495"></a><pre class="programlisting">gboolean    gimp_show_help_button           (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587571"></a><h3><a name="gimp-show-help-button"></a>gimp_show_help_button ()</h3><a class="indexterm" name="id2587580"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_show_help_button           (void);</pre><p>
 Returns whether or not GimpDialog should automatically add a help
 button if help_func and help_id are given.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the show_help_button boolean
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2588532"></a><h3><a name="gimp-check-size"></a>gimp_check_size ()</h3><a class="indexterm" name="id2588540"></a><pre class="programlisting"><a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2587617"></a><h3><a name="gimp-check-size"></a>gimp_check_size ()</h3><a class="indexterm" name="id2587625"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
 >GimpCheckSize</a> gimp_check_size               (void);</pre><p>
 Returns the size of the checkerboard to be used in previews.
@@ -484,7 +694,7 @@ This is a constant value given at Plug-In config time.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the check_size value
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2588577"></a><h3><a name="gimp-check-type"></a>gimp_check_type ()</h3><a class="indexterm" name="id2588585"></a><pre class="programlisting"><a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2587662"></a><h3><a name="gimp-check-type"></a>gimp_check_type ()</h3><a class="indexterm" name="id2587670"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
 >GimpCheckType</a> gimp_check_type               (void);</pre><p>
 Returns the type of the checkerboard to be used in previews.
@@ -493,32 +703,42 @@ This is a constant value given at Plug-In config time.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the check_type value
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2588622"></a><h3><a name="gimp-default-display"></a>gimp_default_display ()</h3><a class="indexterm" name="id2588631"></a><pre class="programlisting">gint32      gimp_default_display            (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2587707"></a><h3><a name="gimp-default-display"></a>gimp_default_display ()</h3><a class="indexterm" name="id2587716"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>      gimp_default_display            (void);</pre><p>
 Returns the default display ID. This corresponds to the display the
 running procedure's menu entry was invoked from. This is a
 constant value given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the default display ID
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588665"></a><h3><a name="gimp-wm-class"></a>gimp_wm_class ()</h3><a class="indexterm" name="id2588674"></a><pre class="programlisting">const gchar* gimp_wm_class                  (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587750"></a><h3><a name="gimp-wm-class"></a>gimp_wm_class ()</h3><a class="indexterm" name="id2587759"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* gimp_wm_class                  (void);</pre><p>
 Returns the window manager class to be used for plug-in windows.
 This is a constant value given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the window manager class
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588708"></a><h3><a name="gimp-display-name"></a>gimp_display_name ()</h3><a class="indexterm" name="id2588716"></a><pre class="programlisting">const gchar* gimp_display_name              (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587793"></a><h3><a name="gimp-display-name"></a>gimp_display_name ()</h3><a class="indexterm" name="id2587801"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* gimp_display_name              (void);</pre><p>
 Returns the display to be used for plug-in windows.
 This is a constant value given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the display name
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588750"></a><h3><a name="gimp-monitor-number"></a>gimp_monitor_number ()</h3><a class="indexterm" name="id2588758"></a><pre class="programlisting">gint        gimp_monitor_number             (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587835"></a><h3><a name="gimp-monitor-number"></a>gimp_monitor_number ()</h3><a class="indexterm" name="id2587843"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>        gimp_monitor_number             (void);</pre><p>
 Returns the monitor number to be used for plug-in windows.
 This is a constant value given at Plug-In config time.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the monitor number
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588792"></a><h3><a name="gimp-get-progname"></a>gimp_get_progname ()</h3><a class="indexterm" name="id2588800"></a><pre class="programlisting">const gchar* gimp_get_progname              (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587877"></a><h3><a name="gimp-get-progname"></a>gimp_get_progname ()</h3><a class="indexterm" name="id2587885"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>* gimp_get_progname              (void);</pre><p>
 Returns the Plug-In's executable name.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the executable name
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588832"></a><h3><a name="gimp-extension-enable"></a>gimp_extension_enable ()</h3><a class="indexterm" name="id2588840"></a><pre class="programlisting">void        gimp_extension_enable           (void);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587917"></a><h3><a name="gimp-extension-enable"></a>gimp_extension_enable ()</h3><a class="indexterm" name="id2587925"></a><pre class="programlisting">void        gimp_extension_enable           (void);</pre><p>
 Enables asnychronous processing of messages from the main GIMP
 application.
 </p><p>
@@ -533,7 +753,9 @@ to execute them. Usually this will be done by running
 <a href="libgimp-gimp.html#gimp-extension-process"><tt class="function">gimp_extension_process()</tt></a> in an endless loop.
 </p><p>
 If the plug-in cannot use <a href="libgimp-gimp.html#gimp-extension-process"><tt class="function">gimp_extension_process()</tt></a>, i.e. if it has
-a GUI and is hanging around in a <span class="type">GMainLoop</span>, it must call
+a GUI and is hanging around in a <a
+href="../glib/glib-The-Main-Event-Loop.html#GMainLoop"
+><span class="type">GMainLoop</span></a>, it must call
 <a href="libgimp-gimp.html#gimp-extension-enable"><tt class="function">gimp_extension_enable()</tt></a>.
 </p><p>
 Note that the plug-in does not need to be a <span class="type">GIMP_EXTENSION</span> to
@@ -541,7 +763,7 @@ register temporary procedures.
 </p><p>
 See also: <a href="libgimp-gimp.html#gimp-install-procedure"><tt class="function">gimp_install_procedure()</tt></a>, <a href="libgimp-gimp.html#gimp-install-temp-proc"><tt class="function">gimp_install_temp_proc()</tt></a></p><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2588934"></a><h3><a name="gimp-extension-ack"></a>gimp_extension_ack ()</h3><a class="indexterm" name="id2588942"></a><pre class="programlisting">void        gimp_extension_ack              (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2588019"></a><h3><a name="gimp-extension-ack"></a>gimp_extension_ack ()</h3><a class="indexterm" name="id2588027"></a><pre class="programlisting">void        gimp_extension_ack              (void);</pre><p>
 Notify the main GIMP application that the extension has been properly
 initialized and is ready to run.
 </p><p>
@@ -554,7 +776,9 @@ requests using either <a href="libgimp-gimp.html#gimp-extension-enable"><tt clas
 </p><p>
 See also: <a href="libgimp-gimp.html#gimp-install-procedure"><tt class="function">gimp_install_procedure()</tt></a>, <a href="libgimp-gimp.html#gimp-install-temp-proc"><tt class="function">gimp_install_temp_proc()</tt></a></p><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2589008"></a><h3><a name="gimp-extension-process"></a>gimp_extension_process ()</h3><a class="indexterm" name="id2589016"></a><pre class="programlisting">void        gimp_extension_process          (guint timeout);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2588093"></a><h3><a name="gimp-extension-process"></a>gimp_extension_process ()</h3><a class="indexterm" name="id2588101"></a><pre class="programlisting">void        gimp_extension_process          (<a
+href="../glib/glib-Basic-Types.html#guint"
+>guint</a> timeout);</pre><p>
 Processes one message sent by the GIMP and returns.
 </p><p>
 Call this function in an endless loop after calling
@@ -567,9 +791,11 @@ same if running an endless loop is not an option.
 See also: <a href="libgimp-gimp.html#gimp-install-procedure"><tt class="function">gimp_install_procedure()</tt></a>, <a href="libgimp-gimp.html#gimp-install-temp-proc"><tt class="function">gimp_install_temp_proc()</tt></a></p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>timeout</tt></i> :</span></td><td> The timeout (in ms) to use for the <tt class="function">select()</tt> call.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2589098"></a><h3><a name="gimp-parasite-find"></a>gimp_parasite_find ()</h3><a class="indexterm" name="id2589106"></a><pre class="programlisting"><a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588183"></a><h3><a name="gimp-parasite-find"></a>gimp_parasite_find ()</h3><a class="indexterm" name="id2588191"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>* gimp_parasite_find            (const gchar *name);</pre><p>
+>GimpParasite</a>* gimp_parasite_find            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre><p>
 Finds the named parasite.
 </p><p>
 Finds and returns the named parasite that was previously attached to
@@ -577,8 +803,14 @@ the gimp.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The name of the parasite to find.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The found parasite.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2589157"></a><h3><a name="gimp-parasite-list"></a>gimp_parasite_list ()</h3><a class="indexterm" name="id2589166"></a><pre class="programlisting">gboolean    gimp_parasite_list              (gint *num_parasites,
-                                             gchar ***parasites);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588242"></a><h3><a name="gimp-parasite-list"></a>gimp_parasite_list ()</h3><a class="indexterm" name="id2588251"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_parasite_list              (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_parasites,
+                                             <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> ***parasites);</pre><p>
 List all parasites.
 </p><p>
 Returns a list of all currently attached parasites.</p><p>
@@ -586,7 +818,9 @@ Returns a list of all currently attached parasites.</p><p>
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>num_parasites</tt></i> :</span></td><td> The number of attached parasites.
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>parasites</tt></i> :</span></td><td> The names of currently attached parasites.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2589234"></a><h3><a name="gimp-parasite-attach"></a>gimp_parasite_attach ()</h3><a class="indexterm" name="id2589243"></a><pre class="programlisting">gboolean    gimp_parasite_attach            (<a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588319"></a><h3><a name="gimp-parasite-attach"></a>gimp_parasite_attach ()</h3><a class="indexterm" name="id2588328"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_parasite_attach            (<a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);</pre><p>
 Add a parasite to the gimp.
@@ -596,7 +830,11 @@ values.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>parasite</tt></i> :</span></td><td> The parasite to attach to the gimp.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2589294"></a><h3><a name="gimp-parasite-detach"></a>gimp_parasite_detach ()</h3><a class="indexterm" name="id2589302"></a><pre class="programlisting">gboolean    gimp_parasite_detach            (const gchar *name);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588379"></a><h3><a name="gimp-parasite-detach"></a>gimp_parasite_detach ()</h3><a class="indexterm" name="id2588387"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>    gimp_parasite_detach            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre><p>
 Removes a parasite from the gimp.
 </p><p>
 This procedure detaches a parasite from the gimp. It has no return
@@ -604,10 +842,18 @@ values.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The name of the parasite to detach from the gimp.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2589354"></a><h3><a name="gimp-attach-new-parasite"></a>gimp_attach_new_parasite ()</h3><a class="indexterm" name="id2589365"></a><pre class="programlisting">void        gimp_attach_new_parasite        (const gchar *name,
-                                             gint flags,
-                                             gint size,
-                                             gconstpointer data);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588439"></a><h3><a name="gimp-attach-new-parasite"></a>gimp_attach_new_parasite ()</h3><a class="indexterm" name="id2588448"></a><pre class="programlisting">void        gimp_attach_new_parasite        (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> flags,
+                                             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> size,
+                                             <a
+href="../glib/glib-Basic-Types.html#gconstpointer"
+>gconstpointer</a> data);</pre><p>
 Convenience function that creates a parasite and attaches it
 to the GIMP.
 </p><p>

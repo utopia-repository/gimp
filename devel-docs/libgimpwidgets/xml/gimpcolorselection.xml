@@ -136,7 +136,7 @@ Returns the <parameter>selection</parameter>'s <parameter>show_alpha</parameter>
 <varlistentry><term><parameter>selection</parameter>&nbsp;:</term>
 <listitem><simpara> A <link linkend="GimpColorSelection"><type>GimpColorSelection</type></link> widget.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the <link linkend="GimpColorSelection"><type>GimpColorSelection</type></link> has alpha controls.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><type>TRUE</type></link> if the <link linkend="GimpColorSelection"><type>GimpColorSelection</type></link> has alpha controls.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

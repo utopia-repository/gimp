@@ -6,14 +6,20 @@
 void        <a href="libgimp-gimptile.html#gimp-tile-ref">gimp_tile_ref</a>                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
 void        <a href="libgimp-gimptile.html#gimp-tile-ref-zero">gimp_tile_ref_zero</a>              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
 void        <a href="libgimp-gimptile.html#gimp-tile-unref">gimp_tile_unref</a>                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
-                                             gboolean dirty);
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dirty);
 void        <a href="libgimp-gimptile.html#gimp-tile-flush">gimp_tile_flush</a>                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);
-void        <a href="libgimp-gimptile.html#gimp-tile-cache-size">gimp_tile_cache_size</a>            (gulong kilobytes);
-void        <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles">gimp_tile_cache_ntiles</a>          (gulong ntiles);
-</pre></div><div class="refsect1" lang="en"><a name="id2633165"></a><h2>Description</h2><p>
+void        <a href="libgimp-gimptile.html#gimp-tile-cache-size">gimp_tile_cache_size</a>            (<a
+href="../glib/glib-Basic-Types.html#gulong"
+>gulong</a> kilobytes);
+void        <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles">gimp_tile_cache_ntiles</a>          (<a
+href="../glib/glib-Basic-Types.html#gulong"
+>gulong</a> ntiles);
+</pre></div><div class="refsect1" lang="en"><a name="id2611959"></a><h2>Description</h2><p>
 Functions for working with tiles.
 
-</p></div><div class="refsect1" lang="en"><a name="id2633175"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2633180"></a><h3><a name="GimpTile"></a>GimpTile</h3><a class="indexterm" name="id2633189"></a><pre class="programlisting">typedef struct {
+</p></div><div class="refsect1" lang="en"><a name="id2611968"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2611974"></a><h3><a name="GimpTile"></a>GimpTile</h3><a class="indexterm" name="id2611982"></a><pre class="programlisting">typedef struct {
   guint         ewidth;     /* the effective width of the tile */
   guint         eheight;    /* the effective height of the tile */
   guint         bpp;        /* the bytes per pixel (1, 2, 3 or 4 ) */
@@ -26,35 +32,41 @@ Functions for working with tiles.
 } GimpTile;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2642607"></a><h3><a name="gimp-tile-ref"></a>gimp_tile_ref ()</h3><a class="indexterm" name="id2558118"></a><pre class="programlisting">void        gimp_tile_ref                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2576529"></a><h3><a name="gimp-tile-ref"></a>gimp_tile_ref ()</h3><a class="indexterm" name="id2528491"></a><pre class="programlisting">void        gimp_tile_ref                   (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2545681"></a><h3><a name="gimp-tile-ref-zero"></a>gimp_tile_ref_zero ()</h3><a class="indexterm" name="id2633208"></a><pre class="programlisting">void        gimp_tile_ref_zero              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2574266"></a><h3><a name="gimp-tile-ref-zero"></a>gimp_tile_ref_zero ()</h3><a class="indexterm" name="id2534797"></a><pre class="programlisting">void        gimp_tile_ref_zero              (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2620259"></a><h3><a name="gimp-tile-unref"></a>gimp_tile_unref ()</h3><a class="indexterm" name="id2620266"></a><pre class="programlisting">void        gimp_tile_unref                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
-                                             gboolean dirty);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2612007"></a><h3><a name="gimp-tile-unref"></a>gimp_tile_unref ()</h3><a class="indexterm" name="id2615617"></a><pre class="programlisting">void        gimp_tile_unref                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile,
+                                             <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dirty);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><i class="parameter"><tt>dirty</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2620313"></a><h3><a name="gimp-tile-flush"></a>gimp_tile_flush ()</h3><a class="indexterm" name="id2620321"></a><pre class="programlisting">void        gimp_tile_flush                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2615664"></a><h3><a name="gimp-tile-flush"></a>gimp_tile_flush ()</h3><a class="indexterm" name="id2615672"></a><pre class="programlisting">void        gimp_tile_flush                 (<a href="libgimp-gimptile.html#GimpTile">GimpTile</a> *tile);</pre><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tile</tt></i> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2620352"></a><h3><a name="gimp-tile-cache-size"></a>gimp_tile_cache_size ()</h3><a class="indexterm" name="id2620359"></a><pre class="programlisting">void        gimp_tile_cache_size            (gulong kilobytes);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2615703"></a><h3><a name="gimp-tile-cache-size"></a>gimp_tile_cache_size ()</h3><a class="indexterm" name="id2615710"></a><pre class="programlisting">void        gimp_tile_cache_size            (<a
+href="../glib/glib-Basic-Types.html#gulong"
+>gulong</a> kilobytes);</pre><p>
 Sets the size of the tile cache on the plug-in side. The tile cache
 is used to reduce the number of tiles exchanged between the GIMP core
 and the plug-in. See also <a href="libgimp-gimptile.html#gimp-tile-cache-ntiles"><tt class="function">gimp_tile_cache_ntiles()</tt></a>.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>kilobytes</tt></i> :</span></td><td> new cache size in kilobytes
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2634131"></a><h3><a name="gimp-tile-cache-ntiles"></a>gimp_tile_cache_ntiles ()</h3><a class="indexterm" name="id2634139"></a><pre class="programlisting">void        gimp_tile_cache_ntiles          (gulong ntiles);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2615753"></a><h3><a name="gimp-tile-cache-ntiles"></a>gimp_tile_cache_ntiles ()</h3><a class="indexterm" name="id2635403"></a><pre class="programlisting">void        gimp_tile_cache_ntiles          (<a
+href="../glib/glib-Basic-Types.html#gulong"
+>gulong</a> ntiles);</pre><p>
 Sets the size of the tile cache on the plug-in side. This function
 is similar to <a href="libgimp-gimptile.html#gimp-tile-cache-size"><tt class="function">gimp_tile_cache_size()</tt></a> but allows to specify the
 number of tiles directly.

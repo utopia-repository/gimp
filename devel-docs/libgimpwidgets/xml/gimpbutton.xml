@@ -108,7 +108,7 @@ Emits the button's "extended_clicked" signal.</para>
 <listitem><simpara> a <link linkend="GimpButton"><type>GimpButton</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>state</parameter>&nbsp;:</term>
-<listitem><simpara>  a state as found in <link linkend="GdkEventButton-"><type>GdkEventButton-</type></link>>state, e.g. <link linkend="GDK-SHIFT-MASK--CAPS"><type>GDK_SHIFT_MASK</type></link>.
+<listitem><simpara>  a state as found in <link linkend="GdkEventButton-"><type>GdkEventButton-</type></link>>state, e.g. <link linkend="GDK-SHIFT-MASK:CAPS"><type>GDK_SHIFT_MASK</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

@@ -124,7 +124,7 @@ interpreted relative to this rootdir.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-plugin-menu-register"/>gimp_plugin_menu_register ()</title>
-<indexterm role="GIMP"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_menu_register       (const <link linkend="gchar">gchar</link> *procedure_name,
+<indexterm role="GIMP 2.2"><primary>gimp_plugin_menu_register</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_plugin_menu_register       (const <link linkend="gchar">gchar</link> *procedure_name,
                                              const <link linkend="gchar">gchar</link> *menu_path);</programlisting>
 <para>
 Register an additional menu path for a plug-in procedure.

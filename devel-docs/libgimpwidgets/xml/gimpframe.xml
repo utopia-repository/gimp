@@ -79,7 +79,7 @@ A widget providing a HIG-compliant subclass of <link linkend="GtkFrame"><type>Gt
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-frame-new"/>gimp_frame_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_frame_new                  (const <link linkend="gchar">gchar</link> *label);</programlisting>
+<indexterm role="GIMP"><primary>gimp_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_frame_new                  (const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
 Creates a <link linkend="GimpFrame"><type>GimpFrame</type></link> widget. A <link linkend="GimpFrame"><type>GimpFrame</type></link> is a HIG-compliant
 variant of <link linkend="GtkFrame"><type>GtkFrame</type></link>. It doesn't render a frame at all but

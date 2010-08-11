@@ -119,7 +119,7 @@ edit buffer.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-edit-copy-visible"/>gimp_edit_copy_visible ()</title>
-<indexterm role="GIMP"><primary>gimp_edit_copy_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_copy_visible          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm role="GIMP 2.2"><primary>gimp_edit_copy_visible</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_edit_copy_visible          (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Copy from the projection.
 </para>

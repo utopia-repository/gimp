@@ -59,7 +59,7 @@
 
 
 #ifdef RCSID
-static char rcsid[] = "$Id: newsprint.c,v 1.69.2.2 2005/06/21 22:11:36 weskaggs Exp $";
+static char rcsid[] = "$Id: newsprint.c 17745 2005-06-21 22:11:36Z weskaggs $";
 #endif
 
 #define VERSION "v0.60"

@@ -4,16 +4,19 @@
 
 <refentry id="libgimpcolor-GimpBilinear">
 <refmeta>
-<refentrytitle>GimpBilinear</refentrytitle>
+<refentrytitle role="top_of_page">GimpBilinear</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCOLOR Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpBilinear</refname><refpurpose></refpurpose>
+<refname>GimpBilinear</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -54,17 +57,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-bilinear"/>gimp_bilinear ()</title>
+<title><anchor id="gimp-bilinear" role="function"/>gimp_bilinear ()</title>
 <indexterm><primary>gimp_bilinear</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_bilinear                   (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="gdouble">gdouble</link> *values);</programlisting>
@@ -86,7 +89,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-bilinear-8"/>gimp_bilinear_8 ()</title>
+<title><anchor id="gimp-bilinear-8" role="function"/>gimp_bilinear_8 ()</title>
 <indexterm><primary>gimp_bilinear_8</primary></indexterm><programlisting><link linkend="guchar">guchar</link>      gimp_bilinear_8                 (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="guchar">guchar</link> *values);</programlisting>
@@ -108,7 +111,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-bilinear-16"/>gimp_bilinear_16 ()</title>
+<title><anchor id="gimp-bilinear-16" role="function"/>gimp_bilinear_16 ()</title>
 <indexterm><primary>gimp_bilinear_16</primary></indexterm><programlisting><link linkend="guint16">guint16</link>     gimp_bilinear_16                (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="guint16">guint16</link> *values);</programlisting>
@@ -130,7 +133,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-bilinear-32"/>gimp_bilinear_32 ()</title>
+<title><anchor id="gimp-bilinear-32" role="function"/>gimp_bilinear_32 ()</title>
 <indexterm><primary>gimp_bilinear_32</primary></indexterm><programlisting><link linkend="guint32">guint32</link>     gimp_bilinear_32                (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="guint32">guint32</link> *values);</programlisting>
@@ -152,7 +155,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-bilinear-rgb"/>gimp_bilinear_rgb ()</title>
+<title><anchor id="gimp-bilinear-rgb" role="function"/>gimp_bilinear_rgb ()</title>
 <indexterm><primary>gimp_bilinear_rgb</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>     gimp_bilinear_rgb               (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
@@ -174,7 +177,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-bilinear-rgba"/>gimp_bilinear_rgba ()</title>
+<title><anchor id="gimp-bilinear-rgba" role="function"/>gimp_bilinear_rgba ()</title>
 <indexterm><primary>gimp_bilinear_rgba</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>     gimp_bilinear_rgba              (<link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
                                              <link linkend="GimpRGB">GimpRGB</link> *values);</programlisting>
@@ -196,7 +199,7 @@
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-bilinear-pixels-8"/>gimp_bilinear_pixels_8 ()</title>
+<title><anchor id="gimp-bilinear-pixels-8" role="function"/>gimp_bilinear_pixels_8 ()</title>
 <indexterm><primary>gimp_bilinear_pixels_8</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_bilinear_pixels_8          (<link linkend="guchar">guchar</link> *dest,
                                              <link linkend="gdouble">gdouble</link> x,
                                              <link linkend="gdouble">gdouble</link> y,
@@ -207,8 +210,8 @@
 Computes bilinear interpolation of four pixels.
 </para>
 <para>
-When <parameter>has_alpha</parameter> is <literal>FALSE</literal>, it's identical to <link linkend="gimp-bilinear-8"><function>gimp_bilinear_8()</function></link> on
-each channel separately.  When <parameter>has_alpha</parameter> is <literal>TRUE</literal>, it handles
+When <parameter>has_alpha</parameter> is <link linkend="FALSE:CAPS"><literal>FALSE</literal></link>, it's identical to <link linkend="gimp-bilinear-8"><function>gimp_bilinear_8()</function></link> on
+each channel separately.  When <parameter>has_alpha</parameter> is <link linkend="TRUE:CAPS"><literal>TRUE</literal></link>, it handles
 alpha channel correctly.
 </para>
 <para>
@@ -231,7 +234,7 @@ following order: [0,0], [1,0], [0,1], [1,1].</para>
    <parameter>bpp</parameter> bytes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>has_alpha</parameter>&nbsp;:</term>
-<listitem><simpara> <literal>TRUE</literal> if the last channel is an alpha channel.
+<listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the last channel is an alpha channel.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>values</parameter>&nbsp;:</term>
 <listitem><simpara> Array of four pointers to pixels.

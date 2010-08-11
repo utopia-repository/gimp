@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimptexttool</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpselection.html" title="gimpselection">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimptile.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2533779" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2563339" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2619181" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2652487" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptexttool"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2533779"></a><span class="refentrytitle">gimptexttool</span>
+<a name="id2563339"></a><span class="refentrytitle">gimptexttool</span>
 </h2>
 <p>gimptexttool &#8212; Functions for controlling the text tool.</p>
 </td>
@@ -102,18 +102,18 @@ gboolean    <a href="libgimp-gimptexttool.html#gimp-text-get-extents">gimp_text_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619181"></a><h2>Description</h2>
+<a name="id2652487"></a><h2>Description</h2>
 <p>
 Functions for controlling the text tool.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619196"></a><h2>Details</h2>
+<a name="id2652502"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619207"></a><h3>
+<a name="id2652513"></a><h3>
 <a name="gimp-text-fontname"></a>gimp_text_fontname ()</h3>
-<a class="indexterm" name="id2619219"></a><pre class="programlisting">gint32      gimp_text_fontname              (gint32 image_ID,
+<a class="indexterm" name="id2652526"></a><pre class="programlisting">gint32      gimp_text_fontname              (gint32 image_ID,
                                              gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
@@ -145,68 +145,57 @@ The border is measured in pixels.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable: (-1 for a new text layer).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> The x coordinate for the left of the text bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> The y coordinate for the top of the text bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
 <td> The text to generate (in UTF-8 encoding).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>border</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>border</code></em>&#160;:</span></td>
 <td> The size of the border.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
 <td> The size of text in either pixels or points.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
 <td> The units of specified size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>fontname</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>fontname</code></em>&#160;:</span></td>
 <td> The name of the font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new text layer or -1 if no layer was created.
 </td>
 </tr>
@@ -215,9 +204,9 @@ The border is measured in pixels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604246"></a><h3>
+<a name="id2650229"></a><h3>
 <a name="gimp-text-get-extents-fontname"></a>gimp_text_get_extents_fontname ()</h3>
-<a class="indexterm" name="id2604257"></a><pre class="programlisting">gboolean    gimp_text_get_extents_fontname  (const gchar *text,
+<a class="indexterm" name="id2650240"></a><pre class="programlisting">gboolean    gimp_text_get_extents_fontname  (const gchar *text,
                                              gdouble size,
                                              <a href="libgimp-gimpenums.html#GimpSizeType">GimpSizeType</a> size_type,
                                              const gchar *fontname,
@@ -239,56 +228,47 @@ and descent for the specified font are returned as well.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
 <td> The text to generate (in UTF-8 encoding).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
 <td> The size of text in either pixels or points.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
 <td> The units of specified size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>fontname</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>fontname</code></em>&#160;:</span></td>
 <td> The name of the font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The width of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The height of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>ascent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>ascent</code></em>&#160;:</span></td>
 <td> The ascent of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>descent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>descent</code></em>&#160;:</span></td>
 <td> The descent of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -297,9 +277,9 @@ and descent for the specified font are returned as well.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604470"></a><h3>
+<a name="id2650453"></a><h3>
 <a name="gimp-text"></a>gimp_text ()</h3>
-<a class="indexterm" name="id2604485"></a><pre class="programlisting">gint32      gimp_text                       (gint32 image_ID,
+<a class="indexterm" name="id2650468"></a><pre class="programlisting">gint32      gimp_text                       (gint32 image_ID,
                                              gint32 drawable_ID,
                                              gdouble x,
                                              gdouble y,
@@ -329,110 +309,92 @@ This procedure is deprecated! Use <a href="libgimp-gimptexttool.html#gimp-text-f
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
 <td> The affected drawable: (-1 for a new text layer).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td> The x coordinate for the left of the text bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td> The y coordinate for the top of the text bounding box.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
 <td> The text to generate (in UTF-8 encoding).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>border</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>border</code></em>&#160;:</span></td>
 <td> The size of the border.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
 <td> The size of text in either pixels or points.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
 <td> The units of specified size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>foundry</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>foundry</code></em>&#160;:</span></td>
 <td> The font foundry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>family</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>family</code></em>&#160;:</span></td>
 <td> The font family.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>weight</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>weight</code></em>&#160;:</span></td>
 <td> The font weight.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>slant</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>slant</code></em>&#160;:</span></td>
 <td> The font slant.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>set_width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>set_width</code></em>&#160;:</span></td>
 <td> The font set-width.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td> The font spacing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>registry</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>registry</code></em>&#160;:</span></td>
 <td> The font registry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>encoding</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>encoding</code></em>&#160;:</span></td>
 <td> The font encoding.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new text layer or -1 if no layer was created.
 </td>
 </tr>
@@ -441,9 +403,9 @@ This procedure is deprecated! Use <a href="libgimp-gimptexttool.html#gimp-text-f
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626352"></a><h3>
+<a name="id2659334"></a><h3>
 <a name="gimp-text-get-extents"></a>gimp_text_get_extents ()</h3>
-<a class="indexterm" name="id2626364"></a><pre class="programlisting">gboolean    gimp_text_get_extents           (const gchar *text,
+<a class="indexterm" name="id2659346"></a><pre class="programlisting">gboolean    gimp_text_get_extents           (const gchar *text,
                                              gdouble size,
                                              <a href="libgimp-gimpenums.html#GimpSizeType">GimpSizeType</a> size_type,
                                              const gchar *foundry,
@@ -472,98 +434,82 @@ instead.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
 <td> The text to generate (in UTF-8 encoding).
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size</code></em>&#160;:</span></td>
 <td> The size of text in either pixels or points.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>size_type</code></em>&#160;:</span></td>
 <td> The units of specified size.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>foundry</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>foundry</code></em>&#160;:</span></td>
 <td> The font foundry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>family</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>family</code></em>&#160;:</span></td>
 <td> The font family.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>weight</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>weight</code></em>&#160;:</span></td>
 <td> The font weight.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>slant</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>slant</code></em>&#160;:</span></td>
 <td> The font slant.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>set_width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>set_width</code></em>&#160;:</span></td>
 <td> The font set-width.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td> The font spacing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>registry</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>registry</code></em>&#160;:</span></td>
 <td> The font registry.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>encoding</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>encoding</code></em>&#160;:</span></td>
 <td> The font encoding.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
 <td> The width of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
 <td> The height of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>ascent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>ascent</code></em>&#160;:</span></td>
 <td> The ascent of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>descent</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>descent</code></em>&#160;:</span></td>
 <td> The descent of the specified font.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

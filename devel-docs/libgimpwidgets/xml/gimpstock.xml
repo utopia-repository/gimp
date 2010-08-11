@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-GimpStock">
 <refmeta>
-<refentrytitle id="top_of_page">GimpStock</refentrytitle>
+<refentrytitle role="top_of_page">GimpStock</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -213,8 +213,8 @@
 
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 GIMP registers a set of menu/toolbar items and corresponding icons in
 addition to the standard GTK+ stock items. These can be used just like
@@ -227,8 +227,8 @@ locales.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="gimp-stock-init" role="function"/>gimp_stock_init ()</title>
 <indexterm><primary>gimp_stock_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_stock_init                 (void);</programlisting>

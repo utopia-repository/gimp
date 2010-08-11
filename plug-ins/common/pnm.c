@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: pnm.c,v 1.52 2004/12/12 17:18:03 weskaggs Exp $ */
+/* $Id: pnm.c 15909 2004-12-12 17:18:03Z weskaggs $ */
 
 /*
  * The pnm reading and writing code was written from scratch by Erik Nygren

@@ -23,7 +23,7 @@ static void
 init_trace_version (void)
 {
   setvar (cintern ("*trace-version*"),
-	  cintern ("$Id: trace.c,v 1.4 2003/12/04 13:21:25 mitch Exp $"),
+	  cintern ("$Id: trace.c 11692 2003-12-04 13:21:27Z mitch $"),
 	  NIL);
 }
 

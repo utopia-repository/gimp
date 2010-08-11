@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpgradientmenu</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpfontmenu.html" title="gimpfontmenu">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppalettemenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2566190" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2557401" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2660182" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2688539" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgradientmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2566190"></a><span class="refentrytitle">gimpgradientmenu</span>
+<a name="id2557401"></a><span class="refentrytitle">gimpgradientmenu</span>
 </h2>
 <p>gimpgradientmenu &#8212; A widget for selecting gradients.</p>
 </td>
@@ -60,17 +60,17 @@ void        <a href="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-s
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660182"></a><h2>Description</h2>
+<a name="id2688539"></a><h2>Description</h2>
 <p>
 A widget for selecting gradients.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660197"></a><h2>Details</h2>
+<a name="id2688555"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2660208"></a><h3>
+<a name="id2688565"></a><h3>
 <a name="gimp-gradient-select-widget-new"></a>gimp_gradient_select_widget_new ()</h3>
-<a class="indexterm" name="id2660219"></a><pre class="programlisting">GtkWidget*  gimp_gradient_select_widget_new (const gchar *title,
+<a class="indexterm" name="id2688576"></a><pre class="programlisting">GtkWidget*  gimp_gradient_select_widget_new (const gchar *title,
                                              const gchar *gradient_name,
                                              <a href="libgimp-gimpgradientselect.html#GimpRunGradientCallback">GimpRunGradientCallback</a> callback,
                                              gpointer data);</pre>
@@ -85,33 +85,28 @@ plug-in dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>         Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gradient_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gradient_name</code></em>&#160;:</span></td>
 <td> Initial gradient name or <code class="literal">NULL</code> to use current selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>      A function to call when the selected gradient changes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>          A pointer to arbitary data to be used in the call to
                 <em class="parameter"><code>callback</code></em>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <span class="type">GtkWidget</span> that you can use in your UI.
 </td>
 </tr>
@@ -120,9 +115,9 @@ plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2660382"></a><h3>
+<a name="id2690856"></a><h3>
 <a name="gimp-gradient-select-widget-close"></a>gimp_gradient_select_widget_close ()</h3>
-<a class="indexterm" name="id2653072"></a><pre class="programlisting">void        gimp_gradient_select_widget_close
+<a class="indexterm" name="id2690868"></a><pre class="programlisting">void        gimp_gradient_select_widget_close
                                             (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
@@ -132,8 +127,7 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td> A gradient select widget.
 </td>
 </tr></tbody>
@@ -141,9 +135,9 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653127"></a><h3>
+<a name="id2692779"></a><h3>
 <a name="gimp-gradient-select-widget-set"></a>gimp_gradient_select_widget_set ()</h3>
-<a class="indexterm" name="id2653138"></a><pre class="programlisting">void        gimp_gradient_select_widget_set (GtkWidget *widget,
+<a class="indexterm" name="id2692790"></a><pre class="programlisting">void        gimp_gradient_select_widget_set (GtkWidget *widget,
                                              const gchar *gradient_name);</pre>
 <p>
 Sets the current gradient for the gradient select widget.  Calls
@@ -156,14 +150,12 @@ the callback function if one was supplied in the call to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td>        A gradient select widget.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gradient_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gradient_name</code></em>&#160;:</span></td>
 <td> Gradient name to set.
 </td>
 </tr>

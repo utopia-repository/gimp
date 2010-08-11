@@ -1,5 +1,5 @@
 /*
- * "$Id: png.c,v 1.118.2.2 2006/06/05 04:30:17 kcozens Exp $"
+ * "$Id: png.c 19978 2006-06-05 04:30:17Z kcozens $"
  *
  *   Portable Network Graphics (PNG) plug-in for The GIMP -- an image
  *   manipulation program

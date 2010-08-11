@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpwire</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpprotocol.html" title="gimpprotocol">
@@ -20,16 +20,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td>&#160;</td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574773" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581368" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2575161" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2558512" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpwire"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2574773"></a><span class="refentrytitle">gimpwire</span>
+<a name="id2581368"></a><span class="refentrytitle">gimpwire</span>
 </h2>
 <p>gimpwire &#8212; The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.</p>
@@ -125,7 +125,7 @@ gboolean    <a href="libgimpbase-gimpwire.html#wire-write-string">wire_write_str
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575161"></a><h2>Description</h2>
+<a name="id2558512"></a><h2>Description</h2>
 <p>
 The lowlevel I/O protocol used for communication between GIMP and
 it's plug-ins.
@@ -133,11 +133,11 @@ it's plug-ins.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2581608"></a><h2>Details</h2>
+<a name="id2614586"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2581618"></a><h3>
+<a name="id2614595"></a><h3>
 <a name="WireMessage"></a>WireMessage</h3>
-<a class="indexterm" name="id2581628"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2614606"></a><pre class="programlisting">typedef struct {
   guint32  type;
   gpointer data;
 } WireMessage;
@@ -148,9 +148,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581642"></a><h3>
+<a name="id2614619"></a><h3>
 <a name="WireReadFunc"></a>WireReadFunc ()</h3>
-<a class="indexterm" name="id2581652"></a><pre class="programlisting">void        (*WireReadFunc)                 (GIOChannel *channel,
+<a class="indexterm" name="id2614630"></a><pre class="programlisting">void        (*WireReadFunc)                 (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                              gpointer user_data);</pre>
 <p>
@@ -160,20 +160,17 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -184,9 +181,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581730"></a><h3>
+<a name="id2614707"></a><h3>
 <a name="WireWriteFunc"></a>WireWriteFunc ()</h3>
-<a class="indexterm" name="id2581740"></a><pre class="programlisting">void        (*WireWriteFunc)                (GIOChannel *channel,
+<a class="indexterm" name="id2614718"></a><pre class="programlisting">void        (*WireWriteFunc)                (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                              gpointer user_data);</pre>
 <p>
@@ -196,20 +193,17 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -220,17 +214,16 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581827"></a><h3>
+<a name="id2614806"></a><h3>
 <a name="WireDestroyFunc"></a>WireDestroyFunc ()</h3>
-<a class="indexterm" name="id2581839"></a><pre class="programlisting">void        (*WireDestroyFunc)              (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
+<a class="indexterm" name="id2614818"></a><pre class="programlisting">void        (*WireDestroyFunc)              (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
 <td>
 
 
@@ -240,9 +233,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2581884"></a><h3>
+<a name="id2614863"></a><h3>
 <a name="WireIOFunc"></a>WireIOFunc ()</h3>
-<a class="indexterm" name="id2581897"></a><pre class="programlisting">gboolean    (*WireIOFunc)                   (GIOChannel *channel,
+<a class="indexterm" name="id2614875"></a><pre class="programlisting">gboolean    (*WireIOFunc)                   (GIOChannel *channel,
                                              guint8 *buf,
                                              gulong count,
                                              gpointer user_data);</pre>
@@ -253,32 +246,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -289,9 +277,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582016"></a><h3>
+<a name="id2614994"></a><h3>
 <a name="WireFlushFunc"></a>WireFlushFunc ()</h3>
-<a class="indexterm" name="id2582029"></a><pre class="programlisting">gboolean    (*WireFlushFunc)                (GIOChannel *channel,
+<a class="indexterm" name="id2615006"></a><pre class="programlisting">gboolean    (*WireFlushFunc)                (GIOChannel *channel,
                                              gpointer user_data);</pre>
 <p>
 
@@ -300,20 +288,17 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -324,9 +309,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582106"></a><h3>
+<a name="id2615084"></a><h3>
 <a name="wire-register"></a>wire_register ()</h3>
-<a class="indexterm" name="id2582119"></a><pre class="programlisting">void        wire_register                   (guint32 type,
+<a class="indexterm" name="id2615097"></a><pre class="programlisting">void        wire_register                   (guint32 type,
                                              <a href="libgimpbase-gimpwire.html#WireReadFunc">WireReadFunc</a> read_func,
                                              <a href="libgimpbase-gimpwire.html#WireWriteFunc">WireWriteFunc</a> write_func,
                                              <a href="libgimpbase-gimpwire.html#WireDestroyFunc">WireDestroyFunc</a> destroy_func);</pre>
@@ -337,26 +322,22 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>read_func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>type</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>write_func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>read_func</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>write_func</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>destroy_func</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>destroy_func</code></em>&#160;:</span></td>
 <td>
 
 
@@ -367,17 +348,16 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582229"></a><h3>
+<a name="id2615207"></a><h3>
 <a name="wire-set-reader"></a>wire_set_reader ()</h3>
-<a class="indexterm" name="id2582241"></a><pre class="programlisting">void        wire_set_reader                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> read_func);</pre>
+<a class="indexterm" name="id2615219"></a><pre class="programlisting">void        wire_set_reader                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> read_func);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>read_func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>read_func</code></em>&#160;:</span></td>
 <td>
 
 
@@ -387,17 +367,16 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582287"></a><h3>
+<a name="id2615265"></a><h3>
 <a name="wire-set-writer"></a>wire_set_writer ()</h3>
-<a class="indexterm" name="id2582300"></a><pre class="programlisting">void        wire_set_writer                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> write_func);</pre>
+<a class="indexterm" name="id2615278"></a><pre class="programlisting">void        wire_set_writer                 (<a href="libgimpbase-gimpwire.html#WireIOFunc">WireIOFunc</a> write_func);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>write_func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>write_func</code></em>&#160;:</span></td>
 <td>
 
 
@@ -407,17 +386,16 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582346"></a><h3>
+<a name="id2615324"></a><h3>
 <a name="wire-set-flusher"></a>wire_set_flusher ()</h3>
-<a class="indexterm" name="id2582358"></a><pre class="programlisting">void        wire_set_flusher                (<a href="libgimpbase-gimpwire.html#WireFlushFunc">WireFlushFunc</a> flush_func);</pre>
+<a class="indexterm" name="id2615336"></a><pre class="programlisting">void        wire_set_flusher                (<a href="libgimpbase-gimpwire.html#WireFlushFunc">WireFlushFunc</a> flush_func);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>flush_func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>flush_func</code></em>&#160;:</span></td>
 <td>
 
 
@@ -427,9 +405,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2548461"></a><h3>
+<a name="id2615382"></a><h3>
 <a name="wire-read"></a>wire_read ()</h3>
-<a class="indexterm" name="id2540191"></a><pre class="programlisting">gboolean    wire_read                       (GIOChannel *channel,
+<a class="indexterm" name="id2615394"></a><pre class="programlisting">gboolean    wire_read                       (GIOChannel *channel,
                                              guint8 *buf,
                                              gsize count,
                                              gpointer user_data);</pre>
@@ -440,32 +418,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -476,9 +449,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582496"></a><h3>
+<a name="id2615514"></a><h3>
 <a name="wire-write"></a>wire_write ()</h3>
-<a class="indexterm" name="id2582506"></a><pre class="programlisting">gboolean    wire_write                      (GIOChannel *channel,
+<a class="indexterm" name="id2615526"></a><pre class="programlisting">gboolean    wire_write                      (GIOChannel *channel,
                                              guint8 *buf,
                                              gsize count,
                                              gpointer user_data);</pre>
@@ -489,32 +462,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -525,9 +493,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582613"></a><h3>
+<a name="id2615646"></a><h3>
 <a name="wire-flush"></a>wire_flush ()</h3>
-<a class="indexterm" name="id2582624"></a><pre class="programlisting">gboolean    wire_flush                      (GIOChannel *channel,
+<a class="indexterm" name="id2615658"></a><pre class="programlisting">gboolean    wire_flush                      (GIOChannel *channel,
                                              gpointer user_data);</pre>
 <p>
 
@@ -536,20 +504,17 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -560,17 +525,16 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582693"></a><h3>
+<a name="id2615736"></a><h3>
 <a name="wire-error"></a>wire_error ()</h3>
-<a class="indexterm" name="id2582703"></a><pre class="programlisting">gboolean    wire_error                      (void);</pre>
+<a class="indexterm" name="id2615748"></a><pre class="programlisting">gboolean    wire_error                      (void);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -580,18 +544,18 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582735"></a><h3>
+<a name="id2615784"></a><h3>
 <a name="wire-clear-error"></a>wire_clear_error ()</h3>
-<a class="indexterm" name="id2582746"></a><pre class="programlisting">void        wire_clear_error                (void);</pre>
+<a class="indexterm" name="id2615796"></a><pre class="programlisting">void        wire_clear_error                (void);</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582764"></a><h3>
+<a name="id2615817"></a><h3>
 <a name="wire-read-msg"></a>wire_read_msg ()</h3>
-<a class="indexterm" name="id2582775"></a><pre class="programlisting">gboolean    wire_read_msg                   (GIOChannel *channel,
+<a class="indexterm" name="id2615830"></a><pre class="programlisting">gboolean    wire_read_msg                   (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                              gpointer user_data);</pre>
 <p>
@@ -601,26 +565,22 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -631,9 +591,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582863"></a><h3>
+<a name="id2615929"></a><h3>
 <a name="wire-write-msg"></a>wire_write_msg ()</h3>
-<a class="indexterm" name="id2582873"></a><pre class="programlisting">gboolean    wire_write_msg                  (GIOChannel *channel,
+<a class="indexterm" name="id2615941"></a><pre class="programlisting">gboolean    wire_write_msg                  (GIOChannel *channel,
                                              <a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg,
                                              gpointer user_data);</pre>
 <p>
@@ -643,26 +603,22 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -673,17 +629,16 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2582961"></a><h3>
+<a name="id2616040"></a><h3>
 <a name="wire-destroy"></a>wire_destroy ()</h3>
-<a class="indexterm" name="id2582972"></a><pre class="programlisting">void        wire_destroy                    (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
+<a class="indexterm" name="id2604497"></a><pre class="programlisting">void        wire_destroy                    (<a href="libgimpbase-gimpwire.html#WireMessage">WireMessage</a> *msg);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>msg</code></em>&#160;:</span></td>
 <td>
 
 
@@ -693,9 +648,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583012"></a><h3>
+<a name="id2616072"></a><h3>
 <a name="wire-read-int32"></a>wire_read_int32 ()</h3>
-<a class="indexterm" name="id2583022"></a><pre class="programlisting">gboolean    wire_read_int32                 (GIOChannel *channel,
+<a class="indexterm" name="id2616082"></a><pre class="programlisting">gboolean    wire_read_int32                 (GIOChannel *channel,
                                              guint32 *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -706,32 +661,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -742,9 +692,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583129"></a><h3>
+<a name="id2616189"></a><h3>
 <a name="wire-read-int16"></a>wire_read_int16 ()</h3>
-<a class="indexterm" name="id2583140"></a><pre class="programlisting">gboolean    wire_read_int16                 (GIOChannel *channel,
+<a class="indexterm" name="id2616199"></a><pre class="programlisting">gboolean    wire_read_int16                 (GIOChannel *channel,
                                              guint16 *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -755,32 +705,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -791,9 +736,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583247"></a><h3>
+<a name="id2616306"></a><h3>
 <a name="wire-read-int8"></a>wire_read_int8 ()</h3>
-<a class="indexterm" name="id2583257"></a><pre class="programlisting">gboolean    wire_read_int8                  (GIOChannel *channel,
+<a class="indexterm" name="id2616317"></a><pre class="programlisting">gboolean    wire_read_int8                  (GIOChannel *channel,
                                              guint8 *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -804,32 +749,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -840,9 +780,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583364"></a><h3>
+<a name="id2616424"></a><h3>
 <a name="wire-read-double"></a>wire_read_double ()</h3>
-<a class="indexterm" name="id2583374"></a><pre class="programlisting">gboolean    wire_read_double                (GIOChannel *channel,
+<a class="indexterm" name="id2616434"></a><pre class="programlisting">gboolean    wire_read_double                (GIOChannel *channel,
                                              gdouble *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -853,32 +793,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -889,9 +824,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583481"></a><h3>
+<a name="id2616541"></a><h3>
 <a name="wire-read-string"></a>wire_read_string ()</h3>
-<a class="indexterm" name="id2583492"></a><pre class="programlisting">gboolean    wire_read_string                (GIOChannel *channel,
+<a class="indexterm" name="id2616551"></a><pre class="programlisting">gboolean    wire_read_string                (GIOChannel *channel,
                                              gchar **data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -902,32 +837,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -938,9 +868,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583599"></a><h3>
+<a name="id2616658"></a><h3>
 <a name="wire-write-int32"></a>wire_write_int32 ()</h3>
-<a class="indexterm" name="id2583609"></a><pre class="programlisting">gboolean    wire_write_int32                (GIOChannel *channel,
+<a class="indexterm" name="id2616669"></a><pre class="programlisting">gboolean    wire_write_int32                (GIOChannel *channel,
                                              guint32 *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -951,32 +881,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -987,9 +912,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583716"></a><h3>
+<a name="id2616776"></a><h3>
 <a name="wire-write-int16"></a>wire_write_int16 ()</h3>
-<a class="indexterm" name="id2583726"></a><pre class="programlisting">gboolean    wire_write_int16                (GIOChannel *channel,
+<a class="indexterm" name="id2616786"></a><pre class="programlisting">gboolean    wire_write_int16                (GIOChannel *channel,
                                              guint16 *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -1000,32 +925,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1036,9 +956,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583833"></a><h3>
+<a name="id2616893"></a><h3>
 <a name="wire-write-int8"></a>wire_write_int8 ()</h3>
-<a class="indexterm" name="id2583844"></a><pre class="programlisting">gboolean    wire_write_int8                 (GIOChannel *channel,
+<a class="indexterm" name="id2616903"></a><pre class="programlisting">gboolean    wire_write_int8                 (GIOChannel *channel,
                                              guint8 *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -1049,32 +969,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1085,9 +1000,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583951"></a><h3>
+<a name="id2617010"></a><h3>
 <a name="wire-write-double"></a>wire_write_double ()</h3>
-<a class="indexterm" name="id2583961"></a><pre class="programlisting">gboolean    wire_write_double               (GIOChannel *channel,
+<a class="indexterm" name="id2617021"></a><pre class="programlisting">gboolean    wire_write_double               (GIOChannel *channel,
                                              gdouble *data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -1098,32 +1013,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1134,9 +1044,9 @@ it's plug-ins.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2584068"></a><h3>
+<a name="id2617128"></a><h3>
 <a name="wire-write-string"></a>wire_write_string ()</h3>
-<a class="indexterm" name="id2584078"></a><pre class="programlisting">gboolean    wire_write_string               (GIOChannel *channel,
+<a class="indexterm" name="id2617138"></a><pre class="programlisting">gboolean    wire_write_string               (GIOChannel *channel,
                                              gchar **data,
                                              gint count,
                                              gpointer user_data);</pre>
@@ -1147,32 +1057,27 @@ it's plug-ins.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>channel</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>count</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -1183,7 +1088,7 @@ it's plug-ins.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2584186"></a><h2>See Also</h2>
+<a name="id2617246"></a><h2>See Also</h2>
 <p>
 <span class="type">libgimp-gimpprotocol</span>
 </p>

@@ -1,7 +1,7 @@
 /*
  * file: hot/hot.c
  *
- * $Id: hot.c,v 1.38 2004/10/12 21:48:38 mitch Exp $
+ * $Id: hot.c 15087 2004-10-12 21:48:39Z mitch $
  */
 
 /*

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpbrushmenu</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpmenu.html" title="gimpmenu">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfontmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2527580" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582326" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2653512" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2685218" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrushmenu"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2527580"></a><span class="refentrytitle">gimpbrushmenu</span>
+<a name="id2582326"></a><span class="refentrytitle">gimpbrushmenu</span>
 </h2>
 <p>gimpbrushmenu &#8212; A widget for selecting brushes.</p>
 </td>
@@ -65,17 +65,17 @@ void        <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-set">gi
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2653512"></a><h2>Description</h2>
+<a name="id2685218"></a><h2>Description</h2>
 <p>
 A widget for selecting brushes.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2653527"></a><h2>Details</h2>
+<a name="id2685233"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2653538"></a><h3>
+<a name="id2685244"></a><h3>
 <a name="gimp-brush-select-widget-new"></a>gimp_brush_select_widget_new ()</h3>
-<a class="indexterm" name="id2653549"></a><pre class="programlisting">GtkWidget*  gimp_brush_select_widget_new    (const gchar *title,
+<a class="indexterm" name="id2685255"></a><pre class="programlisting">GtkWidget*  gimp_brush_select_widget_new    (const gchar *title,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -95,50 +95,42 @@ a plug-in dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>      Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
 <td> Initial brush name or <code class="literal">NULL</code> to use current selection.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td>    Initial opacity. -1 means to use current opacity.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td>    Initial spacing. -1 means to use current spacing.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td> Initial paint mode.  -1 means to use current paint mode.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>   A function to call when the selected brush changes.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       A pointer to arbitary data to be used in the call to <em class="parameter"><code>callback</code></em>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A <span class="type">GtkWidget</span> that you can use in your UI.
 </td>
 </tr>
@@ -147,9 +139,9 @@ a plug-in dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2659139"></a><h3>
+<a name="id2691750"></a><h3>
 <a name="gimp-brush-select-widget-close"></a>gimp_brush_select_widget_close ()</h3>
-<a class="indexterm" name="id2659150"></a><pre class="programlisting">void        gimp_brush_select_widget_close  (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2691761"></a><pre class="programlisting">void        gimp_brush_select_widget_close  (GtkWidget *widget);</pre>
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
@@ -158,8 +150,7 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td> A brush select widget.
 </td>
 </tr></tbody>
@@ -167,9 +158,9 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656735"></a><h3>
+<a name="id2691815"></a><h3>
 <a name="gimp-brush-select-widget-set"></a>gimp_brush_select_widget_set ()</h3>
-<a class="indexterm" name="id2656746"></a><pre class="programlisting">void        gimp_brush_select_widget_set    (GtkWidget *widget,
+<a class="indexterm" name="id2691826"></a><pre class="programlisting">void        gimp_brush_select_widget_set    (GtkWidget *widget,
                                              const gchar *brush_name,
                                              gdouble opacity,
                                              gint spacing,
@@ -185,32 +176,27 @@ call to <a href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new"><code 
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td>     A brush select widget.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>brush_name</code></em>&#160;:</span></td>
 <td> Brush name to set; <code class="literal">NULL</code> means no change.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
 <td>    Opacity to set. -1 means no change.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>spacing</code></em>&#160;:</span></td>
 <td>    Spacing to set. -1 means no change.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
 <td> Paint mode to set.  -1 means no change.
 </td>
 </tr>

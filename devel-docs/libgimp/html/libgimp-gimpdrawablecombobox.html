@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpdrawablecombobox</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="prev" href="GimpDrawablePreview.html" title="GimpDrawablePreview">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpimagecombobox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577567" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2595488" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2648025" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2684429" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpdrawablecombobox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2577567"></a><span class="refentrytitle">gimpdrawablecombobox</span>
+<a name="id2595488"></a><span class="refentrytitle">gimpdrawablecombobox</span>
 </h2>
 <p>gimpdrawablecombobox &#8212; A widget providing a popup menu of drawables.</p>
 </td>
@@ -61,17 +61,17 @@ GtkWidget*  <a href="libgimp-gimpdrawablecombobox.html#gimp-layer-combo-box-new"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2648025"></a><h2>Description</h2>
+<a name="id2684429"></a><h2>Description</h2>
 <p>
 A widget providing a popup menu of drawables.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2648041"></a><h2>Details</h2>
+<a name="id2684445"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2648052"></a><h3>
+<a name="id2684455"></a><h3>
 <a name="GimpDrawableConstraintFunc"></a>GimpDrawableConstraintFunc ()</h3>
-<a class="indexterm" name="id2648063"></a><pre class="programlisting">gboolean    (*GimpDrawableConstraintFunc)   (gint32 image_id,
+<a class="indexterm" name="id2684467"></a><pre class="programlisting">gboolean    (*GimpDrawableConstraintFunc)   (gint32 image_id,
                                              gint32 drawable_id,
                                              gpointer data);</pre>
 <p>
@@ -81,26 +81,22 @@ A widget providing a popup menu of drawables.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>image_id</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable_id</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>image_id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable_id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -111,9 +107,9 @@ A widget providing a popup menu of drawables.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648160"></a><h3>
+<a name="id2688306"></a><h3>
 <a name="gimp-drawable-combo-box-new"></a>gimp_drawable_combo_box_new ()</h3>
-<a class="indexterm" name="id2648173"></a><pre class="programlisting">GtkWidget*  gimp_drawable_combo_box_new     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+<a class="indexterm" name="id2688319"></a><pre class="programlisting">GtkWidget*  gimp_drawable_combo_box_new     (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a
@@ -141,20 +137,17 @@ of the selected drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
 <td> a <a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <code class="literal">NULL</code>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       a pointer that is passed to <em class="parameter"><code>constraint</code></em>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a>.
@@ -168,9 +161,9 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649494"></a><h3>
+<a name="id2688484"></a><h3>
 <a name="gimp-channel-combo-box-new"></a>gimp_channel_combo_box_new ()</h3>
-<a class="indexterm" name="id2649507"></a><pre class="programlisting">GtkWidget*  gimp_channel_combo_box_new      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+<a class="indexterm" name="id2686765"></a><pre class="programlisting">GtkWidget*  gimp_channel_combo_box_new      (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a
@@ -184,20 +177,17 @@ channels. See <code class="function">gimp_drawable_combo_box()</code> for more i
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
 <td> a <a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <code class="literal">NULL</code>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       a pointer that is passed to <em class="parameter"><code>constraint</code></em>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a>.
@@ -211,9 +201,9 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649635"></a><h3>
+<a name="id2686892"></a><h3>
 <a name="gimp-layer-combo-box-new"></a>gimp_layer_combo_box_new ()</h3>
-<a class="indexterm" name="id2649648"></a><pre class="programlisting">GtkWidget*  gimp_layer_combo_box_new        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+<a class="indexterm" name="id2686905"></a><pre class="programlisting">GtkWidget*  gimp_layer_combo_box_new        (<a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                              gpointer data);</pre>
 <p>
 Creates a new <a
@@ -227,20 +217,17 @@ layers. See <code class="function">gimp_drawable_combo_box()</code> for more inf
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>constraint</code></em>&#160;:</span></td>
 <td> a <a href="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <code class="literal">NULL</code>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>       a pointer that is passed to <em class="parameter"><code>constraint</code></em>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a>.

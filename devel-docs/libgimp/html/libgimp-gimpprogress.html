@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpprogress</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-image.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2536579" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2561187" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2575763" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2608692" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpprogress"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2536579"></a><span class="refentrytitle">gimpprogress</span>
+<a name="id2561187"></a><span class="refentrytitle">gimpprogress</span>
 </h2>
 <p>gimpprogress &#8212; Functions for embedding the progress bar into a plug-in's GUI.</p>
 </td>
@@ -69,17 +69,17 @@ gboolean    <a href="libgimp-gimpprogress.html#gimp-progress-cancel">gimp_progre
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575763"></a><h2>Description</h2>
+<a name="id2608692"></a><h2>Description</h2>
 <p>
 Functions for embedding the progress bar into a plug-in's GUI.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575780"></a><h2>Details</h2>
+<a name="id2608709"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2575791"></a><h3>
+<a name="id2608719"></a><h3>
 <a name="GimpProgressStartCallback"></a>GimpProgressStartCallback ()</h3>
-<a class="indexterm" name="id2575802"></a><pre class="programlisting">void        (*GimpProgressStartCallback)    (const gchar *message,
+<a class="indexterm" name="id2608731"></a><pre class="programlisting">void        (*GimpProgressStartCallback)    (const gchar *message,
                                              gboolean cancelable,
                                              gpointer user_data);</pre>
 <p>
@@ -89,20 +89,17 @@ Functions for embedding the progress bar into a plug-in's GUI.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>cancelable</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>cancelable</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -113,17 +110,16 @@ Functions for embedding the progress bar into a plug-in's GUI.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2575890"></a><h3>
+<a name="id2608818"></a><h3>
 <a name="GimpProgressEndCallback"></a>GimpProgressEndCallback ()</h3>
-<a class="indexterm" name="id2575901"></a><pre class="programlisting">void        (*GimpProgressEndCallback)      (gpointer user_data);</pre>
+<a class="indexterm" name="id2608830"></a><pre class="programlisting">void        (*GimpProgressEndCallback)      (gpointer user_data);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -133,9 +129,9 @@ Functions for embedding the progress bar into a plug-in's GUI.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2575946"></a><h3>
+<a name="id2608874"></a><h3>
 <a name="GimpProgressTextCallback"></a>GimpProgressTextCallback ()</h3>
-<a class="indexterm" name="id2575957"></a><pre class="programlisting">void        (*GimpProgressTextCallback)     (const gchar *message,
+<a class="indexterm" name="id2608886"></a><pre class="programlisting">void        (*GimpProgressTextCallback)     (const gchar *message,
                                              gpointer user_data);</pre>
 <p>
 
@@ -144,14 +140,12 @@ Functions for embedding the progress bar into a plug-in's GUI.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -162,9 +156,9 @@ Functions for embedding the progress bar into a plug-in's GUI.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2523190"></a><h3>
+<a name="id2567422"></a><h3>
 <a name="GimpProgressValueCallback"></a>GimpProgressValueCallback ()</h3>
-<a class="indexterm" name="id2523202"></a><pre class="programlisting">void        (*GimpProgressValueCallback)    (gdouble percentage,
+<a class="indexterm" name="id2567433"></a><pre class="programlisting">void        (*GimpProgressValueCallback)    (gdouble percentage,
                                              gpointer user_data);</pre>
 <p>
 
@@ -173,14 +167,12 @@ Functions for embedding the progress bar into a plug-in's GUI.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>percentage</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>percentage</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -191,9 +183,9 @@ Functions for embedding the progress bar into a plug-in's GUI.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2523268"></a><h3>
+<a name="id2567499"></a><h3>
 <a name="gimp-progress-init"></a>gimp_progress_init ()</h3>
-<a class="indexterm" name="id2523280"></a><pre class="programlisting">gboolean    gimp_progress_init              (const gchar *message);</pre>
+<a class="indexterm" name="id2567511"></a><pre class="programlisting">gboolean    gimp_progress_init              (const gchar *message);</pre>
 <p>
 Initializes the progress bar for the current plug-in.
 </p>
@@ -207,14 +199,12 @@ valid to call this procedure from a plug-in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
 <td> Message to use in the progress dialog.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -223,9 +213,9 @@ valid to call this procedure from a plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2523345"></a><h3>
+<a name="id2567578"></a><h3>
 <a name="gimp-progress-update"></a>gimp_progress_update ()</h3>
-<a class="indexterm" name="id2523356"></a><pre class="programlisting">gboolean    gimp_progress_update            (gdouble percentage);</pre>
+<a class="indexterm" name="id2567589"></a><pre class="programlisting">gboolean    gimp_progress_update            (gdouble percentage);</pre>
 <p>
 Updates the progress bar for the current plug-in.
 </p>
@@ -239,14 +229,12 @@ to call this procedure from a plug-in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>percentage</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>percentage</code></em>&#160;:</span></td>
 <td> Percentage of progress completed which must be between 0.0 and 1.0.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -255,9 +243,9 @@ to call this procedure from a plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2523423"></a><h3>
+<a name="id2567656"></a><h3>
 <a name="gimp-progress-install"></a>gimp_progress_install ()</h3>
-<a class="indexterm" name="id2523436"></a><pre class="programlisting">const gchar* gimp_progress_install          (<a href="libgimp-gimpprogress.html#GimpProgressStartCallback">GimpProgressStartCallback</a> start_callback,
+<a class="indexterm" name="id2567670"></a><pre class="programlisting">const gchar* gimp_progress_install          (<a href="libgimp-gimpprogress.html#GimpProgressStartCallback">GimpProgressStartCallback</a> start_callback,
                                              <a href="libgimp-gimpprogress.html#GimpProgressEndCallback">GimpProgressEndCallback</a> end_callback,
                                              <a href="libgimp-gimpprogress.html#GimpProgressTextCallback">GimpProgressTextCallback</a> text_callback,
                                              <a href="libgimp-gimpprogress.html#GimpProgressValueCallback">GimpProgressValueCallback</a> value_callback,
@@ -271,38 +259,32 @@ to call this procedure from a plug-in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>start_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>start_callback</code></em>&#160;:</span></td>
 <td> the function to call when progress starts
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>end_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>end_callback</code></em>&#160;:</span></td>
 <td>   the function to call when progress finishes
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>text_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>text_callback</code></em>&#160;:</span></td>
 <td>  the function to call to change the text
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>value_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>value_callback</code></em>&#160;:</span></td>
 <td> the function to call to change the value
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>      a pointer that is returned when uninstalling the progress
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the name of the temporary procedure that's been installed
 
 </td>
@@ -314,9 +296,9 @@ to call this procedure from a plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2545274"></a><h3>
+<a name="id2600633"></a><h3>
 <a name="gimp-progress-uninstall"></a>gimp_progress_uninstall ()</h3>
-<a class="indexterm" name="id2545287"></a><pre class="programlisting">gpointer    gimp_progress_uninstall         (const gchar *progress_callback);</pre>
+<a class="indexterm" name="id2600647"></a><pre class="programlisting">gpointer    gimp_progress_uninstall         (const gchar *progress_callback);</pre>
 <p>
 Uninstalls a temporary progress procedure that was installed using
 <a href="libgimp-gimpprogress.html#gimp-progress-install"><code class="function">gimp_progress_install()</code></a>.</p>
@@ -327,14 +309,12 @@ Uninstalls a temporary progress procedure that was installed using
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>progress_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>progress_callback</code></em>&#160;:</span></td>
 <td> the name of the temporary procedure to uninstall
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the <em class="parameter"><code>user_data</code></em> that was passed to <a href="libgimp-gimpprogress.html#gimp-progress-install"><code class="function">gimp_progress_install()</code></a>.
 
 </td>
@@ -346,9 +326,9 @@ Uninstalls a temporary progress procedure that was installed using
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2545376"></a><h3>
+<a name="id2600736"></a><h3>
 <a name="gimp-progress-cancel"></a>gimp_progress_cancel ()</h3>
-<a class="indexterm" name="id2545390"></a><pre class="programlisting">gboolean    gimp_progress_cancel            (const gchar *progress_callback);</pre>
+<a class="indexterm" name="id2600750"></a><pre class="programlisting">gboolean    gimp_progress_cancel            (const gchar *progress_callback);</pre>
 <p>
 Cancels a running progress.
 </p>
@@ -361,14 +341,12 @@ This function cancels the currently running progress.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>progress_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>progress_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this progress.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 
 </td>

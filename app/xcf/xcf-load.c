@@ -190,8 +190,17 @@ xcf_load_image (Gimp    *gimp,
 
       /* add the layer to the image if its not the floating selection */
       if (layer != info->floating_sel)
-        gimp_image_add_layer (gimage, layer,
-                              gimp_container_num_children (gimage->layers));
+        {
+          gint position = gimp_container_num_children (gimage->layers);
+
+          /*  GIMP 2.2 wants an alpha channel for layers above the
+           *  background layer
+           */
+          if (position > 0)
+            gimp_layer_add_alpha (layer);
+
+          gimp_image_add_layer (gimage, layer, position);
+        }
 
       /* restore the saved position so we'll be ready to
        *  read the next offset.
@@ -229,7 +238,8 @@ xcf_load_image (Gimp    *gimp,
 
       /* add the channel to the image if its not the selection */
       if (channel != gimage->selection_mask)
-        gimp_image_add_channel (gimage, channel, -1);
+        gimp_image_add_channel (gimage, channel,
+                                gimp_container_num_children (gimage->channels));
 
       /* restore the saved position so we'll be ready to
        *  read the next offset.
@@ -935,6 +945,9 @@ xcf_load_layer (XcfInfo   *info,
       layer_mask->edit_mask  = edit_mask;
       layer_mask->show_mask  = show_mask;
 
+      /*  GIMP 2.2 wants an alpha channel for layers with masks  */
+      gimp_layer_add_alpha (layer);
+
       gimp_layer_add_mask (layer, layer_mask, FALSE);
     }
 
@@ -1292,6 +1305,15 @@ xcf_load_tile_rle (XcfInfo *info,
   gint i, j;
   gint nmemb_read_successfully;
   guchar *xcfdata, *xcfodata, *xcfdatalimit;
+
+  /* Workaround for bug #357809: avoid crashing on g_malloc() and skip
+   * this tile (return TRUE without storing data) as if it did not
+   * contain any data.  It is better than returning FALSE, which would
+   * skip the whole hierarchy while there may still be some valid
+   * tiles in the file.
+   */
+  if (data_length <= 0)
+    return TRUE;
 
   data = tile_data_pointer (tile, 0, 0);
   bpp = tile_bpp (tile);

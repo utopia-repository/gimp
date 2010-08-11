@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpregioniterator</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimppixelrgn.html" title="gimppixelrgn">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpselection.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2539869" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588038" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2618358" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2651475" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpregioniterator"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2539869"></a><span class="refentrytitle">gimpregioniterator</span>
+<a name="id2588038"></a><span class="refentrytitle">gimpregioniterator</span>
 </h2>
 <p>gimpregioniterator &#8212; Functions to traverse a pixel regions.</p>
 </td>
@@ -96,7 +96,7 @@ void        <a href="libgimp-gimpregioniterator.html#gimp-rgn-iterate2">gimp_rgn
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2618358"></a><h2>Description</h2>
+<a name="id2651475"></a><h2>Description</h2>
 <p>
 The GimpRgnIterator functions provide a variety
 of common ways to traverse a PixelRegion,
@@ -104,20 +104,20 @@ using a pre-defined function pointer per pixel.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2618376"></a><h2>Details</h2>
+<a name="id2651493"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2618387"></a><h3>
+<a name="id2651504"></a><h3>
 <a name="GimpRgnIterator"></a>GimpRgnIterator</h3>
-<a class="indexterm" name="id2618399"></a><pre class="programlisting">typedef struct _GimpRgnIterator GimpRgnIterator;</pre>
+<a class="indexterm" name="id2651516"></a><pre class="programlisting">typedef struct _GimpRgnIterator GimpRgnIterator;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618416"></a><h3>
+<a name="id2651533"></a><h3>
 <a name="GimpRgnFunc1"></a>GimpRgnFunc1 ()</h3>
-<a class="indexterm" name="id2618428"></a><pre class="programlisting">void        (*GimpRgnFunc1)                 (const guchar *src,
+<a class="indexterm" name="id2651545"></a><pre class="programlisting">void        (*GimpRgnFunc1)                 (const guchar *src,
                                              gint bpp,
                                              gpointer data);</pre>
 <p>
@@ -127,20 +127,17 @@ using a pre-defined function pointer per pixel.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -151,9 +148,9 @@ using a pre-defined function pointer per pixel.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2618516"></a><h3>
+<a name="id2651633"></a><h3>
 <a name="GimpRgnFunc2"></a>GimpRgnFunc2 ()</h3>
-<a class="indexterm" name="id2618528"></a><pre class="programlisting">void        (*GimpRgnFunc2)                 (const guchar *src,
+<a class="indexterm" name="id2651646"></a><pre class="programlisting">void        (*GimpRgnFunc2)                 (const guchar *src,
                                              guchar *dest,
                                              gint bpp,
                                              gpointer data);</pre>
@@ -164,26 +161,22 @@ using a pre-defined function pointer per pixel.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -194,9 +187,9 @@ using a pre-defined function pointer per pixel.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608258"></a><h3>
+<a name="id2634143"></a><h3>
 <a name="GimpRgnFuncSrc"></a>GimpRgnFuncSrc ()</h3>
-<a class="indexterm" name="id2608271"></a><pre class="programlisting">void        (*GimpRgnFuncSrc)               (gint x,
+<a class="indexterm" name="id2634155"></a><pre class="programlisting">void        (*GimpRgnFuncSrc)               (gint x,
                                              gint y,
                                              const guchar *src,
                                              gint bpp,
@@ -208,32 +201,27 @@ using a pre-defined function pointer per pixel.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -244,9 +232,9 @@ using a pre-defined function pointer per pixel.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608400"></a><h3>
+<a name="id2634284"></a><h3>
 <a name="GimpRgnFuncDest"></a>GimpRgnFuncDest ()</h3>
-<a class="indexterm" name="id2608412"></a><pre class="programlisting">void        (*GimpRgnFuncDest)              (gint x,
+<a class="indexterm" name="id2634296"></a><pre class="programlisting">void        (*GimpRgnFuncDest)              (gint x,
                                              gint y,
                                              guchar *dest,
                                              gint bpp,
@@ -258,32 +246,27 @@ using a pre-defined function pointer per pixel.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -294,9 +277,9 @@ using a pre-defined function pointer per pixel.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621771"></a><h3>
+<a name="id2654764"></a><h3>
 <a name="GimpRgnFuncSrcDest"></a>GimpRgnFuncSrcDest ()</h3>
-<a class="indexterm" name="id2621782"></a><pre class="programlisting">void        (*GimpRgnFuncSrcDest)           (gint x,
+<a class="indexterm" name="id2654775"></a><pre class="programlisting">void        (*GimpRgnFuncSrcDest)           (gint x,
                                              gint y,
                                              const guchar *src,
                                              guchar *dest,
@@ -309,38 +292,32 @@ using a pre-defined function pointer per pixel.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>src</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -351,9 +328,9 @@ using a pre-defined function pointer per pixel.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621918"></a><h3>
+<a name="id2654911"></a><h3>
 <a name="gimp-rgn-iterator-new"></a>gimp_rgn_iterator_new ()</h3>
-<a class="indexterm" name="id2621929"></a><pre class="programlisting"><a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a>* gimp_rgn_iterator_new      (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a class="indexterm" name="id2654922"></a><pre class="programlisting"><a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a>* gimp_rgn_iterator_new      (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
                                              <a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> unused);</pre>
 <p>
 Creates a new <a href="libgimp-gimpregioniterator.html#GimpRgnIterator"><span class="type">GimpRgnIterator</span></a> for <em class="parameter"><code>drawable</code></em>. The <a href="libgimp-gimpenums.html#GimpRunMode"><span class="type">GimpRunMode</span></a>
@@ -365,20 +342,17 @@ parameter is ignored.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
 <td> a <a href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>unused</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unused</code></em>&#160;:</span></td>
 <td>   ignored
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a newly allocated <a href="libgimp-gimpregioniterator.html#GimpRgnIterator"><span class="type">GimpRgnIterator</span></a>.
 </td>
 </tr>
@@ -387,9 +361,9 @@ parameter is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622044"></a><h3>
+<a name="id2655038"></a><h3>
 <a name="gimp-rgn-iterator-free"></a>gimp_rgn_iterator_free ()</h3>
-<a class="indexterm" name="id2622056"></a><pre class="programlisting">void        gimp_rgn_iterator_free          (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter);</pre>
+<a class="indexterm" name="id2655049"></a><pre class="programlisting">void        gimp_rgn_iterator_free          (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter);</pre>
 <p>
 Frees the resources allocated for <em class="parameter"><code>iter</code></em>.</p>
 <p>
@@ -398,8 +372,7 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
 <td> a <a href="libgimp-gimpregioniterator.html#GimpRgnIterator"><span class="type">GimpRgnIterator</span></a>
 </td>
 </tr></tbody>
@@ -407,9 +380,9 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622118"></a><h3>
+<a name="id2655112"></a><h3>
 <a name="gimp-rgn-iterator-src"></a>gimp_rgn_iterator_src ()</h3>
-<a class="indexterm" name="id2622129"></a><pre class="programlisting">void        gimp_rgn_iterator_src           (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter,
+<a class="indexterm" name="id2655123"></a><pre class="programlisting">void        gimp_rgn_iterator_src           (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter,
                                              <a href="libgimp-gimpregioniterator.html#GimpRgnFuncSrc">GimpRgnFuncSrc</a> func,
                                              gpointer data);</pre>
 <p>
@@ -419,20 +392,17 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -443,9 +413,9 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622218"></a><h3>
+<a name="id2655211"></a><h3>
 <a name="gimp-rgn-iterator-dest"></a>gimp_rgn_iterator_dest ()</h3>
-<a class="indexterm" name="id2622229"></a><pre class="programlisting">void        gimp_rgn_iterator_dest          (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter,
+<a class="indexterm" name="id2655222"></a><pre class="programlisting">void        gimp_rgn_iterator_dest          (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter,
                                              <a href="libgimp-gimpregioniterator.html#GimpRgnFuncDest">GimpRgnFuncDest</a> func,
                                              gpointer data);</pre>
 <p>
@@ -455,20 +425,17 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -479,9 +446,9 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622317"></a><h3>
+<a name="id2655310"></a><h3>
 <a name="gimp-rgn-iterator-src-dest"></a>gimp_rgn_iterator_src_dest ()</h3>
-<a class="indexterm" name="id2622328"></a><pre class="programlisting">void        gimp_rgn_iterator_src_dest      (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter,
+<a class="indexterm" name="id2655321"></a><pre class="programlisting">void        gimp_rgn_iterator_src_dest      (<a href="libgimp-gimpregioniterator.html#GimpRgnIterator">GimpRgnIterator</a> *iter,
                                              <a href="libgimp-gimpregioniterator.html#GimpRgnFuncSrcDest">GimpRgnFuncSrcDest</a> func,
                                              gpointer data);</pre>
 <p>
@@ -491,20 +458,17 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>iter</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -515,9 +479,9 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622416"></a><h3>
+<a name="id2655410"></a><h3>
 <a name="gimp-rgn-iterate1"></a>gimp_rgn_iterate1 ()</h3>
-<a class="indexterm" name="id2622429"></a><pre class="programlisting">void        gimp_rgn_iterate1               (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a class="indexterm" name="id2655422"></a><pre class="programlisting">void        gimp_rgn_iterate1               (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
                                              <a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> unused,
                                              <a href="libgimp-gimpregioniterator.html#GimpRgnFunc1">GimpRgnFunc1</a> func,
                                              gpointer data);</pre>
@@ -528,26 +492,22 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>unused</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unused</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -558,9 +518,9 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622538"></a><h3>
+<a name="id2655531"></a><h3>
 <a name="gimp-rgn-iterate2"></a>gimp_rgn_iterate2 ()</h3>
-<a class="indexterm" name="id2622550"></a><pre class="programlisting">void        gimp_rgn_iterate2               (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+<a class="indexterm" name="id2655544"></a><pre class="programlisting">void        gimp_rgn_iterate2               (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
                                              <a href="libgimp-gimpenums.html#GimpRunMode">GimpRunMode</a> unused,
                                              <a href="libgimp-gimpregioniterator.html#GimpRgnFunc2">GimpRgnFunc2</a> func,
                                              gpointer data);</pre>
@@ -571,26 +531,22 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>unused</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>unused</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>func</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td>
 
 

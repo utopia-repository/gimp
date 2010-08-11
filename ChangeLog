@@ -1,3 +1,240 @@
+2007-04-18  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.14 release.
+
+2007-04-17  Sven Neumann  <sven@gimp.org>
+
+	* INSTALL
+	* HACKING: merged some changes from trunk, mostly dealing with the
+	switch from CVS to Subversion.
+
+2007-04-16  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/Lighting/lighting_ui.c: applied patch from Aurimas
+	Juška that fixes sensitivity of input fields related to the light
+	type (bug #359833).
+
+2007-03-26  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/common/compressor.c (save_image, load_image): 
+	Changed previous patch to be consistent with the other code in
+	this file.
+
+2007-03-26  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/common/compressor.c (save_image, load_image): 
+	Check if the files to be read or written and the temporary files
+	have been opened. Otherwise, bail out safely instead of causing a
+	crash. Fixes bug #422444 for the stable branch.
+
+2007-03-22  Sven Neumann  <sven@gimp.org>
+
+	* app/xcf/xcf-load.c: silently add an alpha channel for
+	non-background layers and layers with a layer mask. This improves
+	forward-compatibility for files created with GIMP 2.3 (bug #316207).
+
+2007-03-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-preview.c
+	(gimp_display_shell_trace_tri_edge): be more robust to avoid
+	crashes like bug #420595.
+
+2007-02-19  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/psd_save.c: check the return value of
+	gimp_image_flatten(). Fixes the crash reported in bug #395385.
+
+2007-02-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+        * gimpui.pc.in (Libs): added gimpmodule-2.0. Fixes bug #356394.
+	
+2007-02-03  Mukund Sivaraman  <muks@mukund.org>
+
+	* plug-ins/common/psd_save.c: Backported fixes from bug #335130 to
+	  this branch to make psd_save work properly on 64-bit platforms;
+	  this should fix #384762; also fixed a warning about incompatible
+	  data types
+
+2007-01-30  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpcontainertreeview.c
+	(gimp_container_tree_view_button_press): corrected the GTK+
+	version check. Closes bug #348347 again.
+
+2007-01-26  Sven Neumann  <sven@gimp.org>
+
+	* docs/gimp.1.in: fixed markup (bug #401145)
+
+2007-01-22  Tor Lillqvist  <tml@novell.com>
+
+	Merge from trunk, fixes bug #398726:
+
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_set_image): Add
+	workaround for a problem that occurs on Win32 when one has opened
+	an image from the root of a drive letter and then does Save As.
+
+2007-01-22  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/script-fu/scripts/guides-new-percent.scm: replaced
+	license statement according to bug #119667.
+
+2007-01-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* tools/gimp-remote.c (gimp_remote_find_window): check Atoms
+	before using them. Fixes bug #392111.
+
+2007-01-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimpwidgets/gimppreviewarea.c: fixed clipping (bug #392692).
+
+2006-12-12  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* plug-ins/script-fu/scripts/burn-in-anim.scm: Don't allow one of the
+	two layers to be a floating selection. Fixes bug #384096.
+
+2006-11-23  Sven Neumann  <sven@gimp.org>
+
+	* tips/Makefile.am (tips_POFILES): removed no.po.
+
+2006-11-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch (fix by Simon Budig):
+
+	* app/xcf/xcf-load.c: load the channels in the proper order;
+	fixes bug #378003.
+
+2006-11-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch (fix by Mukund Sivaraman):
+
+	* plug-ins/FractalExplorer/FractalExplorer.c
+	* plug-ins/FractalExplorer/Dialogs.c: Fixed bug #372671 and made
+	loglog smoothing work again.
+
+2006-11-14  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/randomize.c: fixed possible buffer overflow
+	(bug #375295).
+
+2006-11-07  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Remove no from ALL_LINGUAS.
+	* po-libgimp/no.po:
+	* po-plug-ins/no.po:
+	* po-script-fu/no.po:
+	* po/no.po:
+	* tips/no.po: Remove the old obsolete translation from
+	the branch as well.
+
+2006-11-03  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/screenshot.c: pass the number of bytes to
+	gimp_parasite_new(), not the number of characters.
+
+2006-10-18  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-ins.c (plug_ins_init): initialize the plug-in
+	translation domains before using them. Fixes bug #362983.
+
+2006-10-14  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/imagemap/imap_cmd_move.c
+	* plug-ins/imagemap/imap_cmd_move_sash.c
+	* plug-ins/imagemap/imap_main.c
+	* plug-ins/imagemap/imap_object.c: use GDK_XOR instead of
+	GDK_EQUIV. Fixes bug #311621.
+
+2006-10-11  Raphaël Quinet  <raphael@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/xcf/xcf-load.c (xcf_load_tile_rle): workaround for bug
+	#357809: avoid crashing when invalid offsets are read for a
+	compressed tile in the XCF file.
+
+2006-10-10  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/nova.c: added a missing cast to fix bug #340073.
+
+2006-10-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/FractalExplorer/Dialogs.c: save files using
+	g_ascii_formatd() (fixes bug #360095).
+
+2006-09-24  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/ripple.c: set min for "period" scale entry
+	to 1 instead of 0, and add error check for noninteractive.
+	Fixes bug #357431.
+
+2006-09-24  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* plug-ins/script-fu/scripts/line-nova.scm: Change min for randomness
+	from 0 to 1, should fix bug #357433.
+
+2006-09-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimp/gimpdrawablepreview.c (gimp_drawable_preview_draw_area):
+	fixed calculation of offset into the source buffer (bug #353639).
+
+2006-09-08  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/depthmerge.c (dialogDepthMap2ChangedCallback):
+	change "depthMap1Drawable" to "depthMap2Drawable" to fix
+	typo introduced in version committed on 2004-04-21.
+	Should fix bug #355219.	
+
+2006-09-08  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	Merged from HEAD branch, with some hackery:
+
+	* app/text/gimptextlayout-render.c (gimp_text_layout_render_glyphs): 
+	handle tabs correctly, as instructed by behdad.  Fixes bug #353132.	
+
+2006-08-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/postscript.c (dither_grey): code cleanup and fix
+	for bug #353381 (crash when Preview option is selected).
+
+2006-08-28  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+        * plug-ins/winicon/icoload.c: avoid crashing on newer versions of
+        the winicon file format (bug #352899).
+
+2006-08-25  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.2.14, interface_age 14.
+
 2006-08-24  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.2.13 release.

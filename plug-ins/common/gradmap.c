@@ -27,7 +27,7 @@
 
 
 #ifdef RCSID
-static char rcsid[] = "$Id: gradmap.c,v 1.27 2004/10/12 21:48:38 mitch Exp $";
+static char rcsid[] = "$Id: gradmap.c 15087 2004-10-12 21:48:39Z mitch $";
 #endif
 
 /* Some useful macros */

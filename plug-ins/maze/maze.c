@@ -1,4 +1,4 @@
-/* $Id: maze.c,v 1.37 2004/11/18 08:59:56 neo Exp $
+/* $Id: maze.c 15673 2004-11-18 08:59:56Z neo $
  * This is a plug-in for the GIMP.
  * It draws mazes...
  *

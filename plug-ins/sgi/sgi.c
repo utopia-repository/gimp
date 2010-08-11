@@ -1,5 +1,5 @@
 /*
- * "$Id: sgi.c,v 1.47 2004/10/28 12:12:52 neo Exp $"
+ * "$Id: sgi.c 15342 2004-10-28 12:12:52Z neo $"
  *
  *   SGI image file plug-in for the GIMP.
  *

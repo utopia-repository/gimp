@@ -1,27 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpModuleDB</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Module Library Reference Manual">
 <link rel="up" href="libgimpmodule.html" title="Part&#160;I.&#160;GIMP Module Library">
 <link rel="prev" href="GimpModule.html" title="GimpModule">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpmodule.html" title="Part&#160;I.&#160;GIMP Module Library">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="GimpModule.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpmodule.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Module Library Reference Manual</th>
-</tr></table>
+<td>&#160;</td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2510677" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#id2566613" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#id2593966" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#id2593989" class="shortcut">Signals</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpModuleDB"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpModuleDB</span></h2>
+<h2>
+<a name="id2510677"></a><span class="refentrytitle">GimpModuleDB</span>
+</h2>
 <p>GimpModuleDB &#8212; Keeps a list of <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>'s found in a given searchpath.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -46,7 +59,7 @@ void        <a href="GimpModuleDB.html#gimp-module-db-refresh">gimp_module_db_re
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2515135"></a><h2>Object Hierarchy</h2>
+<a name="id2593966"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -54,42 +67,42 @@ void        <a href="GimpModuleDB.html#gimp-module-db-refresh">gimp_module_db_re
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2515154"></a><h2>Signal Prototypes</h2>
+<a name="id2593989"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpModuleDB.html#GimpModuleDB-add">add</a>"       void        user_function      (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
-                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a> *arg1,
-                                            gpointer user_data);
+                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a>   *arg1,
+                                            gpointer      user_data)         : Run first
 "<a href="GimpModuleDB.html#GimpModuleDB-module-modified">module-modified</a>"
             void        user_function      (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
-                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a> *arg1,
-                                            gpointer user_data);
+                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a>   *arg1,
+                                            gpointer      user_data)         : Run first
 "<a href="GimpModuleDB.html#GimpModuleDB-remove">remove</a>"    void        user_function      (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
-                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a> *arg1,
-                                            gpointer user_data);
+                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a>   *arg1,
+                                            gpointer      user_data)         : Run first
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2543694"></a><h2>Description</h2>
+<a name="id2566613"></a><h2>Description</h2>
 <p>
 Keeps a list of <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>'s found in a given searchpath.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2543713"></a><h2>Details</h2>
+<a name="id2566636"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2543719"></a><h3>
+<a name="id2566646"></a><h3>
 <a name="GimpModuleDB-struct"></a>GimpModuleDB</h3>
-<a class="indexterm" name="id2543730"></a><pre class="programlisting">typedef struct _GimpModuleDB GimpModuleDB;</pre>
+<a class="indexterm" name="id2566659"></a><pre class="programlisting">typedef struct _GimpModuleDB GimpModuleDB;</pre>
 <p>
 The <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a> struct contains no public members.
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2543752"></a><h3>
+<a name="id2588457"></a><h3>
 <a name="gimp-module-db-new"></a>gimp_module_db_new ()</h3>
-<a class="indexterm" name="id2543762"></a><pre class="programlisting"><a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a>* gimp_module_db_new            (gboolean verbose);</pre>
+<a class="indexterm" name="id2588469"></a><pre class="programlisting"><a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a>* gimp_module_db_new            (gboolean verbose);</pre>
 <p>
 Creates a new <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a> instance. The <em class="parameter"><code>verbose</code></em> parameter will be
 passed to the created <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a> instances using <a href="GimpModule.html#gimp-module-new"><code class="function">gimp_module_new()</code></a>.</p>
@@ -100,14 +113,12 @@ passed to the created <a href="GimpModule.html" title="GimpModule"><span class="
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>verbose</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>verbose</code></em>&#160;:</span></td>
 <td> Pass <code class="literal">TRUE</code> to enable debugging output.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The new <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a> instance.
 </td>
 </tr>
@@ -116,9 +127,9 @@ passed to the created <a href="GimpModule.html" title="GimpModule"><span class="
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2553260"></a><h3>
+<a name="id2588576"></a><h3>
 <a name="gimp-module-db-set-load-inhibit"></a>gimp_module_db_set_load_inhibit ()</h3>
-<a class="indexterm" name="id2553271"></a><pre class="programlisting">void        gimp_module_db_set_load_inhibit (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db,
+<a class="indexterm" name="id2588588"></a><pre class="programlisting">void        gimp_module_db_set_load_inhibit (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db,
                                              const gchar *load_inhibit);</pre>
 <p>
 Sets the <em class="parameter"><code>load_inhibit</code></em> flag for all <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>'s which are kept
@@ -130,14 +141,12 @@ by <em class="parameter"><code>db</code></em> (using <a href="GimpModule.html#gi
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
 <td>           A <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>load_inhibit</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>load_inhibit</code></em>&#160;:</span></td>
 <td> A <span class="type">G_SEARCHPATH_SEPARATOR</span> delimited list of module
                filenames to exclude from auto-loading.
 </td>
@@ -147,9 +156,9 @@ by <em class="parameter"><code>db</code></em> (using <a href="GimpModule.html#gi
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2553386"></a><h3>
+<a name="id2588704"></a><h3>
 <a name="gimp-module-db-get-load-inhibit"></a>gimp_module_db_get_load_inhibit ()</h3>
-<a class="indexterm" name="id2553397"></a><pre class="programlisting">const gchar* gimp_module_db_get_load_inhibit
+<a class="indexterm" name="id2566056"></a><pre class="programlisting">const gchar* gimp_module_db_get_load_inhibit
                                             (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db);</pre>
 <p>
 Return the <span class="type">G_SEARCHPATH_SEPARATOR</span> selimited list of module filenames
@@ -161,14 +170,12 @@ which are excluded from auto-loading.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
 <td> A <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> the <em class="parameter"><code>db</code></em>'s <em class="parameter"><code>load_inhibit</code></em> string.
 </td>
 </tr>
@@ -177,9 +184,9 @@ which are excluded from auto-loading.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2525404"></a><h3>
+<a name="id2566146"></a><h3>
 <a name="gimp-module-db-load"></a>gimp_module_db_load ()</h3>
-<a class="indexterm" name="id2525414"></a><pre class="programlisting">void        gimp_module_db_load             (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db,
+<a class="indexterm" name="id2566158"></a><pre class="programlisting">void        gimp_module_db_load             (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db,
                                              const gchar *module_path);</pre>
 <p>
 Scans the directories contained in <em class="parameter"><code>module_path</code></em> using
@@ -194,14 +201,12 @@ instance for every loadable module contained in the directories.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
 <td>          A <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>module_path</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>module_path</code></em>&#160;:</span></td>
 <td> A <span class="type">G_SEARCHPATH_SEPARATOR</span> delimited list of directories
               to load modules from.
 </td>
@@ -211,9 +216,9 @@ instance for every loadable module contained in the directories.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2525524"></a><h3>
+<a name="id2566269"></a><h3>
 <a name="gimp-module-db-refresh"></a>gimp_module_db_refresh ()</h3>
-<a class="indexterm" name="id2525533"></a><pre class="programlisting">void        gimp_module_db_refresh          (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db,
+<a class="indexterm" name="id2566280"></a><pre class="programlisting">void        gimp_module_db_refresh          (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *db,
                                              const gchar *module_path);</pre>
 <p>
 Does the same as <a href="GimpModuleDB.html#gimp-module-db-load"><code class="function">gimp_module_db_load()</code></a>, plus removes all <a href="GimpModule.html" title="GimpModule"><span class="type">GimpModule</span></a>
@@ -230,14 +235,12 @@ instances which actually implement types.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>db</code></em>&#160;:</span></td>
 <td>          A <a href="GimpModuleDB.html" title="GimpModuleDB"><span class="type">GimpModuleDB</span></a>.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>module_path</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>module_path</code></em>&#160;:</span></td>
 <td> A <span class="type">G_SEARCHPATH_SEPARATOR</span> delimited list of directories
               to load modules from.
 </td>
@@ -247,13 +250,13 @@ instances which actually implement types.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2559224"></a><h2>Signals</h2>
+<a name="id2600173"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2559230"></a><h3>
+<a name="id2600182"></a><h3>
 <a name="GimpModuleDB-add"></a>The "add" signal</h3>
-<pre class="programlisting">void        user_function                  (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
-                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a> *arg1,
-                                            gpointer user_data);</pre>
+<a class="indexterm" name="id2600189"></a><pre class="programlisting">void        user_function                  (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
+                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a>   *arg1,
+                                            gpointer      user_data)         : Run first</pre>
 <p>
 
 </p>
@@ -261,21 +264,18 @@ instances which actually implement types.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gimpmoduledb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gimpmoduledb</code></em>&#160;:</span></td>
 <td>the object which received the signal.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
 <td>
 
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -283,11 +283,11 @@ instances which actually implement types.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2559312"></a><h3>
+<a name="id2600277"></a><h3>
 <a name="GimpModuleDB-module-modified"></a>The "module-modified" signal</h3>
-<pre class="programlisting">void        user_function                  (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
-                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a> *arg1,
-                                            gpointer user_data);</pre>
+<a class="indexterm" name="id2600287"></a><pre class="programlisting">void        user_function                  (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
+                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a>   *arg1,
+                                            gpointer      user_data)         : Run first</pre>
 <p>
 
 </p>
@@ -295,21 +295,18 @@ instances which actually implement types.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gimpmoduledb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gimpmoduledb</code></em>&#160;:</span></td>
 <td>the object which received the signal.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
 <td>
 
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -317,11 +314,11 @@ instances which actually implement types.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538612"></a><h3>
+<a name="id2600376"></a><h3>
 <a name="GimpModuleDB-remove"></a>The "remove" signal</h3>
-<pre class="programlisting">void        user_function                  (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
-                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a> *arg1,
-                                            gpointer user_data);</pre>
+<a class="indexterm" name="id2600385"></a><pre class="programlisting">void        user_function                  (<a href="GimpModuleDB.html" title="GimpModuleDB">GimpModuleDB</a> *gimpmoduledb,
+                                            <a href="GimpModule.html" title="GimpModule">GimpModule</a>   *arg1,
+                                            gpointer      user_data)         : Run first</pre>
 <p>
 
 </p>
@@ -329,21 +326,18 @@ instances which actually implement types.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>gimpmoduledb</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>gimpmoduledb</code></em>&#160;:</span></td>
 <td>the object which received the signal.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>arg1</code></em>&#160;:</span></td>
 <td>
 
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -351,9 +345,5 @@ instances which actually implement types.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="GimpModule.html"><b>&lt;&lt;&#160;GimpModule</b></a></td>
-<td align="right"></td>
-</tr></table>
 </body>
 </html>

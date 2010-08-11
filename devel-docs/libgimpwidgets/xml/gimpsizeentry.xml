@@ -4,7 +4,7 @@
 
 <refentry id="GimpSizeEntry">
 <refmeta>
-<refentrytitle id="top_of_page">GimpSizeEntry</refentrytitle>
+<refentrytitle role="top_of_page">GimpSizeEntry</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,8 +15,8 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv id="synopsis">
-<title id="synopsis.title">Synopsis</title>
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -86,8 +86,8 @@ enum        <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy<
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 id="object_hierarchy">
-<title id="object_hierarchy.title">Object Hierarchy</title>
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -103,8 +103,8 @@ enum        <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy<
 
 
 
-<refsect1 id="impl_interfaces">
-<title id="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1 role="impl_interfaces">
+<title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpSizeEntry implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -113,8 +113,8 @@ GimpSizeEntry implements
 
 
 
-<refsect1 id="signal_proto">
-<title id="signal_proto.title">Signals</title>
+<refsect1 role="signal_proto">
+<title role="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpSizeEntry-refval-changed">refval-changed</link>&quot;
@@ -130,8 +130,8 @@ GimpSizeEntry implements
 </refsect1>
 
 
-<refsect1 id="desc">
-<title id="desc.title">Description</title>
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
 <para>
 This widget is used to enter pixel distances/sizes and resolutions.
 </para>
@@ -159,8 +159,8 @@ real-world-unit.
 </para>
 </refsect1>
 
-<refsect1 id="details">
-<title id="details.title">Details</title>
+<refsect1 role="details">
+<title role="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpSizeEntry-struct" role="struct"/>GimpSizeEntry</title>
 <indexterm><primary>GimpSizeEntry</primary></indexterm><programlisting>typedef struct _GimpSizeEntry GimpSizeEntry;</programlisting>
@@ -681,8 +681,8 @@ can use this function to get a pointer to the spinbuttons.</para>
 
 </refsect1>
 
-<refsect1 id="signals">
-<title id="signals.title">Signal Details</title>
+<refsect1 role="signals">
+<title role="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpSizeEntry-refval-changed"/>The &quot;refval-changed&quot; signal</title>
 <indexterm><primary>GimpSizeEntry::refval-changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                             <link linkend="gpointer">gpointer</link>       user_data)          : Run first</programlisting>

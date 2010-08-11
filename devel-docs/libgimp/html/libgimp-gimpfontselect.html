@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpfontselect</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="libgimp-gimpbrushselect.html" title="gimpbrushselect">
@@ -28,16 +28,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2537230" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594189" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2637766" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2671616" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2537230"></a><span class="refentrytitle">gimpfontselect</span>
+<a name="id2594189"></a><span class="refentrytitle">gimpfontselect</span>
 </h2>
 <p>gimpfontselect &#8212; Functions providing a font selection dialog.</p>
 </td>
@@ -66,17 +66,17 @@ gboolean    <a href="libgimp-gimpfontselect.html#gimp-fonts-set-popup">gimp_font
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637766"></a><h2>Description</h2>
+<a name="id2671616"></a><h2>Description</h2>
 <p>
 Functions providing a font selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637782"></a><h2>Details</h2>
+<a name="id2671632"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2637793"></a><h3>
+<a name="id2671642"></a><h3>
 <a name="GimpRunFontCallback"></a>GimpRunFontCallback ()</h3>
-<a class="indexterm" name="id2649156"></a><pre class="programlisting">void        (*GimpRunFontCallback)          (const gchar *font_name,
+<a class="indexterm" name="id2682081"></a><pre class="programlisting">void        (*GimpRunFontCallback)          (const gchar *font_name,
                                              gboolean dialog_closing,
                                              gpointer user_data);</pre>
 <p>
@@ -86,20 +86,17 @@ Functions providing a font selection dialog.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
 <td>
-<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>
 
 
@@ -110,9 +107,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649242"></a><h3>
+<a name="id2682168"></a><h3>
 <a name="gimp-font-select-new"></a>gimp_font_select_new ()</h3>
-<a class="indexterm" name="id2649254"></a><pre class="programlisting">const gchar* gimp_font_select_new           (const gchar *title,
+<a class="indexterm" name="id2682180"></a><pre class="programlisting">const gchar* gimp_font_select_new           (const gchar *title,
                                              const gchar *font_name,
                                              <a href="libgimp-gimpfontselect.html#GimpRunFontCallback">GimpRunFontCallback</a> callback,
                                              gpointer data);</pre>
@@ -123,32 +120,27 @@ Functions providing a font selection dialog.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
+<td><span class="term"><em class="parameter"><code>callback</code></em>&#160;:</span></td>
 <td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td>
 
 
@@ -159,17 +151,16 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649373"></a><h3>
+<a name="id2682299"></a><h3>
 <a name="gimp-font-select-destroy"></a>gimp_font_select_destroy ()</h3>
-<a class="indexterm" name="id2649384"></a><pre class="programlisting">void        gimp_font_select_destroy        (const gchar *font_callback);</pre>
+<a class="indexterm" name="id2682310"></a><pre class="programlisting">void        gimp_font_select_destroy        (const gchar *font_callback);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td>
-<span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
 <td>
 
 
@@ -179,9 +170,9 @@ Functions providing a font selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640380"></a><h3>
+<a name="id2681171"></a><h3>
 <a name="gimp-fonts-popup"></a>gimp_fonts_popup ()</h3>
-<a class="indexterm" name="id2640392"></a><pre class="programlisting">gboolean    gimp_fonts_popup                (const gchar *font_callback,
+<a class="indexterm" name="id2681182"></a><pre class="programlisting">gboolean    gimp_fonts_popup                (const gchar *font_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_font);</pre>
 <p>
@@ -196,26 +187,22 @@ This procedure popups the font selection dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
 <td> The callback PDB proc to call when font selection is made.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>popup_title</code></em>&#160;:</span></td>
 <td> Title to give the font popup window.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>initial_font</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>initial_font</code></em>&#160;:</span></td>
 <td> The name of the font to set as the first selected.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -224,9 +211,9 @@ This procedure popups the font selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640497"></a><h3>
+<a name="id2681288"></a><h3>
 <a name="gimp-fonts-close-popup"></a>gimp_fonts_close_popup ()</h3>
-<a class="indexterm" name="id2640509"></a><pre class="programlisting">gboolean    gimp_fonts_close_popup          (const gchar *font_callback);</pre>
+<a class="indexterm" name="id2681299"></a><pre class="programlisting">gboolean    gimp_fonts_close_popup          (const gchar *font_callback);</pre>
 <p>
 Popdown the Gimp font selection.
 </p>
@@ -239,14 +226,12 @@ This procedure closes an opened font selection dialog.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this popup.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -255,9 +240,9 @@ This procedure closes an opened font selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640572"></a><h3>
+<a name="id2681362"></a><h3>
 <a name="gimp-fonts-set-popup"></a>gimp_fonts_set_popup ()</h3>
-<a class="indexterm" name="id2640583"></a><pre class="programlisting">gboolean    gimp_fonts_set_popup            (const gchar *font_callback,
+<a class="indexterm" name="id2681374"></a><pre class="programlisting">gboolean    gimp_fonts_set_popup            (const gchar *font_callback,
                                              const gchar *font_name);</pre>
 <p>
 Sets the current font selection in a popup.
@@ -271,20 +256,17 @@ Sets the current font selection in a popup.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_callback</code></em>&#160;:</span></td>
 <td> The name of the callback registered for this popup.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
+<td><span class="term"><em class="parameter"><code>font_name</code></em>&#160;:</span></td>
 <td> The name of the font to set as selected.
 </td>
 </tr>
 <tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>

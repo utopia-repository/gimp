@@ -1,3 +1,470 @@
+commit f34c49a08b8511815467dfbc5232f8f167b7f950
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Oct 3 22:22:31 2010 +0200
+
+    NEWS: update for the upcoming 2.6.11 release
+
+ NEWS |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+
+commit c58dc682e6dbbcf2ad5eb162ae84e15f12ae74a1
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Oct 3 14:05:20 2010 +0200
+
+    Bug 631199 - Printing and Print preview broken with cairo 1.10
+
+    Add missing calls to cairo_surface_mark_dirty().
+    (cherry picked from commit 6be41a6675007a0c7328453c654bcda5a2b875b0)
+
+ plug-ins/print/print-draw-page.c |    2 ++
+ plug-ins/print/print-preview.c   |    2 ++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
+
+commit c54dff49f85d38a558aa621d2aa0c8808c23bab2
+Author: Tor Lillqvist <tml@iki.fi>
+Date:   Mon Sep 27 18:21:53 2010 +0300
+
+    No SYMPREFIX should be used for 64-bit Windows
+
+    Earlier builds of mingw-w64 misguidedly used the _ prefix, but not
+    current ones. Thanks to Fridrich Strba.
+
+ configure.in |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit ac5fc1097110772340874abfa3fdca61c8710abf
+Author: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+Date:   Tue Sep 21 20:23:37 2010 +0800
+
+    Updated Traditional Chinese translation (Hong Kong and Taiwan)
+
+ po-libgimp/zh_HK.po   |  110 ++---
+ po-libgimp/zh_TW.po   |  108 ++---
+ po-plug-ins/zh_HK.po  | 1326
+ ++++++++++++++++++-------------------------------
+ po-plug-ins/zh_TW.po  | 1324
+ ++++++++++++++++++-------------------------------
+ po-python/zh_HK.po    |   12 +-
+ po-python/zh_TW.po    |   10 +-
+ po-script-fu/zh_HK.po |  303 +++++-------
+ po-script-fu/zh_TW.po |  301 +++++-------
+ 8 files changed, 1305 insertions(+), 2189 deletions(-)
+
+commit d2986674793f39d3582a5f983c7a1b719db5edad
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Mon Sep 20 23:47:55 2010 -0400
+
+    Additional fixes for handling UTF-8 coded strings (Bugs 572865 &
+    628893)
+
+    plug-ins/script-fu/scheme-wrapper.c:
+    - Fixed set and get of UTF-8 coded strings for parasites using
+    slightly
+      modified version of a patch from Massimo.
+
+    plug-ins/script-fu/tinyscheme/scheme.c:
+    - Additional fix to string-append and fixed substring. The
+    mk_empty_string
+      routine is not the way to allocate space for UTF-8 coded strings.
+    - Added some comments.
+    (Cherry picked of commit b0d8ba5ffddd46798a7480d75f5de3c8d808b9ad)
+
+ plug-ins/script-fu/scheme-wrapper.c    |   10 +++++---
+ plug-ins/script-fu/tinyscheme/scheme.c |   35
+ +++++++++++++++++++++++++------
+ 2 files changed, 34 insertions(+), 11 deletions(-)
+
+commit c00dfc97d7bf8f47e4bb888079d6675f3e791e1e
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Sun Sep 19 20:17:26 2010 -0400
+
+    Last part of fixes for handling UTF-8 coded strings (Bugs 572865
+    & 628893)
+
+    At end of a double quoted string, readstrexp() passed byte count
+    instead
+    of character count to mk_counted_string(). Cleaned up basic_inchar().
+    It ignores bad UTF-8 coded characters when reading from file or
+    buffer.
+
+ plug-ins/script-fu/tinyscheme/scheme.c |  102
+ ++++++++++++++++----------------
+ 1 files changed, 51 insertions(+), 51 deletions(-)
+
+commit 136bfb61cc655d51b0ee7066f5126ceb33cf56c5
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Sun Sep 19 17:50:49 2010 -0400
+
+    First part of fixes for handling UTF-8 coded strings (Bugs 572865
+    & 628893)
+
+    Fixed string-set! and string-append due to mixup of chars vs. bytes.
+    Fixed calculation of pointer to past end of string in open-*-string
+    routines.
+    (Cherry picked of commit d06a4ee4c37912557fce5a7e2e24b8015c6ccf9b)
+
+ plug-ins/script-fu/tinyscheme/scheme.c |   19 ++++++++++++++-----
+ 1 files changed, 14 insertions(+), 5 deletions(-)
+
+commit d06a4ee4c37912557fce5a7e2e24b8015c6ccf9b
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Thu Sep 16 15:01:11 2010 -0400
+
+    Applied changes from CVS version 1.23 of official version of
+    TinyScheme.
+    Fixed potential problem of arglist to foreign calls being wrongly
+    GC'ed.
+    (Cherry pick of commit 6a3a7befcf7ab4954d62f96263c6d9b3d8f88c9d)
+
+ plug-ins/script-fu/tinyscheme/scheme.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit 24b76d01e0c53d4f64e81c5f43ffd23f471ca1ab
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Thu Sep 16 12:11:09 2010 -0400
+
+    Applied changes from CVS version 1.9 of official version of
+    TinyScheme.
+    Fix for nasty gc bug. This change shifts the burden of protecting
+    newly
+    allocated cells in foreign functions from the foreign functions to the
+    TinyScheme interpreter.
+    (cherry pick of commit 28e7c3f612a4d89c73e1f9f95f5469d9e44340e6)
+
+ plug-ins/script-fu/scheme-wrapper.c            |   50 +++--------
+ plug-ins/script-fu/tinyscheme/scheme-private.h |    1 -
+ plug-ins/script-fu/tinyscheme/scheme.c         |  117
+ +++++++++++++++++------
+ plug-ins/script-fu/tinyscheme/scheme.h         |    2 -
+ 4 files changed, 99 insertions(+), 71 deletions(-)
+
+commit 2782c8bb3d519a5959870558d7ae385356ca97dd
+Author: Massimo Valentini <sixtysix@inwind.it>
+Date:   Thu Sep 16 19:47:37 2010 +0200
+
+    Bug 623850 - (Paco) Recursive Gaussian Filter error
+
+ plug-ins/common/contrast-retinex.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit a2ab5e8b55782f619657728818a4bfcb5305d5a8
+Author: Barak Itkin <lightningismyname@gmail.com>
+Date:   Mon Sep 13 02:55:20 2010 +0200
+
+    Bug 624487 - Fix incorrect "wrap mode" documentation values in
+    Edge plug-in
+
+ plug-ins/common/edge.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit b0868e3eef076e8aadbf6726ee9cd9938c2ff524
+Author: Seth Burgess <sjburges@gimp.org>
+Date:   Mon Sep 13 02:08:05 2010 +0200
+
+    plug-ins: Fix preview in Difference of Gaussians
+
+    Implement invert as part of normalize routine - See Bug 557380
+    (cherry picked from commit 0382fdb45de2d9f05157327295c873a84b5b8f8d)
+
+ plug-ins/common/edge-dog.c |   41
+ +++++++++++++++++++++++++++--------------
+ 1 files changed, 27 insertions(+), 14 deletions(-)
+
+commit 7a74dc1d93eacac6dba631bbdcadf1709928210c
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Sep 7 16:21:40 2010 +0200
+
+    app: make sure to always show error messages returned by plug-ins
+
+    gimp_plug_in_handle_proc_return(): if there is no plug-in main loop
+    running (the plugin was running asynchronously from a menu), show the
+    plug-in's error message here, because nobody else will show it
+    otherwise.
+    (cherry picked from commit bdc2d4520be090bbbb90af18c75de6df49ed1d61)
+
+ app/plug-in/gimpplugin-message.c |   24 +++++++++++++++++-------
+ 1 files changed, 17 insertions(+), 7 deletions(-)
+
+commit 927d0c380adf208f21c48c46b2e2c9365efa4f2c
+Author: Tor Lillqvist <tml@iki.fi>
+Date:   Thu Sep 2 21:28:29 2010 +0300
+
+    Reduce risks on Windows also for plug-ins
+
+ libgimp/gimp.c |   23 +++++++++++++++++++++++
+ 1 files changed, 23 insertions(+), 0 deletions(-)
+
+commit 0bb4d7d58436ab2f44b406b254f48ab8f1413b47
+Author: Tor Lillqvist <tml@iki.fi>
+Date:   Thu Sep 2 18:38:06 2010 +0300
+
+    Increase safety on Windows
+
+    Call SetDllDirectory() to reduce risk of DLL hijacking, and call
+    SetProcessDEPPolicy() to reduce risk of rogue code execution.
+
+ app/main.c |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+
+commit aa8ca0439d290e0aab3be3185f2bab0f7db705f4
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Aug 27 11:27:40 2010 +0200
+
+    Updated italian translation
+
+ po-script-fu/it.po |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 93efe1eb5658ad0d2f0f67073be51ce4789d9fb8
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Mon Aug 16 22:34:59 2010 +0200
+
+    Bug 627009 - Image type filter doesn't include .rgba SGI files
+
+    Added the rgba file extension to the load and save handler
+    registration of the SGI file plug-in.
+
+ plug-ins/file-sgi/sgi.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 2401b3b7174b2145bb93e2c1e387ed23d7e6e56c
+Author: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+Date:   Fri Aug 13 20:21:52 2010 +0800
+
+    Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+ po-libgimp/LINGUAS    |    1 +
+ po-libgimp/zh_HK.po   | 1966 +++++++++++++++++++++++++++++
+ po-libgimp/zh_TW.po   | 1648 ++++++++++++++++++-------
+ po-plug-ins/zh_HK.po  | 3320
+ ++++++++++++++++++++++++++++++-------------------
+ po-plug-ins/zh_TW.po  | 3319
+ ++++++++++++++++++++++++++++++-------------------
+ po-python/LINGUAS     |    1 +
+ po-python/zh_HK.po    |  353 ++++++
+ po-python/zh_TW.po    |  342 +++++-
+ po-script-fu/zh_HK.po |  482 +++++---
+ po-script-fu/zh_TW.po |  479 +++++---
+ 10 files changed, 8516 insertions(+), 3395 deletions(-)
+
+commit 5eb5d0e8d8960fedd0cb764f1bf13adb30bd8751
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Aug 13 00:51:41 2010 +0200
+
+    Updated italian translation
+
+ po-plug-ins/it.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 2643fc74bdacca7a179d5e043a5792da3ff82f05
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Thu Aug 12 22:55:50 2010 +0200
+
+    Added all *.exe files and some missing .libs to .gitignore
+
+ libgimpthumb/.gitignore               |    1 +
+ plug-ins/color-rotate/.gitignore      |    1 +
+ plug-ins/common/.gitignore            |  144
+ +++++++++++++++++++++++++++++++++
+ plug-ins/file-bmp/.gitignore          |    1 +
+ plug-ins/file-faxg3/.gitignore        |    1 +
+ plug-ins/file-fits/.gitignore         |    1 +
+ plug-ins/file-fli/.gitignore          |    1 +
+ plug-ins/file-ico/.gitignore          |    1 +
+ plug-ins/file-jpeg/.gitignore         |    2 +
+ plug-ins/file-psd/.gitignore          |    2 +
+ plug-ins/file-sgi/.gitignore          |    1 +
+ plug-ins/file-uri/.gitignore          |    1 +
+ plug-ins/file-xjt/.gitignore          |    1 +
+ plug-ins/flame/.gitignore             |    1 +
+ plug-ins/fractal-explorer/.gitignore  |    1 +
+ plug-ins/gfig/.gitignore              |    1 +
+ plug-ins/gimpressionist/.gitignore    |    1 +
+ plug-ins/gradient-flare/.gitignore    |    1 +
+ plug-ins/help-browser/.gitignore      |    1 +
+ plug-ins/help/.gitignore              |    2 +
+ plug-ins/ifs-compose/.gitignore       |    1 +
+ plug-ins/imagemap/.gitignore          |    1 +
+ plug-ins/lighting/.gitignore          |    1 +
+ plug-ins/map-object/.gitignore        |    1 +
+ plug-ins/maze/.gitignore              |    1 +
+ plug-ins/metadata/.gitignore          |    3 +
+ plug-ins/pagecurl/.gitignore          |    1 +
+ plug-ins/print/.gitignore             |    6 +-
+ plug-ins/script-fu/.gitignore         |    1 +
+ plug-ins/selection-to-path/.gitignore |    1 +
+ plug-ins/twain/.gitignore             |    4 +-
+ plug-ins/win-snap/.gitignore          |    5 +-
+ tools/.gitignore                      |    2 +
+ 33 files changed, 190 insertions(+), 4 deletions(-)
+
+commit 608a680240eb4a10e718cdb4ac8e17e70c695312
+Author: Michael Schumacher <schumaml@gmx.de>
+Date:   Thu Aug 12 21:40:40 2010 +0200
+
+    Bug 626020 - Console window opening on file-ps-load
+
+    Added G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL to the
+    g_spawn_sync () flags. According to Tor Lillqvist this won't fix
+    the bug,
+    but the GLib docs state that these flags have to be added if
+    stdout and
+    stderr are set to NULL.
+
+ plug-ins/common/file-ps.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit 1078f2c8969675f0d3f5232c6fc5374b4c425e2c
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Wed Aug 11 09:34:02 2010 +0200
+
+    Updated italian translation.
+
+ po-plug-ins/it.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit e1e2a0c10cbcbfcbdb7084ee0c1d2e8ea400f97e
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:   Sat Aug 7 20:44:50 2010 +0300
+
+    po: Updated Romanian translation
+
+ po/ro.po |   30 +++++++++++++++---------------
+ 1 files changed, 15 insertions(+), 15 deletions(-)
+
+commit 5e49f5f8782b9197acdeab151caba47e1f4a9177
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:   Fri Aug 6 00:40:45 2010 +0300
+
+    po-script-fu: Updated Romanian translation
+
+ po-script-fu/ro.po |  204
+ +++++++++++++++------------------------------------
+ 1 files changed, 60 insertions(+), 144 deletions(-)
+
+commit f90e15aac9c086bbeb7ab608d63f5ff1363c1691
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:   Fri Aug 6 00:36:57 2010 +0300
+
+    po-python: Updated Romanian translation
+
+ po-python/ro.po |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 4f3f841e1cb8b84e0a7225ae3f2bdea8a0ec99ef
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:   Fri Aug 6 00:35:34 2010 +0300
+
+    po-plug-ins: Updated Romanian translation
+
+ po-plug-ins/ro.po |  300
+ ++++++++++++++++++-----------------------------------
+ 1 files changed, 103 insertions(+), 197 deletions(-)
+
+commit d5df55e3254f3b6dbcd8bb57375d71d907a0c6d4
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:   Fri Aug 6 00:33:20 2010 +0300
+
+    po-libgimp: Updated Romanian translation
+
+ po-libgimp/ro.po |   58
+ +++++++++--------------------------------------------
+ 1 files changed, 10 insertions(+), 48 deletions(-)
+
+commit 85bb25433926e19ef88088743e75c4b2ba9d188d
+Author: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>
+Date:   Fri Aug 6 00:31:28 2010 +0300
+
+    po: Updated Romanian translation
+
+ po/ro.po |  230
+ +++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 122 insertions(+), 108 deletions(-)
+
+commit ab673588a98aec75410acba93599cf4a536a8410
+Author: Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>
+Date:   Thu Aug 5 00:22:53 2010 +0900
+
+    Updated Japanese translation.
+
+ po-plug-ins/ja.po  |  348
+ ++++++++++++++++++++++++++++++----------------------
+ po-script-fu/ja.po |    6 +-
+ 2 files changed, 203 insertions(+), 151 deletions(-)
+
+commit 785238ca23ad5bf6b5a60f55a8c219425863117a
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Aug 3 22:42:19 2010 +0200
+
+    Updated italian translation.
+
+ po-plug-ins/it.po |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit edf792a40f0fe9e331b40f3b98ef2d488db3683a
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Aug 3 17:50:01 2010 +0200
+
+    Updated italian translation
+
+ po-script-fu/it.po |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 2a551e000f333ff5940e66ffef53a6e458ee87e5
+Author: Francisco Vila <francisco.vila@hispalinux.es>
+Date:   Wed Jul 28 08:43:32 2010 +0200
+
+    Updated Spanish translation
+
+ po-plug-ins/es.po |  787
+ ++++++++++++++++++++++++++++++-----------------------
+ 1 files changed, 441 insertions(+), 346 deletions(-)
+
+commit fa621655fcfe1dd40c33904eb34bad4b0273b8b4
+Author: Ulf-D. Ehlert <ulfehlert@svn.gnome.org>
+Date:   Mon Jul 26 21:19:18 2010 +0200
+
+    po: Fix German translation
+
+ po-plug-ins/de.po |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 5bcb212e825cf5d0bb3fc190bc2bb7fd443e904a
+Author: Cameron Gregory <public@bloke.com>
+Date:   Mon Jul 19 13:53:00 2010 +0200
+
+    Bug 624698 - Wood 1 and Wood 2 have bad alpha value
+
+    Alpha value in last segment of Wood gradients should be 1.0.
+    (cherry picked from commit e701384f3ac89dadd6de5e69f822d904f7f72a27)
+
+ data/gradients/Wood_1.ggr |    2 +-
+ data/gradients/Wood_2.ggr |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit d8d734a1a81dce5cb6a38697f64e82424104bbae
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Jul 13 22:20:15 2010 +0200
+
+    Bug 624275 - Image saved from google docs generates a
+    'gimp-image-set-resolution' error message
+
+    Only set the image resolution if the resolution in the PNG file
+    is greater than zero.
+    (cherry picked from commit ff221e679c2dd17be9cd55d3d980859d656bfccd)
+
+ plug-ins/common/file-png.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 9a6372218dc4587990cb02373d4526c569f97c43
+Author: Sven Neumann <sven@gimp.org>
+Date:   Wed Jul 7 22:40:10 2010 +0200
+
+    Bump version to 2.6.11 (interface age 11)
+
+ configure.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
 commit c2a0c39c298e2c2b892ada59831d55679a3a8e9c
 Author: Sven Neumann <s.neumann@raumfeld.com>
 Date:   Wed Jul 7 21:45:16 2010 +0200

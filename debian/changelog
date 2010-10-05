@@ -1,3 +1,11 @@
+gimp (2.6.11-1) unstable; urgency=low
+
+  * Imported Upstream version 2.6.11
+  * Remove statusbar-progress-zoom.patch, since it was from upstream
+  * Switch Vcs path to git
+
+ -- Ari Pollak <ari@debian.org>  Mon, 04 Oct 2010 23:09:57 -0400
+
 gimp (2.6.10-1) unstable; urgency=low
 
   * New upstream release

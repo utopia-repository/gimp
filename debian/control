@@ -26,7 +26,7 @@ Package: libgimp2.0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
-Recommends: gimp, gimp-data (>= ${source:Upstream-Version}), gimp-data (<= ${source:Upstream-Version}-z)
+Recommends: gimp-data (>= ${source:Upstream-Version}), gimp-data (<= ${source:Upstream-Version}-z)
 Description: Libraries for the GNU Image Manipulation Program
  This package includes the libgimp libraries, which are
  necessary to run GIMP and third-party GIMP plugins.

@@ -26,11 +26,12 @@ clean::
 	rm -rf build
 
 common-install-impl::
-	# Remove compiled python files from the distribution, they're compiled in
-	# postrm by dh_python
-	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
+	# Remove compiled python files from the distribution, they're compiled
+	# in postrm by dh_python
+	find $(CURDIR)/debian/tmp -name "*.py[co]" -delete
 
-	rm debian/tmp/usr/lib/*.la
+	# Remove all libtool .la files
+	find $(CURDIR)/debian/tmp/usr/lib -name "*.la" -delete
 
 	dh_movefiles
 

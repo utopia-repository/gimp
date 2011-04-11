@@ -1,3 +1,14 @@
+gimp (2.6.11-2) unstable; urgency=high
+
+  * Fix security issues when reading plugin configuration files and PSP files
+    (CVE-2010-4540, CVE-2010-4541, CVE-2010-4542, CVE-2010-4543)
+    (Closes: #608497)
+    - patches imported from Ubuntu
+  * Drop libgimp2.0's recommendation on gimp (Closes: #600226)
+  * remove .la files, even from python modules (Closes: #621230)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 10 Apr 2011 20:11:01 -0400
+
 gimp (2.6.11-1) unstable; urgency=low
 
   * Imported Upstream version 2.6.11

@@ -1,1 +1,3 @@
 01_debian-gimprc.patch
+06_CVE-2010-4543.patch
+05_CVE-2010-454x.patch

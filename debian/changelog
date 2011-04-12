@@ -6,8 +6,11 @@ gimp (2.6.11-2) unstable; urgency=high
     - patches imported from Ubuntu
   * Drop libgimp2.0's recommendation on gimp (Closes: #600226)
   * remove .la files, even from python modules (Closes: #621230)
+  * Remove HAL support (Closes: #613201)
+  * 07_binutils-gold.patch:
+    - Allow package to build with binutils-gold
 
- -- Ari Pollak <ari@debian.org>  Sun, 10 Apr 2011 20:11:01 -0400
+ -- Ari Pollak <ari@debian.org>  Tue, 12 Apr 2011 19:04:28 -0400
 
 gimp (2.6.11-1) unstable; urgency=low
 

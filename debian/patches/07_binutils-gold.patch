@@ -1,0 +1,42 @@
+Description: Allows package to build with binutils-gold.
+ Already fixed upstream in Makefile.ams, but changes Makefile.ins so we don't
+ have to autoreconf.
+Index: gimp/libgimpthumb/Makefile.in
+===================================================================
+--- gimp.orig/libgimpthumb/Makefile.in
++++ gimp/libgimpthumb/Makefile.in
+@@ -462,7 +462,8 @@ libgimpthumb_2_0_la_LDFLAGS = \
+ 
+ libgimpthumb_2_0_la_LIBADD = $(GDK_PIXBUF_LIBS) $(GLIB_LIBS) 
+ gimp_thumbnail_list_SOURCES = gimp-thumbnail-list.c
+-gimp_thumbnail_list_LDADD = libgimpthumb-$(GIMP_API_VERSION).la
++gimp_thumbnail_list_LDADD = libgimpthumb-$(GIMP_API_VERSION).la \
++			    $(GDK_PIXBUF_LIBS) $(GLIB_LIBS)
+ 
+ #
+ # rules to generate built sources
+Index: gimp/plug-ins/common/Makefile.in
+===================================================================
+--- gimp.orig/plug-ins/common/Makefile.in
++++ gimp/plug-ins/common/Makefile.in
+@@ -1440,7 +1440,7 @@ libgimp = $(top_builddir)/libgimp/libgim
+ libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+ libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+-libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
++libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la -lm
+ libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
+ libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+ libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+Index: gimp/plug-ins/help-browser/Makefile.in
+===================================================================
+--- gimp.orig/plug-ins/help-browser/Makefile.in
++++ gimp/plug-ins/help-browser/Makefile.in
+@@ -409,6 +409,7 @@ LDADD = \
+ 	$(libgimpbase)		\
+ 	$(WEBKIT_LIBS)		\
+ 	$(GIO_LIBS)		\
++	$(GLIB_LIBS)		\
+ 	$(RT_LIBS)		\
+ 	$(INTLLIBS)
+ 

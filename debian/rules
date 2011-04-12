@@ -16,7 +16,7 @@ include /usr/share/cdbs/1/class/gnome.mk
 
 
 LDFLAGS = -Wl,--as-needed
-DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary
+DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary --without-hal
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib

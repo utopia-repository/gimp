@@ -40,18 +40,25 @@ Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.
 Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3), gimp-helpbrowser, gimp-python (<< 2.6.0), gimp-gnomevfs (<< 2.6.0), gimp-libcurl (<< 2.6.0)
 Suggests: gimp-help-en | gimp-help, gimp-data-extras, gvfs-backends, libasound2, ghostscript
 Description: The GNU Image Manipulation Program
- GIMP lets you draw, paint, edit images, and much more! GIMP
- includes the functionality and plug-ins of other famous image
- editing and processing programs.
+ GIMP is an advanced picture editor. You can use it to edit, enhance, and
+ retouch photos and scans, create drawings, and make your own images.
+ It has a large collection of professional-level editing tools and
+ filters, similar to the ones you might find in Photoshop. Numerous
+ fine-control settings and features like layers, paths, masks, and
+ scripting give you total control over your images.
  .
- If you'd like to be able to open files remotely (like over HTTP or FTP),
- install the gvfs-backends package.
+ Many image file formats are supported, including JPEG, Photoshop (.psd),
+ and Paint Shop Pro (.psp) files. It can also be used to scan and print
+ photos.
  .
- If you'd like to use a MIDI device as an input controller in GIMP,
- install libasound2 and read the how-to at /usr/share/doc/gimp/README.MIDI
+ To open files remotely (like over HTTP), install the gvfs-backends
+ package.
  .
- If you'd like to be able to read and write PostScript files from GIMP,
+ To read and write PostScript files from GIMP,
  install the ghostscript package.
+ .
+ To use a MIDI device (like a musical keyboard) as an input controller in GIMP,
+ install libasound2 and read the how-to at /usr/share/doc/gimp/README.MIDI
 
 Package: gimp-data
 Architecture: all

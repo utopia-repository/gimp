@@ -9,7 +9,7 @@ by Ari Pollak <ari@debian.org> on 6 Apr 2005.
 What?
 -----
 
-GIMP 2.2 comes with a module that allows to control it using MIDI devices.
+GIMP comes with a module that allows to control it using MIDI devices.
 Currently this is only supported on Linux with either the OSS or the ALSA sound
 drivers. It might work on other platforms as well if there is a way to access
 the raw MIDI stream by opening a device.
@@ -19,7 +19,7 @@ Enabling the MIDI Module
 ------------------------
 
 To make the UI of Gimp's MIDI controller visible you need to edit a
-configuration file when the Gimp is not running. Open ~/.gimp-2.2/controllerrc
+configuration file when the Gimp is not running. Open ~/.gimp-2.6/controllerrc
 in an editor and add the following lines to the end of the file:
 
 (GimpControllerInfo "MIDI"

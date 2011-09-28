@@ -27,7 +27,8 @@ clean::
 
 common-install-impl::
 	# Remove compiled python files from the distribution, they're compiled
-	# in postrm by dh_python
+	# in postrm by dh_python2
+	# TODO: is this still needed?
 	find $(CURDIR)/debian/tmp -name "*.py[co]" -delete
 
 	# Remove all libtool .la files
@@ -36,4 +37,4 @@ common-install-impl::
 	dh_movefiles
 
 binary-install/gimp::
-	dh_pysupport -pgimp /usr/lib/gimp/2.0/python
+	dh_python2 -pgimp /usr/lib/gimp/2.0/python

@@ -1,3 +1,24 @@
+gimp (2.6.11-4) unstable; urgency=low
+
+  * string-format.patch: fix from upstream for build failures with
+    -Werror=format-security, which is now the default with dpkg 1.16.1 and
+    cdbs
+    (Closes: #643388)
+  * Improve gimp package description (Closes: #588898)
+  * Move ghostscript to Recommends since it doesn't have many dependencies
+  * Update README.MIDI for gimp 2.6 (it's about time).
+  * Switch to using dh_python2 (Closes: #641579)
+  * fix_ftbfs4hurd.patch: fix compilation on GNU/Hurd until the real fix is in
+    place for gimp 2.8
+    (Closes: #601906)
+  * Change build-dependency from libwebkit-dev to libwebkitgtk-dev
+    (Closes: #635409)
+  * Use [linux-any] instead of hardcoded list of non-Linux architectures
+    (Closes: #634662)
+  * Bump standards-version and debhelper version
+
+ -- Ari Pollak <ari@debian.org>  Tue, 27 Sep 2011 23:32:45 -0400
+
 gimp (2.6.11-3) unstable; urgency=low
 
   * Fix buffer overflow in PSP reading code (CVE-2011-1782) (Closes: #629830)

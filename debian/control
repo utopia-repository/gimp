@@ -16,7 +16,8 @@ Build-Depends: debhelper (>= 8), cdbs (>= 0.4.97), autotools-dev,
  libpoppler-glib-dev (>= 0.3.1),
  libasound2-dev (>= 1.0.0) [linux-any],
  libdbus-glib-1-dev (>= 0.70),
- liblcms1-dev | liblcms-dev, libgegl-0.0-dev, libbabl-0.0-0-dev
+ liblcms1-dev | liblcms-dev, libgegl-0.0-dev, libbabl-0.0-0-dev,
+ xsltproc
 #Build-Conflicts: libgimp2.0
 Vcs-Git: git://git.debian.org/git/collab-maint/gimp.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/gimp.git

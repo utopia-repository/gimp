@@ -16,6 +16,7 @@ gimp (2.6.11-4) unstable; urgency=low
   * Use [linux-any] instead of hardcoded list of non-Linux architectures
     (Closes: #634662)
   * Bump standards-version and debhelper version
+  * Add xsltproc to build-depends so the menus will build again
 
  -- Ari Pollak <ari@debian.org>  Tue, 27 Sep 2011 23:32:45 -0400
 

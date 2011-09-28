@@ -1,0 +1,30 @@
+diff -uard gimp-2.6.11/libgimpbase/gimpreloc.c gimp-2.6.11.modified/libgimpbase//gimpreloc.c
+--- gimp-2.6.11/libgimpbase/gimpreloc.c	2010-07-03 00:51:56.000000000 +0200
++++ gimp-2.6.11.modified/libgimpbase/gimpreloc.c	2011-09-09 08:12:09.000000000 +0200
+@@ -27,6 +27,9 @@
+ 
+ #include "gimpreloc.h"
+ 
++#ifndef PATH_MAX
++#define PATH_MAX 4096
++#endif
+ 
+ /*
+  * Find the canonical filename of the executable. Returns the filename
+diff -uard gimp-2.6.11/plug-ins/common/qbist.c gimp-2.6.11.modified/plug-ins/common/qbist.c
+--- gimp-2.6.11/plug-ins/common/qbist.c	2010-07-03 00:51:56.000000000 +0200
++++ gimp-2.6.11.modified/plug-ins/common/qbist.c	2011-09-09 08:11:00.000000000 +0200
+@@ -41,8 +41,12 @@
+ 
+ #include "libgimp/stdplugins-intl.h"
+ 
+-#if ! defined PATH_MAX && defined _MAX_PATH
++#if ! defined PATH_MAX 
++#if defined _MAX_PATH
+ #  define PATH_MAX _MAX_PATH
++#else
++#  define PATH_MAX 4096
++#endif
+ #endif
+ 
+ /** qbist renderer ***********************************************************/

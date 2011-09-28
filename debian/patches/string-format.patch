@@ -1,0 +1,822 @@
+From 9d121afc2fd638734b73fe778f9aed0b7b69bf02 Mon Sep 17 00:00:00 2001
+From: Mukund Sivaraman <muks@banu.com>
+Date: Wed, 28 Sep 2011 07:50:50 +0530
+Subject: [PATCH] Bug 660305 - fails to build with -Werror=format-security
+
+According to the bug, Debian enforces
+-Wformat-security and -Werror=format-security, which is a good thing.
+Most of these patches are already in master, but I'll check master
+anyway.
+---
+ app/actions/image-commands.c          |    2 +-
+ app/actions/layers-commands.c         |    4 ++--
+ app/actions/select-commands.c         |    2 +-
+ app/actions/vectors-commands.c        |    4 ++--
+ app/config/gimprc.c                   |    6 +++---
+ app/core/gimpcontainer-filter.c       |    2 +-
+ app/dialogs/convert-dialog.c          |    2 +-
+ app/dialogs/preferences-dialog.c      |    2 +-
+ app/dialogs/quit-dialog.c             |    2 +-
+ app/dialogs/stroke-dialog.c           |    1 +
+ app/errors.c                          |    2 +-
+ app/file/file-open.c                  |    8 +++++---
+ app/gui/gui-message.c                 |    2 +-
+ app/gui/gui.c                         |    2 +-
+ app/main.c                            |    4 ++--
+ app/plug-in/gimppluginprocedure.c     |    2 +-
+ app/tools/gimpaligntool.c             |    2 +-
+ app/tools/gimpbucketfilltool.c        |    2 +-
+ app/tools/gimpcolorpickertool.c       |    2 +-
+ app/tools/gimpcurvestool.c            |    2 +-
+ app/tools/gimpforegroundselecttool.c  |    2 +-
+ app/tools/gimpfreeselecttool.c        |    2 +-
+ app/tools/gimpimagemaptool-settings.c |    4 ++--
+ app/tools/gimpiscissorstool.c         |    4 ++--
+ app/tools/gimpmeasuretool.c           |    6 +++---
+ app/tools/gimppainttool.c             |    4 ++--
+ app/tools/gimpselectiontool.c         |    2 +-
+ app/tools/gimpsourcetool.c            |    4 ++--
+ app/tools/gimptool.c                  |    2 +-
+ app/tools/gimptransformtool.c         |    2 +-
+ app/tools/gimpvectortool.c            |    2 +-
+ app/widgets/gimpcontrollerlist.c      |    4 ++--
+ app/widgets/gimperrordialog.c         |    2 +-
+ app/widgets/gimphelp.c                |    5 +++--
+ app/widgets/gimpwidgets-utils.c       |    6 +++---
+ configure.in                          |    3 +++
+ libgimpconfig/gimpconfigwriter.c      |    1 +
+ libgimpthumb/gimpthumbnail.c          |    2 +-
+ plug-ins/common/lcms.c                |    4 ++--
+ plug-ins/common/mail.c                |    2 +-
+ plug-ins/file-bmp/bmp-write.c         |    4 ++--
+ plug-ins/file-fits/fits.c             |    2 +-
+ plug-ins/file-jpeg/jpeg.c             |    2 +-
+ plug-ins/file-uri/uri.c               |    2 +-
+ plug-ins/help/gimphelpdomain.c        |    2 +-
+ plug-ins/ifs-compose/ifs-compose.c    |    3 ++-
+ plug-ins/print/print.c                |    2 +-
+ 47 files changed, 72 insertions(+), 63 deletions(-)
+
+diff --git a/app/actions/image-commands.c b/app/actions/image-commands.c
+index 73b5717..a2e26d5 100644
+--- a/app/actions/image-commands.c
++++ b/app/actions/image-commands.c
+@@ -174,7 +174,7 @@ image_convert_cmd_callback (GtkAction *action,
+                                 NULL, &error))
+         {
+           gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+-                        error->message);
++                        "%s", error->message);
+           g_clear_error (&error);
+           return;
+         }
+diff --git a/app/actions/layers-commands.c b/app/actions/layers-commands.c
+index 55d93ce..9afef64 100644
+--- a/app/actions/layers-commands.c
++++ b/app/actions/layers-commands.c
+@@ -235,7 +235,7 @@ layers_new_cmd_callback (GtkAction *action,
+       if (! floating_sel_to_layer (floating_sel, &error))
+         {
+           gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+-                        error->message);
++                        "%s", error->message);
+           g_clear_error (&error);
+           return;
+         }
+@@ -287,7 +287,7 @@ layers_new_last_vals_cmd_callback (GtkAction *action,
+       if (! floating_sel_to_layer (floating_sel, &error))
+         {
+           gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+-                        error->message);
++                        "%s", error->message);
+           g_clear_error (&error);
+           return;
+         }
+diff --git a/app/actions/select-commands.c b/app/actions/select-commands.c
+index 9aa0964..546cb68 100644
+--- a/app/actions/select-commands.c
++++ b/app/actions/select-commands.c
+@@ -374,7 +374,7 @@ select_stroke_last_vals_cmd_callback (GtkAction *action,
+                           drawable, context, desc, FALSE, NULL, &error))
+     {
+       gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+-                    error->message);
++                    "%s", error->message);
+       g_clear_error (&error);
+     }
+   else
+diff --git a/app/actions/vectors-commands.c b/app/actions/vectors-commands.c
+index 6b89759..8cd4af8 100644
+--- a/app/actions/vectors-commands.c
++++ b/app/actions/vectors-commands.c
+@@ -281,7 +281,7 @@ vectors_merge_visible_cmd_callback (GtkAction *action,
+   if (! gimp_image_merge_visible_vectors (image, &error))
+     {
+       gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+-                    error->message);
++                    "%s", error->message);
+       g_clear_error (&error);
+       return;
+     }
+@@ -425,7 +425,7 @@ vectors_stroke_last_vals_cmd_callback (GtkAction *action,
+                           NULL, &error))
+     {
+       gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+-                    error->message);
++                    "%s", error->message);
+       g_clear_error (&error);
+     }
+   else
+diff --git a/app/config/gimprc.c b/app/config/gimprc.c
+index 9b4a109..26e44c6 100644
+--- a/app/config/gimprc.c
++++ b/app/config/gimprc.c
+@@ -264,7 +264,7 @@ gimp_rc_load (GimpRc *rc)
+                                       rc->system_gimprc, NULL, &error))
+     {
+       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
+-        g_message (error->message);
++        g_message ("%s", error->message);
+ 
+       g_clear_error (&error);
+     }
+@@ -278,7 +278,7 @@ gimp_rc_load (GimpRc *rc)
+     {
+       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
+         {
+-          g_message (error->message);
++          g_message ("%s", error->message);
+ 
+           gimp_config_file_backup_on_error (rc->user_gimprc, "gimprc", NULL);
+         }
+@@ -524,7 +524,7 @@ gimp_rc_save (GimpRc *rc)
+                                        header, footer, global,
+                                        &error))
+     {
+-      g_message (error->message);
++      g_message ("%s", error->message);
+       g_error_free (error);
+     }
+ 
+diff --git a/app/core/gimpcontainer-filter.c b/app/core/gimpcontainer-filter.c
+index d29b11e..5e99f42 100644
+--- a/app/core/gimpcontainer-filter.c
++++ b/app/core/gimpcontainer-filter.c
+@@ -166,7 +166,7 @@ gimp_container_get_filtered_name_array (const GimpContainer  *container,
+     }
+   else
+     {
+-      g_warning (error->message);
++      g_warning ("%s", error->message);
+       g_error_free (error);
+ 
+       *length = 0;
+diff --git a/app/dialogs/convert-dialog.c b/app/dialogs/convert-dialog.c
+index e384bc7..693a92b 100644
+--- a/app/dialogs/convert-dialog.c
++++ b/app/dialogs/convert-dialog.c
+@@ -298,7 +298,7 @@ convert_dialog_response (GtkWidget     *widget,
+         {
+           gimp_message (dialog->image->gimp, G_OBJECT (dialog->dialog),
+                         GIMP_MESSAGE_WARNING,
+-                        error->message);
++                        "%s", error->message);
+           g_clear_error (&error);
+ 
+           if (progress)
+diff --git a/app/dialogs/preferences-dialog.c b/app/dialogs/preferences-dialog.c
+index 00a5c23..df33304 100644
+--- a/app/dialogs/preferences-dialog.c
++++ b/app/dialogs/preferences-dialog.c
+@@ -1362,7 +1362,7 @@ prefs_message (GtkMessageType  type,
+                                    destroy_with_parent ?
+                                    GTK_DIALOG_DESTROY_WITH_PARENT : 0,
+                                    type, GTK_BUTTONS_OK,
+-                                   message);
++                                   "%s", message);
+ 
+   g_signal_connect (dialog, "response",
+                     G_CALLBACK (gtk_widget_destroy),
+diff --git a/app/dialogs/quit-dialog.c b/app/dialogs/quit-dialog.c
+index 7cfa9c7..b7cdecd 100644
+--- a/app/dialogs/quit-dialog.c
++++ b/app/dialogs/quit-dialog.c
+@@ -216,7 +216,7 @@ quit_close_all_dialog_container_changed (GimpContainer  *images,
+   text = g_strdup_printf (ngettext ("There is one image with unsaved changes:",
+                                     "There are %d images with unsaved changes:",
+                                     num_images), num_images);
+-  gimp_message_box_set_primary_text (box, text);
++  gimp_message_box_set_primary_text (box, "%s", text);
+   g_free (text);
+ 
+   if (num_images == 0)
+diff --git a/app/dialogs/stroke-dialog.c b/app/dialogs/stroke-dialog.c
+index d57f053..c957aa5 100644
+--- a/app/dialogs/stroke-dialog.c
++++ b/app/dialogs/stroke-dialog.c
+@@ -321,6 +321,7 @@ stroke_dialog_response (GtkWidget  *widget,
+             gimp_message (context->gimp,
+                           G_OBJECT (widget),
+                           GIMP_MESSAGE_WARNING,
++                          "%s",
+                           error ? error->message : "NULL");
+             g_clear_error (&error);
+             return;
+diff --git a/app/errors.c b/app/errors.c
+index 1eafaef..7103112 100644
+--- a/app/errors.c
++++ b/app/errors.c
+@@ -185,7 +185,7 @@ gimp_error_log_func (const gchar    *domain,
+                      const gchar    *message,
+                      gpointer        data)
+ {
+-  gimp_fatal_error (message);
++  gimp_fatal_error ("%s", message);
+ }
+ 
+ static void
+diff --git a/app/file/file-open.c b/app/file/file-open.c
+index 269cc9a..d706e88 100644
+--- a/app/file/file-open.c
++++ b/app/file/file-open.c
+@@ -136,7 +136,7 @@ file_open_image (Gimp                *gimp,
+             {
+               g_free (filename);
+               g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES,
+-                           g_strerror (errno));
++                           "%s", g_strerror (errno));
+               return NULL;
+             }
+         }
+@@ -617,13 +617,15 @@ file_open_profile_apply_rgb (GimpImage    *image,
+           g_object_set (config, "mode", GIMP_COLOR_MANAGEMENT_OFF, NULL);
+ 
+           gimp_message (image->gimp, G_OBJECT (progress),
+-                        GIMP_MESSAGE_WARNING, msg);
++                        GIMP_MESSAGE_WARNING,
++                        "%s", msg);
+           g_free (msg);
+         }
+       else
+         {
+           gimp_message (image->gimp, G_OBJECT (progress),
+-                        GIMP_MESSAGE_ERROR, error->message);
++                        GIMP_MESSAGE_ERROR,
++                        "%s", error->message);
+         }
+ 
+       g_error_free (error);
+diff --git a/app/gui/gui-message.c b/app/gui/gui-message.c
+index 15a0cd8..ec85868 100644
+--- a/app/gui/gui-message.c
++++ b/app/gui/gui-message.c
+@@ -219,7 +219,7 @@ gui_message_error_dialog (Gimp                *gimp,
+         gtk_message_dialog_new (GTK_WINDOW (gtk_widget_get_toplevel (parent)),
+                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                 type, GTK_BUTTONS_OK,
+-                                message);
++                                "%s", message);
+ 
+       g_signal_connect (dialog, "response",
+                         G_CALLBACK (gtk_widget_destroy),
+diff --git a/app/gui/gui.c b/app/gui/gui.c
+index 2adca76..3634c22 100644
+--- a/app/gui/gui.c
++++ b/app/gui/gui.c
+@@ -170,7 +170,7 @@ gui_abort (const gchar *abort_message)
+                       "border-width", 12,
+                       NULL);
+ 
+-  gimp_message_box_set_text (GIMP_MESSAGE_BOX (box), abort_message);
++  gimp_message_box_set_text (GIMP_MESSAGE_BOX (box), "%s", abort_message);
+ 
+   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), box);
+   gtk_widget_show (box);
+diff --git a/app/main.c b/app/main.c
+index 34c9f74..49f4f3e 100644
+--- a/app/main.c
++++ b/app/main.c
+@@ -719,14 +719,14 @@ gimp_sigfatal_handler (gint sig_num)
+     case SIGQUIT:
+     case SIGABRT:
+     case SIGTERM:
+-      gimp_terminate (g_strsignal (sig_num));
++      gimp_terminate ("%s", g_strsignal (sig_num));
+       break;
+ 
+     case SIGBUS:
+     case SIGSEGV:
+     case SIGFPE:
+     default:
+-      gimp_fatal_error (g_strsignal (sig_num));
++      gimp_fatal_error ("%s", g_strsignal (sig_num));
+       break;
+     }
+ }
+diff --git a/app/plug-in/gimppluginprocedure.c b/app/plug-in/gimppluginprocedure.c
+index 845dc44..09a27ca 100644
+--- a/app/plug-in/gimppluginprocedure.c
++++ b/app/plug-in/gimppluginprocedure.c
+@@ -658,7 +658,7 @@ gimp_plug_in_procedure_get_pixbuf (const GimpPlugInProcedure *proc)
+ 
+   if (! pixbuf && error)
+     {
+-      g_printerr (error->message);
++      g_printerr ("%s", error->message);
+       g_clear_error (&error);
+     }
+ 
+diff --git a/app/tools/gimpaligntool.c b/app/tools/gimpaligntool.c
+index 4275861..bc2e951 100644
+--- a/app/tools/gimpaligntool.c
++++ b/app/tools/gimpaligntool.c
+@@ -645,7 +645,7 @@ gimp_align_tool_status_update (GimpTool        *tool,
+         }
+ 
+       if (status)
+-        gimp_tool_push_status (tool, display, status);
++        gimp_tool_push_status (tool, display, "%s", status);
+ 
+       if (free_status)
+         g_free ((gchar *) status);
+diff --git a/app/tools/gimpbucketfilltool.c b/app/tools/gimpbucketfilltool.c
+index ed37335..6c02103 100644
+--- a/app/tools/gimpbucketfilltool.c
++++ b/app/tools/gimpbucketfilltool.c
+@@ -158,7 +158,7 @@ gimp_bucket_fill_tool_button_release (GimpTool              *tool,
+         {
+           gimp_message (display->image->gimp, G_OBJECT (display),
+                         GIMP_MESSAGE_WARNING,
+-                        error->message);
++                        "%s", error->message);
+           g_clear_error (&error);
+         }
+       else
+diff --git a/app/tools/gimpcolorpickertool.c b/app/tools/gimpcolorpickertool.c
+index 39c3fae..5f86cb4 100644
+--- a/app/tools/gimpcolorpickertool.c
++++ b/app/tools/gimpcolorpickertool.c
+@@ -270,7 +270,7 @@ gimp_color_picker_tool_oper_update (GimpTool        *tool,
+         }
+       if (status_help != NULL)
+         {
+-          gimp_tool_push_status (tool, display, status_help);
++          gimp_tool_push_status (tool, display, "%s", status_help);
+           g_free (status_help);
+         }
+     }
+diff --git a/app/tools/gimpcurvestool.c b/app/tools/gimpcurvestool.c
+index 0c182a9..a8f4b8a 100644
+--- a/app/tools/gimpcurvestool.c
++++ b/app/tools/gimpcurvestool.c
+@@ -331,7 +331,7 @@ gimp_curves_tool_oper_update (GimpTool        *tool,
+   GIMP_COLOR_TOOL (tool)->pick_mode = mode;
+ 
+   if (status && proximity)
+-    gimp_tool_push_status (tool, display, status);
++    gimp_tool_push_status (tool, display, "%s", status);
+ }
+ 
+ static void
+diff --git a/app/tools/gimpforegroundselecttool.c b/app/tools/gimpforegroundselecttool.c
+index bdc8bb8..bd579c4 100644
+--- a/app/tools/gimpforegroundselecttool.c
++++ b/app/tools/gimpforegroundselecttool.c
+@@ -334,7 +334,7 @@ gimp_foreground_select_tool_oper_update (GimpTool        *tool,
+   if (proximity)
+     {
+       if (status)
+-        gimp_tool_replace_status (tool, display, status);
++        gimp_tool_replace_status (tool, display, "%s", status);
+ 
+       gimp_draw_tool_start (draw_tool, display);
+     }
+diff --git a/app/tools/gimpfreeselecttool.c b/app/tools/gimpfreeselecttool.c
+index 6051100..9e82648 100644
+--- a/app/tools/gimpfreeselecttool.c
++++ b/app/tools/gimpfreeselecttool.c
+@@ -1132,7 +1132,7 @@ gimp_free_select_tool_status_update (GimpFreeSelectTool *fst,
+ 
+       if (status_text)
+         {
+-          gimp_tool_push_status (tool, display, status_text);
++          gimp_tool_push_status (tool, display, "%s", status_text);
+         }
+     }
+ }
+diff --git a/app/tools/gimpimagemaptool-settings.c b/app/tools/gimpimagemaptool-settings.c
+index edd0ec9..d9e067b 100644
+--- a/app/tools/gimpimagemaptool-settings.c
++++ b/app/tools/gimpimagemaptool-settings.c
+@@ -179,7 +179,7 @@ gimp_image_map_tool_settings_import (GimpSettingsBox  *box,
+   if (! tool_class->settings_import (tool, filename, &error))
+     {
+       gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (tool->shell),
+-                    GIMP_MESSAGE_ERROR, error->message);
++                    GIMP_MESSAGE_ERROR, "%s", error->message);
+       g_clear_error (&error);
+ 
+       return FALSE;
+@@ -208,7 +208,7 @@ gimp_image_map_tool_settings_export (GimpSettingsBox  *box,
+   if (! tool_class->settings_export (tool, filename, &error))
+     {
+       gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (tool->shell),
+-                    GIMP_MESSAGE_ERROR, error->message);
++                    GIMP_MESSAGE_ERROR, "%s", error->message);
+       g_clear_error (&error);
+ 
+       return FALSE;
+diff --git a/app/tools/gimpiscissorstool.c b/app/tools/gimpiscissorstool.c
+index 1b1f329..41282e1 100644
+--- a/app/tools/gimpiscissorstool.c
++++ b/app/tools/gimpiscissorstool.c
+@@ -940,7 +940,7 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
+       status = gimp_suggest_modifiers (_("Click-Drag to move this point"),
+                                        GDK_SHIFT_MASK & ~state,
+                                        _("%s: disable auto-snap"), NULL, NULL);
+-      gimp_tool_replace_status (tool, display, status);
++      gimp_tool_replace_status (tool, display, "%s", status);
+       g_free (status);
+       iscissors->op = ISCISSORS_OP_MOVE_POINT;
+     }
+@@ -1006,7 +1006,7 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
+                                                GDK_SHIFT_MASK & ~state,
+                                                _("%s: disable auto-snap"),
+                                                NULL, NULL);
+-              gimp_tool_replace_status (tool, display, status);
++              gimp_tool_replace_status (tool, display, "%s", status);
+               g_free (status);
+             }
+           iscissors->op = ISCISSORS_OP_ADD_POINT;
+diff --git a/app/tools/gimpmeasuretool.c b/app/tools/gimpmeasuretool.c
+index 0171bde..2cd406b 100644
+--- a/app/tools/gimpmeasuretool.c
++++ b/app/tools/gimpmeasuretool.c
+@@ -572,7 +572,7 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
+                                                        GDK_MOD1_MASK & ~state,
+                                                        NULL, NULL, NULL);
+                     }
+-                  gimp_tool_replace_status (tool, display, status);
++                  gimp_tool_replace_status (tool, display, "%s", status);
+                   g_free (status);
+                   measure->status_help = TRUE;
+                   break;
+@@ -585,7 +585,7 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
+                                                      "vertical guide"),
+                                                    GDK_CONTROL_MASK & ~state,
+                                                    NULL, NULL, NULL);
+-                  gimp_tool_replace_status (tool, display, status);
++                  gimp_tool_replace_status (tool, display, "%s", status);
+                   g_free (status);
+                   measure->status_help = TRUE;
+                   break;
+@@ -613,7 +613,7 @@ gimp_measure_tool_cursor_update (GimpTool        *tool,
+                                                     | GDK_MOD1_MASK) & ~state,
+                                                    NULL, NULL, NULL);
+                 }
+-              gimp_tool_replace_status (tool, display, status);
++              gimp_tool_replace_status (tool, display, "%s", status);
+               g_free (status);
+               measure->status_help = TRUE;
+               break;
+diff --git a/app/tools/gimppainttool.c b/app/tools/gimppainttool.c
+index e76409d..a0584f5 100644
+--- a/app/tools/gimppainttool.c
++++ b/app/tools/gimppainttool.c
+@@ -325,7 +325,7 @@ gimp_paint_tool_button_press (GimpTool        *tool,
+   if (! gimp_paint_core_start (core, drawable, paint_options, &curr_coords,
+                                &error))
+     {
+-      gimp_tool_message (tool, display, error->message);
++      gimp_tool_message (tool, display, "%s", error->message);
+       g_clear_error (&error);
+       return;
+     }
+@@ -662,7 +662,7 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
+                                            _("%s for a straight line"),
+                                            paint_tool->status_ctrl,
+                                            NULL);
+-          gimp_tool_push_status (tool, display, status);
++          gimp_tool_push_status (tool, display, "%s", status);
+           g_free (status);
+ 
+           paint_tool->draw_line = FALSE;
+diff --git a/app/tools/gimpselectiontool.c b/app/tools/gimpselectiontool.c
+index 36b64b7..91db226 100644
+--- a/app/tools/gimpselectiontool.c
++++ b/app/tools/gimpselectiontool.c
+@@ -313,7 +313,7 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
+         }
+ 
+       if (status)
+-        gimp_tool_push_status (tool, display, status);
++        gimp_tool_push_status (tool, display, "%s", status);
+ 
+       if (free_status)
+         g_free ((gchar *) status);
+diff --git a/app/tools/gimpsourcetool.c b/app/tools/gimpsourcetool.c
+index c42c13b..cf9037f 100644
+--- a/app/tools/gimpsourcetool.c
++++ b/app/tools/gimpsourcetool.c
+@@ -313,7 +313,7 @@ gimp_source_tool_oper_update (GimpTool        *tool,
+         {
+           if (state & GDK_CONTROL_MASK)
+             gimp_tool_replace_status (tool, display,
+-                                      source_tool->status_set_source);
++                                      "%s", source_tool->status_set_source);
+           else
+             {
+               gchar *status;
+@@ -322,7 +322,7 @@ gimp_source_tool_oper_update (GimpTool        *tool,
+                                     gimp_get_mod_separator (),
+                                     source_tool->status_set_source,
+                                     NULL);
+-              gimp_tool_replace_status (tool, display, status);
++              gimp_tool_replace_status (tool, display, "%s", status);
+               g_free (status);
+             }
+         }
+diff --git a/app/tools/gimptool.c b/app/tools/gimptool.c
+index 397ec10..2f8c6d3 100644
+--- a/app/tools/gimptool.c
++++ b/app/tools/gimptool.c
+@@ -429,7 +429,7 @@ gimp_tool_initialize (GimpTool    *tool,
+     {
+       if (error)
+         {
+-          gimp_tool_message (tool, display, error->message);
++          gimp_tool_message (tool, display, "%s", error->message);
+           g_clear_error (&error);
+         }
+ 
+diff --git a/app/tools/gimptransformtool.c b/app/tools/gimptransformtool.c
+index bf2e575..07041ce 100644
+--- a/app/tools/gimptransformtool.c
++++ b/app/tools/gimptransformtool.c
+@@ -1179,7 +1179,7 @@ gimp_transform_tool_doit (GimpTransformTool *tr_tool,
+ 
+   if (! active_item)
+     {
+-      gimp_tool_message (tool, display, message);
++      gimp_tool_message (tool, display, "%s", message);
+       return;
+     }
+ 
+diff --git a/app/tools/gimpvectortool.c b/app/tools/gimpvectortool.c
+index c58783c..b9281d4 100644
+--- a/app/tools/gimpvectortool.c
++++ b/app/tools/gimpvectortool.c
+@@ -1265,7 +1265,7 @@ gimp_vector_tool_status_update (GimpTool        *tool,
+       }
+ 
+       if (status)
+-        gimp_tool_push_status (tool, display, status);
++        gimp_tool_push_status (tool, display, "%s", status);
+ 
+       if (free_status)
+         g_free ((gchar *) status);
+diff --git a/app/widgets/gimpcontrollerlist.c b/app/widgets/gimpcontrollerlist.c
+index 2adfedd..e6d8655 100644
+--- a/app/widgets/gimpcontrollerlist.c
++++ b/app/widgets/gimpcontrollerlist.c
+@@ -577,9 +577,9 @@ gimp_controller_list_remove_clicked (GtkWidget          *button,
+                        "the controller without removing it."));
+ 
+   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+-                                     primary);
++                                     "%s", primary);
+   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+-                             secondary);
++                             "%s", secondary);
+ 
+   g_free (primary);
+   g_free (secondary);
+diff --git a/app/widgets/gimperrordialog.c b/app/widgets/gimperrordialog.c
+index d31155e..eec7935 100644
+--- a/app/widgets/gimperrordialog.c
++++ b/app/widgets/gimperrordialog.c
+@@ -165,7 +165,7 @@ gimp_error_dialog_add (GimpErrorDialog *dialog,
+   dialog->num_messages++;
+ 
+   if (overflow)
+-    gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (box), domain);
++    gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (box), "%s", domain);
+   else
+     gimp_message_box_set_primary_text (GIMP_MESSAGE_BOX (box),
+                                        _("%s Message"), domain);
+diff --git a/app/widgets/gimphelp.c b/app/widgets/gimphelp.c
+index 945bbfc..012f768 100644
+--- a/app/widgets/gimphelp.c
++++ b/app/widgets/gimphelp.c
+@@ -380,8 +380,9 @@ gimp_help_browser_error (Gimp         *gimp,
+     }
+ 
+   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+-                                     primary);
+-  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box, text);
++                                     "%s", primary);
++  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
++                             "%s", text);
+ 
+   if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
+     {
+diff --git a/app/widgets/gimpwidgets-utils.c b/app/widgets/gimpwidgets-utils.c
+index 4a3a711..59b6784 100644
+--- a/app/widgets/gimpwidgets-utils.c
++++ b/app/widgets/gimpwidgets-utils.c
+@@ -850,7 +850,7 @@ gimp_text_buffer_load (GtkTextBuffer  *buffer,
+   if (! file)
+     {
+       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+-                   g_strerror (errno));
++                   "%s", g_strerror (errno));
+       return FALSE;
+     }
+ 
+@@ -907,7 +907,7 @@ gimp_text_buffer_save (GtkTextBuffer  *buffer,
+   if (fd == -1)
+     {
+       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+-                   g_strerror (errno));
++                   "%s", g_strerror (errno));
+       return FALSE;
+     }
+ 
+@@ -934,7 +934,7 @@ gimp_text_buffer_save (GtkTextBuffer  *buffer,
+               g_free (text_contents);
+               close (fd);
+               g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+-                           g_strerror (errno));
++                           "%s", g_strerror (errno));
+               return FALSE;
+             }
+         }
+diff --git a/configure.in b/configure.in
+index 51a70b8..c567873 100644
+--- a/configure.in
++++ b/configure.in
+@@ -339,6 +339,9 @@ CFLAGS="$CFLAGS $extra_warnings"
+ GIMP_DETECT_CFLAGS(extra_warnings, '-Wold-style-definition')
+ CFLAGS="$CFLAGS $extra_warnings"
+ 
++GIMP_DETECT_CFLAGS(extra_warnings, '-Wformat-security')
++CFLAGS="$CFLAGS $extra_warnings"
++
+ 
+ # Ensure MSVC-compatible struct packing convention is used when
+ # compiling for Win32 with gcc.
+diff --git a/libgimpconfig/gimpconfigwriter.c b/libgimpconfig/gimpconfigwriter.c
+index 525ea8a..9f2db79 100644
+--- a/libgimpconfig/gimpconfigwriter.c
++++ b/libgimpconfig/gimpconfigwriter.c
+@@ -568,6 +568,7 @@ gimp_config_writer_linefeed (GimpConfigWriter *writer)
+     {
+       if (write (writer->fd, "\n", 1) < 0)
+         g_set_error (&writer->error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_WRITE,
++                     "%s",
+                      g_strerror (errno));
+     }
+   else
+diff --git a/libgimpthumb/gimpthumbnail.c b/libgimpthumb/gimpthumbnail.c
+index df093b3..7648a44 100644
+--- a/libgimpthumb/gimpthumbnail.c
++++ b/libgimpthumb/gimpthumbnail.c
+@@ -830,7 +830,7 @@ gimp_thumbnail_save (GimpThumbnail  *thumbnail,
+   if (thumbnail->image_mimetype)
+     {
+       keys[i]   = TAG_THUMB_MIMETYPE;
+-      values[i] = g_strdup_printf (thumbnail->image_mimetype);
++      values[i] = g_strdup_printf ("%s", thumbnail->image_mimetype);
+       i++;
+     }
+ 
+diff --git a/plug-ins/common/lcms.c b/plug-ins/common/lcms.c
+index 2e697a0..8b679bf 100644
+--- a/plug-ins/common/lcms.c
++++ b/plug-ins/common/lcms.c
+@@ -804,7 +804,7 @@ lcms_image_set_profile (gint32       image,
+ 
+       if (! file)
+         {
+-          g_message (error->message);
++          g_message ("%s", error->message);
+           g_error_free (error);
+ 
+           return FALSE;
+@@ -1109,7 +1109,7 @@ lcms_load_profile (const gchar *filename,
+ 
+   if (! file)
+     {
+-      g_message (error->message);
++      g_message ("%s", error->message);
+       g_error_free (error);
+ 
+       return NULL;
+diff --git a/plug-ins/common/mail.c b/plug-ins/common/mail.c
+index 0dfdfd7..ddf08b9 100644
+--- a/plug-ins/common/mail.c
++++ b/plug-ins/common/mail.c
+@@ -351,7 +351,7 @@ save_image (const gchar *filename,
+ 
+   if (! to64 (tmpname, mailpipe, &error))
+     {
+-      g_message (error->message);
++      g_message ("%s", error->message);
+       g_error_free (error);
+       goto error;
+     }
+diff --git a/plug-ins/file-bmp/bmp-write.c b/plug-ins/file-bmp/bmp-write.c
+index 913bd7b..4e99672 100644
+--- a/plug-ins/file-bmp/bmp-write.c
++++ b/plug-ins/file-bmp/bmp-write.c
+@@ -123,10 +123,10 @@ warning_dialog (const gchar *primary,
+ 
+   dialog = gtk_message_dialog_new (NULL, 0,
+                                    GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL,
+-                                   primary);
++                                   "%s", primary);
+ 
+   gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+-                                            secondary);
++                                            "%s", secondary);
+ 
+   gimp_window_set_transient (GTK_WINDOW (dialog));
+ 
+diff --git a/plug-ins/file-fits/fits.c b/plug-ins/file-fits/fits.c
+index 9a3c40b..3aa1a48 100644
+--- a/plug-ins/file-fits/fits.c
++++ b/plug-ins/file-fits/fits.c
+@@ -1065,5 +1065,5 @@ show_fits_errors (void)
+ 
+   /* Write out error messages of FITS-Library */
+   while ((msg = fits_get_error ()) != NULL)
+-    g_message (msg);
++    g_message ("%s", msg);
+ }
+diff --git a/plug-ins/file-jpeg/jpeg.c b/plug-ins/file-jpeg/jpeg.c
+index b88b63e..fe18678 100644
+--- a/plug-ins/file-jpeg/jpeg.c
++++ b/plug-ins/file-jpeg/jpeg.c
+@@ -564,5 +564,5 @@ my_output_message (j_common_ptr cinfo)
+   gchar  buffer[JMSG_LENGTH_MAX + 1];
+ 
+   (*cinfo->err->format_message)(cinfo, buffer);
+-  g_message (buffer);
++  g_message ("%s", buffer);
+ }
+diff --git a/plug-ins/file-uri/uri.c b/plug-ins/file-uri/uri.c
+index 89d6464..751678c 100644
+--- a/plug-ins/file-uri/uri.c
++++ b/plug-ins/file-uri/uri.c
+@@ -102,7 +102,7 @@ query (void)
+ 
+   if (! uri_backend_init (PLUG_IN_BINARY, FALSE, 0, &error))
+     {
+-      g_message (error->message);
++      g_message ("%s", error->message);
+       g_clear_error (&error);
+ 
+       return;
+diff --git a/plug-ins/help/gimphelpdomain.c b/plug-ins/help/gimphelpdomain.c
+index 1a5ab8b..78a62a9 100644
+--- a/plug-ins/help/gimphelpdomain.c
++++ b/plug-ins/help/gimphelpdomain.c
+@@ -202,7 +202,7 @@ gimp_help_domain_map (GimpHelpDomain    *domain,
+               break;
+ 
+             default:
+-              g_message (error->message);
++              g_message ("%s", error->message);
+               break;
+             }
+ 
+diff --git a/plug-ins/ifs-compose/ifs-compose.c b/plug-ins/ifs-compose/ifs-compose.c
+index 56815ce..a4ed9c3 100644
+--- a/plug-ins/ifs-compose/ifs-compose.c
++++ b/plug-ins/ifs-compose/ifs-compose.c
+@@ -2341,7 +2341,8 @@ ifscompose_message_dialog (GtkMessageType  type,
+ {
+   GtkWidget *dialog;
+ 
+-  dialog = gtk_message_dialog_new (parent, 0, type, GTK_BUTTONS_OK, message);
++  dialog = gtk_message_dialog_new (parent, 0, type, GTK_BUTTONS_OK,
++                                   "%s", message);
+ 
+   if (title)
+     gtk_window_set_title (GTK_WINDOW (dialog), title);
+diff --git a/plug-ins/print/print.c b/plug-ins/print/print.c
+index 63a5b96..e94c414 100644
+--- a/plug-ins/print/print.c
++++ b/plug-ins/print/print.c
+@@ -348,7 +348,7 @@ print_show_error (const gchar *message)
+                                    _("An error occurred while trying to print:"));
+ 
+   gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+-                                            message);
++                                            "%s", message);
+ 
+   gtk_dialog_run (GTK_DIALOG (dialog));
+   gtk_widget_destroy (dialog);
+-- 
+1.7.4.4
+

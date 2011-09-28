@@ -4,3 +4,4 @@
 07_binutils-gold.patch
 08_CVE-2011-1782.patch
 fix_ftbfs4hurd.patch
+string-format.patch

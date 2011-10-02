@@ -1,4 +1,4 @@
-Debian-Bug: http://bugs.debian.org/644025
+Bug-Debian: http://bugs.debian.org/644025
 commit 0af966b63fcc55b36380d6538dfb30000f71fef9
 Author: Nils Philippsen <nils@redhat.com>
 Date:   Wed Feb 2 17:11:28 2011 +0100

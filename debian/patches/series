@@ -5,3 +5,4 @@
 08_CVE-2011-1782.patch
 fix_ftbfs4hurd.patch
 string-format.patch
+pyslice.patch

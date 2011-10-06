@@ -6,3 +6,5 @@
 fix_ftbfs4hurd.patch
 string-format.patch
 pyslice.patch
+CVE-2011-2896.part1.patch
+CVE-2011-2896.part2.patch

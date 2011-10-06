@@ -1,3 +1,10 @@
+gimp (2.6.11-5) unstable; urgency=high
+
+  * pyslice.patch: upstream patch to fix slice filter crashing (Closes: #644025)
+  * Apply fix for GIF buffer overflow (CVE-2011-2896) (Closes: #643753)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 06 Oct 2011 21:46:58 -0400
+
 gimp (2.6.11-4) unstable; urgency=low
 
   * string-format.patch: fix from upstream for build failures with

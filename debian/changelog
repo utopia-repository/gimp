@@ -1,3 +1,11 @@
+gimp (2.6.11-6) unstable; urgency=low
+
+  * libpng_compile.patch:
+      - Apply patch from upstream to fix compilation with libpng 1.5
+        (Closes: #649972)
+
+ -- Ari Pollak <ari@debian.org>  Tue, 29 Nov 2011 21:38:57 -0500
+
 gimp (2.6.11-5) unstable; urgency=high
 
   * pyslice.patch: upstream patch to fix slice filter crashing (Closes: #644025)

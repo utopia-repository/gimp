@@ -14,8 +14,6 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/class/gnome.mk
 
-export DEB_BUILD_MAINT_OPTIONS="hardening=-format" # avoid compile-time errors
-
 LDFLAGS = -Wl,--as-needed
 DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary --without-hal
 DEB_BUILDDIR := $(DEB_SRCDIR)/build

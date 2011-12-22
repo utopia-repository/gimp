@@ -1,8 +1,0 @@
-gimp (2.4.0~rc2-3) unstable; urgency=low
-
-  * The gimp package now includes its own Print plug-in, and should
-    automatically remove the old gimp-print package that was provided by
-    Gutenprint. If you still want to use the extended Gutenprint Print
-    plug-in, please install the gimp-gutenprint package.
-
- -- Ari Pollak <ari@debian.org>  Tue, 18 Sep 2007 08:25:34 -0400

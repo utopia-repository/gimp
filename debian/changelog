@@ -1,6 +1,13 @@
+gimp (2.6.11-8) unstable; urgency=low
+
+  * Really add the patch this time (Closes: #651387)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 22 Dec 2011 09:39:20 -0500
+
 gimp (2.6.11-7) unstable; urgency=low
 
-  * poppler0.18.patch: Port file-pdf plugin to poppler 0.18 API. Patch taken from Fedora via Ubuntu.
+  * poppler0.18.patch: Port file-pdf plugin to poppler 0.18 API. Patch taken
+    from Fedora via Ubuntu.
     (Closes: #651387)
 
  -- Ari Pollak <ari@debian.org>  Sat, 10 Dec 2011 16:02:12 -0500

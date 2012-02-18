@@ -22,7 +22,7 @@
   </chapters>
   <functions>
     <keyword type="struct" name="GimpConfig" link="libgimpconfig-GimpConfig.html#GimpConfig"/>
-    <keyword type="struct" name="GimpConfigInterface" link="libgimpconfig-GimpConfig.html#GimpConfigInterface-struct"/>
+    <keyword type="struct" name="struct GimpConfigInterface" link="libgimpconfig-GimpConfig.html#GimpConfigInterface-struct"/>
     <keyword type="function" name="gimp_config_serialize_to_file ()" link="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-file" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_to_fd ()" link="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-fd" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_to_string ()" link="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-string" since="GIMP 2.4"/>

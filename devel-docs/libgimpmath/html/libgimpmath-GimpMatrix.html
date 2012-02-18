@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpMatrix</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath-GimpMath.html" title="GimpMath">
 <link rel="next" href="libgimpmath-GimpVector.html" title="GimpVector">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libgimpmath-GimpMatrix.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpMatrix">
+<div class="refentry">
 <a name="libgimpmath-GimpMatrix"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,7 +35,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libgimpmath-GimpMatrix.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2">GimpMatrix2</a>;
                     <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3">GimpMatrix3</a>;
@@ -47,51 +47,51 @@
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-mult" title="gimp_matrix3_mult ()">gimp_matrix3_mult</a>                   (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix1</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix2</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-translate" title="gimp_matrix3_translate ()">gimp_matrix3_translate</a>              (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-scale" title="gimp_matrix3_scale ()">gimp_matrix3_scale</a>                  (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-rotate" title="gimp_matrix3_rotate ()">gimp_matrix3_rotate</a>                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> theta</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> theta</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-xshear" title="gimp_matrix3_xshear ()">gimp_matrix3_xshear</a>                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-yshear" title="gimp_matrix3_yshear ()">gimp_matrix3_yshear</a>                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-affine" title="gimp_matrix3_affine ()">gimp_matrix3_affine</a>                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> a</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> b</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> c</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> d</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> e</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> f</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> a</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> b</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> c</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> d</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> e</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> f</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-transform-point" title="gimp_matrix3_transform_point ()">gimp_matrix3_transform_point</a>        (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newx</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newy</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-determinant" title="gimp_matrix3_determinant ()">gimp_matrix3_determinant</a>            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newx</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newy</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-determinant" title="gimp_matrix3_determinant ()">gimp_matrix3_determinant</a>            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-invert" title="gimp_matrix3_invert ()">gimp_matrix3_invert</a>                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-identity" title="gimp_matrix3_is_identity ()">gimp_matrix3_is_identity</a>            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-diagonal" title="gimp_matrix3_is_diagonal ()">gimp_matrix3_is_diagonal</a>            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-affine" title="gimp_matrix3_is_affine ()">gimp_matrix3_is_affine</a>              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-simple" title="gimp_matrix3_is_simple ()">gimp_matrix3_is_simple</a>              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-identity" title="gimp_matrix3_is_identity ()">gimp_matrix3_is_identity</a>            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-diagonal" title="gimp_matrix3_is_diagonal ()">gimp_matrix3_is_diagonal</a>            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-affine" title="gimp_matrix3_is_affine ()">gimp_matrix3_is_affine</a>              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix3-is-simple" title="gimp_matrix3_is_simple ()">gimp_matrix3_is_simple</a>              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMatrix.html#gimp-matrix4-to-deg" title="gimp_matrix4_to_deg ()">gimp_matrix4_to_deg</a>                 (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix4" title="GimpMatrix4"><span class="type">GimpMatrix4</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *a</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *b</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *c</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *a</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *b</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *c</code></em>);
 #define             <a class="link" href="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX2:CAPS" title="GIMP_TYPE_MATRIX2">GIMP_TYPE_MATRIX2</a>
 #define             <a class="link" href="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX2:CAPS" title="GIMP_TYPE_PARAM_MATRIX2">GIMP_TYPE_PARAM_MATRIX2</a>
 #define             <a class="link" href="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2:CAPS" title="GIMP_IS_PARAM_SPEC_MATRIX2()">GIMP_IS_PARAM_SPEC_MATRIX2</a>          (pspec)
-<a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"><span class="returnvalue">GParamSpec</span></a> *        <a class="link" href="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2" title="gimp_param_spec_matrix2 ()">gimp_param_spec_matrix2</a>             (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *nick</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *blurb</code></em>,
+<a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"><span class="returnvalue">GParamSpec</span></a> *        <a class="link" href="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2" title="gimp_param_spec_matrix2 ()">gimp_param_spec_matrix2</a>             (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *nick</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *blurb</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2"><span class="type">GimpMatrix2</span></a> *default_value</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a> flags</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a> flags</code></em>);
 #define             <a class="link" href="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2:CAPS" title="GIMP_VALUE_HOLDS_MATRIX2()">GIMP_VALUE_HOLDS_MATRIX2</a>            (value)
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libgimpmath-GimpMatrix.description"></a><h2>Description</h2>
 <p>
 When doing image manipulation you will often need 3x3 transformation
@@ -105,9 +105,9 @@ Each matrix class has a 2 dimensional gdouble coeff member. The
 element for row r and column c of the matrix is coeff[r][c].
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libgimpmath-GimpMatrix.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpMatrix2">
+<div class="refsect2">
 <a name="GimpMatrix2"></a><h3>GimpMatrix2</h3>
 <pre class="programlisting">typedef struct {
   gdouble coeff[2][2];
@@ -118,7 +118,7 @@ A two by two matrix.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GimpMatrix3">
+<div class="refsect2">
 <a name="GimpMatrix3"></a><h3>GimpMatrix3</h3>
 <pre class="programlisting">typedef struct {
   gdouble coeff[3][3];
@@ -129,7 +129,7 @@ A three by three matrix.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GimpMatrix4">
+<div class="refsect2">
 <a name="GimpMatrix4"></a><h3>GimpMatrix4</h3>
 <pre class="programlisting">typedef struct {
   gdouble coeff[4][4];
@@ -140,7 +140,7 @@ A four by four matrix.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix2_identity ()">
+<div class="refsect2">
 <a name="gimp-matrix2-identity"></a><h3>gimp_matrix2_identity ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix2_identity               (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2"><span class="type">GimpMatrix2</span></a> *matrix</code></em>);</pre>
 <p>
@@ -150,13 +150,12 @@ Sets the matrix to the identity matrix.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>A matrix.
-</td>
+<td>A matrix.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix2_mult ()">
+<div class="refsect2">
 <a name="gimp-matrix2-mult"></a><h3>gimp_matrix2_mult ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix2_mult                   (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2"><span class="type">GimpMatrix2</span></a> *matrix1</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2"><span class="type">GimpMatrix2</span></a> *matrix2</code></em>);</pre>
@@ -168,19 +167,17 @@ Multiplies two matrices and puts the result into the second one.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix1</code></em> :</span></p></td>
-<td>The first input matrix.
-</td>
+<td>The first input matrix.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix2</code></em> :</span></p></td>
-<td>The second input matrix which will be overwritten by the result.
-</td>
+<td>The second input matrix which will be overwritten by the result.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_identity ()">
+<div class="refsect2">
 <a name="gimp-matrix3-identity"></a><h3>gimp_matrix3_identity ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_identity               (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
@@ -190,13 +187,12 @@ Sets the matrix to the identity matrix.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>A matrix.
-</td>
+<td>A matrix.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_mult ()">
+<div class="refsect2">
 <a name="gimp-matrix3-mult"></a><h3>gimp_matrix3_mult ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_mult                   (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix1</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix2</code></em>);</pre>
@@ -208,23 +204,21 @@ Multiplies two matrices and puts the result into the second one.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix1</code></em> :</span></p></td>
-<td>The first input matrix.
-</td>
+<td>The first input matrix.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix2</code></em> :</span></p></td>
-<td>The second input matrix which will be overwritten by the result.
-</td>
+<td>The second input matrix which will be overwritten by the result.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_translate ()">
+<div class="refsect2">
 <a name="gimp-matrix3-translate"></a><h3>gimp_matrix3_translate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_translate              (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
 <p>
 Translates the matrix by x and y.
 </p>
@@ -233,28 +227,25 @@ Translates the matrix by x and y.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be translated.
-</td>
+<td>The matrix that is to be translated.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>Translation in X direction.
-</td>
+<td>Translation in X direction.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>Translation in Y direction.
-</td>
+<td>Translation in Y direction.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_scale ()">
+<div class="refsect2">
 <a name="gimp-matrix3-scale"></a><h3>gimp_matrix3_scale ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_scale                  (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
 <p>
 Scales the matrix by x and y
 </p>
@@ -263,27 +254,24 @@ Scales the matrix by x and y
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be scaled.
-</td>
+<td>The matrix that is to be scaled.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>X scale factor.
-</td>
+<td>X scale factor.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>Y scale factor.
-</td>
+<td>Y scale factor.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_rotate ()">
+<div class="refsect2">
 <a name="gimp-matrix3-rotate"></a><h3>gimp_matrix3_rotate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_rotate                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> theta</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> theta</code></em>);</pre>
 <p>
 Rotates the matrix by theta degrees.
 </p>
@@ -292,22 +280,20 @@ Rotates the matrix by theta degrees.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be rotated.
-</td>
+<td>The matrix that is to be rotated.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>theta</code></em> :</span></p></td>
-<td>The angle of rotation (in radians).
-</td>
+<td>The angle of rotation (in radians).</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_xshear ()">
+<div class="refsect2">
 <a name="gimp-matrix3-xshear"></a><h3>gimp_matrix3_xshear ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_xshear                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);</pre>
 <p>
 Shears the matrix in the X direction.
 </p>
@@ -316,22 +302,20 @@ Shears the matrix in the X direction.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be sheared.
-</td>
+<td>The matrix that is to be sheared.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>amount</code></em> :</span></p></td>
-<td>X shear amount.
-</td>
+<td>X shear amount.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_yshear ()">
+<div class="refsect2">
 <a name="gimp-matrix3-yshear"></a><h3>gimp_matrix3_yshear ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_yshear                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> amount</code></em>);</pre>
 <p>
 Shears the matrix in the Y direction.
 </p>
@@ -340,27 +324,25 @@ Shears the matrix in the Y direction.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be sheared.
-</td>
+<td>The matrix that is to be sheared.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>amount</code></em> :</span></p></td>
-<td>Y shear amount.
-</td>
+<td>Y shear amount.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_affine ()">
+<div class="refsect2">
 <a name="gimp-matrix3-affine"></a><h3>gimp_matrix3_affine ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_affine                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> a</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> b</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> c</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> d</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> e</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> f</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> a</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> b</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> c</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> d</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> e</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> f</code></em>);</pre>
 <p>
 Applies the affine transformation given by six values to <em class="parameter"><code>matrix</code></em>.
 The six values form define an affine transformation matrix as
@@ -375,19 +357,18 @@ illustrated below:
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The input matrix.
-</td>
+<td>The input matrix.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_transform_point ()">
+<div class="refsect2">
 <a name="gimp-matrix3-transform-point"></a><h3>gimp_matrix3_transform_point ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_transform_point        (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newx</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newy</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newx</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *newy</code></em>);</pre>
 <p>
 Transforms a point in 2D as specified by the transformation matrix.
 </p>
@@ -396,36 +377,31 @@ Transforms a point in 2D as specified by the transformation matrix.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The transformation matrix.
-</td>
+<td>The transformation matrix.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>The source X coordinate.
-</td>
+<td>The source X coordinate.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>The source Y coordinate.
-</td>
+<td>The source Y coordinate.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>newx</code></em> :</span></p></td>
-<td>The transformed X coordinate.
-</td>
+<td>The transformed X coordinate.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>newy</code></em> :</span></p></td>
-<td>The transformed Y coordinate.
-</td>
+<td>The transformed Y coordinate.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_determinant ()">
+<div class="refsect2">
 <a name="gimp-matrix3-determinant"></a><h3>gimp_matrix3_determinant ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gimp_matrix3_determinant            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gimp_matrix3_determinant            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
 Calculates the determinant of the given matrix.
 </p>
@@ -434,19 +410,17 @@ Calculates the determinant of the given matrix.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The input matrix.
-</td>
+<td>The input matrix.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The determinant.
-</td>
+<td>The determinant.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_invert ()">
+<div class="refsect2">
 <a name="gimp-matrix3-invert"></a><h3>gimp_matrix3_invert ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix3_invert                 (<em class="parameter"><code><a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
@@ -456,15 +430,14 @@ Inverts the given matrix.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be inverted.
-</td>
+<td>The matrix that is to be inverted.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_is_identity ()">
+<div class="refsect2">
 <a name="gimp-matrix3-is-identity"></a><h3>gimp_matrix3_is_identity ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_identity            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_identity            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
 Checks if the given matrix is the identity matrix.
 </p>
@@ -473,21 +446,20 @@ Checks if the given matrix is the identity matrix.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be tested.
-</td>
+<td>The matrix that is to be tested.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the matrix is the identity matrix, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise
-</td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the matrix is the identity matrix, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_is_diagonal ()">
+<div class="refsect2">
 <a name="gimp-matrix3-is-diagonal"></a><h3>gimp_matrix3_is_diagonal ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_diagonal            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_diagonal            (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
 Checks if the given matrix is diagonal.
 </p>
@@ -496,21 +468,20 @@ Checks if the given matrix is diagonal.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be tested.
-</td>
+<td>The matrix that is to be tested.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the matrix is diagonal, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise
-</td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the matrix is diagonal, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_is_affine ()">
+<div class="refsect2">
 <a name="gimp-matrix3-is-affine"></a><h3>gimp_matrix3_is_affine ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_affine              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_affine              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
 Checks if the given matrix defines an affine transformation.
 </p>
@@ -519,24 +490,22 @@ Checks if the given matrix defines an affine transformation.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be tested.
-</td>
+<td>The matrix that is to be tested.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the matrix defines an affine transformation,
-         <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise
-
-</td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the matrix defines an affine transformation,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix3_is_simple ()">
+<div class="refsect2">
 <a name="gimp-matrix3-is-simple"></a><h3>gimp_matrix3_is_simple ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_simple              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_matrix3_is_simple              (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix3" title="GimpMatrix3"><span class="type">GimpMatrix3</span></a> *matrix</code></em>);</pre>
 <p>
 Checks if we'll need to interpolate when applying this matrix as
 a transformation.
@@ -546,28 +515,27 @@ a transformation.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
-<td>The matrix that is to be tested.
-</td>
+<td>The matrix that is to be tested.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if all entries of the upper left 2x2 matrix are
-         either 0 or 1, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise
-</td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if all entries of the upper left 2x2 matrix are
+either 0 or 1, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_matrix4_to_deg ()">
+<div class="refsect2">
 <a name="gimp-matrix4-to-deg"></a><h3>gimp_matrix4_to_deg ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_matrix4_to_deg                 (<em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix4" title="GimpMatrix4"><span class="type">GimpMatrix4</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *a</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *b</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *c</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *a</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *b</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *c</code></em>);</pre>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_TYPE_MATRIX2">
+<div class="refsect2">
 <a name="GIMP-TYPE-MATRIX2:CAPS"></a><h3>GIMP_TYPE_MATRIX2</h3>
 <pre class="programlisting">#define GIMP_TYPE_MATRIX2               (gimp_matrix2_get_type ())
 </pre>
@@ -575,7 +543,7 @@ a transformation.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_TYPE_PARAM_MATRIX2">
+<div class="refsect2">
 <a name="GIMP-TYPE-PARAM-MATRIX2:CAPS"></a><h3>GIMP_TYPE_PARAM_MATRIX2</h3>
 <pre class="programlisting">#define GIMP_TYPE_PARAM_MATRIX2            (gimp_param_matrix2_get_type ())
 </pre>
@@ -583,89 +551,67 @@ a transformation.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_IS_PARAM_SPEC_MATRIX2()">
+<div class="refsect2">
 <a name="GIMP-IS-PARAM-SPEC-MATRIX2:CAPS"></a><h3>GIMP_IS_PARAM_SPEC_MATRIX2()</h3>
 <pre class="programlisting">#define GIMP_IS_PARAM_SPEC_MATRIX2(pspec)  (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MATRIX2))
 </pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>pspec</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_param_spec_matrix2 ()">
+<div class="refsect2">
 <a name="gimp-param-spec-matrix2"></a><h3>gimp_param_spec_matrix2 ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"><span class="returnvalue">GParamSpec</span></a> *        gimp_param_spec_matrix2             (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *nick</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *blurb</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"><span class="returnvalue">GParamSpec</span></a> *        gimp_param_spec_matrix2             (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *nick</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *blurb</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2"><span class="type">GimpMatrix2</span></a> *default_value</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a> flags</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a> flags</code></em>);</pre>
 <p>
 Creates a param spec to hold a <a class="link" href="libgimpmath-GimpMatrix.html#GimpMatrix2" title="GimpMatrix2"><span class="type">GimpMatrix2</span></a> value.
-See <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#g-param-spec-internal"><code class="function">g_param_spec_internal()</code></a> for more information.
+See <a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#g-param-spec-internal"><code class="function">g_param_spec_internal()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
-<td>Canonical name of the param
-</td>
+<td>Canonical name of the param</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>nick</code></em> :</span></p></td>
-<td>Nickname of the param
-</td>
+<td>Nickname of the param</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blurb</code></em> :</span></p></td>
-<td>Brief desciption of param.
-</td>
+<td>Brief desciption of param.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>default_value</code></em> :</span></p></td>
-<td>Value to use if none is assigned.
-</td>
+<td>Value to use if none is assigned.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
-<td>a combination of <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a>
+<td>a combination of <a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly allocated <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"><span class="type">GParamSpec</span></a> instance
-
-</td>
+<td>a newly allocated <a href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"><span class="type">GParamSpec</span></a> instance</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_VALUE_HOLDS_MATRIX2()">
+<div class="refsect2">
 <a name="GIMP-VALUE-HOLDS-MATRIX2:CAPS"></a><h3>GIMP_VALUE_HOLDS_MATRIX2()</h3>
 <pre class="programlisting">#define GIMP_VALUE_HOLDS_MATRIX2(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MATRIX2))
 </pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 </div>
-<div class="refsect1" title="See Also">
+<div class="refsect1">
 <a name="libgimpmath-GimpMatrix.see-also"></a><h2>See Also</h2>
 <p>
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2"><span class="type">GimpVector2</span></a>
@@ -680,6 +626,6 @@ See <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#g-param-spe
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

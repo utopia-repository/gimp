@@ -18,7 +18,7 @@
     <sub name="Index of deprecated symbols" link="libgimpcolor-index-deprecated.html"/>
   </chapters>
   <functions>
-    <keyword type="struct" name="GimpRGB" link="libgimpcolor-GimpRGB.html#GimpRGB"/>
+    <keyword type="struct" name="struct GimpRGB" link="libgimpcolor-GimpRGB.html#GimpRGB"/>
     <keyword type="enum" name="enum GimpRGBCompositeMode" link="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode"/>
     <keyword type="function" name="gimp_rgb_set ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-set"/>
     <keyword type="function" name="gimp_rgb_set_alpha ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-set-alpha"/>
@@ -64,14 +64,14 @@
     <keyword type="macro" name="GIMP_VALUE_HOLDS_RGB()" link="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS"/>
     <keyword type="function" name="gimp_value_get_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-get-rgb"/>
     <keyword type="function" name="gimp_value_set_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-value-set-rgb"/>
-    <keyword type="struct" name="GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
-    <keyword type="struct" name="GimpHSL" link="libgimpcolor-GimpHSV.html#GimpHSL"/>
+    <keyword type="struct" name="struct GimpHSV" link="libgimpcolor-GimpHSV.html#GimpHSV"/>
+    <keyword type="struct" name="struct GimpHSL" link="libgimpcolor-GimpHSV.html#GimpHSL"/>
     <keyword type="function" name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
     <keyword type="function" name="gimp_hsv_clamp ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-clamp"/>
     <keyword type="function" name="gimp_hsva_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsva-set"/>
     <keyword type="macro" name="GIMP_TYPE_HSV" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS"/>
     <keyword type="macro" name="GIMP_TYPE_HSL" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS"/>
-    <keyword type="struct" name="GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
+    <keyword type="struct" name="struct GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
     <keyword type="function" name="gimp_cmyk_set ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set"/>
     <keyword type="function" name="gimp_cmyk_set_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-set-uchar"/>
     <keyword type="function" name="gimp_cmyk_get_uchar ()" link="libgimpcolor-GimpCMYK.html#gimp-cmyk-get-uchar"/>
@@ -97,7 +97,7 @@
     <keyword type="function" name="gimp_rgb_to_hsv4 ()" link="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv4"/>
     <keyword type="function" name="gimp_hsv_to_rgb4 ()" link="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4"/>
     <keyword type="struct" name="GimpColorManaged" link="libgimpcolor-GimpColorManaged.html#GimpColorManaged"/>
-    <keyword type="struct" name="GimpColorManagedInterface" link="libgimpcolor-GimpColorManaged.html#GimpColorManagedInterface"/>
+    <keyword type="struct" name="struct GimpColorManagedInterface" link="libgimpcolor-GimpColorManaged.html#GimpColorManagedInterface"/>
     <keyword type="function" name="gimp_color_managed_get_icc_profile ()" link="libgimpcolor-GimpColorManaged.html#gimp-color-managed-get-icc-profile" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_color_managed_profile_changed ()" link="libgimpcolor-GimpColorManaged.html#gimp-color-managed-profile-changed" since="GIMP 2.4"/>
     <keyword type="function" name="GimpProgressFunc ()" link="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc"/>

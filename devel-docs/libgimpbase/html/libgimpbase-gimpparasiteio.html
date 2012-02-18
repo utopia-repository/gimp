@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpparasiteio</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparasite.html" title="gimpparasite">
 <link rel="next" href="libgimpbase-gimpsignal.html" title="gimpsignal">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libgimpbase-gimpparasiteio.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="gimpparasiteio">
+<div class="refentry">
 <a name="libgimpbase-gimpparasiteio"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,24 +35,24 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libgimpbase-gimpparasiteio.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS" title="GIMP_PIXPIPE_MAXDIM">GIMP_PIXPIPE_MAXDIM</a>
 <span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init" title="gimp_pixpipe_params_init ()">gimp_pixpipe_params_init</a>            (<em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse" title="gimp_pixpipe_params_parse ()">gimp_pixpipe_params_parse</a>           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *parameters</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse" title="gimp_pixpipe_params_parse ()">gimp_pixpipe_params_parse</a>           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *parameters</code></em>,
                                                          <em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build" title="gimp_pixpipe_params_build ()">gimp_pixpipe_params_build</a>           (<em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build" title="gimp_pixpipe_params_build ()">gimp_pixpipe_params_build</a>           (<em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libgimpbase-gimpparasiteio.description"></a><h2>Description</h2>
 <p>
 Utility functions to (de)serialize certain C structures to/from <a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite"><span class="type">GimpParasite</span></a>'s.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libgimpbase-gimpparasiteio.details"></a><h2>Details</h2>
-<div class="refsect2" title="GIMP_PIXPIPE_MAXDIM">
+<div class="refsect2">
 <a name="GIMP-PIXPIPE-MAXDIM:CAPS"></a><h3>GIMP_PIXPIPE_MAXDIM</h3>
 <pre class="programlisting">#define GIMP_PIXPIPE_MAXDIM 4
 </pre>
@@ -60,67 +60,29 @@ Utility functions to (de)serialize certain C structures to/from <a class="link" 
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_pixpipe_params_init ()">
+<div class="refsect2">
 <a name="gimp-pixpipe-params-init"></a><h3>gimp_pixpipe_params_init ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_pixpipe_params_init            (<em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>params</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_pixpipe_params_parse ()">
+<div class="refsect2">
 <a name="gimp-pixpipe-params-parse"></a><h3>gimp_pixpipe_params_parse ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_pixpipe_params_parse           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *parameters</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_pixpipe_params_parse           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *parameters</code></em>,
                                                          <em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>parameters</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>params</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_pixpipe_params_build ()">
+<div class="refsect2">
 <a name="gimp-pixpipe-params-build"></a><h3>gimp_pixpipe_params_build ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_pixpipe_params_build           (<em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_pixpipe_params_build           (<em class="parameter"><code><span class="type">GimpPixPipeParams</span> *params</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>params</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 </div>
-<div class="refsect1" title="See Also">
+<div class="refsect1">
 <a name="libgimpbase-gimpparasiteio.see-also"></a><h2>See Also</h2>
 <p>
 <a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite"><span class="type">GimpParasite</span></a>
@@ -129,6 +91,6 @@ Utility functions to (de)serialize certain C structures to/from <a class="link" 
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

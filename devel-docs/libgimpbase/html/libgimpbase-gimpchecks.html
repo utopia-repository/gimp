@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpchecks</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparam.html" title="gimpparam">
 <link rel="next" href="libgimpbase-gimpcpuaccel.html" title="gimpcpuaccel">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libgimpbase-gimpchecks.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="gimpchecks">
+<div class="refentry">
 <a name="libgimpbase-gimpchecks"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,26 +35,26 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libgimpbase-gimpchecks.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE:CAPS" title="GIMP_CHECK_SIZE">GIMP_CHECK_SIZE</a>
 #define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-SIZE-SM:CAPS" title="GIMP_CHECK_SIZE_SM">GIMP_CHECK_SIZE_SM</a>
 #define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-DARK:CAPS" title="GIMP_CHECK_DARK">GIMP_CHECK_DARK</a>
 #define             <a class="link" href="libgimpbase-gimpchecks.html#GIMP-CHECK-LIGHT:CAPS" title="GIMP_CHECK_LIGHT">GIMP_CHECK_LIGHT</a>
 <span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpchecks.html#gimp-checks-get-shades" title="gimp_checks_get_shades ()">gimp_checks_get_shades</a>              (<em class="parameter"><code><a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType"><span class="type">GimpCheckType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *light</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *dark</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *light</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *dark</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libgimpbase-gimpchecks.description"></a><h2>Description</h2>
 <p>
 Constants and functions related to rendering checkerboards.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libgimpbase-gimpchecks.details"></a><h2>Details</h2>
-<div class="refsect2" title="GIMP_CHECK_SIZE">
+<div class="refsect2">
 <a name="GIMP-CHECK-SIZE:CAPS"></a><h3>GIMP_CHECK_SIZE</h3>
 <pre class="programlisting">#define GIMP_CHECK_SIZE      8
 </pre>
@@ -65,7 +65,7 @@ this constant instead.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_CHECK_SIZE_SM">
+<div class="refsect2">
 <a name="GIMP-CHECK-SIZE-SM:CAPS"></a><h3>GIMP_CHECK_SIZE_SM</h3>
 <pre class="programlisting">#define GIMP_CHECK_SIZE_SM   4
 </pre>
@@ -74,7 +74,7 @@ The default small checkerboard size in pixels.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_CHECK_DARK">
+<div class="refsect2">
 <a name="GIMP-CHECK-DARK:CAPS"></a><h3>GIMP_CHECK_DARK</h3>
 <pre class="programlisting">#define GIMP_CHECK_DARK      0.4
 </pre>
@@ -83,7 +83,7 @@ The dark gray value for the default checkerboard pattern.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_CHECK_LIGHT">
+<div class="refsect2">
 <a name="GIMP-CHECK-LIGHT:CAPS"></a><h3>GIMP_CHECK_LIGHT</h3>
 <pre class="programlisting">#define GIMP_CHECK_LIGHT     0.6
 </pre>
@@ -92,11 +92,11 @@ The light gray value for the default checkerboard pattern.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_checks_get_shades ()">
+<div class="refsect2">
 <a name="gimp-checks-get-shades"></a><h3>gimp_checks_get_shades ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_checks_get_shades              (<em class="parameter"><code><a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType"><span class="type">GimpCheckType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *light</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *dark</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *light</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *dark</code></em>);</pre>
 <p>
 Retrieves the actual shades of gray to use when drawing a
 checkerboard for a certain <a class="link" href="libgimpbase-gimpbaseenums.html#GimpCheckType" title="enum GimpCheckType"><span class="type">GimpCheckType</span></a>.
@@ -106,18 +106,15 @@ checkerboard for a certain <a class="link" href="libgimpbase-gimpbaseenums.html#
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>the checkerboard type
-</td>
+<td>the checkerboard type</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>light</code></em> :</span></p></td>
-<td>return location for the light shade
-</td>
+<td>return location for the light shade</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dark</code></em> :</span></p></td>
-<td>return location for the dark shade
-</td>
+<td>return location for the dark shade</td>
 </tr>
 </tbody>
 </table></div>
@@ -127,6 +124,6 @@ checkerboard for a certain <a class="link" href="libgimpbase-gimpbaseenums.html#
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

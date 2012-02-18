@@ -224,7 +224,7 @@
     <keyword type="function" name="gimp_procedural_db_proc_arg ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg"/>
     <keyword type="function" name="gimp_procedural_db_proc_val ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val"/>
     <keyword type="function" name="gimp_procedural_db_get_data_size ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size"/>
-    <keyword type="struct" name="GimpProgressVtable" link="libgimp-gimpprogress.html#GimpProgressVtable"/>
+    <keyword type="struct" name="struct GimpProgressVtable" link="libgimp-gimpprogress.html#GimpProgressVtable"/>
     <keyword type="function" name="gimp_progress_init ()" link="libgimp-gimpprogress.html#gimp-progress-init"/>
     <keyword type="function" name="gimp_progress_init_printf ()" link="libgimp-gimpprogress.html#gimp-progress-init-printf" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_progress_update ()" link="libgimp-gimpprogress.html#gimp-progress-update"/>

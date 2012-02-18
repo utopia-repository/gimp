@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpthumb-error</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Thumbnail Library Reference Manual">
 <link rel="up" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library">
 <link rel="prev" href="libgimpthumb-gimpthumb-enums.html" title="gimpthumb-enums">
 <link rel="next" href="libgimpthumb-index.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libgimpthumb-gimpthumb-error.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="gimpthumb-error">
+<div class="refentry">
 <a name="libgimpthumb-gimpthumb-error"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,31 +35,30 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libgimpthumb-gimpthumb-error.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">enum                <a class="link" href="libgimpthumb-gimpthumb-error.html#GimpThumbError" title="enum GimpThumbError">GimpThumbError</a>;
 #define             <a class="link" href="libgimpthumb-gimpthumb-error.html#GIMP-THUMB-ERROR:CAPS" title="GIMP_THUMB_ERROR">GIMP_THUMB_ERROR</a>
-<a href="/usr/share/gtk-doc/html/glib/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="libgimpthumb-gimpthumb-error.html#gimp-thumb-error-quark" title="gimp_thumb_error_quark ()">gimp_thumb_error_quark</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="libgimpthumb-gimpthumb-error.html#gimp-thumb-error-quark" title="gimp_thumb_error_quark ()">gimp_thumb_error_quark</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libgimpthumb-gimpthumb-error.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libgimpthumb-gimpthumb-error.details"></a><h2>Details</h2>
-<div class="refsect2" title="enum GimpThumbError">
+<div class="refsect2">
 <a name="GimpThumbError"></a><h3>enum GimpThumbError</h3>
-<pre class="programlisting">typedef enum
-{
+<pre class="programlisting">typedef enum {
   GIMP_THUMB_ERROR_OPEN,         /*  open failed                            */
   GIMP_THUMB_ERROR_OPEN_ENOENT,  /*  file does not exist                    */
   GIMP_THUMB_ERROR_MKDIR         /*  mkdir failed                           */
 } GimpThumbError;
 </pre>
 <p>
-These are the possible error codes used when a <a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> is set by
+These are the possible error codes used when a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> is set by
 libgimpthumb.
 </p>
 <div class="variablelist"><table border="0">
@@ -84,7 +83,7 @@ libgimpthumb.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="GIMP_THUMB_ERROR">
+<div class="refsect2">
 <a name="GIMP-THUMB-ERROR:CAPS"></a><h3>GIMP_THUMB_ERROR</h3>
 <pre class="programlisting">#define GIMP_THUMB_ERROR (gimp_thumb_error_quark ())
 </pre>
@@ -93,9 +92,9 @@ Identifier for the libgimpthumb error domain.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_thumb_error_quark ()">
+<div class="refsect2">
 <a name="gimp-thumb-error-quark"></a><h3>gimp_thumb_error_quark ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              gimp_thumb_error_quark              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              gimp_thumb_error_quark              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 This function is never called directly. Use <a class="link" href="libgimpthumb-gimpthumb-error.html#GIMP-THUMB-ERROR:CAPS" title="GIMP_THUMB_ERROR"><code class="function">GIMP_THUMB_ERROR()</code></a> instead.
 </p>
@@ -103,8 +102,7 @@ This function is never called directly. Use <a class="link" href="libgimpthumb-g
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> the <a href="/usr/share/gtk-doc/html/glib/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> that defines the GimpThumb error domain.
-</td>
+<td>the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> that defines the GimpThumb error domain.</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -112,6 +110,6 @@ This function is never called directly. Use <a class="link" href="libgimpthumb-g
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

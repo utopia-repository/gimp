@@ -8,11 +8,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [6])
-m4_define([gimp_micro_version], [11])
+m4_define([gimp_micro_version], [12])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [11])
+m4_define([gimp_interface_age], [12])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -339,6 +339,9 @@ CFLAGS="$CFLAGS $extra_warnings"
 GIMP_DETECT_CFLAGS(extra_warnings, '-Wold-style-definition')
 CFLAGS="$CFLAGS $extra_warnings"
 
+GIMP_DETECT_CFLAGS(extra_warnings, '-Wformat-security')
+CFLAGS="$CFLAGS $extra_warnings"
+
 
 # Ensure MSVC-compatible struct packing convention is used when
 # compiling for Win32 with gcc.
@@ -602,14 +605,14 @@ AC_CHECK_FUNC(rint, AC_DEFINE(HAVE_RINT, 1,
     AC_DEFINE(HAVE_RINT)])])
 
 
-######################################################
-# Check for extra libs needed for inet_ntoa and socket
-######################################################
+########################################################
+# Check for extra libs needed for getnameinfo and socket
+########################################################
 
 gimp_save_LIBS=$LIBS
 LIBS=""
 
-AC_CHECK_FUNCS(inet_ntoa, , AC_CHECK_LIB(nsl, inet_ntoa))
+AC_CHECK_FUNCS(getnameinfo, , AC_CHECK_LIB(nsl, getnameinfo))
 AC_CHECK_LIB(socket, socket)
 
 SOCKET_LIBS="$LIBS"

@@ -61,21 +61,24 @@ am_metadata_OBJECTS = metadata.$(OBJEXT) base64.$(OBJEXT) \
 metadata_OBJECTS = $(am_metadata_OBJECTS)
 metadata_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-metadata_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+metadata_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimp) \
+	$(libgimpmath) $(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_testbase64_OBJECTS = base64.$(OBJEXT) testbase64.$(OBJEXT)
 testbase64_OBJECTS = $(am_testbase64_OBJECTS)
 testbase64_LDADD = $(LDADD)
-testbase64_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+testbase64_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimp) \
+	$(libgimpmath) $(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_xmpdump_OBJECTS = xmpdump.$(OBJEXT) base64.$(OBJEXT) \
 	xmp-parse.$(OBJEXT)
 xmpdump_OBJECTS = $(am_xmpdump_OBJECTS)
 xmpdump_LDADD = $(LDADD)
-xmpdump_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+xmpdump_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimp) \
+	$(libgimpmath) $(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -250,6 +253,7 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -341,6 +345,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
@@ -378,7 +383,6 @@ libdir = @libdir@
 libexecdir = $(gimpplugindir)/plug-ins
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
@@ -436,11 +440,14 @@ INCLUDES = \
 	-I$(includedir)
 
 LDADD = \
+	$(libgimpui)		\
+	$(libgimpwidgets)	\
 	$(libgimp)		\
+	$(libgimpmath)		\
 	$(libgimpconfig)	\
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
-	$(libgimpmath)		\
+	$(EXIF_LIBS)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)

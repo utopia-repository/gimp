@@ -60,10 +60,12 @@ am_selection_to_path_OBJECTS = curve.$(OBJEXT) edge.$(OBJEXT) \
 selection_to_path_OBJECTS = $(am_selection_to_path_OBJECTS)
 selection_to_path_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-selection_to_path_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpconfig) $(libgimpmath) $(libgimp) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la \
 	$(am__DEPENDENCIES_1)
+selection_to_path_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
+	$(libgimpconfig) $(am__DEPENDENCIES_2) $(libgimp) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -234,6 +236,7 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -325,6 +328,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
@@ -362,7 +366,6 @@ libdir = @libdir@
 libexecdir = $(gimpplugindir)/plug-ins
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
@@ -383,14 +386,15 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@OS_WIN32_TRUE@mwindows = -mwindows
+@OS_WIN32_FALSE@libm = -lm
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
 libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
-@OS_WIN32_TRUE@mwindows = -mwindows
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la $(libm)
 AM_LDFLAGS = $(mwindows)
 selection_to_path_SOURCES = \
 	bitmap.h			\

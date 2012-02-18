@@ -136,7 +136,6 @@ struct mng_data_t
   gint32 default_dispose;
 };
 
-
 /* Values of the instance of the above struct when the plug-in is
  * first invoked. */
 
@@ -158,6 +157,21 @@ static struct mng_data_t mng_data =
   100,                          /* default_delay */
   DISPOSE_COMBINE               /* default_dispose */
 };
+
+
+/* These are not saved or restored. */
+
+struct mng_globals_t
+{
+  gboolean   has_trns;
+  png_bytep  trans;
+  int        num_trans;
+  gboolean   has_plte;
+  png_colorp palette;
+  int        num_palette;
+};
+
+static struct mng_globals_t mngg;
 
 
 /* The output FILE pointer which is used by libmng;
@@ -196,7 +210,8 @@ static gboolean  respin_cmap     (png_structp       png_ptr,
                                   png_infop         png_info_ptr,
                                   guchar           *remap,
                                   gint32            image_id,
-                                  GimpDrawable     *drawable);
+                                  GimpDrawable     *drawable,
+                                  int              *bit_depth);
 
 static gboolean  mng_save_image  (const gchar      *filename,
                                   gint32            image_id,
@@ -414,6 +429,18 @@ ia_has_transparent_pixels (guchar *pixels,
   return FALSE;
 }
 
+static int
+get_bit_depth_for_palette (int num_palette)
+{
+  if (num_palette <= 2)
+    return 1;
+  else if (num_palette <= 4)
+    return 2;
+  else if (num_palette <= 16)
+    return 4;
+  else
+    return 8;
+}
 
 /* Spins the color map (palette) putting the transparent color at
  * index 0 if there is space. If there isn't any space, warn the user
@@ -422,11 +449,12 @@ ia_has_transparent_pixels (guchar *pixels,
  */
 
 static gboolean
-respin_cmap (png_structp  png_ptr,
-             png_infop    png_info_ptr,
+respin_cmap (png_structp  pp,
+             png_infop    info,
              guchar       *remap,
              gint32       image_id,
-             GimpDrawable *drawable)
+             GimpDrawable *drawable,
+             int          *bit_depth)
 {
   static guchar  trans[] = { 0 };
   guchar        *before;
@@ -464,10 +492,13 @@ respin_cmap (png_structp  png_ptr,
 
       if (transparent != -1)
         {
-          png_color palette[256] = { {0, 0, 0} };
+          static png_color palette[256] = { {0, 0, 0} };
           gint i;
 
-          png_set_tRNS (png_ptr, png_info_ptr, (png_bytep) trans, 1, NULL);
+          /* Set tRNS chunk values for writing later. */
+          mngg.has_trns = TRUE;
+          mngg.trans = trans;
+          mngg.num_trans = 1;
 
           /* Transform all pixels with a value = transparent to
            * 0 and vice versa to compensate for re-ordering in palette
@@ -489,7 +520,12 @@ respin_cmap (png_structp  png_ptr,
               palette[i].blue = before[3 * remap[i] + 2];
             }
 
-          png_set_PLTE (png_ptr, png_info_ptr, (png_colorp) palette, colors);
+          /* Set PLTE chunk values for writing later. */
+          mngg.has_plte = TRUE;
+          mngg.palette = palette;
+          mngg.num_palette = colors;
+
+          *bit_depth = get_bit_depth_for_palette (colors);
 
           return TRUE;
         }
@@ -500,7 +536,10 @@ respin_cmap (png_structp  png_ptr,
         }
     }
 
-  png_set_PLTE (png_ptr, png_info_ptr, (png_colorp) before, colors);
+  mngg.has_plte = TRUE;
+  mngg.palette = (png_colorp) before;
+  mngg.num_palette = colors;
+  *bit_depth = get_bit_depth_for_palette (colors);
 
   return FALSE;
 }
@@ -777,7 +816,6 @@ mng_save_image (const gchar  *filename,
 
   for (i = (num_layers - 1); i >= 0; i--)
     {
-      gint            num_colors;
       GimpImageType   layer_drawable_type;
       GimpDrawable   *layer_drawable;
       gint            layer_offset_x, layer_offset_y;
@@ -795,8 +833,8 @@ mng_save_image (const gchar  *filename,
       gchar           frame_mode;
       int             frame_delay;
       gchar          *temp_file_name;
-      png_structp     png_ptr;
-      png_infop       png_info_ptr;
+      png_structp     pp;
+      png_infop       info;
       FILE           *infile, *outfile;
       int             num_passes;
       int             tile_height;
@@ -804,6 +842,8 @@ mng_save_image (const gchar  *filename,
       int             pass, j, k, begin, end, num;
       guchar         *fixed;
       guchar          layer_remap[256];
+      int             color_type;
+      int             bit_depth;
 
       layer_name          = gimp_drawable_get_name (layers[i]);
       layer_chunks_type   = parse_chunks_type_from_layer_name (layer_name);
@@ -948,9 +988,9 @@ mng_save_image (const gchar  *filename,
           goto err3;
         }
 
-      png_ptr = png_create_write_struct (PNG_LIBPNG_VER_STRING,
+      pp = png_create_write_struct (PNG_LIBPNG_VER_STRING,
                                          NULL, NULL, NULL);
-      if (NULL == png_ptr)
+      if (NULL == pp)
         {
           g_warning ("Unable to png_create_write_struct() in mng_save_image()");
           fclose (outfile);
@@ -958,89 +998,97 @@ mng_save_image (const gchar  *filename,
           goto err3;
         }
 
-      png_info_ptr = png_create_info_struct (png_ptr);
-      if (NULL == png_info_ptr)
+      info = png_create_info_struct (pp);
+      if (NULL == info)
         {
           g_warning
             ("Unable to png_create_info_struct() in mng_save_image()");
-          png_destroy_write_struct (&png_ptr, NULL);
+          png_destroy_write_struct (&pp, NULL);
           fclose (outfile);
           g_unlink (temp_file_name);
           goto err3;
         }
 
-      if (setjmp (png_ptr->jmpbuf) != 0)
+      if (setjmp (png_jmpbuf (pp)) != 0)
         {
           g_warning ("HRM saving PNG in mng_save_image()");
-          png_destroy_write_struct (&png_ptr, &png_info_ptr);
+          png_destroy_write_struct (&pp, &info);
           fclose (outfile);
           g_unlink (temp_file_name);
           goto err3;
         }
 
-      png_init_io (png_ptr, outfile);
-      png_set_compression_level (png_ptr, mng_data.compression_level);
+      png_init_io (pp, outfile);
 
-      png_info_ptr->width = layer_cols;
-      png_info_ptr->height = layer_rows;
-      png_info_ptr->interlace_type = (mng_data.interlaced == 0 ? 0 : 1);
-      png_info_ptr->bit_depth = 8;
+      bit_depth = 8;
 
       switch (layer_drawable_type)
         {
         case GIMP_RGB_IMAGE:
-          png_info_ptr->color_type = PNG_COLOR_TYPE_RGB;
+          color_type = PNG_COLOR_TYPE_RGB;
           break;
         case GIMP_RGBA_IMAGE:
-          png_info_ptr->color_type = PNG_COLOR_TYPE_RGB_ALPHA;
+          color_type = PNG_COLOR_TYPE_RGB_ALPHA;
           break;
         case GIMP_GRAY_IMAGE:
-          png_info_ptr->color_type = PNG_COLOR_TYPE_GRAY;
+          color_type = PNG_COLOR_TYPE_GRAY;
           break;
         case GIMP_GRAYA_IMAGE:
-          png_info_ptr->color_type = PNG_COLOR_TYPE_GRAY_ALPHA;
+          color_type = PNG_COLOR_TYPE_GRAY_ALPHA;
           break;
         case GIMP_INDEXED_IMAGE:
-          png_info_ptr->color_type = PNG_COLOR_TYPE_PALETTE;
-          png_info_ptr->valid |= PNG_INFO_PLTE;
-          png_info_ptr->palette =
-            (png_colorp) gimp_image_get_colormap (image_id, &num_colors);
-          png_info_ptr->num_palette = num_colors;
+          color_type = PNG_COLOR_TYPE_PALETTE;
+          mngg.has_plte = TRUE;
+          mngg.palette = (png_colorp)
+            gimp_image_get_colormap (image_id, &mngg.num_palette);
+          bit_depth = get_bit_depth_for_palette (mngg.num_palette);
           break;
         case GIMP_INDEXEDA_IMAGE:
-          png_info_ptr->color_type = PNG_COLOR_TYPE_PALETTE;
+          color_type = PNG_COLOR_TYPE_PALETTE;
           layer_has_unique_palette =
-            respin_cmap (png_ptr, png_info_ptr, layer_remap,
-                         image_id, layer_drawable);
+            respin_cmap (pp, info, layer_remap,
+                         image_id, layer_drawable,
+                         &bit_depth);
           break;
         default:
           g_warning ("This can't be!\n");
-          png_destroy_write_struct (&png_ptr, &png_info_ptr);
+          png_destroy_write_struct (&pp, &info);
           fclose (outfile);
           g_unlink (temp_file_name);
           goto err3;
         }
 
-      if ((png_info_ptr->valid & PNG_INFO_PLTE) == PNG_INFO_PLTE)
+      /* Note: png_set_IHDR() must be called before any other
+         png_set_*() functions. */
+      png_set_IHDR (pp, info, layer_cols, layer_rows,
+                bit_depth,
+                color_type,
+                mng_data.interlaced ? PNG_INTERLACE_ADAM7 : PNG_INTERLACE_NONE,
+                PNG_COMPRESSION_TYPE_BASE,
+                PNG_FILTER_TYPE_BASE);
+
+      if (mngg.has_trns)
         {
-          if (png_info_ptr->num_palette <= 2)
-            png_info_ptr->bit_depth = 1;
-          else if (png_info_ptr->num_palette <= 4)
-            png_info_ptr->bit_depth = 2;
-          else if (png_info_ptr->num_palette <= 16)
-            png_info_ptr->bit_depth = 4;
+          png_set_tRNS (pp, info, mngg.trans, mngg.num_trans, NULL);
         }
 
-      png_write_info (png_ptr, png_info_ptr);
+      if (mngg.has_plte)
+        {
+          png_set_PLTE (pp, info, mngg.palette, mngg.num_palette);
+        }
+
+      png_set_compression_level (pp, mng_data.compression_level);
+
+      png_write_info (pp, info);
 
       if (mng_data.interlaced != 0)
-        num_passes = png_set_interlace_handling (png_ptr);
+        num_passes = png_set_interlace_handling (pp);
       else
         num_passes = 1;
 
-      if ((png_info_ptr->color_type == PNG_COLOR_TYPE_PALETTE) &&
-          (png_info_ptr->bit_depth < 8))
-        png_set_packing (png_ptr);
+      if ((color_type == PNG_COLOR_TYPE_PALETTE) &&
+          (bit_depth < 8))
+        png_set_packing (pp);
 
       tile_height = gimp_tile_height ();
       layer_pixel = g_new (guchar, tile_height * layer_cols * layer_bpp);
@@ -1065,7 +1113,7 @@ mng_save_image (const gchar  *filename,
               gimp_pixel_rgn_get_rect (&layer_pixel_rgn, layer_pixel, 0,
                                        begin, layer_cols, num);
 
-              if ((png_info_ptr->valid & PNG_INFO_tRNS) == PNG_INFO_tRNS)
+              if (png_get_valid (pp, info, PNG_INFO_tRNS))
                 {
                   for (j = 0; j < num; j++)
                     {
@@ -1077,7 +1125,7 @@ mng_save_image (const gchar  *filename,
                     }
                 }
               else
-                if (((png_info_ptr->valid & PNG_INFO_PLTE) == PNG_INFO_PLTE)
+                if (png_get_valid (pp, info, PNG_INFO_PLTE)
                     && (layer_bpp == 2))
                 {
                   for (j = 0; j < num; j++)
@@ -1089,12 +1137,12 @@ mng_save_image (const gchar  *filename,
                     }
                 }
 
-              png_write_rows (png_ptr, layer_pixels, num);
+              png_write_rows (pp, layer_pixels, num);
             }
         }
 
-      png_write_end (png_ptr, png_info_ptr);
-      png_destroy_write_struct (&png_ptr, &png_info_ptr);
+      png_write_end (pp, info);
+      png_destroy_write_struct (&pp, &info);
 
       g_free (layer_pixels);
       g_free (layer_pixel);

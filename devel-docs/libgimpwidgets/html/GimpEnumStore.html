@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpEnumStore</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpDialog.html" title="GimpDialog">
 <link rel="next" href="GimpEnumComboBox.html" title="GimpEnumComboBox">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,7 +32,7 @@
                   <a href="#GimpEnumStore.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpEnumStore">
+<div class="refentry">
 <a name="GimpEnumStore"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,64 +41,64 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="GimpEnumStore.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpEnumStore.html#GimpEnumStore-struct" title="GimpEnumStore">GimpEnumStore</a>;
-<a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new" title="gimp_enum_store_new ()">gimp_enum_store_new</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>);
-<a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-range" title="gimp_enum_store_new_with_range ()">gimp_enum_store_new_with_range</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);
-<a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-values" title="gimp_enum_store_new_with_values ()">gimp_enum_store_new_with_values</a>     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new" title="gimp_enum_store_new ()">gimp_enum_store_new</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>);
+<a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-range" title="gimp_enum_store_new_with_range ()">gimp_enum_store_new_with_range</a>      (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);
+<a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-values" title="gimp_enum_store_new_with_values ()">gimp_enum_store_new_with_values</a>     (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-values-valist" title="gimp_enum_store_new_with_values_valist ()">gimp_enum_store_new_with_values_valist</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-values-valist" title="gimp_enum_store_new_with_values_valist ()">gimp_enum_store_new_with_values_valist</a>
+                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> args</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpEnumStore.html#gimp-enum-store-set-stock-prefix" title="gimp_enum_store_set_stock_prefix ()">gimp_enum_store_set_stock_prefix</a>    (<em class="parameter"><code><a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a> *store</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_prefix</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_prefix</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="GimpEnumStore.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html">GtkListStore</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gtk3/GtkListStore.html">GtkListStore</a>
          +----<a class="link" href="GimpIntStore.html" title="GimpIntStore">GimpIntStore</a>
                +----GimpEnumStore
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="GimpEnumStore.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpEnumStore implements
- <a href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html">GtkTreeModel</a>,  <a href="/usr/share/gtk-doc/html/gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragSource">GtkTreeDragSource</a>,  <a href="/usr/share/gtk-doc/html/gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragDest">GtkTreeDragDest</a>,  <a href="/usr/share/gtk-doc/html/gtk/GtkTreeSortable.html">GtkTreeSortable</a> and  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a>.</p>
+ <a href="http://library.gnome.org/devel/gtk3/GtkTreeModel.html">GtkTreeModel</a>,  <a href="http://library.gnome.org/devel/gtk3/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragSource">GtkTreeDragSource</a>,  <a href="http://library.gnome.org/devel/gtk3/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragDest">GtkTreeDragDest</a>,  <a href="http://library.gnome.org/devel/gtk3/GtkTreeSortable.html">GtkTreeSortable</a> and  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>.</p>
 </div>
-<div class="refsect1" title="Properties">
+<div class="refsect1">
 <a name="GimpEnumStore.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpEnumStore.html#GimpEnumStore--enum-type" title='The "enum-type" property'>enum-type</a>"                <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a>*                : Read / Write / Construct Only
+  "<a class="link" href="GimpEnumStore.html#GimpEnumStore--enum-type" title='The "enum-type" property'>enum-type</a>"                <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a>*                : Read / Write / Construct Only
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="GimpEnumStore.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="GimpEnumStore.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpEnumStore">
+<div class="refsect2">
 <a name="GimpEnumStore-struct"></a><h3>GimpEnumStore</h3>
 <pre class="programlisting">typedef struct _GimpEnumStore GimpEnumStore;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_enum_store_new ()">
+<div class="refsect2">
 <a name="gimp-enum-store-new"></a><h3>gimp_enum_store_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>);</pre>
 <p>
-Creates a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>, derived from <a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="type">GtkListStore</span></a> and fills
+Creates a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>, derived from <a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="type">GtkListStore</span></a> and fills
 it with enum values. The enum needs to be registered to the type
 system and should have translatable value names.
 </p>
@@ -107,25 +107,22 @@ system and should have translatable value names.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td>the <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.
-</td>
+<td>the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.
-
-</td>
+<td>a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_enum_store_new_with_range ()">
+<div class="refsect2">
 <a name="gimp-enum-store-new-with-range"></a><h3>gimp_enum_store_new_with_range ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new_with_range      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new_with_range      (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a> like <a class="link" href="GimpEnumStore.html#gimp-enum-store-new" title="gimp_enum_store_new ()"><code class="function">gimp_enum_store_new()</code></a> but allows
 to limit the enum values to a certain range. Values smaller than
@@ -136,34 +133,29 @@ to limit the enum values to a certain range. Values smaller than
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td>the <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.
-</td>
+<td>the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>minimum</code></em> :</span></p></td>
-<td>the minimum value to include
-</td>
+<td>the minimum value to include</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>maximum</code></em> :</span></p></td>
-<td>the maximum value to include
-</td>
+<td>the maximum value to include</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.
-
-</td>
+<td>a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_enum_store_new_with_values ()">
+<div class="refsect2">
 <a name="gimp-enum-store-new-with-values"></a><h3>gimp_enum_store_new_with_values ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new_with_values     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new_with_values     (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a> like <a class="link" href="GimpEnumStore.html#gimp-enum-store-new" title="gimp_enum_store_new ()"><code class="function">gimp_enum_store_new()</code></a> but allows
@@ -175,35 +167,30 @@ store.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td>the <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.
-</td>
+<td>the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of enum values to include
-</td>
+<td>the number of enum values to include</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>a list of enum values (exactly <em class="parameter"><code>n_values</code></em>)
-</td>
+<td>a list of enum values (exactly <em class="parameter"><code>n_values</code></em>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.
-
-</td>
+<td>a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_enum_store_new_with_values_valist ()">
+<div class="refsect2">
 <a name="gimp-enum-store-new-with-values-valist"></a><h3>gimp_enum_store_new_with_values_valist ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new_with_values_valist
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkListStore.html"><span class="returnvalue">GtkListStore</span></a> *      gimp_enum_store_new_with_values_valist
+                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> args</code></em>);</pre>
 <p>
 See <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-values" title="gimp_enum_store_new_with_values ()"><code class="function">gimp_enum_store_new_with_values()</code></a>.
@@ -213,34 +200,29 @@ See <a class="link" href="GimpEnumStore.html#gimp-enum-store-new-with-values" ti
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td>the <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.
-</td>
+<td>the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of enum values to include
-</td>
+<td>the number of enum values to include</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>args</code></em> :</span></p></td>
-<td>a va_list of enum values (exactly <em class="parameter"><code>n_values</code></em>)
-</td>
+<td>a va_list of enum values (exactly <em class="parameter"><code>n_values</code></em>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.
-
-</td>
+<td>a new <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_enum_store_set_stock_prefix ()">
+<div class="refsect2">
 <a name="gimp-enum-store-set-stock-prefix"></a><h3>gimp_enum_store_set_stock_prefix ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_enum_store_set_stock_prefix    (<em class="parameter"><code><a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a> *store</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_prefix</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_prefix</code></em>);</pre>
 <p>
 Creates a stock ID for each enum value in the <em class="parameter"><code>store</code></em> by appending
 the value's nick to the given <em class="parameter"><code>stock_prefix</code></em>, separated by a hyphen.
@@ -258,28 +240,28 @@ See also: <a class="link" href="GimpEnumComboBox.html#gimp-enum-combo-box-set-st
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>stock_prefix</code></em> :</span></p></td>
-<td>a prefix to create icon stock ID from enum values
-</td>
+<td>a prefix to create icon stock ID from enum values</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" title="Property Details">
+<div class="refsect1">
 <a name="GimpEnumStore.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" title='The "enum-type" property'>
+<div class="refsect2">
 <a name="GimpEnumStore--enum-type"></a><h3>The <code class="literal">"enum-type"</code> property</h3>
-<pre class="programlisting">  "enum-type"                <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a>*                : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "enum-type"                <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a>*                : Read / Write / Construct Only</pre>
 <p>
-Sets the <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of the enum to be used in the store.
+Sets the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of the enum to be used in the store.
 </p>
+<p>Allowed values: gint</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

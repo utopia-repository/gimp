@@ -1,12 +1,2 @@
 01_debian-gimprc.patch
-06_CVE-2010-4543.patch
-05_CVE-2010-454x.patch
-07_binutils-gold.patch
-08_CVE-2011-1782.patch
 fix_ftbfs4hurd.patch
-string-format.patch
-pyslice.patch
-CVE-2011-2896.part1.patch
-CVE-2011-2896.part2.patch
-libpng_compile.patch
-poppler0.18.patch

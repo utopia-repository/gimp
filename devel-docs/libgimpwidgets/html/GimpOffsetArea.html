@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpOffsetArea</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpNumberPairEntry.html" title="GimpNumberPairEntry">
 <link rel="next" href="GimpPageSelector.html" title="GimpPageSelector">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,7 +32,7 @@
                   <a href="#GimpOffsetArea.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpOffsetArea">
+<div class="refentry">
 <a name="GimpOffsetArea"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,62 +41,62 @@
 </td>
 <td valign="top" align="right"><img src="gimp-offset-area.png"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="GimpOffsetArea.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpOffsetArea.html#GimpOffsetArea-struct" title="GimpOffsetArea">GimpOffsetArea</a>;
-<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpOffsetArea.html#gimp-offset-area-new" title="gimp_offset_area_new ()">gimp_offset_area_new</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_height</code></em>);
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpOffsetArea.html#gimp-offset-area-new" title="gimp_offset_area_new ()">gimp_offset_area_new</a>                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_height</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpOffsetArea.html#gimp-offset-area-set-size" title="gimp_offset_area_set_size ()">gimp_offset_area_set_size</a>           (<em class="parameter"><code><a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *offset_area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpOffsetArea.html#gimp-offset-area-set-offsets" title="gimp_offset_area_set_offsets ()">gimp_offset_area_set_offsets</a>        (<em class="parameter"><code><a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *offset_area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_y</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_y</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpOffsetArea.html#gimp-offset-area-set-pixbuf" title="gimp_offset_area_set_pixbuf ()">gimp_offset_area_set_pixbuf</a>         (<em class="parameter"><code><a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *offset_area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"><span class="type">GdkPixbuf</span></a> *pixbuf</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gdk-pixbuf/unstable/gdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf"><span class="type">GdkPixbuf</span></a> *pixbuf</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="GimpOffsetArea.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
-               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
-                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkDrawingArea.html">GtkDrawingArea</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                     +----<a href="http://library.gnome.org/devel/gtk3/GtkDrawingArea.html">GtkDrawingArea</a>
                            +----GimpOffsetArea
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="GimpOffsetArea.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpOffsetArea implements
- AtkImplementorIface and  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a>.</p>
+ AtkImplementorIface and  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>.</p>
 </div>
-<div class="refsect1" title="Signals">
+<div class="refsect1">
 <a name="GimpOffsetArea.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpOffsetArea.html#GimpOffsetArea-offsets-changed" title='The "offsets-changed" signal'>offsets-changed</a>"                                : Run First
+  "<a class="link" href="GimpOffsetArea.html#GimpOffsetArea-offsets-changed" title='The "offsets-changed" signal'>offsets-changed</a>"                                : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a>
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="GimpOffsetArea.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="GimpOffsetArea.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpOffsetArea">
+<div class="refsect2">
 <a name="GimpOffsetArea-struct"></a><h3>GimpOffsetArea</h3>
 <pre class="programlisting">typedef struct _GimpOffsetArea GimpOffsetArea;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_offset_area_new ()">
+<div class="refsect2">
 <a name="gimp-offset-area-new"></a><h3>gimp_offset_area_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_offset_area_new                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_height</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_offset_area_new                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> orig_height</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> widget. A <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> can be used
 when resizing an image or a drawable to allow the user to interactively
@@ -107,28 +107,25 @@ specify the new offsets.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>orig_width</code></em> :</span></p></td>
-<td>the original width
-</td>
+<td>the original width</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>orig_height</code></em> :</span></p></td>
-<td>the original height
-</td>
+<td>the original height</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> the new <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> widget.
-</td>
+<td>the new <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> widget.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_offset_area_set_size ()">
+<div class="refsect2">
 <a name="gimp-offset-area-set-size"></a><h3>gimp_offset_area_set_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_offset_area_set_size           (<em class="parameter"><code><a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *offset_area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
 <p>
 Sets the size of the image/drawable displayed by the <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
 If the offsets change as a result of this change, the "offsets-changed"
@@ -139,28 +136,25 @@ signal is emitted.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offset_area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
-</td>
+<td>a <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>the new width
-</td>
+<td>the new width</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>the new height
-</td>
+<td>the new height</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_offset_area_set_offsets ()">
+<div class="refsect2">
 <a name="gimp-offset-area-set-offsets"></a><h3>gimp_offset_area_set_offsets ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_offset_area_set_offsets        (<em class="parameter"><code><a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *offset_area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_y</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset_y</code></em>);</pre>
 <p>
 Sets the offsets of the image/drawable displayed by the <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
 It does not emit the "offsets-changed" signal.
@@ -170,27 +164,24 @@ It does not emit the "offsets-changed" signal.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offset_area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
-</td>
+<td>a <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offset_x</code></em> :</span></p></td>
-<td>the X offset
-</td>
+<td>the X offset</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offset_y</code></em> :</span></p></td>
-<td>the Y offset
-</td>
+<td>the Y offset</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_offset_area_set_pixbuf ()">
+<div class="refsect2">
 <a name="gimp-offset-area-set-pixbuf"></a><h3>gimp_offset_area_set_pixbuf ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_offset_area_set_pixbuf         (<em class="parameter"><code><a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *offset_area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"><span class="type">GdkPixbuf</span></a> *pixbuf</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gdk-pixbuf/unstable/gdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf"><span class="type">GdkPixbuf</span></a> *pixbuf</code></em>);</pre>
 <p>
 Sets the pixbuf which represents the original image/drawable which
 is being offset.
@@ -200,27 +191,25 @@ is being offset.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offset_area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.
-</td>
+<td>a <a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pixbuf</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"><span class="type">GdkPixbuf</span></a>.
-</td>
+<td>a <a href="http://library.gnome.org/devel/gdk-pixbuf/unstable/gdk-pixbuf-The-GdkPixbuf-Structure.html#GdkPixbuf"><span class="type">GdkPixbuf</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.2</p>
 </div>
 </div>
-<div class="refsect1" title="Signal Details">
+<div class="refsect1">
 <a name="GimpOffsetArea.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" title='The "offsets-changed" signal'>
+<div class="refsect2">
 <a name="GimpOffsetArea-offsets-changed"></a><h3>The <code class="literal">"offsets-changed"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpOffsetArea.html" title="GimpOffsetArea"><span class="type">GimpOffsetArea</span></a> *gimpoffsetarea,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>            arg1,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>            arg2,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)           : Run First</pre>
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>            arg1,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>            arg2,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)           : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a></pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -228,18 +217,7 @@ is being offset.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimpoffsetarea</code></em> :</span></p></td>
-<td>the object which received the signal.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>arg1</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>arg2</code></em> :</span></p></td>
-<td>
-</td>
+<td>the object which received the signal.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -252,6 +230,6 @@ is being offset.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

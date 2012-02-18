@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpGradientSelectButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="GimpFontSelectButton.html" title="GimpFontSelectButton">
 <link rel="next" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -34,7 +34,7 @@
                   <a href="#GimpGradientSelectButton.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpGradientSelectButton">
+<div class="refentry">
 <a name="GimpGradientSelectButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -43,71 +43,71 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="GimpGradientSelectButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton-struct" title="GimpGradientSelectButton">GimpGradientSelectButton</a>;
-<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpGradientSelectButton.html#gimp-gradient-select-button-new" title="gimp_gradient_select_button_new ()">gimp_gradient_select_button_new</a>     (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);
-const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="GimpGradientSelectButton.html#gimp-gradient-select-button-get-gradient" title="gimp_gradient_select_button_get_gradient ()">gimp_gradient_select_button_get_gradient</a>
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpGradientSelectButton.html#gimp-gradient-select-button-new" title="gimp_gradient_select_button_new ()">gimp_gradient_select_button_new</a>     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="GimpGradientSelectButton.html#gimp-gradient-select-button-get-gradient" title="gimp_gradient_select_button_get_gradient ()">gimp_gradient_select_button_get_gradient</a>
                                                         (<em class="parameter"><code><a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton"><span class="type">GimpGradientSelectButton</span></a> *button</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpGradientSelectButton.html#gimp-gradient-select-button-set-gradient" title="gimp_gradient_select_button_set_gradient ()">gimp_gradient_select_button_set_gradient</a>
                                                         (<em class="parameter"><code><a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton"><span class="type">GimpGradientSelectButton</span></a> *button</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
-               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
-                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkContainer.html">GtkContainer</a>
-                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkBox.html">GtkBox</a>
-                                 +----<a href="/usr/share/gtk-doc/html/gtk/GtkHBox.html">GtkHBox</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                     +----<a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                           +----<a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
+                                 +----<a href="http://library.gnome.org/devel/gtk3/GtkHBox.html">GtkHBox</a>
                                        +----<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
                                              +----GimpGradientSelectButton
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpGradientSelectButton implements
- AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" title="Properties">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton--gradient-name" title='The "gradient-name" property'>gradient-name</a>"            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
-  "<a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton--title" title='The "title" property'>title</a>"                    <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct Only
+  "<a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton--gradient-name" title='The "gradient-name" property'>gradient-name</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
+  "<a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton--title" title='The "title" property'>title</a>"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct Only
 </pre>
 </div>
-<div class="refsect1" title="Signals">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton-gradient-set" title='The "gradient-set" signal'>gradient-set</a>"                                   : Run First
+  "<a class="link" href="GimpGradientSelectButton.html#GimpGradientSelectButton-gradient-set" title='The "gradient-set" signal'>gradient-set</a>"                                   : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a>
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpGradientSelectButton">
+<div class="refsect2">
 <a name="GimpGradientSelectButton-struct"></a><h3>GimpGradientSelectButton</h3>
 <pre class="programlisting">typedef struct _GimpGradientSelectButton GimpGradientSelectButton;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_gradient_select_button_new ()">
+<div class="refsect2">
 <a name="gimp-gradient-select-button-new"></a><h3>gimp_gradient_select_button_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_gradient_select_button_new     (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_gradient_select_button_new     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);</pre>
 <p>
-Creates a new <a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> that completely controls the selection of
+Creates a new <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="type">GtkWidget</span></a> that completely controls the selection of
 a gradient.  This widget is suitable for placement in a table in a
 plug-in dialog.
 </p>
@@ -116,28 +116,24 @@ plug-in dialog.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>Title of the dialog to use or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the default title.
-</td>
+<td>Title of the dialog to use or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the default title.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gradient_name</code></em> :</span></p></td>
-<td>Initial gradient name.
-</td>
+<td>Initial gradient name.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> that you can use in your UI.
-
-</td>
+<td>A <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="type">GtkWidget</span></a> that you can use in your UI.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_gradient_select_button_get_gradient ()">
+<div class="refsect2">
 <a name="gimp-gradient-select-button-get-gradient"></a><h3>gimp_gradient_select_button_get_gradient ()</h3>
-<pre class="programlisting">const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_gradient_select_button_get_gradient
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_gradient_select_button_get_gradient
                                                         (<em class="parameter"><code><a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton"><span class="type">GimpGradientSelectButton</span></a> *button</code></em>);</pre>
 <p>
 Retrieves the name of currently selected gradient.
@@ -152,20 +148,18 @@ Retrieves the name of currently selected gradient.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> an internal copy of the gradient name which must not be freed.
-
-</td>
+<td>an internal copy of the gradient name which must not be freed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_gradient_select_button_set_gradient ()">
+<div class="refsect2">
 <a name="gimp-gradient-select-button-set-gradient"></a><h3>gimp_gradient_select_button_set_gradient ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_gradient_select_button_set_gradient
                                                         (<em class="parameter"><code><a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton"><span class="type">GimpGradientSelectButton</span></a> *button</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gradient_name</code></em>);</pre>
 <p>
 Sets the current gradient for the gradient select button.
 </p>
@@ -179,19 +173,18 @@ Sets the current gradient for the gradient select button.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gradient_name</code></em> :</span></p></td>
-<td>Gradient name to set.
-</td>
+<td>Gradient name to set.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" title="Property Details">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" title='The "gradient-name" property'>
+<div class="refsect2">
 <a name="GimpGradientSelectButton--gradient-name"></a><h3>The <code class="literal">"gradient-name"</code> property</h3>
-<pre class="programlisting">  "gradient-name"            <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
+<pre class="programlisting">  "gradient-name"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
 The name of the currently selected gradient.
 </p>
@@ -199,9 +192,9 @@ The name of the currently selected gradient.
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title='The "title" property'>
+<div class="refsect2">
 <a name="GimpGradientSelectButton--title"></a><h3>The <code class="literal">"title"</code> property</h3>
-<pre class="programlisting">  "title"                    <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "title"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the gradient selection popup dialog.
 </p>
@@ -209,16 +202,16 @@ The title to be used for the gradient selection popup dialog.
 <p class="since">Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" title="Signal Details">
+<div class="refsect1">
 <a name="GimpGradientSelectButton.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" title='The "gradient-set" signal'>
+<div class="refsect2">
 <a name="GimpGradientSelectButton-gradient-set"></a><h3>The <code class="literal">"gradient-set"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton"><span class="type">GimpGradientSelectButton</span></a> *widget,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                    *gradient_name,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                      width,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                  grad_data,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>                  dialog_closing,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                  user_data)           : Run First</pre>
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                    *gradient_name,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                      width,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                  grad_data,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>                  dialog_closing,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                  user_data)           : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a></pre>
 <p>
 The ::gradient-set signal is emitted when the user selects a gradient.
 </p>
@@ -227,28 +220,23 @@ The ::gradient-set signal is emitted when the user selects a gradient.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
-<td>the object which received the signal.
-</td>
+<td>the object which received the signal.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gradient_name</code></em> :</span></p></td>
-<td>the name of the currently selected gradient.
-</td>
+<td>the name of the currently selected gradient.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>width of the gradient
-</td>
+<td>width of the gradient</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>grad_data</code></em> :</span></p></td>
-<td>gradient data
-</td>
+<td>gradient data</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dialog_closing</code></em> :</span></p></td>
-<td>whether the dialog was closed or not.
-</td>
+<td>whether the dialog was closed or not.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -262,6 +250,6 @@ The ::gradient-set signal is emitted when the user selects a gradient.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

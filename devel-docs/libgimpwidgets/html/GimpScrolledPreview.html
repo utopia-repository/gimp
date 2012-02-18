@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpScrolledPreview</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpRuler.html" title="GimpRuler">
 <link rel="next" href="GimpSizeEntry.html" title="GimpSizeEntry">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,7 +30,7 @@
                   <a href="#GimpScrolledPreview.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpScrolledPreview">
+<div class="refentry">
 <a name="GimpScrolledPreview"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,59 +39,59 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="GimpScrolledPreview.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpScrolledPreview.html#GimpScrolledPreview-struct" title="GimpScrolledPreview">GimpScrolledPreview</a>;
 <span class="returnvalue">void</span>                <a class="link" href="GimpScrolledPreview.html#gimp-scrolled-preview-set-position" title="gimp_scrolled_preview_set_position ()">gimp_scrolled_preview_set_position</a>  (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy" title="gimp_scrolled_preview_set_policy ()">gimp_scrolled_preview_set_policy</a>    (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> hscrollbar_policy</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> vscrollbar_policy</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> hscrollbar_policy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> vscrollbar_policy</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpScrolledPreview.html#gimp-scrolled-preview-freeze" title="gimp_scrolled_preview_freeze ()">gimp_scrolled_preview_freeze</a>        (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpScrolledPreview.html#gimp-scrolled-preview-thaw" title="gimp_scrolled_preview_thaw ()">gimp_scrolled_preview_thaw</a>          (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="GimpScrolledPreview.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
-               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
-                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkContainer.html">GtkContainer</a>
-                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkBox.html">GtkBox</a>
-                                 +----<a href="/usr/share/gtk-doc/html/gtk/GtkVBox.html">GtkVBox</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                     +----<a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                           +----<a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
+                                 +----<a href="http://library.gnome.org/devel/gtk3/GtkVBox.html">GtkVBox</a>
                                        +----<a class="link" href="GimpPreview.html" title="GimpPreview">GimpPreview</a>
                                              +----GimpScrolledPreview
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="GimpScrolledPreview.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpScrolledPreview implements
- AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="GimpScrolledPreview.description"></a><h2>Description</h2>
 <p>
 A widget providing a <a class="link" href="GimpPreview.html" title="GimpPreview"><span class="type">GimpPreview</span></a> enhanced by scrolling capabilities.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="GimpScrolledPreview.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpScrolledPreview">
+<div class="refsect2">
 <a name="GimpScrolledPreview-struct"></a><h3>GimpScrolledPreview</h3>
 <pre class="programlisting">typedef struct _GimpScrolledPreview GimpScrolledPreview;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_scrolled_preview_set_position ()">
+<div class="refsect2">
 <a name="gimp-scrolled-preview-set-position"></a><h3>gimp_scrolled_preview_set_position ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_scrolled_preview_set_position  (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -102,24 +102,22 @@ A widget providing a <a class="link" href="GimpPreview.html" title="GimpPreview"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>horizontal scroll offset
-</td>
+<td>horizontal scroll offset</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>vertical scroll offset
-</td>
+<td>vertical scroll offset</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_scrolled_preview_set_policy ()">
+<div class="refsect2">
 <a name="gimp-scrolled-preview-set-policy"></a><h3>gimp_scrolled_preview_set_policy ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_scrolled_preview_set_policy    (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> hscrollbar_policy</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> vscrollbar_policy</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> hscrollbar_policy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/gtk-Standard-Enumerations.html#GtkPolicyType"><span class="type">GtkPolicyType</span></a> vscrollbar_policy</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -130,20 +128,18 @@ A widget providing a <a class="link" href="GimpPreview.html" title="GimpPreview"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hscrollbar_policy</code></em> :</span></p></td>
-<td>policy for horizontal scrollbar
-</td>
+<td>policy for horizontal scrollbar</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vscrollbar_policy</code></em> :</span></p></td>
-<td>policy for vertical scrollbar
-</td>
+<td>policy for vertical scrollbar</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_scrolled_preview_freeze ()">
+<div class="refsect2">
 <a name="gimp-scrolled-preview-freeze"></a><h3>gimp_scrolled_preview_freeze ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_scrolled_preview_freeze        (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>);</pre>
 <p>
@@ -165,7 +161,7 @@ This function should only be used to implement widgets derived from
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_scrolled_preview_thaw ()">
+<div class="refsect2">
 <a name="gimp-scrolled-preview-thaw"></a><h3>gimp_scrolled_preview_thaw ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_scrolled_preview_thaw          (<em class="parameter"><code><a class="link" href="GimpScrolledPreview.html" title="GimpScrolledPreview"><span class="type">GimpScrolledPreview</span></a> *preview</code></em>);</pre>
 <p>
@@ -190,6 +186,6 @@ This function should only be used to implement widgets derived from
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

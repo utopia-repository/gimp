@@ -27,6 +27,7 @@ G_BEGIN_DECLS
 #define g_marshal_value_peek_boxed(v)    g_value_get_boxed (v)
 #define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
 #define g_marshal_value_peek_object(v)   g_value_get_object (v)
+#define g_marshal_value_peek_variant(v)  g_value_get_variant (v)
 #else /* !G_ENABLE_DEBUG */
 /* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
  *          Do not access GValues directly in your code. Instead, use the
@@ -50,6 +51,7 @@ G_BEGIN_DECLS
 #define g_marshal_value_peek_boxed(v)    (v)->data[0].v_pointer
 #define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer
 #define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer
+#define g_marshal_value_peek_variant(v)  (v)->data[0].v_pointer
 #endif /* !G_ENABLE_DEBUG */
 
 
@@ -158,8 +160,7 @@ static const DBusGMethodInfo dbus_glib_gimp_methods[] = {
   { (GCallback) gimp_dbus_service_activate, dbus_glib_marshal_gimp_BOOLEAN__POINTER, 103 },
 };
 
-const DBusGObjectInfo dbus_glib_gimp_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_gimp_object_info = {  1,
   dbus_glib_gimp_methods,
   3,
 "org.gimp.GIMP.UI\0Open\0S\0uri\0I\0s\0success\0O\0F\0N\0b\0\0org.gimp.GIMP.UI\0OpenAsNew\0S\0uri\0I\0s\0success\0O\0F\0N\0b\0\0org.gimp.GIMP.UI\0Activate\0S\0\0\0",

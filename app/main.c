@@ -240,7 +240,7 @@ static const GOptionEntry main_entries[] =
     N_("Debug in case of a crash (never|query|always)"), "<mode>"
   },
   {
-    "debug-handlers", 0, G_OPTION_FLAG_NO_ARG,
+    "debug-handlers", 0, 0,
     G_OPTION_ARG_NONE, &use_debug_handler,
     N_("Enable non-fatal debugging signal handlers"), NULL
   },
@@ -719,14 +719,14 @@ gimp_sigfatal_handler (gint sig_num)
     case SIGQUIT:
     case SIGABRT:
     case SIGTERM:
-      gimp_terminate (g_strsignal (sig_num));
+      gimp_terminate ("%s", g_strsignal (sig_num));
       break;
 
     case SIGBUS:
     case SIGSEGV:
     case SIGFPE:
     default:
-      gimp_fatal_error (g_strsignal (sig_num));
+      gimp_fatal_error ("%s", g_strsignal (sig_num));
       break;
     }
 }

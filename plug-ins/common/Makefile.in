@@ -114,63 +114,72 @@ PROGRAMS = $(libexec_PROGRAMS)
 am_alien_map_OBJECTS = alien-map.$(OBJEXT)
 alien_map_OBJECTS = $(am_alien_map_OBJECTS)
 am__DEPENDENCIES_1 =
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la \
+	$(am__DEPENDENCIES_1)
 alien_map_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_align_layers_OBJECTS = align-layers.$(OBJEXT)
 align_layers_OBJECTS = $(am_align_layers_OBJECTS)
 align_layers_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_animation_optimize_OBJECTS = animation-optimize.$(OBJEXT)
 animation_optimize_OBJECTS = $(am_animation_optimize_OBJECTS)
-animation_optimize_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+animation_optimize_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_animation_play_OBJECTS = animation-play.$(OBJEXT)
 animation_play_OBJECTS = $(am_animation_play_OBJECTS)
 animation_play_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_antialias_OBJECTS = antialias.$(OBJEXT)
 antialias_OBJECTS = $(am_antialias_OBJECTS)
-antialias_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+antialias_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_apply_canvas_OBJECTS = apply-canvas.$(OBJEXT)
 apply_canvas_OBJECTS = $(am_apply_canvas_OBJECTS)
 apply_canvas_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_blinds_OBJECTS = blinds.$(OBJEXT)
 blinds_OBJECTS = $(am_blinds_OBJECTS)
 blinds_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_blur_OBJECTS = blur.$(OBJEXT)
 blur_OBJECTS = $(am_blur_OBJECTS)
-blur_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
+blur_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
 	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_blur_gauss_OBJECTS = blur-gauss.$(OBJEXT)
 blur_gauss_OBJECTS = $(am_blur_gauss_OBJECTS)
 blur_gauss_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_blur_gauss_selective_OBJECTS =  \
 	blur_gauss_selective-blur-gauss-selective.$(OBJEXT)
 blur_gauss_selective_OBJECTS = $(am_blur_gauss_selective_OBJECTS)
 blur_gauss_selective_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 blur_gauss_selective_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(blur_gauss_selective_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
@@ -178,825 +187,912 @@ blur_gauss_selective_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 am_blur_motion_OBJECTS = blur-motion.$(OBJEXT)
 blur_motion_OBJECTS = $(am_blur_motion_OBJECTS)
 blur_motion_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_border_average_OBJECTS = border-average.$(OBJEXT)
 border_average_OBJECTS = $(am_border_average_OBJECTS)
 border_average_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_bump_map_OBJECTS = bump-map.$(OBJEXT)
 bump_map_OBJECTS = $(am_bump_map_OBJECTS)
 bump_map_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_cartoon_OBJECTS = cartoon.$(OBJEXT)
 cartoon_OBJECTS = $(am_cartoon_OBJECTS)
 cartoon_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_channel_mixer_OBJECTS = channel-mixer.$(OBJEXT)
 channel_mixer_OBJECTS = $(am_channel_mixer_OBJECTS)
 channel_mixer_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_checkerboard_OBJECTS = checkerboard.$(OBJEXT)
 checkerboard_OBJECTS = $(am_checkerboard_OBJECTS)
 checkerboard_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_cml_explorer_OBJECTS = cml-explorer.$(OBJEXT)
 cml_explorer_OBJECTS = $(am_cml_explorer_OBJECTS)
 cml_explorer_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_color_cube_analyze_OBJECTS = color-cube-analyze.$(OBJEXT)
 color_cube_analyze_OBJECTS = $(am_color_cube_analyze_OBJECTS)
 color_cube_analyze_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_color_enhance_OBJECTS = color-enhance.$(OBJEXT)
 color_enhance_OBJECTS = $(am_color_enhance_OBJECTS)
 color_enhance_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_color_exchange_OBJECTS = color-exchange.$(OBJEXT)
 color_exchange_OBJECTS = $(am_color_exchange_OBJECTS)
 color_exchange_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_color_to_alpha_OBJECTS = color-to-alpha.$(OBJEXT)
 color_to_alpha_OBJECTS = $(am_color_to_alpha_OBJECTS)
 color_to_alpha_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_colorify_OBJECTS = colorify.$(OBJEXT)
 colorify_OBJECTS = $(am_colorify_OBJECTS)
 colorify_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_colormap_remap_OBJECTS = colormap-remap.$(OBJEXT)
 colormap_remap_OBJECTS = $(am_colormap_remap_OBJECTS)
 colormap_remap_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_compose_OBJECTS = compose.$(OBJEXT)
 compose_OBJECTS = $(am_compose_OBJECTS)
 compose_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_contrast_normalize_OBJECTS = contrast-normalize.$(OBJEXT)
 contrast_normalize_OBJECTS = $(am_contrast_normalize_OBJECTS)
-contrast_normalize_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+contrast_normalize_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_contrast_retinex_OBJECTS = contrast-retinex.$(OBJEXT)
 contrast_retinex_OBJECTS = $(am_contrast_retinex_OBJECTS)
 contrast_retinex_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_contrast_stretch_OBJECTS = contrast-stretch.$(OBJEXT)
 contrast_stretch_OBJECTS = $(am_contrast_stretch_OBJECTS)
-contrast_stretch_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+contrast_stretch_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_contrast_stretch_hsv_OBJECTS = contrast-stretch-hsv.$(OBJEXT)
 contrast_stretch_hsv_OBJECTS = $(am_contrast_stretch_hsv_OBJECTS)
-contrast_stretch_hsv_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+contrast_stretch_hsv_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_convolution_matrix_OBJECTS = convolution-matrix.$(OBJEXT)
 convolution_matrix_OBJECTS = $(am_convolution_matrix_OBJECTS)
 convolution_matrix_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_crop_auto_OBJECTS = crop-auto.$(OBJEXT)
 crop_auto_OBJECTS = $(am_crop_auto_OBJECTS)
-crop_auto_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+crop_auto_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_crop_zealous_OBJECTS = crop-zealous.$(OBJEXT)
 crop_zealous_OBJECTS = $(am_crop_zealous_OBJECTS)
-crop_zealous_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+crop_zealous_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_cubism_OBJECTS = cubism.$(OBJEXT)
 cubism_OBJECTS = $(am_cubism_OBJECTS)
 cubism_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_curve_bend_OBJECTS = curve-bend.$(OBJEXT)
 curve_bend_OBJECTS = $(am_curve_bend_OBJECTS)
 curve_bend_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_decompose_OBJECTS = decompose.$(OBJEXT)
 decompose_OBJECTS = $(am_decompose_OBJECTS)
 decompose_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_deinterlace_OBJECTS = deinterlace.$(OBJEXT)
 deinterlace_OBJECTS = $(am_deinterlace_OBJECTS)
 deinterlace_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_depth_merge_OBJECTS = depth-merge.$(OBJEXT)
 depth_merge_OBJECTS = $(am_depth_merge_OBJECTS)
 depth_merge_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_despeckle_OBJECTS = despeckle.$(OBJEXT)
 despeckle_OBJECTS = $(am_despeckle_OBJECTS)
 despeckle_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_destripe_OBJECTS = destripe.$(OBJEXT)
 destripe_OBJECTS = $(am_destripe_OBJECTS)
 destripe_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_diffraction_OBJECTS = diffraction.$(OBJEXT)
 diffraction_OBJECTS = $(am_diffraction_OBJECTS)
 diffraction_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_displace_OBJECTS = displace.$(OBJEXT)
 displace_OBJECTS = $(am_displace_OBJECTS)
 displace_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_edge_OBJECTS = edge.$(OBJEXT)
 edge_OBJECTS = $(am_edge_OBJECTS)
 edge_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_edge_dog_OBJECTS = edge-dog.$(OBJEXT)
 edge_dog_OBJECTS = $(am_edge_dog_OBJECTS)
 edge_dog_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_edge_laplace_OBJECTS = edge-laplace.$(OBJEXT)
 edge_laplace_OBJECTS = $(am_edge_laplace_OBJECTS)
-edge_laplace_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+edge_laplace_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_edge_neon_OBJECTS = edge-neon.$(OBJEXT)
 edge_neon_OBJECTS = $(am_edge_neon_OBJECTS)
 edge_neon_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_edge_sobel_OBJECTS = edge-sobel.$(OBJEXT)
 edge_sobel_OBJECTS = $(am_edge_sobel_OBJECTS)
 edge_sobel_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_emboss_OBJECTS = emboss.$(OBJEXT)
 emboss_OBJECTS = $(am_emboss_OBJECTS)
 emboss_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_engrave_OBJECTS = engrave.$(OBJEXT)
 engrave_OBJECTS = $(am_engrave_OBJECTS)
 engrave_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_aa_OBJECTS = file-aa.$(OBJEXT)
 file_aa_OBJECTS = $(am_file_aa_OBJECTS)
 file_aa_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_cel_OBJECTS = file-cel.$(OBJEXT)
 file_cel_OBJECTS = $(am_file_cel_OBJECTS)
 file_cel_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_compressor_OBJECTS = file-compressor.$(OBJEXT)
 file_compressor_OBJECTS = $(am_file_compressor_OBJECTS)
-file_compressor_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+file_compressor_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_file_csource_OBJECTS = file-csource.$(OBJEXT)
 file_csource_OBJECTS = $(am_file_csource_OBJECTS)
 file_csource_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_desktop_link_OBJECTS = file-desktop-link.$(OBJEXT)
 file_desktop_link_OBJECTS = $(am_file_desktop_link_OBJECTS)
-file_desktop_link_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+file_desktop_link_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_file_dicom_OBJECTS = file-dicom.$(OBJEXT)
 file_dicom_OBJECTS = $(am_file_dicom_OBJECTS)
 file_dicom_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_gbr_OBJECTS = file-gbr.$(OBJEXT)
 file_gbr_OBJECTS = $(am_file_gbr_OBJECTS)
 file_gbr_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_gif_load_OBJECTS = file-gif-load.$(OBJEXT)
 file_gif_load_OBJECTS = $(am_file_gif_load_OBJECTS)
-file_gif_load_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+file_gif_load_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_file_gif_save_OBJECTS = file-gif-save.$(OBJEXT)
 file_gif_save_OBJECTS = $(am_file_gif_save_OBJECTS)
 file_gif_save_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_gih_OBJECTS = file-gih.$(OBJEXT)
 file_gih_OBJECTS = $(am_file_gih_OBJECTS)
 file_gih_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_glob_OBJECTS = file-glob.$(OBJEXT)
 file_glob_OBJECTS = $(am_file_glob_OBJECTS)
-file_glob_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+file_glob_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_header_OBJECTS = file-header.$(OBJEXT)
 file_header_OBJECTS = $(am_file_header_OBJECTS)
 file_header_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_html_table_OBJECTS = file-html-table.$(OBJEXT)
 file_html_table_OBJECTS = $(am_file_html_table_OBJECTS)
 file_html_table_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_mng_OBJECTS = file-mng.$(OBJEXT)
 file_mng_OBJECTS = $(am_file_mng_OBJECTS)
 file_mng_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_pat_OBJECTS = file-pat.$(OBJEXT)
 file_pat_OBJECTS = $(am_file_pat_OBJECTS)
 file_pat_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_pcx_OBJECTS = file-pcx.$(OBJEXT)
 file_pcx_OBJECTS = $(am_file_pcx_OBJECTS)
 file_pcx_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_pdf_OBJECTS = file_pdf-file-pdf.$(OBJEXT)
 file_pdf_OBJECTS = $(am_file_pdf_OBJECTS)
 file_pdf_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 file_pdf_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(file_pdf_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_file_pix_OBJECTS = file-pix.$(OBJEXT)
 file_pix_OBJECTS = $(am_file_pix_OBJECTS)
 file_pix_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_png_OBJECTS = file_png-file-png.$(OBJEXT)
 file_png_OBJECTS = $(am_file_png_OBJECTS)
 file_png_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 file_png_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(file_png_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_file_pnm_OBJECTS = file-pnm.$(OBJEXT)
 file_pnm_OBJECTS = $(am_file_pnm_OBJECTS)
 file_pnm_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_ps_OBJECTS = file-ps.$(OBJEXT)
 file_ps_OBJECTS = $(am_file_ps_OBJECTS)
 file_ps_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_psp_OBJECTS = file-psp.$(OBJEXT)
 file_psp_OBJECTS = $(am_file_psp_OBJECTS)
 file_psp_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_raw_OBJECTS = file-raw.$(OBJEXT)
 file_raw_OBJECTS = $(am_file_raw_OBJECTS)
 file_raw_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_sunras_OBJECTS = file-sunras.$(OBJEXT)
 file_sunras_OBJECTS = $(am_file_sunras_OBJECTS)
 file_sunras_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_svg_OBJECTS = file_svg-file-svg.$(OBJEXT)
 file_svg_OBJECTS = $(am_file_svg_OBJECTS)
 file_svg_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 file_svg_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(file_svg_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_file_tga_OBJECTS = file-tga.$(OBJEXT)
 file_tga_OBJECTS = $(am_file_tga_OBJECTS)
 file_tga_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_tiff_load_OBJECTS = file-tiff-load.$(OBJEXT)
 file_tiff_load_OBJECTS = $(am_file_tiff_load_OBJECTS)
 file_tiff_load_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_tiff_save_OBJECTS = file-tiff-save.$(OBJEXT)
 file_tiff_save_OBJECTS = $(am_file_tiff_save_OBJECTS)
 file_tiff_save_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_wmf_OBJECTS = file_wmf-file-wmf.$(OBJEXT)
 file_wmf_OBJECTS = $(am_file_wmf_OBJECTS)
 file_wmf_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 file_wmf_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(file_wmf_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_file_xbm_OBJECTS = file-xbm.$(OBJEXT)
 file_xbm_OBJECTS = $(am_file_xbm_OBJECTS)
 file_xbm_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_file_xpm_OBJECTS = file-xpm.$(OBJEXT)
 file_xpm_OBJECTS = $(am_file_xpm_OBJECTS)
 file_xpm_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_file_xwd_OBJECTS = file-xwd.$(OBJEXT)
 file_xwd_OBJECTS = $(am_file_xwd_OBJECTS)
 file_xwd_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_film_OBJECTS = film.$(OBJEXT)
 film_OBJECTS = $(am_film_OBJECTS)
 film_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_filter_pack_OBJECTS = filter-pack.$(OBJEXT)
 filter_pack_OBJECTS = $(am_filter_pack_OBJECTS)
 filter_pack_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_fractal_trace_OBJECTS = fractal-trace.$(OBJEXT)
 fractal_trace_OBJECTS = $(am_fractal_trace_OBJECTS)
 fractal_trace_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_gee_OBJECTS = gee.$(OBJEXT)
 gee_OBJECTS = $(am_gee_OBJECTS)
 gee_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_gee_zoom_OBJECTS = gee-zoom.$(OBJEXT)
 gee_zoom_OBJECTS = $(am_gee_zoom_OBJECTS)
 gee_zoom_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_gradient_map_OBJECTS = gradient-map.$(OBJEXT)
 gradient_map_OBJECTS = $(am_gradient_map_OBJECTS)
-gradient_map_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+gradient_map_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_grid_OBJECTS = grid.$(OBJEXT)
 grid_OBJECTS = $(am_grid_OBJECTS)
 grid_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_guillotine_OBJECTS = guillotine.$(OBJEXT)
-guillotine_OBJECTS = $(am_guillotine_OBJECTS)
-guillotine_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
 	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_guillotine_OBJECTS = guillotine.$(OBJEXT)
+guillotine_OBJECTS = $(am_guillotine_OBJECTS)
+guillotine_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_hot_OBJECTS = hot.$(OBJEXT)
 hot_OBJECTS = $(am_hot_OBJECTS)
 hot_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_illusion_OBJECTS = illusion.$(OBJEXT)
 illusion_OBJECTS = $(am_illusion_OBJECTS)
 illusion_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_iwarp_OBJECTS = iwarp.$(OBJEXT)
 iwarp_OBJECTS = $(am_iwarp_OBJECTS)
 iwarp_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_jigsaw_OBJECTS = jigsaw.$(OBJEXT)
 jigsaw_OBJECTS = $(am_jigsaw_OBJECTS)
 jigsaw_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_lcms_OBJECTS = lcms-lcms.$(OBJEXT)
 lcms_OBJECTS = $(am_lcms_OBJECTS)
 lcms_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 lcms_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(lcms_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_lens_apply_OBJECTS = lens-apply.$(OBJEXT)
 lens_apply_OBJECTS = $(am_lens_apply_OBJECTS)
 lens_apply_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_lens_distortion_OBJECTS = lens-distortion.$(OBJEXT)
 lens_distortion_OBJECTS = $(am_lens_distortion_OBJECTS)
 lens_distortion_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_lens_flare_OBJECTS = lens-flare.$(OBJEXT)
 lens_flare_OBJECTS = $(am_lens_flare_OBJECTS)
 lens_flare_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_mail_OBJECTS = mail.$(OBJEXT)
 mail_OBJECTS = $(am_mail_OBJECTS)
 mail_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_max_rgb_OBJECTS = max-rgb.$(OBJEXT)
 max_rgb_OBJECTS = $(am_max_rgb_OBJECTS)
 max_rgb_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_mosaic_OBJECTS = mosaic.$(OBJEXT)
 mosaic_OBJECTS = $(am_mosaic_OBJECTS)
 mosaic_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_newsprint_OBJECTS = newsprint.$(OBJEXT)
 newsprint_OBJECTS = $(am_newsprint_OBJECTS)
 newsprint_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_nl_filter_OBJECTS = nl-filter.$(OBJEXT)
 nl_filter_OBJECTS = $(am_nl_filter_OBJECTS)
 nl_filter_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_noise_hsv_OBJECTS = noise-hsv.$(OBJEXT)
 noise_hsv_OBJECTS = $(am_noise_hsv_OBJECTS)
 noise_hsv_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_noise_randomize_OBJECTS = noise-randomize.$(OBJEXT)
 noise_randomize_OBJECTS = $(am_noise_randomize_OBJECTS)
 noise_randomize_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_noise_rgb_OBJECTS = noise-rgb.$(OBJEXT)
 noise_rgb_OBJECTS = $(am_noise_rgb_OBJECTS)
 noise_rgb_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_noise_solid_OBJECTS = noise-solid.$(OBJEXT)
 noise_solid_OBJECTS = $(am_noise_solid_OBJECTS)
 noise_solid_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_noise_spread_OBJECTS = noise-spread.$(OBJEXT)
 noise_spread_OBJECTS = $(am_noise_spread_OBJECTS)
 noise_spread_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_nova_OBJECTS = nova.$(OBJEXT)
 nova_OBJECTS = $(am_nova_OBJECTS)
 nova_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_oilify_OBJECTS = oilify.$(OBJEXT)
 oilify_OBJECTS = $(am_oilify_OBJECTS)
 oilify_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_photocopy_OBJECTS = photocopy.$(OBJEXT)
 photocopy_OBJECTS = $(am_photocopy_OBJECTS)
 photocopy_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_pixelize_OBJECTS = pixelize.$(OBJEXT)
 pixelize_OBJECTS = $(am_pixelize_OBJECTS)
 pixelize_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_plasma_OBJECTS = plasma.$(OBJEXT)
 plasma_OBJECTS = $(am_plasma_OBJECTS)
 plasma_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_plugin_browser_OBJECTS = plugin-browser.$(OBJEXT)
 plugin_browser_OBJECTS = $(am_plugin_browser_OBJECTS)
 plugin_browser_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_polar_coords_OBJECTS = polar-coords.$(OBJEXT)
 polar_coords_OBJECTS = $(am_polar_coords_OBJECTS)
 polar_coords_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_procedure_browser_OBJECTS = procedure-browser.$(OBJEXT)
 procedure_browser_OBJECTS = $(am_procedure_browser_OBJECTS)
 procedure_browser_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_qbist_OBJECTS = qbist.$(OBJEXT)
 qbist_OBJECTS = $(am_qbist_OBJECTS)
 qbist_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_red_eye_removal_OBJECTS = red-eye-removal.$(OBJEXT)
 red_eye_removal_OBJECTS = $(am_red_eye_removal_OBJECTS)
 red_eye_removal_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_ripple_OBJECTS = ripple.$(OBJEXT)
 ripple_OBJECTS = $(am_ripple_OBJECTS)
 ripple_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_rotate_OBJECTS = rotate.$(OBJEXT)
-rotate_OBJECTS = $(am_rotate_OBJECTS)
-rotate_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
 	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_rotate_OBJECTS = rotate.$(OBJEXT)
+rotate_OBJECTS = $(am_rotate_OBJECTS)
+rotate_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_sample_colorize_OBJECTS = sample-colorize.$(OBJEXT)
 sample_colorize_OBJECTS = $(am_sample_colorize_OBJECTS)
 sample_colorize_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_screenshot_OBJECTS = screenshot-screenshot.$(OBJEXT)
 screenshot_OBJECTS = $(am_screenshot_OBJECTS)
 screenshot_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 screenshot_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(screenshot_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am_semi_flatten_OBJECTS = semi-flatten.$(OBJEXT)
 semi_flatten_OBJECTS = $(am_semi_flatten_OBJECTS)
-semi_flatten_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+semi_flatten_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_sharpen_OBJECTS = sharpen.$(OBJEXT)
 sharpen_OBJECTS = $(am_sharpen_OBJECTS)
 sharpen_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_shift_OBJECTS = shift.$(OBJEXT)
 shift_OBJECTS = $(am_shift_OBJECTS)
 shift_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_sinus_OBJECTS = sinus.$(OBJEXT)
 sinus_OBJECTS = $(am_sinus_OBJECTS)
 sinus_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_smooth_palette_OBJECTS = smooth-palette.$(OBJEXT)
 smooth_palette_OBJECTS = $(am_smooth_palette_OBJECTS)
 smooth_palette_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_softglow_OBJECTS = softglow.$(OBJEXT)
 softglow_OBJECTS = $(am_softglow_OBJECTS)
 softglow_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_sparkle_OBJECTS = sparkle.$(OBJEXT)
 sparkle_OBJECTS = $(am_sparkle_OBJECTS)
 sparkle_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_sphere_designer_OBJECTS = sphere-designer.$(OBJEXT)
 sphere_designer_OBJECTS = $(am_sphere_designer_OBJECTS)
 sphere_designer_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_threshold_alpha_OBJECTS = threshold-alpha.$(OBJEXT)
 threshold_alpha_OBJECTS = $(am_threshold_alpha_OBJECTS)
 threshold_alpha_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_tile_OBJECTS = tile.$(OBJEXT)
 tile_OBJECTS = $(am_tile_OBJECTS)
 tile_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tile_glass_OBJECTS = tile-glass.$(OBJEXT)
 tile_glass_OBJECTS = $(am_tile_glass_OBJECTS)
 tile_glass_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_tile_paper_OBJECTS = tile-paper.$(OBJEXT)
 tile_paper_OBJECTS = $(am_tile_paper_OBJECTS)
 tile_paper_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_tile_seamless_OBJECTS = tile-seamless.$(OBJEXT)
 tile_seamless_OBJECTS = $(am_tile_seamless_OBJECTS)
-tile_seamless_DEPENDENCIES = $(libgimp) $(libgimpmath) \
+tile_seamless_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
 	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_tile_small_OBJECTS = tile-small.$(OBJEXT)
 tile_small_OBJECTS = $(am_tile_small_OBJECTS)
 tile_small_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_unit_editor_OBJECTS = unit-editor.$(OBJEXT)
 unit_editor_OBJECTS = $(am_unit_editor_OBJECTS)
 unit_editor_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_unsharp_mask_OBJECTS = unsharp-mask.$(OBJEXT)
 unsharp_mask_OBJECTS = $(am_unsharp_mask_OBJECTS)
 unsharp_mask_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_value_invert_OBJECTS = value-invert.$(OBJEXT)
 value_invert_OBJECTS = $(am_value_invert_OBJECTS)
-value_invert_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+value_invert_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_value_propagate_OBJECTS = value-propagate.$(OBJEXT)
 value_propagate_OBJECTS = $(am_value_propagate_OBJECTS)
 value_propagate_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_van_gogh_lic_OBJECTS = van-gogh-lic.$(OBJEXT)
 van_gogh_lic_OBJECTS = $(am_van_gogh_lic_OBJECTS)
 van_gogh_lic_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_video_OBJECTS = video.$(OBJEXT)
 video_OBJECTS = $(am_video_OBJECTS)
 video_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_warp_OBJECTS = warp.$(OBJEXT)
 warp_OBJECTS = $(am_warp_OBJECTS)
 warp_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_waves_OBJECTS = waves.$(OBJEXT)
 waves_OBJECTS = $(am_waves_OBJECTS)
 waves_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_web_browser_OBJECTS = web-browser.$(OBJEXT)
-web_browser_OBJECTS = $(am_web_browser_OBJECTS)
-web_browser_DEPENDENCIES = $(libgimp) $(libgimpmath) $(libgimpconfig) \
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
 	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_web_browser_OBJECTS = web-browser.$(OBJEXT)
+web_browser_OBJECTS = $(am_web_browser_OBJECTS)
+web_browser_DEPENDENCIES = $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_whirl_pinch_OBJECTS = whirl-pinch.$(OBJEXT)
 whirl_pinch_OBJECTS = $(am_whirl_pinch_OBJECTS)
 whirl_pinch_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) \
-	$(libgimpmodule) $(libgimp) $(libgimpmath) $(libgimpconfig) \
-	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(libgimpmodule) $(libgimp) $(am__DEPENDENCIES_2) \
+	$(libgimpconfig) $(libgimpcolor) $(libgimpbase) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_wind_OBJECTS = wind.$(OBJEXT)
 wind_OBJECTS = $(am_wind_OBJECTS)
 wind_DEPENDENCIES = $(libgimpui) $(libgimpwidgets) $(libgimpmodule) \
-	$(libgimp) $(libgimpmath) $(libgimpconfig) $(libgimpcolor) \
-	$(libgimpbase) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(libgimp) $(am__DEPENDENCIES_2) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -1287,6 +1383,7 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -1378,6 +1475,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
@@ -1415,7 +1513,6 @@ libdir = @libdir@
 libexecdir = $(gimpplugindir)/plug-ins
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
@@ -1436,15 +1533,16 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@OS_WIN32_TRUE@mwindows = -mwindows
+@OS_WIN32_FALSE@libm = -lm
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
-libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la $(libm)
 libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-@OS_WIN32_TRUE@mwindows = -mwindows
 AM_LDFLAGS = $(mwindows)
 EXTRA_DIST = \
 	mkgen.pl	\

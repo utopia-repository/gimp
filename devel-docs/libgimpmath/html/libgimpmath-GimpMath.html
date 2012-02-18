@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpMath</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="next" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libgimpmath-GimpMath.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpMath">
+<div class="refentry">
 <a name="libgimpmath-GimpMath"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,7 +35,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libgimpmath-GimpMath.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" title="RINT()">RINT</a>                                (x)
 #define             <a class="link" href="libgimpmath-GimpMath.html#ROUND:CAPS" title="ROUND()">ROUND</a>                               (x)
@@ -46,18 +46,19 @@
 #define             <a class="link" href="libgimpmath-GimpMath.html#gimp-rad-to-deg" title="gimp_rad_to_deg()">gimp_rad_to_deg</a>                     (angle)
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libgimpmath-GimpMath.description"></a><h2>Description</h2>
 <p>
 Mathematical definitions and macros. These macros should be used
 rather than the ones from math.h for enhanced portability.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libgimpmath-GimpMath.details"></a><h2>Details</h2>
-<div class="refsect2" title="RINT()">
+<div class="refsect2">
 <a name="RINT:CAPS"></a><h3>RINT()</h3>
-<pre class="programlisting">#define             RINT(x)</pre>
+<pre class="programlisting">#define RINT(x) rint(x)
+</pre>
 <p>
 This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating point
 format.
@@ -66,13 +67,12 @@ format.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>the value to be rounded.
-</td>
+<td>the value to be rounded.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="ROUND()">
+<div class="refsect2">
 <a name="ROUND:CAPS"></a><h3>ROUND()</h3>
 <pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
 </pre>
@@ -83,13 +83,12 @@ This macro rounds its argument <em class="parameter"><code>x</code></em> to the 
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>the value to be rounded.
-</td>
+<td>the value to be rounded.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="SQR()">
+<div class="refsect2">
 <a name="SQR:CAPS"></a><h3>SQR()</h3>
 <pre class="programlisting">#define SQR(x) ((x) * (x))
 </pre>
@@ -100,13 +99,12 @@ This macro squares its argument <em class="parameter"><code>x</code></em>.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>the value to be squared.
-</td>
+<td>the value to be squared.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="MAX255()">
+<div class="refsect2">
 <a name="MAX255:CAPS"></a><h3>MAX255()</h3>
 <pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
 </pre>
@@ -117,13 +115,12 @@ This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-5
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>the value to be limited.
-</td>
+<td>the value to be limited.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="CLAMP0255()">
+<div class="refsect2">
 <a name="CLAMP0255:CAPS"></a><h3>CLAMP0255()</h3>
 <pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
 </pre>
@@ -135,13 +132,12 @@ This macro clamps its argument <em class="parameter"><code>a</code></em>, an int
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>the value to be clamped.
-</td>
+<td>the value to be clamped.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_deg_to_rad()">
+<div class="refsect2">
 <a name="gimp-deg-to-rad"></a><h3>gimp_deg_to_rad()</h3>
 <pre class="programlisting">#define gimp_deg_to_rad(angle) ((angle) * (2.0 * G_PI) / 360.0)
 </pre>
@@ -152,13 +148,12 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>angle</code></em> :</span></p></td>
-<td>the angle to be converted.
-</td>
+<td>the angle to be converted.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_rad_to_deg()">
+<div class="refsect2">
 <a name="gimp-rad-to-deg"></a><h3>gimp_rad_to_deg()</h3>
 <pre class="programlisting">#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
 </pre>
@@ -169,8 +164,7 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>angle</code></em> :</span></p></td>
-<td>the angle to be converted.
-</td>
+<td>the angle to be converted.</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -178,6 +172,6 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

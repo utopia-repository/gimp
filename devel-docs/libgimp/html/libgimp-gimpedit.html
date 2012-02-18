@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpedit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
 <link rel="next" href="libgimp-gimpfileops.html" title="gimpfileops">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libgimp-gimpedit.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="gimpedit">
+<div class="refentry">
 <a name="libgimp-gimpedit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,67 +35,67 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libgimp-gimpedit.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()">gimp_edit_cut</a>                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()">gimp_edit_copy</a>                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy-visible" title="gimp_edit_copy_visible ()">gimp_edit_copy_visible</a>              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()">gimp_edit_paste</a>                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new" title="gimp_edit_paste_as_new ()">gimp_edit_paste_as_new</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-cut" title="gimp_edit_named_cut ()">gimp_edit_named_cut</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy" title="gimp_edit_named_copy ()">gimp_edit_named_copy</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy-visible" title="gimp_edit_named_copy_visible ()">gimp_edit_named_copy_visible</a>        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste" title="gimp_edit_named_paste ()">gimp_edit_named_paste</a>               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste-as-new" title="gimp_edit_named_paste_as_new ()">gimp_edit_named_paste_as_new</a>        (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-clear" title="gimp_edit_clear ()">gimp_edit_clear</a>                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-fill" title="gimp_edit_fill ()">gimp_edit_fill</a>                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()">gimp_edit_cut</a>                       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()">gimp_edit_copy</a>                      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy-visible" title="gimp_edit_copy_visible ()">gimp_edit_copy_visible</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()">gimp_edit_paste</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new" title="gimp_edit_paste_as_new ()">gimp_edit_paste_as_new</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-cut" title="gimp_edit_named_cut ()">gimp_edit_named_cut</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy" title="gimp_edit_named_copy ()">gimp_edit_named_copy</a>                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy-visible" title="gimp_edit_named_copy_visible ()">gimp_edit_named_copy_visible</a>        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste" title="gimp_edit_named_paste ()">gimp_edit_named_paste</a>               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste-as-new" title="gimp_edit_named_paste_as_new ()">gimp_edit_named_paste_as_new</a>        (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-clear" title="gimp_edit_clear ()">gimp_edit_clear</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-fill" title="gimp_edit_fill ()">gimp_edit_fill</a>                      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType"><span class="type">GimpFillType</span></a> fill_type</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-bucket-fill" title="gimp_edit_bucket_fill ()">gimp_edit_bucket_fill</a>               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"><span class="type">GimpBucketFillMode</span></a> fill_mode</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-bucket-fill" title="gimp_edit_bucket_fill ()">gimp_edit_bucket_fill</a>               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"><span class="type">GimpBucketFillMode</span></a> fill_mode</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> paint_mode</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sample_merged</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-blend" title="gimp_edit_blend ()">gimp_edit_blend</a>                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"><span class="type">GimpBlendMode</span></a> blend_mode</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sample_merged</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-blend" title="gimp_edit_blend ()">gimp_edit_blend</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"><span class="type">GimpBlendMode</span></a> blend_mode</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> paint_mode</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"><span class="type">GimpGradientType</span></a> gradient_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> offset</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"><span class="type">GimpRepeatMode</span></a> repeat</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> reverse</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> supersample</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_depth</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dither</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y2</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke" title="gimp_edit_stroke ()">gimp_edit_stroke</a>                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke-vectors" title="gimp_edit_stroke_vectors ()">gimp_edit_stroke_vectors</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> vectors_ID</code></em>);
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"><span class="type">GimpGradientType</span></a> gradient_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> offset</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"><span class="type">GimpRepeatMode</span></a> repeat</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> reverse</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> supersample</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_depth</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dither</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y2</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke" title="gimp_edit_stroke ()">gimp_edit_stroke</a>                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke-vectors" title="gimp_edit_stroke_vectors ()">gimp_edit_stroke_vectors</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> vectors_ID</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libgimp-gimpedit.description"></a><h2>Description</h2>
 <p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libgimp-gimpedit.details"></a><h2>Details</h2>
-<div class="refsect2" title="gimp_edit_cut ()">
+<div class="refsect2">
 <a name="gimp-edit-cut"></a><h3>gimp_edit_cut ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_cut                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_cut                       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Cut from the specified drawable.
 </p>
@@ -114,21 +114,19 @@ there is nothing to copy from.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to cut from.
-</td>
+<td>The drawable to cut from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the cut was successful, FALSE if there was nothing to copy from.
-</td>
+<td>TRUE if the cut was successful, FALSE if there was nothing to copy from.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_copy ()">
+<div class="refsect2">
 <a name="gimp-edit-copy"></a><h3>gimp_edit_copy ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_copy                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_copy                      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Copy from the specified drawable.
 </p>
@@ -147,21 +145,19 @@ nothing to copy from.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to copy from.
-</td>
+<td>The drawable to copy from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the cut was successful, FALSE if there was nothing to copy from.
-</td>
+<td>TRUE if the cut was successful, FALSE if there was nothing to copy from.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_copy_visible ()">
+<div class="refsect2">
 <a name="gimp-edit-copy-visible"></a><h3>gimp_edit_copy_visible ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_copy_visible              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_copy_visible              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>);</pre>
 <p>
 Copy from the projection.
 </p>
@@ -178,24 +174,21 @@ buffer.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
-<td>The image to copy from.
-</td>
+<td>The image to copy from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the copy was successful.
-
-</td>
+<td>TRUE if the copy was successful.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_paste ()">
+<div class="refsect2">
 <a name="gimp-edit-paste"></a><h3>gimp_edit_paste ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_paste                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_paste                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);</pre>
 <p>
 Paste buffer to the specified drawable.
 </p>
@@ -221,26 +214,23 @@ not needed.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to paste to.
-</td>
+<td>The drawable to paste to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>paste_into</code></em> :</span></p></td>
-<td>Clear selection, or paste behind it?
-</td>
+<td>Clear selection, or paste behind it?</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The new floating selection.
-</td>
+<td>The new floating selection.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_paste_as_new ()">
+<div class="refsect2">
 <a name="gimp-edit-paste-as-new"></a><h3>gimp_edit_paste_as_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_paste_as_new              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_paste_as_new              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Paste buffer to a new image.
 </p>
@@ -254,18 +244,16 @@ procedure returns the new image or -1 if the edit buffer was empty.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The new image.
-
-</td>
+<td>The new image.</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_named_cut ()">
+<div class="refsect2">
 <a name="gimp-edit-named-cut"></a><h3>gimp_edit_named_cut ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*              gimp_edit_named_cut                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_edit_named_cut                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
 <p>
 Cut into a named buffer.
 </p>
@@ -280,29 +268,25 @@ operations.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to cut from.
-</td>
+<td>The drawable to cut from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
-<td>The name of the buffer to create.
-</td>
+<td>The name of the buffer to create.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The real name given to the buffer, or NULL if the cut failed.
-
-</td>
+<td>The real name given to the buffer, or NULL if the cut failed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_named_copy ()">
+<div class="refsect2">
 <a name="gimp-edit-named-copy"></a><h3>gimp_edit_named_copy ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*              gimp_edit_named_copy                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_edit_named_copy                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
 <p>
 Copy into a named buffer.
 </p>
@@ -317,29 +301,25 @@ operations.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to copy from.
-</td>
+<td>The drawable to copy from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
-<td>The name of the buffer to create.
-</td>
+<td>The name of the buffer to create.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The real name given to the buffer, or NULL if the copy failed.
-
-</td>
+<td>The real name given to the buffer, or NULL if the copy failed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_named_copy_visible ()">
+<div class="refsect2">
 <a name="gimp-edit-named-copy-visible"></a><h3>gimp_edit_named_copy_visible ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*              gimp_edit_named_copy_visible        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_edit_named_copy_visible        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
 <p>
 Copy from the projection into a named buffer.
 </p>
@@ -354,30 +334,26 @@ cut operations.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
-<td>The image to copy from.
-</td>
+<td>The image to copy from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
-<td>The name of the buffer to create.
-</td>
+<td>The name of the buffer to create.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The real name given to the buffer, or NULL if the copy failed.
-
-</td>
+<td>The real name given to the buffer, or NULL if the copy failed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_named_paste ()">
+<div class="refsect2">
 <a name="gimp-edit-named-paste"></a><h3>gimp_edit_named_paste ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_named_paste               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_named_paste               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> paste_into</code></em>);</pre>
 <p>
 Paste named buffer to the specified drawable.
 </p>
@@ -390,33 +366,28 @@ buffer instead of the global buffer.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to paste to.
-</td>
+<td>The drawable to paste to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
-<td>The name of the buffer to paste.
-</td>
+<td>The name of the buffer to paste.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>paste_into</code></em> :</span></p></td>
-<td>Clear selection, or paste behind it?
-</td>
+<td>Clear selection, or paste behind it?</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The new floating selection.
-
-</td>
+<td>The new floating selection.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_named_paste_as_new ()">
+<div class="refsect2">
 <a name="gimp-edit-named-paste-as-new"></a><h3>gimp_edit_named_paste_as_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_named_paste_as_new        (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_edit_named_paste_as_new        (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer_name</code></em>);</pre>
 <p>
 Paste named buffer to a new image.
 </p>
@@ -429,23 +400,20 @@ named buffer instead of the global buffer.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
-<td>The name of the buffer to paste.
-</td>
+<td>The name of the buffer to paste.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The new image.
-
-</td>
+<td>The new image.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_clear ()">
+<div class="refsect2">
 <a name="gimp-edit-clear"></a><h3>gimp_edit_clear ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_clear                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_clear                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Clear selected area of drawable.
 </p>
@@ -461,21 +429,19 @@ a selection if there is a selection active.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to clear from.
-</td>
+<td>The drawable to clear from.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
-</td>
+<td>TRUE on success.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_fill ()">
+<div class="refsect2">
 <a name="gimp-edit-fill"></a><h3>gimp_edit_fill ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_fill                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_fill                      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType"><span class="type">GimpFillType</span></a> fill_type</code></em>);</pre>
 <p>
 Fill selected area of drawable.
@@ -494,33 +460,30 @@ use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill" title="g
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to fill to.
-</td>
+<td>The drawable to fill to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fill_type</code></em> :</span></p></td>
-<td>The type of fill.
-</td>
+<td>The type of fill.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
-</td>
+<td>TRUE on success.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_bucket_fill ()">
+<div class="refsect2">
 <a name="gimp-edit-bucket-fill"></a><h3>gimp_edit_bucket_fill ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_bucket_fill               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"><span class="type">GimpBucketFillMode</span></a> fill_mode</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_bucket_fill               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"><span class="type">GimpBucketFillMode</span></a> fill_mode</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> paint_mode</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sample_merged</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sample_merged</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
 <p>
 Fill the area specified either by the current selection if there is
 one, or by a seed fill starting at the specified coordinates.
@@ -544,71 +507,62 @@ relative to the drawable's origin.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The affected drawable.
-</td>
+<td>The affected drawable.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fill_mode</code></em> :</span></p></td>
-<td>The type of fill.
-</td>
+<td>The type of fill.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>paint_mode</code></em> :</span></p></td>
-<td>The paint application mode.
-</td>
+<td>The paint application mode.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
-<td>The opacity of the final bucket fill.
-</td>
+<td>The opacity of the final bucket fill.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>threshold</code></em> :</span></p></td>
-<td>The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels. This parameter is only valid when there is no selection in the specified image.
-</td>
+<td>The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels. This parameter is only valid when there is no selection in the specified image.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sample_merged</code></em> :</span></p></td>
-<td>Use the composite image, not the drawable.
-</td>
+<td>Use the composite image, not the drawable.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
-</td>
+<td>The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
-</td>
+<td>The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
-</td>
+<td>TRUE on success.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_blend ()">
+<div class="refsect2">
 <a name="gimp-edit-blend"></a><h3>gimp_edit_blend ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_blend                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"><span class="type">GimpBlendMode</span></a> blend_mode</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_blend                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"><span class="type">GimpBlendMode</span></a> blend_mode</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> paint_mode</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"><span class="type">GimpGradientType</span></a> gradient_type</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> offset</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"><span class="type">GimpRepeatMode</span></a> repeat</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> reverse</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> supersample</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_depth</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dither</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y2</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"><span class="type">GimpGradientType</span></a> gradient_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> offset</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"><span class="type">GimpRepeatMode</span></a> repeat</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> reverse</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> supersample</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_depth</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dither</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y2</code></em>);</pre>
 <p>
 Blend between the starting and ending coordinates with the specified
 blend mode and gradient type.
@@ -624,96 +578,79 @@ each gradient type.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The affected drawable.
-</td>
+<td>The affected drawable.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blend_mode</code></em> :</span></p></td>
-<td>The type of blend.
-</td>
+<td>The type of blend.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>paint_mode</code></em> :</span></p></td>
-<td>The paint application mode.
-</td>
+<td>The paint application mode.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gradient_type</code></em> :</span></p></td>
-<td>The type of gradient.
-</td>
+<td>The type of gradient.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
-<td>The opacity of the final blend.
-</td>
+<td>The opacity of the final blend.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offset</code></em> :</span></p></td>
-<td>Offset relates to the starting and ending coordinates specified for the blend. This parameter is mode dependent.
-</td>
+<td>Offset relates to the starting and ending coordinates specified for the blend. This parameter is mode dependent.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>repeat</code></em> :</span></p></td>
-<td>Repeat mode.
-</td>
+<td>Repeat mode.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>reverse</code></em> :</span></p></td>
-<td>Use the reverse gradient.
-</td>
+<td>Use the reverse gradient.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>supersample</code></em> :</span></p></td>
-<td>Do adaptive supersampling.
-</td>
+<td>Do adaptive supersampling.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_depth</code></em> :</span></p></td>
-<td>Maximum recursion levels for supersampling.
-</td>
+<td>Maximum recursion levels for supersampling.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>threshold</code></em> :</span></p></td>
-<td>Supersampling threshold.
-</td>
+<td>Supersampling threshold.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dither</code></em> :</span></p></td>
-<td>Use dithering to reduce banding.
-</td>
+<td>Use dithering to reduce banding.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
-<td>The x coordinate of this blend's starting point.
-</td>
+<td>The x coordinate of this blend's starting point.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
-<td>The y coordinate of this blend's starting point.
-</td>
+<td>The y coordinate of this blend's starting point.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
-<td>The x coordinate of this blend's ending point.
-</td>
+<td>The x coordinate of this blend's ending point.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
-<td>The y coordinate of this blend's ending point.
-</td>
+<td>The y coordinate of this blend's ending point.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
-</td>
+<td>TRUE on success.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_stroke ()">
+<div class="refsect2">
 <a name="gimp-edit-stroke"></a><h3>gimp_edit_stroke ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_stroke                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_stroke                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Stroke the current selection
 </p>
@@ -728,22 +665,20 @@ selection.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to stroke to.
-</td>
+<td>The drawable to stroke to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
-</td>
+<td>TRUE on success.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_edit_stroke_vectors ()">
+<div class="refsect2">
 <a name="gimp-edit-stroke-vectors"></a><h3>gimp_edit_stroke_vectors ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_stroke_vectors            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> vectors_ID</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_edit_stroke_vectors            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> vectors_ID</code></em>);</pre>
 <p>
 Stroke the specified vectors object
 </p>
@@ -756,19 +691,15 @@ the path with the active brush and foreground color.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td>The drawable to stroke to.
-</td>
+<td>The drawable to stroke to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vectors_ID</code></em> :</span></p></td>
-<td>The vectors object.
-</td>
+<td>The vectors object.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
-
-</td>
+<td>TRUE on success.</td>
 </tr>
 </tbody>
 </table></div>
@@ -778,6 +709,6 @@ the path with the active brush and foreground color.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

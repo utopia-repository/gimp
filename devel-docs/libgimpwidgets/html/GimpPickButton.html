@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpPickButton</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpPathEditor.html" title="GimpPathEditor">
 <link rel="next" href="GimpPixmap.html" title="GimpPixmap">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,7 +32,7 @@
                   <a href="#GimpPickButton.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpPickButton">
+<div class="refentry">
 <a name="GimpPickButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,38 +41,38 @@
 </td>
 <td valign="top" align="right"><img src="gimp-pick-button.png"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="GimpPickButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpPickButton.html#GimpPickButton-struct" title="GimpPickButton">GimpPickButton</a>;
-<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpPickButton.html#gimp-pick-button-new" title="gimp_pick_button_new ()">gimp_pick_button_new</a>                (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpPickButton.html#gimp-pick-button-new" title="gimp_pick_button_new ()">gimp_pick_button_new</a>                (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="GimpPickButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
-               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
-                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkContainer.html">GtkContainer</a>
-                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkBin.html">GtkBin</a>
-                                 +----<a href="/usr/share/gtk-doc/html/gtk/GtkButton.html">GtkButton</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                     +----<a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
+                           +----<a href="http://library.gnome.org/devel/gtk3/GtkBin.html">GtkBin</a>
+                                 +----<a href="http://library.gnome.org/devel/gtk3/GtkButton.html">GtkButton</a>
                                        +----GimpPickButton
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="GimpPickButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPickButton implements
- AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk/GtkActivatable.html">GtkActivatable</a>.</p>
+ AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/GtkActivatable.html">GtkActivatable</a>.</p>
 </div>
-<div class="refsect1" title="Signals">
+<div class="refsect1">
 <a name="GimpPickButton.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpPickButton.html#GimpPickButton-color-picked" title='The "color-picked" signal'>color-picked</a>"                                   : Run First
+  "<a class="link" href="GimpPickButton.html#GimpPickButton-color-picked" title='The "color-picked" signal'>color-picked</a>"                                   : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a>
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="GimpPickButton.description"></a><h2>Description</h2>
 <p>
 <a class="link" href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> is a specialized button. When clicked, it changes the
@@ -80,18 +80,18 @@ cursor to a color-picker pipette and allows the user to pick a color
 from any point on the screen.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="GimpPickButton.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpPickButton">
+<div class="refsect2">
 <a name="GimpPickButton-struct"></a><h3>GimpPickButton</h3>
 <pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_pick_button_new ()">
+<div class="refsect2">
 <a name="gimp-pick-button-new"></a><h3>gimp_pick_button_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_pick_button_new                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_pick_button_new                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.
 </p>
@@ -99,19 +99,18 @@ Creates a new <a class="link" href="GimpPickButton.html" title="GimpPickButton">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A new <a class="link" href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.
-</td>
+<td>A new <a class="link" href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.</td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" title="Signal Details">
+<div class="refsect1">
 <a name="GimpPickButton.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" title='The "color-picked" signal'>
+<div class="refsect2">
 <a name="GimpPickButton-color-picked"></a><h3>The <code class="literal">"color-picked"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> *gimppickbutton,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        arg1,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)           : Run First</pre>
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        arg1,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)           : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a></pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -119,13 +118,11 @@ Creates a new <a class="link" href="GimpPickButton.html" title="GimpPickButton">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gimppickbutton</code></em> :</span></p></td>
-<td>the object which received the signal.
-</td>
+<td>the object which received the signal.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>arg1</code></em> :</span></p></td>
-<td>pointer to a <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> structure that holds the picked color
-</td>
+<td>pointer to a <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> structure that holds the picked color</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -138,6 +135,6 @@ Creates a new <a class="link" href="GimpPickButton.html" title="GimpPickButton">
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

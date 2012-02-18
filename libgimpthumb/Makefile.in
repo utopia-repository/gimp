@@ -92,7 +92,8 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_gimp_thumbnail_list_OBJECTS = gimp-thumbnail-list.$(OBJEXT)
 gimp_thumbnail_list_OBJECTS = $(am_gimp_thumbnail_list_OBJECTS)
 gimp_thumbnail_list_DEPENDENCIES =  \
-	libgimpthumb-$(GIMP_API_VERSION).la
+	libgimpthumb-$(GIMP_API_VERSION).la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -267,6 +268,7 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -358,6 +360,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
@@ -395,7 +398,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
@@ -462,7 +464,11 @@ libgimpthumb_2_0_la_LDFLAGS = \
 
 libgimpthumb_2_0_la_LIBADD = $(GDK_PIXBUF_LIBS) $(GLIB_LIBS) 
 gimp_thumbnail_list_SOURCES = gimp-thumbnail-list.c
-gimp_thumbnail_list_LDADD = libgimpthumb-$(GIMP_API_VERSION).la
+gimp_thumbnail_list_LDADD = \
+	libgimpthumb-$(GIMP_API_VERSION).la \
+	$(GDK_PIXBUF_LIBS) \
+	$(GLIB_LIBS)
+
 
 #
 # rules to generate built sources

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpPreviewArea</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpPixmap.html" title="GimpPixmap">
 <link rel="next" href="GimpPreview.html" title="GimpPreview">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,7 +32,7 @@
                   <a href="#GimpPreviewArea.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
-<div class="refentry" title="GimpPreviewArea">
+<div class="refentry">
 <a name="GimpPreviewArea"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,104 +41,104 @@
 </td>
 <td valign="top" align="right"><img src="gimp-preview-area.png"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="GimpPreviewArea.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpPreviewArea.html#GimpPreviewArea-struct" title="GimpPreviewArea">GimpPreviewArea</a>;
-<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpPreviewArea.html#gimp-preview-area-new" title="gimp_preview_area_new ()">gimp_preview_area_new</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpPreviewArea.html#gimp-preview-area-new" title="gimp_preview_area_new ()">gimp_preview_area_new</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-draw" title="gimp_preview_area_draw ()">gimp_preview_area_draw</a>              (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-fill" title="gimp_preview_area_fill ()">gimp_preview_area_fill</a>              (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> red</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> green</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> blue</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> blue</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-blend" title="gimp_preview_area_blend ()">gimp_preview_area_blend</a>             (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> opacity</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> opacity</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-mask" title="gimp_preview_area_mask ()">gimp_preview_area_mask</a>              (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *mask</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride_mask</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride_mask</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-set-offsets" title="gimp_preview_area_set_offsets ()">gimp_preview_area_set_offsets</a>       (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-set-colormap" title="gimp_preview_area_set_colormap ()">gimp_preview_area_set_colormap</a>      (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *colormap</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_colors</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *colormap</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_colors</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-set-max-size" title="gimp_preview_area_set_max_size ()">gimp_preview_area_set_max_size</a>      (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-menu-popup" title="gimp_preview_area_menu_popup ()">gimp_preview_area_menu_popup</a>        (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gdk/gdk-Event-Structures.html#GdkEventButton"><span class="type">GdkEventButton</span></a> *event</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gdk3/gdk-Event-Structures.html#GdkEventButton"><span class="type">GdkEventButton</span></a> *event</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="GimpPreviewArea.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
-               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
-                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkDrawingArea.html">GtkDrawingArea</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
+               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
+                     +----<a href="http://library.gnome.org/devel/gtk3/GtkDrawingArea.html">GtkDrawingArea</a>
                            +----GimpPreviewArea
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="GimpPreviewArea.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPreviewArea implements
- AtkImplementorIface and  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a>.</p>
+ AtkImplementorIface and  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>.</p>
 </div>
-<div class="refsect1" title="Properties">
+<div class="refsect1">
 <a name="GimpPreviewArea.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpPreviewArea.html#GimpPreviewArea--check-size" title='The "check-size" property'>check-size</a>"               <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"><span class="type">GimpCheckSize</span></a>         : Read / Write
-  "<a class="link" href="GimpPreviewArea.html#GimpPreviewArea--check-type" title='The "check-type" property'>check-type</a>"               <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"><span class="type">GimpCheckType</span></a>         : Read / Write
+  "<a class="link" href="GimpPreviewArea.html#GimpPreviewArea--check-size" title='The "check-size" property'>check-size</a>"               <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"><span class="type">GimpCheckSize</span></a>         : Read / Write
+  "<a class="link" href="GimpPreviewArea.html#GimpPreviewArea--check-type" title='The "check-type" property'>check-type</a>"               <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"><span class="type">GimpCheckType</span></a>         : Read / Write
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="GimpPreviewArea.description"></a><h2>Description</h2>
 <p>
 A general purpose preview widget which caches its pixel data.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="GimpPreviewArea.details"></a><h2>Details</h2>
-<div class="refsect2" title="GimpPreviewArea">
+<div class="refsect2">
 <a name="GimpPreviewArea-struct"></a><h3>GimpPreviewArea</h3>
 <pre class="programlisting">typedef struct _GimpPreviewArea GimpPreviewArea;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_new ()">
+<div class="refsect2">
 <a name="gimp-preview-area-new"></a><h3>gimp_preview_area_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_preview_area_new               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_preview_area_new               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
 </p>
@@ -146,24 +146,22 @@ Creates a new <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
-
-Since GIMP 2.2
-</td>
+<td>a new <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
+Since GIMP 2.2</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_draw ()">
+<div class="refsect2">
 <a name="gimp-preview-area-draw"></a><h3>gimp_preview_area_draw ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_draw              (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride</code></em>);</pre>
 <p>
 Draws <em class="parameter"><code>buf</code></em> on <em class="parameter"><code>area</code></em> and queues a redraw on the given rectangle.
 </p>
@@ -175,38 +173,32 @@ Since GIMP 2.2
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
-</td>
+<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>x offset in preview
-</td>
+<td>x offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>y offset in preview
-</td>
+<td>y offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>buffer width
-</td>
+<td>buffer width</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>buffer height
-</td>
+<td>buffer height</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>the <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> of <em class="parameter"><code>buf</code></em>
+<td>the <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> of <em class="parameter"><code>buf</code></em>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the preview pixel data.
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the preview pixel data.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride</code></em> :</span></p></td>
@@ -217,16 +209,16 @@ Since GIMP 2.2
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_fill ()">
+<div class="refsect2">
 <a name="gimp-preview-area-fill"></a><h3>gimp_preview_area_fill ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_fill              (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> red</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> green</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> blue</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> blue</code></em>);</pre>
 <p>
 Fills the given rectangle of <em class="parameter"><code>area</code></em> in the given color and queues a
 redraw.
@@ -239,61 +231,53 @@ Since GIMP 2.2
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
-</td>
+<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>x offset in preview
-</td>
+<td>x offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>y offset in preview
-</td>
+<td>y offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>width of the rectangle to fill
-</td>
+<td>width of the rectangle to fill</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>height of the rectangle to fill
-</td>
+<td>height of the rectangle to fill</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
-<td>red component of the fill color (0-255)
-</td>
+<td>red component of the fill color (0-255)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
-<td>green component of the fill color (0-255)
-</td>
+<td>green component of the fill color (0-255)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
-<td>red component of the fill color (0-255)
-</td>
+<td>red component of the fill color (0-255)</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_blend ()">
+<div class="refsect2">
 <a name="gimp-preview-area-blend"></a><h3>gimp_preview_area_blend ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_blend             (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> opacity</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> opacity</code></em>);</pre>
 <p>
 Composites <em class="parameter"><code>buf1</code></em> on <em class="parameter"><code>buf2</code></em> with the given <em class="parameter"><code>opacity</code></em>, draws the result
 to <em class="parameter"><code>area</code></em> and queues a redraw on the given rectangle.
@@ -306,39 +290,33 @@ Since GIMP 2.2
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
-</td>
+<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>x offset in preview
-</td>
+<td>x offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>y offset in preview
-</td>
+<td>y offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>buffer width
-</td>
+<td>buffer width</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>buffer height
-</td>
+<td>buffer height</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>the <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> of <em class="parameter"><code>buf1</code></em> and <em class="parameter"><code>buf2</code></em>
+<td>the <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> of <em class="parameter"><code>buf1</code></em> and <em class="parameter"><code>buf2</code></em>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf1</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
-             the lower layer
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
+the lower layer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride1</code></em> :</span></p></td>
@@ -347,9 +325,8 @@ Since GIMP 2.2
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf2</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
-             the upper layer
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
+the upper layer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride2</code></em> :</span></p></td>
@@ -358,27 +335,26 @@ Since GIMP 2.2
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
-<td>The opacity of the first layer.
-</td>
+<td>The opacity of the first layer.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_mask ()">
+<div class="refsect2">
 <a name="gimp-preview-area-mask"></a><h3>gimp_preview_area_mask ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_mask              (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *mask</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride_mask</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride1</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buf2</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride2</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rowstride_mask</code></em>);</pre>
 <p>
 Composites <em class="parameter"><code>buf1</code></em> on <em class="parameter"><code>buf2</code></em> with the given <em class="parameter"><code>mask</code></em>, draws the result on
 <em class="parameter"><code>area</code></em> and queues a redraw on the given rectangle.
@@ -391,39 +367,33 @@ Since GIMP 2.2
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.
-</td>
+<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>x offset in preview
-</td>
+<td>x offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>y offset in preview
-</td>
+<td>y offset in preview</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>buffer width
-</td>
+<td>buffer width</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>buffer height
-</td>
+<td>buffer height</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>the <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> of <em class="parameter"><code>buf1</code></em> and <em class="parameter"><code>buf2</code></em>
+<td>the <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> of <em class="parameter"><code>buf1</code></em> and <em class="parameter"><code>buf2</code></em>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf1</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
-                 the lower layer
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
+the lower layer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride1</code></em> :</span></p></td>
@@ -432,9 +402,8 @@ Since GIMP 2.2
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf2</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
-                 the upper layer
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the pixel data for
+the upper layer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride2</code></em> :</span></p></td>
@@ -443,24 +412,22 @@ Since GIMP 2.2
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mask</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer representing the mask of the second
-                 layer.
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer representing the mask of the second
+layer.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride_mask</code></em> :</span></p></td>
-<td>rowstride for the mask.
-</td>
+<td>rowstride for the mask.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_set_offsets ()">
+<div class="refsect2">
 <a name="gimp-preview-area-set-offsets"></a><h3>gimp_preview_area_set_offsets ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_set_offsets       (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
 <p>
 Sets the offsets of the previewed area. This information is used
 when drawing the checkerboard and to determine the dither offsets.
@@ -475,24 +442,22 @@ when drawing the checkerboard and to determine the dither offsets.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>horizontal offset
-</td>
+<td>horizontal offset</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
-<td>vertical offset
-</td>
+<td>vertical offset</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_set_colormap ()">
+<div class="refsect2">
 <a name="gimp-preview-area-set-colormap"></a><h3>gimp_preview_area_set_colormap ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_set_colormap      (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *colormap</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_colors</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *colormap</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_colors</code></em>);</pre>
 <p>
 Sets the colormap for the <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget. You need to
 call this function before you use <a class="link" href="GimpPreviewArea.html#gimp-preview-area-draw" title="gimp_preview_area_draw ()"><code class="function">gimp_preview_area_draw()</code></a> with
@@ -511,23 +476,21 @@ Since GIMP 2.2
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>colormap</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the colormap
-</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> buffer that contains the colormap</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>num_colors</code></em> :</span></p></td>
-<td>the number of colors in the colormap
-</td>
+<td>the number of colors in the colormap</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_set_max_size ()">
+<div class="refsect2">
 <a name="gimp-preview-area-set-max-size"></a><h3>gimp_preview_area_set_max_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_set_max_size      (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
 <p>
 Usually a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> fills the size that it is
 allocated. This funtion allows you to limit the preview area to a
@@ -539,28 +502,25 @@ preview will draw itself centered into the allocated area.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>area</code></em> :</span></p></td>
-<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget
-</td>
+<td>a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>the maximum width in pixels or -1 to unset the limit
-</td>
+<td>the maximum width in pixels or -1 to unset the limit</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>the maximum height in pixels or -1 to unset the limit
-</td>
+<td>the maximum height in pixels or -1 to unset the limit</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" title="gimp_preview_area_menu_popup ()">
+<div class="refsect2">
 <a name="gimp-preview-area-menu-popup"></a><h3>gimp_preview_area_menu_popup ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_preview_area_menu_popup        (<em class="parameter"><code><a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> *area</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gdk/gdk-Event-Structures.html#GdkEventButton"><span class="type">GdkEventButton</span></a> *event</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gdk3/gdk-Event-Structures.html#GdkEventButton"><span class="type">GdkEventButton</span></a> *event</code></em>);</pre>
 <p>
 Creates a popup menu that allows to configure the size and type of
 the checkerboard pattern that the <em class="parameter"><code>area</code></em> uses to visualize transparency.
@@ -575,7 +535,7 @@ the checkerboard pattern that the <em class="parameter"><code>area</code></em> u
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
-<td>the button event that causes the menu to popup or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>the button event that causes the menu to popup or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -583,18 +543,18 @@ the checkerboard pattern that the <em class="parameter"><code>area</code></em> u
 <p class="since">Since GIMP 2.2</p>
 </div>
 </div>
-<div class="refsect1" title="Property Details">
+<div class="refsect1">
 <a name="GimpPreviewArea.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" title='The "check-size" property'>
+<div class="refsect2">
 <a name="GimpPreviewArea--check-size"></a><h3>The <code class="literal">"check-size"</code> property</h3>
-<pre class="programlisting">  "check-size"               <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"><span class="type">GimpCheckSize</span></a>         : Read / Write</pre>
+<pre class="programlisting">  "check-size"               <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"><span class="type">GimpCheckSize</span></a>         : Read / Write</pre>
 <p></p>
 <p>Default value: GIMP_CHECK_SIZE_MEDIUM_CHECKS</p>
 </div>
 <hr>
-<div class="refsect2" title='The "check-type" property'>
+<div class="refsect2">
 <a name="GimpPreviewArea--check-type"></a><h3>The <code class="literal">"check-type"</code> property</h3>
-<pre class="programlisting">  "check-type"               <a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"><span class="type">GimpCheckType</span></a>         : Read / Write</pre>
+<pre class="programlisting">  "check-type"               <a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"><span class="type">GimpCheckType</span></a>         : Read / Write</pre>
 <p></p>
 <p>Default value: GIMP_CHECK_TYPE_GRAY_CHECKS</p>
 </div>
@@ -602,6 +562,6 @@ the checkerboard pattern that the <em class="parameter"><code>area</code></em> u
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

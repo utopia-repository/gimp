@@ -62,8 +62,8 @@
     <keyword type="enum" name="enum GimpTransformResize" link="libgimpbase-gimpbaseenums.html#GimpTransformResize"/>
     <keyword type="enum" name="enum GimpUserDirectory" link="libgimpbase-gimpbaseenums.html#GimpUserDirectory" deprecated=""/>
     <keyword type="enum" name="enum GimpVectorsStrokeType" link="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"/>
-    <keyword type="struct" name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
-    <keyword type="struct" name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
+    <keyword type="struct" name="struct GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
+    <keyword type="struct" name="struct GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
     <keyword type="function" name="gimp_type_set_translation_domain ()" link="libgimpbase-gimpbasetypes.html#gimp-type-set-translation-domain" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_type_get_translation_domain ()" link="libgimpbase-gimpbasetypes.html#gimp-type-get-translation-domain" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_enum_set_value_descriptions ()" link="libgimpbase-gimpbasetypes.html#gimp-enum-set-value-descriptions" since="GIMP 2.2"/>

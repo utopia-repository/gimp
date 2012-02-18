@@ -450,9 +450,9 @@
     <keyword type="struct" name="GimpColorScales" link="GimpColorScales.html#GimpColorScales-struct"/>
     <keyword type="struct" name="GimpColorSelect" link="GimpColorSelect.html#GimpColorSelect-struct"/>
     <keyword type="enum" name="enum GimpControllerEventType" link="GimpController.html#GimpControllerEventType"/>
-    <keyword type="struct" name="GimpControllerEventAny" link="GimpController.html#GimpControllerEventAny"/>
-    <keyword type="struct" name="GimpControllerEventTrigger" link="GimpController.html#GimpControllerEventTrigger"/>
-    <keyword type="struct" name="GimpControllerEventValue" link="GimpController.html#GimpControllerEventValue"/>
+    <keyword type="struct" name="struct GimpControllerEventAny" link="GimpController.html#GimpControllerEventAny"/>
+    <keyword type="struct" name="struct GimpControllerEventTrigger" link="GimpController.html#GimpControllerEventTrigger"/>
+    <keyword type="struct" name="struct GimpControllerEventValue" link="GimpController.html#GimpControllerEventValue"/>
     <keyword type="union" name="union GimpControllerEvent" link="GimpController.html#GimpControllerEvent"/>
     <keyword type="struct" name="GimpController" link="GimpController.html#GimpController-struct"/>
     <keyword type="function" name="gimp_controller_new ()" link="GimpController.html#gimp-controller-new"/>

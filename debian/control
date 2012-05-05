@@ -53,9 +53,9 @@ Build-Depends: debhelper (>= 8),
                python-gtk2-dev (>= 2.10.4),
                xsltproc
 #Build-Conflicts: libgimp2.0
-Vcs-Git: git://git.debian.org/git/collab-maint/gimp.git
-Vcs-Browser: http://git.debian.org/?p=collab-maint/gimp.git
-Homepage: http://www.gimp.org
+Vcs-Git: git://anonscm.debian.org/collab-maint/gimp.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/gimp.git
+Homepage: http://www.gimp.org/
 
 Package: libgimp2.0
 Architecture: any

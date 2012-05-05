@@ -1,6 +1,7 @@
 gimp (2.8.0-1) UNRELEASED; urgency=low
 
   * New upstream stable release (closes: #644182, #671399).
+    - “Create” menu item is now accessible via a mnemonic (closes: #610579).
   * Massive update of Build-Depends, to ensure all new features are
     enabled (bzip2 compression, JPEG 2000, Ghostscript, PDF export, GUdev,
     X Mourse Cursor and others), as per configure.ac.
@@ -70,7 +71,7 @@ gimp (2.6.11-4) unstable; urgency=low
     -Werror=format-security, which is now the default with dpkg 1.16.1 and
     cdbs
     (Closes: #643388)
-  * Improve gimp package description (Closes: #588898)
+  * Improve gimp package description (Closes: #178293, #588898)
   * Move ghostscript to Recommends since it doesn't have many dependencies
   * Update README.MIDI for gimp 2.6 (it's about time).
   * Switch to using dh_python2 (Closes: #641579)

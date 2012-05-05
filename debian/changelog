@@ -23,8 +23,9 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Rename all .files files to .install, and stop calling dh_movefiles.
   * Rename BUILDDIR to “builddir”, as “build” is now a real directory in
     the distribution.
+  * Add myself to Uploaders.
 
- -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 17:27:31 +0200
+ -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 17:41:01 +0200
 
 gimp (2.6.12-1) unstable; urgency=low
 

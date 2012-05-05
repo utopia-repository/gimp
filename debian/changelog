@@ -1,3 +1,9 @@
+gimp (2.8.0-1) UNRELEASED; urgency=low
+
+  * New upstream stable release (closes: #644182, #671399).
+
+ -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 12:50:49 +0200
+
 gimp (2.6.12-1) unstable; urgency=low
 
   * Imported Upstream version 2.6.12

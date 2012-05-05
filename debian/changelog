@@ -4,6 +4,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Massive update of Build-Depends, to ensure all new features are
     enabled (bzip2 compression, JPEG 2000, Ghostscript, PDF export, GUdev,
     X Mourse Cursor and others), as per configure.ac.
+  * Build depend on unversioned libpng-dev (closes: #662347).
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 12:50:49 +0200
 

@@ -28,6 +28,7 @@ DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
 # exclude this since we manually add the Recommends in debian/control
 DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller-midi.so
 DEB_DH_MAKESHLIBS_ARGS_gimp := -X/usr/lib/gimp/2.0/modules/
+DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 += -V -- c4
 
 clean::
 	rm -rf build

@@ -10,6 +10,8 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Update Vcs-* URLs.
   * Remove duplicate Section fields.
   * Remove gimp.preinst, it only handled upgrades from pre-lenny.
+  * Use an explicit "set -e" in other maint scripts, instead of using the
+    shebang.
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 12:50:49 +0200
 

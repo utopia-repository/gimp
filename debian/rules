@@ -42,7 +42,5 @@ common-install-impl::
 	# Remove all libtool .la files
 	find $(CURDIR)/debian/tmp/usr/lib -name "*.la" -delete
 
-	dh_movefiles
-
 binary-install/gimp::
 	dh_python2 -pgimp /usr/lib/gimp/2.0/python

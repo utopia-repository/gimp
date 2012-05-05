@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,8 +27,6 @@
 #include "base/tile-manager.h"
 #include "base/tile-manager-preview.h"
 #include "base/temp-buf.h"
-
-#include "paint-funcs/paint-funcs.h"
 
 #include "gimpbuffer.h"
 
@@ -211,7 +208,7 @@ gimp_buffer_get_description (GimpViewable  *viewable,
   GimpBuffer *buffer = GIMP_BUFFER (viewable);
 
   return g_strdup_printf ("%s (%d × %d)",
-                          GIMP_OBJECT (buffer)->name,
+                          gimp_object_get_name (buffer),
                           gimp_buffer_get_width (buffer),
                           gimp_buffer_get_height (buffer));
 }
@@ -219,44 +216,37 @@ gimp_buffer_get_description (GimpViewable  *viewable,
 GimpBuffer *
 gimp_buffer_new (TileManager *tiles,
                  const gchar *name,
+                 gint         offset_x,
+                 gint         offset_y,
                  gboolean     copy_pixels)
 {
   GimpBuffer *buffer;
-  gint        width, height;
 
   g_return_val_if_fail (tiles != NULL, NULL);
   g_return_val_if_fail (name != NULL, NULL);
-
-  width  = tile_manager_width (tiles);
-  height = tile_manager_height (tiles);
 
   buffer = g_object_new (GIMP_TYPE_BUFFER,
                          "name", name,
                          NULL);
 
   if (copy_pixels)
-    {
-      PixelRegion srcPR, destPR;
-
-      buffer->tiles = tile_manager_new (width, height,
-                                        tile_manager_bpp (tiles));
-
-      pixel_region_init (&srcPR, tiles, 0, 0, width, height, FALSE);
-      pixel_region_init (&destPR, buffer->tiles, 0, 0, width, height, TRUE);
-      copy_region (&srcPR, &destPR);
-    }
+    buffer->tiles = tile_manager_duplicate (tiles);
   else
-    {
-      buffer->tiles = tiles;
-    }
+    buffer->tiles = tile_manager_ref (tiles);
+
+  buffer->offset_x = offset_x;
+  buffer->offset_y = offset_y;
 
   return buffer;
 }
 
 GimpBuffer *
 gimp_buffer_new_from_pixbuf (GdkPixbuf   *pixbuf,
-                             const gchar *name)
+                             const gchar *name,
+                             gint         offset_x,
+                             gint         offset_y)
 {
+  GimpBuffer  *buffer;
   TileManager *tiles;
   guchar      *pixels;
   PixelRegion  destPR;
@@ -285,7 +275,11 @@ gimp_buffer_new_from_pixbuf (GdkPixbuf   *pixbuf,
       pixel_region_set_row (&destPR, 0, y, width, pixels);
    }
 
-  return gimp_buffer_new (tiles, name, FALSE);
+  buffer = gimp_buffer_new (tiles, name, offset_x, offset_y, FALSE);
+
+  tile_manager_unref (tiles);
+
+  return buffer;
 }
 
 gint

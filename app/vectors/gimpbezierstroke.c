@@ -4,9 +4,9 @@
  * gimpbezierstroke.c
  * Copyright (C) 2002 Simon Budig  <simon@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,7 +27,9 @@
 
 #include "vectors-types.h"
 
+#include "core/gimpbezierdesc.h"
 #include "core/gimpcoords.h"
+#include "core/gimpcoords-interpolate.h"
 
 #include "gimpanchor.h"
 #include "gimpbezierstroke.h"
@@ -140,22 +141,6 @@ static void gimp_bezier_stroke_finalize    (GObject               *object);
 static GList * gimp_bezier_stroke_get_anchor_listitem
                                            (GList                 *list);
 
-static void gimp_bezier_coords_subdivide   (const GimpCoords      *beziercoords,
-                                            const gdouble          precision,
-                                            GArray               **ret_coords,
-                                            GArray               **ret_params);
-static void gimp_bezier_coords_subdivide2  (const GimpCoords      *beziercoords,
-                                            const gdouble          start_t,
-                                            const gdouble          end_t,
-                                            const gdouble          precision,
-                                            GArray               **ret_coords,
-                                            GArray               **ret_params,
-                                            gint                   depth);
-
-static gboolean gimp_bezier_coords_is_straight
-                                           (const GimpCoords      *beziercoords,
-                                            const gdouble          precision);
-
 
 G_DEFINE_TYPE (GimpBezierStroke, gimp_bezier_stroke, GIMP_TYPE_STROKE)
 
@@ -217,18 +202,15 @@ gimp_bezier_stroke_new_from_coords (const GimpCoords *coords,
                                     gint              n_coords,
                                     gboolean          closed)
 {
-  GimpBezierStroke *bezier_stroke;
-  GimpStroke       *stroke;
-  GimpAnchor       *last_anchor;
-  gint              count;
+  GimpStroke *stroke;
+  GimpAnchor *last_anchor;
+  gint        count;
 
   g_return_val_if_fail (coords != NULL, NULL);
   g_return_val_if_fail (n_coords >= 3, NULL);
   g_return_val_if_fail ((n_coords % 3) == 0, NULL);
 
   stroke = gimp_bezier_stroke_new ();
-
-  bezier_stroke = GIMP_BEZIER_STROKE (stroke);
 
   last_anchor = NULL;
 
@@ -691,7 +673,11 @@ gimp_bezier_stroke_segment_nearest_point_get (const GimpCoords  *beziercoords,
   gimp_coords_difference (&beziercoords[1], &beziercoords[0], &point1);
   gimp_coords_difference (&beziercoords[3], &beziercoords[2], &point2);
 
-  if (!depth || (gimp_bezier_coords_is_straight (beziercoords, precision)
+  if (!depth || (gimp_coords_bezier_is_straight (beziercoords[0],
+                                                 beziercoords[1],
+                                                 beziercoords[2],
+                                                 beziercoords[3],
+                                                 precision)
                  && gimp_coords_length_squared (&point1) < precision
                  && gimp_coords_length_squared (&point2) < precision))
     {
@@ -924,8 +910,12 @@ gimp_bezier_stroke_segment_nearest_tangent_get (const GimpCoords *beziercoords,
   g_printerr ("(%.2f, %.2f)-(%.2f,%.2f): ", coord1->x, coord1->y,
               coord2->x, coord2->y);
 
-  gimp_bezier_coords_subdivide (beziercoords, precision,
-                                &ret_coords, &ret_params);
+  gimp_coords_interpolate_bezier (beziercoords[0],
+                                  beziercoords[1],
+                                  beziercoords[2],
+                                  beziercoords[3],
+                                  precision,
+                                  &ret_coords, &ret_params);
 
   g_return_val_if_fail (ret_coords->len == ret_params->len, -1.0);
 
@@ -997,11 +987,8 @@ static gboolean
 gimp_bezier_stroke_is_extendable (GimpStroke *stroke,
                                   GimpAnchor *neighbor)
 {
-  GimpBezierStroke *bezier_stroke;
-  GList            *listneighbor;
-  gint              loose_end;
-
-  bezier_stroke = GIMP_BEZIER_STROKE (stroke);
+  GList *listneighbor;
+  gint   loose_end;
 
   if (stroke->closed)
     return FALSE;
@@ -1065,13 +1052,11 @@ gimp_bezier_stroke_is_extendable (GimpStroke *stroke,
                   listneighbor->prev->prev == NULL)
                 {
                   loose_end = -1;
-                  listneighbor = listneighbor->prev;
                 }
               else if (listneighbor->next &&
                        listneighbor->next->next == NULL)
                 {
                   loose_end = 1;
-                  listneighbor = listneighbor->next;
                 }
             }
         }
@@ -1086,12 +1071,9 @@ gimp_bezier_stroke_extend (GimpStroke           *stroke,
                            GimpAnchor           *neighbor,
                            GimpVectorExtendMode  extend_mode)
 {
-  GimpAnchor       *anchor = NULL;
-  GimpBezierStroke *bezier_stroke;
-  GList            *listneighbor;
-  gint              loose_end, control_count;
-
-  bezier_stroke = GIMP_BEZIER_STROKE (stroke);
+  GimpAnchor *anchor = NULL;
+  GList      *listneighbor;
+  gint        loose_end, control_count;
 
   if (stroke->anchors == NULL)
     {
@@ -1543,11 +1525,8 @@ gimp_bezier_stroke_make_bezier (const GimpStroke *stroke)
     g_printerr ("miscalculated path cmd length! (%d vs. %d)\n",
                 cmd_array->len, num_cmds);
 
-  bezdesc = g_new (GimpBezierDesc, 1);
-  bezdesc->status = CAIRO_STATUS_SUCCESS;
-  bezdesc->data = (cairo_path_data_t *) cmd_array->data;
-  bezdesc->num_data = cmd_array->len;
-
+  bezdesc = gimp_bezier_desc_new ((cairo_path_data_t *) cmd_array->data,
+                                  cmd_array->len);
   g_array_free (points, TRUE);
   g_array_free (cmd_array, FALSE);
 
@@ -1591,8 +1570,12 @@ gimp_bezier_stroke_interpolate (const GimpStroke  *stroke,
 
       if (count == 4)
         {
-          gimp_bezier_coords_subdivide (segmentcoords, precision,
-                                        &ret_coords, NULL);
+          gimp_coords_interpolate_bezier (segmentcoords[0],
+                                          segmentcoords[1],
+                                          segmentcoords[2],
+                                          segmentcoords[3],
+                                          precision,
+                                          &ret_coords, NULL);
           segmentcoords[0] = segmentcoords[3];
           count = 1;
           need_endpoint = TRUE;
@@ -1612,8 +1595,12 @@ gimp_bezier_stroke_interpolate (const GimpStroke  *stroke,
       if (anchorlist)
         segmentcoords[3] = GIMP_ANCHOR (anchorlist->data)->position;
 
-      gimp_bezier_coords_subdivide (segmentcoords, precision,
-                                    &ret_coords, NULL);
+      gimp_coords_interpolate_bezier (segmentcoords[0],
+                                      segmentcoords[1],
+                                      segmentcoords[2],
+                                      segmentcoords[3],
+                                      precision,
+                                      &ret_coords, NULL);
       need_endpoint = TRUE;
 
     }
@@ -2109,150 +2096,4 @@ gimp_bezier_stroke_get_anchor_listitem (GList *list)
   g_return_val_if_fail (/* bezier stroke inconsistent! */ FALSE, NULL);
 
   return NULL;
-}
-
-
-/*
- * a helper function that determines if a bezier segment is "straight
- * enough" to be approximated by a line.
- *
- * To be more exact, it also checks for the control points to be distributed
- * evenly along the line. This makes it easier to reconstruct parameters for
- * a given point along the segment.
- *
- * Needs four GimpCoords in an array.
- */
-
-static gboolean
-gimp_bezier_coords_is_straight (const GimpCoords *beziercoords,
-                                gdouble           precision)
-{
-  GimpCoords pt1, pt2;
-
-  /* calculate the "ideal" positions for the control points */
-
-  gimp_coords_mix (2.0 / 3.0, &(beziercoords[0]),
-                   1.0 / 3.0, &(beziercoords[3]),
-                   &pt1);
-  gimp_coords_mix (1.0 / 3.0, &(beziercoords[0]),
-                   2.0 / 3.0, &(beziercoords[3]),
-                   &pt2);
-
-  /* calculate the deviation of the actual control points */
-
-  return (gimp_coords_manhattan_dist (&(beziercoords[1]), &pt1) < precision &&
-          gimp_coords_manhattan_dist (&(beziercoords[2]), &pt2) < precision);
-}
-
-
-/* local helper functions for bezier subdivision */
-
-static void
-gimp_bezier_coords_subdivide (const GimpCoords  *beziercoords,
-                              const gdouble      precision,
-                              GArray           **ret_coords,
-                              GArray           **ret_params)
-{
-  gimp_bezier_coords_subdivide2 (beziercoords, 0.0, 1.0,
-                                 precision, ret_coords, ret_params, 10);
-}
-
-
-static void
-gimp_bezier_coords_subdivide2 (const GimpCoords *beziercoords,
-                               const gdouble     start_t,
-                               const gdouble     end_t,
-                               const gdouble     precision,
-                               GArray          **ret_coords,
-                               GArray          **ret_params,
-                               gint              depth)
-{
-  /*
-   * beziercoords has to contain four GimpCoords with the four control points
-   * of the bezier segment. We subdivide it at the parameter 0.5.
-   */
-
-  GimpCoords subdivided[8];
-  gdouble    middle_t = (start_t + end_t) / 2;
-
-  subdivided[0] = beziercoords[0];
-  subdivided[6] = beziercoords[3];
-
-  /* if (!depth) g_printerr ("Hit recursion depth limit!\n"); */
-
-  gimp_coords_average (&(beziercoords[0]), &(beziercoords[1]),
-                       &(subdivided[1]));
-
-  gimp_coords_average (&(beziercoords[1]), &(beziercoords[2]),
-                       &(subdivided[7]));
-
-  gimp_coords_average (&(beziercoords[2]), &(beziercoords[3]),
-                       &(subdivided[5]));
-
-  gimp_coords_average (&(subdivided[1]), &(subdivided[7]),
-                       &(subdivided[2]));
-
-  gimp_coords_average (&(subdivided[7]), &(subdivided[5]),
-                       &(subdivided[4]));
-
-  gimp_coords_average (&(subdivided[2]), &(subdivided[4]),
-                       &(subdivided[3]));
-
-  /*
-   * We now have the coordinates of the two bezier segments in
-   * subdivided [0-3] and subdivided [3-6]
-   */
-
-  /*
-   * Here we need to check, if we have sufficiently subdivided, i.e.
-   * if the stroke is sufficiently close to a straight line.
-   */
-
-  if (!depth || gimp_bezier_coords_is_straight (&(subdivided[0]),
-                                                precision)) /* 1st half */
-    {
-      *ret_coords = g_array_append_vals (*ret_coords, &(subdivided[0]), 3);
-
-      if (ret_params)
-        {
-          gdouble params[3];
-
-          params[0] = start_t;
-          params[1] = (2 * start_t + middle_t) / 3;
-          params[2] = (start_t + 2 * middle_t) / 3;
-
-          *ret_params = g_array_append_vals (*ret_params, &(params[0]), 3);
-        }
-    }
-  else
-    {
-      gimp_bezier_coords_subdivide2 (&(subdivided[0]),
-                                     start_t, (start_t + end_t) / 2,
-                                     precision,
-                                     ret_coords, ret_params, depth-1);
-    }
-
-  if (!depth || gimp_bezier_coords_is_straight (&(subdivided[3]),
-                                                precision)) /* 2nd half */
-    {
-      *ret_coords = g_array_append_vals (*ret_coords, &(subdivided[3]), 3);
-
-      if (ret_params)
-        {
-          gdouble params[3];
-
-          params[0] = middle_t;
-          params[1] = (2 * middle_t + end_t) / 3;
-          params[2] = (middle_t + 2 * end_t) / 3;
-
-          *ret_params = g_array_append_vals (*ret_params, &(params[0]), 3);
-        }
-    }
-  else
-    {
-      gimp_bezier_coords_subdivide2 (&(subdivided[3]),
-                                     (start_t + end_t) / 2, end_t,
-                                     precision,
-                                     ret_coords, ret_params, depth-1);
-    }
 }

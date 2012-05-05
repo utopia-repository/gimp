@@ -5,10 +5,10 @@
  * Copyright (C) 2000 Michael Natterer <mitch@gimp.org>,
  *               2008 Bill Skaggs <weskaggs@primate.ucdavis.edu>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,10 +16,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_SCALE_ENTRY_H__
 #define __GIMP_SCALE_ENTRY_H__
@@ -27,17 +30,49 @@
 G_BEGIN_DECLS
 
 
+/**
+ * GIMP_SCALE_ENTRY_LABEL:
+ * @adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+ *
+ * Returns: the scale_entry's #GtkLabel.
+ **/
 #define GIMP_SCALE_ENTRY_LABEL(adj) \
         (g_object_get_data (G_OBJECT (adj), "label"))
 
+/**
+ * GIMP_SCALE_ENTRY_SCALE:
+ * @adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+ *
+ * Returns: the scale_entry's #GtkHScale.
+ **/
 #define GIMP_SCALE_ENTRY_SCALE(adj) \
         (g_object_get_data (G_OBJECT (adj), "scale"))
-#define GIMP_SCALE_ENTRY_SCALE_ADJ(adj) \
+
+/**
+ * GIMP_SCALE_ENTRY_SCALE_ADJ:
+ * @adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+ *
+ * Returns: the #GtkAdjustment of the scale_entry's #GtkHScale.
+ **/
+#define GIMP_SCALE_ENTRY_SCALE_ADJ(adj)     \
         gtk_range_get_adjustment \
         (GTK_RANGE (g_object_get_data (G_OBJECT (adj), "scale")))
 
+/**
+ * GIMP_SCALE_ENTRY_SPINBUTTON:
+ * @adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+ *
+ * Returns: the scale_entry's #GtkSpinButton.
+ **/
 #define GIMP_SCALE_ENTRY_SPINBUTTON(adj) \
         (g_object_get_data (G_OBJECT (adj), "spinbutton"))
+
+/**
+ * GIMP_SCALE_ENTRY_SPINBUTTON_ADJ:
+ * @adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+ *
+ * Returns: the #GtkAdjustment of the scale_entry's #GtkSpinButton.
+ **/
 #define GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj) \
         gtk_spin_button_get_adjustment \
         (GTK_SPIN_BUTTON (g_object_get_data (G_OBJECT (adj), "spinbutton")))

@@ -4,9 +4,9 @@
  * gimpsizebox.c
  * Copyright (C) 2004 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -67,28 +66,24 @@ struct _GimpSizeBoxPrivate
 };
 
 
-static GObject * gimp_size_box_constructor   (GType                  type,
-                                              guint                  n_params,
-                                              GObjectConstructParam *params);
+static void   gimp_size_box_constructed       (GObject         *object);
+static void   gimp_size_box_dispose           (GObject         *object);
+static void   gimp_size_box_set_property      (GObject         *object,
+                                               guint            property_id,
+                                               const GValue    *value,
+                                               GParamSpec      *pspec);
+static void   gimp_size_box_get_property      (GObject         *object,
+                                               guint            property_id,
+                                               GValue          *value,
+                                               GParamSpec      *pspec);
 
-static void      gimp_size_box_set_property      (GObject         *object,
-                                                  guint            property_id,
-                                                  const GValue    *value,
-                                                  GParamSpec      *pspec);
-static void      gimp_size_box_get_property      (GObject         *object,
-                                                  guint            property_id,
-                                                  GValue          *value,
-                                                  GParamSpec      *pspec);
-
-static void      gimp_size_box_destroy           (GtkObject       *object);
-
-static void      gimp_size_box_update_size       (GimpSizeBox     *box);
-static void      gimp_size_box_update_resolution (GimpSizeBox     *box);
-static void      gimp_size_box_chain_toggled     (GimpChainButton *button,
-                                                  GimpSizeBox     *box);
+static void   gimp_size_box_update_size       (GimpSizeBox     *box);
+static void   gimp_size_box_update_resolution (GimpSizeBox     *box);
+static void   gimp_size_box_chain_toggled     (GimpChainButton *button,
+                                               GimpSizeBox     *box);
 
 
-G_DEFINE_TYPE (GimpSizeBox, gimp_size_box, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpSizeBox, gimp_size_box, GTK_TYPE_BOX)
 
 #define parent_class gimp_size_box_parent_class
 
@@ -96,14 +91,12 @@ G_DEFINE_TYPE (GimpSizeBox, gimp_size_box, GTK_TYPE_VBOX)
 static void
 gimp_size_box_class_init (GimpSizeBoxClass *klass)
 {
-  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_size_box_constructor;
+  object_class->constructed  = gimp_size_box_constructed;
+  object_class->dispose      = gimp_size_box_dispose;
   object_class->set_property = gimp_size_box_set_property;
   object_class->get_property = gimp_size_box_get_property;
-
-  gtk_object_class->destroy  = gimp_size_box_destroy;
 
   g_type_class_add_private (object_class, sizeof (GimpSizeBoxPrivate));
 
@@ -166,19 +159,19 @@ gimp_size_box_class_init (GimpSizeBoxClass *klass)
 static void
 gimp_size_box_init (GimpSizeBox *box)
 {
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
+                                  GTK_ORIENTATION_VERTICAL);
+
   gtk_box_set_spacing (GTK_BOX (box), 6);
 
   box->size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 }
 
-static GObject *
-gimp_size_box_constructor (GType                  type,
-                           guint                  n_params,
-                           GObjectConstructParam *params)
+static void
+gimp_size_box_constructed (GObject *object)
 {
-  GObject            *object;
-  GimpSizeBox        *box;
-  GimpSizeBoxPrivate *priv;
+  GimpSizeBox        *box  = GIMP_SIZE_BOX (object);
+  GimpSizeBoxPrivate *priv = GIMP_SIZE_BOX_GET_PRIVATE (box);
   GtkWidget          *vbox;
   GtkWidget          *entry;
   GtkWidget          *hbox;
@@ -186,12 +179,10 @@ gimp_size_box_constructor (GType                  type,
   GList              *children;
   GList              *list;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  box = GIMP_SIZE_BOX (object);
-  priv = GIMP_SIZE_BOX_GET_PRIVATE (box);
-
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -237,7 +228,7 @@ gimp_size_box_constructor (GType                  type,
       gtk_size_group_add_widget (box->size_group, list->data);
   g_list_free (children);
 
-  vbox = gtk_vbox_new (2, FALSE);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_table_attach_defaults (GTK_TABLE (entry), vbox, 1, 3, 2, 3);
   gtk_widget_show (vbox);
 
@@ -253,7 +244,7 @@ gimp_size_box_constructor (GType                  type,
 
   if (box->edit_resolution)
     {
-      hbox = gtk_hbox_new (FALSE, 0);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
 
@@ -299,8 +290,20 @@ gimp_size_box_constructor (GType                  type,
 
   gimp_size_box_update_size (box);
   gimp_size_box_update_resolution (box);
+}
 
-  return object;
+static void
+gimp_size_box_dispose (GObject *object)
+{
+  GimpSizeBox *box = GIMP_SIZE_BOX (object);
+
+  if (box->size_group)
+    {
+      g_object_unref (box->size_group);
+      box->size_group = NULL;
+    }
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -412,20 +415,6 @@ gimp_size_box_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-static void
-gimp_size_box_destroy (GtkObject *object)
-{
-  GimpSizeBox *box = GIMP_SIZE_BOX (object);
-
-  if (box->size_group)
-    {
-      g_object_unref (box->size_group);
-      box->size_group = NULL;
-    }
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 static void

@@ -11,9 +11,9 @@
  *    ripple   (Copyright (C) 1997 Brian Degenhardt) and
  *    whirl    (Copyright (C) 1997 Federico Mena Quintero).
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,8 +22,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ****************************************************************************/
 
@@ -116,7 +115,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               },
   };
@@ -213,7 +212,7 @@ blur_prepare_row (GimpPixelRgn *pixel_rgn,
 {
   gint b;
 
-  y = CLAMP (y, 0, (gint)pixel_rgn->h - 1);
+  y = CLAMP (y, 0, pixel_rgn->h - 1);
 
   gimp_pixel_rgn_get_row (pixel_rgn, data, x, y, w);
 
@@ -251,7 +250,13 @@ blur (GimpDrawable *drawable)
   gint          ind;
   gboolean      has_alpha;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return;
+
+  x2 = x1 + width;
+  y2 = y1 + height;
+
   /*
    *  Get the size of the input image. (This will/must be the same
    *  as the size of the output image.  Also get alpha info.
@@ -295,29 +300,29 @@ blur (GimpDrawable *drawable)
       d = dest;
       ind = 0;
       for (col = 0; col < (x2 - x1) * bytes; col++)
-	{
-	  ind++;
-	  if (ind == bytes || !has_alpha)
-	    {
-	      /*
-	       *  If no alpha channel,
-	       *   or if there is one and this is it...
-	       */
-	      *d++ = ((gint) pr[col - bytes] + (gint) pr[col] +
-		      (gint) pr[col + bytes] +
-		      (gint) cr[col - bytes] + (gint) cr[col] +
-		      (gint) cr[col + bytes] +
-		      (gint) nr[col - bytes] + (gint) nr[col] +
-		      (gint) nr[col + bytes] + 4) / 9;
-	      ind = 0;
-	    }
-	  else
-	    {
-	      /*
-	       *  otherwise we have an alpha channel,
-	       *   but this is a color channel
-	       */
-	      *d++ = ROUND(
+        {
+          ind++;
+          if (ind == bytes || !has_alpha)
+            {
+              /*
+               *  If no alpha channel,
+               *   or if there is one and this is it...
+               */
+              *d++ = ((gint) pr[col - bytes] + (gint) pr[col] +
+                      (gint) pr[col + bytes] +
+                      (gint) cr[col - bytes] + (gint) cr[col] +
+                      (gint) cr[col + bytes] +
+                      (gint) nr[col - bytes] + (gint) nr[col] +
+                      (gint) nr[col + bytes] + 4) / 9;
+              ind = 0;
+            }
+          else
+            {
+              /*
+               *  otherwise we have an alpha channel,
+               *   but this is a color channel
+               */
+              *d++ = ROUND(
                            ((gdouble) (pr[col - bytes] * pr[col - ind])
                             + (gdouble) (pr[col] * pr[col + bytes - ind])
                             + (gdouble) (pr[col + bytes] * pr[col + 2*bytes - ind])
@@ -336,8 +341,8 @@ blur (GimpDrawable *drawable)
                               + (gdouble) nr[col - ind]
                               + (gdouble) nr[col + bytes - ind]
                               + (gdouble) nr[col + 2*bytes - ind]));
-	    }
-	}
+            }
+        }
 
       /*
        *  Save the modified row, shuffle the row pointers, and every
@@ -351,7 +356,7 @@ blur (GimpDrawable *drawable)
       nr = tmp;
 
       if ((row % 32) == 0)
-	gimp_progress_update ((gdouble) row / (gdouble) (y2 - y1));
+        gimp_progress_update ((gdouble) row / (gdouble) (y2 - y1));
     }
 
   gimp_progress_update (1.0);

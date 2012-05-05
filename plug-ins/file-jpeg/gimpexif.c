@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -26,14 +25,14 @@
 
 #include <libgimp/gimp.h>
 
-#ifdef HAVE_EXIF
-
 #include <libexif/exif-data.h>
 #include <libexif/exif-content.h>
 #include <libexif/exif-utils.h>
 
 #include "gimpexif.h"
 
+
+#define EXIF_HEADER_SIZE 8
 
 /*
  * gimp_metadata_store_exif:
@@ -51,6 +50,8 @@
 void gimp_metadata_store_exif    (gint32    image_ID,
                                   ExifData *exif_data)
 {
+  GimpParam    *return_vals;
+  gint          nreturn_vals;
   GimpParasite *parasite      = NULL;
   guchar       *exif_buf      = NULL;
   guint         exif_buf_len  = 0;
@@ -62,9 +63,17 @@ void gimp_metadata_store_exif    (gint32    image_ID,
       parasite = gimp_parasite_new ("exif-data",
                                     GIMP_PARASITE_PERSISTENT,
                                     exif_buf_len, exif_buf);
-      gimp_image_parasite_attach (image_ID, parasite);
+      gimp_image_attach_parasite (image_ID, parasite);
       gimp_parasite_free (parasite);
     }
+  return_vals = gimp_run_procedure ("plug-in-metadata-decode-exif",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE,      image_ID,
+                                    GIMP_PDB_INT32,      exif_data->size,
+                                    GIMP_PDB_INT8ARRAY,  exif_data,
+                                    GIMP_PDB_END);
+  if (return_vals[0].data.d_status != GIMP_PDB_SUCCESS)
+    g_warning ("JPEG Exif -> XMP Merge failed");
 
   free (exif_buf);
 }
@@ -87,8 +96,8 @@ ExifData *
 gimp_metadata_generate_exif (gint32 image_ID)
 {
   ExifData     *exif_data;
-  GimpParasite *parasite   = gimp_image_parasite_find (image_ID,
-                                                       "exif-data");
+  GimpParasite *parasite = gimp_image_get_parasite (image_ID, "exif-data");
+
   if (parasite)
     {
       exif_data = exif_data_new_from_data (gimp_parasite_data (parasite),
@@ -149,6 +158,3 @@ gimp_exif_data_remove_entry (ExifData *exif_data,
   if (entry)
     exif_content_remove_entry (exif_data->ifd[ifd], entry);
 }
-
-
-#endif /* HAVE_EXIF */

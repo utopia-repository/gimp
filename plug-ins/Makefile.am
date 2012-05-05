@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = \
-	makefile.msc
-
-
-if BUILD_HELP_BROWSER
+if HAVE_WEBKIT
 help_browser = help-browser
 endif
 
@@ -29,6 +25,12 @@ if HAVE_MAC_TWAIN
 twain = twain
 endif
 
+if HAVE_Z
+if HAVE_BZIP2
+file_compressor = file-compressor
+endif
+endif
+
 if HAVE_PNG
 file_ico = file-ico
 endif
@@ -47,12 +49,17 @@ if BUILD_XJT
 file_xjt = file-xjt
 endif
 
+if HAVE_LIBEXIF
+metadata = metadata
+endif
+
 
 SUBDIRS = \
 	$(script_fu)		\
 	$(pygimp)		\
 	color-rotate		\
 	file-bmp		\
+	$(file_compressor)	\
 	file-faxg3		\
 	file-fits		\
 	file-fli		\
@@ -74,10 +81,11 @@ SUBDIRS = \
 	lighting		\
 	map-object		\
 	maze			\
-	metadata		\
+	$(metadata)		\
 	pagecurl		\
 	$(print)		\
 	selection-to-path	\
 	$(twain)		\
+	ui			\
 	$(win_snap)		\
 	common

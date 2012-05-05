@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -37,10 +37,10 @@
 #include "composite/gimp-composite.h"
 
 #include "paint-funcs.h"
+#include "paint-funcs-utils.h"
 #include "paint-funcs-generic.h"
 
 
-#define RANDOM_SEED   314159265
 #define EPSILON       0.0001
 
 #define LOG_1_255     -5.541263545    /*  log (1.0 / 255.0)  */
@@ -87,39 +87,6 @@ static const LayerMode layer_modes[] =
   { TRUE,  FALSE, TRUE,  },  /*  GIMP_ERASE_MODE         */
   { TRUE,  TRUE,  TRUE,  },  /*  GIMP_REPLACE_MODE       */
   { TRUE,  TRUE,  FALSE, }   /*  GIMP_ANTI_ERASE_MODE    */
-};
-
-
-typedef void (* LayerModeFunc) (struct apply_layer_mode_struct *);
-
-static const LayerModeFunc layer_mode_funcs[] =
-{
-  layer_normal_mode,
-  layer_dissolve_mode,
-  layer_behind_mode,
-  layer_multiply_mode,
-  layer_screen_mode,
-  layer_overlay_mode,
-  layer_difference_mode,
-  layer_addition_mode,
-  layer_subtract_mode,
-  layer_darken_only_mode,
-  layer_lighten_only_mode,
-  layer_hue_mode,
-  layer_saturation_mode,
-  layer_color_mode,
-  layer_value_mode,
-  layer_divide_mode,
-  layer_dodge_mode,
-  layer_burn_mode,
-  layer_hardlight_mode,
-  layer_softlight_mode,
-  layer_grain_extract_mode,
-  layer_grain_merge_mode,
-  layer_color_erase_mode,
-  layer_erase_mode,
-  layer_replace_mode,
-  layer_anti_erase_mode
 };
 
 
@@ -248,22 +215,6 @@ cubic (gdouble dx,
 void
 paint_funcs_setup (void)
 {
-  GRand *gr;
-  gint   i;
-
-  /*  generate a table of random seeds  */
-  gr = g_rand_new_with_seed (RANDOM_SEED);
-
-  for (i = 0; i < RANDOM_TABLE_SIZE; i++)
-    random_table[i] = g_rand_int (gr);
-
-  for (i = 0; i < 256; i++)
-    add_lut[i] = i;
-
-  for (i = 256; i <= 510; i++)
-    add_lut[i] = 255;
-
-  g_rand_free (gr);
 }
 
 void
@@ -668,40 +619,6 @@ combine_inten_and_inten_a_pixels (const guchar   *src1,
     }
 }
 
-/*orig #define alphify(src2_alpha,new_alpha) \
-        if (new_alpha == 0 || src2_alpha == 0)                                                        \
-          {                                                                                        \
-            for (b = 0; b < alpha; b++)                                                                \
-              dest[b] = src1 [b];                                                                \
-          }                                                                                        \
-        else if (src2_alpha == new_alpha){                                                        \
-          for (b = 0; b < alpha; b++)                                                                \
-            dest [b] = affect [b] ? src2 [b] : src1 [b];                                        \
-        } else {                                                                                \
-          ratio = (float) src2_alpha / new_alpha;                                                \
-          compl_ratio = 1.0 - ratio;                                                                \
-                                                                                                  \
-          for (b = 0; b < alpha; b++)                                                                \
-            dest[b] = affect[b] ?                                                                \
-              (guchar) (src2[b] * ratio + src1[b] * compl_ratio + EPSILON) : src1[b];        \
-        }*/
-
-/*shortened #define alphify(src2_alpha,new_alpha) \
-        if (src2_alpha != 0 && new_alpha != 0)                                                        \
-          {                                                                                        \
-            if (src2_alpha == new_alpha){                                                        \
-              for (b = 0; b < alpha; b++)                                                        \
-              dest [b] = affect [b] ? src2 [b] : src1 [b];                                        \
-            } else {                                                                                \
-              ratio = (float) src2_alpha / new_alpha;                                                \
-              compl_ratio = 1.0 - ratio;                                                        \
-                                                                                                  \
-              for (b = 0; b < alpha; b++)                                                        \
-                dest[b] = affect[b] ?                                                                \
-                  (guchar) (src2[b] * ratio + src1[b] * compl_ratio + EPSILON) : src1[b];\
-            }                                                                                   \
-          }*/
-
 #define alphify(src2_alpha,new_alpha) \
         if (src2_alpha != 0 && new_alpha != 0)                                                        \
           {                                                                                        \
@@ -719,26 +636,6 @@ combine_inten_and_inten_a_pixels (const guchar   *src1,
                    } while (b); \
             }    \
           }
-
-/*special #define alphify4(src2_alpha,new_alpha) \
-        if (src2_alpha != 0 && new_alpha != 0)                                                        \
-          {                                                                                        \
-            if (src2_alpha == new_alpha){                                                        \
-              dest [0] = affect [0] ? src2 [0] : src1 [0];                                        \
-              dest [1] = affect [1] ? src2 [1] : src1 [1];                                        \
-              dest [2] = affect [2] ? src2 [2] : src1 [2];                                        \
-            } else {                                                                                \
-              ratio = (float) src2_alpha / new_alpha;                                                \
-              compl_ratio = 1.0 - ratio;                                                        \
-                                                                                                  \
-              dest[0] = affect[0] ?                                                                \
-                (guchar) (src2[0] * ratio + src1[0] * compl_ratio + EPSILON) : src1[0];  \
-              dest[1] = affect[1] ?                                                                \
-                (guchar) (src2[1] * ratio + src1[1] * compl_ratio + EPSILON) : src1[1];  \
-              dest[2] = affect[2] ?                                                                \
-                (guchar) (src2[2] * ratio + src1[2] * compl_ratio + EPSILON) : src1[2];  \
-            }                                                                                   \
-          }*/
 
 void
 combine_inten_a_and_inten_pixels (const guchar   *src1,
@@ -1667,9 +1564,9 @@ anti_erase_indexed_pixels (const guchar   *src1,
 }
 
 
-static inline void
-color_erase_helper (GimpRGB       *src,
-                    const GimpRGB *color)
+void
+paint_funcs_color_erase_helper (GimpRGB       *src,
+                                const GimpRGB *color)
 {
   GimpRGB alpha;
 
@@ -1760,7 +1657,7 @@ color_erase_inten_pixels (const guchar   *src1,
           gimp_rgba_set_uchar (&bgcolor,
                                src2[0], src2[0], src2[0], src2_alpha);
 
-          color_erase_helper (&color, &bgcolor);
+          paint_funcs_color_erase_helper (&color, &bgcolor);
 
           gimp_rgba_get_uchar (&color, dest, NULL, NULL, dest + 1);
           break;
@@ -1774,7 +1671,7 @@ color_erase_inten_pixels (const guchar   *src1,
           gimp_rgba_set_uchar (&bgcolor,
                                src2[0], src2[1], src2[2], src2_alpha);
 
-          color_erase_helper (&color, &bgcolor);
+          paint_funcs_color_erase_helper (&color, &bgcolor);
 
           gimp_rgba_get_uchar (&color, dest, dest + 1, dest + 2, dest + 3);
           break;
@@ -2070,9 +1967,6 @@ copy_region (PixelRegion *src,
 {
   gpointer pr;
 
-#ifdef COWSHOW
-  fputc ('[',stderr);
-#endif
   for (pr = pixel_regions_register (2, src, dest);
        pr != NULL;
        pr = pixel_regions_process (pr))
@@ -2086,9 +1980,6 @@ copy_region (PixelRegion *src,
           src->h  == tile_eheight (src->curtile) &&
           dest->h == tile_eheight (dest->curtile))
         {
-#ifdef COWSHOW
-          fputc('!',stderr);
-#endif
           tile_manager_map_over_tile (dest->tiles,
                                       dest->curtile, src->curtile);
         }
@@ -2099,10 +1990,6 @@ copy_region (PixelRegion *src,
           gint          h      = src->h;
           gint          pixels = src->w * src->bytes;
 
-#ifdef COWSHOW
-          fputc ('.',stderr);
-#endif
-
           while (h --)
             {
               memcpy (d, s, pixels);
@@ -2112,11 +1999,6 @@ copy_region (PixelRegion *src,
             }
         }
     }
-
-#ifdef COWSHOW
-  fputc (']',stderr);
-  fputc ('\n',stderr);
-#endif
 }
 
 void
@@ -2401,6 +2283,7 @@ convolve_region (PixelRegion         *srcR,
       dest += destR->rowstride;
     }
 }
+
 
 /* Convert from separated alpha to premultiplied alpha. Only works on
    non-tiled regions! */
@@ -3483,7 +3366,6 @@ border_region (PixelRegion *src,
   /* TODO: Figure out role clearly in algorithm. */
   guchar **density;
 
-  guchar   last_max;
   gint16   last_index;
 
   if (xradius < 0 || yradius < 0)
@@ -3724,12 +3606,13 @@ border_region (PixelRegion *src,
             max[x] = -yradius - 1;
         }
 
-      last_max =  max[0][density[-1]];
       last_index = 1;
 
        /* render scan line */
       for (x = 0 ; x < src->w; x++)
         {
+          guchar last_max;
+
           last_index--;
 
           if (last_index >= 0)
@@ -4052,38 +3935,28 @@ initial_sub_region (struct initial_regions_struct *st,
         case INITIAL_INTENSITY:
           if (mode == GIMP_DISSOLVE_MODE)
             {
-              if (gimp_composite_options.bits & GIMP_COMPOSITE_OPTION_USE)
-                {
-                  GimpCompositeContext ctx;
+              GimpCompositeContext ctx;
 
-                  ctx.A = NULL;
-                  ctx.pixelformat_A = GIMP_PIXELFORMAT_RGBA8;
+              ctx.A = NULL;
+              ctx.pixelformat_A = GIMP_PIXELFORMAT_RGBA8;
 
-                  ctx.B = s;
-                  ctx.pixelformat_B = (src->bytes   == 1 ? GIMP_PIXELFORMAT_V8
-                                       : src->bytes == 2 ? GIMP_PIXELFORMAT_VA8
-                                       : src->bytes == 3 ? GIMP_PIXELFORMAT_RGB8
-                                       : src->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8
-                                       : GIMP_PIXELFORMAT_ANY);
-                  ctx.D = buf;
-                  ctx.pixelformat_D = ctx.pixelformat_B;
+              ctx.B = s;
+              ctx.pixelformat_B = (src->bytes   == 1 ? GIMP_PIXELFORMAT_V8
+                                   : src->bytes == 2 ? GIMP_PIXELFORMAT_VA8
+                                   : src->bytes == 3 ? GIMP_PIXELFORMAT_RGB8
+                                   : src->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8
+                                   : GIMP_PIXELFORMAT_ANY);
+              ctx.D = buf;
+              ctx.pixelformat_D = ctx.pixelformat_B;
 
-                  ctx.M = m;
+              ctx.M = m;
 
-                  ctx.n_pixels = src->w;
-                  ctx.op = GIMP_COMPOSITE_DISSOLVE;
-                  ctx.dissolve.x = src->x;
-                  ctx.dissolve.y = src->y + h;
-                  ctx.dissolve.opacity = opacity;
-                  gimp_composite_dispatch (&ctx);
-                }
-              else
-                {
-                  dissolve_pixels (s, m, buf, src->x, src->y + h,
-                                   opacity, src->w,
-                                   src->bytes, src->bytes + 1,
-                                   FALSE);
-                }
+              ctx.n_pixels = src->w;
+              ctx.op = GIMP_COMPOSITE_DISSOLVE;
+              ctx.dissolve.x = src->x;
+              ctx.dissolve.y = src->y + h;
+              ctx.dissolve.opacity = opacity;
+              gimp_composite_dispatch (&ctx);
 
               initial_inten_a_pixels (buf, d, NULL, OPAQUE_OPACITY, affect,
                                       src->w, src->bytes + 1);
@@ -4098,38 +3971,28 @@ initial_sub_region (struct initial_regions_struct *st,
         case INITIAL_INTENSITY_ALPHA:
           if (mode == GIMP_DISSOLVE_MODE)
             {
-              if (gimp_composite_options.bits & GIMP_COMPOSITE_OPTION_USE)
-                {
-                  GimpCompositeContext ctx;
+              GimpCompositeContext ctx;
 
-                  ctx.A = NULL;
-                  ctx.pixelformat_A = GIMP_PIXELFORMAT_RGBA8;
+              ctx.A = NULL;
+              ctx.pixelformat_A = GIMP_PIXELFORMAT_RGBA8;
 
-                  ctx.B = s;
-                  ctx.pixelformat_B = (src->bytes   == 1 ? GIMP_PIXELFORMAT_V8
-                                       : src->bytes == 2 ? GIMP_PIXELFORMAT_VA8
-                                       : src->bytes == 3 ? GIMP_PIXELFORMAT_RGB8
-                                       : src->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8
-                                       : GIMP_PIXELFORMAT_ANY);
-                  ctx.D = buf;
-                  ctx.pixelformat_D = ctx.pixelformat_B;
+              ctx.B = s;
+              ctx.pixelformat_B = (src->bytes   == 1 ? GIMP_PIXELFORMAT_V8
+                                   : src->bytes == 2 ? GIMP_PIXELFORMAT_VA8
+                                   : src->bytes == 3 ? GIMP_PIXELFORMAT_RGB8
+                                   : src->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8
+                                   : GIMP_PIXELFORMAT_ANY);
+              ctx.D = buf;
+              ctx.pixelformat_D = ctx.pixelformat_B;
 
-                  ctx.M = m;
+              ctx.M = m;
 
-                  ctx.n_pixels = src->w;
-                  ctx.op = GIMP_COMPOSITE_DISSOLVE;
-                  ctx.dissolve.x = src->x;
-                  ctx.dissolve.y = src->y + h;
-                  ctx.dissolve.opacity = opacity;
-                  gimp_composite_dispatch (&ctx);
-                }
-              else
-                {
-                  dissolve_pixels (s, m, buf, src->x, src->y + h,
-                                   opacity, src->w,
-                                   src->bytes, src->bytes,
-                                   TRUE);
-                }
+              ctx.n_pixels = src->w;
+              ctx.op = GIMP_COMPOSITE_DISSOLVE;
+              ctx.dissolve.x = src->x;
+              ctx.dissolve.y = src->y + h;
+              ctx.dissolve.opacity = opacity;
+              gimp_composite_dispatch (&ctx);
 
               initial_inten_a_pixels (buf, d, NULL, OPAQUE_OPACITY, affect,
                                       src->w, src->bytes);
@@ -4338,73 +4201,44 @@ combine_sub_region (struct combine_regions_struct *st,
           {
             /*  Now, apply the paint mode  */
 
-            if (gimp_composite_options.bits & GIMP_COMPOSITE_OPTION_USE)
-              {
-                GimpCompositeContext ctx;
+            GimpCompositeContext ctx;
 
-                ctx.A             = s1;
-                ctx.pixelformat_A = (src1->bytes == 1 ? GIMP_PIXELFORMAT_V8    :
-                                     src1->bytes == 2 ? GIMP_PIXELFORMAT_VA8   :
-                                     src1->bytes == 3 ? GIMP_PIXELFORMAT_RGB8  :
-                                     src1->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8 :
-                                     GIMP_PIXELFORMAT_ANY);
+            ctx.A             = s1;
+            ctx.pixelformat_A = (src1->bytes == 1 ? GIMP_PIXELFORMAT_V8    :
+                                 src1->bytes == 2 ? GIMP_PIXELFORMAT_VA8   :
+                                 src1->bytes == 3 ? GIMP_PIXELFORMAT_RGB8  :
+                                 src1->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8 :
+                                 GIMP_PIXELFORMAT_ANY);
 
-                ctx.B             = s2;
-                ctx.pixelformat_B = (src2->bytes == 1 ? GIMP_PIXELFORMAT_V8    :
-                                     src2->bytes == 2 ? GIMP_PIXELFORMAT_VA8   :
-                                     src2->bytes == 3 ? GIMP_PIXELFORMAT_RGB8  :
-                                     src2->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8 :
-                                     GIMP_PIXELFORMAT_ANY);
+            ctx.B             = s2;
+            ctx.pixelformat_B = (src2->bytes == 1 ? GIMP_PIXELFORMAT_V8    :
+                                 src2->bytes == 2 ? GIMP_PIXELFORMAT_VA8   :
+                                 src2->bytes == 3 ? GIMP_PIXELFORMAT_RGB8  :
+                                 src2->bytes == 4 ? GIMP_PIXELFORMAT_RGBA8 :
+                                 GIMP_PIXELFORMAT_ANY);
 
-                ctx.D             = s;
-                ctx.pixelformat_D = ctx.pixelformat_A;
+            ctx.D             = s;
+            ctx.pixelformat_D = ctx.pixelformat_A;
 
-                ctx.M             = layer_mode_mask;
-                ctx.pixelformat_M = GIMP_PIXELFORMAT_ANY;
+            ctx.M             = layer_mode_mask;
+            ctx.pixelformat_M = GIMP_PIXELFORMAT_ANY;
 
-                ctx.n_pixels      = src1->w;
-                ctx.combine       = combine;
-                ctx.op            = mode;
+            ctx.n_pixels      = src1->w;
+            ctx.combine       = combine;
+            ctx.op            = mode;
 
-                ctx.dissolve.x       = src1->x;
-                ctx.dissolve.y       = src1->y + h;
-                ctx.dissolve.opacity = layer_mode_opacity;
+            ctx.dissolve.x       = src1->x;
+            ctx.dissolve.y       = src1->y + h;
+            ctx.dissolve.opacity = layer_mode_opacity;
 
-                mode_affect =
-                  gimp_composite_operation_effects[mode].affect_opacity;
+            mode_affect =
+              gimp_composite_operation_effects[mode].affect_opacity;
 
-                gimp_composite_dispatch (&ctx);
+            gimp_composite_dispatch (&ctx);
 
-                s = ctx.D;
-                combine = (ctx.combine == NO_COMBINATION) ? type : ctx.combine;
-              }
-            else
-              {
-                struct apply_layer_mode_struct alms;
+            s = ctx.D;
+            combine = (ctx.combine == NO_COMBINATION) ? type : ctx.combine;
 
-                alms.src1    = s1;
-                alms.src2    = s2;
-                alms.mask    = layer_mode_mask;
-                alms.dest    = &s;
-                alms.x       = src1->x;
-                alms.y       = src1->y + h;
-                alms.opacity = layer_mode_opacity;
-                alms.combine = combine;
-                alms.length  = src1->w;
-                alms.bytes1  = src1->bytes;
-                alms.bytes2  = src2->bytes;
-
-                /*  Determine whether the alpha channel of the destination
-                 *  can be affected by the specified mode. -- This keeps
-                 *  consistency with varying opacities.
-                 */
-                mode_affect = layer_modes[mode].affect_alpha;
-
-                layer_mode_funcs[mode] (&alms);
-
-                combine = (alms.combine == NO_COMBINATION ?
-                           type : alms.combine);
-              }
           }
           break;
 
@@ -4583,7 +4417,7 @@ combine_regions (PixelRegion          *src1,
                  const gboolean       *affect,
                  CombinationMode       type)
 {
-  gboolean has_alpha1, has_alpha2;
+  gboolean has_alpha1;
   guint i;
   struct combine_regions_struct st;
 
@@ -4592,24 +4426,22 @@ combine_regions (PixelRegion          *src1,
     {
     case COMBINE_INTEN_INTEN:
     case COMBINE_INDEXED_INDEXED:
-      has_alpha1 = has_alpha2 = FALSE;
+      has_alpha1 = FALSE;
       break;
     case COMBINE_INTEN_A_INTEN:
     case COMBINE_INTEN_A_INDEXED:
       has_alpha1 = TRUE;
-      has_alpha2 = FALSE;
       break;
     case COMBINE_INTEN_INTEN_A:
     case COMBINE_INDEXED_INDEXED_A:
       has_alpha1 = FALSE;
-      has_alpha2 = TRUE;
       break;
     case COMBINE_INTEN_A_INTEN_A:
     case COMBINE_INDEXED_A_INDEXED_A:
-      has_alpha1 = has_alpha2 = TRUE;
+      has_alpha1 = TRUE;
       break;
     default:
-      has_alpha1 = has_alpha2 = FALSE;
+      has_alpha1 = FALSE;
     }
 
   st.opacity    = opacity;

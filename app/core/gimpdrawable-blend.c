@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,7 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -215,7 +215,7 @@ gimp_drawable_blend (GimpDrawable         *drawable,
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
+  if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
     return;
 
   gimp_set_busy (image->gimp);
@@ -242,9 +242,9 @@ gimp_drawable_blend (GimpDrawable         *drawable,
 
   pixel_region_init (&bufPR, buf_tiles, 0, 0, width, height, FALSE);
   gimp_drawable_apply_region (drawable, &bufPR,
-                              TRUE, _("Blend"),
+                              TRUE, C_("undo-type", "Blend"),
                               opacity, paint_mode,
-                              NULL, x, y);
+                              NULL, NULL, x, y);
 
   /*  update the image  */
   gimp_drawable_update (drawable, x, y, width, height);
@@ -588,14 +588,14 @@ gradient_precalc_shapeburst (GimpImage    *image,
   if (! gimp_channel_is_empty (mask))
     {
       PixelRegion maskR;
-      gint        x1, y1, x2, y2;
-      gint        offx, offy;
+      gint        x, y, width, height;
+      gint        off_x, off_y;
 
-      gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
-      gimp_item_offsets (GIMP_ITEM (drawable), &offx, &offy);
+      gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height);
+      gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
       pixel_region_init (&maskR, gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                         x1 + offx, y1 + offy, (x2 - x1), (y2 - y1), FALSE);
+                         x + off_x, y + off_y, width, height, FALSE);
 
       /*  copy the mask to the temp mask  */
       copy_region (&maskR, &tempR);

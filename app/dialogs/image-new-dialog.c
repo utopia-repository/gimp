@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -82,7 +82,8 @@ image_new_dialog_new (GimpContext *context)
 {
   ImageNewDialog *dialog;
   GtkWidget      *main_vbox;
-  GtkWidget      *table;
+  GtkWidget      *hbox;
+  GtkWidget      *label;
   GimpSizeEntry  *entry;
 
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
@@ -120,16 +121,20 @@ image_new_dialog_new (GimpContext *context)
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog->dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog->dialog))),
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  table = gtk_table_new (1, 2, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
+  /*  The template combo  */
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  label = gtk_label_new_with_mnemonic (_("_Template:"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
 
   dialog->combo = g_object_new (GIMP_TYPE_CONTAINER_COMBO_BOX,
                                 "container",         context->gimp->templates,
@@ -139,10 +144,10 @@ image_new_dialog_new (GimpContext *context)
                                 "ellipsize",         PANGO_ELLIPSIZE_NONE,
                                 "focus-on-click",    FALSE,
                                 NULL);
+  gtk_box_pack_start (GTK_BOX (hbox), dialog->combo, TRUE, TRUE, 0);
+  gtk_widget_show (dialog->combo);
 
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                             _("_Template:"),  0.0, 0.5,
-                             dialog->combo, 1, TRUE);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), dialog->combo);
 
   g_signal_connect (dialog->context, "template-changed",
                     G_CALLBACK (image_new_template_changed),
@@ -154,7 +159,7 @@ image_new_dialog_new (GimpContext *context)
   gtk_box_pack_start (GTK_BOX (main_vbox), dialog->editor, FALSE, FALSE, 0);
   gtk_widget_show (dialog->editor);
 
-  entry = GIMP_SIZE_ENTRY (GIMP_TEMPLATE_EDITOR (dialog->editor)->size_se);
+  entry = GIMP_SIZE_ENTRY (gimp_template_editor_get_size_se (GIMP_TEMPLATE_EDITOR (dialog->editor)));
   gimp_size_entry_set_activates_default (entry, TRUE);
   gimp_size_entry_grab_focus (entry);
 
@@ -223,7 +228,7 @@ image_new_dialog_response (GtkWidget      *widget,
       break;
 
     case GTK_RESPONSE_OK:
-      if (dialog->template->initial_size >
+      if (gimp_template_get_initial_size (dialog->template) >
           GIMP_GUI_CONFIG (dialog->context->gimp->config)->max_new_image_size)
         image_new_confirm_dialog (dialog);
       else
@@ -241,13 +246,17 @@ image_new_template_changed (GimpContext    *context,
                             GimpTemplate   *template,
                             ImageNewDialog *dialog)
 {
-  gchar *comment = NULL;
+  gchar *comment;
 
   if (!template)
     return;
 
-  if (!template->comment || !strlen (template->comment))
-    comment = g_strdup (dialog->template->comment);
+  comment = (gchar *) gimp_template_get_comment (template);
+
+  if (! comment || ! strlen (comment))
+    comment = g_strdup (gimp_template_get_comment (dialog->template));
+  else
+    comment = NULL;
 
   /*  make sure the resolution values are copied first (see bug #546924)  */
   gimp_config_sync (G_OBJECT (template), G_OBJECT (dialog->template),
@@ -316,14 +325,14 @@ image_new_confirm_dialog (ImageNewDialog *data)
                     G_CALLBACK (image_new_confirm_response),
                     data);
 
-  size = g_format_size_for_display (data->template->initial_size);
+  size = g_format_size (gimp_template_get_initial_size (data->template));
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
                                      _("You are trying to create an image "
                                        "with a size of %s."), size);
   g_free (size);
 
   config = GIMP_GUI_CONFIG (data->context->gimp->config);
-  size = g_format_size_for_display (config->max_new_image_size);
+  size = g_format_size (config->max_new_image_size);
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
                               _("An image of the chosen size will use more "
                                 "memory than what is configured as "
@@ -344,7 +353,7 @@ image_new_create_image (ImageNewDialog *dialog)
 
   gtk_widget_destroy (dialog->dialog);
 
-  gimp_template_create_image (gimp, template, gimp_get_user_context (gimp));
+  gimp_image_new_from_template (gimp, template, gimp_get_user_context (gimp));
   gimp_image_new_set_last_template (gimp, template);
 
   g_object_unref (template);

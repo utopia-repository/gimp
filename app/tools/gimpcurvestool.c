@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -43,11 +42,13 @@
 #include "core/gimpcurve-map.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawable-histogram.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimpcolorbar.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpcurveview.h"
+#include "widgets/gimpwidgets-utils.h"
 
 #include "display/gimpdisplay.h"
 
@@ -70,7 +71,7 @@ static gboolean   gimp_curves_tool_initialize     (GimpTool             *tool,
                                                    GimpDisplay          *display,
                                                    GError              **error);
 static void       gimp_curves_tool_button_release (GimpTool             *tool,
-                                                   GimpCoords           *coords,
+                                                   const GimpCoords     *coords,
                                                    guint32               time,
                                                    GdkModifierType       state,
                                                    GimpButtonReleaseType release_type,
@@ -79,7 +80,7 @@ static gboolean   gimp_curves_tool_key_press      (GimpTool             *tool,
                                                    GdkEventKey          *kevent,
                                                    GimpDisplay          *display);
 static void       gimp_curves_tool_oper_update    (GimpTool             *tool,
-                                                   GimpCoords           *coords,
+                                                   const GimpCoords     *coords,
                                                    GdkModifierType       state,
                                                    gboolean              proximity,
                                                    GimpDisplay          *display);
@@ -87,7 +88,7 @@ static void       gimp_curves_tool_oper_update    (GimpTool             *tool,
 static void       gimp_curves_tool_color_picked   (GimpColorTool        *color_tool,
                                                    GimpColorPickState    pick_state,
                                                    GimpImageType         sample_type,
-                                                   GimpRGB              *color,
+                                                   const GimpRGB        *color,
                                                    gint                  color_index);
 static GeglNode * gimp_curves_tool_get_operation  (GimpImageMapTool     *image_map_tool,
                                                    GObject             **config);
@@ -124,6 +125,15 @@ static void       curves_curve_type_callback      (GtkWidget            *widget,
 G_DEFINE_TYPE (GimpCurvesTool, gimp_curves_tool, GIMP_TYPE_IMAGE_MAP_TOOL)
 
 #define parent_class gimp_curves_tool_parent_class
+
+static GimpRGB channel_colors[GIMP_HISTOGRAM_RGB] =
+{
+  { 0.0, 0.0, 0.0, 1.0 },
+  { 1.0, 0.0, 0.0, 1.0 },
+  { 0.0, 1.0, 0.0, 1.0 },
+  { 0.0, 0.0, 1.0, 1.0 },
+  { 0.5, 0.5, 0.5, 1.0 }
+};
 
 
 /*  public functions  */
@@ -165,7 +175,7 @@ gimp_curves_tool_class_init (GimpCurvesToolClass *klass)
 
   color_tool_class->picked           = gimp_curves_tool_color_picked;
 
-  im_tool_class->shell_desc          = _("Adjust Color Curves");
+  im_tool_class->dialog_desc         = _("Adjust Color Curves");
   im_tool_class->settings_name       = "curves";
   im_tool_class->import_dialog_title = _("Import Curves");
   im_tool_class->export_dialog_title = _("Export Curves");
@@ -209,7 +219,8 @@ gimp_curves_tool_initialize (GimpTool     *tool,
                              GError      **error)
 {
   GimpCurvesTool *c_tool   = GIMP_CURVES_TOOL (tool);
-  GimpDrawable   *drawable = gimp_image_get_active_drawable (display->image);
+  GimpImage      *image    = gimp_display_get_image (display);
+  GimpDrawable   *drawable = gimp_image_get_active_drawable (image);
   GimpHistogram  *histogram;
 
   if (! drawable)
@@ -217,14 +228,17 @@ gimp_curves_tool_initialize (GimpTool     *tool,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Curves does not operate on indexed layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Curves does not operate on indexed layers."));
       return FALSE;
     }
 
   gimp_config_reset (GIMP_CONFIG (c_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
+  if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
+    {
+      return FALSE;
+    }
 
   /*  always pick colors  */
   gimp_color_tool_enable (GIMP_COLOR_TOOL (tool),
@@ -244,7 +258,7 @@ gimp_curves_tool_initialize (GimpTool     *tool,
 
 static void
 gimp_curves_tool_button_release (GimpTool              *tool,
-                                 GimpCoords            *coords,
+                                 const GimpCoords      *coords,
                                  guint32                time,
                                  GdkModifierType        state,
                                  GimpButtonReleaseType  release_type,
@@ -267,7 +281,7 @@ gimp_curves_tool_button_release (GimpTool              *tool,
       gimp_curve_set_point (curve, closest,
                             value, gimp_curve_map_value (curve, value));
     }
-  else if (state & GDK_CONTROL_MASK)
+  else if (state & gimp_get_toggle_behavior_mask ())
     {
       gint i;
 
@@ -299,18 +313,21 @@ gimp_curves_tool_key_press (GimpTool    *tool,
 {
   GimpCurvesTool *c_tool = GIMP_CURVES_TOOL (tool);
 
-  return gtk_widget_event (c_tool->graph, (GdkEvent *) kevent);
+  if (gtk_widget_event (c_tool->graph, (GdkEvent *) kevent))
+    return TRUE;
+
+  return GIMP_TOOL_CLASS (parent_class)->key_press (tool, kevent, display);
 }
 
 static void
-gimp_curves_tool_oper_update (GimpTool        *tool,
-                              GimpCoords      *coords,
-                              GdkModifierType  state,
-                              gboolean         proximity,
-                              GimpDisplay     *display)
+gimp_curves_tool_oper_update (GimpTool         *tool,
+                              const GimpCoords *coords,
+                              GdkModifierType   state,
+                              gboolean          proximity,
+                              GimpDisplay      *display)
 {
-  GimpColorPickMode  mode   = GIMP_COLOR_PICK_MODE_NONE;
-  const gchar       *status = NULL;
+  GimpColorPickMode  mode;
+  const gchar       *status;
 
   GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
                                                display);
@@ -322,15 +339,20 @@ gimp_curves_tool_oper_update (GimpTool        *tool,
       mode   = GIMP_COLOR_PICK_MODE_PALETTE;
       status = _("Click to add a control point");
     }
-  else if (state & GDK_CONTROL_MASK)
+  else if (state & gimp_get_toggle_behavior_mask ())
     {
       mode   = GIMP_COLOR_PICK_MODE_PALETTE;
       status = _("Click to add control points to all channels");
     }
+  else
+    {
+      mode   = GIMP_COLOR_PICK_MODE_NONE;
+      status = _("Click to locate on curve (try Shift, Ctrl)");
+    }
 
   GIMP_COLOR_TOOL (tool)->pick_mode = mode;
 
-  if (status && proximity)
+  if (proximity)
     gimp_tool_push_status (tool, display, "%s", status);
 }
 
@@ -338,7 +360,7 @@ static void
 gimp_curves_tool_color_picked (GimpColorTool      *color_tool,
                                GimpColorPickState  pick_state,
                                GimpImageType       sample_type,
-                               GimpRGB            *color,
+                               const GimpRGB      *color,
                                gint                color_index)
 {
   GimpCurvesTool *tool = GIMP_CURVES_TOOL (color_tool);
@@ -368,7 +390,7 @@ gimp_curves_tool_get_operation (GimpImageMapTool  *image_map_tool,
   GeglNode       *node;
 
   node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp-curves",
+                       "operation", "gimp:curves",
                        NULL);
 
   tool->config = g_object_new (GIMP_TYPE_CURVES_CONFIG, NULL);
@@ -434,7 +456,7 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
   label_group = gimp_image_map_tool_dialog_get_label_group (image_map_tool);
 
   /*  The combo box for selecting channels  */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -486,7 +508,7 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (main_vbox), table, TRUE, TRUE, 0);
 
   /*  The left color bar  */
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_table_attach (GTK_TABLE (table), vbox, 0, 1, 0, 1,
                     GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
   gtk_widget_show (vbox);
@@ -509,6 +531,8 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_widget_show (frame);
 
   tool->graph = gimp_curve_view_new ();
+  gimp_curve_view_set_range_x (GIMP_CURVE_VIEW (tool->graph), 0, 255);
+  gimp_curve_view_set_range_y (GIMP_CURVE_VIEW (tool->graph), 0, 255);
   gtk_widget_set_size_request (tool->graph,
                                GRAPH_SIZE + RADIUS * 2,
                                GRAPH_SIZE + RADIUS * 2);
@@ -517,7 +541,8 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
                 "subdivisions", 1,
                 NULL);
   gimp_curve_view_set_curve (GIMP_CURVE_VIEW (tool->graph),
-                             config->curve[config->channel]);
+                             config->curve[config->channel],
+                             &channel_colors[config->channel]);
   gtk_container_add (GTK_CONTAINER (frame), tool->graph);
   gtk_widget_show (tool->graph);
 
@@ -525,7 +550,7 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
                                        GIMP_HISTOGRAM_VIEW (tool->graph));
 
   /*  The bottom color bar  */
-  hbox2 = gtk_hbox_new (FALSE, 0);
+  hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox2, 1, 2, 1, 2,
                     GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (hbox2);
@@ -535,7 +560,8 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (hbox2), frame, TRUE, TRUE, RADIUS);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (TRUE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_box_set_homogeneous (GTK_BOX (vbox), TRUE);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -550,7 +576,7 @@ gimp_curves_tool_dialog (GimpImageMapTool *image_map_tool)
 
   gtk_widget_show (table);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_end (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -726,6 +752,8 @@ gimp_curves_tool_config_notify (GObject        *object,
 
   if (! strcmp (pspec->name, "channel"))
     {
+      GimpHistogramChannel channel;
+
       gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (tool->channel_menu),
                                      config->channel);
 
@@ -767,7 +795,24 @@ gimp_curves_tool_config_notify (GObject        *object,
       gimp_color_bar_set_channel (GIMP_COLOR_BAR (tool->yrange),
                                   config->channel);
 
-      gimp_curve_view_set_curve (GIMP_CURVE_VIEW (tool->graph), curve);
+      gimp_curve_view_remove_all_backgrounds (GIMP_CURVE_VIEW (tool->graph));
+
+      for (channel = GIMP_HISTOGRAM_VALUE;
+           channel <= GIMP_HISTOGRAM_ALPHA;
+           channel++)
+        {
+          if (channel == config->channel)
+            {
+              gimp_curve_view_set_curve (GIMP_CURVE_VIEW (tool->graph), curve,
+                                         &channel_colors[channel]);
+            }
+          else
+            {
+              gimp_curve_view_add_background (GIMP_CURVE_VIEW (tool->graph),
+                                              config->curve[channel],
+                                              &channel_colors[channel]);
+            }
+        }
 
       gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (tool->curve_type),
                                      curve->curve_type);

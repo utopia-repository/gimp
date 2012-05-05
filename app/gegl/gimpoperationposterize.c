@@ -4,9 +4,9 @@
  * gimpoperationposterize.c
  * Copyright (C) 2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -36,7 +36,8 @@ static gboolean gimp_operation_posterize_process (GeglOperation       *operation
                                                   void                *in_buf,
                                                   void                *out_buf,
                                                   glong                samples,
-                                                  const GeglRectangle *roi);
+                                                  const GeglRectangle *roi,
+                                                  gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationPosterize, gimp_operation_posterize,
@@ -55,9 +56,11 @@ gimp_operation_posterize_class_init (GimpOperationPosterizeClass *klass)
   object_class->set_property   = gimp_operation_point_filter_set_property;
   object_class->get_property   = gimp_operation_point_filter_get_property;
 
-  operation_class->name        = "gimp-posterize";
-  operation_class->categories  = "color";
-  operation_class->description = "GIMP Posterize operation";
+  gegl_operation_class_set_keys (operation_class,
+           "name"       , "gimp:posterize",
+           "categories" , "color",
+           "description", "GIMP Posterize operation",
+           NULL);
 
   point_class->process         = gimp_operation_posterize_process;
 
@@ -81,7 +84,8 @@ gimp_operation_posterize_process (GeglOperation       *operation,
                                   void                *in_buf,
                                   void                *out_buf,
                                   glong                samples,
-                                  const GeglRectangle *roi)
+                                  const GeglRectangle *roi,
+                                  gint                 level)
 {
   GimpOperationPointFilter *point  = GIMP_OPERATION_POINT_FILTER (operation);
   GimpPosterizeConfig      *config = GIMP_POSTERIZE_CONFIG (point->config);
@@ -96,10 +100,10 @@ gimp_operation_posterize_process (GeglOperation       *operation,
 
   while (samples--)
     {
-      dest[RED_PIX]   = RINT (src[RED_PIX]   * levels) / levels;
-      dest[GREEN_PIX] = RINT (src[GREEN_PIX] * levels) / levels;
-      dest[BLUE_PIX]  = RINT (src[BLUE_PIX]  * levels) / levels;
-      dest[ALPHA_PIX] = src[ALPHA_PIX];
+      dest[RED]   = RINT (src[RED]   * levels) / levels;
+      dest[GREEN] = RINT (src[GREEN] * levels) / levels;
+      dest[BLUE]  = RINT (src[BLUE]  * levels) / levels;
+      dest[ALPHA] = src[ALPHA];
 
       src  += 4;
       dest += 4;

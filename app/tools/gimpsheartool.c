@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -23,6 +22,7 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -39,9 +39,12 @@
 
 
 /*  index into trans_info array  */
-#define HORZ_OR_VERT 0
-#define XSHEAR       1
-#define YSHEAR       2
+enum
+{
+  HORZ_OR_VERT,
+  XSHEAR,
+  YSHEAR
+};
 
 /*  the minimum movement before direction of shear can be determined (pixels) */
 #define MIN_MOVE     5
@@ -51,20 +54,18 @@
 
 /*  local function prototypes  */
 
-static void   gimp_shear_tool_dialog        (GimpTransformTool  *tr_tool);
-static void   gimp_shear_tool_dialog_update (GimpTransformTool  *tr_tool);
+static void    gimp_shear_tool_dialog        (GimpTransformTool  *tr_tool);
+static void    gimp_shear_tool_dialog_update (GimpTransformTool  *tr_tool);
 
-static void   gimp_shear_tool_prepare       (GimpTransformTool  *tr_tool,
-                                             GimpDisplay        *display);
-static void   gimp_shear_tool_motion        (GimpTransformTool  *tr_tool,
-                                             GimpDisplay        *display);
-static void   gimp_shear_tool_recalc        (GimpTransformTool  *tr_tool,
-                                             GimpDisplay        *display);
+static void    gimp_shear_tool_prepare       (GimpTransformTool  *tr_tool);
+static void    gimp_shear_tool_motion        (GimpTransformTool  *tr_tool);
+static void    gimp_shear_tool_recalc_matrix (GimpTransformTool  *tr_tool);
+static gchar * gimp_shear_tool_get_undo_desc (GimpTransformTool  *tr_tool);
 
-static void   shear_x_mag_changed           (GtkAdjustment      *adj,
-                                             GimpTransformTool  *tr_tool);
-static void   shear_y_mag_changed           (GtkAdjustment      *adj,
-                                             GimpTransformTool  *tr_tool);
+static void    shear_x_mag_changed           (GtkAdjustment      *adj,
+                                              GimpTransformTool  *tr_tool);
+static void    shear_y_mag_changed           (GtkAdjustment      *adj,
+                                              GimpTransformTool  *tr_tool);
 
 
 G_DEFINE_TYPE (GimpShearTool, gimp_shear_tool, GIMP_TYPE_TRANSFORM_TOOL)
@@ -96,7 +97,8 @@ gimp_shear_tool_class_init (GimpShearToolClass *klass)
   trans_class->dialog_update = gimp_shear_tool_dialog_update;
   trans_class->prepare       = gimp_shear_tool_prepare;
   trans_class->motion        = gimp_shear_tool_motion;
-  trans_class->recalc        = gimp_shear_tool_recalc;
+  trans_class->recalc_matrix = gimp_shear_tool_recalc_matrix;
+  trans_class->get_undo_desc = gimp_shear_tool_get_undo_desc;
 }
 
 static void
@@ -107,7 +109,6 @@ gimp_shear_tool_init (GimpShearTool *shear_tool)
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_SHEAR);
 
-  tr_tool->undo_desc     = C_("command", "Shear");
   tr_tool->progress_text = _("Shearing");
 
   tr_tool->use_grid      = TRUE;
@@ -124,11 +125,11 @@ gimp_shear_tool_dialog (GimpTransformTool *tr_tool)
   gtk_container_set_border_width (GTK_CONTAINER (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 2);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (tr_tool->dialog)->vbox), table,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (tr_tool->dialog))),
+                      table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  button = gimp_spin_button_new (&shear->x_adj,
+  button = gimp_spin_button_new ((GtkObject **) &shear->x_adj,
                                  0, -65536, 65536, 1, 15, 0, 1, 0);
   gtk_entry_set_width_chars (GTK_ENTRY (button), SB_WIDTH);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0, _("Shear magnitude _X:"),
@@ -138,7 +139,7 @@ gimp_shear_tool_dialog (GimpTransformTool *tr_tool)
                     G_CALLBACK (shear_x_mag_changed),
                     tr_tool);
 
-  button = gimp_spin_button_new (&shear->y_adj,
+  button = gimp_spin_button_new ((GtkObject **) &shear->y_adj,
                                  0, -65536, 65536, 1, 15, 0, 1, 0);
   gtk_entry_set_width_chars (GTK_ENTRY (button), SB_WIDTH);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1, _("Shear magnitude _Y:"),
@@ -154,15 +155,12 @@ gimp_shear_tool_dialog_update (GimpTransformTool *tr_tool)
 {
   GimpShearTool *shear = GIMP_SHEAR_TOOL (tr_tool);
 
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (shear->x_adj),
-                            tr_tool->trans_info[XSHEAR]);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (shear->y_adj),
-                            tr_tool->trans_info[YSHEAR]);
+  gtk_adjustment_set_value (shear->x_adj, tr_tool->trans_info[XSHEAR]);
+  gtk_adjustment_set_value (shear->y_adj, tr_tool->trans_info[YSHEAR]);
 }
 
 static void
-gimp_shear_tool_prepare (GimpTransformTool *tr_tool,
-                         GimpDisplay       *display)
+gimp_shear_tool_prepare (GimpTransformTool *tr_tool)
 {
   tr_tool->trans_info[HORZ_OR_VERT] = GIMP_ORIENTATION_UNKNOWN;
   tr_tool->trans_info[XSHEAR]       = 0.0;
@@ -170,8 +168,7 @@ gimp_shear_tool_prepare (GimpTransformTool *tr_tool,
 }
 
 static void
-gimp_shear_tool_motion (GimpTransformTool *tr_tool,
-                        GimpDisplay       *display)
+gimp_shear_tool_motion (GimpTransformTool *tr_tool)
 {
   gdouble diffx = tr_tool->curx - tr_tool->lastx;
   gdouble diffy = tr_tool->cury - tr_tool->lasty;
@@ -221,8 +218,7 @@ gimp_shear_tool_motion (GimpTransformTool *tr_tool,
 }
 
 static void
-gimp_shear_tool_recalc (GimpTransformTool *tr_tool,
-                        GimpDisplay       *display)
+gimp_shear_tool_recalc_matrix (GimpTransformTool *tr_tool)
 {
   gdouble amount;
 
@@ -247,6 +243,29 @@ gimp_shear_tool_recalc (GimpTransformTool *tr_tool,
                                amount);
 }
 
+static gchar *
+gimp_shear_tool_get_undo_desc (GimpTransformTool *tr_tool)
+{
+  gdouble x = tr_tool->trans_info[XSHEAR];
+  gdouble y = tr_tool->trans_info[YSHEAR];
+
+  switch ((gint) tr_tool->trans_info[HORZ_OR_VERT])
+    {
+    case GIMP_ORIENTATION_HORIZONTAL:
+      return g_strdup_printf (C_("undo-type", "Shear horizontally by %-3.3g"),
+                              x);
+
+    case GIMP_ORIENTATION_VERTICAL:
+      return g_strdup_printf (C_("undo-type", "Shear vertically by %-3.3g"),
+                              y);
+
+    default:
+      /* e.g. user entered numbers but no notification callback */
+      return g_strdup_printf (C_("undo-type", "Shear horizontally by %-3.3g, vertically by %-3.3g"),
+                              x, y);
+    }
+}
+
 static void
 shear_x_mag_changed (GtkAdjustment     *adj,
                      GimpTransformTool *tr_tool)
@@ -262,9 +281,7 @@ shear_x_mag_changed (GtkAdjustment     *adj,
 
       tr_tool->trans_info[XSHEAR] = value;
 
-      gimp_transform_tool_recalc (tr_tool, GIMP_TOOL (tr_tool)->display);
-
-      gimp_transform_tool_expose_preview (tr_tool);
+      gimp_transform_tool_recalc_matrix (tr_tool);
 
       gimp_draw_tool_resume (GIMP_DRAW_TOOL (tr_tool));
     }
@@ -285,9 +302,7 @@ shear_y_mag_changed (GtkAdjustment     *adj,
 
       tr_tool->trans_info[YSHEAR] = value;
 
-      gimp_transform_tool_recalc (tr_tool, GIMP_TOOL (tr_tool)->display);
-
-      gimp_transform_tool_expose_preview (tr_tool);
+      gimp_transform_tool_recalc_matrix (tr_tool);
 
       gimp_draw_tool_resume (GIMP_DRAW_TOOL (tr_tool));
     }

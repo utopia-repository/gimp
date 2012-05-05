@@ -3,9 +3,9 @@
  *
  * Copyright (C) Nigel Wetten
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contact info: nigel@cs.nwu.edu
  *
@@ -45,6 +44,7 @@
 
 #define PLUG_IN_PROC   "plug-in-jigsaw"
 #define PLUG_IN_BINARY "jigsaw"
+#define PLUG_IN_ROLE   "gimp-jigsaw"
 
 
 typedef enum
@@ -342,12 +342,12 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, Non-interactive, Last-Vals" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable" },
     { GIMP_PDB_INT32,    "x",            "Number of tiles across > 0" },
     { GIMP_PDB_INT32,    "y",            "Number of tiles down > 0" },
-    { GIMP_PDB_INT32,    "style",        "The style/shape of the jigsaw puzzle, 0 or 1" },
+    { GIMP_PDB_INT32,    "style",        "The style/shape of the jigsaw puzzle { 0, 1 }" },
     { GIMP_PDB_INT32,    "blend-lines",  "Number of lines for shading bevels >= 0" },
     { GIMP_PDB_FLOAT,    "blend-amount", "The power of the light highlights 0 =< 5" }
   };
@@ -448,7 +448,7 @@ jigsaw (GimpDrawable *drawable,
       gimp_preview_get_size (preview, &width, &height);
       bytes  = drawable->bpp;
       buffer = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-						 &width, &height, &bytes);
+                                                 &width, &height, &bytes);
       buffer_size = bytes * width * height;
     }
   else
@@ -462,7 +462,7 @@ jigsaw (GimpDrawable *drawable,
       buffer = g_new (guchar, buffer_size);
 
       gimp_pixel_rgn_init (&src_pr,  drawable, 0, 0, width, height,
-			   FALSE, FALSE);
+                           FALSE, FALSE);
       gimp_pixel_rgn_get_rect (&src_pr, buffer, 0, 0, width, height);
     }
 
@@ -483,7 +483,7 @@ jigsaw (GimpDrawable *drawable,
   else
     {
       gimp_pixel_rgn_init (&dest_pr, drawable, 0, 0, width, height,
-			   TRUE, TRUE);
+                           TRUE, TRUE);
       gimp_pixel_rgn_set_rect (&dest_pr, buffer, 0, 0, width, height);
 
       gimp_drawable_flush (drawable);
@@ -602,6 +602,7 @@ draw_jigsaw (guchar   *buffer,
       printf("draw_jigsaw: bad style\n");
       gimp_quit ();
     }
+  gimp_progress_update (1.0);
 
   g_free (globals.gridx);
   g_free (globals.gridy);
@@ -629,19 +630,10 @@ draw_vertical_border (guchar  *buffer,
   gdouble delta;
   gdouble sigma = blend_amount / blend_lines;
   gint right;
-  bump_t style_index;
 
   for (i = 0; i < ytiles; i++)
     {
       right = g_random_int_range (0, 2);
-      if (right)
-        {
-          style_index = RIGHT;
-        }
-      else
-        {
-          style_index = LEFT;
-        }
 
       /* first straight line from top downwards */
       px[0] = px[1] = x_offset;
@@ -753,6 +745,7 @@ draw_horizontal_border (guchar   *buffer,
   for (i = 0; i < xtiles; i++)
     {
       up = g_random_int_range (0, 2);
+
       /* first horizontal line across */
       px[0] = x_offset; px[1] = x_offset + curve_start_offset - 1;
       py[0] = py[1] = y_offset;
@@ -2110,7 +2103,6 @@ draw_bezier_vertical_border (guchar   *buffer,
   gdouble delta;
   gdouble sigma = blend_amount / blend_lines;
   gint right;
-  bump_t style_index;
   gint *cachex, *cachey;
 
   cachex = g_new (gint, steps);
@@ -2119,14 +2111,7 @@ draw_bezier_vertical_border (guchar   *buffer,
   for (i = 0; i < ytiles; i++)
     {
       right = g_random_int_range (0, 2);
-      if (right)
-        {
-          style_index = RIGHT;
-        }
-      else
-        {
-          style_index = LEFT;
-        }
+
       px[0] = px[3] = x_offset;
       px[1] = x_offset + WALL_XFACTOR2 * tile_width * FUDGE;
       px[2] = x_offset + WALL_XFACTOR3 * tile_width * FUDGE;
@@ -2246,7 +2231,6 @@ draw_bezier_horizontal_border (guchar   *buffer,
   gdouble delta;
   gdouble sigma = blend_amount / blend_lines;
   gint up;
-  style_t style_index;
   gint *cachex, *cachey;
 
   cachex = g_new (gint, steps);
@@ -2255,14 +2239,7 @@ draw_bezier_horizontal_border (guchar   *buffer,
   for (i = 0; i < xtiles; i++)
     {
       up = g_random_int_range (0, 2);
-      if (up)
-        {
-          style_index = UP;
-        }
-      else
-        {
-          style_index = DOWN;
-        }
+
       px[0] = x_offset;
       px[1] = x_offset + WALL_XCONS2 * tile_width;
       px[2] = x_offset + WALL_XCONS3 * tile_width;
@@ -2413,7 +2390,7 @@ jigsaw_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Jigsaw"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Jigsaw"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -2429,9 +2406,10 @@ jigsaw_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_aspect_preview_new (drawable, NULL);

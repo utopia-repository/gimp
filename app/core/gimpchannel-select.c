@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -57,7 +57,7 @@ gimp_channel_select_rectangle (GimpChannel    *channel,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
 
   if (push_undo)
-    gimp_channel_push_undo (channel, C_("command", "Rectangle Select"));
+    gimp_channel_push_undo (channel, C_("undo-type", "Rectangle Select"));
 
   /*  if applicable, replace the current selection  */
   if (op == GIMP_CHANNEL_OP_REPLACE)
@@ -72,8 +72,8 @@ gimp_channel_select_rectangle (GimpChannel    *channel,
       GimpChannel *add_on;
 
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width  (item),
-                                      gimp_item_height (item));
+                                      gimp_item_get_width  (item),
+                                      gimp_item_get_height (item));
       gimp_channel_combine_rect (add_on, GIMP_CHANNEL_OP_ADD, x, y, w, h);
 
       if (feather)
@@ -108,7 +108,7 @@ gimp_channel_select_ellipse (GimpChannel    *channel,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
 
   if (push_undo)
-    gimp_channel_push_undo (channel, C_("command", "Ellipse Select"));
+    gimp_channel_push_undo (channel, C_("undo-type", "Ellipse Select"));
 
   /*  if applicable, replace the current selection  */
   if (op == GIMP_CHANNEL_OP_REPLACE)
@@ -123,8 +123,8 @@ gimp_channel_select_ellipse (GimpChannel    *channel,
       GimpChannel *add_on;
 
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width  (item),
-                                      gimp_item_height (item));
+                                      gimp_item_get_width  (item),
+                                      gimp_item_get_height (item));
       gimp_channel_combine_ellipse (add_on, GIMP_CHANNEL_OP_ADD,
                                     x, y, w, h, antialias);
 
@@ -162,7 +162,7 @@ gimp_channel_select_round_rect (GimpChannel         *channel,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
 
   if (push_undo)
-    gimp_channel_push_undo (channel, C_("command", "Rounded Rectangle Select"));
+    gimp_channel_push_undo (channel, C_("undo-type", "Rounded Rectangle Select"));
 
   /*  if applicable, replace the current selection  */
   if (op == GIMP_CHANNEL_OP_REPLACE)
@@ -177,8 +177,8 @@ gimp_channel_select_round_rect (GimpChannel         *channel,
       GimpChannel *add_on;
 
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width  (item),
-                                      gimp_item_height (item));
+                                      gimp_item_get_width  (item),
+                                      gimp_item_get_height (item));
       gimp_channel_combine_ellipse_rect (add_on, GIMP_CHANNEL_OP_ADD,
                                          x, y, w, h,
                                          corner_radius_x, corner_radius_y,
@@ -234,8 +234,8 @@ gimp_channel_select_scan_convert (GimpChannel     *channel,
   item = GIMP_ITEM (channel);
 
   add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                  gimp_item_width  (item),
-                                  gimp_item_height (item));
+                                  gimp_item_get_width  (item),
+                                  gimp_item_get_height (item));
   gimp_scan_convert_render (scan_convert,
                             gimp_drawable_get_tiles (GIMP_DRAWABLE (add_on)),
                             offset_x, offset_y, antialias);
@@ -291,56 +291,29 @@ gimp_channel_select_vectors (GimpChannel    *channel,
                              gdouble         feather_radius_y,
                              gboolean        push_undo)
 {
-  GimpScanConvert *scan_convert;
-  GList           *stroke;
-  gboolean         coords_added = FALSE;
+  const GimpBezierDesc *bezier;
 
   g_return_if_fail (GIMP_IS_CHANNEL (channel));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
   g_return_if_fail (undo_desc != NULL);
   g_return_if_fail (GIMP_IS_VECTORS (vectors));
 
-  scan_convert = gimp_scan_convert_new ();
+  bezier = gimp_vectors_get_bezier (vectors);
 
-  for (stroke = vectors->strokes; stroke; stroke = stroke->next)
+  if (bezier && bezier->num_data > 4)
     {
-      GArray   *coords;
-      gboolean  closed;
+      GimpScanConvert *scan_convert;
 
-      coords = gimp_stroke_interpolate (GIMP_STROKE (stroke->data),
-                                        1.0, &closed);
+      scan_convert = gimp_scan_convert_new ();
+      gimp_scan_convert_add_bezier (scan_convert, bezier);
 
-      if (coords && coords->len)
-        {
-          GimpVector2 *points;
-          gint         i;
+      gimp_channel_select_scan_convert (channel, undo_desc, scan_convert, 0, 0,
+                                        op, antialias, feather,
+                                        feather_radius_x, feather_radius_y,
+                                        push_undo);
 
-          points = g_new0 (GimpVector2, coords->len);
-
-          for (i = 0; i < coords->len; i++)
-            {
-              points[i].x = g_array_index (coords, GimpCoords, i).x;
-              points[i].y = g_array_index (coords, GimpCoords, i).y;
-            }
-
-          gimp_scan_convert_add_polyline (scan_convert, coords->len,
-                                          points, TRUE);
-          coords_added = TRUE;
-
-          g_free (points);
-        }
-
-      if (coords)
-        g_array_free (coords, TRUE);
+      gimp_scan_convert_free (scan_convert);
     }
-
-  if (coords_added)
-    gimp_channel_select_scan_convert (channel, undo_desc, scan_convert, 0, 0,
-                                      op, antialias, feather,
-                                      feather_radius_x, feather_radius_y,
-                                      push_undo);
-
-  gimp_scan_convert_free (scan_convert);
 }
 
 
@@ -374,8 +347,8 @@ gimp_channel_select_channel (GimpChannel    *channel,
       GimpChannel *add_on2;
 
       add_on2 = gimp_channel_new_mask (gimp_item_get_image (item),
-                                       gimp_item_width  (item),
-                                       gimp_item_height (item));
+                                       gimp_item_get_width  (item),
+                                       gimp_item_get_height (item));
 
       gimp_channel_combine_mask (add_on2, add_on, GIMP_CHANNEL_OP_ADD,
                                  offset_x, offset_y);
@@ -424,14 +397,14 @@ gimp_channel_select_alpha (GimpChannel    *channel,
        *  so simply select the whole layer's extents.  --mitch
        */
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width  (GIMP_ITEM (drawable)),
-                                      gimp_item_height (GIMP_ITEM (drawable)));
+                                      gimp_item_get_width  (GIMP_ITEM (drawable)),
+                                      gimp_item_get_height (GIMP_ITEM (drawable)));
       gimp_channel_all (add_on, FALSE);
     }
 
-  gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+  gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
-  gimp_channel_select_channel (channel, _("Alpha to Selection"), add_on,
+  gimp_channel_select_channel (channel, C_("undo-type", "Alpha to Selection"), add_on,
                                off_x, off_y,
                                op, feather,
                                feather_radius_x,
@@ -469,7 +442,7 @@ gimp_channel_select_component (GimpChannel     *channel,
   gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,
                        NULL, NULL, &desc, NULL);
 
-  undo_desc = g_strdup_printf (_("%s Channel to Selection"), desc);
+  undo_desc = g_strdup_printf (C_("undo-type", "%s Channel to Selection"), desc);
 
   gimp_channel_select_channel (channel, undo_desc, add_on,
                                0, 0, op,
@@ -515,9 +488,9 @@ gimp_channel_select_fuzzy (GimpChannel         *channel,
                                                  x, y);
 
   if (! sample_merged)
-    gimp_item_offsets (GIMP_ITEM (drawable), &add_on_x, &add_on_y);
+    gimp_item_get_offset (GIMP_ITEM (drawable), &add_on_x, &add_on_y);
 
-  gimp_channel_select_channel (channel, C_("command", "Fuzzy Select"),
+  gimp_channel_select_channel (channel, C_("undo-type", "Fuzzy Select"),
                                add_on, add_on_x, add_on_y,
                                op,
                                feather,
@@ -562,9 +535,9 @@ gimp_channel_select_by_color (GimpChannel         *channel,
                                                   color);
 
   if (! sample_merged)
-    gimp_item_offsets (GIMP_ITEM (drawable), &add_on_x, &add_on_y);
+    gimp_item_get_offset (GIMP_ITEM (drawable), &add_on_x, &add_on_y);
 
-  gimp_channel_select_channel (channel, C_("command", "Select by Color"),
+  gimp_channel_select_channel (channel, C_("undo-type", "Select by Color"),
                                add_on, add_on_x, add_on_y,
                                op,
                                feather,

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <time.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -43,6 +43,7 @@
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-close.h"
+#include "gimpimagewindow.h"
 
 #include "gimp-intl.h"
 
@@ -72,7 +73,7 @@ gimp_display_shell_close (GimpDisplayShell *shell,
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  image = shell->display->image;
+  image = gimp_display_get_image (shell->display);
 
   /*  FIXME: gimp_busy HACK not really appropriate here because we only
    *  want to prevent the busy image and display to be closed.  --Mitch
@@ -84,10 +85,10 @@ gimp_display_shell_close (GimpDisplayShell *shell,
    *  it before nuking it--this only applies if its the last view
    *  to an image canvas.  (a image with disp_count = 1)
    */
-  if (! kill_it              &&
-      image                  &&
-      image->disp_count == 1 &&
-      image->dirty           &&
+  if (! kill_it                                 &&
+      image                                     &&
+      gimp_image_get_display_count (image) == 1 &&
+      gimp_image_is_dirty (image)               &&
       shell->display->config->confirm_on_close)
     {
       /*  If there's a save dialog active for this image, then raise it.
@@ -110,11 +111,17 @@ gimp_display_shell_close (GimpDisplayShell *shell,
     }
   else
     {
-      /* Activate the action instead of simply calling gimp_exit(), so
-       * the quit action's sensitivity is taken into account.
-       */
-      gimp_ui_manager_activate_action (shell->menubar_manager,
-                                       "file", "file-quit");
+      GimpImageWindow *window = gimp_display_shell_get_window (shell);
+
+      if (window)
+        {
+          GimpUIManager *manager = gimp_image_window_get_ui_manager (window);
+
+          /* Activate the action instead of simply calling gimp_exit(), so
+           * the quit action's sensitivity is taken into account.
+           */
+          gimp_ui_manager_activate_action (manager, "file", "file-quit");
+        }
     }
 }
 
@@ -129,12 +136,11 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
                                  GimpImage        *image)
 {
   GtkWidget      *dialog;
-  GtkWidget      *button;
   GimpMessageBox *box;
   GClosure       *closure;
   GSource        *source;
-  gchar          *name;
   gchar          *title;
+  const gchar    *uri;
 
   if (shell->close_dialog)
     {
@@ -142,10 +148,9 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
       return;
     }
 
-  name = file_utils_uri_display_basename (gimp_image_get_uri (image));
+  uri = gimp_image_get_uri (image);
 
-  title = g_strdup_printf (_("Close %s"), name);
-  g_free (name);
+  title = g_strdup_printf (_("Close %s"), gimp_image_get_display_name (image));
 
   shell->close_dialog =
     dialog = gimp_message_dialog_new (title, GTK_STOCK_SAVE,
@@ -155,15 +160,12 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
                                       NULL);
   g_free (title);
 
-  button = gtk_dialog_add_button (GTK_DIALOG (dialog),
-                                  _("Do_n't Save"), GTK_RESPONSE_CLOSE);
-  gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_DELETE,
-                                                  GTK_ICON_SIZE_BUTTON));
-
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                          GTK_STOCK_SAVE,   RESPONSE_SAVE,
+                          _("Close _without Saving"), GTK_RESPONSE_CLOSE,
+                          GTK_STOCK_CANCEL,           GTK_RESPONSE_CANCEL,
+                          (uri ?
+                           GTK_STOCK_SAVE :
+                           GTK_STOCK_SAVE_AS),        RESPONSE_SAVE,
                           NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
@@ -215,13 +217,11 @@ gimp_display_shell_close_name_changed (GimpImage      *image,
                                        GimpMessageBox *box)
 {
   GtkWidget *window = gtk_widget_get_toplevel (GTK_WIDGET (box));
-  gchar     *name;
 
-  name = file_utils_uri_display_basename (gimp_image_get_uri (image));
-
-  if (window)
+  if (GTK_IS_WINDOW (window))
     {
-      gchar *title = g_strdup_printf (_("Close %s"), name);
+      gchar *title = g_strdup_printf (_("Close %s"),
+				      gimp_image_get_display_name (image));
 
       gtk_window_set_title (GTK_WINDOW (window), title);
       g_free (title);
@@ -230,22 +230,22 @@ gimp_display_shell_close_name_changed (GimpImage      *image,
   gimp_message_box_set_primary_text (box,
                                      _("Save the changes to image '%s' "
                                        "before closing?"),
-                                     name);
-  g_free (name);
+                                     gimp_image_get_display_name (image));
 }
 
 
 static gboolean
 gimp_display_shell_close_time_changed (GimpMessageBox *box)
 {
-  GimpImage *image  = g_object_get_data (G_OBJECT (box), "gimp-image");
+  GimpImage *image      = g_object_get_data (G_OBJECT (box), "gimp-image");
+  gint       dirty_time = gimp_image_get_dirty_time (image);
 
-  if (image->dirty_time)
+  if (dirty_time)
     {
       gint hours   = 0;
       gint minutes = 0;
 
-      gimp_time_since (image->dirty_time, &hours, &minutes);
+      gimp_time_since (dirty_time, &hours, &minutes);
 
       if (hours > 0)
         {
@@ -303,8 +303,19 @@ gimp_display_shell_close_response (GtkWidget        *widget,
       break;
 
     case RESPONSE_SAVE:
-      gimp_ui_manager_activate_action (shell->menubar_manager,
-                                       "file", "file-save-and-close");
+      {
+        GimpImageWindow *window = gimp_display_shell_get_window (shell);
+
+        if (window)
+          {
+            GimpUIManager *manager = gimp_image_window_get_ui_manager (window);
+
+            /* FIXME image window: set this display active */
+
+            gimp_ui_manager_activate_action (manager,
+                                             "file", "file-save-and-close");
+          }
+      }
       break;
 
     default:

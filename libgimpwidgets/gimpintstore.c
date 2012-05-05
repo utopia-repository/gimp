@@ -4,10 +4,10 @@
  * gimpintstore.c
  * Copyright (C) 2004-2007  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,16 @@
 #include "libgimp/libgimp-intl.h"
 
 
+/**
+ * SECTION: gimpintstore
+ * @title: GimpIntStore
+ * @short_description: A model for integer based name-value pairs
+ *                     (e.g. enums)
+ *
+ * A model for integer based name-value pairs (e.g. enums)
+ **/
+
+
 enum
 {
   PROP_0,
@@ -45,12 +54,9 @@ typedef struct
 } GimpIntStorePrivate;
 
 
-static GObject * gimp_int_store_constructor (GType                  type,
-                                             guint                  n_params,
-                                             GObjectConstructParam *params);
-
 static void  gimp_int_store_tree_model_init (GtkTreeModelIface *iface);
 
+static void  gimp_int_store_constructed     (GObject           *object);
 static void  gimp_int_store_finalize        (GObject           *object);
 static void  gimp_int_store_set_property    (GObject           *object,
                                              guint              property_id,
@@ -84,7 +90,7 @@ gimp_int_store_class_init (GimpIntStoreClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_int_store_constructor;
+  object_class->constructed  = gimp_int_store_constructed;
   object_class->finalize     = gimp_int_store_finalize;
   object_class->set_property = gimp_int_store_set_property;
   object_class->get_property = gimp_int_store_get_property;
@@ -112,25 +118,28 @@ gimp_int_store_class_init (GimpIntStoreClass *klass)
 }
 
 static void
+gimp_int_store_tree_model_init (GtkTreeModelIface *iface)
+{
+  parent_iface = g_type_interface_peek_parent (iface);
+
+  iface->row_inserted = gimp_int_store_row_inserted;
+}
+
+static void
 gimp_int_store_init (GimpIntStore *store)
 {
   store->empty_iter = NULL;
 }
 
-static GObject *
-gimp_int_store_constructor (GType                  type,
-                            guint                  n_params,
-                            GObjectConstructParam *params)
+static void
+gimp_int_store_constructed (GObject *object)
 {
-  GObject             *object;
-  GimpIntStore        *store;
-  GimpIntStorePrivate *priv;
+  GimpIntStore        *store = GIMP_INT_STORE (object);
+  GimpIntStorePrivate *priv  = GIMP_INT_STORE_GET_PRIVATE (store);
   GType                types[GIMP_INT_STORE_NUM_COLUMNS];
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  store = GIMP_INT_STORE (object);
-  priv = GIMP_INT_STORE_GET_PRIVATE (store);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   types[GIMP_INT_STORE_VALUE]     = G_TYPE_INT;
   types[GIMP_INT_STORE_LABEL]     = G_TYPE_STRING;
@@ -143,16 +152,6 @@ gimp_int_store_constructor (GType                  type,
                                    GIMP_INT_STORE_NUM_COLUMNS, types);
 
   gimp_int_store_add_empty (store);
-
-  return object;
-}
-
-static void
-gimp_int_store_tree_model_init (GtkTreeModelIface *iface)
-{
-  parent_iface = g_type_interface_peek_parent (iface);
-
-  iface->row_inserted = gimp_int_store_row_inserted;
 }
 
 static void
@@ -236,6 +235,9 @@ gimp_int_store_add_empty (GimpIntStore *store)
   gtk_list_store_prepend (GTK_LIST_STORE (store), &iter);
   gtk_list_store_set (GTK_LIST_STORE (store), &iter,
                       GIMP_INT_STORE_VALUE, -1,
+                      /* This string appears in an empty menu as in
+                       * "nothing selected and nothing to select"
+                       */
                       GIMP_INT_STORE_LABEL, (_("(Empty)")),
                       -1);
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -175,7 +174,6 @@ script_fu_interface (SFScript  *script,
                      gint       start_arg)
 {
   GtkWidget    *dialog;
-  GtkWidget    *menu;
   GtkWidget    *vbox;
   GtkWidget    *vbox2;
   GtkSizeGroup *group;
@@ -224,7 +222,7 @@ script_fu_interface (SFScript  *script,
   title = g_strdup_printf (_("Script-Fu: %s"), sf_interface->title);
 
   sf_interface->dialog = dialog =
-    gimp_dialog_new (title, "script-fu",
+    gimp_dialog_new (title, "gimp-script-fu",
                      NULL, 0,
                      gimp_standard_help_func, script->name,
 
@@ -253,9 +251,9 @@ script_fu_interface (SFScript  *script,
 
   gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                       vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -322,7 +320,6 @@ script_fu_interface (SFScript  *script,
               break;
 
             default:
-              menu = NULL;
               break;
             }
 
@@ -504,13 +501,13 @@ script_fu_interface (SFScript  *script,
           break;
 
         case SF_OPTION:
-          widget = gtk_combo_box_new_text ();
+          widget = gtk_combo_box_text_new ();
           for (list = arg->default_value.sfa_option.list;
                list;
                list = g_slist_next (list))
             {
-              gtk_combo_box_append_text (GTK_COMBO_BOX (widget),
-                                         gettext ((const gchar *) list->data));
+              gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (widget),
+                                              gettext (list->data));
             }
 
           gtk_combo_box_set_active (GTK_COMBO_BOX (widget),
@@ -564,7 +561,7 @@ script_fu_interface (SFScript  *script,
   g_object_unref (group);
 
   /* the script progress bar */
-  vbox2 = gtk_vbox_new (FALSE, 6);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_end (GTK_BOX (vbox), vbox2, FALSE, FALSE, 0);
   gtk_widget_show (vbox2);
 
@@ -722,7 +719,11 @@ script_fu_response (GtkWidget *widget,
                     gint       response_id,
                     SFScript  *script)
 {
-  if (! GTK_WIDGET_SENSITIVE (GTK_DIALOG (sf_interface->dialog)->action_area))
+  GtkWidget *action_area;
+
+  action_area = gtk_dialog_get_action_area (GTK_DIALOG (sf_interface->dialog));
+
+  if (! gtk_widget_is_sensitive (action_area))
     return;
 
   switch (response_id)
@@ -733,8 +734,7 @@ script_fu_response (GtkWidget *widget,
 
     case GTK_RESPONSE_OK:
       gtk_widget_set_sensitive (sf_interface->table, FALSE);
-      gtk_widget_set_sensitive (GTK_DIALOG (sf_interface->dialog)->action_area,
-                                FALSE);
+      gtk_widget_set_sensitive (action_area, FALSE);
 
       script_fu_ok (script);
       gtk_widget_destroy (sf_interface->dialog);

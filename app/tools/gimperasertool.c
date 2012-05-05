@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,15 +35,15 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_eraser_tool_modifier_key  (GimpTool        *tool,
-                                              GdkModifierType  key,
-                                              gboolean         press,
-                                              GdkModifierType  state,
-                                              GimpDisplay     *display);
-static void   gimp_eraser_tool_cursor_update (GimpTool        *tool,
-                                              GimpCoords      *coords,
-                                              GdkModifierType  state,
-                                              GimpDisplay     *display);
+static void   gimp_eraser_tool_modifier_key  (GimpTool         *tool,
+                                              GdkModifierType   key,
+                                              gboolean          press,
+                                              GdkModifierType   state,
+                                              GimpDisplay      *display);
+static void   gimp_eraser_tool_cursor_update (GimpTool         *tool,
+                                              const GimpCoords *coords,
+                                              GdkModifierType   state,
+                                              GimpDisplay      *display);
 
 static GtkWidget * gimp_eraser_options_gui   (GimpToolOptions *tool_options);
 
@@ -119,10 +118,10 @@ gimp_eraser_tool_modifier_key (GimpTool        *tool,
 }
 
 static void
-gimp_eraser_tool_cursor_update (GimpTool        *tool,
-                                GimpCoords      *coords,
-                                GdkModifierType  state,
-                                GimpDisplay     *display)
+gimp_eraser_tool_cursor_update (GimpTool         *tool,
+                                const GimpCoords *coords,
+                                GdkModifierType   state,
+                                GimpDisplay      *display)
 {
   GimpEraserOptions *options = GIMP_ERASER_TOOL_GET_OPTIONS (tool);
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "actions-types.h"
@@ -27,6 +27,7 @@
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-new.h"
 
 #include "widgets/gimpbufferview.h"
 #include "widgets/gimpcontainerview.h"
@@ -85,14 +86,10 @@ buffers_paste_as_new_cmd_callback (GtkAction *action,
         {
           GimpImage *new_image;
 
-          new_image = gimp_edit_paste_as_new (image->gimp, image, buffer);
-
-          if (new_image)
-            {
-              gimp_create_display (image->gimp, new_image,
-                                   GIMP_UNIT_PIXEL, 1.0);
-              g_object_unref (new_image);
-            }
+          new_image = gimp_image_new_from_buffer (image->gimp, image, buffer);
+          gimp_create_display (image->gimp, new_image,
+                               GIMP_UNIT_PIXEL, 1.0);
+          g_object_unref (new_image);
         }
     }
 }
@@ -134,12 +131,12 @@ buffers_paste (GimpBufferView *view,
 
       if (display)
         {
-          GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+          GimpDisplayShell *shell = gimp_display_get_shell (display);
 
           gimp_display_shell_untransform_viewport (shell,
                                                    &x, &y, &width, &height);
 
-          image = display->image;
+          image = gimp_display_get_image (display);
         }
       else
         {

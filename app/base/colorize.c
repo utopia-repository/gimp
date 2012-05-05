@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -92,7 +92,7 @@ colorize (Colorize    *colorize,
   h     = srcPR->h;
   src   = srcPR->data;
   dest  = destPR->data;
-  alpha = (srcPR->bytes == 4) ? TRUE : FALSE;
+  alpha = pixel_region_has_alpha (srcPR);
 
   while (h--)
     {
@@ -102,9 +102,9 @@ colorize (Colorize    *colorize,
 
       while (w--)
         {
-          lum = (colorize->lum_red_lookup[s[RED_PIX]] +
-                 colorize->lum_green_lookup[s[GREEN_PIX]] +
-                 colorize->lum_blue_lookup[s[BLUE_PIX]]); /* luminosity */
+          lum = (colorize->lum_red_lookup[s[RED]] +
+                 colorize->lum_green_lookup[s[GREEN]] +
+                 colorize->lum_blue_lookup[s[BLUE]]); /* luminosity */
 
           if (colorize->lightness > 0)
             {
@@ -117,12 +117,12 @@ colorize (Colorize    *colorize,
               lum = (gdouble) lum * (colorize->lightness + 100.0) / 100.0;
             }
 
-          d[RED_PIX]   = colorize->final_red_lookup[lum];
-          d[GREEN_PIX] = colorize->final_green_lookup[lum];
-          d[BLUE_PIX]  = colorize->final_blue_lookup[lum];
+          d[RED]   = colorize->final_red_lookup[lum];
+          d[GREEN] = colorize->final_green_lookup[lum];
+          d[BLUE]  = colorize->final_blue_lookup[lum];
 
           if (alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
+            d[ALPHA] = s[ALPHA];
 
           s += srcPR->bytes;
           d += destPR->bytes;

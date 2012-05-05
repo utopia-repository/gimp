@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2002 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TOOL_H__
@@ -48,8 +47,6 @@ struct _GimpTool
   GimpDisplay     *display;     /*  pointer to currently active display    */
   GimpDrawable    *drawable;    /*  pointer to the tool's current drawable */
 
-  gdouble          max_coord_smooth;
-
   /*  private state of gimp_tool_set_focus_display() and
    *  gimp_tool_set_[active_]modifier_state()
    */
@@ -68,6 +65,10 @@ struct _GimpTool
   /*  private list of displays which have a status message from this tool
    */
   GList           *status_displays;
+
+  /*  on-canvas progress  */
+  GimpCanvasItem  *progress;
+  GimpDisplay     *progress_display;
 };
 
 struct _GimpToolClass
@@ -76,150 +77,177 @@ struct _GimpToolClass
 
   /*  virtual functions  */
 
-  gboolean      (* has_display)         (GimpTool              *tool,
-                                         GimpDisplay           *display);
-  GimpDisplay * (* has_image)           (GimpTool              *tool,
-                                         GimpImage             *image);
+  gboolean        (* has_display)         (GimpTool              *tool,
+                                           GimpDisplay           *display);
+  GimpDisplay   * (* has_image)           (GimpTool              *tool,
+                                           GimpImage             *image);
 
-  gboolean      (* initialize)          (GimpTool              *tool,
-                                         GimpDisplay           *display,
-                                         GError               **error);
-  void          (* control)             (GimpTool              *tool,
-                                         GimpToolAction         action,
-                                         GimpDisplay           *display);
+  gboolean        (* initialize)          (GimpTool              *tool,
+                                           GimpDisplay           *display,
+                                           GError               **error);
+  void            (* control)             (GimpTool              *tool,
+                                           GimpToolAction         action,
+                                           GimpDisplay           *display);
 
-  void          (* button_press)        (GimpTool              *tool,
-                                         GimpCoords            *coords,
-                                         guint32                time,
-                                         GdkModifierType        state,
-                                         GimpDisplay           *display);
-  void          (* button_release)      (GimpTool              *tool,
-                                         GimpCoords            *coords,
-                                         guint32                time,
-                                         GdkModifierType        state,
-                                         GimpButtonReleaseType  release_type,
-                                         GimpDisplay           *display);
-  void          (* motion)              (GimpTool              *tool,
-                                         GimpCoords            *coords,
-                                         guint32                time,
-                                         GdkModifierType        state,
-                                         GimpDisplay           *display);
+  void            (* button_press)        (GimpTool              *tool,
+                                           const GimpCoords      *coords,
+                                           guint32                time,
+                                           GdkModifierType        state,
+                                           GimpButtonPressType    press_type,
+                                           GimpDisplay           *display);
+  void            (* button_release)      (GimpTool              *tool,
+                                           const GimpCoords      *coords,
+                                           guint32                time,
+                                           GdkModifierType        state,
+                                           GimpButtonReleaseType  release_type,
+                                           GimpDisplay           *display);
+  void            (* motion)              (GimpTool              *tool,
+                                           const GimpCoords      *coords,
+                                           guint32                time,
+                                           GdkModifierType        state,
+                                           GimpDisplay           *display);
 
-  gboolean      (* key_press)           (GimpTool              *tool,
-                                         GdkEventKey           *kevent,
-                                         GimpDisplay           *display);
-  void          (* modifier_key)        (GimpTool              *tool,
-                                         GdkModifierType        key,
-                                         gboolean               press,
-                                         GdkModifierType        state,
-                                         GimpDisplay           *display);
-  void          (* active_modifier_key) (GimpTool              *tool,
-                                         GdkModifierType        key,
-                                         gboolean               press,
-                                         GdkModifierType        state,
-                                         GimpDisplay           *display);
+  gboolean        (* key_press)           (GimpTool              *tool,
+                                           GdkEventKey           *kevent,
+                                           GimpDisplay           *display);
+  gboolean        (* key_release)         (GimpTool              *tool,
+                                           GdkEventKey           *kevent,
+                                           GimpDisplay           *display);
+  void            (* modifier_key)        (GimpTool              *tool,
+                                           GdkModifierType        key,
+                                           gboolean               press,
+                                           GdkModifierType        state,
+                                           GimpDisplay           *display);
+  void            (* active_modifier_key) (GimpTool              *tool,
+                                           GdkModifierType        key,
+                                           gboolean               press,
+                                           GdkModifierType        state,
+                                           GimpDisplay           *display);
 
-  void          (* oper_update)         (GimpTool              *tool,
-                                         GimpCoords            *coords,
-                                         GdkModifierType        state,
-                                         gboolean               proximity,
-                                         GimpDisplay           *display);
-  void          (* cursor_update)       (GimpTool              *tool,
-                                         GimpCoords            *coords,
-                                         GdkModifierType        state,
-                                         GimpDisplay           *display);
+  void            (* oper_update)         (GimpTool              *tool,
+                                           const GimpCoords      *coords,
+                                           GdkModifierType        state,
+                                           gboolean               proximity,
+                                           GimpDisplay           *display);
+  void            (* cursor_update)       (GimpTool              *tool,
+                                           const GimpCoords      *coords,
+                                           GdkModifierType        state,
+                                           GimpDisplay           *display);
+
+  GimpUIManager * (* get_popup)           (GimpTool              *tool,
+                                           const GimpCoords      *coords,
+                                           GdkModifierType        state,
+                                           GimpDisplay           *display,
+                                           const gchar          **ui_path);
+
+  void            (* options_notify)      (GimpTool              *tool,
+                                           GimpToolOptions       *options,
+                                           const GParamSpec      *pspec);
 };
 
 
-GType         gimp_tool_get_type            (void) G_GNUC_CONST;
+GType             gimp_tool_get_type            (void) G_GNUC_CONST;
 
-GimpToolOptions * gimp_tool_get_options     (GimpTool            *tool);
+GimpToolOptions * gimp_tool_get_options         (GimpTool            *tool);
 
-gboolean      gimp_tool_has_display         (GimpTool            *tool,
-                                             GimpDisplay         *display);
-GimpDisplay * gimp_tool_has_image           (GimpTool            *tool,
-                                             GimpImage           *image);
+gboolean          gimp_tool_has_display         (GimpTool            *tool,
+                                                 GimpDisplay         *display);
+GimpDisplay     * gimp_tool_has_image           (GimpTool            *tool,
+                                                 GimpImage           *image);
 
-gboolean      gimp_tool_initialize          (GimpTool            *tool,
-                                             GimpDisplay         *display);
-void          gimp_tool_control             (GimpTool            *tool,
-                                             GimpToolAction       action,
-                                             GimpDisplay         *display);
+gboolean          gimp_tool_initialize          (GimpTool            *tool,
+                                                 GimpDisplay         *display);
+void              gimp_tool_control             (GimpTool            *tool,
+                                                 GimpToolAction       action,
+                                                 GimpDisplay         *display);
 
-void          gimp_tool_button_press        (GimpTool            *tool,
-                                             GimpCoords          *coords,
-                                             guint32              time,
-                                             GdkModifierType      state,
-                                             GimpDisplay         *display);
-void          gimp_tool_button_release      (GimpTool            *tool,
-                                             GimpCoords          *coords,
-                                             guint32              time,
-                                             GdkModifierType      state,
-                                             GimpDisplay         *display);
-void          gimp_tool_motion              (GimpTool            *tool,
-                                             GimpCoords          *coords,
-                                             guint32              time,
-                                             GdkModifierType      state,
-                                             GimpDisplay         *display);
+void              gimp_tool_button_press        (GimpTool            *tool,
+                                                 const GimpCoords    *coords,
+                                                 guint32              time,
+                                                 GdkModifierType      state,
+                                                 GimpButtonPressType  press_type,
+                                                 GimpDisplay         *display);
+void              gimp_tool_button_release      (GimpTool            *tool,
+                                                 const GimpCoords    *coords,
+                                                 guint32              time,
+                                                 GdkModifierType      state,
+                                                 GimpDisplay         *display);
+void              gimp_tool_motion              (GimpTool            *tool,
+                                                 const GimpCoords    *coords,
+                                                 guint32              time,
+                                                 GdkModifierType      state,
+                                                 GimpDisplay         *display);
 
-gboolean      gimp_tool_key_press           (GimpTool            *tool,
-                                             GdkEventKey         *kevent,
-                                             GimpDisplay         *display);
+gboolean          gimp_tool_key_press           (GimpTool            *tool,
+                                                 GdkEventKey         *kevent,
+                                                 GimpDisplay         *display);
+gboolean          gimp_tool_key_release         (GimpTool            *tool,
+                                                 GdkEventKey         *kevent,
+                                                 GimpDisplay         *display);
 
-void          gimp_tool_set_focus_display   (GimpTool            *tool,
-                                             GimpDisplay         *display);
-void          gimp_tool_set_modifier_state  (GimpTool            *tool,
-                                             GdkModifierType      state,
-                                             GimpDisplay         *display);
-void    gimp_tool_set_active_modifier_state (GimpTool            *tool,
-                                             GdkModifierType      state,
-                                             GimpDisplay         *display);
+void              gimp_tool_set_focus_display   (GimpTool            *tool,
+                                                 GimpDisplay         *display);
+void              gimp_tool_set_modifier_state  (GimpTool            *tool,
+                                                 GdkModifierType      state,
+                                                 GimpDisplay         *display);
+void        gimp_tool_set_active_modifier_state (GimpTool            *tool,
+                                                 GdkModifierType      state,
+                                                 GimpDisplay         *display);
 
-void          gimp_tool_oper_update         (GimpTool            *tool,
-                                             GimpCoords          *coords,
-                                             GdkModifierType      state,
-                                             gboolean             proximity,
-                                             GimpDisplay         *display);
-void          gimp_tool_cursor_update       (GimpTool            *tool,
-                                             GimpCoords          *coords,
-                                             GdkModifierType      state,
-                                             GimpDisplay         *display);
+void              gimp_tool_oper_update         (GimpTool            *tool,
+                                                 const GimpCoords    *coords,
+                                                 GdkModifierType      state,
+                                                 gboolean             proximity,
+                                                 GimpDisplay         *display);
+void              gimp_tool_cursor_update       (GimpTool            *tool,
+                                                 const GimpCoords    *coords,
+                                                 GdkModifierType      state,
+                                                 GimpDisplay         *display);
 
-void          gimp_tool_push_status         (GimpTool            *tool,
-                                             GimpDisplay         *display,
-                                             const gchar         *format,
-                                             ...) G_GNUC_PRINTF(3,4);
-void          gimp_tool_push_status_coords  (GimpTool            *tool,
-                                             GimpDisplay         *display,
-                                             GimpCursorPrecision  precision,
-                                             const gchar         *title,
-                                             gdouble              x,
-                                             const gchar         *separator,
-                                             gdouble              y,
-                                             const gchar         *help);
-void          gimp_tool_push_status_length  (GimpTool            *tool,
-                                             GimpDisplay         *display,
-                                             const gchar         *title,
-                                             GimpOrientationType  axis,
-                                             gdouble              value,
-                                             const gchar         *help);
-void          gimp_tool_replace_status      (GimpTool            *tool,
-                                             GimpDisplay         *display,
-                                             const gchar         *format,
-                                             ...) G_GNUC_PRINTF(3,4);
-void          gimp_tool_pop_status          (GimpTool            *tool,
-                                             GimpDisplay         *display);
+GimpUIManager   * gimp_tool_get_popup           (GimpTool            *tool,
+                                                 const GimpCoords    *coords,
+                                                 GdkModifierType      state,
+                                                 GimpDisplay         *display,
+                                                 const gchar        **ui_path);
 
-void          gimp_tool_message             (GimpTool            *tool,
-                                             GimpDisplay         *display,
-                                             const gchar         *format,
-                                             ...) G_GNUC_PRINTF(3,4);
+void              gimp_tool_push_status         (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 const gchar         *format,
+                                                 ...) G_GNUC_PRINTF(3,4);
+void              gimp_tool_push_status_coords  (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 GimpCursorPrecision  precision,
+                                                 const gchar         *title,
+                                                 gdouble              x,
+                                                 const gchar         *separator,
+                                                 gdouble              y,
+                                                 const gchar         *help);
+void              gimp_tool_push_status_length  (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 const gchar         *title,
+                                                 GimpOrientationType  axis,
+                                                 gdouble              value,
+                                                 const gchar         *help);
+void              gimp_tool_replace_status      (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 const gchar         *format,
+                                                 ...) G_GNUC_PRINTF(3,4);
+void              gimp_tool_pop_status          (GimpTool            *tool,
+                                                 GimpDisplay         *display);
 
-void          gimp_tool_set_cursor          (GimpTool            *tool,
-                                             GimpDisplay         *display,
-                                             GimpCursorType       cursor,
-                                             GimpToolCursorType   tool_cursor,
-                                             GimpCursorModifier   modifier);
+void              gimp_tool_message             (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 const gchar         *format,
+                                                 ...) G_GNUC_PRINTF(3,4);
+void              gimp_tool_message_literal     (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 const gchar         *message);
+
+void              gimp_tool_set_cursor          (GimpTool            *tool,
+                                                 GimpDisplay         *display,
+                                                 GimpCursorType       cursor,
+                                                 GimpToolCursorType   tool_cursor,
+                                                 GimpCursorModifier   modifier);
 
 
 #endif  /*  __GIMP_TOOL_H__  */

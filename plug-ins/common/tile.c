@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -31,6 +30,7 @@
 
 #define PLUG_IN_PROC   "plug-in-tile"
 #define PLUG_IN_BINARY "tile"
+#define PLUG_IN_ROLE   "gimp-tile"
 
 
 typedef struct
@@ -83,7 +83,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"        },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"              },
     { GIMP_PDB_INT32,    "new-width",  "New (tiled) image width"     },
@@ -129,8 +129,6 @@ run (const gchar      *name,
   GimpRunMode       run_mode;
   GimpPDBStatusType status    = GIMP_PDB_SUCCESS;
   gint32            new_layer = -1;
-  gint              width;
-  gint              height;
 
   run_mode = param[0].data.d_int32;
 
@@ -143,9 +141,6 @@ run (const gchar      *name,
   values[0].data.d_status = status;
   values[1].type          = GIMP_PDB_IMAGE;
   values[2].type          = GIMP_PDB_LAYER;
-
-  width  = gimp_drawable_width  (param[2].data.d_drawable);
-  height = gimp_drawable_height (param[2].data.d_drawable);
 
   switch (run_mode)
     {
@@ -272,7 +267,7 @@ tile (gint32  image_id,
       if (*layer_id == -1)
         return -1;
 
-      gimp_image_add_layer (new_image_id, *layer_id, 0);
+      gimp_image_insert_layer (new_image_id, *layer_id, -1, 0);
       new_layer = gimp_drawable_get (*layer_id);
 
       /*  Get the source drawable  */
@@ -286,7 +281,7 @@ tile (gint32  image_id,
                          tvals.new_width, tvals.new_height,
                          0, 0);
 
-      if (gimp_drawable_is_layer (drawable_id))
+      if (gimp_item_is_layer (drawable_id))
         gimp_layer_resize (drawable_id,
                            tvals.new_width, tvals.new_height,
                            0, 0);
@@ -340,6 +335,7 @@ tile (gint32  image_id,
             }
         }
     }
+  gimp_progress_update (1.0);
 
   gimp_drawable_update (new_layer->drawable_id,
                         0, 0, new_layer->width, new_layer->height);
@@ -398,7 +394,7 @@ tile_dialog (gint32 image_ID,
   tvals.new_width  = width;
   tvals.new_height = height;
 
-  dlg = gimp_dialog_new (_("Tile"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Tile"), PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -414,9 +410,10 @@ tile_dialog (gint32 image_ID,
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), vbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   frame = gimp_frame_new (_("Tile to New Size"));

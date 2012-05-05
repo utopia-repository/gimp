@@ -20,7 +20,7 @@ gimp_thumb_file_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     type = g_enum_register_static ("GimpThumbFileType", values);
 
   return type;
@@ -39,7 +39,7 @@ gimp_thumb_size_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     type = g_enum_register_static ("GimpThumbSize", values);
 
   return type;
@@ -64,7 +64,7 @@ gimp_thumb_state_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     type = g_enum_register_static ("GimpThumbState", values);
 
   return type;

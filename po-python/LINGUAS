@@ -4,6 +4,7 @@ ar
 az
 be
 bg
+br
 ca
 ca@valencia
 cs
@@ -25,6 +26,7 @@ gl
 gu
 hr
 hu
+id
 is
 it
 ja
@@ -33,7 +35,6 @@ ko
 lt
 lv
 mk
-mr
 ms
 my
 nb
@@ -41,7 +42,6 @@ ne
 nl
 nn
 oc
-or
 pa
 pl
 pt
@@ -54,6 +54,8 @@ sl
 sr
 sr@latin
 sv
+ta
+te
 tr
 uk
 vi

@@ -4,9 +4,9 @@
 # New Text PDB API
 # Copyright (C) 2008 Marcus Heese <heese@cip.ifi.lmu.de>
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 sub text_layer_new {
@@ -27,7 +26,7 @@ This procedure creates a new text layer. The arguments are kept as
 simple as necessary for the normal case. All text attributes, however,
 can be modified with the appropriate gimp_text_layer_set_*()
 procedures. The new layer still needs to be added to the image, as
-this is not automatic. Add the new layer using gimp_image_add_layer().
+this is not automatic. Add the new layer using gimp_image_insert_layer().
 HELP
 
     &marcus_pdb_misc('2008', '2.6');
@@ -71,7 +70,7 @@ HELP
 
   if (! layer)
     {
-      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+      g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_ARGUMENT,
                    _("Failed to create text layer"));
 
       success = FALSE;
@@ -103,7 +102,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "text", &text,
@@ -137,12 +136,53 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
                            "text", text,
                            NULL);
+    }
+  else
+    {
+      success = FALSE;
+    }
+}
+CODE
+    );
+}
+
+sub text_layer_get_markup {
+    $blurb = 'Get the markup from a text layer as string.';
+
+    $help = <<'HELP';
+This procedure returns the markup of the styles from a text layer.
+The markup will be in the form of Pango's markup - See
+http://www.pango.org/ for more information about Pango and its markup.
+Note: Setting the markup of a text layer using Pango's markup is not
+supported for now.
+HELP
+
+    barak_pdb_misc('2010', '2.8');
+
+    @inargs = (
+        { name => 'layer', type => 'layer',
+          desc => 'The text layer' }
+    );
+
+    @outargs = (
+        { name => 'markup', type => 'string',
+          desc => 'The markup which represents the style of the specified text layer.' }
+    );
+    
+    %invoke = (
+        code => <<'CODE'
+{
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+    {
+      g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
+                    "markup", &markup,
+                    NULL);
     }
   else
     {
@@ -175,7 +215,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "font", &font,
@@ -209,7 +249,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -251,7 +291,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "font-size",      &font_size,
@@ -289,7 +329,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -307,14 +347,7 @@ CODE
 }
 
 sub text_layer_get_hinting {
-    $blurb = 'Get information about hinting in the specified text layer.';
-
-    $help = <<'HELP';
-This procedure provides information about the hinting that is being
-used in a text layer.
-HELP
-
-    &marcus_pdb_misc('2008', '2.6');
+    &std_pdb_deprecated ('gimp-text-layer-get-hint-style');
 
     @inargs = (
         { name => 'layer', type => 'layer',
@@ -331,11 +364,10 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
-                    "hinting",  &hinting,
-                    "autohint", &autohint,
+                    "hinting", &hinting,
                     NULL);
     }
   else
@@ -348,6 +380,8 @@ CODE
 }
 
 sub text_layer_set_hinting {
+    &std_pdb_deprecated ('gimp-text-layer-set-hint-style');
+
     $blurb = 'Enable/disable the use of hinting in a text layer.';
 
     $help = <<'HELP';
@@ -363,19 +397,18 @@ HELP
           desc => 'The text layer' },
         { name => 'hinting', type => 'boolean',
           desc => 'Enable/disable the use of hinting on the text' },
-        { name => 'autohint', type => 'boolean',
+        { name => 'autohint', type => 'boolean', dead => 1,
           desc => 'Force the use of the autohinter provided through FreeType' }
     );
 
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
-                           "hinting",  hinting,
-                           "autohint", autohint,
+                           "hinting", hinting,
                            NULL);
     }
   else
@@ -409,7 +442,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "antialias", &antialias,
@@ -443,11 +476,87 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
                            "antialias", antialias,
+                           NULL);
+    }
+  else
+    {
+      success = FALSE;
+    }
+}
+CODE
+    );
+}
+
+sub text_layer_get_hint_style {
+    $blurb = 'Get information about hinting in the specified text layer.';
+
+    $help = <<'HELP';
+This procedure provides information about the hinting that is being
+used in a text layer. Hinting can be optimized for fidelity or contrast
+or it can be turned entirely off.
+HELP
+
+    &marcus_pdb_misc('2008', '2.8');
+
+    @inargs = (
+        { name => 'layer', type => 'layer',
+          desc => 'The text layer' }
+    );
+
+    @outargs = (
+        { name => 'style', type => 'enum GimpTextHintStyle',
+          desc => 'The hint style used for font outlines' }
+    );
+    
+    %invoke = (
+        code => <<'CODE'
+{
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
+    {
+      g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
+                    "hint-style", &style,
+                    NULL);
+    }
+  else
+    {
+      success = FALSE;
+    }
+}
+CODE
+    );
+}
+
+sub text_layer_set_hint_style {
+    $blurb = 'Control how font outlines are hinted in a text layer.';
+
+    $help = <<'HELP';
+This procedure sets the hint style for font outlines in a text
+layer. This controls whether to fit font outlines to the pixel grid,
+and if so, whether to optimize for fidelity or contrast.
+HELP
+
+    &neo_pdb_misc('2008', '2.8');
+
+    @inargs = (
+        { name => 'layer', type => 'layer',
+          desc => 'The text layer' },
+        { name => 'style', type => 'enum GimpTextHintStyle',
+          desc => 'The new hint style' }
+    );
+
+    %invoke = (
+        code => <<'CODE'
+{
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+    {
+      gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
+                           _("Set text layer attribute"),
+                           "hint-style", style,
                            NULL);
     }
   else
@@ -481,7 +590,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "kerning", &kerning,
@@ -515,7 +624,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -554,7 +663,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "language", &language,
@@ -589,7 +698,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -628,7 +737,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "base-direction", &direction,
@@ -663,7 +772,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -702,7 +811,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "justify", &justify,
@@ -737,7 +846,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -775,7 +884,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       color = gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer))->color;
     }
@@ -807,7 +916,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -845,7 +954,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "indent", &indent,
@@ -879,7 +988,7 @@ HELP
      %invoke = (
          code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -917,7 +1026,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "line-spacing", &line_spacing,
@@ -951,7 +1060,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
@@ -990,7 +1099,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, FALSE, error))
     {
       g_object_get (gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer)),
                     "letter-spacing", &letter_spacing,
@@ -1025,11 +1134,62 @@ HELP
     %invoke = (    
         code => <<'CODE'
 {
-  if (gimp_pdb_layer_is_text_layer (layer, error))
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
                            _("Set text layer attribute"),
                            "letter-spacing", letter_spacing,
+                           NULL);
+    }
+  else
+    {
+      success = FALSE;
+    }
+}
+CODE
+    );
+}
+
+sub text_layer_resize {
+    $blurb = 'Resize the box of a text layer.';
+
+    $help = <<'HELP';
+This procedure changes the width and height of a text layer while
+keeping it as a text layer and not converting it to a bitmap like
+gimp_layer_resize() would do.
+HELP
+
+    barak_pdb_misc('2009', '2.8');
+
+    @inargs = (
+        { name => 'layer', type => 'layer',
+          desc => 'The text layer' },
+        { name => 'width', type => '0.0 <= float <= GIMP_MAX_IMAGE_SIZE',
+          desc => 'The new box width in pixels' },
+        { name => 'height', type => '0.0 <= float <= GIMP_MAX_IMAGE_SIZE',
+          desc => 'The new box height in pixels' },
+    );
+
+    %invoke = (
+        code => <<'CODE'
+{
+  if (gimp_pdb_layer_is_text_layer (layer, TRUE, error))
+    {
+      GimpText *text = gimp_text_layer_get_text (GIMP_TEXT_LAYER (layer));
+      gdouble   xres, yres;
+
+      gimp_image_get_resolution (gimp_item_get_image (GIMP_ITEM (layer)),
+                                 &xres, &yres);
+
+      gimp_text_layer_set (GIMP_TEXT_LAYER (layer),
+                           _("Set text layer attribute"),
+                           "box-mode",   GIMP_TEXT_BOX_FIXED,
+                           "box-width",  gimp_pixels_to_units (width,
+                                                               text->box_unit,
+                                                               xres),
+                           "box-height", gimp_pixels_to_units (height,
+                                                               text->box_unit,
+                                                               yres),
                            NULL);
     }
   else
@@ -1053,14 +1213,15 @@ CODE
 @procs = qw(text_layer_new
             text_layer_get_text
             text_layer_set_text
+            text_layer_get_markup
             text_layer_get_font
             text_layer_set_font
             text_layer_get_font_size
             text_layer_set_font_size
-            text_layer_get_hinting
-            text_layer_set_hinting
             text_layer_get_antialias
             text_layer_set_antialias
+            text_layer_get_hint_style
+            text_layer_set_hint_style
             text_layer_get_kerning
             text_layer_set_kerning
             text_layer_get_language
@@ -1076,10 +1237,17 @@ CODE
             text_layer_get_line_spacing
             text_layer_set_line_spacing
             text_layer_get_letter_spacing
-            text_layer_set_letter_spacing);
+            text_layer_set_letter_spacing
+            text_layer_resize
+            text_layer_get_hinting
+            text_layer_set_hinting
+);
 
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Text layer procedures';
+$doc_title = 'gimptextlayer';
+$doc_short_desc = 'Functions for querying and manipulating text layers.';
+$doc_long_desc = 'Functions for querying and manipulating text layers.';
 
 1;

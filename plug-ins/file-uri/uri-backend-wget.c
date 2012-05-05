@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Author: Josh MacDonald. */
@@ -122,7 +121,7 @@ uri_backend_load_image (const gchar  *uri,
       g_snprintf (timeout_str, sizeof (timeout_str), "%d", TIMEOUT);
 
       execlp ("wget",
-              "wget", "-v", "-e", "server-response=off", "-T", timeout_str,
+              "wget", "-v", "-e", "server-response=off", "--progress=dot", "-T", timeout_str,
               uri, "-O", tmpname, NULL);
       _exit (127);
     }
@@ -131,6 +130,7 @@ uri_backend_load_image (const gchar  *uri,
       FILE     *input;
       gchar     buf[BUFSIZE];
       gboolean  seen_resolve = FALSE;
+      gboolean  seen_ftp     = FALSE;
       gboolean  connected    = FALSE;
       gboolean  redirect     = FALSE;
       gboolean  file_found   = FALSE;
@@ -146,13 +146,13 @@ uri_backend_load_image (const gchar  *uri,
       gchar    *message;
       gchar    *timeout_msg;
 
-#define DEBUG(x) if (debug) g_printerr (x)
+#define DEBUG(x) if (debug) g_printerr ("%s\n", x)
 
       close (p[1]);
 
       input = fdopen (p[0], "r");
 
-      /*  hardcoded and not-really-foolproof scanning of wget putput  */
+      /*  hardcoded and not-really-foolproof scanning of wget output  */
 
     wget_begin:
       /* Eat any Location lines */
@@ -181,6 +181,11 @@ uri_backend_load_image (const gchar  *uri,
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("wget exited abnormally on URI '%s'"), uri);
           return FALSE;
+        }
+      /* with an ftp url wget has a "=> `filename.foo" */
+      else if ( !seen_ftp && strstr (buf, "=> `"))
+        {
+          seen_ftp = TRUE;
         }
 
       DEBUG (buf);
@@ -233,6 +238,16 @@ uri_backend_load_image (const gchar  *uri,
 
           return FALSE;
         }
+      /* on successful ftp login wget prints a "Logged in" message */
+      else if ( seen_ftp && !strstr(buf, "Logged in!"))
+        {
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("A network error occurred: %s"), buf);
+
+          DEBUG (buf);
+
+          return FALSE;
+        }
       else if (strstr (buf, "302 Found"))
         {
           DEBUG (buf);
@@ -245,6 +260,37 @@ uri_backend_load_image (const gchar  *uri,
         }
 
       DEBUG (buf);
+
+      /* for an ftp session wget has extra output*/
+    ftp_session:
+      if (seen_ftp)
+        {
+          if (fgets (buf, sizeof (buf), input) == NULL)
+            {
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("A network error occurred: %s"), buf);
+
+              DEBUG (buf);
+
+              return FALSE;
+            }
+          /* if there is no size output file does not exist on server */
+          else if (strstr (buf, "==> SIZE") && strstr (buf, "... done"))
+            {
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("wget exited abnormally on URI '%s'"), uri);
+
+              DEBUG (buf);
+
+              return FALSE;
+            }
+          /* while no PASV line we eat other messages */
+          else if (!strstr (buf, "==> PASV"))
+            {
+              DEBUG (buf);
+              goto ftp_session;
+            }
+        }
 
       /*  The fifth line is either the length of the file or an error  */
       if (fgets (buf, sizeof (buf), input) == NULL)
@@ -296,10 +342,22 @@ uri_backend_load_image (const gchar  *uri,
             size = 0;
         }
 
+      /* on http sessions wget has "Saving to: ..." */
+      if (!seen_ftp)
+        {
+          if (fgets (buf, sizeof (buf), input) == NULL)
+            {
+              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("wget exited abnormally on URI '%s'"), uri);
+
+              return FALSE;
+            }
+        }
+
       /*  Start the actual download...  */
       if (size > 0)
         {
-          memsize = g_format_size_for_display (size);
+          memsize = g_format_size (size);
           message = g_strdup_printf (_("Downloading %s of image data"),
                                      memsize);
         }
@@ -340,7 +398,7 @@ uri_backend_load_image (const gchar  *uri,
                 }
               else
                 {
-                  memsize = g_format_size_for_display (kilobytes * 1024);
+                  memsize = g_format_size (kilobytes * 1024);
 
                   gimp_progress_set_text_printf
                     (_("Downloaded %s of image data"), memsize);
@@ -386,4 +444,11 @@ uri_backend_save_image (const gchar  *uri,
   g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, "not implemented");
 
   return FALSE;
+}
+
+gchar *
+uri_backend_map_image (const gchar  *uri,
+                       GimpRunMode   run_mode)
+{
+  return NULL;
 }

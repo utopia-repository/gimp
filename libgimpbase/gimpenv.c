@@ -4,10 +4,10 @@
  * gimpenv.c
  * Copyright (C) 1999 Tor Lillqvist <tml@iki.fi>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,13 +31,10 @@
 #include <glib-object.h>
 #include <glib/gstdio.h>
 
-#ifndef LIBGIMP_COMPILATION
-#define LIBGIMP_COMPILATION
-#endif
-
 #undef GIMP_DISABLE_DEPRECATED
 #include "gimpbasetypes.h"
 
+#define __GIMP_ENV_C__
 #include "gimpenv.h"
 #include "gimpversion.h"
 #include "gimpreloc.h"
@@ -64,6 +60,16 @@
 #define geteuid() 0
 #define getegid() 0
 #endif
+
+
+/**
+ * SECTION: gimpenv
+ * @title: gimpenv
+ * @short_description: Functions to access the GIMP environment.
+ *
+ * A set of functions to find the locations of GIMP's data directories
+ * and configuration files.
+ **/
 
 
 static gchar * gimp_env_get_dir (const gchar *gimp_env_name,
@@ -152,16 +158,50 @@ gimp_env_init (gboolean plug_in)
 const gchar *
 gimp_directory (void)
 {
-  static gchar *gimp_dir = NULL;
+  static gchar *gimp_dir          = NULL;
+  static gchar *last_env_gimp_dir = NULL;
 
   const gchar  *env_gimp_dir;
   const gchar  *home_dir;
 
-  if (gimp_dir)
-    return gimp_dir;
-
   env_gimp_dir = g_getenv ("GIMP2_DIRECTORY");
-  home_dir     = g_get_home_dir ();
+
+  if (gimp_dir)
+    {
+      gboolean gimp2_directory_changed = FALSE;
+
+      /* We have constructed the gimp_dir already. We can return
+       * gimp_dir unless some parameter gimp_dir depends on has
+       * changed. For now we just check for changes to GIMP2_DIRECTORY
+       */
+      gimp2_directory_changed =
+        (env_gimp_dir == NULL &&
+         last_env_gimp_dir != NULL) ||
+        (env_gimp_dir != NULL &&
+         last_env_gimp_dir == NULL) ||
+        (env_gimp_dir != NULL &&
+         last_env_gimp_dir != NULL &&
+         strcmp (env_gimp_dir, last_env_gimp_dir) != 0);
+
+      if (! gimp2_directory_changed)
+        {
+          return gimp_dir;
+        }
+      else
+        {
+          /* Free the old gimp_dir and go on to update it */
+          g_free (gimp_dir);
+          gimp_dir = NULL;
+        }
+    }
+
+  /* Remember the GIMP2_DIRECTORY to next invocation so we can check
+   * if it changes
+   */
+  g_free (last_env_gimp_dir);
+  last_env_gimp_dir = g_strdup (env_gimp_dir);
+
+  home_dir = g_get_home_dir ();
 
   if (env_gimp_dir)
     {
@@ -689,8 +729,7 @@ gimp_path_to_str (GList *path)
 void
 gimp_path_free (GList *path)
 {
-  g_list_foreach (path, (GFunc) g_free, NULL);
-  g_list_free (path);
+  g_list_free_full (path, (GDestroyNotify) g_free);
 }
 
 /**

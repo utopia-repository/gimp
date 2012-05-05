@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,6 +33,7 @@
 #include "gegl/gimpoperationhuesaturation.h"
 
 #include "core/gimpdrawable.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -118,7 +118,7 @@ gimp_hue_saturation_tool_class_init (GimpHueSaturationToolClass *klass)
 
   tool_class->initialize             = gimp_hue_saturation_tool_initialize;
 
-  im_tool_class->shell_desc          = _("Adjust Hue / Lightness / Saturation");
+  im_tool_class->dialog_desc         = _("Adjust Hue / Lightness / Saturation");
   im_tool_class->settings_name       = "hue-saturation";
   im_tool_class->import_dialog_title = _("Import Hue-Saturation Settings");
   im_tool_class->export_dialog_title = _("Export Hue-Saturation Settings");
@@ -157,26 +157,23 @@ gimp_hue_saturation_tool_initialize (GimpTool     *tool,
                                      GimpDisplay  *display,
                                      GError      **error)
 {
-  GimpHueSaturationTool *hs_tool = GIMP_HUE_SATURATION_TOOL (tool);
-  GimpDrawable          *drawable;
-
-  drawable = gimp_image_get_active_drawable (display->image);
+  GimpHueSaturationTool *hs_tool  = GIMP_HUE_SATURATION_TOOL (tool);
+  GimpImage             *image    = gimp_display_get_image (display);
+  GimpDrawable          *drawable = gimp_image_get_active_drawable (image);
 
   if (! drawable)
     return FALSE;
 
   if (! gimp_drawable_is_rgb (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Hue-Saturation operates only on RGB color layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Hue-Saturation operates only on RGB color layers."));
       return FALSE;
     }
 
   gimp_config_reset (GIMP_CONFIG (hs_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
-
-  return TRUE;
+  return GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
 }
 
 static GeglNode *
@@ -187,7 +184,7 @@ gimp_hue_saturation_tool_get_operation (GimpImageMapTool  *im_tool,
   GeglNode              *node;
 
   node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp-hue-saturation",
+                       "operation", "gimp:hue-saturation",
                        NULL);
 
   hs_tool->config = g_object_new (GIMP_TYPE_HUE_SATURATION_CONFIG, NULL);
@@ -227,7 +224,6 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
   GtkWidget               *vbox;
   GtkWidget               *abox;
   GtkWidget               *table;
-  GtkWidget               *slider;
   GtkWidget               *button;
   GtkWidget               *frame;
   GtkWidget               *hbox;
@@ -263,7 +259,7 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -361,9 +357,6 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
   g_object_unref (label_group);
   g_object_unref (spinner_group);
 
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
-
   g_signal_connect (data, "value-changed",
                     G_CALLBACK (hue_saturation_overlap_changed),
                     hs_tool);
@@ -373,7 +366,7 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_widget_show (frame);
 
   /*  The table containing sliders  */
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -395,9 +388,6 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_size_group_add_widget (label_group, GIMP_SCALE_ENTRY_LABEL (data));
   gtk_size_group_add_widget (spinner_group, GIMP_SCALE_ENTRY_SPINBUTTON (data));
 
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
-
   g_signal_connect (data, "value-changed",
                     G_CALLBACK (hue_saturation_hue_changed),
                     hs_tool);
@@ -413,9 +403,6 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
 
   gtk_size_group_add_widget (label_group, GIMP_SCALE_ENTRY_LABEL (data));
   gtk_size_group_add_widget (spinner_group, GIMP_SCALE_ENTRY_SPINBUTTON (data));
-
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
 
   g_signal_connect (data, "value-changed",
                     G_CALLBACK (hue_saturation_lightness_changed),
@@ -433,14 +420,11 @@ gimp_hue_saturation_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_size_group_add_widget (label_group, GIMP_SCALE_ENTRY_LABEL (data));
   gtk_size_group_add_widget (spinner_group, GIMP_SCALE_ENTRY_SPINBUTTON (data));
 
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
-
   g_signal_connect (hs_tool->saturation_data, "value-changed",
                     G_CALLBACK (hue_saturation_saturation_changed),
                     hs_tool);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

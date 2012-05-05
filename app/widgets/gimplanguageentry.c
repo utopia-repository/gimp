@@ -4,9 +4,9 @@
  * gimplanguageentry.c
  * Copyright (C) 2008  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,18 +15,24 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* GimpLanguageEntry is an entry widget that provides completion on
+ * translated language names. It is suited for specifying the language
+ * a text is written in.
  */
 
 #include "config.h"
+
+#include <string.h>
 
 #include <gtk/gtk.h>
 
 #include "widgets-types.h"
 
-#include "gimplanguagestore.h"
 #include "gimplanguageentry.h"
+#include "gimplanguagestore.h"
 
 
 enum
@@ -35,11 +41,16 @@ enum
   PROP_MODEL
 };
 
+struct _GimpLanguageEntry
+{
+  GtkEntry       parent_instance;
 
-static GObject * gimp_language_entry_constructor  (GType                  type,
-                                                   guint                  n_params,
-                                                   GObjectConstructParam *params);
+  GtkListStore  *store;
+  gchar         *code;  /*  ISO 639-1 language code  */
+};
 
+
+static void      gimp_language_entry_constructed  (GObject      *object);
 static void      gimp_language_entry_finalize     (GObject      *object);
 static void      gimp_language_entry_set_property (GObject      *object,
                                                    guint         property_id,
@@ -49,6 +60,11 @@ static void      gimp_language_entry_get_property (GObject      *object,
                                                    guint         property_id,
                                                    GValue       *value,
                                                    GParamSpec   *pspec);
+
+static gboolean  gimp_language_entry_language_selected (GtkEntryCompletion *completion,
+                                                        GtkTreeModel       *model,
+                                                        GtkTreeIter        *iter,
+                                                        GimpLanguageEntry  *entry);
 
 
 G_DEFINE_TYPE (GimpLanguageEntry, gimp_language_entry, GTK_TYPE_ENTRY)
@@ -61,7 +77,7 @@ gimp_language_entry_class_init (GimpLanguageEntryClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_language_entry_constructor;
+  object_class->constructed  = gimp_language_entry_constructed;
   object_class->finalize     = gimp_language_entry_finalize;
   object_class->set_property = gimp_language_entry_set_property;
   object_class->get_property = gimp_language_entry_get_property;
@@ -78,16 +94,13 @@ gimp_language_entry_init (GimpLanguageEntry *entry)
 {
 }
 
-static GObject *
-gimp_language_entry_constructor (GType                  type,
-                                 guint                  n_params,
-                                 GObjectConstructParam *params)
+static void
+gimp_language_entry_constructed (GObject *object)
 {
-  GimpLanguageEntry *entry;
-  GObject           *object;
+  GimpLanguageEntry *entry = GIMP_LANGUAGE_ENTRY (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-  entry  = GIMP_LANGUAGE_ENTRY (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   if (entry->store)
     {
@@ -95,15 +108,22 @@ gimp_language_entry_constructor (GType                  type,
 
       completion = g_object_new (GTK_TYPE_ENTRY_COMPLETION,
                                  "model",             entry->store,
-                                 "text-column",       GIMP_LANGUAGE_STORE_LANGUAGE,
                                  "inline-selection",  TRUE,
                                  NULL);
 
+      /* Note that we must use this function to set the text column,
+       * otherwise we won't get a cell renderer for free.
+       */
+      gtk_entry_completion_set_text_column (completion,
+                                            GIMP_LANGUAGE_STORE_LABEL);
+
       gtk_entry_set_completion (GTK_ENTRY (entry), completion);
       g_object_unref (completion);
-    }
 
-  return object;
+      g_signal_connect (completion, "match-selected",
+                        G_CALLBACK (gimp_language_entry_language_selected),
+                        entry);
+    }
 }
 
 static void
@@ -115,6 +135,12 @@ gimp_language_entry_finalize (GObject *object)
     {
       g_object_unref (entry->store);
       entry->store = NULL;
+    }
+
+  if (entry->code)
+    {
+      g_free (entry->code);
+      entry->code = NULL;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -131,8 +157,7 @@ gimp_language_entry_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_MODEL:
-      if (entry->store)
-        g_object_unref (entry->store);
+      g_return_if_fail (entry->store == NULL);
       entry->store = g_value_dup_object (value);
       break;
 
@@ -162,6 +187,21 @@ gimp_language_entry_get_property (GObject      *object,
     }
 }
 
+static gboolean
+gimp_language_entry_language_selected (GtkEntryCompletion *completion,
+                                       GtkTreeModel       *model,
+                                       GtkTreeIter        *iter,
+                                       GimpLanguageEntry  *entry)
+{
+  g_free (entry->code);
+
+  gtk_tree_model_get (model, iter,
+                      GIMP_LANGUAGE_STORE_CODE, &entry->code,
+                      -1);
+
+  return FALSE;
+}
+
 GtkWidget *
 gimp_language_entry_new (void)
 {
@@ -177,4 +217,52 @@ gimp_language_entry_new (void)
   g_object_unref (store);
 
   return entry;
+}
+
+const gchar *
+gimp_language_entry_get_code (GimpLanguageEntry *entry)
+{
+  g_return_val_if_fail (GIMP_IS_LANGUAGE_ENTRY (entry), NULL);
+
+  return entry->code;
+}
+
+gboolean
+gimp_language_entry_set_code (GimpLanguageEntry *entry,
+                              const gchar       *code)
+{
+  GtkTreeIter  iter;
+
+  g_return_val_if_fail (GIMP_IS_LANGUAGE_ENTRY (entry), FALSE);
+
+  if (entry->code)
+    {
+      g_free (entry->code);
+      entry->code = NULL;
+    }
+
+  if (! code || ! strlen (code))
+    {
+      gtk_entry_set_text (GTK_ENTRY (entry), "");
+
+      return TRUE;
+    }
+
+  if (gimp_language_store_lookup (GIMP_LANGUAGE_STORE (entry->store),
+                                  code, &iter))
+    {
+      gchar *label;
+
+      gtk_tree_model_get (GTK_TREE_MODEL (entry->store), &iter,
+                          GIMP_LANGUAGE_STORE_LABEL, &label,
+                          GIMP_LANGUAGE_STORE_CODE,  &entry->code,
+                          -1);
+
+      gtk_entry_set_text (GTK_ENTRY (entry), label);
+      g_free (label);
+
+      return TRUE;
+    }
+
+  return FALSE;
 }

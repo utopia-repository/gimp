@@ -3,10 +3,10 @@
  *
  * gimp.h
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,20 +14,22 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_H__
 #define __GIMP_H__
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <libgimpbase/gimpbase.h>
 #include <libgimpcolor/gimpcolor.h>
 #include <libgimpconfig/gimpconfig.h>
 #include <libgimpmath/gimpmath.h>
+
+#define __GIMP_H_INSIDE__
 
 #include <libgimp/gimpenums.h>
 #include <libgimp/gimptypes.h>
@@ -47,6 +49,7 @@
 #include <libgimp/gimppaletteselect.h>
 #include <libgimp/gimppatterns.h>
 #include <libgimp/gimppatternselect.h>
+#include <libgimp/gimppixbuf.h>
 #include <libgimp/gimppixelfetcher.h>
 #include <libgimp/gimppixelrgn.h>
 #include <libgimp/gimpplugin.h>
@@ -55,13 +58,15 @@
 #include <libgimp/gimpregioniterator.h>
 #include <libgimp/gimpselection.h>
 #include <libgimp/gimptile.h>
+#include <libgimp/gimpvectors.h>
 
-#include <libgimp/gimp_pdb.h>
+#include <libgimp/gimp_pdb_headers.h>
+
+#undef __GIMP_H_INSIDE__
 
 #ifdef G_OS_WIN32
 #include <stdlib.h> /* For __argc and __argv */
 #endif
-
 
 G_BEGIN_DECLS
 
@@ -81,23 +86,21 @@ typedef void (* GimpRunProc)   (const gchar      *name,
                                 GimpParam       **return_vals);
 
 
+/**
+ * GimpPlugInInfo:
+ * @init_proc:  called when the gimp application initially starts up
+ * @quit_proc:  called when the gimp application exits
+ * @query_proc: called by gimp so that the plug-in can inform the
+ *              gimp of what it does. (ie. installing a procedure database
+ *              procedure).
+ * @run_proc:   called to run a procedure the plug-in installed in the
+ *              procedure database.
+ **/
 struct _GimpPlugInInfo
 {
-  /* called when the gimp application initially starts up */
   GimpInitProc  init_proc;
-
-  /* called when the gimp application exits */
   GimpQuitProc  quit_proc;
-
-  /* called by gimp so that the plug-in can inform the
-   *  gimp of what it does. (ie. installing a procedure database
-   *  procedure).
-   */
   GimpQueryProc query_proc;
-
-  /* called to run a procedure the plug-in installed in the
-   *  procedure database.
-   */
   GimpRunProc   run_proc;
 };
 
@@ -130,9 +133,10 @@ union _GimpParamData
   gchar           **d_stringarray;
   GimpRGB          *d_colorarray;
   GimpRGB           d_color;
-  GimpParamRegion   d_region;
+  GimpParamRegion   d_region; /* deprecated */
   gint32            d_display;
   gint32            d_image;
+  gint32            d_item;
   gint32            d_layer;
   gint32            d_layer_mask;
   gint32            d_channel;
@@ -156,15 +160,14 @@ struct _GimpParam
 
 
 /**
- * MAIN():
+ * MAIN:
  *
  * A macro that expands to the appropriate main() function for the
  * platform being compiled for.
  *
  * To use this macro, simply place a line that contains just the code
  * MAIN() at the toplevel of your file.  No semicolon should be used.
- *
- */
+ **/
 
 #ifdef G_OS_WIN32
 
@@ -319,8 +322,6 @@ guint          gimp_tile_height         (void) G_GNUC_CONST;
 gint           gimp_shm_ID              (void) G_GNUC_CONST;
 guchar       * gimp_shm_addr            (void) G_GNUC_CONST;
 gdouble        gimp_gamma               (void) G_GNUC_CONST;
-gboolean       gimp_install_cmap        (void) G_GNUC_CONST;
-gint           gimp_min_colors          (void) G_GNUC_CONST;
 gboolean       gimp_show_tool_tips      (void) G_GNUC_CONST;
 gboolean       gimp_show_help_button    (void) G_GNUC_CONST;
 GimpCheckSize  gimp_check_size          (void) G_GNUC_CONST;
@@ -333,10 +334,20 @@ guint32        gimp_user_time           (void) G_GNUC_CONST;
 
 const gchar  * gimp_get_progname        (void) G_GNUC_CONST;
 
-gboolean       gimp_attach_new_parasite (const gchar    *name,
-                                         gint            flags,
-                                         gint            size,
-                                         gconstpointer   data);
+#ifndef GIMP_DISABLE_DEPRECATED
+gboolean       gimp_install_cmap        (void) G_GNUC_CONST;
+gint           gimp_min_colors          (void) G_GNUC_CONST;
+
+GimpParasite * gimp_parasite_find       (const gchar        *name);
+gboolean       gimp_parasite_attach     (const GimpParasite *parasite);
+gboolean       gimp_parasite_detach     (const gchar        *name);
+gboolean       gimp_parasite_list       (gint               *num_parasites,
+                                         gchar            ***parasites);
+gboolean       gimp_attach_new_parasite (const gchar        *name,
+                                         gint                flags,
+                                         gint                size,
+                                         gconstpointer       data);
+#endif /* GIMP_DISABLE_DEPRECATED */
 
 
 G_END_DECLS

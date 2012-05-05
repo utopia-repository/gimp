@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,10 +29,18 @@
 #include <process.h>
 #endif
 
+#ifdef G_OS_UNIX
+/* For get_backtrace() */
+#include <stdlib.h>
+#include <string.h>
+#include <execinfo.h>
+#endif
+
 #include "base-utils.h"
 
 
 #define NUM_PROCESSORS_DEFAULT 1
+#define MAX_FUNC               100
 
 
 /*  public functions  */
@@ -93,4 +100,41 @@ get_physical_memory_size (void)
 #endif
 
   return 0;
+}
+
+/**
+ * get_backtrace:
+ *
+ * Returns: The current stack trace. Free with g_free(). Mainly meant
+ * for debugging, for example storing the allocation stack traces for
+ * objects to hunt down leaks.
+ **/
+char *
+get_backtrace (void)
+{
+#ifdef G_OS_UNIX
+  void     *functions[MAX_FUNC];
+  char    **function_names;
+  int       n_functions;
+  int       i;
+  GString  *result;
+
+  /* Get symbols */
+  n_functions    = backtrace (functions, MAX_FUNC);
+  function_names = backtrace_symbols (functions, n_functions);
+
+  /* Construct stack trace */
+  result = g_string_new ("");
+  for (i = 0; i < n_functions; i++)
+    g_string_append_printf (result, "%s\n", function_names[i]);
+
+  /* We must not free the function names themselves, we only need to
+   * free the array that points to them
+   */
+  free (function_names);
+
+  return g_string_free (result, FALSE/*free_segment*/);
+#else
+  return g_strdup ("backtrace() only available with GNU libc\n");
+#endif
 }

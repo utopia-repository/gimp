@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __TOOLS_ENUMS_H__
@@ -22,6 +21,18 @@
 /*
  * these enums are registered with the type system
  */
+
+#define GIMP_TYPE_BUTTON_PRESS_TYPE (gimp_button_press_type_get_type ())
+
+GType gimp_button_press_type_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_BUTTON_PRESS_NORMAL,
+  GIMP_BUTTON_PRESS_DOUBLE,
+  GIMP_BUTTON_PRESS_TRIPLE
+} GimpButtonPressType;
+
 
 #define GIMP_TYPE_BUTTON_RELEASE_TYPE (gimp_button_release_type_get_type ())
 
@@ -34,19 +45,6 @@ typedef enum
   GIMP_BUTTON_RELEASE_CLICK,
   GIMP_BUTTON_RELEASE_NO_MOTION
 } GimpButtonReleaseType;
-
-
-#define GIMP_TYPE_RECTANGLE_GUIDE (gimp_rectangle_guide_get_type ())
-
-GType gimp_rectangle_guide_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_RECTANGLE_GUIDE_NONE,          /*< desc="No guides"       >*/
-  GIMP_RECTANGLE_GUIDE_CENTER_LINES,  /*< desc="Center lines"    >*/
-  GIMP_RECTANGLE_GUIDE_THIRDS,        /*< desc="Rule of thirds"  >*/
-  GIMP_RECTANGLE_GUIDE_GOLDEN         /*< desc="Golden sections" >*/
-} GimpRectangleGuide;
 
 
 #define GIMP_TYPE_RECTANGLE_CONSTRAINT (gimp_rectangle_constraint_get_type ())
@@ -109,30 +107,6 @@ typedef enum
 } GimpTransformType;
 
 
-#define GIMP_TYPE_TRANSFORM_PREVIEW_TYPE (gimp_transform_preview_type_get_type ())
-
-GType gimp_transform_preview_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_TRANSFORM_PREVIEW_TYPE_OUTLINE,     /*< desc="Outline"      >*/
-  GIMP_TRANSFORM_PREVIEW_TYPE_GRID,        /*< desc="Grid"         >*/
-  GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE,       /*< desc="Image"        >*/
-  GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE_GRID   /*< desc="Image + Grid" >*/
-} GimpTransformPreviewType;
-
-
-#define GIMP_TYPE_TRANSFORM_GRID_TYPE (gimp_transform_grid_type_get_type ())
-
-GType gimp_transform_grid_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_TRANSFORM_GRID_TYPE_N_LINES,  /*< desc="Number of grid lines" >*/
-  GIMP_TRANSFORM_GRID_TYPE_SPACING   /*< desc="Grid line spacing"    >*/
-} GimpTransformGridType;
-
-
 #define GIMP_TYPE_VECTOR_MODE (gimp_vector_mode_get_type ())
 
 GType gimp_vector_mode_get_type (void) G_GNUC_CONST;
@@ -143,6 +117,18 @@ typedef enum
   GIMP_VECTOR_MODE_EDIT,        /*< desc="Edit"   >*/
   GIMP_VECTOR_MODE_MOVE         /*< desc="Move"   >*/
 } GimpVectorMode;
+
+
+#define GIMP_TYPE_TOOL_ACTION (gimp_tool_action_get_type ())
+
+GType gimp_tool_action_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_TOOL_ACTION_PAUSE,
+  GIMP_TOOL_ACTION_RESUME,
+  GIMP_TOOL_ACTION_HALT
+} GimpToolAction;
 
 
 /*
@@ -157,14 +143,6 @@ typedef enum /*< skip >*/
   SELECTION_MOVE_COPY,
   SELECTION_ANCHOR
 } SelectFunction;
-
-/*  Tool control actions  */
-typedef enum /*< skip >*/
-{
-  GIMP_TOOL_ACTION_PAUSE,
-  GIMP_TOOL_ACTION_RESUME,
-  GIMP_TOOL_ACTION_HALT
-} GimpToolAction;
 
 /*  Modes of GimpEditSelectionTool  */
 typedef enum /*< skip >*/
@@ -183,25 +161,8 @@ typedef enum /*< skip >*/
 typedef enum /*< skip >*/
 {
   GIMP_MOTION_MODE_EXACT,
-  GIMP_MOTION_MODE_HINT,
   GIMP_MOTION_MODE_COMPRESS
 } GimpMotionMode;
-
-/*  Possible transform functions  */
-typedef enum /*< skip >*/
-{
-  TRANSFORM_CREATING,
-  TRANSFORM_HANDLE_NONE,
-  TRANSFORM_HANDLE_NW, /* north west */
-  TRANSFORM_HANDLE_NE, /* north east */
-  TRANSFORM_HANDLE_SW, /* south west */
-  TRANSFORM_HANDLE_SE, /* south east */
-  TRANSFORM_HANDLE_N,  /* north      */
-  TRANSFORM_HANDLE_S,  /* south      */
-  TRANSFORM_HANDLE_E,  /* east       */
-  TRANSFORM_HANDLE_W,  /* west       */
-  TRANSFORM_HANDLE_CENTER
-} TransformAction;
 
 
 #endif /* __TOOLS_ENUMS_H__ */

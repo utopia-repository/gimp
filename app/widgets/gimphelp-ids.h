@@ -4,9 +4,9 @@
  * gimphelp-ids.h
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_HELP_IDS_H__
@@ -34,11 +33,15 @@
 #define GIMP_HELP_FILE_SAVE                       "gimp-file-save"
 #define GIMP_HELP_FILE_SAVE_AS                    "gimp-file-save-as"
 #define GIMP_HELP_FILE_SAVE_A_COPY                "gimp-file-save-a-copy"
-#define GIMP_HELP_FILE_SAVE_AS_TEMPLATE           "gimp-file-save-as-template"
 #define GIMP_HELP_FILE_SAVE_BY_EXTENSION          "gimp-file-save-by-extension"
+#define GIMP_HELP_FILE_EXPORT                     "gimp-file-export"
+#define GIMP_HELP_FILE_EXPORT_TO                  "gimp-file-export-to"
+#define GIMP_HELP_FILE_OVERWRITE                  "gimp-file-overwrite"
+#define GIMP_HELP_FILE_SAVE_AS_TEMPLATE           "gimp-file-save-as-template"
 #define GIMP_HELP_FILE_REVERT                     "gimp-file-revert"
 #define GIMP_HELP_FILE_CLOSE                      "gimp-file-close"
 #define GIMP_HELP_FILE_CLOSE_ALL                  "gimp-file-close-all"
+#define GIMP_HELP_FILE_CREATE_TEMPLATE            "gimp-file-save-as-template" /* Update string along with gimp-help-2 */
 #define GIMP_HELP_FILE_QUIT                       "gimp-file-quit"
 
 #define GIMP_HELP_EDIT_UNDO                       "gimp-edit-undo"
@@ -141,14 +144,11 @@
 #define GIMP_HELP_LAYER_DUPLICATE                 "gimp-layer-duplicate"
 #define GIMP_HELP_LAYER_ANCHOR                    "gimp-layer-anchor"
 #define GIMP_HELP_LAYER_MERGE_DOWN                "gimp-layer-merge-down"
+#define GIMP_HELP_LAYER_MERGE_GROUP               "gimp-layer-merge-group"
 #define GIMP_HELP_LAYER_DELETE                    "gimp-layer-delete"
 #define GIMP_HELP_LAYER_TEXT_DISCARD              "gimp-layer-text-discard"
 #define GIMP_HELP_LAYER_TEXT_TO_PATH              "gimp-layer-text-to-path"
 #define GIMP_HELP_LAYER_TEXT_ALONG_PATH           "gimp-layer-text-along-path"
-#define GIMP_HELP_LAYER_TEXT_SELECTION_REPLACE    "gimp-layer-text-selection-replace"
-#define GIMP_HELP_LAYER_TEXT_SELECTION_ADD        "gimp-layer-text-selection-add"
-#define GIMP_HELP_LAYER_TEXT_SELECTION_SUBTRACT   "gimp-layer-text-selection-subtract"
-#define GIMP_HELP_LAYER_TEXT_SELECTION_INTERSECT  "gimp-layer-text-selection-intersect"
 #define GIMP_HELP_LAYER_PREVIOUS                  "gimp-layer-previous"
 #define GIMP_HELP_LAYER_NEXT                      "gimp-layer-next"
 #define GIMP_HELP_LAYER_TOP                       "gimp-layer-top"
@@ -242,6 +242,7 @@
 #define GIMP_HELP_TOOL_BRIGHTNESS_CONTRAST        "gimp-tool-brightness-contrast"
 #define GIMP_HELP_TOOL_BUCKET_FILL                "gimp-tool-bucket-fill"
 #define GIMP_HELP_TOOL_BY_COLOR_SELECT            "gimp-tool-by-color-select"
+#define GIMP_HELP_TOOL_CAGE                       "gimp-tool-cage"
 #define GIMP_HELP_TOOL_CLONE                      "gimp-tool-clone"
 #define GIMP_HELP_TOOL_COLORIZE                   "gimp-tool-colorize"
 #define GIMP_HELP_TOOL_COLOR_BALANCE              "gimp-tool-color-balance"
@@ -258,6 +259,7 @@
 #define GIMP_HELP_TOOL_FREE_SELECT                "gimp-tool-free-select"
 #define GIMP_HELP_TOOL_FOREGROUND_SELECT          "gimp-tool-foreground-select"
 #define GIMP_HELP_TOOL_FUZZY_SELECT               "gimp-tool-fuzzy-select"
+#define GIMP_HELP_TOOL_GEGL                       "gimp-tool-gegl"
 #define GIMP_HELP_TOOL_HEAL                       "gimp-tool-heal"
 #define GIMP_HELP_TOOL_HUE_SATURATION             "gimp-tool-hue-saturation"
 #define GIMP_HELP_TOOL_INK                        "gimp-tool-ink"
@@ -303,6 +305,18 @@
 
 #define GIMP_HELP_BRUSH_EDITOR_DIALOG             "gimp-brush-editor-dialog"
 #define GIMP_HELP_BRUSH_EDITOR_EDIT_ACTIVE        "gimp-brush-editor-edit-active"
+
+#define GIMP_HELP_DYNAMICS_EDITOR_DIALOG          "gimp-dynamics-editor-dialog"
+
+#define GIMP_HELP_TOOL_PRESET_EDITOR_DIALOG       "gimp-tool-preset-editor-dialog"
+
+#define GIMP_HELP_DYNAMICS_DIALOG                 "gimp-dynamics-dialog"
+#define GIMP_HELP_DYNAMICS_EDIT                   "gimp-dynamics-edit"
+#define GIMP_HELP_DYNAMICS_NEW                    "gimp-dynamics-new"
+#define GIMP_HELP_DYNAMICS_DUPLICATE              "gimp-dynamics-duplicate"
+#define GIMP_HELP_DYNAMICS_COPY_LOCATION          "gimp-dynamics-copy-location"
+#define GIMP_HELP_DYNAMICS_DELETE                 "gimp-dynamics-delete"
+#define GIMP_HELP_DYNAMICS_REFRESH                "gimp-dynamics-refresh"
 
 #define GIMP_HELP_PATTERN_DIALOG                  "gimp-pattern-dialog"
 #define GIMP_HELP_PATTERN_EDIT                    "gimp-pattern-edit"
@@ -375,6 +389,14 @@
 #define GIMP_HELP_BUFFER_PASTE_AS_NEW             "gimp-buffer-paste-as-new"
 #define GIMP_HELP_BUFFER_DELETE                   "gimp-buffer-delete"
 
+#define GIMP_HELP_TOOL_PRESET_DIALOG              "gimp-tool-preset-dialog"
+#define GIMP_HELP_TOOL_PRESET_EDIT                "gimp-tool-preset-edit"
+#define GIMP_HELP_TOOL_PRESET_NEW                 "gimp-tool-preset-new"
+#define GIMP_HELP_TOOL_PRESET_DUPLICATE           "gimp-tool-preset-duplicate"
+#define GIMP_HELP_TOOL_PRESET_COPY_LOCATION       "gimp-tool-preset-copy-location"
+#define GIMP_HELP_TOOL_PRESET_DELETE              "gimp-tool-preset-delete"
+#define GIMP_HELP_TOOL_PRESET_REFRESH             "gimp-tool-preset-refresh"
+
 #define GIMP_HELP_DOCUMENT_CLEAR                  "gimp-document-clear"
 #define GIMP_HELP_DOCUMENT_COPY_LOCATION          "gimp-document-copy-location"
 #define GIMP_HELP_DOCUMENT_DIALOG                 "gimp-document-dialog"
@@ -392,7 +414,7 @@
 #define GIMP_HELP_TOOL_OPTIONS_DIALOG             "gimp-tool-options-dialog"
 #define GIMP_HELP_TOOL_OPTIONS_SAVE               "gimp-tool-options-save"
 #define GIMP_HELP_TOOL_OPTIONS_RESTORE            "gimp-tool-options-restore"
-#define GIMP_HELP_TOOL_OPTIONS_RENAME             "gimp-tool-options-rename"
+#define GIMP_HELP_TOOL_OPTIONS_EDIT               "gimp-tool-options-edit"
 #define GIMP_HELP_TOOL_OPTIONS_DELETE             "gimp-tool-options-delete"
 #define GIMP_HELP_TOOL_OPTIONS_RESET              "gimp-tool-options-reset"
 
@@ -422,10 +444,12 @@
 #define GIMP_HELP_PREFS_SESSION                   "gimp-prefs-session"
 #define GIMP_HELP_PREFS_FOLDERS                   "gimp-prefs-folders"
 #define GIMP_HELP_PREFS_FOLDERS_BRUSHES           "gimp-prefs-folders-brushes"
+#define GIMP_HELP_PREFS_FOLDERS_DYNAMICS          "gimp-prefs-folders-dynamics"
 #define GIMP_HELP_PREFS_FOLDERS_PATTERNS          "gimp-prefs-folders-patterns"
 #define GIMP_HELP_PREFS_FOLDERS_PALETTES          "gimp-prefs-folders-palettes"
 #define GIMP_HELP_PREFS_FOLDERS_GRADIENTS         "gimp-prefs-folders-gradients"
 #define GIMP_HELP_PREFS_FOLDERS_FONTS             "gimp-prefs-folders-fonts"
+#define GIMP_HELP_PREFS_FOLDERS_TOOL_PRESETS      "gimp-prefs-folders-tool-presets"
 #define GIMP_HELP_PREFS_FOLDERS_PLUG_INS          "gimp-prefs-folders-plug-ins"
 #define GIMP_HELP_PREFS_FOLDERS_SCRIPTS           "gimp-prefs-folders-scripts"
 #define GIMP_HELP_PREFS_FOLDERS_MODULES           "gimp-prefs-folders-modules"
@@ -433,6 +457,7 @@
 #define GIMP_HELP_PREFS_FOLDERS_ENVIRONMENT       "gimp-prefs-folders-environment"
 #define GIMP_HELP_PREFS_FOLDERS_THEMES            "gimp-prefs-folders-themes"
 
+#define GIMP_HELP_INPUT_DEVICES                   "gimp-help-input-devices"
 #define GIMP_HELP_KEYBOARD_SHORTCUTS              "gimp-help-keyboard-shortcuts"
 
 #define GIMP_HELP_INDEXED_PALETTE_DIALOG          "gimp-indexed-palette-dialog"
@@ -480,6 +505,8 @@
 #define GIMP_HELP_UNIT_DIALOG                     "gimp-unit-dialog"
 
 #define GIMP_HELP_WINDOWS_SHOW_DOCK               "gimp-windows-show-dock"
+#define GIMP_HELP_WINDOWS_HIDE_DOCKS              "gimp-windows-hide-docks"
+#define GIMP_HELP_WINDOWS_USE_SINGLE_WINDOW_MODE  "gimp-windows-use-single-window-mode"
 #define GIMP_HELP_WINDOWS_OPEN_RECENT_DOCK        "gimp-windows-open-recent-dock"
 
 #define GIMP_HELP_HELP                            "gimp-help"
@@ -498,6 +525,7 @@
 #define GIMP_HELP_CONTROLLER_KEYBOARD             "gimp-controller-keyboard"
 #define GIMP_HELP_CONTROLLER_LINUX_INPUT          "gimp-controller-linux-input"
 #define GIMP_HELP_CONTROLLER_MIDI                 "gimp-controller-midi"
+#define GIMP_HELP_CONTROLLER_MOUSE                "gimp-controller-mouse"
 #define GIMP_HELP_CONTROLLER_WHEEL                "gimp-controller-wheel"
 
 #define GIMP_HELP_CONFIG_USE_GEGL                 "gimp-config-use-gegl"

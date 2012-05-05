@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -41,80 +41,81 @@
 static const GimpActionEntry select_actions[] =
 {
   { "selection-popup", GIMP_STOCK_TOOL_RECT_SELECT,
-    N_("Selection Editor Menu"), NULL, NULL, NULL,
+    NC_("select-action", "Selection Editor Menu"), NULL, NULL, NULL,
     GIMP_HELP_SELECTION_DIALOG },
 
-  { "select-menu", NULL, N_("_Select") },
+  { "select-menu", NULL, NC_("select-action", "_Select") },
 
   { "select-all", GIMP_STOCK_SELECTION_ALL,
-    N_("select|_All"), "<control>A",
-    N_("Select everything"),
+    NC_("select-action", "_All"), "<primary>A",
+    NC_("select-action", "Select everything"),
     G_CALLBACK (select_all_cmd_callback),
     GIMP_HELP_SELECTION_ALL },
 
   { "select-none", GIMP_STOCK_SELECTION_NONE,
-    N_("select|_None"), "<control><shift>A",
-    N_("Dismiss the selection"),
+    NC_("select-action", "_None"), "<primary><shift>A",
+    NC_("select-action", "Dismiss the selection"),
     G_CALLBACK (select_none_cmd_callback),
     GIMP_HELP_SELECTION_NONE },
 
   { "select-invert", GIMP_STOCK_INVERT,
-    N_("_Invert"), "<control>I",
-    N_("Invert the selection"),
+    NC_("select-action", "_Invert"), "<primary>I",
+    NC_("select-action", "Invert the selection"),
     G_CALLBACK (select_invert_cmd_callback),
     GIMP_HELP_SELECTION_INVERT },
 
   { "select-float", GIMP_STOCK_FLOATING_SELECTION,
-    N_("_Float"), "<control><shift>L",
-    N_("Create a floating selection"),
+    NC_("select-action", "_Float"), "<primary><shift>L",
+    NC_("select-action", "Create a floating selection"),
     G_CALLBACK (select_float_cmd_callback),
     GIMP_HELP_SELECTION_FLOAT },
 
   { "select-feather", NULL,
-    N_("Fea_ther..."), NULL,
-    N_("Blur the selection border so that it fades out smoothly"),
+    NC_("select-action", "Fea_ther..."), NULL,
+    NC_("select-action",
+        "Blur the selection border so that it fades out smoothly"),
     G_CALLBACK (select_feather_cmd_callback),
     GIMP_HELP_SELECTION_FEATHER },
 
   { "select-sharpen", NULL,
-    N_("_Sharpen"), NULL,
-    N_("Remove fuzzyness from the selection"),
+    NC_("select-action", "_Sharpen"), NULL,
+    NC_("select-action", "Remove fuzziness from the selection"),
     G_CALLBACK (select_sharpen_cmd_callback),
     GIMP_HELP_SELECTION_SHARPEN },
 
   { "select-shrink", GIMP_STOCK_SELECTION_SHRINK,
-    N_("S_hrink..."), NULL,
-    N_("Contract the selection"),
+    NC_("select-action", "S_hrink..."), NULL,
+    NC_("select-action", "Contract the selection"),
     G_CALLBACK (select_shrink_cmd_callback),
     GIMP_HELP_SELECTION_SHRINK },
 
   { "select-grow", GIMP_STOCK_SELECTION_GROW,
-    N_("_Grow..."), NULL,
-    N_("Enlarge the selection"),
+    NC_("select-action", "_Grow..."), NULL,
+    NC_("select-action", "Enlarge the selection"),
     G_CALLBACK (select_grow_cmd_callback),
     GIMP_HELP_SELECTION_GROW },
 
   { "select-border", GIMP_STOCK_SELECTION_BORDER,
-    N_("Bo_rder..."), NULL,
-    N_("Replace the selection by its border"),
+    NC_("select-action", "Bo_rder..."), NULL,
+    NC_("select-action", "Replace the selection by its border"),
     G_CALLBACK (select_border_cmd_callback),
     GIMP_HELP_SELECTION_BORDER },
 
   { "select-save", GIMP_STOCK_SELECTION_TO_CHANNEL,
-    N_("Save to _Channel"), NULL,
-    N_("Save the selection to a channel"),
+    NC_("select-action", "Save to _Channel"), NULL,
+    NC_("select-action", "Save the selection to a channel"),
     G_CALLBACK (select_save_cmd_callback),
     GIMP_HELP_SELECTION_TO_CHANNEL },
 
   { "select-stroke", GIMP_STOCK_SELECTION_STROKE,
-    N_("_Stroke Selection..."), NULL,
-    N_("Paint along the selection outline"),
+    NC_("select-action", "_Stroke Selection..."), NULL,
+    NC_("select-action", "Paint along the selection outline"),
     G_CALLBACK (select_stroke_cmd_callback),
     GIMP_HELP_SELECTION_STROKE },
 
   { "select-stroke-last-values", GIMP_STOCK_SELECTION_STROKE,
-    N_("_Stroke Selection"), NULL,
-    N_("Stroke the selection with last used values"),
+    NC_("select-action", "_Stroke Selection"), NULL,
+    NC_("select-action", "Stroke the selection with last used values"),
     G_CALLBACK (select_stroke_last_vals_cmd_callback),
     GIMP_HELP_SELECTION_STROKE }
 };
@@ -123,25 +124,35 @@ static const GimpActionEntry select_actions[] =
 void
 select_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "select-action",
                                  select_actions,
-                                 G_N_ELEMENTS (select_actions));
+				 G_N_ELEMENTS (select_actions));
 }
 
 void
 select_actions_update (GimpActionGroup *group,
                        gpointer         data)
 {
-  GimpImage    *image   = action_data_get_image (data);
+  GimpImage    *image    = action_data_get_image (data);
   GimpDrawable *drawable = NULL;
   gboolean      fs       = FALSE;
   gboolean      sel      = FALSE;
+  gboolean      writable = FALSE;
+  gboolean      children = FALSE;
 
   if (image)
     {
       drawable = gimp_image_get_active_drawable (image);
 
-      fs  = (gimp_image_floating_sel (image) != NULL);
+      if (drawable)
+        {
+          writable = ! gimp_item_is_content_locked (GIMP_ITEM (drawable));
+
+          if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
+            children = TRUE;
+        }
+
+      fs  = (gimp_image_get_floating_selection (image) != NULL);
       sel = ! gimp_channel_is_empty (gimp_image_get_mask (image));
     }
 
@@ -151,7 +162,7 @@ select_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("select-all",    drawable);
   SET_SENSITIVE ("select-none",   drawable && sel);
   SET_SENSITIVE ("select-invert", drawable);
-  SET_SENSITIVE ("select-float",  drawable && sel);
+  SET_SENSITIVE ("select-float",  writable && !children && sel);
 
   SET_SENSITIVE ("select-feather", drawable && sel);
   SET_SENSITIVE ("select-sharpen", drawable && sel);
@@ -160,8 +171,8 @@ select_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("select-border",  drawable && sel);
 
   SET_SENSITIVE ("select-save",               drawable && !fs);
-  SET_SENSITIVE ("select-stroke",             drawable && sel);
-  SET_SENSITIVE ("select-stroke-last-values", drawable && sel);
+  SET_SENSITIVE ("select-stroke",             writable && !children && sel);
+  SET_SENSITIVE ("select-stroke-last-values", writable && !children && sel);
 
 #undef SET_SENSITIVE
 }

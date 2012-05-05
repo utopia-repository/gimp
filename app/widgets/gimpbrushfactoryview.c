@@ -4,9 +4,9 @@
  * gimpbrushfactoryview.c
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,14 +32,16 @@
 #include "core/gimpbrushgenerated.h"
 #include "core/gimpdatafactory.h"
 
-#include "gimpcontainerview.h"
 #include "gimpbrushfactoryview.h"
+#include "gimpcontainerview.h"
+#include "gimpmenufactory.h"
+#include "gimpspinscale.h"
 #include "gimpviewrenderer.h"
 
 #include "gimp-intl.h"
 
 
-static void   gimp_brush_factory_view_destroy         (GtkObject            *object);
+static void   gimp_brush_factory_view_dispose         (GObject              *object);
 
 static void   gimp_brush_factory_view_select_item     (GimpContainerEditor  *editor,
                                                        GimpViewable         *viewable);
@@ -60,10 +61,10 @@ G_DEFINE_TYPE (GimpBrushFactoryView, gimp_brush_factory_view,
 static void
 gimp_brush_factory_view_class_init (GimpBrushFactoryViewClass *klass)
 {
-  GtkObjectClass           *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass             *object_class = G_OBJECT_CLASS (klass);
   GimpContainerEditorClass *editor_class = GIMP_CONTAINER_EDITOR_CLASS (klass);
 
-  object_class->destroy     = gimp_brush_factory_view_destroy;
+  object_class->dispose     = gimp_brush_factory_view_dispose;
 
   editor_class->select_item = gimp_brush_factory_view_select_item;
 }
@@ -71,40 +72,36 @@ gimp_brush_factory_view_class_init (GimpBrushFactoryViewClass *klass)
 static void
 gimp_brush_factory_view_init (GimpBrushFactoryView *view)
 {
-  GtkWidget *table;
-
-  table = gtk_table_new (1, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_widget_show (table);
-
   view->spacing_adjustment =
-    GTK_ADJUSTMENT (gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
-                                          _("Spacing:"), -1, -1,
-                                          0.0, 1.0, 200.0, 1.0, 10.0, 1,
-                                          FALSE, 1.0, 5000.0,
-                                          _("Percentage of width of brush"),
-                                          NULL));
+    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 1.0, 5000.0,
+                                        1.0, 10.0, 0.0));
 
-  view->spacing_scale = GIMP_SCALE_ENTRY_SCALE (view->spacing_adjustment);
+  view->spacing_scale = gimp_spin_scale_new (view->spacing_adjustment,
+                                             _("Spacing"), 1);
+  gimp_spin_scale_set_scale_limits (GIMP_SPIN_SCALE (view->spacing_scale),
+                                   1.0, 200.0);
+  gimp_help_set_help_data (view->spacing_scale,
+                           _("Percentage of width of brush"),
+                           NULL);
 
   g_signal_connect (view->spacing_adjustment, "value-changed",
                     G_CALLBACK (gimp_brush_factory_view_spacing_update),
                     view);
-
-  view->spacing_changed_handler_id = 0;
 }
 
 static void
-gimp_brush_factory_view_destroy (GtkObject *object)
+gimp_brush_factory_view_dispose (GObject *object)
 {
   GimpBrushFactoryView *view   = GIMP_BRUSH_FACTORY_VIEW (object);
   GimpContainerEditor  *editor = GIMP_CONTAINER_EDITOR (object);
 
   if (view->spacing_changed_handler_id)
     {
-      GimpContainer *container;
+      GimpDataFactory *factory;
+      GimpContainer   *container;
 
-      container = gimp_container_view_get_container (editor->view);
+      factory   = gimp_data_factory_view_get_data_factory (GIMP_DATA_FACTORY_VIEW (editor));
+      container = gimp_data_factory_get_container (factory);
 
       gimp_container_remove_handler (container,
                                      view->spacing_changed_handler_id);
@@ -112,7 +109,7 @@ gimp_brush_factory_view_destroy (GtkObject *object)
       view->spacing_changed_handler_id = 0;
     }
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 GtkWidget *
@@ -128,38 +125,37 @@ gimp_brush_factory_view_new (GimpViewType     view_type,
   GimpContainerEditor  *editor;
 
   g_return_val_if_fail (GIMP_IS_DATA_FACTORY (factory), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (view_size > 0 &&
                         view_size <= GIMP_VIEWABLE_MAX_PREVIEW_SIZE, NULL);
   g_return_val_if_fail (view_border_width >= 0 &&
                         view_border_width <= GIMP_VIEW_MAX_BORDER_WIDTH,
                         NULL);
+  g_return_val_if_fail (menu_factory == NULL ||
+                        GIMP_IS_MENU_FACTORY (menu_factory), NULL);
 
-  factory_view = g_object_new (GIMP_TYPE_BRUSH_FACTORY_VIEW, NULL);
+  factory_view = g_object_new (GIMP_TYPE_BRUSH_FACTORY_VIEW,
+                               "view-type",         view_type,
+                               "data-factory",      factory,
+                               "context",           context,
+                               "view-size",         view_size,
+                               "view-border-width", view_border_width,
+                               "menu-factory",      menu_factory,
+                               "menu-identifier",   "<Brushes>",
+                               "ui-path",           "/brushes-popup",
+                               "action-group",      "brushes",
+                               NULL);
 
   factory_view->change_brush_spacing = change_brush_spacing;
 
-  if (! gimp_data_factory_view_construct (GIMP_DATA_FACTORY_VIEW (factory_view),
-                                          view_type,
-                                          factory,
-                                          context,
-                                          view_size, view_border_width,
-                                          menu_factory, "<Brushes>",
-                                          "/brushes-popup",
-                                          "brushes"))
-    {
-      g_object_unref (factory_view);
-      return NULL;
-    }
-
   editor = GIMP_CONTAINER_EDITOR (factory_view);
 
-  /*  eek  */
-  gtk_box_pack_end (GTK_BOX (editor->view),
-                    gtk_widget_get_parent (factory_view->spacing_scale),
+  gtk_box_pack_end (GTK_BOX (editor->view), factory_view->spacing_scale,
                     FALSE, FALSE, 0);
+  gtk_widget_show (factory_view->spacing_scale);
 
   factory_view->spacing_changed_handler_id =
-    gimp_container_add_handler (factory->container, "spacing-changed",
+    gimp_container_add_handler (gimp_data_factory_get_container (factory), "spacing-changed",
                                 G_CALLBACK (gimp_brush_factory_view_spacing_changed),
                                 factory_view);
 

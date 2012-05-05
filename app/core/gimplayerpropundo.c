@@ -1,9 +1,9 @@
 /* Gimp - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -29,13 +28,11 @@
 #include "gimplayerpropundo.h"
 
 
-static GObject * gimp_layer_prop_undo_constructor (GType                  type,
-                                                   guint                  n_params,
-                                                   GObjectConstructParam *params);
+static void   gimp_layer_prop_undo_constructed (GObject             *object);
 
-static void      gimp_layer_prop_undo_pop         (GimpUndo              *undo,
-                                                   GimpUndoMode           undo_mode,
-                                                   GimpUndoAccumulator   *accum);
+static void   gimp_layer_prop_undo_pop         (GimpUndo            *undo,
+                                                GimpUndoMode         undo_mode,
+                                                GimpUndoAccumulator *accum);
 
 
 G_DEFINE_TYPE (GimpLayerPropUndo, gimp_layer_prop_undo, GIMP_TYPE_ITEM_UNDO)
@@ -49,7 +46,7 @@ gimp_layer_prop_undo_class_init (GimpLayerPropUndoClass *klass)
   GObjectClass  *object_class = G_OBJECT_CLASS (klass);
   GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor = gimp_layer_prop_undo_constructor;
+  object_class->constructed = gimp_layer_prop_undo_constructed;
 
   undo_class->pop           = gimp_layer_prop_undo_pop;
 }
@@ -59,31 +56,21 @@ gimp_layer_prop_undo_init (GimpLayerPropUndo *undo)
 {
 }
 
-static GObject *
-gimp_layer_prop_undo_constructor (GType                  type,
-                                  guint                  n_params,
-                                  GObjectConstructParam *params)
+static void
+gimp_layer_prop_undo_constructed (GObject *object)
 {
-  GObject           *object;
-  GimpLayerPropUndo *layer_prop_undo;
-  GimpImage         *image;
+  GimpLayerPropUndo *layer_prop_undo = GIMP_LAYER_PROP_UNDO (object);
   GimpLayer         *layer;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  layer_prop_undo = GIMP_LAYER_PROP_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_LAYER (GIMP_ITEM_UNDO (object)->item));
 
-  image = GIMP_UNDO (object)->image;
   layer = GIMP_LAYER (GIMP_ITEM_UNDO (object)->item);
 
   switch (GIMP_UNDO (object)->undo_type)
     {
-    case GIMP_UNDO_LAYER_REPOSITION:
-      layer_prop_undo->position = gimp_image_get_layer_index (image, layer);
-      break;
-
     case GIMP_UNDO_LAYER_MODE:
       layer_prop_undo->mode = gimp_layer_get_mode (layer);
       break;
@@ -99,8 +86,6 @@ gimp_layer_prop_undo_constructor (GType                  type,
     default:
       g_assert_not_reached ();
     }
-
-  return object;
 }
 
 static void
@@ -115,18 +100,6 @@ gimp_layer_prop_undo_pop (GimpUndo            *undo,
 
   switch (undo->undo_type)
     {
-    case GIMP_UNDO_LAYER_REPOSITION:
-      {
-        gint position;
-
-        position = gimp_image_get_layer_index (undo->image, layer);
-        gimp_image_position_layer (undo->image, layer,
-                                   layer_prop_undo->position,
-                                   FALSE, NULL);
-        layer_prop_undo->position = position;
-      }
-      break;
-
     case GIMP_UNDO_LAYER_MODE:
       {
         GimpLayerModeEffects mode;

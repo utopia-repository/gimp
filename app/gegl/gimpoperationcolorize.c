@@ -4,9 +4,9 @@
  * gimpoperationcolorize.c
  * Copyright (C) 2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -35,7 +35,8 @@ static gboolean gimp_operation_colorize_process (GeglOperation       *operation,
                                                  void                *in_buf,
                                                  void                *out_buf,
                                                  glong                samples,
-                                                 const GeglRectangle *roi);
+                                                 const GeglRectangle *roi,
+                                                 gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationColorize, gimp_operation_colorize,
@@ -54,9 +55,11 @@ gimp_operation_colorize_class_init (GimpOperationColorizeClass *klass)
   object_class->set_property   = gimp_operation_point_filter_set_property;
   object_class->get_property   = gimp_operation_point_filter_get_property;
 
-  operation_class->name        = "gimp-colorize";
-  operation_class->categories  = "color";
-  operation_class->description = "GIMP Colorize operation";
+  gegl_operation_class_set_keys (operation_class,
+                  "name"       , "gimp:colorize",
+                  "categories" , "color",
+                  "description", "GIMP Colorize operation",
+                  NULL);
 
   point_class->process         = gimp_operation_colorize_process;
 
@@ -80,7 +83,8 @@ gimp_operation_colorize_process (GeglOperation       *operation,
                                  void                *in_buf,
                                  void                *out_buf,
                                  glong                samples,
-                                 const GeglRectangle *roi)
+                                 const GeglRectangle *roi,
+                                 gint                 level)
 {
   GimpOperationPointFilter *point  = GIMP_OPERATION_POINT_FILTER (operation);
   GimpColorizeConfig       *config = GIMP_COLORIZE_CONFIG (point->config);
@@ -97,9 +101,9 @@ gimp_operation_colorize_process (GeglOperation       *operation,
   while (samples--)
     {
       GimpRGB rgb;
-      gfloat  lum = GIMP_RGB_LUMINANCE (src[RED_PIX],
-                                        src[GREEN_PIX],
-                                        src[BLUE_PIX]);
+      gfloat  lum = GIMP_RGB_LUMINANCE (src[RED],
+                                        src[GREEN],
+                                        src[BLUE]);
 
       if (config->lightness > 0)
         {
@@ -121,10 +125,10 @@ gimp_operation_colorize_process (GeglOperation       *operation,
        *  don't repeat this bug here (this is the reason why the gegl
        *  colorize is brighter than the legacy one).
        */
-      dest[RED_PIX]   = rgb.r; /* * lum; */
-      dest[GREEN_PIX] = rgb.g; /* * lum; */
-      dest[BLUE_PIX]  = rgb.b; /* * lum */;
-      dest[ALPHA_PIX] = src[ALPHA_PIX];
+      dest[RED]   = rgb.r; /* * lum; */
+      dest[GREEN] = rgb.g; /* * lum; */
+      dest[BLUE]  = rgb.b; /* * lum */;
+      dest[ALPHA] = src[ALPHA];
 
       src  += 4;
       dest += 4;

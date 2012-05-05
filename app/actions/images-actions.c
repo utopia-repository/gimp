@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -40,24 +40,24 @@
 static const GimpActionEntry images_actions[] =
 {
   { "images-popup", GIMP_STOCK_IMAGES,
-    N_("Images Menu"), NULL, NULL, NULL,
+    NC_("images-action", "Images Menu"), NULL, NULL, NULL,
     GIMP_HELP_IMAGE_DIALOG },
 
   { "images-raise-views", GTK_STOCK_GOTO_TOP,
-    N_("_Raise Views"), "",
-    N_("Raise this image's displays"),
+    NC_("images-action", "_Raise Views"), "",
+    NC_("images-action", "Raise this image's displays"),
     G_CALLBACK (images_raise_views_cmd_callback),
     NULL },
 
   { "images-new-view", GTK_STOCK_NEW,
-    N_("_New View"), "",
-    N_("Create a new display for this image"),
+    NC_("images-action", "_New View"), "",
+    NC_("images-action", "Create a new display for this image"),
     G_CALLBACK (images_new_view_cmd_callback),
     NULL },
 
   { "images-delete", GTK_STOCK_DELETE,
-    N_("_Delete Image"), "",
-    N_("Delete this image"),
+    NC_("images-action", "_Delete Image"), "",
+    NC_("images-action", "Delete this image"),
     G_CALLBACK (images_delete_image_cmd_callback),
     NULL }
 };
@@ -66,7 +66,7 @@ static const GimpActionEntry images_actions[] =
 void
 images_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "images-action",
                                  images_actions,
                                  G_N_ELEMENTS (images_actions));
 }
@@ -75,18 +75,24 @@ void
 images_actions_update (GimpActionGroup *group,
                        gpointer         data)
 {
-  GimpContext *context = action_data_get_context (data);
-  GimpImage   *image   = NULL;
+  GimpContext *context    = action_data_get_context (data);
+  GimpImage   *image      = NULL;
+  gint         disp_count = 0;
 
   if (context)
-    image = gimp_context_get_image (context);
+    {
+      image = gimp_context_get_image (context);
+
+      if (image)
+        disp_count = gimp_image_get_display_count (image);
+    }
 
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
   SET_SENSITIVE ("images-raise-views", image);
   SET_SENSITIVE ("images-new-view",    image);
-  SET_SENSITIVE ("images-delete",      image && image->disp_count == 0);
+  SET_SENSITIVE ("images-delete",      image && disp_count == 0);
 
 #undef SET_SENSITIVE
 }

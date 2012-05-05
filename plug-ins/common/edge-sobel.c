@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* This plugin by thorsten@arch.usyd.edu.au           */
@@ -32,6 +31,7 @@
 
 #define PLUG_IN_PROC   "plug-in-sobel"
 #define PLUG_IN_BINARY "edge-sobel"
+#define PLUG_IN_ROLE   "gimp-edge-sobel"
 
 
 typedef struct
@@ -96,7 +96,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive"  },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"  },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"          },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"                },
     { GIMP_PDB_INT32,    "horizontal", "Sobel in horizontal direction" },
@@ -228,7 +228,7 @@ sobel_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Sobel Edge Detection"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Sobel Edge Detection"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -244,9 +244,10 @@ sobel_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -352,24 +353,23 @@ sobel (GimpDrawable *drawable,
   guchar       *next_row, *nr;
   guchar       *tmp;
   gint          row, col;
-  gint          x1, y1, x2, y2;
+  gint          x, y;
   gboolean      alpha;
   gint          counter;
   guchar       *preview_buffer = NULL;
 
   if (preview)
     {
-      gimp_preview_get_position (preview, &x1, &y1);
+      gimp_preview_get_position (preview, &x, &y);
       gimp_preview_get_size (preview, &width, &height);
-      x2 = x1 + width;
-      y2 = y1 + height;
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x, &y, &width, &height))
+        return;
+
       gimp_progress_init (_("Sobel edge detecting"));
-      width  = x2 - x1;
-      height = y2 - y1;
     }
 
   /* Get the size of the input image. (This will/must be the same
@@ -404,14 +404,14 @@ sobel (GimpDrawable *drawable,
   cr = cur_row  + bytes;
   nr = next_row + bytes;
 
-  sobel_prepare_row (&srcPR, pr, x1, y1 - 1, width);
-  sobel_prepare_row (&srcPR, cr, x1, y1, width);
+  sobel_prepare_row (&srcPR, pr, x, y - 1, width);
+  sobel_prepare_row (&srcPR, cr, x, y, width);
   counter =0;
   /*  loop through the rows, applying the sobel convolution  */
-  for (row = y1; row < y2; row++)
+  for (row = y; row < y + height; row++)
     {
       /*  prepare the next row  */
-      sobel_prepare_row (&srcPR, nr, x1, row + 1, width);
+      sobel_prepare_row (&srcPR, nr, x, row + 1, width);
 
       d = dest;
       for (col = 0; col < width * bytes; col++)
@@ -449,16 +449,16 @@ sobel (GimpDrawable *drawable,
       /*  store the dest  */
       if (preview)
         {
-          memcpy (preview_buffer + width * (row - y1) * bytes,
+          memcpy (preview_buffer + width * (row - y) * bytes,
                   dest,
                   width * bytes);
         }
       else
         {
-          gimp_pixel_rgn_set_row (&destPR, dest, x1, row, width);
+          gimp_pixel_rgn_set_row (&destPR, dest, x, row, width);
 
           if ((row % 20) == 0)
-            gimp_progress_update ((double) row / (double) (y2 - y1));
+            gimp_progress_update ((double) row / (double) height);
         }
     }
 
@@ -469,10 +469,11 @@ sobel (GimpDrawable *drawable,
     }
   else
     {
+      gimp_progress_update (1.0);
       /*  update the sobeled region  */
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-      gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
+      gimp_drawable_update (drawable->drawable_id, x, y, width, height);
     }
 
   g_free (prev_row);

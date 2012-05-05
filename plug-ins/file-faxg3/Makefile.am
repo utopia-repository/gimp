@@ -12,6 +12,11 @@ if OS_WIN32
 mwindows = -mwindows
 endif
 
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+file_faxg3_RC = file-faxg3.rc.o
+endif
+
 AM_LDFLAGS = $(mwindows)
 
 libexecdir = $(gimpplugindir)/plug-ins
@@ -24,8 +29,9 @@ file_faxg3_SOURCES = \
 	g3.h
 
 INCLUDES = \
-	-I$(top_srcdir)	\
-	$(GLIB_CFLAGS)	\
+	-I$(top_srcdir)		\
+	$(CAIRO_CFLAGS)		\
+	$(GDK_PIXBUF_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \
@@ -34,6 +40,8 @@ LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(libgimpmath)		\
-	$(GLIB_LIBS)		\
+	$(CAIRO_LIBS)		\
+	$(GDK_PIXBUF_LIBS)	\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
+	$(INTLLIBS)		\
+	$(file_faxg3_RC)

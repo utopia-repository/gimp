@@ -5,19 +5,18 @@
  * Copyright (C) 1997 Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  * original pixelize.c for GIMP 0.54 by Tracy Scott
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -26,8 +25,8 @@
  *
  * This plug-in "pixelizes" the image.
  *
- *	Eiichi Takamori <taka@ma1.seikyou.ne.jp>
- *	http://ha1.seikyou.ne.jp/home/taka/gimp/
+ *      Eiichi Takamori <taka@ma1.seikyou.ne.jp>
+ *      http://ha1.seikyou.ne.jp/home/taka/gimp/
  *
  * Changes from version 1.03 to version 1.04:
  * - Added gtk_rc_parse
@@ -71,6 +70,7 @@
 #define PIXELIZE_PROC   "plug-in-pixelize"
 #define PIXELIZE2_PROC  "plug-in-pixelize2"
 #define PLUG_IN_BINARY  "pixelize"
+#define PLUG_IN_ROLE    "gimp-pixelize"
 #define TILE_CACHE_SIZE  16
 #define SCALE_WIDTH     125
 #define ENTRY_WIDTH       6
@@ -145,17 +145,17 @@ query (void)
 {
   static const GimpParamDef pixelize_args[]=
   {
-    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",       "Input image (unused)"         },
-    { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable"               },
+    { GIMP_PDB_INT32,    "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable"       },
     { GIMP_PDB_INT32,    "pixel-width", "Pixel width (the decrease in resolution)" }
   };
 
   static const GimpParamDef pixelize2_args[]=
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",        "Input image (unused)"         },
-    { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable"               },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",        "Input image (unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable"       },
     { GIMP_PDB_INT32,    "pixel-width",  "Pixel width (the decrease in horizontal resolution)" },
     { GIMP_PDB_INT32,    "pixel-height", "Pixel height (the decrease in vertical resolution)" }
   };
@@ -313,7 +313,7 @@ pixelize_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Pixelize"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Pixelize"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PIXELIZE_PROC,
 
@@ -329,9 +329,10 @@ pixelize_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -341,7 +342,7 @@ pixelize_dialog (GimpDrawable *drawable)
                             G_CALLBACK (pixelize),
                             drawable);
 
-  image_id = gimp_drawable_get_image (drawable->drawable_id);
+  image_id = gimp_item_get_image (drawable->drawable_id);
   unit = gimp_image_get_unit (image_id);
   gimp_image_get_resolution (image_id, &xres, &yres);
 
@@ -461,10 +462,12 @@ pixelize_large (GimpDrawable *drawable,
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id,
-                                 &x1, &y1, &x2, &y2);
-      width  = x2 - x1;
-      height = y2 - y1;
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &width, &height))
+        return;
+
+      x2 = x1 + width;
+      y2 = y1 + height;
 
       /* Initialize progress */
       progress = 0;
@@ -607,7 +610,8 @@ pixelize_large (GimpDrawable *drawable,
     }
   else
     {
-      /*  update the blurred region	 */
+      gimp_progress_update (1.0);
+      /*  update the blurred region      */
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
       gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
@@ -633,10 +637,15 @@ pixelize_small (GimpDrawable *drawable,
 {
   GimpPixelRgn src_rgn, dest_rgn;
   gint         bpp, has_alpha;
-  gint         x1, y1, x2, y2;
+  gint         x1, y1, x2, y2, w, h;
   gint         progress, max_progress;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id, &x1, &y1, &w, &h))
+    return;
+
+  x2 = x1 + w;
+  y2 = y1 + h;
+
   gimp_pixel_rgn_init (&src_rgn, drawable, x1, y1, x2-x1, y2-y1, FALSE, FALSE);
   gimp_pixel_rgn_init (&dest_rgn, drawable, x1, y1, x2-x1, y2-y1, TRUE, TRUE);
 
@@ -679,6 +688,7 @@ pixelize_small (GimpDrawable *drawable,
 
   g_free(area.data);
 
+  gimp_progress_update (1.0);
   /*  update the pixelized region  */
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
@@ -686,7 +696,7 @@ pixelize_small (GimpDrawable *drawable,
 }
 
 /*
-  This function acts on one PixelArea.	Since there were so many
+  This function acts on one PixelArea.  Since there were so many
   nested FORs in pixelize_small(), I put a few of them here...
   */
 

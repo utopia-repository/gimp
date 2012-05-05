@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,7 +38,6 @@
 #include "widgets/gimpcontainercombobox.h"
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpcontrollerlist.h"
-#include "widgets/gimpdeviceinfo.h"
 #include "widgets/gimpdevices.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpgrideditor.h"
@@ -50,6 +48,7 @@
 #include "widgets/gimpprofilechooserdialog.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimptemplateeditor.h"
+#include "widgets/gimptooleditor.h"
 #include "widgets/gimpwidgets-constructors.h"
 #include "widgets/gimpwidgets-utils.h"
 
@@ -91,7 +90,7 @@ static void        prefs_message                  (GtkMessageType  type,
                                                    const gchar    *message);
 
 static void   prefs_notebook_page_callback        (GtkNotebook      *notebook,
-                                                   GtkNotebookPage  *page,
+                                                   gpointer          page,
                                                    guint             page_num,
                                                    GtkTreeSelection *sel);
 static void   prefs_resolution_source_callback    (GtkWidget  *widget,
@@ -100,9 +99,8 @@ static void   prefs_resolution_calibrate_callback (GtkWidget  *widget,
                                                    GtkWidget  *entry);
 static void   prefs_input_devices_dialog          (GtkWidget  *widget,
                                                    Gimp       *gimp);
-static void   prefs_input_dialog_able_callback    (GtkWidget  *widget,
-                                                   GdkDevice  *device,
-                                                   gpointer    data);
+static void   prefs_keyboard_shortcuts_dialog     (GtkWidget  *widget,
+                                                   Gimp       *gimp);
 static void   prefs_menus_save_callback           (GtkWidget  *widget,
                                                    Gimp       *gimp);
 static void   prefs_menus_clear_callback          (GtkWidget  *widget,
@@ -126,6 +124,7 @@ static void   prefs_tool_options_clear_callback   (GtkWidget  *widget,
 /*  private variables  */
 
 static GtkWidget *prefs_dialog = NULL;
+static GtkWidget *tool_editor  = NULL;
 
 
 /*  public function  */
@@ -406,10 +405,14 @@ prefs_response (GtkWidget *widget,
             g_value_unset (&value);
           }
 
+        gimp_tool_editor_revert_changes (GIMP_TOOL_EDITOR (tool_editor));
+
         g_object_thaw_notify (G_OBJECT (gimp->edit_config));
 
         g_list_free (diff);
       }
+
+      tool_editor = NULL;
     }
 
   /*  enable autosaving again  */
@@ -441,8 +444,6 @@ prefs_resolution_source_callback (GtkWidget *widget,
   gdouble  xres;
   gdouble  yres;
   gboolean from_gdk;
-
-  gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (widget));
 
   from_gdk = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
@@ -488,58 +489,16 @@ static void
 prefs_input_devices_dialog (GtkWidget *widget,
                             Gimp      *gimp)
 {
-  static GtkWidget *input_dialog = NULL;
-
-  if (input_dialog)
-    {
-      gtk_window_present (GTK_WINDOW (input_dialog));
-      return;
-    }
-
-  input_dialog = g_object_new (GTK_TYPE_INPUT_DIALOG,
-                               "title", _("Configure Input Devices"),
-                               NULL);
-
-  g_object_add_weak_pointer (G_OBJECT (input_dialog),
-                             (gpointer) &input_dialog);
-
-  gtk_window_set_transient_for (GTK_WINDOW (input_dialog),
-                                GTK_WINDOW (prefs_dialog));
-  gtk_window_set_destroy_with_parent (GTK_WINDOW (input_dialog), TRUE);
-
-  g_signal_connect_swapped (GTK_INPUT_DIALOG (input_dialog)->save_button,
-                            "clicked",
-                            G_CALLBACK (gimp_devices_save),
-                            gimp);
-
-  g_signal_connect_swapped (GTK_INPUT_DIALOG (input_dialog)->close_button,
-                            "clicked",
-                            G_CALLBACK (gtk_widget_destroy),
-                            input_dialog);
-
-  g_signal_connect (input_dialog, "enable-device",
-                    G_CALLBACK (prefs_input_dialog_able_callback),
-                    NULL);
-  g_signal_connect (input_dialog, "disable-device",
-                    G_CALLBACK (prefs_input_dialog_able_callback),
-                    NULL);
-
-  gtk_widget_show (input_dialog);
-}
-
-static void
-prefs_input_dialog_able_callback (GtkWidget *widget,
-                                  GdkDevice *device,
-                                  gpointer   data)
-{
-  gimp_device_info_changed_by_device (device);
+  gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
+                                    gtk_widget_get_screen (widget),
+                                    "gimp-input-devices-dialog", 0);
 }
 
 static void
 prefs_keyboard_shortcuts_dialog (GtkWidget *widget,
                                  Gimp      *gimp)
 {
-  gimp_dialog_factory_dialog_raise (gimp_dialog_factory_from_name ("toplevel"),
+  gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
                                     gtk_widget_get_screen (widget),
                                     "gimp-keyboard-shortcuts-dialog", 0);
 }
@@ -747,7 +706,7 @@ prefs_notebook_append_page (Gimp          *gimp,
 
   gimp_help_set_help_data (event_box, NULL, help_id);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (event_box), vbox);
   gtk_widget_show (vbox);
 
@@ -840,7 +799,7 @@ prefs_tree_select_callback (GtkTreeSelection *sel,
 
 static void
 prefs_notebook_page_callback (GtkNotebook      *notebook,
-                              GtkNotebookPage  *page,
+                              gpointer          page,
                               guint             page_num,
                               GtkTreeSelection *sel)
 {
@@ -945,7 +904,7 @@ prefs_frame_new (const gchar  *label,
 
   frame = gimp_frame_new (label);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -1121,7 +1080,7 @@ prefs_check_button_add_with_icon (GObject      *config,
   if (!button)
     return NULL;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (vbox, hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1215,6 +1174,24 @@ prefs_boolean_combo_box_add (GObject      *config,
   return combo;
 }
 
+#ifdef HAVE_ISO_CODES
+static GtkWidget *
+prefs_language_combo_box_add (GObject      *config,
+                              const gchar  *property_name,
+                              GtkBox       *vbox)
+{
+  GtkWidget *combo = gimp_prop_language_combo_box_new (config, property_name);
+
+  if (combo)
+    {
+      gtk_box_pack_start (vbox, combo, FALSE, FALSE, 0);
+      gtk_widget_show (combo);
+    }
+
+  return combo;
+}
+#endif
+
 static GtkWidget *
 prefs_spin_button_add (GObject      *config,
                        const gchar  *property_name,
@@ -1276,11 +1253,11 @@ prefs_display_options_frame_add (Gimp         *gimp,
 
   vbox = prefs_frame_new (label, parent, FALSE);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  checks_vbox = gtk_vbox_new (FALSE, 2);
+  checks_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start (GTK_BOX (hbox), checks_vbox, TRUE, TRUE, 0);
   gtk_widget_show (checks_vbox);
 
@@ -1299,7 +1276,7 @@ prefs_display_options_frame_add (Gimp         *gimp,
                           _("Show s_tatusbar"),
                           GTK_BOX (checks_vbox));
 
-  checks_vbox = gtk_vbox_new (FALSE, 2);
+  checks_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start (GTK_BOX (hbox), checks_vbox, TRUE, TRUE, 0);
   gtk_widget_show (checks_vbox);
 
@@ -1414,7 +1391,7 @@ prefs_dialog_new (Gimp       *gimp,
   core_config    = GIMP_CORE_CONFIG (config);
   display_config = GIMP_DISPLAY_CONFIG (config);
 
-  dialog = gimp_dialog_new (_("Preferences"), "preferences",
+  dialog = gimp_dialog_new (_("Preferences"), "gimp-preferences",
                             NULL, 0,
                             prefs_help_func,
                             GIMP_HELP_PREFS_DIALOG,
@@ -1436,9 +1413,10 @@ prefs_dialog_new (Gimp       *gimp,
                     dialog);
 
   /* The main hbox */
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
   /* The categories tree */
@@ -1472,7 +1450,7 @@ prefs_dialog_new (Gimp       *gimp,
 
   gtk_container_add (GTK_CONTAINER (frame), tv);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -1481,7 +1459,7 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_box_pack_start (GTK_BOX (vbox), ebox, FALSE, TRUE, 0);
   gtk_widget_show (ebox);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_container_add (GTK_CONTAINER (ebox), hbox);
   gtk_widget_show (hbox);
@@ -1613,6 +1591,15 @@ prefs_dialog_new (Gimp       *gimp,
                                      &top_iter,
                                      page_index++);
 
+  /*  Language  */
+
+  /*  Only add the language entry if the iso-codes package is available.  */
+#ifdef HAVE_ISO_CODES
+  vbox2 = prefs_frame_new (_("Language"), GTK_CONTAINER (vbox), FALSE);
+
+  prefs_language_combo_box_add (object, "language", GTK_BOX (vbox2));
+#endif
+
   /*  Previews  */
   vbox2 = prefs_frame_new (_("Previews"), GTK_CONTAINER (vbox), FALSE);
 
@@ -1633,9 +1620,6 @@ prefs_dialog_new (Gimp       *gimp,
   vbox2 = prefs_frame_new (_("Keyboard Shortcuts"),
                            GTK_CONTAINER (vbox), FALSE);
 
-  prefs_check_button_add (object, "menu-mnemonics",
-                          _("Show menu _mnemonics (access keys)"),
-                          GTK_BOX (vbox2));
   prefs_check_button_add (object, "can-change-accels",
                           _("_Use dynamic keyboard shortcuts"),
                           GTK_BOX (vbox2));
@@ -1766,7 +1750,7 @@ prefs_dialog_new (Gimp       *gimp,
                       gimp);
   }
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1831,7 +1815,7 @@ prefs_dialog_new (Gimp       *gimp,
         text = _("The user manual is not installed locally.");
       }
 
-    hbox = gtk_hbox_new (FALSE, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, 1, 2);
     gtk_widget_show (hbox);
 
@@ -1857,16 +1841,6 @@ prefs_dialog_new (Gimp       *gimp,
   prefs_enum_combo_box_add (object, "help-browser", 0, 0,
                             _("H_elp browser to use:"),
                             GTK_TABLE (table), 0, size_group);
-
-  /*  Web Browser  (unused on win32)  */
-#ifndef G_OS_WIN32
-  vbox2 = prefs_frame_new (_("Web Browser"), GTK_CONTAINER (vbox), FALSE);
-  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
-
-  prefs_widget_add_aligned (gimp_prop_entry_new (object, "web-browser", 0),
-                            _("_Web browser to use:"),
-                            GTK_TABLE (table), 0, FALSE, size_group);
-#endif
 
   g_object_unref (size_group);
   size_group = NULL;
@@ -1939,6 +1913,9 @@ prefs_dialog_new (Gimp       *gimp,
   prefs_check_button_add_with_icon (object, "global-brush",
                                     _("_Brush"),    GIMP_STOCK_BRUSH,
                                     GTK_BOX (vbox2), size_group);
+  prefs_check_button_add_with_icon (object, "global-dynamics",
+                                    _("_Dynamics"), GIMP_STOCK_DYNAMICS,
+                                    GTK_BOX (vbox2), size_group);
   prefs_check_button_add_with_icon (object, "global-pattern",
                                     _("_Pattern"),  GIMP_STOCK_PATTERN,
                                     GTK_BOX (vbox2), size_group);
@@ -1946,6 +1923,7 @@ prefs_dialog_new (Gimp       *gimp,
                                     _("_Gradient"), GIMP_STOCK_GRADIENT,
                                     GTK_BOX (vbox2), size_group);
 
+  /*  Move Tool */
   vbox2 = prefs_frame_new (_("Move Tool"),
                            GTK_CONTAINER (vbox), FALSE);
 
@@ -1994,6 +1972,16 @@ prefs_dialog_new (Gimp       *gimp,
   g_object_unref (size_group);
   size_group = NULL;
 
+  /* Tool Editor */
+  vbox2 = prefs_frame_new (_("Tools configuration"),
+                           GTK_CONTAINER (vbox), TRUE);
+  tool_editor = gimp_tool_editor_new (gimp->tool_info_list, gimp->user_context,
+                                      gimp_tools_get_default_order (gimp),
+                                      GIMP_VIEW_SIZE_SMALL, 1);
+
+  gtk_box_pack_start (GTK_BOX (vbox2), tool_editor, TRUE, TRUE, 0);
+  gtk_widget_show (tool_editor);
+
 
   /***********************/
   /*  Default New Image  */
@@ -2033,6 +2021,19 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_box_pack_start (GTK_BOX (vbox), editor, FALSE, FALSE, 0);
   gtk_widget_show (editor);
 
+  /*  Quick Mask Color */
+  vbox2 = prefs_frame_new (_("Quick Mask"), GTK_CONTAINER (vbox), FALSE);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
+  button = gimp_prop_color_button_new (object, "quick-mask-color",
+                                       _("Set the default Quick Mask color"),
+                                       COLOR_BUTTON_WIDTH,
+                                       COLOR_BUTTON_HEIGHT,
+                                       GIMP_COLOR_AREA_SMALL_CHECKS);
+  gimp_color_panel_set_context (GIMP_COLOR_PANEL (button),
+                                gimp_get_user_context (gimp));
+  prefs_widget_add_aligned (button, _("Quick Mask color:"),
+                            GTK_TABLE (table), 0, TRUE, NULL);
+
 
 
   /******************/
@@ -2052,10 +2053,9 @@ prefs_dialog_new (Gimp       *gimp,
   /*  Grid  */
   editor = gimp_grid_editor_new (core_config->default_grid,
                                  gimp_get_user_context (gimp),
-                                 core_config->default_image->xresolution,
-                                 core_config->default_image->yresolution);
-
-  gtk_container_add (GTK_CONTAINER (vbox), editor);
+                                 gimp_template_get_resolution_x (core_config->default_image),
+                                 gimp_template_get_resolution_y (core_config->default_image));
+  gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
   gtk_widget_show (editor);
 
 
@@ -2128,7 +2128,7 @@ prefs_dialog_new (Gimp       *gimp,
                           _("Show pointer for paint _tools"),
                           GTK_BOX (vbox2));
 
-  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+  table = prefs_table_new (3, GTK_CONTAINER (vbox2));
 
   prefs_enum_combo_box_add (object, "cursor-mode", 0, 0,
                             _("Pointer _mode:"),
@@ -2136,6 +2136,9 @@ prefs_dialog_new (Gimp       *gimp,
   prefs_enum_combo_box_add (object, "cursor-format", 0, 0,
                             _("Pointer re_ndering:"),
                             GTK_TABLE (table), 1, size_group);
+  prefs_enum_combo_box_add (object, "cursor-handedness", 0, 0,
+                            _("Pointer _handedness:"),
+                            GTK_TABLE (table), 2, NULL);
 
   g_object_unref (size_group);
   size_group = NULL;
@@ -2346,7 +2349,7 @@ prefs_dialog_new (Gimp       *gimp,
   gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
                                 _("ppi"), 1, 4, 0.0);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 24);
   gtk_widget_show (entry);
@@ -2373,8 +2376,6 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_widget_show (button);
 
   g_object_set_data (G_OBJECT (button), "monitor_resolution_sizeentry", entry);
-  g_object_set_data (G_OBJECT (button), "set_sensitive", label);
-  g_object_set_data (G_OBJECT (button), "inverse_sensitive", entry);
 
   g_signal_connect (button, "toggled",
                     G_CALLBACK (prefs_resolution_source_callback),
@@ -2391,7 +2392,7 @@ prefs_dialog_new (Gimp       *gimp,
   if (! display_config->monitor_res_from_gdk)
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -2403,7 +2404,12 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_widget_set_sensitive (calibrate_button,
                             ! display_config->monitor_res_from_gdk);
 
-  g_object_set_data (G_OBJECT (entry), "inverse_sensitive", calibrate_button);
+  g_object_bind_property (button, "active",
+                          entry,  "sensitive",
+                          G_BINDING_SYNC_CREATE);
+  g_object_bind_property (button,           "active",
+                          calibrate_button, "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   g_signal_connect (calibrate_button, "clicked",
                     G_CALLBACK (prefs_resolution_calibrate_callback),
@@ -2512,7 +2518,7 @@ prefs_dialog_new (Gimp       *gimp,
 
     g_object_unref (store);
 
-    hbox = gtk_hbox_new (FALSE, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, row, row + 1);
     gtk_widget_show (hbox);
     row++;
@@ -2626,22 +2632,11 @@ prefs_dialog_new (Gimp       *gimp,
   vbox2 = prefs_frame_new (_("Window Manager Hints"),
                            GTK_CONTAINER (vbox), FALSE);
 
-  table = prefs_table_new (2, GTK_CONTAINER (vbox2));
-
-  prefs_enum_combo_box_add (object, "toolbox-window-hint", 0, 0,
-                            _("Hint for the _toolbox:"),
-                            GTK_TABLE (table), 0, size_group);
+  table = prefs_table_new (1, GTK_CONTAINER (vbox2));
 
   prefs_enum_combo_box_add (object, "dock-window-hint", 0, 0,
-                            _("Hint for other _docks:"),
+                            _("Hint for _docks and toolbox:"),
                             GTK_TABLE (table), 1, size_group);
-
-#ifdef GIMP_UNSTABLE
-  prefs_check_button_add (object, "transient-docks",
-                          _("Toolbox and other docks are transient "
-                            "to the active image window"),
-                          GTK_BOX (vbox2));
-#endif
 
   vbox2 = prefs_frame_new (_("Focus"),
                            GTK_CONTAINER (vbox), FALSE);
@@ -2745,6 +2740,10 @@ prefs_dialog_new (Gimp       *gimp,
         GIMP_HELP_PREFS_FOLDERS_BRUSHES,
         N_("Select Brush Folders"),
         "brush-path", "brush-path-writable" },
+      { N_("Dynamics"), N_("Dynamics Folders"), "folders-dynamics",
+        GIMP_HELP_PREFS_FOLDERS_DYNAMICS,
+        N_("Select Dynamics Folders"),
+        "dynamics-path", "dynamics-path-writable" },
       { N_("Patterns"), N_("Pattern Folders"), "folders-patterns",
         GIMP_HELP_PREFS_FOLDERS_PATTERNS,
         N_("Select Pattern Folders"),
@@ -2761,6 +2760,10 @@ prefs_dialog_new (Gimp       *gimp,
         GIMP_HELP_PREFS_FOLDERS_FONTS,
         N_("Select Font Folders"),
         "font-path", NULL },
+      { N_("Tool Presets"), N_("Tool Preset Folders"), "folders-tool-presets",
+        GIMP_HELP_PREFS_FOLDERS_TOOL_PRESETS,
+        N_("Select Tool Preset Folders"),
+        "tool-preset-path", "tool-preset-path-writable" },
       { N_("Plug-Ins"), N_("Plug-In Folders"), "folders-plug-ins",
         GIMP_HELP_PREFS_FOLDERS_PLUG_INS,
         N_("Select Plug-In Folders"),
@@ -2806,7 +2809,7 @@ prefs_dialog_new (Gimp       *gimp,
                                             paths[i].path_property_name,
                                             paths[i].writable_property_name,
                                             gettext (paths[i].fs_label));
-        gtk_container_add (GTK_CONTAINER (vbox), editor);
+        gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
         gtk_widget_show (editor);
       }
   }

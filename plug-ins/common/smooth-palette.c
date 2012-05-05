@@ -1,24 +1,23 @@
 /*
-   smooth palette - derive smooth palette from image
-   Copyright (C) 1997  Scott Draves <spot@cs.cmu.edu>
-
-   GIMP - The GNU Image Manipulation Program
-   Copyright (C) 1995 Spencer Kimball and Peter Mattis
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-*/
+ * smooth palette - derive smooth palette from image
+ * Copyright (C) 1997  Scott Draves <spot@cs.cmu.edu>
+ *
+ * GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "config.h"
 
@@ -32,6 +31,7 @@
 
 #define PLUG_IN_PROC   "plug-in-smooth-palette"
 #define PLUG_IN_BINARY "smooth-palette"
+#define PLUG_IN_ROLE   "gimp-smooth-palette"
 
 
 /* Declare local functions. */
@@ -64,7 +64,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"               },
     { GIMP_PDB_INT32,    "width",      "Width"                        },
@@ -258,7 +258,7 @@ smooth_palette (GimpDrawable *drawable,
                               config.width, config.height,
                               gimp_drawable_type (drawable->drawable_id),
                               100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (new_image_id, *layer_id, 0);
+  gimp_image_insert_layer (new_image_id, *layer_id, -1, 0);
   new_layer = gimp_drawable_get (*layer_id);
 
   psize = config.width;
@@ -355,6 +355,7 @@ smooth_palette (GimpDrawable *drawable,
               len_best = len;
             }
         }
+      gimp_progress_update (1.0);
       memcpy (pal, pal_best, bpp * psize);
       g_free (pal_best);
       g_free (original);
@@ -409,7 +410,7 @@ dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (_("Smooth Palette"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Smooth Palette"), PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -425,7 +426,7 @@ dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  image_id = gimp_drawable_get_image (drawable->drawable_id);
+  image_id = gimp_item_get_image (drawable->drawable_id);
   unit = gimp_image_get_unit (image_id);
   gimp_image_get_resolution (image_id, &xres, &yres);
 
@@ -443,8 +444,9 @@ dialog (GimpDrawable *drawable)
                                     1, GIMP_MAX_IMAGE_SIZE,
                                     1, GIMP_MAX_IMAGE_SIZE);
   gtk_container_set_border_width (GTK_CONTAINER (sizeentry), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), sizeentry,
-                      FALSE, FALSE, 0);  gtk_widget_show (sizeentry);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      sizeentry, FALSE, FALSE, 0);
+  gtk_widget_show (sizeentry);
 
   spinbutton = gimp_spin_button_new (&adj, config.ntries,
                                      1, 1024, 1, 10, 0, 1, 0);

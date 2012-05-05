@@ -4,9 +4,9 @@
  * Copyright (C) 1997 Mike Taylor
  * (email: mtaylor@aw.sgi.com, WWW: http://reality.sgi.com/mtaylor)
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -56,6 +55,7 @@
 #define LOAD_PROC      "file-pix-load"
 #define SAVE_PROC      "file-pix-save"
 #define PLUG_IN_BINARY "file-pix"
+#define PLUG_IN_ROLE   "gimp-file-pix"
 
 
 /* #define PIX_DEBUG */
@@ -74,23 +74,23 @@
 
 static void     query     (void);
 static void     run       (const gchar      *name,
-			   gint              nparams,
-			   const GimpParam  *param,
-			   gint             *nreturn_vals,
-			   GimpParam       **return_vals);
+                           gint              nparams,
+                           const GimpParam  *param,
+                           gint             *nreturn_vals,
+                           GimpParam       **return_vals);
 
 /* Local Helper Functions */
 
 static gint32   load_image (const gchar     *filename,
                             GError         **error);
 static gboolean save_image (const gchar     *filename,
-			    gint32           image_ID,
-			    gint32           drawable_ID,
+                            gint32           image_ID,
+                            gint32           drawable_ID,
                             GError         **error);
 
 static guint16  get_short  (FILE            *file);
 static void     put_short  (guint16          value,
-			    FILE            *file);
+                            FILE            *file);
 
 /******************
  * Implementation *
@@ -115,7 +115,7 @@ query (void)
    */
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",      "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",      "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",      "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename",   "The name entered"            }
   };
@@ -126,7 +126,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -134,21 +134,21 @@ query (void)
   };
 
   gimp_install_procedure (LOAD_PROC,
-			  "loads files of the Alias|Wavefront Pix file format",
-			  "loads files of the Alias|Wavefront Pix file format",
-			  "Michael Taylor",
-			  "Michael Taylor",
-			  "1997",
+                          "loads files of the Alias|Wavefront Pix file format",
+                          "loads files of the Alias|Wavefront Pix file format",
+                          "Michael Taylor",
+                          "Michael Taylor",
+                          "1997",
                           N_("Alias Pix image"),
-			  NULL,
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (load_args),
+                          NULL,
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (load_args),
                           G_N_ELEMENTS (load_return_vals),
-			  load_args, load_return_vals);
+                          load_args, load_return_vals);
 
   gimp_register_load_handler (LOAD_PROC,
-			      "pix,matte,mask,alpha,als",
-			      "");
+                              "pix,matte,mask,alpha,als",
+                              "");
 
   gimp_install_procedure (SAVE_PROC,
                           "save file in the Alias|Wavefront pix/matte file format",
@@ -207,17 +207,17 @@ run (const gchar      *name,
       image_ID = load_image (param[1].data.d_string, &error);
 
       if (image_ID != -1)
-	{
-	  /* The image load was successful */
-	  *nreturn_vals = 2;
-	  values[1].type         = GIMP_PDB_IMAGE;
-	  values[1].data.d_image = image_ID;
-	}
+        {
+          /* The image load was successful */
+          *nreturn_vals = 2;
+          values[1].type         = GIMP_PDB_IMAGE;
+          values[1].data.d_image = image_ID;
+        }
       else
-	{
-	  /* The image load falied */
-	  status = GIMP_PDB_EXECUTION_ERROR;
-	}
+        {
+          /* The image load falied */
+          status = GIMP_PDB_EXECUTION_ERROR;
+        }
     }
   else if (strcmp (name, SAVE_PROC) == 0)
     {
@@ -226,34 +226,34 @@ run (const gchar      *name,
 
       /*  eventually export the image */
       switch (run_mode)
-	{
-	case GIMP_RUN_INTERACTIVE:
-	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
-	  export = gimp_export_image (&image_ID, &drawable_ID, "PIX",
-				      (GIMP_EXPORT_CAN_HANDLE_RGB |
-				       GIMP_EXPORT_CAN_HANDLE_GRAY));
-	  if (export == GIMP_EXPORT_CANCEL)
-	    {
-	      values[0].data.d_status = GIMP_PDB_CANCEL;
-	      return;
-	    }
-	  break;
-	default:
-	  break;
-	}
+        {
+        case GIMP_RUN_INTERACTIVE:
+        case GIMP_RUN_WITH_LAST_VALS:
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
+                                      (GIMP_EXPORT_CAN_HANDLE_RGB |
+                                       GIMP_EXPORT_CAN_HANDLE_GRAY));
+          if (export == GIMP_EXPORT_CANCEL)
+            {
+              values[0].data.d_status = GIMP_PDB_CANCEL;
+              return;
+            }
+          break;
+        default:
+          break;
+        }
 
       if (status == GIMP_PDB_SUCCESS)
-	{
-	  if (! save_image (param[3].data.d_string, image_ID, drawable_ID,
+        {
+          if (! save_image (param[3].data.d_string, image_ID, drawable_ID,
                             &error))
-	    {
-	      status = GIMP_PDB_EXECUTION_ERROR;
-	    }
-	}
+            {
+              status = GIMP_PDB_EXECUTION_ERROR;
+            }
+        }
 
       if (export == GIMP_EXPORT_EXPORT)
-	gimp_image_delete (image_ID);
+        gimp_image_delete (image_ID);
     }
   else
     {
@@ -295,7 +295,7 @@ get_short (FILE *file)
 
 static void
 put_short (guint16  value,
-	   FILE    *file)
+           FILE    *file)
 {
   guchar buf[2];
   buf[0] = (value >> 8) & 0xFF;
@@ -380,13 +380,13 @@ load_image (const gchar  *filename,
   image_ID = gimp_image_new (width, height, imgtype);
   gimp_image_set_filename (image_ID, filename);
   layer_ID = gimp_layer_new (image_ID, _("Background"),
-			     width,
-			     height,
-			     gdtype, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+                             width,
+                             height,
+                             gdtype, 100, GIMP_NORMAL_MODE);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
   drawable = gimp_drawable_get (layer_ID);
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
-		       drawable->height, TRUE, FALSE);
+                       drawable->height, TRUE, FALSE);
 
   tile_height = gimp_tile_height ();
 
@@ -400,37 +400,37 @@ load_image (const gchar  *filename,
       dest_base = dest = g_new (guchar, 3 * width * tile_height);
 
       for (i = 0; i < height;)
-	{
-	  for (dest = dest_base, row = 0;
-	       row < tile_height && i < height;
-	       i++, row++)
-	    {
-	      guchar count;
+        {
+          for (dest = dest_base, row = 0;
+               row < tile_height && i < height;
+               i++, row++)
+            {
+              guchar count;
 
-	      /* Read a row of the image */
-	      j = 0;
-	      while (j < width)
-		{
-		  readlen = fread (record, 1, 4, file);
-		  if (readlen < 4)
-		    break;
+              /* Read a row of the image */
+              j = 0;
+              while (j < width)
+                {
+                  readlen = fread (record, 1, 4, file);
+                  if (readlen < 4)
+                    break;
 
-		  for (count = 0; count < record[0]; ++count)
-		    {
-		      dest[0]   = record[3];
-		      dest[1]   = record[2];
-		      dest[2]   = record[1];
-		      dest += 3;
-		      j++;
-		      if (j >= width)
-			break;
-		    }
-		}
-	    }
-	  gimp_pixel_rgn_set_rect (&pixel_rgn, dest_base, 0, i-row,
-				   width, row);
-	  gimp_progress_update ((double) i / (double) height);
-	}
+                  for (count = 0; count < record[0]; ++count)
+                    {
+                      dest[0]   = record[3];
+                      dest[1]   = record[2];
+                      dest[2]   = record[1];
+                      dest += 3;
+                      j++;
+                      if (j >= width)
+                        break;
+                    }
+                }
+            }
+          gimp_pixel_rgn_set_rect (&pixel_rgn, dest_base, 0, i-row,
+                                   width, row);
+          gimp_progress_update ((double) i / (double) height);
+        }
 
       g_free (dest_base);
     }
@@ -443,37 +443,39 @@ load_image (const gchar  *filename,
       dest_base = dest = g_new (guchar, width * tile_height);
 
       for (i = 0; i < height;)
-	{
-	  for (dest = dest_base, row = 0;
-	       row < tile_height && i < height;
-	       i++, row++)
-	    {
-	      guchar count;
+        {
+          for (dest = dest_base, row = 0;
+               row < tile_height && i < height;
+               i++, row++)
+            {
+              guchar count;
 
-	      /* Read a row of the image */
-	      j = 0;
-	      while (j < width)
-		{
-		  readlen = fread(record, 1, 2, file);
-		  if (readlen < 2)
-		    break;
+              /* Read a row of the image */
+              j = 0;
+              while (j < width)
+                {
+                  readlen = fread(record, 1, 2, file);
+                  if (readlen < 2)
+                    break;
 
-		  for (count = 0; count < record[0]; ++count)
-		    {
-		      dest[j]   = record[1];
-		      j++;
-		      if (j >= width)
-			break;
-		    }
-		}
-	      dest += width;
-	    }
-	  gimp_pixel_rgn_set_rect (&pixel_rgn, dest_base, 0, i-row,
-				   width, row);
-	  gimp_progress_update ((double) i / (double) height);
-	}
+                  for (count = 0; count < record[0]; ++count)
+                    {
+                      dest[j]   = record[1];
+                      j++;
+                      if (j >= width)
+                        break;
+                    }
+                }
+              dest += width;
+            }
+          gimp_pixel_rgn_set_rect (&pixel_rgn, dest_base, 0, i-row,
+                                   width, row);
+          gimp_progress_update ((double) i / (double) height);
+        }
       g_free (dest_base);
     }
+
+  gimp_progress_update (1.0);
 
   gimp_drawable_flush (drawable);
   gimp_drawable_detach (drawable);
@@ -495,8 +497,8 @@ load_image (const gchar  *filename,
 
 static gboolean
 save_image (const gchar  *filename,
-	    gint32        image_ID,
-	    gint32        drawable_ID,
+            gint32        image_ID,
+            gint32        drawable_ID,
             GError      **error)
 {
   gint       depth, i, j, row, tile_height, writelen, rectHeight;
@@ -511,7 +513,7 @@ save_image (const gchar  *filename,
   drawable = gimp_drawable_get (drawable_ID);
 
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
-		       drawable->height, FALSE, FALSE);
+                       drawable->height, FALSE, FALSE);
 
   savingColor = gimp_drawable_is_rgb (drawable_ID);
   depth = gimp_drawable_bpp (drawable_ID);
@@ -548,49 +550,49 @@ save_image (const gchar  *filename,
       put_short (24, file);
 
       for (i = 0; i < drawable->height;)
-	{
-	  rectHeight = (tile_height < (drawable->height - i - 1)) ?
-	    tile_height : (drawable->height - i - 1);
-	  gimp_pixel_rgn_get_rect (&pixel_rgn, src_base, 0, i,
-				   drawable->width, rectHeight);
+        {
+          rectHeight = (tile_height < (drawable->height - i - 1)) ?
+            tile_height : (drawable->height - i - 1);
+          gimp_pixel_rgn_get_rect (&pixel_rgn, src_base, 0, i,
+                                   drawable->width, rectHeight);
 
-	  for (src = src_base, row = 0;
-	       row < tile_height && i < drawable->height;
-	       i += 1, row += 1)
-	    {
-	      /* Write a row of the image */
-	      record[0] = 1;
-	      record[3] = src[0];
-	      record[2] = src[1];
-	      record[1] = src[2];
-	      src += depth;
-	      for (j = 1; j < drawable->width; ++j)
-		{
-		  if ((record[3] != src[0]) ||
-		       (record[2] != src[1]) ||
-		       (record[1] != src[2]) ||
-		       (record[0] == 255))
-		    {
-		      /* Write current RLE record and start a new one */
+          for (src = src_base, row = 0;
+               row < tile_height && i < drawable->height;
+               i += 1, row += 1)
+            {
+              /* Write a row of the image */
+              record[0] = 1;
+              record[3] = src[0];
+              record[2] = src[1];
+              record[1] = src[2];
+              src += depth;
+              for (j = 1; j < drawable->width; ++j)
+                {
+                  if ((record[3] != src[0]) ||
+                       (record[2] != src[1]) ||
+                       (record[1] != src[2]) ||
+                       (record[0] == 255))
+                    {
+                      /* Write current RLE record and start a new one */
 
-		      writelen = fwrite (record, 1, 4, file);
-		      record[0] = 1;
-		      record[3] = src[0];
-		      record[2] = src[1];
-		      record[1] = src[2];
-		    }
-		  else
-		    {
-		      /* increment run length in current record */
-		      record[0]++;
-		    }
-		  src += depth;
-		}
-	      /* Write last record in row */
-	      writelen = fwrite (record, 1, 4, file);
-	    }
-	  gimp_progress_update ((double) i / (double) drawable->height);
-	}
+                      writelen = fwrite (record, 1, 4, file);
+                      record[0] = 1;
+                      record[3] = src[0];
+                      record[2] = src[1];
+                      record[1] = src[2];
+                    }
+                  else
+                    {
+                      /* increment run length in current record */
+                      record[0]++;
+                    }
+                  src += depth;
+                }
+              /* Write last record in row */
+              writelen = fwrite (record, 1, 4, file);
+            }
+          gimp_progress_update ((double) i / (double) drawable->height);
+        }
     }
   else
     {
@@ -600,42 +602,43 @@ save_image (const gchar  *filename,
       put_short (8, file);
 
       for (i = 0; i < drawable->height;)
-	{
-	  rectHeight = (tile_height < (drawable->height - i - 1)) ?
-	    tile_height : (drawable->height - i - 1);
-	  gimp_pixel_rgn_get_rect (&pixel_rgn, src_base, 0, i,
-				   drawable->width, rectHeight);
+        {
+          rectHeight = (tile_height < (drawable->height - i - 1)) ?
+            tile_height : (drawable->height - i - 1);
+          gimp_pixel_rgn_get_rect (&pixel_rgn, src_base, 0, i,
+                                   drawable->width, rectHeight);
 
-	  for (src = src_base, row = 0;
-	       row < tile_height && i < drawable->height;
-	       i += 1, row += 1)
-	    {
-	      /* Write a row of the image */
-	      record[0] = 1;
-	      record[1] = src[0];
-	      src += depth;
-	      for (j = 1; j < drawable->width; ++j)
-		{
-		  if ((record[1] != src[0]) || (record[0] == 255))
-		    {
-		      /* Write current RLE record and start a new one */
-		      writelen = fwrite (record, 1, 2, file);
-		      record[0] = 1;
-		      record[1] = src[0];
-		    }
-		  else
-		    {
-		      /* increment run length in current record */
-		      record[0] ++;
-		    }
-		  src += depth;
-		}
-	      /* Write last record in row */
-	      writelen = fwrite (record, 1, 2, file);
-	    }
-	  gimp_progress_update ((double) i / (double) drawable->height);
-	}
+          for (src = src_base, row = 0;
+               row < tile_height && i < drawable->height;
+               i += 1, row += 1)
+            {
+              /* Write a row of the image */
+              record[0] = 1;
+              record[1] = src[0];
+              src += depth;
+              for (j = 1; j < drawable->width; ++j)
+                {
+                  if ((record[1] != src[0]) || (record[0] == 255))
+                    {
+                      /* Write current RLE record and start a new one */
+                      writelen = fwrite (record, 1, 2, file);
+                      record[0] = 1;
+                      record[1] = src[0];
+                    }
+                  else
+                    {
+                      /* increment run length in current record */
+                      record[0] ++;
+                    }
+                  src += depth;
+                }
+              /* Write last record in row */
+              writelen = fwrite (record, 1, 2, file);
+            }
+          gimp_progress_update ((double) i / (double) drawable->height);
+        }
     }
+  gimp_progress_update (1.0);
 
   g_free (src_base);
 

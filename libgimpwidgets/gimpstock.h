@@ -4,10 +4,10 @@
  * gimpstock.h
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_STOCK_H__
 #define __GIMP_STOCK_H__
@@ -51,7 +54,6 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED   "gimp-gradient-shapeburst-dimpled"
 #define GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE     "gimp-gradient-spiral-clockwise"
 #define GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE "gimp-gradient-spiral-anticlockwise"
-
 
 #define GIMP_STOCK_GRAVITY_EAST             "gimp-gravity-east"
 #define GIMP_STOCK_GRAVITY_NORTH            "gimp-gravity-north"
@@ -105,12 +107,14 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST "gimp-tool-brightness-contrast"
 #define GIMP_STOCK_TOOL_BUCKET_FILL         "gimp-tool-bucket-fill"
 #define GIMP_STOCK_TOOL_BY_COLOR_SELECT     "gimp-tool-by-color-select"
+#define GIMP_STOCK_TOOL_CAGE                "gimp-tool-cage"
 #define GIMP_STOCK_TOOL_CLONE               "gimp-tool-clone"
 #define GIMP_STOCK_TOOL_COLOR_BALANCE       "gimp-tool-color-balance"
 #define GIMP_STOCK_TOOL_COLOR_PICKER        "gimp-tool-color-picker"
 #define GIMP_STOCK_TOOL_COLORIZE            "gimp-tool-colorize"
 #define GIMP_STOCK_TOOL_CROP                "gimp-tool-crop"
 #define GIMP_STOCK_TOOL_CURVES              "gimp-tool-curves"
+#define GIMP_STOCK_TOOL_DESATURATE          "gimp-tool-desaturate"
 #define GIMP_STOCK_TOOL_DODGE               "gimp-tool-dodge"
 #define GIMP_STOCK_TOOL_ELLIPSE_SELECT      "gimp-tool-ellipse-select"
 #define GIMP_STOCK_TOOL_ERASER              "gimp-tool-eraser"
@@ -139,6 +143,7 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_TOOL_TEXT                "gimp-tool-text"
 #define GIMP_STOCK_TOOL_THRESHOLD           "gimp-tool-threshold"
 #define GIMP_STOCK_TOOL_ZOOM                "gimp-tool-zoom"
+
 
 /*  in menu size:  */
 
@@ -215,8 +220,11 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_TOOLS                    "gimp-tools"
 #define GIMP_STOCK_TOOL_OPTIONS             "gimp-tool-options"
 #define GIMP_STOCK_DEVICE_STATUS            "gimp-device-status"
+#define GIMP_STOCK_INPUT_DEVICE             "gimp-input-device"
 #define GIMP_STOCK_CURSOR                   "gimp-cursor"
 #define GIMP_STOCK_SAMPLE_POINT             "gimp-sample-point"
+#define GIMP_STOCK_DYNAMICS                 "gimp-dynamics"
+#define GIMP_STOCK_TOOL_PRESET              "gimp-tool-preset"
 
 #define GIMP_STOCK_CONTROLLER               "gimp-controller"
 #define GIMP_STOCK_CONTROLLER_KEYBOARD      "gimp-controller-keyboard"
@@ -275,7 +283,7 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_GRADIENT                 GIMP_STOCK_TOOL_BLEND
 #define GIMP_STOCK_PALETTE                  GTK_STOCK_SELECT_COLOR
 #define GIMP_STOCK_PATTERN                  GIMP_STOCK_TOOL_BUCKET_FILL
-#define GIMP_STOCK_TOOL_DESATURATE          GIMP_STOCK_CONVERT_GRAYSCALE
+#define GIMP_STOCK_CONTROLLER_MOUSE         GIMP_STOCK_CURSOR
 
 
 void   gimp_stock_init (void);

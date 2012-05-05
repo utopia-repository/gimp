@@ -4,9 +4,9 @@
  * gimpoperationcurves.c
  * Copyright (C) 2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -39,7 +39,8 @@ static gboolean gimp_operation_curves_process (GeglOperation       *operation,
                                                void                *in_buf,
                                                void                *out_buf,
                                                glong                samples,
-                                               const GeglRectangle *roi);
+                                               const GeglRectangle *roi,
+                                               gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationCurves, gimp_operation_curves,
@@ -58,9 +59,11 @@ gimp_operation_curves_class_init (GimpOperationCurvesClass *klass)
   object_class->set_property   = gimp_operation_point_filter_set_property;
   object_class->get_property   = gimp_operation_point_filter_get_property;
 
-  operation_class->name        = "gimp-curves";
-  operation_class->categories  = "color";
-  operation_class->description = "GIMP Curves operation";
+  gegl_operation_class_set_keys (operation_class,
+           "name"       , "gimp:curves",
+           "categories" , "color",
+           "description", "GIMP Curves operation",
+           NULL);
 
   point_class->process         = gimp_operation_curves_process;
 
@@ -84,7 +87,8 @@ gimp_operation_curves_process (GeglOperation       *operation,
                                void                *in_buf,
                                void                *out_buf,
                                glong                samples,
-                               const GeglRectangle *roi)
+                               const GeglRectangle *roi,
+                               gint                 level)
 {
   GimpOperationPointFilter *point  = GIMP_OPERATION_POINT_FILTER (operation);
   GimpCurvesConfig         *config = GIMP_CURVES_CONFIG (point->config);

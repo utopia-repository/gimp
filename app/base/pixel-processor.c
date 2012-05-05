@@ -3,9 +3,9 @@
  *
  * pixel_processor.c: Copyright (C) 1999 Jay Cox <jaycox@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -92,23 +91,26 @@ do_parallel_regions (PixelProcessor *processor)
   g_mutex_lock (processor->mutex);
 
   /*  the first thread getting here must not call pixel_regions_process()  */
-  if (!processor->first && processor->PRI)
+  if (! processor->first && processor->PRI)
     processor->PRI = pixel_regions_process (processor->PRI);
   else
     processor->first = FALSE;
 
   while (processor->PRI)
     {
-      guint pixels = (processor->PRI->portion_width *
-                      processor->PRI->portion_height);
+      const guint pixels = (processor->PRI->portion_width *
+                            processor->PRI->portion_height);
 
       for (i = 0; i < processor->num_regions; i++)
-        if (processor->regions[i])
-          {
-            memcpy (&tr[i], processor->regions[i], sizeof (PixelRegion));
-            if (tr[i].tiles)
-              tile_lock (tr[i].curtile);
-          }
+        {
+          if (processor->regions[i])
+            {
+              memcpy (&tr[i], processor->regions[i], sizeof (PixelRegion));
+
+              if (tr[i].tiles)
+                tile_lock (tr[i].curtile);
+            }
+        }
 
       g_mutex_unlock (processor->mutex);
 
@@ -149,11 +151,13 @@ do_parallel_regions (PixelProcessor *processor)
       g_mutex_lock (processor->mutex);
 
       for (i = 0; i < processor->num_regions; i++)
-        if (processor->regions[i])
-          {
-            if (tr[i].tiles)
-              tile_release (tr[i].curtile, tr[i].dirty);
-          }
+        {
+          if (processor->regions[i])
+            {
+              if (tr[i].tiles)
+                tile_release (tr[i].curtile, tr[i].dirty);
+            }
+        }
 
       processor->progress += pixels;
 

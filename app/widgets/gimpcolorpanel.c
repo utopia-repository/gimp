@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,6 +20,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
@@ -34,10 +34,13 @@
 
 /*  local function prototypes  */
 
-static void       gimp_color_panel_destroy         (GtkObject          *object);
+static void       gimp_color_panel_dispose         (GObject            *object);
+
 static gboolean   gimp_color_panel_button_press    (GtkWidget          *widget,
                                                     GdkEventButton     *bevent);
+
 static void       gimp_color_panel_clicked         (GtkButton          *button);
+
 static void       gimp_color_panel_color_changed   (GimpColorButton    *button);
 static GType      gimp_color_panel_get_action_type (GimpColorButton    *button);
 
@@ -55,12 +58,12 @@ G_DEFINE_TYPE (GimpColorPanel, gimp_color_panel, GIMP_TYPE_COLOR_BUTTON)
 static void
 gimp_color_panel_class_init (GimpColorPanelClass *klass)
 {
-  GtkObjectClass       *object_class       = GTK_OBJECT_CLASS (klass);
+  GObjectClass         *object_class       = G_OBJECT_CLASS (klass);
   GtkWidgetClass       *widget_class       = GTK_WIDGET_CLASS (klass);
   GtkButtonClass       *button_class       = GTK_BUTTON_CLASS (klass);
   GimpColorButtonClass *color_button_class = GIMP_COLOR_BUTTON_CLASS (klass);
 
-  object_class->destroy               = gimp_color_panel_destroy;
+  object_class->dispose               = gimp_color_panel_dispose;
 
   widget_class->button_press_event    = gimp_color_panel_button_press;
 
@@ -78,7 +81,7 @@ gimp_color_panel_init (GimpColorPanel *panel)
 }
 
 static void
-gimp_color_panel_destroy (GtkObject *object)
+gimp_color_panel_dispose (GObject *object)
 {
   GimpColorPanel *panel = GIMP_COLOR_PANEL (object);
 
@@ -88,14 +91,14 @@ gimp_color_panel_destroy (GtkObject *object)
       panel->color_dialog = NULL;
     }
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static gboolean
 gimp_color_panel_button_press (GtkWidget      *widget,
                                GdkEventButton *bevent)
 {
-  if (bevent->button == 3)
+  if (gdk_event_triggers_context_menu ((GdkEvent *) bevent))
     {
       GimpColorButton *color_button;
       GimpColorPanel  *color_panel;
@@ -194,20 +197,18 @@ gimp_color_panel_new (const gchar       *title,
                       gint               width,
                       gint               height)
 {
-  GimpColorPanel *panel;
-
   g_return_val_if_fail (title != NULL, NULL);
   g_return_val_if_fail (color != NULL, NULL);
+  g_return_val_if_fail (width > 0, NULL);
+  g_return_val_if_fail (height > 0, NULL);
 
-  panel = g_object_new (GIMP_TYPE_COLOR_PANEL, NULL);
-
-  GIMP_COLOR_BUTTON (panel)->title = g_strdup (title);
-
-  gimp_color_button_set_type (GIMP_COLOR_BUTTON (panel), type);
-  gimp_color_button_set_color (GIMP_COLOR_BUTTON (panel), color);
-  gtk_widget_set_size_request (GTK_WIDGET (panel), width, height);
-
-  return GTK_WIDGET (panel);
+  return g_object_new (GIMP_TYPE_COLOR_PANEL,
+                       "title",       title,
+                       "type",        type,
+                       "color",       color,
+                       "area-width",  width,
+                       "area-height", height,
+                       NULL);
 }
 
 static void

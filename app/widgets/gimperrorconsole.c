@@ -7,9 +7,9 @@
  * partly based on errorconsole.c
  * Copyright (C) 1998 Nick Fetchak <nuke@bayside.net>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,16 +34,15 @@
 
 #include "gimperrorconsole.h"
 #include "gimpmenufactory.h"
+#include "gimptextbuffer.h"
 #include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
 
-static GObject * gimp_error_console_constructor  (GType             type,
-                                                  guint             n_params,
-                                                  GObjectConstructParam *params);
+static void      gimp_error_console_constructed  (GObject          *object);
+static void      gimp_error_console_dispose      (GObject          *object);
 
-static void      gimp_error_console_destroy      (GtkObject        *object);
 static void      gimp_error_console_unmap        (GtkWidget        *widget);
 
 static gboolean  gimp_error_console_button_press (GtkWidget        *widget,
@@ -60,12 +58,12 @@ G_DEFINE_TYPE (GimpErrorConsole, gimp_error_console, GIMP_TYPE_EDITOR)
 static void
 gimp_error_console_class_init (GimpErrorConsoleClass *klass)
 {
-  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class     = GTK_WIDGET_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->constructor = gimp_error_console_constructor;
-  gtk_object_class->destroy = gimp_error_console_destroy;
+  object_class->constructed = gimp_error_console_constructed;
+  object_class->dispose     = gimp_error_console_dispose;
+
   widget_class->unmap       = gimp_error_console_unmap;
 }
 
@@ -74,7 +72,7 @@ gimp_error_console_init (GimpErrorConsole *console)
 {
   GtkWidget *scrolled_window;
 
-  console->text_buffer = gtk_text_buffer_new (NULL);
+  console->text_buffer = GTK_TEXT_BUFFER (gimp_text_buffer_new ());
 
   gtk_text_buffer_create_tag (console->text_buffer, "title",
                               "scale",  PANGO_SCALE_LARGE,
@@ -87,7 +85,7 @@ gimp_error_console_init (GimpErrorConsole *console)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (console), scrolled_window);
+  gtk_box_pack_start (GTK_BOX (console), scrolled_window, TRUE, TRUE, 0);
   gtk_widget_show (scrolled_window);
 
   console->text_view = gtk_text_view_new_with_buffer (console->text_buffer);
@@ -106,17 +104,13 @@ gimp_error_console_init (GimpErrorConsole *console)
   console->file_dialog = NULL;
 }
 
-static GObject *
-gimp_error_console_constructor (GType                  type,
-                                guint                  n_params,
-                                GObjectConstructParam *params)
+static void
+gimp_error_console_constructed (GObject *object)
 {
-  GObject          *object;
-  GimpErrorConsole *console;
+  GimpErrorConsole *console = GIMP_ERROR_CONSOLE (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  console = GIMP_ERROR_CONSOLE (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   console->clear_button =
     gimp_editor_add_action_button (GIMP_EDITOR (console), "error-console",
@@ -128,12 +122,10 @@ gimp_error_console_constructor (GType                  type,
                                    "error-console-save-selection",
                                    GDK_SHIFT_MASK,
                                    NULL);
-
-  return object;
 }
 
 static void
-gimp_error_console_destroy (GtkObject *object)
+gimp_error_console_dispose (GObject *object)
 {
   GimpErrorConsole *console = GIMP_ERROR_CONSOLE (object);
 
@@ -142,7 +134,7 @@ gimp_error_console_destroy (GtkObject *object)
 
   console->gimp->message_handler = GIMP_MESSAGE_BOX;
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -238,7 +230,7 @@ gimp_error_console_button_press (GtkWidget        *widget,
                                  GdkEventButton   *bevent,
                                  GimpErrorConsole *console)
 {
-  if (bevent->button == 3 && bevent->type == GDK_BUTTON_PRESS)
+  if (gdk_event_triggers_context_menu ((GdkEvent *) bevent))
     {
       return gimp_editor_popup_menu (GIMP_EDITOR (console), NULL, NULL);
     }

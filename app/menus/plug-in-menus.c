@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -223,7 +222,7 @@ plug_in_menus_register_procedure (GimpPDB       *pdb,
 
 
           GIMP_LOG (MENUS, "register procedure: %s",
-                    gimp_object_get_name (GIMP_OBJECT (procedure)));
+                    gimp_object_get_name (procedure));
 
           for (list = plug_in_proc->menu_paths; list; list = g_list_next (list))
             plug_in_menus_menu_path_added (plug_in_proc, list->data, manager);
@@ -250,7 +249,7 @@ plug_in_menus_unregister_procedure (GimpPDB       *pdb,
           GList *list;
 
           GIMP_LOG (MENUS, "unregister procedure: %s",
-                   gimp_object_get_name (GIMP_OBJECT (procedure)));
+                   gimp_object_get_name (procedure));
 
           for (list = plug_in_proc->menu_paths; list; list = g_list_next (list))
             {
@@ -260,7 +259,7 @@ plug_in_menus_unregister_procedure (GimpPDB       *pdb,
                   guint  merge_id;
 
                   merge_key = g_strdup_printf ("%s-merge-id",
-                                               GIMP_OBJECT (plug_in_proc)->name);
+                                               gimp_object_get_name (plug_in_proc));
                   merge_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (manager),
                                                                   merge_key));
                   g_free (merge_key);
@@ -282,7 +281,7 @@ plug_in_menus_menu_path_added (GimpPlugInProcedure *plug_in_proc,
                                GimpUIManager       *manager)
 {
   GIMP_LOG (MENUS, "menu path added: %s (%s)",
-           gimp_object_get_name (GIMP_OBJECT (plug_in_proc)), menu_path);
+           gimp_object_get_name (plug_in_proc), menu_path);
 
   if (g_str_has_prefix (menu_path, manager->name))
     {
@@ -323,6 +322,11 @@ plug_in_menus_menu_path_added (GimpPlugInProcedure *plug_in_proc,
           plug_in_menus_add_proc (manager, "/brushes-popup",
                                   plug_in_proc, menu_path);
         }
+      else if (! strcmp (manager->name, "<Dynamics>"))
+        {
+          plug_in_menus_add_proc (manager, "/dynamics-popup",
+                                  plug_in_proc, menu_path);
+        }
       else if (! strcmp (manager->name, "<Gradients>"))
         {
           plug_in_menus_add_proc (manager, "/gradients-popup",
@@ -336,6 +340,11 @@ plug_in_menus_menu_path_added (GimpPlugInProcedure *plug_in_proc,
       else if (! strcmp (manager->name, "<Patterns>"))
         {
           plug_in_menus_add_proc (manager, "/patterns-popup",
+                                  plug_in_proc, menu_path);
+        }
+      else if (! strcmp (manager->name, "<ToolPresets>"))
+        {
+          plug_in_menus_add_proc (manager, "/tool-presets-popup",
                                   plug_in_proc, menu_path);
         }
       else if (! strcmp (manager->name, "<Fonts>"))
@@ -387,7 +396,7 @@ plug_in_menus_add_proc (GimpUIManager       *manager,
       *p = '\0';
     }
 
-  merge_key = g_strdup_printf ("%s-merge-id", GIMP_OBJECT (proc)->name);
+  merge_key = g_strdup_printf ("%s-merge-id", gimp_object_get_name (proc));
 
   merge_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (manager),
                                                   merge_key));
@@ -423,12 +432,12 @@ plug_in_menus_add_proc (GimpUIManager       *manager,
     }
 
   GIMP_LOG (MENUS, "adding menu item for '%s' (@ %s)",
-            GIMP_OBJECT (proc)->name, action_path);
+            gimp_object_get_name (proc), action_path);
 
   gtk_ui_manager_add_ui (GTK_UI_MANAGER (manager), merge_id,
                          action_path,
-                         GIMP_OBJECT (proc)->name,
-                         GIMP_OBJECT (proc)->name,
+                         gimp_object_get_name (proc),
+                         gimp_object_get_name (proc),
                          GTK_UI_MANAGER_MENUITEM,
                          FALSE);
 
@@ -447,9 +456,7 @@ plug_in_menus_tree_insert (GTree           *entries,
   /* Append the procedure name to the menu path in order to get a unique
    * key even if two procedures are installed to the same menu entry.
    */
-  key = g_strconcat (strip,
-                     gimp_object_get_name (GIMP_OBJECT (entry->proc)),
-                     NULL);
+  key = g_strconcat (strip, gimp_object_get_name (entry->proc), NULL);
 
   g_tree_insert (entries, g_utf8_collate_key (key, -1), entry);
 

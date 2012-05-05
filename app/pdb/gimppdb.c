@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,7 +25,6 @@
 #include <gobject/gvaluecollector.h>
 
 #include "libgimpbase/gimpbase.h"
-#include "libgimpcolor/gimpcolor.h"
 
 #include "pdb-types.h"
 
@@ -158,7 +156,7 @@ gimp_pdb_real_register_procedure (GimpPDB       *pdb,
   const gchar *name;
   GList       *list;
 
-  name = gimp_object_get_name (GIMP_OBJECT (procedure));
+  name = gimp_object_get_name (procedure);
 
   list = g_hash_table_lookup (pdb->procedures, name);
 
@@ -173,7 +171,7 @@ gimp_pdb_real_unregister_procedure (GimpPDB       *pdb,
   const gchar *name;
   GList       *list;
 
-  name = gimp_object_get_name (GIMP_OBJECT (procedure));
+  name = gimp_object_get_name (procedure);
 
   list = g_hash_table_lookup (pdb->procedures, name);
 
@@ -183,7 +181,7 @@ gimp_pdb_real_unregister_procedure (GimpPDB       *pdb,
 
       if (list)
         {
-          name = gimp_object_get_name (GIMP_OBJECT (list->data));
+          name = gimp_object_get_name (list->data);
           g_hash_table_replace (pdb->procedures, (gpointer) name, list);
         }
       else
@@ -303,7 +301,7 @@ gimp_pdb_execute_procedure_by_name_args (GimpPDB       *pdb,
   if (list == NULL)
     {
       GError *pdb_error = g_error_new (GIMP_PDB_ERROR,
-                                       GIMP_PDB_PROCEDURE_NOT_FOUND,
+                                       GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
                                        _("Procedure '%s' not found"), name);
 
       return_vals = gimp_procedure_get_return_values (NULL, FALSE, pdb_error);
@@ -373,7 +371,7 @@ gimp_pdb_execute_procedure_by_name (GimpPDB       *pdb,
   if (! procedure)
     {
       GError *pdb_error = g_error_new (GIMP_PDB_ERROR,
-                                       GIMP_PDB_PROCEDURE_NOT_FOUND,
+                                       GIMP_PDB_ERROR_PROCEDURE_NOT_FOUND,
                                        _("Procedure '%s' not found"), name);
 
       return_vals = gimp_procedure_get_return_values (NULL, FALSE, pdb_error);
@@ -407,11 +405,12 @@ gimp_pdb_execute_procedure_by_name (GimpPDB       *pdb,
 
           g_value_array_free (args);
 
-          pdb_error = g_error_new (GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+          pdb_error = g_error_new (GIMP_PDB_ERROR,
+                                   GIMP_PDB_ERROR_INVALID_ARGUMENT,
                                    _("Procedure '%s' has been called with a "
                                      "wrong type for argument #%d. "
                                      "Expected %s, got %s."),
-                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   gimp_object_get_name (procedure),
                                    i + 1, expected, got);
 
           return_vals = gimp_procedure_get_return_values (procedure,
@@ -428,7 +427,7 @@ gimp_pdb_execute_procedure_by_name (GimpPDB       *pdb,
       if (error_msg)
         {
           GError *pdb_error = g_error_new_literal (GIMP_PDB_ERROR,
-                                                   GIMP_PDB_INTERNAL_ERROR,
+                                                   GIMP_PDB_ERROR_INTERNAL_ERROR,
                                                    error_msg);
           g_warning ("%s: %s", G_STRFUNC, error_msg);
           g_free (error_msg);
@@ -456,6 +455,44 @@ gimp_pdb_execute_procedure_by_name (GimpPDB       *pdb,
   return return_vals;
 }
 
+/**
+ * gimp_pdb_get_deprecated_procedures:
+ * @pdb:
+ *
+ * Returns: A new #GList with the deprecated procedures. Free with
+ *          g_list_free().
+ **/
+GList *
+gimp_pdb_get_deprecated_procedures (GimpPDB *pdb)
+{
+  GList *result = NULL;
+  GList *procs;
+  GList *iter;
+
+  g_return_val_if_fail (GIMP_IS_PDB (pdb), NULL);
+
+  procs = g_hash_table_get_values (pdb->procedures);
+
+  for (iter = procs;
+       iter;
+       iter = g_list_next (iter))
+    {
+      GList *proc_list = iter->data;
+
+      /* Only care about the first procedure in the list */
+      GimpProcedure *procedure = GIMP_PROCEDURE (proc_list->data);
+
+      if (procedure->deprecated)
+        result = g_list_prepend (result, procedure);
+    }
+
+  result = g_list_sort (result, (GCompareFunc) gimp_procedure_name_compare);
+
+  g_list_free (procs);
+
+  return result;
+}
+
 
 /*  private functions  */
 
@@ -465,10 +502,7 @@ gimp_pdb_entry_free (gpointer key,
                      gpointer user_data)
 {
   if (value)
-    {
-      g_list_foreach (value, (GFunc) g_object_unref, NULL);
-      g_list_free (value);
-    }
+    g_list_free_full (value, (GDestroyNotify) g_object_unref);
 }
 
 static gint64

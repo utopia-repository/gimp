@@ -4,10 +4,10 @@
  * gimppageselector.c
  * Copyright (C) 2005 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,8 +32,19 @@
 #include "gimppropwidgets.h"
 #include "gimpstock.h"
 #include "gimpwidgets.h"
+#include "gimp3migration.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimppageselector
+ * @title: GimpPageSelector
+ * @short_description: A widget to select pages from multi-page things.
+ *
+ * Use this for example for specifying what pages to import from
+ * a PDF or PS document.
+ **/
 
 
 enum
@@ -118,7 +128,7 @@ static GdkPixbuf * gimp_page_selector_add_frame    (GtkWidget        *widget,
                                                     GdkPixbuf        *pixbuf);
 
 
-G_DEFINE_TYPE (GimpPageSelector, gimp_page_selector, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpPageSelector, gimp_page_selector, GTK_TYPE_BOX)
 
 #define parent_class gimp_page_selector_parent_class
 
@@ -226,11 +236,14 @@ gimp_page_selector_init (GimpPageSelector *selector)
   priv->n_pages = 0;
   priv->target  = GIMP_PAGE_SELECTOR_TARGET_LAYERS;
 
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (selector),
+                                  GTK_ORIENTATION_VERTICAL);
+
   gtk_box_set_spacing (GTK_BOX (selector), 12);
 
   /*  Pages  */
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start (GTK_BOX (selector), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -276,11 +289,11 @@ gimp_page_selector_init (GimpPageSelector *selector)
 
   /*  Select all button & range entry  */
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (selector), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  hbbox = gtk_hbutton_box_new ();
+  hbbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (hbox), hbbox, FALSE, FALSE, 0);
   gtk_widget_show (hbbox);
 
@@ -312,7 +325,7 @@ gimp_page_selector_init (GimpPageSelector *selector)
 
   /*  Target combo  */
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (selector), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -598,7 +611,7 @@ gimp_page_selector_get_target (GimpPageSelector *selector)
  * @page_no: The number of the page to set the thumbnail for.
  * @thumbnail: The thumbnail pixbuf.
  *
- * Sets the thumbnail for given %page_no. A default "page" icon will
+ * Sets the thumbnail for given @page_no. A default "page" icon will
  * be used if no page thumbnail is set.
  *
  * Since: GIMP 2.4
@@ -719,9 +732,10 @@ gimp_page_selector_get_page_thumbnail (GimpPageSelector *selector,
 /**
  * gimp_page_selector_set_page_label:
  * @selector: Pointer to a #GimpPageSelector.
- * @page_no: The number of the page to set the label for.
- * @label: The label.
+ * @page_no:  The number of the page to set the label for.
+ * @label:    The label.
  *
+ * Sets the label of the specified page.
  *
  * Since: GIMP 2.4
  **/
@@ -978,8 +992,7 @@ gimp_page_selector_get_selected_pages (GimpPageSelector *selector,
   qsort (array, *n_selected_pages, sizeof (gint),
          gimp_page_selector_int_compare);
 
-  g_list_foreach (selected, (GFunc) gtk_tree_path_free, NULL);
-  g_list_free (selected);
+  g_list_free_full (selected, (GDestroyNotify) gtk_tree_path_free);
 
   return array;
 }
@@ -989,7 +1002,7 @@ gimp_page_selector_get_selected_pages (GimpPageSelector *selector,
  * @selector: Pointer to a #GimpPageSelector.
  * @range: A string representing the set of selected pages.
  *
- * Selectes the pages described by %range. The range string is a
+ * Selectes the pages described by @range. The range string is a
  * user-editable list of pages and ranges, e.g. "1,3,5-7,9-12,14".
  * Note that the page numbering in the range string starts with 1,
  * not 0.
@@ -1092,7 +1105,7 @@ gimp_page_selector_select_range (GimpPageSelector *selector,
  * @selector: Pointer to a #GimpPageSelector.
  *
  * Returns: A newly allocated string representing the set of selected
- *          pages. See gimp_page_selector_set_selected_range() for the
+ *          pages. See gimp_page_selector_select_range() for the
  *          format of the string.
  *
  * Since: GIMP 2.4
@@ -1157,8 +1170,7 @@ gimp_page_selector_selection_changed (GtkIconView      *icon_view,
 
   selected = gtk_icon_view_get_selected_items (GTK_ICON_VIEW (priv->view));
   n_selected = g_list_length (selected);
-  g_list_foreach (selected, (GFunc) gtk_tree_path_free, NULL);
-  g_list_free (selected);
+  g_list_free_full (selected, (GDestroyNotify) gtk_tree_path_free);
 
   if (n_selected == 0)
     {
@@ -1384,9 +1396,7 @@ stretch_frame_image (GdkPixbuf *frame_image,
                      gint       dest_height)
 {
   GdkPixbuf *pixbuf;
-  guchar    *pixels;
   gint       frame_width, frame_height;
-  gint       row_stride;
   gint       target_width,  target_frame_width;
   gint       target_height, target_frame_height;
 
@@ -1396,9 +1406,6 @@ stretch_frame_image (GdkPixbuf *frame_image,
   pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
                            dest_width, dest_height);
   gdk_pixbuf_fill (pixbuf, 0);
-
-  row_stride = gdk_pixbuf_get_rowstride (pixbuf);
-  pixels = gdk_pixbuf_get_pixels (pixbuf);
 
   target_width = dest_width - left_offset - right_offset;
   target_height = dest_height - top_offset - bottom_offset;

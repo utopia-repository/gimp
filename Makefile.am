@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
+
 SUBDIRS = \
 	m4macros	\
 	tools		\
@@ -27,9 +29,8 @@ SUBDIRS = \
 	$(GIMP_PLUGINS)	\
 	etc		\
 	devel-docs	\
-	docs
-
-bin_SCRIPTS = @GIMPINSTALL@
+	docs		\
+	build
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = \
@@ -40,11 +41,9 @@ pkgconfig_DATA = \
 
 AUTHORS: authors.xml authors.xsl
 if HAVE_XSLTPROC
-	$(XSLTPROC) authors.xsl $< > $(@) || rm -f $(@)
+	$(XSLTPROC) -o $(@) $(top_srcdir)/authors.xsl $< || rm -f $(@)
 endif
 
-
-EXTRA_SCRIPTS = gimpinstall-@GIMP_TOOL_VERSION@
 
 EXTRA_DIST = \
 	AUTHORS			\
@@ -70,16 +69,11 @@ EXTRA_DIST = \
 	authors.xml		\
 	authors.xsl		\
 	config.h.win32		\
-	gimp-zip.in		\
-	gimpdefs.msc		\
-	makefile.msc
+	gimp-zip.in
 
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
-
-gimpinstall-@GIMP_TOOL_VERSION@:
-	$(LN_S) $(srcdir)/install-sh $(srcdir)/gimpinstall-@GIMP_TOOL_VERSION@
 
 check-defs:
 	@$(PYTHON) $(top_srcdir)/tools/defcheck.py $(top_srcdir) || \
@@ -97,7 +91,8 @@ all-local: AUTHORS
 dist-hook: check-defs validate-authors
 
 
-CHANGELOG_START = f8f3c41320320cb07af2956eca48007a464f14d7
+
+CHANGELOG_START = 74424325abb54620b370f2595445b2b2a19fe5e7
 
 ChangeLog: $(srcdir)/ChangeLog $(srcdir)/ChangeLog.pre-git
 $(srcdir)/ChangeLog:
@@ -114,5 +109,4 @@ $(srcdir)/ChangeLog:
 	  (echo A git checkout and git-log is required to generate ChangeLog >&2 && \
 	  echo A git checkout and git-log is required to generate this file >> $@); \
 	fi
-
 .PHONY: $(srcdir)/ChangeLog

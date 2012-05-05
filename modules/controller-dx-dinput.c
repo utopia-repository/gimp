@@ -6,9 +6,9 @@
  *                         Michael Natterer <mitch@gimp.org>
  *                         Tor Lillqvist <tml@iki.fi>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* When using gcc with the February 2007 version of the DirectX SDK,
@@ -333,8 +332,7 @@ dx_dinput_get_n_events (GimpController *controller)
 }
 
 static const gchar *
-dx_dinput_get_event_name
- (GimpController *controller,
+dx_dinput_get_event_name (GimpController *controller,
                           gint            event_id)
 {
   ControllerDXDInput *cdxdi = (ControllerDXDInput *) controller;
@@ -550,7 +548,7 @@ dx_dinput_get_device_info (ControllerDXDInput *controller,
                                                           DIDFT_RELAXIS|
                                                           DIDFT_TGLBUTTON))))
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::EnumObjects failed: %s",
                    g_win32_error_message (hresult));
       return FALSE;
@@ -590,7 +588,7 @@ dx_dinput_get_device_info (ControllerDXDInput *controller,
       g_free (controller->event_names);
       g_free (controller->event_blurbs);
 
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::EnumObjects failed: %s",
                    g_win32_error_message (hresult));
       return FALSE;
@@ -654,13 +652,12 @@ dx_dinput_event_dispatch (GSource     *source,
   gint                             i;
   GimpControllerEvent              cevent = { 0, };
 
-  data = g_malloc (format->dwDataSize);
+  data = g_alloca (format->dwDataSize);
 
   if (FAILED ((hresult = IDirectInputDevice8_GetDeviceState (input->didevice8,
                                                              format->dwDataSize,
                                                              data))))
     {
-      g_free (data);
       return TRUE;
     }
 
@@ -916,7 +913,7 @@ dx_dinput_setup_events (ControllerDXDInput *controller,
 
   if ((controller->event = CreateEvent (NULL, TRUE, FALSE, NULL)) == NULL)
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "CreateEvent failed: %s",
                    g_win32_error_message (GetLastError ()));
       return FALSE;
@@ -936,7 +933,7 @@ dx_dinput_setup_events (ControllerDXDInput *controller,
                                                           DIPROP_AXISMODE,
                                                           &dword.diph))))
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::GetParameters failed: %s",
                    g_win32_error_message (hresult));
       goto fail0;
@@ -1007,7 +1004,7 @@ dx_dinput_setup_events (ControllerDXDInput *controller,
   if (FAILED ((hresult = IDirectInputDevice8_SetDataFormat (controller->didevice8,
                                                             controller->format))))
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::SetDataFormat failed: %s",
                    g_win32_error_message (hresult));
       goto fail1;
@@ -1016,7 +1013,7 @@ dx_dinput_setup_events (ControllerDXDInput *controller,
   if (FAILED ((hresult = IDirectInputDevice8_SetEventNotification (controller->didevice8,
                                                                    controller->event))))
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::SetEventNotification failed: %s",
                    g_win32_error_message (hresult));
       goto fail2;
@@ -1024,7 +1021,7 @@ dx_dinput_setup_events (ControllerDXDInput *controller,
 
   if (FAILED ((hresult = IDirectInputDevice8_Acquire (controller->didevice8))))
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::Acquire failed: %s",
                    g_win32_error_message (hresult));
       goto fail2;
@@ -1034,7 +1031,7 @@ dx_dinput_setup_events (ControllerDXDInput *controller,
                                                              controller->format->dwDataSize,
                                                              controller->prevdata))))
     {
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
                    "IDirectInputDevice8::GetDeviceState failed: %s",
                    g_win32_error_message (hresult));
       goto fail2;

@@ -74,6 +74,7 @@
 #define SAVE_PROC      "file-tiff-save"
 #define SAVE2_PROC     "file-tiff-save2"
 #define PLUG_IN_BINARY "file-tiff-save"
+#define PLUG_IN_ROLE   "gimp-file-tiff-save"
 
 
 typedef struct
@@ -153,7 +154,7 @@ static void
 query (void)
 {
 #define COMMON_SAVE_ARGS \
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },\
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },\
     { GIMP_PDB_IMAGE,    "image",        "Input image" },\
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },\
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },\
@@ -250,7 +251,7 @@ run (const gchar      *name,
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image, &drawable, "TIFF",
+          export = gimp_export_image (&image, &drawable, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_INDEXED |
@@ -265,7 +266,7 @@ run (const gchar      *name,
           break;
         }
 
-      parasite = gimp_image_parasite_find (orig_image, "gimp-comment");
+      parasite = gimp_image_get_parasite (orig_image, "gimp-comment");
       if (parasite)
         {
           image_comment = g_strndup (gimp_parasite_data (parasite),
@@ -279,7 +280,7 @@ run (const gchar      *name,
           /*  Possibly retrieve data  */
           gimp_get_data (SAVE_PROC, &tsvals);
 
-          parasite = gimp_image_parasite_find (orig_image, "tiff-save-options");
+          parasite = gimp_image_get_parasite (orig_image, "tiff-save-options");
           if (parasite)
             {
               const TiffSaveVals *pvals = gimp_parasite_data (parasite);
@@ -326,7 +327,7 @@ run (const gchar      *name,
           /*  Possibly retrieve data  */
           gimp_get_data (SAVE_PROC, &tsvals);
 
-          parasite = gimp_image_parasite_find (orig_image, "tiff-save-options");
+          parasite = gimp_image_get_parasite (orig_image, "tiff-save-options");
           if (parasite)
             {
               const TiffSaveVals *pvals = gimp_parasite_data (parasite);
@@ -425,13 +426,13 @@ image_is_monochrome (gint32 image)
 
   if (colors)
     {
-      if (num_colors == 2)
+      if (num_colors == 2 || num_colors == 1)
         {
-          const guchar   bw_map[] = { 0, 0, 0, 255, 255, 255 };
-          const guchar   wb_map[] = { 255, 255, 255, 0, 0, 0 };
+          const guchar  bw_map[] = { 0, 0, 0, 255, 255, 255 };
+          const guchar  wb_map[] = { 255, 255, 255, 0, 0, 0 };
 
-          if (memcmp (colors, bw_map, 6) == 0 ||
-              memcmp (colors, wb_map, 6) == 0)
+          if (memcmp (colors, bw_map, 3 * num_colors) == 0 ||
+              memcmp (colors, wb_map, 3 * num_colors) == 0)
             {
               monochrome = TRUE;
             }
@@ -505,7 +506,7 @@ save_paths (TIFF   *tif,
        * - use iso8859-1 if possible
        * - otherwise use UTF-8, prepended with \xef\xbb\xbf (Byte-Order-Mark)
        */
-      name = gimp_vectors_get_name (vectors[v]);
+      name = gimp_item_get_name (vectors[v]);
       tmpname = g_convert (name, -1, "iso8859-1", "utf-8", NULL, &len, &err);
 
       if (tmpname && err == NULL)
@@ -649,7 +650,7 @@ save_image (const gchar  *filename,
   gint           bytesperrow;
   guchar        *t, *src, *data;
   guchar        *cmap;
-  gint           colors;
+  gint           num_colors;
   gint           success;
   GimpDrawable  *drawable;
   GimpImageType  drawable_type;
@@ -675,7 +676,7 @@ save_image (const gchar  *filename,
   tile_height = gimp_tile_height ();
   rowsperstrip = tile_height;
 
-  fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0644);
+  fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0666);
 
   if (fd == -1)
     {
@@ -740,16 +741,16 @@ save_image (const gchar  *filename,
       break;
 
     case GIMP_INDEXED_IMAGE:
-      cmap = gimp_image_get_colormap (image, &colors);
+      cmap = gimp_image_get_colormap (image, &num_colors);
 
-      if (colors == 2)
+      if (num_colors == 2 || num_colors == 1)
         {
-          is_bw = (memcmp (cmap, bw_map, 6) == 0);
+          is_bw = (memcmp (cmap, bw_map, 3 * num_colors) == 0);
           photometric = PHOTOMETRIC_MINISWHITE;
 
           if (!is_bw)
             {
-              is_bw = (memcmp (cmap, wb_map, 6) == 0);
+              is_bw = (memcmp (cmap, wb_map, 3 * num_colors) == 0);
 
               if (is_bw)
                 invert = FALSE;
@@ -765,7 +766,7 @@ save_image (const gchar  *filename,
           bitspersample = 8;
           photometric   = PHOTOMETRIC_PALETTE;
 
-          for (i = 0; i < colors; i++)
+          for (i = 0; i < num_colors; i++)
             {
               red[i] = cmap[i * 3 + 0] * 65535 / 255;
               grn[i] = cmap[i * 3 + 1] * 65535 / 255;
@@ -906,7 +907,7 @@ save_image (const gchar  *filename,
       parasite = gimp_parasite_new ("gimp-comment",
                                     GIMP_PARASITE_PERSISTENT,
                                     strlen (image_comment) + 1, image_comment);
-      gimp_image_parasite_attach (orig_image, parasite);
+      gimp_image_attach_parasite (orig_image, parasite);
       gimp_parasite_free (parasite);
     }
 
@@ -917,7 +918,7 @@ save_image (const gchar  *filename,
     uint32        profile_size;
     const guchar *icc_profile;
 
-    parasite = gimp_image_parasite_find (orig_image, "icc-profile");
+    parasite = gimp_image_get_parasite (orig_image, "icc-profile");
     if (parasite)
       {
         profile_size = gimp_parasite_data_size (parasite);
@@ -1058,25 +1059,11 @@ save_dialog (gboolean has_alpha,
   GtkWidget *g4;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as TIFF"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("TIFF"), PLUG_IN_BINARY, SAVE_PROC);
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       vbox, FALSE, TRUE, 0);
 
   /*  compression  */
@@ -1124,7 +1111,7 @@ save_dialog (gboolean has_alpha,
                     &tsvals.save_transp_pixels);
 
   /* comment entry */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #if 0
@@ -288,7 +287,7 @@ void
 ts_print_welcome (void)
 {
   ts_output_string (TS_OUTPUT_NORMAL,
-                    "Welcome to TinyScheme, Version 1.38\n", -1);
+                    "Welcome to TinyScheme, Version 1.40\n", -1);
   ts_output_string (TS_OUTPUT_NORMAL,
                     "Copyright (c) Dimitrios Souflis\n", -1);
 }
@@ -428,6 +427,12 @@ ts_init_constants (scheme *sc)
   symbol = sc->vptr->mk_symbol (sc, "DIR-SEPARATOR");
   sc->vptr->scheme_define (sc, sc->global_env, symbol,
                            sc->vptr->mk_string (sc, G_DIR_SEPARATOR_S));
+  sc->vptr->setimmutable (symbol);
+
+  /* Define string constant for use in building search paths */
+  symbol = sc->vptr->mk_symbol (sc, "SEARCHPATH-SEPARATOR");
+  sc->vptr->scheme_define (sc, sc->global_env, symbol,
+                           sc->vptr->mk_string (sc, G_SEARCHPATH_SEPARATOR_S));
   sc->vptr->setimmutable (symbol);
 
   /* These constants are deprecated and will be removed at a later date. */
@@ -746,6 +751,7 @@ script_fu_marshal_procedure_call (scheme  *sc,
         case GIMP_PDB_INT32:
         case GIMP_PDB_DISPLAY:
         case GIMP_PDB_IMAGE:
+        case GIMP_PDB_ITEM:
         case GIMP_PDB_LAYER:
         case GIMP_PDB_CHANNEL:
         case GIMP_PDB_DRAWABLE:
@@ -1174,36 +1180,6 @@ script_fu_marshal_procedure_call (scheme  *sc,
             }
           break;
 
-        case GIMP_PDB_REGION:
-          if (! (sc->vptr->is_list (sc, sc->vptr->pair_car (a)) &&
-            sc->vptr->list_length (sc, sc->vptr->pair_car (a)) == 4))
-            success = FALSE;
-          if (success)
-            {
-              pointer region;
-
-              region = sc->vptr->pair_car (a);
-              args[i].data.d_region.x =
-                           sc->vptr->ivalue (sc->vptr->pair_car (region));
-              region = sc->vptr->pair_cdr (region);
-              args[i].data.d_region.y =
-                           sc->vptr->ivalue (sc->vptr->pair_car (region));
-              region = sc->vptr->pair_cdr (region);
-              args[i].data.d_region.width =
-                           sc->vptr->ivalue (sc->vptr->pair_car (region));
-              region = sc->vptr->pair_cdr (region);
-              args[i].data.d_region.height =
-                           sc->vptr->ivalue (sc->vptr->pair_car (region));
-#if DEBUG_MARSHALL
-              g_printerr ("      (%d %d %d %d)\n",
-                          args[i].data.d_region.x,
-                          args[i].data.d_region.y,
-                          args[i].data.d_region.width,
-                          args[i].data.d_region.height);
-#endif
-            }
-          break;
-
         case GIMP_PDB_PARASITE:
           if (!sc->vptr->is_list (sc, sc->vptr->pair_car (a)) ||
               sc->vptr->list_length (sc, sc->vptr->pair_car (a)) != 3)
@@ -1385,6 +1361,7 @@ script_fu_marshal_procedure_call (scheme  *sc,
             case GIMP_PDB_INT32:
             case GIMP_PDB_DISPLAY:
             case GIMP_PDB_IMAGE:
+            case GIMP_PDB_ITEM:
             case GIMP_PDB_LAYER:
             case GIMP_PDB_CHANNEL:
             case GIMP_PDB_DRAWABLE:
@@ -1560,32 +1537,6 @@ script_fu_marshal_procedure_call (scheme  *sc,
               }
               break;
 
-            case GIMP_PDB_REGION:
-              {
-                gint32  x, y, w, h;
-                pointer temp_val;
-
-                x = values[i + 1].data.d_region.x;
-                y = values[i + 1].data.d_region.y;
-                w = values[i + 1].data.d_region.width;
-                h = values[i + 1].data.d_region.height;
-
-                temp_val = sc->vptr->cons (sc,
-                             sc->vptr->mk_integer (sc, x),
-                             sc->vptr->cons (sc,
-                               sc->vptr->mk_integer (sc, y),
-                               sc->vptr->cons (sc,
-                                 sc->vptr->mk_integer (sc, w),
-                                 sc->vptr->cons (sc,
-                                   sc->vptr->mk_integer (sc, h),
-                                   sc->NIL))));
-                return_val = sc->vptr->cons (sc,
-                                             temp_val,
-                                             return_val);
-                break;
-              }
-              break;
-
             case GIMP_PDB_PARASITE:
               {
                 if (values[i + 1].data.d_parasite.name == NULL)
@@ -1725,9 +1676,9 @@ script_fu_marshal_destroy_args (GimpParam *params,
           break;
 
         case GIMP_PDB_COLOR:
-        case GIMP_PDB_REGION:
         case GIMP_PDB_DISPLAY:
         case GIMP_PDB_IMAGE:
+        case GIMP_PDB_ITEM:
         case GIMP_PDB_LAYER:
         case GIMP_PDB_CHANNEL:
         case GIMP_PDB_DRAWABLE:

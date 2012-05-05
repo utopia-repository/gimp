@@ -2,9 +2,9 @@
     flame - cosmic recursive fractal flames
     Copyright (C) 1992  Scott Draves <spot@cs.cmu.edu>
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -79,7 +78,6 @@ extern void print_control_point(FILE *f, control_point *cp, int quote);
 extern void random_control_point(control_point *cp, int ivar);
 extern void parse_control_point(char **ss, control_point *cp);
 extern void estimate_bounding_box(control_point *cp, double eps, double *bmin, double *bmax);
-extern void sort_control_points(control_point *cps, int ncps, double (*metric)());
 extern double standard_metric(control_point *cp1, control_point *cp2);
 extern double random_uniform01(void);
 extern double random_uniform11(void);

@@ -5,9 +5,9 @@
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -53,21 +52,22 @@
 #define LOAD_PROC      "file-pat-load"
 #define SAVE_PROC      "file-pat-save"
 #define PLUG_IN_BINARY "file-pat"
+#define PLUG_IN_ROLE   "gimp-file-pat"
 
 
 /*  local function prototypes  */
 
 static void       query          (void);
 static void       run            (const gchar      *name,
-				  gint              nparams,
-				  const GimpParam  *param,
-				  gint             *nreturn_vals,
-				  GimpParam       **return_vals);
+                                  gint              nparams,
+                                  const GimpParam  *param,
+                                  gint             *nreturn_vals,
+                                  GimpParam       **return_vals);
 static gint32     load_image     (const gchar      *filename,
                                   GError          **error);
 static gboolean   save_image     (const gchar      *filename,
-				  gint32            image_ID,
-				  gint32            drawable_ID,
+                                  gint32            image_ID,
+                                  gint32            drawable_ID,
                                   GError          **error);
 
 static gboolean   save_dialog    (void);
@@ -94,7 +94,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
@@ -105,7 +105,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive"     },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"     },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                      },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"                 },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -116,7 +116,7 @@ query (void)
   gimp_install_procedure (LOAD_PROC,
                           "Loads Gimp's .PAT pattern files",
                           "The images in the pattern dialog can be loaded "
-			  "directly with this plug-in",
+                          "directly with this plug-in",
                           "Tim Newsome",
                           "Tim Newsome",
                           "1997",
@@ -131,14 +131,14 @@ query (void)
                              (const guint8 *) GIMP_STOCK_PATTERN);
   gimp_register_file_handler_mime (LOAD_PROC, "image/x-gimp-pat");
   gimp_register_magic_load_handler (LOAD_PROC,
-				    "pat",
-				    "",
-				    "20,string,GPAT");
+                                    "pat",
+                                    "",
+                                    "20,string,GPAT");
 
   gimp_install_procedure (SAVE_PROC,
                           "Saves Gimp pattern file (.PAT)",
                           "New Gimp patterns can be created by saving them "
-			  "in the appropriate place with this plug-in.",
+                          "in the appropriate place with this plug-in.",
                           "Tim Newsome",
                           "Tim Newsome",
                           "1997",
@@ -184,15 +184,15 @@ run (const gchar      *name,
       image_ID = load_image (param[1].data.d_string, &error);
 
       if (image_ID != -1)
-	{
-	  *nreturn_vals = 2;
-	  values[1].type         = GIMP_PDB_IMAGE;
-	  values[1].data.d_image = image_ID;
-	}
+        {
+          *nreturn_vals = 2;
+          values[1].type         = GIMP_PDB_IMAGE;
+          values[1].data.d_image = image_ID;
+        }
       else
-	{
-	  status = GIMP_PDB_EXECUTION_ERROR;
-	}
+        {
+          status = GIMP_PDB_EXECUTION_ERROR;
+        }
     }
   else if (strcmp (name, SAVE_PROC) == 0)
     {
@@ -205,29 +205,29 @@ run (const gchar      *name,
       orig_image_ID = image_ID;
 
       switch (run_mode)
-	{
-	case GIMP_RUN_INTERACTIVE:
-	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
-	  export = gimp_export_image (&image_ID, &drawable_ID, "PAT",
-				      GIMP_EXPORT_CAN_HANDLE_GRAY |
-				      GIMP_EXPORT_CAN_HANDLE_RGB |
+        {
+        case GIMP_RUN_INTERACTIVE:
+        case GIMP_RUN_WITH_LAST_VALS:
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
+                                      GIMP_EXPORT_CAN_HANDLE_GRAY |
+                                      GIMP_EXPORT_CAN_HANDLE_RGB |
                                       GIMP_EXPORT_CAN_HANDLE_ALPHA);
-	  if (export == GIMP_EXPORT_CANCEL)
-	    {
-	      values[0].data.d_status = GIMP_PDB_CANCEL;
-	      return;
-	    }
+          if (export == GIMP_EXPORT_CANCEL)
+            {
+              values[0].data.d_status = GIMP_PDB_CANCEL;
+              return;
+            }
 
-	  /*  Possibly retrieve data  */
-	  gimp_get_data (SAVE_PROC, description);
-	  break;
+          /*  Possibly retrieve data  */
+          gimp_get_data (SAVE_PROC, description);
+          break;
 
-	default:
-	  break;
-	}
+        default:
+          break;
+        }
 
-      parasite = gimp_image_parasite_find (orig_image_ID, "gimp-pattern-name");
+      parasite = gimp_image_get_parasite (orig_image_ID, "gimp-pattern-name");
       if (parasite)
         {
           gchar *name = g_strndup (gimp_parasite_data (parasite),
@@ -236,58 +236,64 @@ run (const gchar      *name,
 
           strncpy (description, name, sizeof (description));
           description[sizeof (description) - 1] = '\0';
+
+          g_free (name);
         }
 
       switch (run_mode)
-	{
-	case GIMP_RUN_INTERACTIVE:
-	  if (!save_dialog ())
-	    status = GIMP_PDB_CANCEL;
-	  break;
+        {
+        case GIMP_RUN_INTERACTIVE:
+          if (!save_dialog ())
+            status = GIMP_PDB_CANCEL;
+          break;
 
-	case GIMP_RUN_NONINTERACTIVE:
-	  if (nparams != 6)
+        case GIMP_RUN_NONINTERACTIVE:
+          if (nparams != 6)
             {
               status = GIMP_PDB_CALLING_ERROR;
             }
-	  else
+          else
             {
               strncpy (description, param[5].data.d_string,
                        sizeof (description));
               description[sizeof (description) - 1] = '\0';
             }
-	  break;
+          break;
 
-	default:
-	  break;
-	}
+        default:
+          break;
+        }
 
       if (status == GIMP_PDB_SUCCESS)
-	{
-	  if (save_image (param[3].data.d_string, image_ID, drawable_ID,
+        {
+          if (save_image (param[3].data.d_string, image_ID, drawable_ID,
                           &error))
-	    {
-	      gimp_set_data (SAVE_PROC, description, sizeof (description));
-	    }
-	  else
-	    {
-	      status = GIMP_PDB_EXECUTION_ERROR;
-	    }
-	}
+            {
+              gimp_set_data (SAVE_PROC, description, sizeof (description));
+            }
+          else
+            {
+              status = GIMP_PDB_EXECUTION_ERROR;
+            }
+        }
 
       if (export == GIMP_EXPORT_EXPORT)
-	gimp_image_delete (image_ID);
+        gimp_image_delete (image_ID);
 
       if (strlen (description))
         {
-          gimp_image_attach_new_parasite (orig_image_ID, "gimp-pattern-name",
-                                          GIMP_PARASITE_PERSISTENT,
-                                          strlen (description) + 1,
-                                          description);
+          GimpParasite *parasite;
+
+          parasite = gimp_parasite_new ("gimp-pattern-name",
+                                        GIMP_PARASITE_PERSISTENT,
+                                        strlen (description) + 1,
+                                        description);
+          gimp_image_attach_parasite (orig_image_ID, parasite);
+          gimp_parasite_free (parasite);
         }
       else
         {
-          gimp_image_parasite_detach (orig_image_ID, "gimp-pattern-name");
+          gimp_image_detach_parasite (orig_image_ID, "gimp-pattern-name");
         }
     }
   else
@@ -316,6 +322,7 @@ load_image (const gchar  *filename,
   guchar           *buffer;
   gint32            image_ID;
   gint32            layer_ID;
+  GimpParasite     *parasite;
   GimpDrawable     *drawable;
   gint              line;
   GimpPixelRgn      pixel_rgn;
@@ -418,13 +425,15 @@ load_image (const gchar  *filename,
   image_ID = gimp_image_new (ph.width, ph.height, base_type);
   gimp_image_set_filename (image_ID, filename);
 
-  gimp_image_attach_new_parasite (image_ID, "gimp-pattern-name",
-                                  GIMP_PARASITE_PERSISTENT,
-                                  strlen (name) + 1, name);
+  parasite = gimp_parasite_new ("gimp-pattern-name",
+                                GIMP_PARASITE_PERSISTENT,
+                                strlen (name) + 1, name);
+  gimp_image_attach_parasite (image_ID, parasite);
+  gimp_parasite_free (parasite);
 
   layer_ID = gimp_layer_new (image_ID, name, ph.width, ph.height,
                              image_type, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
   g_free (name);
 
@@ -439,16 +448,17 @@ load_image (const gchar  *filename,
   for (line = 0; line < ph.height; line++)
     {
       if (read (fd, buffer, ph.width * ph.bytes) != ph.width * ph.bytes)
-	{
-	  close (fd);
-	  g_free (buffer);
-	  return -1;
-	}
+        {
+          close (fd);
+          g_free (buffer);
+          return -1;
+        }
 
       gimp_pixel_rgn_set_row (&pixel_rgn, buffer, 0, line, ph.width);
 
       gimp_progress_update ((gdouble) line / (gdouble) ph.height);
     }
+  gimp_progress_update (1.0);
 
   gimp_drawable_flush (drawable);
 
@@ -457,8 +467,8 @@ load_image (const gchar  *filename,
 
 static gboolean
 save_image (const gchar  *filename,
-	    gint32        image_ID,
-	    gint32        drawable_ID,
+            gint32        image_ID,
+            gint32        drawable_ID,
             GError      **error)
 {
   gint          fd;
@@ -468,7 +478,7 @@ save_image (const gchar  *filename,
   gint          line;
   GimpPixelRgn  pixel_rgn;
 
-  fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0644);
+  fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0666);
 
   if (fd == -1)
     {
@@ -483,7 +493,7 @@ save_image (const gchar  *filename,
 
   drawable = gimp_drawable_get (drawable_ID);
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
-		       drawable->height, FALSE, FALSE);
+                       drawable->height, FALSE, FALSE);
 
   ph.header_size  = g_htonl (sizeof (PatternHeader) + strlen (description) + 1);
   ph.version      = g_htonl (1);
@@ -517,11 +527,11 @@ save_image (const gchar  *filename,
       gimp_pixel_rgn_get_row (&pixel_rgn, buffer, 0, line, drawable->width);
 
       if (write (fd, buffer, drawable->width * drawable->bpp) !=
-	  drawable->width * drawable->bpp)
-	{
-	  close (fd);
-	  return FALSE;
-	}
+          drawable->width * drawable->bpp)
+        {
+          close (fd);
+          return FALSE;
+        }
 
       gimp_progress_update ((gdouble) line / (gdouble) drawable->height);
     }
@@ -540,27 +550,14 @@ save_dialog (void)
   GtkWidget *entry;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as Pattern"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("Pattern"), PLUG_IN_BINARY, SAVE_PROC);
 
   /* The main table */
   table = gtk_table_new (1, 2, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   entry = gtk_entry_new ();
@@ -568,8 +565,8 @@ save_dialog (void)
   gtk_entry_set_text (GTK_ENTRY (entry), description);
   gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-			     _("Description:"), 1.0, 0.5,
-			     entry, 1, FALSE);
+                             _("Description:"), 1.0, 0.5,
+                             entry, 1, FALSE);
   gtk_widget_show (entry);
 
   gtk_widget_show (dialog);

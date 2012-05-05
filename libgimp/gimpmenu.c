@@ -3,10 +3,10 @@
  *
  * gimpmenu.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,14 +14,15 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <gtk/gtk.h>
+
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "gimp.h"
 
@@ -31,6 +32,16 @@
 #include "gimpmenu.h"
 
 #include "libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpmenu
+ * @title: gimpmenu
+ * @short_description: Menus for selecting images, layers, channels
+ *                     and drawables.
+ *
+ * Menus for selecting images, layers, channels and drawables.
+ **/
 
 
 #define MENU_THUMBNAIL_WIDTH   24
@@ -58,14 +69,14 @@ static void        gimp_menu_callback      (GtkWidget          *widget,
 
 /**
  * gimp_image_menu_new:
- * @constraint:
- * @callback:
- * @data:
- * @active_image:
+ * @constraint:   a function to filter the menu contents
+ * @callback:     the callback to call when an image is selected
+ * @data:         the callback's user_data
+ * @active_image: an image to preselect
  *
- * Use gimp_image_combo_box_new() instead.
+ * Deprecated: Use gimp_image_combo_box_new() instead.
  *
- * Return value:
+ * Returns: the image menu.
  */
 GtkWidget *
 gimp_image_menu_new (GimpConstraintFunc constraint,
@@ -123,14 +134,14 @@ gimp_image_menu_new (GimpConstraintFunc constraint,
 
 /**
  * gimp_layer_menu_new:
- * @constraint:
- * @callback:
- * @data:
- * @active_layer:
+ * @constraint:   a function to filter the menu contents
+ * @callback:     the callback to call when a channel is selected
+ * @data:         the callback's user_data
+ * @active_layer: a layer to preselect
  *
- * Use gimp_layer_combo_box_new() instead.
+ * Deprecated: Use gimp_layer_combo_box_new() instead.
  *
- * Return value:
+ * Returns: the layer menu.
  */
 GtkWidget *
 gimp_layer_menu_new (GimpConstraintFunc constraint,
@@ -167,7 +178,7 @@ gimp_layer_menu_new (GimpConstraintFunc constraint,
         for (j = 0; j < n_layers; j++)
           if (! constraint || (* constraint) (images[i], layers[j], data))
             {
-              name = gimp_drawable_get_name (layers[j]);
+              name = gimp_item_get_name (layers[j]);
               gimp_menu_add_item (menu, image_label, name, layers[j]);
               g_free (name);
 
@@ -200,14 +211,14 @@ gimp_layer_menu_new (GimpConstraintFunc constraint,
 
 /**
  * gimp_channel_menu_new:
- * @constraint:
- * @callback:
- * @data:
- * @active_channel:
+ * @constraint:     a function to filter the menu contents
+ * @callback:       the callback to call when a channel is selected
+ * @data:           the callback's user_data
+ * @active_channel: a channel to preselect
  *
- * Use gimp_channel_combo_box_new() instead.
+ * Deprecated: Use gimp_channel_combo_box_new() instead.
  *
- * Return value:
+ * Returns: the channel menu.
  */
 GtkWidget *
 gimp_channel_menu_new (GimpConstraintFunc constraint,
@@ -246,7 +257,7 @@ gimp_channel_menu_new (GimpConstraintFunc constraint,
         for (j = 0; j < n_channels; j++)
           if (! constraint || (* constraint) (images[i], channels[j], data))
             {
-              name = gimp_drawable_get_name (channels[j]);
+              name = gimp_item_get_name (channels[j]);
               gimp_menu_add_item (menu, image_label, name, channels[j]);
               g_free (name);
 
@@ -279,14 +290,14 @@ gimp_channel_menu_new (GimpConstraintFunc constraint,
 
 /**
  * gimp_drawable_menu_new:
- * @constraint:
- * @callback:
- * @data:
- * @active_drawable:
+ * @constraint:      a function to filter the menu contents
+ * @callback:        the callback to call when a channel is selected
+ * @data:            the callback's user_data
+ * @active_drawable: a drawable to preselect
  *
- * Use gimp_drawable_combo_box_new() instead.
+ * Deprecated: Use gimp_drawable_combo_box_new() instead.
  *
- * Return value:
+ * Returns: the drawable menu.
  */
 GtkWidget *
 gimp_drawable_menu_new (GimpConstraintFunc constraint,
@@ -325,7 +336,7 @@ gimp_drawable_menu_new (GimpConstraintFunc constraint,
         for (j = 0; j < n_layers; j++)
           if (! constraint || (* constraint) (images[i], layers[j], data))
             {
-              name = gimp_drawable_get_name (layers[j]);
+              name = gimp_item_get_name (layers[j]);
               gimp_menu_add_item (menu, image_label, name, layers[j]);
               g_free (name);
 
@@ -345,7 +356,7 @@ gimp_drawable_menu_new (GimpConstraintFunc constraint,
         for (j = 0; j < n_channels; j++)
           if (! constraint || (* constraint) (images[i], channels[j], data))
             {
-              name = gimp_drawable_get_name (channels[j]);
+              name = gimp_item_get_name (channels[j]);
               gimp_menu_add_item (menu, image_label, name, channels[j]);
               g_free (name);
 
@@ -419,18 +430,18 @@ gimp_menu_add_item (GtkWidget   *menu,
                     G_CALLBACK (gimp_menu_callback),
                     GINT_TO_POINTER (any_ID));
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_container_add (GTK_CONTAINER (menuitem), hbox);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
   preview = gimp_menu_make_preview (any_ID, drawable_name == NULL,
                                     MENU_THUMBNAIL_WIDTH,
                                     MENU_THUMBNAIL_HEIGHT);
-  gtk_container_add (GTK_CONTAINER (vbox), preview);
+  gtk_box_pack_start (GTK_BOX (vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
   label = gtk_label_new (str);

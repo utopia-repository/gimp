@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,7 @@
 #include "paint/gimpairbrushoptions.h"
 
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimppropwidgets.h"
 
 #include "gimpairbrushtool.h"
 #include "gimppaintoptions-gui.h"
@@ -35,7 +35,7 @@
 #include "gimp-intl.h"
 
 
-static GtkWidget * gimp_airbrush_options_gui (GimpToolOptions  *tool_options);
+static GtkWidget * gimp_airbrush_options_gui (GimpToolOptions *tool_options);
 
 
 G_DEFINE_TYPE (GimpAirbrushTool, gimp_airbrush_tool, GIMP_TYPE_PAINTBRUSH_TOOL)
@@ -80,24 +80,24 @@ gimp_airbrush_options_gui (GimpToolOptions *tool_options)
 {
   GObject   *config = G_OBJECT (tool_options);
   GtkWidget *vbox   = gimp_paint_options_gui (tool_options);
-  GtkWidget *table;
+  GtkWidget *button;
+  GtkWidget *scale;
 
-  table = gtk_table_new (2, 3, FALSE);
-  gtk_table_set_col_spacing (GTK_TABLE (table), 0, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
+  button = gimp_prop_check_button_new (config, "motion-only", _("Motion only"));
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
-  gimp_prop_scale_entry_new (config, "rate",
-                             GTK_TABLE (table), 0, 0,
-                             _("Rate:"),
-                             1.0, 1.0, 1,
-                             FALSE, 0.0, 0.0);
+  scale = gimp_prop_spin_scale_new (config, "rate",
+                                    _("Rate"),
+                                    1.0, 10.0, 1);
+  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
 
-  gimp_prop_scale_entry_new (config, "pressure",
-                             GTK_TABLE (table), 0, 1,
-                             _("Pressure:"),
-                             1.0, 1.0, 1,
-                             FALSE, 0.0, 0.0);
+  scale = gimp_prop_spin_scale_new (config, "flow",
+                                    _("Flow"),
+                                    1.0, 10.0, 1);
+  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
 
   return vbox;
 }

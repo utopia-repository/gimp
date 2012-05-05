@@ -4,9 +4,9 @@
  * gimpviewrendererbrush.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,13 +32,14 @@
 #include "gimpviewrendererbrush.h"
 
 
-static void   gimp_view_renderer_brush_finalize (GObject            *object);
-static void   gimp_view_renderer_brush_render   (GimpViewRenderer   *renderer,
-                                                 GtkWidget          *widget);
-static void   gimp_view_renderer_brush_draw     (GimpViewRenderer   *renderer,
-                                                 GtkWidget          *widget,
-                                                 cairo_t            *cr,
-                                                 const GdkRectangle *area);
+static void   gimp_view_renderer_brush_finalize (GObject          *object);
+static void   gimp_view_renderer_brush_render   (GimpViewRenderer *renderer,
+                                                 GtkWidget        *widget);
+static void   gimp_view_renderer_brush_draw     (GimpViewRenderer *renderer,
+                                                 GtkWidget        *widget,
+                                                 cairo_t          *cr,
+                                                 gint              available_width,
+                                                 gint              available_height);
 
 static gboolean gimp_view_renderer_brush_render_timeout (gpointer    data);
 
@@ -109,9 +109,9 @@ gimp_view_renderer_brush_render (GimpViewRenderer *renderer,
 
   if (renderer->is_popup)
     {
-      gimp_view_renderer_render_surface (renderer, temp_buf, -1,
-                                         GIMP_VIEW_BG_WHITE,
-                                         GIMP_VIEW_BG_WHITE);
+      gimp_view_renderer_render_temp_buf (renderer, temp_buf, -1,
+                                          GIMP_VIEW_BG_WHITE,
+                                          GIMP_VIEW_BG_WHITE);
 
       temp_buf_free (temp_buf);
 
@@ -126,9 +126,9 @@ gimp_view_renderer_brush_render (GimpViewRenderer *renderer,
       return;
     }
 
-  gimp_view_renderer_render_surface (renderer, temp_buf, -1,
-                                     GIMP_VIEW_BG_WHITE,
-                                     GIMP_VIEW_BG_WHITE);
+  gimp_view_renderer_render_temp_buf (renderer, temp_buf, -1,
+                                      GIMP_VIEW_BG_WHITE,
+                                      GIMP_VIEW_BG_WHITE);
 
   temp_buf_free (temp_buf);
 }
@@ -154,7 +154,7 @@ gimp_view_renderer_brush_render_timeout (gpointer data)
 
   renderbrush->pipe_animation_index++;
 
-  if (renderbrush->pipe_animation_index >= brush_pipe->nbrushes)
+  if (renderbrush->pipe_animation_index >= brush_pipe->n_brushes)
     renderbrush->pipe_animation_index = 0;
 
   brush =
@@ -171,9 +171,9 @@ gimp_view_renderer_brush_render_timeout (gpointer data)
   if (temp_buf->height < renderer->height)
     temp_buf->y = (renderer->height - temp_buf->height) / 2;
 
-  gimp_view_renderer_render_surface (renderer, temp_buf, -1,
-                                     GIMP_VIEW_BG_WHITE,
-                                     GIMP_VIEW_BG_WHITE);
+  gimp_view_renderer_render_temp_buf (renderer, temp_buf, -1,
+                                      GIMP_VIEW_BG_WHITE,
+                                      GIMP_VIEW_BG_WHITE);
 
   temp_buf_free (temp_buf);
 
@@ -183,12 +183,15 @@ gimp_view_renderer_brush_render_timeout (gpointer data)
 }
 
 static void
-gimp_view_renderer_brush_draw (GimpViewRenderer   *renderer,
-                               GtkWidget          *widget,
-                               cairo_t            *cr,
-                               const GdkRectangle *area)
+gimp_view_renderer_brush_draw (GimpViewRenderer *renderer,
+                               GtkWidget        *widget,
+                               cairo_t          *cr,
+                               gint              available_width,
+                               gint              available_height)
 {
-  GIMP_VIEW_RENDERER_CLASS (parent_class)->draw (renderer, widget, cr, area);
+  GIMP_VIEW_RENDERER_CLASS (parent_class)->draw (renderer, widget, cr,
+                                                 available_width,
+                                                 available_height);
 
 #define INDICATOR_WIDTH  7
 #define INDICATOR_HEIGHT 7
@@ -203,7 +206,7 @@ gimp_view_renderer_brush_draw (GimpViewRenderer   *renderer,
 
       if (generated || pipe)
         {
-          cairo_move_to (cr, area->x + area->width, area->y + area->height);
+          cairo_move_to (cr, available_width, available_height);
           cairo_rel_line_to (cr, - INDICATOR_WIDTH, 0);
           cairo_rel_line_to (cr, INDICATOR_WIDTH, - INDICATOR_HEIGHT);
           cairo_rel_line_to (cr, 0, INDICATOR_HEIGHT);
@@ -221,13 +224,13 @@ gimp_view_renderer_brush_draw (GimpViewRenderer   *renderer,
       if (renderer->width < brush_width || renderer->height < brush_height)
         {
           cairo_move_to (cr,
-                         area->x + area->width  - INDICATOR_WIDTH + 1,
-                         area->y + area->height - INDICATOR_HEIGHT / 2.0);
+                         available_width  - INDICATOR_WIDTH + 1,
+                         available_height - INDICATOR_HEIGHT / 2.0);
           cairo_rel_line_to (cr, INDICATOR_WIDTH - 2, 0);
 
           cairo_move_to (cr,
-                         area->x + area->width  - INDICATOR_WIDTH / 2.0,
-                         area->y + area->height - INDICATOR_HEIGHT + 1);
+                         available_width  - INDICATOR_WIDTH / 2.0,
+                         available_height - INDICATOR_HEIGHT + 1);
           cairo_rel_line_to (cr, 0, INDICATOR_WIDTH - 2);
 
           cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);

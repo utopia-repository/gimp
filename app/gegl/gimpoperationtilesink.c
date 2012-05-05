@@ -4,9 +4,9 @@
  * gimpoperationtilesink.c
  * Copyright (C) 2007 Øyvind Kolås <pippin@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#undef G_DISABLE_DEPRECATED /* GStaticMutex */
 #include <gegl.h>
 #include <gegl-buffer.h>
 
@@ -62,7 +62,8 @@ static void     gimp_operation_tile_sink_set_property (GObject       *object,
 
 static gboolean gimp_operation_tile_sink_process      (GeglOperation *operation,
                                                        GeglBuffer          *input,
-                                                       const GeglRectangle *result);
+                                                       const GeglRectangle *result,
+                                                       gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationTileSink, gimp_operation_tile_sink,
@@ -94,9 +95,11 @@ gimp_operation_tile_sink_class_init (GimpOperationTileSinkClass *klass)
   object_class->set_property   = gimp_operation_tile_sink_set_property;
   object_class->get_property   = gimp_operation_tile_sink_get_property;
 
-  operation_class->name        = "gimp-tilemanager-sink";
-  operation_class->categories  = "output";
-  operation_class->description = "GIMP TileManager sink";
+  gegl_operation_class_set_keys (operation_class,
+      "name", "gimp:tilemanager-sink",
+      "categories", "output",
+      "description", "GIMP TileManager sink",
+      NULL);
 
   sink_class->process          = gimp_operation_tile_sink_process;
   sink_class->needs_full       = FALSE;
@@ -188,26 +191,24 @@ gimp_operation_tile_sink_set_property (GObject      *object,
     }
 }
 
+
 static gboolean
 gimp_operation_tile_sink_process (GeglOperation       *operation,
                                   GeglBuffer          *input,
-                                  const GeglRectangle *result)
+                                  const GeglRectangle *result,
+                                  gint                 level)
 {
   GimpOperationTileSink *self = GIMP_OPERATION_TILE_SINK (operation);
+  static GStaticMutex    mutex = G_STATIC_MUTEX_INIT;
   const Babl            *format;
   PixelRegion            destPR;
-  guint                  bpp;
   gpointer               pr;
 
   if (! self->tile_manager)
     return FALSE;
 
-  bpp = tile_manager_bpp (self->tile_manager);
-
-  if (self->linear)
-    format = gimp_bpp_to_babl_format_linear (bpp);
-  else
-    format = gimp_bpp_to_babl_format (bpp);
+  format = gimp_bpp_to_babl_format (tile_manager_bpp (self->tile_manager),
+                                    self->linear);
 
   pixel_region_init (&destPR, self->tile_manager,
                      result->x,     result->y,
@@ -220,11 +221,18 @@ gimp_operation_tile_sink_process (GeglOperation       *operation,
     {
       GeglRectangle rect = { destPR.x, destPR.y, destPR.w, destPR.h };
 
-      gegl_buffer_get (input,
-                       1.0, &rect, format, destPR.data, destPR.rowstride);
+      gegl_buffer_get (input, &rect, 1.0,
+                       format, destPR.data, destPR.rowstride,
+                       GEGL_ABYSS_NONE);
     }
 
+  g_static_mutex_lock (&mutex); 
+  /* a lock here serializes all fired signals, this emit gets called from
+   * different worker threads, but the main loop will be blocked by GEGL
+   * when it happens
+   */
   g_signal_emit (operation, tile_sink_signals[DATA_WRITTEN], 0, result);
+  g_static_mutex_unlock (&mutex);
 
   return TRUE;
 }

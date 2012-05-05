@@ -3,10 +3,10 @@
  *
  * gimppixelrgn.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,6 +24,16 @@
 #include <stdarg.h>
 
 #include "gimp.h"
+
+
+/**
+ * SECTION: gimppixelrgn
+ * @title: gimppixelrgn
+ * @short_description: Functions for operating on pixel regions.
+ *
+ * Functions for operating on pixel regions. These functions provide
+ * fast ways of accessing and modifying portions of a drawable.
+ **/
 
 
 #define TILE_WIDTH  gimp_tile_width()
@@ -703,8 +712,8 @@ gimp_pixel_rgns_register2 (gint           nrgns,
 
 /**
  * gimp_pixel_rgns_register:
- * @nrgns:   the number of regions to register.
- * @Varargs: @nrgns pointers to #GimpPixelRgn.
+ * @nrgns: the number of regions to register.
+ * @...:   @nrgns pointers to #GimpPixelRgn.
  *
  * This is the varargs version of #gimp_pixel_rgns_register2.
  *

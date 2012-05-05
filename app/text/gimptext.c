@@ -4,9 +4,9 @@
  * GimpText
  * Copyright (C) 2002-2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,15 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <cairo.h>
 #include <pango/pango.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -33,6 +32,7 @@
 
 #include "text-types.h"
 
+#include "core/gimpmarshal.h"
 #include "core/gimpstrokeoptions.h"
 #include "core/gimp-utils.h"
 
@@ -43,12 +43,12 @@ enum
 {
   PROP_0,
   PROP_TEXT,
+  PROP_MARKUP,
   PROP_FONT,
   PROP_FONT_SIZE,
   PROP_UNIT,
-  PROP_HINTING,
-  PROP_AUTOHINT,
   PROP_ANTIALIAS,
+  PROP_HINT_STYLE,
   PROP_KERNING,
   PROP_LANGUAGE,
   PROP_BASE_DIR,
@@ -65,27 +65,40 @@ enum
   PROP_TRANSFORMATION,
   PROP_OFFSET_X,
   PROP_OFFSET_Y,
-  PROP_BORDER
+  PROP_BORDER,
+  /* for backward compatibility */
+  PROP_HINTING
+};
+
+enum
+{
+  CHANGED,
+  LAST_SIGNAL
 };
 
 
-static void     gimp_text_finalize     (GObject      *object);
-static void     gimp_text_get_property (GObject      *object,
-                                        guint         property_id,
-                                        GValue       *value,
-                                        GParamSpec   *pspec);
-static void     gimp_text_set_property (GObject      *object,
-                                        guint         property_id,
-                                        const GValue *value,
-                                        GParamSpec   *pspec);
-static gint64   gimp_text_get_memsize  (GimpObject   *object,
-                                        gint64       *gui_size);
+static void     gimp_text_finalize                    (GObject      *object);
+static void     gimp_text_get_property                (GObject      *object,
+                                                       guint         property_id,
+                                                       GValue       *value,
+                                                       GParamSpec   *pspec);
+static void     gimp_text_set_property                (GObject      *object,
+                                                       guint         property_id,
+                                                       const GValue *value,
+                                                       GParamSpec   *pspec);
+static void     gimp_text_dispatch_properties_changed (GObject      *object,
+                                                       guint         n_pspecs,
+                                                       GParamSpec  **pspecs);
+static gint64   gimp_text_get_memsize                 (GimpObject   *object,
+                                                       gint64       *gui_size);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpText, gimp_text, GIMP_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL))
 
 #define parent_class gimp_text_parent_class
+
+static guint text_signals[LAST_SIGNAL] = { 0 };
 
 
 static void
@@ -97,11 +110,21 @@ gimp_text_class_init (GimpTextClass *klass)
   GimpMatrix2      identity;
   gchar           *language;
 
-  object_class->finalize         = gimp_text_finalize;
-  object_class->get_property     = gimp_text_get_property;
-  object_class->set_property     = gimp_text_set_property;
+  text_signals[CHANGED] =
+    g_signal_new ("changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpTextClass, changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
-  gimp_object_class->get_memsize = gimp_text_get_memsize;
+  object_class->finalize                    = gimp_text_finalize;
+  object_class->get_property                = gimp_text_get_property;
+  object_class->set_property                = gimp_text_set_property;
+  object_class->dispatch_properties_changed = gimp_text_dispatch_properties_changed;
+
+  gimp_object_class->get_memsize            = gimp_text_get_memsize;
 
   gimp_rgba_set (&black, 0.0, 0.0, 0.0, GIMP_OPACITY_OPAQUE);
   gimp_matrix2_identity (&identity);
@@ -110,6 +133,10 @@ gimp_text_class_init (GimpTextClass *klass)
 
   GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_TEXT,
                                    "text", NULL,
+                                   NULL,
+                                   GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_MARKUP,
+                                   "markup", NULL,
                                    NULL,
                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_FONT,
@@ -128,19 +155,16 @@ gimp_text_class_init (GimpTextClass *klass)
                                  "font-size-unit", NULL,
                                  TRUE, FALSE, GIMP_UNIT_PIXEL,
                                  GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_HINTING,
-                                    "hinting", NULL,
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_AUTOHINT,
-                                    "autohint", NULL,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS |
-                                    GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,
                                     "antialias", NULL,
                                     TRUE,
                                     GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_HINT_STYLE,
+                                "hint-style", NULL,
+                                 GIMP_TYPE_TEXT_HINT_STYLE,
+                                 GIMP_TEXT_HINT_STYLE_MEDIUM,
+                                 GIMP_PARAM_STATIC_STRINGS |
+                                 GIMP_CONFIG_PARAM_DEFAULTS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_KERNING,
                                     "kerning", NULL,
                                     FALSE,
@@ -228,6 +252,12 @@ gimp_text_class_init (GimpTextClass *klass)
                                                      G_PARAM_CONSTRUCT |
                                                      GIMP_PARAM_WRITABLE));
 
+  /*  the old hinting options have been replaced by 'hint-style'  */
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_HINTING,
+                                    "hinting", NULL,
+                                    TRUE,
+                                    GIMP_PARAM_STATIC_STRINGS);
+
   g_free (language);
 }
 
@@ -245,6 +275,11 @@ gimp_text_finalize (GObject *object)
     {
       g_free (text->text);
       text->text = NULL;
+    }
+  if (text->markup)
+    {
+      g_free (text->markup);
+      text->markup = NULL;
     }
   if (text->font)
     {
@@ -273,6 +308,9 @@ gimp_text_get_property (GObject      *object,
     case PROP_TEXT:
       g_value_set_string (value, text->text);
       break;
+    case PROP_MARKUP:
+      g_value_set_string (value, text->markup);
+      break;
     case PROP_FONT:
       g_value_set_string (value, text->font);
       break;
@@ -282,14 +320,11 @@ gimp_text_get_property (GObject      *object,
     case PROP_UNIT:
       g_value_set_int (value, text->unit);
       break;
-    case PROP_HINTING:
-      g_value_set_boolean (value, text->hinting);
-      break;
-    case PROP_AUTOHINT:
-      g_value_set_boolean (value, text->autohint);
-      break;
     case PROP_ANTIALIAS:
       g_value_set_boolean (value, text->antialias);
+      break;
+    case PROP_HINT_STYLE:
+      g_value_set_enum (value, text->hint_style);
       break;
     case PROP_KERNING:
       g_value_set_boolean (value, text->kerning);
@@ -339,6 +374,10 @@ gimp_text_get_property (GObject      *object,
     case PROP_OFFSET_Y:
       g_value_set_double (value, text->offset_y);
       break;
+    case PROP_HINTING:
+      g_value_set_boolean (value,
+                           text->hint_style != GIMP_TEXT_HINT_STYLE_NONE);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -360,6 +399,22 @@ gimp_text_set_property (GObject      *object,
     case PROP_TEXT:
       g_free (text->text);
       text->text = g_value_dup_string (value);
+      if (text->text && text->markup)
+        {
+          g_free (text->markup);
+          text->markup = NULL;
+          g_object_notify (object, "markup");
+        }
+      break;
+    case PROP_MARKUP:
+      g_free (text->markup);
+      text->markup = g_value_dup_string (value);
+      if (text->markup && text->text)
+        {
+          g_free (text->text);
+          text->text = NULL;
+          g_object_notify (object, "text");
+        }
       break;
     case PROP_FONT:
       {
@@ -388,14 +443,11 @@ gimp_text_set_property (GObject      *object,
     case PROP_UNIT:
       text->unit = g_value_get_int (value);
       break;
-    case PROP_HINTING:
-      text->hinting = g_value_get_boolean (value);
-      break;
-    case PROP_AUTOHINT:
-      text->autohint = g_value_get_boolean (value);
-      break;
     case PROP_ANTIALIAS:
       text->antialias = g_value_get_boolean (value);
+      break;
+    case PROP_HINT_STYLE:
+      text->hint_style = g_value_get_enum (value);
       break;
     case PROP_KERNING:
       text->kerning = g_value_get_boolean (value);
@@ -451,10 +503,31 @@ gimp_text_set_property (GObject      *object,
     case PROP_BORDER:
       text->border = g_value_get_int (value);
       break;
+    case PROP_HINTING:
+      /* interpret "hinting" only if "hint-style" has its default
+       * value, so we don't overwrite a serialized new hint-style with
+       * a compat "hinting" that is only there for old GIMP versions
+       */
+      if (text->hint_style == GIMP_TEXT_HINT_STYLE_MEDIUM)
+        text->hint_style = (g_value_get_boolean (value) ?
+                            GIMP_TEXT_HINT_STYLE_MEDIUM :
+                            GIMP_TEXT_HINT_STYLE_NONE);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
+}
+
+static void
+gimp_text_dispatch_properties_changed (GObject     *object,
+                                       guint        n_pspecs,
+                                       GParamSpec **pspecs)
+{
+  G_OBJECT_CLASS (parent_class)->dispatch_properties_changed (object,
+                                                              n_pspecs, pspecs);
+
+  g_signal_emit (object, text_signals[CHANGED], 0);
 }
 
 static gint64
@@ -465,6 +538,7 @@ gimp_text_get_memsize (GimpObject *object,
   gint64    memsize = 0;
 
   memsize += gimp_string_get_memsize (text->text);
+  memsize += gimp_string_get_memsize (text->markup);
   memsize += gimp_string_get_memsize (text->font);
   memsize += gimp_string_get_memsize (text->language);
 

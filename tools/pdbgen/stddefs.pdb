@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1998-2003 Manish Singh <yosh@gimp.org>
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Boilerplate PDB stuff
 
@@ -58,12 +57,20 @@ sub austin_pdb_misc {
     contrib_pdb_misc('Austin Donnelly', '', @_);
 }
 
+sub barak_pdb_misc {
+    contrib_pdb_misc('Barak Itkin', 'lightningismyname@gmail.com', @_);
+}
+
 sub bill_pdb_misc {
     contrib_pdb_misc('Bill Skaggs', 'weskaggs@primate.ucdavis.edu', @_);
 }
 
 sub david_pdb_misc {
     contrib_pdb_misc('David Gowers', '', @_);
+}
+
+sub ejs_pdb_misc {
+    contrib_pdb_misc('Ed Swartz', '', @_);
 }
 
 sub federico_pdb_misc {
@@ -148,10 +155,10 @@ sub yosh_pdb_misc {
 
 sub std_pdb_deprecated {
     if (@_) {
-        $blurb = $help = "This procedure is deprecated! Use '@_' instead.";
+        $blurb = $help = "Deprecated: Use '@_' instead.";
         $deprecated = "@_";
     } else {
-        $blurb = $help = "This procedure is deprecated!";
+        $blurb = $help = "Deprecated: There is no replacement for this procedure.";
         $deprecated = "NONE";
     }
     $author = $copyright = $date = '';

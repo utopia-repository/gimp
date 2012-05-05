@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,10 +24,9 @@
 #include "base/gimplut.h"
 #include "base/lut-funcs.h"
 
-#include "gegl/gimp-gegl-utils.h"
 #include "gegl/gimpbrightnesscontrastconfig.h"
 
-/* temporary */
+/* temp */
 #include "gimp.h"
 #include "gimpimage.h"
 
@@ -59,21 +57,18 @@ gimp_drawable_brightness_contrast (GimpDrawable *drawable,
                          "contrast",   contrast   / 127.0,
                          NULL);
 
-  if (gimp_use_gegl (GIMP_ITEM (drawable)->image->gimp))
+  if (gimp_use_gegl (gimp_item_get_image (GIMP_ITEM (drawable))->gimp))
     {
-      GeglNode    *node;
-      const gchar *name;
-
-      name = (gimp_gegl_check_version (0, 0, 21) ?
-              "gegl:brightness-contrast" : "brightness-contrast");
+      GeglNode *node;
 
       node = g_object_new (GEGL_TYPE_NODE,
-                           "operation", name,
+                           "operation", "gimp:brightness-contrast",
+                           "config",    config,
                            NULL);
-      gimp_brightness_contrast_config_set_node (config, node);
 
       gimp_drawable_apply_operation (drawable, progress,
-                                     _("Brightness_Contrast"), node, TRUE);
+                                     C_("undo-type", "Brightness-Contrast")
+                                     , node, TRUE);
       g_object_unref (node);
     }
   else
@@ -84,7 +79,8 @@ gimp_drawable_brightness_contrast (GimpDrawable *drawable,
                                          config->contrast,
                                          gimp_drawable_bytes (drawable));
 
-      gimp_drawable_process_lut (drawable, progress, _("Brightness-Contrast"),
+      gimp_drawable_process_lut (drawable, progress,
+                                 C_("undo-type", "Brightness-Contrast"),
                                  lut);
       gimp_lut_free (lut);
     }

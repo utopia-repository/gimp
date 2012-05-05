@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1999 Andy Thomas alt@gimp.org
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -156,9 +155,7 @@ gimp_preview_cache_invalidate (GSList **plist)
   preview_cache_print (*plist);
 #endif
 
-  g_slist_foreach (*plist, (GFunc) temp_buf_free, NULL);
-
-  g_slist_free (*plist);
+  g_slist_free_full (*plist, (GDestroyNotify) temp_buf_free);
   *plist = NULL;
 }
 
@@ -244,8 +241,8 @@ gimp_preview_cache_get (GSList **plist,
       else
         y_ratio = 0.0;
 
-      src_data  = temp_buf_data (pn.buf);
-      dest_data = temp_buf_data (preview);
+      src_data  = temp_buf_get_data (pn.buf);
+      dest_data = temp_buf_get_data (preview);
 
       for (loop1 = 0 ; loop1 < height ; loop1++)
         for (loop2 = 0 ; loop2 < width ; loop2++)

@@ -4,10 +4,10 @@
  * gimpgradientmenu.c
  * Copyright (C) 1998 Andy Thomas
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,6 +30,15 @@
 
 #undef GIMP_DISABLE_DEPRECATED
 #include "gimpgradientmenu.h"
+
+
+/**
+ * SECTION: gimpgradientmenu
+ * @title: gimpgradientmenu
+ * @short_description: A widget for selecting gradients.
+ *
+ * A widget for selecting gradients.
+ **/
 
 
 typedef struct
@@ -105,7 +113,7 @@ gimp_gradient_select_widget_close (GtkWidget *widget)
 }
 
 /**
- * gimp_gradient_select_widget_set;
+ * gimp_gradient_select_widget_set:
  * @widget:        A gradient select widget.
  * @gradient_name: Gradient name to set.
  *

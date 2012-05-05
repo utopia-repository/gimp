@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -32,10 +31,10 @@
 static CmdExecuteValue_t select_all_command_execute(Command_t *parent);
 
 static CommandClass_t select_all_command_class = {
-   NULL,			/* select_all_command_destruct, */
+   NULL,                        /* select_all_command_destruct, */
    select_all_command_execute,
-   NULL, 			/* select_all_command_undo */
-   NULL				/* select_all_command_redo */
+   NULL,                        /* select_all_command_undo */
+   NULL                         /* select_all_command_redo */
 };
 
 typedef struct {
@@ -49,7 +48,7 @@ select_all_command_new(ObjectList_t *list)
    SelectAllCommand_t *command = g_new(SelectAllCommand_t, 1);
    command->list = list;
    return command_init(&command->parent, _("Select All"),
-		       &select_all_command_class);
+                       &select_all_command_class);
 }
 
 static void

@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998 Jens Ch. Restemeier <jchrr@hrz.uni-bielefeld.de>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * This is a first loader for FLI and FLC movies. It uses as the same method as
  * the gif plug-in to store the animation (i.e. 1 layer/frame).
@@ -69,6 +68,7 @@
 #define SAVE_PROC      "file-fli-save"
 #define INFO_PROC      "file-fli-info"
 #define PLUG_IN_BINARY "file-fli"
+#define PLUG_IN_ROLE   "gimp-file-fli"
 
 
 static void      query       (void);
@@ -111,7 +111,7 @@ const GimpPlugInInfo PLUG_IN_INFO =
 
 static const GimpParamDef load_args[] =
 {
-  { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive"   },
+  { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"   },
   { GIMP_PDB_STRING, "filename",     "The name of the file to load"   },
   { GIMP_PDB_STRING, "raw-filename", "The name entered"               },
   { GIMP_PDB_INT32,  "from-frame",   "Load beginning from this frame" },
@@ -125,7 +125,7 @@ static const GimpParamDef load_return_vals[] =
 
 static const GimpParamDef save_args[] =
 {
-  { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+  { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
   { GIMP_PDB_IMAGE,    "image",        "Input image" },
   { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable (unused)" },
   { GIMP_PDB_STRING,   "filename",     "The name of the file to save" },
@@ -212,8 +212,6 @@ query (void)
                           info_return_vals);
 }
 
-GimpParam values[5];
-
 static void
 run (const gchar      *name,
      gint              nparams,
@@ -221,6 +219,7 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
+  static GimpParam   values[5];
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GimpRunMode        run_mode;
   gint32             pc;
@@ -352,7 +351,7 @@ run (const gchar      *name,
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
 	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
-	  export = gimp_export_image (&image_ID, &drawable_ID, "FLI",
+	  export = gimp_export_image (&image_ID, &drawable_ID, NULL,
 				      GIMP_EXPORT_CAN_HANDLE_INDEXED |
                                       GIMP_EXPORT_CAN_HANDLE_GRAY    |
                                       GIMP_EXPORT_CAN_HANDLE_ALPHA   |
@@ -582,7 +581,7 @@ load_image (const gchar  *filename,
       if (cnt > 0)
 	gimp_layer_add_alpha (layer_ID);
 
-      gimp_image_add_layer (image_id, layer_ID, 0);
+      gimp_image_insert_layer (image_id, layer_ID, -1, 0);
 
       if (cnt < to_frame)
 	{
@@ -592,6 +591,7 @@ load_image (const gchar  *filename,
 
       gimp_progress_update ((double) cnt + 1 / (double)(to_frame - from_frame));
     }
+  gimp_progress_update (1.0);
 
   gimp_image_set_colormap (image_id, cm, 256);
 
@@ -809,6 +809,7 @@ save_image (const gchar  *filename,
 
       gimp_progress_update ((double) cnt + 1 / (double)(to_frame - from_frame));
     }
+  gimp_progress_update (1.0);
 
   /*
    * finish fli
@@ -843,7 +844,7 @@ load_dialog (const gchar *filename)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("GFLI 1.3 - Load framestack"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("GFLI 1.3 - Load framestack"), PLUG_IN_ROLE,
                             NULL, 0,
 			    gimp_standard_help_func, LOAD_PROC,
 
@@ -861,8 +862,8 @@ load_dialog (const gchar *filename)
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), table,
-		     FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
   /*
@@ -872,7 +873,7 @@ load_dialog (const gchar *filename)
   spinbutton = gimp_spin_button_new (&adj,
 				     from_frame, 1, nframes, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-			     _("From:"), 0.0, 0.5,
+			     C_("frame-range", "From:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -881,7 +882,7 @@ load_dialog (const gchar *filename)
   spinbutton = gimp_spin_button_new (&adj,
 				     to_frame, 1, nframes, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-			     _("To:"), 0.0, 0.5,
+			     C_("frame-range", "To:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -911,28 +912,14 @@ save_dialog (gint32 image_id)
   from_frame = 1;
   to_frame   = nframes;
 
-  dialog = gimp_dialog_new (_("GFLI 1.3 - Save framestack"), PLUG_IN_BINARY,
-                            NULL, 0,
-			    gimp_standard_help_func, SAVE_PROC,
-
-			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			    GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-			    NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("GFLI 1.3"), PLUG_IN_BINARY, SAVE_PROC);
 
   table = gtk_table_new (2, 2, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_start (GTK_BOX(GTK_DIALOG (dialog)->vbox), table,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
   /*
@@ -942,7 +929,7 @@ save_dialog (gint32 image_id)
   spinbutton = gimp_spin_button_new (&adj,
 				     from_frame, 1, nframes, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-			     _("From:"), 0.0, 0.5,
+			     C_("frame-range", "From:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -951,7 +938,7 @@ save_dialog (gint32 image_id)
   spinbutton = gimp_spin_button_new (&adj,
 				     to_frame, 1, nframes, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-			     _("To:"), 0.0, 0.5,
+			     C_("frame-range", "To:"), 0.0, 0.5,
 			     spinbutton, 1, TRUE);
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),

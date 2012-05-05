@@ -1,14 +1,15 @@
 /*
- * Animation Playback plug-in version 0.98.8
+ * Animation Playback plug-in version 0.99.1
  *
  * (c) Adam D. Moss : 1997-2000 : adam@gimp.org : adam@foxbox.org
+ * (c) Mircea Purdea : 2009 : someone_else@exhalus.net
  *
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -28,7 +28,7 @@
  *  speedups (caching?  most bottlenecks seem to be in pixelrgns)
  *    -> do pixelrgns properly!
  *
- *  write other half of the user interface (default timing, disposal &c)
+ *  write other half of the user interface (zoom, disposal &c)
  */
 
 #include "config.h"
@@ -36,6 +36,7 @@
 #include <string.h>
 
 #include <libgimp/gimp.h>
+#undef GDK_DISABLE_DEPRECATED
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
@@ -43,6 +44,7 @@
 
 #define PLUG_IN_PROC   "plug-in-animationplay"
 #define PLUG_IN_BINARY "animation-play"
+#define PLUG_IN_ROLE   "gimp-animation-play"
 #define DITHERTYPE     GDK_RGB_DITHER_NORMAL
 
 
@@ -71,7 +73,9 @@ static void        rewind_callback           (GtkAction       *action);
 static void        speed_up_callback         (GtkAction       *action);
 static void        speed_down_callback       (GtkAction       *action);
 static void        speed_reset_callback      (GtkAction       *action);
-static void        speedcombo_changed        (GtkWidget       *scombo,
+static void        speedcombo_changed        (GtkWidget       *combo,
+                                              gpointer         data);
+static void        fpscombo_changed          (GtkWidget       *combo,
                                               gpointer         data);
 static gboolean    repaint_sda               (GtkWidget       *darea,
                                               GdkEventExpose  *event,
@@ -86,6 +90,7 @@ static void        total_alpha_preview       (guchar          *ptr);
 static void        init_preview              (void);
 static void        update_combobox           (void);
 static gdouble     get_duration_factor       (gint             index);
+static gint        get_fps                   (gint             index);
 
 
 /* tag util functions*/
@@ -133,6 +138,7 @@ static GimpImageBaseType  imagetype;
 static guchar            *palette;
 static gint               ncolours;
 static gint               duration_index = 3;
+static gint               default_frame_duration = 100; /* ms */
 
 
 /* for shaping */
@@ -154,7 +160,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable (unused)"      }
   };
@@ -223,7 +229,7 @@ reshape_from_bitmap (const gchar *bitmap)
     {
       GdkBitmap *shape_mask;
 
-      shape_mask = gdk_bitmap_create_from_data (shape_window->window,
+      shape_mask = gdk_bitmap_create_from_data (gtk_widget_get_window (shape_window),
                                                 bitmap,
                                                 width, height);
       gtk_widget_shape_combine_mask (shape_window, shape_mask, 0, 0);
@@ -255,7 +261,7 @@ static gboolean
 button_press (GtkWidget      *widget,
               GdkEventButton *event)
 {
-  if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+  if (gdk_event_triggers_context_menu ((GdkEvent *) event))
     return popup_menu (widget, event);
 
   return FALSE;
@@ -280,12 +286,12 @@ shape_pressed (GtkWidget      *widget,
       p->y = (gint) event->y;
 
       gtk_grab_add (widget);
-      gdk_pointer_grab (widget->window, TRUE,
+      gdk_pointer_grab (gtk_widget_get_window (widget), TRUE,
                         GDK_BUTTON_RELEASE_MASK |
                         GDK_BUTTON_MOTION_MASK  |
                         GDK_POINTER_MOTION_HINT_MASK,
                         NULL, NULL, 0);
-      gdk_window_raise (widget->window);
+      gdk_window_raise (gtk_widget_get_window (widget));
     }
 
   return FALSE;
@@ -345,7 +351,7 @@ repaint_da (GtkWidget      *darea,
 {
   GtkStyle *style = gtk_widget_get_style (darea);
 
-  gdk_draw_rgb_image (darea->window,
+  gdk_draw_rgb_image (gtk_widget_get_window (darea),
                       style->white_gc,
                       0, 0, width, height,
                       (total_frames == 1) ? GDK_RGB_DITHER_MAX : DITHERTYPE,
@@ -361,7 +367,7 @@ repaint_sda (GtkWidget      *darea,
 {
   GtkStyle *style = gtk_widget_get_style (darea);
 
-  gdk_draw_rgb_image (darea->window,
+  gdk_draw_rgb_image (gtk_widget_get_window (darea),
                       style->white_gc,
                       0, 0, width, height,
                       (total_frames == 1) ? GDK_RGB_DITHER_MAX : DITHERTYPE,
@@ -409,18 +415,18 @@ detach_callback (GtkToggleAction *action)
       gtk_window_set_screen (GTK_WINDOW (shape_window),
                              gtk_widget_get_screen (drawing_area));
 
-      if (GTK_WIDGET_REALIZED (drawing_area))
+      if (gtk_widget_get_realized (drawing_area))
         {
           gint x, y;
 
-          gdk_window_get_origin (drawing_area->window, &x, &y);
+          gdk_window_get_origin (gtk_widget_get_window (drawing_area), &x, &y);
 
           gtk_window_move (GTK_WINDOW (shape_window), x + 6, y + 6);
         }
 
       gtk_widget_show (shape_window);
 
-      gdk_window_set_back_pixmap (shape_drawing_area->window, NULL, TRUE);
+      gdk_window_set_back_pixmap (gtk_widget_get_window (shape_drawing_area), NULL, TRUE);
 
       memset (shape_preview_mask, 0, (width * height) / 8 + height);
       render_frame (frame_number);
@@ -600,7 +606,7 @@ build_dialog (GimpImageBaseType  basetype,
 
   ui_manager = ui_manager_new (window);
 
-  main_vbox = gtk_vbox_new (FALSE, 0);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (window), main_vbox);
   gtk_widget_show (main_vbox);
 
@@ -614,7 +620,7 @@ build_dialog (GimpImageBaseType  basetype,
   gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
   gtk_tool_item_set_expand (item, TRUE);
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start (GTK_BOX (main_vbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -637,20 +643,46 @@ build_dialog (GimpImageBaseType  basetype,
                     G_CALLBACK (button_press),
                     NULL);
 
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  speedcombo = gtk_combo_box_new_text ();
-  gtk_box_pack_start (GTK_BOX (hbox), speedcombo, FALSE, FALSE, 0);
+  progress = gtk_progress_bar_new ();
+  gtk_box_pack_end (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
+  gtk_widget_show (progress);
+
+  speedcombo = gtk_combo_box_text_new ();
+  gtk_box_pack_end (GTK_BOX (hbox), speedcombo, FALSE, FALSE, 0);
+  gtk_widget_show (speedcombo);
+
+  for (index = 0; index < 9; index++)
+    {
+      gchar *text;
+
+      /* list is given in "fps" - frames per second */
+      text = g_strdup_printf  (_("%d fps"), get_fps (index));
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (speedcombo), text);
+      g_free (text);
+    }
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (speedcombo), 0);
+
+  g_signal_connect (speedcombo, "changed",
+                    G_CALLBACK (fpscombo_changed),
+                    NULL);
+
+  gimp_help_set_help_data (speedcombo, _("Default framerate"), NULL);
+
+  speedcombo = gtk_combo_box_text_new ();
+  gtk_box_pack_end (GTK_BOX (hbox), speedcombo, FALSE, FALSE, 0);
   gtk_widget_show (speedcombo);
 
   for (index = 0; index < 7; index++)
     {
       gchar *text;
 
-      text = g_strdup_printf  ("%g %%", 100.0 / get_duration_factor (index));
-      gtk_combo_box_append_text (GTK_COMBO_BOX (speedcombo), text);
+      text = g_strdup_printf  ("%g\303\227", (100 / get_duration_factor (index)) / 100);
+      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (speedcombo), text);
       g_free (text);
     }
 
@@ -661,10 +693,6 @@ build_dialog (GimpImageBaseType  basetype,
                     NULL);
 
   gimp_help_set_help_data (speedcombo, _("Playback speed"), NULL);
-
-  progress = gtk_progress_bar_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
-  gtk_widget_show (progress);
 
   if (total_frames < 2)
     {
@@ -697,11 +725,11 @@ build_dialog (GimpImageBaseType  basetype,
   gtk_widget_add_events (shape_drawing_area, GDK_BUTTON_PRESS_MASK);
   gtk_widget_realize (shape_window);
 
-  gdk_window_set_back_pixmap (shape_window->window, NULL, FALSE);
+  gdk_window_set_back_pixmap (gtk_widget_get_window (shape_window), NULL, FALSE);
 
   cursor = gdk_cursor_new_for_display (gtk_widget_get_display (shape_window),
                                        GDK_HAND2);
-  gdk_window_set_cursor (shape_window->window, cursor);
+  gdk_window_set_cursor (gtk_widget_get_window (shape_window), cursor);
   gdk_cursor_unref (cursor);
 
   g_signal_connect (shape_window, "button-press-event",
@@ -923,7 +951,7 @@ render_frame (gint32 whichframe)
           if (detached)
             {
               reshape_from_bitmap (shape_preview_mask);
-              gdk_draw_rgb_image (shape_drawing_area->window,
+              gdk_draw_rgb_image (gtk_widget_get_window (shape_drawing_area),
                                   shape_style->white_gc,
                                   0, 0, width, height,
                                   (total_frames == 1 ?
@@ -933,7 +961,7 @@ render_frame (gint32 whichframe)
           else
             {
               reshape_from_bitmap (shape_preview_mask);
-              gdk_draw_rgb_image (drawing_area->window,
+              gdk_draw_rgb_image (gtk_widget_get_window (drawing_area),
                                   drawing_style->white_gc,
                                   0, 0, width, height,
                                   (total_frames == 1 ?
@@ -1024,7 +1052,7 @@ render_frame (gint32 whichframe)
                   gint bottom = MIN (rawy + rawheight, height);
 
                   reshape_from_bitmap (shape_preview_mask);
-                  gdk_draw_rgb_image (shape_drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (shape_drawing_area),
                                       shape_style->white_gc,
                                       0, top, width, bottom - top,
                                       (total_frames == 1 ?
@@ -1035,7 +1063,7 @@ render_frame (gint32 whichframe)
               else
                 {
                   reshape_from_bitmap (shape_preview_mask);
-                  gdk_draw_rgb_image (shape_drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (shape_drawing_area),
                                       shape_style->white_gc,
                                       0, 0, width, height,
                                       (total_frames == 1 ?
@@ -1050,7 +1078,7 @@ render_frame (gint32 whichframe)
                   gint top    = MAX (rawy, 0);
                   gint bottom = MIN (rawy + rawheight, height);
 
-                  gdk_draw_rgb_image (drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (drawing_area),
                                       drawing_style->white_gc,
                                       0, top, width, bottom - top,
                                       (total_frames == 1 ?
@@ -1060,7 +1088,7 @@ render_frame (gint32 whichframe)
                 }
               else
                 {
-                  gdk_draw_rgb_image (drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (drawing_area),
                                       drawing_style->white_gc,
                                       0, 0, width, height,
                                       (total_frames == 1 ?
@@ -1152,7 +1180,7 @@ render_frame (gint32 whichframe)
           if (detached)
             {
               reshape_from_bitmap (shape_preview_mask);
-              gdk_draw_rgb_image (shape_drawing_area->window,
+              gdk_draw_rgb_image (gtk_widget_get_window (shape_drawing_area),
                                   shape_style->white_gc,
                                   0, 0, width, height,
                                   (total_frames == 1 ?
@@ -1161,7 +1189,7 @@ render_frame (gint32 whichframe)
             }
           else
             {
-              gdk_draw_rgb_image (drawing_area->window,
+              gdk_draw_rgb_image (gtk_widget_get_window (drawing_area),
                                   drawing_style->white_gc,
                                   0, 0, width, height,
                                   (total_frames == 1 ?
@@ -1257,7 +1285,7 @@ render_frame (gint32 whichframe)
                   gint bottom = MIN (rawy + rawheight, height);
 
                   reshape_from_bitmap (shape_preview_mask);
-                  gdk_draw_rgb_image (shape_drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (shape_drawing_area),
                                       shape_style->white_gc,
                                       0, top, width, bottom - top,
                                       (total_frames == 1 ?
@@ -1268,7 +1296,7 @@ render_frame (gint32 whichframe)
               else
                 {
                   reshape_from_bitmap (shape_preview_mask);
-                  gdk_draw_rgb_image (shape_drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (shape_drawing_area),
                                       shape_style->white_gc,
                                       0, 0, width, height,
                                       (total_frames == 1 ?
@@ -1283,7 +1311,7 @@ render_frame (gint32 whichframe)
                   gint top    = MAX (rawy, 0);
                   gint bottom = MIN (rawy + rawheight, height);
 
-                  gdk_draw_rgb_image (drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (drawing_area),
                                       drawing_style->white_gc,
                                       0, top, width, bottom - top,
                                       (total_frames == 1 ?
@@ -1293,7 +1321,7 @@ render_frame (gint32 whichframe)
                 }
               else
                 {
-                  gdk_draw_rgb_image (drawing_area->window,
+                  gdk_draw_rgb_image (gtk_widget_get_window (drawing_area),
                                       drawing_style->white_gc,
                                       0, 0, width, height,
                                       (total_frames == 1 ?
@@ -1443,8 +1471,8 @@ play_callback (GtkToggleAction *action)
                            advance_frame_callback, NULL);
 
   g_object_set (action,
-		"tooltip", playing ? _("Stop playback") : _("Start playback"),
-		NULL);
+                "tooltip", playing ? _("Stop playback") : _("Start playback"),
+                NULL);
 }
 
 static gdouble
@@ -1468,6 +1496,34 @@ get_duration_factor (gint index)
       return 8.0;
     default:
       return 1.0;
+    }
+}
+
+static gint
+get_fps (gint index)
+{
+  switch (index)
+    {
+    case 0:
+      return 10;
+    case 1:
+      return 12;
+    case 2:
+      return 15;
+    case 3:
+      return 24;
+    case 4:
+      return 25;
+    case 5:
+      return 30;
+    case 6:
+      return 50;
+    case 7:
+      return 60;
+    case 8:
+      return 72;
+    default:
+      return 10;
     }
 }
 
@@ -1550,11 +1606,11 @@ speed_reset_callback (GtkAction *action)
 
 
 static void
-speedcombo_changed (GtkWidget *scombo, gpointer data)
+speedcombo_changed (GtkWidget *combo, gpointer data)
 {
   GtkAction * action;
 
-  duration_index = gtk_combo_box_get_active (GTK_COMBO_BOX (scombo));
+  duration_index = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
 
   action = gtk_ui_manager_get_action (ui_manager,
                                       "/anim-play-popup/speed-reset");
@@ -1567,6 +1623,12 @@ speedcombo_changed (GtkWidget *scombo, gpointer data)
   action = gtk_ui_manager_get_action (ui_manager,
                                       "/anim-play-popup/speed-up");
   gtk_action_set_sensitive (action, duration_index > 0);
+}
+
+static void
+fpscombo_changed (GtkWidget *combo, gpointer data)
+{
+  default_frame_duration = 1000 / get_fps(gtk_combo_box_get_active (GTK_COMBO_BOX (combo)));
 }
 
 static void
@@ -1583,7 +1645,7 @@ get_frame_disposal (guint whichframe)
   DisposeType  disposal;
   gchar       *layer_name;
 
-  layer_name = gimp_drawable_get_name (layers[total_frames-(whichframe+1)]);
+  layer_name = gimp_item_get_name (layers[total_frames-(whichframe+1)]);
   disposal = parse_disposal_tag (layer_name);
   g_free (layer_name);
 
@@ -1596,16 +1658,15 @@ get_frame_duration (guint whichframe)
   gchar *layer_name;
   gint   duration = 0;
 
-  layer_name = gimp_drawable_get_name (layers[total_frames-(whichframe+1)]);
+  layer_name = gimp_item_get_name (layers[total_frames-(whichframe+1)]);
   if (layer_name)
     {
       duration = parse_ms_tag (layer_name);
       g_free (layer_name);
     }
 
-  if (duration < 0) duration = 100;  /* FIXME for default-if-not-said  */
-  else
-    if (duration == 0) duration = 100; /* FIXME - 0-wait is nasty */
+  if (duration <= 0)
+    duration = default_frame_duration;
 
   return (guint32) duration;
 }

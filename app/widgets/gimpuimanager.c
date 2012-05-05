@@ -4,9 +4,9 @@
  * gimpuimanager.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,13 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
+
+#undef GSEAL_ENABLE
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -58,9 +59,7 @@ enum
 };
 
 
-static GObject *  gimp_ui_manager_constructor         (GType           type,
-                                                       guint           n_params,
-                                                       GObjectConstructParam *params);
+static void       gimp_ui_manager_constructed         (GObject        *object);
 static void       gimp_ui_manager_dispose             (GObject        *object);
 static void       gimp_ui_manager_finalize            (GObject        *object);
 static void       gimp_ui_manager_set_property        (GObject        *object,
@@ -127,7 +126,7 @@ gimp_ui_manager_class_init (GimpUIManagerClass *klass)
   GObjectClass      *object_class  = G_OBJECT_CLASS (klass);
   GtkUIManagerClass *manager_class = GTK_UI_MANAGER_CLASS (klass);
 
-  object_class->constructor    = gimp_ui_manager_constructor;
+  object_class->constructed    = gimp_ui_manager_constructed;
   object_class->dispose        = gimp_ui_manager_dispose;
   object_class->finalize       = gimp_ui_manager_finalize;
   object_class->set_property   = gimp_ui_manager_set_property;
@@ -194,17 +193,13 @@ gimp_ui_manager_init (GimpUIManager *manager)
   manager->gimp = NULL;
 }
 
-static GObject *
-gimp_ui_manager_constructor (GType                  type,
-                             guint                  n_params,
-                             GObjectConstructParam *params)
+static void
+gimp_ui_manager_constructed (GObject *object)
 {
-  GObject       *object;
-  GimpUIManager *manager;
+  GimpUIManager *manager = GIMP_UI_MANAGER (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  manager = GIMP_UI_MANAGER (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   if (manager->name)
     {
@@ -220,8 +215,6 @@ gimp_ui_manager_constructor (GType                  type,
       g_hash_table_replace (manager_class->managers,
                             g_strdup (manager->name), list);
     }
-
-  return object;
 }
 
 static void
@@ -298,9 +291,11 @@ gimp_ui_manager_set_property (GObject      *object,
       g_free (manager->name);
       manager->name = g_value_dup_string (value);
       break;
+
     case PROP_GIMP:
       manager->gimp = g_value_get_object (value);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -320,9 +315,11 @@ gimp_ui_manager_get_property (GObject    *object,
     case PROP_NAME:
       g_value_set_string (value, manager->name);
       break;
+
     case PROP_GIMP:
       g_value_set_object (value, manager->gimp);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -335,8 +332,7 @@ gimp_ui_manager_connect_proxy (GtkUIManager *manager,
                                GtkWidget    *proxy)
 {
   g_object_set_qdata (G_OBJECT (proxy), GIMP_HELP_ID,
-                      g_object_get_qdata (G_OBJECT (action),
-                                          GIMP_HELP_ID));
+                      g_object_get_qdata (G_OBJECT (action), GIMP_HELP_ID));
 
   if (GTK_IS_MENU_ITEM (proxy))
     {
@@ -690,10 +686,18 @@ gimp_ui_manager_entry_load (GimpUIManager         *manager,
                             GimpUIManagerUIEntry  *entry,
                             GError               **error)
 {
-  gchar *filename;
+  gchar       *filename           = NULL;
+  const gchar *menus_dir_override = g_getenv ("GIMP_TESTING_MENUS_DIR");
 
-  filename = g_build_filename (gimp_data_directory (), "menus",
-                               entry->basename, NULL);
+  /* In order for test cases to be able to run without GIMP being
+   * installed yet, allow them to override the menus directory to the
+   * menus dir in the source root
+   */
+  if (menus_dir_override)
+    filename = g_build_filename (menus_dir_override, entry->basename, NULL);
+  else
+    filename = g_build_filename (gimp_data_directory (), "menus",
+                                 entry->basename, NULL);
 
   if (manager->gimp->be_verbose)
     g_print ("loading menu '%s' for %s\n",
@@ -737,8 +741,8 @@ gimp_ui_manager_entry_ensure (GimpUIManager *manager,
                             "%s\n\n%s\n\n%s",
                             _("Your GIMP installation is incomplete:"),
                             error->message,
-                            _("Plase make sure the menu XML files are correctly "
-                              "installed."));
+                            _("Please make sure the menu XML files are "
+                              "correctly installed."));
             }
           else
             {
@@ -909,20 +913,15 @@ static void
 gimp_ui_manager_menu_item_select (GtkWidget     *widget,
                                   GimpUIManager *manager)
 {
-  GtkAction *action = gtk_widget_get_action (widget);
+  GtkAction *action =
+    gtk_activatable_get_related_action (GTK_ACTIVATABLE (widget));
 
   if (action)
     {
-      gchar *tooltip;
-
-      g_object_get (action, "tooltip", &tooltip, NULL);
+      const gchar *tooltip = gtk_action_get_tooltip (action);
 
       if (tooltip)
-        {
-          g_signal_emit (manager, manager_signals[SHOW_TOOLTIP], 0,
-                         tooltip);
-          g_free (tooltip);
-        }
+        g_signal_emit (manager, manager_signals[SHOW_TOOLTIP], 0, tooltip);
     }
 }
 
@@ -946,7 +945,8 @@ gimp_ui_manager_item_key_press (GtkWidget     *widget,
 
       if (! menu_item && GTK_IS_MENU (widget))
         {
-          GdkWindow *window = GTK_MENU (widget)->toplevel->window;
+          GtkWidget *parent = gtk_widget_get_parent (widget);
+          GdkWindow *window = gtk_widget_get_window (parent);
           gint       x, y;
 
           gdk_window_get_pointer (window, &x, &y, NULL);
@@ -1005,7 +1005,7 @@ gimp_ui_manager_item_key_press (GtkWidget     *widget,
    *  standard GtkMenuShell callback and assign a new shortcut, but
    *  don't assign a shortcut to the help menu entries ...
    */
-  if (kevent->keyval != GDK_F1)
+  if (kevent->keyval != GDK_KEY_F1)
     {
       if (help_id                                   &&
           gtk_accelerator_valid (kevent->keyval, 0) &&
@@ -1056,9 +1056,7 @@ gimp_ui_manager_item_key_press (GtkWidget     *widget,
 /* Stuff below taken from gtktooltip.c
  */
 
-#ifdef __GNUC__
-#warning FIXME: remove this crack as soon as a GTK+ widget_under_pointer() is available
-#endif
+/* FIXME: remove this crack as soon as a GTK+ widget_under_pointer() is available */
 
 struct ChildLocation
 {
@@ -1071,61 +1069,67 @@ struct ChildLocation
 
 static void
 child_location_foreach (GtkWidget *child,
-			gpointer   data)
+                        gpointer   data)
 {
   gint x, y;
   struct ChildLocation *child_loc = data;
 
   /* Ignore invisible widgets */
-  if (!GTK_WIDGET_DRAWABLE (child))
+  if (! gtk_widget_is_drawable (child))
     return;
 
   /* (child_loc->x, child_loc->y) are relative to
    * child_loc->container's allocation.
    */
 
-  if (!child_loc->child &&
+  if (! child_loc->child &&
       gtk_widget_translate_coordinates (child_loc->container, child,
-					child_loc->x, child_loc->y,
-					&x, &y))
+                                        child_loc->x, child_loc->y,
+                                        &x, &y))
     {
+      GtkAllocation child_allocation;
+
+      gtk_widget_get_allocation (child, &child_allocation);
+
 #ifdef DEBUG_TOOLTIP
       g_print ("candidate: %s  alloc=[(%d,%d)  %dx%d]     (%d, %d)->(%d, %d)\n",
-	       gtk_widget_get_name (child),
-	       child->allocation.x,
-	       child->allocation.y,
-	       child->allocation.width,
-	       child->allocation.height,
-	       child_loc->x, child_loc->y,
-	       x, y);
+               gtk_widget_get_name (child),
+               child_allocation.x,
+               child_allocation.y,
+               child_allocation.width,
+               child_allocation.height,
+               child_loc->x, child_loc->y,
+               x, y);
 #endif /* DEBUG_TOOLTIP */
 
       /* (x, y) relative to child's allocation. */
-      if (x >= 0 && x < child->allocation.width
-	  && y >= 0 && y < child->allocation.height)
+      if (x >= 0 && x < child_allocation.width
+          && y >= 0 && y < child_allocation.height)
         {
-	  if (GTK_IS_CONTAINER (child))
-	    {
-	      struct ChildLocation tmp = { NULL, NULL, 0, 0 };
+          if (GTK_IS_CONTAINER (child))
+            {
+              struct ChildLocation tmp = { NULL, NULL, 0, 0 };
 
-	      /* Take (x, y) relative the child's allocation and
-	       * recurse.
-	       */
-	      tmp.x = x;
-	      tmp.y = y;
-	      tmp.container = child;
+              /* Take (x, y) relative the child's allocation and
+               * recurse.
+               */
+              tmp.x = x;
+              tmp.y = y;
+              tmp.container = child;
 
-	      gtk_container_forall (GTK_CONTAINER (child),
-				    child_location_foreach, &tmp);
+              gtk_container_forall (GTK_CONTAINER (child),
+                                    child_location_foreach, &tmp);
 
-	      if (tmp.child)
-		child_loc->child = tmp.child;
-	      else
-		child_loc->child = child;
-	    }
-	  else
-	    child_loc->child = child;
-	}
+              if (tmp.child)
+                child_loc->child = tmp.child;
+              else
+                child_loc->child = child;
+            }
+          else
+            {
+              child_loc->child = child;
+            }
+        }
     }
 }
 
@@ -1134,27 +1138,33 @@ child_location_foreach (GtkWidget *child,
  */
 static void
 window_to_alloc (GtkWidget *dest_widget,
-		 gint       src_x,
-		 gint       src_y,
-		 gint      *dest_x,
-		 gint      *dest_y)
+                 gint       src_x,
+                 gint       src_y,
+                 gint      *dest_x,
+                 gint      *dest_y)
 {
+  GtkAllocation dest_allocation;
+
+  gtk_widget_get_allocation (dest_widget, &dest_allocation);
+
   /* Translate from window relative to allocation relative */
-  if (!GTK_WIDGET_NO_WINDOW (dest_widget) && dest_widget->parent)
+  if (gtk_widget_get_has_window (dest_widget) &&
+      gtk_widget_get_parent (dest_widget))
     {
       gint wx, wy;
-      gdk_window_get_position (dest_widget->window, &wx, &wy);
+
+      gdk_window_get_position (gtk_widget_get_window (dest_widget), &wx, &wy);
 
       /* Offset coordinates if widget->window is smaller than
        * widget->allocation.
        */
-      src_x += wx - dest_widget->allocation.x;
-      src_y += wy - dest_widget->allocation.y;
+      src_x += wx - dest_allocation.x;
+      src_y += wy - dest_allocation.y;
     }
   else
     {
-      src_x -= dest_widget->allocation.x;
-      src_y -= dest_widget->allocation.y;
+      src_x -= dest_allocation.x;
+      src_y -= dest_allocation.y;
     }
 
   if (dest_x)
@@ -1165,21 +1175,21 @@ window_to_alloc (GtkWidget *dest_widget,
 
 static GtkWidget *
 find_widget_under_pointer (GdkWindow *window,
-			   gint      *x,
-			   gint      *y)
+                           gint      *x,
+                           gint      *y)
 {
   GtkWidget *event_widget;
   struct ChildLocation child_loc = { NULL, NULL, 0, 0 };
 
   gdk_window_get_user_data (window, (void **)&event_widget);
 
-  if (!event_widget)
+  if (! event_widget)
     return NULL;
 
 #ifdef DEBUG_TOOLTIP
   g_print ("event window %p (belonging to %p (%s))  (%d, %d)\n",
-	   window, event_widget, gtk_widget_get_name (event_widget),
-	   *x, *y);
+           window, event_widget, gtk_widget_get_name (event_widget),
+           *x, *y);
 #endif
 
   /* Coordinates are relative to event window */
@@ -1190,7 +1200,7 @@ find_widget_under_pointer (GdkWindow *window,
    * coordinates stay relative to the current window.
    * We end up with window == widget->window, coordinates relative to that.
    */
-  while (window && window != event_widget->window)
+  while (window && window != gtk_widget_get_window (event_widget))
     {
       gint px, py;
 
@@ -1213,8 +1223,8 @@ find_widget_under_pointer (GdkWindow *window,
    * relative coordinates.
    */
   window_to_alloc (event_widget,
-		   child_loc.x, child_loc.y,
-		   &child_loc.x, &child_loc.y);
+                   child_loc.x, child_loc.y,
+                   &child_loc.x, &child_loc.y);
 
   if (GTK_IS_CONTAINER (event_widget))
     {
@@ -1224,21 +1234,21 @@ find_widget_under_pointer (GdkWindow *window,
       child_loc.child = NULL;
 
       gtk_container_forall (GTK_CONTAINER (event_widget),
-			    child_location_foreach, &child_loc);
+                            child_location_foreach, &child_loc);
 
       /* Here we have a widget, with coordinates relative to
        * child_loc.container's allocation.
        */
 
       if (child_loc.child)
-	event_widget = child_loc.child;
+        event_widget = child_loc.child;
       else if (child_loc.container)
-	event_widget = child_loc.container;
+        event_widget = child_loc.container;
 
       /* Translate to event_widget's allocation */
       gtk_widget_translate_coordinates (container, event_widget,
-					child_loc.x, child_loc.y,
-					&child_loc.x, &child_loc.y);
+                                        child_loc.x, child_loc.y,
+                                        &child_loc.x, &child_loc.y);
 
     }
 

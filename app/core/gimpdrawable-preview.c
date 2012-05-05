@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
@@ -37,8 +36,8 @@
 #include "gimp.h"
 #include "gimpchannel.h"
 #include "gimpimage.h"
-#include "gimpimage-colormap.h"
 #include "gimpdrawable-preview.h"
+#include "gimpdrawable-private.h"
 #include "gimplayer.h"
 #include "gimppreviewcache.h"
 
@@ -70,13 +69,13 @@ gimp_drawable_get_preview (GimpViewable *viewable,
   GimpImage    *image;
 
   drawable = GIMP_DRAWABLE (viewable);
-  image   = gimp_item_get_image (GIMP_ITEM (drawable));
+  image    = gimp_item_get_image (GIMP_ITEM (drawable));
 
   if (! image->gimp->config->layer_previews)
     return NULL;
 
   /* Ok prime the cache with a large preview if the cache is invalid */
-  if (! drawable->preview_valid                                 &&
+  if (! drawable->private->preview_valid                        &&
       width  <= PREVIEW_CACHE_PRIME_WIDTH                       &&
       height <= PREVIEW_CACHE_PRIME_HEIGHT                      &&
       image                                                     &&
@@ -144,8 +143,8 @@ gimp_drawable_get_sub_preview (GimpDrawable *drawable,
 
   item = GIMP_ITEM (drawable);
 
-  g_return_val_if_fail ((src_x + src_width)  <= gimp_item_width  (item), NULL);
-  g_return_val_if_fail ((src_y + src_height) <= gimp_item_height (item), NULL);
+  g_return_val_if_fail ((src_x + src_width)  <= gimp_item_get_width  (item), NULL);
+  g_return_val_if_fail ((src_y + src_height) <= gimp_item_get_height (item), NULL);
 
   image = gimp_item_get_image (item);
 
@@ -154,7 +153,7 @@ gimp_drawable_get_sub_preview (GimpDrawable *drawable,
 
   if (GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable)) == GIMP_INDEXED)
     return gimp_drawable_indexed_preview (drawable,
-                                          gimp_image_get_colormap (image),
+                                          gimp_drawable_get_colormap (drawable),
                                           src_x, src_y, src_width, src_height,
                                           dest_width, dest_height);
 
@@ -173,25 +172,25 @@ gimp_drawable_preview_private (GimpDrawable *drawable,
 {
   TempBuf *ret_buf;
 
-  if (! drawable->preview_valid ||
-      ! (ret_buf = gimp_preview_cache_get (&drawable->preview_cache,
+  if (! drawable->private->preview_valid ||
+      ! (ret_buf = gimp_preview_cache_get (&drawable->private->preview_cache,
                                            width, height)))
     {
       GimpItem *item = GIMP_ITEM (drawable);
 
       ret_buf = gimp_drawable_get_sub_preview (drawable,
                                                0, 0,
-                                               gimp_item_width (item),
-                                               gimp_item_height (item),
+                                               gimp_item_get_width (item),
+                                               gimp_item_get_height (item),
                                                width,
                                                height);
 
-      if (! drawable->preview_valid)
-        gimp_preview_cache_invalidate (&drawable->preview_cache);
+      if (! drawable->private->preview_valid)
+        gimp_preview_cache_invalidate (&drawable->private->preview_cache);
 
-      drawable->preview_valid = TRUE;
+      drawable->private->preview_valid = TRUE;
 
-      gimp_preview_cache_add (&drawable->preview_cache, ret_buf);
+      gimp_preview_cache_add (&drawable->private->preview_cache, ret_buf);
     }
 
   return ret_buf;

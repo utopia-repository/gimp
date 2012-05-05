@@ -23,16 +23,17 @@
   <separator/>
   <menuitem action="dialogs-colors"/>
   <menuitem action="dialogs-brushes"/>
+  <menuitem action="dialogs-dynamics"/>
   <menuitem action="dialogs-patterns"/>
   <menuitem action="dialogs-gradients"/>
   <menuitem action="dialogs-palettes"/>
   <menuitem action="dialogs-fonts"/>
+  <menuitem action="dialogs-tool-presets"/>
   <menuitem action="dialogs-buffers"/>
   <separator/>
   <menuitem action="dialogs-images"/>
   <menuitem action="dialogs-document-history"/>
   <menuitem action="dialogs-templates"/>
-  <menuitem action="dialogs-tools"/>
   <menuitem action="dialogs-error-console"/>
 
     </menu>
@@ -56,6 +57,8 @@
       <menuitem action="dockable-tab-style-name"/>
       <menuitem action="dockable-tab-style-icon-name"/>
       <menuitem action="dockable-tab-style-preview-name"/>
+      <separator/>
+      <menuitem action="dockable-tab-style-automatic"/>
     </menu>
     <menuitem action="dockable-view-type-list"/>
     <menuitem action="dockable-view-type-grid"/>

@@ -6,10 +6,10 @@
  * Copyright (C) 2007  Sven Neumann      <sven@gimp.org>
  * Copyright (C) 2007  Martin Nordholts  <martin@svn.gnome.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,13 +17,16 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GIMP_NUMBER_PAIR_ENTRY_H
-#define GIMP_NUMBER_PAIR_ENTRY_H
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
+
+#ifndef __GIMP_NUMBER_PAIR_ENTRY_H__
+#define __GIMP_NUMBER_PAIR_ENTRY_H__
 
 G_BEGIN_DECLS
 
@@ -96,8 +99,6 @@ void           gimp_number_pair_entry_set_user_override  (GimpNumberPairEntry *e
 gboolean       gimp_number_pair_entry_get_user_override  (GimpNumberPairEntry *entry);
 
 
-
-
 G_END_DECLS
 
-#endif /* GIMP_NUMBER_PAIR_ENTRY_H */
+#endif /* __GIMP_NUMBER_PAIR_ENTRY_H__ */

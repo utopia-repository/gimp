@@ -19,9 +19,9 @@
 ;
 ;  see http://www.gimp.org/~adrian/script.html
 ;
-; This program is free software; you can redistribute it and/or modify
+; This program is free software: you can redistribute it and/or modify
 ; it under the terms of the GNU General Public License as published by
-; the Free Software Foundation; either version 2 of the License, or
+; the Free Software Foundation; either version 3 of the License, or
 ; (at your option) any later version.
 ;
 ; This program is distributed in the hope that it will be useful,
@@ -30,8 +30,7 @@
 ; GNU General Public License for more details.
 ;
 ; You should have received a copy of the GNU General Public License
-; along with this program; if not, write to the Free Software
-; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 ;  Some suggested patterns: Dried mud, 3D green, Slate
 ;
@@ -54,6 +53,7 @@
         )
 
     (gimp-context-push)
+    (gimp-context-set-defaults)
 
     (script-fu-util-image-resize-from-layer img logo-layer)
     (script-fu-util-image-add-layers img bump-layer bg-layer)
@@ -73,7 +73,7 @@
     (gimp-selection-all img)
     (gimp-edit-clear bump-layer)
     (gimp-selection-none img)
-    (gimp-selection-layer-alpha logo-layer)
+    (gimp-image-select-item img CHANNEL-OP-REPLACE logo-layer)
     (gimp-edit-fill bump-layer BACKGROUND-FILL)
     (gimp-edit-bucket-fill logo-layer
                            PATTERN-BUCKET-FILL NORMAL-MODE 100 255 FALSE 1 1)
@@ -81,7 +81,7 @@
 
     (gimp-layer-set-lock-alpha bump-layer FALSE)
     (plug-in-spread RUN-NONINTERACTIVE img bump-layer spread-amount spread-amount)
-    (gimp-selection-layer-alpha bump-layer)
+    (gimp-image-select-item img CHANNEL-OP-REPLACE bump-layer)
     (plug-in-gauss-rle RUN-NONINTERACTIVE img bump-layer blur-amount TRUE TRUE)
 
     (gimp-selection-none img)
@@ -89,7 +89,7 @@
     (plug-in-bump-map RUN-NONINTERACTIVE img logo-layer bump-layer
                       135.00 25.0 60 0 0 0 0 TRUE invert 1)
 
-    (gimp-drawable-set-visible bump-layer FALSE)
+    (gimp-item-set-visible bump-layer FALSE)
 
      (if (= drop-shadow TRUE)
         (begin
@@ -99,7 +99,7 @@
             (gimp-selection-all img)
             (gimp-edit-clear shadow-layer)
             (gimp-selection-none img)
-            (gimp-selection-layer-alpha logo-layer)
+            (gimp-image-select-item img CHANNEL-OP-REPLACE logo-layer)
             (gimp-context-set-background '(0 0 0))
             (gimp-edit-fill shadow-layer BACKGROUND-FILL)
             (gimp-selection-none img)

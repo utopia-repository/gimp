@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*  Mosaic is a filter which transforms an image into
@@ -35,6 +34,7 @@
 
 #define PLUG_IN_PROC    "plug-in-mosaic"
 #define PLUG_IN_BINARY  "mosaic"
+#define PLUG_IN_ROLE    "gimp-mosaic"
 
 #define SCALE_WIDTH     150
 
@@ -338,7 +338,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",        "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",            "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",         "Input drawable" },
     { GIMP_PDB_FLOAT,    "tile-size",        "Average diameter of each tile (in pixels)" },
@@ -350,9 +350,9 @@ query (void)
     { GIMP_PDB_FLOAT,    "color-variation",  "Magnitude of random color variations (0.0 - 1.0)" },
     { GIMP_PDB_INT32,    "antialiasing",     "Enables smoother tile output at the cost of speed" },
     { GIMP_PDB_INT32,    "color-averaging",  "Tile color based on average of subsumed pixels" },
-    { GIMP_PDB_INT32,    "tile-type",        "Tile geometry: { SQUARES (0), HEXAGONS (1), OCTAGONS (2), TRIANGLES (3) }" },
-    { GIMP_PDB_INT32,    "tile-surface",     "Surface characteristics: { SMOOTH (0), ROUGH (1) }" },
-    { GIMP_PDB_INT32,    "grout-color",      "Grout color (black/white or fore/background): { BW (0), FG_BG (1) }" }
+    { GIMP_PDB_INT32,    "tile-type",        "Tile geometry { SQUARES (0), HEXAGONS (1), OCTAGONS (2), TRIANGLES (3) }" },
+    { GIMP_PDB_INT32,    "tile-surface",     "Surface characteristics { SMOOTH (0), ROUGH (1) }" },
+    { GIMP_PDB_INT32,    "grout-color",      "Grout color (black/white or fore/background) { BW (0), FG-BG (1) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -481,7 +481,6 @@ mosaic (GimpDrawable *drawable,
 {
   gint     x1, y1, x2, y2;
   gint     width, height;
-  gint     alpha;
   GimpRGB  color;
 
   /*  Find the mask bounds  */
@@ -489,14 +488,18 @@ mosaic (GimpDrawable *drawable,
     {
       gimp_preview_get_position (preview, &x1, &y1);
       gimp_preview_get_size (preview, &width, &height);
+
       x2 = x1 + width;
       y2 = y1 + height;
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      width  = (x2 - x1);
-      height = (y2 - y1);
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &width, &height))
+        return;
+
+      x2 = x1 + width;
+      y2 = y1 + height;
 
       /*  progress bar for gradient finding  */
       gimp_progress_init (_("Finding edges"));
@@ -518,7 +521,7 @@ mosaic (GimpDrawable *drawable,
       grid_create_octagons (x1, y1, x2, y2);
       break;
     case TRIANGLES:
-      grid_create_triangles(x1, y1, x2, y2);
+      grid_create_triangles (x1, y1, x2, y2);
       break;
     default:
       break;
@@ -542,8 +545,6 @@ mosaic (GimpDrawable *drawable,
       gimp_drawable_get_color_uchar (drawable->drawable_id, &color, back);
       break;
     }
-
-  alpha = drawable->bpp - 1;
 
   light_x = -cos (mvals.light_dir * G_PI / 180.0);
   light_y =  sin (mvals.light_dir * G_PI / 180.0);
@@ -586,7 +587,7 @@ mosaic_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Mosaic"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Mosaic"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -602,9 +603,10 @@ mosaic_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   /* A preview */
@@ -616,7 +618,7 @@ mosaic_dialog (GimpDrawable *drawable)
                             drawable);
 
   /*  The hbox -- splits the scripts and the info vbox  */
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -720,7 +722,7 @@ mosaic_dialog (GimpDrawable *drawable)
                             preview);
 
   /*  the vertical box and its toggle buttons  */
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -812,14 +814,11 @@ find_gradients (GimpDrawable *drawable,
 {
   GimpPixelRgn  src_rgn;
   GimpPixelRgn  dest_rgn;
-  gint          bytes;
   gint          i, j;
   guchar       *gr, *dh, *dv;
   gint          hmax, vmax;
   gint          row, rows;
   gint          ith_row;
-
-  bytes = drawable->bpp;
 
   /*  allocate the gradient maps  */
   h_grad = g_new (guchar, width * height);
@@ -1457,7 +1456,7 @@ grid_localize (gint x1,
                gint x2,
                gint y2)
 {
-  gint     width, height;
+  gint     width;
   gint     i, j;
   gint     k, l;
   gint     x3, y3, x4, y4;
@@ -1469,7 +1468,6 @@ grid_localize (gint x1,
   Vertex  *pt;
 
   width  = x2 - x1;
-  height = y2 - y1;
   size = (gint) mvals.tile_size;
   rand_localize = size * (1.0 - mvals.tile_neatness);
 
@@ -1553,7 +1551,6 @@ grid_render (GimpDrawable *drawable,
            pr != NULL;
            pr = gimp_pixel_rgns_process (pr))
         {
-          size = src_rgn.w * src_rgn.h;
           dest = src_rgn.data;
 
           for (i = 0; i < src_rgn.h ; i++)
@@ -1972,7 +1969,7 @@ clip_point (gdouble *dir,
             gdouble  y2,
             Polygon *poly_new)
 {
-  gdouble det, m11, m12, m21, m22;
+  gdouble det, m11, m12;
   gdouble side1, side2;
   gdouble t;
   gdouble vec[2];
@@ -2009,8 +2006,6 @@ clip_point (gdouble *dir,
 
       m11 = vec[1] / det;
       m12 = -vec[0] / det;
-      m21 = -dir[1] / det;
-      m22 = dir[0] / det;
 
       t = m11 * x1 + m12 * y1;
 
@@ -2045,7 +2040,7 @@ find_poly_dir (Polygon *poly,
   gint    xe, ye;
   gint    min_x, min_y;
   gint    max_x, max_y;
-  gint    size_x, size_y;
+  gint    size_y;
   gint   *max_scanlines;
   gint   *min_scanlines;
   guchar *dm, *dv, *dh;
@@ -2069,7 +2064,6 @@ find_poly_dir (Polygon *poly,
   max_y = (gint) dmax_y;
 
   size_y = max_y - min_y;
-  size_x = max_x - min_x;
 
   min_scanlines = g_new (gint, size_y);
   max_scanlines = g_new (gint, size_y);
@@ -2118,7 +2112,11 @@ find_poly_dir (Polygon *poly,
     }
 
   if (!total)
-    return;
+    {
+      g_free (max_scanlines);
+      g_free (min_scanlines);
+      return;
+    }
 
   if ((gdouble) count / (gdouble) total > COUNT_THRESHOLD)
     {
@@ -2157,7 +2155,7 @@ find_poly_color (Polygon      *poly,
   gint          xe, ye;
   gint          min_x, min_y;
   gint          max_x, max_y;
-  gint          size_x, size_y;
+  gint          size_y;
   gint         *max_scanlines;
   gint         *min_scanlines;
   gint          col_sum[4] = {0, 0, 0, 0};
@@ -2177,7 +2175,6 @@ find_poly_color (Polygon      *poly,
   max_y = (gint) dmax_y;
 
   size_y = max_y - min_y;
-  size_x = max_x - min_x;
 
   min_scanlines = g_new (int, size_y);
   max_scanlines = g_new (int, size_y);

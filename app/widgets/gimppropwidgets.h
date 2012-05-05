@@ -4,9 +4,9 @@
  * gimppropwidgets.h
  * Copyright (C) 2002 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_APP_PROP_WIDGETS_H__
@@ -51,8 +50,18 @@ GtkWidget * gimp_prop_color_button_new    (GObject     *config,
 
 
 /*  GParamDouble  */
+
 GtkWidget * gimp_prop_scale_button_new    (GObject     *config,
                                            const gchar *property_name);
+GtkWidget * gimp_prop_spin_scale_new      (GObject     *config,
+                                           const gchar *property_name,
+                                           const gchar *label,
+                                           gdouble      step_increment,
+                                           gdouble      page_increment,
+                                           gint         digits);
+GtkWidget * gimp_prop_opacity_spin_scale_new (GObject     *config,
+                                              const gchar *property_name,
+                                              const gchar *label);
 
 
 /*  GParamObject (GimpViewable)  */
@@ -79,6 +88,16 @@ GtkWidget * gimp_prop_number_pair_entry_new
                                            gdouble      min_valid_value,
                                            gdouble      max_valid_value);
 
+/*  GParamString  */
+
+GtkWidget * gimp_prop_language_combo_box_new (GObject     *config,
+                                              const gchar *property_name);
+GtkWidget * gimp_prop_language_entry_new     (GObject     *config,
+                                              const gchar *property_name);
+
+GtkWidget * gimp_prop_icon_picker_new        (GObject     *config,
+                                              const gchar *property_name,
+                                              Gimp        *gimp);
 
 /*  A view on all of an object's properties  */
 

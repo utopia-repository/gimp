@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -56,7 +55,7 @@ print_utils_key_file_load_from_parasite (gint32       image_ID,
 
   g_return_val_if_fail (parasite_name != NULL, NULL);
 
-  parasite = gimp_image_parasite_find (image_ID, parasite_name);
+  parasite = gimp_image_get_parasite (image_ID, parasite_name);
 
   if (! parasite)
     return NULL;
@@ -121,9 +120,10 @@ print_utils_key_file_save_as_parasite (GKeyFile    *key_file,
                                        gint32       image_ID,
                                        const gchar *parasite_name)
 {
-  gchar  *contents;
-  gsize   length;
-  GError *error = NULL;
+  GimpParasite *parasite;
+  gchar        *contents;
+  gsize         length;
+  GError       *error = NULL;
 
   g_return_if_fail (parasite_name != NULL);
 
@@ -137,6 +137,9 @@ print_utils_key_file_save_as_parasite (GKeyFile    *key_file,
       return;
     }
 
-  gimp_image_attach_new_parasite (image_ID, parasite_name, 0, length, contents);
+  parasite = gimp_parasite_new (parasite_name, 0, length, contents);
   g_free (contents);
+
+  gimp_image_attach_parasite (image_ID, parasite);
+  gimp_parasite_free (parasite);
 }

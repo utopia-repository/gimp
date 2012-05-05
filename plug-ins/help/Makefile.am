@@ -11,6 +11,11 @@ if OS_WIN32
 mwindows = -mwindows
 endif
 
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+help_RC = help.rc.o
+endif
+
 AM_CPPFLAGS = -DDATADIR=\""$(gimpdatadir)"\"
 
 AM_LDFLAGS = $(mwindows)
@@ -38,8 +43,10 @@ libexec_PROGRAMS = help
 help_SOURCES = help.c
 
 INCLUDES = \
-	-I$(top_srcdir)	\
-	$(GIO_CFLAGS)	\
+	-I$(top_srcdir)		\
+	$(CAIRO_CFLAGS)		\
+	$(GIO_CFLAGS)		\
+	$(GDK_PIXBUF_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \
@@ -49,9 +56,12 @@ LDADD = \
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(libgimpmath)		\
+	$(CAIRO_LIBS)		\
 	$(GIO_LIBS)		\
+	$(GDK_PIXBUF_LIBS)	\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
+	$(INTLLIBS)		\
+	$(help_RC)
 
 
 noinst_PROGRAMS = gimp-help-lookup

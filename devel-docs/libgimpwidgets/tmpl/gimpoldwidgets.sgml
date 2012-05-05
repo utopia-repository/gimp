@@ -2,16 +2,16 @@
 gimpoldwidgets
 
 <!-- ##### SECTION Short_Description ##### -->
-Old API that is still available but declared as deprecated.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions are not defined if you #define GIMP_DISABLE_DEPRECATED.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-GimpIntComboBox
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -115,6 +115,33 @@ GimpIntComboBox
 
 
 <!-- ##### FUNCTION gimp_menu_item_update ##### -->
+<para>
+
+</para>
+
+@widget: 
+@data: 
+
+
+<!-- ##### FUNCTION gimp_toggle_button_sensitive_update ##### -->
+<para>
+
+</para>
+
+@toggle_button: 
+
+
+<!-- ##### FUNCTION gimp_pixmap_button_new ##### -->
+<para>
+
+</para>
+
+@xpm_data: 
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_unit_menu_update ##### -->
 <para>
 
 </para>

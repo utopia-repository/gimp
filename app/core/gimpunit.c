@@ -4,9 +4,9 @@
  * gimpunit.c
  * Copyright (C) 1999-2000 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* This file contains the definition of the size unit objects. The
+ * factor of the units is relative to inches (which have a factor of 1).
  */
 
 #include "config.h"
@@ -53,22 +56,30 @@ typedef struct
 static const GimpUnitDef gimp_unit_defs[GIMP_UNIT_END] =
 {
   /* pseudo unit */
-  { FALSE,  0.0, 0, "pixels",      "px", "px", N_("pixel"),      N_("pixels") },
+  { FALSE,  0.0, 0, "pixels",      "px", "px",
+    NC_("unit-singular", "pixel"),      NC_("unit-plural", "pixels")      },
 
   /* standard units */
-  { FALSE,  1.0, 2, "inches",      "''", "in", N_("inch"),       N_("inches") },
-  { FALSE, 25.4, 1, "millimeters", "mm", "mm", N_("millimeter"), N_("millimeters") },
+  { FALSE,  1.0, 2, "inches",      "''", "in",
+    NC_("unit-singular", "inch"),       NC_("unit-plural", "inches")      },
+
+  { FALSE, 25.4, 1, "millimeters", "mm", "mm",
+    NC_("unit-singular", "millimeter"), NC_("unit-plural", "millimeters") },
 
   /* professional units */
-  { FALSE, 72.0, 0, "points",      "pt", "pt", N_("point"),      N_("points") },
-  { FALSE,  6.0, 1, "picas",       "pc", "pc", N_("pica"),       N_("picas") },
+  { FALSE, 72.0, 0, "points",      "pt", "pt",
+    NC_("unit-singular", "point"),      NC_("unit-plural", "points")      },
+
+  { FALSE,  6.0, 1, "picas",       "pc", "pc",
+    NC_("unit-singular", "pica"),       NC_("unit-plural", "picas")       }
 };
 
 /*  not a unit at all but kept here to have the strings in one place
  */
 static const GimpUnitDef gimp_unit_percent =
 {
-  FALSE,    0.0, 0, "percent",     "%",  "%",  N_("percent"),    N_("plural|percent")
+    FALSE,  0.0, 0, "percent",     "%",  "%", 
+    NC_("singular", "percent"),    NC_("plural", "percent")
 };
 
 
@@ -233,12 +244,10 @@ _gimp_unit_get_singular (Gimp     *gimp,
                         gimp_unit_defs[GIMP_UNIT_INCH].singular);
 
   if (unit < GIMP_UNIT_END)
-    return g_strip_context (gimp_unit_defs[unit].singular,
-                            gettext (gimp_unit_defs[unit].singular));
+    return g_dpgettext2 (NULL, "unit-singular", gimp_unit_defs[unit].singular);
 
   if (unit == GIMP_UNIT_PERCENT)
-    return g_strip_context (gimp_unit_percent.singular,
-                            gettext (gimp_unit_percent.singular));
+    return g_dpgettext2 (NULL, "unit-singular", gimp_unit_percent.singular);
 
   return _gimp_unit_get_user_unit (gimp, unit)->singular;
 }
@@ -252,12 +261,10 @@ _gimp_unit_get_plural (Gimp     *gimp,
                         gimp_unit_defs[GIMP_UNIT_INCH].plural);
 
   if (unit < GIMP_UNIT_END)
-    return g_strip_context (gimp_unit_defs[unit].plural,
-                            gettext (gimp_unit_defs[unit].plural));
+    return g_dpgettext2 (NULL, "unit-plural", gimp_unit_defs[unit].plural);
 
   if (unit == GIMP_UNIT_PERCENT)
-    return g_strip_context (gimp_unit_percent.plural,
-                            gettext (gimp_unit_percent.plural));
+    return g_dpgettext2 (NULL, "unit-plural", gimp_unit_percent.plural);
 
   return _gimp_unit_get_user_unit (gimp, unit)->plural;
 }

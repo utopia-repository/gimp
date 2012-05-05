@@ -6,7 +6,7 @@
  * Copyright (C) 1997 Owen Taylor
  *
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -265,6 +264,7 @@ ipolygon_convex_hull (IPolygon *poly)
     {
       memcpy (new_points, poly->points, num_new * sizeof (GdkPoint));
       new_poly->npoints = num_new;
+      g_free (sort_points);
       return new_poly;
     }
 
@@ -717,33 +717,57 @@ aff_element_draw (AffElement  *elem,
                   gboolean     selected,
                   gint         width,
                   gint         height,
-                  GdkDrawable *win,
-                  GdkGC       *normal_gc,
-                  GdkGC       *selected_gc,
+                  cairo_t     *cr,
+                  GdkColor    *color,
                   PangoLayout *layout)
 {
-  PangoRectangle  rect;
-  GdkGC          *gc;
+  PangoRectangle rect;
+  gint           i;
 
   pango_layout_set_text (layout, elem->name, -1);
   pango_layout_get_pixel_extents (layout, NULL, &rect);
 
-  if (selected)
-    gc = selected_gc;
-  else
-    gc = normal_gc;
+  gdk_cairo_set_source_color (cr, color);
 
-  gdk_draw_layout (win, gc,
-                   elem->v.x * width - rect.width  / 2,
-                   elem->v.y * width + rect.height / 2,
-                   layout);
+  cairo_move_to (cr,
+                 elem->v.x * width - rect.width  / 2,
+                 elem->v.y * width + rect.height / 2);
+  pango_cairo_show_layout (cr, layout);
+  cairo_fill (cr);
+
+  cairo_set_line_width (cr, 1.0);
 
   if (elem->click_boundary != elem->draw_boundary)
-    gdk_draw_polygon (win, normal_gc, FALSE, elem->click_boundary->points,
-                      elem->click_boundary->npoints);
+    {
+      cairo_move_to (cr,
+                     elem->click_boundary->points[0].x,
+                     elem->click_boundary->points[0].y);
 
-  gdk_draw_polygon (win, gc, FALSE, elem->draw_boundary->points,
-                    elem->draw_boundary->npoints);
+      for (i = 1; i < elem->click_boundary->npoints; i++)
+        cairo_line_to (cr,
+                       elem->click_boundary->points[i].x,
+                       elem->click_boundary->points[i].y);
+
+      cairo_close_path (cr);
+
+      cairo_stroke (cr);
+    }
+
+  if (selected)
+    cairo_set_line_width (cr, 3.0);
+
+  cairo_move_to (cr,
+                 elem->draw_boundary->points[0].x,
+                 elem->draw_boundary->points[0].y);
+
+  for (i = 1; i < elem->draw_boundary->npoints; i++)
+    cairo_line_to (cr,
+                   elem->draw_boundary->points[i].x,
+                   elem->draw_boundary->points[i].y);
+
+  cairo_close_path (cr);
+
+  cairo_stroke (cr);
 }
 
 AffElement *

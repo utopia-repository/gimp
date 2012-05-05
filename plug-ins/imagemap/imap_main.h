@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -27,9 +26,11 @@
 #include "imap_mru.h"
 #include "imap_object.h"
 #include "imap_preferences.h"
+#include "imap_preview.h"
 
 #define PLUG_IN_PROC   "plug-in-imagemap"
 #define PLUG_IN_BINARY "imagemap"
+#define PLUG_IN_ROLE   "gimp-imagemap"
 
 typedef enum {NCSA, CERN, CSIM} MapFormat_t;
 
@@ -42,7 +43,7 @@ typedef struct {
    gchar *description;
    gint   old_image_width;
    gint   old_image_height;
-   gboolean color;		/* Color (TRUE) or Gray (FALSE) */
+   gboolean color;              /* Color (TRUE) or Gray (FALSE) */
    gboolean show_gray;
 } MapInfo_t;
 
@@ -66,15 +67,13 @@ void main_toolbar_set_grid(gboolean active);
 
 void set_zoom(gint zoom_factor);
 gint get_real_coord(gint coord);
-void draw_line(GdkWindow *window, GdkGC *gc, gint x1, gint y1, gint x2,
-	       gint y2);
-void draw_rectangle(GdkWindow *window, GdkGC *gc, gint filled, gint x, gint y,
-		    gint width, gint height);
-void draw_arc(GdkWindow *window, GdkGC *gc, gint filled, gint x, gint y,
-	      gint width, gint height, gint angle1, gint angle2);
-void draw_circle(GdkWindow *window, GdkGC *gc, gint filled, gint x, gint y,
-		 gint r);
-void draw_polygon(GdkWindow *window, GdkGC *gc, GList *list);
+void draw_line(cairo_t *cr, gint x1, gint y1, gint x2,
+               gint y2);
+void draw_rectangle(cairo_t *cr, gboolean filled, gint x, gint y,
+                    gint width, gint height);
+void draw_circle(cairo_t *cr, gint x, gint y,
+                 gint r);
+void draw_polygon(cairo_t *cr, GList *list);
 
 const char *get_filename(void);
 
@@ -85,11 +84,7 @@ void select_shape(GtkWidget *widget, GdkEventButton *event);
 void edit_shape(gint x, gint y);
 
 void do_popup_menu(GdkEventButton *event);
-void draw_shapes(GtkWidget *preview);
-
-void redraw_preview(void);
-void preview_freeze(void);
-void preview_thaw(void);
+void draw_shapes(cairo_t *cr);
 
 void show_url(void);
 void hide_url(void);

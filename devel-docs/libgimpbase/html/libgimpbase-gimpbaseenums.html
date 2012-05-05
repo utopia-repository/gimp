@@ -66,6 +66,7 @@ enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpRun
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpSizeType" title="enum GimpSizeType">GimpSizeType</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpStackTraceMode" title="enum GimpStackTraceMode">GimpStackTraceMode</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextDirection" title="enum GimpTextDirection">GimpTextDirection</a>;
+enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextHintStyle" title="enum GimpTextHintStyle">GimpTextHintStyle</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextJustification" title="enum GimpTextJustification">GimpTextJustification</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransferMode" title="enum GimpTransferMode">GimpTransferMode</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformDirection" title="enum GimpTransformDirection">GimpTransformDirection</a>;
@@ -225,7 +226,7 @@ Basic GIMP enumeration data types.
 <div class="refsect2">
 <a name="GimpGradientType"></a><h3>enum GimpGradientType</h3>
 <pre class="programlisting">typedef enum {
-  GIMP_GRADIENT_LINEAR,                /*&lt; desc="gradient|Linear"   &gt;*/
+  GIMP_GRADIENT_LINEAR,                /*&lt; desc="Linear"            &gt;*/
   GIMP_GRADIENT_BILINEAR,              /*&lt; desc="Bi-linear"         &gt;*/
   GIMP_GRADIENT_RADIAL,                /*&lt; desc="Radial"            &gt;*/
   GIMP_GRADIENT_SQUARE,                /*&lt; desc="Square"            &gt;*/
@@ -298,10 +299,10 @@ Basic GIMP enumeration data types.
 <div class="refsect2">
 <a name="GimpInterpolationType"></a><h3>enum GimpInterpolationType</h3>
 <pre class="programlisting">typedef enum {
-  GIMP_INTERPOLATION_NONE,   /*&lt; desc="interpolation|None"   &gt;*/
-  GIMP_INTERPOLATION_LINEAR, /*&lt; desc="interpolation|Linear" &gt;*/
-  GIMP_INTERPOLATION_CUBIC,  /*&lt; desc="Cubic"                &gt;*/
-  GIMP_INTERPOLATION_LANCZOS /*&lt; desc="Sinc (Lanczos3)"      &gt;*/
+  GIMP_INTERPOLATION_NONE,   /*&lt; desc="None"            &gt;*/
+  GIMP_INTERPOLATION_LINEAR, /*&lt; desc="Linear"          &gt;*/
+  GIMP_INTERPOLATION_CUBIC,  /*&lt; desc="Cubic"           &gt;*/
+  GIMP_INTERPOLATION_LANCZOS /*&lt; desc="Sinc (Lanczos3)" &gt;*/
 } GimpInterpolationType;
 </pre>
 <p>
@@ -345,7 +346,7 @@ Basic GIMP enumeration data types.
   GIMP_PDB_FLOATARRAY,
   GIMP_PDB_STRINGARRAY,
   GIMP_PDB_COLOR,
-  GIMP_PDB_REGION,
+  GIMP_PDB_ITEM,
   GIMP_PDB_DISPLAY,
   GIMP_PDB_IMAGE,
   GIMP_PDB_LAYER,
@@ -360,7 +361,8 @@ Basic GIMP enumeration data types.
 
   /*  the following aliases are deprecated  */
   GIMP_PDB_PATH     = GIMP_PDB_VECTORS,     /*&lt; skip &gt;*/
-  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY   /*&lt; skip &gt;*/
+  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY,  /*&lt; skip &gt;*/
+  GIMP_PDB_REGION   = GIMP_PDB_ITEM         /*&lt; skip &gt;*/
 } GimpPDBArgType;
 </pre>
 <p>
@@ -473,6 +475,19 @@ Basic GIMP enumeration data types.
   GIMP_TEXT_DIRECTION_LTR,   /*&lt; desc="From left to right" &gt;*/
   GIMP_TEXT_DIRECTION_RTL    /*&lt; desc="From right to left" &gt;*/
 } GimpTextDirection;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GimpTextHintStyle"></a><h3>enum GimpTextHintStyle</h3>
+<pre class="programlisting">typedef enum {
+  GIMP_TEXT_HINT_STYLE_NONE,     /*&lt; desc="None"   &gt;*/
+  GIMP_TEXT_HINT_STYLE_SLIGHT,   /*&lt; desc="Slight" &gt;*/
+  GIMP_TEXT_HINT_STYLE_MEDIUM,   /*&lt; desc="Medium" &gt;*/
+  GIMP_TEXT_HINT_STYLE_FULL      /*&lt; desc="Full"   &gt;*/
+} GimpTextHintStyle;
 </pre>
 <p>
 </p>

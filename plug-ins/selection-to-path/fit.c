@@ -4,9 +4,9 @@
  *
  * Copyright (C) 1992 Free Software Foundation, Inc.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <string.h>
 #include <float.h>
 #include <math.h>
 #include <assert.h>
@@ -1111,6 +1111,13 @@ fit_with_least_squares (curve_type curve)
   unsigned iteration = 0;
   real previous_error = FLT_MAX;
   real improvement = FLT_MAX;
+
+  /* FIXME: Initialize best_spline to zeroes. This is strictly not
+     necessary as best_spline is always set in the loop below. But the
+     compiler thinks it isn't and warns. Ideally, the code should be
+     rewritten such that best_spline and best_error are initialized with
+     the first values before the loop begins. */
+  memset (&best_spline, 0, sizeof best_spline);
 
 /*   LOG ("\nFitting with least squares:\n"); */
 

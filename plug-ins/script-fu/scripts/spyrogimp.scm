@@ -1,25 +1,22 @@
-;; spyrogimp.scm -*-scheme-*-
-;; Draws Spirographs, Epitrochoids and Lissajous Curves.
-;; More info at http://www.wisdom.weizmann.ac.il/~elad/spyrogimp/
-;; Version 1.2
-;;
-;; Copyright (C) 2003 by Elad Shahar <elad@wisdom.weizmann.ac.il>
-;;
-;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License
-;; as published by the Free Software Foundation; either version 2
-;; of the License, or (at your option) any later version.
-;;
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; spyrogimp.scm -*-scheme-*-
+; Draws Spirographs, Epitrochoids and Lissajous Curves.
+; More info at http://www.wisdom.weizmann.ac.il/~elad/spyrogimp/
+; Version 1.2
+;
+; Copyright (C) 2003 by Elad Shahar <elad@wisdom.weizmann.ac.il>
+;
+; This program is free software: you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation; either version 3 of the License, or
+; (at your option) any later version.
+;
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ; This routine is invoked by a dialog.
@@ -237,7 +234,7 @@
       ; Set new color, brush, opacity, paint mode.
       (gimp-context-set-foreground color)
       (gimp-context-set-brush (car brush))
-      (gimp-context-set-opacity (* 100 (car (cdr brush))))
+      (gimp-context-set-opacity (car (cdr brush)))
       (gimp-context-set-paint-mode (car (cdr (cdr (cdr brush)))))
 
       (gimp-progress-set-text _"Rendering Spyro")
@@ -345,7 +342,7 @@
   SF-OPTION     _"Tool"          '(_"Pencil"
                                    _"Brush"
                                    _"Airbrush")
-  SF-BRUSH      _"Brush"         '("Circle (01)" 1.0 -1 0)
+  SF-BRUSH      _"Brush"         '("Circle (01)" 100 -1 0)
 
   SF-OPTION     _"Color method"  '(_"Solid Color"
                                    _"Gradient: Loop Sawtooth"

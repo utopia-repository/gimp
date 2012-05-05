@@ -4,9 +4,9 @@
  * Parts Copyright (C) 1995 Gert Doering
  * Parts Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "config.h"
 
@@ -85,7 +84,7 @@ void query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" },
   };
@@ -122,11 +121,8 @@ run (const gchar      *name,
      GimpParam       **return_vals)
 {
   static GimpParam  values[2];
-  GimpRunMode       run_mode;
   gint32            image_ID;
   GError           *error = NULL;
-
-  run_mode = param[0].data.d_int32;
 
   *nreturn_vals = 1;
   *return_vals = values;
@@ -479,7 +475,7 @@ emitgimp (gint         hcol,
 			     hcol,
 			     row,
 			     GIMP_GRAY_IMAGE, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
   drawable = gimp_drawable_get (layer_ID);
   gimp_pixel_rgn_init (&pixel_rgn, drawable,

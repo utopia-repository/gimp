@@ -4,10 +4,10 @@
  * gimphelpui.c
  * Copyright (C) 2000-2003 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,9 +30,22 @@
 #include "libgimp/libgimp-intl.h"
 
 
+/**
+ * SECTION: gimphelpui
+ * @title: GimpHelpUI
+ * @short_description: Functions for setting tooltip and help identifier
+ *                     used by the GIMP help system.
+ *
+ * Functions for setting tooltip and help identifier used by the GIMP
+ * help system.
+ **/
+
+
 typedef enum
 {
-  GIMP_WIDGET_HELP_TYPE_HELP = 0xff
+  GIMP_WIDGET_HELP_TOOLTIP    = GTK_WIDGET_HELP_TOOLTIP,
+  GIMP_WIDGET_HELP_WHATS_THIS = GTK_WIDGET_HELP_WHATS_THIS,
+  GIMP_WIDGET_HELP_TYPE_HELP  = 0xff
 } GimpWidgetHelpType;
 
 
@@ -166,11 +178,11 @@ gimp_help_connect (GtkWidget    *widget,
       binding_set =
         gtk_binding_set_by_class (g_type_class_peek (GTK_TYPE_WIDGET));
 
-      gtk_binding_entry_add_signal (binding_set, GDK_F1, 0,
+      gtk_binding_entry_add_signal (binding_set, GDK_KEY_F1, 0,
                                     "show-help", 1,
                                     GTK_TYPE_WIDGET_HELP_TYPE,
                                     GIMP_WIDGET_HELP_TYPE_HELP);
-      gtk_binding_entry_add_signal (binding_set, GDK_KP_F1, 0,
+      gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_F1, 0,
                                     "show-help", 1,
                                     GTK_TYPE_WIDGET_HELP_TYPE,
                                     GIMP_WIDGET_HELP_TYPE_HELP);
@@ -271,7 +283,7 @@ gimp_context_help (GtkWidget *widget)
 {
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  gimp_help_callback (widget, GTK_WIDGET_HELP_WHATS_THIS, NULL);
+  gimp_help_callback (widget, GIMP_WIDGET_HELP_WHATS_THIS, NULL);
 }
 
 /**
@@ -347,7 +359,7 @@ gimp_help_callback (GtkWidget          *widget,
         }
       return TRUE;
 
-    case GTK_WIDGET_HELP_WHATS_THIS:
+    case GIMP_WIDGET_HELP_WHATS_THIS:
       g_idle_add (gimp_context_help_idle_start, widget);
       return TRUE;
 
@@ -406,7 +418,7 @@ gimp_help_menu_item_query_tooltip (GtkWidget  *widget,
   if (! text)
     return FALSE;
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
 
   label = gtk_label_new (text);
   gtk_label_set_use_markup (GTK_LABEL (label), use_markup);
@@ -454,7 +466,7 @@ gimp_context_help_idle_start (gpointer widget)
       cursor = gdk_cursor_new_for_display (gtk_widget_get_display (invisible),
                                            GDK_QUESTION_ARROW);
 
-      status = gdk_pointer_grab (invisible->window, TRUE,
+      status = gdk_pointer_grab (gtk_widget_get_window (invisible), TRUE,
                                  GDK_BUTTON_PRESS_MASK   |
                                  GDK_BUTTON_RELEASE_MASK |
                                  GDK_ENTER_NOTIFY_MASK   |
@@ -470,7 +482,7 @@ gimp_context_help_idle_start (gpointer widget)
           return FALSE;
         }
 
-      if (gdk_keyboard_grab (invisible->window, TRUE,
+      if (gdk_keyboard_grab (gtk_widget_get_window (invisible), TRUE,
                              GDK_CURRENT_TIME) != GDK_GRAB_SUCCESS)
         {
           gdk_display_pointer_ungrab (gtk_widget_get_display (invisible),
@@ -520,7 +532,7 @@ gimp_context_help_key_press (GtkWidget   *widget,
                              GdkEventKey *kevent,
                              gpointer     data)
 {
-  if (kevent->keyval == GDK_Escape)
+  if (kevent->keyval == GDK_KEY_Escape)
     {
       GdkDisplay *display = gtk_widget_get_display (widget);
 

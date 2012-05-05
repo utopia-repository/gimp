@@ -17,20 +17,28 @@ SUBDIRS = \
 	$(app)
 
 EXTRA_DIST = \
-	ChangeLog		\
-	README			\
-	README.gtkdoc		\
-	debug-plug-ins.txt	\
-	gbr.txt			\
-	ggr.txt  		\
-	gih.txt  		\
-	gpb.txt  		\
-	includes.txt		\
-	parasites.txt		\
-	pat.txt			\
-	structure.xml		\
-	undo.txt		\
-	vbr.txt			\
+	README				\
+	README.gtkdoc			\
+	bugzilla-milestones.txt		\
+	contexts.txt			\
+	debug-plug-ins.txt		\
+	exif-handling.txt		\
+	gbr.txt				\
+	ggr.txt  			\
+	gih.txt  			\
+	gpb.txt  			\
+	includes.txt			\
+	parasites.txt			\
+	pat.txt				\
+	gegl-porting-plan.txt		\
+	gtkbuilder-porting-guide.txt	\
+	release-howto.txt		\
+	structure.xml			\
+	submitting-patches.txt		\
+	tagging.txt			\
+	ui-framework.txt		\
+	undo.txt			\
+	vbr.txt				\
 	xcf.txt
 
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -41,12 +40,13 @@
 #define BATCH_DEFAULT_EVAL_PROC   "plug-in-script-fu-eval"
 
 
-static gboolean  batch_exit_after_callback (Gimp          *gimp);
-static void      batch_run_cmd             (Gimp          *gimp,
-                                            const gchar   *proc_name,
-                                            GimpProcedure *procedure,
-                                            GimpRunMode    run_mode,
-                                            const gchar   *cmd);
+static void  batch_exit_after_callback (Gimp          *gimp) G_GNUC_NORETURN;
+
+static void  batch_run_cmd             (Gimp          *gimp,
+                                        const gchar   *proc_name,
+                                        GimpProcedure *procedure,
+                                        GimpRunMode    run_mode,
+                                        const gchar   *cmd);
 
 
 void
@@ -123,7 +123,7 @@ batch_run (Gimp         *gimp,
  * message "batch command experienced an execution error" would appear
  * and gimp would hang forever.
  */
-static gboolean
+static void
 batch_exit_after_callback (Gimp *gimp)
 {
   if (gimp->be_verbose)
@@ -135,8 +135,6 @@ batch_exit_after_callback (Gimp *gimp)
   tile_swap_exit ();
 
   exit (EXIT_SUCCESS);
-
-  return TRUE;
 }
 
 static void
@@ -170,8 +168,8 @@ batch_run_cmd (Gimp          *gimp,
     case GIMP_PDB_EXECUTION_ERROR:
       if (error)
         {
-          g_printerr ("batch command experienced an execution error: %s\n",
-                      error->message);
+          g_printerr ("batch command experienced an execution error:\n"
+                      "%s\n", error->message);
         }
       else
         {
@@ -182,8 +180,8 @@ batch_run_cmd (Gimp          *gimp,
     case GIMP_PDB_CALLING_ERROR:
       if (error)
         {
-          g_printerr ("batch command experienced a calling error: %s\n",
-                      error->message);
+          g_printerr ("batch command experienced a calling error:\n"
+                      "%s\n", error->message);
         }
       else
         {

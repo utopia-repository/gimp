@@ -4,9 +4,9 @@
  * gimppaletteview.c
  * Copyright (C) 2005 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -153,7 +152,7 @@ gimp_palette_view_class_init (GimpPaletteViewClass *klass)
 static void
 gimp_palette_view_init (GimpPaletteView *view)
 {
-  GTK_WIDGET_SET_FLAGS (view, GTK_CAN_FOCUS);
+  gtk_widget_set_can_focus (GTK_WIDGET (view), TRUE);
 
   view->selected  = NULL;
   view->dnd_entry = NULL;
@@ -166,7 +165,7 @@ gimp_palette_view_expose (GtkWidget      *widget,
   GimpPaletteView *pal_view = GIMP_PALETTE_VIEW (widget);
   GimpView        *view     = GIMP_VIEW (widget);
 
-  if (! GTK_WIDGET_DRAWABLE (widget))
+  if (! gtk_widget_is_drawable (widget))
     return FALSE;
 
   GTK_WIDGET_CLASS (parent_class)->expose_event (widget, eevent);
@@ -175,21 +174,26 @@ gimp_palette_view_expose (GtkWidget      *widget,
     {
       GimpViewRendererPalette *renderer;
       GtkStyle                *style = gtk_widget_get_style (widget);
+      GtkAllocation            allocation;
       cairo_t                 *cr;
       gint                     row, col;
 
       renderer = GIMP_VIEW_RENDERER_PALETTE (view->renderer);
 
+      gtk_widget_get_allocation (widget, &allocation);
+
       row = pal_view->selected->position / renderer->columns;
       col = pal_view->selected->position % renderer->columns;
 
-      cr = gdk_cairo_create (widget->window);
+      cr = gdk_cairo_create (gtk_widget_get_window (widget));
       gdk_cairo_region (cr, eevent->region);
       cairo_clip (cr);
 
+      cairo_translate (cr, allocation.x, allocation.y);
+
       cairo_rectangle (cr,
-                       widget->allocation.x + col * renderer->cell_width  + 0.5,
-                       widget->allocation.y + row * renderer->cell_height + 0.5,
+                       col * renderer->cell_width  + 0.5,
+                       row * renderer->cell_height + 0.5,
                        renderer->cell_width,
                        renderer->cell_height);
 
@@ -216,7 +220,7 @@ gimp_palette_view_button_press (GtkWidget      *widget,
   GimpPaletteView  *view = GIMP_PALETTE_VIEW (widget);
   GimpPaletteEntry *entry;
 
-  if (GTK_WIDGET_CAN_FOCUS (widget) && ! GTK_WIDGET_HAS_FOCUS (widget))
+  if (gtk_widget_get_can_focus (widget) && ! gtk_widget_has_focus (widget))
     gtk_widget_grab_focus (widget);
 
   entry = gimp_palette_view_find_entry (view, bevent->x, bevent->y);
@@ -224,15 +228,21 @@ gimp_palette_view_button_press (GtkWidget      *widget,
   view->dnd_entry = entry;
 
   if (! entry || bevent->button == 2)
-    return FALSE;
+    return TRUE;
 
   if (bevent->type == GDK_BUTTON_PRESS)
     g_signal_emit (view, view_signals[ENTRY_CLICKED], 0,
                    entry, bevent->state);
 
-  switch (bevent->button)
+  if (gdk_event_triggers_context_menu ((GdkEvent *) bevent))
     {
-    case 1:
+      if (entry != view->selected)
+        gimp_palette_view_select_entry (view, entry);
+
+      g_signal_emit (view, view_signals[ENTRY_CONTEXT], 0, entry);
+    }
+  else if (bevent->button == 1)
+    {
       if (bevent->type == GDK_BUTTON_PRESS)
         {
           gimp_palette_view_select_entry (view, entry);
@@ -241,23 +251,9 @@ gimp_palette_view_button_press (GtkWidget      *widget,
         {
           g_signal_emit (view, view_signals[ENTRY_ACTIVATED], 0, entry);
         }
-      break;
-
-    case 3:
-      if (bevent->type == GDK_BUTTON_PRESS)
-        {
-          if (entry != view->selected)
-            gimp_palette_view_select_entry (view, entry);
-
-          g_signal_emit (view, view_signals[ENTRY_CONTEXT], 0, entry);
-        }
-      break;
-
-    default:
-      break;
     }
 
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
@@ -267,11 +263,11 @@ gimp_palette_view_key_press (GtkWidget   *widget,
   GimpPaletteView *view = GIMP_PALETTE_VIEW (widget);
 
   if (view->selected &&
-      (kevent->keyval == GDK_space    ||
-       kevent->keyval == GDK_KP_Space ||
-       kevent->keyval == GDK_Return   ||
-       kevent->keyval == GDK_KP_Enter ||
-       kevent->keyval == GDK_ISO_Enter))
+      (kevent->keyval == GDK_KEY_space    ||
+       kevent->keyval == GDK_KEY_KP_Space ||
+       kevent->keyval == GDK_KEY_Return   ||
+       kevent->keyval == GDK_KEY_KP_Enter ||
+       kevent->keyval == GDK_KEY_ISO_Enter))
     {
       g_signal_emit (view, view_signals[ENTRY_CLICKED], 0,
                      view->selected, kevent->state);
@@ -289,12 +285,18 @@ gimp_palette_view_focus (GtkWidget        *widget,
 
   palette = GIMP_PALETTE (GIMP_VIEW (view)->renderer->viewable);
 
-  if (GTK_WIDGET_CAN_FOCUS (widget) && ! GTK_WIDGET_HAS_FOCUS (widget))
+  if (gtk_widget_get_can_focus (widget) &&
+      ! gtk_widget_has_focus (widget))
     {
       gtk_widget_grab_focus (widget);
 
-      if (! view->selected && palette->colors)
-        gimp_palette_view_select_entry (view, palette->colors->data);
+      if (! view->selected &&
+          palette && gimp_palette_get_n_colors (palette) > 0)
+        {
+          GimpPaletteEntry *entry = gimp_palette_get_entry (palette, 0);
+
+          gimp_palette_view_select_entry (view, entry);
+        }
 
       return TRUE;
     }
@@ -333,7 +335,7 @@ gimp_palette_view_focus (GtkWidget        *widget,
 
           position = view->selected->position + skip;
 
-          entry = g_list_nth_data (palette->colors, position);
+          entry = gimp_palette_get_entry (palette, position);
 
           if (entry)
             gimp_palette_view_select_entry (view, entry);
@@ -423,11 +425,16 @@ gimp_palette_view_find_entry (GimpPaletteView *view,
                               gint             x,
                               gint             y)
 {
+  GimpPalette             *palette;
   GimpViewRendererPalette *renderer;
   GimpPaletteEntry        *entry = NULL;
   gint                     col, row;
 
+  palette  = GIMP_PALETTE (GIMP_VIEW (view)->renderer->viewable);
   renderer = GIMP_VIEW_RENDERER_PALETTE (GIMP_VIEW (view)->renderer);
+
+  if (! palette)
+    return NULL;
 
   col = x / renderer->cell_width;
   row = y / renderer->cell_height;
@@ -435,12 +442,8 @@ gimp_palette_view_find_entry (GimpPaletteView *view,
   if (col >= 0 && col < renderer->columns &&
       row >= 0 && row < renderer->rows)
     {
-      GimpPalette *palette;
-
-      palette = GIMP_PALETTE (GIMP_VIEW (view)->renderer->viewable);
-
-      entry = g_list_nth_data (palette->colors,
-                               row * renderer->columns + col);
+      entry = gimp_palette_get_entry (palette,
+                                      row * renderer->columns + col);
     }
 
   return entry;
@@ -453,15 +456,18 @@ gimp_palette_view_expose_entry (GimpPaletteView  *view,
   GimpViewRendererPalette *renderer;
   gint                     row, col;
   GtkWidget               *widget = GTK_WIDGET (view);
+  GtkAllocation            allocation;
 
   renderer = GIMP_VIEW_RENDERER_PALETTE (GIMP_VIEW (view)->renderer);
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   row = entry->position / renderer->columns;
   col = entry->position % renderer->columns;
 
   gtk_widget_queue_draw_area (GTK_WIDGET (view),
-                              widget->allocation.x + col * renderer->cell_width,
-                              widget->allocation.y + row * renderer->cell_height,
+                              allocation.x + col * renderer->cell_width,
+                              allocation.y + row * renderer->cell_height,
                               renderer->cell_width  + 1,
                               renderer->cell_height + 1);
 }
@@ -472,8 +478,11 @@ gimp_palette_view_invalidate (GimpPalette     *palette,
 {
   view->dnd_entry = NULL;
 
-  if (view->selected && ! g_list_find (palette->colors, view->selected))
-    gimp_palette_view_select_entry (view, NULL);
+  if (view->selected &&
+      ! g_list_find (gimp_palette_get_colors (palette), view->selected))
+    {
+      gimp_palette_view_select_entry (view, NULL);
+    }
 }
 
 static void

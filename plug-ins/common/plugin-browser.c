@@ -6,9 +6,9 @@
  * Copyright (C) 1999 Andy Thomas  alt@picnic.demon.co.uk
  *
  * Note some portions of the UI comes from the dbbrowser plugin.
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,6 +35,7 @@
 
 #define PLUG_IN_PROC    "plug-in-plug-in-details"
 #define PLUG_IN_BINARY  "plugin-browser"
+#define PLUG_IN_ROLE    "gimp-plugin-browser"
 #define DBL_LIST_WIDTH  250
 #define DBL_WIDTH       (DBL_LIST_WIDTH + 400)
 #define DBL_HEIGHT      250
@@ -127,7 +127,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run-mode", "Interactive, [non-interactive]" }
+    { GIMP_PDB_INT32, "run-mode", "The run mode { RUN-INTERACTIVE (0) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -160,9 +160,6 @@ run (const gchar      *name,
      GimpParam       **return_vals)
 {
   static GimpParam  values[2];
-  GimpRunMode       run_mode;
-
-  run_mode = param[0].data.d_int32;
 
   *nreturn_vals = 1;
   *return_vals  = values;
@@ -258,7 +255,6 @@ get_parent (PluginBrowser *browser,
   GtkTreeIter   last_parent;
   gchar        *tmp_ptr;
   gchar        *str_ptr;
-  const gchar  *leaf_ptr;
   GtkTreeStore *tree_store;
 
   if (! mpath)
@@ -281,7 +277,6 @@ get_parent (PluginBrowser *browser,
 
   if (str_ptr == NULL)
     {
-      leaf_ptr = mpath;
       gtk_tree_store_append (tree_store, parent, NULL);
       gtk_tree_store_set (tree_store, parent,
                           TREE_COLUMN_MPATH,     mpath,
@@ -290,8 +285,9 @@ get_parent (PluginBrowser *browser,
     }
   else
     {
-      leaf_ptr = g_strdup (str_ptr + 1);
+      gchar  *leaf_ptr;
 
+      leaf_ptr = g_strdup (str_ptr + 1);
       *str_ptr = '\0';
 
       get_parent (browser, tmp_ptr, &last_parent);
@@ -300,6 +296,8 @@ get_parent (PluginBrowser *browser,
                           TREE_COLUMN_MPATH,     mpath,
                           TREE_COLUMN_PATH_NAME, leaf_ptr,
                           -1);
+
+      g_free (leaf_ptr);
     }
 }
 
@@ -312,10 +310,8 @@ insert_into_tree_view (PluginBrowser *browser,
                        const gchar   *types_str,
                        PInfo         *pinfo)
 {
-  gchar        *labels[3];
   gchar        *str_ptr;
   gchar        *tmp_ptr;
-  gchar        *leaf_ptr;
   GtkTreeIter   parent, iter;
   GtkTreeStore *tree_store;
 
@@ -327,21 +323,16 @@ insert_into_tree_view (PluginBrowser *browser,
   str_ptr = strrchr (tmp_ptr, '/');
 
   if (str_ptr == NULL)
+  {
+    g_free (tmp_ptr);
     return; /* No node */
-
-  leaf_ptr = g_strdup (str_ptr + 1);
+  }
 
   *str_ptr = '\0';
 
   /*   printf("inserting %s...\n",menu_str); */
 
   get_parent (browser, tmp_ptr, &parent);
-
-  /* Last was a leaf */
-  /*   printf("found leaf %s parent = %p\n",leaf_ptr,parent); */
-  labels[0] = g_strdup (name);
-  labels[1] = g_strdup (xtimestr);
-  labels[2] = g_strdup (types_str);
 
   tree_store = GTK_TREE_STORE (gtk_tree_view_get_model (browser->tree_view));
   gtk_tree_store_append (tree_store, &iter, &parent);
@@ -542,6 +533,7 @@ browser_dialog_new (void)
   GtkTreeStore      *tree_store;
   GtkWidget         *list_view;
   GtkWidget         *tree_view;
+  GtkWidget         *parent;
   GtkTreeViewColumn *column;
   GtkCellRenderer   *renderer;
   GtkTreeSelection  *selection;
@@ -551,7 +543,7 @@ browser_dialog_new (void)
 
   browser = g_new0 (PluginBrowser, 1);
 
-  browser->dialog = gimp_dialog_new (_("Plug-In Browser"), PLUG_IN_BINARY,
+  browser->dialog = gimp_dialog_new (_("Plug-In Browser"), PLUG_IN_ROLE,
                                      NULL, 0,
                                      gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -565,8 +557,8 @@ browser_dialog_new (void)
 
   browser->browser = gimp_browser_new ();
   gtk_container_set_border_width (GTK_CONTAINER (browser->browser), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (browser->dialog)->vbox),
-                     browser->browser);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (browser->dialog))),
+                      browser->browser, TRUE, TRUE, 0);
   gtk_widget_show (browser->browser);
 
   g_signal_connect (browser->browser, "search",
@@ -714,8 +706,10 @@ browser_dialog_new (void)
   gtk_widget_show (scrolled_window);
   gtk_widget_show (notebook);
 
-  gtk_widget_set_size_request (GIMP_BROWSER (browser->browser)->right_vbox->parent->parent,
-                               DBL_WIDTH - DBL_LIST_WIDTH, -1);
+  parent = gtk_widget_get_parent (GIMP_BROWSER (browser->browser)->right_vbox);
+  parent = gtk_widget_get_parent (parent);
+
+  gtk_widget_set_size_request (parent, DBL_WIDTH - DBL_LIST_WIDTH, -1);
 
   /* now build the list */
   browser_search (GIMP_BROWSER (browser->browser), "", 0, browser);

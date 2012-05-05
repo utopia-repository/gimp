@@ -4,9 +4,9 @@
  * GimpGuiConfig class
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_GUI_CONFIG_H__
 #define __GIMP_GUI_CONFIG_H__
-
-#include "widgets/widgets-enums.h"
 
 #include "config/gimpdisplayconfig.h"
 
@@ -40,8 +37,8 @@ struct _GimpGuiConfig
 {
   GimpDisplayConfig    parent_instance;
 
-  gint                 default_threshold;
   gboolean             move_tool_changes_active;
+  gint                 image_map_tool_max_recent;
   gboolean             trust_dirty_flag;
   gboolean             save_device_status;
   gboolean             save_session_info;
@@ -52,7 +49,6 @@ struct _GimpGuiConfig
   gboolean             can_change_accels;
   gboolean             save_accels;
   gboolean             restore_accels;
-  gboolean             menu_mnemonics;
   gint                 last_opened_size;
   guint64              max_new_image_size;
   gboolean             toolbox_color_area;
@@ -68,12 +64,14 @@ struct _GimpGuiConfig
   gchar               *web_browser;
   gboolean             user_manual_online;
   gchar               *user_manual_online_uri;
-  GimpWindowHint       toolbox_window_hint;
   GimpWindowHint       dock_window_hint;
-  gboolean             transient_docks;
   GimpCursorFormat     cursor_format;
+  GimpHandedness       cursor_handedness;
 
-  gint                 last_tip;  /* saved in sessionrc */
+  /* saved in sessionrc */
+  gboolean             hide_docks;
+  gboolean             single_window_mode;
+  gint                 last_tip_shown;
 };
 
 struct _GimpGuiConfigClass

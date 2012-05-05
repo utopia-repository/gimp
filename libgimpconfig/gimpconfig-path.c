@@ -4,10 +4,10 @@
  * gimpconfig-path.c
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,9 +28,19 @@
 
 #include "libgimpbase/gimpbase.h"
 
+#include "gimpconfig-error.h"
 #include "gimpconfig-path.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpconfig-path
+ * @title: GimpConfig-path
+ * @short_description: File path utilities for libgimpconfig.
+ *
+ * File path utilities for libgimpconfig.
+ **/
 
 
 /**
@@ -122,7 +131,7 @@ gimp_param_config_path_class_init (GParamSpecClass *class)
  * @name:          Canonical name of the param
  * @nick:          Nickname of the param
  * @blurb:         Brief desciption of param.
- * @type:          a #GimpParamConfigPathType value.
+ * @type:          a #GimpConfigPathType value.
  * @default_value: Value to use if none is assigned.
  * @flags:         a combination of #GParamFlags
  *
@@ -260,7 +269,7 @@ gimp_config_build_writable_path (const gchar *name)
 
 /**
  * gimp_config_path_expand:
- * @path: a %NUL-terminated string in UTF-8 encoding
+ * @path: a NUL-terminated string in UTF-8 encoding
  * @recode: whether to convert to the filesystem's encoding
  * @error: return location for errors
  *
@@ -272,7 +281,7 @@ gimp_config_build_writable_path (const gchar *name)
  * substitution for you and can also attempt to convert to the
  * filesystem encoding.
  *
- * Return value: a newly allocated %NUL-terminated string
+ * Return value: a newly allocated NUL-terminated string
  *
  * Since: GIMP 2.4
  **/
@@ -374,7 +383,8 @@ gimp_config_path_expand_only (const gchar  *path,
 
           if (!s)
             {
-              g_set_error (error, 0, 0, _("Cannot expand ${%s}"), token);
+              g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+			   _("Cannot expand ${%s}"), token);
               g_free (token);
               goto cleanup;
             }

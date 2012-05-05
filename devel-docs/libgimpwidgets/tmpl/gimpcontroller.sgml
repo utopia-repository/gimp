@@ -2,11 +2,11 @@
 GimpController
 
 <!-- ##### SECTION Short_Description ##### -->
-Pluggable GIMP input controller modules.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-An abstract interface for implementing arbitrary input controllers.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

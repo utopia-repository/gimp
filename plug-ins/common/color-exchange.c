@@ -1,9 +1,9 @@
 /*
  * This is a plug-in for GIMP.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  */
@@ -45,6 +44,7 @@
 
 #define PLUG_IN_PROC   "plug-in-exchange"
 #define PLUG_IN_BINARY "color-exchange"
+#define PLUG_IN_ROLE   "gimp-color-exchange"
 
 #define SCALE_WIDTH    128
 
@@ -104,7 +104,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",        "Interactive"        },
+    { GIMP_PDB_INT32,    "run-mode",        "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",           "Input image"        },
     { GIMP_PDB_DRAWABLE, "drawable",        "Input drawable"     },
     { GIMP_PDB_INT8,     "from-red",        "Red value (from)"   },
@@ -271,20 +271,20 @@ exchange_dialog (GimpDrawable *drawable)
 {
   GtkWidget    *dialog;
   GtkWidget    *main_vbox;
+  GtkWidget    *hbox;
   GtkWidget    *frame;
   GtkWidget    *preview;
   GtkWidget    *table;
   GtkWidget    *threshold;
   GtkWidget    *colorbutton;
-  GtkWidget    *scale;
-  GtkSizeGroup *group;
   GtkObject    *adj;
+  GtkSizeGroup *group;
   gint          framenumber;
   gboolean      run;
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Color Exchange"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Color Exchange"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -301,12 +301,14 @@ exchange_dialog (GimpDrawable *drawable)
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
   /* do some boxes here */
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  frame = gimp_frame_new (_("Middle-Click Inside Preview to Pick \"From Color\""));
+  frame = gimp_frame_new (_("Middle-Click Inside Preview to "
+                            "Pick \"From Color\""));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
@@ -337,28 +339,40 @@ exchange_dialog (GimpDrawable *drawable)
                             preview);
 
   /* and our scales */
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
+  gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
   group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   for (framenumber = 0; framenumber < 2; framenumber++)
     {
-      GtkWidget *image;
-      gint       row = 0;
+      GtkWidget    *vbox;
+      GtkWidget    *image;
+      gint          row = 0;
 
       frame = gimp_frame_new (framenumber ? _("To Color") : _("From Color"));
-      gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
       gtk_widget_show (frame);
+
+      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+      gtk_container_add (GTK_CONTAINER (frame), vbox);
+      gtk_widget_show (vbox);
 
       table = gtk_table_new (framenumber ? 4 : 8, 4, FALSE);
       gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-      gtk_table_set_row_spacings (GTK_TABLE (table), 2);
+      gtk_table_set_row_spacings (GTK_TABLE (table), 6);
       gtk_table_set_row_spacing (GTK_TABLE (table), 0, 12);
-      if (!framenumber)
+
+      if (! framenumber)
         {
-          gtk_table_set_row_spacing (GTK_TABLE (table), 2, 6);
-          gtk_table_set_row_spacing (GTK_TABLE (table), 4, 6);
-          gtk_table_set_row_spacing (GTK_TABLE (table), 6, 6);
+          gtk_table_set_row_spacing (GTK_TABLE (table), 1, 2);
+          gtk_table_set_row_spacing (GTK_TABLE (table), 3, 2);
+          gtk_table_set_row_spacing (GTK_TABLE (table), 5, 2);
         }
-      gtk_container_add (GTK_CONTAINER (frame), table);
+
+      gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
       gtk_widget_show (table);
 
       colorbutton = gimp_color_button_new (framenumber ?
@@ -382,7 +396,7 @@ exchange_dialog (GimpDrawable *drawable)
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
 
-      if (!framenumber)
+      if (! framenumber)
         from_colorbutton = colorbutton;
 
       /*  Red  */
@@ -414,8 +428,6 @@ exchange_dialog (GimpDrawable *drawable)
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
 
-      scale = GTK_WIDGET (GIMP_SCALE_ENTRY_SCALE (adj));
-      gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
       gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
 
       if (! framenumber)
@@ -440,8 +452,6 @@ exchange_dialog (GimpDrawable *drawable)
                                     G_CALLBACK (gimp_preview_invalidate),
                                     preview);
 
-          scale = GTK_WIDGET (GIMP_SCALE_ENTRY_SCALE (adj));
-          gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
           gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
         }
 
@@ -474,11 +484,9 @@ exchange_dialog (GimpDrawable *drawable)
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
 
-      scale = GTK_WIDGET (GIMP_SCALE_ENTRY_SCALE (adj));
-      gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
       gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
 
-      if (!framenumber)
+      if (! framenumber)
         {
           adj = gimp_scale_entry_new (GTK_TABLE (table), 1, row++,
                                       _("G_reen threshold:"), SCALE_WIDTH, 0,
@@ -500,9 +508,6 @@ exchange_dialog (GimpDrawable *drawable)
                                     G_CALLBACK (gimp_preview_invalidate),
                                     preview);
 
-
-          scale = GTK_WIDGET (GIMP_SCALE_ENTRY_SCALE (adj));
-          gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
           gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
         }
 
@@ -535,8 +540,6 @@ exchange_dialog (GimpDrawable *drawable)
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
 
-      scale = GTK_WIDGET (GIMP_SCALE_ENTRY_SCALE (adj));
-      gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
       gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
 
       if (! framenumber)
@@ -561,12 +564,10 @@ exchange_dialog (GimpDrawable *drawable)
                                     G_CALLBACK (gimp_preview_invalidate),
                                     preview);
 
-          scale = GTK_WIDGET (GIMP_SCALE_ENTRY_SCALE (adj));
-          gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
           gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (adj));
         }
 
-      if (!framenumber)
+      if (! framenumber)
         {
           GtkWidget *button;
 
@@ -635,7 +636,11 @@ scale_callback (GtkAdjustment *adj,
   if (GIMP_IS_COLOR_BUTTON (object))
     {
       if (color == &xargs.threshold && lock_threshold == TRUE)
-        gimp_rgb_set (color, adj->value, adj->value, adj->value);
+        {
+          gdouble value = gtk_adjustment_get_value (adj);
+
+          gimp_rgb_set (color, value, value, value);
+        }
 
       gimp_color_button_set_color (GIMP_COLOR_BUTTON (object), color);
     }
@@ -654,7 +659,7 @@ exchange (GimpDrawable *drawable,
   guchar       *src_row, *dest_row;
   gint          x, y, bpp = drawable->bpp;
   gboolean      has_alpha;
-  gint          x1, y1, x2, y2;
+  gint          x1, y1, y2;
   gint          width, height;
   GimpRGB       min;
   GimpRGB       max;
@@ -663,17 +668,14 @@ exchange (GimpDrawable *drawable,
     {
       gimp_preview_get_position (preview, &x1, &y1);
       gimp_preview_get_size (preview, &width, &height);
-
-      x2 = x1 + width;
-      y2 = y1 + height;
     }
-  else
+  else if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                           &x1, &y1, &width, &height))
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-
-      width  = x2 - x1;
-      height = y2 - y1;
+      return;
     }
+
+  y2 = y1 + height;
 
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
   /* allocate memory */
@@ -772,6 +774,7 @@ exchange (GimpDrawable *drawable,
     }
   else
     {
+      gimp_progress_update (1.0);
       /* update the processed region */
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);

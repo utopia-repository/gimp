@@ -4,9 +4,9 @@
  * gimptemplate.h
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TEMPLATE_H__
@@ -54,23 +53,7 @@ typedef struct _GimpTemplateClass GimpTemplateClass;
 
 struct _GimpTemplate
 {
-  GimpViewable       parent_instance;
-
-  gint               width;
-  gint               height;
-  GimpUnit           unit;
-
-  gdouble            xresolution;
-  gdouble            yresolution;
-  GimpUnit           resolution_unit;
-
-  GimpImageBaseType  image_type;
-  GimpFillType       fill_type;
-
-  gchar             *comment;
-  gchar             *filename;
-
-  guint64            initial_size;
+  GimpViewable  parent_instance;
 };
 
 struct _GimpTemplateClass
@@ -79,16 +62,27 @@ struct _GimpTemplateClass
 };
 
 
-GType          gimp_template_get_type        (void) G_GNUC_CONST;
+GType               gimp_template_get_type            (void) G_GNUC_CONST;
 
-GimpTemplate * gimp_template_new             (const gchar    *name);
+GimpTemplate      * gimp_template_new                 (const gchar  *name);
 
-void           gimp_template_set_from_image  (GimpTemplate   *template,
-                                              GimpImage      *image);
+void                gimp_template_set_from_image      (GimpTemplate *template,
+                                                       GimpImage    *image);
 
-GimpImage    * gimp_template_create_image    (Gimp           *gimp,
-                                              GimpTemplate   *template,
-                                              GimpContext    *context);
+gint                gimp_template_get_width           (GimpTemplate *template);
+gint                gimp_template_get_height          (GimpTemplate *template);
+GimpUnit            gimp_template_get_unit            (GimpTemplate *template);
+
+gdouble             gimp_template_get_resolution_x    (GimpTemplate *template);
+gdouble             gimp_template_get_resolution_y    (GimpTemplate *template);
+GimpUnit            gimp_template_get_resolution_unit (GimpTemplate *template);
+
+GimpImageBaseType   gimp_template_get_image_type      (GimpTemplate *template);
+GimpFillType        gimp_template_get_fill_type       (GimpTemplate *template);
+
+const gchar       * gimp_template_get_comment         (GimpTemplate *template);
+
+guint64             gimp_template_get_initial_size    (GimpTemplate *template);
 
 
 #endif /* __GIMP_TEMPLATE__ */

@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="GIMP Color Library Reference Manual">
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpAdaptiveSupersample.html" title="GimpAdaptiveSupersample">
-<link rel="next" href="libgimpcolor-index.html" title="Index">
+<link rel="next" href="libgimpcolor-GimpCairoColor.html" title="GimpCairoColor">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="libgimpcolor.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
-<td><a accesskey="n" href="libgimpcolor-index.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libgimpcolor-GimpCairoColor.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpcolor-GimpBilinear.synopsis" class="shortcut">Top</a>
@@ -31,85 +31,86 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimpcolor-GimpBilinear.top_of_page"></a>GimpBilinear</span></h2>
-<p>GimpBilinear</p>
+<p>GimpBilinear — Utility functions for bilinear interpolation.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimpcolor-GimpBilinear.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear" title="gimp_bilinear ()">gimp_bilinear</a>                       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *values</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="returnvalue">guchar</span></a>              <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-8" title="gimp_bilinear_8 ()">gimp_bilinear_8</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *values</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-16" title="gimp_bilinear_16 ()">gimp_bilinear_16</a>                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> *values</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-32" title="gimp_bilinear_32 ()">gimp_bilinear_32</a>                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *values</code></em>);
-<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgb" title="gimp_bilinear_rgb ()">gimp_bilinear_rgb</a>                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+<pre class="synopsis"><span class="returnvalue">gdouble</span>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear" title="gimp_bilinear ()">gimp_bilinear</a>                       (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *values</code></em>);
+<span class="returnvalue">guchar</span>              <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-8" title="gimp_bilinear_8 ()">gimp_bilinear_8</a>                     (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guchar</span> *values</code></em>);
+<span class="returnvalue">guint16</span>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-16" title="gimp_bilinear_16 ()">gimp_bilinear_16</a>                    (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint16</span> *values</code></em>);
+<span class="returnvalue">guint32</span>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-32" title="gimp_bilinear_32 ()">gimp_bilinear_32</a>                    (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint32</span> *values</code></em>);
+<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgb" title="gimp_bilinear_rgb ()">gimp_bilinear_rgb</a>                   (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *values</code></em>);
-<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgba" title="gimp_bilinear_rgba ()">gimp_bilinear_rgba</a>                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgba" title="gimp_bilinear_rgba ()">gimp_bilinear_rgba</a>                  (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *values</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-pixels-8" title="gimp_bilinear_pixels_8 ()">gimp_bilinear_pixels_8</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> bpp</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> has_alpha</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> **values</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-pixels-8" title="gimp_bilinear_pixels_8 ()">gimp_bilinear_pixels_8</a>              (<em class="parameter"><code><span class="type">guchar</span> *dest</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> bpp</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> has_alpha</code></em>,
+                                                         <em class="parameter"><code><span class="type">guchar</span> **values</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="libgimpcolor-GimpBilinear.description"></a><h2>Description</h2>
 <p>
+Utility functions for bilinear interpolation.
 </p>
 </div>
 <div class="refsect1">
 <a name="libgimpcolor-GimpBilinear.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gimp-bilinear"></a><h3>gimp_bilinear ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gimp_bilinear                       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *values</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_bilinear                       (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *values</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-bilinear-8"></a><h3>gimp_bilinear_8 ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="returnvalue">guchar</span></a>              gimp_bilinear_8                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *values</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">guchar</span>              gimp_bilinear_8                     (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guchar</span> *values</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-bilinear-16"></a><h3>gimp_bilinear_16 ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>             gimp_bilinear_16                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> *values</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">guint16</span>             gimp_bilinear_16                    (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint16</span> *values</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-bilinear-32"></a><h3>gimp_bilinear_32 ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>             gimp_bilinear_32                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *values</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">guint32</span>             gimp_bilinear_32                    (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint32</span> *values</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-bilinear-rgb"></a><h3>gimp_bilinear_rgb ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             gimp_bilinear_rgb                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+<pre class="programlisting"><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             gimp_bilinear_rgb                   (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *values</code></em>);</pre>
 <p>
 </p>
@@ -117,8 +118,8 @@
 <hr>
 <div class="refsect2">
 <a name="gimp-bilinear-rgba"></a><h3>gimp_bilinear_rgba ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             gimp_bilinear_rgba                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+<pre class="programlisting"><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="returnvalue">GimpRGB</span></a>             gimp_bilinear_rgba                  (<em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="struct GimpRGB"><span class="type">GimpRGB</span></a> *values</code></em>);</pre>
 <p>
 </p>
@@ -126,18 +127,18 @@
 <hr>
 <div class="refsect2">
 <a name="gimp-bilinear-pixels-8"></a><h3>gimp_bilinear_pixels_8 ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_bilinear_pixels_8              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> bpp</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> has_alpha</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> **values</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_bilinear_pixels_8              (<em class="parameter"><code><span class="type">guchar</span> *dest</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> bpp</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> has_alpha</code></em>,
+                                                         <em class="parameter"><code><span class="type">guchar</span> **values</code></em>);</pre>
 <p>
 Computes bilinear interpolation of four pixels.
 </p>
 <p>
-When <em class="parameter"><code>has_alpha</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>, it's identical to <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-8" title="gimp_bilinear_8 ()"><code class="function">gimp_bilinear_8()</code></a> on
-each channel separately.  When <em class="parameter"><code>has_alpha</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it handles
+When <em class="parameter"><code>has_alpha</code></em> is <code class="literal">FALSE</code>, it's identical to <a class="link" href="libgimpcolor-GimpBilinear.html#gimp-bilinear-8" title="gimp_bilinear_8 ()"><code class="function">gimp_bilinear_8()</code></a> on
+each channel separately.  When <em class="parameter"><code>has_alpha</code></em> is <code class="literal">TRUE</code>, it handles
 alpha channel correctly.
 </p>
 <p>
@@ -167,7 +168,7 @@ following order: [0,0], [1,0], [0,1], [1,1].
 <tr>
 <td><p><span class="term"><em class="parameter"><code>has_alpha</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the last channel is an alpha channel.</td>
+<code class="literal">TRUE</code> if the last channel is an alpha channel.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>values</code></em> :</span></p></td>

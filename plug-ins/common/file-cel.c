@@ -4,9 +4,9 @@
  * cel.c -- KISS CEL file format plug-in
  * (copyright) 1997,1998 Nick Lamb (njl195@zepler.org.uk)
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,6 +34,7 @@
 #define LOAD_PROC      "file-cel-load"
 #define SAVE_PROC      "file-cel-save"
 #define PLUG_IN_BINARY "file-cel"
+#define PLUG_IN_ROLE   "gimp-file-cel"
 
 
 static void query (void);
@@ -82,7 +82,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",         "Interactive, non-interactive"  },
+    { GIMP_PDB_INT32,  "run-mode",         "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"  },
     { GIMP_PDB_STRING, "filename",         "Filename to load image from"   },
     { GIMP_PDB_STRING, "raw-filename",     "Name entered"                  },
     { GIMP_PDB_STRING, "palette-filename", "Filename to load palette from" }
@@ -94,7 +94,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",         "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",         "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",            "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",         "Drawable to save"             },
     { GIMP_PDB_STRING,   "filename",         "Filename to save image to"    },
@@ -127,7 +127,7 @@ query (void)
                           "Nick Lamb <njl195@zepler.org.uk>",
                           "May 1998",
                           N_("KISS CEL"),
-			  "RGB*, INDEXED*",
+                          "RGB*, INDEXED*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
@@ -214,27 +214,27 @@ run (const gchar      *name,
 
       /*  eventually export the image */
       switch (run_mode)
-	{
-	case GIMP_RUN_INTERACTIVE:
-	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
-	  export = gimp_export_image (&image_ID, &drawable_ID, "CEL",
-				      (GIMP_EXPORT_CAN_HANDLE_RGB |
-				       GIMP_EXPORT_CAN_HANDLE_ALPHA |
-				       GIMP_EXPORT_CAN_HANDLE_INDEXED
-				       ));
-	  if (export == GIMP_EXPORT_CANCEL)
-	    {
-	      values[0].data.d_status = GIMP_PDB_CANCEL;
-	      return;
-	    }
-	  break;
-	default:
-	  break;
-	}
+        {
+        case GIMP_RUN_INTERACTIVE:
+        case GIMP_RUN_WITH_LAST_VALS:
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
+                                      (GIMP_EXPORT_CAN_HANDLE_RGB |
+                                       GIMP_EXPORT_CAN_HANDLE_ALPHA |
+                                       GIMP_EXPORT_CAN_HANDLE_INDEXED
+                                       ));
+          if (export == GIMP_EXPORT_CANCEL)
+            {
+              values[0].data.d_status = GIMP_PDB_CANCEL;
+              return;
+            }
+          break;
+        default:
+          break;
+        }
 
       if (save_image (param[3].data.d_string, param[4].data.d_string,
-		      image_ID, drawable_ID, &error))
+                      image_ID, drawable_ID, &error))
         {
           gimp_set_data (SAVE_PROC, palette_file, data_length);
         }
@@ -244,7 +244,7 @@ run (const gchar      *name,
         }
 
       if (export == GIMP_EXPORT_EXPORT)
-	gimp_image_delete (image_ID);
+        gimp_image_delete (image_ID);
     }
   else
     {
@@ -352,6 +352,7 @@ load_image (const gchar  *file,
   if (image == -1)
     {
       g_message (_("Can't create a new image"));
+      fclose (fp);
       return -1;
     }
 
@@ -364,7 +365,7 @@ load_image (const gchar  *file,
   else
     layer = gimp_layer_new (image, _("Background"), width, height,
                             GIMP_INDEXEDA_IMAGE, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
   gimp_layer_set_offsets (layer, offx, offy);
 
   /* Get the drawable and set the pixel region for our load... */
@@ -447,6 +448,7 @@ load_image (const gchar  *file,
       gimp_pixel_rgn_set_rect (&pixel_rgn, line, 0, i, drawable->width, 1);
       gimp_progress_update ((float) i / (float) height);
     }
+  gimp_progress_update (1.0);
 
   /* Close image files, give back allocated memory */
 
@@ -528,7 +530,7 @@ load_palette (FILE   *fp,
     }
   else
     {
-      colours = 16; bpp = 12;
+      colours = 16;
       fseek (fp, 0, SEEK_SET);
       for (i= 0; i < colours; ++i)
         {
@@ -673,6 +675,7 @@ save_image (const gchar  *file,
 
       gimp_progress_update ((float) i / (float) drawable->height);
     }
+  gimp_progress_update (1.0);
 
   /* Close files, give back allocated memory */
   fclose (fp);

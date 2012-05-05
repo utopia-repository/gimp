@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,19 +12,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
 #include "base/tile-manager.h"
 
 #include "gimp.h"
+#include "gimpcontainer.h"
 #include "gimpguide.h"
 #include "gimpimage.h"
 #include "gimpimage-guides.h"
@@ -34,7 +34,6 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimplayer.h"
-#include "gimplist.h"
 #include "gimpprogress.h"
 #include "gimpprojection.h"
 #include "gimpsamplepoint.h"
@@ -52,8 +51,10 @@ gimp_image_scale (GimpImage             *image,
                   GimpProgress          *progress)
 {
   GimpProgress *sub_progress;
+  GList        *all_layers;
+  GList        *all_channels;
+  GList        *all_vectors;
   GList        *list;
-  GList        *remove           = NULL;
   gint          old_width;
   gint          old_height;
   gint          offset_x;
@@ -71,15 +72,19 @@ gimp_image_scale (GimpImage             *image,
 
   sub_progress = gimp_sub_progress_new (progress);
 
-  progress_steps = (image->channels->num_children +
-                    image->layers->num_children   +
-                    image->vectors->num_children  +
+  all_layers   = gimp_image_get_layer_list (image);
+  all_channels = gimp_image_get_channel_list (image);
+  all_vectors  = gimp_image_get_vectors_list (image);
+
+  progress_steps = (g_list_length (all_layers)   +
+                    g_list_length (all_channels) +
+                    g_list_length (all_vectors)  +
                     1 /* selection */);
 
   g_object_freeze_notify (G_OBJECT (image));
 
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_SCALE,
-                               _("Scale Image"));
+                               C_("undo-type", "Scale Image"));
 
   old_width   = gimp_image_get_width  (image);
   old_height  = gimp_image_get_height (image);
@@ -97,16 +102,17 @@ gimp_image_scale (GimpImage             *image,
                                    new_width,
                                    new_height);
 
-  /*  Set the new width and height  */
+  /*  Set the new width and height early, so below image item setters
+   *  (esp. guides and sample points) don't choke about moving stuff
+   *  out of the image
+   */
   g_object_set (image,
                 "width",  new_width,
                 "height", new_height,
                 NULL);
 
   /*  Scale all channels  */
-  for (list = GIMP_LIST (image->channels)->list;
-       list;
-       list = g_list_next (list))
+  for (list = all_channels; list; list = g_list_next (list))
     {
       GimpItem *item = list->data;
 
@@ -119,9 +125,7 @@ gimp_image_scale (GimpImage             *image,
     }
 
   /*  Scale all vectors  */
-  for (list = GIMP_LIST (image->vectors)->list;
-       list;
-       list = g_list_next (list))
+  for (list = all_vectors; list; list = g_list_next (list))
     {
       GimpItem *item = list->data;
 
@@ -142,14 +146,16 @@ gimp_image_scale (GimpImage             *image,
                    interpolation_type, sub_progress);
 
   /*  Scale all layers  */
-  for (list = GIMP_LIST (image->layers)->list;
-       list;
-       list = g_list_next (list))
+  for (list = all_layers; list; list = g_list_next (list))
     {
       GimpItem *item = list->data;
 
       gimp_sub_progress_set_step (GIMP_SUB_PROGRESS (sub_progress),
                                   progress_current++, progress_steps);
+
+      /*  group layers are updated automatically  */
+      if (gimp_viewable_get_children (GIMP_VIEWABLE (item)))
+        continue;
 
       if (! gimp_item_scale_by_factors (item,
                                         img_scale_w, img_scale_h,
@@ -160,26 +166,14 @@ gimp_image_scale (GimpImage             *image,
            * here. Upstream warning implemented in resize_check_layer_scaling(),
            * which offers the user the chance to bail out.
            */
-          remove = g_list_prepend (remove, item);
+          gimp_image_remove_layer (image, GIMP_LAYER (item), TRUE, NULL);
         }
     }
 
-  /* We defer removing layers lost to scaling until now so as not to mix
-   * the operations of iterating over and removal from image->layers.
-   */
-  remove = g_list_reverse (remove);
-
-  for (list = remove; list; list = g_list_next (list))
-    {
-      GimpLayer *layer = list->data;
-
-      gimp_image_remove_layer (image, layer);
-    }
-
-  g_list_free (remove);
-
   /*  Scale all Guides  */
-  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image);
+       list;
+       list = g_list_next (list))
     {
       GimpGuide *guide    = list->data;
       gint       position = gimp_guide_get_position (guide);
@@ -187,13 +181,15 @@ gimp_image_scale (GimpImage             *image,
       switch (gimp_guide_get_orientation (guide))
         {
         case GIMP_ORIENTATION_HORIZONTAL:
-          gimp_image_undo_push_guide (image, NULL, guide);
-          gimp_guide_set_position (guide, (position * new_height) / old_height);
+          gimp_image_move_guide (image, guide,
+                                 (position * new_height) / old_height,
+                                 TRUE);
           break;
 
         case GIMP_ORIENTATION_VERTICAL:
-          gimp_image_undo_push_guide (image, NULL, guide);
-          gimp_guide_set_position (guide, (position * new_width) / old_width);
+          gimp_image_move_guide (image, guide,
+                                 (position * new_width) / old_width,
+                                 TRUE);
           break;
 
         default:
@@ -208,12 +204,17 @@ gimp_image_scale (GimpImage             *image,
     {
       GimpSamplePoint *sample_point = list->data;
 
-      gimp_image_undo_push_sample_point (image, NULL, sample_point);
-      sample_point->x = sample_point->x * new_width / old_width;
-      sample_point->y = sample_point->y * new_height / old_height;
+      gimp_image_move_sample_point (image, sample_point,
+                                    sample_point->x * new_width  / old_width,
+                                    sample_point->y * new_height / old_height,
+                                    TRUE);
     }
 
   gimp_image_undo_group_end (image);
+
+  g_list_free (all_layers);
+  g_list_free (all_channels);
+  g_list_free (all_vectors);
 
   g_object_unref (sub_progress);
 
@@ -255,6 +256,7 @@ gimp_image_scale_check (const GimpImage *image,
                         gint64          *new_memsize)
 {
   GList  *drawables;
+  GList  *all_layers;
   GList  *list;
   gint64  current_size;
   gint64  scalable_size;
@@ -274,6 +276,9 @@ gimp_image_scale_check (const GimpImage *image,
                                              GIMP_ITEM_TYPE_LAYERS |
                                              GIMP_ITEM_TYPE_CHANNELS,
                                              GIMP_ITEM_SET_ALL);
+
+  gimp_image_item_list_filter (NULL, drawables, TRUE, FALSE);
+
   drawables = g_list_prepend (drawables, gimp_image_get_mask (image));
 
   scalable_size = 0;
@@ -282,8 +287,8 @@ gimp_image_scale_check (const GimpImage *image,
   for (list = drawables; list; list = g_list_next (list))
     {
       GimpDrawable *drawable = list->data;
-      gdouble       width    = gimp_item_width (GIMP_ITEM (drawable));
-      gdouble       height   = gimp_item_height (GIMP_ITEM (drawable));
+      gdouble       width    = gimp_item_get_width  (GIMP_ITEM (drawable));
+      gdouble       height   = gimp_item_get_height (GIMP_ITEM (drawable));
 
       scalable_size +=
         gimp_drawable_estimate_memsize (drawable,
@@ -312,8 +317,8 @@ gimp_image_scale_check (const GimpImage *image,
             "scalable_size = %"G_GINT64_FORMAT"  scaled_size = %"G_GINT64_FORMAT,
             scalable_size, scaled_size);
 
-  undo_size = gimp_object_get_memsize (GIMP_OBJECT (image->undo_stack), NULL);
-  redo_size = gimp_object_get_memsize (GIMP_OBJECT (image->redo_stack), NULL);
+  undo_size = gimp_object_get_memsize (GIMP_OBJECT (gimp_image_get_undo_stack (image)), NULL);
+  redo_size = gimp_object_get_memsize (GIMP_OBJECT (gimp_image_get_redo_stack (image)), NULL);
 
   /*  the fixed part of the image's memsize w/o any undo information  */
   fixed_size = current_size - undo_size - redo_size - scalable_size;
@@ -331,15 +336,25 @@ gimp_image_scale_check (const GimpImage *image,
   if (new_size > current_size && new_size > max_memsize)
     return GIMP_IMAGE_SCALE_TOO_BIG;
 
-  for (list = GIMP_LIST (image->layers)->list;
-       list;
-       list = g_list_next (list))
+  all_layers = gimp_image_get_layer_list (image);
+
+  for (list = all_layers; list; list = g_list_next (list))
     {
       GimpItem *item = list->data;
 
+      /*  group layers are updated automatically  */
+      if (gimp_viewable_get_children (GIMP_VIEWABLE (item)))
+        continue;
+
       if (! gimp_item_check_scaling (item, new_width, new_height))
-        return GIMP_IMAGE_SCALE_TOO_SMALL;
+        {
+          g_list_free (all_layers);
+
+          return GIMP_IMAGE_SCALE_TOO_SMALL;
+        }
     }
+
+  g_list_free (all_layers);
 
   return GIMP_IMAGE_SCALE_OK;
 }

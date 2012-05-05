@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -36,29 +35,6 @@
 
 #include "libgimp/stdplugins-intl.h"
 
-static void
-set_buttons(Selection_t *data)
-{
-#ifdef _OLD_
-  if (gtk_tree_selection_count_selected_rows (data->selection)) {
-#ifdef _OLD_
-    gtk_widget_set_sensitive(data->arrow_up,
-			     (data->selected_row) ? TRUE : FALSE);
-    if (data->selected_row < GTK_CLIST(data->list)->rows - 1)
-      gtk_widget_set_sensitive(data->arrow_down, TRUE);
-    else
-      gtk_widget_set_sensitive(data->arrow_down, FALSE);
-#endif
-    gtk_widget_set_sensitive(data->remove, TRUE);
-    gtk_widget_set_sensitive(data->edit, TRUE);
-  } else {
-    gtk_widget_set_sensitive(data->arrow_up, FALSE);
-    gtk_widget_set_sensitive(data->arrow_down, FALSE);
-    gtk_widget_set_sensitive(data->remove, FALSE);
-    gtk_widget_set_sensitive(data->edit, FALSE);
-  }
-#endif
-}
 
 static void
 changed_cb(GtkTreeSelection *selection, gpointer param)
@@ -99,11 +75,8 @@ changed_cb(GtkTreeSelection *selection, gpointer param)
 
         command_execute (command);
 
-        g_list_foreach (selected_rows, (GFunc) gtk_tree_path_free, NULL);
-        g_list_free (selected_rows);
-
-        set_buttons (data);
-  }
+        g_list_free_full (selected_rows, (GDestroyNotify) gtk_tree_path_free);
+      }
 }
 
 static gboolean
@@ -116,17 +89,17 @@ button_press_cb(GtkWidget *widget, GdkEventButton *event, Selection_t *data)
       data->doubleclick = FALSE;
 
       if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
-					 (gint) event->x, (gint) event->y,
-					 &path, NULL, NULL, NULL)) {
-	GtkTreeIter iter;
+                                         (gint) event->x, (gint) event->y,
+                                         &path, NULL, NULL, NULL)) {
+        GtkTreeIter iter;
 
-	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (data->store), &iter,
-				     path)) {
-	  Object_t *obj;
-	  gtk_tree_model_get (GTK_TREE_MODEL(data->store), &iter, 0, &obj, -1);
-	  object_edit (obj, TRUE);
-	}
-	gtk_tree_path_free (path);
+        if (gtk_tree_model_get_iter (GTK_TREE_MODEL (data->store), &iter,
+                                     path)) {
+          Object_t *obj;
+          gtk_tree_model_get (GTK_TREE_MODEL(data->store), &iter, 0, &obj, -1);
+          object_edit (obj, TRUE);
+        }
+        gtk_tree_path_free (path);
       }
     } else {
       data->doubleclick = TRUE;
@@ -149,7 +122,7 @@ selection_set_selected(Selection_t *selection, gint row)
   GtkTreeIter iter;
 
   if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (selection->store), &iter,
-				     NULL, row)) {
+                                     NULL, row)) {
     Object_t *obj;
 
     gtk_tree_model_get (GTK_TREE_MODEL(selection->store), &iter, 0, &obj, -1);
@@ -182,20 +155,20 @@ object_added_cb(Object_t *obj, gpointer data)
 
 static gboolean
 selection_find_object(Selection_t *selection, Object_t *lookup,
-		      GtkTreeIter *iter)
+                      GtkTreeIter *iter)
 {
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (selection->store),
-				     iter)) {
+                                     iter)) {
     do {
       Object_t *obj;
 
       gtk_tree_model_get (GTK_TREE_MODEL(selection->store), iter, 0,
-			  &obj, -1);
+                          &obj, -1);
       if (obj == lookup)
-	return TRUE;
+        return TRUE;
 
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (selection->store),
-				       iter));
+                                       iter));
   }
   return FALSE;
 }
@@ -211,7 +184,7 @@ object_updated_cb(Object_t *obj, gpointer data)
 
     path = gtk_tree_model_get_path (GTK_TREE_MODEL (selection->store), &iter);
     gtk_tree_model_row_changed (GTK_TREE_MODEL (selection->store), path,
-				&iter);
+                                &iter);
   }
 }
 
@@ -223,7 +196,6 @@ object_removed_cb(Object_t *obj, gpointer data)
 
   if (selection_find_object (selection, obj, &iter)) {
     gtk_list_store_remove (GTK_LIST_STORE (selection->store), &iter);
-    set_buttons(selection);
   }
 }
 
@@ -233,7 +205,6 @@ object_selected_cb(Object_t *obj, gpointer data)
   Selection_t *selection = (Selection_t*) data;
   gint position = object_get_position_in_list (obj);
   selection_set_selected (selection, position);
-  set_buttons(selection);
 }
 
 static void
@@ -241,13 +212,6 @@ object_moved_cb(Object_t *obj, gpointer data)
 {
   Selection_t *selection = (Selection_t*) data;
   selection->select_lock = TRUE;
-#ifdef _OLD_
-  {
-    gint row = object_get_position_in_list(obj);
-    gtk_clist_set_row_data(GTK_CLIST(selection->list), row, (gpointer) obj);
-    selection_set_selected(selection, row);
-  }
-#endif
 }
 
 static const GtkTargetEntry target_table[] =
@@ -266,34 +230,42 @@ selection_get_object (GtkTreeModel *tree_model, GtkTreeIter *iter)
 
 static void
 handle_drop(GtkWidget *widget, GdkDragContext *context, gint x, gint y,
-	    GtkSelectionData *data, guint info, guint time)
+            GtkSelectionData *data, guint info, guint time)
 {
   gboolean success = FALSE;
-  if (data->length >= 0 && data->format == 8) {
-    GtkTreePath *path;
-    if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), x, y,
-				       &path, NULL, NULL, NULL)) {
-      GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
-      GtkTreeIter iter;
 
-      if (gtk_tree_model_get_iter (model, &iter, path)) {
-	Object_t *obj = selection_get_object (model, &iter);
-	if (!obj->locked) {
-	  command_list_add(edit_object_command_new (obj));
-	  object_set_url (obj, (const gchar *) data->data);
-	  object_emit_update_signal (obj);
-	  success = TRUE;
-	}
-      }
-      gtk_tree_path_free (path);
+  if (gtk_selection_data_get_length (data) >= 0 &&
+      gtk_selection_data_get_format (data) == 8)
+    {
+      GtkTreePath *path;
+
+      if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), x, y,
+                                         &path, NULL, NULL, NULL))
+        {
+          GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
+          GtkTreeIter iter;
+
+          if (gtk_tree_model_get_iter (model, &iter, path))
+            {
+              Object_t *obj = selection_get_object (model, &iter);
+
+              if (!obj->locked)
+                {
+                  command_list_add(edit_object_command_new (obj));
+                  object_set_url (obj, (const gchar *) gtk_selection_data_get_data (data));
+                  object_emit_update_signal (obj);
+                  success = TRUE;
+                }
+            }
+          gtk_tree_path_free (path);
+        }
     }
-  }
   gtk_drag_finish(context, success, FALSE, time);
 }
 
 static void
 render_image (GtkTreeViewColumn *column, GtkCellRenderer *cell,
-	      GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+              GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
   Object_t *obj = selection_get_object (tree_model, iter);
   g_object_set(cell, "stock-id", object_get_stock_icon_name(obj), NULL);
@@ -301,7 +273,7 @@ render_image (GtkTreeViewColumn *column, GtkCellRenderer *cell,
 
 static void
 render_nr (GtkTreeViewColumn *column, GtkCellRenderer *cell,
-	   GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+           GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
   Object_t *obj = selection_get_object (tree_model, iter);
   gchar *scratch;
@@ -313,7 +285,7 @@ render_nr (GtkTreeViewColumn *column, GtkCellRenderer *cell,
 
 static void
 render_url (GtkTreeViewColumn *column, GtkCellRenderer *cell,
-	    GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+            GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
   Object_t *obj = selection_get_object (tree_model, iter);
   g_object_set (cell, "text", obj->url, NULL);
@@ -321,7 +293,7 @@ render_url (GtkTreeViewColumn *column, GtkCellRenderer *cell,
 
 static void
 render_target (GtkTreeViewColumn *column, GtkCellRenderer *cell,
-	       GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+               GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
   Object_t *obj = selection_get_object (tree_model, iter);
   g_object_set (cell, "text", obj->target, NULL);
@@ -329,7 +301,7 @@ render_target (GtkTreeViewColumn *column, GtkCellRenderer *cell,
 
 static void
 render_comment (GtkTreeViewColumn *column, GtkCellRenderer *cell,
-		GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+                GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
   Object_t *obj = selection_get_object (tree_model, iter);
   g_object_set (cell, "text", obj->comment, NULL);
@@ -356,17 +328,17 @@ make_selection(ObjectList_t *object_list)
   gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_IN);
   gtk_widget_show(frame);
 
-  hbox = gtk_hbox_new(FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_add(GTK_CONTAINER(frame), hbox);
   gtk_widget_show(hbox);
 
-  toolbar = make_selection_toolbar();
-  gtk_container_add(GTK_CONTAINER(hbox), toolbar);
+  toolbar = make_selection_toolbar ();
+  gtk_box_pack_start (GTK_BOX (hbox), toolbar, TRUE, TRUE, 0);
 
   /* Create selection */
-  frame = gimp_frame_new(_("Selection"));
-  gtk_container_add(GTK_CONTAINER(hbox), frame);
-  gtk_widget_show(frame);
+  frame = gimp_frame_new (_("Selection"));
+  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show (frame);
 
   data->store = gtk_list_store_new (1, G_TYPE_POINTER);
   data->list = gtk_tree_view_new_with_model (GTK_TREE_MODEL (data->store));
@@ -375,10 +347,10 @@ make_selection(ObjectList_t *object_list)
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (N_("#"),
-						     renderer,
-						     NULL);
+                                                     renderer,
+                                                     NULL);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
-					   render_nr, data, NULL);
+                                           render_nr, data, NULL);
   gtk_tree_view_column_set_min_width (column, 16);
   gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_alignment (column, 0.5);
@@ -390,12 +362,12 @@ make_selection(ObjectList_t *object_list)
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start(column, renderer, FALSE);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
-					   render_image, data, NULL);
+                                           render_image, data, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, renderer, TRUE);
   gtk_tree_view_column_set_cell_data_func (column, renderer, render_url, data,
-					   NULL);
+                                           NULL);
   gtk_tree_view_column_set_min_width (column, 80);
   gtk_tree_view_column_set_resizable (column, TRUE);
   gtk_tree_view_column_set_alignment (column, 0.5);
@@ -404,9 +376,9 @@ make_selection(ObjectList_t *object_list)
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("ALT Text"), renderer,
-						     NULL);
+                                                     NULL);
   gtk_tree_view_column_set_cell_data_func (column, renderer, render_comment,
-					   data, NULL);
+                                           data, NULL);
   gtk_tree_view_column_set_min_width (column, 64);
   gtk_tree_view_column_set_resizable (column, TRUE);
   gtk_tree_view_column_set_alignment (column, 0.5);
@@ -414,9 +386,9 @@ make_selection(ObjectList_t *object_list)
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Target"), renderer,
-						     NULL);
+                                                     NULL);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
-					   render_target, data, NULL);
+                                           render_target, data, NULL);
   gtk_tree_view_column_set_min_width (column, 64);
   gtk_tree_view_column_set_resizable (column, TRUE);
   gtk_tree_view_column_set_alignment (column, 0.5);
@@ -434,22 +406,20 @@ make_selection(ObjectList_t *object_list)
 
   /* Drop support */
   gtk_drag_dest_set (list, GTK_DEST_DEFAULT_ALL, target_table, 2,
-		     GDK_ACTION_COPY);
+                     GDK_ACTION_COPY);
   g_signal_connect (list, "drag-data-received", G_CALLBACK(handle_drop), NULL);
 
   /* For handling doubleclick */
 
   g_signal_connect (list, "button-press-event",
-		    G_CALLBACK(button_press_cb), data);
+                    G_CALLBACK(button_press_cb), data);
   g_signal_connect (list, "button-release-event",
-		    G_CALLBACK(button_release_cb), data);
+                    G_CALLBACK(button_release_cb), data);
 
   /* Callbacks we are interested in */
   data->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (list));
   gtk_tree_selection_set_mode (data->selection, GTK_SELECTION_MULTIPLE);
   g_signal_connect (data->selection, "changed", G_CALLBACK(changed_cb), data);
-
-  set_buttons (data);
 
   /* Set object list callbacks we're interested in */
   object_list_add_add_cb (object_list, object_added_cb, data);
@@ -464,13 +434,12 @@ make_selection(ObjectList_t *object_list)
 void
 selection_toggle_visibility(Selection_t *selection)
 {
-  if (selection->is_visible) {
-    gtk_widget_hide (selection->container);
-    selection->is_visible = FALSE;
-  } else {
-    gtk_widget_show (selection->container);
-    selection->is_visible = TRUE;
-  }
+  /* Toggle */
+  selection->is_visible = ! selection->is_visible;
+
+  /* Adapt to new state */
+  gtk_widget_set_visible (selection->container,
+                          selection->is_visible);
 }
 
 void

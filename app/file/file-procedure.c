@@ -4,9 +4,9 @@
  *
  * file-procedure.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -114,7 +113,8 @@ file_procedure_find (GSList       *procs,
     {
       GimpPlugInProcedure *size_matched_proc = NULL;
       FILE                *ifp               = NULL;
-      gint                 head_size         = -2;
+      gboolean             opened            = FALSE;
+      gint                 head_size         = 0;
       gint                 size_match_count  = 0;
       guchar               head[256];
 
@@ -125,21 +125,17 @@ file_procedure_find (GSList       *procs,
 
           if (file_proc->magics_list)
             {
-              if (head_size == -2)
+              if (G_UNLIKELY (!opened))
                 {
-                  head_size = 0;
-
-                  if ((ifp = g_fopen (filename, "rb")) != NULL)
-                    {
-                      head_size = fread ((gchar *) head, 1, sizeof (head), ifp);
-                    }
+                  ifp = g_fopen (filename, "rb");
+                  if (ifp != NULL)
+                    head_size = fread ((gchar *) head, 1, sizeof (head), ifp);
                   else
-                    {
-                      g_set_error (error,
-                                   G_FILE_ERROR,
-                                   g_file_error_from_errno (errno),
-                                   "%s", g_strerror (errno));
-                    }
+                    g_set_error_literal (error,
+                                         G_FILE_ERROR,
+                                         g_file_error_from_errno (errno),
+                                         g_strerror (errno));
+                  opened = TRUE;
                 }
 
               if (head_size >= 4)
@@ -170,10 +166,9 @@ file_procedure_find (GSList       *procs,
       if (ifp)
         {
           if (ferror (ifp))
-            g_set_error (error,
-                         G_FILE_ERROR,
-                         g_file_error_from_errno (errno),
-                         "%s", g_strerror (errno));
+            g_set_error_literal (error, G_FILE_ERROR,
+                                 g_file_error_from_errno (errno),
+                                 g_strerror (errno));
 
           fclose (ifp);
         }
@@ -196,8 +191,8 @@ file_procedure_find (GSList       *procs,
     {
       /* set an error message unless one was already set */
       if (error && *error == NULL)
-        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                     _("Unknown file type"));
+	g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+			     _("Unknown file type"));
     }
 
   return file_proc;
@@ -219,6 +214,41 @@ file_procedure_find_by_extension (GSList      *procs,
   g_return_val_if_fail (uri != NULL, NULL);
 
   return file_proc_find_by_extension (procs, uri, FALSE);
+}
+
+gboolean
+file_procedure_in_group (GimpPlugInProcedure *file_proc,
+                         FileProcedureGroup   group)
+{
+  const gchar *name        = gimp_object_get_name (file_proc);
+  gboolean     is_xcf_save = FALSE;
+  gboolean     is_filter   = FALSE;
+
+  is_xcf_save = (strcmp (name, "gimp-xcf-save") == 0);
+
+  is_filter   = (strcmp (name, "file-gz-save")  == 0 ||
+                 strcmp (name, "file-bz2-save") == 0);
+
+  switch (group)
+    {
+    case FILE_PROCEDURE_GROUP_SAVE:
+      /* Only .xcf shall pass */
+      /* FIXME: Handle .gz and .bz2 properly */
+      return is_xcf_save || is_filter;
+
+    case FILE_PROCEDURE_GROUP_EXPORT:
+      /* Anything but .xcf shall pass */
+      /* FIXME: Handle .gz and .bz2 properly */
+      return ! is_xcf_save || is_filter;
+
+    case FILE_PROCEDURE_GROUP_OPEN:
+      /* No filter applied for Open */
+      return TRUE;
+
+    default:
+    case FILE_PROCEDURE_GROUP_ANY:
+      return TRUE;
+    }
 }
 
 

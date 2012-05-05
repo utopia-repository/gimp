@@ -6,9 +6,9 @@
  * Copyright (C) 2007  Sven Neumann <sven@gimp.org>
  * Copyright (C) 2007  Tor Lillqvist <tml@novell.com>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,6 +38,8 @@
 #endif
 
 #include <gdk/gdkwin32.h>
+
+#include "libgimpmodule/gimpmodule.h"
 
 #include "gimpinputdevicestore.h"
 
@@ -210,19 +211,22 @@ gimp_input_device_store_init (GimpInputDeviceStore *store)
 
   if ((store->window = create_aux_window (store)) == NULL)
     {
-      g_set_error (&store->error, 0, 0, "Could not create aux window");
+      g_set_error_literal (&store->error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
+			   "Could not create aux window");
       return;
     }
 
   if ((dinput8 = LoadLibrary ("dinput8.dll")) == NULL)
     {
-      g_set_error (&store->error, 0, 0, "Could not load dinput8.dll");
+      g_set_error_literal (&store->error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
+			   "Could not load dinput8.dll");
       return;
     }
 
   if ((p_DirectInput8Create = (t_DirectInput8Create) GetProcAddress (dinput8, "DirectInput8Create")) == NULL)
     {
-      g_set_error (&store->error, 0, 0, "Could not find DirectInput8Create in dinput8.dll");
+      g_set_error_literal (&store->error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
+			   "Could not find DirectInput8Create in dinput8.dll");
       return;
     }
 
@@ -232,7 +236,9 @@ gimp_input_device_store_init (GimpInputDeviceStore *store)
                                                   (LPVOID *) &store->directinput8,
                                                   NULL))))
     {
-      g_set_error (&store->error, 0, 0, "DirectInput8Create failed: %s", g_win32_error_message (hresult));
+      g_set_error (&store->error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
+		   "DirectInput8Create failed: %s",
+		   g_win32_error_message (hresult));
       return;
     }
 
@@ -242,7 +248,9 @@ gimp_input_device_store_init (GimpInputDeviceStore *store)
                                                     store,
                                                     DIEDFL_ATTACHEDONLY))))
     {
-      g_set_error (&store->error, 0, 0, "IDirectInput8::EnumDevices failed: %s", g_win32_error_message (hresult));
+      g_set_error (&store->error, GIMP_MODULE_ERROR, GIMP_MODULE_FAILED,
+		   "IDirectInput8::EnumDevices failed: %s",
+		   g_win32_error_message (hresult));
       return;
     }
 }
@@ -358,7 +366,10 @@ gimp_input_device_store_add (GimpInputDeviceStore *store,
                                                      guid,
                                                      &didevice8,
                                                      NULL))))
-    return FALSE;
+    {
+      g_free (guidstring);
+      return FALSE;
+    }
 
   if (FAILED ((hresult = IDirectInputDevice8_SetCooperativeLevel (didevice8,
                                                                   (HWND) gdk_win32_drawable_get_handle (store->window),
@@ -366,6 +377,7 @@ gimp_input_device_store_add (GimpInputDeviceStore *store,
     {
       g_warning ("IDirectInputDevice8::SetCooperativeLevel failed: %s",
                  g_win32_error_message (hresult));
+      g_free (guidstring);
       return FALSE;
     }
 
@@ -375,6 +387,7 @@ gimp_input_device_store_add (GimpInputDeviceStore *store,
     {
       g_warning ("IDirectInputDevice8::GetDeviceInfo failed: %s",
                  g_win32_error_message (hresult));
+      g_free (guidstring);
       return FALSE;
     }
 

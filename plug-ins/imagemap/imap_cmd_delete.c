@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-1999 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -37,15 +36,15 @@ static CommandClass_t delete_command_class = {
    delete_command_destruct,
    delete_command_execute,
    delete_command_undo,
-   NULL				/* delete_command_redo */
+   NULL                         /* delete_command_redo */
 };
 
 typedef struct {
    Command_t parent;
    ObjectList_t *list;
    Object_t     *obj;
-   gint		 position;
-   gboolean	 changed;
+   gint          position;
+   gboolean      changed;
 } DeleteCommand_t;
 
 Command_t*
@@ -55,7 +54,7 @@ delete_command_new(ObjectList_t *list, Object_t *obj)
    command->list = list;
    command->obj = object_ref(obj);
    return command_init(&command->parent, _("Delete"),
-		       &delete_command_class);
+                       &delete_command_class);
 }
 
 static void

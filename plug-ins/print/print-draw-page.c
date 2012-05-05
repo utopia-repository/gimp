@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,7 +28,49 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-static cairo_surface_t * print_cairo_surface_from_drawable (gint32 drawable_ID);
+static cairo_surface_t * print_surface_from_drawable (gint32  drawable_ID);
+
+static void              print_draw_crop_marks       (GtkPrintContext *context,
+                                                      gdouble          x,
+                                                      gdouble          y,
+                                                      gdouble          w,
+                                                      gdouble          h);
+
+gboolean
+print_draw_page (GtkPrintContext *context,
+                 PrintData       *data)
+{
+  cairo_t         *cr = gtk_print_context_get_cairo_context (context);
+  cairo_surface_t *surface;
+  gint             width;
+  gint             height;
+  gdouble          scale_x;
+  gdouble          scale_y;
+
+  surface = print_surface_from_drawable (data->drawable_id);
+
+  width  = cairo_image_surface_get_width (surface);
+  height = cairo_image_surface_get_height (surface);
+
+  scale_x = gtk_print_context_get_dpi_x (context) / data->xres;
+  scale_y = gtk_print_context_get_dpi_y (context) / data->yres;
+
+  cairo_translate (cr, data->offset_x, data->offset_y);
+
+  if (data->draw_crop_marks)
+    print_draw_crop_marks (context,
+                           0, 0, width * scale_x, height * scale_y);
+
+  cairo_scale (cr, scale_x, scale_y);
+  cairo_rectangle (cr, 0, 0, width, height);
+  cairo_set_source_surface (cr, surface, 0, 0);
+  cairo_fill (cr);
+
+  cairo_surface_destroy (surface);
+
+  return TRUE;
+}
+
 
 static inline void
 convert_from_rgb (const guchar *src,
@@ -127,35 +168,8 @@ convert_from_indexeda (const guchar *src,
     }
 }
 
-gboolean
-print_draw_page (GtkPrintContext *context,
-                 PrintData       *data)
-{
-  cairo_t         *cr;
-  cairo_surface_t *surface;
-
-  cr = gtk_print_context_get_cairo_context (context);
-
-  surface = print_cairo_surface_from_drawable (data->drawable_id);
-
-  cairo_translate (cr, data->offset_x, data->offset_y);
-  cairo_scale (cr,
-	       gtk_print_context_get_dpi_x (context) / data->xres,
-	       gtk_print_context_get_dpi_y (context) / data->yres);
-
-  cairo_rectangle (cr,
-                   0, 0,
-                   cairo_image_surface_get_width (surface),
-                   cairo_image_surface_get_height (surface));
-  cairo_set_source_surface (cr, surface, 0, 0);
-  cairo_fill (cr);
-  cairo_surface_destroy (surface);
-
-  return TRUE;
-}
-
 static cairo_surface_t *
-print_cairo_surface_from_drawable (gint32 drawable_ID)
+print_surface_from_drawable (gint32 drawable_ID)
 {
   GimpDrawable    *drawable      = gimp_drawable_get (drawable_ID);
   GimpPixelRgn     region;
@@ -175,7 +189,7 @@ print_cairo_surface_from_drawable (gint32 drawable_ID)
       guchar *colors;
       gint    num_colors;
 
-      colors = gimp_image_get_colormap (gimp_drawable_get_image (drawable_ID),
+      colors = gimp_image_get_colormap (gimp_item_get_image (drawable_ID),
                                         &num_colors);
       memcpy (cmap, colors, 3 * num_colors);
       g_free (colors);
@@ -238,6 +252,8 @@ print_cairo_surface_from_drawable (gint32 drawable_ID)
         gimp_progress_update ((gdouble) done / (width * height));
     }
 
+  gimp_progress_update (1.0);
+
   gimp_drawable_detach (drawable);
 
   cairo_surface_mark_dirty (surface);
@@ -245,3 +261,50 @@ print_cairo_surface_from_drawable (gint32 drawable_ID)
   return surface;
 }
 
+static void
+print_draw_crop_marks (GtkPrintContext *context,
+                       gdouble          x,
+                       gdouble          y,
+                       gdouble          w,
+                       gdouble          h)
+{
+  cairo_t *cr  = gtk_print_context_get_cairo_context (context);
+  gdouble  len = MIN (gtk_print_context_get_width (context),
+                      gtk_print_context_get_height (context)) / 20.0;
+
+  /*  upper left  */
+
+  cairo_move_to (cr, x - len,     y);
+  cairo_line_to (cr, x - len / 5, y);
+
+  cairo_move_to (cr, x, y - len);
+  cairo_line_to (cr, x, y - len / 5);
+
+  /*  upper right  */
+
+  cairo_move_to (cr, x + w + len / 5, y);
+  cairo_line_to (cr, x + w + len,     y);
+
+  cairo_move_to (cr, x + w, y - len);
+  cairo_line_to (cr, x + w, y - len / 5);
+
+  /*  lower left  */
+
+  cairo_move_to (cr, x - len,     y + h);
+  cairo_line_to (cr, x - len / 5, y + h);
+
+  cairo_move_to (cr, x, y + h + len);
+  cairo_line_to (cr, x, y + h + len / 5);
+
+  /*  lower right  */
+
+  cairo_move_to (cr, x + w + len / 5, y + h);
+  cairo_line_to (cr, x + w + len,     y + h);
+
+  cairo_move_to (cr, x + w, y + h + len);
+  cairo_line_to (cr, x + w, y + h + len / 5);
+
+  cairo_set_source_rgb (cr, 0.5, 0.5, 0.5);
+  cairo_set_line_width (cr, 2);
+  cairo_stroke (cr);
+}

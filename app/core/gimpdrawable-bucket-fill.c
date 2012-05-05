@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -38,6 +38,7 @@
 #include "gimpcontext.h"
 #include "gimpdrawable.h"
 #include "gimpdrawable-bucket-fill.h"
+#include "gimperror.h"
 #include "gimpimage.h"
 #include "gimpimage-contiguous-region.h"
 #include "gimppattern.h"
@@ -62,7 +63,6 @@ gimp_drawable_bucket_fill (GimpDrawable         *drawable,
                            gdouble               y,
                            GError              **error)
 {
-  GimpImage   *image;
   GimpRGB      color;
   GimpPattern *pattern = NULL;
 
@@ -70,8 +70,6 @@ gimp_drawable_bucket_fill (GimpDrawable         *drawable,
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   if (fill_mode == GIMP_FG_BUCKET_FILL)
     {
@@ -87,8 +85,8 @@ gimp_drawable_bucket_fill (GimpDrawable         *drawable,
 
       if (! pattern)
         {
-          g_set_error (error, 0, 0,
-                       _("No patterns available for this operation."));
+          g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			       _("No patterns available for this operation."));
           return FALSE;
         }
     }
@@ -146,7 +144,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   bytes     = gimp_drawable_bytes (drawable);
-  selection = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
+  selection = gimp_item_mask_bounds (GIMP_ITEM (drawable), &x1, &y1, &x2, &y2);
 
   if ((x1 == x2) || (y1 == y2))
     return;
@@ -157,9 +155,9 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
       guchar tmp_col[MAX_CHANNELS];
 
       gimp_rgb_get_uchar (color,
-                          &tmp_col[RED_PIX],
-                          &tmp_col[GREEN_PIX],
-                          &tmp_col[BLUE_PIX]);
+                          &tmp_col[RED],
+                          &tmp_col[GREEN],
+                          &tmp_col[BLUE]);
 
       gimp_image_transform_color (image, gimp_drawable_type (drawable), col,
                                   GIMP_RGB, tmp_col);
@@ -200,7 +198,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
           gint off_y = 0;
 
           if (! sample_merged)
-            gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+            gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
           gimp_channel_combine_mask (mask, gimp_image_get_mask (image),
                                      GIMP_CHANNEL_OP_INTERSECT,
@@ -218,12 +216,12 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
           item = GIMP_ITEM (drawable);
 
           /*  Limit the channel bounds to the drawable's extents  */
-          gimp_item_offsets (item, &off_x, &off_y);
+          gimp_item_get_offset (item, &off_x, &off_y);
 
-          x1 = CLAMP (x1, off_x, (off_x + gimp_item_width (item)));
-          y1 = CLAMP (y1, off_y, (off_y + gimp_item_height (item)));
-          x2 = CLAMP (x2, off_x, (off_x + gimp_item_width (item)));
-          y2 = CLAMP (y2, off_y, (off_y + gimp_item_height (item)));
+          x1 = CLAMP (x1, off_x, (off_x + gimp_item_get_width (item)));
+          y1 = CLAMP (y1, off_y, (off_y + gimp_item_get_height (item)));
+          x2 = CLAMP (x2, off_x, (off_x + gimp_item_get_width (item)));
+          y2 = CLAMP (y2, off_y, (off_y + gimp_item_get_height (item)));
 
           pixel_region_init (&maskPR,
                              gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
@@ -283,9 +281,9 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
   /*  Apply it to the image  */
   pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), FALSE);
   gimp_drawable_apply_region (drawable, &bufPR,
-                              TRUE, C_("command", "Bucket Fill"),
+                              TRUE, C_("undo-type", "Bucket Fill"),
                               opacity, paint_mode,
-                              NULL, x1, y1);
+                              NULL, NULL, x1, y1);
   tile_manager_unref (buf_tiles);
 
   /*  update the image  */

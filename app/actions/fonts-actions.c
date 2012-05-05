@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -41,12 +40,12 @@
 static const GimpActionEntry fonts_actions[] =
 {
   { "fonts-popup", GIMP_STOCK_FONT,
-    N_("Fonts Menu"), NULL, NULL, NULL,
+    NC_("fonts-action", "Fonts Menu"), NULL, NULL, NULL,
     GIMP_HELP_FONT_DIALOG },
 
   { "fonts-refresh", GTK_STOCK_REFRESH,
-    N_("_Rescan Font List"), "",
-    N_("Rescan font list"),
+    NC_("fonts-action", "_Rescan Font List"), "",
+    NC_("fonts-action", "Rescan the installed fonts"),
     G_CALLBACK (fonts_refresh_cmd_callback),
     GIMP_HELP_FONT_REFRESH }
 };
@@ -55,7 +54,7 @@ static const GimpActionEntry fonts_actions[] =
 void
 fonts_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "fonts-action",
                                  fonts_actions,
                                  G_N_ELEMENTS (fonts_actions));
 }
@@ -64,12 +63,6 @@ void
 fonts_actions_update (GimpActionGroup *group,
                       gpointer         data)
 {
-  GimpContext *context = action_data_get_context (data);
-  GimpFont    *font    = NULL;
-
-  if (context)
-    font = gimp_context_get_font (context);
-
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 

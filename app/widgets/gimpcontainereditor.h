@@ -2,11 +2,11 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpcontainereditor.h
- * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2001-2011 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_CONTAINER_EDITOR_H__
@@ -31,18 +30,21 @@
 #define GIMP_CONTAINER_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CONTAINER_EDITOR, GimpContainerEditorClass))
 
 
-typedef struct _GimpContainerEditorClass  GimpContainerEditorClass;
+typedef struct _GimpContainerEditorPrivate GimpContainerEditorPrivate;
+typedef struct _GimpContainerEditorClass   GimpContainerEditorClass;
 
 struct _GimpContainerEditor
 {
-  GtkVBox            parent_instance;
+  GtkBox             parent_instance;
 
   GimpContainerView *view;
+
+  GimpContainerEditorPrivate *priv;
 };
 
 struct _GimpContainerEditorClass
 {
-  GtkVBoxClass  parent_class;
+  GtkBoxClass  parent_class;
 
   void (* select_item)   (GimpContainerEditor *editor,
                           GimpViewable        *object);
@@ -53,20 +55,11 @@ struct _GimpContainerEditorClass
 };
 
 
-GType     gimp_container_editor_get_type  (void) G_GNUC_CONST;
+GType            gimp_container_editor_get_type           (void) G_GNUC_CONST;
 
-
-/*  protected  */
-
-gboolean  gimp_container_editor_construct (GimpContainerEditor *editor,
-                                           GimpViewType         view_type,
-                                           GimpContainer       *container,
-                                           GimpContext         *context,
-                                           gint                 view_size,
-                                           gint                 view_border_width,
-                                           GimpMenuFactory     *menu_factory,
-                                           const gchar         *menu_identifier,
-                                           const gchar         *ui_path);
+GtkSelectionMode gimp_container_editor_get_selection_mode (GimpContainerEditor *editor);
+void             gimp_container_editor_set_selection_mode (GimpContainerEditor *editor,
+                                                           GtkSelectionMode     mode);
 
 
 #endif  /*  __GIMP_CONTAINER_EDITOR_H__  */

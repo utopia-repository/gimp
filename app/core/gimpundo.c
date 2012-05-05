@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <time.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -33,6 +32,7 @@
 #include "gimp.h"
 #include "gimpcontext.h"
 #include "gimpimage.h"
+#include "gimpimage-undo.h"
 #include "gimpmarshal.h"
 #include "gimpundo.h"
 #include "gimpundostack.h"
@@ -57,9 +57,7 @@ enum
 };
 
 
-static GObject * gimp_undo_constructor         (GType                type,
-                                                guint                n_params,
-                                                GObjectConstructParam *params);
+static void      gimp_undo_constructed         (GObject             *object);
 static void      gimp_undo_finalize            (GObject             *object);
 static void      gimp_undo_set_property        (GObject             *object,
                                                 guint                property_id,
@@ -130,7 +128,7 @@ gimp_undo_class_init (GimpUndoClass *klass)
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_UNDO_MODE);
 
-  object_class->constructor        = gimp_undo_constructor;
+  object_class->constructed        = gimp_undo_constructed;
   object_class->finalize           = gimp_undo_finalize;
   object_class->set_property       = gimp_undo_set_property;
   object_class->get_property       = gimp_undo_get_property;
@@ -177,21 +175,15 @@ gimp_undo_init (GimpUndo *undo)
   undo->time = time (NULL);
 }
 
-static GObject *
-gimp_undo_constructor (GType                  type,
-                       guint                  n_params,
-                       GObjectConstructParam *params)
+static void
+gimp_undo_constructed (GObject *object)
 {
-  GObject  *object;
-  GimpUndo *undo;
+  GimpUndo *undo = GIMP_UNDO (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  undo = GIMP_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_IMAGE (undo->image));
-
-  return object;
 }
 
 static void
@@ -440,9 +432,10 @@ gimp_undo_create_preview (GimpUndo    *undo,
 static gboolean
 gimp_undo_create_preview_idle (gpointer data)
 {
-  GimpUndoIdle *idle = data;
+  GimpUndoIdle *idle   = data;
+  GimpUndoStack *stack = gimp_image_get_undo_stack (idle->undo->image);
 
-  if (idle->undo == gimp_undo_stack_peek (idle->undo->image->undo_stack))
+  if (idle->undo == gimp_undo_stack_peek (stack))
     {
       gimp_undo_create_preview_private (idle->undo, idle->context);
     }
@@ -537,12 +530,8 @@ gimp_undo_type_to_name (GimpUndoType type)
 gboolean
 gimp_undo_is_weak (GimpUndo *undo)
 {
-  GimpUndoType type;
-
   if (! undo)
     return FALSE;
-
-  type = undo->undo_type;
 
   switch (undo->undo_type)
     {

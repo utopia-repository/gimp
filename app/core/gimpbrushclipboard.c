@@ -4,9 +4,9 @@
  * gimpbrushclipboard.c
  * Copyright (C) 2006 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,13 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -48,9 +47,7 @@ enum
 
 /*  local function prototypes  */
 
-static GObject  * gimp_brush_clipboard_constructor  (GType         type,
-                                                     guint         n_params,
-                                                     GObjectConstructParam *params);
+static void       gimp_brush_clipboard_constructed  (GObject      *object);
 static void       gimp_brush_clipboard_set_property (GObject      *object,
                                                      guint         property_id,
                                                      const GValue *value,
@@ -80,7 +77,7 @@ gimp_brush_clipboard_class_init (GimpBrushClipboardClass *klass)
   GimpDataClass *data_class   = GIMP_DATA_CLASS (klass);
 #endif
 
-  object_class->constructor  = gimp_brush_clipboard_constructor;
+  object_class->constructed  = gimp_brush_clipboard_constructed;
   object_class->set_property = gimp_brush_clipboard_set_property;
   object_class->get_property = gimp_brush_clipboard_get_property;
 
@@ -101,17 +98,13 @@ gimp_brush_clipboard_init (GimpBrushClipboard *brush)
   brush->gimp = NULL;
 }
 
-static GObject *
-gimp_brush_clipboard_constructor (GType                  type,
-                                  guint                  n_params,
-                                  GObjectConstructParam *params)
+static void
+gimp_brush_clipboard_constructed (GObject *object)
 {
-  GObject            *object;
-  GimpBrushClipboard *brush;
+  GimpBrushClipboard *brush = GIMP_BRUSH_CLIPBOARD (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  brush = GIMP_BRUSH_CLIPBOARD (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_GIMP (brush->gimp));
 
@@ -120,8 +113,6 @@ gimp_brush_clipboard_constructor (GType                  type,
                            brush, 0);
 
   gimp_brush_clipboard_buffer_changed (brush->gimp, GIMP_BRUSH (brush));
-
-  return object;
 }
 
 static void

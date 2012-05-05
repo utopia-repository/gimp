@@ -1,4 +1,4 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
+/* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define to 1 if you are compiling for PowerPC. */
 #undef ARCH_PPC
@@ -75,26 +75,20 @@
 /* Define to 1 if you have DirectX DirectInput headers and libraries */
 #undef HAVE_DX_DINPUT
 
-/* Define to 1 if libexif is available */
-#undef HAVE_EXIF
-
 /* Define to 1 if you have the `finite' function. */
 #undef HAVE_FINITE
 
 /* Define to 1 if you have the `fsync' function. */
 #undef HAVE_FSYNC
 
+/* Define to 1 if you have the `getaddrinfo' function. */
+#undef HAVE_GETADDRINFO
+
 /* Define to 1 if you have the `getnameinfo' function. */
 #undef HAVE_GETNAMEINFO
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
-
-/* Define to 1 if libgnomeui is available */
-#undef HAVE_GNOMEUI
-
-/* Define to 1 if gnome-keyring is available */
-#undef HAVE_GNOME_KEYRING
 
 /* Define to 1 if you have the <ieeefp.h> header file. */
 #undef HAVE_IEEEFP_H
@@ -120,8 +114,11 @@
 /* Define to 1 if you have the `asound' library (-lasound). */
 #undef HAVE_LIBASOUND
 
-/* Define to 1 if libhal is available */
-#undef HAVE_LIBHAL
+/* Define to 1 if libexif is available */
+#undef HAVE_LIBEXIF
+
+/* Define to 1 if libgudev is available */
+#undef HAVE_LIBGUDEV
 
 /* Define to 1 if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL
@@ -240,9 +237,6 @@
 
 /* define to 1 if compiling for Mac OS X */
 #undef PLATFORM_OSX
-
-/* Define as the return type of signal handlers (`int' or `void'). */
-#undef RETSIGTYPE
 
 /* The MTA used by the mail plug-in. */
 #undef SENDMAIL

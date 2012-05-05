@@ -2,9 +2,9 @@
    flame - cosmic recursive fractal flames
    Copyright (C) 1992  Scott Draves <spot@cs.cmu.edu>
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
+   the Free Software Foundation; either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -789,6 +788,8 @@ interpolate (control_point  cps[],
   for (i = 0; i < NXFORMS; i++)
     {
       double r;
+      double rh_time;
+
       INTERP(xform[i].density);
       if (result->xform[i].density > 0)
         result->xform[i].density = 1.0;
@@ -805,31 +806,27 @@ interpolate (control_point  cps[],
       interpolate_matrix(c1, cps[i1].xform[i].c, cps[i2].xform[i].c,
                          result->xform[i].c);
 
-      if (1)
+      rh_time = time * 2 * G_PI / (60.0 * 30.0);
+
+      /* apply pulse factor. */
+      r = 1.0;
+      for (j = 0; j < 2; j++)
+        r += result->pulse[j][0] * sin(result->pulse[j][1] * rh_time);
+      for (j = 0; j < 3; j++)
         {
-          double rh_time = time * 2 * G_PI / (60.0 * 30.0);
+          result->xform[i].c[j][0] *= r;
+          result->xform[i].c[j][1] *= r;
+        }
 
-          /* apply pulse factor. */
-          r = 1.0;
-          for (j = 0; j < 2; j++)
-            r += result->pulse[j][0] * sin(result->pulse[j][1] * rh_time);
-          for (j = 0; j < 3; j++)
-            {
-              result->xform[i].c[j][0] *= r;
-              result->xform[i].c[j][1] *= r;
-            }
-
-          /* apply wiggle factor */
-          r = 0.0;
-          for (j = 0; j < 2; j++)
-            {
-              double tt = result->wiggle[j][1] * rh_time;
-              double m = result->wiggle[j][0];
-              result->xform[i].c[0][0] += m *  cos(tt);
-              result->xform[i].c[1][0] += m * -sin(tt);
-              result->xform[i].c[0][1] += m *  sin(tt);
-              result->xform[i].c[1][1] += m *  cos(tt);
-            }
+      /* apply wiggle factor */
+      for (j = 0; j < 2; j++)
+        {
+          double tt = result->wiggle[j][1] * rh_time;
+          double m = result->wiggle[j][0];
+          result->xform[i].c[0][0] += m *  cos(tt);
+          result->xform[i].c[1][0] += m * -sin(tt);
+          result->xform[i].c[0][1] += m *  sin(tt);
+          result->xform[i].c[1][1] += m *  cos(tt);
         }
     } /* for i */
 }
@@ -1258,43 +1255,6 @@ estimate_bounding_box (control_point *cp,
       bmax[1] += (e < high_target) ? delta[1] : -delta[1];
       delta[0] = delta[0] / 2.0;
       delta[1] = delta[1] / 2.0;
-    }
-}
-
-/* use hill climberer to find smooth ordering of control points
-   this is untested */
-
-void
-sort_control_points (control_point *cps,
-                     int            ncps,
-                     double       (*metric)())
-{
-  int    niter = ncps * 1000;
-  int    i, n, m;
-  double same, swap;
-  for (i = 0; i < niter; i++)
-    {
-      /* consider switching points with indexes n and m */
-      n = g_random_int_range (0, ncps);
-      m = g_random_int_range (0, ncps);
-
-      same = (metric(cps + n, cps + (n - 1) % ncps) +
-              metric(cps + n, cps + (n + 1) % ncps) +
-              metric(cps + m, cps + (m - 1) % ncps) +
-              metric(cps + m, cps + (m + 1) % ncps));
-
-      swap = (metric(cps + n, cps + (m - 1) % ncps) +
-              metric(cps + n, cps + (m + 1) % ncps) +
-              metric(cps + m, cps + (n - 1) % ncps) +
-              metric(cps + m, cps + (n + 1) % ncps));
-
-      if (swap < same)
-        {
-          control_point t;
-          t = cps[n];
-          cps[n] = cps[m];
-          cps[m] = t;
-        }
     }
 }
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,11 +35,24 @@
 
 static const GimpActionEntry debug_actions[] =
 {
-  { "debug-menu", NULL, "D_ebug" },
+  { "debug-menu", NULL, "_Debug" },
 
   { "debug-mem-profile", NULL,
     "_Memory Profile", NULL, NULL,
     G_CALLBACK (debug_mem_profile_cmd_callback),
+    NULL },
+
+  { "debug-benchmark-projection", NULL,
+    "Benchmark _Projection", NULL,
+    "Invalidates the entire projection, measures the time it takes to "
+    "validate (render) it again, and print the result to stdout.",
+    G_CALLBACK (debug_benchmark_projection_cmd_callback),
+    NULL },
+
+  { "debug-show-image-graph", NULL,
+    "Show Image _Graph", NULL,
+    "Creates a new image showing the GEGL graph of this image",
+    G_CALLBACK (debug_show_image_graph_cmd_callback),
     NULL },
 
   { "debug-dump-items", NULL,
@@ -51,6 +63,11 @@ static const GimpActionEntry debug_actions[] =
   { "debug-dump-managers", NULL,
     "Dump _UI Managers", NULL, NULL,
     G_CALLBACK (debug_dump_managers_cmd_callback),
+    NULL },
+
+  { "debug-dump-keyboard-shortcuts", NULL,
+    "Dump _Keyboard Shortcuts", NULL, NULL,
+    G_CALLBACK (debug_dump_keyboard_shortcuts_cmd_callback),
     NULL },
 
   { "debug-dump-attached-data", NULL,
@@ -65,7 +82,7 @@ void
 debug_actions_setup (GimpActionGroup *group)
 {
 #ifdef ENABLE_DEBUG_MENU
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, NULL,
                                  debug_actions,
                                  G_N_ELEMENTS (debug_actions));
 #endif

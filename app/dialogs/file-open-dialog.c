@@ -2,9 +2,9 @@
  * Copyright (C) 1995, 1996, 1997 Spencer Kimball and Peter Mattis
  * Copyright (C) 1997 Josh MacDonald
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,14 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -35,6 +35,7 @@
 
 #include "file/file-open.h"
 #include "file/file-utils.h"
+#include "file/gimp-file.h"
 
 #include "widgets/gimpfiledialog.h"
 #include "widgets/gimphelp-ids.h"
@@ -72,7 +73,7 @@ file_open_dialog_new (Gimp *gimp)
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   dialog = gimp_file_dialog_new (gimp,
-                                 GTK_FILE_CHOOSER_ACTION_OPEN,
+                                 GIMP_FILE_CHOOSER_ACTION_OPEN,
                                  _("Open Image"), "gimp-file-open",
                                  GTK_STOCK_OPEN,
                                  GIMP_HELP_FILE_OPEN);
@@ -119,7 +120,7 @@ file_open_dialog_response (GtkWidget *open_dialog,
   uris = gtk_file_chooser_get_uris (GTK_FILE_CHOOSER (open_dialog));
 
   if (uris)
-    g_object_set_data_full (G_OBJECT (gimp), "gimp-file-open-last-uri",
+    g_object_set_data_full (G_OBJECT (gimp), GIMP_FILE_OPEN_LAST_URI_KEY,
                             g_strdup (uris->data), (GDestroyNotify) g_free);
 
   gimp_file_dialog_set_sensitive (dialog, FALSE);
@@ -179,7 +180,10 @@ file_open_dialog_response (GtkWidget *open_dialog,
             {
               success = TRUE;
 
-              gdk_window_raise (open_dialog->window);
+              /* Make the dialog stay on top of all images we open if
+               * we open say 10 at once
+               */
+              gdk_window_raise (gtk_widget_get_window (open_dialog));
             }
         }
 
@@ -199,8 +203,7 @@ file_open_dialog_response (GtkWidget *open_dialog,
       gimp_file_dialog_set_sensitive (dialog, TRUE);
     }
 
-  g_slist_foreach (uris, (GFunc) g_free, NULL);
-  g_slist_free (uris);
+  g_slist_free_full (uris, (GDestroyNotify) g_free);
 }
 
 static GimpImage *
@@ -255,7 +258,8 @@ file_open_dialog_open_layers (GtkWidget           *open_dialog,
 
   if (new_layers)
     {
-      gimp_image_add_layers (image, new_layers, -1,
+      gimp_image_add_layers (image, new_layers,
+                             GIMP_IMAGE_ACTIVE_PARENT, -1,
                              0, 0,
                              gimp_image_get_width (image),
                              gimp_image_get_height (image),

@@ -2,11 +2,11 @@
 gimpcontext
 
 <!-- ##### SECTION Short_Description ##### -->
-Functions to manipulate a plug-in's context.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Functions to manipulate a plug-in's context.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -30,6 +30,15 @@ Functions to manipulate a plug-in's context.
 
 
 <!-- ##### FUNCTION gimp_context_pop ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_defaults ##### -->
 <para>
 
 </para>
@@ -146,6 +155,87 @@ Functions to manipulate a plug-in's context.
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_context_get_brush_angle ##### -->
+<para>
+
+</para>
+
+@angle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_brush_angle ##### -->
+<para>
+
+</para>
+
+@angle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_brush_aspect_ratio ##### -->
+<para>
+
+</para>
+
+@aspect: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_brush_aspect_ratio ##### -->
+<para>
+
+</para>
+
+@aspect: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_brush_size ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_brush_size ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_brush_default_size ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_dynamics ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_dynamics ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_context_get_pattern ##### -->
 <para>
 
@@ -243,6 +333,368 @@ Functions to manipulate a plug-in's context.
 
 @num_paint_methods: 
 @paint_methods: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_antialias ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_antialias ##### -->
+<para>
+
+</para>
+
+@antialias: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_feather ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_feather ##### -->
+<para>
+
+</para>
+
+@feather: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_feather_radius ##### -->
+<para>
+
+</para>
+
+@feather_radius_x: 
+@feather_radius_y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_feather_radius ##### -->
+<para>
+
+</para>
+
+@feather_radius_x: 
+@feather_radius_y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_sample_merged ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_sample_merged ##### -->
+<para>
+
+</para>
+
+@sample_merged: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_sample_criterion ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_sample_criterion ##### -->
+<para>
+
+</para>
+
+@sample_criterion: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_sample_threshold ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_sample_threshold ##### -->
+<para>
+
+</para>
+
+@sample_threshold: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_sample_threshold_int ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_sample_threshold_int ##### -->
+<para>
+
+</para>
+
+@sample_threshold: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_sample_transparent ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_sample_transparent ##### -->
+<para>
+
+</para>
+
+@sample_transparent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_interpolation ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_interpolation ##### -->
+<para>
+
+</para>
+
+@interpolation: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_transform_direction ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_transform_direction ##### -->
+<para>
+
+</para>
+
+@transform_direction: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_transform_resize ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_transform_resize ##### -->
+<para>
+
+</para>
+
+@transform_resize: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_transform_recursion ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_transform_recursion ##### -->
+<para>
+
+</para>
+
+@transform_recursion: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_angle ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_angle ##### -->
+<para>
+
+</para>
+
+@angle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_blob_angle ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_blob_angle ##### -->
+<para>
+
+</para>
+
+@angle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_blob_aspect_ratio ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_blob_aspect_ratio ##### -->
+<para>
+
+</para>
+
+@aspect: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_blob_type ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_blob_type ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_size ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_size ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_size_sensitivity ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_size_sensitivity ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_speed_sensitivity ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_speed_sensitivity ##### -->
+<para>
+
+</para>
+
+@speed: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_get_ink_tilt_sensitivity ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_context_set_ink_tilt_sensitivity ##### -->
+<para>
+
+</para>
+
+@tilt: 
 @Returns: 
 
 

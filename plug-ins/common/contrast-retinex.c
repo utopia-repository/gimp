@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,7 @@
 
 #define PLUG_IN_PROC        "plug-in-retinex"
 #define PLUG_IN_BINARY      "contrast-retinex"
+#define PLUG_IN_ROLE        "gimp-contrast-retinex"
 #define MAX_RETINEX_SCALES    8
 #define MIN_GAUSSIAN_SCALE   16
 #define MAX_GAUSSIAN_SCALE  250
@@ -143,7 +143,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive"        },
+    { GIMP_PDB_INT32,    "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"        },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)"                },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable"                      },
     { GIMP_PDB_INT32,    "scale",       "Biggest scale value"                 },
@@ -277,13 +277,12 @@ retinex_dialog (GimpDrawable *drawable)
   GtkWidget *preview;
   GtkWidget *table;
   GtkWidget *combo;
-  GtkWidget *scale;
   GtkObject *adj;
   gboolean   run;
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Retinex Image Enhancement"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Retinex Image Enhancement"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -299,9 +298,10 @@ retinex_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_zoom_preview_new (drawable);
@@ -340,8 +340,6 @@ retinex_dialog (GimpDrawable *drawable)
                               rvals.scale,
                               MIN_GAUSSIAN_SCALE, MAX_GAUSSIAN_SCALE, 1, 1, 0,
                               TRUE, 0, 0, NULL, NULL);
-  scale = GIMP_SCALE_ENTRY_SCALE (adj);
-  gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DISCONTINUOUS);
 
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -355,8 +353,6 @@ retinex_dialog (GimpDrawable *drawable)
                               rvals.nscales,
                               0, MAX_RETINEX_SCALES, 1, 1, 0,
                               TRUE, 0, 0, NULL, NULL);
-  scale = GIMP_SCALE_ENTRY_SCALE (adj);
-  gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DISCONTINUOUS);
 
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -369,8 +365,6 @@ retinex_dialog (GimpDrawable *drawable)
                               _("Dy_namic:"), SCALE_WIDTH, ENTRY_WIDTH,
                               rvals.cvar, 0, 4, 0.1, 0.1, 1,
                               TRUE, 0, 0, NULL, NULL);
-  scale = GIMP_SCALE_ENTRY_SCALE (adj);
-  gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DISCONTINUOUS);
 
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_float_adjustment_update),
@@ -525,8 +519,6 @@ compute_coefs3 (gauss3_coefs *c, gfloat sigma)
    */
   gfloat q, q2, q3;
 
-  q = 0;
-
   if (sigma >= 2.5)
     {
       q = 0.98711 * sigma - 0.96330;
@@ -621,7 +613,6 @@ MSRCR (guchar *src, gint width, gint height, gint bytes, gboolean preview_mode)
   gint          scale,row,col;
   gint          i,j;
   gint          size;
-  gint          pos;
   gint          channel;
   guchar       *psrc = NULL;            /* backup pointer for src buffer */
   gfloat       *dst  = NULL;            /* float buffer for algorithm */
@@ -691,9 +682,10 @@ MSRCR (guchar *src, gint width, gint height, gint bytes, gboolean preview_mode)
     The recursive filtering algorithm needs different coefficients according
     to the selected scale (~ = standard deviation of Gaussian).
    */
-  pos = 0;
   for (channel = 0; channel < 3; channel++)
     {
+      gint pos;
+
       for (i = 0, pos = channel; i < channelsize ; i++, pos += bytes)
          {
             /* 0-255 => 1-256 */

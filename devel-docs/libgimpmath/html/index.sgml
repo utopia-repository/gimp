@@ -39,6 +39,11 @@
 <ANCHOR id="GIMP-IS-PARAM-SPEC-MATRIX2:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2:CAPS">
 <ANCHOR id="gimp-param-spec-matrix2" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2">
 <ANCHOR id="GIMP-VALUE-HOLDS-MATRIX2:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2:CAPS">
+<ANCHOR id="GIMP-TYPE-MATRIX3:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX3:CAPS">
+<ANCHOR id="GIMP-TYPE-PARAM-MATRIX3:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX3:CAPS">
+<ANCHOR id="GIMP-IS-PARAM-SPEC-MATRIX3:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX3:CAPS">
+<ANCHOR id="gimp-param-spec-matrix3" href="libgimpmath/libgimpmath-GimpMatrix.html#gimp-param-spec-matrix3">
+<ANCHOR id="GIMP-VALUE-HOLDS-MATRIX3:CAPS" href="libgimpmath/libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX3:CAPS">
 <ANCHOR id="libgimpmath-GimpMatrix.see-also" href="libgimpmath/libgimpmath-GimpMatrix.html#libgimpmath-GimpMatrix.see-also">
 <ANCHOR id="libgimpmath-GimpVector" href="libgimpmath/libgimpmath-GimpVector.html">
 <ANCHOR id="libgimpmath-GimpVector.synopsis" href="libgimpmath/libgimpmath-GimpVector.html#libgimpmath-GimpVector.synopsis">
@@ -53,6 +58,8 @@
 <ANCHOR id="gimp-vector2-length-val" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-length-val">
 <ANCHOR id="gimp-vector2-mul" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-mul">
 <ANCHOR id="gimp-vector2-mul-val" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-mul-val">
+<ANCHOR id="gimp-vector2-normal" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-normal">
+<ANCHOR id="gimp-vector2-normal-val" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-normal-val">
 <ANCHOR id="gimp-vector2-normalize" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-normalize">
 <ANCHOR id="gimp-vector2-normalize-val" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-normalize-val">
 <ANCHOR id="gimp-vector2-neg" href="libgimpmath/libgimpmath-GimpVector.html#gimp-vector2-neg">

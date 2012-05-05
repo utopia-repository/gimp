@@ -4,10 +4,10 @@
  * gimppatheditor.c
  * Copyright (C) 1999-2004 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,8 +33,30 @@
 #include "gimpfileentry.h"
 
 #include "gimppatheditor.h"
+#include "gimp3migration.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimppatheditor
+ * @title: GimpPathEditor
+ * @short_description: Widget for editing a file search path.
+ * @see_also: #GimpFileEntry, #G_SEARCHPATH_SEPARATOR
+ *
+ * This widget is used to edit file search paths.
+ *
+ * It shows a list of all directories which are in the search
+ * path. You can click a directory to select it. The widget provides a
+ * #GimpFileEntry to change the currently selected directory.
+ *
+ * There are buttons to add or delete directories as well as "up" and
+ * "down" buttons to change the order in which the directories will be
+ * searched.
+ *
+ * Whenever the user adds, deletes, changes or reorders a directory of
+ * the search path, the "path_changed" signal will be emitted.
+ **/
 
 
 enum
@@ -69,7 +90,7 @@ static void   gimp_path_editor_writable_toggled   (GtkCellRendererToggle *toggle
                                                    GimpPathEditor      *editor);
 
 
-G_DEFINE_TYPE (GimpPathEditor, gimp_path_editor, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpPathEditor, gimp_path_editor, GTK_TYPE_BOX)
 
 #define parent_class gimp_path_editor_parent_class
 
@@ -129,11 +150,15 @@ gimp_path_editor_init (GimpPathEditor *editor)
   editor->sel_path   = NULL;
   editor->num_items  = 0;
 
-  editor->upper_hbox = gtk_hbox_new (FALSE, 2);
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+                                  GTK_ORIENTATION_VERTICAL);
+
+  editor->upper_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_pack_start (GTK_BOX (editor), editor->upper_hbox, FALSE, TRUE, 0);
   gtk_widget_show (editor->upper_hbox);
 
-  button_box = gtk_hbox_new (TRUE, 0);
+  button_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_set_homogeneous (GTK_BOX (button_box), TRUE);
   gtk_box_pack_start (GTK_BOX (editor->upper_hbox), button_box, FALSE, TRUE, 0);
   gtk_widget_show (button_box);
 
@@ -348,7 +373,7 @@ gimp_path_editor_set_path (GimpPathEditor *editor,
 
   g_free (old_path);
 
-  path_list = gimp_path_parse (path, 16, TRUE, NULL);
+  path_list = gimp_path_parse (path, 16, FALSE, NULL);
 
   gtk_list_store_clear (editor->dir_list);
 
@@ -431,7 +456,7 @@ gimp_path_editor_set_writable_path (GimpPathEditor *editor,
 
   gtk_tree_view_column_set_visible (editor->writable_column, TRUE);
 
-  path_list = gimp_path_parse (path, 16, TRUE, NULL);
+  path_list = gimp_path_parse (path, 16, FALSE, NULL);
 
   model = GTK_TREE_MODEL (editor->dir_list);
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,20 +31,20 @@
 
 struct _PixelSurround
 {
-  TileManager *mgr;        /*  tile manager to access tiles from    */
-  gint         xmax;       /*  largest x coordinate in tile manager */
-  gint         ymax;       /*  largest y coordinate in tile manager */
-  gint         bpp;        /*  bytes per pixel in tile manager      */
-  gint         w;          /*  width of pixel surround area         */
-  gint         h;          /*  height of pixel surround area        */
-  Tile        *tile;       /*  locked tile (may be NULL)            */
-  gint         tile_x;     /*  origin of locked tile                */
-  gint         tile_y;     /*  origin of locked tile                */
-  gint         tile_w;     /*  width of locked tile                 */
-  gint         tile_h;     /*  height of locked tile                */
-  gint         rowstride;  /*  rowstride of buffers                 */
-  guchar      *bg;         /*  buffer filled with background color  */
-  guchar      *buf;        /*  buffer used for combining tile data  */
+  TileManager       *mgr;        /*  tile manager to access tiles from    */
+  gint               xmax;       /*  largest x coordinate in tile manager */
+  gint               ymax;       /*  largest y coordinate in tile manager */
+  gint               bpp;        /*  bytes per pixel in tile manager      */
+  gint               w;          /*  width of pixel surround area         */
+  gint               h;          /*  height of pixel surround area        */
+  Tile              *tile;       /*  locked tile (may be NULL)            */
+  gint               tile_x;     /*  origin of locked tile                */
+  gint               tile_y;     /*  origin of locked tile                */
+  gint               tile_w;     /*  width of locked tile                 */
+  gint               tile_h;     /*  height of locked tile                */
+  gint               rowstride;  /*  rowstride of buffers                 */
+  guchar            *bg;         /*  buffer filled with background color  */
+  guchar            *buf;        /*  buffer used for combining tile data  */
   PixelSurroundMode  mode;
 };
 

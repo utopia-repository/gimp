@@ -4,9 +4,9 @@
  * GimpDisplayConfig class
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DISPLAY_CONFIG_H__
 #define __GIMP_DISPLAY_CONFIG_H__
-
-#include "display/display-enums.h"
 
 #include "config/gimpcoreconfig.h"
 
@@ -66,10 +63,14 @@ struct _GimpDisplayConfig
   GimpViewSize        nav_preview_size;
   GimpDisplayOptions *default_view;
   GimpDisplayOptions *default_fullscreen_view;
+  gboolean            default_snap_to_guides;
+  gboolean            default_snap_to_grid;
+  gboolean            default_snap_to_canvas;
+  gboolean            default_snap_to_path;
   gboolean            activate_on_focus;
   GimpSpaceBarAction  space_bar_action;
-  GimpRGB             xor_color;
   GimpZoomQuality     zoom_quality;
+  gboolean            use_event_history;
 };
 
 struct _GimpDisplayConfigClass

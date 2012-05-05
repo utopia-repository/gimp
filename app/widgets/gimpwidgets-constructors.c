@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -107,23 +106,24 @@ gimp_paint_mode_menu_new (gboolean with_behind_mode,
                                            GIMP_NORMAL_MODE,
                                            GIMP_DISSOLVE_MODE,
 
-                                           GIMP_MULTIPLY_MODE,
-                                           GIMP_DIVIDE_MODE,
+                                           GIMP_LIGHTEN_ONLY_MODE,
                                            GIMP_SCREEN_MODE,
-                                           GIMP_OVERLAY_MODE,
-
                                            GIMP_DODGE_MODE,
+                                           GIMP_ADDITION_MODE,
+
+                                           GIMP_DARKEN_ONLY_MODE,
+                                           GIMP_MULTIPLY_MODE,
                                            GIMP_BURN_MODE,
-                                           GIMP_HARDLIGHT_MODE,
+
+                                           GIMP_OVERLAY_MODE,
                                            GIMP_SOFTLIGHT_MODE,
-                                           GIMP_GRAIN_EXTRACT_MODE,
-                                           GIMP_GRAIN_MERGE_MODE,
+                                           GIMP_HARDLIGHT_MODE,
 
                                            GIMP_DIFFERENCE_MODE,
-                                           GIMP_ADDITION_MODE,
                                            GIMP_SUBTRACT_MODE,
-                                           GIMP_DARKEN_ONLY_MODE,
-                                           GIMP_LIGHTEN_ONLY_MODE,
+                                           GIMP_GRAIN_EXTRACT_MODE,
+                                           GIMP_GRAIN_MERGE_MODE,
+                                           GIMP_DIVIDE_MODE,
 
                                            GIMP_HUE_MODE,
                                            GIMP_SATURATION_MODE,
@@ -132,12 +132,18 @@ gimp_paint_mode_menu_new (gboolean with_behind_mode,
 
   gimp_int_store_insert_separator_after (GIMP_INT_STORE (store),
                                          GIMP_DISSOLVE_MODE, -1);
+
   gimp_int_store_insert_separator_after (GIMP_INT_STORE (store),
-                                         GIMP_OVERLAY_MODE, -1);
+                                         GIMP_ADDITION_MODE, -1);
+
   gimp_int_store_insert_separator_after (GIMP_INT_STORE (store),
-                                         GIMP_GRAIN_MERGE_MODE, -1);
+                                         GIMP_BURN_MODE, -1);
+
   gimp_int_store_insert_separator_after (GIMP_INT_STORE (store),
-                                         GIMP_LIGHTEN_ONLY_MODE, -1);
+                                         GIMP_HARDLIGHT_MODE, -1);
+
+  gimp_int_store_insert_separator_after (GIMP_INT_STORE (store),
+                                         GIMP_DIVIDE_MODE, -1);
 
   if (with_behind_mode)
     {
@@ -178,24 +184,34 @@ gimp_stock_button_new (const gchar *stock_id,
                        const gchar *label)
 {
   GtkWidget *button;
-  GtkWidget *hbox;
   GtkWidget *image;
-  GtkWidget *lab;
 
   button = gtk_button_new ();
 
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_container_add (GTK_CONTAINER (button), hbox);
-  gtk_widget_show (hbox);
+  if (label)
+    {
+      GtkWidget *hbox;
+      GtkWidget *lab;
 
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-  gtk_widget_show (image);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+      gtk_container_add (GTK_CONTAINER (button), hbox);
+      gtk_widget_show (hbox);
 
-  lab = gtk_label_new_with_mnemonic (label);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (lab), button);
-  gtk_box_pack_start (GTK_BOX (hbox), lab, TRUE, TRUE, 0);
-  gtk_widget_show (lab);
+      image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
+      gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+      gtk_widget_show (image);
+
+      lab = gtk_label_new_with_mnemonic (label);
+      gtk_label_set_mnemonic_widget (GTK_LABEL (lab), button);
+      gtk_box_pack_start (GTK_BOX (hbox), lab, TRUE, TRUE, 0);
+      gtk_widget_show (lab);
+    }
+  else
+    {
+      image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
+      gtk_container_add (GTK_CONTAINER (button), image);
+      gtk_widget_show (image);
+    }
 
   return button;
 }

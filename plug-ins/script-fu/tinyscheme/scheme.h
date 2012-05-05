@@ -5,6 +5,11 @@
 
 #include <stdio.h>
 #include <glib.h>
+#include <glib/gstdio.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Default values for #define'd symbols
@@ -99,6 +104,10 @@
 # define USE_INTERFACE 0
 #endif
 
+#ifndef SHOW_ERROR_LINE   /* Show error line in file */
+# define SHOW_ERROR_LINE 1
+#endif
+
 typedef struct scheme scheme;
 typedef struct cell *pointer;
 
@@ -140,6 +149,7 @@ void scheme_set_input_port_string(scheme *sc, char *start, char *past_the_end);
 SCHEME_EXPORT void scheme_set_output_port_file(scheme *sc, FILE *fin);
 void scheme_set_output_port_string(scheme *sc, char *start, char *past_the_end);
 SCHEME_EXPORT void scheme_load_file(scheme *sc, FILE *fin);
+SCHEME_EXPORT void scheme_load_named_file(scheme *sc, FILE *fin, const char *filename);
 SCHEME_EXPORT void scheme_load_string(scheme *sc, const char *cmd);
 SCHEME_EXPORT pointer scheme_apply0(scheme *sc, const char *procname);
 SCHEME_EXPORT pointer scheme_call(scheme *sc, pointer func, pointer args);
@@ -198,7 +208,7 @@ struct scheme_interface {
   gunichar (*charvalue)(pointer p);
   int (*is_list)(scheme *sc, pointer p);
   int (*is_vector)(pointer p);
-  int (*list_length)(scheme *sc, pointer a);
+  int (*list_length)(scheme *sc, pointer p);
   long (*vector_length)(pointer vec);
   void (*fill_vector)(pointer vec, pointer elem);
   pointer (*vector_elem)(pointer vec, int ielem);
@@ -235,5 +245,29 @@ struct scheme_interface {
 };
 #endif
 
+#if !STANDALONE
+typedef struct scheme_registerable
+{
+  foreign_func  f;
+  char *       name;
+}
+scheme_registerable;
+
+void scheme_register_foreign_func(scheme * sc, scheme_registerable * sr);
+void scheme_register_foreign_func_list(scheme * sc,
+                                      scheme_registerable * list,
+                                      int n);
+
+#endif /* !STANDALONE */
+
+#ifdef __cplusplus
+}
 #endif
 
+#endif
+
+/*
+Local variables:
+c-file-style: "k&r"
+End:
+*/

@@ -2,9 +2,9 @@
 # Copyright (C) 1995, 1996, 1997 Spencer Kimball and Peter Mattis
 # Copyright (C) 1997 Josh MacDonald
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -89,7 +88,7 @@ HELP
   return_vals =
     gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
                                              context, progress, error,
-                                             GIMP_OBJECT (proc)->name,
+                                             gimp_object_get_name (proc),
                                              new_args);
 
   g_value_array_free (new_args);
@@ -117,7 +116,7 @@ sub file_load_layer {
     $help = <<'HELP';
 This procedure behaves like the file-load procedure but opens the specified
 image as a layer for an existing image. The returned layer needs to be
-added to the existing image with gimp_image_add_layer().
+added to the existing image with gimp_image_insert_layer().
 HELP
 
     &neo_pdb_misc('2005', '2.4');
@@ -172,7 +171,7 @@ sub file_load_layers {
     $help = <<'HELP';
 This procedure behaves like the file-load procedure but opens the specified
 image as layers for an existing image. The returned layers needs to be
-added to the existing image with gimp_image_add_layer().
+added to the existing image with gimp_image_insert_layer().
 HELP
 
     &mitch_pdb_misc('2006', '2.4');
@@ -282,7 +281,10 @@ HELP
                                              error ? *error : NULL);
 
   file_proc =
-    file_procedure_find (gimp->plug_in_manager->save_procs, uri, error);
+    file_procedure_find (gimp->plug_in_manager->save_procs, uri, NULL);
+
+  if (! file_proc)
+    file_proc = file_procedure_find (gimp->plug_in_manager->export_procs, uri, error);
 
   g_free (uri);
 
@@ -304,7 +306,7 @@ HELP
   return_vals =
     gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
                                              context, progress, error,
-                                             GIMP_OBJECT (proc)->name,
+                                             gimp_object_get_name (proc),
                                              new_args);
 
   g_value_array_free (new_args);
@@ -635,5 +637,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs[0..3,5..11]]);
 
 $desc = 'File Operations';
+$doc_title = 'gimpfileops';
+$doc_short_desc = 'File operations (load, save, etc.)';
+$doc_long_desc = 'File operations (load, save, etc.)';
 
 1;

@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(GEGL_CFLAGS)		\
 	$(GDK_PIXBUF_CFLAGS)	\
 	-I$(includedir)
 
@@ -21,6 +22,5 @@ libappfile_a_SOURCES = \
 	file-save.c		\
 	file-save.h		\
 	file-utils.c		\
-	file-utils.h
-
-EXTRA_DIST = makefile.msc
+	file-utils.h		\
+	gimp-file.h

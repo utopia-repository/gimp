@@ -3,9 +3,9 @@
  *
  * gimppluginmanager-call.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,8 +34,9 @@
 #include "composite/gimp-composite.h"
 
 #include "core/gimp.h"
-#include "core/gimpcontext.h"
 #include "core/gimpprogress.h"
+
+#include "pdb/gimppdbcontext.h"
 
 #include "gimpplugin.h"
 #include "gimpplugin-message.h"
@@ -62,7 +62,7 @@ gimp_plug_in_manager_call_query (GimpPlugInManager *manager,
   GimpPlugIn *plug_in;
 
   g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-  g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
   g_return_if_fail (GIMP_IS_PLUG_IN_DEF (plug_in_def));
 
   plug_in = gimp_plug_in_new (manager, context, NULL,
@@ -102,7 +102,7 @@ gimp_plug_in_manager_call_init (GimpPlugInManager *manager,
   GimpPlugIn *plug_in;
 
   g_return_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager));
-  g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
   g_return_if_fail (GIMP_IS_PLUG_IN_DEF (plug_in_def));
 
   plug_in = gimp_plug_in_new (manager, context, NULL,
@@ -147,7 +147,7 @@ gimp_plug_in_manager_call_run (GimpPlugInManager   *manager,
   GimpPlugIn  *plug_in;
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
   g_return_val_if_fail (args != NULL, NULL);
@@ -167,7 +167,7 @@ gimp_plug_in_manager_call_run (GimpPlugInManager   *manager,
 
       if (! gimp_plug_in_open (plug_in, GIMP_PLUG_IN_CALL_RUN, FALSE))
         {
-          const gchar *name  = gimp_object_get_name (GIMP_OBJECT (plug_in));
+          const gchar *name  = gimp_object_get_name (plug_in);
           GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
                                             GIMP_PLUG_IN_EXECUTION_FAILED,
                                             _("Failed to run plug-in \"%s\""),
@@ -198,9 +198,9 @@ gimp_plug_in_manager_call_run (GimpPlugInManager   *manager,
       config.gimp_reserved_6  = 0;
       config.gimp_reserved_7  = 0;
       config.gimp_reserved_8  = 0;
-      config.install_cmap     = core_config->install_cmap;
+      config.install_cmap     = FALSE;
       config.show_tooltips    = gui_config->show_tooltips;
-      config.min_colors       = CLAMP (core_config->min_colors, 27, 256);
+      config.min_colors       = 144;
       config.gdisp_ID         = display_ID;
       config.app_name         = (gchar *) g_get_application_name ();
       config.wm_class         = (gchar *) gimp_get_program_class (manager->gimp);
@@ -217,7 +217,7 @@ gimp_plug_in_manager_call_run (GimpPlugInManager   *manager,
           ! gp_proc_run_write (plug_in->my_write, &proc_run, plug_in) ||
           ! gimp_wire_flush (plug_in->my_write, plug_in))
         {
-          const gchar *name  = gimp_object_get_name (GIMP_OBJECT (plug_in));
+          const gchar *name  = gimp_object_get_name (plug_in);
           GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
                                             GIMP_PLUG_IN_EXECUTION_FAILED,
                                             _("Failed to run plug-in \"%s\""),
@@ -293,7 +293,7 @@ gimp_plug_in_manager_call_run_temp (GimpPlugInManager      *manager,
   GimpPlugIn  *plug_in;
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (procedure), NULL);
   g_return_val_if_fail (args != NULL, NULL);
@@ -315,7 +315,7 @@ gimp_plug_in_manager_call_run_temp (GimpPlugInManager      *manager,
       if (! gp_temp_proc_run_write (plug_in->my_write, &proc_run, plug_in) ||
           ! gimp_wire_flush (plug_in->my_write, plug_in))
         {
-          const gchar *name  = gimp_object_get_name (GIMP_OBJECT (plug_in));
+          const gchar *name  = gimp_object_get_name (plug_in);
           GError      *error = g_error_new (GIMP_PLUG_IN_ERROR,
                                             GIMP_PLUG_IN_EXECUTION_FAILED,
                                             _("Failed to run plug-in \"%s\""),

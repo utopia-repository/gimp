@@ -37,54 +37,55 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimputils.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimputils.html#gimp-any-to-utf8" title="gimp_any_to_utf8 ()">gimp_any_to_utf8</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gssize"><span class="type">gssize</span></a> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *warning_format</code></em>,
+<pre class="synopsis"><span class="returnvalue">gchar</span> *             <a class="link" href="libgimpbase-gimputils.html#gimp-any-to-utf8" title="gimp_any_to_utf8 ()">gimp_any_to_utf8</a>                    (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">gssize</span> len</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *warning_format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libgimpbase-gimputils.html#gimp-filename-to-utf8" title="gimp_filename_to_utf8 ()">gimp_filename_to_utf8</a>               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimputils.html#gimp-utf8-strtrim" title="gimp_utf8_strtrim ()">gimp_utf8_strtrim</a>                   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_chars</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimputils.html#gimp-escape-uline" title="gimp_escape_uline ()">gimp_escape_uline</a>                   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimputils.html#gimp-strip-uline" title="gimp_strip_uline ()">gimp_strip_uline</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimputils.html#gimp-canonicalize-identifier" title="gimp_canonicalize_identifier ()">gimp_canonicalize_identifier</a>        (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *identifier</code></em>);
-<a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="returnvalue">GimpEnumDesc</span></a> *      <a class="link" href="libgimpbase-gimputils.html#gimp-enum-get-desc" title="gimp_enum_get_desc ()">gimp_enum_get_desc</a>                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpbase-gimputils.html#gimp-enum-get-value" title="gimp_enum_get_value ()">gimp_enum_get_value</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_name</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_nick</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_desc</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_help</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-desc" title="gimp_enum_value_get_desc ()">gimp_enum_value_get_desc</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> *enum_value</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-help" title="gimp_enum_value_get_help ()">gimp_enum_value_get_help</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> *enum_value</code></em>);
-<a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="returnvalue">GimpFlagsDesc</span></a> *     <a class="link" href="libgimpbase-gimputils.html#gimp-flags-get-first-desc" title="gimp_flags_get_first_desc ()">gimp_flags_get_first_desc</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> value</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpbase-gimputils.html#gimp-flags-get-first-value" title="gimp_flags_get_first_value ()">gimp_flags_get_first_value</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> flags_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> value</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_name</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_nick</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_desc</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_help</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libgimpbase-gimputils.html#gimp-flags-value-get-desc" title="gimp_flags_value_get_desc ()">gimp_flags_value_get_desc</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> *flags_value</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libgimpbase-gimputils.html#gimp-flags-value-get-help" title="gimp_flags_value_get_help ()">gimp_flags_value_get_help</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> *flags_value</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libgimpbase-gimputils.html#gimp-filename-to-utf8" title="gimp_filename_to_utf8 ()">gimp_filename_to_utf8</a>               (<em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libgimpbase-gimputils.html#gimp-utf8-strtrim" title="gimp_utf8_strtrim ()">gimp_utf8_strtrim</a>                   (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> max_chars</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libgimpbase-gimputils.html#gimp-escape-uline" title="gimp_escape_uline ()">gimp_escape_uline</a>                   (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libgimpbase-gimputils.html#gimp-strip-uline" title="gimp_strip_uline ()">gimp_strip_uline</a>                    (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libgimpbase-gimputils.html#gimp-canonicalize-identifier" title="gimp_canonicalize_identifier ()">gimp_canonicalize_identifier</a>        (<em class="parameter"><code>const <span class="type">gchar</span> *identifier</code></em>);
+<a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="returnvalue">GimpEnumDesc</span></a> *      <a class="link" href="libgimpbase-gimputils.html#gimp-enum-get-desc" title="gimp_enum_get_desc ()">gimp_enum_get_desc</a>                  (<em class="parameter"><code><span class="type">GEnumClass</span> *enum_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimpbase-gimputils.html#gimp-enum-get-value" title="gimp_enum_get_value ()">gimp_enum_get_value</a>                 (<em class="parameter"><code><span class="type">GType</span> enum_type</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_name</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_nick</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_desc</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_help</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-desc" title="gimp_enum_value_get_desc ()">gimp_enum_value_get_desc</a>            (<em class="parameter"><code><span class="type">GEnumClass</span> *enum_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GEnumValue</span> *enum_value</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libgimpbase-gimputils.html#gimp-enum-value-get-help" title="gimp_enum_value_get_help ()">gimp_enum_value_get_help</a>            (<em class="parameter"><code><span class="type">GEnumClass</span> *enum_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GEnumValue</span> *enum_value</code></em>);
+<a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="returnvalue">GimpFlagsDesc</span></a> *     <a class="link" href="libgimpbase-gimputils.html#gimp-flags-get-first-desc" title="gimp_flags_get_first_desc ()">gimp_flags_get_first_desc</a>           (<em class="parameter"><code><span class="type">GFlagsClass</span> *flags_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> value</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimpbase-gimputils.html#gimp-flags-get-first-value" title="gimp_flags_get_first_value ()">gimp_flags_get_first_value</a>          (<em class="parameter"><code><span class="type">GType</span> flags_type</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> value</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_name</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_nick</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_desc</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_help</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libgimpbase-gimputils.html#gimp-flags-value-get-desc" title="gimp_flags_value_get_desc ()">gimp_flags_value_get_desc</a>           (<em class="parameter"><code><span class="type">GFlagsClass</span> *flags_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFlagsValue</span> *flags_value</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libgimpbase-gimputils.html#gimp-flags-value-get-help" title="gimp_flags_value_get_help ()">gimp_flags_value_get_help</a>           (<em class="parameter"><code><span class="type">GFlagsClass</span> *flags_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFlagsValue</span> *flags_value</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="libgimpbase-gimputils.description"></a><h2>Description</h2>
 <p>
+Utilities of general interest
 </p>
 </div>
 <div class="refsect1">
 <a name="libgimpbase-gimputils.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gimp-any-to-utf8"></a><h3>gimp_any_to_utf8 ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_any_to_utf8                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gssize"><span class="type">gssize</span></a> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *warning_format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_any_to_utf8                    (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">gssize</span> len</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *warning_format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 This function takes any string (UTF-8 or not) and always returns a valid
@@ -94,7 +95,7 @@ UTF-8 string.
 If <em class="parameter"><code>str</code></em> is valid UTF-8, a copy of the string is returned.
 </p>
 <p>
-If UTF-8 validation fails, <a href="http://library.gnome.org/devel/glib/unstable/glib-Character-Set-Conversion.html#g-locale-to-utf8"><code class="function">g_locale_to_utf8()</code></a> is tried and if it
+If UTF-8 validation fails, <code class="function">g_locale_to_utf8()</code> is tried and if it
 succeeds the resulting string is returned.
 </p>
 <p>
@@ -121,6 +122,10 @@ to UTF-8 fails. See the <code class="function"><code class="function">printf()</
 documentation.</td>
 </tr>
 <tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>The parameters to insert into the format string.</td>
+</tr>
+<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The UTF-8 string as described above.</td>
 </tr>
@@ -130,7 +135,7 @@ documentation.</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-filename-to-utf8"></a><h3>gimp_filename_to_utf8 ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_filename_to_utf8               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       gimp_filename_to_utf8               (<em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>);</pre>
 <p>
 Convert a filename in the filesystem's encoding to UTF-8
 temporarily.  The return value is a pointer to a string that is
@@ -160,8 +165,8 @@ This string must not be changed or freed.</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-utf8-strtrim"></a><h3>gimp_utf8_strtrim ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_utf8_strtrim                   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_chars</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_utf8_strtrim                   (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> max_chars</code></em>);</pre>
 <p>
 Creates a (possibly trimmed) copy of <em class="parameter"><code>str</code></em>. The string is cut if it
 exceeds <em class="parameter"><code>max_chars</code></em> characters or on the first newline. The fact
@@ -172,7 +177,7 @@ that the string was trimmed is indicated by appending an ellipsis.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td>an UTF-8 encoded string (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>an UTF-8 encoded string (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_chars</code></em> :</span></p></td>
@@ -182,7 +187,7 @@ trimmed</td>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A (possibly trimmed) copy of <em class="parameter"><code>str</code></em> which should be freed
-using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when it is not needed any longer.</td>
+using <code class="function">g_free()</code> when it is not needed any longer.</td>
 </tr>
 </tbody>
 </table></div>
@@ -190,7 +195,7 @@ using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocati
 <hr>
 <div class="refsect2">
 <a name="gimp-escape-uline"></a><h3>gimp_escape_uline ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_escape_uline                   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_escape_uline                   (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
 <p>
 This function returns a copy of <em class="parameter"><code>str</code></em> with all underline converted
 to two adjacent underlines. This comes in handy when needing to display
@@ -202,12 +207,12 @@ them to mnemonics.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td>Underline infested string (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>Underline infested string (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A (possibly escaped) copy of <em class="parameter"><code>str</code></em> which should be
-freed using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when it is not needed any longer.</td>
+freed using <code class="function">g_free()</code> when it is not needed any longer.</td>
 </tr>
 </tbody>
 </table></div>
@@ -216,7 +221,7 @@ freed using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Al
 <hr>
 <div class="refsect2">
 <a name="gimp-strip-uline"></a><h3>gimp_strip_uline ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_strip_uline                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_strip_uline                    (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
 <p>
 This function returns a copy of <em class="parameter"><code>str</code></em> stripped of underline
 characters. This comes in handy when needing to strip mnemonics
@@ -226,19 +231,19 @@ from menu paths etc.
 In some languages, mnemonics are handled by adding the mnemonic
 character in brackets (like "File (_F)"). This function recognizes
 this construct and removes the whole bracket construction to get
-rid of the mnemonic (see bug <span class="type">157561</span>).
+rid of the mnemonic (see bug 157561).
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td>underline infested string (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>underline infested string (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A (possibly stripped) copy of <em class="parameter"><code>str</code></em> which should be
-freed using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when it is not needed any longer.</td>
+freed using <code class="function">g_free()</code> when it is not needed any longer.</td>
 </tr>
 </tbody>
 </table></div>
@@ -246,7 +251,7 @@ freed using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Al
 <hr>
 <div class="refsect2">
 <a name="gimp-canonicalize-identifier"></a><h3>gimp_canonicalize_identifier ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_canonicalize_identifier        (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *identifier</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_canonicalize_identifier        (<em class="parameter"><code>const <span class="type">gchar</span> *identifier</code></em>);</pre>
 <p>
 Turns any input string into a canonicalized string.
 </p>
@@ -265,7 +270,7 @@ not either '-', 'a-z', 'A-Z' or '0-9' will be replaced by a '-'.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The canonicalized identifier. This is a newly
-allocated string that should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>
+allocated string that should be freed with <code class="function">g_free()</code>
 when no longer needed.</td>
 </tr>
 </tbody>
@@ -275,17 +280,17 @@ when no longer needed.</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-enum-get-desc"></a><h3>gimp_enum_get_desc ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="returnvalue">GimpEnumDesc</span></a> *      gimp_enum_get_desc                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="returnvalue">GimpEnumDesc</span></a> *      gimp_enum_get_desc                  (<em class="parameter"><code><span class="type">GEnumClass</span> *enum_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>);</pre>
 <p>
-Retrieves <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="type">GimpEnumDesc</span></a> associated with the given value, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.
+Retrieves <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="struct GimpEnumDesc"><span class="type">GimpEnumDesc</span></a> associated with the given value, or <code class="literal">NULL</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_class</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a>
+<td>a <span class="type">GEnumClass</span>
 </td>
 </tr>
 <tr>
@@ -304,24 +309,24 @@ Retrieves <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" tit
 <hr>
 <div class="refsect2">
 <a name="gimp-enum-get-value"></a><h3>gimp_enum_get_value ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_enum_get_value                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_name</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_nick</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_desc</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_help</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_enum_get_value                 (<em class="parameter"><code><span class="type">GType</span> enum_type</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_name</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_nick</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_desc</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_help</code></em>);</pre>
 <p>
 Checks if <em class="parameter"><code>value</code></em> is valid for the enum registered as <em class="parameter"><code>enum_type</code></em>.
 If the value exists in that enum, its name, nick and its translated
-desc and help are returned (if <em class="parameter"><code>value_name</code></em>, <em class="parameter"><code>value_nick</code></em>, <em class="parameter"><code>value_desc</code></em>
-and <em class="parameter"><code>value_help</code></em> are not <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>).
+description and help are returned (if <em class="parameter"><code>value_name</code></em>, <em class="parameter"><code>value_nick</code></em>,
+<em class="parameter"><code>value_desc</code></em> and <em class="parameter"><code>value_help</code></em> are not <code class="literal">NULL</code>).
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td>the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of a registered enum</td>
+<td>the <span class="type">GType</span> of a registered enum</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
@@ -329,25 +334,25 @@ and <em class="parameter"><code>value_help</code></em> are not <a href="/usr/sha
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_name</code></em> :</span></p></td>
-<td>return location for the value's name (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's name (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_nick</code></em> :</span></p></td>
-<td>return location for the value's nick (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's nick (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_desc</code></em> :</span></p></td>
-<td>return location for the value's translated desc (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's translated description (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_help</code></em> :</span></p></td>
-<td>return location for the value's translated help (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's translated help (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>enum_type</code></em>,
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+<code class="literal">TRUE</code> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>enum_type</code></em>,
+<code class="literal">FALSE</code> otherwise</td>
 </tr>
 </tbody>
 </table></div>
@@ -356,27 +361,27 @@ and <em class="parameter"><code>value_help</code></em> are not <a href="/usr/sha
 <hr>
 <div class="refsect2">
 <a name="gimp-enum-value-get-desc"></a><h3>gimp_enum_value_get_desc ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_enum_value_get_desc            (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> *enum_value</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       gimp_enum_value_get_desc            (<em class="parameter"><code><span class="type">GEnumClass</span> *enum_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GEnumValue</span> *enum_value</code></em>);</pre>
 <p>
-Retrieves the translated desc for a given <em class="parameter"><code>enum_value</code></em>.
+Retrieves the translated description for a given <em class="parameter"><code>enum_value</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_class</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a>
+<td>a <span class="type">GEnumClass</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_value</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> from <em class="parameter"><code>enum_class</code></em>
+<td>a <span class="type">GEnumValue</span> from <em class="parameter"><code>enum_class</code></em>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the translated desc of the enum value</td>
+<td>the translated description of the enum value</td>
 </tr>
 </tbody>
 </table></div>
@@ -385,8 +390,8 @@ Retrieves the translated desc for a given <em class="parameter"><code>enum_value
 <hr>
 <div class="refsect2">
 <a name="gimp-enum-value-get-help"></a><h3>gimp_enum_value_get_help ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_enum_value_get_help            (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a> *enum_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> *enum_value</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       gimp_enum_value_get_help            (<em class="parameter"><code><span class="type">GEnumClass</span> *enum_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GEnumValue</span> *enum_value</code></em>);</pre>
 <p>
 Retrieves the translated help for a given <em class="parameter"><code>enum_value</code></em>.
 </p>
@@ -395,12 +400,12 @@ Retrieves the translated help for a given <em class="parameter"><code>enum_value
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_class</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumClass"><span class="type">GEnumClass</span></a>
+<td>a <span class="type">GEnumClass</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_value</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GEnumValue"><span class="type">GEnumValue</span></a> from <em class="parameter"><code>enum_class</code></em>
+<td>a <span class="type">GEnumValue</span> from <em class="parameter"><code>enum_class</code></em>
 </td>
 </tr>
 <tr>
@@ -414,17 +419,17 @@ Retrieves the translated help for a given <em class="parameter"><code>enum_value
 <hr>
 <div class="refsect2">
 <a name="gimp-flags-get-first-desc"></a><h3>gimp_flags_get_first_desc ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="returnvalue">GimpFlagsDesc</span></a> *     gimp_flags_get_first_desc           (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> value</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="returnvalue">GimpFlagsDesc</span></a> *     gimp_flags_get_first_desc           (<em class="parameter"><code><span class="type">GFlagsClass</span> *flags_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> value</code></em>);</pre>
 <p>
-Retrieves the first <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a> that matches the given value, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.
+Retrieves the first <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="struct GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a> that matches the given value, or <code class="literal">NULL</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_class</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a>
+<td>a <span class="type">GFlagsClass</span>
 </td>
 </tr>
 <tr>
@@ -443,24 +448,24 @@ Retrieves the first <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFla
 <hr>
 <div class="refsect2">
 <a name="gimp-flags-get-first-value"></a><h3>gimp_flags_get_first_value ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_flags_get_first_value          (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> flags_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> value</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_name</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_nick</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_desc</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value_help</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_flags_get_first_value          (<em class="parameter"><code><span class="type">GType</span> flags_type</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> value</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_name</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_nick</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_desc</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **value_help</code></em>);</pre>
 <p>
 Checks if <em class="parameter"><code>value</code></em> is valid for the flags registered as <em class="parameter"><code>flags_type</code></em>.
-If the value exists in that flags, its name, nick and its translated
-desc and help are returned (if <em class="parameter"><code>value_name</code></em>, <em class="parameter"><code>value_nick</code></em>, <em class="parameter"><code>value_desc</code></em>
-and <em class="parameter"><code>value_help</code></em> are not <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>).
+If the value exists in that flags, its name, nick and its
+translated description and help are returned (if <em class="parameter"><code>value_name</code></em>,
+<em class="parameter"><code>value_nick</code></em>, <em class="parameter"><code>value_desc</code></em> and <em class="parameter"><code>value_help</code></em> are not <code class="literal">NULL</code>).
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_type</code></em> :</span></p></td>
-<td>the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of registered flags</td>
+<td>the <span class="type">GType</span> of registered flags</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
@@ -468,25 +473,25 @@ and <em class="parameter"><code>value_help</code></em> are not <a href="/usr/sha
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_name</code></em> :</span></p></td>
-<td>return location for the value's name (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's name (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_nick</code></em> :</span></p></td>
-<td>return location for the value's nick (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's nick (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_desc</code></em> :</span></p></td>
-<td>return location for the value's translated desc (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's translated description (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_help</code></em> :</span></p></td>
-<td>return location for the value's translated help (or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>)</td>
+<td>return location for the value's translated help (or <code class="literal">NULL</code>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>flags_type</code></em>,
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+<code class="literal">TRUE</code> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>flags_type</code></em>,
+<code class="literal">FALSE</code> otherwise</td>
 </tr>
 </tbody>
 </table></div>
@@ -495,27 +500,27 @@ and <em class="parameter"><code>value_help</code></em> are not <a href="/usr/sha
 <hr>
 <div class="refsect2">
 <a name="gimp-flags-value-get-desc"></a><h3>gimp_flags_value_get_desc ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_flags_value_get_desc           (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> *flags_value</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       gimp_flags_value_get_desc           (<em class="parameter"><code><span class="type">GFlagsClass</span> *flags_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFlagsValue</span> *flags_value</code></em>);</pre>
 <p>
-Retrieves the translated desc for a given <em class="parameter"><code>flags_value</code></em>.
+Retrieves the translated description for a given <em class="parameter"><code>flags_value</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_class</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a>
+<td>a <span class="type">GFlagsClass</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_value</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> from <em class="parameter"><code>flags_class</code></em>
+<td>a <span class="type">GFlagsValue</span> from <em class="parameter"><code>flags_class</code></em>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the translated desc of the flags value</td>
+<td>the translated description of the flags value</td>
 </tr>
 </tbody>
 </table></div>
@@ -524,8 +529,8 @@ Retrieves the translated desc for a given <em class="parameter"><code>flags_valu
 <hr>
 <div class="refsect2">
 <a name="gimp-flags-value-get-help"></a><h3>gimp_flags_value_get_help ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gimp_flags_value_get_help           (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a> *flags_class</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> *flags_value</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       gimp_flags_value_get_help           (<em class="parameter"><code><span class="type">GFlagsClass</span> *flags_class</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFlagsValue</span> *flags_value</code></em>);</pre>
 <p>
 Retrieves the translated help for a given <em class="parameter"><code>flags_value</code></em>.
 </p>
@@ -534,12 +539,12 @@ Retrieves the translated help for a given <em class="parameter"><code>flags_valu
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_class</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsClass"><span class="type">GFlagsClass</span></a>
+<td>a <span class="type">GFlagsClass</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags_value</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Flag-Types.html#GFlagsValue"><span class="type">GFlagsValue</span></a> from <em class="parameter"><code>flags_class</code></em>
+<td>a <span class="type">GFlagsValue</span> from <em class="parameter"><code>flags_class</code></em>
 </td>
 </tr>
 <tr>

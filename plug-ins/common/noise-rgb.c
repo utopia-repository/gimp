@@ -4,9 +4,9 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1996 Torsten Martinsen
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -43,6 +42,7 @@
 #define RGB_NOISE_PROC   "plug-in-rgb-noise"
 #define NOISIFY_PROC     "plug-in-noisify"
 #define PLUG_IN_BINARY   "noise-rgb"
+#define PLUG_IN_ROLE     "gimp-noise-rgb"
 #define SCALE_WIDTH      125
 #define TILE_CACHE_SIZE  16
 
@@ -117,7 +117,7 @@ query (void)
 {
   static const GimpParamDef scatter_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_INT32,    "independent", "Noise in channels independent" },
@@ -127,9 +127,10 @@ query (void)
     { GIMP_PDB_FLOAT,    "noise-3",     "Noise in the third channel (blue)" },
     { GIMP_PDB_FLOAT,    "noise-4",     "Noise in the fourth channel (alpha)" }
   };
+
   static const GimpParamDef noisify_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_INT32,    "independent", "Noise in channels independent" },
@@ -308,15 +309,15 @@ noisify_func (const guchar *src,
               gint          bpp,
               gpointer      data)
 {
-  GRand *gr    = data;
-  gint   noise = 0;
-  gint   b;
+  GRand   *gr    = data;
+  gdouble  noise = 0;
+  gint     b;
 
   for (b = 0; b < bpp; b++)
     {
       if (b == 0 || nvals.independent ||
           (b == 1 && bpp == 2) || (b == 3 && bpp == 4))
-        noise = (gint) (nvals.noise[b] * gauss (gr) * 127);
+        noise = nvals.noise[b] * gauss (gr) * 127;
 
       if (nvals.noise[b] > 0.0)
         {
@@ -324,12 +325,13 @@ noisify_func (const guchar *src,
 
           if (nvals.correlated)
             {
-              p = (gint) (src[b] + (src[b] * (noise / 127.0)));
+              p = (gint) (src[b] + (src[b] * (noise / 127.0)) + 0.5);
             }
           else
             {
-              p = src[b] + noise;
+              p = (gint) (src[b] + noise + 0.5);
             }
+
           dest[b] = CLAMP0255 (p);
         }
       else
@@ -445,7 +447,7 @@ noisify_dialog (GimpDrawable *drawable,
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("RGB Noise"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("RGB Noise"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, RGB_NOISE_PROC,
 
@@ -461,9 +463,10 @@ noisify_dialog (GimpDrawable *drawable,
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -474,7 +477,7 @@ noisify_dialog (GimpDrawable *drawable,
                     G_CALLBACK (noisify),
                     NULL);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (main_vbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -597,12 +600,9 @@ static void
 noisify_double_adjustment_update (GtkAdjustment *adjustment,
                                   gpointer       data)
 {
-  GimpDrawable *drawable;
-  gint          n;
+  gint n;
 
   gimp_double_adjustment_update (adjustment, data);
-
-  drawable = g_object_get_data (G_OBJECT (adjustment), "drawable");
 
   if (! nvals.independent)
     {
@@ -619,6 +619,6 @@ noisify_double_adjustment_update (GtkAdjustment *adjustment,
       for (i = 0; i < n; i++)
         if (adjustment != GTK_ADJUSTMENT (noise_int.channel_adj[i]))
           gtk_adjustment_set_value (GTK_ADJUSTMENT (noise_int.channel_adj[i]),
-                                    adjustment->value);
+                                    gtk_adjustment_get_value (adjustment));
     }
 }

@@ -2,10 +2,10 @@
  *
  * Copyright (C) 2005, Raphaël Quinet <raphael@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,14 +13,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <stdio.h>
 #include <string.h>
 
 #include <gtk/gtk.h>
@@ -31,6 +29,15 @@
 
 #include "xmp-encode.h"
 #include "xmp-schemas.h"
+
+
+static void  gen_element (GString     *buffer,
+                          gint         indent,
+                          const gchar *prefix,
+                          const gchar *name,
+                          const gchar *value,
+                          ...) G_GNUC_NULL_TERMINATED;
+
 
 static void
 gen_schema_start (GString         *buffer,
@@ -47,6 +54,48 @@ gen_schema_end (GString *buffer)
 }
 
 static void
+gen_element (GString     *buffer,
+             gint         indent,
+             const gchar *prefix,
+             const gchar *name,
+             const gchar *value,
+             ...)
+{
+  const gchar *attr_name;
+  const gchar *attr_value;
+  va_list      args;
+
+  while (indent--)
+    g_string_append_c (buffer, ' ');
+
+  g_string_append_printf (buffer, "<%s:%s", prefix, name);
+
+  va_start (args, value);
+
+  while ((attr_name  = va_arg (args, const gchar *)) != NULL &&
+         (attr_value = va_arg (args, const gchar *)) != NULL)
+    {
+      if (*attr_name && *attr_value)
+        g_string_append_printf (buffer, " %s='%s'", attr_name, attr_value);
+    }
+
+  va_end (args);
+
+  if (value && *value)
+    {
+      gchar *escaped_value = g_markup_escape_text (value, -1);
+
+      g_string_append_printf (buffer, ">%s</%s:%s>\n",
+                              escaped_value, prefix, name);
+      g_free (escaped_value);
+    }
+  else
+    {
+      g_string_append (buffer, " />\n");
+    }
+}
+
+static void
 gen_property (GString            *buffer,
               const XMPSchema    *schema,
               const XMPProperty  *property,
@@ -54,7 +103,6 @@ gen_property (GString            *buffer,
 {
   gint         i;
   const gchar *ns_prefix;
-  gchar       *escaped_value;
 
   switch (property->type)
     {
@@ -65,12 +113,9 @@ gen_property (GString            *buffer,
     case XMP_TYPE_MIME_TYPE:
     case XMP_TYPE_TEXT:
     case XMP_TYPE_RATIONAL:
-      escaped_value = g_markup_escape_text (value_array[0], -1);
-      g_string_append_printf (buffer, "  <%s:%s>%s</%s:%s>\n",
-                              schema->prefix, property->name,
-                              escaped_value,
-                              schema->prefix, property->name);
-      g_free (escaped_value);
+      gen_element (buffer, 2,
+                   schema->prefix, property->name, value_array[0],
+                   NULL);
       break;
 
     case XMP_TYPE_LOCALE_BAG:
@@ -81,10 +126,9 @@ gen_property (GString            *buffer,
                               schema->prefix, property->name);
       for (i = 0; value_array[i] != NULL; i++)
         {
-          escaped_value = g_markup_escape_text (value_array[i], -1);
-          g_string_append_printf (buffer, "    <rdf:li>%s</rdf:li>\n",
-                                  escaped_value);
-          g_free (escaped_value);
+          gen_element (buffer, 4,
+                       "rdf", "li", value_array[i],
+                       NULL);
         }
       g_string_append_printf (buffer, "   </rdf:Bag>\n  </%s:%s>\n",
                               schema->prefix, property->name);
@@ -98,10 +142,9 @@ gen_property (GString            *buffer,
                               schema->prefix, property->name);
       for (i = 0; value_array[i] != NULL; i++)
         {
-          escaped_value = g_markup_escape_text (value_array[i], -1);
-          g_string_append_printf (buffer, "    <rdf:li>%s</rdf:li>\n",
-                                  escaped_value);
-          g_free (escaped_value);
+          gen_element (buffer, 4,
+                       "rdf", "li", value_array[i],
+                       NULL);
         }
       g_string_append_printf (buffer, "   </rdf:Seq>\n  </%s:%s>\n",
                               schema->prefix, property->name);
@@ -110,21 +153,19 @@ gen_property (GString            *buffer,
     case XMP_TYPE_LANG_ALT:
       g_string_append_printf (buffer, "  <%s:%s>\n   <rdf:Alt>\n",
                               schema->prefix, property->name);
-      for (i = 0; value_array[i] != NULL; i += 2)
-        {
-          escaped_value = g_markup_escape_text (value_array[i + 1], -1);
-          g_string_append_printf (buffer,
-                                  "    <rdf:li xml:lang='%s'>%s</rdf:li>\n",
-                                  value_array[i], escaped_value);
-          g_free (escaped_value);
-        }
+      gen_element (buffer, 4,
+                   "rdf", "li", value_array[0],
+                   "xml:lang", "x-default",
+                   NULL);
       g_string_append_printf (buffer, "   </rdf:Alt>\n  </%s:%s>\n",
                               schema->prefix, property->name);
       break;
 
     case XMP_TYPE_URI:
-      g_string_append_printf (buffer, "  <%s:%s rdf:resource='%s' />\n",
-                              schema->prefix, property->name, value_array[0]);
+      gen_element (buffer, 2,
+                   schema->prefix, property->name, NULL,
+                   "rdf:resource", value_array[0],
+                   NULL);
       break;
 
     case XMP_TYPE_RESOURCE_REF:
@@ -156,12 +197,9 @@ gen_property (GString            *buffer,
       if (value_array[0] && value_array[1])
         for (i = 2; value_array[i] != NULL; i += 2)
           {
-            escaped_value = g_markup_escape_text (value_array[i + 1], -1);
-            g_string_append_printf (buffer, "   <%s:%s>%s</%s:%s>\n",
-                                    ns_prefix, value_array[i],
-                                    escaped_value,
-                                    ns_prefix, value_array[i]);
-            g_free (escaped_value);
+            gen_element (buffer, 3,
+                         ns_prefix, value_array[i], value_array[i + 1],
+                         NULL);
           }
       g_string_append_printf (buffer, "  </%s:%s>\n",
                               schema->prefix, property->name);

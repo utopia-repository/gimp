@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -34,6 +33,9 @@
 
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
+#include "core/gimpdynamics.h"
+#include "core/gimpdynamicsoutput.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimppattern.h"
 #include "core/gimppickable.h"
@@ -47,12 +49,13 @@
 static gboolean gimp_clone_start        (GimpPaintCore    *paint_core,
                                          GimpDrawable     *drawable,
                                          GimpPaintOptions *paint_options,
-                                         GimpCoords       *coords,
+                                         const GimpCoords *coords,
                                          GError          **error);
 
 static void     gimp_clone_motion       (GimpSourceCore   *source_core,
                                          GimpDrawable     *drawable,
                                          GimpPaintOptions *paint_options,
+                                         const GimpCoords *coords,
                                          gdouble           opacity,
                                          GimpPickable     *src_pickable,
                                          PixelRegion      *srcPR,
@@ -120,7 +123,7 @@ static gboolean
 gimp_clone_start (GimpPaintCore     *paint_core,
                   GimpDrawable      *drawable,
                   GimpPaintOptions  *paint_options,
-                  GimpCoords        *coords,
+                  const GimpCoords  *coords,
                   GError           **error)
 {
   GimpCloneOptions *options = GIMP_CLONE_OPTIONS (paint_options);
@@ -136,8 +139,8 @@ gimp_clone_start (GimpPaintCore     *paint_core,
     {
       if (! gimp_context_get_pattern (GIMP_CONTEXT (options)))
         {
-          g_set_error (error, 0, 0,
-                       _("No patterns available for use with this tool."));
+          g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			       _("No patterns available for use with this tool."));
           return FALSE;
         }
     }
@@ -149,6 +152,7 @@ static void
 gimp_clone_motion (GimpSourceCore   *source_core,
                    GimpDrawable     *drawable,
                    GimpPaintOptions *paint_options,
+                   const GimpCoords *coords,
                    gdouble           opacity,
                    GimpPickable     *src_pickable,
                    PixelRegion      *srcPR,
@@ -160,21 +164,21 @@ gimp_clone_motion (GimpSourceCore   *source_core,
                    gint              paint_area_width,
                    gint              paint_area_height)
 {
-  GimpPaintCore     *paint_core     = GIMP_PAINT_CORE (source_core);
-  GimpCloneOptions  *options        = GIMP_CLONE_OPTIONS (paint_options);
-  GimpSourceOptions *source_options = GIMP_SOURCE_OPTIONS (paint_options);
-  GimpContext       *context        = GIMP_CONTEXT (paint_options);
-  GimpImage         *src_image      = NULL;
-  GimpImageType      src_type       = 0;
-  GimpImageType      dest_type;
-  GimpImage         *image;
-  gpointer           pr = NULL;
-  gint               y;
-  PixelRegion        destPR;
-  GimpPattern       *pattern = NULL;
-  gdouble            hardness;
-
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
+  GimpPaintCore      *paint_core     = GIMP_PAINT_CORE (source_core);
+  GimpCloneOptions   *options        = GIMP_CLONE_OPTIONS (paint_options);
+  GimpSourceOptions  *source_options = GIMP_SOURCE_OPTIONS (paint_options);
+  GimpContext        *context        = GIMP_CONTEXT (paint_options);
+  GimpImage          *image          = gimp_item_get_image (GIMP_ITEM (drawable));
+  GimpImage          *src_image      = NULL;
+  GimpDynamicsOutput *force_output;
+  GimpImageType       src_type       = 0;
+  GimpImageType       dest_type;
+  gpointer            pr = NULL;
+  gint                y;
+  PixelRegion         destPR;
+  GimpPattern        *pattern = NULL;
+  gdouble             fade_point;
+  gdouble             force;
 
   switch (options->clone_type)
     {
@@ -236,18 +240,24 @@ gimp_clone_motion (GimpSourceCore   *source_core,
         }
     }
 
-  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
-                                                     &paint_core->cur_coords);
+  force_output = gimp_dynamics_get_output (GIMP_BRUSH_CORE (paint_core)->dynamics,
+                                           GIMP_DYNAMICS_OUTPUT_FORCE);
 
-  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
-                                                      &paint_core->cur_coords);
+  fade_point = gimp_paint_options_get_fade (paint_options, image,
+                                            paint_core->pixel_dist);
+
+  force = gimp_dynamics_output_get_linear_value (force_output,
+                                                 coords,
+                                                 paint_options,
+                                                 fade_point);
 
   gimp_brush_core_paste_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
+                                coords,
                                 MIN (opacity, GIMP_OPACITY_OPAQUE),
                                 gimp_context_get_opacity (context),
                                 gimp_context_get_paint_mode (context),
                                 gimp_paint_options_get_brush_mode (paint_options),
-                                hardness,
+                                force,
 
                                 /* In fixed mode, paint incremental so the
                                  * individual brushes are properly applied
@@ -282,7 +292,7 @@ gimp_clone_line_image (GimpImage     *dest_image,
       gimp_image_transform_color (dest_image, dest_type, d,
                                   GIMP_RGB, rgba);
 
-      d[alpha] = rgba[ALPHA_PIX];
+      d[alpha] = rgba[ALPHA];
 
       s += src_bytes;
       d += dest_bytes;
@@ -314,7 +324,7 @@ gimp_clone_line_pattern (GimpImage     *dest_image,
     y += pattern->mask->height;
 
   /*  Get a pointer to the appropriate scanline of the pattern buffer  */
-  pat = temp_buf_data (pattern->mask) +
+  pat = temp_buf_get_data (pattern->mask) +
     (y % pattern->mask->height) * pattern->mask->width * pat_bytes;
 
   color_type = (pat_bytes == 3 ||

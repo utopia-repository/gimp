@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -91,7 +90,6 @@ static gint       load_options            (GFigObj *gfig,
                                            FILE    *fp);
 /* globals */
 
-GdkGC        *gfig_gc;
 GfigObjectClass dobj_class[10];
 GFigContext  *gfig_context;
 GtkWidget    *top_level_dlg;
@@ -114,7 +112,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
     { GIMP_PDB_INT32,    "dummy",    "dummy" }
@@ -148,11 +146,12 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  GimpParam         *values = g_new (GimpParam, 1);
+  static GimpParam   values[1];
   GimpDrawable      *drawable;
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   gint               pwidth, pheight;
+
   INIT_I18N ();
 
   gfig_context = g_new0 (GFigContext, 1);
@@ -456,6 +455,7 @@ gfig_load (const gchar *filename,
     {
       g_message ("File '%s' is not a gfig file",
                   gimp_filename_to_utf8 (gfig->filename));
+      gfig_free (gfig);
       return NULL;
     }
 
@@ -475,6 +475,7 @@ gfig_load (const gchar *filename,
     {
       g_message ("File '%s' corrupt file - Line %d Option section incorrect",
                  gimp_filename_to_utf8 (filename), line_no);
+      gfig_free (gfig);
       return NULL;
     }
 
@@ -482,6 +483,7 @@ gfig_load (const gchar *filename,
     {
       g_message ("File '%s' corrupt file - Line %d Option section incorrect",
                  gimp_filename_to_utf8 (filename), line_no);
+      gfig_free (gfig);
       return NULL;
     }
 
@@ -497,6 +499,7 @@ gfig_load (const gchar *filename,
     {
       g_message ("File '%s' corrupt file - Line %d Object count to small",
                  gimp_filename_to_utf8 (filename), line_no);
+      gfig_free (gfig);
       return NULL;
     }
 
@@ -726,7 +729,7 @@ gfig_save_as_parasite (void)
 
   g_string_free (string, TRUE);
 
-  if (!gimp_drawable_parasite_attach (gfig_context->drawable_id, parasite))
+  if (!gimp_item_attach_parasite (gfig_context->drawable_id, parasite))
     {
       g_message (_("Error trying to save figure as a parasite: "
                    "can't attach parasite to drawable."));
@@ -746,7 +749,7 @@ gfig_load_from_parasite (void)
   GimpParasite *parasite;
   GFigObj      *gfig;
 
-  parasite = gimp_drawable_parasite_find (gfig_context->drawable_id, "gfig");
+  parasite = gimp_item_get_parasite (gfig_context->drawable_id, "gfig");
   if (! parasite)
     return NULL;
 

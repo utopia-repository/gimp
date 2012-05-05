@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,7 +20,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 #include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -30,8 +29,6 @@
 
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
-#include "core/gimplist.h"
-#include "core/gimpunit.h"
 
 #include "gimpanchor.h"
 #include "gimpstroke.h"
@@ -80,7 +77,8 @@ gimp_vectors_export_file (const GimpImage    *image,
   file = g_fopen (filename, "w");
   if (!file)
     {
-      g_set_error (error, 0, 0, _("Could not open '%s' for writing: %s"),
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+		   _("Could not open '%s' for writing: %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       return FALSE;
     }
@@ -93,7 +91,8 @@ gimp_vectors_export_file (const GimpImage    *image,
 
   if (fclose (file))
     {
-      g_set_error (error, 0, 0, _("Error while writing '%s': %s"),
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+		   _("Error while writing '%s': %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       return FALSE;
     }
@@ -150,8 +149,12 @@ gimp_vectors_export (const GimpImage   *image,
     {
       GList *list;
 
-      for (list = GIMP_LIST (image->vectors)->list; list; list = list->next)
-        gimp_vectors_export_path (GIMP_VECTORS (list->data), str);
+      for (list = gimp_image_get_vectors_iter (image);
+           list;
+           list = list->next)
+        {
+          gimp_vectors_export_path (GIMP_VECTORS (list->data), str);
+        }
     }
 
   g_string_append (str, "</svg>\n");
@@ -191,10 +194,8 @@ gimp_vectors_export_image_size (const GimpImage *image,
       break;
     }
 
-  g_ascii_formatd (wbuf, sizeof (wbuf),
-                   "%g", w * _gimp_unit_get_factor (image->gimp, unit));
-  g_ascii_formatd (hbuf, sizeof (hbuf),
-                   "%g", h * _gimp_unit_get_factor (image->gimp, unit));
+  g_ascii_formatd (wbuf, sizeof (wbuf), "%g", w * gimp_unit_get_factor (unit));
+  g_ascii_formatd (hbuf, sizeof (hbuf), "%g", h * gimp_unit_get_factor (unit));
 
   g_string_append_printf (str,
                           "width=\"%s%s\" height=\"%s%s\"",
@@ -205,7 +206,7 @@ static void
 gimp_vectors_export_path (const GimpVectors *vectors,
                           GString           *str)
 {
-  const gchar *name = gimp_object_get_name (GIMP_OBJECT (vectors));
+  const gchar *name = gimp_object_get_name (vectors);
   gchar       *data = gimp_vectors_export_path_data (vectors);
   gchar       *esc_name;
 

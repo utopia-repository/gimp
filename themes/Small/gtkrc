@@ -44,17 +44,17 @@ style "gimp-default-style"
   GtkOptionMenu::indicator-spacing = { 4, 3, 1, 1 }
 
   GtkPaned::handle-size             = 5
-  GimpDock::default-height          = 240
+  GimpDockWindow::default-height    = 240
   GimpDock::font-scale              = 0.8333
-  GimpDockSeparator::height         = 5
   GimpMenuDock::minimal-width       = 200
-  GimpMenuDock::menu-preview-size   = small-toolbar
-  GimpToolbox::tool-icon-size       = menu
-  GimpToolbox::button-relief        = none
+  GimpDockWindow::menu-preview-size = small-toolbar
+  GimpToolPalette::tool-icon-size   = menu
+  GimpToolPalette::button-relief    = none
   GimpDockbook::tab-border          = 0
   GimpDockbook::tab-icon-size       = menu
   GimpColorNotebook::tab-border     = 0
   GimpColorNotebook::tab-icon-size  = menu
+  GimpDeviceEditor::handle-size     = 12
   GimpDockable::content-border      = 1
   GimpEditor::content-spacing       = 1
   GimpEditor::button-spacing        = 1
@@ -108,3 +108,11 @@ style "gimp-display-style" = "gimp-default-style"
 }
 
 widget "*GimpDisplayShell.*" style "gimp-display-style"
+
+
+style "gimp-overlay-style" = "gimp-display-style"
+{
+  GtkButton::focus-line_width = 1
+}
+
+widget_class "*<GimpOverlayFrame>*" style "gimp-overlay-style"

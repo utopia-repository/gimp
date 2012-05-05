@@ -5,9 +5,9 @@
  *
  * Copyright (C) 2000 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,6 +31,7 @@
 
 #define PLUG_IN_PROC     "plug-in-unit-editor"
 #define PLUG_IN_BINARY   "unit-editor"
+#define PLUG_IN_ROLE     "gimp-unit-editor"
 #define RESPONSE_REFRESH 1
 
 enum
@@ -101,7 +101,7 @@ static const UnitColumn columns[] =
                            "the input field should provide to get "
                            "approximately the same accuracy as an "
                            "\"inch\" input field with two decimal digits.") },
-  { N_("Symbol"),       N_("The unit's symbol if it has one (e.g. \"'\" "
+  { N_("Symbol"),       N_("The unit's symbol if it has one (e.g. \" "
                            "for inches). The unit's abbreviation is used "
                            "if doesn't have a symbol.")                     },
   { N_("Abbreviation"), N_("The unit's abbreviation (e.g. \"cm\" for "
@@ -138,7 +138,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run-mode", "Interactive" }
+    { GIMP_PDB_INT32, "run-mode", "The run mode { RUN-INTERACTIVE (0) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -147,10 +147,10 @@ query (void)
                           "Michael Natterer <mitch@gimp.org>",
                           "Michael Natterer <mitch@gimp.org>",
                           "2000",
-			  N_("U_nits"),
-			  "",
+                          N_("U_nits"),
+                          "",
                           GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
+                          G_N_ELEMENTS (args), 0,
                           args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Edit/Preferences");
@@ -166,9 +166,6 @@ run (const gchar      *name,
      GimpParam       **return_vals)
 {
   static GimpParam values[2];
-  GimpRunMode      run_mode;
-
-  run_mode = param[0].data.d_int32;
 
   INIT_I18N ();
 
@@ -205,9 +202,9 @@ new_unit_dialog (GtkWidget *main_dialog,
 
   GimpUnit   unit = GIMP_UNIT_PIXEL;
 
-  dialog = gimp_dialog_new (_("Add a New Unit"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Add a New Unit"), PLUG_IN_ROLE,
                             main_dialog, GTK_DIALOG_MODAL,
-			    gimp_standard_help_func, PLUG_IN_PROC,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_ADD,    GTK_RESPONSE_OK,
@@ -223,8 +220,8 @@ new_unit_dialog (GtkWidget *main_dialog,
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
-		      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
   entry = identifier_entry = gtk_entry_new ();
@@ -234,29 +231,29 @@ new_unit_dialog (GtkWidget *main_dialog,
                           gimp_unit_get_identifier (template));
     }
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-			     _("_ID:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("_ID:"), 0.0, 0.5,
+                             entry, 1, FALSE);
 
   gimp_help_set_help_data (entry, gettext (columns[IDENTIFIER].help), NULL);
 
   spinbutton = gimp_spin_button_new (&factor_adj,
-				     (template != GIMP_UNIT_PIXEL) ?
-				     gimp_unit_get_factor (template) : 1.0,
-				     GIMP_MIN_RESOLUTION, GIMP_MAX_RESOLUTION,
-				     0.01, 0.1, 0.0, 0.01, 5);
+                                     (template != GIMP_UNIT_PIXEL) ?
+                                     gimp_unit_get_factor (template) : 1.0,
+                                     GIMP_MIN_RESOLUTION, GIMP_MAX_RESOLUTION,
+                                     0.01, 0.1, 0.0, 0.01, 5);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-			     _("_Factor:"), 0.0, 0.5,
-			     spinbutton, 1, TRUE);
+                             _("_Factor:"), 0.0, 0.5,
+                             spinbutton, 1, TRUE);
 
   gimp_help_set_help_data (spinbutton, gettext (columns[FACTOR].help), NULL);
 
   spinbutton = gimp_spin_button_new (&digits_adj,
-				     (template != GIMP_UNIT_PIXEL) ?
-				     gimp_unit_get_digits (template) : 2.0,
-				     0, 5, 1, 1, 0, 1, 0);
+                                     (template != GIMP_UNIT_PIXEL) ?
+                                     gimp_unit_get_digits (template) : 2.0,
+                                     0, 5, 1, 1, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
-			     _("_Digits:"), 0.0, 0.5,
-			     spinbutton, 1, TRUE);
+                             _("_Digits:"), 0.0, 0.5,
+                             spinbutton, 1, TRUE);
 
   gimp_help_set_help_data (spinbutton, gettext (columns[DIGITS].help), NULL);
 
@@ -267,8 +264,8 @@ new_unit_dialog (GtkWidget *main_dialog,
                           gimp_unit_get_symbol (template));
     }
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
-			     _("_Symbol:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("_Symbol:"), 0.0, 0.5,
+                             entry, 1, FALSE);
 
   gimp_help_set_help_data (entry, gettext (columns[SYMBOL].help), NULL);
 
@@ -279,8 +276,8 @@ new_unit_dialog (GtkWidget *main_dialog,
                           gimp_unit_get_abbreviation (template));
     }
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 4,
-			     _("_Abbreviation:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("_Abbreviation:"), 0.0, 0.5,
+                             entry, 1, FALSE);
 
   gimp_help_set_help_data (entry, gettext (columns[ABBREVIATION].help), NULL);
 
@@ -291,8 +288,8 @@ new_unit_dialog (GtkWidget *main_dialog,
                           gimp_unit_get_singular (template));
     }
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 5,
-			     _("Si_ngular:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("Si_ngular:"), 0.0, 0.5,
+                             entry, 1, FALSE);
 
   gimp_help_set_help_data (entry, gettext (columns[SINGULAR].help), NULL);
 
@@ -303,8 +300,8 @@ new_unit_dialog (GtkWidget *main_dialog,
                           gimp_unit_get_plural (template));
     }
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 6,
-			     _("_Plural:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("_Plural:"), 0.0, 0.5,
+                             entry, 1, FALSE);
 
   gimp_help_set_help_data (entry, gettext (columns[PLURAL].help), NULL);
 
@@ -385,6 +382,8 @@ unit_editor_dialog (void)
   GtkListStore      *list_store;
   GtkWidget         *tv;
   GtkTreeViewColumn *col;
+  GtkWidget         *col_widget;
+  GtkWidget         *button;
   GtkCellRenderer   *rend;
   gint               i;
 
@@ -406,7 +405,7 @@ unit_editor_dialog (void)
   tv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   g_object_unref (list_store);
 
-  dialog = gimp_dialog_new (_("Unit Editor"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Unit Editor"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -450,19 +449,19 @@ unit_editor_dialog (void)
      -1, NULL);
 
   toolbar = gtk_ui_manager_get_widget (ui_manager, "/unit-editor-toolbar");
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), toolbar,
-		      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      toolbar, FALSE, FALSE, 0);
   gtk_widget_show (toolbar);
 
   scrolled_win = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_win),
-				       GTK_SHADOW_IN);
+                                       GTK_SHADOW_IN);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
                                   GTK_POLICY_NEVER,
                                   GTK_POLICY_ALWAYS);
   gtk_container_set_border_width (GTK_CONTAINER (scrolled_win), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-                     scrolled_win);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      scrolled_win, TRUE, TRUE, 0);
   gtk_widget_show (scrolled_win);
 
   gtk_widget_set_size_request (tv, -1, 220);
@@ -480,8 +479,15 @@ unit_editor_dialog (void)
 
   gtk_tree_view_append_column (GTK_TREE_VIEW (tv), col);
 
-  gimp_help_set_help_data (col->button,
-			   gettext (columns[SAVE].help), NULL);
+  col_widget = gtk_tree_view_column_get_widget (col);
+  if (col_widget)
+    {
+      button = gtk_widget_get_ancestor (col_widget, GTK_TYPE_BUTTON);
+
+      if (button)
+        gimp_help_set_help_data (button,
+                                 gettext (columns[SAVE].help), NULL);
+    }
 
   g_signal_connect (rend, "toggled",
                     G_CALLBACK (saved_toggled_callback),
@@ -501,7 +507,14 @@ unit_editor_dialog (void)
 
       gtk_tree_view_append_column (GTK_TREE_VIEW (tv), col);
 
-      gimp_help_set_help_data (col->button, gettext (columns[i].help), NULL);
+      col_widget = gtk_tree_view_column_get_widget (col);
+      if (col_widget)
+        {
+          button = gtk_widget_get_ancestor (col_widget, GTK_TYPE_BUTTON);
+
+          if (button)
+            gimp_help_set_help_data (button, gettext (columns[i].help), NULL);
+        }
     }
 
   unit_list_init (GTK_TREE_VIEW (tv));
@@ -530,7 +543,7 @@ unit_editor_response (GtkWidget *widget,
 
 static void
 new_callback (GtkAction   *action,
-	      GtkTreeView *tv)
+              GtkTreeView *tv)
 {
   GimpUnit  unit;
 
@@ -556,14 +569,14 @@ new_callback (GtkAction   *action,
                                           &iter);
 
           adj = gtk_tree_view_get_vadjustment (tv);
-          gtk_adjustment_set_value (adj, adj->upper);
+          gtk_adjustment_set_value (adj, gtk_adjustment_get_upper (adj));
         }
     }
 }
 
 static void
 duplicate_callback (GtkAction   *action,
-		    GtkTreeView *tv)
+                    GtkTreeView *tv)
 {
   GtkTreeModel     *model;
   GtkTreeSelection *sel;
@@ -598,7 +611,7 @@ duplicate_callback (GtkAction   *action,
               gtk_tree_selection_select_iter (sel, &iter);
 
               adj = gtk_tree_view_get_vadjustment (tv);
-              gtk_adjustment_set_value (adj, adj->upper);
+              gtk_adjustment_set_value (adj, gtk_adjustment_get_upper (adj));
             }
         }
     }

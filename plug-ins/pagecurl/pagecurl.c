@@ -5,9 +5,9 @@
  * You can contact me at quartic@polloux.fciencias.unam.mx
  * You can contact the original GIMP authors at gimp@xcf.berkeley.edu
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -53,6 +52,7 @@
 
 #define PLUG_IN_PROC    "plug-in-pagecurl"
 #define PLUG_IN_BINARY  "pagecurl"
+#define PLUG_IN_ROLE    "gimp-pagecurl"
 #define PLUG_IN_VERSION "July 2004, 1.0"
 #define NGRADSAMPLES    256
 
@@ -159,7 +159,7 @@ static const guint8 *curl_pixbufs[] =
 
 static GtkWidget *curl_image = NULL;
 
-static gint   sel_x1, sel_y1, sel_x2, sel_y2;
+static gint   sel_x, sel_y;
 static gint   true_sel_width, true_sel_height;
 static gint   sel_width, sel_height;
 static gint   drawable_position;
@@ -196,7 +196,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",    "Interactive (0), non-interactive (1)" },
+    { GIMP_PDB_INT32,    "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",       "Input image"                          },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable"                       },
     { GIMP_PDB_INT32,    "colors",      "FG- and BG-Color (0), Current gradient (1), Current gradient reversed (2)" },
@@ -262,8 +262,10 @@ run (const gchar      *name,
   drawable_id = param[2].data.d_drawable;
   image_id = param[1].data.d_image;
 
-  if (gimp_drawable_is_rgb (drawable_id)
-       || gimp_drawable_is_gray (drawable_id))
+  if ((gimp_drawable_is_rgb (drawable_id) ||
+       gimp_drawable_is_gray (drawable_id)) &&
+      gimp_drawable_mask_intersect (drawable_id, &sel_x, &sel_y,
+                                    &true_sel_width, &true_sel_height))
     {
       switch (run_mode)
 	{
@@ -393,7 +395,7 @@ static void
 dialog_scale_update (GtkAdjustment *adjustment,
 		     gdouble       *value)
 {
-  *value = ((gdouble) adjustment->value) / 100.0;
+  *value = ((gdouble) gtk_adjustment_get_value (adjustment)) / 100.0;
 }
 
 static void
@@ -437,7 +439,7 @@ dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Pagecurl Effect"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Pagecurl Effect"), PLUG_IN_ROLE,
                             NULL, 0,
 			    gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -453,9 +455,9 @@ dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                       vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -524,7 +526,8 @@ dialog (void)
   frame = gimp_frame_new (_("Curl Orientation"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  hbox = gtk_hbox_new (TRUE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
 
   {
@@ -647,13 +650,6 @@ init_calculation (gint32 drawable_id)
 	 image_layers[drawable_position] != drawable_id)
     drawable_position++;
 
-  /* Get the bounds of the active selection */
-  gimp_drawable_mask_bounds (drawable_id,
-			     &sel_x1, &sel_y1, &sel_x2, &sel_y2);
-
-  true_sel_width = sel_x2 - sel_x1;
-  true_sel_height = sel_y2 - sel_y1;
-
   switch (curl.orientation)
     {
     case CURL_ORIENTATION_VERTICAL:
@@ -717,7 +713,7 @@ do_curl_effect (gint32 drawable_id)
   gboolean      color_image;
   gint          x1, y1, k;
   guint         alpha_pos, progress, max_progress;
-  gdouble       intensity, alpha, beta;
+  gdouble       intensity, alpha;
   GimpVector2   v, dl, dr;
   gdouble       dl_mag, dr_mag, angle, factor;
   guchar       *pp, *dest, fore_grayval, back_grayval;
@@ -740,11 +736,13 @@ do_curl_effect (gint32 drawable_id)
 
   curl_layer_id = curl_layer->drawable_id;
 
-  gimp_image_add_layer (image_id, curl_layer->drawable_id, drawable_position);
+  gimp_image_insert_layer (image_id, curl_layer->drawable_id,
+                           gimp_item_get_parent (drawable_id),
+                           drawable_position);
   gimp_drawable_fill (curl_layer->drawable_id, GIMP_TRANSPARENT_FILL);
 
   gimp_drawable_offsets (drawable_id, &x1, &y1);
-  gimp_layer_set_offsets (curl_layer->drawable_id, sel_x1 + x1, sel_y1 + y1);
+  gimp_layer_set_offsets (curl_layer->drawable_id, sel_x + x1, sel_y + y1);
   gimp_tile_cache_ntiles (2 * (curl_layer->width / gimp_tile_width () + 1));
 
   gimp_pixel_rgn_init (&dest_rgn, curl_layer,
@@ -758,7 +756,6 @@ do_curl_effect (gint32 drawable_id)
 		    -(sel_height - right_tangent.y));
   dr_mag = gimp_vector2_length (&dr);
   alpha = acos (gimp_vector2_inner_product (&dl, &dr) / (dl_mag * dr_mag));
-  beta = alpha / 2;
 
   /* Init shade_curl */
 
@@ -906,6 +903,7 @@ do_curl_effect (gint32 drawable_id)
       gimp_progress_update ((double) progress / (double) max_progress);
     }
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (curl_layer);
   gimp_drawable_merge_shadow (curl_layer->drawable_id, FALSE);
   gimp_drawable_update (curl_layer->drawable_id,
@@ -938,10 +936,10 @@ clear_curled_region (gint32 drawable_id)
 
   gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
   gimp_pixel_rgn_init (&src_rgn, drawable,
-		       sel_x1, sel_y1, true_sel_width, true_sel_height,
+		       sel_x, sel_y, true_sel_width, true_sel_height,
 		       FALSE, FALSE);
   gimp_pixel_rgn_init (&dest_rgn, drawable,
-		       sel_x1, sel_y1, true_sel_width, true_sel_height,
+		       sel_x, sel_y, true_sel_width, true_sel_height,
 		       TRUE, TRUE);
   alpha_pos = dest_rgn.bpp - 1;
 
@@ -964,16 +962,16 @@ clear_curled_region (gint32 drawable_id)
                 {
                 case CURL_ORIENTATION_VERTICAL:
 		  x = (CURL_EDGE_RIGHT (curl.edge) ?
-                       x1 - sel_x1 : sel_width  - 1 - (x1 - sel_x1));
+                       x1 - sel_x : sel_width  - 1 - (x1 - sel_x));
 		  y = (CURL_EDGE_UPPER (curl.edge) ?
-                       y1 - sel_y1 : sel_height - 1 - (y1 - sel_y1));
+                       y1 - sel_y : sel_height - 1 - (y1 - sel_y));
                   break;
 
                 case CURL_ORIENTATION_HORIZONTAL:
 		  x = (CURL_EDGE_LOWER (curl.edge) ?
-                       y1 - sel_y1 : sel_width - 1 - (y1 - sel_y1));
+                       y1 - sel_y : sel_width - 1 - (y1 - sel_y));
                   y = (CURL_EDGE_LEFT (curl.edge)  ?
-                       x1 - sel_x1 : sel_height - 1 - (x1 - sel_x1));
+                       x1 - sel_x : sel_height - 1 - (x1 - sel_x));
                   break;
                 }
 
@@ -1005,10 +1003,12 @@ clear_curled_region (gint32 drawable_id)
       gimp_progress_update ((double) progress / (double) max_progress);
     }
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable_id, TRUE);
   gimp_drawable_update (drawable_id,
-			sel_x1, sel_y1, true_sel_width, true_sel_height);
+                        sel_x, sel_y,
+                        true_sel_width, true_sel_height);
   gimp_drawable_detach (drawable);
 }
 

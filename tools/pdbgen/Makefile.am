@@ -13,11 +13,13 @@ pdb_sources = \
 	pdb/display.pdb			\
 	pdb/drawable.pdb		\
 	pdb/drawable_transform.pdb	\
+	pdb/dynamics.pdb		\
 	pdb/edit.pdb			\
 	pdb/fileops.pdb			\
 	pdb/floating_sel.pdb		\
 	pdb/font_select.pdb		\
 	pdb/fonts.pdb			\
+	pdb/gimp.pdb			\
 	pdb/gimprc.pdb			\
 	pdb/gradient.pdb		\
 	pdb/gradient_select.pdb		\
@@ -26,14 +28,15 @@ pdb_sources = \
 	pdb/guides.pdb			\
 	pdb/help.pdb			\
 	pdb/image.pdb			\
+	pdb/image_select.pdb		\
+	pdb/item.pdb			\
+	pdb/item_transform.pdb		\
 	pdb/layer.pdb			\
 	pdb/message.pdb			\
-	pdb/misc.pdb			\
 	pdb/paint_tools.pdb		\
 	pdb/palette.pdb			\
 	pdb/palette_select.pdb		\
 	pdb/palettes.pdb		\
-	pdb/parasite.pdb		\
 	pdb/paths.pdb			\
 	pdb/pattern.pdb			\
 	pdb/pattern_select.pdb		\
@@ -51,16 +54,18 @@ pdb_sources = \
 	pdb/vectors.pdb
 
 EXTRA_DIST = \
-	README		\
-	app.pl		\
-	enumcode.pl	\
-	enumgen.pl	\
-	groups.pl	\
-	lib.pl		\
-	pdb.pl		\
-	pdbgen.pl	\
-	stddefs.pdb	\
-	util.pl		\
+	README			\
+	README_NEW_PDB_PROC	\
+	app.pl			\
+	enumcode.pl		\
+	enumgen.pl		\
+	enums.pl		\
+	groups.pl		\
+	lib.pl			\
+	pdb.pl			\
+	pdbgen.pl		\
+	stddefs.pdb		\
+	util.pl			\
 	$(pdb_sources)
 
 enum_headers = \
@@ -105,6 +110,8 @@ $(srcdir)/enums.pl: stamp-enums
 	@:
 stamp-enums: $(srcdir)/enumgen.pl $(enum_headers) Makefile.am
 	rootme=`pwd`; \
+	destdir=`cd $(top_srcdir) && pwd`; export destdir; \
+	builddir=`cd $(top_builddir) && pwd`; export builddir; \
 	cd $(srcdir) && $(PERL) enumgen.pl $(enum_headers) \
 	&& echo timestamp > $$rootme/stamp-enums
 
@@ -126,7 +133,8 @@ stamp-groups: Makefile.am
 
 stamp-pdbgen: $(pdbgen_deps) $(pdb_scripts) $(pdb_sources) Makefile.am
 	rootme=`pwd`; \
-	destdir=`cd $(top_builddir) && pwd`; export destdir; \
+	destdir=`cd $(top_srcdir) && pwd`; export destdir; \
+	builddir=`cd $(top_builddir) && pwd`; export builddir; \
 	cd $(srcdir) && \
 	   PDBGEN_BACKUP=$(PDBGEN_BACKUP) PDBGEN_GROUPS=$(PDBGEN_GROUPS) \
 	   $(PERL) pdbgen.pl app lib \
@@ -134,7 +142,8 @@ stamp-pdbgen: $(pdbgen_deps) $(pdb_scripts) $(pdb_sources) Makefile.am
 
 stamp-enum-code: $(srcdir)/enumcode.pl $(enum_deps)
 	rootme=`pwd`; \
-	destdir=`cd $(top_builddir) && pwd`; export destdir; \
+	destdir=`cd $(top_srcdir) && pwd`; export destdir; \
+	builddir=`cd $(top_builddir) && pwd`; export builddir; \
 	cd $(srcdir) && \
 	  PDBGEN_BACKUP=$(PDBGEN_BACKUP) \
 	  $(PERL) enumcode.pl \

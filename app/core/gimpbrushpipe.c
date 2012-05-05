@@ -2,9 +2,9 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1999 Adrian Likins and Tor Lillqvist
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,24 +30,26 @@
 #include "gimpbrushpipe-load.h"
 
 
-static void        gimp_brush_pipe_finalize         (GObject      *object);
+static void        gimp_brush_pipe_finalize         (GObject          *object);
 
-static gint64      gimp_brush_pipe_get_memsize      (GimpObject   *object,
-                                                     gint64       *gui_size);
+static gint64      gimp_brush_pipe_get_memsize      (GimpObject       *object,
+                                                     gint64           *gui_size);
 
-static gboolean    gimp_brush_pipe_get_popup_size   (GimpViewable *viewable,
-                                                     gint          width,
-                                                     gint          height,
-                                                     gboolean      dot_for_dot,
-                                                     gint         *popup_width,
-                                                     gint         *popup_height);
+static gboolean    gimp_brush_pipe_get_popup_size   (GimpViewable     *viewable,
+                                                     gint              width,
+                                                     gint              height,
+                                                     gboolean          dot_for_dot,
+                                                     gint             *popup_width,
+                                                     gint             *popup_height);
 
-static GimpBrush * gimp_brush_pipe_select_brush     (GimpBrush    *brush,
-                                                     GimpCoords   *last_coords,
-                                                     GimpCoords   *cur_coords);
-static gboolean    gimp_brush_pipe_want_null_motion (GimpBrush    *brush,
-                                                     GimpCoords   *last_coords,
-                                                     GimpCoords   *cur_coords);
+static void        gimp_brush_pipe_begin_use        (GimpBrush        *brush);
+static void        gimp_brush_pipe_end_use          (GimpBrush        *brush);
+static GimpBrush * gimp_brush_pipe_select_brush     (GimpBrush        *brush,
+                                                     const GimpCoords *last_coords,
+                                                     const GimpCoords *current_coords);
+static gboolean    gimp_brush_pipe_want_null_motion (GimpBrush        *brush,
+                                                     const GimpCoords *last_coords,
+                                                     const GimpCoords *current_coords);
 
 
 G_DEFINE_TYPE (GimpBrushPipe, gimp_brush_pipe, GIMP_TYPE_BRUSH);
@@ -70,6 +71,8 @@ gimp_brush_pipe_class_init (GimpBrushPipeClass *klass)
 
   viewable_class->get_popup_size = gimp_brush_pipe_get_popup_size;
 
+  brush_class->begin_use         = gimp_brush_pipe_begin_use;
+  brush_class->end_use           = gimp_brush_pipe_end_use;
   brush_class->select_brush      = gimp_brush_pipe_select_brush;
   brush_class->want_null_motion  = gimp_brush_pipe_want_null_motion;
 }
@@ -81,7 +84,7 @@ gimp_brush_pipe_init (GimpBrushPipe *pipe)
   pipe->dimension = 0;
   pipe->rank      = NULL;
   pipe->stride    = NULL;
-  pipe->nbrushes  = 0;
+  pipe->n_brushes = 0;
   pipe->brushes   = NULL;
   pipe->select    = NULL;
   pipe->index     = NULL;
@@ -107,7 +110,7 @@ gimp_brush_pipe_finalize (GObject *object)
     {
       gint i;
 
-      for (i = 0; i < pipe->nbrushes; i++)
+      for (i = 0; i < pipe->n_brushes; i++)
         if (pipe->brushes[i])
           g_object_unref (pipe->brushes[i]);
 
@@ -144,7 +147,7 @@ gimp_brush_pipe_get_memsize (GimpObject *object,
                                 sizeof (gint) /* stride */ +
                                 sizeof (PipeSelectModes));
 
-  for (i = 0; i < pipe->nbrushes; i++)
+  for (i = 0; i < pipe->n_brushes; i++)
     memsize += gimp_object_get_memsize (GIMP_OBJECT (pipe->brushes[i]),
                                         gui_size);
 
@@ -163,22 +166,43 @@ gimp_brush_pipe_get_popup_size (GimpViewable *viewable,
   return gimp_viewable_get_size (viewable, popup_width, popup_height);
 }
 
+static void
+gimp_brush_pipe_begin_use (GimpBrush *brush)
+{
+  GimpBrushPipe *pipe = GIMP_BRUSH_PIPE (brush);
+  gint           i;
+
+  GIMP_BRUSH_CLASS (parent_class)->begin_use (brush);
+
+  for (i = 0; i < pipe->n_brushes; i++)
+    if (pipe->brushes[i])
+      gimp_brush_begin_use (pipe->brushes[i]);
+}
+
+static void
+gimp_brush_pipe_end_use (GimpBrush *brush)
+{
+  GimpBrushPipe *pipe = GIMP_BRUSH_PIPE (brush);
+  gint           i;
+
+  GIMP_BRUSH_CLASS (parent_class)->end_use (brush);
+
+  for (i = 0; i < pipe->n_brushes; i++)
+    if (pipe->brushes[i])
+      gimp_brush_end_use (pipe->brushes[i]);
+}
+
 static GimpBrush *
-gimp_brush_pipe_select_brush (GimpBrush  *brush,
-                              GimpCoords *last_coords,
-                              GimpCoords *cur_coords)
+gimp_brush_pipe_select_brush (GimpBrush        *brush,
+                              const GimpCoords *last_coords,
+                              const GimpCoords *current_coords)
 {
   GimpBrushPipe *pipe = GIMP_BRUSH_PIPE (brush);
   gint           i, brushix, ix;
-  gdouble        angle, velocity, spacing;
+  gdouble        velocity;
 
-  if (pipe->nbrushes == 1)
+  if (pipe->n_brushes == 1)
     return GIMP_BRUSH (pipe->current);
-
-
-  /* calculates brush native spacing in pixels, based on it's width)*/
-  spacing = ((gdouble) gimp_brush_get_spacing (pipe->current) / 100) *
-             MAX (brush->mask->width, brush->mask->height);
 
   brushix = 0;
   for (i = 0; i < pipe->dimension; i++)
@@ -190,25 +214,17 @@ gimp_brush_pipe_select_brush (GimpBrush  *brush,
           break;
 
         case PIPE_SELECT_ANGULAR:
-          angle = atan2 (cur_coords->y - last_coords->y,
-                         cur_coords->x - last_coords->x);
-          /* Offset angle to be compatible with PSP tubes */
-          angle += G_PI_2;
-          /* Map it to the [0..2*G_PI) interval */
-          if (angle < 0)
-            angle += 2.0 * G_PI;
-          else if (angle > 2.0 * G_PI)
-            angle -= 2.0 * G_PI;
-          ix = RINT (angle / (2.0 * G_PI) * pipe->rank[i]);
+          /* Coords angle is already nomalized,
+           * offset by 90 degrees is still needed
+           * because hoses were made PS compatible*/
+          ix = (gint) RINT ((1.0 - current_coords->direction + 0.25) * pipe->rank[i]) % pipe->rank[i];
           break;
 
         case PIPE_SELECT_VELOCITY:
-          velocity = sqrt (SQR (cur_coords->x - last_coords->x) +
-                           SQR (cur_coords->y - last_coords->y));
+          velocity = current_coords->velocity;
 
-          /* I don't know how much velocity is enough velocity. I will assume 0  to
-           brush' saved spacing (converted to pixels) to be 'enough' velocity */
-          ix = ROUND ((1.0 - MIN (1.0, velocity / (spacing))) * pipe->rank[i]);
+          /* Max velocity is 3.0, picking stamp as a ratio*/
+          ix = ROUND ((3.0 / velocity) * pipe->rank[i]);
           break;
 
         case PIPE_SELECT_RANDOM:
@@ -217,15 +233,15 @@ gimp_brush_pipe_select_brush (GimpBrush  *brush,
           break;
 
         case PIPE_SELECT_PRESSURE:
-          ix = RINT (cur_coords->pressure * (pipe->rank[i] - 1));
+          ix = RINT (current_coords->pressure * (pipe->rank[i] - 1));
           break;
 
         case PIPE_SELECT_TILT_X:
-          ix = RINT (cur_coords->xtilt / 2.0 * pipe->rank[i]) + pipe->rank[i] / 2;
+          ix = RINT (current_coords->xtilt / 2.0 * pipe->rank[i]) + pipe->rank[i] / 2;
           break;
 
         case PIPE_SELECT_TILT_Y:
-          ix = RINT (cur_coords->ytilt / 2.0 * pipe->rank[i]) + pipe->rank[i] / 2;
+          ix = RINT (current_coords->ytilt / 2.0 * pipe->rank[i]) + pipe->rank[i] / 2;
           break;
 
         case PIPE_SELECT_CONSTANT:
@@ -239,7 +255,7 @@ gimp_brush_pipe_select_brush (GimpBrush  *brush,
     }
 
   /* Make sure is inside bounds */
-  brushix = CLAMP (brushix, 0, pipe->nbrushes - 1);
+  brushix = CLAMP (brushix, 0, pipe->n_brushes - 1);
 
   pipe->current = pipe->brushes[brushix];
 
@@ -247,14 +263,14 @@ gimp_brush_pipe_select_brush (GimpBrush  *brush,
 }
 
 static gboolean
-gimp_brush_pipe_want_null_motion (GimpBrush  *brush,
-                                  GimpCoords *last_coords,
-                                  GimpCoords *cur_coords)
+gimp_brush_pipe_want_null_motion (GimpBrush        *brush,
+                                  const GimpCoords *last_coords,
+                                  const GimpCoords *current_coords)
 {
   GimpBrushPipe *pipe = GIMP_BRUSH_PIPE (brush);
   gint           i;
 
-  if (pipe->nbrushes == 1)
+  if (pipe->n_brushes == 1)
     return TRUE;
 
   for (i = 0; i < pipe->dimension; i++)

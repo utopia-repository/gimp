@@ -3,9 +3,9 @@
  *
  * gimp_brush_generated module Copyright 1998 Jay Cox <jaycox@earthlink.net>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,6 +31,8 @@
 #include "gimpbrushgenerated.h"
 #include "gimpbrushgenerated-load.h"
 #include "gimpbrushgenerated-save.h"
+
+#include "gimp-intl.h"
 
 
 #define OVERSAMPLING 4
@@ -64,12 +65,17 @@ static void          gimp_brush_generated_dirty         (GimpData     *data);
 static const gchar * gimp_brush_generated_get_extension (GimpData     *data);
 static GimpData    * gimp_brush_generated_duplicate     (GimpData     *data);
 
-static void          gimp_brush_generated_scale_size    (GimpBrush    *gbrush,
+static void          gimp_brush_generated_transform_size(GimpBrush    *gbrush,
                                                          gdouble       scale,
+                                                         gdouble       aspect_ratio,
+                                                         gdouble       angle,
                                                          gint         *width,
                                                          gint         *height);
-static TempBuf     * gimp_brush_generated_scale_mask    (GimpBrush    *gbrush,
-                                                         gdouble       scale);
+static TempBuf     * gimp_brush_generated_transform_mask(GimpBrush    *gbrush,
+                                                         gdouble       scale,
+                                                         gdouble       aspect_ratio,
+                                                         gdouble       angle,
+                                                         gdouble       hardness);
 
 static TempBuf     * gimp_brush_generated_calc          (GimpBrushGenerated      *brush,
                                                          GimpBrushGeneratedShape  shape,
@@ -107,51 +113,57 @@ gimp_brush_generated_class_init (GimpBrushGeneratedClass *klass)
   GimpDataClass  *data_class   = GIMP_DATA_CLASS (klass);
   GimpBrushClass *brush_class  = GIMP_BRUSH_CLASS (klass);
 
-  object_class->set_property = gimp_brush_generated_set_property;
-  object_class->get_property = gimp_brush_generated_get_property;
+  object_class->set_property  = gimp_brush_generated_set_property;
+  object_class->get_property  = gimp_brush_generated_get_property;
 
-  data_class->save           = gimp_brush_generated_save;
-  data_class->dirty          = gimp_brush_generated_dirty;
-  data_class->get_extension  = gimp_brush_generated_get_extension;
-  data_class->duplicate      = gimp_brush_generated_duplicate;
+  data_class->save            = gimp_brush_generated_save;
+  data_class->dirty           = gimp_brush_generated_dirty;
+  data_class->get_extension   = gimp_brush_generated_get_extension;
+  data_class->duplicate       = gimp_brush_generated_duplicate;
 
-  brush_class->scale_size    = gimp_brush_generated_scale_size;
-  brush_class->scale_mask    = gimp_brush_generated_scale_mask;
+  brush_class->transform_size = gimp_brush_generated_transform_size;
+  brush_class->transform_mask = gimp_brush_generated_transform_mask;
 
   g_object_class_install_property (object_class, PROP_SHAPE,
-                                   g_param_spec_enum ("shape", NULL, NULL,
+                                   g_param_spec_enum ("shape", NULL,
+                                                      _("Brush Shape"),
                                                       GIMP_TYPE_BRUSH_GENERATED_SHAPE,
                                                       GIMP_BRUSH_GENERATED_CIRCLE,
                                                       GIMP_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_RADIUS,
-                                   g_param_spec_double ("radius", NULL, NULL,
+                                   g_param_spec_double ("radius", NULL,
+                                                        _("Brush Radius"),
                                                         0.1, 4000.0, 5.0,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_SPIKES,
-                                   g_param_spec_int    ("spikes", NULL, NULL,
+                                   g_param_spec_int    ("spikes", NULL,
+                                                        _("Brush Spikes"),
                                                         2, 20, 2,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_HARDNESS,
-                                   g_param_spec_double ("hardness", NULL, NULL,
+                                   g_param_spec_double ("hardness", NULL,
+                                                        _("Brush Hardness"),
                                                         0.0, 1.0, 0.0,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_ASPECT_RATIO,
                                    g_param_spec_double ("aspect-ratio",
-                                                        NULL, NULL,
+                                                        NULL,
+                                                        _("Brush Aspect Ratio"),
                                                         1.0, 20.0, 1.0,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class, PROP_ANGLE,
-                                   g_param_spec_double ("angle", NULL, NULL,
+                                   g_param_spec_double ("angle", NULL,
+                                                        _("Brush Angle"),
                                                         0.0, 180.0, 0.0,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
@@ -268,7 +280,7 @@ gimp_brush_generated_duplicate (GimpData *data)
 {
   GimpBrushGenerated *brush = GIMP_BRUSH_GENERATED (data);
 
-  return gimp_brush_generated_new (GIMP_OBJECT (brush)->name,
+  return gimp_brush_generated_new (gimp_object_get_name (brush),
                                    brush->shape,
                                    brush->radius,
                                    brush->spikes,
@@ -278,22 +290,45 @@ gimp_brush_generated_duplicate (GimpData *data)
 }
 
 static void
-gimp_brush_generated_scale_size (GimpBrush *gbrush,
-                                 gdouble    scale,
-                                 gint      *width,
-                                 gint      *height)
+gimp_brush_generated_transform_size (GimpBrush *gbrush,
+                                     gdouble    scale,
+                                     gdouble    aspect_ratio,
+                                     gdouble    angle,
+                                     gint      *width,
+                                     gint      *height)
 {
   GimpBrushGenerated *brush = GIMP_BRUSH_GENERATED (gbrush);
   gint                half_width;
   gint                half_height;
+  gdouble             ratio;
+
+  if (aspect_ratio == 0.0)
+    {
+      ratio = brush->aspect_ratio;
+    }
+  else
+    {
+      ratio = MIN (fabs (aspect_ratio) + 1, 20);
+      /* Since generated brushes are symmetric the dont have input
+       * for aspect ratios  < 1.0. its same as rotate by 90 degrees and
+       * 1 / ratio. So we fix the input up for this case.   */
+
+      if (aspect_ratio < 0.0)
+        {
+          angle = angle + 0.25;
+        }
+    }
+
+
+
 
   gimp_brush_generated_get_half_size (brush,
                                       brush->shape,
                                       brush->radius * scale,
                                       brush->spikes,
                                       brush->hardness,
-                                      brush->aspect_ratio,
-                                      brush->angle,
+                                      ratio,
+                                      (brush->angle + 360 * angle),
                                       &half_width, &half_height,
                                       NULL, NULL, NULL, NULL);
 
@@ -302,18 +337,40 @@ gimp_brush_generated_scale_size (GimpBrush *gbrush,
 }
 
 static TempBuf *
-gimp_brush_generated_scale_mask (GimpBrush *gbrush,
-                                 gdouble    scale)
+gimp_brush_generated_transform_mask (GimpBrush *gbrush,
+                                     gdouble    scale,
+                                     gdouble    aspect_ratio,
+                                     gdouble    angle,
+                                     gdouble    hardness)
 {
   GimpBrushGenerated *brush  = GIMP_BRUSH_GENERATED (gbrush);
+  gdouble             ratio;
+
+  if (aspect_ratio == 0.0)
+    {
+      ratio = brush->aspect_ratio;
+    }
+  else
+    {
+      ratio = MIN (fabs (aspect_ratio) + 1, 20);
+      /* Since generated brushes are symmetric the dont have input
+       * for aspect ratios  < 1.0. its same as rotate by 90 degrees and
+       * 1 / ratio. So we fix the input up for this case.   */
+
+      if (aspect_ratio < 0.0)
+        {
+          angle = angle + 0.25;
+        }
+   }
+
 
   return gimp_brush_generated_calc (brush,
                                     brush->shape,
                                     brush->radius * scale,
                                     brush->spikes,
-                                    brush->hardness,
-                                    brush->aspect_ratio,
-                                    brush->angle,
+                                    brush->hardness * hardness,
+                                    ratio,
+                                    (brush->angle + 360 * angle),
                                     NULL, NULL);
 }
 
@@ -429,7 +486,7 @@ gimp_brush_generated_calc (GimpBrushGenerated      *brush,
                        half_height * 2 + 1,
                        1, half_width, half_height, NULL);
 
-  centerp = temp_buf_data (mask) + half_height * mask->width + half_width;
+  centerp = temp_buf_get_data (mask) + half_height * mask->width + half_width;
 
   lookup = gimp_brush_generated_calc_lut (radius, hardness);
 
@@ -499,7 +556,7 @@ gimp_brush_generated_calc (GimpBrushGenerated      *brush,
   return mask;
 }
 
-/* This function is shared between gimp_brush_generated_scale_size and
+/* This function is shared between gimp_brush_generated_transform_size and
  * gimp_brush_generated_calc, therefore we provide a bunch of optional
  * pointers for returnvalues.
  */
@@ -522,6 +579,17 @@ gimp_brush_generated_get_half_size (GimpBrushGenerated      *gbrush,
   gdouble      short_radius;
   GimpVector2  x_axis;
   GimpVector2  y_axis;
+
+  /* Since floatongpoint is not really accurate,
+   * we need to round to limit the errors.
+   * Errors in some border cases resulted in
+   * different height and width reported for
+   * the same input value on calling procedure side.
+   * This became problem at the rise of dynamics that
+   * allows for any angle to turn up.
+   **/
+
+  angle_in_degrees = ROUND (angle_in_degrees * 1000.0) / 1000.0;
 
   s = sin (gimp_deg_to_rad (angle_in_degrees));
   c = cos (gimp_deg_to_rad (angle_in_degrees));

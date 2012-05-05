@@ -4,9 +4,9 @@
  * gimpdevicestatus.h
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DEVICE_STATUS_H__
@@ -39,17 +38,17 @@ typedef struct _GimpDeviceStatusClass GimpDeviceStatusClass;
 
 struct _GimpDeviceStatus
 {
-  GimpEditor  parent_instance;
+  GimpEditor      parent_instance;
 
-  Gimp       *gimp;
-  GdkDevice  *current_device;
+  Gimp           *gimp;
+  GimpDeviceInfo *current_device;
 
-  GList      *devices;
+  GList          *devices;
 
-  GtkWidget  *vbox;
+  GtkWidget      *vbox;
 
-  GtkWidget  *save_button;
-  GtkWidget  *edit_button;
+  GtkWidget      *save_button;
+  GtkWidget      *edit_button;
 };
 
 struct _GimpDeviceStatusClass
@@ -60,8 +59,7 @@ struct _GimpDeviceStatusClass
 
 GType       gimp_device_status_get_type (void) G_GNUC_CONST;
 
-GtkWidget * gimp_device_status_new      (Gimp             *gimp);
-void        gimp_device_status_update   (GimpDeviceStatus *status);
+GtkWidget * gimp_device_status_new      (Gimp *gimp);
 
 
 #endif  /*  __GIMP_DEVICE_STATUS_H__  */

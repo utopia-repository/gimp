@@ -9,36 +9,6 @@
 
 /* enumerations from "./display-enums.h" */
 GType
-gimp_cursor_mode_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_CURSOR_MODE_TOOL_ICON, "GIMP_CURSOR_MODE_TOOL_ICON", "tool-icon" },
-    { GIMP_CURSOR_MODE_TOOL_CROSSHAIR, "GIMP_CURSOR_MODE_TOOL_CROSSHAIR", "tool-crosshair" },
-    { GIMP_CURSOR_MODE_CROSSHAIR, "GIMP_CURSOR_MODE_CROSSHAIR", "crosshair" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_CURSOR_MODE_TOOL_ICON, N_("Tool icon"), NULL },
-    { GIMP_CURSOR_MODE_TOOL_CROSSHAIR, N_("Tool icon with crosshair"), NULL },
-    { GIMP_CURSOR_MODE_CROSSHAIR, N_("Crosshair only"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpCursorMode", values);
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
 gimp_cursor_precision_get_type (void)
 {
   static const GEnumValue values[] =
@@ -59,9 +29,10 @@ gimp_cursor_precision_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpCursorPrecision", values);
+      gimp_type_set_translation_context (type, "cursor-precision");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -69,31 +40,40 @@ gimp_cursor_precision_get_type (void)
 }
 
 GType
-gimp_canvas_padding_mode_get_type (void)
+gimp_guides_type_get_type (void)
 {
   static const GEnumValue values[] =
   {
-    { GIMP_CANVAS_PADDING_MODE_DEFAULT, "GIMP_CANVAS_PADDING_MODE_DEFAULT", "default" },
-    { GIMP_CANVAS_PADDING_MODE_LIGHT_CHECK, "GIMP_CANVAS_PADDING_MODE_LIGHT_CHECK", "light-check" },
-    { GIMP_CANVAS_PADDING_MODE_DARK_CHECK, "GIMP_CANVAS_PADDING_MODE_DARK_CHECK", "dark-check" },
-    { GIMP_CANVAS_PADDING_MODE_CUSTOM, "GIMP_CANVAS_PADDING_MODE_CUSTOM", "custom" },
+    { GIMP_GUIDES_NONE, "GIMP_GUIDES_NONE", "none" },
+    { GIMP_GUIDES_CENTER_LINES, "GIMP_GUIDES_CENTER_LINES", "center-lines" },
+    { GIMP_GUIDES_THIRDS, "GIMP_GUIDES_THIRDS", "thirds" },
+    { GIMP_GUIDES_FIFTHS, "GIMP_GUIDES_FIFTHS", "fifths" },
+    { GIMP_GUIDES_GOLDEN, "GIMP_GUIDES_GOLDEN", "golden" },
+    { GIMP_GUIDES_DIAGONALS, "GIMP_GUIDES_DIAGONALS", "diagonals" },
+    { GIMP_GUIDES_N_LINES, "GIMP_GUIDES_N_LINES", "n-lines" },
+    { GIMP_GUIDES_SPACING, "GIMP_GUIDES_SPACING", "spacing" },
     { 0, NULL, NULL }
   };
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_CANVAS_PADDING_MODE_DEFAULT, N_("From theme"), NULL },
-    { GIMP_CANVAS_PADDING_MODE_LIGHT_CHECK, N_("Light check color"), NULL },
-    { GIMP_CANVAS_PADDING_MODE_DARK_CHECK, N_("Dark check color"), NULL },
-    { GIMP_CANVAS_PADDING_MODE_CUSTOM, N_("Custom color"), NULL },
+    { GIMP_GUIDES_NONE, NC_("guides-type", "No guides"), NULL },
+    { GIMP_GUIDES_CENTER_LINES, NC_("guides-type", "Center lines"), NULL },
+    { GIMP_GUIDES_THIRDS, NC_("guides-type", "Rule of thirds"), NULL },
+    { GIMP_GUIDES_FIFTHS, NC_("guides-type", "Rule of fifths"), NULL },
+    { GIMP_GUIDES_GOLDEN, NC_("guides-type", "Golden sections"), NULL },
+    { GIMP_GUIDES_DIAGONALS, NC_("guides-type", "Diagonal lines"), NULL },
+    { GIMP_GUIDES_N_LINES, NC_("guides-type", "Number of lines"), NULL },
+    { GIMP_GUIDES_SPACING, NC_("guides-type", "Line spacing"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
-      type = g_enum_register_static ("GimpCanvasPaddingMode", values);
+      type = g_enum_register_static ("GimpGuidesType", values);
+      gimp_type_set_translation_context (type, "guides-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -101,29 +81,34 @@ gimp_canvas_padding_mode_get_type (void)
 }
 
 GType
-gimp_space_bar_action_get_type (void)
+gimp_handle_type_get_type (void)
 {
   static const GEnumValue values[] =
   {
-    { GIMP_SPACE_BAR_ACTION_NONE, "GIMP_SPACE_BAR_ACTION_NONE", "none" },
-    { GIMP_SPACE_BAR_ACTION_PAN, "GIMP_SPACE_BAR_ACTION_PAN", "pan" },
-    { GIMP_SPACE_BAR_ACTION_MOVE, "GIMP_SPACE_BAR_ACTION_MOVE", "move" },
+    { GIMP_HANDLE_SQUARE, "GIMP_HANDLE_SQUARE", "square" },
+    { GIMP_HANDLE_FILLED_SQUARE, "GIMP_HANDLE_FILLED_SQUARE", "filled-square" },
+    { GIMP_HANDLE_CIRCLE, "GIMP_HANDLE_CIRCLE", "circle" },
+    { GIMP_HANDLE_FILLED_CIRCLE, "GIMP_HANDLE_FILLED_CIRCLE", "filled-circle" },
+    { GIMP_HANDLE_CROSS, "GIMP_HANDLE_CROSS", "cross" },
     { 0, NULL, NULL }
   };
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_SPACE_BAR_ACTION_NONE, N_("No action"), NULL },
-    { GIMP_SPACE_BAR_ACTION_PAN, N_("Pan view"), NULL },
-    { GIMP_SPACE_BAR_ACTION_MOVE, N_("Switch to Move tool"), NULL },
+    { GIMP_HANDLE_SQUARE, "GIMP_HANDLE_SQUARE", NULL },
+    { GIMP_HANDLE_FILLED_SQUARE, "GIMP_HANDLE_FILLED_SQUARE", NULL },
+    { GIMP_HANDLE_CIRCLE, "GIMP_HANDLE_CIRCLE", NULL },
+    { GIMP_HANDLE_FILLED_CIRCLE, "GIMP_HANDLE_FILLED_CIRCLE", NULL },
+    { GIMP_HANDLE_CROSS, "GIMP_HANDLE_CROSS", NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
-      type = g_enum_register_static ("GimpSpaceBarAction", values);
+      type = g_enum_register_static ("GimpHandleType", values);
+      gimp_type_set_translation_context (type, "handle-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -131,27 +116,73 @@ gimp_space_bar_action_get_type (void)
 }
 
 GType
-gimp_zoom_quality_get_type (void)
+gimp_handle_anchor_get_type (void)
 {
   static const GEnumValue values[] =
   {
-    { GIMP_ZOOM_QUALITY_LOW, "GIMP_ZOOM_QUALITY_LOW", "low" },
-    { GIMP_ZOOM_QUALITY_HIGH, "GIMP_ZOOM_QUALITY_HIGH", "high" },
+    { GIMP_HANDLE_ANCHOR_CENTER, "GIMP_HANDLE_ANCHOR_CENTER", "center" },
+    { GIMP_HANDLE_ANCHOR_NORTH, "GIMP_HANDLE_ANCHOR_NORTH", "north" },
+    { GIMP_HANDLE_ANCHOR_NORTH_WEST, "GIMP_HANDLE_ANCHOR_NORTH_WEST", "north-west" },
+    { GIMP_HANDLE_ANCHOR_NORTH_EAST, "GIMP_HANDLE_ANCHOR_NORTH_EAST", "north-east" },
+    { GIMP_HANDLE_ANCHOR_SOUTH, "GIMP_HANDLE_ANCHOR_SOUTH", "south" },
+    { GIMP_HANDLE_ANCHOR_SOUTH_WEST, "GIMP_HANDLE_ANCHOR_SOUTH_WEST", "south-west" },
+    { GIMP_HANDLE_ANCHOR_SOUTH_EAST, "GIMP_HANDLE_ANCHOR_SOUTH_EAST", "south-east" },
+    { GIMP_HANDLE_ANCHOR_WEST, "GIMP_HANDLE_ANCHOR_WEST", "west" },
+    { GIMP_HANDLE_ANCHOR_EAST, "GIMP_HANDLE_ANCHOR_EAST", "east" },
     { 0, NULL, NULL }
   };
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_ZOOM_QUALITY_LOW, N_("quality|Low"), NULL },
-    { GIMP_ZOOM_QUALITY_HIGH, N_("quality|High"), NULL },
+    { GIMP_HANDLE_ANCHOR_CENTER, "GIMP_HANDLE_ANCHOR_CENTER", NULL },
+    { GIMP_HANDLE_ANCHOR_NORTH, "GIMP_HANDLE_ANCHOR_NORTH", NULL },
+    { GIMP_HANDLE_ANCHOR_NORTH_WEST, "GIMP_HANDLE_ANCHOR_NORTH_WEST", NULL },
+    { GIMP_HANDLE_ANCHOR_NORTH_EAST, "GIMP_HANDLE_ANCHOR_NORTH_EAST", NULL },
+    { GIMP_HANDLE_ANCHOR_SOUTH, "GIMP_HANDLE_ANCHOR_SOUTH", NULL },
+    { GIMP_HANDLE_ANCHOR_SOUTH_WEST, "GIMP_HANDLE_ANCHOR_SOUTH_WEST", NULL },
+    { GIMP_HANDLE_ANCHOR_SOUTH_EAST, "GIMP_HANDLE_ANCHOR_SOUTH_EAST", NULL },
+    { GIMP_HANDLE_ANCHOR_WEST, "GIMP_HANDLE_ANCHOR_WEST", NULL },
+    { GIMP_HANDLE_ANCHOR_EAST, "GIMP_HANDLE_ANCHOR_EAST", NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
-      type = g_enum_register_static ("GimpZoomQuality", values);
+      type = g_enum_register_static ("GimpHandleAnchor", values);
+      gimp_type_set_translation_context (type, "handle-anchor");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_path_style_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_PATH_STYLE_DEFAULT, "GIMP_PATH_STYLE_DEFAULT", "default" },
+    { GIMP_PATH_STYLE_VECTORS, "GIMP_PATH_STYLE_VECTORS", "vectors" },
+    { GIMP_PATH_STYLE_OUTLINE, "GIMP_PATH_STYLE_OUTLINE", "outline" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_PATH_STYLE_DEFAULT, "GIMP_PATH_STYLE_DEFAULT", NULL },
+    { GIMP_PATH_STYLE_VECTORS, "GIMP_PATH_STYLE_VECTORS", NULL },
+    { GIMP_PATH_STYLE_OUTLINE, "GIMP_PATH_STYLE_OUTLINE", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (G_UNLIKELY (! type))
+    {
+      type = g_enum_register_static ("GimpPathStyle", values);
+      gimp_type_set_translation_context (type, "path-style");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -181,9 +212,10 @@ gimp_zoom_focus_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpZoomFocus", values);
+      gimp_type_set_translation_context (type, "zoom-focus");
       gimp_enum_set_value_descriptions (type, descs);
     }
 

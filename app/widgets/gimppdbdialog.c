@@ -4,9 +4,9 @@
  * gimppdbdialog.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -53,30 +52,26 @@ enum
 };
 
 
-static void      gimp_pdb_dialog_class_init     (GimpPdbDialogClass *klass);
-static void      gimp_pdb_dialog_init           (GimpPdbDialog      *dialog,
-                                                 GimpPdbDialogClass *klass);
+static void   gimp_pdb_dialog_class_init      (GimpPdbDialogClass *klass);
+static void   gimp_pdb_dialog_init            (GimpPdbDialog      *dialog,
+                                               GimpPdbDialogClass *klass);
 
-static GObject * gimp_pdb_dialog_constructor    (GType               type,
-                                                 guint               n_params,
-                                                 GObjectConstructParam *params);
-static void      gimp_pdb_dialog_dispose        (GObject            *object);
-static void      gimp_pdb_dialog_set_property   (GObject            *object,
-                                                 guint               property_id,
-                                                 const GValue       *value,
-                                                 GParamSpec         *pspec);
+static void   gimp_pdb_dialog_constructed     (GObject            *object);
+static void   gimp_pdb_dialog_dispose         (GObject            *object);
+static void   gimp_pdb_dialog_set_property    (GObject            *object,
+                                               guint               property_id,
+                                               const GValue       *value,
+                                               GParamSpec         *pspec);
 
-static void      gimp_pdb_dialog_destroy        (GtkObject          *object);
+static void   gimp_pdb_dialog_response        (GtkDialog          *dialog,
+                                               gint                response_id);
 
-static void      gimp_pdb_dialog_response       (GtkDialog          *dialog,
-                                                 gint                response_id);
-
-static void     gimp_pdb_dialog_context_changed (GimpContext        *context,
-                                                 GimpObject         *object,
-                                                 GimpPdbDialog      *dialog);
-static void     gimp_pdb_dialog_plug_in_closed  (GimpPlugInManager  *manager,
-                                                 GimpPlugIn         *plug_in,
-                                                 GimpPdbDialog      *dialog);
+static void   gimp_pdb_dialog_context_changed (GimpContext        *context,
+                                               GimpObject         *object,
+                                               GimpPdbDialog      *dialog);
+static void   gimp_pdb_dialog_plug_in_closed  (GimpPlugInManager  *manager,
+                                               GimpPlugIn         *plug_in,
+                                               GimpPdbDialog      *dialog);
 
 
 static GimpDialogClass *parent_class = NULL;
@@ -114,18 +109,15 @@ gimp_pdb_dialog_get_type (void)
 static void
 gimp_pdb_dialog_class_init (GimpPdbDialogClass *klass)
 {
-  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
-  GtkDialogClass *dialog_class     = GTK_DIALOG_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkDialogClass *dialog_class = GTK_DIALOG_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->constructor  = gimp_pdb_dialog_constructor;
+  object_class->constructed  = gimp_pdb_dialog_constructed;
   object_class->dispose      = gimp_pdb_dialog_dispose;
   object_class->set_property = gimp_pdb_dialog_set_property;
   object_class->set_property = gimp_pdb_dialog_set_property;
-
-  gtk_object_class->destroy  = gimp_pdb_dialog_destroy;
 
   dialog_class->response     = gimp_pdb_dialog_response;
 
@@ -182,25 +174,21 @@ gimp_pdb_dialog_init (GimpPdbDialog      *dialog,
                          GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE);
 }
 
-static GObject *
-gimp_pdb_dialog_constructor (GType                  type,
-                             guint                  n_params,
-                             GObjectConstructParam *params)
+static void
+gimp_pdb_dialog_constructed (GObject *object)
 {
-  GObject       *object;
-  GimpPdbDialog *dialog;
+  GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
   const gchar   *signal_name;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  dialog = GIMP_PDB_DIALOG (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_PDB (dialog->pdb));
   g_assert (GIMP_IS_CONTEXT (dialog->caller_context));
   g_assert (g_type_is_a (dialog->select_type, GIMP_TYPE_OBJECT));
 
   dialog->context = gimp_context_new (dialog->caller_context->gimp,
-                                      g_type_name (type),
+                                      G_OBJECT_TYPE_NAME (object),
                                       NULL);
 
   gimp_context_set_by_type (dialog->context, dialog->select_type,
@@ -217,16 +205,45 @@ gimp_pdb_dialog_constructor (GType                  type,
                            "plug-in-closed",
                            G_CALLBACK (gimp_pdb_dialog_plug_in_closed),
                            dialog, 0);
-
-  return object;
 }
 
 static void
 gimp_pdb_dialog_dispose (GObject *object)
 {
-  GimpPdbDialogClass *klass = GIMP_PDB_DIALOG_GET_CLASS (object);
+  GimpPdbDialog      *dialog = GIMP_PDB_DIALOG (object);
+  GimpPdbDialogClass *klass  = GIMP_PDB_DIALOG_GET_CLASS (object);
 
   klass->dialogs = g_list_remove (klass->dialogs, object);
+
+  if (dialog->pdb)
+    {
+      g_object_unref (dialog->pdb);
+      dialog->pdb = NULL;
+    }
+
+  if (dialog->caller_context)
+    {
+      g_object_unref (dialog->caller_context);
+      dialog->caller_context = NULL;
+    }
+
+  if (dialog->context)
+    {
+      g_object_unref (dialog->context);
+      dialog->context = NULL;
+    }
+
+  if (dialog->callback_name)
+    {
+      g_free (dialog->callback_name);
+      dialog->callback_name = NULL;
+    }
+
+  if (dialog->menu_factory)
+    {
+      g_object_unref (dialog->menu_factory);
+      dialog->menu_factory = NULL;
+    }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -275,44 +292,6 @@ gimp_pdb_dialog_set_property (GObject      *object,
 }
 
 static void
-gimp_pdb_dialog_destroy (GtkObject *object)
-{
-  GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
-
-  if (dialog->pdb)
-    {
-      g_object_unref (dialog->pdb);
-      dialog->pdb = NULL;
-    }
-
-  if (dialog->caller_context)
-    {
-      g_object_unref (dialog->caller_context);
-      dialog->caller_context = NULL;
-    }
-
-  if (dialog->context)
-    {
-      g_object_unref (dialog->context);
-      dialog->context = NULL;
-    }
-
-  if (dialog->callback_name)
-    {
-      g_free (dialog->callback_name);
-      dialog->callback_name = NULL;
-    }
-
-  if (dialog->menu_factory)
-    {
-      g_object_unref (dialog->menu_factory);
-      dialog->menu_factory = NULL;
-    }
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
-}
-
-static void
 gimp_pdb_dialog_response (GtkDialog *gtk_dialog,
                           gint       response_id)
 {
@@ -356,9 +335,9 @@ gimp_pdb_dialog_run_callback (GimpPdbDialog *dialog,
             }
           else if (error)
             {
-              gimp_message (dialog->context->gimp, G_OBJECT (dialog),
-                            GIMP_MESSAGE_ERROR,
-                            "%s", error->message);
+              gimp_message_literal (dialog->context->gimp, G_OBJECT (dialog),
+				    GIMP_MESSAGE_ERROR,
+				    error->message);
               g_error_free (error);
             }
 

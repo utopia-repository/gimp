@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -26,6 +26,7 @@
 
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
+#include "core/gimpitemstack.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpviewabledialog.h"
@@ -43,6 +44,7 @@ image_merge_layers_dialog_new (GimpImage     *image,
                                GimpContext   *context,
                                GtkWidget     *parent,
                                GimpMergeType  merge_type,
+                               gboolean       merge_active_group,
                                gboolean       discard_invisible)
 {
   ImageMergeLayersDialog *dialog;
@@ -55,9 +57,11 @@ image_merge_layers_dialog_new (GimpImage     *image,
 
   dialog = g_slice_new0 (ImageMergeLayersDialog);
 
-  dialog->image      = image;
-  dialog->context    = context;
-  dialog->merge_type = GIMP_EXPAND_AS_NECESSARY;
+  dialog->image              = image;
+  dialog->context            = context;
+  dialog->merge_type         = GIMP_EXPAND_AS_NECESSARY;
+  dialog->merge_active_group = merge_active_group;
+  dialog->discard_invisible  = discard_invisible;
 
   dialog->dialog =
     gimp_viewable_dialog_new (GIMP_VIEWABLE (image), context,
@@ -83,9 +87,10 @@ image_merge_layers_dialog_new (GimpImage     *image,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog->dialog)->vbox), vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog->dialog))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   frame = gimp_int_radio_group_new (TRUE, _("Final, Merged Layer should be:"),
@@ -105,6 +110,19 @@ image_merge_layers_dialog_new (GimpImage     *image,
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
+
+  button = gtk_check_button_new_with_mnemonic (_("Merge within active _group only"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                dialog->merge_active_group);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  g_signal_connect (button, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &dialog->merge_active_group);
+
+  if (gimp_item_stack_is_flat (GIMP_ITEM_STACK (gimp_image_get_layers (image))))
+    gtk_widget_set_sensitive (button, FALSE);
 
   button = gtk_check_button_new_with_mnemonic (_("_Discard invisible layers"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),

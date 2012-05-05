@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,14 +12,21 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <gtk/gtk.h>
+
+#ifdef GDK_WINDOWING_WIN32
+#include <gdk/gdkwin32.h>
+#endif
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
 
 #include "libgimpmodule/gimpmodule.h"
 
@@ -28,6 +35,20 @@
 
 #include "libgimpwidgets/gimpwidgets.h"
 #include "libgimpwidgets/gimpwidgets-private.h"
+
+
+/**
+ * SECTION: gimpui
+ * @title: gimpui
+ * @short_description: Common user interface functions. This header includes
+ *                     all other GIMP User Interface Library headers.
+ * @see_also: gtk_init(), gdk_set_use_xshm(), gdk_rgb_get_visual(),
+ *            gdk_rgb_get_cmap(), gtk_widget_set_default_visual(),
+ *            gtk_widget_set_default_colormap(), gtk_preview_set_gamma().
+ *
+ * Common user interface functions. This header includes all other
+ * GIMP User Interface Library headers.
+ **/
 
 
 /*  local function prototypes  */
@@ -109,9 +130,6 @@ gimp_ui_init (const gchar *prog_name,
 
   gdk_set_program_class (gimp_wm_class ());
 
-  gdk_rgb_set_min_colors (gimp_min_colors ());
-  gdk_rgb_set_install (gimp_install_cmap ());
-
   screen = gdk_screen_get_default ();
   gtk_widget_set_default_colormap (gdk_screen_get_rgb_colormap (screen));
 
@@ -128,8 +146,25 @@ gimp_ui_init (const gchar *prog_name,
   gimp_ui_initialized = TRUE;
 }
 
+static GdkWindow *
+gimp_ui_get_foreign_window (guint32 window)
+{
+#ifdef GDK_WINDOWING_X11
+  return gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
+                                                 window);
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+  return gdk_win32_window_foreign_new_for_display (gdk_display_get_default (),
+                                                   window);
+#endif
+
+  return NULL;
+}
+
 /**
  * gimp_ui_get_display_window:
+ * @gdisp_ID: a #GimpDisplay ID.
  *
  * Returns the #GdkWindow of a display window. The purpose is to allow
  * to make plug-in dialogs transient to the image display as explained
@@ -147,16 +182,13 @@ gimp_ui_init (const gchar *prog_name,
 GdkWindow *
 gimp_ui_get_display_window (guint32 gdisp_ID)
 {
-#ifndef GDK_NATIVE_WINDOW_POINTER
-  GdkNativeWindow  window;
+  guint32 window;
 
   g_return_val_if_fail (gimp_ui_initialized, NULL);
 
   window = gimp_display_get_window_handle (gdisp_ID);
   if (window)
-    return gdk_window_foreign_new_for_display (gdk_display_get_default (),
-                                               window);
-#endif
+    return gimp_ui_get_foreign_window (window);
 
   return NULL;
 }
@@ -180,16 +212,13 @@ gimp_ui_get_display_window (guint32 gdisp_ID)
 GdkWindow *
 gimp_ui_get_progress_window (void)
 {
-#ifndef GDK_NATIVE_WINDOW_POINTER
-  GdkNativeWindow  window;
+  guint32  window;
 
   g_return_val_if_fail (gimp_ui_initialized, NULL);
 
   window = gimp_progress_get_window_handle ();
   if (window)
-    return gdk_window_foreign_new_for_display (gdk_display_get_default (),
-                                               window);
-#endif
+     return gimp_ui_get_foreign_window (window);
 
   return NULL;
 }
@@ -272,8 +301,8 @@ static void
 gimp_window_transient_realized (GtkWidget *window,
                                 GdkWindow *parent)
 {
-  if (GTK_WIDGET_REALIZED (window))
-    gdk_window_set_transient_for (window->window, parent);
+  if (gtk_widget_get_realized (window))
+    gdk_window_set_transient_for (gtk_widget_get_window (window), parent);
 }
 
 static void
@@ -291,8 +320,9 @@ gimp_window_set_transient_for (GtkWindow *window,
   if (! parent)
     return;
 
-  if (GTK_WIDGET_REALIZED (window))
-    gdk_window_set_transient_for (GTK_WIDGET (window)->window, parent);
+  if (gtk_widget_get_realized (GTK_WIDGET (window)))
+    gdk_window_set_transient_for (gtk_widget_get_window (GTK_WIDGET (window)),
+                                  parent);
 
   g_signal_connect_object (window, "realize",
                            G_CALLBACK (gimp_window_transient_realized),

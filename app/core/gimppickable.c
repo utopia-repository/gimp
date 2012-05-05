@@ -4,9 +4,9 @@
  * gimppickable.c
  * Copyright (C) 2004  Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,13 +15,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* This file contains an interface for pixel objects that their color at
+ * a given position can be picked. Also included is a utility for
+ * sampling an average area (which uses the implemented picking
+ * functions).
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -227,16 +233,16 @@ gimp_pickable_pick_color (GimpPickable *pickable,
 
               gimp_image_get_color (image, type, pixel, col);
 
-              color_avg[RED_PIX]   += col[RED_PIX];
-              color_avg[GREEN_PIX] += col[GREEN_PIX];
-              color_avg[BLUE_PIX]  += col[BLUE_PIX];
-              color_avg[ALPHA_PIX] += col[ALPHA_PIX];
+              color_avg[RED]   += col[RED];
+              color_avg[GREEN] += col[GREEN];
+              color_avg[BLUE]  += col[BLUE];
+              color_avg[ALPHA] += col[ALPHA];
             }
 
-      col[RED_PIX]   = (guchar) ((color_avg[RED_PIX]   + count / 2) / count);
-      col[GREEN_PIX] = (guchar) ((color_avg[GREEN_PIX] + count / 2) / count);
-      col[BLUE_PIX]  = (guchar) ((color_avg[BLUE_PIX]  + count / 2) / count);
-      col[ALPHA_PIX] = (guchar) ((color_avg[ALPHA_PIX] + count / 2) / count);
+      col[RED]   = (guchar) ((color_avg[RED]   + count / 2) / count);
+      col[GREEN] = (guchar) ((color_avg[GREEN] + count / 2) / count);
+      col[BLUE]  = (guchar) ((color_avg[BLUE]  + count / 2) / count);
+      col[ALPHA] = (guchar) ((color_avg[ALPHA] + count / 2) / count);
     }
   else
     {
@@ -245,10 +251,10 @@ gimp_pickable_pick_color (GimpPickable *pickable,
 
 
   gimp_rgba_set_uchar (color,
-                       col[RED_PIX],
-                       col[GREEN_PIX],
-                       col[BLUE_PIX],
-                       col[ALPHA_PIX]);
+                       col[RED],
+                       col[GREEN],
+                       col[BLUE],
+                       col[ALPHA]);
 
   if (color_index)
     {

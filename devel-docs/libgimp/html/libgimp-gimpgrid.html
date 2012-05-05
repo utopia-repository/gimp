@@ -31,53 +31,54 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimp-gimpgrid.top_of_page"></a>gimpgrid</span></h2>
-<p>gimpgrid</p>
+<p>gimpgrid — Functions manuipulating an image's grid.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimp-gimpgrid.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-spacing" title="gimp_image_grid_get_spacing ()">gimp_image_grid_get_spacing</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *xspacing</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *yspacing</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-spacing" title="gimp_image_grid_set_spacing ()">gimp_image_grid_set_spacing</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xspacing</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yspacing</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-offset" title="gimp_image_grid_get_offset ()">gimp_image_grid_get_offset</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *xoffset</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *yoffset</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-offset" title="gimp_image_grid_set_offset ()">gimp_image_grid_set_offset</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xoffset</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yoffset</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-foreground-color" title="gimp_image_grid_get_foreground_color ()">gimp_image_grid_get_foreground_color</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-foreground-color" title="gimp_image_grid_set_foreground_color ()">gimp_image_grid_set_foreground_color</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-background-color" title="gimp_image_grid_get_background_color ()">gimp_image_grid_get_background_color</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-background-color" title="gimp_image_grid_set_background_color ()">gimp_image_grid_set_background_color</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);
-<a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="returnvalue">GimpGridStyle</span></a>       <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-style" title="gimp_image_grid_get_style ()">gimp_image_grid_get_style</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-style" title="gimp_image_grid_set_style ()">gimp_image_grid_set_style</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="type">GimpGridStyle</span></a> style</code></em>);
+<pre class="synopsis"><span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-spacing" title="gimp_image_grid_get_spacing ()">gimp_image_grid_get_spacing</a>         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *xspacing</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *yspacing</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-spacing" title="gimp_image_grid_set_spacing ()">gimp_image_grid_set_spacing</a>         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> xspacing</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> yspacing</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-offset" title="gimp_image_grid_get_offset ()">gimp_image_grid_get_offset</a>          (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *xoffset</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *yoffset</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-offset" title="gimp_image_grid_set_offset ()">gimp_image_grid_set_offset</a>          (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> xoffset</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> yoffset</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-foreground-color" title="gimp_image_grid_get_foreground_color ()">gimp_image_grid_get_foreground_color</a>
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-foreground-color" title="gimp_image_grid_set_foreground_color ()">gimp_image_grid_set_foreground_color</a>
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-background-color" title="gimp_image_grid_get_background_color ()">gimp_image_grid_get_background_color</a>
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-background-color" title="gimp_image_grid_set_background_color ()">gimp_image_grid_set_background_color</a>
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);
+<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="returnvalue">GimpGridStyle</span></a>       <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-get-style" title="gimp_image_grid_get_style ()">gimp_image_grid_get_style</a>           (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpgrid.html#gimp-image-grid-set-style" title="gimp_image_grid_set_style ()">gimp_image_grid_set_style</a>           (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="type">GimpGridStyle</span></a> style</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpgrid.description"></a><h2>Description</h2>
 <p>
+Functions manuipulating an image's grid.
 </p>
 </div>
 <div class="refsect1">
 <a name="libgimp-gimpgrid.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gimp-image-grid-get-spacing"></a><h3>gimp_image_grid_get_spacing ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_get_spacing         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *xspacing</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *yspacing</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_get_spacing         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *xspacing</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *yspacing</code></em>);</pre>
 <p>
 Gets the spacing of an image's grid.
 </p>
@@ -111,9 +112,9 @@ image's grid. It takes the image as parameter.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-set-spacing"></a><h3>gimp_image_grid_set_spacing ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_set_spacing         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xspacing</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yspacing</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_set_spacing         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> xspacing</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> yspacing</code></em>);</pre>
 <p>
 Sets the spacing of an image's grid.
 </p>
@@ -147,9 +148,9 @@ image's grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-get-offset"></a><h3>gimp_image_grid_get_offset ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_get_offset          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *xoffset</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *yoffset</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_get_offset          (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *xoffset</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *yoffset</code></em>);</pre>
 <p>
 Gets the offset of an image's grid.
 </p>
@@ -183,9 +184,9 @@ image's grid. It takes the image as parameter.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-set-offset"></a><h3>gimp_image_grid_set_offset ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_set_offset          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xoffset</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yoffset</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_set_offset          (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> xoffset</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> yoffset</code></em>);</pre>
 <p>
 Sets the offset of an image's grid.
 </p>
@@ -219,9 +220,9 @@ grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-get-foreground-color"></a><h3>gimp_image_grid_get_foreground_color ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_get_foreground_color
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_get_foreground_color
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);</pre>
 <p>
 Sets the foreground color of an image's grid.
 </p>
@@ -250,9 +251,9 @@ This procedure gets the foreground color of an image's grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-set-foreground-color"></a><h3>gimp_image_grid_set_foreground_color ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_set_foreground_color
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_set_foreground_color
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *fgcolor</code></em>);</pre>
 <p>
 Gets the foreground color of an image's grid.
 </p>
@@ -281,9 +282,9 @@ This procedure sets the foreground color of an image's grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-get-background-color"></a><h3>gimp_image_grid_get_background_color ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_get_background_color
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_get_background_color
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);</pre>
 <p>
 Sets the background color of an image's grid.
 </p>
@@ -312,9 +313,9 @@ This procedure gets the background color of an image's grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-set-background-color"></a><h3>gimp_image_grid_set_background_color ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_set_background_color
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_set_background_color
+                                                        (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *bgcolor</code></em>);</pre>
 <p>
 Gets the background color of an image's grid.
 </p>
@@ -343,7 +344,7 @@ This procedure sets the background color of an image's grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-get-style"></a><h3>gimp_image_grid_get_style ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="returnvalue">GimpGridStyle</span></a>       gimp_image_grid_get_style           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>);</pre>
+<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="returnvalue">GimpGridStyle</span></a>       gimp_image_grid_get_style           (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>);</pre>
 <p>
 Gets the style of an image's grid.
 </p>
@@ -368,8 +369,8 @@ This procedure retrieves the style of an image's grid.
 <hr>
 <div class="refsect2">
 <a name="gimp-image-grid-set-style"></a><h3>gimp_image_grid_set_style ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_image_grid_set_style           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="type">GimpGridStyle</span></a> style</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_image_grid_set_style           (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGridStyle"><span class="type">GimpGridStyle</span></a> style</code></em>);</pre>
 <p>
 Sets the style unit of an image's grid.
 </p>

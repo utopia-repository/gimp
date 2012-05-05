@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,7 @@
 
 #include "core/gimpdrawable.h"
 #include "core/gimpdrawable-histogram.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -106,7 +106,7 @@ gimp_threshold_tool_class_init (GimpThresholdToolClass *klass)
 
   tool_class->initialize             = gimp_threshold_tool_initialize;
 
-  im_tool_class->shell_desc          = _("Apply Threshold");
+  im_tool_class->dialog_desc         = _("Apply Threshold");
   im_tool_class->settings_name       = "threshold";
   im_tool_class->import_dialog_title = _("Import Threshold Settings");
   im_tool_class->export_dialog_title = _("Export Threshold Settings");
@@ -150,21 +150,25 @@ gimp_threshold_tool_initialize (GimpTool     *tool,
                                 GError      **error)
 {
   GimpThresholdTool *t_tool   = GIMP_THRESHOLD_TOOL (tool);
-  GimpDrawable      *drawable = gimp_image_get_active_drawable (display->image);
+  GimpImage         *image    = gimp_display_get_image (display);
+  GimpDrawable      *drawable = gimp_image_get_active_drawable (image);
 
   if (! drawable)
     return FALSE;
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Threshold does not operate on indexed layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Threshold does not operate on indexed layers."));
       return FALSE;
     }
 
   gimp_config_reset (GIMP_CONFIG (t_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
+  if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
+    {
+      return FALSE;
+    }
 
   gimp_drawable_calculate_histogram (drawable, t_tool->histogram);
   gimp_histogram_view_set_histogram (t_tool->histogram_box->view,
@@ -183,7 +187,7 @@ gimp_threshold_tool_get_operation (GimpImageMapTool  *image_map_tool,
   GeglNode          *node;
 
   node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp-threshold",
+                       "operation", "gimp:threshold",
                        NULL);
 
   t_tool->config = g_object_new (GIMP_TYPE_THRESHOLD_CONFIG, NULL);
@@ -230,7 +234,7 @@ gimp_threshold_tool_dialog (GimpImageMapTool *image_map_tool)
 
   main_vbox = gimp_image_map_tool_dialog_get_vbox (image_map_tool);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -257,7 +261,7 @@ gimp_threshold_tool_dialog (GimpImageMapTool *image_map_tool)
   gimp_histogram_options_connect_view (GIMP_HISTOGRAM_OPTIONS (tool_options),
                                        t_tool->histogram_box->view);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

@@ -4,9 +4,9 @@
  * gimpcontrollereditor.c
  * Copyright (C) 2004-2008 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -59,13 +58,12 @@ enum
   COLUMN_BLURB,
   COLUMN_STOCK_ID,
   COLUMN_ACTION,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 
-static GObject * gimp_controller_editor_constructor (GType               type,
-                                                     guint               n_params,
-                                                     GObjectConstructParam *params);
+static void gimp_controller_editor_constructed    (GObject              *object);
+static void gimp_controller_editor_finalize       (GObject              *object);
 static void gimp_controller_editor_set_property   (GObject              *object,
                                                    guint                 property_id,
                                                    const GValue         *value,
@@ -75,7 +73,6 @@ static void gimp_controller_editor_get_property   (GObject              *object,
                                                    GValue               *value,
                                                    GParamSpec           *pspec);
 
-static void gimp_controller_editor_finalize       (GObject              *object);
 
 static void gimp_controller_editor_unmap          (GtkWidget            *widget);
 
@@ -108,7 +105,7 @@ static GtkWidget *  gimp_controller_int_view_new    (GimpController *controller,
                                                      GParamSpec     *pspec);
 
 
-G_DEFINE_TYPE (GimpControllerEditor, gimp_controller_editor, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpControllerEditor, gimp_controller_editor, GTK_TYPE_BOX)
 
 #define parent_class gimp_controller_editor_parent_class
 
@@ -119,10 +116,10 @@ gimp_controller_editor_class_init (GimpControllerEditorClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->constructor  = gimp_controller_editor_constructor;
+  object_class->constructed  = gimp_controller_editor_constructed;
+  object_class->finalize     = gimp_controller_editor_finalize;
   object_class->set_property = gimp_controller_editor_set_property;
   object_class->get_property = gimp_controller_editor_get_property;
-  object_class->finalize     = gimp_controller_editor_finalize;
 
   widget_class->unmap        = gimp_controller_editor_unmap;
 
@@ -143,18 +140,18 @@ gimp_controller_editor_class_init (GimpControllerEditorClass *klass)
 static void
 gimp_controller_editor_init (GimpControllerEditor *editor)
 {
-  editor->info = NULL;
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+                                  GTK_ORIENTATION_VERTICAL);
 
   gtk_box_set_spacing (GTK_BOX (editor), 12);
+
+  editor->info = NULL;
 }
 
-static GObject *
-gimp_controller_editor_constructor (GType                  type,
-                                    guint                  n_params,
-                                    GObjectConstructParam *params)
+static void
+gimp_controller_editor_constructed (GObject *object)
 {
-  GObject              *object;
-  GimpControllerEditor *editor;
+  GimpControllerEditor *editor = GIMP_CONTROLLER_EDITOR (object);
   GimpControllerInfo   *info;
   GimpController       *controller;
   GimpControllerClass  *controller_class;
@@ -176,9 +173,8 @@ gimp_controller_editor_constructor (GType                  type,
   gint                  row;
   gint                  i;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  editor = GIMP_CONTROLLER_EDITOR (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_CONTROLLER_INFO (editor->info));
 
@@ -190,7 +186,7 @@ gimp_controller_editor_constructor (GType                  type,
   gtk_box_pack_start (GTK_BOX (editor), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -212,7 +208,7 @@ gimp_controller_editor_constructor (GType                  type,
   gtk_box_pack_start (GTK_BOX (editor), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -272,7 +268,7 @@ gimp_controller_editor_constructor (GType                  type,
 
   g_free (property_specs);
 
-  store = gtk_list_store_new (NUM_COLUMNS,
+  store = gtk_list_store_new (N_COLUMNS,
                               G_TYPE_STRING,
                               G_TYPE_STRING,
                               G_TYPE_STRING,
@@ -286,7 +282,7 @@ gimp_controller_editor_constructor (GType                  type,
   gtk_container_add (GTK_CONTAINER (sw), tv);
   gtk_widget_show (tv);
 
-  gtk_container_add (GTK_CONTAINER (vbox), sw);
+  gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
   gtk_widget_show (sw);
 
   g_signal_connect (tv, "row-activated",
@@ -309,7 +305,7 @@ gimp_controller_editor_constructor (GType                  type,
       const gchar *event_name;
       const gchar *event_blurb;
       const gchar *event_action;
-      gchar       *stock_id = NULL;
+      const gchar *stock_id = NULL;
 
       event_name  = gimp_controller_get_event_name  (controller, i);
       event_blurb = gimp_controller_get_event_blurb (controller, i);
@@ -323,7 +319,7 @@ gimp_controller_editor_constructor (GType                  type,
           action = gimp_ui_manager_find_action (ui_manager, NULL, event_action);
 
           if (action)
-            g_object_get (action, "stock-id", &stock_id, NULL);
+            stock_id = gtk_action_get_stock_id (action);
         }
 
       gtk_list_store_append (store, &iter);
@@ -333,9 +329,6 @@ gimp_controller_editor_constructor (GType                  type,
                           COLUMN_STOCK_ID, stock_id,
                           COLUMN_ACTION,   event_action,
                           -1);
-
-      if (stock_id)
-        g_free (stock_id);
     }
 
   gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tv), 0,
@@ -360,12 +353,11 @@ gimp_controller_editor_constructor (GType                  type,
                                        "text", COLUMN_ACTION,
                                        NULL);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  editor->grab_button = gtk_check_button_new_with_mnemonic (_("_Grab event"));
-  gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (editor->grab_button), FALSE);
+  editor->grab_button = gtk_toggle_button_new_with_mnemonic (_("_Grab event"));
   gtk_box_pack_start (GTK_BOX (hbox), editor->grab_button, TRUE, TRUE, 0);
   gtk_widget_show (editor->grab_button);
 
@@ -396,8 +388,31 @@ gimp_controller_editor_constructor (GType                  type,
 
   gtk_widget_set_sensitive (editor->edit_button,   FALSE);
   gtk_widget_set_sensitive (editor->delete_button, FALSE);
+}
 
-  return object;
+static void
+gimp_controller_editor_finalize (GObject *object)
+{
+  GimpControllerEditor *editor = GIMP_CONTROLLER_EDITOR (object);
+
+  if (editor->info)
+    {
+      gimp_controller_info_set_event_snooper (editor->info, NULL, NULL);
+
+      g_object_unref (editor->info);
+      editor->info = NULL;
+    }
+
+  if (editor->context)
+    {
+      g_object_unref (editor->context);
+      editor->context = NULL;
+    }
+
+  if (editor->edit_dialog)
+    gtk_widget_destroy (editor->edit_dialog);
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -446,31 +461,6 @@ gimp_controller_editor_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-static void
-gimp_controller_editor_finalize (GObject *object)
-{
-  GimpControllerEditor *editor = GIMP_CONTROLLER_EDITOR (object);
-
-  if (editor->info)
-    {
-      gimp_controller_info_set_event_snooper (editor->info, NULL, NULL);
-
-      g_object_unref (editor->info);
-      editor->info = NULL;
-    }
-
-  if (editor->context)
-    {
-      g_object_unref (editor->context);
-      editor->context = NULL;
-    }
-
-  if (editor->edit_dialog)
-    gtk_widget_destroy (editor->edit_dialog);
-
-  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -559,7 +549,7 @@ gimp_controller_editor_row_activated (GtkTreeView          *tv,
                                       GtkTreeViewColumn    *column,
                                       GimpControllerEditor *editor)
 {
-  if (GTK_WIDGET_IS_SENSITIVE (editor->edit_button))
+  if (gtk_widget_is_sensitive (editor->edit_button))
     gtk_button_clicked (GTK_BUTTON (editor->edit_button));
 }
 
@@ -686,7 +676,7 @@ gimp_controller_editor_edit_clicked (GtkWidget            *button,
       g_object_add_weak_pointer (G_OBJECT (editor->edit_dialog),
                                  (gpointer) &editor->edit_dialog);
 
-      gimp_dialog_factory_add_foreign (gimp_dialog_factory_from_name ("toplevel"),
+      gimp_dialog_factory_add_foreign (gimp_dialog_factory_get_singleton (),
                                        "gimp-controller-action-dialog",
                                        editor->edit_dialog);
 
@@ -697,8 +687,8 @@ gimp_controller_editor_edit_clicked (GtkWidget            *button,
       view = gimp_action_editor_new (gimp_ui_managers_from_name ("<Image>")->data,
                                      action_name, FALSE);
       gtk_container_set_border_width (GTK_CONTAINER (view), 12);
-      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (editor->edit_dialog)->vbox),
-                         view);
+      gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (editor->edit_dialog))),
+                          view, TRUE, TRUE, 0);
       gtk_widget_show (view);
 
       g_signal_connect (GIMP_ACTION_EDITOR (view)->view, "row-activated",

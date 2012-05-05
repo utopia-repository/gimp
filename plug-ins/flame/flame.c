@@ -4,9 +4,9 @@
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,6 +36,7 @@
 
 #define PLUG_IN_PROC      "plug-in-flame"
 #define PLUG_IN_BINARY    "flame"
+#define PLUG_IN_ROLE      "gimp-flame"
 
 #define VARIATION_SAME    (-2)
 
@@ -120,7 +120,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
@@ -272,9 +272,7 @@ drawable_to_cmap (control_point *cp)
       gint     num;
       gdouble *g;
 
-#ifdef __GNUC__
-#warning FIXME: "reverse" hardcoded to FALSE.
-#endif
+      /* FIXME: "reverse" hardcoded to FALSE. */
       gimp_gradient_get_uniform_samples (name, 256, FALSE,
                                          &num, &g);
 
@@ -330,6 +328,7 @@ flame (GimpDrawable *drawable)
   drawable_to_cmap (&config.cp);
   render_rectangle (&f, tmp, width, field_both, 4,
                     gimp_progress_update);
+  gimp_progress_update (1.0);
 
   /* update destination */
   if (4 == bytes)
@@ -455,10 +454,10 @@ file_response_callback (GtkFileChooser *chooser,
 
   gtk_widget_destroy (GTK_WIDGET (chooser));
 
-  if (! GTK_WIDGET_SENSITIVE (load_button))
+  if (! gtk_widget_get_sensitive (load_button))
     gtk_widget_set_sensitive (load_button, TRUE);
 
-  if (! GTK_WIDGET_SENSITIVE (save_button))
+  if (! gtk_widget_get_sensitive (save_button))
     gtk_widget_set_sensitive (save_button, TRUE);
 }
 
@@ -643,7 +642,7 @@ edit_callback (GtkWidget *widget,
       GtkObject *adj;
       gint       i, j;
 
-      edit_dialog = gimp_dialog_new (_("Edit Flame"), PLUG_IN_BINARY,
+      edit_dialog = gimp_dialog_new (_("Edit Flame"), PLUG_IN_ROLE,
                                      parent, GTK_DIALOG_DESTROY_WITH_PARENT,
                                      gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -661,10 +660,10 @@ edit_callback (GtkWidget *widget,
                         G_CALLBACK (edit_response),
                         edit_dialog);
 
-      main_vbox = gtk_vbox_new (FALSE, 12);
+      main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
       gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-      gtk_box_pack_start (GTK_BOX (GTK_DIALOG (edit_dialog)->vbox), main_vbox,
-                          FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (edit_dialog))),
+                          main_vbox, FALSE, FALSE, 0);
 
       frame = gimp_frame_new (_("Directions"));
       gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
@@ -706,7 +705,7 @@ edit_callback (GtkWidget *widget,
       gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
       gtk_widget_show (frame);
 
-      vbox = gtk_vbox_new (FALSE, 6);
+      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
       gtk_container_add (GTK_CONTAINER (frame), vbox);
       gtk_widget_show (vbox);
 
@@ -729,7 +728,7 @@ edit_callback (GtkWidget *widget,
                         G_CALLBACK (set_edit_preview),
                         NULL);
 
-      hbox = gtk_hbox_new (FALSE, 6);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
       gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
 
@@ -965,7 +964,7 @@ flame_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Flame"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Flame"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -981,13 +980,13 @@ flame_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, FALSE, FALSE, 0);
   gtk_widget_show (main_vbox);
 
-  box = gtk_hbox_new (FALSE, 12);
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), box, FALSE, FALSE, 0);
   gtk_widget_show (box);
 
@@ -1025,11 +1024,11 @@ flame_dialog (void)
     GtkWidget *vbox;
     GtkWidget *vbbox;
 
-    vbox = gtk_vbox_new (FALSE, 6);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_box_pack_start (GTK_BOX (box), vbox, FALSE, FALSE, 0);
     gtk_widget_show (vbox);
 
-    vbbox= gtk_vbutton_box_new ();
+    vbbox= gtk_button_box_new (GTK_ORIENTATION_VERTICAL);
     gtk_box_set_homogeneous (GTK_BOX (vbbox), FALSE);
     gtk_box_set_spacing (GTK_BOX (vbbox), 6);
     gtk_box_pack_start (GTK_BOX (vbox), vbbox, FALSE, FALSE, 0);
@@ -1064,7 +1063,7 @@ flame_dialog (void)
   gtk_box_pack_start (GTK_BOX (main_vbox), notebook, FALSE, FALSE, 0);
   gtk_widget_show (notebook);
 
-  box = gtk_vbox_new (FALSE, 12);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (box), 12);
   label = gtk_label_new_with_mnemonic(_("_Rendering"));
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), box, label);
@@ -1157,7 +1156,7 @@ flame_dialog (void)
     GtkWidget *label;
     GtkWidget *combo;
 
-    hbox = gtk_hbox_new (FALSE, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 

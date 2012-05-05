@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,6 +30,7 @@
 #define GAUSS_RLE_PROC  "plug-in-gauss-rle"
 #define GAUSS_RLE2_PROC "plug-in-gauss-rle2"
 #define PLUG_IN_BINARY  "blur-gauss"
+#define PLUG_IN_ROLE    "gimp-blur-gauss"
 
 typedef enum
 {
@@ -128,17 +128,17 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
     { GIMP_PDB_FLOAT,    "horizontal", "Horizontal radius of gaussian blur (in pixels, > 0.0)" },
     { GIMP_PDB_FLOAT,    "vertical",   "Vertical radius of gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_INT32,    "method",     "IIR (0) or RLE (1)" }
+    { GIMP_PDB_INT32,    "method",     "Blur method { IIR (0), RLE (1) }" }
   };
 
   static const GimpParamDef args1[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
     { GIMP_PDB_FLOAT,    "radius",     "Radius of gaussian blur (in pixels, > 0.0)" },
@@ -148,7 +148,7 @@ query (void)
 
   static const GimpParamDef args2[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
     { GIMP_PDB_FLOAT,    "horizontal", "Horizontal radius of gaussian blur (in pixels, > 0.0)" },
@@ -475,7 +475,7 @@ gauss_dialog (gint32        image_ID,
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Gaussian Blur"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Gaussian Blur"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, GAUSS_PROC,
 
@@ -491,16 +491,17 @@ gauss_dialog (gint32        image_ID,
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1200,8 +1201,8 @@ gauss_rle (GimpDrawable *drawable,
 
   if (direct)
     gimp_pixel_rgn_init (&dest_rgn,
-			 drawable, 0, 0, drawable->width, drawable->height,
-			 TRUE, TRUE);
+                         drawable, 0, 0, drawable->width, drawable->height,
+                         TRUE, TRUE);
 
   progress = 0.0;
   max_progress  = (horz <= 0.0) ? 0 : width * height * horz;
@@ -1244,22 +1245,22 @@ gauss_rle (GimpDrawable *drawable,
           for (b = 0; b < bytes; b++)
             {
               gint same =  run_length_encode (src + b, rle, pix, bytes,
-					      height, length, TRUE);
+                                              height, length, TRUE);
 
               if (same > (3 * height) / 4)
-		{
-		  /* encoded_rle is only fastest if there are a lot of
-		   * repeating pixels
-		   */
+                {
+                  /* encoded_rle is only fastest if there are a lot of
+                   * repeating pixels
+                   */
                   do_encoded_lre (rle, pix, dest + b, height, length, bytes,
                                   curve, total, sum);
-		}
-	      else
-		{
-		  /* else a full but more simple algorithm is better */
-		  do_full_lre (pix, dest + b, height, length, bytes,
-			       curve, total);
-		}
+                }
+              else
+                {
+                  /* else a full but more simple algorithm is better */
+                  do_full_lre (pix, dest + b, height, length, bytes,
+                               curve, total);
+                }
             }
 
           if (has_alpha)
@@ -1356,22 +1357,22 @@ gauss_rle (GimpDrawable *drawable,
           for (b = 0; b < bytes; b++)
             {
               gint same = run_length_encode (src + b, rle, pix, bytes,
-					     width, length, TRUE);
+                                             width, length, TRUE);
 
               if (same > (3 * width) / 4)
-		{
-		  /* encoded_rle is only fastest if there are a lot of
-		   * repeating pixels
-		   */
+                {
+                  /* encoded_rle is only fastest if there are a lot of
+                   * repeating pixels
+                   */
                   do_encoded_lre (rle, pix, dest + b, width, length, bytes,
                                   curve, total, sum);
-		}
-	      else
-		{
-		  /* else a full but more simple algorithm is better */
-		  do_full_lre (pix, dest + b, width, length, bytes,
+                }
+              else
+                {
+                  /* else a full but more simple algorithm is better */
+                  do_full_lre (pix, dest + b, width, length, bytes,
                                curve, total);
-		}
+                }
             }
 
 
@@ -1415,9 +1416,9 @@ gauss (GimpDrawable *drawable,
        GtkWidget    *preview)
 {
 
-  gint    x1, y1, x2, y2;
+  gint    x, y;
   gint    width, height;
-  guchar *preview_buffer;
+  guchar *preview_buffer = NULL;
 
   /*
    * IIR goes wrong if the blur radius is less than 1, so we silently
@@ -1435,49 +1436,39 @@ gauss (GimpDrawable *drawable,
 
   if (preview)
     {
-      gimp_preview_get_position (GIMP_PREVIEW (preview), &x1, &y1);
+      gimp_preview_get_position (GIMP_PREVIEW (preview), &x, &y);
       gimp_preview_get_size (GIMP_PREVIEW (preview), &width, &height);
-
-      if (width < 1 || height < 1)
-        return;
 
       preview_buffer = g_new (guchar, width * height * drawable->bpp);
 
     }
-  else
+  else if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                           &x, &y, &width, &height))
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-
-      width  = (x2 - x1);
-      height = (y2 - y1);
-
-      if (width < 1 || height < 1)
-        return;
-
-      preview_buffer = NULL;
-
+      return;
     }
 
 
   if (method == BLUR_IIR)
     gauss_iir (drawable,
-	       horz, vert, method, preview_buffer, x1, y1, width, height);
+               horz, vert, method, preview_buffer, x, y, width, height);
   else
     gauss_rle (drawable,
-	       horz, vert, method, preview_buffer, x1, y1, width, height);
+               horz, vert, method, preview_buffer, x, y, width, height);
 
   if (preview)
     {
       gimp_preview_draw_buffer (GIMP_PREVIEW (preview),
-				preview_buffer, width * drawable->bpp);
+                                preview_buffer, width * drawable->bpp);
       g_free (preview_buffer);
     }
   else
     {
+      gimp_progress_update (1.0);
       /*  merge the shadow, update the drawable  */
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-      gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
+      gimp_drawable_update (drawable->drawable_id, x, y, width, height);
     }
 }
 
@@ -1497,9 +1488,9 @@ transfer_pixels (const gdouble *src1,
       sum = *src1++ + *src2++;
 
       if (sum > 255)
-	sum = 255;
+        sum = 255;
       else if (sum < 0)
-	sum = 0;
+        sum = 0;
 
       *dest++ = (guchar) sum;
     }
@@ -1531,13 +1522,13 @@ find_iir_constants (gdouble *n_p,
 
   n_p [0] = x4 + x6;
   n_p [1] = (exp(x1)*(x7*sin(x3)-(x6+2*x4)*cos(x3)) +
-	     exp(x0)*(x5*sin(x2) - (2*x6+x4)*cos (x2)));
+             exp(x0)*(x5*sin(x2) - (2*x6+x4)*cos (x2)));
   n_p [2] = (2 * exp(x0+x1) *
-	     ((x4+x6)*cos(x3)*cos(x2) - x5*cos(x3)*sin(x2) -
-	      x7*cos(x2)*sin(x3)) +
-	     x6*exp(2*x0) + x4*exp(2*x1));
+             ((x4+x6)*cos(x3)*cos(x2) - x5*cos(x3)*sin(x2) -
+              x7*cos(x2)*sin(x3)) +
+             x6*exp(2*x0) + x4*exp(2*x1));
   n_p [3] = (exp(x1+2*x0) * (x7*sin(x3) - x6*cos(x3)) +
-	     exp(x0+2*x1) * (x5*sin(x2) - x4*cos(x2)));
+             exp(x0+2*x1) * (x5*sin(x2) - x4*cos(x2)));
   n_p [4] = 0.0;
 
   d_p [0] = 0.0;

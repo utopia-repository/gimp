@@ -19,8 +19,6 @@ libapptools_a_sources = \
 	tools-types.h			\
 	gimp-tools.c			\
 	gimp-tools.h			\
-	tools-utils.c			\
-	tools-utils.h			\
 	tool_manager.c			\
 	tool_manager.h			\
 	\
@@ -44,6 +42,10 @@ libapptools_a_sources = \
 	gimpbucketfilltool.h		\
 	gimpbycolorselecttool.c		\
 	gimpbycolorselecttool.h		\
+	gimpcageoptions.c		\
+	gimpcageoptions.h		\
+	gimpcagetool.c			\
+	gimpcagetool.h			\
 	gimpclonetool.c			\
 	gimpclonetool.h			\
 	gimpcoloroptions.c		\
@@ -172,10 +174,14 @@ libapptools_a_sources = \
 	gimptextoptions.h		\
 	gimptexttool.c			\
 	gimptexttool.h			\
+	gimptexttool-editor.c		\
+	gimptexttool-editor.h		\
 	gimpthresholdtool.c		\
 	gimpthresholdtool.h		\
 	gimptool.c			\
 	gimptool.h			\
+	gimptool-progress.c		\
+	gimptool-progress.h		\
 	gimptoolcontrol.c		\
 	gimptoolcontrol.h		\
 	gimptooloptions-gui.c		\
@@ -195,8 +201,6 @@ libapptools_a_built_sources = tools-enums.c
 
 libapptools_a_SOURCES = $(libapptools_a_built_sources) $(libapptools_a_sources)
 
-EXTRA_DIST = makefile.msc
-
 #
 # rules to generate built sources
 #
@@ -213,7 +217,7 @@ tools-enums.c: $(srcdir)/tools-enums.h $(GIMP_MKENUMS)
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
 		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
-		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
 		$(srcdir)/tools-enums.h > xgen-tec \
 	&& cp xgen-tec $(@F) \
 	&& rm -f xgen-tec

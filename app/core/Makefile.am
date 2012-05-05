@@ -33,6 +33,8 @@ libappcore_a_sources = \
 	gimp-modules.h				\
 	gimp-parasites.c			\
 	gimp-parasites.h			\
+	gimp-tags.c				\
+	gimp-tags.h				\
 	gimp-templates.c			\
 	gimp-templates.h			\
 	gimp-transform-region.c			\
@@ -49,13 +51,19 @@ libappcore_a_sources = \
 	gimp-utils.h				\
 	gimparea.c				\
 	gimparea.h				\
+	gimpbezierdesc.h			\
+	gimpbezierdesc.c			\
 	gimpbrush.c				\
 	gimpbrush.h				\
+	gimpbrush-boundary.c			\
+	gimpbrush-boundary.h			\
 	gimpbrush-header.h			\
 	gimpbrush-load.c			\
 	gimpbrush-load.h			\
-	gimpbrush-scale.c			\
-	gimpbrush-scale.h			\
+	gimpbrush-transform.c			\
+	gimpbrush-transform.h			\
+	gimpbrushcache.c			\
+	gimpbrushcache.h			\
 	gimpbrushclipboard.c			\
 	gimpbrushclipboard.h			\
 	gimpbrushgenerated.c			\
@@ -74,6 +82,8 @@ libappcore_a_sources = \
 	gimpchannel.h				\
 	gimpchannel-combine.c			\
 	gimpchannel-combine.h			\
+	gimpchannel-project.c			\
+	gimpchannel-project.h			\
 	gimpchannel-select.c			\
 	gimpchannel-select.h			\
 	gimpchannelpropundo.c			\
@@ -88,6 +98,8 @@ libappcore_a_sources = \
 	gimpcontext.h				\
 	gimpcoords.c				\
 	gimpcoords.h				\
+	gimpcoords-interpolate.c		\
+	gimpcoords-interpolate.h		\
 	gimpcurve.c				\
 	gimpcurve.h				\
 	gimpcurve-load.c			\
@@ -144,6 +156,7 @@ libappcore_a_sources = \
 	gimpdrawable-posterize.h		\
 	gimpdrawable-preview.c			\
 	gimpdrawable-preview.h			\
+	gimpdrawable-private.h			\
 	gimpdrawable-process.c			\
 	gimpdrawable-process.h			\
 	gimpdrawable-shadow.c			\
@@ -156,8 +169,24 @@ libappcore_a_sources = \
 	gimpdrawable-transform.h		\
 	gimpdrawablemodundo.c			\
 	gimpdrawablemodundo.h			\
+	gimpdrawablestack.c			\
+	gimpdrawablestack.h			\
 	gimpdrawableundo.c			\
 	gimpdrawableundo.h			\
+	gimpdynamics.c				\
+	gimpdynamics.h				\
+	gimpdynamics-load.c			\
+	gimpdynamics-load.h			\
+	gimpdynamics-save.c			\
+	gimpdynamics-save.h			\
+	gimpdynamicsoutput.c			\
+	gimpdynamicsoutput.h			\
+	gimperror.c				\
+	gimperror.h				\
+	gimpfilloptions.c			\
+	gimpfilloptions.h			\
+	gimpfilteredcontainer.c			\
+	gimpfilteredcontainer.h			\
 	gimpfloatingselundo.c			\
 	gimpfloatingselundo.h			\
 	gimpgradient.c				\
@@ -168,10 +197,16 @@ libappcore_a_sources = \
 	gimpgradient-save.h			\
 	gimpgrid.c				\
 	gimpgrid.h				\
+	gimpgrouplayer.c			\
+	gimpgrouplayer.h			\
+	gimpgrouplayerundo.c			\
+	gimpgrouplayerundo.h			\
 	gimpguide.c				\
 	gimpguide.h				\
 	gimpguideundo.c				\
 	gimpguideundo.h				\
+	gimpidtable.c				\
+	gimpidtable.h				\
 	gimpimage.c				\
 	gimpimage.h				\
 	gimpimage-arrange.c			\
@@ -204,8 +239,11 @@ libappcore_a_sources = \
 	gimpimage-new.h				\
 	gimpimage-pick-color.c			\
 	gimpimage-pick-color.h			\
+	gimpimage-pick-layer.c			\
+	gimpimage-pick-layer.h			\
 	gimpimage-preview.c			\
 	gimpimage-preview.h			\
+	gimpimage-private.h			\
 	gimpimage-quick-mask.c			\
 	gimpimage-quick-mask.h			\
 	gimpimage-resize.c			\
@@ -232,18 +270,26 @@ libappcore_a_sources = \
 	gimpimagemapconfig.h			\
 	gimpitem.c				\
 	gimpitem.h				\
+	gimpitem-exclusive.c			\
+	gimpitem-exclusive.h			\
 	gimpitem-linked.c			\
 	gimpitem-linked.h			\
 	gimpitem-preview.c			\
 	gimpitem-preview.h			\
 	gimpitempropundo.c			\
 	gimpitempropundo.h			\
+	gimpitemstack.c				\
+	gimpitemstack.h				\
+	gimpitemtree.c				\
+	gimpitemtree.h				\
 	gimpitemundo.c				\
 	gimpitemundo.h				\
 	gimplayer.c				\
 	gimplayer.h				\
 	gimplayer-floating-sel.c		\
 	gimplayer-floating-sel.h		\
+	gimplayer-project.c			\
+	gimplayer-project.h			\
 	gimplayermask.c				\
 	gimplayermask.h				\
 	gimplayermaskpropundo.c			\
@@ -281,6 +327,8 @@ libappcore_a_sources = \
 	gimpparamspecs.h			\
 	gimpparamspecs-desc.c			\
 	gimpparamspecs-desc.h			\
+	gimpparamspecs-duplicate.c		\
+	gimpparamspecs-duplicate.h		\
 	gimpparasitelist.c			\
 	gimpparasitelist.h			\
 	gimppdbprogress.c			\
@@ -291,6 +339,8 @@ libappcore_a_sources = \
 	gimppreviewcache.h			\
 	gimpprogress.c				\
 	gimpprogress.h				\
+	gimpprojectable.c			\
+	gimpprojectable.h			\
 	gimpprojection.c			\
 	gimpprojection.h			\
 	gimpprojection-construct.c		\
@@ -303,22 +353,32 @@ libappcore_a_sources = \
 	gimpscanconvert.h			\
 	gimpselection.c				\
 	gimpselection.h				\
-	gimpstrokedesc.c			\
-	gimpstrokedesc.h			\
 	gimpstrokeoptions.c			\
 	gimpstrokeoptions.h			\
 	gimpsubprogress.c			\
 	gimpsubprogress.h			\
+	gimptag.c				\
+	gimptag.h				\
+	gimptagcache.c				\
+	gimptagcache.h				\
 	gimptagged.c				\
 	gimptagged.h				\
+	gimptaggedcontainer.c			\
+	gimptaggedcontainer.h			\
 	gimptemplate.c				\
 	gimptemplate.h				\
 	gimptoolinfo.c				\
 	gimptoolinfo.h				\
 	gimptooloptions.c			\
 	gimptooloptions.h			\
-	gimptoolpresets.c			\
-	gimptoolpresets.h			\
+	gimptoolpreset.c			\
+	gimptoolpreset.h			\
+	gimptoolpreset-load.c			\
+	gimptoolpreset-load.h			\
+	gimptoolpreset-save.c			\
+	gimptoolpreset-save.h			\
+	gimptreehandler.c			\
+	gimptreehandler.h			\
 	gimpunit.c				\
 	gimpunit.h				\
 	gimpundo.c				\
@@ -339,7 +399,6 @@ libappcore_a_extra_sources = \
 libappcore_a_SOURCES = $(libappcore_a_built_sources) $(libappcore_a_sources)
 
 EXTRA_DIST = \
-	makefile.msc			\
 	$(libappcore_a_extra_sources)
 
 #
@@ -369,7 +428,7 @@ core-enums.c: $(srcdir)/core-enums.h $(GIMP_MKENUMS)
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
 		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
-		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
 		$(srcdir)/core-enums.h > xgen-cec \
 	&& cp xgen-cec $(@F) \
 	&& rm -f xgen-cec

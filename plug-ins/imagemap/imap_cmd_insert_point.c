@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -35,19 +34,19 @@ static CmdExecuteValue_t insert_point_command_execute(Command_t *parent);
 static void insert_point_command_undo(Command_t *parent);
 
 static CommandClass_t insert_point_command_class = {
-   NULL,			/* insert_point_command_destruct */
+   NULL,                        /* insert_point_command_destruct */
    insert_point_command_execute,
    insert_point_command_undo,
-   NULL				/* insert_point_command_redo */
+   NULL                         /* insert_point_command_redo */
 };
 
 typedef struct {
-   Command_t 	parent;
+   Command_t    parent;
    Polygon_t   *polygon;
-   gint		x;
-   gint		y;
-   gint		edge;
-   gint		position;
+   gint         x;
+   gint         y;
+   gint         edge;
+   gint         position;
 } InsertPointCommand_t;
 
 Command_t*
@@ -60,7 +59,7 @@ insert_point_command_new(Object_t *obj, gint x, gint y, gint edge)
    command->y = y;
    command->edge = edge;
    return command_init(&command->parent, _("Insert Point"),
-		       &insert_point_command_class);
+                       &insert_point_command_class);
 }
 
 static CmdExecuteValue_t
@@ -76,10 +75,10 @@ insert_point_command_execute(Command_t *parent)
       command->position = command->edge - 1;
    } else {
       polygon->points = g_list_insert(polygon->points, (gpointer) point,
-				      command->edge);
+                                      command->edge);
       command->position = command->edge;
    }
-   redraw_preview();
+   preview_redraw();
 
    return CMD_APPEND;
 }
@@ -93,5 +92,5 @@ insert_point_command_undo(Command_t *parent)
 
    g_free(p->data);
    polygon->points = g_list_remove_link(polygon->points, p);
-   redraw_preview();		/* Fix me! */
+   preview_redraw();            /* Fix me! */
 }

@@ -1,20 +1,19 @@
 /* -*- Mode: C; c-basic-offset: 4 -*-
-    Gimp-Python - allows the writing of Gimp plugins in Python.
-    Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Gimp-Python - allows the writing of Gimp plugins in Python.
+ * Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -32,6 +31,7 @@
 #include <structmember.h>
 
 #include <glib-object.h>
+#include <glib/gprintf.h>
 
 #ifndef PG_DEBUG
 # define PG_DEBUG 0
@@ -74,6 +74,7 @@ pygimp_param_print(int nparams, GimpParam *params)
     int i;
 
     for (i = 0; i < nparams; i++) {
+	g_printf("param_print: type: %d, PDB_ITEM: %d\n",  params[i].type, GIMP_PDB_ITEM);
 	switch(params[i].type) {
 	case GIMP_PDB_INT32:
 	    g_printerr("%i. int %i\n", i,
@@ -127,6 +128,10 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
     args = PyTuple_New(nparams);
     for (i = 0; i < nparams && params[i].type != GIMP_PDB_END; i++) {
 	PyObject *value = NULL;
+	
+#if PG_DEBUG > 1
+	g_printf("param_to_tuple: type: %d, PDB_ITEM: %d\n",  params[i].type, GIMP_PDB_ITEM);
+#endif
 
 	switch(params[i].type) {
 	case GIMP_PDB_INT32:
@@ -262,6 +267,9 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 	case GIMP_PDB_COLOR:
 	    value = pygimp_rgb_new(&params[i].data.d_color);
 	    break;
+	/*
+	GIMP_PDB_REGION is deprecated in libgimpbase/gimpbaseenums.h
+	and conflicts with GIMP_PDB_ITEM
 	case GIMP_PDB_REGION:
 	    value = Py_BuildValue("(iiii)",
 				  (int) params[i].data.d_region.x,
@@ -269,6 +277,7 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 				  (int) params[i].data.d_region.width,
 				  (int) params[i].data.d_region.height);
 	    break;
+	*/
 	case GIMP_PDB_DISPLAY:
 	    value = pygimp_display_new(params[i].data.d_display);
 	    break;
@@ -280,6 +289,9 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 	    break;
 	case GIMP_PDB_CHANNEL:
 	    value = pygimp_channel_new(params[i].data.d_channel);
+	    break;
+	case GIMP_PDB_ITEM:
+	    value = pygimp_item_new(params[i].data.d_item);
 	    break;
 	case GIMP_PDB_DRAWABLE:
 	    value = pygimp_drawable_new(NULL, params[i].data.d_drawable);
@@ -329,7 +341,7 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 GimpParam *
 pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 {
-    PyObject *tuple, *item, *x, *y, *w, *h;
+    PyObject *tuple, *item, *x, *y;
     GimpParam *ret;
     int i, j, len;
     gint32 *i32a; gint16 *i16a; guint8 *i8a; gdouble *fa; gchar **sa;
@@ -372,6 +384,9 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	}
     for (i = 1; i <= nparams; i++) {
 	item = PyTuple_GetItem(tuple, i-1);
+#if PG_DEBUG > 1
+	g_printf("param_from_tuple: type: %d, PDB_ITEM: %d\n",  ptype[i-1].type, GIMP_PDB_ITEM);
+#endif
 	switch (ptype[i-1].type) {
 	case GIMP_PDB_INT32:
 	    check((x = PyNumber_Int(item)) == NULL);
@@ -484,6 +499,7 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
                 ret[i].data.d_color = rgb;
 	    }
 	    break;
+/*
 	case GIMP_PDB_REGION:
 	    check(!PySequence_Check(item) ||
 		  PySequence_Length(item) < 4);
@@ -498,6 +514,7 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	    ret[i].data.d_region.width = PyInt_AsLong(w);
 	    ret[i].data.d_region.height = PyInt_AsLong(h);
 	    break;
+*/
 	case GIMP_PDB_DISPLAY:
             if (item == Py_None) {
                 ret[i].data.d_display = -1;
@@ -529,6 +546,14 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	    }
 	    check(!pygimp_channel_check(item));
 	    ret[i].data.d_channel = ((PyGimpChannel *)item)->ID;
+	    break;
+	case GIMP_PDB_ITEM:
+	    if (item == Py_None) {
+		ret[i].data.d_channel = -1;
+		break;
+	    }
+	    check(!pygimp_item_check(item));
+	    ret[i].data.d_item = ((PyGimpItem *)item)->ID;
 	    break;
 	case GIMP_PDB_DRAWABLE:
 	    if (item == Py_None) {
@@ -565,6 +590,10 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	    }
 	    break;
 	case GIMP_PDB_VECTORS:
+	    if (item == Py_None) {
+		ret[i].data.d_vectors = -1;
+		break;
+	    }
 	    check(!pygimp_vectors_check(item));
 	    ret[i].data.d_vectors = ((PyGimpVectors *)item)->ID;
 	    break;
@@ -668,7 +697,7 @@ pdb_subscript(PyGimpPDB *self, PyObject *key)
 }
 
 static PyMappingMethods pdb_as_mapping = {
-    (inquiry)0,			/*mp_length*/
+    (lenfunc)0,			/*mp_length*/
     (binaryfunc)pdb_subscript,	/*mp_subscript*/
     (objobjargproc)0,		/*mp_ass_subscript*/
 };

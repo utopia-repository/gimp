@@ -1,9 +1,9 @@
 /* CSource - GIMP Plugin to dump image data in RGB(A) format for C source
  * Copyright (C) 1999 Tim Janik
  *
- * This program is free software; you can redistribute it and/or
+ * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -11,9 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * This plugin is heavily based on the header plugin by Spencer Kimball and
  * Peter Mattis.
@@ -34,6 +33,7 @@
 
 #define SAVE_PROC      "file-csource-save"
 #define PLUG_IN_BINARY "file-csource"
+#define PLUG_IN_ROLE   "gimp-file-csource"
 
 
 typedef struct
@@ -44,6 +44,7 @@ typedef struct
   gboolean  use_comment;
   gboolean  glib_types;
   gboolean  alpha;
+  gboolean  rgb565;
   gboolean  use_macros;
   gboolean  use_rle;
   gdouble   opacity;
@@ -64,7 +65,6 @@ static gboolean save_image      (Config           *config,
                                  GError          **error);
 static gboolean run_save_dialog (Config           *config);
 
-
 /* --- variables --- */
 const GimpPlugInInfo PLUG_IN_INFO =
 {
@@ -82,6 +82,7 @@ static Config config =
   FALSE,        /* use_comment */
   TRUE,         /* glib_types */
   FALSE,        /* alpha */
+  FALSE,        /* rgb565 */
   FALSE,        /* use_macros */
   FALSE,        /* use_rle */
   100.0,        /* opacity */
@@ -96,7 +97,7 @@ query (void)
 {
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -160,7 +161,7 @@ run (const gchar      *name,
                       drawable_type == GIMP_GRAYA_IMAGE ||
                       drawable_type == GIMP_INDEXEDA_IMAGE);
 
-      parasite = gimp_image_parasite_find (image_ID, "gimp-comment");
+      parasite = gimp_image_get_parasite (image_ID, "gimp-comment");
       if (parasite)
         {
           config.comment = g_strndup (gimp_parasite_data (parasite),
@@ -171,7 +172,7 @@ run (const gchar      *name,
 
       gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-      export = gimp_export_image (&image_ID, &drawable_ID, "C Source",
+      export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                   (GIMP_EXPORT_CAN_HANDLE_RGB |
                                    GIMP_EXPORT_CAN_HANDLE_ALPHA ));
 
@@ -188,7 +189,7 @@ run (const gchar      *name,
             {
               if (!config.comment || !config.comment[0])
                 {
-                  gimp_image_parasite_detach (image_ID, "gimp-comment");
+                  gimp_image_detach_parasite (image_ID, "gimp-comment");
                 }
               else
                 {
@@ -196,7 +197,7 @@ run (const gchar      *name,
                                                 GIMP_PARASITE_PERSISTENT,
                                                 strlen (config.comment) + 1,
                                                 config.comment);
-                  gimp_image_parasite_attach (image_ID, parasite);
+                  gimp_image_attach_parasite (image_ID, parasite);
                   gimp_parasite_free (parasite);
                 }
             }
@@ -392,7 +393,7 @@ save_image (Config  *config,
   GimpDrawable *drawable      = gimp_drawable_get (drawable_ID);
   GimpImageType drawable_type = gimp_drawable_type (drawable_ID);
   GimpPixelRgn pixel_rgn;
-  gchar  *s_uint_8, *s_uint_32, *s_uint, *s_char, *s_null;
+  gchar  *s_uint_8, *s_uint, *s_char, *s_null;
   FILE   *fp;
   guint   c;
   gchar  *macro_name;
@@ -417,17 +418,39 @@ save_image (Config  *config,
       guint8 *data, *p;
       gint x, y, pad, n_bytes, bpp;
 
-      bpp = config->alpha ? 4 : 3;
+      bpp = config->rgb565 ? 2 : (config->alpha ? 4 : 3);
       n_bytes = drawable->width * drawable->height * bpp;
       pad = drawable->width * drawable->bpp;
       if (config->use_rle)
         pad = MAX (pad, 130 + n_bytes / 127);
+
       data = g_new (guint8, pad + n_bytes);
       p = data + pad;
+
       for (y = 0; y < drawable->height; y++)
         {
           gimp_pixel_rgn_get_row (&pixel_rgn, data, 0, y, drawable->width);
-          if (config->alpha)
+
+          if (bpp == 2)
+             for (x = 0; x < drawable->width; x++)
+              {
+                guint8 *d = data + x * drawable->bpp;
+                guint8 r, g, b;
+                gushort rgb16;
+                gdouble alpha = drawable_type == GIMP_RGBA_IMAGE ? d[3] : 0xff;
+
+                alpha *= config->opacity / 25500.0;
+                r = (0.5 + alpha * (gdouble) d[0]);
+                g = (0.5 + alpha * (gdouble) d[1]);
+                b = (0.5 + alpha * (gdouble) d[2]);
+                r >>= 3;
+                g >>= 2;
+                b >>= 3;
+                rgb16 = (r << 11) + (g << 5) + b;
+                *(p++) = (guchar) rgb16;
+                *(p++) = (guchar) (rgb16 >> 8);
+              }
+          else if (config->alpha)
             for (x = 0; x < drawable->width; x++)
               {
                 guint8 *d = data + x * drawable->bpp;
@@ -451,6 +474,7 @@ save_image (Config  *config,
                 *(p++) = 0.5 + alpha * (gdouble) d[2];
               }
         }
+
       img_buffer = data + pad;
       if (config->use_rle)
         {
@@ -467,7 +491,6 @@ save_image (Config  *config,
   if (!config->use_macros && config->glib_types)
     {
       s_uint_8 =  "guint8 ";
-      s_uint_32 = "guint32";
       s_uint  =   "guint  ";
       s_char =    "gchar  ";
       s_null =    "NULL";
@@ -475,7 +498,6 @@ save_image (Config  *config,
   else if (!config->use_macros)
     {
       s_uint_8 =  "unsigned char";
-      s_uint_32 = "unsigned int ";
       s_uint =    "unsigned int ";
       s_char =    "char         ";
       s_null =    "(char*) 0";
@@ -483,7 +505,6 @@ save_image (Config  *config,
   else if (config->use_macros && config->glib_types)
     {
       s_uint_8 =  "guint8";
-      s_uint_32 = "guint32";
       s_uint  =   "guint";
       s_char =    "gchar";
       s_null =    "NULL";
@@ -491,7 +512,6 @@ save_image (Config  *config,
   else /* config->use_macros && !config->glib_types */
     {
       s_uint_8 =  "unsigned char";
-      s_uint_32 = "unsigned int";
       s_uint =    "unsigned int";
       s_char =    "char";
       s_null =    "(char*) 0";
@@ -520,7 +540,8 @@ save_image (Config  *config,
       fprintf (fp, "static const struct {\n");
       fprintf (fp, "  %s\t width;\n", s_uint);
       fprintf (fp, "  %s\t height;\n", s_uint);
-      fprintf (fp, "  %s\t bytes_per_pixel; /* 3:RGB, 4:RGBA */ \n", s_uint);
+      fprintf (fp, "  %s\t bytes_per_pixel; /* 2:RGB16, 3:RGB, 4:RGBA */ \n",
+               s_uint);
       if (config->use_comment)
         fprintf (fp, "  %s\t*comment;\n", s_char);
       fprintf (fp, "  %s\t %spixel_data[",
@@ -532,12 +553,12 @@ save_image (Config  *config,
         fprintf (fp, "%u * %u * %u + 1];\n",
                  drawable->width,
                  drawable->height,
-                 config->alpha ? 4 : 3);
+                 config->rgb565 ? 2 : (config->alpha ? 4 : 3));
       fprintf (fp, "} %s = {\n", config->prefixed_name);
       fprintf (fp, "  %u, %u, %u,\n",
                drawable->width,
                drawable->height,
-               config->alpha ? 4 : 3);
+               config->rgb565 ? 2 : (config->alpha ? 4 : 3));
     }
   else /* use macros */
     {
@@ -630,6 +651,7 @@ save_image (Config  *config,
       break;
     default:
       g_warning ("unhandled drawable type (%d)", drawable_type);
+      fclose (fp);
       return FALSE;
     }
   if (!config->use_macros)
@@ -644,8 +666,23 @@ save_image (Config  *config,
   return TRUE;
 }
 
-static GtkWidget *prefixed_name;
-static GtkWidget *centry;
+static void
+rgb565_toggle_button_update (GtkWidget *toggle,
+                             gpointer   data)
+{
+  GtkWidget *widget;
+  gboolean   active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle));
+
+  gimp_toggle_button_update (toggle, data);
+
+  widget = g_object_get_data (G_OBJECT (toggle), "set-insensitive-1");
+  if (widget)
+    gtk_widget_set_sensitive (widget, ! active);
+
+  widget = g_object_get_data (G_OBJECT (toggle), "set-insensitive-2");
+  if (widget)
+    gtk_widget_set_sensitive (widget, ! active);
+}
 
 static gboolean
 run_save_dialog (Config *config)
@@ -653,29 +690,20 @@ run_save_dialog (Config *config)
   GtkWidget *dialog;
   GtkWidget *vbox;
   GtkWidget *table;
+  GtkWidget *prefixed_name;
+  GtkWidget *centry;
   GtkWidget *toggle;
+  GtkWidget *rle_toggle;
+  GtkWidget *alpha_toggle;
   GtkObject *adj;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as C-Source"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("C-Source"), PLUG_IN_BINARY, SAVE_PROC);
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), vbox);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   table = gtk_table_new (2, 2, FALSE);
@@ -728,7 +756,8 @@ run_save_dialog (Config *config)
 
   /* Use Macros
    */
-  toggle = gtk_check_button_new_with_mnemonic (_("Us_e macros instead of struct"));
+  toggle =
+    gtk_check_button_new_with_mnemonic (_("Us_e macros instead of struct"));
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 config->use_macros);
@@ -740,7 +769,8 @@ run_save_dialog (Config *config)
 
   /* Use RLE
    */
-  toggle = gtk_check_button_new_with_mnemonic (_("Use _1 byte Run-Length-Encoding"));
+  rle_toggle = toggle =
+    gtk_check_button_new_with_mnemonic (_("Use _1 byte Run-Length-Encoding"));
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 config->use_rle);
@@ -752,7 +782,8 @@ run_save_dialog (Config *config)
 
   /* Alpha
    */
-  toggle = gtk_check_button_new_with_mnemonic (_("Sa_ve alpha channel (RGBA/RGB)"));
+  alpha_toggle = toggle =
+    gtk_check_button_new_with_mnemonic (_("Sa_ve alpha channel (RGBA/RGB)"));
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 config->alpha);
@@ -761,6 +792,23 @@ run_save_dialog (Config *config)
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &config->alpha);
+
+  /* RGB-565
+   */
+  toggle = gtk_check_button_new_with_mnemonic (_("Save as _RGB565 (16-bit)"));
+  gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
+
+  /* RLE and alpha settings are not used with RGB-565 */
+  g_object_set_data (G_OBJECT (toggle), "set-insensitive-1", rle_toggle);
+  g_object_set_data (G_OBJECT (toggle), "set-insensitive-2", alpha_toggle);
+
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (rgb565_toggle_button_update),
+                    &config->rgb565);
+  gtk_widget_show (toggle);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+                                config->rgb565);
 
   /* Max Alpha Value
    */
@@ -793,6 +841,7 @@ run_save_dialog (Config *config)
 
   if (!config->prefixed_name || !config->prefixed_name[0])
     config->prefixed_name = "tmp";
+
   if (config->comment && !config->comment[0])
     config->comment = NULL;
 

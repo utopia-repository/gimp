@@ -7,10 +7,10 @@
  * Copyright (C) 2001-2003  Sven Neumann <sven@gimp.org>
  *                          Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,9 +18,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_THUMB_ENUMS_H__
@@ -29,6 +28,24 @@
 G_BEGIN_DECLS
 
 
+/**
+ * SECTION: gimpthumb-enums
+ * @title: GimpThumb-enums
+ * @short_description: Enumerations used by libgimpthumb
+ *
+ * Enumerations used by libgimpthumb
+ **/
+
+
+/**
+ * GimpThumbFileType:
+ * @GIMP_THUMB_FILE_TYPE_NONE:    file does not exist
+ * @GIMP_THUMB_FILE_TYPE_REGULAR: a regular file
+ * @GIMP_THUMB_FILE_TYPE_FOLDER:  a directory
+ * @GIMP_THUMB_FILE_TYPE_SPECIAL: a special file (device node, fifo, socket, ...)
+ *
+ * File types as returned by gimp_thumb_file_test().
+ **/
 #define GIMP_TYPE_THUMB_FILE_TYPE (gimp_thumb_file_type_get_type ())
 
 GType gimp_thumb_file_type_get_type (void) G_GNUC_CONST;
@@ -42,6 +59,16 @@ typedef enum
 } GimpThumbFileType;
 
 
+/**
+ * GimpThumbSize:
+ * @GIMP_THUMB_SIZE_FAIL:   special size used to indicate a thumbnail
+ *                          creation failure
+ * @GIMP_THUMB_SIZE_NORMAL: normal thumbnail size (128 pixels)
+ * @GIMP_THUMB_SIZE_LARGE:  large thumbnail size (256 pixels)
+ *
+ * Possible thumbnail sizes as defined by the Thumbnail Managaging
+ * Standard.
+ **/
 #define GIMP_TYPE_THUMB_SIZE (gimp_thumb_size_get_type ())
 
 GType gimp_thumb_size_get_type (void) G_GNUC_CONST;
@@ -54,6 +81,20 @@ typedef enum
 } GimpThumbSize;
 
 
+/**
+ * GimpThumbState:
+ * @GIMP_THUMB_STATE_UNKNOWN:   nothing is known about the file/thumbnail
+ * @GIMP_THUMB_STATE_REMOTE:    the file is on a remote file system
+ * @GIMP_THUMB_STATE_FOLDER:    the file is a directory
+ * @GIMP_THUMB_STATE_SPECIAL:   the file is a special file
+ * @GIMP_THUMB_STATE_NOT_FOUND: the file/thumbnail doesn't exist
+ * @GIMP_THUMB_STATE_EXISTS:    the file/thumbnail exists
+ * @GIMP_THUMB_STATE_OLD:       the thumbnail may be outdated
+ * @GIMP_THUMB_STATE_FAILED:    the thumbnail couldn't be created
+ * @GIMP_THUMB_STATE_OK:        the thumbnail exists and matches the image
+ *
+ * Possible image and thumbnail file states used by libgimpthumb.
+ **/
 #define GIMP_TYPE_THUMB_STATE (gimp_thumb_state_get_type ())
 
 GType gimp_thumb_state_get_type (void) G_GNUC_CONST;

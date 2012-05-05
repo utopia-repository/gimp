@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -81,12 +80,14 @@ gimp_selection_options_class_init (GimpSelectionOptionsClass *klass)
                                     GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FEATHER,
-                                    "feather", NULL,
+                                    "feather",
+                                    N_("Enable feathering of selection edges"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FEATHER_RADIUS,
-                                   "feather-radius", NULL,
+                                   "feather-radius",
+                                   N_("Radius of feathering"),
                                    0.0, 100.0, 10.0,
                                    GIMP_PARAM_STATIC_STRINGS);
 }
@@ -161,30 +162,35 @@ gimp_selection_options_get_property (GObject    *object,
 }
 
 static const gchar *
-gimp_selection_options_get_modifier (GimpChannelOps operation)
+gimp_selection_options_get_modifiers (GimpChannelOps operation)
 {
-  GdkModifierType mod = 0;
+  GdkModifierType extend_mask;
+  GdkModifierType modify_mask;
+  GdkModifierType modifiers = 0;
+
+  extend_mask = gimp_get_extend_selection_mask ();
+  modify_mask = gimp_get_modify_selection_mask ();
 
   switch (operation)
     {
     case GIMP_CHANNEL_OP_ADD:
-      mod = GDK_SHIFT_MASK;
+      modifiers = extend_mask;
       break;
 
     case GIMP_CHANNEL_OP_SUBTRACT:
-      mod = GDK_CONTROL_MASK;
+      modifiers = modify_mask;
       break;
 
     case GIMP_CHANNEL_OP_REPLACE:
-      mod = 0;
+      modifiers = 0;
       break;
 
     case GIMP_CHANNEL_OP_INTERSECT:
-      mod = GDK_CONTROL_MASK | GDK_SHIFT_MASK;
+      modifiers = extend_mask | modify_mask;
       break;
     }
 
-  return gimp_get_mod_string (mod);
+  return gimp_get_mod_string (modifiers);
 }
 
 GtkWidget *
@@ -204,7 +210,7 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
     GList     *list;
     gint       i;
 
-    hbox = gtk_hbox_new (FALSE, 2);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
     gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 
@@ -223,7 +229,7 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
     for (list = children, i = 0; list; list = list->next, i++)
       {
         GtkWidget   *button   = list->data;
-        const gchar *modifier = gimp_selection_options_get_modifier (i);
+        const gchar *modifier = gimp_selection_options_get_modifiers (i);
         gchar       *tooltip;
 
         if (! modifier)
@@ -264,23 +270,18 @@ gimp_selection_options_gui (GimpToolOptions *tool_options)
   /*  the feather frame  */
   {
     GtkWidget *frame;
-    GtkWidget *table;
+    GtkWidget *scale;
 
-    table = gtk_table_new (1, 3, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (table), 2);
+    /*  the feather radius scale  */
+    scale = gimp_prop_spin_scale_new (config, "feather-radius",
+                                      _("Radius"),
+                                      1.0, 10.0, 1);
 
     frame = gimp_prop_expanding_frame_new (config, "feather",
                                            _("Feather edges"),
-                                           table, NULL);
+                                           scale, NULL);
     gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
     gtk_widget_show (frame);
-
-    /*  the feather radius scale  */
-    gimp_prop_scale_entry_new (config, "feather-radius",
-                               GTK_TABLE (table), 0, 0,
-                               _("Radius:"),
-                               1.0, 10.0, 1,
-                               FALSE, 0.0, 0.0);
   }
 
   return vbox;

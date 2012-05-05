@@ -3,10 +3,10 @@
  *
  * gimppreview.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,17 @@
 #include "gimppreview.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimppreview
+ * @title: GimpPreview
+ * @short_description: A widget providing a #GimpPreviewArea plus
+ *                     framework to update the preview.
+ *
+ * A widget providing a #GimpPreviewArea plus framework to update the
+ * preview.
+ **/
 
 
 #define DEFAULT_SIZE     200
@@ -105,7 +115,7 @@ static void      gimp_preview_real_untransform    (GimpPreview      *preview,
 
 static guint preview_signals[LAST_SIGNAL] = { 0 };
 
-static GtkVBoxClass *parent_class = NULL;
+static GtkBoxClass *parent_class = NULL;
 
 
 GType
@@ -128,7 +138,7 @@ gimp_preview_get_type (void)
         (GInstanceInitFunc) gimp_preview_init,
       };
 
-      preview_type = g_type_register_static (GTK_TYPE_VBOX,
+      preview_type = g_type_register_static (GTK_TYPE_BOX,
                                              "GimpPreview",
                                              &preview_info,
                                              G_TYPE_FLAG_ABSTRACT);
@@ -192,6 +202,9 @@ gimp_preview_init (GimpPreview *preview)
   GimpPreviewPrivate *priv = GIMP_PREVIEW_GET_PRIVATE (preview);
   GtkWidget          *frame;
   gdouble             xalign = 0.0;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (preview),
+                                  GTK_ORIENTATION_VERTICAL);
 
   gtk_box_set_homogeneous (GTK_BOX (preview), FALSE);
   gtk_box_set_spacing (GTK_BOX (preview), 6);
@@ -268,7 +281,7 @@ gimp_preview_init (GimpPreview *preview)
                          G_CALLBACK (gimp_preview_area_set_cursor),
                          preview, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
-  priv->controls = gtk_hbox_new (FALSE, 6);
+  priv->controls = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_table_attach (GTK_TABLE (preview->table), priv->controls, 0, 2, 2, 3,
                     GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
   gtk_widget_show (priv->controls);
@@ -475,17 +488,19 @@ gimp_preview_invalidate_now (GimpPreview *preview)
 
   preview->timeout_id = 0;
 
-  if (toplevel && GTK_WIDGET_REALIZED (toplevel))
+  if (toplevel && gtk_widget_get_realized (toplevel))
     {
-      gdk_window_set_cursor (toplevel->window, preview->cursor_busy);
-      gdk_window_set_cursor (preview->area->window, preview->cursor_busy);
+      gdk_window_set_cursor (gtk_widget_get_window (toplevel),
+                             preview->cursor_busy);
+      gdk_window_set_cursor (gtk_widget_get_window (preview->area),
+                             preview->cursor_busy);
 
       gdk_flush ();
 
       g_signal_emit (preview, preview_signals[INVALIDATED], 0);
 
       class->set_cursor (preview);
-      gdk_window_set_cursor (toplevel->window, NULL);
+      gdk_window_set_cursor (gtk_widget_get_window (toplevel), NULL);
     }
   else
     {
@@ -498,8 +513,9 @@ gimp_preview_invalidate_now (GimpPreview *preview)
 static void
 gimp_preview_real_set_cursor (GimpPreview *preview)
 {
-  if (GTK_WIDGET_REALIZED (preview->area))
-    gdk_window_set_cursor (preview->area->window, preview->default_cursor);
+  if (gtk_widget_get_realized (preview->area))
+    gdk_window_set_cursor (gtk_widget_get_window (preview->area),
+                           preview->default_cursor);
 }
 
 static void
@@ -564,10 +580,10 @@ gimp_preview_get_update (GimpPreview *preview)
 /**
  * gimp_preview_set_bounds:
  * @preview: a #GimpPreview widget
- * @xmin:
- * @ymin:
- * @xmax:
- * @ymax:
+ * @xmin:    the minimum X value
+ * @ymin:    the minimum Y value
+ * @xmax:    the maximum X value
+ * @ymax:    the maximum Y value
  *
  * Sets the lower and upper limits for the previewed area. The
  * difference between the upper and lower value is used to set the

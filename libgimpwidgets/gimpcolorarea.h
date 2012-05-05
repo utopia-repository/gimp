@@ -4,10 +4,10 @@
  * gimpcolorarea.h
  * Copyright (C) 2001-2002  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,18 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 /* This provides a color preview area. The preview
  * can handle transparency by showing the checkerboard and
  * handles drag'n'drop.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_COLOR_AREA_H__
 #define __GIMP_COLOR_AREA_H__
@@ -86,16 +89,6 @@ void        gimp_color_area_set_type        (GimpColorArea     *area,
                                              GimpColorAreaType  type);
 void        gimp_color_area_set_draw_border (GimpColorArea     *area,
                                              gboolean           draw_border);
-
-/*  only for private use in libgimpwidgets  */
-G_GNUC_INTERNAL void _gimp_color_area_render_buf (GtkWidget         *widget,
-                                                  gboolean           insensitive,
-                                                  GimpColorAreaType  type,
-                                                  guchar            *buf,
-                                                  guint              width,
-                                                  guint              height,
-                                                  guint              rowstride,
-                                                  GimpRGB           *color);
 
 
 G_END_DECLS

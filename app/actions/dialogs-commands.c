@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -24,9 +23,10 @@
 
 #include "actions-types.h"
 
-#include "widgets/gimpdialogfactory.h"
+#include "core/gimp.h"
 
-#include "dialogs/dialogs.h"
+#include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpwindowstrategy.h"
 
 #include "actions.h"
 #include "dialogs-commands.h"
@@ -43,8 +43,9 @@ dialogs_create_toplevel_cmd_callback (GtkAction   *action,
   return_if_no_widget (widget, data);
 
   if (value)
-    gimp_dialog_factory_dialog_new (global_dialog_factory,
+    gimp_dialog_factory_dialog_new (gimp_dialog_factory_get_singleton (),
                                     gtk_widget_get_screen (widget),
+                                    NULL /*ui_manager*/,
                                     value, -1, TRUE);
 }
 
@@ -53,11 +54,15 @@ dialogs_create_dockable_cmd_callback (GtkAction   *action,
                                       const gchar *value,
                                       gpointer     data)
 {
+  Gimp      *gimp;
   GtkWidget *widget;
+  return_if_no_gimp   (gimp, data);
   return_if_no_widget (widget, data);
 
   if (value)
-    gimp_dialog_factory_dialog_raise (global_dock_factory,
-                                      gtk_widget_get_screen (widget),
-                                      value, -1);
+    gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
+                                               gimp,
+                                               gimp_dialog_factory_get_singleton (),
+                                               gtk_widget_get_screen (widget),
+                                               value);
 }

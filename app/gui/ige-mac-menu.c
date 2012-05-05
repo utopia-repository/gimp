@@ -6,7 +6,7 @@
  * For further information, see:
  * http://developer.imendio.com/projects/gtk-macosx/menubar
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; version 2.1
  * of the License.
@@ -17,9 +17,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -301,52 +300,60 @@ carbon_menu_item_update_accelerator (CarbonMenuItem *carbon_item,
 
   get_menu_label_text (widget, &label);
 
-  if (GTK_IS_ACCEL_LABEL (label) &&
-      GTK_ACCEL_LABEL (label)->accel_closure)
+  if (GTK_IS_ACCEL_LABEL (label))
     {
-      GtkAccelKey *key;
+      GClosure      *closure;
 
-      key = gtk_accel_group_find (GTK_ACCEL_LABEL (label)->accel_group,
-				  accel_find_func,
-				  GTK_ACCEL_LABEL (label)->accel_closure);
+      g_object_get (label, "accel-closure", &closure, NULL);
 
-      if (key            &&
-	  key->accel_key &&
-	  key->accel_flags & GTK_ACCEL_VISIBLE)
+      if (closure)
 	{
-	  GdkDisplay      *display = gtk_widget_get_display (widget);
-	  GdkKeymap       *keymap  = gdk_keymap_get_for_display (display);
-	  GdkKeymapKey    *keys;
-	  gint             n_keys;
+	  GtkAccelGroup *group;
+	  GtkAccelKey   *key;
 
-	  if (gdk_keymap_get_entries_for_keyval (keymap, key->accel_key,
-						 &keys, &n_keys))
+	  group = gtk_accel_group_from_accel_closure (closure);
+	  key = gtk_accel_group_find (group, accel_find_func, closure);
+
+	  g_closure_unref (closure);
+
+	  if (key            &&
+	      key->accel_key &&
+	      key->accel_flags & GTK_ACCEL_VISIBLE)
 	    {
-	      UInt8 modifiers = 0;
+	      GdkDisplay      *display = gtk_widget_get_display (widget);
+	      GdkKeymap       *keymap  = gdk_keymap_get_for_display (display);
+	      GdkKeymapKey    *keys;
+	      gint             n_keys;
 
-	      SetMenuItemCommandKey (carbon_item->menu, carbon_item->index,
-				     true, keys[0].keycode);
-
-	      g_free (keys);
-
-	      if (key->accel_mods)
+	      if (gdk_keymap_get_entries_for_keyval (keymap, key->accel_key,
+						     &keys, &n_keys))
 		{
-		  if (key->accel_mods & GDK_SHIFT_MASK)
-		    modifiers |= kMenuShiftModifier;
+		  UInt8 modifiers = 0;
 
-		  if (key->accel_mods & GDK_MOD1_MASK)
-		    modifiers |= kMenuOptionModifier;
+		  SetMenuItemCommandKey (carbon_item->menu, carbon_item->index,
+					 true, keys[0].keycode);
+
+		  g_free (keys);
+
+		  if (key->accel_mods)
+		    {
+		      if (key->accel_mods & GDK_SHIFT_MASK)
+			modifiers |= kMenuShiftModifier;
+
+		      if (key->accel_mods & GDK_MOD1_MASK)
+			modifiers |= kMenuOptionModifier;
+		    }
+
+		  if (!(key->accel_mods & GDK_META_MASK))
+		    {
+		      modifiers |= kMenuNoCommandModifier;
+		    }
+
+		  SetMenuItemModifiers (carbon_item->menu, carbon_item->index,
+					modifiers);
+
+		  return;
 		}
-
-	      if (!(key->accel_mods & GDK_CONTROL_MASK))
-		{
-		  modifiers |= kMenuNoCommandModifier;
-		}
-
-	      SetMenuItemModifiers (carbon_item->menu, carbon_item->index,
-				    modifiers);
-
-	      return;
 	    }
 	}
     }
@@ -372,9 +379,20 @@ carbon_menu_item_accel_changed (GtkAccelGroup   *accel_group,
 
   get_menu_label_text (widget, &label);
 
-  if (GTK_IS_ACCEL_LABEL (label) &&
-      GTK_ACCEL_LABEL (label)->accel_closure == accel_closure)
-    carbon_menu_item_update_accelerator (carbon_item, widget);
+  if (GTK_IS_ACCEL_LABEL (label))
+    {
+      GClosure *closure;
+
+      g_object_get (label, "accel-closure", &closure, NULL);
+
+      if (closure)
+	{
+	  if (closure == accel_closure)
+	    carbon_menu_item_update_accelerator (carbon_item, widget);
+
+	  g_closure_unref (closure);
+	}
+    }
 }
 
 static void
@@ -399,12 +417,10 @@ carbon_menu_item_update_accel_closure (CarbonMenuItem *carbon_item,
     }
 
   if (GTK_IS_ACCEL_LABEL (label))
-    carbon_item->accel_closure = GTK_ACCEL_LABEL (label)->accel_closure;
+    g_object_get (label, "accel-closure", &carbon_item->accel_closure, NULL);
 
   if (carbon_item->accel_closure)
     {
-      g_closure_ref (carbon_item->accel_closure);
-
       group = gtk_accel_group_from_accel_closure (carbon_item->accel_closure);
 
       g_signal_connect_object (group, "accel-changed",
@@ -675,10 +691,10 @@ sync_menu_shell (GtkMenuShell *menu_shell,
 	  if (GTK_IS_SEPARATOR_MENU_ITEM (menu_item))
 	    attributes |= kMenuItemAttrSeparator;
 
-	  if (!GTK_WIDGET_IS_SENSITIVE (menu_item))
+	  if (!gtk_widget_is_sensitive (menu_item))
 	    attributes |= kMenuItemAttrDisabled;
 
-	  if (!GTK_WIDGET_VISIBLE (menu_item))
+	  if (!gtk_widget_get_visible (menu_item))
 	    attributes |= kMenuItemAttrHidden;
 
 	  InsertMenuItemTextWithCFString (carbon_menu, cfstr,
@@ -731,10 +747,17 @@ parent_set_emission_hook (GSignalInvocationHint *ihint,
 	{
 	  menu_shell = previous_parent;
         }
-      else if (GTK_IS_MENU_SHELL (instance->parent))
-	{
-	  menu_shell = instance->parent;
-	}
+      else
+      {
+        GtkWidget *parent;
+
+        parent = gtk_widget_get_parent (instance);
+
+        if (GTK_IS_MENU_SHELL (parent))
+	  {
+	    menu_shell = parent;
+	  }
+      }
 
       if (menu_shell)
         {

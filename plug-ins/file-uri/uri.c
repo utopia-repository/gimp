@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Author: Josh MacDonald. */
@@ -41,6 +40,7 @@
 #define LOAD_PROC      "file-uri-load"
 #define SAVE_PROC      "file-uri-save"
 #define PLUG_IN_BINARY "file-uri"
+#define PLUG_IN_ROLE   "gimp-file-uri"
 
 
 static void                query         (void);
@@ -79,7 +79,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
@@ -91,7 +91,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -100,7 +100,10 @@ query (void)
 
   GError *error = NULL;
 
-  if (! uri_backend_init (PLUG_IN_BINARY, FALSE, 0, &error))
+  if (! uri_backend_init (PLUG_IN_BINARY,
+                          FALSE,
+                          GIMP_RUN_NONINTERACTIVE,
+                          &error))
     {
       g_message ("%s", error->message);
       g_clear_error (&error);
@@ -232,31 +235,43 @@ load_image (const gchar  *uri,
             GimpRunMode   run_mode,
             GError      **error)
 {
-  gchar    *tmpname    = NULL;
   gint32    image_ID   = -1;
   gboolean  name_image = FALSE;
+  gchar    *tmpname;
+  gboolean  mapped     = FALSE;
 
-  tmpname = get_temp_name (uri, &name_image);
+  tmpname = uri_backend_map_image (uri, run_mode);
 
-  if (uri_backend_load_image (uri, tmpname, run_mode, error))
+  if (tmpname)
     {
-      image_ID = gimp_file_load (run_mode, tmpname, tmpname);
+      mapped = TRUE;
+    }
+  else
+    {
+      tmpname = get_temp_name (uri, &name_image);
 
-      if (image_ID != -1)
-        {
-          if (name_image)
-            gimp_image_set_filename (image_ID, uri);
-          else
-            gimp_image_set_filename (image_ID, "");
-        }
-      else
-        {
-          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                       "%s", gimp_get_pdb_error ());
-        }
+      if (! uri_backend_load_image (uri, tmpname, run_mode, error))
+        return -1;
     }
 
-  g_unlink (tmpname);
+  image_ID = gimp_file_load (run_mode, tmpname, tmpname);
+
+  if (image_ID != -1)
+    {
+      if (mapped || name_image)
+        gimp_image_set_filename (image_ID, uri);
+      else
+        gimp_image_set_filename (image_ID, "");
+    }
+  else
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   "%s", gimp_get_pdb_error ());
+    }
+
+  if (! mapped)
+    g_unlink (tmpname);
+
   g_free (tmpname);
 
   return image_ID;
@@ -271,8 +286,14 @@ save_image (const gchar  *uri,
 {
   GimpPDBStatusType  status = GIMP_PDB_EXECUTION_ERROR;
   gchar             *tmpname;
+  gboolean           mapped = FALSE;
 
-  tmpname = get_temp_name (uri, NULL);
+  tmpname = uri_backend_map_image (uri, run_mode);
+
+  if (tmpname)
+    mapped = TRUE;
+  else
+    tmpname = get_temp_name (uri, NULL);
 
   if (gimp_file_save (run_mode,
                       image_ID,
@@ -280,7 +301,7 @@ save_image (const gchar  *uri,
                       tmpname,
                       tmpname) && valid_file (tmpname))
     {
-      if (uri_backend_save_image (uri, tmpname, run_mode, error))
+      if (mapped || uri_backend_save_image (uri, tmpname, run_mode, error))
         {
           status = GIMP_PDB_SUCCESS;
         }
@@ -291,7 +312,9 @@ save_image (const gchar  *uri,
                    "%s", gimp_get_pdb_error ());
     }
 
-  g_unlink (tmpname);
+  if (! mapped)
+    g_unlink (tmpname);
+
   g_free (tmpname);
 
   return status;

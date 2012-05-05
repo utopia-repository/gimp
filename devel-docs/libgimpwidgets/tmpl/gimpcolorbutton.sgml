@@ -2,23 +2,16 @@
 GimpColorButton
 
 <!-- ##### SECTION Short_Description ##### -->
-Widget for selecting a color from a simple button.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-This widget provides a simple button with a preview showing the
-color.
-</para>
-<para>
-On click a GtkColorSelectionDialog is opened. Additionally the button
-supports Drag and Drop and has a right-click menu that allows to choose
-the color from the current FG or BG color. If the user changes the 
-color, the "color_changed" signal is emitted.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#libgimpcolor-gimpcolorspace
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -39,6 +32,16 @@ color, the "color_changed" signal is emitted.
 </para>
 
 @gimpcolorbutton: the object which received the signal.
+
+<!-- ##### ARG GimpColorButton:area-height ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GimpColorButton:area-width ##### -->
+<para>
+
+</para>
 
 <!-- ##### ARG GimpColorButton:color ##### -->
 <para>

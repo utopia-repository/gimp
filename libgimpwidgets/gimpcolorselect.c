@@ -7,10 +7,10 @@
  * based on color_notebook module
  * Copyright (C) 1998 Austin Donnelly <austin@greenend.org.uk>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,9 +18,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -38,8 +37,23 @@
 #include "gimphelpui.h"
 #include "gimppreviewarea.h"
 #include "gimpstock.h"
+#include "gimp3migration.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpcolorselect
+ * @title: GimpColorSelect
+ * @short_description: A #GimpColorSelector implementation.
+ *
+ * The #GimpColorSelect widget is an implementation of a
+ * #GimpColorSelector. It shows a square area that allows to
+ * interactively change two color channels and a smaller area to
+ * change the third channel. You can select which channel should be
+ * the third by calling gimp_color_selector_set_channel(). The widget
+ * will then change the other two channels accordingly.
+ **/
 
 
 #define COLOR_AREA_EVENT_MASK (GDK_EXPOSURE_MASK       | \
@@ -75,6 +89,13 @@ typedef enum
   UPDATE_CALLER     = 1 << 6
 } ColorSelectUpdateType;
 
+typedef enum
+{
+  DRAG_NONE,
+  DRAG_XY,
+  DRAG_Z
+} ColorSelectDragMode;
+
 
 #define GIMP_COLOR_SELECT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_SELECT, GimpColorSelectClass))
 #define GIMP_IS_COLOR_SELECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_COLOR_SELECT))
@@ -96,7 +117,8 @@ struct _GimpColorSelect
 
   ColorSelectFillType  z_color_fill;
   ColorSelectFillType  xy_color_fill;
-  GdkGC               *gc;
+
+  ColorSelectDragMode  drag_mode;
 };
 
 struct _GimpColorSelectClass
@@ -121,8 +143,6 @@ struct _ColorSelectFill
   ColorSelectFillUpdateProc update;
 };
 
-
-static void   gimp_color_select_unrealize       (GtkWidget          *widget);
 
 static void   gimp_color_select_togg_visible    (GimpColorSelector  *selector,
                                                  gboolean            visible);
@@ -174,11 +194,6 @@ static void   gimp_color_select_image_fill      (GtkWidget          *widget,
                                                  const GimpHSV      *hsv,
                                                  const GimpRGB      *rgb);
 
-static void   gimp_color_select_draw_z_marker   (GimpColorSelect    *select,
-                                                 GdkRectangle       *clip);
-static void   gimp_color_select_draw_xy_marker  (GimpColorSelect    *select,
-                                                 GdkRectangle       *clip);
-
 static void   color_select_update_red              (ColorSelectFill *csf);
 static void   color_select_update_green            (ColorSelectFill *csf);
 static void   color_select_update_blue             (ColorSelectFill *csf);
@@ -218,10 +233,7 @@ static const ColorSelectFillUpdateProc update_procs[] =
 static void
 gimp_color_select_class_init (GimpColorSelectClass *klass)
 {
-  GtkWidgetClass         *widget_class   = GTK_WIDGET_CLASS (klass);
   GimpColorSelectorClass *selector_class = GIMP_COLOR_SELECTOR_CLASS (klass);
-
-  widget_class->unrealize               = gimp_color_select_unrealize;
 
   selector_class->name                  = "GIMP";
   selector_class->help_id               = "gimp-colorselector-gimp";
@@ -240,9 +252,9 @@ gimp_color_select_init (GimpColorSelect *select)
 
   select->z_color_fill  = COLOR_SELECT_HUE;
   select->xy_color_fill = COLOR_SELECT_SATURATION_VALUE;
-  select->gc            = NULL;
+  select->drag_mode     = DRAG_NONE;
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_box_pack_start (GTK_BOX (select), hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
@@ -298,7 +310,7 @@ gimp_color_select_init (GimpColorSelect *select)
                     G_CALLBACK (gimp_color_select_z_events),
                     select);
 
-  select->toggle_box = gtk_vbox_new (FALSE, 2);
+  select->toggle_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start (GTK_BOX (hbox), select->toggle_box, FALSE, FALSE, 0);
   gtk_widget_show (select->toggle_box);
 
@@ -345,29 +357,12 @@ gimp_color_select_init (GimpColorSelect *select)
 }
 
 static void
-gimp_color_select_unrealize (GtkWidget *widget)
-{
-  GimpColorSelect *select = GIMP_COLOR_SELECT (widget);
-
-  if (select->gc)
-    {
-      g_object_unref (select->gc);
-      select->gc = NULL;
-    }
-
-  GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
-}
-
-static void
 gimp_color_select_togg_visible (GimpColorSelector *selector,
                                 gboolean           visible)
 {
   GimpColorSelect *select = GIMP_COLOR_SELECT (selector);
 
-  if (visible)
-    gtk_widget_show (select->toggle_box);
-  else
-    gtk_widget_hide (select->toggle_box);
+  gtk_widget_set_visible (select->toggle_box, visible);
 }
 
 static void
@@ -624,10 +619,34 @@ gimp_color_select_xy_expose (GtkWidget       *widget,
                              GdkEventExpose  *event,
                              GimpColorSelect *select)
 {
-  if (! select->gc)
-    select->gc = gdk_gc_new (widget->window);
+  GtkAllocation  allocation;
+  cairo_t       *cr;
+  gint           x, y;
 
-  gimp_color_select_draw_xy_marker (select, &event->area);
+  gtk_widget_get_allocation (select->xy_color, &allocation);
+
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  x = ((allocation.width - 1) * select->pos[0]) / 255;
+  y = (allocation.height - 1) - ((allocation.height - 1) * select->pos[1]) / 255;
+
+  cairo_move_to (cr, 0,                y + 0.5);
+  cairo_line_to (cr, allocation.width, y + 0.5);
+
+  cairo_move_to (cr, x + 0.5, 0);
+  cairo_line_to (cr, x + 0.5, allocation.height);
+
+  cairo_set_line_width (cr, 3.0);
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+  cairo_stroke_preserve (cr);
+
+  cairo_set_line_width (cr, 1.0);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.8);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }
@@ -637,59 +656,69 @@ gimp_color_select_xy_events (GtkWidget       *widget,
                              GdkEvent        *event,
                              GimpColorSelect *select)
 {
-  GdkEventButton *bevent;
-  GdkEventMotion *mevent;
-  gint            width, height;
-  gint            x, y;
+  GtkAllocation allocation;
+  gint          x, y;
 
   switch (event->type)
     {
     case GDK_BUTTON_PRESS:
-      bevent = (GdkEventButton *) event;
-      x = bevent->x;
-      y = bevent->y;
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-      gdk_pointer_grab (select->xy_color->window, FALSE,
-                        GDK_POINTER_MOTION_HINT_MASK |
-                        GDK_BUTTON_MOTION_MASK       |
-                        GDK_BUTTON_RELEASE_MASK,
-                        NULL, NULL, bevent->time);
+        if (select->drag_mode != DRAG_NONE || bevent->button != 1)
+          return FALSE;
+
+        x = bevent->x;
+        y = bevent->y;
+
+        gtk_grab_add (widget);
+        select->drag_mode = DRAG_XY;
+      }
       break;
 
     case GDK_BUTTON_RELEASE:
-      bevent = (GdkEventButton *) event;
-      x = bevent->x;
-      y = bevent->y;
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-      gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                  bevent->time);
+        if (select->drag_mode != DRAG_XY || bevent->button != 1)
+          return FALSE;
+
+        x = bevent->x;
+        y = bevent->y;
+
+        gtk_grab_remove (widget);
+        select->drag_mode = DRAG_NONE;
+      }
       break;
 
     case GDK_MOTION_NOTIFY:
-      mevent = (GdkEventMotion *) event;
-      x = mevent->x;
-      y = mevent->y;
+      {
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
+
+        if (select->drag_mode != DRAG_XY)
+          return FALSE;
+
+        x = mevent->x;
+        y = mevent->y;
+      }
       break;
 
     default:
       return FALSE;
     }
 
-  gimp_color_select_draw_xy_marker (select, NULL);
+  gtk_widget_get_allocation (select->xy_color, &allocation);
 
-  width  = select->xy_color->allocation.width;
-  height = select->xy_color->allocation.height;
-
-  if (width > 1 && height > 1)
+  if (allocation.width > 1 && allocation.height > 1)
     {
-      select->pos[0] = (x * 255) / (width - 1);
-      select->pos[1] = 255 - (y * 255) / (height - 1);
+      select->pos[0] = (x * 255) / (allocation.width - 1);
+      select->pos[1] = 255 - (y * 255) / (allocation.height - 1);
     }
 
   select->pos[0] = CLAMP (select->pos[0], 0, 255);
   select->pos[1] = CLAMP (select->pos[1], 0, 255);
 
-  gimp_color_select_draw_xy_marker (select, NULL);
+  gtk_widget_queue_draw (select->xy_color);
 
   gimp_color_select_update (select, UPDATE_VALUES | UPDATE_CALLER);
 
@@ -712,10 +741,30 @@ gimp_color_select_z_expose (GtkWidget       *widget,
                             GdkEventExpose  *event,
                             GimpColorSelect *select)
 {
-  if (! select->gc)
-    select->gc = gdk_gc_new (widget->window);
+  GtkAllocation  allocation;
+  cairo_t       *cr;
+  gint           y;
 
-  gimp_color_select_draw_z_marker (select, &event->area);
+  gtk_widget_get_allocation (widget, &allocation);
+
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  y = (allocation.height - 1) - ((allocation.height - 1) * select->pos[2]) / 255;
+
+  cairo_move_to (cr, 0,                y + 0.5);
+  cairo_line_to (cr, allocation.width, y + 0.5);
+
+  cairo_set_line_width (cr, 3.0);
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+  cairo_stroke_preserve (cr);
+
+  cairo_set_line_width (cr, 1.0);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.8);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }
@@ -725,51 +774,63 @@ gimp_color_select_z_events (GtkWidget       *widget,
                             GdkEvent        *event,
                             GimpColorSelect *select)
 {
-  GdkEventButton *bevent;
-  GdkEventMotion *mevent;
-  gint            height;
-  gint            z;
+  GtkAllocation allocation;
+  gint          z;
 
   switch (event->type)
     {
     case GDK_BUTTON_PRESS:
-      bevent = (GdkEventButton *) event;
-      z = bevent->y;
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-      gdk_pointer_grab (select->z_color->window, FALSE,
-                        GDK_POINTER_MOTION_HINT_MASK |
-                        GDK_BUTTON_MOTION_MASK       |
-                        GDK_BUTTON_RELEASE_MASK,
-                        NULL, NULL, bevent->time);
+        if (select->drag_mode != DRAG_NONE || bevent->button != 1)
+          return FALSE;
+
+        z = bevent->y;
+
+        gtk_grab_add (widget);
+        select->drag_mode = DRAG_Z;
+      }
       break;
 
     case GDK_BUTTON_RELEASE:
-      bevent = (GdkEventButton *) event;
-      z = bevent->y;
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-      gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                  bevent->time);
+        if (select->drag_mode != DRAG_Z || bevent->button != 1)
+          return FALSE;
+
+        z = bevent->y;
+
+        gtk_grab_remove (widget);
+        select->drag_mode = DRAG_NONE;
+      }
       break;
 
     case GDK_MOTION_NOTIFY:
-      mevent = (GdkEventMotion *) event;
-      z = mevent->y;
+      {
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
+
+        if (select->drag_mode != DRAG_Z)
+          return FALSE;
+
+        z = mevent->y;
+      }
       break;
 
     default:
       return FALSE;
     }
 
-  gimp_color_select_draw_z_marker (select, NULL);
+  gtk_widget_get_allocation (select->z_color, &allocation);
 
-  height = select->z_color->allocation.height;
-
-  if (height > 1)
-    select->pos[2] = 255 - (z * 255) / (height - 1);
+  if (allocation.height > 1)
+    select->pos[2] = 255 - (z * 255) / (allocation.height - 1);
 
   select->pos[2] = CLAMP (select->pos[2], 0, 255);
 
-  gimp_color_select_draw_z_marker (select, NULL);
+  gtk_widget_queue_draw (select->z_color);
+
   gimp_color_select_update (select,
                             UPDATE_VALUES | UPDATE_XY_COLOR | UPDATE_CALLER);
 
@@ -785,12 +846,15 @@ gimp_color_select_image_fill (GtkWidget           *preview,
                               const GimpHSV       *hsv,
                               const GimpRGB       *rgb)
 {
+  GtkAllocation   allocation;
   ColorSelectFill csf;
+
+  gtk_widget_get_allocation (preview, &allocation);
 
   csf.update = update_procs[fill_type];
 
-  csf.width  = preview->allocation.width;
-  csf.height = preview->allocation.height;
+  csf.width  = allocation.width;
+  csf.height = allocation.height;
   csf.hsv    = *hsv;
   csf.rgb    = *rgb;
 
@@ -808,92 +872,6 @@ gimp_color_select_image_fill (GtkWidget           *preview,
                                 csf.buffer, csf.width * 3);
       }
     }
-}
-
-static void
-gimp_color_select_draw_z_marker (GimpColorSelect *select,
-                                 GdkRectangle    *clip)
-{
-  gint width;
-  gint height;
-  gint y;
-  gint minx;
-  gint miny;
-
-  if (! select->gc)
-    return;
-
-  width  = select->z_color->allocation.width;
-  height = select->z_color->allocation.height;
-
-  if (width < 1 || height < 1)
-    return;
-
-  y = (height - 1) - ((height - 1) * select->pos[2]) / 255;
-
-  minx = 0;
-  miny = 0;
-
-  if (clip)
-    {
-      width  = MIN (width,  clip->x + clip->width);
-      height = MIN (height, clip->y + clip->height);
-      minx   = MAX (0, clip->x);
-      miny   = MAX (0, clip->y);
-    }
-
-  if (y >= miny && y < height)
-    {
-      gdk_gc_set_function (select->gc, GDK_INVERT);
-      gdk_draw_line (select->z_color->window,
-                     select->gc, minx, y, width - 1, y);
-      gdk_gc_set_function (select->gc, GDK_COPY);
-    }
-}
-
-static void
-gimp_color_select_draw_xy_marker (GimpColorSelect *select,
-                                  GdkRectangle    *clip)
-{
-  gint width;
-  gint height;
-  gint x, y;
-  gint minx, miny;
-
-  if (! select->gc)
-    return;
-
-  width  = select->xy_color->allocation.width;
-  height = select->xy_color->allocation.height;
-
-  if (width < 1 || height < 1)
-    return;
-
-  x = ((width - 1) * select->pos[0]) / 255;
-  y = (height - 1) - ((height - 1) * select->pos[1]) / 255;
-
-  minx = 0;
-  miny = 0;
-
-  gdk_gc_set_function (select->gc, GDK_INVERT);
-
-  if (clip)
-    {
-      width  = MIN (width,  clip->x + clip->width);
-      height = MIN (height, clip->y + clip->height);
-      minx   = MAX (0, clip->x);
-      miny   = MAX (0, clip->y);
-    }
-
-  if (y >= miny && y < height)
-    gdk_draw_line (select->xy_color->window,
-                   select->gc, minx, y, width - 1, y);
-
-  if (x >= minx && x < width)
-    gdk_draw_line (select->xy_color->window,
-                   select->gc, x, miny, x, height - 1);
-
-  gdk_gc_set_function (select->gc, GDK_COPY);
 }
 
 static void

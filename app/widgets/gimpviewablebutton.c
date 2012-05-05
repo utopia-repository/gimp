@@ -4,9 +4,9 @@
  * gimpviewablebutton.c
  * Copyright (C) 2003-2005 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -190,7 +189,7 @@ gimp_viewable_button_scroll_event (GtkWidget      *widget,
   gint                index;
 
   object = gimp_context_get_by_type (button->context,
-                                     button->container->children_type);
+                                     gimp_container_get_children_type (button->container));
 
   index = gimp_container_get_child_index (button->container, object);
 
@@ -199,7 +198,7 @@ gimp_viewable_button_scroll_event (GtkWidget      *widget,
       gint n_children;
       gint new_index = index;
 
-      n_children = gimp_container_num_children (button->container);
+      n_children = gimp_container_get_n_children (button->container);
 
       if (sevent->direction == GDK_SCROLL_UP)
         {
@@ -223,7 +222,7 @@ gimp_viewable_button_scroll_event (GtkWidget      *widget,
 
           if (object)
             gimp_context_set_by_type (button->context,
-                                      button->container->children_type,
+                                      gimp_container_get_children_type (button->container),
                                       object);
         }
     }
@@ -321,7 +320,7 @@ gimp_viewable_button_new (GimpContainer     *container,
       button->dialog_tooltip    = g_strdup (dialog_tooltip);
     }
 
-  prop_name = gimp_context_type_to_prop_name (container->children_type);
+  prop_name = gimp_context_type_to_prop_name (gimp_container_get_children_type (container));
 
   button->view = gimp_prop_view_new (G_OBJECT (context), prop_name,
                                      context, button->button_view_size);

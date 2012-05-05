@@ -6,9 +6,9 @@
  * Copyright (C) Pavel Grinfeld (pavel@ml.com)
  *
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,6 +33,7 @@
 
 #define PLUG_IN_PROC       "plug-in-filter-pack"
 #define PLUG_IN_BINARY     "filter-pack"
+#define PLUG_IN_ROLE       "gimp-filter-pack"
 
 #define MAX_PREVIEW_SIZE   125
 #define MAX_ROUGHNESS      128
@@ -308,7 +308,7 @@ query (void)
 {
   GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive"          },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"          },
     { GIMP_PDB_IMAGE,    "image",    "Input image (used for indexed images)" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"                        }
   };
@@ -337,7 +337,7 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  GimpParam         values[1];
+  static GimpParam  values[1];
   GimpPDBStatusType status = GIMP_PDB_SUCCESS;
   GimpRunMode       run_mode;
 
@@ -625,18 +625,20 @@ fp_create_circle_palette (GtkWidget *parent)
 static GtkWidget *
 fp_create_rough (void)
 {
-  GtkWidget *frame, *vbox, *scale;
-  GtkObject *data;
+  GtkWidget     *frame, *vbox, *scale;
+  GtkAdjustment *data;
 
   frame = gimp_frame_new (_("Roughness"));
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
-  data = gtk_adjustment_new (fpvals.roughness, 0, 1.0, 0.05, 0.01, 0.0);
-  fp_widgets.roughness_scale = scale = gtk_hscale_new (GTK_ADJUSTMENT (data));
+  data = (GtkAdjustment *)
+    gtk_adjustment_new (fpvals.roughness, 0, 1.0, 0.05, 0.01, 0.0);
+  fp_widgets.roughness_scale = scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                                      data);
 
   gtk_widget_set_size_request (scale, 60, -1);
   gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
@@ -661,7 +663,7 @@ fp_change_current_range (GtkWidget *widget,
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     {
       fp_refresh_previews (fpvals.visible_frames);
-      if (AW.window && GTK_WIDGET_VISIBLE (AW.window))
+      if (AW.window && gtk_widget_get_visible (AW.window))
         fp_create_smoothness_graph (AW.aliasing_preview);
     }
 }
@@ -693,7 +695,7 @@ fp_create_control (void)
 
   frame = gimp_frame_new (_("Windows"));
 
-  box = gtk_vbox_new (FALSE, 6);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), box);
   gtk_widget_show (box);
 
@@ -817,7 +819,7 @@ fp_change_current_pixels_by (GtkWidget *widget,
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     {
       fp_refresh_previews (fpvals.visible_frames);
-      if (AW.window && GTK_WIDGET_VISIBLE (AW.window) && AW.range_preview)
+      if (AW.window && gtk_widget_get_visible (AW.window) && AW.range_preview)
         fp_range_preview_spill (AW.range_preview,fpvals.value_by);
     }
 }
@@ -924,7 +926,7 @@ fp_create_table_entry (GtkWidget   **box,
   GtkWidget *button;
   GtkWidget *table;
 
-  *box = gtk_vbox_new (FALSE, 1);
+  *box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1);
   gtk_container_set_border_width (GTK_CONTAINER (*box), PR_BX_BRDR);
   gtk_widget_show (*box);
 
@@ -999,7 +1001,7 @@ fp_show_hide_frame (GtkWidget *button,
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
     {
-      if (!GTK_WIDGET_VISIBLE (frame))
+      if (! gtk_widget_get_visible (frame))
         {
           gtk_widget_show (frame);
 
@@ -1017,7 +1019,7 @@ fp_show_hide_frame (GtkWidget *button,
     }
   else
     {
-      if (GTK_WIDGET_VISIBLE (frame))
+      if (gtk_widget_get_visible (frame))
         {
           gtk_widget_hide (frame);
 
@@ -1164,17 +1166,17 @@ fp_scale_update (GtkAdjustment *adjustment,
 {
   static gdouble prevValue = 0.25;
 
-  *scale_val = adjustment->value;
+  *scale_val = gtk_adjustment_get_value (adjustment);
 
-  if (prevValue != adjustment->value)
+  if (prevValue != gtk_adjustment_get_value (adjustment))
     {
       fp_create_nudge (nudgeArray);
       fp_refresh_previews (fpvals.visible_frames);
 
-      if (AW.window != NULL && GTK_WIDGET_VISIBLE (AW.window))
+      if (AW.window != NULL && gtk_widget_get_visible (AW.window))
         fp_create_smoothness_graph (AW.aliasing_preview);
 
-      prevValue = adjustment->value;
+      prevValue = gtk_adjustment_get_value (adjustment);
     }
 }
 
@@ -1198,7 +1200,7 @@ fp_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (_("Filter Pack Simulation"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Filter Pack Simulation"), PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1242,7 +1244,8 @@ fp_dialog (void)
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), table, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   gtk_table_attach (GTK_TABLE (table), bna, 0, 2, 0, 1,
@@ -1280,7 +1283,7 @@ static void
 fp_preview_scale_update (GtkAdjustment *adjustment,
                          gdouble        *scale_val)
 {
-  fpvals.preview_size = adjustment->value;
+  fpvals.preview_size = gtk_adjustment_get_value (adjustment);
   fp_redraw_all_windows();
 }
 
@@ -1290,12 +1293,12 @@ fp_advanced_dialog (GtkWidget *parent)
   const gchar *rangeNames[] = { N_("Shadows:"),
                                 N_("Midtones:"),
                                 N_("Highlights:") };
-  GtkWidget *frame, *hbox;
-  GtkObject *smoothnessData;
-  GtkWidget *graphFrame, *scale;
-  GtkWidget *vbox, *label, *labelTable, *alignment;
-  GtkWidget *inner_vbox, *innermost_vbox;
-  gint       i;
+  GtkWidget     *frame, *hbox;
+  GtkAdjustment *smoothnessData;
+  GtkWidget     *graphFrame, *scale;
+  GtkWidget     *vbox, *label, *labelTable, *alignment;
+  GtkWidget     *inner_vbox, *innermost_vbox;
+  gint           i;
 
   AW.window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
@@ -1309,7 +1312,7 @@ fp_advanced_dialog (GtkWidget *parent)
                     G_CALLBACK (sub_dialog_destroy),
                     NULL);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_container_add (GTK_CONTAINER (AW.window), hbox);
   gtk_widget_show (hbox);
@@ -1318,7 +1321,7 @@ fp_advanced_dialog (GtkWidget *parent)
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -1328,7 +1331,7 @@ fp_advanced_dialog (GtkWidget *parent)
   gtk_box_pack_start (GTK_BOX (vbox), graphFrame, FALSE, FALSE, 0);
   gtk_widget_show (graphFrame);
 
-  inner_vbox = gtk_vbox_new (FALSE, 0);
+  inner_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (graphFrame), inner_vbox);
   gtk_widget_show (inner_vbox);
 
@@ -1336,7 +1339,7 @@ fp_advanced_dialog (GtkWidget *parent)
   gtk_box_pack_start (GTK_BOX (inner_vbox), alignment, TRUE, TRUE, 0);
   gtk_widget_show (alignment);
 
-  innermost_vbox = gtk_vbox_new (FALSE, 0);
+  innermost_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (alignment), innermost_vbox);
   gtk_widget_show (innermost_vbox);
 
@@ -1396,15 +1399,15 @@ fp_advanced_dialog (GtkWidget *parent)
                         GTK_EXPAND | GTK_FILL, 0, 0, 0);
     }
 
-  smoothnessData = gtk_adjustment_new (fpvals.aliasing,
-                                       0, 1.0, 0.05, 0.01, 0.0);
+  smoothnessData = (GtkAdjustment *)
+    gtk_adjustment_new (fpvals.aliasing,
+                        0, 1.0, 0.05, 0.01, 0.0);
 
   fp_widgets.aliasing_scale = scale =
-    gtk_hscale_new (GTK_ADJUSTMENT (smoothnessData));
+    gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, smoothnessData);
   gtk_widget_set_size_request (scale, 200, -1);
   gtk_scale_set_digits (GTK_SCALE (scale), 2);
   gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
-  gtk_range_set_update_policy (GTK_RANGE (scale), 0);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_widget_show (scale);
 
@@ -1418,21 +1421,21 @@ fp_advanced_dialog (GtkWidget *parent)
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
-  smoothnessData = gtk_adjustment_new (fpvals.preview_size,
-                                       50, MAX_PREVIEW_SIZE,
-                                       5, 5, 0.0);
+  smoothnessData = (GtkAdjustment *)
+    gtk_adjustment_new (fpvals.preview_size,
+                        50, MAX_PREVIEW_SIZE,
+                        5, 5, 0.0);
 
   fp_widgets.preview_size_scale = scale =
-    gtk_hscale_new (GTK_ADJUSTMENT (smoothnessData));
+    gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, smoothnessData);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_widget_set_size_request (scale, 100, -1);
   gtk_scale_set_digits (GTK_SCALE (scale), 0);
   gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
-  gtk_range_set_update_policy (GTK_RANGE (scale), 0);
   gtk_widget_show (scale);
 
   g_signal_connect (smoothnessData, "value-changed",
@@ -1451,46 +1454,48 @@ slider_erase (GdkWindow *window,
 }
 
 static void
-draw_slider (GdkWindow *window,
-             GdkGC     *border_gc,
-             GdkGC     *fill_gc,
-             gint       xpos)
+draw_slider (cairo_t  *cr,
+             GdkColor *border_color,
+             GdkColor *fill_color,
+             gint      xpos)
 {
-  gint i;
+  cairo_move_to (cr, MARGIN + xpos, 0);
+  cairo_line_to (cr, MARGIN + xpos - (RANGE_HEIGHT - 1) / 2, RANGE_HEIGHT - 1);
+  cairo_line_to (cr, MARGIN + xpos + (RANGE_HEIGHT - 1) / 2, RANGE_HEIGHT - 1);
+  cairo_line_to (cr, MARGIN + xpos, 0);
 
-  for (i = 0; i < RANGE_HEIGHT; i++)
-    gdk_draw_line (window, fill_gc, MARGIN + xpos-i/2, i, MARGIN + xpos+i/2,i);
+  gdk_cairo_set_source_color (cr, fill_color);
+  cairo_fill_preserve (cr);
 
-  gdk_draw_line (window, border_gc, MARGIN + xpos, 0,
-                 MARGIN + xpos - (RANGE_HEIGHT - 1) / 2, RANGE_HEIGHT - 1);
-
-  gdk_draw_line (window, border_gc, MARGIN + xpos, 0,
-                 MARGIN + xpos + (RANGE_HEIGHT - 1) / 2, RANGE_HEIGHT - 1);
-
-  gdk_draw_line (window, border_gc, MARGIN + xpos- (RANGE_HEIGHT - 1)/2,
-                 RANGE_HEIGHT-1, MARGIN + xpos + (RANGE_HEIGHT-1)/2,
-                 RANGE_HEIGHT - 1);
+  gdk_cairo_set_source_color (cr, border_color);
+  cairo_stroke (cr);
 }
 
 static void
 draw_it (GtkWidget *widget)
 {
   GtkStyle *style = gtk_widget_get_style (AW.aliasing_graph);
+  cairo_t  *cr    = gdk_cairo_create (gtk_widget_get_window (AW.aliasing_graph));
 
-  draw_slider (AW.aliasing_graph->window,
-               style->black_gc,
-               style->dark_gc[GTK_STATE_NORMAL],
+  cairo_translate (cr, 0.5, 0.5);
+  cairo_set_line_width (cr, 1.0);
+
+  draw_slider (cr,
+               &style->black,
+               &style->dark[GTK_STATE_NORMAL],
                fpvals.cutoff[SHADOWS]);
 
-  draw_slider (AW.aliasing_graph->window,
-               style->black_gc,
-               style->dark_gc[GTK_STATE_NORMAL],
+  draw_slider (cr,
+               &style->black,
+               &style->dark[GTK_STATE_NORMAL],
                fpvals.cutoff[MIDTONES]);
 
-  draw_slider (AW.aliasing_graph->window,
-               style->black_gc,
-               style->dark_gc[GTK_STATE_SELECTED],
+  draw_slider (cr,
+               &style->black,
+               &style->dark[GTK_STATE_SELECTED],
                fpvals.offset);
+
+  cairo_destroy (cr);
 }
 
 static gboolean
@@ -1528,7 +1533,7 @@ fp_range_change_events (GtkWidget *widget,
           else
             new = &fpvals.offset;
 
-          slider_erase (AW.aliasing_graph->window, *new);
+          slider_erase (gtk_widget_get_window (AW.aliasing_graph), *new);
           *new = bevent->x;
         }
 
@@ -1549,7 +1554,7 @@ fp_range_change_events (GtkWidget *widget,
 
       if (x >= 0 && x < 256)
         {
-          slider_erase (AW.aliasing_graph->window, *new);
+          slider_erase (gtk_widget_get_window (AW.aliasing_graph), *new);
           *new = x;
           draw_it (NULL);
           fp_range_preview_spill (AW.range_preview, fpvals.value_by);

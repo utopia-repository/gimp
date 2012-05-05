@@ -3,9 +3,9 @@
  *
  * gimppluginprocedure.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,15 +14,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -31,11 +30,14 @@
 
 #include "core/gimp.h"
 #include "core/gimp-utils.h"
+#include "core/gimpdrawable.h"
 #include "core/gimpmarshal.h"
 #include "core/gimpparamspecs.h"
 
 #define __YES_I_NEED_GIMP_PLUG_IN_MANAGER_CALL__
 #include "gimppluginmanager-call.h"
+
+#include "gimppluginerror.h"
 #include "gimppluginprocedure.h"
 #include "plug-in-menu-path.h"
 
@@ -123,8 +125,7 @@ gimp_plug_in_procedure_finalize (GObject *object)
   g_free (proc->prog);
   g_free (proc->menu_label);
 
-  g_list_foreach (proc->menu_paths, (GFunc) g_free, NULL);
-  g_list_free (proc->menu_paths);
+  g_list_free_full (proc->menu_paths, (GDestroyNotify) g_free);
 
   g_free (proc->label);
 
@@ -136,14 +137,9 @@ gimp_plug_in_procedure_finalize (GObject *object)
   g_free (proc->magics);
   g_free (proc->mime_type);
 
-  g_slist_foreach (proc->extensions_list, (GFunc) g_free, NULL);
-  g_slist_free (proc->extensions_list);
-
-  g_slist_foreach (proc->prefixes_list, (GFunc) g_free, NULL);
-  g_slist_free (proc->prefixes_list);
-
-  g_slist_foreach (proc->magics_list, (GFunc) g_free, NULL);
-  g_slist_free (proc->magics_list);
+  g_slist_free_full (proc->extensions_list, (GDestroyNotify) g_free);
+  g_slist_free_full (proc->prefixes_list, (GDestroyNotify) g_free);
+  g_slist_free_full (proc->magics_list, (GDestroyNotify) g_free);
 
   g_free (proc->thumb_loader);
 
@@ -278,7 +274,7 @@ gimp_plug_in_procedure_find (GSList      *list,
     {
       GimpObject *object = l->data;
 
-      if (! strcmp (proc_name, object->name))
+      if (! strcmp (proc_name, gimp_object_get_name (object)))
         return GIMP_PLUG_IN_PROCEDURE (object);
     }
 
@@ -349,14 +345,14 @@ gimp_plug_in_procedure_add_menu_path (GimpPlugInProcedure  *proc,
     {
       basename = g_filename_display_basename (proc->prog);
 
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                    "Plug-In \"%s\"\n(%s)\n"
                    "attempted to install procedure \"%s\"\n"
                    "in the invalid menu location \"%s\".\n"
                    "The menu path must look like either \"<Prefix>\" "
                    "or \"<Prefix>/path/to/item\".",
                    basename, gimp_filename_to_utf8 (proc->prog),
-                   GIMP_OBJECT (proc)->name,
+                   gimp_object_get_name (proc),
                    menu_path);
       goto failure;
     }
@@ -469,7 +465,7 @@ gimp_plug_in_procedure_add_menu_path (GimpPlugInProcedure  *proc,
     {
       basename = g_filename_display_basename (proc->prog);
 
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                    "Plug-In \"%s\"\n(%s)\n"
                    "attempted to install procedure \"%s\" "
                    "in the invalid menu location \"%s\".\n"
@@ -479,7 +475,7 @@ gimp_plug_in_procedure_add_menu_path (GimpPlugInProcedure  *proc,
                    "\"<Brushes>\", \"<Gradients>\", \"<Palettes>\", "
                    "\"<Patterns>\" or \"<Buffers>\".",
                    basename, gimp_filename_to_utf8 (proc->prog),
-                   GIMP_OBJECT (proc)->name,
+                   gimp_object_get_name (proc),
                    menu_path);
       goto failure;
     }
@@ -505,13 +501,13 @@ gimp_plug_in_procedure_add_menu_path (GimpPlugInProcedure  *proc,
 
       basename = g_filename_display_basename (proc->prog);
 
-      g_set_error (error, 0, 0,
+      g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                    "Plug-In \"%s\"\n(%s)\n\n"
                    "attempted to install %s procedure \"%s\" "
                    "which does not take the standard %s Plug-In "
                    "arguments: (%s).",
                    basename, gimp_filename_to_utf8 (proc->prog),
-                   prefix, GIMP_OBJECT (proc)->name, prefix,
+                   prefix, gimp_object_get_name (proc), prefix,
                    required);
 
       g_free (prefix);
@@ -658,7 +654,7 @@ gimp_plug_in_procedure_get_pixbuf (const GimpPlugInProcedure *proc)
 
   if (! pixbuf && error)
     {
-      g_printerr ("%s", error->message);
+      g_printerr ("%s\n", error->message);
       g_clear_error (&error);
     }
 
@@ -675,18 +671,23 @@ gimp_plug_in_procedure_get_help_id (const GimpPlugInProcedure *proc)
   domain = gimp_plug_in_procedure_get_help_domain (proc);
 
   if (domain)
-    return g_strconcat (domain, "?", GIMP_OBJECT (proc)->name, NULL);
+    return g_strconcat (domain, "?", gimp_object_get_name (proc), NULL);
 
-  return g_strdup (GIMP_OBJECT (proc)->name);
+  return g_strdup (gimp_object_get_name (proc));
 }
 
 gboolean
 gimp_plug_in_procedure_get_sensitive (const GimpPlugInProcedure *proc,
-                                      GimpImageType              image_type)
+                                      GimpDrawable              *drawable)
 {
-  gboolean sensitive;
+  GimpImageType image_type = -1;
+  gboolean      sensitive  = FALSE;
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc), FALSE);
+  g_return_val_if_fail (drawable == NULL || GIMP_IS_DRAWABLE (drawable), FALSE);
+
+  if (drawable)
+    image_type = gimp_drawable_type (drawable);
 
   switch (image_type)
     {
@@ -709,7 +710,6 @@ gimp_plug_in_procedure_get_sensitive (const GimpPlugInProcedure *proc,
       sensitive = proc->image_types_val & GIMP_PLUG_IN_INDEXEDA_IMAGE;
       break;
     default:
-      sensitive = FALSE;
       break;
     }
 
@@ -820,7 +820,7 @@ gimp_plug_in_procedure_set_image_types (GimpPlugInProcedure *proc,
     g_free (proc->image_types);
 
   proc->image_types     = g_strdup (image_types);
-  proc->image_types_val = image_types_parse (gimp_object_get_name (GIMP_OBJECT (proc)),
+  proc->image_types_val = image_types_parse (gimp_object_get_name (proc),
                                              proc->image_types);
 }
 
@@ -876,10 +876,7 @@ gimp_plug_in_procedure_set_file_proc (GimpPlugInProcedure *proc,
     }
 
   if (proc->extensions_list)
-    {
-      g_slist_foreach (proc->extensions_list, (GFunc) g_free, NULL);
-      g_slist_free (proc->extensions_list);
-    }
+    g_slist_free_full (proc->extensions_list, (GDestroyNotify) g_free);
 
   proc->extensions_list = extensions_parse (proc->extensions);
 
@@ -894,10 +891,7 @@ gimp_plug_in_procedure_set_file_proc (GimpPlugInProcedure *proc,
     }
 
   if (proc->prefixes_list)
-    {
-      g_slist_foreach (proc->prefixes_list, (GFunc) g_free, NULL);
-      g_slist_free (proc->prefixes_list);
-    }
+    g_slist_free_full (proc->prefixes_list, (GDestroyNotify) g_free);
 
   proc->prefixes_list = extensions_parse (proc->prefixes);
 
@@ -925,10 +919,7 @@ gimp_plug_in_procedure_set_file_proc (GimpPlugInProcedure *proc,
     }
 
   if (proc->magics_list)
-    {
-      g_slist_foreach (proc->magics_list, (GFunc) g_free, NULL);
-      g_slist_free (proc->magics_list);
-    }
+    g_slist_free_full (proc->magics_list, (GDestroyNotify) g_free);
 
   proc->magics_list = extensions_parse (proc->magics);
 }

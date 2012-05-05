@@ -4,9 +4,9 @@
 
   Copyright (C) 1997-1999 Hirotsuna Mizuno <s1041150@u-aizu.ac.jp>
 
-  This program  is  free software;  you can redistribute it  and/or  modify it
+  This program  is  free software:  you can redistribute it  and/or  modify it
   under the terms of the GNU Public License as published  by the Free Software
-  Foundation;  either version 2 of the License,  or (at your option) any later
+  Foundation;  either version 3 of the License,  or (at your option) any later
   version.
 
   This program is distributed in the hope that it will be useful,  but WITHOUT
@@ -15,8 +15,7 @@
   more details.
 
   You should have received a copy of the GNU General Public License along with
-  this program; if not, write to the Free Software Foundation, Inc.,
-  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+  this program; if not, see <http://www.gnu.org/licenses/>.
 
  *===========================================================================*/
 
@@ -36,6 +35,7 @@
 
 #define PLUG_IN_PROC   "plug-in-papertile"
 #define PLUG_IN_BINARY "tile-paper"
+#define PLUG_IN_ROLE   "gimp-tile-paper"
 
 /*===========================================================================*/
 /* TYPES                                                                     */
@@ -181,9 +181,9 @@ static struct
 static void
 tile_width_adj_changed (GtkAdjustment *adj)
 {
-  if (p.params.tile_width != (gint)adj->value)
+  if (p.params.tile_width != (gint)gtk_adjustment_get_value (adj))
     {
-      p.params.tile_width  = adj->value;
+      p.params.tile_width  = gtk_adjustment_get_value (adj);
       p.params.division_x = p.drawable->width  / p.params.tile_width;
       gtk_adjustment_set_value (GTK_ADJUSTMENT (w.division_x_adj),
                                 p.params.division_x);
@@ -193,9 +193,9 @@ tile_width_adj_changed (GtkAdjustment *adj)
 static void
 tile_height_adj_changed (GtkAdjustment *adj)
 {
-  if (p.params.tile_height != (gint)adj->value)
+  if (p.params.tile_height != (gint)gtk_adjustment_get_value (adj))
     {
-      p.params.tile_height  = adj->value;
+      p.params.tile_height  = gtk_adjustment_get_value (adj);
       p.params.division_y = p.drawable->height / p.params.tile_height;
       gtk_adjustment_set_value (GTK_ADJUSTMENT (w.division_y_adj),
                                 p.params.division_y);
@@ -205,9 +205,9 @@ tile_height_adj_changed (GtkAdjustment *adj)
 static void
 division_x_adj_changed (GtkAdjustment *adj)
 {
-  if (p.params.division_x != (gint) adj->value)
+  if (p.params.division_x != (gint) gtk_adjustment_get_value (adj))
     {
-      p.params.division_x = adj->value;
+      p.params.division_x = gtk_adjustment_get_value (adj);
       p.params.tile_width  = p.drawable->width  / p.params.division_x;
       gtk_adjustment_set_value (GTK_ADJUSTMENT (w.tile_width_adj),
                                 p.params.tile_width);
@@ -217,9 +217,9 @@ division_x_adj_changed (GtkAdjustment *adj)
 static void
 division_y_adj_changed (GtkAdjustment *adj)
 {
-  if (p.params.division_y != (gint)adj->value)
+  if (p.params.division_y != (gint)gtk_adjustment_get_value (adj))
     {
-      p.params.division_y = adj->value;
+      p.params.division_y = gtk_adjustment_get_value (adj);
       p.params.tile_height  = p.drawable->height / p.params.division_y;
       gtk_adjustment_set_value (GTK_ADJUSTMENT (w.tile_height_adj),
                                 p.params.tile_height);
@@ -240,7 +240,7 @@ open_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Paper Tile"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Paper Tile"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -256,13 +256,14 @@ open_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_hbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_hbox, TRUE, TRUE, 0);
   gtk_widget_show (main_hbox);
 
   /* Left */
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -343,7 +344,7 @@ open_dialog (void)
                     &p.params.centering);
 
   /* Right */
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -407,13 +408,13 @@ open_dialog (void)
                       color_button, TRUE, TRUE, 0);
   gtk_widget_show (color_button);
 
-  gtk_widget_set_sensitive (color_button,
-                            p.params.background_type == BACKGROUND_TYPE_COLOR);
-  g_object_set_data (G_OBJECT (button), "set_sensitive", color_button);
-
   g_signal_connect (color_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &p.params.background_color);
+
+  g_object_bind_property (button,       "active",
+                          color_button, "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   gtk_widget_show (dialog);
 
@@ -808,6 +809,7 @@ filter (void)
   gimp_pixel_rgn_set_rect (&dst, pixels, 0, 0, p.drawable->width,
                            p.drawable->height);
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (p.drawable);
   gimp_drawable_merge_shadow (p.drawable->drawable_id, TRUE);
   gimp_drawable_update (p.drawable->drawable_id,
@@ -829,17 +831,17 @@ plugin_query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",         "run mode"                       },
-    { GIMP_PDB_IMAGE,    "image",            "input image"                    },
-    { GIMP_PDB_DRAWABLE, "drawable",         "input drawable"                 },
-    { GIMP_PDB_INT32,    "tile-size",        "tile size (pixels)"             },
-    { GIMP_PDB_FLOAT,    "move-max",         "max move rate (%)"              },
+    { GIMP_PDB_INT32,    "run-mode",         "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",            "Input image"                    },
+    { GIMP_PDB_DRAWABLE, "drawable",         "Input drawable"                 },
+    { GIMP_PDB_INT32,    "tile-size",        "Tile size (pixels)"             },
+    { GIMP_PDB_FLOAT,    "move-max",         "Max move rate (%)"              },
     { GIMP_PDB_INT32,    "fractional-type",  "0:Background 1:Ignore 2:Force"  },
-    { GIMP_PDB_INT32,    "wrap-around",      "wrap around (bool)"             },
-    { GIMP_PDB_INT32,    "centering",        "centering (bool)"               },
+    { GIMP_PDB_INT32,    "wrap-around",      "Wrap around (bool)"             },
+    { GIMP_PDB_INT32,    "centering",        "Centering (bool)"               },
     { GIMP_PDB_INT32,    "background-type",  "0:Transparent 1:Inverted 2:Image? 3:FG 4:BG 5:Color"                  },
-    { GIMP_PDB_INT32,    "background-color", "background color (for bg-type 5)" },
-    { GIMP_PDB_INT32,    "background-alpha", "opacity (for bg-type 5)"        }
+    { GIMP_PDB_INT32,    "background-color", "Background color (for bg-type 5)" },
+    { GIMP_PDB_INT32,    "background-alpha", "Opacity (for bg-type 5)"        }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,

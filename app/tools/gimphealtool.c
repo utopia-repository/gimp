@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -78,6 +77,7 @@ gimp_heal_tool_init (GimpHealTool *heal)
   paint_tool->status_ctrl = _("%s to set a new heal source");
 
   source_tool->status_paint           = _("Click to heal");
+  /* Translators: the translation of "Click" must be the first word */
   source_tool->status_set_source      = _("Click to set a new heal source");
   source_tool->status_set_source_ctrl = _("%s to set a new heal source");
 }
@@ -91,25 +91,28 @@ gimp_heal_options_gui (GimpToolOptions *tool_options)
   GObject   *config = G_OBJECT (tool_options);
   GtkWidget *vbox   = gimp_paint_options_gui (tool_options);
   GtkWidget *button;
-  GtkWidget *table;
+  GtkWidget *hbox;
+  GtkWidget *label;
   GtkWidget *combo;
 
-  /* create and attach the sample merged checkbox */
+  /* the sample merged checkbox */
   button = gimp_prop_check_button_new (config, "sample-merged",
                                        _("Sample merged"));
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  /* create and attach the alignment options to a table */
-  table = gtk_table_new (1, 2, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
+  /* the alignment combo */
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  label = gtk_label_new (_("Alignment:"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
 
   combo = gimp_prop_enum_combo_box_new (config, "align-mode", 0, 0);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                             _("Alignment:"), 0.0, 0.5,
-                             combo, 1, FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
+  gtk_widget_show (combo);
 
   return vbox;
 }

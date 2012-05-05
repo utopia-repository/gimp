@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -32,42 +31,42 @@ typedef struct ObjectList_t ObjectList_t;
 #include "imap_menu_funcs.h"
 
 struct Object_t {
-   ObjectClass_t 	*class;
-   ObjectList_t		*list;
-   gint			 refcount;
-   gboolean 		 selected;
-   gboolean		 locked;
-   gchar		*url;
-   gchar 		*target;
-   gchar 		*comment;
-   gchar 		*mouse_over;
-   gchar 		*mouse_out;
-   gchar		*focus;
-   gchar		*blur;
+   ObjectClass_t        *class;
+   ObjectList_t         *list;
+   gint                  refcount;
+   gboolean              selected;
+   gboolean              locked;
+   gchar                *url;
+   gchar                *target;
+   gchar                *comment;
+   gchar                *mouse_over;
+   gchar                *mouse_out;
+   gchar                *focus;
+   gchar                *blur;
 };
 
 typedef void (*MoveSashFunc_t)(Object_t*, gint, gint);
-typedef void (*OutputFunc_t)(gpointer, const char*, ...);
+typedef void (*OutputFunc_t)(gpointer, const char*, ...) G_GNUC_PRINTF(2,3);
 
 struct AreaInfoDialog_t;
 
 struct ObjectClass_t {
-   const gchar		*name;
-   AreaInfoDialog_t 	*info_dialog;
-   GdkPixmap 		*icon;
-   GdkBitmap 		*mask;
+   const gchar          *name;
+   AreaInfoDialog_t     *info_dialog;
+   GdkPixmap            *icon;
+   GdkBitmap            *mask;
 
    gboolean (*is_valid)(Object_t *obj);
    void (*destruct)(Object_t *obj);
    Object_t* (*clone)(Object_t *obj);
    void (*assign)(Object_t *obj, Object_t *des);
    void (*normalize)(Object_t *obj);
-   void (*draw)(Object_t *obj, GdkWindow *window, GdkGC* gc);
-   void (*draw_sashes)(Object_t *obj, GdkWindow *window, GdkGC* gc);
+   void (*draw)(Object_t *obj, cairo_t *cr);
+   void (*draw_sashes)(Object_t *obj, cairo_t *cr);
    MoveSashFunc_t (*near_sash)(Object_t *obj, gint x, gint y);
    gboolean (*point_is_on)(Object_t *obj, gint x, gint y);
    void (*get_dimensions)(Object_t *obj, gint *x, gint *y, gint *width,
-			  gint *height);
+                          gint *height);
    void (*resize)(Object_t *obj, gint percentage_x, gint percentage_y);
    void (*move)(Object_t *obj, gint dx, gint dy);
    gpointer (*create_info_widget)(GtkWidget *frame);
@@ -88,7 +87,7 @@ void object_unref(Object_t *obj);
 Object_t* object_init(Object_t *obj, ObjectClass_t *class);
 Object_t* object_clone(Object_t *obj);
 Object_t* object_assign(Object_t *src, Object_t *des);
-void object_draw(Object_t *obj, GdkWindow *window);
+void object_draw(Object_t *obj, cairo_t *cr);
 void object_edit(Object_t *obj, gboolean add);
 void object_select(Object_t *obj);
 void object_unselect(Object_t *obj);
@@ -111,28 +110,28 @@ void object_emit_geometry_signal(Object_t *obj);
 void object_emit_update_signal(Object_t *obj);
 
 #define object_is_valid(obj) \
-	((obj)->class->is_valid(obj))
+        ((obj)->class->is_valid(obj))
 
 #define object_get_dimensions(obj, x, y, width, height) \
-   	((obj)->class->get_dimensions((obj), (x), (y), (width), (height)))
+        ((obj)->class->get_dimensions((obj), (x), (y), (width), (height)))
 
 #define object_normalize(obj) \
-  	((obj)->class->normalize(obj))
+        ((obj)->class->normalize(obj))
 
 #define object_resize(obj, per_x, per_y) \
-	((obj)->class->resize((obj), (per_x), (per_y)))
+        ((obj)->class->resize((obj), (per_x), (per_y)))
 
 #define object_update(obj, data) \
-	((obj)->class->update((obj), (data)))
+        ((obj)->class->update((obj), (data)))
 
 #define object_update_info_widget(obj, data) \
-	((obj)->class->update_info_widget((obj), (data)))
+        ((obj)->class->update_info_widget((obj), (data)))
 
 #define object_fill_info_tab(obj, data) \
-	((obj)->class->fill_info_tab((obj), (data)))
+        ((obj)->class->fill_info_tab((obj), (data)))
 
 #define object_get_stock_icon_name(obj) \
-	((obj)->class->get_stock_icon_name())
+        ((obj)->class->get_stock_icon_name())
 
 typedef struct {
    Object_t *obj;
@@ -143,7 +142,7 @@ typedef struct {
 } ObjectFactory_t;
 
 gboolean object_on_button_press(GtkWidget *widget, GdkEventButton *event,
-				gpointer data);
+                                gpointer data);
 
 typedef struct {
    GList *list;
@@ -172,11 +171,11 @@ void object_list_insert(ObjectList_t *list, gint position, Object_t *object);
 void object_list_remove(ObjectList_t *list, Object_t *object);
 void object_list_remove_link(ObjectList_t *list, GList *link);
 void object_list_update(ObjectList_t *list, Object_t *object);
-void object_list_draw(ObjectList_t *list, GdkWindow *window);
-void object_list_draw_selected(ObjectList_t *list, GdkWindow *window);
+void object_list_draw(ObjectList_t *list, cairo_t *cr);
+void object_list_draw_selected(ObjectList_t *list, cairo_t *cr);
 Object_t *object_list_find(ObjectList_t *list, gint x, gint y);
 Object_t *object_list_near_sash(ObjectList_t *list, gint x, gint y,
-				MoveSashFunc_t *sash_func);
+                                MoveSashFunc_t *sash_func);
 
 gint object_list_cut(ObjectList_t *list);
 void object_list_copy_to_paste_buffer(ObjectList_t *list);
@@ -189,11 +188,11 @@ gint object_list_select_all(ObjectList_t *list);
 void object_list_select_next(ObjectList_t *list);
 void object_list_select_prev(ObjectList_t *list);
 gint object_list_select_region(ObjectList_t *list, gint x, gint y, gint width,
-			       gint height);
+                               gint height);
 gint object_list_deselect_all(ObjectList_t *list, Object_t *exception);
 gint object_list_nr_selected(ObjectList_t *list);
 void object_list_resize(ObjectList_t *list, gint percentage_x,
-			gint percentage_y);
+                        gint percentage_y);
 void object_list_move_selected(ObjectList_t *list, gint dx, gint dy);
 void object_list_move_up(ObjectList_t *list, Object_t *obj);
 void object_list_move_down(ObjectList_t *list, Object_t *obj);
@@ -204,33 +203,33 @@ void object_list_send_to_back(ObjectList_t *list);
 void object_list_move_sash_selected(ObjectList_t *list, gint dx, gint dy);
 
 void object_list_write_csim(ObjectList_t *list, gpointer param,
-			    OutputFunc_t output);
+                            OutputFunc_t output);
 void object_list_write_cern(ObjectList_t *list, gpointer param,
-			    OutputFunc_t output);
+                            OutputFunc_t output);
 void object_list_write_ncsa(ObjectList_t *list, gpointer param,
-			    OutputFunc_t output);
+                            OutputFunc_t output);
 
 typedef void (*ObjectListCallbackFunc_t)(Object_t*, gpointer);
 
 gpointer object_list_add_changed_cb(ObjectList_t *list,
-				    ObjectListCallbackFunc_t func,
-				    gpointer data);
+                                    ObjectListCallbackFunc_t func,
+                                    gpointer data);
 gpointer object_list_add_update_cb(ObjectList_t *list,
-				   ObjectListCallbackFunc_t func,
-				   gpointer data);
+                                   ObjectListCallbackFunc_t func,
+                                   gpointer data);
 gpointer object_list_add_add_cb(ObjectList_t *list,
-				ObjectListCallbackFunc_t func, gpointer data);
+                                ObjectListCallbackFunc_t func, gpointer data);
 gpointer object_list_add_remove_cb(ObjectList_t *list,
-				   ObjectListCallbackFunc_t func,
-				   gpointer data);
+                                   ObjectListCallbackFunc_t func,
+                                   gpointer data);
 gpointer object_list_add_select_cb(ObjectList_t *list,
-				   ObjectListCallbackFunc_t func,
-				   gpointer data);
+                                   ObjectListCallbackFunc_t func,
+                                   gpointer data);
 gpointer object_list_add_move_cb(ObjectList_t *list,
-				 ObjectListCallbackFunc_t func, gpointer data);
+                                 ObjectListCallbackFunc_t func, gpointer data);
 gpointer object_list_add_geometry_cb(ObjectList_t *list,
-				     ObjectListCallbackFunc_t func,
-				     gpointer data);
+                                     ObjectListCallbackFunc_t func,
+                                     gpointer data);
 
 void object_list_remove_add_cb(ObjectList_t *list, gpointer id);
 void object_list_remove_select_cb(ObjectList_t *list, gpointer id);
@@ -240,13 +239,13 @@ void object_list_remove_geometry_cb(ObjectList_t *list, gpointer id);
 
 #define object_list_clear_changed(list) ((list)->changed = FALSE)
 #define object_list_set_changed(list, ischanged) \
-	((list)->changed = (ischanged))
+        ((list)->changed = (ischanged))
 #define object_list_get_changed(list) ((list)->changed)
 
 void clear_paste_buffer(void);
 gpointer paste_buffer_add_add_cb(ObjectListCallbackFunc_t func, gpointer data);
 gpointer paste_buffer_add_remove_cb(ObjectListCallbackFunc_t func,
-				    gpointer data);
+                                    gpointer data);
 ObjectList_t *get_paste_buffer(void);
 
 void do_object_locked_dialog(void);

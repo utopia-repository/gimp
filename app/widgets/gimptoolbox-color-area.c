@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -68,7 +67,7 @@ gimp_toolbox_color_area_create (GimpToolbox *toolbox,
 
   g_return_val_if_fail (GIMP_IS_TOOLBOX (toolbox), NULL);
 
-  context = GIMP_DOCK (toolbox)->context;
+  context = gimp_toolbox_get_context (toolbox);
 
   color_area = gimp_fg_bg_editor_new (context);
   gtk_widget_set_size_request (color_area, width, height);
@@ -150,14 +149,10 @@ color_area_color_clicked (GimpFgBgEditor  *editor,
 
   if (! color_dialog)
     {
-      GimpDialogFactory *toplevel_factory;
-
-      toplevel_factory = gimp_dialog_factory_from_name ("toplevel");
-
       color_dialog = gimp_color_dialog_new (NULL, context,
                                             NULL, NULL, NULL,
                                             GTK_WIDGET (editor),
-                                            toplevel_factory,
+                                            gimp_dialog_factory_get_singleton (),
                                             "gimp-toolbox-color-dialog",
                                             &color,
                                             TRUE, FALSE);

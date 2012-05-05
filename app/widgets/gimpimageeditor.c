@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "widgets-types.h"
@@ -34,7 +34,9 @@ static void   gimp_image_editor_docked_iface_init (GimpDockedInterface *iface);
 
 static void   gimp_image_editor_set_context    (GimpDocked       *docked,
                                                 GimpContext      *context);
-static void   gimp_image_editor_destroy        (GtkObject        *object);
+
+static void   gimp_image_editor_dispose        (GObject          *object);
+
 static void   gimp_image_editor_real_set_image (GimpImageEditor  *editor,
                                                 GimpImage        *image);
 static void   gimp_image_editor_image_flush    (GimpImage        *image,
@@ -52,9 +54,9 @@ G_DEFINE_TYPE_WITH_CODE (GimpImageEditor, gimp_image_editor, GIMP_TYPE_EDITOR,
 static void
 gimp_image_editor_class_init (GimpImageEditorClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->destroy = gimp_image_editor_destroy;
+  object_class->dispose = gimp_image_editor_dispose;
 
   klass->set_image      = gimp_image_editor_real_set_image;
 }
@@ -81,14 +83,20 @@ gimp_image_editor_set_context (GimpDocked  *docked,
   GimpImage       *image  = NULL;
 
   if (editor->context)
-    g_signal_handlers_disconnect_by_func (editor->context,
-                                          gimp_image_editor_set_image,
-                                          editor);
+    {
+      g_signal_handlers_disconnect_by_func (editor->context,
+                                            gimp_image_editor_set_image,
+                                            editor);
+
+      g_object_unref (editor->context);
+    }
 
   editor->context = context;
 
   if (context)
     {
+      g_object_ref (editor->context);
+
       g_signal_connect_swapped (context, "image-changed",
                                 G_CALLBACK (gimp_image_editor_set_image),
                                 editor);
@@ -100,14 +108,14 @@ gimp_image_editor_set_context (GimpDocked  *docked,
 }
 
 static void
-gimp_image_editor_destroy (GtkObject *object)
+gimp_image_editor_dispose (GObject *object)
 {
   GimpImageEditor *editor = GIMP_IMAGE_EDITOR (object);
 
   if (editor->image)
     gimp_image_editor_set_image (editor, NULL);
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -143,9 +151,9 @@ gimp_image_editor_set_image (GimpImageEditor *editor,
     {
       GIMP_IMAGE_EDITOR_GET_CLASS (editor)->set_image (editor, image);
 
-      if (GIMP_EDITOR (editor)->ui_manager)
-        gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                                GIMP_EDITOR (editor)->popup_data);
+      if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+        gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                                gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
     }
 }
 
@@ -165,7 +173,7 @@ gimp_image_editor_image_flush (GimpImage       *image,
                                gboolean         invalidate_preview,
                                GimpImageEditor *editor)
 {
-  if (GIMP_EDITOR (editor)->ui_manager)
-    gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                            GIMP_EDITOR (editor)->popup_data);
+  if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+    gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                            gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
 }

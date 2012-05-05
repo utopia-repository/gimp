@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -28,12 +27,12 @@
 
 typedef struct {
    GimpDrawable *drawable;
-   GtkWidget	*window;
-   GtkWidget	*preview;
-   GtkWidget	*hruler;
-   GtkWidget	*vruler;
-   gint		width;
-   gint		height;
+   GtkWidget    *window;
+   GtkWidget    *preview;
+   GtkWidget    *hruler;
+   GtkWidget    *vruler;
+   gint         width;
+   gint         height;
    gint         widget_width;
    gint         widget_height;
    GimpPixelRgn src_rgn;
@@ -42,18 +41,16 @@ typedef struct {
 } Preview_t;
 
 Preview_t *make_preview(GimpDrawable *drawable);
-void preview_redraw(Preview_t *preview);
+void preview_redraw(void);
 
-void add_preview_motion_event(Preview_t *preview, GCallback func);
-void add_enter_notify_event(Preview_t *preview, GCallback func);
-void add_leave_notify_event(Preview_t *preview, GCallback func);
-void add_preview_button_press_event(Preview_t *preview, GCallback func);
+void preview_unset_tmp_obj (Object_t *obj);
+void preview_set_tmp_obj (Object_t *obj);
 
 gint preview_get_width(GtkWidget *preview);
 gint preview_get_height(GtkWidget *preview);
 
 void preview_zoom(Preview_t *preview, gint zoom_factor);
 GdkCursorType preview_set_cursor(Preview_t *preview,
-				 GdkCursorType cursor_type);
+                                 GdkCursorType cursor_type);
 
 #endif /* _IMAP_PREVIEW_H */

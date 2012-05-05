@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-01 03:51+0000\n"
-"PO-Revision-Date: 2008-11-01 11:59+0100\n"
+"POT-Creation-Date: 2008-11-01 07:36+0000\n"
+"PO-Revision-Date: 2008-11-01 11:17+0100\n"
 "Last-Translator: Filip Vervloesem <filip.vervloesem@member.fsf.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -1181,7 +1181,7 @@ msgstr "Instellingen voor kanaalmixer opslaan"
 #: ../plug-ins/file-fli/fli-gimp.c:750
 #: ../plug-ins/file-ico/ico-save.c:1008
 #: ../plug-ins/file-jpeg/jpeg-save.c:325
-#: ../plug-ins/file-psd/psd-save.c:1635
+#: ../plug-ins/file-psd/psd-save.c:1638
 #: ../plug-ins/file-uri/uri-backend-gnomevfs.c:283
 #: ../plug-ins/file-uri/uri-backend-libcurl.c:163
 #: ../plug-ins/file-xjt/xjt.c:1292
@@ -3270,7 +3270,7 @@ msgstr "Aantal kleuren (%d) is niet ondersteund!"
 #: ../plug-ins/file-fli/fli-gimp.c:718
 #: ../plug-ins/file-ico/ico-save.c:1002
 #: ../plug-ins/file-jpeg/jpeg-save.c:282
-#: ../plug-ins/file-psd/psd-save.c:1640
+#: ../plug-ins/file-psd/psd-save.c:1643
 #: ../plug-ins/file-sgi/sgi.c:554
 #: ../plug-ins/file-xjt/xjt.c:1710
 #, c-format
@@ -3452,8 +3452,8 @@ msgstr "'%s' wordt geopen (frame %d)"
 
 # What is the Dutch translation for this phrase?
 #: ../plug-ins/common/file-gif-load.c:965
-#: ../plug-ins/common/iwarp.c:791
-#: ../plug-ins/common/iwarp.c:826
+#: ../plug-ins/common/iwarp.c:794
+#: ../plug-ins/common/iwarp.c:829
 #, c-format
 msgid "Frame %d"
 msgstr "Frame %d"
@@ -5446,111 +5446,111 @@ msgstr "Modus _1"
 msgid "Mode _2"
 msgstr "Modus _2"
 
-#: ../plug-ins/common/iwarp.c:262
+#: ../plug-ins/common/iwarp.c:265
 msgid "Use mouse control to warp image areas"
 msgstr "Afbeeldingsgebieden vervormen met behulp van de muis"
 
 # 29/03/08: "iWarp" behouden ("warp" is elders wel steeds door "vervormen" vertaald), want er is ook een andere functie "Warp"!
-#: ../plug-ins/common/iwarp.c:267
+#: ../plug-ins/common/iwarp.c:270
 msgid "_IWarp..."
 msgstr "_IWarp..."
 
-#: ../plug-ins/common/iwarp.c:697
+#: ../plug-ins/common/iwarp.c:700
 msgid "Warping"
 msgstr "Afbeelding wordt vervormd..."
 
-#: ../plug-ins/common/iwarp.c:802
+#: ../plug-ins/common/iwarp.c:805
 #, c-format
 msgid "Warping Frame %d"
 msgstr "Frame  %d wordt vervormd..."
 
-#: ../plug-ins/common/iwarp.c:814
+#: ../plug-ins/common/iwarp.c:817
 msgid "Ping pong"
 msgstr "Ping-pong"
 
-#: ../plug-ins/common/iwarp.c:1020
+#: ../plug-ins/common/iwarp.c:1023
 msgid "A_nimate"
 msgstr "Animeren"
 
-#: ../plug-ins/common/iwarp.c:1039
+#: ../plug-ins/common/iwarp.c:1042
 msgid "Number of _frames:"
 msgstr "Aantal _frames:"
 
-#: ../plug-ins/common/iwarp.c:1048
+#: ../plug-ins/common/iwarp.c:1051
 msgid "R_everse"
 msgstr "Omgekeerd"
 
-#: ../plug-ins/common/iwarp.c:1057
+#: ../plug-ins/common/iwarp.c:1060
 msgid "_Ping pong"
 msgstr "_Heen en terug"
 
-#: ../plug-ins/common/iwarp.c:1070
+#: ../plug-ins/common/iwarp.c:1073
 msgid "_Animate"
 msgstr "Animeren"
 
-#: ../plug-ins/common/iwarp.c:1091
+#: ../plug-ins/common/iwarp.c:1094
 msgid "Deform Mode"
 msgstr "Vervormingsmodus"
 
-#: ../plug-ins/common/iwarp.c:1104
+#: ../plug-ins/common/iwarp.c:1107
 msgid "_Move"
 msgstr "Verplaatsen"
 
-#: ../plug-ins/common/iwarp.c:1105
+#: ../plug-ins/common/iwarp.c:1108
 msgid "_Grow"
 msgstr "Uitdijen"
 
-#: ../plug-ins/common/iwarp.c:1106
+#: ../plug-ins/common/iwarp.c:1109
 msgid "S_wirl CCW"
 msgstr "Draaien klok-mee"
 
-#: ../plug-ins/common/iwarp.c:1107
+#: ../plug-ins/common/iwarp.c:1110
 msgid "Remo_ve"
 msgstr "Verwijderen"
 
-#: ../plug-ins/common/iwarp.c:1108
+#: ../plug-ins/common/iwarp.c:1111
 msgid "S_hrink"
 msgstr "Krimpen"
 
-#: ../plug-ins/common/iwarp.c:1109
+#: ../plug-ins/common/iwarp.c:1112
 msgid "Sw_irl CW"
 msgstr "Draaien klok-tegen"
 
-#: ../plug-ins/common/iwarp.c:1138
+#: ../plug-ins/common/iwarp.c:1141
 msgid "_Deform radius:"
 msgstr "_Vervormingsstraal:"
 
-#: ../plug-ins/common/iwarp.c:1148
+#: ../plug-ins/common/iwarp.c:1151
 msgid "D_eform amount:"
 msgstr "V_ervormingsmate:"
 
-#: ../plug-ins/common/iwarp.c:1157
+#: ../plug-ins/common/iwarp.c:1160
 msgid "_Bilinear"
 msgstr "_Bilineair"
 
-#: ../plug-ins/common/iwarp.c:1171
+#: ../plug-ins/common/iwarp.c:1174
 msgid "Adaptive s_upersample"
 msgstr "Adaptieve s_upersample"
 
-#: ../plug-ins/common/iwarp.c:1191
+#: ../plug-ins/common/iwarp.c:1194
 msgid "Ma_x depth:"
 msgstr "Ma_x diepte:"
 
-#: ../plug-ins/common/iwarp.c:1201
+#: ../plug-ins/common/iwarp.c:1204
 msgid "Thresho_ld:"
 msgstr "Drempe_l:"
 
-#: ../plug-ins/common/iwarp.c:1214
+#: ../plug-ins/common/iwarp.c:1217
 #: ../plug-ins/common/sinus.c:771
 #: ../plug-ins/gradient-flare/gradient-flare.c:2867
 msgid "_Settings"
 msgstr "In_stellingen"
 
-#: ../plug-ins/common/iwarp.c:1263
+#: ../plug-ins/common/iwarp.c:1275
 msgid "IWarp"
 msgstr "IWarp"
 
-#: ../plug-ins/common/iwarp.c:1299
+#: ../plug-ins/common/iwarp.c:1313
 msgid "Click and drag in the preview to define the distortions to apply to the image."
 msgstr "Klik en sleep in het voorbeeld om te bepalen welke vervormingen toegepast moeten worden op de afbeelding."
 
@@ -8782,21 +8782,21 @@ msgstr "Extra"
 msgid "Photoshop image"
 msgstr "Photoshop-afbeelding"
 
-#: ../plug-ins/file-psd/psd-save.c:371
+#: ../plug-ins/file-psd/psd-save.c:374
 #, c-format
 msgid "Unable to save layer with mode '%s'.  Either the PSD file format or the save plug-in does not support that, using normal mode instead."
 msgstr "Kon de laag niet opslaan met modus '%s'. Het PSD-bestandsformaat of de exportplug-in ondersteunt dit niet, de normale modus wordt in de plaats gebruikt."
 
-#: ../plug-ins/file-psd/psd-save.c:631
+#: ../plug-ins/file-psd/psd-save.c:634
 msgid "Error: Can't convert GIMP base imagetype to PSD mode"
 msgstr "Fout: kan GIMP basisafbeeldingstype niet omzetten naar PSD-modus"
 
-#: ../plug-ins/file-psd/psd-save.c:1605
+#: ../plug-ins/file-psd/psd-save.c:1608
 #, c-format
 msgid "Unable to save '%s'.  The PSD file format does not support images that are more than 30,000 pixels wide or tall."
 msgstr "Kon '%s' niet opslaan. Het PSD-bestandsformaat ondersteunt geen afbeeldingen die meer dan 30.000 beeldpunten breed of hoog zijn."
 
-#: ../plug-ins/file-psd/psd-save.c:1620
+#: ../plug-ins/file-psd/psd-save.c:1623
 #, c-format
 msgid "Unable to save '%s'.  The PSD file format does not support images with layers that are more than 30,000 pixels wide or tall."
 msgstr "Kon '%s' niet opslaan. Het PSD-bestandsformaat ondersteunt geen afbeeldingen met lagen die meer dan 30.000 beeldpunten breed of hoog zijn."
@@ -11501,28 +11501,28 @@ msgstr "Sommige gegevens zijn veranderd!"
 msgid "Do you really want to discard your changes?"
 msgstr "Wilt u uw veranderingen werkelijk wegdoen?"
 
-#: ../plug-ins/imagemap/imap_main.c:873
+#: ../plug-ins/imagemap/imap_main.c:877
 #, c-format
 msgid "File \"%s\" saved."
 msgstr "Bestand \"%s\" opgeslagen."
 
-#: ../plug-ins/imagemap/imap_main.c:877
+#: ../plug-ins/imagemap/imap_main.c:881
 msgid "Couldn't save file:"
 msgstr "Kon bestand niet opslaan:"
 
-#: ../plug-ins/imagemap/imap_main.c:890
+#: ../plug-ins/imagemap/imap_main.c:894
 msgid "Image size has changed."
 msgstr "Afbeeldingsgrootte is veranderd."
 
-#: ../plug-ins/imagemap/imap_main.c:891
+#: ../plug-ins/imagemap/imap_main.c:895
 msgid "Resize area's?"
 msgstr "Gebieden herschalen?"
 
-#: ../plug-ins/imagemap/imap_main.c:925
+#: ../plug-ins/imagemap/imap_main.c:929
 msgid "Couldn't read file:"
 msgstr "Kon bestand niet lezen:"
 
-#: ../plug-ins/imagemap/imap_main.c:972
+#: ../plug-ins/imagemap/imap_main.c:976
 #, c-format
 msgid "URL: %s"
 msgstr "URL: %s"
@@ -11845,7 +11845,7 @@ msgstr "Beschrijving:"
 msgid "Map File Format"
 msgstr "Bestandsformaat voor afbeeldingskaart"
 
-#: ../plug-ins/imagemap/imap_source.c:63
+#: ../plug-ins/imagemap/imap_source.c:67
 msgid "View Source"
 msgstr "Broncode bekijken"
 
@@ -12460,7 +12460,7 @@ msgstr "_Doolhof..."
 msgid "Drawing maze"
 msgstr "Doolhof wordt getekend..."
 
-#: ../plug-ins/metadata/xmp-parse.c:240
+#: ../plug-ins/metadata/xmp-parse.c:239
 #, c-format
 msgid "Error: No XMP packet found"
 msgstr "Fout: geen XMP-pakket gevonden"
@@ -12490,35 +12490,35 @@ msgstr "Onbekend element <%s>"
 msgid "Unknown attribute \"%s\"=\"%s\" in element <%s>"
 msgstr "Onbekend attribuut \"%s\"=\"%s\" in element <%s>"
 
-#: ../plug-ins/metadata/xmp-parse.c:655
+#: ../plug-ins/metadata/xmp-parse.c:678
 #, c-format
 msgid "Required attribute rdf:about missing in <%s>"
 msgstr "Het vereiste attribuut rdf:about ontbreekt in <%s>"
 
-#: ../plug-ins/metadata/xmp-parse.c:881
+#: ../plug-ins/metadata/xmp-parse.c:904
 #, c-format
 msgid "Nested elements (<%s>) are not allowed in this context"
 msgstr "Geneste elementen (<%s>) zijn niet toegelaten in deze context"
 
-#: ../plug-ins/metadata/xmp-parse.c:1005
+#: ../plug-ins/metadata/xmp-parse.c:1028
 #, c-format
 msgid "End of element <%s> not expected in this context"
 msgstr "Einde van het element <%s> werd niet verwacht in deze context"
 
-#: ../plug-ins/metadata/xmp-parse.c:1107
+#: ../plug-ins/metadata/xmp-parse.c:1130
 #, c-format
 msgid "The current element (<%s>) cannot contain text"
 msgstr "Het huidige element (<%s>) kan geen tekst bevatten"
 
-#: ../plug-ins/metadata/xmp-parse.c:1132
+#: ../plug-ins/metadata/xmp-parse.c:1155
 msgid "XMP packets must start with <?xpacket begin=...?>"
 msgstr "XMP-pakketten moeten beginnen met <?xpacket begin=...?>"
 
-#: ../plug-ins/metadata/xmp-parse.c:1146
+#: ../plug-ins/metadata/xmp-parse.c:1169
 msgid "XMP packets must end with <?xpacket end=...?>"
 msgstr "XMP-pakketten moeten eindigen met <?xpacket end=...?>"
 
-#: ../plug-ins/metadata/xmp-parse.c:1159
+#: ../plug-ins/metadata/xmp-parse.c:1182
 msgid "XMP cannot contain XML comments or processing instructions"
 msgstr "XMP kan geen XML-opmerkingen of -verwerkingsinstructies bevatten"
 

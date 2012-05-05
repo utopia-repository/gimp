@@ -4,9 +4,9 @@
  * gimpcomponenteditor.c
  * Copyright (C) 2003-2005 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -48,7 +48,7 @@ enum
   COLUMN_VISIBLE,
   COLUMN_RENDERER,
   COLUMN_NAME,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 
@@ -121,7 +121,7 @@ gimp_component_editor_init (GimpComponentEditor *editor)
   gtk_box_pack_start (GTK_BOX (editor), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  list = gtk_list_store_new (NUM_COLUMNS,
+  list = gtk_list_store_new (N_COLUMNS,
                              G_TYPE_INT,
                              G_TYPE_BOOLEAN,
                              GIMP_TYPE_VIEW_RENDERER,
@@ -502,27 +502,17 @@ gimp_component_editor_button_press (GtkWidget           *widget,
 
       editor->clicked_component = channel;
 
-      switch (bevent->button)
+      if (gdk_event_triggers_context_menu ((GdkEvent *) bevent))
         {
-        case 1:
-          if (column != editor->eye_column && bevent->type == GDK_BUTTON_PRESS)
-            {
-              GimpImage *image = GIMP_IMAGE_EDITOR (editor)->image;
-
-              gimp_image_set_component_active (image, channel, ! active);
-              gimp_image_flush (image);
-            }
-          break;
-
-        case 2:
-          break;
-
-        case 3:
           gimp_editor_popup_menu (GIMP_EDITOR (editor), NULL, NULL);
-          break;
+        }
+      else if (bevent->type == GDK_BUTTON_PRESS && bevent->button == 1 &&
+               column != editor->eye_column)
+        {
+          GimpImage *image = GIMP_IMAGE_EDITOR (editor)->image;
 
-        default:
-          break;
+          gimp_image_set_component_active (image, channel, ! active);
+          gimp_image_flush (image);
         }
     }
 

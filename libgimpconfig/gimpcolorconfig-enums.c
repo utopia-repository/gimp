@@ -3,7 +3,7 @@
 
 #include "config.h"
 #include <glib-object.h>
-#include "libgimpbase/gimpbasetypes.h"
+#include "libgimpbase/gimpbase.h"
 #include "gimpcolorconfig-enums.h"
 #include "libgimp/libgimp-intl.h"
 
@@ -21,18 +21,19 @@ gimp_color_management_mode_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_COLOR_MANAGEMENT_OFF, N_("No color management"), NULL },
-    { GIMP_COLOR_MANAGEMENT_DISPLAY, N_("Color managed display"), NULL },
-    { GIMP_COLOR_MANAGEMENT_SOFTPROOF, N_("Print simulation"), NULL },
+    { GIMP_COLOR_MANAGEMENT_OFF, NC_("color-management-mode", "No color management"), NULL },
+    { GIMP_COLOR_MANAGEMENT_DISPLAY, NC_("color-management-mode", "Color managed display"), NULL },
+    { GIMP_COLOR_MANAGEMENT_SOFTPROOF, NC_("color-management-mode", "Print simulation"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpColorManagementMode", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "color-management-mode");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -53,19 +54,20 @@ gimp_color_rendering_intent_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL, N_("Perceptual"), NULL },
-    { GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, N_("Relative colorimetric"), NULL },
-    { GIMP_COLOR_RENDERING_INTENT_SATURATION, N_("intent|Saturation"), NULL },
-    { GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC, N_("Absolute colorimetric"), NULL },
+    { GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL, NC_("color-rendering-intent", "Perceptual"), NULL },
+    { GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, NC_("color-rendering-intent", "Relative colorimetric"), NULL },
+    { GIMP_COLOR_RENDERING_INTENT_SATURATION, NC_("color-rendering-intent", "Saturation"), NULL },
+    { GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC, NC_("color-rendering-intent", "Absolute colorimetric"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpColorRenderingIntent", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "color-rendering-intent");
       gimp_enum_set_value_descriptions (type, descs);
     }
 

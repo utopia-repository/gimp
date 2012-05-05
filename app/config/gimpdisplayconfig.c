@@ -4,9 +4,9 @@
  * GimpDisplayConfig class
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -29,11 +29,9 @@
 
 #include "config-types.h"
 
-#include "display/display-enums.h"
-#include "display/gimpdisplayoptions.h"
-
 #include "gimprc-blurbs.h"
 #include "gimpdisplayconfig.h"
+#include "gimpdisplayoptions.h"
 
 #include "gimp-intl.h"
 
@@ -41,6 +39,7 @@
 #define DEFAULT_ACTIVATE_ON_FOCUS    TRUE
 #define DEFAULT_MONITOR_RESOLUTION   96.0
 #define DEFAULT_MARCHING_ANTS_SPEED  200
+#define DEFAULT_USE_EVENT_HISTORY    FALSE
 
 enum
 {
@@ -67,10 +66,17 @@ enum
   PROP_NAV_PREVIEW_SIZE,
   PROP_DEFAULT_VIEW,
   PROP_DEFAULT_FULLSCREEN_VIEW,
+  PROP_DEFAULT_SNAP_TO_GUIDES,
+  PROP_DEFAULT_SNAP_TO_GRID,
+  PROP_DEFAULT_SNAP_TO_CANVAS,
+  PROP_DEFAULT_SNAP_TO_PATH,
   PROP_ACTIVATE_ON_FOCUS,
   PROP_SPACE_BAR_ACTION,
-  PROP_XOR_COLOR,
-  PROP_ZOOM_QUALITY
+  PROP_ZOOM_QUALITY,
+  PROP_USE_EVENT_HISTORY,
+
+  /* ignored, only for backward compatibility: */
+  PROP_XOR_COLOR
 };
 
 
@@ -101,9 +107,7 @@ static void
 gimp_display_config_class_init (GimpDisplayConfigClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GimpRGB       color;
-
-  gimp_rgba_set_uchar (&color, 0x80, 0xff, 0x80, 0xff);
+  GimpRGB       color        = { 0, 0, 0, 0 };
 
   object_class->finalize     = gimp_display_config_finalize;
   object_class->set_property = gimp_display_config_set_property;
@@ -126,7 +130,7 @@ gimp_display_config_class_init (GimpDisplayConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_MARCHING_ANTS_SPEED,
                                 "marching-ants-speed",
                                 MARCHING_ANTS_SPEED_BLURB,
-                                10, 1000, DEFAULT_MARCHING_ANTS_SPEED,
+                                10, 10000, DEFAULT_MARCHING_ANTS_SPEED,
                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_RESIZE_WINDOWS_ON_ZOOM,
                                     "resize-windows-on-zoom",
@@ -218,6 +222,26 @@ gimp_display_config_class_init (GimpDisplayConfigClass *klass)
                                    GIMP_TYPE_DISPLAY_OPTIONS,
                                    GIMP_PARAM_STATIC_STRINGS |
                                    GIMP_CONFIG_PARAM_AGGREGATE);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DEFAULT_SNAP_TO_GUIDES,
+                                    "default-snap-to-guides",
+                                    DEFAULT_SNAP_TO_GUIDES_BLURB,
+                                    TRUE,
+                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DEFAULT_SNAP_TO_GRID,
+                                    "default-snap-to-grid",
+                                    DEFAULT_SNAP_TO_GRID_BLURB,
+                                    FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DEFAULT_SNAP_TO_CANVAS,
+                                    "default-snap-to-canvas",
+                                    DEFAULT_SNAP_TO_CANVAS_BLURB,
+                                    FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_DEFAULT_SNAP_TO_PATH,
+                                    "default-snap-to-path",
+                                    DEFAULT_SNAP_TO_PATH_BLURB,
+                                    FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ACTIVATE_ON_FOCUS,
                                     "activate-on-focus",
                                     ACTIVATE_ON_FOCUS_BLURB,
@@ -229,16 +253,25 @@ gimp_display_config_class_init (GimpDisplayConfigClass *klass)
                                  GIMP_TYPE_SPACE_BAR_ACTION,
                                  GIMP_SPACE_BAR_ACTION_PAN,
                                  GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_XOR_COLOR,
-                                "xor-color", XOR_COLOR_BLURB,
-                                FALSE, &color,
-                                GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_ZOOM_QUALITY,
                                  "zoom-quality",
                                  ZOOM_QUALITY_BLURB,
                                  GIMP_TYPE_ZOOM_QUALITY,
                                  GIMP_ZOOM_QUALITY_HIGH,
                                  GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_EVENT_HISTORY,
+                                    "use-event-history",
+                                    DEFAULT_USE_EVENT_HISTORY_BLURB,
+                                    DEFAULT_USE_EVENT_HISTORY,
+                                    GIMP_PARAM_STATIC_STRINGS);
+
+  /*  only for backward compatibility:  */
+  GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_XOR_COLOR,
+                                "xor-color", NULL,
+                                FALSE, &color,
+                                GIMP_PARAM_STATIC_STRINGS |
+                                GIMP_CONFIG_PARAM_IGNORE);
 }
 
 static void
@@ -359,17 +392,32 @@ gimp_display_config_set_property (GObject      *object,
                           G_OBJECT (display_config->default_fullscreen_view),
                           0);
       break;
+    case PROP_DEFAULT_SNAP_TO_GUIDES:
+      display_config->default_snap_to_guides = g_value_get_boolean (value);
+      break;
+    case PROP_DEFAULT_SNAP_TO_GRID:
+      display_config->default_snap_to_grid = g_value_get_boolean (value);
+      break;
+    case PROP_DEFAULT_SNAP_TO_CANVAS:
+      display_config->default_snap_to_canvas = g_value_get_boolean (value);
+      break;
+    case PROP_DEFAULT_SNAP_TO_PATH:
+      display_config->default_snap_to_path = g_value_get_boolean (value);
+      break;
     case PROP_ACTIVATE_ON_FOCUS:
       display_config->activate_on_focus = g_value_get_boolean (value);
       break;
     case PROP_SPACE_BAR_ACTION:
       display_config->space_bar_action = g_value_get_enum (value);
       break;
-    case PROP_XOR_COLOR:
-      display_config->xor_color = *(GimpRGB *) g_value_get_boxed (value);
-      break;
     case PROP_ZOOM_QUALITY:
       display_config->zoom_quality = g_value_get_enum (value);
+      break;
+    case PROP_USE_EVENT_HISTORY:
+      display_config->use_event_history = g_value_get_boolean (value);
+      break;
+    case PROP_XOR_COLOR:
+      /* ignored */
       break;
 
     default:
@@ -454,17 +502,32 @@ gimp_display_config_get_property (GObject    *object,
     case PROP_DEFAULT_FULLSCREEN_VIEW:
       g_value_set_object (value, display_config->default_fullscreen_view);
       break;
+    case PROP_DEFAULT_SNAP_TO_GUIDES:
+      g_value_set_boolean (value, display_config->default_snap_to_guides);
+      break;
+    case PROP_DEFAULT_SNAP_TO_GRID:
+      g_value_set_boolean (value, display_config->default_snap_to_grid);
+      break;
+    case PROP_DEFAULT_SNAP_TO_CANVAS:
+      g_value_set_boolean (value, display_config->default_snap_to_canvas);
+      break;
+    case PROP_DEFAULT_SNAP_TO_PATH:
+      g_value_set_boolean (value, display_config->default_snap_to_path);
+      break;
     case PROP_ACTIVATE_ON_FOCUS:
       g_value_set_boolean (value, display_config->activate_on_focus);
       break;
     case PROP_SPACE_BAR_ACTION:
       g_value_set_enum (value, display_config->space_bar_action);
       break;
-    case PROP_XOR_COLOR:
-      g_value_set_boxed (value, &display_config->xor_color);
-      break;
     case PROP_ZOOM_QUALITY:
       g_value_set_enum (value, display_config->zoom_quality);
+      break;
+    case PROP_USE_EVENT_HISTORY:
+      g_value_set_boolean (value, display_config->use_event_history);
+      break;
+    case PROP_XOR_COLOR:
+      /* ignored */
       break;
 
     default:

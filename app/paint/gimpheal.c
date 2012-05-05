@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -32,10 +31,13 @@
 #include "base/pixel-region.h"
 #include "base/temp-buf.h"
 
-#include "core/gimppickable.h"
-#include "core/gimpimage.h"
-#include "core/gimpdrawable.h"
 #include "core/gimpbrush.h"
+#include "core/gimpdrawable.h"
+#include "core/gimpdynamics.h"
+#include "core/gimpdynamicsoutput.h"
+#include "core/gimperror.h"
+#include "core/gimpimage.h"
+#include "core/gimppickable.h"
 
 #include "gimpheal.h"
 #include "gimpsourceoptions.h"
@@ -43,26 +45,36 @@
 #include "gimp-intl.h"
 
 
-/* NOTES:
- *
- * I had the code working for healing from a pattern, but the results look
- * terrible and I can't see a use for it right now.
- */
 
+/* NOTES
+ *
+ * The method used here is similar to the lighting invariant correctin
+ * method but slightly different: we do not divide the RGB components,
+ * but substract them I2 = I0 - I1, where I0 is the sample image to be
+ * corrected, I1 is the reference pattern. Then we solve DeltaI=0
+ * (Laplace) with I2 Dirichlet conditions at the borders of the
+ * mask. The solver is a unoptimized red/black checker Gauss-Siedel
+ * with an over-relaxation factor of 1.8. It can benefit from a
+ * multi-grid evaluation of an initial solution before the main
+ * iteration loop.
+ *
+ * I reduced the convergence criteria to 0.1% (0.001) as we are
+ * dealing here with RGB integer components, more is overkill.
+ *
+ * Jean-Yves Couleaud cjyves@free.fr
+ */
 
 static gboolean     gimp_heal_start              (GimpPaintCore    *paint_core,
                                                   GimpDrawable     *drawable,
                                                   GimpPaintOptions *paint_options,
-                                                  GimpCoords       *coords,
+                                                  const GimpCoords *coords,
                                                   GError          **error);
 
-static void         gimp_heal_substitute_0_for_1 (PixelRegion      *pr);
-
-static void         gimp_heal_divide             (PixelRegion      *topPR,
+static void         gimp_heal_sub                (PixelRegion      *topPR,
                                                   PixelRegion      *bottomPR,
                                                   gdouble          *result);
 
-static void         gimp_heal_multiply           (gdouble          *first,
+static void         gimp_heal_add                (gdouble          *first,
                                                   PixelRegion      *secondPR,
                                                   PixelRegion      *resultPR);
 
@@ -82,11 +94,12 @@ static void         gimp_heal_laplace_loop       (gdouble          *matrix,
 
 static PixelRegion *gimp_heal_region             (PixelRegion      *tempPR,
                                                   PixelRegion      *srcPR,
-                                                  TempBuf          *mask_buf);
+                                                  const TempBuf    *mask_buf);
 
 static void         gimp_heal_motion             (GimpSourceCore   *source_core,
                                                   GimpDrawable     *drawable,
                                                   GimpPaintOptions *paint_options,
+                                                  const GimpCoords *coords,
                                                   gdouble           opacity,
                                                   GimpPickable     *src_pickable,
                                                   PixelRegion      *srcPR,
@@ -136,7 +149,7 @@ static gboolean
 gimp_heal_start (GimpPaintCore     *paint_core,
                  GimpDrawable      *drawable,
                  GimpPaintOptions  *paint_options,
-                 GimpCoords        *coords,
+                 const GimpCoords  *coords,
                  GError           **error)
 {
   GimpSourceCore *source_core = GIMP_SOURCE_CORE (paint_core);
@@ -150,59 +163,20 @@ gimp_heal_start (GimpPaintCore     *paint_core,
 
   if (! source_core->set_source && gimp_drawable_is_indexed (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Healing does not operate on indexed layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                           _("Healing does not operate on indexed layers."));
       return FALSE;
     }
 
   return TRUE;
 }
 
-/*
- * Substitute any zeros in the input PixelRegion for ones.  This is needed by
- * the algorithm to avoid division by zero, and to get a more realistic image
- * since multiplying by zero is often incorrect (i.e., healing from a dark to
- * a light region will have incorrect spots of zero)
+/* Subtract bottomPR from topPR and store the result as a double
  */
 static void
-gimp_heal_substitute_0_for_1 (PixelRegion *pr)
-{
-  gint     i, j, k;
-
-  gint     height = pr->h;
-  gint     width  = pr->w;
-  gint     depth  = pr->bytes;
-
-  guchar  *pr_data = pr->data;
-
-  guchar  *p;
-
-  for (i = 0; i < height; i++)
-    {
-      p = pr_data;
-
-      for (j = 0; j < width; j++)
-        {
-          for (k = 0; k < depth; k++)
-            {
-              if (p[k] == 0)
-                p[k] = 1;
-            }
-
-          p += depth;
-        }
-
-      pr_data += pr->rowstride;
-    }
-}
-
-/*
- * Divide topPR by bottomPR and store the result as a double
- */
-static void
-gimp_heal_divide (PixelRegion *topPR,
-                  PixelRegion *bottomPR,
-                  gdouble     *result)
+gimp_heal_sub (PixelRegion *topPR,
+               PixelRegion *bottomPR,
+               gdouble     *result)
 {
   gint     i, j, k;
 
@@ -228,9 +202,8 @@ gimp_heal_divide (PixelRegion *topPR,
         {
           for (k = 0; k < depth; k++)
             {
-              r[k] = (gdouble) (t[k]) / (gdouble) (b[k]);
+              r[k] = (gdouble) (t[k]) - (gdouble) (b[k]);
             }
-
           t += depth;
           b += depth;
           r += depth;
@@ -241,13 +214,12 @@ gimp_heal_divide (PixelRegion *topPR,
     }
 }
 
-/*
- * multiply first by secondPR and store the result as a PixelRegion
+/* Add first to secondPR and store the result as a PixelRegion
  */
 static void
-gimp_heal_multiply (gdouble     *first,
-                    PixelRegion *secondPR,
-                    PixelRegion *resultPR)
+gimp_heal_add (gdouble     *first,
+               PixelRegion *secondPR,
+               PixelRegion *resultPR)
 {
   gint     i, j, k;
 
@@ -273,7 +245,8 @@ gimp_heal_multiply (gdouble     *first,
         {
           for (k = 0; k < depth; k++)
             {
-              r[k] = (guchar) CLAMP0255 (ROUND (((gdouble) (f[k])) * ((gdouble) (s[k]))));
+              r[k] = (guchar) CLAMP0255 (ROUND (((gdouble) (f[k])) +
+                                                ((gdouble) (s[k]))));
             }
 
           f += depth;
@@ -286,8 +259,7 @@ gimp_heal_multiply (gdouble     *first,
     }
 }
 
-/*
- * Perform one iteration of the laplace solver for matrix.  Store the
+/* Perform one iteration of the laplace solver for matrix.  Store the
  * result in solution and return the square of the cummulative error
  * of the solution.
  */
@@ -299,54 +271,108 @@ gimp_heal_laplace_iteration (gdouble *matrix,
                              gdouble *solution,
                              guchar  *mask)
 {
-  const gint  rowstride = width * depth;
-  gint        i, j, k;
-  gdouble     tmp, diff;
-  gdouble     err       = 0.0;
+  const gint    rowstride = width * depth;
+  gint          i, j, k, off, offm, offm0, off0;
+  gdouble       tmp, diff;
+  gdouble       err       = 0.0;
+  const gdouble w         = 1.80 * 0.25; /* Over-relaxation = 1.8 */
 
+  /* we use a red/black checker model of the discretization grid */
+
+  /* do reds */
   for (i = 0; i < height; i++)
     {
-      for (j = 0; j < width; j++)
+      off0  = i * rowstride;
+      offm0 = i * width;
+
+      for (j = i % 2; j < width; j += 2)
         {
-          if ((0 == *mask) ||
+          off  = off0 + j * depth;
+          offm = offm0 + j;
+
+          if ((0 == mask[offm]) ||
               (i == 0) || (i == (height - 1)) ||
               (j == 0) || (j == (width - 1)))
             {
               /* do nothing at the boundary or outside mask */
               for (k = 0; k < depth; k++)
-                *(solution + k) = *(matrix + k);
+                solution[off + k] = matrix[off + k];
             }
           else
             {
-              /* calculate the mean of four neighbours for all color channels */
-              /* v[i][j] = 0.45 * (v[i][j-1]+v[i][j+1]+v[i-1][j]+v[i+1][j]) */
+              /* Use Gauss Siedel to get the correction factor then
+               * over-relax it
+               */
               for (k = 0; k < depth; k++)
                 {
-                  tmp = *(solution + k);
+                  tmp = solution[off + k];
+                  solution[off + k] = (matrix[off + k] +
+                                       w *
+                                       (matrix[off - depth + k] +     /* west */
+                                        matrix[off + depth + k] +     /* east */
+                                        matrix[off - rowstride + k] + /* north */
+                                        matrix[off + rowstride + k] - 4.0 *
+                                        matrix[off+k]));              /* south */
 
-                  *(solution + k) = 0.25 *
-                                    ( *(matrix - depth + k)       /* west */
-                                    + *(matrix + depth + k)       /* east */
-                                    + *(matrix - rowstride + k)   /* north */
-                                    + *(matrix + rowstride + k)); /* south */
+                  diff = solution[off + k] - tmp;
+                  err += diff * diff;
+                }
+            }
+        }
+    }
 
-                  diff = *(solution + k) - tmp;
+
+  /* Do blacks
+   *
+   * As we've done the reds earlier, we can use them right now to
+   * accelerate the convergence. So we have "solution" in the solver
+   * instead of "matrix" above
+   */
+  for (i = 0; i < height; i++)
+    {
+      off0 =  i * rowstride;
+      offm0 = i * width;
+
+      for (j = (i % 2) ? 0 : 1; j < width; j += 2)
+        {
+          off = off0 + j * depth;
+          offm = offm0 + j;
+
+          if ((0 == mask[offm]) ||
+              (i == 0) || (i == (height - 1)) ||
+              (j == 0) || (j == (width - 1)))
+            {
+              /* do nothing at the boundary or outside mask */
+              for (k = 0; k < depth; k++)
+                solution[off + k] = matrix[off + k];
+            }
+          else
+            {
+              /* Use Gauss Siedel to get the correction factor then
+               * over-relax it
+               */
+              for (k = 0; k < depth; k++)
+                {
+                  tmp = solution[off + k];
+                  solution[off + k] = (matrix[off + k] +
+                                       w *
+                                       (solution[off - depth + k] +     /* west */
+                                        solution[off + depth + k] +     /* east */
+                                        solution[off - rowstride + k] + /* north */
+                                        solution[off + rowstride + k] - 4.0 *
+                                        matrix[off+k]));                /* south */
+
+                  diff = solution[off + k] - tmp;
                   err += diff*diff;
                 }
             }
-
-          /* advance pointers to data */
-          matrix += depth;
-          solution += depth;
-          mask++;
         }
     }
 
   return err;
 }
 
-/*
- * Solve the laplace equation for matrix and store the result in solution.
+/* Solve the laplace equation for matrix and store the result in solution.
  */
 static void
 gimp_heal_laplace_loop (gdouble *matrix,
@@ -356,7 +382,7 @@ gimp_heal_laplace_loop (gdouble *matrix,
                         gdouble *solution,
                         guchar  *mask)
 {
-#define EPSILON   0.0001
+#define EPSILON   0.001
 #define MAX_ITER  500
   gint i;
 
@@ -372,40 +398,35 @@ gimp_heal_laplace_loop (gdouble *matrix,
       /* copy solution to matrix */
       memcpy (matrix, solution, width * height * depth * sizeof (double));
 
-      if (sqr_err < SQR (EPSILON))
+      if (sqr_err < EPSILON)
         break;
     }
 }
 
-/*
- * Algorithm Design:
+/* Original Algorithm Design:
  *
- * T. Georgiev, "Image Reconstruction Invariant to Relighting", EUROGRAPHICS
- * 2005, http://www.tgeorgiev.net/
+ * T. Georgiev, "Photoshop Healing Brush: a Tool for Seamless Cloning
+ * http://www.tgeorgiev.net/Photoshop_Healing.pdf
  */
 static PixelRegion *
-gimp_heal_region (PixelRegion *tempPR,
-                  PixelRegion *srcPR,
-                  TempBuf     *mask_buf)
+gimp_heal_region (PixelRegion   *tempPR,
+                  PixelRegion   *srcPR,
+                  const TempBuf *mask_buf)
 {
   gdouble *i_1  = g_new (gdouble, tempPR->h * tempPR->bytes * tempPR->w);
   gdouble *i_2  = g_new (gdouble, tempPR->h * tempPR->bytes * tempPR->w);
-  guchar  *mask = temp_buf_data (mask_buf);
+  guchar  *mask = temp_buf_get_data (mask_buf);
 
-  /* substitute 0's for 1's for the division and multiplication operations that
-   * come later
-   */
-  gimp_heal_substitute_0_for_1 (srcPR);
-
-  /* divide tempPR by srcPR and store the result as a double in i_1 */
-  gimp_heal_divide (tempPR, srcPR, i_1);
+  /* substract pattern to image and store the result as a double in i_1 */
+  gimp_heal_sub (tempPR, srcPR, i_1);
 
   /* FIXME: is a faster implementation needed? */
   gimp_heal_laplace_loop (i_1, tempPR->h, tempPR->bytes, tempPR->w, i_2, mask);
 
-  /* multiply a double by srcPR and store in tempPR */
-  gimp_heal_multiply (i_2, srcPR, tempPR);
+  /* add solution to original image and store in tempPR */
+  gimp_heal_add (i_2, srcPR, tempPR);
 
+  /* clean up */
   g_free (i_1);
   g_free (i_2);
 
@@ -416,6 +437,7 @@ static void
 gimp_heal_motion (GimpSourceCore   *source_core,
                   GimpDrawable     *drawable,
                   GimpPaintOptions *paint_options,
+                  const GimpCoords *coords,
                   gdouble           opacity,
                   GimpPickable     *src_pickable,
                   PixelRegion      *srcPR,
@@ -427,21 +449,34 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                   gint              paint_area_width,
                   gint              paint_area_height)
 {
-  GimpPaintCore *paint_core = GIMP_PAINT_CORE (source_core);
-  GimpContext   *context    = GIMP_CONTEXT (paint_options);
-  TempBuf       *src;
-  TempBuf       *temp;
-  PixelRegion    origPR;
-  PixelRegion    tempPR;
-  PixelRegion    destPR;
-  GimpImageType  src_type;
-  TempBuf       *mask_buf;
-  gdouble        hardness;
+  GimpPaintCore      *paint_core = GIMP_PAINT_CORE (source_core);
+  GimpContext        *context    = GIMP_CONTEXT (paint_options);
+  GimpDynamics       *dynamics   = GIMP_BRUSH_CORE (paint_core)->dynamics;
+  GimpDynamicsOutput *hardness_output;
+  GimpImage          *image      = gimp_item_get_image (GIMP_ITEM (drawable));
+  TempBuf            *src;
+  TempBuf            *temp;
+  PixelRegion         origPR;
+  PixelRegion         tempPR;
+  PixelRegion         destPR;
+  GimpImageType       src_type;
+  const TempBuf      *mask_buf;
+  gdouble             fade_point;
+  gdouble             hardness;
 
-  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
-                                                      &paint_core->cur_coords);
+  hardness_output = gimp_dynamics_get_output (dynamics,
+                                              GIMP_DYNAMICS_OUTPUT_HARDNESS);
+
+  fade_point = gimp_paint_options_get_fade (paint_options, image,
+                                            paint_core->pixel_dist);
+
+  hardness = gimp_dynamics_output_get_linear_value (hardness_output,
+                                                    coords,
+                                                    paint_options,
+                                                    fade_point);
 
   mask_buf = gimp_brush_core_get_brush_mask (GIMP_BRUSH_CORE (source_core),
+                                             coords,
                                              GIMP_BRUSH_HARD,
                                              hardness);
 
@@ -518,11 +553,11 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                               paint_area_offset_x, paint_area_offset_y,
                               paint_area_width, paint_area_height);
 
-  /* check that srcPR, tempPR, destPR, and mask_buf are the same size */
+  /* check that srcPR, tempPR and destPR are the same size and tempPR is inside of layer */
   if ((srcPR->w != tempPR.w) || (srcPR->w != destPR.w) ||
       (srcPR->h != tempPR.h) || (srcPR->h != destPR.h) ||
-      (srcPR->h != mask_buf->height) ||
-      (srcPR->w != mask_buf->width))
+      (tempPR.w <= 0) ||
+      (tempPR.h <= 0))
     {
       /* this generally means that the source point has hit the edge of the
          layer, so it is not an error and we should not complain, just
@@ -546,12 +581,9 @@ gimp_heal_motion (GimpSourceCore   *source_core,
 
   temp_buf_free (temp);
 
-  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
-                                                     &paint_core->cur_coords);
-
   /* replace the canvas with our healed data */
-  gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core),
-                                  drawable,
+  gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
+                                  coords,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
                                   gimp_context_get_opacity (context),
                                   gimp_paint_options_get_brush_mode (paint_options),

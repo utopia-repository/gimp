@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -118,10 +117,10 @@ tips_dialog_create (Gimp *gimp)
 
   config = GIMP_GUI_CONFIG (gimp->config);
 
-  if (config->last_tip >= tips_count || config->last_tip < 0)
-    config->last_tip = 0;
+  if (config->last_tip_shown >= tips_count || config->last_tip_shown < 0)
+    config->last_tip_shown = 0;
 
-  current_tip = g_list_nth (tips, config->last_tip);
+  current_tip = g_list_nth (tips, config->last_tip_shown);
 
   if (tips_dialog)
     return tips_dialog;
@@ -155,18 +154,18 @@ tips_dialog_create (Gimp *gimp)
                     G_CALLBACK (tips_dialog_destroy),
                     config);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (tips_dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (tips_dialog))),
                       vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -185,7 +184,7 @@ tips_dialog_create (Gimp *gimp)
   gtk_box_pack_start (GTK_BOX (vbox), tip_label, TRUE, TRUE, 0);
   gtk_widget_show (tip_label);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -209,7 +208,7 @@ tips_dialog_destroy (GtkWidget     *widget,
                      GimpGuiConfig *config)
 {
   /* the last-shown-tip is saved in sessionrc */
-  config->last_tip = g_list_position (tips, current_tip);
+  config->last_tip_shown = g_list_position (tips, current_tip);
 
   tips_dialog = NULL;
   current_tip = NULL;

@@ -4,9 +4,9 @@
  * Session-managment stuff
  * Copyright (C) 1998 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -51,6 +50,7 @@
 #include "dialogs/dialogs.h"
 
 #include "session.h"
+#include "gimp-log.h"
 
 #include "gimp-intl.h"
 
@@ -58,6 +58,8 @@
 enum
 {
   SESSION_INFO = 1,
+  HIDE_DOCKS,
+  SINGLE_WINDOW_MODE,
   LAST_TIP_SHOWN
 };
 
@@ -108,6 +110,10 @@ session_init (Gimp *gimp)
 
   g_scanner_scope_add_symbol (scanner, 0, "session-info",
                               GINT_TO_POINTER (SESSION_INFO));
+  g_scanner_scope_add_symbol (scanner, 0,  "hide-docks",
+                              GINT_TO_POINTER (HIDE_DOCKS));
+  g_scanner_scope_add_symbol (scanner, 0,  "single-window-mode",
+                              GINT_TO_POINTER (SINGLE_WINDOW_MODE));
   g_scanner_scope_add_symbol (scanner, 0,  "last-tip-shown",
                               GINT_TO_POINTER (LAST_TIP_SHOWN));
 
@@ -126,66 +132,138 @@ session_init (Gimp *gimp)
         case G_TOKEN_SYMBOL:
           if (scanner->value.v_symbol == GINT_TO_POINTER (SESSION_INFO))
             {
-              GimpDialogFactory *factory;
-              GimpSessionInfo   *info;
-              gchar             *factory_name;
-              gchar             *entry_name;
-              gboolean           skip = FALSE;
+              GimpDialogFactory      *factory      = NULL;
+              GimpSessionInfo        *info         = NULL;
+              gchar                  *factory_name = NULL;
+              gchar                  *entry_name   = NULL;
+              GimpDialogFactoryEntry *entry        = NULL;
 
               token = G_TOKEN_STRING;
 
               if (! gimp_scanner_parse_string (scanner, &factory_name))
                 break;
 
-              factory = gimp_dialog_factory_from_name (factory_name);
-              g_free (factory_name);
-
-              if (! factory)
-                break;
-
-              if (! gimp_scanner_parse_string (scanner, &entry_name))
-                break;
+              /* In versions <= GIMP 2.6 there was a "toolbox", a
+               * "dock", a "display" and a "toplevel" factory. These
+               * are now merged to a single gimp_dialog_factory_get_singleton (). We
+               * need the legacy name though, so keep it around.
+               */
+              factory = gimp_dialog_factory_get_singleton ();
 
               info = gimp_session_info_new ();
 
-              if (strcmp (entry_name, "dock"))
+              /* GIMP 2.6 has the entry name as part of the
+               * session-info header, so try to get it
+               */
+              gimp_scanner_parse_string (scanner, &entry_name);
+              if (entry_name)
                 {
-                  info->toplevel_entry = gimp_dialog_factory_find_entry (factory,
-                                                                         entry_name);
-                  skip = (info->toplevel_entry == NULL);
-                }
-
-              g_free (entry_name);
-
-              if (GIMP_CONFIG_GET_INTERFACE (info)->deserialize (GIMP_CONFIG (info),
-                                                                 scanner,
-                                                                 1,
-                                                                 NULL))
-                {
-                  if (! skip)
+                  /* Previously, GimpDock was a toplevel. That is why
+                   * versions <= GIMP 2.6 has "dock" as the entry name. We
+                   * want "dock" to be interpreted as 'dock window'
+                   * however so have some special-casing for that. When
+                   * the entry name is "dock" the factory name is either
+                   * "dock" or "toolbox".
+                   */
+                  if (strcmp (entry_name, "dock") == 0)
                     {
-                      factory->session_infos =
-                        g_list_append (factory->session_infos, info);
+                      entry =
+                        gimp_dialog_factory_find_entry (factory,
+                                                        (strcmp (factory_name, "toolbox") == 0 ?
+                                                         "gimp-toolbox-window" :
+                                                         "gimp-dock-window"));
                     }
                   else
                     {
-                      g_object_unref (info);
+                      entry = gimp_dialog_factory_find_entry (factory,
+                                                              entry_name);
                     }
+                }
+
+              /* We're done with these now */
+              g_free (factory_name);
+              g_free (entry_name);
+
+              /* We can get the factory entry either now (the GIMP <=
+               * 2.6 way), or when we deserialize (the GIMP 2.8 way)
+               */
+              if (entry)
+                {
+                  gimp_session_info_set_factory_entry (info, entry);
+                }
+
+              /* Always try to deserialize */
+              if (gimp_config_deserialize (GIMP_CONFIG (info), scanner, 1, NULL))
+                {
+                  /* Make sure we got a factory entry either the 2.6
+                   * or 2.8 way
+                   */
+                  if (gimp_session_info_get_factory_entry (info))
+                    {
+                      GIMP_LOG (DIALOG_FACTORY,
+                                "successfully parsed and added session info %p",
+                                info);
+
+                      gimp_dialog_factory_add_session_info (factory, info);
+                    }
+                  else
+                    {
+                      GIMP_LOG (DIALOG_FACTORY,
+                                "failed to parse session info %p, not adding",
+                                info);
+                    }
+
+                  g_object_unref (info);
                 }
               else
                 {
                   g_object_unref (info);
-                  break;
+
+                  /* set token to left paren to we won't set another
+                   * error below, gimp_config_deserialize() already did
+                   */
+                  token = G_TOKEN_LEFT_PAREN;
+                  goto error;
                 }
+            }
+          else if (scanner->value.v_symbol == GINT_TO_POINTER (HIDE_DOCKS))
+            {
+              gboolean hide_docks;
+
+              token = G_TOKEN_IDENTIFIER;
+
+              if (! gimp_scanner_parse_boolean (scanner, &hide_docks))
+                break;
+
+              g_object_set (gimp->config,
+                            "hide-docks", hide_docks,
+                            NULL);
+            }
+          else if (scanner->value.v_symbol == GINT_TO_POINTER (SINGLE_WINDOW_MODE))
+            {
+              gboolean single_window_mode;
+
+              token = G_TOKEN_IDENTIFIER;
+
+              if (! gimp_scanner_parse_boolean (scanner, &single_window_mode))
+                break;
+
+              g_object_set (gimp->config,
+                            "single-window-mode", single_window_mode,
+                            NULL);
             }
           else if (scanner->value.v_symbol == GINT_TO_POINTER (LAST_TIP_SHOWN))
             {
-              GimpGuiConfig *config = GIMP_GUI_CONFIG (gimp->config);
+              gint last_tip_shown;
 
               token = G_TOKEN_INT;
 
-              if (! gimp_scanner_parse_int (scanner, &config->last_tip))
+              if (! gimp_scanner_parse_int (scanner, &last_tip_shown))
                 break;
+
+              g_object_set (gimp->config,
+                            "last-tip-shown", last_tip_shown,
+                            NULL);
             }
           token = G_TOKEN_RIGHT_PAREN;
           break;
@@ -199,6 +277,8 @@ session_init (Gimp *gimp)
         }
     }
 
+ error:
+
   if (token != G_TOKEN_LEFT_PAREN)
     {
       g_scanner_get_next_token (scanner);
@@ -208,7 +288,7 @@ session_init (Gimp *gimp)
 
   if (error)
     {
-      gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
       g_clear_error (&error);
 
       gimp_config_file_backup_on_error (filename, "sessionrc", NULL);
@@ -231,7 +311,7 @@ session_restore (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  gimp_dialog_factories_session_restore ();
+  gimp_dialog_factory_restore (gimp_dialog_factory_get_singleton ());
 }
 
 void
@@ -270,18 +350,29 @@ session_save (Gimp     *gimp,
   if (!writer)
     return;
 
-  gimp_dialog_factories_session_save (writer);
+  gimp_dialog_factory_save (gimp_dialog_factory_get_singleton (), writer);
   gimp_config_writer_linefeed (writer);
 
-  /* save last tip shown */
+  gimp_config_writer_open (writer, "hide-docks");
+  gimp_config_writer_identifier (writer,
+                                 GIMP_GUI_CONFIG (gimp->config)->hide_docks ?
+                                 "yes" : "no");
+  gimp_config_writer_close (writer);
+
+  gimp_config_writer_open (writer, "single-window-mode");
+  gimp_config_writer_identifier (writer,
+                                 GIMP_GUI_CONFIG (gimp->config)->single_window_mode ?
+                                 "yes" : "no");
+  gimp_config_writer_close (writer);
+
   gimp_config_writer_open (writer, "last-tip-shown");
   gimp_config_writer_printf (writer, "%d",
-                             GIMP_GUI_CONFIG (gimp->config)->last_tip + 1);
+                             GIMP_GUI_CONFIG (gimp->config)->last_tip_shown);
   gimp_config_writer_close (writer);
 
   if (! gimp_config_writer_finish (writer, "end of sessionrc", &error))
     {
-      gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
       g_clear_error (&error);
     }
 
@@ -304,7 +395,8 @@ session_clear (Gimp    *gimp,
 
   if (g_unlink (filename) != 0 && errno != ENOENT)
     {
-      g_set_error (error, 0, 0, _("Deleting \"%s\" failed: %s"),
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+		   _("Deleting \"%s\" failed: %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       success = FALSE;
     }
@@ -322,7 +414,14 @@ session_clear (Gimp    *gimp,
 static gchar *
 session_filename (Gimp *gimp)
 {
-  gchar *filename = gimp_personal_rc_file ("sessionrc");
+  const gchar *basename;
+  gchar       *filename;
+
+  basename = g_getenv ("GIMP_TESTING_SESSIONRC_NAME");
+  if (! basename)
+    basename = "sessionrc";
+
+  filename = gimp_personal_rc_file (basename);
 
   if (gimp->session_name)
     {

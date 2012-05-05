@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,6 +24,7 @@
 #include "core-types.h"
 
 #include "gimp-transform-resize.h"
+#include "gimp-utils.h"
 
 
 #if defined (HAVE_FINITE)
@@ -37,9 +37,7 @@
 #error "no FINITE() implementation available?!"
 #endif
 
-#define EPSILON       0.00000001
-#define MIN4(a,b,c,d) MIN(MIN((a),(b)),MIN((c),(d)))
-#define MAX4(a,b,c,d) MAX(MAX((a),(b)),MAX((c),(d)))
+#define EPSILON 0.00000001
 
 
 typedef struct
@@ -190,6 +188,12 @@ gimp_transform_resize_boundary (const GimpMatrix3   *inv,
                                   ((gdouble) u2 - u1) / (v2 - v1),
                                   x1, y1, x2, y2);
       break;
+
+    case GIMP_TRANSFORM_RESIZE_CLIP:
+      /* Remove warning about not handling all enum values. We handle
+       * this case in the beginning of the function
+       */
+      break;
     }
 
   /* ensure that resulting rectangle has at least area 1 */
@@ -288,33 +292,47 @@ gimp_transform_resize_crop (gdouble  dx1,
   points[0] = points[min];
   points[min] = t;
 
-  for (i = 1; i < 4; i++)
+  for (i = 1; i < 3; i++)
     {
-      gdouble theta, theta_m = 2.0 * G_PI;
-      gdouble theta_v        = 0;
+      gdouble min_theta;
+      gdouble min_mag;
+      int next;
 
-      min = 3;
+      next = 3;
+      min_theta = 2.0 * G_PI;
+      min_mag = DBL_MAX;
 
       for (j = i; j < 4; j++)
         {
-          gdouble sy = points[j].y - points[i - 1].y;
-          gdouble sx = points[j].x - points[i - 1].x;
+          gdouble theta;
+          gdouble sy;
+          gdouble sx;
+          gdouble mag;
 
-          theta = atan2 (sy, sx);
+          sy = points[j].y - points[i - 1].y;
+          sx = points[j].x - points[i - 1].x;
 
-          if ((theta < theta_m) &&
-              ((theta > theta_v) || ((theta == theta_v) && (sx > 0))))
+          if ((sx == 0.0) && (sy == 0.0))
             {
-              theta_m = theta;
-              min = j;
+              next = j;
+              break;
+            }
+
+          theta = atan2 (-sy, -sx);
+          mag = (sx * sx) + (sy * sy);
+
+          if ((theta < min_theta) ||
+              ((theta == min_theta) && (mag < min_mag)))
+            {
+              min_theta = theta;
+              min_mag = mag;
+              next = j;
             }
         }
 
-      theta_v = theta_m;
-
       t = points[i];
-      points[i] = points[min];
-      points[min] = t;
+      points[i] = points[next];
+      points[next] = t;
     }
 
   /* reverse the order of points */
@@ -350,7 +368,7 @@ gimp_transform_resize_crop (gdouble  dx1,
       /* saveguard if something went wrong, adjust and give warning */
       gimp_transform_resize_adjust (dx1, dy1, dx2, dy2, dx3, dy3, dx4, dy4,
                                     x1, y1, x2, y2);
-      g_warning ("no rectangle found by algorith, no cropping done");
+      g_warning ("no rectangle found by algorithm, no cropping done");
       return;
     }
   else

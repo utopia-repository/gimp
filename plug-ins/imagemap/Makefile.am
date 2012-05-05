@@ -12,7 +12,12 @@ libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSIO
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la $(libm)
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+imagemap_RC = imagemap.rc.o
+endif
 
 AM_LDFLAGS = $(mwindows)
 
@@ -132,6 +137,7 @@ INCLUDES = \
 	-I$(includedir)
 
 LDADD = \
+	$(libm)			\
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
 	$(libgimpconfig)	\
@@ -141,14 +147,15 @@ LDADD = \
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
+	$(INTLLIBS)		\
+	$(imagemap)
 
 CLEANFILES = y.tab.c y.tab.h
 
 ## The following rules are not necessary for most users.  They are
 ## only used by the maintainers who modify the symbols and grammar
 ## that are used for parsing the map files.  These rules are very
-## specific and a test for flex and bison in configure.in would not be
+## specific and a test for flex and bison in configure.ac would not be
 ## appropriate in most cases, so the Makefile rules are included here.
 ## In addition, the default rules provided by automake would not be
 ## sufficient because the source and target files have different base

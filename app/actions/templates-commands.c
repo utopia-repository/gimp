@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,7 +27,6 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
-#include "core/gimp-utils.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage-new.h"
@@ -42,7 +40,6 @@
 #include "widgets/gimptemplateeditor.h"
 #include "widgets/gimptemplateview.h"
 
-#include "dialogs/dialogs.h"
 #include "dialogs/template-options-dialog.h"
 
 #include "actions.h"
@@ -93,7 +90,7 @@ templates_create_image_cmd_callback (GtkAction *action,
 
   if (template && gimp_container_have (container, GIMP_OBJECT (template)))
     {
-      gimp_template_create_image (gimp, template, context);
+      gimp_image_new_from_template (gimp, template, context);
       gimp_image_new_set_last_template (gimp, template);
     }
 }
@@ -144,7 +141,8 @@ templates_duplicate_cmd_callback (GtkAction *action,
       new_template = gimp_config_duplicate (GIMP_CONFIG (template));
 
       gimp_container_add (container, GIMP_OBJECT (new_template));
-      gimp_context_set_by_type (context, container->children_type,
+      gimp_context_set_by_type (context,
+                                gimp_container_get_children_type (container),
                                 GIMP_OBJECT (new_template));
       g_object_unref (new_template);
 
@@ -239,7 +237,7 @@ templates_delete_cmd_callback (GtkAction *action,
                                          _("Are you sure you want to delete "
                                            "template '%s' from the list and "
                                            "from disk?"),
-                                         GIMP_OBJECT (template)->name);
+                                         gimp_object_get_name (template));
       gtk_widget_show (dialog);
     }
 }
@@ -254,8 +252,10 @@ templates_new_response (GtkWidget             *dialog,
 {
   if (response_id == GTK_RESPONSE_OK)
     {
-      GimpTemplateEditor *editor   = GIMP_TEMPLATE_EDITOR (options->editor);
-      GimpTemplate       *template = editor->template;
+      GimpTemplateEditor *editor = GIMP_TEMPLATE_EDITOR (options->editor);
+      GimpTemplate       *template;
+
+      template = gimp_template_editor_get_template (editor);
 
       gimp_container_add (options->gimp->templates, GIMP_OBJECT (template));
       gimp_context_set_template (gimp_get_user_context (options->gimp),
@@ -273,8 +273,11 @@ templates_edit_response (GtkWidget             *dialog,
   if (response_id == GTK_RESPONSE_OK)
     {
       GimpTemplateEditor *editor = GIMP_TEMPLATE_EDITOR (options->editor);
+      GimpTemplate       *template;
 
-      gimp_config_sync (G_OBJECT (editor->template),
+      template = gimp_template_editor_get_template (editor);
+
+      gimp_config_sync (G_OBJECT (template),
                         G_OBJECT (options->template), 0);
     }
 
@@ -288,18 +291,21 @@ templates_delete_response (GtkWidget          *dialog,
 {
   if (response_id == GTK_RESPONSE_OK)
     {
-      GimpObject *new_active;
+      GimpObject *new_active = NULL;
 
-      new_active = gimp_container_get_neighbor_of_active (delete_data->container,
-                                                          delete_data->context,
-                                                          GIMP_OBJECT (delete_data->template));
+      if (delete_data->template ==
+          gimp_context_get_template (delete_data->context))
+        {
+          new_active = gimp_container_get_neighbor_of (delete_data->container,
+                                                       GIMP_OBJECT (delete_data->template));
+        }
 
       if (gimp_container_have (delete_data->container,
                                GIMP_OBJECT (delete_data->template)))
         {
           if (new_active)
             gimp_context_set_by_type (delete_data->context,
-                                      delete_data->container->children_type,
+                                      gimp_container_get_children_type (delete_data->container),
                                       new_active);
 
           gimp_container_remove (delete_data->container,

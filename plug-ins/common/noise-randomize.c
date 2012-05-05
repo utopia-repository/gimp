@@ -10,9 +10,9 @@
  *    ripple   (Copyright (C) 1997 Brian Degenhardt) and
  *    whirl    (Copyright (C) 1997 Federico Mena Quintero).
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -21,8 +21,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ****************************************************************************/
 
@@ -84,6 +83,7 @@
  ********************************/
 
 #define PLUG_IN_BINARY "noise-randomize"
+#define PLUG_IN_ROLE   "gimp-noise-randomize"
 
 /*
  *  progress meter update frequency
@@ -147,19 +147,19 @@ static GRand  *gr; /* The GRand object which generates the
 
 static void query (void);
 static void run   (const gchar      *name,
-		   gint              nparams,
-		   const GimpParam  *param,
-		   gint             *nreturn_vals,
-		   GimpParam       **return_vals);
+                   gint              nparams,
+                   const GimpParam  *param,
+                   gint             *nreturn_vals,
+                   GimpParam       **return_vals);
 
 static void randomize                    (GimpDrawable *drawable,
                                           GimpPreview  *preview);
 
 static inline void randomize_prepare_row (GimpPixelRgn *pixel_rgn,
-					  guchar       *data,
-					  gint          x,
-					  gint          y,
-					  gint          w);
+                                          guchar       *data,
+                                          gint          x,
+                                          gint          y,
+                                          gint          w);
 
 static gboolean    randomize_dialog      (GimpDrawable *drawable);
 
@@ -189,12 +189,12 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run_mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_FLOAT,    "rndm_pct",    "Randomization percentage (1.0 - 100.0)" },
     { GIMP_PDB_FLOAT,    "rndm_rcount", "Repeat count (1.0 - 100.0)" },
-    { GIMP_PDB_INT32,    "randomize",   "Use random seed (TRUE, FALSE)" },
+    { GIMP_PDB_INT32,    "randomize",   "Use random seed { TRUE, FALSE }" },
     { GIMP_PDB_INT32,    "seed",        "Seed value (used only if randomize is FALSE)" }
   };
 
@@ -225,40 +225,40 @@ query (void)
   const gchar *copyright_date = "1995-1998";
 
   gimp_install_procedure (PLUG_IN_PROC[0],
-			  hurl_blurb,
-			  hurl_help,
-			  author,
-			  copyrights,
-			  copyright_date,
-			  N_("_Hurl..."),
-			  "RGB*, GRAY*, INDEXED*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          hurl_blurb,
+                          hurl_help,
+                          author,
+                          copyrights,
+                          copyright_date,
+                          N_("_Hurl..."),
+                          "RGB*, GRAY*, INDEXED*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_install_procedure (PLUG_IN_PROC[1],
-			  pick_blurb,
-			  pick_help,
-			  author,
-			  copyrights,
-			  copyright_date,
-			  N_("_Pick..."),
-			  "RGB*, GRAY*, INDEXED*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          pick_blurb,
+                          pick_help,
+                          author,
+                          copyrights,
+                          copyright_date,
+                          N_("_Pick..."),
+                          "RGB*, GRAY*, INDEXED*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_install_procedure (PLUG_IN_PROC[2],
-			  slur_blurb,
-			  slur_help,
-			  author,
-			  copyrights,
-			  copyright_date,
-			  N_("_Slur..."),
-			  "RGB*, GRAY*, INDEXED*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          slur_blurb,
+                          slur_help,
+                          author,
+                          copyrights,
+                          copyright_date,
+                          N_("_Slur..."),
+                          "RGB*, GRAY*, INDEXED*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC[0], "<Image>/Filters/Noise");
   gimp_plugin_menu_register (PLUG_IN_PROC[1], "<Image>/Filters/Noise");
@@ -318,86 +318,86 @@ run (const gchar      *name,
       gimp_tile_cache_ntiles (2 * drawable->ntile_cols);
 
       switch (run_mode)
-	{
-	  /*
-	   *  If we're running interactively, pop up the dialog box.
-	   */
-	case GIMP_RUN_INTERACTIVE:
-	  gimp_get_data (PLUG_IN_PROC[rndm_type - 1], &pivals);
+        {
+          /*
+           *  If we're running interactively, pop up the dialog box.
+           */
+        case GIMP_RUN_INTERACTIVE:
+          gimp_get_data (PLUG_IN_PROC[rndm_type - 1], &pivals);
 
-	  if (! randomize_dialog (drawable)) /* return on Cancel */
-	    return;
-	  break;
-	  /*
-	   *  If we're not interactive (probably scripting), we
-	   *  get the parameters from the param[] array, since
-	   *  we don't use the dialog box.  Make sure they all
-	   *  parameters have legitimate values.
-	   */
-	case GIMP_RUN_NONINTERACTIVE:
-	  if (nparams != 7)
-	    {
-	      status = GIMP_PDB_CALLING_ERROR;
-	    }
-	  else
-	    {
-	      pivals.rndm_pct    = (gdouble) param[3].data.d_float;
-	      pivals.rndm_rcount = (gdouble) param[4].data.d_float;
-	      pivals.randomize   = (gboolean) param[5].data.d_int32;
-	      pivals.seed        = (gint) param[6].data.d_int32;
+          if (! randomize_dialog (drawable)) /* return on Cancel */
+            return;
+          break;
+          /*
+           *  If we're not interactive (probably scripting), we
+           *  get the parameters from the param[] array, since
+           *  we don't use the dialog box.  Make sure they all
+           *  parameters have legitimate values.
+           */
+        case GIMP_RUN_NONINTERACTIVE:
+          if (nparams != 7)
+            {
+              status = GIMP_PDB_CALLING_ERROR;
+            }
+          else
+            {
+              pivals.rndm_pct    = (gdouble) param[3].data.d_float;
+              pivals.rndm_rcount = (gdouble) param[4].data.d_float;
+              pivals.randomize   = (gboolean) param[5].data.d_int32;
+              pivals.seed        = (gint) param[6].data.d_int32;
 
               if (pivals.randomize)
                 pivals.seed = g_random_int ();
 
-	      if ((rndm_type != RNDM_PICK &&
-		   rndm_type != RNDM_SLUR &&
-		   rndm_type != RNDM_HURL) ||
-		  (pivals.rndm_pct < 1.0 || pivals.rndm_pct > 100.0) ||
-		  (pivals.rndm_rcount < 1.0 || pivals.rndm_rcount > 100.0))
-		{
-		  status = GIMP_PDB_CALLING_ERROR;
-		}
-	    }
-	  break;
-	  /*
-	   *  If we're running with the last set of values, get those values.
-	   */
-	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_get_data (PLUG_IN_PROC[rndm_type - 1], &pivals);
+              if ((rndm_type != RNDM_PICK &&
+                   rndm_type != RNDM_SLUR &&
+                   rndm_type != RNDM_HURL) ||
+                  (pivals.rndm_pct < 1.0 || pivals.rndm_pct > 100.0) ||
+                  (pivals.rndm_rcount < 1.0 || pivals.rndm_rcount > 100.0))
+                {
+                  status = GIMP_PDB_CALLING_ERROR;
+                }
+            }
+          break;
+          /*
+           *  If we're running with the last set of values, get those values.
+           */
+        case GIMP_RUN_WITH_LAST_VALS:
+          gimp_get_data (PLUG_IN_PROC[rndm_type - 1], &pivals);
 
           if (pivals.randomize)
             pivals.seed = g_random_int ();
-	  break;
-	  /*
-	   *  Hopefully we never get here!
-	   */
-	default:
-	  break;
+          break;
+          /*
+           *  Hopefully we never get here!
+           */
+        default:
+          break;
         }
 
       if (status == GIMP_PDB_SUCCESS)
-	{
+        {
           gimp_progress_init_printf ("%s", gettext (RNDM_NAME[rndm_type - 1]));
 
-	  /*
-	   *  Initialize the g_rand() function seed
-	   */
+          /*
+           *  Initialize the g_rand() function seed
+           */
           g_rand_set_seed (gr, pivals.seed);
 
-	  randomize (drawable, NULL);
-	  /*
-	   *  If we ran interactively (even repeating) update the display.
-	   */
-	  if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	    {
-	      gimp_displays_flush ();
+          randomize (drawable, NULL);
+          /*
+           *  If we ran interactively (even repeating) update the display.
+           */
+          if (run_mode != GIMP_RUN_NONINTERACTIVE)
+            {
+              gimp_displays_flush ();
             }
-	  /*
-	   *  If we use the dialog popup, set the data for future use.
-	   */
-	  if (run_mode == GIMP_RUN_INTERACTIVE)
-	    {
-	      gimp_set_data (PLUG_IN_PROC[rndm_type - 1], &pivals,
+          /*
+           *  If we use the dialog popup, set the data for future use.
+           */
+          if (run_mode == GIMP_RUN_INTERACTIVE)
+            {
+              gimp_set_data (PLUG_IN_PROC[rndm_type - 1], &pivals,
                              sizeof (RandomizeVals));
             }
         }
@@ -430,10 +430,10 @@ run (const gchar      *name,
 
 static inline void
 randomize_prepare_row (GimpPixelRgn *pixel_rgn,
-		       guchar    *data,
-		       int        x,
-		       int        y,
-		       int        w)
+                       guchar    *data,
+                       int        x,
+                       int        y,
+                       int        w)
 {
   gint b;
 
@@ -480,42 +480,38 @@ randomize (GimpDrawable *drawable,
   guchar *next_row, *nr;
   guchar *tmp;
   gint row, col;
-  gint x1, y1, x2, y2;
+  gint x, y;
   gint cnt;
-  gint has_alpha, ind;
   gint i, j, k;
 
   if (preview)
     {
-      gimp_preview_get_position (preview, &x1, &y1);
+      gimp_preview_get_position (preview, &x, &y);
       gimp_preview_get_size (preview, &width, &height);
-      x2 = x1 + width;
-      y2 = y1 + height;
     }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      width     = (x2 - x1);
-      height    = (y2 - y1);
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x, &y, &width, &height))
+        return;
     }
 
   bytes = drawable->bpp;
-  has_alpha = gimp_drawable_has_alpha(drawable->drawable_id);
 
   /*
    *  allocate row buffers
    */
-  prev_row = g_new (guchar, (x2 - x1 + 2) * bytes);
-  cur_row = g_new (guchar, (x2 - x1 + 2) * bytes);
-  next_row = g_new (guchar, (x2 - x1 + 2) * bytes);
-  dest = g_new (guchar, (x2 - x1) * bytes);
+  prev_row = g_new (guchar, (width + 2) * bytes);
+  cur_row = g_new (guchar, (width + 2) * bytes);
+  next_row = g_new (guchar, (width + 2) * bytes);
+  dest = g_new (guchar, width * bytes);
 
   /*
    *  initialize the pixel regions
    */
-  gimp_pixel_rgn_init (&srcPR, drawable, x1, y1, width, height, FALSE, FALSE);
-  gimp_pixel_rgn_init (&destPR, drawable, x1, y1, width, height, TRUE, TRUE);
-  gimp_pixel_rgn_init (&destPR2, drawable, x1, y1, width, height, TRUE, TRUE);
+  gimp_pixel_rgn_init (&srcPR, drawable, x, y, width, height, FALSE, FALSE);
+  gimp_pixel_rgn_init (&destPR, drawable, x, y, width, height, TRUE, TRUE);
+  gimp_pixel_rgn_init (&destPR2, drawable, x, y, width, height, TRUE, TRUE);
   sp = &srcPR;
   dp = &destPR;
   tp = NULL;
@@ -529,37 +525,36 @@ randomize (GimpDrawable *drawable,
       /*
        *  prepare the first row and previous row
        */
-      randomize_prepare_row (sp, pr, x1, y1 - 1, (x2 - x1));
-      randomize_prepare_row (dp, cr, x1, y1, (x2 - x1));
+      randomize_prepare_row (sp, pr, x, y - 1, width);
+      randomize_prepare_row (sp, cr, x, y, width);
       /*
        *  loop through the rows, applying the selected convolution
        */
-      for (row = y1; row < y2; row++)
-	{
-	  /*  prepare the next row  */
-	  randomize_prepare_row (sp, nr, x1, row + 1, (x2 - x1));
+      for (row = y; row < y + height; row++)
+        {
+          /*  prepare the next row  */
+          randomize_prepare_row (sp, nr, x, row + 1, width);
 
-	  d = dest;
-	  ind = 0;
-	  for (col = 0; col < (x2 - x1); col++)
-	    {
-	      if (g_rand_int_range (gr, 0, 100) <= (gint) pivals.rndm_pct)
-		{
-		  switch (rndm_type)
-		    {
-		      /*
-		       *  HURL
-		       *      Just assign a random value.
-		       */
-		    case RNDM_HURL:
+          d = dest;
+          for (col = 0; col < width; col++)
+            {
+              if (g_rand_int_range (gr, 0, 100) <= (gint) pivals.rndm_pct)
+                {
+                  switch (rndm_type)
+                    {
+                      /*
+                       *  HURL
+                       *      Just assign a random value.
+                       */
+                    case RNDM_HURL:
                       for (j = 0; j < bytes; j++)
                         *d++ = g_rand_int_range (gr, 0, 256);
                       break;
-		      /*
-		       *  PICK
-		       *      pick at random from a neighboring pixel.
-		       */
-		    case RNDM_PICK:
+                      /*
+                       *  PICK
+                       *      pick at random from a neighboring pixel.
+                       */
+                    case RNDM_PICK:
                       k = g_rand_int_range (gr, 0, 9);
                       for (j = 0; j < bytes; j++)
                         {
@@ -598,12 +593,12 @@ randomize (GimpDrawable *drawable,
                         }
                       break;
                       /*
-		       *  SLUR
-		       *      80% chance it's from directly above,
-		       *      10% from above left,
-		       *      10% from above right.
-		       */
-		    case RNDM_SLUR:
+                       *  SLUR
+                       *      80% chance it's from directly above,
+                       *      10% from above left,
+                       *      10% from above right.
+                       */
+                    case RNDM_SLUR:
                       k = g_rand_int_range (gr, 0, 10);
                       for (j = 0; j < bytes; j++)
                         {
@@ -626,30 +621,30 @@ randomize (GimpDrawable *drawable,
                     }
                   /*
                    *  Otherwise, this pixel was not selected for randomization,
-		   *  so use the current value.
-		   */
+                   *  so use the current value.
+                   */
                 }
-	      else
-		{
+              else
+                {
                   for (j = 0; j < bytes; j++)
                     *d++ = (gint) cr[col*bytes + j];
                 }
             }
-	  /*
-	   *  Save the modified row, shuffle the row pointers, and every
-	   *  so often, update the progress meter.
-	   */
-	  gimp_pixel_rgn_set_row (dp, dest, x1, row, (x2 - x1));
+          /*
+           *  Save the modified row, shuffle the row pointers, and every
+           *  so often, update the progress meter.
+           */
+          gimp_pixel_rgn_set_row (dp, dest, x, row, width);
 
-	  tmp = pr;
-	  pr = cr;
-	  cr = nr;
-	  nr = tmp;
+          tmp = pr;
+          pr = cr;
+          cr = nr;
+          nr = tmp;
 
           if (! preview && PROG_UPDATE_TIME)
             {
               gdouble base = (gdouble) cnt / pivals.rndm_rcount;
-              gdouble inc  = (gdouble) row / ((y2 - y1) * pivals.rndm_rcount);
+              gdouble inc  = (gdouble) row / (height * pivals.rndm_rcount);
 
               gimp_progress_update (base + inc);
             }
@@ -659,18 +654,18 @@ randomize (GimpDrawable *drawable,
        *  if we have more cycles to perform, swap the src and dest Pixel Regions
        */
       if (cnt < pivals.rndm_rcount)
-	{
-	  if (tp != NULL)
-	    {
-	      tp = dp;
-	      dp = sp;
-	      sp = tp;
+        {
+          if (tp != NULL)
+            {
+              tp = dp;
+              dp = sp;
+              sp = tp;
             }
-	  else
-	    {
-	      tp = &srcPR;
-	      sp = &destPR;
-	      dp = &destPR2;
+          else
+            {
+              tp = &srcPR;
+              sp = &destPR;
+              dp = &destPR2;
             }
         }
     }
@@ -690,7 +685,7 @@ randomize (GimpDrawable *drawable,
     {
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-      gimp_drawable_update (drawable->drawable_id, x1, y1, (x2 - x1), (y2 - y1));
+      gimp_drawable_update (drawable->drawable_id, x, y, width, height);
     }
 
   /*
@@ -729,14 +724,14 @@ randomize_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (gettext (RNDM_NAME[rndm_type - 1]), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (gettext (RNDM_NAME[rndm_type - 1]), PLUG_IN_ROLE,
                          NULL, 0,
-			 gimp_standard_help_func, PLUG_IN_PROC[rndm_type - 1],
+                         gimp_standard_help_func, PLUG_IN_PROC[rndm_type - 1],
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-			 NULL);
+                         NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
                                            GTK_RESPONSE_OK,
@@ -745,9 +740,10 @@ randomize_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dlg)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -768,19 +764,19 @@ randomize_dialog (GimpDrawable *drawable)
   /*  Random Seed  */
   seed_hbox = gimp_random_seed_new (&pivals.seed, &pivals.randomize);
   label = gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-				     _("_Random seed:"), 0.0, 0.5,
-				     seed_hbox, 1, TRUE);
+                                     _("_Random seed:"), 0.0, 0.5,
+                                     seed_hbox, 1, TRUE);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label),
-				 GIMP_RANDOM_SEED_SPINBUTTON (seed_hbox));
+                                 GIMP_RANDOM_SEED_SPINBUTTON (seed_hbox));
 
   /*
    *  Randomization percentage label & scale (1 to 100)
    */
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 1,
-			      _("R_andomization (%):"), SCALE_WIDTH, 0,
-			      pivals.rndm_pct, 1.0, 100.0, 1.0, 10.0, 0,
-			      TRUE, 0, 0,
-			      _("Percentage of pixels to be filtered"), NULL);
+                              _("R_andomization (%):"), SCALE_WIDTH, 0,
+                              pivals.rndm_pct, 1.0, 100.0, 1.0, 10.0, 0,
+                              TRUE, 0, 0,
+                              _("Percentage of pixels to be filtered"), NULL);
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pivals.rndm_pct);
@@ -792,10 +788,10 @@ randomize_dialog (GimpDrawable *drawable)
    *  Repeat count label & scale (1 to 100)
    */
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 2,
-			      _("R_epeat:"), SCALE_WIDTH, 0,
-			      pivals.rndm_rcount, 1.0, 100.0, 1.0, 10.0, 0,
-			      TRUE, 0, 0,
-			      _("Number of times to apply filter"), NULL);
+                              _("R_epeat:"), SCALE_WIDTH, 0,
+                              pivals.rndm_rcount, 1.0, 100.0, 1.0, 10.0, 0,
+                              TRUE, 0, 0,
+                              _("Number of times to apply filter"), NULL);
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pivals.rndm_rcount);

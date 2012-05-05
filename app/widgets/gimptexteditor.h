@@ -4,9 +4,9 @@
  * GimpTextEditor
  * Copyright (C) 2002-2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TEXT_EDITOR_H__
@@ -56,7 +55,12 @@ struct _GimpTextEditorClass
 GType               gimp_text_editor_get_type      (void) G_GNUC_CONST;
 GtkWidget         * gimp_text_editor_new           (const gchar       *title,
                                                     GtkWindow         *parent,
-                                                    GimpMenuFactory   *menu_factory);
+                                                    Gimp              *gimp,
+                                                    GimpMenuFactory   *menu_factory,
+                                                    GimpText          *text,
+                                                    GimpTextBuffer    *text_buffer,
+                                                    gdouble            xres,
+                                                    gdouble            yres);
 
 void                gimp_text_editor_set_text      (GimpTextEditor    *editor,
                                                     const gchar       *text,

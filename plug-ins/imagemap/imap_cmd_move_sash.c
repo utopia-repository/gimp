@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -30,29 +29,31 @@
 
 #include "libgimp/stdplugins-intl.h"
 
-COMMAND_PROTO(move_sash_command);
+static void move_sash_command_destruct(Command_t *command);
+static CmdExecuteValue_t move_sash_command_execute(Command_t *command);
+static void move_sash_command_redo(Command_t *command);
 
 static CommandClass_t move_sash_command_class = {
    move_sash_command_destruct,
    move_sash_command_execute,
-   NULL, 			/* move_sash_command_undo */
-   NULL				/* move_sash_command_redo */
+   NULL /*undo*/,
+   move_sash_command_redo
 };
 
 typedef struct {
-   Command_t 	parent;
+   Command_t    parent;
    GtkWidget   *widget;
    Object_t    *obj;
-   gint 	x;
-   gint 	y;
-   gint		image_width;
-   gint		image_height;
+   gint         x;
+   gint         y;
+   gint         image_width;
+   gint         image_height;
    MoveSashFunc_t sash_func;
 } MoveSashCommand_t;
 
 Command_t*
 move_sash_command_new(GtkWidget *widget, Object_t *obj,
-		      gint x, gint y, MoveSashFunc_t sash_func)
+                      gint x, gint y, MoveSashFunc_t sash_func)
 {
    MoveSashCommand_t *command = g_new(MoveSashCommand_t, 1);
    Command_t *parent;
@@ -66,7 +67,7 @@ move_sash_command_new(GtkWidget *widget, Object_t *obj,
    command->sash_func = sash_func;
 
    parent = command_init(&command->parent, _("Move Sash"),
-			 &move_sash_command_class);
+                         &move_sash_command_class);
    command_add_subcommand(parent, edit_object_command_new(obj));
 
    return parent;
@@ -105,10 +106,10 @@ sash_move(GtkWidget *widget, GdkEventMotion *event, gpointer data)
    command->x = x;
    command->y = y;
 
-   object_draw(obj, widget->window);
    command->sash_func(obj, dx, dy);
    object_emit_geometry_signal(obj);
-   object_draw(obj, widget->window);
+
+   preview_redraw ();
 }
 
 static void
@@ -123,8 +124,8 @@ sash_end(GtkWidget *widget, GdkEventButton *event, gpointer data)
                                         sash_end, data);
    if (obj->class->normalize)
       object_normalize(obj);
-   gdk_gc_set_function(get_preferences()->selected_gc, GDK_COPY);
-   preview_thaw();
+   preview_unset_tmp_obj(command->obj);
+   preview_redraw();
    show_url();
 }
 
@@ -134,12 +135,16 @@ move_sash_command_execute(Command_t *parent)
    MoveSashCommand_t *command = (MoveSashCommand_t*) parent;
 
    hide_url();
-   preview_freeze();
    g_signal_connect(command->widget, "button-release-event",
                     G_CALLBACK (sash_end), command);
    g_signal_connect(command->widget, "motion-notify-event",
                     G_CALLBACK (sash_move), command);
-   gdk_gc_set_function(get_preferences()->selected_gc, GDK_XOR);
+   preview_set_tmp_obj(command->obj);
 
    return CMD_APPEND;
+}
+
+static void move_sash_command_redo(Command_t *command)
+{
+   /* do nothing, but avoid running execute again which will break event handling */
 }

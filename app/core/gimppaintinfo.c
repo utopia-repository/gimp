@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,7 @@
 #include "gimppaintinfo.h"
 
 
+static void    gimp_paint_info_dispose         (GObject       *object);
 static void    gimp_paint_info_finalize        (GObject       *object);
 static gchar * gimp_paint_info_get_description (GimpViewable  *viewable,
                                                 gchar        **tooltip);
@@ -44,6 +44,7 @@ gimp_paint_info_class_init (GimpPaintInfoClass *klass)
   GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
 
+  object_class->dispose           = gimp_paint_info_dispose;
   object_class->finalize          = gimp_paint_info_finalize;
 
   viewable_class->get_description = gimp_paint_info_get_description;
@@ -59,6 +60,21 @@ gimp_paint_info_init (GimpPaintInfo *paint_info)
 }
 
 static void
+gimp_paint_info_dispose (GObject *object)
+{
+  GimpPaintInfo *paint_info = GIMP_PAINT_INFO (object);
+
+  if (paint_info->paint_options)
+    {
+      g_object_run_dispose (G_OBJECT (paint_info->paint_options));
+      g_object_unref (paint_info->paint_options);
+      paint_info->paint_options = NULL;
+    }
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
+}
+
+static void
 gimp_paint_info_finalize (GObject *object)
 {
   GimpPaintInfo *paint_info = GIMP_PAINT_INFO (object);
@@ -67,12 +83,6 @@ gimp_paint_info_finalize (GObject *object)
     {
       g_free (paint_info->blurb);
       paint_info->blurb = NULL;
-    }
-
-  if (paint_info->paint_options)
-    {
-      g_object_unref (paint_info->paint_options);
-      paint_info->paint_options = NULL;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);

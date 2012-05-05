@@ -16,12 +16,14 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(CAIRO_CFLAGS)		\
 	$(GDK_PIXBUF_CFLAGS)	\
 	-I$(includedir)
 
 noinst_LIBRARIES = libappconfig.a
 
-libappconfig_a_SOURCES = \
+libappconfig_a_sources = \
+	config-enums.h			\
 	config-types.h			\
 	gimpconfig-dump.c		\
 	gimpconfig-dump.h		\
@@ -35,6 +37,8 @@ libappconfig_a_SOURCES = \
 	gimpcoreconfig.h		\
 	gimpdisplayconfig.c		\
 	gimpdisplayconfig.h		\
+	gimpdisplayoptions.c		\
+	gimpdisplayoptions.h		\
 	gimpguiconfig.c			\
 	gimpguiconfig.h			\
 	gimppluginconfig.c		\
@@ -51,9 +55,14 @@ libappconfig_a_SOURCES = \
 	gimpxmlparser.c			\
 	gimpxmlparser.h
 
-EXTRA_PROGRAMS = test-config
+libappconfig_a_built_sources = \
+	config-enums.c
 
-EXTRA_DIST = makefile.msc
+libappconfig_a_SOURCES = \
+	$(libappconfig_a_built_sources)	\
+	$(libappconfig_a_sources)
+
+EXTRA_PROGRAMS = test-config
 
 #
 # unit tests for the GimpConfig system
@@ -63,31 +72,35 @@ TESTS = test-config
 
 test_config_DEPENDENCIES = $(gimpconfig_libs)
 
+# We need this due to circular dependencies, see more detailed
+# comments about it in app/Makefile.am
 test_config_LDFLAGS = \
 	-u $(SYMPREFIX)xcf_init				\
+	-u $(SYMPREFIX)gimp_pdb_new			\
 	-u $(SYMPREFIX)internal_procs_init		\
-	-u $(SYMPREFIX)gimp_coords_mix			\
 	-u $(SYMPREFIX)gimp_plug_in_manager_restore	\
+	-u $(SYMPREFIX)plug_in_icc_profile_apply_rgb	\
+	-u $(SYMPREFIX)gimp_vectors_undo_get_type	\
+	-u $(SYMPREFIX)gimp_vectors_mod_undo_get_type	\
+	-u $(SYMPREFIX)gimp_vectors_prop_undo_get_type	\
 	-u $(SYMPREFIX)gimp_image_map_config_get_type
 
 test_config_LDADD = \
-	../widgets/widgets-enums.o		\
-	../display/display-enums.o		\
-	../display/gimpdisplayoptions.o		\
-	../pdb/libappinternal-procs.a		\
 	../xcf/libappxcf.a			\
-	../file/libappfile.a			\
-	../plug-in/libappplug-in.a		\
+	../pdb/libappinternal-procs.a		\
 	../pdb/libapppdb.a			\
-	../core/libappcore.a			\
+	../plug-in/libappplug-in.a		\
 	../vectors/libappvectors.a		\
-	../paint/libapppaint.a			\
+	../core/libappcore.a			\
+	../file/libappfile.a			\
 	../text/libapptext.a			\
+	../paint/libapppaint.a			\
+	../composite/libappcomposite.a		\
 	../gegl/libappgegl.a			\
 	libappconfig.a				\
 	../paint-funcs/libapppaint-funcs.a	\
-	../composite/libappcomposite.a		\
 	../base/libappbase.a			\
+	../gimp-debug.o				\
 	../gimp-log.o				\
 	$(libgimpmodule)			\
 	$(libgimpcolor)				\
@@ -95,11 +108,31 @@ test_config_LDADD = \
 	$(libgimpmath)				\
 	$(libgimpconfig)			\
 	$(libgimpbase)				\
-	$(CAIRO_LIBS)				\
-	$(PANGOFT2_LIBS)			\
+	$(PANGOCAIRO_LIBS)			\
 	$(GDK_PIXBUF_LIBS)			\
-	$(LIBART_LIBS)				\
 	$(GEGL_LIBS)				\
 	$(GLIB_LIBS)
 
 CLEANFILES = $(EXTRA_PROGRAMS) foorc
+
+#
+# rules to generate built sources
+#
+# setup autogeneration dependencies
+gen_sources = xgen-dec
+CLEANFILES += $(gen_sources)
+
+config-enums.c: $(srcdir)/config-enums.h $(GIMP_MKENUMS)
+	$(GIMP_MKENUMS) \
+		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"config-enums.h\"\n#include\"gimp-intl.h\"" \
+		--fprod "\n/* enumerations from \"@filename@\" */" \
+		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
+		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+		--vtail "    { 0, NULL, NULL }\n  };\n" \
+		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
+		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		$(srcdir)/config-enums.h > xgen-dec \
+	&& cp xgen-dec $(@F) \
+	&& rm -f xgen-dec
+

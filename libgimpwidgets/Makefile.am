@@ -49,7 +49,8 @@ endif
 libgimpwidgetsincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpwidgets
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"LibGimpWidgets\"
+	-DG_LOG_DOMAIN=\"LibGimpWidgets\"	\
+	-DGIMP_WIDGETS_COMPILATION
 
 INCLUDES = \
 	-I$(top_srcdir)	\
@@ -59,10 +60,6 @@ INCLUDES = \
 lib_LTLIBRARIES = libgimpwidgets-2.0.la
 
 libgimpwidgets_2_0_la_sources = \
-	gimpwidgets.c			\
-	gimpwidgets.h			\
-	gimpwidgetsenums.h		\
-	gimpwidgetstypes.h		\
 	gimpbrowser.c			\
 	gimpbrowser.h			\
 	gimpbutton.c			\
@@ -83,37 +80,39 @@ libgimpwidgets_2_0_la_sources = \
 	gimpcolordisplay.h		\
 	gimpcolordisplaystack.c		\
 	gimpcolordisplaystack.h		\
-	gimpenumwidgets.c		\
-	gimpenumwidgets.h		\
 	gimpcolorhexentry.c		\
 	gimpcolorhexentry.h		\
-	gimpcolorprofilecombobox.c	\
-	gimpcolorprofilecombobox.h	\
-	gimpcolorprofilestore.c		\
-	gimpcolorprofilestore.h		\
-	gimpcolorprofilestore-private.h	\
 	gimpcolornotebook.c		\
 	gimpcolornotebook.h		\
+	gimpcolorprofilecombobox.c	\
+	gimpcolorprofilecombobox.h	\
+	gimpcolorprofilestore-private.h	\
+	gimpcolorprofilestore.c		\
+	gimpcolorprofilestore.h		\
 	gimpcolorscale.c		\
 	gimpcolorscale.h		\
 	gimpcolorscales.c		\
 	gimpcolorscales.h		\
-	gimpcolorselector.c		\
-	gimpcolorselector.h		\
 	gimpcolorselect.c		\
 	gimpcolorselect.h		\
 	gimpcolorselection.c		\
 	gimpcolorselection.h		\
+	gimpcolorselector.c		\
+	gimpcolorselector.h		\
 	gimpcontroller.c		\
 	gimpcontroller.h		\
 	gimpdialog.c			\
 	gimpdialog.h			\
-	gimpenumstore.c			\
-	gimpenumstore.h			\
+	gimpeevl.c			\
+	gimpeevl.h			\
 	gimpenumcombobox.c		\
 	gimpenumcombobox.h		\
 	gimpenumlabel.c			\
 	gimpenumlabel.h			\
+	gimpenumstore.c			\
+	gimpenumstore.h			\
+	gimpenumwidgets.c		\
+	gimpenumwidgets.h		\
 	gimpfileentry.c			\
 	gimpfileentry.h			\
 	gimpframe.c			\
@@ -130,10 +129,10 @@ libgimpwidgets_2_0_la_sources = \
 	gimpmemsizeentry.h		\
 	gimpnumberpairentry.c		\
 	gimpnumberpairentry.h		\
-	gimpoldwidgets.c		\
-	gimpoldwidgets.h		\
 	gimpoffsetarea.c		\
 	gimpoffsetarea.h		\
+	gimpoldwidgets.c		\
+	gimpoldwidgets.h		\
 	gimppageselector.c		\
 	gimppageselector.h		\
 	gimppatheditor.c		\
@@ -162,29 +161,38 @@ libgimpwidgets_2_0_la_sources = \
 	gimpstock.h			\
 	gimpstringcombobox.c		\
 	gimpstringcombobox.h		\
+	gimpunitcombobox.c		\
+	gimpunitcombobox.h		\
 	gimpunitmenu.c			\
 	gimpunitmenu.h			\
+	gimpunitstore.c			\
+	gimpunitstore.h			\
+	gimpwidgets-error.c		\
+	gimpwidgets-error.h		\
+	gimpwidgets-private.c		\
+	gimpwidgets-private.h		\
+	gimpwidgets.c			\
+	gimpwidgets.h			\
+	gimpwidgetsenums.h		\
+	gimpwidgetstypes.h		\
 	gimpzoommodel.c			\
 	gimpzoommodel.h			\
-	gimpwidgets-private.c		\
-	gimpwidgets-private.h
+	gimp3migration.c		\
+	gimp3migration.h
 
 libgimpwidgets_2_0_la_built_sources = \
+	gimp-wilber-pixbufs.h	\
 	gimpwidgetsenums.c	\
 	gimpwidgetsmarshal.c	\
-	gimpwidgetsmarshal.h	\
-	gimp-wilber-pixbufs.h	
+	gimpwidgetsmarshal.h
 
 libgimpwidgets_2_0_la_extra_sources = gimpwidgetsmarshal.list
 
-libgimpwidgets_2_0_la_SOURCES = 		\
+libgimpwidgets_2_0_la_SOURCES = \
 	$(libgimpwidgets_2_0_la_built_sources)	\
 	$(libgimpwidgets_2_0_la_sources)
 
 libgimpwidgetsinclude_HEADERS = \
-	gimpwidgets.h			\
-	gimpwidgetsenums.h		\
-	gimpwidgetstypes.h		\
 	gimpbrowser.h			\
 	gimpbutton.h			\
 	gimpcairo-utils.h		\
@@ -193,17 +201,17 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpchainbutton.h		\
 	gimpcolorarea.h			\
 	gimpcolorbutton.h		\
-	gimpcolorprofilecombobox.h	\
-	gimpcolorprofilestore.h		\
 	gimpcolordisplay.h		\
 	gimpcolordisplaystack.h		\
 	gimpcolorhexentry.h		\
 	gimpcolornotebook.h		\
+	gimpcolorprofilecombobox.h	\
+	gimpcolorprofilestore.h		\
 	gimpcolorscale.h		\
 	gimpcolorscales.h		\
-	gimpcolorselector.h		\
 	gimpcolorselect.h		\
 	gimpcolorselection.h		\
+	gimpcolorselector.h		\
 	gimpcontroller.h		\
 	gimpdialog.h			\
 	gimpenumcombobox.h		\
@@ -218,8 +226,8 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpintstore.h			\
 	gimpmemsizeentry.h		\
 	gimpnumberpairentry.h		\
-	gimpoldwidgets.h		\
 	gimpoffsetarea.h		\
+	gimpoldwidgets.h		\
 	gimppageselector.h		\
 	gimppatheditor.h		\
 	gimppickbutton.h		\
@@ -234,8 +242,15 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpsizeentry.h			\
 	gimpstock.h			\
 	gimpstringcombobox.h		\
+	gimpunitcombobox.h		\
 	gimpunitmenu.h			\
-	gimpzoommodel.h
+	gimpunitstore.h			\
+	gimpwidgets-error.h		\
+	gimpwidgets.h			\
+	gimpwidgetsenums.h		\
+	gimpwidgetstypes.h		\
+	gimpzoommodel.h			\
+	gimp3migration.h
 
 libgimpwidgets_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)\
@@ -268,7 +283,6 @@ WILBER_VARIABLES = \
 
 
 EXTRA_DIST = \
-	makefile.msc				\
 	gimpwidgets.def				\
 	$(libgimpwidgets_2_0_la_extra_sources)	\
 	$(WILBER_IMAGES)
@@ -293,7 +307,7 @@ gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
 		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
-		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
 		$(srcdir)/gimpwidgetsenums.h > xgen-wec \
 	&& cp xgen-wec $(@F) \
 	&& rm -f xgen-wec
@@ -318,7 +332,10 @@ gimp-wilber-pixbufs.h: $(WILBER_IMAGES) Makefile.am
 # test programs, not installed
 #
 
-EXTRA_PROGRAMS = test-preview-area
+EXTRA_PROGRAMS = \
+	test-preview-area	\
+	test-eevl
+
 
 test_preview_area_SOURCES = test-preview-area.c 
 
@@ -330,6 +347,28 @@ test_preview_area_LDADD = \
 	$(GTK_LIBS) \
 	$(test_preview_area_DEPENDENCIES)
 
+
+test_eevl_SOURCES = \
+	test-eevl.c
+
+test_eevl_DEPENDENCIES = \
+	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+
+test_eevl_LDADD = \
+	$(GLIB_LIBS) 		\
+	$(test_eevl_DEPENDENCIES)
+
+
+#
+# test programs, not to be built by default and never installed
+#
+
+TESTS = test-eevl$(EXEEXT)
+
+
+
+
+CLEANFILES += $(EXTRA_PROGRAMS)
 
 
 install-data-local: install-ms-lib install-libtool-import-lib

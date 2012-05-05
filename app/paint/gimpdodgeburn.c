@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 
 #include "paint-types.h"
@@ -32,6 +32,8 @@
 
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
+#include "core/gimpdynamics.h"
+#include "core/gimpdynamicsoutput.h"
 #include "core/gimpimage.h"
 
 #include "gimpdodgeburn.h"
@@ -45,11 +47,13 @@ static void   gimp_dodge_burn_finalize   (GObject            *object);
 static void   gimp_dodge_burn_paint      (GimpPaintCore      *paint_core,
                                           GimpDrawable       *drawable,
                                           GimpPaintOptions   *paint_options,
+                                          const GimpCoords   *coords,
                                           GimpPaintState      paint_state,
                                           guint32             time);
 static void   gimp_dodge_burn_motion     (GimpPaintCore      *paint_core,
                                           GimpDrawable       *drawable,
-                                          GimpPaintOptions   *paint_options);
+                                          GimpPaintOptions   *paint_options,
+                                          const GimpCoords   *coords);
 
 static void   gimp_dodge_burn_make_luts  (GimpDodgeBurn      *dodgeburn,
                                           gdouble             db_exposure,
@@ -125,6 +129,7 @@ static void
 gimp_dodge_burn_paint (GimpPaintCore    *paint_core,
                        GimpDrawable     *drawable,
                        GimpPaintOptions *paint_options,
+                       const GimpCoords *coords,
                        GimpPaintState    paint_state,
                        guint32           time)
 {
@@ -144,7 +149,7 @@ gimp_dodge_burn_paint (GimpPaintCore    *paint_core,
       break;
 
     case GIMP_PAINT_STATE_MOTION:
-      gimp_dodge_burn_motion (paint_core, drawable, paint_options);
+      gimp_dodge_burn_motion (paint_core, drawable, paint_options, coords);
       break;
 
     case GIMP_PAINT_STATE_FINISH:
@@ -160,29 +165,43 @@ gimp_dodge_burn_paint (GimpPaintCore    *paint_core,
 static void
 gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
                         GimpDrawable     *drawable,
-                        GimpPaintOptions *paint_options)
+                        GimpPaintOptions *paint_options,
+                        const GimpCoords *coords)
 {
-  GimpDodgeBurn *dodgeburn = GIMP_DODGE_BURN (paint_core);
-  GimpContext   *context   = GIMP_CONTEXT (paint_options);
-  GimpImage     *image;
-  TempBuf       *area;
-  TempBuf       *orig;
-  PixelRegion    srcPR, destPR, tempPR;
-  guchar        *temp_data;
-  gdouble        opacity;
-  gdouble        hardness;
-
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
+  GimpDodgeBurn      *dodgeburn = GIMP_DODGE_BURN (paint_core);
+  GimpContext        *context   = GIMP_CONTEXT (paint_options);
+  GimpDynamics       *dynamics  = GIMP_BRUSH_CORE (paint_core)->dynamics;
+  GimpDynamicsOutput *opacity_output;
+  GimpDynamicsOutput *hardness_output;
+  GimpImage          *image;
+  TempBuf            *area;
+  TempBuf            *orig;
+  PixelRegion         srcPR, destPR, tempPR;
+  guchar             *temp_data;
+  gdouble             fade_point;
+  gdouble             opacity;
+  gdouble             hardness;
 
   if (gimp_drawable_is_indexed (drawable))
     return;
 
-  opacity = gimp_paint_options_get_fade (paint_options, image,
-                                         paint_core->pixel_dist);
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
+
+  opacity_output = gimp_dynamics_get_output (dynamics,
+                                             GIMP_DYNAMICS_OUTPUT_OPACITY);
+
+  fade_point = gimp_paint_options_get_fade (paint_options, image,
+                                            paint_core->pixel_dist);
+
+  opacity = gimp_dynamics_output_get_linear_value (opacity_output,
+                                                   coords,
+                                                   paint_options,
+                                                   fade_point);
   if (opacity == 0.0)
     return;
 
-  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options);
+  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,
+                                         coords);
   if (! area)
     return;
 
@@ -191,21 +210,26 @@ gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
    */
   {
     GimpItem *item = GIMP_ITEM (drawable);
-    gint      x1, y1, x2, y2;
+    gint      x, y;
+    gint      width, height;
 
-    x1 = CLAMP (area->x, 0, gimp_item_width  (item));
-    y1 = CLAMP (area->y, 0, gimp_item_height (item));
-    x2 = CLAMP (area->x + area->width,  0, gimp_item_width  (item));
-    y2 = CLAMP (area->y + area->height, 0, gimp_item_height (item));
-
-    if (!(x2 - x1) || !(y2 - y1))
-      return;
+    if (! gimp_rectangle_intersect (area->x, area->y,
+                                    area->width, area->height,
+                                    0, 0,
+                                    gimp_item_get_width  (item),
+                                    gimp_item_get_height (item),
+                                    &x, &y,
+                                    &width, &height))
+      {
+        return;
+      }
 
     /*  get the original untouched image  */
-    orig = gimp_paint_core_get_orig_image (paint_core, drawable, x1, y1, x2, y2);
+    orig = gimp_paint_core_get_orig_image (paint_core, drawable,
+                                           x, y, width, height);
 
     pixel_region_init_temp_buf (&srcPR, orig,
-                                0, 0, x2 - x1, y2 - y1);
+                                0, 0, width, height);
   }
 
   /* tempPR will hold the dodgeburned region */
@@ -236,14 +260,17 @@ gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
 
   g_free (temp_data);
 
-  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
-                                                     &paint_core->cur_coords);
+  hardness_output = gimp_dynamics_get_output (dynamics,
+                                              GIMP_DYNAMICS_OUTPUT_HARDNESS);
 
-  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
-                                                      &paint_core->cur_coords);
+  hardness = gimp_dynamics_output_get_linear_value (hardness_output,
+                                                    coords,
+                                                    paint_options,
+                                                    fade_point);
 
   /* Replace the newly dodgedburned area (canvas_buf) to the image */
   gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
+                                  coords,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
                                   gimp_context_get_opacity (context),
                                   gimp_paint_options_get_brush_mode (paint_options),

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __WIDGETS_ENUMS_H__
@@ -21,7 +20,7 @@
 
 
 /*
- * these enums that are registered with the type system
+ * enums that are registered with the type system
  */
 
 #define GIMP_TYPE_ACTIVE_COLOR (gimp_active_color_get_type ())
@@ -84,28 +83,6 @@ typedef enum
 } GimpColorPickState;
 
 
-#define GIMP_TYPE_CURSOR_FORMAT (gimp_cursor_format_get_type ())
-
-GType gimp_cursor_format_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_CURSOR_FORMAT_BITMAP, /*< desc="Black & white" >*/
-  GIMP_CURSOR_FORMAT_PIXBUF  /*< desc="Fancy"         >*/
-} GimpCursorFormat;
-
-
-#define GIMP_TYPE_HELP_BROWSER_TYPE (gimp_help_browser_type_get_type ())
-
-GType gimp_help_browser_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_HELP_BROWSER_GIMP,        /*< desc="GIMP help browser" >*/
-  GIMP_HELP_BROWSER_WEB_BROWSER  /*< desc="Web browser"       >*/
-} GimpHelpBrowserType;
-
-
 #define GIMP_TYPE_HISTOGRAM_SCALE (gimp_histogram_scale_get_type ())
 
 GType gimp_histogram_scale_get_type (void) G_GNUC_CONST;
@@ -130,20 +107,21 @@ typedef enum
   GIMP_TAB_STYLE_ICON_NAME,     /*< desc="Icon & text"    >*/
   GIMP_TAB_STYLE_ICON_BLURB,    /*< desc="Icon & desc"    >*/
   GIMP_TAB_STYLE_PREVIEW_NAME,  /*< desc="Status & text"  >*/
-  GIMP_TAB_STYLE_PREVIEW_BLURB  /*< desc="Status & desc"  >*/
+  GIMP_TAB_STYLE_PREVIEW_BLURB, /*< desc="Status & desc"  >*/
+  GIMP_TAB_STYLE_UNDEFINED,     /*< desc="Undefined"      >*/
+  GIMP_TAB_STYLE_AUTOMATIC      /*< desc="Automatic"      >*/
 } GimpTabStyle;
 
 
-#define GIMP_TYPE_WINDOW_HINT (gimp_window_hint_get_type ())
+#define GIMP_TYPE_TAG_ENTRY_MODE       (gimp_tag_entry_mode_get_type ())
 
-GType gimp_window_hint_get_type (void) G_GNUC_CONST;
+GType gimp_tag_entry_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_WINDOW_HINT_NORMAL,     /*< desc="Normal window"  >*/
-  GIMP_WINDOW_HINT_UTILITY,    /*< desc="Utility window" >*/
-  GIMP_WINDOW_HINT_KEEP_ABOVE  /*< desc="Keep above"     >*/
-} GimpWindowHint;
+  GIMP_TAG_ENTRY_MODE_QUERY,
+  GIMP_TAG_ENTRY_MODE_ASSIGN,
+} GimpTagEntryMode;
 
 
 /*
@@ -296,6 +274,20 @@ typedef enum  /*< skip >*/
   GIMP_DEVICE_VALUE_PATTERN    = 1 << 7,
   GIMP_DEVICE_VALUE_GRADIENT   = 1 << 8
 } GimpDeviceValues;
+
+typedef enum  /*< skip >*/
+{
+  GIMP_FILE_CHOOSER_ACTION_OPEN,
+  GIMP_FILE_CHOOSER_ACTION_SAVE,
+  GIMP_FILE_CHOOSER_ACTION_EXPORT
+} GimpFileChooserAction;
+
+typedef enum  /*< skip >*/
+{
+  GIMP_DIALOGS_SHOWN,
+  GIMP_DIALOGS_HIDDEN_EXPLICITLY,  /* user used the Tab key to hide dialogs */
+  GIMP_DIALOGS_HIDDEN_WITH_DISPLAY /* dialogs are hidden with the display   */
+} GimpDialogsState;
 
 
 #endif /* __WIDGETS_ENUMS_H__ */

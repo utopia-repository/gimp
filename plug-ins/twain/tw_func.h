@@ -8,9 +8,9 @@
  * Brion Vibber <brion@pobox.com>
  * 07/22/2004
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  * Based on (at least) the following plug-ins:
@@ -212,6 +211,7 @@ char *twainError(int);
 char *currentTwainError(pTW_SESSION);
 int getImage(pTW_SESSION);
 int loadTwainLibrary(pTW_SESSION);
+int unloadTwainLibrary(pTW_SESSION twSession);
 int openDSM(pTW_SESSION);
 int selectDS(pTW_SESSION);
 int selectDefaultDS(pTW_SESSION);
@@ -221,8 +221,9 @@ int disableDS(pTW_SESSION);
 int closeDS(pTW_SESSION);
 int closeDSM(pTW_SESSION);
 void cancelPendingTransfers(pTW_SESSION);
+int scanImage (void);
 
-TW_FIX32 FloatToFix32(float);
+TW_FIX32 FloatToFIX32(float);
 float FIX32ToFloat(TW_FIX32);
 
 void processTwainMessage(TW_UINT16 message, pTW_SESSION twSession);
@@ -231,5 +232,10 @@ pTW_SESSION newSession(pTW_IDENTITY);
 void registerWindowHandle(pTW_SESSION, TW_HANDLE);
 void registerTransferCallbacks(pTW_SESSION, pTXFR_CB_FUNCS, void *);
 void setClientData(pTW_SESSION session, void *clientData);
+pTW_SESSION initializeTwain(void);
+
+void LogLastWinError(void);
+BOOL InitApplication(HINSTANCE hInstance);
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow, pTW_SESSION twSession);
 
 #endif /* _TW_FUNC_H */

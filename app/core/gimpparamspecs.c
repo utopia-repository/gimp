@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -874,39 +873,34 @@ gimp_param_spec_item_id (const gchar *name,
                          const gchar *nick,
                          const gchar *blurb,
                          Gimp        *gimp,
-                         GType        item_type,
                          gboolean     none_ok,
                          GParamFlags  flags)
 {
   GimpParamSpecItemID *ispec;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (g_type_is_a (item_type, GIMP_TYPE_ITEM), NULL);
 
   ispec = g_param_spec_internal (GIMP_TYPE_PARAM_ITEM_ID,
                                  name, nick, blurb, flags);
 
-  ispec->gimp      = gimp;
-  ispec->item_type = item_type;
-  ispec->none_ok   = none_ok;
+  ispec->gimp    = gimp;
+  ispec->none_ok = none_ok;
 
   return G_PARAM_SPEC (ispec);
 }
 
 GimpItem *
 gimp_value_get_item (const GValue *value,
-                     Gimp         *gimp,
-                     GType         item_type)
+                     Gimp         *gimp)
 {
   GimpItem *item;
 
   g_return_val_if_fail (GIMP_VALUE_HOLDS_ITEM_ID (value), NULL);
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (g_type_is_a (item_type, GIMP_TYPE_ITEM), NULL);
 
   item = gimp_item_get_by_ID (gimp, value->data[0].v_int);
 
-  if (item && ! g_type_is_a (G_TYPE_FROM_INSTANCE (item), item_type))
+  if (item && ! GIMP_IS_ITEM (item))
     return NULL;
 
   return item;
@@ -918,9 +912,7 @@ gimp_value_set_item (GValue   *value,
 {
   g_return_if_fail (item == NULL || GIMP_IS_ITEM (item));
 
-#ifdef __GNUC__
-#warning FIXME remove hack as soon as bug #375864 is fixed
-#endif
+  /* FIXME remove hack as soon as bug #375864 is fixed */
 
   if (GIMP_VALUE_HOLDS_ITEM_ID (value))
     {

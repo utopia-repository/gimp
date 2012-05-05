@@ -7,10 +7,10 @@
  * based on color_notebook module
  * Copyright (C) 1998 Austin Donnelly <austin@greenend.org.uk>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,9 +18,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -40,6 +39,17 @@
 #include "gimpwidgets.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpcolorscales
+ * @title: GimpColorScales
+ * @short_description: A #GimpColorSelector implementation.
+ *
+ * The #GimpColorScales widget is an implementation of a
+ * #GimpColorSelector. It shows a group of #GimpColorScale widgets
+ * that allow to adjust the HSV and RGB color channels.
+ **/
 
 
 #define GIMP_COLOR_SCALES_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_SCALES, GimpColorScalesClass))
@@ -208,12 +218,7 @@ gimp_color_scales_togg_visible (GimpColorSelector *selector,
   gint             i;
 
   for (i = 0; i < 6; i++)
-    {
-      if (visible)
-        gtk_widget_show (scales->toggles[i]);
-      else
-        gtk_widget_hide (scales->toggles[i]);
-    }
+    gtk_widget_set_visible (scales->toggles[i], visible);
 }
 
 static void
@@ -237,18 +242,9 @@ gimp_color_scales_set_show_alpha (GimpColorSelector *selector,
                                  show_alpha ? 3 : 0);
     }
 
-  if (show_alpha)
-    {
-      gtk_widget_show (label);
-      gtk_widget_show (scale);
-      gtk_widget_show (spin);
-    }
-  else
-    {
-      gtk_widget_hide (label);
-      gtk_widget_hide (scale);
-      gtk_widget_hide (spin);
-    }
+  gtk_widget_set_visible (label, show_alpha);
+  gtk_widget_set_visible (scale, show_alpha);
+  gtk_widget_set_visible (spin, show_alpha);
 }
 
 static void

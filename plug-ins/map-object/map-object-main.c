@@ -5,9 +5,9 @@
  *
  * E-mail: tomb@gimp.org (Tom) or quartic@gimp.org (Federico)
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -79,9 +78,11 @@ set_default_settings (void)
 
   mapvals.antialiasing           = TRUE;
   mapvals.create_new_image       = FALSE;
+  mapvals.create_new_layer       = FALSE;
   mapvals.transparent_background = FALSE;
   mapvals.tiled                  = FALSE;
-  mapvals.showgrid               = FALSE;
+  mapvals.livepreview            = FALSE;
+  mapvals.showgrid               = TRUE;
 
   mapvals.lightsource.intensity = 1.0;
   gimp_rgba_set (&mapvals.lightsource.color, 1.0, 1.0, 1.0, 1.0);
@@ -109,12 +110,9 @@ check_drawables (GimpDrawable *drawable)
 
   for (i = 0; i < 6; i++)
     {
-      if (mapvals.boxmap_id[i] == -1)
-        mapvals.boxmap_id[i] = drawable->drawable_id;
-      else if (mapvals.boxmap_id[i] != -1 &&
-	       gimp_drawable_get_image (mapvals.boxmap_id[i]) == -1)
-        mapvals.boxmap_id[i] = drawable->drawable_id;
-      else if (gimp_drawable_is_gray (mapvals.boxmap_id[i]))
+      if (mapvals.boxmap_id[i] == -1 ||
+          !gimp_item_is_valid (mapvals.boxmap_id[i]) ||
+          gimp_drawable_is_gray (mapvals.boxmap_id[i]))
         mapvals.boxmap_id[i] = drawable->drawable_id;
     }
 
@@ -123,12 +121,9 @@ check_drawables (GimpDrawable *drawable)
 
   for (i = 0; i < 2; i++)
     {
-      if (mapvals.cylindermap_id[i] == -1)
-        mapvals.cylindermap_id[i] = drawable->drawable_id;
-      else if (mapvals.cylindermap_id[i]!=-1 &&
-               gimp_drawable_get_image (mapvals.cylindermap_id[i]) == -1)
-        mapvals.cylindermap_id[i] = drawable->drawable_id;
-      else if (gimp_drawable_is_gray (mapvals.cylindermap_id[i]))
+      if (mapvals.cylindermap_id[i] == -1 ||
+          !gimp_item_is_valid (mapvals.cylindermap_id[i]) ||
+          gimp_drawable_is_gray (mapvals.cylindermap_id[i]))
         mapvals.cylindermap_id[i] = drawable->drawable_id;
     }
 }
@@ -138,7 +133,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",              "Interactive (0), non-interactive (1)" },
+    { GIMP_PDB_INT32,    "run-mode",              "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",                 "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",              "Input drawable" },
     { GIMP_PDB_INT32,    "maptype",               "Type of mapping (0=plane,1=sphere,2=box,3=cylinder)" },
@@ -190,16 +185,16 @@ query (void)
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-			  N_("Map the image to an object (plane, sphere, box or cylinder)"),
-			  "No help yet",
-			  "Tom Bech & Federico Mena Quintero",
-			  "Tom Bech & Federico Mena Quintero",
-			  "Version 1.2.0, July 16 1998",
-			  N_("Map _Object..."),
-			  "RGB*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          N_("Map the image to an object (plane, sphere, box or cylinder)"),
+                          "No help yet",
+                          "Tom Bech & Federico Mena Quintero",
+                          "Tom Bech & Federico Mena Quintero",
+                          "Version 1.2.0, July 16 1998",
+                          N_("Map _Object..."),
+                          "RGB*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Map");
 }
@@ -235,6 +230,7 @@ run (const gchar      *name,
   /* Get the specified drawable */
   /* ========================== */
 
+  image_id = param[1].data.d_int32;
   drawable = gimp_drawable_get (param[2].data.d_drawable);
 
   switch (run_mode)
@@ -244,14 +240,14 @@ run (const gchar      *name,
         /* Possibly retrieve data */
         /* ====================== */
 
-        gimp_get_data ("plug_in_map_object", &mapvals);
+        gimp_get_data (PLUG_IN_PROC, &mapvals);
         check_drawables (drawable);
         if (main_dialog (drawable))
-	  {
-	    compute_image ();
+          {
+            compute_image ();
 
-	    gimp_set_data (PLUG_IN_PROC, &mapvals, sizeof (MapObjectValues));
-	  }
+            gimp_set_data (PLUG_IN_PROC, &mapvals, sizeof (MapObjectValues));
+          }
         break;
 
       case GIMP_RUN_WITH_LAST_VALS:
@@ -263,9 +259,9 @@ run (const gchar      *name,
 
       case GIMP_RUN_NONINTERACTIVE:
         if (nparams != 49)
-	  {
-	    status = GIMP_PDB_CALLING_ERROR;
-	  }
+          {
+            status = GIMP_PDB_CALLING_ERROR;
+          }
         else
           {
             mapvals.maptype                 = (MapType) param[3].data.d_int32;
@@ -285,7 +281,7 @@ run (const gchar      *name,
             mapvals.beta                    = param[17].data.d_float;
             mapvals.gamma                   = param[18].data.d_float;
             mapvals.lightsource.type        = (LightType) param[19].data.d_int32;
-	    mapvals.lightsource.color       = param[20].data.d_color;
+            mapvals.lightsource.color       = param[20].data.d_color;
             mapvals.lightsource.position.x  = param[21].data.d_float;
             mapvals.lightsource.position.y  = param[22].data.d_float;
             mapvals.lightsource.position.z  = param[23].data.d_float;

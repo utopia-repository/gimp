@@ -4,10 +4,10 @@
  * gimppatternselectbutton.c
  * Copyright (C) 1998 Andy Thomas
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,15 @@
 #include "gimpuimarshal.h"
 
 #include "libgimp-intl.h"
+
+
+/**
+ * SECTION: gimppatternselectbutton
+ * @title: GimpPatternSelectButton
+ * @short_description: A button which pops up a pattern select dialog.
+ *
+ * A button which pops up a pattern select dialog.
+ **/
 
 
 #define CELL_SIZE 20
@@ -594,7 +602,8 @@ gimp_pattern_select_button_open_popup (GimpPatternSelectButton *button,
   gtk_widget_show (preview);
 
   /* decide where to put the popup */
-  gdk_window_get_origin (priv->preview->window, &x_org, &y_org);
+  gdk_window_get_origin (gtk_widget_get_window (priv->preview),
+                         &x_org, &y_org);
 
   scr_w = gdk_screen_get_width (screen);
   scr_h = gdk_screen_get_height (screen);
@@ -641,15 +650,17 @@ gimp_pattern_select_drag_data_received (GimpPatternSelectButton *button,
                                         guint                    info,
                                         guint                    time)
 {
+  gint   length = gtk_selection_data_get_length (selection);
   gchar *str;
 
-  if ((selection->format != 8) || (selection->length < 1))
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
     {
       g_warning ("Received invalid pattern data!");
       return;
     }
 
-  str = g_strndup ((const gchar *) selection->data, selection->length);
+  str = g_strndup ((const gchar *) gtk_selection_data_get_data (selection),
+                   length);
 
   if (g_utf8_validate (str, -1, NULL))
     {
@@ -681,7 +692,7 @@ gimp_pattern_select_button_create_inside (GimpPatternSelectButton *pattern_butto
 
   gtk_widget_push_composite_child ();
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);

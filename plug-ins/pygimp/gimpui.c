@@ -11,7 +11,9 @@
 #include <pygobject.h>
 
 #include <libgimp/gimp.h>
+#undef GIMP_DISABLE_DEPRECATED
 #include <libgimp/gimpui.h>
+#define GIMP_DISABLE_DEPRECATED
 
 #define NO_IMPORT_PYGIMP
 #include "pygimp-api.h"
@@ -29,12 +31,16 @@ typedef struct {
     PyObject *user_data;
 } PyGimpIntSensitivityData;
 
+/* TODO: Add a header for these */
+void gimpui_register_classes(PyObject *d);
+void gimpui_add_constants(PyObject *module, const gchar *strip_prefix);
+
 static void
 pygimp_decref_callback(PyObject* obj) {
     Py_XDECREF (obj);
 }
 
-#line 38 "gimpui.c"
+#line 44 "gimpui.c"
 
 
 /* ---------- types from other modules ---------- */
@@ -148,12 +154,13 @@ PyTypeObject G_GNUC_INTERNAL PyGimpBrushSelectButton_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpRuler_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpSizeEntry_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpStringComboBox_Type;
+PyTypeObject G_GNUC_INTERNAL PyGimpUnitComboBox_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpUnitMenu_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpVectorsComboBox_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpZoomModel_Type;
 PyTypeObject G_GNUC_INTERNAL PyGimpZoomPreview_Type;
 
-#line 157 "gimpui.c"
+#line 164 "gimpui.c"
 
 
 
@@ -179,7 +186,7 @@ _wrap_gimp_browser_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     return 0;
 }
 
-#line 1372 "gimpui.override"
+#line 1371 "gimpui.override"
 static PyObject *
 _wrap_gimp_browser_add_search_types(PyGObject *self, PyObject *args)
 {
@@ -207,7 +214,7 @@ _wrap_gimp_browser_add_search_types(PyGObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 211 "gimpui.c"
+#line 218 "gimpui.c"
 
 
 static PyObject *
@@ -731,7 +738,7 @@ _wrap_gimp_color_area_set_color(PyGObject *self, PyObject *args, PyObject *kwarg
     return Py_None;
 }
 
-#line 1789 "gimpui.override"
+#line 1788 "gimpui.override"
 static PyObject *
 _wrap_gimp_color_area_get_color(PyGObject *self)
 {
@@ -741,7 +748,7 @@ _wrap_gimp_color_area_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 745 "gimpui.c"
+#line 752 "gimpui.c"
 
 
 static PyObject *
@@ -852,7 +859,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpColorArea_Type = {
 
 /* ----------- GimpColorButton ----------- */
 
-#line 931 "gimpui.override"
+#line 937 "gimpui.override"
 static int
 _wrap_gimp_color_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -888,17 +895,17 @@ _wrap_gimp_color_button_new(PyGObject *self, PyObject *args, PyObject *kwargs)
        return -1;
 
     if (pygobject_construct(self,
-                            "title", title,
-                            "type", type,
-                            "color", color,
+                            "title",       title,
+                            "type",        type,
+                            "color",       color,
+                            "area-width",  width,
+			    "area-height", height,
                             NULL))
         return -1;
 
-    gtk_widget_set_size_request(GIMP_COLOR_BUTTON(self->obj)->color_area,
-                                width, height);
     return 0;
 }
-#line 902 "gimpui.c"
+#line 909 "gimpui.c"
 
 
 static PyObject *
@@ -923,7 +930,7 @@ _wrap_gimp_color_button_set_color(PyGObject *self, PyObject *args, PyObject *kwa
     return Py_None;
 }
 
-#line 893 "gimpui.override"
+#line 899 "gimpui.override"
 static PyObject *
 _wrap_gimp_color_button_get_color(PyGObject *self)
 {
@@ -933,7 +940,7 @@ _wrap_gimp_color_button_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 937 "gimpui.c"
+#line 944 "gimpui.c"
 
 
 static PyObject *
@@ -1078,6 +1085,8 @@ _wrap_gimp_color_display_convert(PyGObject *self, PyObject *args, PyObject *kwar
     guchar *buf;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:Gimp.ColorDisplay.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
+        return NULL;
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use convert_surface(cairo_surface_t*) instead") < 0)
         return NULL;
     
     gimp_color_display_convert(GIMP_COLOR_DISPLAY(self->obj), buf, width, height, bpp, bpl);
@@ -1323,6 +1332,8 @@ _wrap_gimp_color_display_stack_convert(PyGObject *self, PyObject *args, PyObject
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:Gimp.ColorDisplayStack.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
         return NULL;
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use convert_surface(cairo_surface_t*) instead") < 0)
+        return NULL;
     
     gimp_color_display_stack_convert(GIMP_COLOR_DISPLAY_STACK(self->obj), buf, width, height, bpp, bpl);
     
@@ -1439,7 +1450,7 @@ _wrap_gimp_color_hex_entry_set_color(PyGObject *self, PyObject *args, PyObject *
     return Py_None;
 }
 
-#line 1800 "gimpui.override"
+#line 1799 "gimpui.override"
 static PyObject *
 _wrap_gimp_color_hex_entry_get_color(PyGObject *self)
 {
@@ -1449,7 +1460,7 @@ _wrap_gimp_color_hex_entry_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 1453 "gimpui.c"
+#line 1464 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpColorHexEntry_methods[] = {
@@ -1745,15 +1756,13 @@ PyTypeObject G_GNUC_INTERNAL PyGimpColorProfileStore_Type = {
 
 /* ----------- GimpColorScale ----------- */
 
-#line 980 "gimpui.override"
+#line 986 "gimpui.override"
 static int
 _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     PyObject *py_orientation, *py_channel;
     GtkOrientation orientation;
     GimpColorSelectorChannel channel;
-    GimpColorScale *scale;
-    GtkRange *range;
 
     static char *kwlist[] = { "orientation", "channel", NULL };
 
@@ -1771,19 +1780,18 @@ _wrap_gimp_color_scale_new(PyGObject *self, PyObject *args, PyObject *kwargs)
                            (gint*)&channel))
         return -1;
 
-    if (pygobject_construct(self, NULL))
+    if (pygobject_construct(self,
+                            "orientation", orientation,
+                            "channel",     channel,
+                            NULL));
         return -1;
 
-    scale = GIMP_COLOR_SCALE(self->obj);
-    scale->channel = channel;
-
-    range = GTK_RANGE(scale);
-    range->orientation = orientation;
-    range->flippable   = (orientation == GTK_ORIENTATION_HORIZONTAL);
+    gtk_range_set_flippable (GTK_RANGE (self->obj),
+                             orientation == GTK_ORIENTATION_HORIZONTAL);
     
     return 0;
 }
-#line 1787 "gimpui.c"
+#line 1795 "gimpui.c"
 
 
 static PyObject *
@@ -2225,7 +2233,7 @@ _wrap_gimp_color_selection_set_color(PyGObject *self, PyObject *args, PyObject *
     return Py_None;
 }
 
-#line 1822 "gimpui.override"
+#line 1821 "gimpui.override"
 static PyObject *
 _wrap_gimp_color_selection_get_color(PyGObject *self)
 {
@@ -2235,7 +2243,7 @@ _wrap_gimp_color_selection_get_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 2239 "gimpui.c"
+#line 2247 "gimpui.c"
 
 
 static PyObject *
@@ -2260,7 +2268,7 @@ _wrap_gimp_color_selection_set_old_color(PyGObject *self, PyObject *args, PyObje
     return Py_None;
 }
 
-#line 1833 "gimpui.override"
+#line 1832 "gimpui.override"
 static PyObject *
 _wrap_gimp_color_selection_get_old_color(PyGObject *self)
 {
@@ -2270,7 +2278,7 @@ _wrap_gimp_color_selection_get_old_color(PyGObject *self)
 
     return pygimp_rgb_new(&rgb);
 }
-#line 2274 "gimpui.c"
+#line 2282 "gimpui.c"
 
 
 static PyObject *
@@ -2437,7 +2445,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpColorNotebook_Type = {
 
 /* ----------- GimpDialog ----------- */
 
-#line 720 "gimpui.override"
+#line 726 "gimpui.override"
 static void
 pygimp_help_func_marshal(const gchar *help_id, gpointer help_data)
 {
@@ -2468,10 +2476,10 @@ pygimp_dialog_close(GtkWidget *widget)
 {
     /* Synthesize delete_event to close dialog. */
 
-    if (widget->window) {
+    if (gtk_widget_get_window (widget)) {
         GdkEvent *event = gdk_event_new(GDK_DELETE);
 
-        event->any.window     = g_object_ref(widget->window);
+        event->any.window     = g_object_ref (gtk_widget_get_window (widget));
         event->any.send_event = TRUE;
 
         gtk_main_do_event(event);
@@ -2607,7 +2615,7 @@ _wrap_gimp_dialog_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 2611 "gimpui.c"
+#line 2619 "gimpui.c"
 
 
 static PyObject *
@@ -2638,7 +2646,7 @@ _wrap_gimp_dialog_run(PyGObject *self)
     return PyInt_FromLong(ret);
 }
 
-#line 922 "gimpui.override"
+#line 928 "gimpui.override"
 static PyObject *
 _wrap_gimp_window_set_transient(PyGObject *self)
 {
@@ -2646,7 +2654,7 @@ _wrap_gimp_window_set_transient(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 2650 "gimpui.c"
+#line 2658 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpDialog_methods[] = {
@@ -2708,14 +2716,13 @@ PyTypeObject G_GNUC_INTERNAL PyGimpDialog_Type = {
 
 /* ----------- GimpEnumLabel ----------- */
 
-#line 1021 "gimpui.override"
+#line 1024 "gimpui.override"
 static int
 _wrap_gimp_enum_label_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     PyObject *py_enum_type = NULL;
-    gint value;
     GType enum_type;
-    GimpEnumLabel *label;
+    gint value;
 
     static char *kwlist[] = { "enum_type", "value", NULL };
 
@@ -2728,18 +2735,15 @@ _wrap_gimp_enum_label_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     if ((enum_type = pyg_type_from_object(py_enum_type)) == 0)
         return -1;
 
-    if (pygobject_construct(self, NULL))
+    if (pygobject_construct(self,
+                            "enum-type",  enum_type,
+                            "enum-value", value,
+                            NULL))
         return -1;
-
-    label = GIMP_ENUM_LABEL(self->obj);
-
-    label->enum_class = g_type_class_ref(enum_type);
-
-    gimp_enum_label_set_value (label, value);
 
     return 0; 
 }
-#line 2743 "gimpui.c"
+#line 2747 "gimpui.c"
 
 
 static PyObject *
@@ -2970,7 +2974,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpHintBox_Type = {
 
 /* ----------- GimpIntComboBox ----------- */
 
-#line 1055 "gimpui.override"
+#line 1054 "gimpui.override"
 static int
 _wrap_gimp_int_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -3037,10 +3041,10 @@ _wrap_gimp_int_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 3041 "gimpui.c"
+#line 3045 "gimpui.c"
 
 
-#line 1309 "gimpui.override"
+#line 1308 "gimpui.override"
 static PyObject *
 _wrap_gimp_int_combo_box_prepend(PyGObject *self, PyObject *args,
                                  PyObject *kwargs)
@@ -3102,10 +3106,10 @@ _wrap_gimp_int_combo_box_prepend(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3106 "gimpui.c"
+#line 3110 "gimpui.c"
 
 
-#line 1246 "gimpui.override"
+#line 1245 "gimpui.override"
 static PyObject *
 _wrap_gimp_int_combo_box_append(PyGObject *self, PyObject *args,
                                 PyObject *kwargs)
@@ -3167,10 +3171,10 @@ _wrap_gimp_int_combo_box_append(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3171 "gimpui.c"
+#line 3175 "gimpui.c"
 
 
-#line 1221 "gimpui.override"
+#line 1220 "gimpui.override"
 static PyObject *
 _wrap_gimp_int_combo_box_set_active(PyGObject *self, PyObject *args,
                                     PyObject *kwargs)
@@ -3194,10 +3198,10 @@ _wrap_gimp_int_combo_box_set_active(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3198 "gimpui.c"
+#line 3202 "gimpui.c"
 
 
-#line 1208 "gimpui.override"
+#line 1207 "gimpui.override"
 static PyObject *
 _wrap_gimp_int_combo_box_get_active(PyGObject *self)
 {
@@ -3209,10 +3213,10 @@ _wrap_gimp_int_combo_box_get_active(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3213 "gimpui.c"
+#line 3217 "gimpui.c"
 
 
-#line 1125 "gimpui.override"
+#line 1124 "gimpui.override"
 static gboolean
 pygimp_int_combo_box_sensitivity_marshal(gint value, gpointer user_data)
 {
@@ -3294,7 +3298,7 @@ _wrap_gimp_int_combo_box_set_sensitivity(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3298 "gimpui.c"
+#line 3302 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpIntComboBox_methods[] = {
@@ -3360,7 +3364,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpIntComboBox_Type = {
 
 /* ----------- GimpImageComboBox ----------- */
 
-#line 599 "gimpui.override"
+#line 605 "gimpui.override"
 static gboolean
 pygimp_image_constraint_marshal(gint32 image_id, gpointer user_data)
 {
@@ -3441,10 +3445,10 @@ _wrap_gimp_image_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 3445 "gimpui.c"
+#line 3449 "gimpui.c"
 
 
-#line 707 "gimpui.override"
+#line 713 "gimpui.override"
 static PyObject *
 _wrap_gimp_image_combo_box_get_active_image(PyGObject *self)
 {
@@ -3456,10 +3460,10 @@ _wrap_gimp_image_combo_box_get_active_image(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3460 "gimpui.c"
+#line 3464 "gimpui.c"
 
 
-#line 681 "gimpui.override"
+#line 687 "gimpui.override"
 static PyObject *
 _wrap_gimp_image_combo_box_set_active_image(PyGObject *self, PyObject *args,
                                             PyObject *kwargs)
@@ -3484,7 +3488,7 @@ _wrap_gimp_image_combo_box_set_active_image(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3488 "gimpui.c"
+#line 3492 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpImageComboBox_methods[] = {
@@ -3635,7 +3639,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpEnumComboBox_Type = {
 
 /* ----------- GimpDrawableComboBox ----------- */
 
-#line 79 "gimpui.override"
+#line 85 "gimpui.override"
 static gboolean
 pygimp_drawable_constraint_marshal(gint32 image_id, gint32 drawable_id,
                                    gpointer user_data)
@@ -3725,10 +3729,10 @@ _wrap_gimp_drawable_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 3729 "gimpui.c"
+#line 3733 "gimpui.c"
 
 
-#line 170 "gimpui.override"
+#line 176 "gimpui.override"
 static PyObject *
 _wrap_gimp_drawable_combo_box_set_active_drawable(PyGObject *self, PyObject *args,
                                                   PyObject *kwargs)
@@ -3753,10 +3757,10 @@ _wrap_gimp_drawable_combo_box_set_active_drawable(PyGObject *self, PyObject *arg
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3757 "gimpui.c"
+#line 3761 "gimpui.c"
 
 
-#line 196 "gimpui.override"
+#line 202 "gimpui.override"
 static PyObject *
 _wrap_gimp_drawable_combo_box_get_active_drawable(PyGObject *self)
 {
@@ -3768,7 +3772,7 @@ _wrap_gimp_drawable_combo_box_get_active_drawable(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3772 "gimpui.c"
+#line 3776 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpDrawableComboBox_methods[] = {
@@ -3828,7 +3832,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpDrawableComboBox_Type = {
 
 /* ----------- GimpChannelComboBox ----------- */
 
-#line 209 "gimpui.override"
+#line 215 "gimpui.override"
 static gboolean
 pygimp_channel_constraint_marshal(gint32 image_id, gint32 channel_id,
                                   gpointer user_data)
@@ -3918,10 +3922,10 @@ _wrap_gimp_channel_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 3922 "gimpui.c"
+#line 3926 "gimpui.c"
 
 
-#line 300 "gimpui.override"
+#line 306 "gimpui.override"
 static PyObject *
 _wrap_gimp_channel_combo_box_set_active_channel(PyGObject *self, PyObject *args,
                                                 PyObject *kwargs)
@@ -3946,10 +3950,10 @@ _wrap_gimp_channel_combo_box_set_active_channel(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3950 "gimpui.c"
+#line 3954 "gimpui.c"
 
 
-#line 326 "gimpui.override"
+#line 332 "gimpui.override"
 static PyObject *
 _wrap_gimp_channel_combo_box_get_active_channel(PyGObject *self)
 {
@@ -3961,7 +3965,7 @@ _wrap_gimp_channel_combo_box_get_active_channel(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 3965 "gimpui.c"
+#line 3969 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpChannelComboBox_methods[] = {
@@ -4041,7 +4045,7 @@ _wrap_gimp_int_store_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     return 0;
 }
 
-#line 1724 "gimpui.override"
+#line 1723 "gimpui.override"
 static PyObject *
 _wrap_gimp_int_store_lookup_by_value(PyGObject *self, PyObject *args,
                                      PyObject *kwargs)
@@ -4063,7 +4067,7 @@ _wrap_gimp_int_store_lookup_by_value(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 4067 "gimpui.c"
+#line 4071 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpIntStore_methods[] = {
@@ -4121,7 +4125,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpIntStore_Type = {
 
 /* ----------- GimpEnumStore ----------- */
 
-#line 1844 "gimpui.override"
+#line 1843 "gimpui.override"
 static int
 _wrap_gimp_enum_store_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -4164,7 +4168,7 @@ _wrap_gimp_enum_store_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 4168 "gimpui.c"
+#line 4172 "gimpui.c"
 
 
 static PyObject *
@@ -4237,7 +4241,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpEnumStore_Type = {
 
 /* ----------- GimpLayerComboBox ----------- */
 
-#line 339 "gimpui.override"
+#line 345 "gimpui.override"
 static gboolean
 pygimp_layer_constraint_marshal(gint32 image_id, gint32 layer_id,
                                 gpointer user_data)
@@ -4327,10 +4331,10 @@ _wrap_gimp_layer_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 4331 "gimpui.c"
+#line 4335 "gimpui.c"
 
 
-#line 456 "gimpui.override"
+#line 462 "gimpui.override"
 static PyObject *
 _wrap_gimp_layer_combo_box_get_active_layer(PyGObject *self)
 {
@@ -4342,10 +4346,10 @@ _wrap_gimp_layer_combo_box_get_active_layer(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 4346 "gimpui.c"
+#line 4350 "gimpui.c"
 
 
-#line 430 "gimpui.override"
+#line 436 "gimpui.override"
 static PyObject *
 _wrap_gimp_layer_combo_box_set_active_layer(PyGObject *self, PyObject *args,
                                             PyObject *kwargs)
@@ -4370,7 +4374,7 @@ _wrap_gimp_layer_combo_box_set_active_layer(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 4374 "gimpui.c"
+#line 4378 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpLayerComboBox_methods[] = {
@@ -4430,7 +4434,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpLayerComboBox_Type = {
 
 /* ----------- GimpMemsizeEntry ----------- */
 
-#line 1747 "gimpui.override"
+#line 1746 "gimpui.override"
 static int
 _wrap_gimp_memsize_entry_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -4452,10 +4456,10 @@ _wrap_gimp_memsize_entry_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 4456 "gimpui.c"
+#line 4460 "gimpui.c"
 
 
-#line 1770 "gimpui.override"
+#line 1769 "gimpui.override"
 static PyObject *
 _wrap_gimp_memsize_entry_set_value(PyGObject *self, PyObject *args,
                                    PyObject *kwargs)
@@ -4473,7 +4477,7 @@ _wrap_gimp_memsize_entry_set_value(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 4477 "gimpui.c"
+#line 4481 "gimpui.c"
 
 
 static PyObject *
@@ -4589,7 +4593,7 @@ _wrap_gimp_number_pair_entry_set_default_values(PyGObject *self, PyObject *args,
     return Py_None;
 }
 
-#line 1520 "gimpui.override"
+#line 1519 "gimpui.override"
 static PyObject *
 _wrap_gimp_number_pair_entry_get_default_values(PyGObject *self)
 {
@@ -4601,7 +4605,7 @@ _wrap_gimp_number_pair_entry_get_default_values(PyGObject *self)
 
     return Py_BuildValue("(dd)", left, right);
 }
-#line 4605 "gimpui.c"
+#line 4609 "gimpui.c"
 
 
 static PyObject *
@@ -4619,7 +4623,7 @@ _wrap_gimp_number_pair_entry_set_values(PyGObject *self, PyObject *args, PyObjec
     return Py_None;
 }
 
-#line 1508 "gimpui.override"
+#line 1507 "gimpui.override"
 static PyObject *
 _wrap_gimp_number_pair_entry_get_values(PyGObject *self)
 {
@@ -4630,7 +4634,7 @@ _wrap_gimp_number_pair_entry_get_values(PyGObject *self)
 
     return Py_BuildValue("(dd)", left, right);   
 }
-#line 4634 "gimpui.c"
+#line 4638 "gimpui.c"
 
 
 static PyObject *
@@ -4688,7 +4692,7 @@ _wrap_gimp_number_pair_entry_get_ratio(PyGObject *self)
     return PyFloat_FromDouble(ret);
 }
 
-#line 1545 "gimpui.override"
+#line 1544 "gimpui.override"
 static PyObject *
 _wrap_gimp_number_pair_entry_set_aspect(PyGObject *self, PyObject *args,
                                         PyObject *kwargs)
@@ -4717,10 +4721,10 @@ _wrap_gimp_number_pair_entry_set_aspect(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 4721 "gimpui.c"
+#line 4725 "gimpui.c"
 
 
-#line 1533 "gimpui.override"
+#line 1532 "gimpui.override"
 static PyObject *
 _wrap_gimp_number_pair_entry_get_aspect(PyGObject *self)
 {
@@ -4731,7 +4735,7 @@ _wrap_gimp_number_pair_entry_get_aspect(PyGObject *self)
 
     return pyg_enum_from_gtype(GIMP_TYPE_ASPECT_TYPE, aspect);
 }
-#line 4735 "gimpui.c"
+#line 4739 "gimpui.c"
 
 
 static PyObject *
@@ -5169,7 +5173,7 @@ _wrap_gimp_page_selector_page_is_selected(PyGObject *self, PyObject *args, PyObj
 
 }
 
-#line 1575 "gimpui.override"
+#line 1574 "gimpui.override"
 static PyObject *
 _wrap_gimp_page_selector_get_selected_pages(PyGObject *self)
 {
@@ -5191,7 +5195,7 @@ _wrap_gimp_page_selector_get_selected_pages(PyGObject *self)
 
     return py_selected_pages;
 }
-#line 5195 "gimpui.c"
+#line 5199 "gimpui.c"
 
 
 static PyObject *
@@ -5613,7 +5617,7 @@ _wrap_gimp_preview_set_bounds(PyGObject *self, PyObject *args, PyObject *kwargs)
     return Py_None;
 }
 
-#line 1598 "gimpui.override"
+#line 1597 "gimpui.override"
 static PyObject *
 _wrap_gimp_preview_get_position(PyGObject *self)
 {
@@ -5624,10 +5628,10 @@ _wrap_gimp_preview_get_position(PyGObject *self)
 
     return Py_BuildValue("(ii)", x, y);
 }
-#line 5628 "gimpui.c"
+#line 5632 "gimpui.c"
 
 
-#line 1610 "gimpui.override"
+#line 1609 "gimpui.override"
 static PyObject *
 _wrap_gimp_preview_get_size(PyGObject *self)
 {
@@ -5638,10 +5642,10 @@ _wrap_gimp_preview_get_size(PyGObject *self)
 
     return Py_BuildValue("(ii)", width, height);
 }
-#line 5642 "gimpui.c"
+#line 5646 "gimpui.c"
 
 
-#line 1622 "gimpui.override"
+#line 1621 "gimpui.override"
 static PyObject *
 _wrap_gimp_preview_transform(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -5661,10 +5665,10 @@ _wrap_gimp_preview_transform(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return Py_BuildValue("(ii)", dest_x, dest_y);
 }
-#line 5665 "gimpui.c"
+#line 5669 "gimpui.c"
 
 
-#line 1643 "gimpui.override"
+#line 1642 "gimpui.override"
 static PyObject *
 _wrap_gimp_preview_untransform(PyGObject *self, PyObject *args,
                                PyObject *kwargs)
@@ -5686,7 +5690,7 @@ _wrap_gimp_preview_untransform(PyGObject *self, PyObject *args,
 
     return Py_BuildValue("(ii)", dest_x, dest_y);
 }
-#line 5690 "gimpui.c"
+#line 5694 "gimpui.c"
 
 
 static PyObject *
@@ -5850,7 +5854,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpPreview_Type = {
 
 /* ----------- GimpAspectPreview ----------- */
 
-#line 1925 "gimpui.override"
+#line 1924 "gimpui.override"
 static int
 _wrap_gimp_aspect_preview_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -5874,7 +5878,7 @@ _wrap_gimp_aspect_preview_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 
     return 0;
 }
-#line 5878 "gimpui.c"
+#line 5882 "gimpui.c"
 
 
 PyTypeObject G_GNUC_INTERNAL PyGimpAspectPreview_Type = {
@@ -6093,7 +6097,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpPreviewArea_Type = {
 
 /* ----------- GimpProcBrowserDialog ----------- */
 
-#line 1401 "gimpui.override"
+#line 1400 "gimpui.override"
 static int
 _wrap_gimp_proc_browser_dialog_new(PyGObject *self, PyObject *args,
                                    PyObject *kwargs)
@@ -6197,7 +6201,7 @@ _wrap_gimp_proc_browser_dialog_new(PyGObject *self, PyObject *args,
                           "search", "", 0, self->obj);
     return 0;
 }
-#line 6201 "gimpui.c"
+#line 6205 "gimpui.c"
 
 
 static PyObject *
@@ -6457,7 +6461,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpScrolledPreview_Type = {
 
 /* ----------- GimpDrawablePreview ----------- */
 
-#line 1952 "gimpui.override"
+#line 1951 "gimpui.override"
 static int
 _wrap_gimp_drawable_preview_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -6484,10 +6488,10 @@ _wrap_gimp_drawable_preview_new(PyGObject *self, PyObject *args, PyObject *kwarg
     return 0;
 }
 
-#line 6488 "gimpui.c"
+#line 6492 "gimpui.c"
 
 
-#line 1679 "gimpui.override"
+#line 1678 "gimpui.override"
 static PyObject *
 _wrap_gimp_drawable_preview_get_drawable(PyGObject *self)
 {
@@ -6498,10 +6502,10 @@ _wrap_gimp_drawable_preview_get_drawable(PyGObject *self)
     Py_INCREF(drawable);
     return drawable;
 }
-#line 6502 "gimpui.c"
+#line 6506 "gimpui.c"
 
 
-#line 1703 "gimpui.override"
+#line 1702 "gimpui.override"
 static PyObject *
 _wrap_gimp_drawable_preview_draw_region(PyGObject *self, PyObject *args,
                                         PyObject *kwargs)
@@ -6521,7 +6525,7 @@ _wrap_gimp_drawable_preview_draw_region(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 6525 "gimpui.c"
+#line 6529 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpDrawablePreview_methods[] = {
@@ -7140,7 +7144,7 @@ _wrap_gimp_brush_select_button_new(PyGObject *self, PyObject *args, PyObject *kw
     return 0;
 }
 
-#line 904 "gimpui.override"
+#line 910 "gimpui.override"
 static PyObject *
 _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
 {
@@ -7157,7 +7161,7 @@ _wrap_gimp_brush_select_button_get_brush(PyGObject *self)
                          pyg_enum_from_gtype(GIMP_TYPE_LAYER_MODE_EFFECTS,
                                              paint_mode));
 }
-#line 7161 "gimpui.c"
+#line 7165 "gimpui.c"
 
 
 static PyObject *
@@ -7269,6 +7273,32 @@ _wrap_gimp_ruler_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyObject *
+_wrap_gimp_ruler_set_unit(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "unit", NULL };
+    int unit;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.Ruler.set_unit", kwlist, &unit))
+        return NULL;
+    
+    gimp_ruler_set_unit(GIMP_RULER(self->obj), unit);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+_wrap_gimp_ruler_get_unit(PyGObject *self)
+{
+    int ret;
+
+    
+    ret = gimp_ruler_get_unit(GIMP_RULER(self->obj));
+    
+    return PyInt_FromLong(ret);
+}
+
+static PyObject *
 _wrap_gimp_ruler_set_position(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char *kwlist[] = { "position", NULL };
@@ -7309,7 +7339,7 @@ _wrap_gimp_ruler_set_range(PyGObject *self, PyObject *args, PyObject *kwargs)
     return Py_None;
 }
 
-#line 1982 "gimpui.override"
+#line 1981 "gimpui.override"
 static PyObject *
 _wrap_gimp_ruler_get_range(PyGObject *self)
 {
@@ -7319,10 +7349,14 @@ _wrap_gimp_ruler_get_range(PyGObject *self)
 
     return Py_BuildValue("(ddd)", lower, upper, max_size);
 }
-#line 7323 "gimpui.c"
+#line 7353 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpRuler_methods[] = {
+    { "set_unit", (PyCFunction)_wrap_gimp_ruler_set_unit, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_unit", (PyCFunction)_wrap_gimp_ruler_get_unit, METH_NOARGS,
+      NULL },
     { "set_position", (PyCFunction)_wrap_gimp_ruler_set_position, METH_VARARGS|METH_KEYWORDS,
       NULL },
     { "get_position", (PyCFunction)_wrap_gimp_ruler_get_position, METH_NOARGS,
@@ -7384,13 +7418,26 @@ PyTypeObject G_GNUC_INTERNAL PyGimpRuler_Type = {
 /* ----------- GimpSizeEntry ----------- */
 
 static int
-pygobject_no_constructor(PyObject *self, PyObject *args, PyObject *kwargs)
+_wrap_gimp_size_entry_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-    gchar buf[512];
+    static char *kwlist[] = { "number_of_fields", "unit", "unit_format", "menu_show_pixels", "menu_show_percent", "show_refval", "spinbutton_width", "update_policy", NULL };
+    int number_of_fields, unit, menu_show_pixels, menu_show_percent, show_refval, spinbutton_width;
+    char *unit_format;
+    GimpSizeEntryUpdatePolicy update_policy;
+    PyObject *py_update_policy = NULL;
 
-    g_snprintf(buf, sizeof(buf), "%s is an abstract widget", self->ob_type->tp_name);
-    PyErr_SetString(PyExc_NotImplementedError, buf);
-    return -1;
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iisiiiiO:Gimp.SizeEntry.__init__", kwlist, &number_of_fields, &unit, &unit_format, &menu_show_pixels, &menu_show_percent, &show_refval, &spinbutton_width, &py_update_policy))
+        return -1;
+    if (pyg_enum_get_value(GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY, py_update_policy, (gpointer)&update_policy))
+        return -1;
+    self->obj = (GObject *)gimp_size_entry_new(number_of_fields, unit, unit_format, menu_show_pixels, menu_show_percent, show_refval, spinbutton_width, update_policy);
+
+    if (!self->obj) {
+        PyErr_SetString(PyExc_RuntimeError, "could not create GimpSizeEntry object");
+        return -1;
+    }
+    pygobject_register_wrapper((PyObject *)self);
+    return 0;
 }
 
 static PyObject *
@@ -7568,6 +7615,32 @@ _wrap_gimp_size_entry_set_refval(PyGObject *self, PyObject *args, PyObject *kwar
 }
 
 static PyObject *
+_wrap_gimp_size_entry_get_unit(PyGObject *self)
+{
+    int ret;
+
+    
+    ret = gimp_size_entry_get_unit(GIMP_SIZE_ENTRY(self->obj));
+    
+    return PyInt_FromLong(ret);
+}
+
+static PyObject *
+_wrap_gimp_size_entry_set_unit(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "unit", NULL };
+    int unit;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.set_unit", kwlist, &unit))
+        return NULL;
+    
+    gimp_size_entry_set_unit(GIMP_SIZE_ENTRY(self->obj), unit);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
 _wrap_gimp_size_entry_show_unit_menu(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char *kwlist[] = { "show", NULL };
@@ -7661,6 +7734,10 @@ static const PyMethodDef _PyGimpSizeEntry_methods[] = {
       NULL },
     { "set_refval", (PyCFunction)_wrap_gimp_size_entry_set_refval, METH_VARARGS|METH_KEYWORDS,
       NULL },
+    { "get_unit", (PyCFunction)_wrap_gimp_size_entry_get_unit, METH_NOARGS,
+      NULL },
+    { "set_unit", (PyCFunction)_wrap_gimp_size_entry_set_unit, METH_VARARGS|METH_KEYWORDS,
+      NULL },
     { "show_unit_menu", (PyCFunction)_wrap_gimp_size_entry_show_unit_menu, METH_VARARGS|METH_KEYWORDS,
       NULL },
     { "set_pixel_digits", (PyCFunction)_wrap_gimp_size_entry_set_pixel_digits, METH_VARARGS|METH_KEYWORDS,
@@ -7712,7 +7789,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpSizeEntry_Type = {
     (descrgetfunc)0,    /* tp_descr_get */
     (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)pygobject_no_constructor,             /* tp_init */
+    (initproc)_wrap_gimp_size_entry_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -7841,7 +7918,161 @@ PyTypeObject G_GNUC_INTERNAL PyGimpStringComboBox_Type = {
 
 
 
+/* ----------- GimpUnitComboBox ----------- */
+
+ static int
+_wrap_gimp_unit_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char* kwlist[] = { NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     ":gimpui.UnitComboBox.__init__",
+                                     kwlist))
+        return -1;
+
+    pygobject_constructv(self, 0, NULL);
+    if (!self->obj) {
+        PyErr_SetString(
+            PyExc_RuntimeError, 
+            "could not create gimpui.UnitComboBox object");
+        return -1;
+    }
+    return 0;
+}
+
+static PyObject *
+_wrap_gimp_unit_combo_box_get_active(PyGObject *self)
+{
+    int ret;
+
+    
+    ret = gimp_unit_combo_box_get_active(GIMP_UNIT_COMBO_BOX(self->obj));
+    
+    return PyInt_FromLong(ret);
+}
+
+static PyObject *
+_wrap_gimp_unit_combo_box_set_active(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "unit", NULL };
+    int unit;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.UnitComboBox.set_active", kwlist, &unit))
+        return NULL;
+    
+    gimp_unit_combo_box_set_active(GIMP_UNIT_COMBO_BOX(self->obj), unit);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static const PyMethodDef _PyGimpUnitComboBox_methods[] = {
+    { "get_active", (PyCFunction)_wrap_gimp_unit_combo_box_get_active, METH_NOARGS,
+      NULL },
+    { "set_active", (PyCFunction)_wrap_gimp_unit_combo_box_set_active, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { NULL, NULL, 0, NULL }
+};
+
+PyTypeObject G_GNUC_INTERNAL PyGimpUnitComboBox_Type = {
+    PyObject_HEAD_INIT(NULL)
+    0,                                 /* ob_size */
+    "gimpui.UnitComboBox",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
+    /* methods */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
+    (PyNumberMethods*)0,     /* tp_as_number */
+    (PySequenceMethods*)0, /* tp_as_sequence */
+    (PyMappingMethods*)0,   /* tp_as_mapping */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
+    offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGimpUnitComboBox_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
+    offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
+    (initproc)_wrap_gimp_unit_combo_box_new,             /* tp_init */
+    (allocfunc)0,           /* tp_alloc */
+    (newfunc)0,               /* tp_new */
+    (freefunc)0,             /* tp_free */
+    (inquiry)0              /* tp_is_gc */
+};
+
+
+
 /* ----------- GimpUnitMenu ----------- */
+
+static int
+_wrap_gimp_unit_menu_new(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "format", "unit", "show_pixels", "show_percent", "show_custom", NULL };
+    char *format;
+    int unit, show_pixels, show_percent, show_custom;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"siiii:Gimp.UnitMenu.__init__", kwlist, &format, &unit, &show_pixels, &show_percent, &show_custom))
+        return -1;
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use gimpui.UnitComboBox instead") < 0)
+        return -1;
+    self->obj = (GObject *)gimp_unit_menu_new(format, unit, show_pixels, show_percent, show_custom);
+
+    if (!self->obj) {
+        PyErr_SetString(PyExc_RuntimeError, "could not create GimpUnitMenu object");
+        return -1;
+    }
+    pygobject_register_wrapper((PyObject *)self);
+    return 0;
+}
+
+static PyObject *
+_wrap_gimp_unit_menu_set_unit(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "unit", NULL };
+    int unit;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.UnitMenu.set_unit", kwlist, &unit))
+        return NULL;
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use gimpui.UnitComboBox instead") < 0)
+        return NULL;
+    
+    gimp_unit_menu_set_unit(GIMP_UNIT_MENU(self->obj), unit);
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+_wrap_gimp_unit_menu_get_unit(PyGObject *self)
+{
+    int ret;
+
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use gimpui.UnitComboBox instead") < 0)
+        return NULL;
+    
+    ret = gimp_unit_menu_get_unit(GIMP_UNIT_MENU(self->obj));
+    
+    return PyInt_FromLong(ret);
+}
 
 static PyObject *
 _wrap_gimp_unit_menu_set_pixel_digits(PyGObject *self, PyObject *args, PyObject *kwargs)
@@ -7850,6 +8081,8 @@ _wrap_gimp_unit_menu_set_pixel_digits(PyGObject *self, PyObject *args, PyObject 
     int digits;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.UnitMenu.set_pixel_digits", kwlist, &digits))
+        return NULL;
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use gimpui.UnitComboBox instead") < 0)
         return NULL;
     
     gimp_unit_menu_set_pixel_digits(GIMP_UNIT_MENU(self->obj), digits);
@@ -7863,6 +8096,8 @@ _wrap_gimp_unit_menu_get_pixel_digits(PyGObject *self)
 {
     int ret;
 
+    if (PyErr_Warn(PyExc_DeprecationWarning, "use gimpui.UnitComboBox instead") < 0)
+        return NULL;
     
     ret = gimp_unit_menu_get_pixel_digits(GIMP_UNIT_MENU(self->obj));
     
@@ -7870,6 +8105,10 @@ _wrap_gimp_unit_menu_get_pixel_digits(PyGObject *self)
 }
 
 static const PyMethodDef _PyGimpUnitMenu_methods[] = {
+    { "set_unit", (PyCFunction)_wrap_gimp_unit_menu_set_unit, METH_VARARGS|METH_KEYWORDS,
+      NULL },
+    { "get_unit", (PyCFunction)_wrap_gimp_unit_menu_get_unit, METH_NOARGS,
+      NULL },
     { "set_pixel_digits", (PyCFunction)_wrap_gimp_unit_menu_set_pixel_digits, METH_VARARGS|METH_KEYWORDS,
       NULL },
     { "get_pixel_digits", (PyCFunction)_wrap_gimp_unit_menu_get_pixel_digits, METH_NOARGS,
@@ -7915,7 +8154,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpUnitMenu_Type = {
     (descrgetfunc)0,    /* tp_descr_get */
     (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)pygobject_no_constructor,             /* tp_init */
+    (initproc)_wrap_gimp_unit_menu_new,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -7926,7 +8165,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpUnitMenu_Type = {
 
 /* ----------- GimpVectorsComboBox ----------- */
 
-#line 469 "gimpui.override"
+#line 475 "gimpui.override"
 static gboolean
 pygimp_vectors_constraint_marshal(gint32 image_id, gint32 vectors_id,
                                   gpointer user_data)
@@ -8016,10 +8255,10 @@ _wrap_gimp_vectors_combo_box_new(PyGObject *self, PyObject *args,
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
-#line 8020 "gimpui.c"
+#line 8259 "gimpui.c"
 
 
-#line 586 "gimpui.override"
+#line 592 "gimpui.override"
 static PyObject *
 _wrap_gimp_vectors_combo_box_get_active_vectors(PyGObject *self)
 {
@@ -8031,10 +8270,10 @@ _wrap_gimp_vectors_combo_box_get_active_vectors(PyGObject *self)
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 8035 "gimpui.c"
+#line 8274 "gimpui.c"
 
 
-#line 560 "gimpui.override"
+#line 566 "gimpui.override"
 static PyObject *
 _wrap_gimp_vectors_combo_box_set_active_vectors(PyGObject *self, PyObject *args,
                                                 PyObject *kwargs)
@@ -8059,7 +8298,7 @@ _wrap_gimp_vectors_combo_box_set_active_vectors(PyGObject *self, PyObject *args,
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 8063 "gimpui.c"
+#line 8302 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpVectorsComboBox_methods[] = {
@@ -8119,7 +8358,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpVectorsComboBox_Type = {
 
 /* ----------- GimpZoomModel ----------- */
 
- static int
+static int
 _wrap_gimp_zoom_model_new(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
     static char* kwlist[] = { NULL };
@@ -8184,7 +8423,7 @@ _wrap_gimp_zoom_model_get_factor(PyGObject *self)
     return PyFloat_FromDouble(ret);
 }
 
-#line 1666 "gimpui.override"
+#line 1665 "gimpui.override"
 static PyObject *
 _wrap_gimp_zoom_model_get_fraction(PyGObject *self)
 {
@@ -8196,7 +8435,7 @@ _wrap_gimp_zoom_model_get_fraction(PyGObject *self)
 
     return Py_BuildValue("(ii)", numerator, denominator);
 }
-#line 8200 "gimpui.c"
+#line 8439 "gimpui.c"
 
 
 static const PyMethodDef _PyGimpZoomModel_methods[] = {
@@ -8260,7 +8499,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpZoomModel_Type = {
 
 /* ----------- GimpZoomPreview ----------- */
 
-#line 1888 "gimpui.override"
+#line 1887 "gimpui.override"
 static int
 _wrap_gimp_zoom_preview_new_with_model(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -8294,10 +8533,10 @@ _wrap_gimp_zoom_preview_new_with_model(PyGObject *self, PyObject *args, PyObject
 
     return 0;
 }
-#line 8298 "gimpui.c"
+#line 8537 "gimpui.c"
 
 
-#line 1691 "gimpui.override"
+#line 1690 "gimpui.override"
 static PyObject *
 _wrap_gimp_zoom_preview_get_drawable(PyGObject *self)
 {
@@ -8308,7 +8547,7 @@ _wrap_gimp_zoom_preview_get_drawable(PyGObject *self)
     Py_INCREF(drawable);
     return drawable;
 }
-#line 8312 "gimpui.c"
+#line 8551 "gimpui.c"
 
 
 static PyObject *
@@ -8489,6 +8728,11 @@ gimpui_add_constants(PyObject *module, const gchar *strip_prefix)
   pyg_enum_add(module, "ColorSelectorChannel", strip_prefix, GIMP_TYPE_COLOR_SELECTOR_CHANNEL);
   pyg_enum_add(module, "PageSelectorTarget", strip_prefix, GIMP_TYPE_PAGE_SELECTOR_TARGET);
   pyg_enum_add(module, "SizeEntryUpdatePolicy", strip_prefix, GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY);
+    PyModule_AddIntConstant(module, (char *) pyg_constant_strip_prefix("GIMP_UNIT_PIXEL", strip_prefix), GIMP_UNIT_PIXEL);
+    PyModule_AddIntConstant(module, (char *) pyg_constant_strip_prefix("GIMP_UNIT_INCH", strip_prefix), GIMP_UNIT_INCH);
+    PyModule_AddIntConstant(module, (char *) pyg_constant_strip_prefix("GIMP_UNIT_MM", strip_prefix), GIMP_UNIT_MM);
+    PyModule_AddIntConstant(module, (char *) pyg_constant_strip_prefix("GIMP_UNIT_POINT", strip_prefix), GIMP_UNIT_POINT);
+    PyModule_AddIntConstant(module, (char *) pyg_constant_strip_prefix("GIMP_UNIT_PICA", strip_prefix), GIMP_UNIT_PICA);
   pyg_enum_add(module, "ZoomType", strip_prefix, GIMP_TYPE_ZOOM_TYPE);
 
   if (PyErr_Occurred())
@@ -8695,7 +8939,7 @@ gimpui_register_classes(PyObject *d)
     }
 
 
-#line 8699 "gimpui.c"
+#line 8943 "gimpui.c"
     pygobject_register_class(d, "GimpBrowser", GIMP_TYPE_BROWSER, &PyGimpBrowser_Type, Py_BuildValue("(O)", &PyGtkHPaned_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_BROWSER);
     pygobject_register_class(d, "GimpButton", GIMP_TYPE_BUTTON, &PyGimpButton_Type, Py_BuildValue("(O)", &PyGtkButton_Type));
@@ -8783,6 +9027,8 @@ gimpui_register_classes(PyObject *d)
     pygobject_register_class(d, "GimpSizeEntry", GIMP_TYPE_SIZE_ENTRY, &PyGimpSizeEntry_Type, Py_BuildValue("(O)", &PyGtkTable_Type));
     pygobject_register_class(d, "GimpStringComboBox", GIMP_TYPE_STRING_COMBO_BOX, &PyGimpStringComboBox_Type, Py_BuildValue("(O)", &PyGtkComboBox_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_STRING_COMBO_BOX);
+    pygobject_register_class(d, "GimpUnitComboBox", GIMP_TYPE_UNIT_COMBO_BOX, &PyGimpUnitComboBox_Type, Py_BuildValue("(O)", &PyGtkComboBox_Type));
+    pyg_set_object_has_new_constructor(GIMP_TYPE_UNIT_COMBO_BOX);
     pygobject_register_class(d, "GimpUnitMenu", GIMP_TYPE_UNIT_MENU, &PyGimpUnitMenu_Type, Py_BuildValue("(O)", &PyGtkOptionMenu_Type));
     pygobject_register_class(d, "GimpVectorsComboBox", GIMP_TYPE_VECTORS_COMBO_BOX, &PyGimpVectorsComboBox_Type, Py_BuildValue("(O)", &PyGimpIntComboBox_Type));
     pygobject_register_class(d, "GimpZoomModel", GIMP_TYPE_ZOOM_MODEL, &PyGimpZoomModel_Type, Py_BuildValue("(O)", &PyGObject_Type));

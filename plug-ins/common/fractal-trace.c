@@ -5,9 +5,9 @@
   Copyright (C) 1997  Hirotsuna Mizuno
                       s1041150@u-aizu.ac.jp
 
-  This program is free software; you can redistribute it and/or modify it
+  This program is free software: you can redistribute it and/or modify it
   under the terms of the GNU General Public License as published by the Free
-  Software Foundation; either version 2 of the License, or (at your option)
+  Software Foundation; either version 3 of the License, or (at your option)
   any later version.
 
   This program is distributed in the hope that it will be useful, but WITHOUT
@@ -16,13 +16,13 @@
   more details.
 
   You should have received a copy of the GNU General Public License along with
-  this program; if not, write to the Free Software Foundation, Inc.,
-  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+  this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************************************/
 
 #define PLUG_IN_PROC     "plug-in-fractal-trace"
 #define PLUG_IN_BINARY   "fractal-trace"
+#define PLUG_IN_ROLE     "gimp-fractal-trace"
 #define PLUG_IN_VERSION  "v0.4 test version (Dec. 25 1997)"
 
 /*****************************************************************************/
@@ -100,16 +100,16 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "interactive / non-interactive"    },
-    { GIMP_PDB_IMAGE,    "image",        "input image (not used)"           },
-    { GIMP_PDB_DRAWABLE, "drawable",     "input drawable"                   },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",        "Input image (unused)"             },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Input drawable"                   },
     { GIMP_PDB_FLOAT,    "xmin",         "xmin fractal image delimiter"     },
     { GIMP_PDB_FLOAT,    "xmax",         "xmax fractal image delimiter"     },
     { GIMP_PDB_FLOAT,    "ymin",         "ymin fractal image delimiter"     },
     { GIMP_PDB_FLOAT,    "ymax",         "ymax fractal image delimiter"     },
-    { GIMP_PDB_INT32,    "depth",        "trace depth"                      },
-    { GIMP_PDB_INT32,    "outside-type", "outside type"
-                                         "(0=WRAP/1=TRANS/2=BLACK/3=WHITE)" }
+    { GIMP_PDB_INT32,    "depth",        "Trace depth"                      },
+    { GIMP_PDB_INT32,    "outside-type", "Outside type "
+                                         "{ WRAP (0), TRANS (1), BLACK (2), WHITE (3) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -688,7 +688,7 @@ dialog_show (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Fractal Trace"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Fractal Trace"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -704,12 +704,13 @@ dialog_show (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  mainbox = gtk_vbox_new (FALSE, 12);
+  mainbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (mainbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), mainbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      mainbox, TRUE, TRUE, 0);
   gtk_widget_show (mainbox);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (mainbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

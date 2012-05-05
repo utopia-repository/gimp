@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2003 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PDB_UTILS_H__
@@ -25,6 +24,10 @@ GimpBrush     * gimp_pdb_get_brush              (Gimp               *gimp,
                                                  gboolean            writable,
                                                  GError            **error);
 GimpBrush     * gimp_pdb_get_generated_brush    (Gimp               *gimp,
+                                                 const gchar        *name,
+                                                 gboolean            writable,
+                                                 GError            **error);
+GimpDynamics  * gimp_pdb_get_dynamics           (Gimp               *gimp,
                                                  const gchar        *name,
                                                  gboolean            writable,
                                                  GError            **error);
@@ -50,12 +53,34 @@ GimpPaintInfo * gimp_pdb_get_paint_info         (Gimp               *gimp,
                                                  GError            **error);
 
 gboolean        gimp_pdb_item_is_attached       (GimpItem           *item,
+                                                 GimpImage          *image,
+                                                 gboolean            writable,
+                                                 GError            **error);
+gboolean        gimp_pdb_item_is_in_tree        (GimpItem           *item,
+                                                 GimpImage          *image,
+                                                 gboolean            writable,
+                                                 GError            **error);
+gboolean        gimp_pdb_item_is_in_same_tree   (GimpItem           *item,
+                                                 GimpItem           *item2,
+                                                 GimpImage          *image,
+                                                 GError            **error);
+gboolean        gimp_pdb_item_is_not_ancestor   (GimpItem           *item,
+                                                 GimpItem           *not_descendant,
                                                  GError            **error);
 gboolean        gimp_pdb_item_is_floating       (GimpItem           *item,
                                                  GimpImage          *dest_image,
                                                  GError            **error);
-gboolean        gimp_pdb_layer_is_text_layer    (GimpLayer          *layer,
+gboolean        gimp_pdb_item_is_writable       (GimpItem           *item,
                                                  GError            **error);
+gboolean        gimp_pdb_item_is_group          (GimpItem           *item,
+                                                 GError            **error);
+gboolean        gimp_pdb_item_is_not_group      (GimpItem           *item,
+                                                 GError            **error);
+
+gboolean        gimp_pdb_layer_is_text_layer    (GimpLayer          *layer,
+                                                 gboolean            writable,
+                                                 GError            **error);
+
 gboolean        gimp_pdb_image_is_base_type     (GimpImage          *image,
                                                  GimpImageBaseType   type,
                                                  GError            **error);
@@ -65,6 +90,7 @@ gboolean        gimp_pdb_image_is_not_base_type (GimpImage          *image,
 
 GimpStroke    * gimp_pdb_get_vectors_stroke     (GimpVectors        *vectors,
                                                  gint                stroke_ID,
+                                                 gboolean            writable,
                                                  GError            **error);
 
 

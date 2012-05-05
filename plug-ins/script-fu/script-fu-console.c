@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -129,7 +128,7 @@ script_fu_console_interface (void)
   console.history_max = 50;
 
   console.dialog = gimp_dialog_new (_("Script-Fu Console"),
-                                    "script-fu-console",
+                                    "gimp-script-fu-console",
                                     NULL, 0,
                                     gimp_standard_help_func, PROC_NAME,
 
@@ -153,10 +152,10 @@ script_fu_console_interface (void)
                     &console);
 
   /*  The main vbox  */
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (console.dialog)->vbox), vbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (console.dialog))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   /*  The output text widget  */
@@ -220,7 +219,7 @@ script_fu_console_interface (void)
   }
 
   /*  The current command  */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -483,9 +482,18 @@ script_fu_browse_row_activated (GtkDialog *dialog)
 static gboolean
 script_fu_console_idle_scroll_end (GtkWidget *view)
 {
-  GtkAdjustment *adj = GTK_TEXT_VIEW (view)->vadjustment;
+  GtkWidget *parent = gtk_widget_get_parent (view);
 
-  gtk_adjustment_set_value (adj, adj->upper - adj->page_size);
+  if (parent)
+    {
+      GtkAdjustment *adj;
+
+      adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (parent));
+
+      gtk_adjustment_set_value (adj,
+                                gtk_adjustment_get_upper (adj) -
+                                gtk_adjustment_get_page_size (adj));
+    }
 
   g_object_unref (view);
 
@@ -565,9 +573,9 @@ script_fu_cc_key_function (GtkWidget        *widget,
 
   switch (event->keyval)
     {
-    case GDK_Return:
-    case GDK_KP_Enter:
-    case GDK_ISO_Enter:
+    case GDK_KEY_Return:
+    case GDK_KEY_KP_Enter:
+    case GDK_KEY_ISO_Enter:
       if (script_fu_cc_is_empty (console))
         return TRUE;
 
@@ -640,24 +648,24 @@ script_fu_cc_key_function (GtkWidget        *widget,
       return TRUE;
       break;
 
-    case GDK_KP_Up:
-    case GDK_Up:
+    case GDK_KEY_KP_Up:
+    case GDK_KEY_Up:
       direction = -1;
       break;
 
-    case GDK_KP_Down:
-    case GDK_Down:
+    case GDK_KEY_KP_Down:
+    case GDK_KEY_Down:
       direction = 1;
       break;
 
-    case GDK_P:
-    case GDK_p:
+    case GDK_KEY_P:
+    case GDK_KEY_p:
       if (event->state & GDK_CONTROL_MASK)
         direction = -1;
       break;
 
-    case GDK_N:
-    case GDK_n:
+    case GDK_KEY_N:
+    case GDK_KEY_n:
       if (event->state & GDK_CONTROL_MASK)
         direction = 1;
       break;

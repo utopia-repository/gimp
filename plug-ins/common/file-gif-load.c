@@ -119,7 +119,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
@@ -131,6 +131,12 @@ query (void)
   {
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_INT32,  "thumb-size",   "Preferred thumbnail size"     }
+  };
+  static const GimpParamDef thumb_return_vals[] =
+  {
+    { GIMP_PDB_IMAGE,  "image",        "Output image"                 },
+    { GIMP_PDB_INT32,  "image-width",  "Width of full-sized image"    },
+    { GIMP_PDB_INT32,  "image-height", "Height of full-sized image"   }
   };
 
   gimp_install_procedure (LOAD_PROC,
@@ -163,8 +169,8 @@ query (void)
                           NULL,
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (thumb_args),
-                          G_N_ELEMENTS (load_return_vals),
-                          thumb_args, load_return_vals);
+                          G_N_ELEMENTS (thumb_return_vals),
+                          thumb_args, thumb_return_vals);
 
   gimp_register_thumbnail_loader (LOAD_PROC, LOAD_THUMB_PROC);
 }
@@ -176,7 +182,7 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  static GimpParam   values[2];
+  static GimpParam   values[4];
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GError            *error  = NULL;
   gint32             image_ID;
@@ -226,6 +232,15 @@ run (const gchar      *name,
           *nreturn_vals = 2;
           values[1].type         = GIMP_PDB_IMAGE;
           values[1].data.d_image = image_ID;
+
+          if (strcmp (name, LOAD_THUMB_PROC) == 0)
+            {
+              *nreturn_vals = 4;
+              values[2].type         = GIMP_PDB_INT32;
+              values[2].data.d_int32 = gimp_image_width (image_ID);
+              values[3].type         = GIMP_PDB_INT32;
+              values[3].data.d_int32 = gimp_image_height (image_ID);
+            }
         }
       else
         {
@@ -421,6 +436,7 @@ load_image (const gchar  *filename,
               g_message ("EOF / read error on extension function code");
               return image_ID; /* will be -1 if failed on first image! */
             }
+
           DoExtension (fd, c);
           continue;
         }
@@ -478,7 +494,7 @@ load_image (const gchar  *filename,
       if (comment_parasite != NULL)
         {
           if (! thumbnail)
-            gimp_image_parasite_attach (image_ID, comment_parasite);
+            gimp_image_attach_parasite (image_ID, comment_parasite);
 
           gimp_parasite_free (comment_parasite);
           comment_parasite = NULL;
@@ -526,12 +542,17 @@ DoExtension (FILE *fd,
              gint  label)
 {
   static guchar  buf[256];
+#ifdef GIFDEBUG
   gchar         *str;
+#endif
 
   switch (label)
     {
     case 0x01:                  /* Plain Text Extension */
+#ifdef GIFDEBUG
       str = "Plain Text Extension";
+#endif
+
 #ifdef notdef
       if (GetDataBlock (fd, (guchar *) buf) == 0)
         ;
@@ -560,10 +581,14 @@ DoExtension (FILE *fd,
 #endif
 
     case 0xff:                  /* Application Extension */
+#ifdef GIFDEBUG
       str = "Application Extension";
+#endif
       break;
     case 0xfe:                  /* Comment Extension */
+#ifdef GIFDEBUG
       str = "Comment Extension";
+#endif
       while (GetDataBlock (fd, (guchar *) buf) > 0)
         {
           gchar *comment = (gchar *) buf;
@@ -582,7 +607,9 @@ DoExtension (FILE *fd,
       break;
 
     case 0xf9:                  /* Graphic Control Extension */
+#ifdef GIFDEBUG
       str = "Graphic Control Extension";
+#endif
       (void) GetDataBlock (fd, (guchar *) buf);
       Gif89.disposal  = (buf[0] >> 2) & 0x7;
       Gif89.inputFlag = (buf[0] >> 1) & 0x1;
@@ -598,7 +625,9 @@ DoExtension (FILE *fd,
       break;
 
     default:
+#ifdef GIFDEBUG
       str = (gchar *)buf;
+#endif
       sprintf ((gchar *)buf, "UNKNOWN (0x%02x)", label);
       break;
     }
@@ -1020,7 +1049,7 @@ ReadImage (FILE        *fd,
 
   frame_number++;
 
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
   gimp_layer_translate (layer_ID, (gint) leftpos, (gint) toppos);
 
   drawable = gimp_drawable_get (layer_ID);
@@ -1139,6 +1168,7 @@ ReadImage (FILE        *fd,
   if (LZWReadByte (fd, FALSE, c) >= 0)
     g_print ("GIF: too much input data, ignoring extra...\n");
 
+  gimp_progress_update (1.0);
   gimp_pixel_rgn_init (&pixel_rgn, drawable,
                        0, 0, drawable->width, drawable->height, TRUE, FALSE);
   gimp_pixel_rgn_set_rect (&pixel_rgn, dest,

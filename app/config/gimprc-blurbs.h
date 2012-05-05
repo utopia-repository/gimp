@@ -19,6 +19,16 @@ N_("When enabled, an image will become the active image when its image " \
 
 #define BRUSH_PATH_WRITABLE_BLURB ""
 
+#define DYNAMICS_PATH_BLURB \
+N_("Sets the dynamics search path.")
+
+#define DYNAMICS_PATH_WRITABLE_BLURB ""
+
+#define TOOL_PRESET_PATH_BLURB \
+N_("Sets the dynamics search path.")
+
+#define TOOL_PRESET_PATH_WRITABLE_BLURB ""
+
 #define CANVAS_PADDING_COLOR_BLURB \
 N_("Sets the canvas padding color used if the padding mode is set to " \
    "custom color.")
@@ -41,6 +51,9 @@ N_("Sets the pixel format to use for mouse pointers.")
 #define CURSOR_MODE_BLURB \
 N_("Sets the type of mouse pointers to use.")
 
+#define CURSOR_HANDEDNESS_BLURB \
+N_("Sets the handedness for cursor positioning.")
+
 #define CURSOR_UPDATING_BLURB \
 N_("Context-dependent mouse pointers are helpful.  They are enabled by " \
    "default.  However, they require overhead that you may want to do without.")
@@ -48,6 +61,14 @@ N_("Context-dependent mouse pointers are helpful.  They are enabled by " \
 #define DEFAULT_BRUSH_BLURB \
 "Specify a default brush.  The brush is searched for in the " \
 "specified brush path."
+
+#define DEFAULT_DYNAMICS_BLURB \
+"Specify a default dynamics.  The dynamics is searched for in the " \
+"specified dynamics path."
+
+#define DEFAULT_TOOL_PRESET_BLURB \
+"Specify a default tool preset.  The tool preset is searched for in the " \
+"specified tool prests path."
 
 #define DEFAULT_DOT_FOR_DOT_BLURB \
 N_("When enabled, this will ensure that each pixel of an image gets " \
@@ -75,6 +96,18 @@ N_("When enabled, this will ensure that each pixel of an image gets " \
 N_("This is the distance in pixels where Guide and Grid snapping " \
    "activates.")
 
+#define DEFAULT_SNAP_TO_GUIDES_BLURB \
+"Snap to guides by default in new image windows."
+
+#define DEFAULT_SNAP_TO_GRID_BLURB \
+"Snap to the grid by default in new image windows."
+
+#define DEFAULT_SNAP_TO_CANVAS_BLURB \
+"Snap to the canvas edge by default in new image windows."
+
+#define DEFAULT_SNAP_TO_PATH_BLURB \
+"Snap to the active path by default in new image windows."
+
 #define DEFAULT_THRESHOLD_BLURB \
 N_("Tools such as fuzzy-select and bucket fill find regions based on a " \
    "seed-fill algorithm.  The seed fill starts at the initially selected " \
@@ -89,8 +122,9 @@ N_("Tools such as fuzzy-select and bucket fill find regions based on a " \
 "Sets the default settings used when an image is viewed in fullscreen mode."
 
 #define DOCK_WINDOW_HINT_BLURB \
-N_("The window type hint that is set on dock windows. This may affect " \
-   "the way your window manager decorates and handles dock windows.")
+N_("The window type hint that is set on dock windows and the toolbox " \
+   "window. This may affect the way your window manager decorates and " \
+   "handles these windows.")
 
 #define ENVIRON_PATH_BLURB \
 "Sets the environ search path."
@@ -122,6 +156,9 @@ N_("The window type hint that is set on dock windows. This may affect " \
 #define GLOBAL_BRUSH_BLURB \
 N_("When enabled, the selected brush will be used for all tools.")
 
+#define GLOBAL_DYNAMICS_BLURB \
+N_("When enabled, the selected dynamics will be used for all tools.")
+
 #define GLOBAL_FONT_BLURB \
 "When enabled, the selected font will be used for all tools."
 
@@ -150,6 +187,9 @@ N_("Sets the browser used by the help system.")
 "colon-separated list of language identifiers with decreasing priority. " \
 "If empty, the language is taken from the user's locale setting."
 
+#define IMAGE_MAP_TOOL_MAX_RECENT_BLURB \
+"How many recent settings to keep around in color correction tools"
+
 #define IMAGE_STATUS_FORMAT_BLURB \
 N_("Sets the text to appear in image window status bars.")
 
@@ -160,15 +200,15 @@ N_("Sets the text to appear in image window titles.")
 N_("When enabled, this will ensure that the full image is visible after a " \
    "file is opened, otherwise it will be displayed with a scale of 1:1.")
 
-#define INSTALL_COLORMAP_BLURB \
-N_("Install a private colormap; might be useful on 8-bit (256 colors) displays.")
-
 #define INTERPOLATION_TYPE_BLURB \
 N_("Sets the level of interpolation used for scaling and other " \
    "transformations.")
 
 #define INTERPRETER_PATH_BLURB \
 "Sets the interpreter search path."
+
+#define LANGUAGE_BLURB \
+N_("Specifies the language to use for the user interface.")
 
 #define LAST_OPENED_SIZE_BLURB \
 N_("How many recently opened image filenames to keep on the File menu.")
@@ -180,13 +220,6 @@ N_("Speed of marching ants in the selection outline.  This value is in " \
 #define MAX_NEW_IMAGE_SIZE_BLURB  \
 N_("GIMP will warn the user if an attempt is made to create an image that " \
    "would take more memory than the size specified here.")
-
-#define MENU_MNEMONICS_BLURB  \
-N_("When enabled, GIMP will show mnemonics in menus.")
-
-#define MIN_COLORS_BLURB  \
-N_("Generally only a concern for 8-bit displays, this sets the minimum " \
-   "number of system colors allocated for GIMP.")
 
 #define MODULE_PATH_BLURB \
 "Sets the module search path."
@@ -229,7 +262,7 @@ N_("Sets how many processors GIMP should try to use simultaneously.")
 N_("When enabled, the X server is queried for the mouse's current position " \
    "on each motion event, rather than relying on the position hint.  This " \
    "means painting with large brushes should be more accurate, but it may " \
-   "be slower.  Perversely, on some X servers enabling this option results " \
+   "be slower.  Conversely, on some X servers enabling this option results " \
    "in faster painting.")
 
 #define PLUG_IN_HISTORY_SIZE_BLURB \
@@ -249,6 +282,9 @@ N_("Sets whether GIMP should create previews of layers and channels. " \
 #define LAYER_PREVIEW_SIZE_BLURB \
 N_("Sets the preview size used for layers and channel previews in newly " \
    "created dialogs.")
+
+#define QUICK_MASK_COLOR_BLURB \
+N_("Sets the default quick mask color.")
 
 #define RESIZE_WINDOWS_ON_RESIZE_BLURB \
 N_("When enabled, the image window will automatically resize itself " \
@@ -330,6 +366,12 @@ N_("When enabled, the sample points are visible by default. This can also be " \
 #define SHOW_TOOLTIPS_BLURB \
 N_("Show a tooltip when the pointer hovers over an item.")
 
+#define SINGLE_WINDOW_MODE_BLURB \
+N_("Use GIMP in a single-window mode.")
+
+#define HIDE_DOCKS_BLURB \
+N_("Hide docks and other windows, leaving only image windows.")
+
 #define SPACE_BAR_ACTION_BLURB \
 N_("What to do when the space bar is pressed in the image window.")
 
@@ -344,12 +386,6 @@ N_("Sets the swap file location. GIMP uses a tile based memory allocation " \
 
 #define TEAROFF_MENUS_BLURB \
 N_("When enabled, menus can be torn off.")
-
-#define TRANSIENT_DOCKS_BLURB \
-N_("When enabled, dock windows (the toolbox and palettes) are set to be " \
-   "transient to the active image window. Most window managers will " \
-   "keep the dock windows above the image window then, but it may also " \
-   "have other effects.")
 
 #define CAN_CHANGE_ACCELS_BLURB \
 N_("When enabled, you can change keyboard shortcuts for menu items " \
@@ -398,10 +434,6 @@ N_("Show the currently active image in the toolbox.")
 #define TOOLBOX_WILBER_BLURB \
 "Show the GIMP mascot at the top of the toolbox."
 
-#define TOOLBOX_WINDOW_HINT_BLURB \
-N_("The window type hint that is set on the toolbox. This may affect " \
-   "how your window manager decorates and handles the toolbox window.")
-
 #define TRANSPARENCY_TYPE_BLURB \
 N_("Sets the manner in which transparency is displayed in images.")
 
@@ -435,20 +467,11 @@ N_("When enabled, pressing F1 will open the help browser.")
 "The location of the online user manual. This is used if " \
 "'user-manual-online' is enabled."
 
-#define WEB_BROWSER_BLURB \
-N_("Sets the external web browser to be used.  This can be an absolute " \
-   "path or the name of an executable to search for in the user's PATH. " \
-   "If the command contains '%s' it will be replaced with the URL, else " \
-   "the URL will be appended to the command with a space separating the " \
-   "two.")
-
-#define XOR_COLOR_BLURB \
-"Sets the color that is used for XOR drawing. This setting only exists as " \
-"a workaround for buggy display drivers. If lines on the canvas are not " \
-"correctly undrawn, try to set this to white."
-
 #define ZOOM_QUALITY_BLURB \
 "There's a tradeoff between speed and quality of the zoomed-out display."
 
+#define DEFAULT_USE_EVENT_HISTORY_BLURB \
+"Bugs in event history buffer are frequent so in case of cursor " \
+"offset problems turning it off helps."
 
 #endif  /* __GIMP_RC_BLURBS_H__ */

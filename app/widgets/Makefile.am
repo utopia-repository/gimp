@@ -10,6 +10,7 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(GEGL_CFLAGS)		\
 	$(GTK_CFLAGS)		\
 	-I$(includedir)
 
@@ -38,6 +39,8 @@ libappwidgets_a_sources = \
 	gimpbrushselect.h		\
 	gimpbufferview.c		\
 	gimpbufferview.h		\
+	gimpcairo.c			\
+	gimpcairo.h			\
 	gimpcairo-wilber.c		\
 	gimpcairo-wilber.h		\
 	gimpcellrendererdashes.c	\
@@ -64,6 +67,8 @@ libappwidgets_a_sources = \
 	gimpcolorpanel.h		\
 	gimpcolorselectorpalette.c	\
 	gimpcolorselectorpalette.h	\
+	gimpcombotagentry.c		\
+	gimpcombotagentry.h		\
 	gimpcomponenteditor.c		\
 	gimpcomponenteditor.h		\
 	gimpcontainerbox.c		\
@@ -76,12 +81,17 @@ libappwidgets_a_sources = \
 	gimpcontainerentry.h		\
 	gimpcontainergridview.c		\
 	gimpcontainergridview.h		\
+	gimpcontainericonview.c		\
+	gimpcontainericonview.h		\
 	gimpcontainerpopup.c		\
 	gimpcontainerpopup.h		\
+	gimpcontainertreestore.c	\
+	gimpcontainertreestore.h	\
 	gimpcontainertreeview.c		\
 	gimpcontainertreeview.h		\
 	gimpcontainertreeview-dnd.c	\
 	gimpcontainertreeview-dnd.h	\
+	gimpcontainertreeview-private.h	\
 	gimpcontainerview.c		\
 	gimpcontainerview.h		\
 	gimpcontainerview-utils.c	\
@@ -96,12 +106,12 @@ libappwidgets_a_sources = \
 	gimpcontrollers.h		\
 	gimpcontrollerkeyboard.c	\
 	gimpcontrollerkeyboard.h	\
+	gimpcontrollermouse.c		\
+	gimpcontrollermouse.h		\
 	gimpcontrollerwheel.c		\
 	gimpcontrollerwheel.h		\
 	gimpcursor.c			\
 	gimpcursor.h			\
-	gimpcursorview.c		\
-	gimpcursorview.h		\
 	gimpcurveview.c			\
 	gimpcurveview.h			\
 	gimpdasheditor.c		\
@@ -110,8 +120,16 @@ libappwidgets_a_sources = \
 	gimpdataeditor.h		\
 	gimpdatafactoryview.c		\
 	gimpdatafactoryview.h		\
+	gimpdeviceeditor.c		\
+	gimpdeviceeditor.h		\
 	gimpdeviceinfo.c		\
 	gimpdeviceinfo.h		\
+	gimpdeviceinfo-coords.c		\
+	gimpdeviceinfo-coords.h		\
+	gimpdeviceinfoeditor.c		\
+	gimpdeviceinfoeditor.h		\
+	gimpdevicemanager.c		\
+	gimpdevicemanager.h		\
 	gimpdevices.c			\
 	gimpdevices.h			\
 	gimpdevicestatus.c		\
@@ -124,18 +142,28 @@ libappwidgets_a_sources = \
 	gimpdnd-xds.h			\
 	gimpdock.c			\
 	gimpdock.h			\
+	gimpdockcolumns.c		\
+	gimpdockcolumns.h		\
 	gimpdockable.c			\
 	gimpdockable.h			\
 	gimpdockbook.c			\
 	gimpdockbook.h			\
+	gimpdockcontainer.c		\
+	gimpdockcontainer.h		\
 	gimpdocked.c			\
 	gimpdocked.h			\
-	gimpdockseparator.c		\
-	gimpdockseparator.h		\
+	gimpdockwindow.c		\
+	gimpdockwindow.h		\
 	gimpdocumentview.c		\
 	gimpdocumentview.h		\
 	gimpdrawabletreeview.c		\
 	gimpdrawabletreeview.h		\
+	gimpdynamicseditor.c		\
+	gimpdynamicseditor.h		\
+	gimpdynamicsfactoryview.c	\
+	gimpdynamicsfactoryview.h	\
+	gimpdynamicsoutputeditor.c	\
+	gimpdynamicsoutputeditor.h	\
 	gimpeditor.c			\
 	gimpeditor.h			\
 	gimpenumaction.c		\
@@ -152,6 +180,8 @@ libappwidgets_a_sources = \
 	gimpfiledialog.h		\
 	gimpfileprocview.c		\
 	gimpfileprocview.h		\
+	gimpfilleditor.c		\
+	gimpfilleditor.h		\
 	gimpfontselect.c		\
 	gimpfontselect.h		\
 	gimpfontview.c			\
@@ -173,8 +203,8 @@ libappwidgets_a_sources = \
 	gimphistogrameditor.h		\
 	gimphistogramview.c		\
 	gimphistogramview.h		\
-	gimpimagedock.c			\
-	gimpimagedock.h			\
+	gimpiconpicker.c		\
+	gimpiconpicker.h		\
 	gimpimagecommenteditor.c	\
 	gimpimagecommenteditor.h	\
 	gimpimageeditor.c		\
@@ -189,6 +219,8 @@ libappwidgets_a_sources = \
 	gimpimageview.h			\
 	gimpitemtreeview.c		\
 	gimpitemtreeview.h		\
+	gimplanguagecombobox.c		\
+	gimplanguagecombobox.h		\
 	gimplanguageentry.c		\
 	gimplanguageentry.h		\
 	gimplanguagestore.c		\
@@ -207,12 +239,22 @@ libappwidgets_a_sources = \
 	gimpmessagedialog.h		\
 	gimpnavigationview.c		\
 	gimpnavigationview.h		\
+	gimpoverlaybox.c		\
+	gimpoverlaybox.h		\
+	gimpoverlaychild.c		\
+	gimpoverlaychild.h		\
+	gimpoverlaydialog.c		\
+	gimpoverlaydialog.h		\
+	gimpoverlayframe.c		\
+	gimpoverlayframe.h		\
 	gimppaletteeditor.c		\
 	gimppaletteeditor.h		\
 	gimppaletteselect.c		\
 	gimppaletteselect.h		\
 	gimppaletteview.c		\
 	gimppaletteview.h		\
+	gimppanedbox.c			\
+	gimppanedbox.h			\
 	gimppatternfactoryview.c	\
 	gimppatternfactoryview.h	\
 	gimppatternselect.c		\
@@ -253,22 +295,41 @@ libappwidgets_a_sources = \
 	gimpsessioninfo-dock.h		\
 	gimpsessioninfo-dockable.c	\
 	gimpsessioninfo-dockable.h	\
+	gimpsessioninfo-private.h	\
+	gimpsessionmanaged.c		\
+	gimpsessionmanaged.h		\
 	gimpsettingsbox.c		\
 	gimpsettingsbox.h		\
 	gimpsettingseditor.c		\
 	gimpsettingseditor.h		\
 	gimpsizebox.c			\
 	gimpsizebox.h			\
+	gimpspinscale.c			\
+	gimpspinscale.h			\
 	gimpstringaction.c		\
 	gimpstringaction.h		\
 	gimpstrokeeditor.c		\
 	gimpstrokeeditor.h		\
+	gimptagentry.c			\
+	gimptagentry.h			\
+	gimptagpopup.c			\
+	gimptagpopup.h			\
 	gimptemplateeditor.c		\
 	gimptemplateeditor.h		\
 	gimptemplateview.c		\
 	gimptemplateview.h		\
+	gimptextbuffer.c		\
+	gimptextbuffer.h		\
+	gimptextbuffer-serialize.c	\
+	gimptextbuffer-serialize.h	\
 	gimptexteditor.c		\
 	gimptexteditor.h		\
+	gimptextproxy.c			\
+	gimptextproxy.h			\
+	gimptextstyleeditor.c		\
+	gimptextstyleeditor.h		\
+	gimptexttag.c			\
+	gimptexttag.h			\
 	gimpthumbbox.c			\
 	gimpthumbbox.h			\
 	gimptoggleaction.c		\
@@ -283,20 +344,22 @@ libappwidgets_a_sources = \
 	gimptoolbox-image-area.h	\
 	gimptoolbox-indicator-area.c	\
 	gimptoolbox-indicator-area.h	\
-	gimptooldialog.c		\
-	gimptooldialog.h		\
+	gimptooleditor.c		\
+	gimptooleditor.h		\
 	gimptooloptionseditor.c		\
 	gimptooloptionseditor.h		\
-	gimptoolview.c			\
-	gimptoolview.h			\
+	gimptoolpalette.c		\
+	gimptoolpalette.h		\
+	gimptoolpreseteditor.c		\
+	gimptoolpreseteditor.h		\
+	gimptoolpresetfactoryview.c	\
+	gimptoolpresetfactoryview.h	\
+	gimptranslationstore.c		\
+	gimptranslationstore.h		\
 	gimpuimanager.c			\
 	gimpuimanager.h			\
 	gimpundoeditor.c		\
 	gimpundoeditor.h		\
-	gimpunitcombobox.c		\
-	gimpunitcombobox.h		\
-	gimpunitstore.c			\
-	gimpunitstore.h			\
 	gimpvectorstreeview.c		\
 	gimpvectorstreeview.h		\
 	gimpview.c			\
@@ -339,21 +402,17 @@ libappwidgets_a_sources = \
 	gimpwidgets-utils.h		\
 	gimpwindow.c			\
 	gimpwindow.h			\
-	gtkscalebutton.c		\
-	gtkscalebutton.h		\
+	gimpwindowstrategy.c		\
+	gimpwindowstrategy.h		\
 	gtkwrapbox.c			\
 	gtkwrapbox.h			\
 	gtkhwrapbox.c			\
-	gtkhwrapbox.h			\
-	gtkvwrapbox.c			\
-	gtkvwrapbox.h
+	gtkhwrapbox.h
 
 libappwidgets_a_built_sources = widgets-enums.c
 
 libappwidgets_a_SOURCES = \
 	$(libappwidgets_a_built_sources) $(libappwidgets_a_sources)
-
-EXTRA_DIST = makefile.msc
 
 
 #
@@ -372,7 +431,7 @@ widgets-enums.c: $(srcdir)/widgets-enums.h $(GIMP_MKENUMS)
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
 		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
-		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
 		$(srcdir)/widgets-enums.h > xgen-wec \
 	&& cp xgen-wec $(@F) \
 	&& rm -f xgen-wec

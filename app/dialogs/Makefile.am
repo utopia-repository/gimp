@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(GEGL_CFLAGS)		\
 	$(GTK_CFLAGS)		\
 	-I$(includedir)
 
@@ -26,6 +27,8 @@ libappdialogs_a_sources = \
 	channel-options-dialog.h	\
 	convert-dialog.c		\
 	convert-dialog.h		\
+	data-delete-dialog.c		\
+	data-delete-dialog.h		\
 	fade-dialog.c			\
 	fade-dialog.h			\
 	file-open-dialog.c		\
@@ -44,6 +47,8 @@ libappdialogs_a_sources = \
 	image-properties-dialog.h	\
 	image-scale-dialog.c		\
 	image-scale-dialog.h		\
+	input-devices-dialog.c		\
+	input-devices-dialog.h		\
 	keyboard-shortcuts-dialog.c	\
 	keyboard-shortcuts-dialog.h	\
 	layer-add-mask-dialog.c		\
@@ -92,8 +97,7 @@ libappdialogs_a_SOURCES = \
 	$(libappdialogs_a_built_sources) $(libappdialogs_a_sources)
 
 EXTRA_DIST = \
-	authors.xsl	\
-	makefile.msc
+	authors.xsl
 
 
 $(srcdir)/about-dialog.c: authors.h

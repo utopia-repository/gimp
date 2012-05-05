@@ -28,6 +28,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_icon_type_get_type,
   gimp_image_base_type_get_type,
   gimp_image_type_get_type,
+  gimp_ink_blob_type_get_type,
   gimp_interpolation_type_get_type,
   gimp_layer_mode_effects_get_type,
   gimp_mask_apply_mode_get_type,
@@ -48,6 +49,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_size_type_get_type,
   gimp_stack_trace_mode_get_type,
   gimp_text_direction_get_type,
+  gimp_text_hint_style_get_type,
   gimp_text_justification_get_type,
   gimp_transfer_mode_get_type,
   gimp_transform_direction_get_type,
@@ -83,6 +85,7 @@ static const gchar * const type_names[] =
   "GimpIconType",
   "GimpImageBaseType",
   "GimpImageType",
+  "GimpInkBlobType",
   "GimpInterpolationType",
   "GimpLayerModeEffects",
   "GimpMaskApplyMode",
@@ -103,6 +106,7 @@ static const gchar * const type_names[] =
   "GimpSizeType",
   "GimpStackTraceMode",
   "GimpTextDirection",
+  "GimpTextHintStyle",
   "GimpTextJustification",
   "GimpTransferMode",
   "GimpTransformDirection",
@@ -114,14 +118,13 @@ static const gchar * const type_names[] =
 static gboolean enums_initialized = FALSE;
 
 /**
- * gimp_enums_init
+ * gimp_enums_init:
  *
  * This function makes sure all the enum types are registered
- * with the GObject type system. This is intended for use by
- * language bindings that need the symbols early, before gimp_main
- * is run. It's not necessary for plug-ins to call this directly,
- * as the normal plug-in initialization code will handle it
- * implicitly.
+ * with the #GType system. This is intended for use by language
+ * bindings that need the symbols early, before gimp_main is run.
+ * It's not necessary for plug-ins to call this directly, because
+ * the normal plug-in initialization code will handle it implicitly.
  *
  * Since: GIMP 2.4
  **/

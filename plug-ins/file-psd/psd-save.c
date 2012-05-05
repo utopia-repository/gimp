@@ -11,9 +11,9 @@
  *
  *          Copyright (C) 2000 Monigotes
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,8 +22,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -81,6 +80,7 @@
 
 #define SAVE_PROC      "file-psd-save"
 #define PLUG_IN_BINARY "file-psd-save"
+#define PLUG_IN_ROLE   "gimp-file-psd-save"
 
 /* set to TRUE if you want debugging, FALSE otherwise */
 #define DEBUG FALSE
@@ -210,7 +210,7 @@ query (void)
 {
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -272,7 +272,7 @@ run (const gchar      *name,
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image_id, &drawable_id, "PSD",
+          export = gimp_export_image (&image_id, &drawable_id, NULL,
                                       GIMP_EXPORT_CAN_HANDLE_RGB     |
                                       GIMP_EXPORT_CAN_HANDLE_GRAY    |
                                       GIMP_EXPORT_CAN_HANDLE_INDEXED |
@@ -335,6 +335,9 @@ psd_lmode_layer (gint32  idLayer,
       break;
     case GIMP_COLOR_MODE:
       strcpy (psdMode, "colr");
+      break;
+    case GIMP_ADDITION_MODE:
+      strcpy (psdMode, "lddg");
       break;
     case GIMP_MULTIPLY_MODE:
       strcpy (psdMode, "mul ");
@@ -776,15 +779,16 @@ static void
 save_resources (FILE   *fd,
                 gint32  image_id)
 {
-  gint       i;
-  gchar     *fileName;            /* Image file name */
-  gint32     idActLayer;          /* Id of the active layer */
-  guint      nActiveLayer = 0;    /* Number of the active layer */
-  gboolean   ActiveLayerPresent;  /* TRUE if there's an active layer */
+  gint          i;
+  gchar        *fileName;            /* Image file name */
+  gint32        idActLayer;          /* Id of the active layer */
+  guint         nActiveLayer = 0;    /* Number of the active layer */
+  gboolean      ActiveLayerPresent;  /* TRUE if there's an active layer */
+  GimpParasite *parasite;
 
-  glong      eof_pos;             /* Position for End of file */
-  glong      rsc_pos;             /* Position for Lengths of Resources section */
-  glong      name_sec;            /* Position for Lengths of Channel Names */
+  glong         eof_pos;             /* Position for End of file */
+  glong         rsc_pos;             /* Position for Lengths of Resources section */
+  glong         name_sec;            /* Position for Lengths of Channel Names */
 
 
   /* Only relevant resources in GIMP are: 0x03EE, 0x03F0 & 0x0400 */
@@ -851,7 +855,7 @@ save_resources (FILE   *fd,
 
     for (i = PSDImageData.nChannels - 1; i >= 0; i--)
     {
-      char *chName = gimp_drawable_get_name (PSDImageData.lChannels[i]);
+      char *chName = gimp_item_get_name (PSDImageData.lChannels[i]);
       write_string (fd, chName, "channel name");
       g_free (chName);
     }
@@ -952,6 +956,7 @@ save_resources (FILE   *fd,
     write_gint16 (fd, psd_unit, "vRes unit");
     write_gint16 (fd, psd_unit, "height unit");
   }
+
   /* --------------- Write Active Layer Number --------------- */
 
   if (ActiveLayerPresent)
@@ -967,6 +972,21 @@ save_resources (FILE   *fd,
       write_gint16 (fd, nActiveLayer, "active layer");
 
       IFDBG printf ("\tTotal length of 0x0400 resource: %d\n", (int) sizeof (gint16));
+    }
+
+  /* --------------- Write ICC profile data ------------------- */
+  parasite = gimp_image_get_parasite (image_id, "icc-profile");
+  if (parasite)
+    {
+      gint32 profile_length = gimp_parasite_data_size (parasite);
+
+      xfwrite (fd, "8BIM", 4, "imageresources signature");
+      write_gint16 (fd, 0x040f, "0x040f Id");
+      write_gint16 (fd, 0, "Id name"); /* Set to null string (two zeros) */
+      write_gint32 (fd, profile_length, "0x040f resource size");
+      xfwrite (fd, gimp_parasite_data (parasite), profile_length, "ICC profile");
+
+      gimp_parasite_free (parasite);
     }
 
 
@@ -997,9 +1017,6 @@ get_compress_channel_data (guchar  *channel_data,
   gint    i;
   gint32  len;                 /* Length of compressed data */
   guchar *start;               /* Starting position of a row in channel_data */
-  gint32  channel_length;      /* Total channel's length */
-
-  channel_length = channel_cols * channel_rows;
 
   /* For every row in the channel */
 
@@ -1149,7 +1166,7 @@ save_layer_and_mask (FILE   *fd,
 
       flags = 0;
       if (gimp_layer_get_lock_alpha (PSDImageData.lLayers[i])) flags |= 1;
-      if (! gimp_drawable_get_visible (PSDImageData.lLayers[i])) flags |= 2;
+      if (! gimp_item_get_visible (PSDImageData.lLayers[i])) flags |= 2;
       IFDBG printf ("\t\tFlags: %u\n", flags);
       write_gchar (fd, flags, "Flags");
 
@@ -1188,7 +1205,7 @@ save_layer_and_mask (FILE   *fd,
       write_gint32 (fd, 0, "Layer blending size");
       IFDBG printf ("\t\tLayer blending size: %d\n", 0);
 
-      layerName = gimp_drawable_get_name (PSDImageData.lLayers[i]);
+      layerName = gimp_item_get_name (PSDImageData.lLayers[i]);
       write_pascalstring (fd, layerName, 4, "layer name");
       IFDBG printf ("\t\tLayer name: %s\n", layerName);
 
@@ -1358,7 +1375,7 @@ write_pixel_data (FILE   *fd,
     }
 
   /* Write layer mask, as last channel, id -2 */
-  if (gimp_drawable_is_layer (drawableID))
+  if (gimp_item_is_layer (drawableID))
     {
       gint32 maskID = gimp_layer_get_mask (drawableID);
 
@@ -1661,7 +1678,7 @@ save_image (const gchar  *filename,
 
   /* Delete merged image now */
 
-  gimp_drawable_delete (PSDImageData.merged_layer);
+  gimp_item_delete (PSDImageData.merged_layer);
 
   IFDBG printf ("----- Closing PSD file, done -----\n\n");
 

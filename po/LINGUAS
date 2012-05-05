@@ -6,9 +6,11 @@ ast
 az
 be
 bg
+br
 ca
 ca@valencia
 cs
+csb
 da
 de
 dz
@@ -42,7 +44,6 @@ lt
 lv
 mk
 ml
-mr
 ms
 my
 nb
@@ -50,7 +51,6 @@ nds
 ne
 nl
 nn
-or
 oc
 pa
 pl
@@ -66,6 +66,7 @@ sr
 sr@latin
 sv
 ta
+te
 th
 tr
 tt

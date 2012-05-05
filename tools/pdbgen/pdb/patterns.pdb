@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -30,7 +29,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  gimp_data_factory_data_refresh (gimp->pattern_factory);
+  gimp_data_factory_data_refresh (gimp->pattern_factory, context);
 }
 CODE
     );
@@ -62,7 +61,7 @@ HELP
         headers => [ qw("core/gimpcontainer-filter.h") ],
 	code => <<'CODE'
 {
-  pattern_list = gimp_container_get_filtered_name_array (gimp->pattern_factory->container,
+  pattern_list = gimp_container_get_filtered_name_array (gimp_data_factory_get_container (gimp->pattern_factory),
                                                          filter, &num_patterns);
 }
 CODE
@@ -88,7 +87,7 @@ sub patterns_get_pattern {
 
   if (pattern)
     {
-      name   = g_strdup (gimp_object_get_name (GIMP_OBJECT (pattern)));
+      name   = g_strdup (gimp_object_get_name (pattern));
       width  = pattern->mask->width;
       height = pattern->mask->height;
     }
@@ -134,13 +133,13 @@ sub patterns_get_pattern_data {
 
   if (pattern)
     {
-      actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (pattern)));
+      actual_name = g_strdup (gimp_object_get_name (pattern));
       width       = pattern->mask->width;
       height      = pattern->mask->height;
       mask_bpp    = pattern->mask->bytes;
       length      = pattern->mask->height * pattern->mask->width *
 	            pattern->mask->bytes;
-      mask_data   = g_memdup (temp_buf_data (pattern->mask), length);
+      mask_data   = g_memdup (temp_buf_get_data (pattern->mask), length);
     }
   else
     success = FALSE;
@@ -166,5 +165,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Patterns';
+$doc_title = 'gimppatterns';
+$doc_short_desc = 'Functions relating to patterns.';
+$doc_long_desc = 'Functions relating to patterns.';
 
 1;

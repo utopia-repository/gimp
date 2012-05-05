@@ -8,9 +8,9 @@
  *
  * dialog.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -172,7 +171,6 @@ browser_dialog_open (const gchar *plug_in_binary)
   GtkWidget   *toolbar;
   GtkWidget   *paned;
   GtkWidget   *scrolled;
-  GtkWidget   *button;
   GtkToolItem *item;
   GtkAction   *action;
   DialogData   data = { 720, 560, 240, TRUE, 1.0 };
@@ -194,7 +192,7 @@ browser_dialog_open (const gchar *plug_in_binary)
 
   window_set_icons (window);
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_show (vbox);
 
@@ -211,7 +209,7 @@ browser_dialog_open (const gchar *plug_in_binary)
 
   action = gtk_ui_manager_get_action (ui_manager,
                                       "/ui/help-browser-popup/forward");
-  gtk_action_connect_proxy (action, GTK_WIDGET (item));
+  gtk_activatable_set_related_action (GTK_ACTIVATABLE (item), action);
   g_object_notify (G_OBJECT (action), "tooltip");
   button_next = GTK_WIDGET (item);
 
@@ -221,7 +219,7 @@ browser_dialog_open (const gchar *plug_in_binary)
 
   action = gtk_ui_manager_get_action (ui_manager,
                                       "/ui/help-browser-popup/back");
-  gtk_action_connect_proxy (action, GTK_WIDGET (item));
+  gtk_activatable_set_related_action (GTK_ACTIVATABLE (item), action);
   g_object_notify (G_OBJECT (action), "tooltip");
   button_prev = GTK_WIDGET (item);
 
@@ -231,11 +229,8 @@ browser_dialog_open (const gchar *plug_in_binary)
   gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
   gtk_tool_item_set_expand (item, TRUE);
 
-  button = gtk_ui_manager_get_widget (ui_manager,
-                                      "/help-browser-toolbar/website");
-
   /*  the horizontal paned  */
-  paned = gtk_hpaned_new ();
+  paned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (vbox), paned, TRUE, TRUE, 0);
   gtk_widget_show (paned);
 
@@ -266,7 +261,7 @@ browser_dialog_open (const gchar *plug_in_binary)
                     NULL);
 
   /*  HTML view  */
-  main_vbox = gtk_vbox_new (FALSE, 0);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (main_vbox);
   gtk_paned_pack2 (GTK_PANED (paned), main_vbox, TRUE, TRUE);
 
@@ -356,8 +351,8 @@ window_set_icons (GtkWidget *window)
                                                    sizes[i], NULL));
 
   gtk_window_set_icon_list (GTK_WINDOW (window), list);
-  g_list_foreach (list, (GFunc) g_object_unref, NULL);
-  g_list_free (list);
+
+  g_list_free_full (list, (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -365,38 +360,61 @@ browser_dialog_make_index_foreach (const gchar    *help_id,
                                    GimpHelpItem   *item,
                                    GimpHelpLocale *locale)
 {
-#if 0
+  gchar *sort_key = item->title;
+
+#if DEBUG_SORT_HELP_ITEMS
   g_printerr ("%s: processing %s (parent %s)\n",
               G_STRFUNC,
               item->title  ? item->title  : "NULL",
               item->parent ? item->parent : "NULL");
 #endif
 
-  if (item->title)
+  if (item->sort &&
+      g_regex_match_simple ("^[0-9]+([.][0-9]+)*$", item->sort, 0, 0))
     {
-      gchar **indices = g_strsplit (item->title, ".", -1);
+      sort_key = item->sort;
+
+#if DEBUG_SORT_HELP_ITEMS
+      g_printerr ("%s: sort key = %s\n", G_STRFUNC, sort_key);
+#endif
+    }
+
+  item->index = 0;
+
+  if (sort_key)
+    {
+      const gint max_tokens = GIMP_HELP_BROWSER_INDEX_MAX_DEPTH;
+      gchar* *indices = g_strsplit (sort_key, ".", max_tokens + 1);
       gint    i;
 
-      for (i = 0; i < 5; i++)
+      for (i = 0; i < max_tokens; i++)
         {
           gunichar c;
 
           if (! indices[i])
-            break;
+            {
+              /* make sure that all item->index's are comparable */
+              item->index <<= (8 * (max_tokens - i));
+              break;
+            }
 
+          item->index <<= 8;  /* NOP if i = 0 */
           c = g_utf8_get_char (indices[i]);
-
           if (g_unichar_isdigit (c))
             {
-              item->index += atoi (indices[i]) << (8 * (5 - i));
+              item->index += atoi (indices[i]);
             }
           else if (g_utf8_strlen (indices[i], -1) == 1)
             {
-              item->index += (c & 0xFF) << (8 * (5 - i));
+              item->index += (c & 0xFF);
             }
         }
 
       g_strfreev (indices);
+
+#if DEBUG_SORT_HELP_ITEMS
+      g_printerr ("%s: index = %lu\n", G_STRFUNC, item->index);
+#endif
     }
 
   if (item->parent && strlen (item->parent))
@@ -839,14 +857,8 @@ static void
 show_index_callback (GtkAction *action,
                      gpointer   data)
 {
-  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    {
-      gtk_widget_show (sidebar);
-    }
-  else
-    {
-      gtk_widget_hide (sidebar);
-    }
+  gtk_widget_set_visible (sidebar,
+                          gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)));
 }
 
 static void
@@ -985,7 +997,7 @@ update_actions (void)
   action = gtk_ui_manager_get_action (ui_manager,
                                       "/ui/help-browser-popup/show-index");
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action),
-                                GTK_WIDGET_VISIBLE (sidebar));
+                                gtk_widget_get_visible (sidebar));
 }
 
 static void
@@ -1028,7 +1040,7 @@ dialog_unmap (GtkWidget *window,
   gtk_window_get_size (GTK_WINDOW (window), &data.width, &data.height);
 
   data.paned_position = gtk_paned_get_position (GTK_PANED (paned));
-  data.show_index     = GTK_WIDGET_VISIBLE (sidebar);
+  data.show_index     = gtk_widget_get_visible (sidebar);
 
   data.zoom = (view ?
                webkit_web_view_get_zoom_level (WEBKIT_WEB_VIEW (view)) : 1.0);
@@ -1084,7 +1096,7 @@ static gboolean
 view_button_press (GtkWidget      *widget,
                    GdkEventButton *event)
 {
-  if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+  if (gdk_event_triggers_context_menu ((GdkEvent *) event))
     return view_popup_menu (widget, event);
 
   return FALSE;
@@ -1094,7 +1106,7 @@ static gboolean
 view_key_press (GtkWidget   *widget,
                 GdkEventKey *event)
 {
-  if (event->keyval == GDK_slash)
+  if (event->keyval == GDK_KEY_slash)
     {
       GtkAction *action;
 
@@ -1157,7 +1169,7 @@ build_searchbar (void)
   GtkWidget *hbox;
   GtkWidget *label;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
   label = gtk_label_new (_("Find:"));
   gtk_widget_show (label);
@@ -1229,14 +1241,14 @@ search_entry_key_press (GtkWidget   *entry,
 {
   switch (event->keyval)
     {
-    case GDK_Escape:
+    case GDK_KEY_Escape:
       gtk_widget_hide (searchbar);
       webkit_web_view_unmark_text_matches (WEBKIT_WEB_VIEW (view));
       return TRUE;
 
-    case GDK_Return:
-    case GDK_KP_Enter:
-    case GDK_ISO_Enter:
+    case GDK_KEY_Return:
+    case GDK_KEY_KP_Enter:
+    case GDK_KEY_ISO_Enter:
       search (gtk_entry_get_text (GTK_ENTRY (entry)), TRUE);
       return TRUE;
     }

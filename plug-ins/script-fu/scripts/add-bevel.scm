@@ -4,9 +4,9 @@
 ; add-bevel.scm version 1.04
 ; Time-stamp: <2004-02-09 17:07:06 simon>
 ;
-; This program is free software; you can redistribute it and/or modify
+; This program is free software: you can redistribute it and/or modify
 ; it under the terms of the GNU General Public License as published by
-; the Free Software Foundation; either version 2 of the License, or
+; the Free Software Foundation; either version 3 of the License, or
 ; (at your option) any later version.
 ;
 ; This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
 ; GNU General Public License for more details.
 ;
 ; You should have received a copy of the GNU General Public License
-; along with this program; if not, write to the Free Software
-; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 ; Copyright (C) 1997 Andrew Donkin  (ard@cs.waikato.ac.nz)
 ; Contains code from add-shadow.scm by Sven Neumann
@@ -74,7 +73,7 @@
                                          (+ width 2)
                                          (+ height 2)
                                          RGB-IMAGE
-                                         "Bumpmap"
+                                         _"Bumpmap"
                                          100
                                          NORMAL-MODE)))
 
@@ -83,6 +82,7 @@
         )
 
     (gimp-context-push)
+    (gimp-context-set-defaults)
 
     ; disable undo on copy, start group otherwise
     (if (= work-on-copy TRUE)
@@ -90,7 +90,7 @@
       (gimp-image-undo-group-start image)
     )
 
-    (gimp-image-add-layer image bump-layer 1)
+    (gimp-image-insert-layer image bump-layer 0 1)
 
     ; If the layer we're bevelling is offset from the image's origin, we
     ; have to do the same to the bumpmap
@@ -102,7 +102,7 @@
     ; Set the selection to the area we want to bevel.
     ;
     (if (= selection-exists 0)
-        (gimp-selection-layer-alpha pic-layer)
+        (gimp-image-select-item image CHANNEL-OP-REPLACE pic-layer)
     )
 
     ; Store it for later.
@@ -152,7 +152,7 @@
     ;
     (if (= selection-exists 0)
         (gimp-selection-none image)        ; No selection to start with
-        (gimp-selection-load selection)
+        (gimp-image-select-item image CHANNEL-OP-REPLACE selection)
     )
     ; If they started with a selection, they can Select->Invert then
     ; Edit->Clear for a cutout.
@@ -160,7 +160,7 @@
     ; clean up
     (gimp-image-remove-channel image selection)
     (if (= keep-bump-layer TRUE)
-        (gimp-drawable-set-visible bump-layer 0)
+        (gimp-item-set-visible bump-layer 0)
         (gimp-image-remove-layer image bump-layer)
     )
 

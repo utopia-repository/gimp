@@ -4,9 +4,9 @@
  * GimpCoreConfig class
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_CORE_CONFIG_H__
@@ -40,27 +39,36 @@ struct _GimpCoreConfig
 {
   GimpBaseConfig          parent_instance;
 
+  gchar                  *language;
   GimpInterpolationType   interpolation_type;
+  gint                    default_threshold;
   gchar                  *plug_in_path;
   gchar                  *module_path;
   gchar                  *interpreter_path;
   gchar                  *environ_path;
   gchar                  *brush_path;
   gchar                  *brush_path_writable;
+  gchar                  *dynamics_path;
+  gchar                  *dynamics_path_writable;
   gchar                  *pattern_path;
   gchar                  *pattern_path_writable;
   gchar                  *palette_path;
   gchar                  *palette_path_writable;
   gchar                  *gradient_path;
   gchar                  *gradient_path_writable;
+  gchar                  *tool_preset_path;
+  gchar                  *tool_preset_path_writable;
   gchar                  *font_path;
   gchar                  *font_path_writable;  /*  unused  */
   gchar                  *default_brush;
+  gchar                  *default_dynamics;
   gchar                  *default_pattern;
   gchar                  *default_palette;
+  gchar                  *default_tool_preset;
   gchar                  *default_gradient;
   gchar                  *default_font;
   gboolean                global_brush;
+  gboolean                global_dynamics;
   gboolean                global_pattern;
   gboolean                global_palette;
   gboolean                global_gradient;
@@ -76,11 +84,10 @@ struct _GimpCoreConfig
   GimpViewSize            layer_preview_size;
   GimpThumbnailSize       thumbnail_size;
   guint64                 thumbnail_filesize_limit;
-  gboolean                install_cmap;
-  gint                    min_colors;
   GimpColorConfig        *color_management;
   GimpColorProfilePolicy  color_profile_policy;
   gboolean                save_document_history;
+  GimpRGB                 quick_mask_color;
   gboolean                use_gegl;
 };
 

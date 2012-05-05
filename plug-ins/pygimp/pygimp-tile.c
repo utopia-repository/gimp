@@ -1,20 +1,19 @@
 /* -*- Mode: C; c-basic-offset: 4 -*-
-    Gimp-Python - allows the writing of Gimp plugins in Python.
-    Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Gimp-Python - allows the writing of Gimp plugins in Python.
+ * Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -131,7 +130,7 @@ tile_repr(PyGimpTile *self)
     PyObject *s;
     gchar *name;
 
-    name = gimp_drawable_get_name(self->tile->drawable->drawable_id);
+    name = gimp_item_get_name(self->tile->drawable->drawable_id);
 
     if (self->tile->shadow)
 	s = PyString_FromFormat("<gimp.Tile for drawable '%s' (shadow)>", name);
@@ -690,7 +689,7 @@ pr_repr(PyGimpPixelRgn *self)
     PyObject *s;
     gchar *name;
 
-    name = gimp_drawable_get_name(self->drawable->drawable->drawable_id);
+    name = gimp_item_get_name(self->drawable->drawable->drawable_id);
     s = PyString_FromFormat("<gimp.PixelRgn for drawable '%s'>", name);
     g_free(name);
 
@@ -876,7 +875,7 @@ pf_ass_sub(PyGimpPixelFetcher *self, PyObject *v, PyObject *w)
 }
 
 static PyMappingMethods pf_as_mapping = {
-    (inquiry)pf_length,
+    (lenfunc)pf_length,
     (binaryfunc)pf_subscript,
     (objobjargproc)pf_ass_sub,
 };
@@ -951,7 +950,7 @@ pf_repr(PyGimpPixelFetcher *self)
     PyObject *s;
     char *name;
 
-    name = gimp_drawable_get_name(self->drawable->drawable->drawable_id);
+    name = gimp_item_get_name(self->drawable->drawable->drawable_id);
 
     if (self->shadow)
         s = PyString_FromFormat("<gimp.PixelFetcher for drawable '%s' (shadow)>", name);

@@ -4,9 +4,9 @@
  *
  * Copyright (C) 1992 Free Software Foundation, Inc.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -118,6 +117,8 @@ find_outline_pixels (void)
     if ((row & 0xf) == 0)
 	gimp_progress_update (((gdouble)row) / height);
   }
+
+  gimp_progress_update (1.0);
 
   local_free_bitmap (&marked);
 
@@ -223,7 +224,6 @@ static void
 append_coordinate (pixel_outline_type *o, int x, int y, edge_type edge)
 {
   coordinate_type c;
-  char * str;
 
   c.x = x;
   c.y = y;
@@ -232,22 +232,18 @@ append_coordinate (pixel_outline_type *o, int x, int y, edge_type edge)
     {
     case top:
       c.y++;
-      str = "top";
       break;
 
     case right:
       c.x++;
       c.y++;
-      str = "right";
       break;
 
     case bottom:
       c.x++;
-      str = "bottom";
       break;
 
     case left:
-      str = "left";
       break;
 
     default:

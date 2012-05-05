@@ -4,10 +4,10 @@
  * gimpcellrenderertoggle.c
  * Copyright (C) 2003-2004  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <config.h>
@@ -28,6 +27,16 @@
 
 #include "gimpwidgetsmarshal.h"
 #include "gimpcellrenderertoggle.h"
+
+
+/**
+ * SECTION: gimpcellrenderertoggle
+ * @title: GimpCellRendererToggle
+ * @short_description: A #GtkCellRendererToggle that displays icons instead
+ *                     of a checkbox.
+ *
+ * A #GtkCellRendererToggle that displays icons instead of a checkbox.
+ **/
 
 
 #define DEFAULT_ICON_SIZE  GTK_ICON_SIZE_BUTTON
@@ -225,6 +234,10 @@ gimp_cell_renderer_toggle_get_size (GtkCellRenderer *cell,
   gint                    calc_height;
   gint                    pixbuf_width;
   gint                    pixbuf_height;
+  gfloat                  xalign;
+  gfloat                  yalign;
+  gint                    xpad;
+  gint                    ypad;
 
   if (! toggle->stock_id)
     {
@@ -236,6 +249,9 @@ gimp_cell_renderer_toggle_get_size (GtkCellRenderer *cell,
       return;
     }
 
+  gtk_cell_renderer_get_alignment (cell, &xalign, &yalign);
+  gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+
   if (! toggle->pixbuf)
     gimp_cell_renderer_toggle_create_pixbuf (toggle, widget);
 
@@ -243,9 +259,9 @@ gimp_cell_renderer_toggle_get_size (GtkCellRenderer *cell,
   pixbuf_height = gdk_pixbuf_get_height (toggle->pixbuf);
 
   calc_width  = (pixbuf_width +
-                 (gint) cell->xpad * 2 + style->xthickness * 2);
+                 (gint) xpad * 2 + style->xthickness * 2);
   calc_height = (pixbuf_height +
-                 (gint) cell->ypad * 2 + style->ythickness * 2);
+                 (gint) ypad * 2 + style->ythickness * 2);
 
   if (width)
     *width  = calc_width;
@@ -258,14 +274,14 @@ gimp_cell_renderer_toggle_get_size (GtkCellRenderer *cell,
       if (x_offset)
         {
           *x_offset = (((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
-                        (1.0 - cell->xalign) : cell->xalign) *
+                        (1.0 - xalign) : xalign) *
                        (cell_area->width - calc_width));
           *x_offset = MAX (*x_offset, 0);
         }
 
       if (y_offset)
         {
-          *y_offset = cell->yalign * (cell_area->height - calc_height);
+          *y_offset = yalign * (cell_area->height - calc_height);
           *y_offset = MAX (*y_offset, 0);
         }
     }
@@ -286,6 +302,8 @@ gimp_cell_renderer_toggle_render (GtkCellRenderer      *cell,
   GdkRectangle            draw_rect;
   GtkStateType            state;
   gboolean                active;
+  gint                    xpad;
+  gint                    ypad;
 
   if (! toggle->stock_id)
     {
@@ -302,10 +320,12 @@ gimp_cell_renderer_toggle_render (GtkCellRenderer      *cell,
                                       &toggle_rect.width,
                                       &toggle_rect.height);
 
-  toggle_rect.x      += cell_area->x + cell->xpad;
-  toggle_rect.y      += cell_area->y + cell->ypad;
-  toggle_rect.width  -= cell->xpad * 2;
-  toggle_rect.height -= cell->ypad * 2;
+  gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+
+  toggle_rect.x      += cell_area->x + xpad;
+  toggle_rect.y      += cell_area->y + ypad;
+  toggle_rect.width  -= xpad * 2;
+  toggle_rect.height -= ypad * 2;
 
   if (toggle_rect.width <= 0 || toggle_rect.height <= 0)
     return;
@@ -315,14 +335,14 @@ gimp_cell_renderer_toggle_render (GtkCellRenderer      *cell,
 
   if ((flags & GTK_CELL_RENDERER_SELECTED) == GTK_CELL_RENDERER_SELECTED)
     {
-      if (GTK_WIDGET_HAS_FOCUS (widget))
+      if (gtk_widget_has_focus (widget))
         state = GTK_STATE_SELECTED;
       else
         state = GTK_STATE_ACTIVE;
     }
   else
     {
-      if (GTK_CELL_RENDERER_TOGGLE (cell)->activatable)
+      if (gtk_cell_renderer_toggle_get_activatable (GTK_CELL_RENDERER_TOGGLE (cell)))
         state = GTK_STATE_NORMAL;
       else
         state = GTK_STATE_INSENSITIVE;
@@ -347,18 +367,36 @@ gimp_cell_renderer_toggle_render (GtkCellRenderer      *cell,
       toggle_rect.height -= style->ythickness * 2;
 
       if (gdk_rectangle_intersect (&draw_rect, &toggle_rect, &draw_rect))
-        gdk_draw_pixbuf (window,
-                         style->black_gc,
-                         toggle->pixbuf,
-                         /* pixbuf 0, 0 is at toggle_rect.x, toggle_rect.y */
-                         draw_rect.x - toggle_rect.x,
-                         draw_rect.y - toggle_rect.y,
-                         draw_rect.x,
-                         draw_rect.y,
-                         draw_rect.width,
-                         draw_rect.height,
-                         GDK_RGB_DITHER_NORMAL,
-                         0, 0);
+        {
+          cairo_t  *cr = gdk_cairo_create (window);
+          gboolean  inconsistent;
+
+          gdk_cairo_rectangle (cr, &draw_rect);
+          cairo_clip (cr);
+
+          gdk_cairo_set_source_pixbuf (cr, toggle->pixbuf,
+                                       toggle_rect.x, toggle_rect.y);
+          cairo_paint (cr);
+
+          g_object_get (toggle,
+                        "inconsistent", &inconsistent,
+                        NULL);
+
+          if (inconsistent)
+            {
+              gdk_cairo_set_source_color (cr, &style->fg[state]);
+              cairo_set_line_width (cr, 2.0);
+              cairo_move_to (cr,
+                             toggle_rect.x + toggle_rect.width,
+                             toggle_rect.y);
+              cairo_line_to (cr,
+                             toggle_rect.x,
+                             toggle_rect.y + toggle_rect.height);
+              cairo_stroke (cr);
+            }
+
+          cairo_destroy (cr);
+        }
     }
 }
 
@@ -373,7 +411,7 @@ gimp_cell_renderer_toggle_activate (GtkCellRenderer      *cell,
 {
   GtkCellRendererToggle *toggle = GTK_CELL_RENDERER_TOGGLE (cell);
 
-  if (toggle->activatable)
+  if (gtk_cell_renderer_toggle_get_activatable (toggle))
     {
       GdkModifierType state = 0;
 
@@ -426,9 +464,9 @@ gimp_cell_renderer_toggle_new (const gchar *stock_id)
 
 /**
  * gimp_cell_renderer_toggle_clicked:
- * @cell: a #GimpCellRendererToggle
- * @path:
- * @state:
+ * @cell:  a #GimpCellRendererToggle
+ * @path:  the path to the clicked row
+ * @state: the modifier state
  *
  * Emits the "clicked" signal from a #GimpCellRendererToggle.
  *

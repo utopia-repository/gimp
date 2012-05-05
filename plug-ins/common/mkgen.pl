@@ -7,12 +7,16 @@ require 'util.pl';
 *write_file = \&Gimp::CodeGen::util::write_file;
 *FILE_EXT   = \$Gimp::CodeGen::util::FILE_EXT;
 
-$ignorefile = ".svnignore";
+$ignorefile = ".gitignore";
+$rcfile     = "gimprc.common";
 
 $outmk = "Makefile.am$FILE_EXT";
 $outignore = "$ignorefile$FILE_EXT";
+$outrc = "$rcfile$FILE_EXT";
+
 open MK, "> $outmk";
 open IGNORE, "> $outignore";
+open RC, "> $outrc";
 
 require 'plugin-defs.pl';
 
@@ -57,6 +61,11 @@ else
 libm = -lm
 endif
 
+if HAVE_WINDRES
+include \$(top_srcdir)/build/windows/gimprc-plug-ins.rule
+include $rcfile
+endif
+
 libgimp = \$(top_builddir)/libgimp/libgimp-\$(GIMP_API_VERSION).la
 libgimpbase = \$(top_builddir)/libgimpbase/libgimpbase-\$(GIMP_API_VERSION).la
 libgimpcolor = \$(top_builddir)/libgimpcolor/libgimpcolor-\$(GIMP_API_VERSION).la
@@ -73,7 +82,8 @@ libexecdir = \$(gimpplugindir)/plug-ins
 
 EXTRA_DIST = \\
 	mkgen.pl	\\
-	plugin-defs.pl$extra
+	plugin-defs.pl$extra	\\
+	$rcfile
 
 INCLUDES = \\
 	-I\$(top_srcdir)	\\
@@ -94,23 +104,21 @@ install-\%: \%
 	   || test -f \$\$p1 \\
 	; then \\
 	  f=`echo "\$\$p1" | sed 's,^.*/,,;\$(transform);s/\$\$/\$(EXEEXT)/'`; \\
-	  echo " \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(libexecPROGRAMS_INSTALL) \$\$p \$(DESTDIR)\$(libexecdir)/\$\$f"; \\
-	  \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(libexecPROGRAMS_INSTALL) \$\$p \$(DESTDIR)\$(libexecdir)/\$\$f || exit 1; \\
+	  echo " \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(INSTALL_PROGRAM) \$\$p \$(DESTDIR)\$(libexecdir)/\$\$f"; \\
+	  \$(INSTALL_PROGRAM_ENV) \$(LIBTOOL) --mode=install \$(INSTALL_PROGRAM) \$\$p \$(DESTDIR)\$(libexecdir)/\$\$f || exit 1; \\
 	else :; fi
 EOT
 
 print IGNORE <<EOT;
-Makefile
-Makefile.in
-.deps
-.libs
+/.deps
+/.libs
+/Makefile
+/Makefile.in
 EOT
 
 foreach (sort keys %plugins) {
     my $makename = $_;
-    my $MAKENAME;
     $makename =~ s/-/_/g;
-    $MAKENAME = "\U$makename";
 
     my $libgimp = "";
 
@@ -129,9 +137,9 @@ foreach (sort keys %plugins) {
 
     my $glib;
     if (exists $plugins{$_}->{ui}) {
-	$glib = "\$(GTK_LIBS)"
+	$glib = "\$(GTK_LIBS)\t\t\\"
     } else {
-	$glib = "\$(GLIB_LIBS)"
+	$glib = "\$(CAIRO_LIBS)\t\t\\\n\t\$(GDK_PIXBUF_LIBS)\t\\"
     }
 
     my $optlib = "";
@@ -144,11 +152,11 @@ foreach (sort keys %plugins) {
 
     if (exists $plugins{$_}->{cflags}) {
 	my $cflags = $plugins{$_}->{cflags};
-	my $optflags = $cflags =~ /FLAGS/ ? $cflags : "$MAKENAME\E_CFLAGS";
+	my $cflagsvalue = $cflags =~ /FLAGS/ ? "\$($cflags)" : $cflags;
 
 	print MK <<EOT;
 
-${makename}_CFLAGS = \$($optflags)
+${makename}_CFLAGS = $cflagsvalue
 EOT
     }
 
@@ -160,6 +168,8 @@ EOT
 	}
     }
 
+    my $rclib = "\$(${makename}_RC)";
+
     print MK <<EOT;
 
 ${makename}_SOURCES = \\
@@ -167,18 +177,24 @@ ${makename}_SOURCES = \\
 
 ${makename}_LDADD = \\
 	$libgimp		\\
-	$glib		\\$optlib
-	$deplib
+	$glib$optlib
+	$deplib		\\
+	$rclib
 EOT
 
-    print IGNORE "$_\n";
+     print RC <<EOT;
+${makename}_RC = $_.rc.o
+EOT
+
+    print IGNORE "/$_\n";
+    print IGNORE "/$_.exe\n";
 }
 
+close RC;
 close MK;
 close IGNORE;
 
 &write_file($outmk);
 &write_file($outignore);
+&write_file($outrc);
 
-system ("svn", "propset", "-F", $ignorefile, "svn:ignore", ".");
-unlink $ignorefile;

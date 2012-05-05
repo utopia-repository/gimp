@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -64,7 +63,7 @@ gradients_save_as_pov_ray_cmd_callback (GtkAction *action,
     return;
 
   title = g_strdup_printf (_("Save '%s' as POV-Ray"),
-                           GIMP_OBJECT (gradient)->name);
+                           gimp_object_get_name (gradient));
 
   chooser = GTK_FILE_CHOOSER
     (gtk_file_chooser_dialog_new (title, NULL,
@@ -130,10 +129,9 @@ gradients_save_as_pov_ray_response (GtkWidget    *dialog,
 
       if (! gimp_gradient_save_pov (gradient, filename, &error))
         {
-          gimp_message (g_object_get_data (G_OBJECT (dialog), "gimp"),
-                        G_OBJECT (dialog),
-                        GIMP_MESSAGE_ERROR,
-                        "%s", error->message);
+          gimp_message_literal (g_object_get_data (G_OBJECT (dialog), "gimp"),
+				G_OBJECT (dialog), GIMP_MESSAGE_ERROR,
+				error->message);
           g_clear_error (&error);
           return;
         }

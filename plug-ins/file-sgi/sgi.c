@@ -1,21 +1,20 @@
 /*
- *   SGI image file plug-in for GIMP.
+ * SGI image file plug-in for GIMP.
  *
- *   Copyright 1997-1998 Michael Sweet (mike@easysw.com)
+ * Copyright 1997-1998 Michael Sweet (mike@easysw.com)
  *
- *   This program is free software; you can redistribute it and/or modify it
- *   under the terms of the GNU General Public License as published by the Free
- *   Software Foundation; either version 2 of the License, or (at your option)
- *   any later version.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 3 of the License, or (at your option)
+ * any later version.
  *
- *   This program is distributed in the hope that it will be useful, but
- *   WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- *   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- *   for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * for more details.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contents:
  *
@@ -48,6 +47,7 @@
 #define LOAD_PROC        "file-sgi-load"
 #define SAVE_PROC        "file-sgi-save"
 #define PLUG_IN_BINARY   "file-sgi"
+#define PLUG_IN_ROLE     "gimp-file-sgi"
 #define PLUG_IN_VERSION  "1.1.1 - 17 May 1998"
 
 
@@ -93,7 +93,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,      "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,      "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING,     "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING,     "raw-filename", "The name of the file to load" },
   };
@@ -104,7 +104,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -200,7 +200,7 @@ run (const gchar      *name,
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image_ID, &drawable_ID, "SGI",
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB  |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_ALPHA));
@@ -334,22 +334,24 @@ load_image (const gchar  *filename,
    * Get the image dimensions and create the image...
    */
 
-  /* Sanitize dimensions */
-  if (sgip->xsize == 0 || sgip->xsize > GIMP_MAX_IMAGE_SIZE)
+  /* Sanitize dimensions (note that they are unsigned short and can
+   * thus never be larger than GIMP_MAX_IMAGE_SIZE
+   */
+  if (sgip->xsize == 0 /*|| sgip->xsize > GIMP_MAX_IMAGE_SIZE*/)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
               _("Invalid width: %hu"), sgip->xsize);
       return -1;
     }
 
-  if (sgip->ysize == 0 || sgip->ysize > GIMP_MAX_IMAGE_SIZE)
+  if (sgip->ysize == 0 /*|| sgip->ysize > GIMP_MAX_IMAGE_SIZE*/)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
               _("Invalid height: %hu"), sgip->ysize);
       return -1;
     }
 
-  if (sgip->zsize == 0 || sgip->zsize > GIMP_MAX_IMAGE_SIZE)
+  if (sgip->zsize == 0 /*|| sgip->zsize > GIMP_MAX_IMAGE_SIZE*/)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
               _("Invalid number of channels: %hu"), sgip->zsize);
@@ -404,7 +406,7 @@ load_image (const gchar  *filename,
 
   layer = gimp_layer_new (image, _("Background"), sgip->xsize, sgip->ysize,
                           layer_type, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
 
   /*
    * Get the drawable and set the pixel region for our load...
@@ -475,6 +477,7 @@ load_image (const gchar  *filename,
               *pptr = rows[i][x] >> 8;
         }
     }
+  gimp_progress_update (1.0);
 
   /*
    * Do the last n rows (count always > 0)
@@ -537,7 +540,6 @@ save_image (const gchar  *filename,
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, drawable->width,
                        drawable->height, FALSE, FALSE);
 
-  zsize = 0;
   switch (gimp_drawable_type (drawable_ID))
     {
     case GIMP_GRAY_IMAGE :
@@ -623,7 +625,8 @@ save_image (const gchar  *filename,
         };
 
       gimp_progress_update ((double) y / (double) drawable->height);
-    };
+    }
+  gimp_progress_update (1.0);
 
   /*
    * Done with the file...
@@ -646,21 +649,7 @@ save_dialog (void)
   GtkWidget *frame;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as SGI"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("SGI"), PLUG_IN_BINARY, SAVE_PROC);
 
   frame = gimp_int_radio_group_new (TRUE, _("Compression type"),
                                     G_CALLBACK (gimp_radio_button_update),
@@ -676,7 +665,7 @@ save_dialog (void)
                                     NULL);
 
   gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 

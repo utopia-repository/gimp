@@ -4,9 +4,9 @@
  * gimpbrightnesscontrastconfig.c
  * Copyright (C) 2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -67,7 +66,7 @@ gimp_brightness_contrast_config_class_init (GimpBrightnessContrastConfigClass *k
   object_class->set_property       = gimp_brightness_contrast_config_set_property;
   object_class->get_property       = gimp_brightness_contrast_config_get_property;
 
-  viewable_class->default_stock_id = "gimp-tool-brightness-constrast";
+  viewable_class->default_stock_id = "gimp-tool-brightness-contrast";
 
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_BRIGHTNESS,
                                    "brightness",
@@ -135,27 +134,6 @@ gimp_brightness_contrast_config_set_property (GObject      *object,
 
 
 /*  public functions  */
-
-void
-gimp_brightness_contrast_config_set_node (GimpBrightnessContrastConfig *config,
-                                          GeglNode                     *node)
-{
-  gdouble brightness;
-  gdouble contrast;
-
-  g_return_if_fail (GIMP_IS_BRIGHTNESS_CONTRAST_CONFIG (config));
-  g_return_if_fail (GEGL_IS_NODE (node));
-
-  brightness = config->brightness / 2.0;
-  contrast   = (config->contrast < 0 ?
-                (config->contrast + 1.0) :
-                config->contrast * 4.0 + 1.0);
-
-  gegl_node_set (node,
-                 "brightness", brightness,
-                 "contrast",   contrast,
-                 NULL);
-}
 
 GimpLevelsConfig *
 gimp_brightness_contrast_config_to_levels_config (GimpBrightnessContrastConfig *config)

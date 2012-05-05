@@ -70,7 +70,6 @@ Description: Libraries for the GNU Image Manipulation Program
 
 Package: gimp
 Architecture: any
-Section: graphics
 Provides: gimp-helpbrowser, gimp-python
 Depends: libgimp2.0 (>= ${source:Upstream-Version}),
          libgimp2.0 (<= ${source:Upstream-Version}-z),
@@ -105,7 +104,6 @@ Description: The GNU Image Manipulation Program
 
 Package: gimp-data
 Architecture: all
-Section: graphics
 Recommends: gimp
 Depends: ${misc:Depends}
 Conflicts: gimp (<< 2.4.0~rc2-2),

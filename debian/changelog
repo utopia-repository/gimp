@@ -21,6 +21,8 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Rewrite copyright file in machine-readable format 1.0.
   * Pass -- -V -c4 to dh_makeshlibs.
   * Rename all .files files to .install, and stop calling dh_movefiles.
+  * Rename BUILDDIR to “builddir”, as “build” is now a real directory in
+    the distribution.
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 17:27:31 +0200
 

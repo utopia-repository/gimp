@@ -4,9 +4,9 @@
  * reading and writing code Copyright (C) 1997 Peter Kirchgessner
  * e-mail: peter@kirchgessner.net, WWW: http://www.kirchgessner.net
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -53,6 +52,7 @@
 #define LOAD_PROC      "file-fits-load"
 #define SAVE_PROC      "file-fits-save"
 #define PLUG_IN_BINARY "file-fits"
+#define PLUG_IN_ROLE   "gimp-file-fits"
 
 
 /* Load info */
@@ -140,7 +140,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING,   "raw-filename", "The name of the file to load" },
   };
@@ -151,7 +151,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -281,7 +281,7 @@ run (const gchar      *name,
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
 	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
-	  export = gimp_export_image (&image_ID, &drawable_ID, "FITS",
+	  export = gimp_export_image (&image_ID, &drawable_ID, NULL,
 				      (GIMP_EXPORT_CAN_HANDLE_RGB |
 				       GIMP_EXPORT_CAN_HANDLE_GRAY |
 				       GIMP_EXPORT_CAN_HANDLE_INDEXED));
@@ -529,7 +529,7 @@ create_new_image (const gchar        *filename,
   gimp_image_undo_disable (image_ID);
   *layer_ID = gimp_layer_new (image_ID, _("Background"), width, height,
 			      dtype, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image_ID, *layer_ID, 0);
+  gimp_image_insert_layer (image_ID, *layer_ID, -1, 0);
 
   *drawable = gimp_drawable_get (*layer_ID);
   gimp_pixel_rgn_init (pixel_rgn, *drawable, 0, 0, (*drawable)->width,
@@ -690,6 +690,7 @@ load_fits (const gchar *filename,
 	}
       g_free (linebuf);
     }
+  gimp_progress_update (1.0);
 
   g_free (data);
 
@@ -779,11 +780,9 @@ save_direct (FITS_FILE *ofp,
   guchar *data, *src;
   GimpPixelRgn pixel_rgn;
   GimpDrawable *drawable;
-  GimpImageType drawable_type;
   FITS_HDU_LIST *hdu;
 
   drawable = gimp_drawable_get (drawable_ID);
-  drawable_type = gimp_drawable_type (drawable_ID);
   width = drawable->width;
   height = drawable->height;
   bpp = drawable->bpp;       /* Bytes per pixel */
@@ -833,6 +832,7 @@ save_direct (FITS_FILE *ofp,
                                   (gdouble) (height * bpp));
 	}
     }
+  gimp_progress_update (1.0);
 
   nbytes = nbytes % FITS_RECORD_SIZE;
   if (nbytes)
@@ -869,13 +869,11 @@ save_index (FITS_FILE *ofp,
   guchar *channels[3];
   GimpPixelRgn pixel_rgn;
   GimpDrawable *drawable;
-  GimpImageType drawable_type;
   FITS_HDU_LIST *hdu;
 
   channels[0] = red;   channels[1] = green;   channels[2] = blue;
 
   drawable = gimp_drawable_get (drawable_ID);
-  drawable_type = gimp_drawable_type (drawable_ID);
   width = drawable->width;
   height = drawable->height;
   bpp = drawable->bpp;       /* Bytes per pixel */
@@ -957,6 +955,7 @@ save_index (FITS_FILE *ofp,
 	gimp_progress_update ((gdouble) (i + channel * height) /
 			      (gdouble) (height * (bpp + 2)));
     }
+  gimp_progress_update (1.0);
 
   nbytes = nbytes % FITS_RECORD_SIZE;
   if (nbytes)
@@ -990,7 +989,7 @@ load_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Load FITS File"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Load FITS File"), PLUG_IN_ROLE,
                             NULL, 0,
 			    gimp_standard_help_func, LOAD_PROC,
 
@@ -1008,10 +1007,10 @@ load_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox,
-		      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   frame = gimp_int_radio_group_new (TRUE, _("Replacement for undefined pixels"),
@@ -1042,7 +1041,7 @@ load_dialog (void)
 			      G_CALLBACK (gimp_radio_button_update),
 			      &plvals.compose, plvals.compose,
 
-			      _("None"),                 FALSE, NULL,
+			      C_("composing", "None"),   FALSE, NULL,
 			      "NAXIS=3, NAXIS3=2,...,4", TRUE,  NULL,
 
 			      NULL);
@@ -1061,7 +1060,7 @@ load_dialog (void)
 static void
 show_fits_errors (void)
 {
-  gchar *msg;
+  const gchar *msg;
 
   /* Write out error messages of FITS-Library */
   while ((msg = fits_get_error ()) != NULL)

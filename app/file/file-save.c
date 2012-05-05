@@ -4,9 +4,9 @@
  *
  * file-save.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,7 +32,7 @@
 #include <unistd.h>
 #endif
 
-#include <glib-object.h>
+#include <gegl.h>
 #include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
@@ -60,6 +59,7 @@
 
 #include "file-save.h"
 #include "file-utils.h"
+#include "gimp-file.h"
 
 #include "gimp-intl.h"
 
@@ -67,13 +67,14 @@
 /*  public functions  */
 
 GimpPDBStatusType
-file_save (GimpImage           *image,
-           GimpContext         *context,
+file_save (Gimp                *gimp,
+           GimpImage           *image,
            GimpProgress        *progress,
            const gchar         *uri,
            GimpPlugInProcedure *file_proc,
            GimpRunMode          run_mode,
-           gboolean             save_a_copy,
+           gboolean             change_saved_state,
+           gboolean             export,
            GError             **error)
 {
   GimpDrawable      *drawable;
@@ -83,8 +84,8 @@ file_save (GimpImage           *image,
   gint32             image_ID;
   gint32             drawable_ID;
 
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (GIMP_IS_IMAGE (image), GIMP_PDB_CALLING_ERROR);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress),
                         GIMP_PDB_CALLING_ERROR);
   g_return_val_if_fail (uri != NULL, GIMP_PDB_CALLING_ERROR);
@@ -107,16 +108,16 @@ file_save (GimpImage           *image,
         {
           if (! g_file_test (filename, G_FILE_TEST_IS_REGULAR))
             {
-              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                           "%s", _("Not a regular file"));
+              g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+				   _("Not a regular file"));
               status = GIMP_PDB_EXECUTION_ERROR;
               goto out;
             }
 
           if (g_access (filename, W_OK) != 0)
             {
-              g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES,
-                           "%s", g_strerror (errno));
+              g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_ACCES,
+                                   g_strerror (errno));
               status = GIMP_PDB_EXECUTION_ERROR;
               goto out;
             }
@@ -135,8 +136,9 @@ file_save (GimpImage           *image,
 
   return_vals =
     gimp_pdb_execute_procedure_by_name (image->gimp->pdb,
-                                        context, progress, error,
-                                        GIMP_OBJECT (file_proc)->name,
+                                        gimp_get_user_context (gimp),
+                                        progress, error,
+                                        gimp_object_get_name (file_proc),
                                         GIMP_TYPE_INT32,       run_mode,
                                         GIMP_TYPE_IMAGE_ID,    image_ID,
                                         GIMP_TYPE_DRAWABLE_ID, drawable_ID,
@@ -153,27 +155,41 @@ file_save (GimpImage           *image,
       GimpDocumentList *documents;
       GimpImagefile    *imagefile;
 
-      if (save_a_copy)
+      if (change_saved_state)
         {
-          /*  remember the "save-a-copy" filename for the next invocation  */
-          g_object_set_data_full (G_OBJECT (image), "gimp-image-save-a-copy",
-                                  g_strdup (uri),
-                                  (GDestroyNotify) g_free);
-        }
-      else
-        {
-          /*  reset the "save-a-copy" filename when the image URI changes  */
-          if (strcmp (uri, gimp_image_get_uri (image)))
-            g_object_set_data (G_OBJECT (image),
-                               "gimp-image-save-a-copy", NULL);
-
           gimp_image_set_uri (image, uri);
           gimp_image_set_save_proc (image, file_proc);
 
+          /* Forget the import source when we save. We interpret a
+           * save as that the user is not interested in being able
+           * to quickly export back to the original any longer
+           */
+          gimp_image_set_imported_uri (image, NULL);
+
           gimp_image_clean_all (image);
         }
+      else if (export)
+        {
+          /* Remeber the last entered Export URI for the image. We
+           * only need to do this explicitly when exporting. It
+           * happens implicitly when saving since the GimpObject name
+           * of a GimpImage is the last-save URI
+           */
+          gimp_image_set_exported_uri (image, uri);
 
-      gimp_image_saved (image, uri);
+          /* An image can not be considered both exported and imported
+           * at the same time, so stop consider it as imported now
+           * that we consider it exported.
+           */
+          gimp_image_set_imported_uri (image, NULL);
+
+          gimp_image_export_clean_all (image);
+        }
+
+      if (export)
+        gimp_image_exported (image, uri);
+      else
+        gimp_image_saved (image, uri);
 
       documents = GIMP_DOCUMENT_LIST (image->gimp->documents);
       imagefile = gimp_document_list_add_uri (documents,

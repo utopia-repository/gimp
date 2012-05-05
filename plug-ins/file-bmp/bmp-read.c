@@ -5,9 +5,9 @@
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ----------------------------------------------------------------------------
  */
 
@@ -27,10 +26,8 @@
 #include <string.h>
 
 #include <glib/gstdio.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <libgimp/gimp.h>
-#include <libgimp/gimppixbuf.h>
 
 #include "bmp.h"
 
@@ -165,12 +162,13 @@ ReadBMP (const gchar  *name,
 
   if (!ReadOK (fd, magick, 2) || !(!strncmp (magick, "BA", 2) ||
      !strncmp (magick, "BM", 2) || !strncmp (magick, "IC", 2) ||
-     !strncmp (magick, "PI", 2) || !strncmp (magick, "CI", 2) ||
+     !strncmp (magick, "PT", 2) || !strncmp (magick, "CI", 2) ||
      !strncmp (magick, "CP", 2)))
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
                    gimp_filename_to_utf8 (filename));
+      fclose (fd);
       return -1;
     }
 
@@ -386,7 +384,7 @@ ReadBMP (const gchar  *name,
           g_object_unref (pixbuf);
 
           gimp_image_set_filename (image_ID, filename);
-          gimp_image_add_layer (image_ID, layer_ID, -1);
+          gimp_image_insert_layer (image_ID, layer_ID, -1, -1);
 
           return image_ID;
         }
@@ -652,7 +650,7 @@ ReadImage (FILE                  *fd,
 
   gimp_image_set_filename (image, filename);
 
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
   drawable = gimp_drawable_get (layer);
 
   /* use g_malloc0 to initialize the dest buffer so that unspecified
@@ -691,41 +689,41 @@ ReadImage (FILE                  *fd,
                                     (gdouble) max_progress);
           }
 
-	if (channels == 4)
-	  {
-	    gboolean  has_alpha = FALSE;
+        if (channels == 4)
+          {
+            gboolean  has_alpha = FALSE;
 
-	    /* at least one pixel should have nonzero alpha */
-	    for (ypos = 0; ypos < height; ypos++)
-	      {
-		temp = dest + (ypos * rowstride);
-		for (xpos = 0; xpos < width; xpos++)
-		  {
-		    if (temp[3])
-		      {
-			has_alpha = TRUE;
-			break;
-		      }
-		    temp += 4;
-		  }
-		if (has_alpha)
-		  break;
-	      }
+            /* at least one pixel should have nonzero alpha */
+            for (ypos = 0; ypos < height; ypos++)
+              {
+                temp = dest + (ypos * rowstride);
+                for (xpos = 0; xpos < width; xpos++)
+                  {
+                    if (temp[3])
+                      {
+                        has_alpha = TRUE;
+                        break;
+                      }
+                    temp += 4;
+                  }
+                if (has_alpha)
+                  break;
+              }
 
-	    /* workaround unwanted behaviour when all alpha pixels are zero */
-	    if (!has_alpha)
-	      {
-		for (ypos = 0; ypos < height; ypos++)
-		  {
-		    temp = dest + (ypos * rowstride);
-		    for (xpos = 0; xpos < width; xpos++)
-		      {
-			temp[3] = 255;
-			temp += 4;
-		      }
-		  }
-	      }
-	  }
+            /* workaround unwanted behaviour when all alpha pixels are zero */
+            if (!has_alpha)
+              {
+                for (ypos = 0; ypos < height; ypos++)
+                  {
+                    temp = dest + (ypos * rowstride);
+                    for (xpos = 0; xpos < width; xpos++)
+                      {
+                        temp[3] = 255;
+                        temp += 4;
+                      }
+                  }
+              }
+          }
       }
       break;
 
@@ -934,7 +932,7 @@ ReadImage (FILE                  *fd,
         gimp_cmap[j++] = cmap[i][2];
       }
 
-  gimp_progress_update (1);
+  gimp_progress_update (1.0);
 
   gimp_pixel_rgn_init (&pixel_rgn, drawable,
                        0, 0, drawable->width, drawable->height, TRUE, FALSE);

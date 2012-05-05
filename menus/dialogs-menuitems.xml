@@ -17,15 +17,16 @@
   <separator />
   <menuitem action="dialogs-colors" />
   <menuitem action="dialogs-brushes" />
+  <menuitem action="dialogs-dynamics" />
   <menuitem action="dialogs-patterns" />
   <menuitem action="dialogs-gradients" />
   <menuitem action="dialogs-palettes" />
   <menuitem action="dialogs-fonts" />
+  <menuitem action="dialogs-tool-presets" />
   <menuitem action="dialogs-buffers" />
   <separator />
   <menuitem action="dialogs-images" />
   <menuitem action="dialogs-document-history" />
   <menuitem action="dialogs-templates" />
-  <menuitem action="dialogs-tools" />
   <menuitem action="dialogs-error-console" />
 </menuitems>

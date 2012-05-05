@@ -11,9 +11,9 @@
  * Email: ddunbar@diads.com
  * WWW:   http://millennium.diads.com/gimp/
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,8 +22,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Version 1.0:
@@ -63,6 +62,7 @@
 
 #define SAVE_PROC      "file-gtm-save"
 #define PLUG_IN_BINARY "file-html-table"
+#define PLUG_IN_ROLE   "gimp-file-html-table"
 
 /* Typedefs */
 
@@ -140,7 +140,7 @@ query (void)
 {
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -154,7 +154,7 @@ query (void)
                           "Daniel Dunbar",
                           "1998",
                           _("HTML table"),
-			  "RGB*, GRAY*",
+                          "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
@@ -190,13 +190,13 @@ run (const gchar      *name,
   if (save_dialog (param[1].data.d_int32))
     {
       if (save_image (param[3].data.d_string, drawable, &error))
-	{
-	  gimp_set_data (SAVE_PROC, &gtmvals, sizeof (GTMValues));
-	}
+        {
+          gimp_set_data (SAVE_PROC, &gtmvals, sizeof (GTMValues));
+        }
       else
-	{
-	  status = GIMP_PDB_EXECUTION_ERROR;
-	}
+        {
+          status = GIMP_PDB_EXECUTION_ERROR;
+        }
     }
   else
     {
@@ -215,7 +215,7 @@ run (const gchar      *name,
 
 static gboolean
 save_image (const gchar   *filename,
-	    GimpDrawable  *drawable,
+            GimpDrawable  *drawable,
             GError       **error)
 {
   gint          row,col, cols, rows, x, y;
@@ -235,6 +235,7 @@ save_image (const gchar   *filename,
       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
                    _("Could not open '%s' for writing: %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
+      g_free (palloc);
       return FALSE;
     }
 
@@ -373,6 +374,7 @@ save_image (const gchar   *filename,
 
       gimp_progress_update ((double) y / (double) rows);
     }
+  gimp_progress_update (1.0);
 
   if (gtmvals.fulldoc)
     fprintf (fp, "</TABLE></BODY></HTML>\n");
@@ -406,26 +408,12 @@ save_dialog (gint32 image_ID)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Save as HTML table"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("HTML table"), PLUG_IN_BINARY, SAVE_PROC);
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
-		      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      main_vbox, TRUE, TRUE, 0);
 
   if (gimp_image_width (image_ID) * gimp_image_height (image_ID) > 4096)
     {
@@ -437,7 +425,7 @@ save_dialog (gint32 image_ID)
       gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
       gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
 
-      hbox = gtk_hbox_new (FALSE, 12);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
       gtk_container_add (GTK_CONTAINER (frame), hbox);
 
       eek = gtk_image_new_from_stock (GIMP_STOCK_WILBER_EEK,
@@ -445,8 +433,8 @@ save_dialog (gint32 image_ID)
       gtk_box_pack_start (GTK_BOX (hbox), eek, FALSE, FALSE, 0);
 
       label = gtk_label_new (_("You are about to create a huge\n"
-			       "HTML file which will most likely\n"
-			       "crash your browser."));
+                               "HTML file which will most likely\n"
+                               "crash your browser."));
       gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
 
       gtk_widget_show_all (frame);
@@ -456,7 +444,7 @@ save_dialog (gint32 image_ID)
   frame = gimp_frame_new (_("HTML Page Options"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -466,10 +454,10 @@ save_dialog (gint32 image_ID)
   gtk_widget_show (toggle);
 
   gimp_help_set_help_data (toggle,
-			   _("If checked GTM will output a full HTML document "
-			     "with <HTML>, <BODY>, etc. tags instead of just "
-			     "the table html."),
-			   NULL);
+                           _("If checked GTM will output a full HTML document "
+                             "with <HTML>, <BODY>, etc. tags instead of just "
+                             "the table html."),
+                           NULL);
 
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
@@ -493,10 +481,10 @@ save_dialog (gint32 image_ID)
   gtk_widget_show (toggle);
 
   gimp_help_set_help_data (toggle,
-			   _("If checked GTM will replace any rectangular "
-			     "sections of identically colored blocks with one "
-			     "large cell with ROWSPAN and COLSPAN values."),
-			   NULL);
+                           _("If checked GTM will replace any rectangular "
+                             "sections of identically colored blocks with one "
+                             "large cell with ROWSPAN and COLSPAN values."),
+                           NULL);
 
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
@@ -508,11 +496,11 @@ save_dialog (gint32 image_ID)
   gtk_widget_show (toggle);
 
   gimp_help_set_help_data (toggle,
-			   _("Checking this tag will cause GTM to leave no "
-			     "whitespace between the TD tags and the "
-			     "cellcontent.  This is only necessary for pixel "
-			     "level positioning control."),
-			   NULL);
+                           _("Checking this tag will cause GTM to leave no "
+                             "whitespace between the TD tags and the "
+                             "cellcontent.  This is only necessary for pixel "
+                             "level positioning control."),
+                           NULL);
 
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
@@ -524,9 +512,9 @@ save_dialog (gint32 image_ID)
   gtk_widget_show (toggle);
 
   gimp_help_set_help_data (toggle,
-			   _("Check if you would like to have the table "
-			     "captioned."),
-			   NULL);
+                           _("Check if you would like to have the table "
+                             "captioned."),
+                           NULL);
 
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
@@ -536,7 +524,7 @@ save_dialog (gint32 image_ID)
   gtk_widget_set_size_request (entry, 200, -1);
   gtk_entry_set_text (GTK_ENTRY (entry), gtmvals.captiontxt);
   gtk_table_attach (GTK_TABLE (table), entry, 1, 2, 2, 3,
-		    GTK_FILL | GTK_EXPAND, 0, 0, 0);
+                    GTK_FILL | GTK_EXPAND, 0, 0, 0);
   gtk_widget_show (entry);
 
   gimp_help_set_help_data (entry, _("The text for the table caption."), NULL);
@@ -545,15 +533,16 @@ save_dialog (gint32 image_ID)
                     G_CALLBACK (gtm_caption_callback),
                     NULL);
 
-  g_object_set_data (G_OBJECT (toggle), "set_sensitive", entry);
-  gtk_widget_set_sensitive (entry, gtmvals.caption);
+  g_object_bind_property (toggle, "active",
+                          entry,  "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   entry = gtk_entry_new ();
   gtk_widget_set_size_request (entry, 200, -1);
   gtk_entry_set_text (GTK_ENTRY (entry), gtmvals.cellcontent);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
-			     _("C_ell content:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("C_ell content:"), 0.0, 0.5,
+                             entry, 1, FALSE);
   gtk_widget_show (entry);
 
   gimp_help_set_help_data (entry, _("The text to go into each cell."), NULL);
@@ -575,14 +564,14 @@ save_dialog (gint32 image_ID)
   gtk_container_add (GTK_CONTAINER (frame), table);
 
   spinbutton = gimp_spin_button_new (&adj, gtmvals.border,
-				     0, 1000, 1, 10, 0, 1, 0);
+                                     0, 1000, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-			     _("_Border:"), 0.0, 0.5,
-			     spinbutton, 1, TRUE);
+                             _("_Border:"), 0.0, 0.5,
+                             spinbutton, 1, TRUE);
 
   gimp_help_set_help_data (spinbutton,
-			   _("The number of pixels in the table border."),
-			   NULL);
+                           _("The number of pixels in the table border."),
+                           NULL);
 
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -592,13 +581,13 @@ save_dialog (gint32 image_ID)
   gtk_widget_set_size_request (entry, 60, -1);
   gtk_entry_set_text (GTK_ENTRY (entry), gtmvals.clwidth);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-			     _("_Width:"), 0.0, 0.5,
-			     entry, 1, TRUE);
+                             _("_Width:"), 0.0, 0.5,
+                             entry, 1, TRUE);
 
   gimp_help_set_help_data (entry,
-			   _("The width for each table cell.  "
-			     "Can be a number or a percent."),
-			   NULL);
+                           _("The width for each table cell.  "
+                             "Can be a number or a percent."),
+                           NULL);
 
   g_signal_connect (entry, "changed",
                     G_CALLBACK (gtm_clwidth_callback),
@@ -608,39 +597,39 @@ save_dialog (gint32 image_ID)
   gtk_widget_set_size_request (entry, 60, -1);
   gtk_entry_set_text (GTK_ENTRY (entry), gtmvals.clheight);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
-			     _("_Height:"), 0.0, 0.5,
-			     entry, 1, TRUE);
+                             _("_Height:"), 0.0, 0.5,
+                             entry, 1, TRUE);
 
   gimp_help_set_help_data (entry,
-			   _("The height for each table cell.  "
-			     "Can be a number or a percent."),
-			   NULL);
+                           _("The height for each table cell.  "
+                             "Can be a number or a percent."),
+                           NULL);
 
   g_signal_connect (entry, "changed",
                     G_CALLBACK (gtm_clheight_callback),
                     NULL);
 
   spinbutton = gimp_spin_button_new (&adj, gtmvals.cellpadding,
-				     0, 1000, 1, 10, 0, 1, 0);
+                                     0, 1000, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
-			     _("Cell-_padding:"), 0.0, 0.5,
-			     spinbutton, 1, TRUE);
+                             _("Cell-_padding:"), 0.0, 0.5,
+                             spinbutton, 1, TRUE);
 
   gimp_help_set_help_data (spinbutton,
-			   _("The amount of cellpadding."), NULL);
+                           _("The amount of cell padding."), NULL);
 
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &gtmvals.cellpadding);
 
   spinbutton = gimp_spin_button_new (&adj, gtmvals.cellspacing,
-				     0, 1000, 1, 10, 0, 1, 0);
+                                     0, 1000, 1, 10, 0, 1, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 4,
-			     _("Cell-_spacing:"), 0.0, 0.5,
-			     spinbutton, 1, TRUE);
+                             _("Cell-_spacing:"), 0.0, 0.5,
+                             spinbutton, 1, TRUE);
 
   gimp_help_set_help_data (spinbutton,
-			   _("The amount of cellspacing."), NULL);
+                           _("The amount of cell spacing."), NULL);
 
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
@@ -660,7 +649,7 @@ save_dialog (gint32 image_ID)
 
 static gboolean
 color_comp (guchar *buffer,
-	    guchar *buf2)
+            guchar *buf2)
 {
   return (buffer[0] == buf2[0] &&
           buffer[1] == buf2[1] &&
@@ -671,28 +660,28 @@ color_comp (guchar *buffer,
 
 static void
 gtm_caption_callback (GtkWidget *widget,
-		      gpointer   data)
+                      gpointer   data)
 {
   strncpy (gtmvals.captiontxt, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
 }
 
 static void
 gtm_cellcontent_callback (GtkWidget *widget,
-			  gpointer   data)
+                          gpointer   data)
 {
   strncpy (gtmvals.cellcontent, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
 }
 
 static void
 gtm_clwidth_callback (GtkWidget *widget,
-		      gpointer   data)
+                      gpointer   data)
 {
   strncpy (gtmvals.clwidth, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
 }
 
 static void
 gtm_clheight_callback (GtkWidget *widget,
-		       gpointer   data)
+                       gpointer   data)
 {
   strncpy (gtmvals.clheight, gtk_entry_get_text (GTK_ENTRY (widget)), 255);
 }

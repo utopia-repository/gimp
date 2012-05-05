@@ -2,11 +2,10 @@
 gimpconfig-utils
 
 <!-- ##### SECTION Short_Description ##### -->
-Miscellaneous utility functions for libgimpconfig.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Miscellaneous utility functions for libgimpconfig.
 
 </para>
 

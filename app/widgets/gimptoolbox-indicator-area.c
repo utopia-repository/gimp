@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,7 @@
 
 #include "widgets-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpbrush.h"
 #include "core/gimpcontext.h"
 #include "core/gimpgradient.h"
@@ -37,6 +37,7 @@
 #include "gimpview.h"
 #include "gimptoolbox.h"
 #include "gimptoolbox-indicator-area.h"
+#include "gimpwindowstrategy.h"
 
 #include "gimp-intl.h"
 
@@ -52,9 +53,13 @@ brush_preview_clicked (GtkWidget       *widget,
                        GdkModifierType  state,
                        GimpToolbox     *toolbox)
 {
-  gimp_dialog_factory_dialog_raise (GIMP_DOCK (toolbox)->dialog_factory,
-                                    gtk_widget_get_screen (widget),
-                                    "gimp-brush-grid|gimp-brush-list", -1);
+  GimpContext *context = gimp_toolbox_get_context (toolbox);
+
+  gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
+                                             context->gimp,
+                                             gimp_dock_get_dialog_factory (GIMP_DOCK (toolbox)),
+                                             gtk_widget_get_screen (widget),
+                                             "gimp-brush-grid|gimp-brush-list");
 }
 
 static void
@@ -74,9 +79,13 @@ pattern_preview_clicked (GtkWidget       *widget,
                          GdkModifierType  state,
                          GimpToolbox     *toolbox)
 {
-  gimp_dialog_factory_dialog_raise (GIMP_DOCK (toolbox)->dialog_factory,
-                                    gtk_widget_get_screen (widget),
-                                    "gimp-pattern-grid|gimp-pattern-list", -1);
+  GimpContext *context = gimp_toolbox_get_context (toolbox);
+
+  gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
+                                             context->gimp,
+                                             gimp_dock_get_dialog_factory (GIMP_DOCK (toolbox)),
+                                             gtk_widget_get_screen (widget),
+                                             "gimp-pattern-grid|gimp-pattern-list");
 }
 
 static void
@@ -96,9 +105,13 @@ gradient_preview_clicked (GtkWidget       *widget,
                           GdkModifierType  state,
                           GimpToolbox     *toolbox)
 {
-  gimp_dialog_factory_dialog_raise (GIMP_DOCK (toolbox)->dialog_factory,
-                                    gtk_widget_get_screen (widget),
-                                    "gimp-gradient-list|gimp-gradient-grid", -1);
+  GimpContext *context = gimp_toolbox_get_context (toolbox);
+
+  gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (context->gimp)),
+                                             context->gimp,
+                                             gimp_dock_get_dialog_factory (GIMP_DOCK (toolbox)),
+                                             gtk_widget_get_screen (widget),
+                                             "gimp-gradient-list|gimp-gradient-grid");
 }
 
 static void
@@ -127,7 +140,7 @@ gimp_toolbox_indicator_area_create (GimpToolbox *toolbox)
 
   g_return_val_if_fail (GIMP_IS_TOOLBOX (toolbox), NULL);
 
-  context = GIMP_DOCK (toolbox)->context;
+  context = gimp_toolbox_get_context (toolbox);
 
   indicator_table = gtk_table_new (2, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (indicator_table), CELL_SPACING);

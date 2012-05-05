@@ -7,9 +7,9 @@
  * partly based on app/nav_window
  * Copyright (C) 1999 Andy Thomas <alt@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,12 +18,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -53,9 +53,12 @@
 #include "gimp-intl.h"
 
 
+#define UPDATE_DELAY 300 /* From GtkRange in GTK+ 2.22 */
+
+
 static void        gimp_navigation_editor_docked_iface_init (GimpDockedInterface  *iface);
 
-static void        gimp_navigation_editor_destroy           (GtkObject            *object);
+static void        gimp_navigation_editor_dispose           (GObject              *object);
 
 static void        gimp_navigation_editor_set_context       (GimpDocked           *docked,
                                                              GimpContext          *context);
@@ -104,9 +107,9 @@ G_DEFINE_TYPE_WITH_CODE (GimpNavigationEditor, gimp_navigation_editor,
 static void
 gimp_navigation_editor_class_init (GimpNavigationEditorClass *klass)
 {
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gtk_object_class->destroy = gimp_navigation_editor_destroy;
+  object_class->dispose = gimp_navigation_editor_dispose;
 }
 
 static void
@@ -120,8 +123,9 @@ gimp_navigation_editor_init (GimpNavigationEditor *editor)
 {
   GtkWidget *frame;
 
-  editor->context = NULL;
-  editor->shell   = NULL;
+  editor->context       = NULL;
+  editor->shell         = NULL;
+  editor->scale_timeout = 0;
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -149,25 +153,31 @@ gimp_navigation_editor_init (GimpNavigationEditor *editor)
 }
 
 static void
-gimp_navigation_editor_destroy (GtkObject *object)
+gimp_navigation_editor_dispose (GObject *object)
 {
   GimpNavigationEditor *editor = GIMP_NAVIGATION_EDITOR (object);
 
   if (editor->shell)
     gimp_navigation_editor_set_shell (editor, NULL);
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  if (editor->scale_timeout)
+    {
+      g_source_remove (editor->scale_timeout);
+      editor->scale_timeout = 0;
+    }
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
-gimp_navigation_editor_context_changed (GimpContext          *context,
+gimp_navigation_editor_display_changed (GimpContext          *context,
                                         GimpDisplay          *display,
                                         GimpNavigationEditor *editor)
 {
   GimpDisplayShell *shell = NULL;
 
   if (display)
-    shell = GIMP_DISPLAY_SHELL (display->shell);
+    shell = gimp_display_get_shell (display);
 
   gimp_navigation_editor_set_shell (editor, shell);
 }
@@ -178,21 +188,20 @@ gimp_navigation_editor_set_context (GimpDocked  *docked,
 {
   GimpNavigationEditor *editor  = GIMP_NAVIGATION_EDITOR (docked);
   GimpDisplay          *display = NULL;
-  GimpDisplayShell     *shell   = NULL;
 
   if (editor->context)
     {
       g_signal_handlers_disconnect_by_func (editor->context,
-                                            gimp_navigation_editor_context_changed,
+                                            gimp_navigation_editor_display_changed,
                                             editor);
     }
 
   editor->context = context;
 
-  if (context)
+  if (editor->context)
     {
       g_signal_connect (context, "display-changed",
-                        G_CALLBACK (gimp_navigation_editor_context_changed),
+                        G_CALLBACK (gimp_navigation_editor_display_changed),
                         editor);
 
       display = gimp_context_get_display (context);
@@ -201,10 +210,9 @@ gimp_navigation_editor_set_context (GimpDocked  *docked,
   gimp_view_renderer_set_context (GIMP_VIEW (editor->view)->renderer,
                                   context);
 
-  if (display)
-    shell = GIMP_DISPLAY_SHELL (display->shell);
-
-  gimp_navigation_editor_set_shell (editor, shell);
+  gimp_navigation_editor_display_changed (editor->context,
+                                          display,
+                                          editor);
 }
 
 
@@ -279,14 +287,15 @@ gimp_navigation_editor_popup (GimpDisplayShell *shell,
     gint border_width, border_height;
     gint screen_click_x, screen_click_y;
 
-    gdk_window_get_origin (widget->window, &x_origin, &y_origin);
+    gdk_window_get_origin (gtk_widget_get_window (widget),
+                           &x_origin, &y_origin);
 
     screen_click_x = x_origin + click_x;
     screen_click_y = y_origin + click_y;
-    border_width   = style->xthickness * 4;
-    border_height  = style->ythickness * 4;
-    popup_width    = GIMP_VIEW (view)->renderer->width  - border_width;
-    popup_height   = GIMP_VIEW (view)->renderer->height - border_height;
+    border_width   = 2 * style->xthickness;
+    border_height  = 2 * style->ythickness;
+    popup_width    = GIMP_VIEW (view)->renderer->width  - 2 * border_width;
+    popup_height   = GIMP_VIEW (view)->renderer->height - 2 * border_height;
 
     x = screen_click_x -
         border_width -
@@ -347,7 +356,7 @@ gimp_navigation_editor_new_private (GimpMenuFactory  *menu_factory,
   if (shell)
     {
       Gimp              *gimp   = shell->display->gimp;
-      GimpDisplayConfig *config = GIMP_DISPLAY_CONFIG (gimp->config);
+      GimpDisplayConfig *config = shell->display->config;
       GimpView          *view;
 
       editor = g_object_new (GIMP_TYPE_NAVIGATION_EDITOR, NULL);
@@ -406,7 +415,7 @@ gimp_navigation_editor_new_private (GimpMenuFactory  *menu_factory,
 
       /* the zoom scale */
 
-      hbox = gtk_hbox_new (FALSE, 6);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
       gtk_box_pack_end (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
 
@@ -417,8 +426,8 @@ gimp_navigation_editor_new_private (GimpMenuFactory  *menu_factory,
                         G_CALLBACK (gimp_navigation_editor_zoom_adj_changed),
                         editor);
 
-      hscale = gtk_hscale_new (GTK_ADJUSTMENT (editor->zoom_adjustment));
-      gtk_range_set_update_policy (GTK_RANGE (hscale), GTK_UPDATE_DELAYED);
+      hscale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                              editor->zoom_adjustment);
       gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
       gtk_box_pack_start (GTK_BOX (hbox), hscale, TRUE, TRUE, 0);
       gtk_widget_show (hscale);
@@ -468,8 +477,10 @@ gimp_navigation_editor_set_shell (GimpNavigationEditor *editor,
 
   if (editor->shell)
     {
+      GimpImage *image = gimp_display_get_image (shell->display);
+
       gimp_view_set_viewable (GIMP_VIEW (editor->view),
-                              GIMP_VIEWABLE (shell->display->image));
+                              GIMP_VIEWABLE (image));
 
       g_signal_connect (editor->shell, "scaled",
                         G_CALLBACK (gimp_navigation_editor_shell_scaled),
@@ -489,9 +500,9 @@ gimp_navigation_editor_set_shell (GimpNavigationEditor *editor,
       gtk_widget_set_sensitive (GTK_WIDGET (editor), FALSE);
     }
 
-  if (GIMP_EDITOR (editor)->ui_manager)
-    gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                            GIMP_EDITOR (editor)->popup_data);
+  if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+    gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                            gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
 }
 
 static gboolean
@@ -517,11 +528,10 @@ gimp_navigation_editor_marker_changed (GimpNavigationView   *view,
 {
   if (editor->shell)
     {
-      GimpDisplayShell *shell = editor->shell;
-
-      gimp_display_shell_scroll_center_image_coordinate (shell,
-                                                         x + width / 2,
-                                                         y + height / 2);
+      if (gimp_display_get_image (editor->shell->display))
+        gimp_display_shell_scroll_center_image_coordinate (editor->shell,
+                                                           x + width / 2,
+                                                           y + height / 2);
     }
 }
 
@@ -534,10 +544,11 @@ gimp_navigation_editor_zoom (GimpNavigationView   *view,
 
   if (editor->shell)
     {
-      gimp_display_shell_scale (editor->shell,
-                                direction,
-                                0.0,
-                                GIMP_ZOOM_FOCUS_BEST_GUESS);
+      if (gimp_display_get_image (editor->shell->display))
+        gimp_display_shell_scale (editor->shell,
+                                  direction,
+                                  0.0,
+                                  GIMP_ZOOM_FOCUS_BEST_GUESS);
     }
 }
 
@@ -572,29 +583,52 @@ gimp_navigation_editor_scroll (GimpNavigationView   *view,
         {
         case GDK_SCROLL_LEFT:
         case GDK_SCROLL_UP:
-          value -= adj->page_increment / 2;
+          value -= gtk_adjustment_get_page_increment (adj) / 2;
           break;
 
         case GDK_SCROLL_RIGHT:
         case GDK_SCROLL_DOWN:
-          value += adj->page_increment / 2;
+          value += gtk_adjustment_get_page_increment (adj) / 2;
           break;
         }
 
-      value = CLAMP (value, adj->lower, adj->upper - adj->page_size);
+      value = CLAMP (value,
+                     gtk_adjustment_get_lower (adj),
+                     gtk_adjustment_get_upper (adj) -
+                     gtk_adjustment_get_page_size (adj));
 
       gtk_adjustment_set_value (adj, value);
     }
+}
+
+static gboolean
+gimp_navigation_editor_zoom_adj_changed_timeout (gpointer data)
+{
+  GimpNavigationEditor *editor = GIMP_NAVIGATION_EDITOR (data);
+  GtkAdjustment        *adj    = editor->zoom_adjustment;
+
+  if (gimp_display_get_image (editor->shell->display))
+    gimp_display_shell_scale (editor->shell,
+                              GIMP_ZOOM_TO,
+                              pow (2.0, gtk_adjustment_get_value (adj)),
+                              GIMP_ZOOM_FOCUS_BEST_GUESS);
+
+  editor->scale_timeout = 0;
+
+  return FALSE;
 }
 
 static void
 gimp_navigation_editor_zoom_adj_changed (GtkAdjustment        *adj,
                                          GimpNavigationEditor *editor)
 {
-  gimp_display_shell_scale (editor->shell,
-                            GIMP_ZOOM_TO,
-                            pow (2.0, gtk_adjustment_get_value (adj)),
-                            GIMP_ZOOM_FOCUS_BEST_GUESS);
+  if (editor->scale_timeout)
+    g_source_remove (editor->scale_timeout);
+
+  editor->scale_timeout =
+    g_timeout_add (UPDATE_DELAY,
+                   gimp_navigation_editor_zoom_adj_changed_timeout,
+                   editor);
 }
 
 static void
@@ -631,9 +665,9 @@ gimp_navigation_editor_shell_scaled (GimpDisplayShell     *shell,
 
   gimp_navigation_editor_update_marker (editor);
 
-  if (GIMP_EDITOR (editor)->ui_manager)
-    gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                            GIMP_EDITOR (editor)->popup_data);
+  if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+    gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                            gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
 }
 
 static void
@@ -642,21 +676,23 @@ gimp_navigation_editor_shell_scrolled (GimpDisplayShell     *shell,
 {
   gimp_navigation_editor_update_marker (editor);
 
-  if (GIMP_EDITOR (editor)->ui_manager)
-    gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                            GIMP_EDITOR (editor)->popup_data);
+  if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+    gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                            gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
 }
 
 static void
 gimp_navigation_editor_shell_reconnect (GimpDisplayShell     *shell,
                                         GimpNavigationEditor *editor)
 {
-  gimp_view_set_viewable (GIMP_VIEW (editor->view),
-                          GIMP_VIEWABLE (shell->display->image));
+  GimpImage *image = gimp_display_get_image (shell->display);
 
-  if (GIMP_EDITOR (editor)->ui_manager)
-    gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                            GIMP_EDITOR (editor)->popup_data);
+  gimp_view_set_viewable (GIMP_VIEW (editor->view),
+                          GIMP_VIEWABLE (image));
+
+  if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+    gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                            gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
 }
 
 static void

@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,15 @@
 
 #undef GIMP_DISABLE_DEPRECATED  /*  for GIMP_RGB_INTENSITY()  */
 #include "gimprgb.h"
+
+
+/**
+ * SECTION: gimprgb
+ * @title: GimpRGB
+ * @short_description: Definitions and Functions relating to RGB colors.
+ *
+ * Definitions and Functions relating to RGB colors.
+ **/
 
 
 /*
@@ -83,10 +91,10 @@ gimp_rgb_copy (const GimpRGB *rgb)
 
 /**
  * gimp_rgb_set:
- * @rgb: a #GimpRGB struct
- * @red:
- * @green:
- * @blue:
+ * @rgb:   a #GimpRGB struct
+ * @red:   the red component
+ * @green: the green component
+ * @blue:  the blue component
  *
  * Sets the red, green and blue components of @rgb and leaves the
  * alpha component unchanged. The color values should be between 0.0
@@ -108,8 +116,8 @@ gimp_rgb_set (GimpRGB *rgb,
 
 /**
  * gimp_rgb_set_alpha:
- * @rgb: a #GimpRGB struct
- * @alpha:
+ * @rgb:   a #GimpRGB struct
+ * @alpha: the alpha component
  *
  * Sets the alpha component of @rgb and leaves the RGB components unchanged.
  **/
@@ -124,10 +132,10 @@ gimp_rgb_set_alpha (GimpRGB *rgb,
 
 /**
  * gimp_rgb_set_uchar:
- * @rgb: a #GimpRGB struct
- * @red:
- * @green:
- * @blue:
+ * @rgb:   a #GimpRGB struct
+ * @red:   the red component
+ * @green: the green component
+ * @blue:  the blue component
  *
  * Sets the red, green and blue components of @rgb from 8bit values
  * (0 to 255) and leaves the alpha component unchanged.
@@ -258,7 +266,7 @@ gimp_rgb_gamma (GimpRGB *rgb,
 
 /**
  * gimp_rgb_luminance:
- * @rgb:
+ * @rgb: a #GimpRGB struct
  *
  * Return value: the luminous intensity of the range from 0.0 to 1.0.
  *
@@ -278,7 +286,7 @@ gimp_rgb_luminance (const GimpRGB *rgb)
 
 /**
  * gimp_rgb_luminance_uchar:
- * @rgb:
+ * @rgb: a #GimpRGB struct
  *
  * Return value: the luminous intensity in the range from 0 to 255.
  *
@@ -294,7 +302,7 @@ gimp_rgb_luminance_uchar (const GimpRGB *rgb)
 
 /**
  * gimp_rgb_intensity:
- * @rgb:
+ * @rgb: a #GimpRGB struct
  *
  * This function is deprecated! Use gimp_rgb_luminance() instead.
  *
@@ -314,7 +322,7 @@ gimp_rgb_intensity (const GimpRGB *rgb)
 
 /**
  * gimp_rgb_intensity_uchar:
- * @rgb:
+ * @rgb: a #GimpRGB struct
  *
  * This function is deprecated! Use gimp_rgb_luminance_uchar() instead.
  *
@@ -377,11 +385,11 @@ gimp_rgb_composite (GimpRGB              *color1,
 
 /**
  * gimp_rgba_set:
- * @rgba: a #GimpRGB struct
- * @red:
- * @green:
- * @blue:
- * @alpha:
+ * @rgba:  a #GimpRGB struct
+ * @red:   the red component
+ * @green: the green component
+ * @blue:  the blue component
+ * @alpha: the alpha component
  *
  * Sets the red, green, blue and alpha components of @rgb. The values
  * should be between 0.0 and 1.0 but there is no check to enforce this
@@ -404,11 +412,11 @@ gimp_rgba_set (GimpRGB *rgba,
 
 /**
  * gimp_rgba_set_uchar:
- * @rgba: a #GimpRGB struct
- * @red:
- * @green:
- * @blue:
- * @alpha:
+ * @rgba:  a #GimpRGB struct
+ * @red:   the red component
+ * @green: the green component
+ * @blue:  the blue component
+ * @alpha: the alpha component
  *
  * Sets the red, green, blue and alpha components of @rgb from 8bit
  * values (0 to 255).

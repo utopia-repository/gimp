@@ -4,9 +4,9 @@
  * GimpConfig object property dumper.
  * Copyright (C) 2001-2006  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,7 @@
 #include <unistd.h>
 #endif
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -237,9 +237,7 @@ static const gchar man_page_footer[] =
 "Per-user configuration file\n"
 "\n"
 ".SH \"SEE ALSO\"\n"
-".BR gimp (1),\n"
-".BR gimptool (1),\n"
-".BR gimp\\-remote (1)\n";
+".BR gimp (1)\n";
 
 
 static void
@@ -316,6 +314,7 @@ static const gchar display_format_description[] =
 "%W  image width in real-world units\n"
 "%h  image height in pixels\n"
 "%H  image height in real-world units\n"
+"%M  the image size expressed in megapixels\n"
 "%u  unit symbol\n"
 "%U  unit abbreviation\n\n";
 
@@ -481,7 +480,10 @@ dump_describe_param (GParamSpec *param_spec)
     g_warning ("FIXME: Can't tell anything about a %s.",
                g_type_name (param_spec->value_type));
 
-  return g_strdup_printf ("%s  %s", blurb, values);
+  if (strcmp (blurb, "") == 0)
+    return g_strdup_printf ("%s", values);
+  else
+    return g_strdup_printf ("%s  %s", blurb, values);
 }
 
 

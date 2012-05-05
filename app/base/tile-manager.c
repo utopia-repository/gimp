@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,6 +34,15 @@
 
 static void  tile_manager_allocate_tiles (TileManager *tm);
 
+#ifdef TILE_PROFILING
+extern gint tile_exist_peak;
+extern gint tile_exist_count;
+#endif
+
+#ifdef GIMP_UNSTABLE
+GList *tile_managers = NULL;
+#endif
+
 
 GType
 gimp_tile_manager_get_type (void)
@@ -49,6 +57,26 @@ gimp_tile_manager_get_type (void)
   return type;
 }
 
+#ifdef GIMP_UNSTABLE
+void
+tile_manager_exit (void)
+{
+  if (tile_managers)
+    {
+      g_warning ("%d tile managers leaked", g_list_length (tile_managers));
+
+      while (tile_managers)
+        {
+          g_printerr ("unref tile manager %p (%d x %d)\n",
+                      tile_managers->data,
+                      tile_manager_width (tile_managers->data),
+                      tile_manager_height (tile_managers->data));
+
+          tile_manager_unref (tile_managers->data);
+        }
+    }
+}
+#endif
 
 static inline gint
 tile_manager_get_tile_num (TileManager *tm,
@@ -61,7 +89,6 @@ tile_manager_get_tile_num (TileManager *tm,
 
   return (ypixel / TILE_HEIGHT) * tm->ntile_cols + (xpixel / TILE_WIDTH);
 }
-
 
 TileManager *
 tile_manager_new (gint width,
@@ -82,6 +109,10 @@ tile_manager_new (gint width,
   tm->ntile_rows  = (height + TILE_HEIGHT - 1) / TILE_HEIGHT;
   tm->ntile_cols  = (width  + TILE_WIDTH  - 1) / TILE_WIDTH;
   tm->cached_num  = -1;
+
+#ifdef GIMP_UNSTABLE
+  tile_managers = g_list_prepend (tile_managers, tm);
+#endif
 
   return tm;
 }
@@ -105,6 +136,10 @@ tile_manager_unref (TileManager *tm)
 
   if (tm->ref_count < 1)
     {
+#ifdef GIMP_UNSTABLE
+      tile_managers = g_list_remove (tile_managers, tm);
+#endif
+
       if (tm->cached_tile)
         tile_release (tm->cached_tile, FALSE);
 
@@ -121,6 +156,33 @@ tile_manager_unref (TileManager *tm)
 
       g_slice_free (TileManager, tm);
     }
+}
+
+TileManager *
+tile_manager_duplicate (TileManager *tm)
+{
+  TileManager *copy;
+  gint         n_tiles;
+  gint         i;
+
+  g_return_val_if_fail (tm != NULL, NULL);
+
+  copy = tile_manager_new (tm->width, tm->height, tm->bpp);
+
+  tile_manager_allocate_tiles (copy);
+
+  n_tiles = tm->ntile_rows * tm->ntile_cols;
+
+  for (i = 0; i < n_tiles; i++)
+    {
+      Tile *tile;
+
+      tile = tile_manager_get (tm, i, TRUE, FALSE);
+      tile_manager_map (copy, i, tile);
+      tile_release (tile, FALSE);
+    }
+
+  return copy;
 }
 
 void
@@ -174,7 +236,7 @@ tile_manager_get (TileManager *tm,
 
 #ifdef DEBUG_TILE_MANAGER
   if (G_UNLIKELY (tile->share_count && tile->write_count))
-    g_printerr (">> MEEPITY %d,%d <<\n", tile->share_count, tile->write_count);
+    g_printerr (">> MEEPITY %u,%d <<\n", tile->share_count, tile->write_count);
 #endif
 
   if (wantread)
@@ -200,6 +262,12 @@ tile_manager_get (TileManager *tm,
 
               new->size    = new->ewidth * new->eheight * new->bpp;
               new->data    = g_new (guchar, new->size);
+
+#ifdef TILE_PROFILING
+              tile_exist_count++;
+              if (tile_exist_count > tile_exist_peak)
+                tile_exist_peak = tile_exist_count;
+#endif
 
               if (tile->rowhint)
                 {
@@ -227,18 +295,19 @@ tile_manager_get (TileManager *tm,
               tm->tiles[tile_num] = tile;
             }
 
+	  /* must lock before marking dirty */
+	  tile_lock (tile);
           tile->write_count++;
           tile->dirty = TRUE;
         }
-#ifdef DEBUG_TILE_MANAGER
       else
         {
+#ifdef DEBUG_TILE_MANAGER
           if (G_UNLIKELY (tile->write_count))
             g_printerr ("STINK! r/o on r/w tile (%d)\n", tile->write_count);
-        }
 #endif
-
-      tile_lock (tile);
+          tile_lock (tile);
+        }
     }
 
   return tile;
@@ -340,7 +409,7 @@ tile_manager_invalidate_tile (TileManager  *tm,
       tm->cached_num  = -1;
     }
 
-  if (tile->listhead)
+  if (tile->cached)
     tile_cache_flush (tile);
 
   if (G_UNLIKELY (tile->share_count > 1))
@@ -365,6 +434,9 @@ tile_manager_invalidate_tile (TileManager  *tm,
     {
       g_free (tile->data);
       tile->data = NULL;
+#ifdef TILE_PROFILING
+      tile_exist_count--;
+#endif
     }
 
   if (tile->swap_offset != -1)
@@ -503,45 +575,6 @@ tile_manager_bpp (const TileManager *tm)
   return tm->bpp;
 }
 
-gint
-tile_manager_tiles_per_col (const TileManager *tm)
-{
-  g_return_val_if_fail (tm != NULL, 0);
-
-  return tm->ntile_cols;
-}
-
-gint
-tile_manager_tiles_per_row (const TileManager *tm)
-{
-  g_return_val_if_fail (tm != NULL, 0);
-
-  return tm->ntile_rows;
-}
-
-void
-tile_manager_get_offsets (const TileManager *tm,
-                          gint              *x,
-                          gint              *y)
-{
-  g_return_if_fail (tm != NULL);
-  g_return_if_fail (x != NULL && y != NULL);
-
-  *x = tm->x;
-  *y = tm->y;
-}
-
-void
-tile_manager_set_offsets (TileManager *tm,
-                          gint         x,
-                          gint         y)
-{
-  g_return_if_fail (tm != NULL);
-
-  tm->x = x;
-  tm->y = y;
-}
-
 gint64
 tile_manager_get_memsize (const TileManager *tm,
                           gboolean           sparse)
@@ -666,13 +699,13 @@ tile_manager_map_over_tile (TileManager *tm,
 }
 
 void
-read_pixel_data (TileManager *tm,
-                 gint         x1,
-                 gint         y1,
-                 gint         x2,
-                 gint         y2,
-                 guchar      *buffer,
-                 guint        stride)
+tile_manager_read_pixel_data (TileManager *tm,
+                              gint         x1,
+                              gint         y1,
+                              gint         x2,
+                              gint         y2,
+                              guchar      *buffer,
+                              guint        stride)
 {
   guint x, y;
 
@@ -708,13 +741,13 @@ read_pixel_data (TileManager *tm,
 }
 
 void
-write_pixel_data (TileManager  *tm,
-                  gint          x1,
-                  gint          y1,
-                  gint          x2,
-                  gint          y2,
-                  const guchar *buffer,
-                  guint         stride)
+tile_manager_write_pixel_data (TileManager  *tm,
+                               gint          x1,
+                               gint          y1,
+                               gint          x2,
+                               gint          y2,
+                               const guchar *buffer,
+                               guint         stride)
 {
   guint x, y;
 
@@ -750,10 +783,10 @@ write_pixel_data (TileManager  *tm,
 }
 
 void
-read_pixel_data_1 (TileManager *tm,
-                   gint         x,
-                   gint         y,
-                   guchar      *buffer)
+tile_manager_read_pixel_data_1 (TileManager *tm,
+                                gint         x,
+                                gint         y,
+                                guchar      *buffer)
 {
   const gint num = tile_manager_get_tile_num (tm, x, y);
 
@@ -801,7 +834,7 @@ read_pixel_data_1 (TileManager *tm,
 }
 
 void
-write_pixel_data_1 (TileManager  *tm,
+tile_manager_write_pixel_data_1 (TileManager  *tm,
                     gint          x,
                     gint          y,
                     const guchar *buffer)

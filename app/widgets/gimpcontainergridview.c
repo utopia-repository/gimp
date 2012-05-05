@@ -4,9 +4,9 @@
  * gimpcontainergridview.c
  * Copyright (C) 2001-2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -64,6 +63,7 @@ static void     gimp_container_grid_view_set_context  (GimpContainerView      *v
                                                        GimpContext            *context);
 static gpointer gimp_container_grid_view_insert_item  (GimpContainerView      *view,
                                                        GimpViewable           *viewable,
+                                                       gpointer                parent_insert_data,
                                                        gint                    index);
 static void     gimp_container_grid_view_remove_item  (GimpContainerView      *view,
                                                        GimpViewable           *viewable,
@@ -139,19 +139,19 @@ gimp_container_grid_view_class_init (GimpContainerGridViewClass *klass)
                   GTK_TYPE_MOVEMENT_STEP,
                   G_TYPE_INT);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_Home, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Home, 0,
                                 "move-cursor", 2,
                                 G_TYPE_ENUM, GTK_MOVEMENT_BUFFER_ENDS,
                                 G_TYPE_INT, -1);
-  gtk_binding_entry_add_signal (binding_set, GDK_End, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_End, 0,
                                 "move-cursor", 2,
                                 G_TYPE_ENUM, GTK_MOVEMENT_BUFFER_ENDS,
                                 G_TYPE_INT, 1);
-  gtk_binding_entry_add_signal (binding_set, GDK_Page_Up, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Page_Up, 0,
                                 "move-cursor", 2,
                                 G_TYPE_ENUM, GTK_MOVEMENT_PAGES,
                                 G_TYPE_INT, -1);
-  gtk_binding_entry_add_signal (binding_set, GDK_Page_Down, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Page_Down, 0,
                                 "move-cursor", 2,
                                 G_TYPE_ENUM, GTK_MOVEMENT_PAGES,
                                 G_TYPE_INT, 1);
@@ -207,7 +207,7 @@ gimp_container_grid_view_init (GimpContainerGridView *grid_view)
                     G_CALLBACK (gimp_container_grid_view_button_press),
                     grid_view);
 
-  GTK_WIDGET_SET_FLAGS (grid_view, GTK_CAN_FOCUS);
+  gtk_widget_set_can_focus (GTK_WIDGET (grid_view), TRUE);
 }
 
 GtkWidget *
@@ -263,12 +263,12 @@ gimp_container_grid_view_move_by (GimpContainerGridView *grid_view,
   index = gimp_container_get_child_index (container, GIMP_OBJECT (item));
 
   index += x;
-  index = CLAMP (index, 0, container->num_children - 1);
+  index = CLAMP (index, 0, gimp_container_get_n_children (container) - 1);
 
   index += y * grid_view->columns;
   while (index < 0)
     index += grid_view->columns;
-  while (index >= container->num_children)
+  while (index >= gimp_container_get_n_children (container))
     index -= grid_view->columns;
 
   item = (GimpViewable *) gimp_container_get_child_by_index (container, index);
@@ -287,7 +287,7 @@ gimp_container_grid_view_move_cursor (GimpContainerGridView *grid_view,
   GimpContainer     *container;
   GimpViewable      *item;
 
-  if (! GTK_WIDGET_HAS_FOCUS (GTK_WIDGET (grid_view)) || count == 0)
+  if (! gtk_widget_has_focus (GTK_WIDGET (grid_view)) || count == 0)
     return FALSE;
 
   container = gimp_container_view_get_container (view);
@@ -299,7 +299,7 @@ gimp_container_grid_view_move_cursor (GimpContainerGridView *grid_view,
                                                count * grid_view->visible_rows);
 
     case GTK_MOVEMENT_BUFFER_ENDS:
-      count = count < 0 ? 0 : container->num_children - 1;
+      count = count < 0 ? 0 : gimp_container_get_n_children (container) - 1;
 
       item = (GimpViewable *) gimp_container_get_child_by_index (container,
                                                                  count);
@@ -321,7 +321,7 @@ gimp_container_grid_view_focus (GtkWidget        *widget,
 {
   GimpContainerGridView *view = GIMP_CONTAINER_GRID_VIEW (widget);
 
-  if (GTK_WIDGET_CAN_FOCUS (widget) && ! GTK_WIDGET_HAS_FOCUS (widget))
+  if (gtk_widget_get_can_focus (widget) && ! gtk_widget_has_focus (widget))
     {
       gtk_widget_grab_focus (GTK_WIDGET (widget));
       return TRUE;
@@ -354,24 +354,27 @@ gimp_container_grid_view_menu_position (GtkMenu  *menu,
 {
   GimpContainerGridView *grid_view = GIMP_CONTAINER_GRID_VIEW (data);
   GtkWidget             *widget;
+  GtkAllocation          allocation;
 
   if (grid_view->selected_item)
     widget = GTK_WIDGET (grid_view->selected_item);
   else
     widget = GTK_WIDGET (grid_view->wrap_box);
 
-  gdk_window_get_origin (widget->window, x, y);
+  gtk_widget_get_allocation (widget, &allocation);
 
-  if (GTK_WIDGET_NO_WINDOW (widget))
+  gdk_window_get_origin (gtk_widget_get_window (widget), x, y);
+
+  if (! gtk_widget_get_has_window (widget))
     {
-      *x += widget->allocation.x;
-      *y += widget->allocation.y;
+      *x += allocation.x;
+      *y += allocation.y;
     }
 
   if (grid_view->selected_item)
     {
-      *x += widget->allocation.width  / 2;
-      *y += widget->allocation.height / 2;
+      *x += allocation.width  / 2;
+      *y += allocation.height / 2;
     }
   else
     {
@@ -416,6 +419,7 @@ gimp_container_grid_view_set_context (GimpContainerView *view,
 static gpointer
 gimp_container_grid_view_insert_item (GimpContainerView *container_view,
                                       GimpViewable      *viewable,
+                                      gpointer           parent_insert_data,
                                       gint               index)
 {
   GimpContainerGridView *grid_view = GIMP_CONTAINER_GRID_VIEW (container_view);
@@ -465,7 +469,7 @@ gimp_container_grid_view_remove_item (GimpContainerView *container_view,
   if (view == (GtkWidget *) grid_view->selected_item)
     grid_view->selected_item = NULL;
 
-  gtk_container_remove (GTK_CONTAINER (grid_view->wrap_box), view);
+  gtk_widget_destroy (view);
 }
 
 static void
@@ -516,8 +520,7 @@ gimp_container_grid_view_clear_items (GimpContainerView *view)
   grid_view->selected_item = NULL;
 
   while (GTK_WRAP_BOX (grid_view->wrap_box)->children)
-    gtk_container_remove (GTK_CONTAINER (grid_view->wrap_box),
-                          GTK_WRAP_BOX (grid_view->wrap_box)->children->widget);
+    gtk_widget_destroy (GTK_WRAP_BOX (grid_view->wrap_box)->children->widget);
 
   parent_view_iface->clear_items (view);
 }
@@ -552,7 +555,7 @@ gimp_container_grid_view_item_selected (GtkWidget      *widget,
 {
   if (bevent->type == GDK_BUTTON_PRESS && bevent->button == 1)
     {
-      if (GTK_WIDGET_CAN_FOCUS (data) && ! GTK_WIDGET_HAS_FOCUS (data))
+      if (gtk_widget_get_can_focus (data) && ! gtk_widget_has_focus (data))
         gtk_widget_grab_focus (GTK_WIDGET (data));
 
       gimp_container_view_item_selected (GIMP_CONTAINER_VIEW (data),
@@ -632,14 +635,16 @@ gimp_container_grid_view_highlight_item (GimpContainerView *container_view,
 
       row = index / grid_view->columns;
 
-      if (row * item_height < adj->value)
+      if (row * item_height < gtk_adjustment_get_value (adj))
         {
           gtk_adjustment_set_value (adj, row * item_height);
         }
-      else if ((row + 1) * item_height > adj->value + adj->page_size)
+      else if ((row + 1) * item_height > (gtk_adjustment_get_value (adj) +
+                                          gtk_adjustment_get_page_size (adj)))
         {
           gtk_adjustment_set_value (adj,
-                                    (row + 1) * item_height - adj->page_size);
+                                    (row + 1) * item_height -
+                                    gtk_adjustment_get_page_size (adj));
         }
 
       gimp_view_renderer_set_border_type (view->renderer,
@@ -718,18 +723,13 @@ gimp_container_grid_view_viewport_resized (GtkWidget             *widget,
 }
 
 static gboolean
-gimp_container_grid_view_button_press (GtkWidget              *widget,
-                                       GdkEventButton         *bevent,
-                                       GimpContainerGridView  *grid_view)
+gimp_container_grid_view_button_press (GtkWidget             *widget,
+                                       GdkEventButton        *bevent,
+                                       GimpContainerGridView *grid_view)
 {
-  switch (bevent->button)
+  if (gdk_event_triggers_context_menu ((GdkEvent *) bevent))
     {
-    case 3:
       gimp_editor_popup_menu (GIMP_EDITOR (grid_view), NULL, NULL);
-      break;
-
-    default:
-      break;
     }
 
   return TRUE;

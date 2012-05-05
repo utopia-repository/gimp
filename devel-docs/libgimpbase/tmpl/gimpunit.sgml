@@ -2,22 +2,16 @@
 gimpunit
 
 <!-- ##### SECTION Short_Description ##### -->
-Provides a collection of predefined units and functions for creating
-user-defined units.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Provides a collection of predefined units and functions for creating
-user-defined units.
 
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#GimpUnitMenu
-</para>
-<para>
-#GimpSizeEntry
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -153,9 +147,52 @@ user-defined units.
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_unit_format_string ##### -->
+<para>
+
+</para>
+
+@format: 
+@unit: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_pixels_to_units ##### -->
+<para>
+
+</para>
+
+@pixels: 
+@unit: 
+@resolution: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_units_to_pixels ##### -->
+<para>
+
+</para>
+
+@value: 
+@unit: 
+@resolution: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_units_to_points ##### -->
+<para>
+
+</para>
+
+@value: 
+@unit: 
+@resolution: 
+@Returns: 
+
+
 <!-- ##### MACRO GIMP_TYPE_UNIT ##### -->
 <para>
-#GIMP_TYPE_UNIT is a #GType derived from #G_TYPE_INT.
+
 </para>
 
 

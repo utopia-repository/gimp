@@ -1,451 +1,643 @@
                    ------------------------------
                    GNU Image Manipulation Program
-                          2.6 Stable Branch
+                          2.8 Stable Branch
                    ------------------------------
 
 This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
-Overview of Changes from GIMP 2.6.11 to GIMP 2.6.12
-===================================================
-
-* Bugs fixed:
-
- 627328 - GIMP 2.6.10 segfaults when CTRL-left click on a layer mask
- 631885 - GIMP fails to import a path from SVG
- 631728 - Crash or Gtk-CRITICAL on File->Open
- 641259 - [abrt] gimp-2:2.6.11-1.fc14: py-slice.py:172:slice:TypeError: integer argument expected, got float
- 640219 - gimp(1) manpage fixes
- 640612 - Sample Colorize does not function non-interactively
- 646947 - file-pdf-load: Don't use deprecated API
- 639203 - file-psp: fix for bogus input data
- 639203 - Fixes for some buffer overflow problems
- 652280 - Guard against crash due to quitting while DND is processed
- 660305 - fails to build with -Werror=format-security
- 623045 - script-fu: make server IPv6 aware
-
- ... plus a ton of others.
-
-* Updated translations:
-
- Asturian (ast)
- Catalan (Valencian) (ca@valencia)
- Danish (da)
- Greek (el)
- Esperanto (eo)
- Spanish (es)
- Italian (it)
- Japanese (ja)
- Kazakh (kk)
- Latvian (la)
- Norwegian Nynorsk (nn)
- Polish (pl)
- Portuguese (pt)
- Brazilian Portuguese (pt_BR)
- Russian (ru)
- Turkish (tr)
- Simplified Chinese (zh_CN)
-
-
-Overview of Changes from GIMP 2.6.10 to GIMP 2.6.11
-===================================================
-
-* Bugs fixed:
-
- 631199 - Printing and Print preview broken with cairo 1.10
- 572865 - Parasite handling had problems and can cause crashing
- 628893 - Error with string-append and gimp-drawable-get-name
- 623850 - Colors -> Retinex creates halos
- 624487 - Fix incorrect "wrap mode" documentation values in Edge plug-in
- 557380 - Difference of Gaussians gives blank doc if "Invert" selected
- 627009 - Image type filter doesn't include .rgba SGI files
- 626020 - Console window opening on file-ps-load
- 624698 - Wood 1 and Wood 2 have bad alpha value
- 624275 - Image saved from google docs generates a
-          'gimp-image-set-resolution' error message
-
-* Updated translations:
-
- German (de)
- Spanish (es)
- Italian (it)
- Japanese (ja)
- Romanian (ro)
- Chinese (Hong Kong) (zh_HK)
- Chinese (Taiwan) (zh_HK)
-
-
-Overview of Changes from GIMP 2.6.9 to GIMP 2.6.10
-==================================================
-
-* Bugs fixed:
-
- 613328 - TGA files saved with incorrect header yOrigin data
- 623290 - Save As... does not save Windows Bitmap as default in dialog
- 621363 - CMYK decompose broken
- 595170 - brush - color from gradient works wrong in greyscale
- 613838 - Error in gimp-hue-saturation PDB call
- 622608 - GIMP crashes when clicking any scroll bar from combo boxes
- 565459 - newly opened images are put into the background
-
-* Updated translations:
-
- German (de)
- Italian (it)
- Romanian (ro)
- Portuguese (pt)
-
-
-Overview of Changes from GIMP 2.6.8 to GIMP 2.6.9
-=================================================
-
-* Bugs fixed:
-
- 612618 - Font selection remains visible
- 622234 - gimp.desktop: image/x-psd in MimeTypes twice
- 622196 - Unportable test(1) construct in configure script
- 620604 - Description of "histogram" procedure is slightly inaccurate
- 541586 - Tool options not saved/loaded correctly?
- 614153 - Importing PDF files with long titles
- 600112 - blur-gauss-selective.exe crashes
- 599233 - Dialog of "Save as BMP" ignores changes which are not made
-          with a mous
- 565001 - Text-Tool crashes when edit a 2.4.2 version xcf
- 610478 - Layer preview suddenly stops getting updated
- 609026 - leaks shared memory
- 609056 - Exporting to Alias PIX format fails
- 608188 - a few strings in Save as... > Raw image data dialog are always
-          in English
- 604820 - GEGL Operation "path" crashes GIMP
- 603711 - Crashes when using path tool
- 607242 - GIMP 2.7.0 fails to build against libpng 1.4.0
- 606372 - Saving to .ppm fails on indexed colorspace
- 605237 - the "Antialiasing..." message in the progress bar does not show
-          translated
- 604508 - gimp-layer-new-from-visible should work from updated projection
-
-* Updated and new translations:
-
- Asturian (ast)
- Basque (eu)
- Burmese (my)
- Catalan (ca)
- Chinese (Hong Kong) (zh_HK)
- Chinese (Taiwan) (zh_HK)
- German (de)
- Italian (it)
- Latvian (lv)
- Low German (nds)
- Romanian (ro)
- Simplified Chinese (zh_CN)
- Slovenian (sl)
- Ukrainian (uk)
- Valencian (ca@valencia)
-
-
-Overview of Changes from GIMP 2.6.7 to GIMP 2.6.8
-=================================================
-
-* Bugs fixed:
-
- 470698 - MapObject cannot modify highlight
- 593848 - FG color changed to black when FG-BG Editor tab created
- 594651 - layer.scale() raises RuntimeError
- 594998 - Keyboard shortcuts does not work for first image when dock
-          is focused
- 599765 - F1 key on gimp-tool-align in menu have wrong link and it
-          open gimp-tool-move
- 600484 - Gimp BMP Integer Overflow Vulnerability
- 600741 - "read_channel_data()" Integer Overflow Vulnerability
- 601891 - gimp_image_get_selection returns None
- 602761 - plug-in-grid: Parameters Horizontal/Vertical Spacing and
-          Horizontal/Vertical Offset are reversed.
- 603995 - PCX plugin doesn't sanitize input to avoid allocation overflows.
- 603998 - PCX: Calculating amount of memory to allocate may overflow.
- 604000 - SGI: sanitize input
- 604001 - SGI: Calculating amount of memory to allocate may overflow.
- 604002 - SGI: RLE encoded input data may write beyond allocated buffers
- 604004 - SGI: allocate memory consistently
- 604008 - GBR, PAT: sanitize input data
- 604078 - Crash when pressing Backspace with Free Select Tool
-
-* Updated and new translations:
-
- Basque (eu)
- British English (en_GB)
- Czech (cs)
- French (fr)
- Greek (el)
- Italian (it)
- Japanese (ja)
- Norwegian Nynorsk (nn)
- Polish (pl)
- Romanian (ro)
- Russian (ru)
- Simplified Chinese (zh_CN)
-
-
-Overview of Changes from GIMP 2.6.6 to GIMP 2.6.7
-=================================================
-
-* Bugs fixed:
-
- 591017 – Tablet pan is not working as fast as it should
- 577581 – Crashes when using any colors tool/function on Windows
- 589667 – GIMP crashes when clicking GEGL Operation on Windows
- 569833 – file-jpeg-save erroneous with small quality values
- 590638 – Changing palettes from list to grid view loses "locked to dock"
-          status
- 589674 – "Send by Email" does not update "Filename"
- 586851 – Transparent BMP files fail to load
- 589205 – help-browser uses deprecated (and sometimes broken) webkit call
- 582821 – 'Sphere Designer' does not reset correctly...
- 570353 – first time open of .svg file ignores the requested units
- 555777 – Export to MNG animation fails
- 577301 – Dithering with transparency is broken for "positioned" method
- 493778 – metadata plug-in crashes on some images
- 567466 – PNG comment not found if more than 1 tEXt chunks
- 585665 – Exporting to PSD with a blank text layer creates a corrupt file
- 586316 – Levels tool does not adjust output levels correctly if input
-          levels are changed
- 569661 – Import from PDF throws errors when entering resolution in
-          pixels per millimetre
- 567262 – Black pixels appear in "Spread" filter preview
- 554658 – Path Dialog: Path preview pics not to see constantly
- 167604 – gimp_gradient_get_color_at() may return out-of-bounds values
- 567393 – Rectangle select tool size shrinks to 0 if size is larger than
-          the image and the up or down arrow is pressed
- 587543 – crash when invoking certain actions by keyboard shortcut
- 563029 - Closing maximized image doesn't restore document window size
- 585488 – Perspective transformation on a layer with a mask causes crash
- 586008 - GIMP crashes when right-click canceling a drawing action initiated
-          outside layer boundaries
- 584345 – when printing, the number of copies should be reset to 1
- 557061 – Alpha to Logo
- 472644 – Rotate with clipping crops the whole layer
- 577575 – transform tool fills underlying extracted area wrongly
- 555738 – Image display is wrong after undoing canvas size
- 577024 – help-browser plugin crashes when used with webkit 1.1.3
- 555025 – Action GEGL box widgets weirdness
-
-* Updated and new translations:
-
- Czech (cs)
- Danish (da)
- German (de)
- Spanish (es)
- Basque (eu)
- Finnish (fi)
- Hungarian (hu)
- Italian (it)
- Gujarati (gu)
- Japanese (ja)
- Kannada (kn)
- Marathi (mr)
- Norwegian bokmål (nb)
- Oriya (or)
- Portuguese (pt)
- Romanian (ro)
- Sinhala (si)
- Swedish (sv)
- Simplified Chinese (zh_CN)
- Traditional Chinese - Hong Kong (zh_HK)
- Traditional Chinese - Taiwan (zh_TW)
-
-
-Overview of Changes from GIMP 2.6.5 to GIMP 2.6.6
-=================================================
-
-* Bugs fixed:
-
- 571117 – lcms plug-in crashes on broken profile
- 575154 – changing the help browser preference may not work
- 573542 – blur plugin: bug in the first line
- 572403 – gimp-2.6 crashed with SIGSEGV in IA__g_object_get()
- 573695 – 1-bit white background saved as PBM becomes all black
- 573488 – Small bug in Filter>Distorts>Ripple
- 572156 – top left pixel position/coordinate is not 0,0 but 1,1
- 472644 – Rotate with clipping crops the whole layer
-
-* Updated translations:
-
- German (de)
- Spanish (es)
- Estonian (et)
- Basque (eu)
- French (fr)
- Italian (it)
- Portuguese (pt)
- Simplified Chinese (zh_CN)
-
-
-Overview of Changes from GIMP 2.6.4 to GIMP 2.6.5
-=================================================
-
-* Bugs fixed:
-
- 571628 – Scaling image to 25% turn background from white to grey
- 567840 – GIMP's GtkScaleButton conflicts with GTK's
- 569043 – GEGL tool - missing Operation Settings for all sub-tools
- 568890 – don't rely on GtkAction implementation details
- 568909 – wrong RGB values for color names in libgimpcolor/gimprgb-parse.c
- 568839 – wrong hex RGB value for the color names slategrey and slategray
- 559408 - Brushes dragged to the image window look strange
- 563337 – Rectangle Select Tool does not allow 1:1 fixed ratio
- 568016 – Black pullout parameter of plug-in-newsprint has no effect
- 562818 – First image opened in GIMP offset
- 562213 – Align Tool doesn't work properly if it is the active tool
-          at startup
-
-* Updated translations:
-
- Spanish (es)
- Estonian (et)
- Hindi (hi)
- Italian (it)
- Brazilian Portuguese (pt_BR)
- Romanian (ro)
- Russian (ru)
- Serbian (sr)
- Tamil (ta)
- Simplified Chinese (zh_CN)
-
-
-Overview of Changes from GIMP 2.6.3 to GIMP 2.6.4
-=================================================
-
-* Bugs fixed:
-
- 565223 – Perspective transformation jagged edges / comb effect
- 563985 – jpg save dialog: "cancel" is treated like "commit"
-          for settings
- 564087 – Using clone tool on a layer with a part out of canvas
-          causes crashes
- 564593 – crash when the drawable is changed while a color tool
-          is active
- 564869 – GIMP crashes on selecting Tools->GEGL operation
- 565138 – python-fu-foggify does not check if image is in rgb mode
- 563130 – Hue selection mode does not cross the 0-360 degrees line
- 563179 – Scrollbars not resized when we extend the canvas size
- 562459 – PF_PALETTE: 'TypeError' when used in a plugin that is
-          registered in <Image>
- 562427 – Compilation with --as-needed
- 562386 – PF_SLIDER and PF_SPINNER 'Step' values do not change
-          consistently...
- 562366 – Default image dimensions are not correctly
-          transferred in the file/new dialog box
- 561899 – GIMP can't save to mounted filesystem if file exists
-
-* Updated translations:
-
- Greek (el)
- Hindi (hi)
- Hungarian (hu)
- Italian (it)
- Japanese (ja)
- Korean (ko)
- Slovenian (sl)
- Swedish (sv)
- Tamil (ta)
- Simplified Chinese (zh_CN)
-
-
-Overview of Changes from GIMP 2.6.2 to GIMP 2.6.3
-=================================================
-
-* Bugs fixed:
-
- 558454 – Plugin Map Color Range disappears from GIMP
- 559239 – Error while loading psd-data
- 560903 – Explicit zooming with e.g. '1' should handle
-	  zoom-focus better
- 560245 – Zoom selection always centered in the Navigation tab
- 559490 – Wrong lang tags for 'no'
- 559292 – SOTA Chrome cannot accept different textures
- 560375 – Clearing an already empty document history crashes GIMP
- 559580 – Image windows need better default locations
- 560283 – "Scale image..." causes distortion around edges
- 559716 – Changing crop size in Crop Tool Options can make UI
-          unresponsive
- 558549 – Stroking a single-point path with a paint tool
-          crashes GIMP
- 559015 – Move tool gives bad information about px moved
- 558660 – help behavior for locales without manual translation
-
-* Updated translations:
-
- Belarusian (be)
- Dutch (nl)
- German (de)
- Japanese (ja)
- Lithuanian (lt)
- Norwegian Bokmål (nb)
- Norwegian Nynorsk (nn)
- Polish (pl)
- Romanian (ro)
-
-
-Overview of Changes from GIMP 2.6.1 to GIMP 2.6.2
-=================================================
-
-* Bugs fixed:
-
- 557950 – Scaling in Gimp 2.6 is much slower than in Gimp 2.4
- 558215 – unit and zoom entries in Statusbar not visible
- 558451 – Cannot build GIMP using Sun CC on Solaris 2.8
- 558420 – projection incorrect with alpha-less layers
- 556603 – Zoom region always zooms in center of image
- 557870 – "Qmask" message popping up here and there
- 557705 – compatibility with GEGL > 0.0.20
- 556248 – Scaling gives 'jagged' edges
- 556804 – Zoom drop down doesn't update
- 524615 – Print not to scale
- 555246 – gimp crashes when a file is opened while a preview is generating
- 556741 – Alpha layer automatically added (in psd format)
- 556182 – Could you please explain a few strings [I18N]
- 555697 – build fails if configured with --without-libjpeg
- 134956 – Curves tool doesn't save free curves
-
-* Updated translations:
-
- Czech (cs)
- Danish (da)
- Finnish (fi)
- French (fr)
- Japanese (ja)
- Polish (pl)
- Brazilian Portuguese (pt_BR)
- Swedish (sv)
- Simplified Chinese (zh_CN)
-
-
-Overview of Changes from GIMP 2.6.0 to GIMP 2.6.1
-=================================================
-
-* Bugs fixed:
-
- 555587 – PSD file crashes PSD plug-in
- 555222 – PSD Load Plugin: unsupported compression mode
- 555362 – gimp-remote is not working properly
- 555280 – some gif files will not be open
- 554890 – JPEG Save Options Dialog does not remember
- 554966 – Gimp crashes creating a new image using a template
- 554785 – Compile failure on uri-backend-libcurl
- 554646 – Opening Help crashes GIMP with lqr-plugin installed
- 553534 – centering issues after image scaling and setting zoom
- 554898 – Compile failure on uri-backend-wget.c
-
-* Updated translations:
-
- Belarusian (be)
- Catalan (ca)
- Finnish (fi)
- French (fr)
- Japanese (ja)
- Macedonian (mk)
- Punjab (pa)
- Brazilian Portuguese (pt_BR)
- Romanian (ro)
- Slovenian (sl)
- Swedish (sv)
+Changes in GIMP 2.8.0
+=====================
+
+
+Core:
+
+ - Add our own GimpOperationBrightnessContrast because GEGL one is different
+
+
+Plug-ins:
+
+ - Fix some GFig rendering issues
+
+
+Source and build system:
+
+ - Depend on Babl 0.1.10, GEGL 0.2.0 and some other new library versions
+
+
+General:
+
+ - Bug fixes
+ - Translation updates
+
+
+Changes in GIMP 2.7.5
+=====================
+
+
+UI:
+
+ - Minor application menu fixes on the Mac
+ - Make the toolbox arbitrarily resizable again
+ - Add axis labels to the dynamics curves to make them more obvious
+ - Fix dockable showing to do the right thing in both MWM and SWM
+ - Fix some glitches in the tool preset UI, like proper sensitivity
+
+
+Core:
+
+ - Restore autoshrink functionality in the rectangle tools
+ - Allow smudge to work with dynamic brushes
+ - Make sure tool presets and tool options are consistent after loading
+ - Add automatic tags for the folders a file lives in
+ - Make the default Quick Mask color configurable
+ - Fix Color Balance so the "range" setting actually makes a difference
+
+
+Plug-ins:
+
+ - Proper toplevel item sorting in the help browser
+ - Use libraries instead of launching programs in file-compressor
+ - Use the Ghostscript library instead of launching ghostscript
+ - Allow to switch off antialiasing when importing from PDF
+ - Embed the page setup in the main print dialog
+ - Port Gfig to cairo
+
+
+Libgimp:
+
+ - Add PDB API to modify a lot of paint and ink options
+
+
+Data:
+
+ - Add a new set of default brushes and tool presets from Ramon Miranda
+
+
+Developer documentation:
+
+ - Update everything including app/ so all functions appear again
+
+
+Source and build system:
+
+ - Remove the unmaintained makefile.msc build system
+ - Explicitly link plug-ins to -lm when needed
+ - Also create .xz tarballs
+
+
+General:
+
+ - Lots of bug fixes
+ - Tons and tons of translation updates
+
+
+Changes in GIMP 2.7.4
+=====================
+
+
+UI:
+
+ - Add a close button to image tabs in single-window mode
+ - Improve the transform tools' undo strings to be more descriptive
+ - Render the layer's "eye" icon in inconsistent state if the layer is
+   visible, but one of its parents isn't
+ - Add proper stacking for canvas items, so things don't hide each other
+ - Make sure single-window-mode and multi-window-mode are always saved
+   consistently in sessionrc
+
+
+Core:
+
+ - Fix "render_image_tile_fault: assertion `tile[4] != NULL' failed"
+   warnings that occurred for some image sizes
+ - Fix attachment of the floating selection when the gegl projection
+   is enabled
+ - Replace heal algorithm with a new one by Jean-Yves Couleaud that
+   works much better
+ - Make resource sub-folders show up in UI as tags, allowing users
+   to easily locate resource collections they may have installed
+ - Fix graphics tablet canvas interaction by moving from
+   gdk_pointer_grab() to gtk_grab_add() for most grabs
+ - Stop using motion hints, they are a concept from the dark ages
+
+
+Libgimp:
+
+ - Add a basic paint dynamics PDB interface
+
+
+Plug-ins:
+
+ - Make writing color space information to BMP files optional
+ - PSD loader now reads and imports working paths
+
+
+Script-Fu:
+
+ - Lots and lots of undeprecations
+
+
+Developer documentation:
+
+ - Add devel-docs/gegl-porting-plan.txt
+
+
+Source and build system:
+
+ - Make git-version.h generation work in shallow git clones
+ - Modernize use of autotools a bit, maintainer-mode and pdbgen
+   are now enabled by default
+
+
+General:
+
+ - Make gimptool install scripts in the correct system-wide directory
+ - Fix lots and lots of stuff found by static code analysis
+
+
+Changes in GIMP 2.7.3
+=====================
+
+
+UI:
+
+ - Use GimpSpinScales instead of scale entries in all dockable widgets
+ - Allow the spin scale to control a range larger than its scale's range
+ - Implement RTL mode in GimpSpinScale
+ - Add lots of tooltips to tool options
+ - Allow to drop more things to the empty image window, and simply
+   create new images from them
+ - Cage tool: allow to add handle to the cage when clicking on an edge
+ - Cage tool: allow to remove selected handles from the cage by hitting delete
+ - Remember column widths in multi-column dock windows
+ - Support starting GIMP in single-window mode
+ - When the brush is shared among paint tools, also share all
+   brush-modifying paint options
+ - Use ALT+number and ALT+Tab shortcuts to navigate between images
+   in both single- and multi-window mode
+ - Make 'Export to' always activatable and fall back to 'Export...' if
+   no export target has been set yet
+ - In single-window mode, add new dockable dialogs to the image window
+   instead of in a new window
+ - When switching on single-window mode, put docks in the image window
+   depending on what side of the window they originally had
+ - When switching off single-window mode, distribute dock windows
+   better
+ - Add a canvas item for the transform grid, fixing a major speed
+   regression, and add the same guides options as in the rectangle tools
+ - Don't unmaximize the single-window mode image window when closing
+   images
+ - Resurrect the "You can drop dockable dialogs here" help string
+   below the toolbox
+ - Make pick-and-move with the Move Tool work for layers in a layer
+   group
+
+
+Core:
+
+ - Add GimpMotionBuffer which abstracts away stroke smoothing behind
+   a simple API and takes it out of GimpDisplayShell
+ - Add a GimpIdTable utility class
+ - Add a GimpDockContainer interface
+ - Add a GimpSessionManaged interface
+ - Add GimpCanvasRectangleGuides which makes the rectangle tool's
+   guides draw properly
+
+
+Libgimp:
+
+ - Make libgimp depend on GdkPixbuf
+ - Add API to create layers from cairo surfaces
+ - Make it impossible to include individual files from any GIMP
+   library. This was always forbidden and designed so it most
+   probably breaks, but now it reliably breaks using #error
+ - Deprecate the "set_sensitive" logic and use g_object_bind_property()
+
+
+Plug-ins:
+
+ - Use poppler's cairo API to load PDFs, the pixbuf API is removed
+ - Port screenshot from GdkPixbuf to cairo
+ - Fix the annoying parser build warnings in imagemap
+ - Add a check-for-deprecated-procedures-in-script-fu make target
+ - Update libpng code to not use deprecated API (file-mng and file-png)
+ - Add an Item class to pygimp
+ - Correct/update some labels and defaults in the JPEG plug-in's save dialog UI
+ - Fix "Bug 596410 - gimp-image-get-filename returns NULL for imported files"
+
+
+Developer documentation:
+
+ - Many updates
+
+
+Source and build system:
+
+ - Make cairo a global dependency, starting at libgimpcolor
+ - Require poppler >= 0.12.4
+ - Remove gimp-remote for good, it has been disabled for years
+
+
+General:
+
+ - Some more undeprecations now that we use GTK+ 2.24
+ - Fix lots of warnings that are new in -Wall in GCC 4.6
+ - Lots of bug fixes and cleanup
+ - Lots of translation updates
+
+
+Changes in GIMP 2.7.2
+=====================
+
+
+UI:
+
+ - A lot of undeprecations due to GTK+ 2.22 and 2.24
+ - Lots and lots of cairo porting, calls to gdk_draw_* are gone
+ - Merge the cage transform tool from GSoC
+ - Remove the old bitmap cursors completely and always use RGBA cursors
+   also for compat cursors for old X servers
+ - Add new GimpCanvasItem infrastructure with subclasses for everything
+   that needs to be drawn on the canvas and port all tools to canvas items,
+   this is a huge change that touches all tools and almost all display
+   code, and which finally gets rid of XOR drawing altogether
+ - Switch from purely idle-rendering the display to something that ensures
+   a minimum framerate, so we don't fail to update under heavy load
+ - Make the text tool handle RTL mode better
+ - Change GimpColorMapEditor to use the newly added proxy GimpPalette
+ - Replace the brush scale control in tool options by a brush size
+   one that works in pixels, and does the right thing when the brush
+   changes
+ - Add new widget GimpSpinScale which is a scale with number entry,
+   and use it in all tool options
+ - Make the brush, pattern etc. selectors in tool options more
+   compact and allow to directly jump to the editor dialogs
+ - Make handle sizes in tools consistent
+ - Add an on-canvas progress and use it for tool progress instead of
+   the statusbar
+ - Add a new GimpToolPalette class with lots of code that was
+   in GimpToolBox
+ - Allow to properly drop into and after a layer group
+ - Refactor and clean up the dynamics editor widget, and add colors
+   for the curves
+ - Add support for F2 to rename items in lists
+ - Clean up GimpDeviceStatus internally and visually
+ - Allow to set GimpToolPreset's icon using the new GimpIconPicker widget
+ - Make the text tool's style overlay show default values from the
+   text object if there is no style active at the cursor position/selection
+ - Show the the text size's unit in the text style overlay
+ - Make tool dialogs transient to the image window again
+ - Consistently add a "gimp-" prefix to all window roles
+ - Make the preset buttons in tool options work on the global tool
+   presets instead of the removed per-tool preset lists
+ - Add GimpControllerMouse, which allows to bind extra mouse buttons to
+   arbitrary actions
+
+
+Core:
+
+ - Add uniform API to turn any GimpItem's outline into a selection
+ - Add support for color tags in text layers
+ - Remove the selection_control() stuff from GimpImage and with it
+   maybe last piece of UI code still not properly separated
+ - Add more validation code for XCF loading
+ - Add accessors to GimpPalette and use them globally
+ - Keep a proxy GimpPalette around for the image's colormap
+ - Don't scale SVGs when pasting or importing them
+ - A lot of changes to the input device handling code, partly
+   merged from the gtk3-port branch, add GimpDeviceManager class
+ - Add smoothing of paint strokes
+ - Fix display filters to work on a cairo surface
+ - Fix and enhance GimpImage's URI/filename handling API
+ - Unset "removed" flag on items when they get added back to
+   the image from the undo stack
+ - Change item creation to properly use GObject properties and
+   remove item_configure() and drawable_configure()
+ - Refactor tool event handling and move lots of stuff into
+   utility functions
+ - Clean up GimpViewRenderer API
+ - Implement transforms on group layers
+ - Clean up the transform tool a lot, and refactor away old junk
+ - Tool and tool event cleanup: enforce tool activate/halt invariants,
+   consistently shutdown all tools in control(HALT), and many other
+   tool fixes
+ - Remove GimpToolPresets object, this functionality got merged into
+   the new GimpToolPreset system
+ - Rename GimpFilteredContainer to GimpTaggedContainer and add a new
+   GimpFilteredContainer parent class which is a generic filter
+ - Remove the concept of an "offset" from TileManager and instead
+   pass around the offsets explicitly when needed, like when
+   transforming
+ - Move GimpBezier desc from vectors/ to core/ and add API to create
+   one from sorted BoundSegs
+ - Change GimpBrush boundary API to return a GimpBezierDesc
+ - Add GimpBrushCache object and use it to cache a brush's transformed
+   pixels and its outline, remove the caching code from GimpBrushCore
+ - Add GimpBezierDesc based API to GimpScanConvert and use it
+
+
+GEGL:
+
+ - Add operations and gegl infrastructure for the cage tool
+ - Disable View -> Use GEGL as we will not have time to finish the
+   GEGL projection code for GIMP 2.8
+
+
+Libgimp:
+
+ - Introduce an "item" type in the PDB and libgimp and deprecate
+   lots of old API in favor of item API
+ - Add procedures to create, traverse and manipulate layer trees
+ - Add more state to the context API, and deprecate functions with
+   too many parameters in favor of simpler ones that use context states,
+   particularly the entire transform and selection API
+ - Move GimpUnitStore and GimpUnitComboBox to libgimpwidgets, and
+   use them in GimpSizeEntry, deprecate GimpUnitMenu.
+ - Deprecate gimp_min_colors() and gimp_install_cmap()
+ - Add API that enables GimpRuler to track motion events by itself
+ - Add new selection API and deprecate all old selection functions
+ - Move around and rename all parasite functions, deprecate the old ones
+ - Add a generated PDB file in the "gimp" namespace and get rid
+   of "gimpmisc"
+ - Add unit conversion functions to libgimpbase
+ - Add function to reset a plug-in's context to default values
+
+
+Plug-ins:
+
+ - Make script-fu server IPv6 aware
+ - Follow libgimp deprecations in plug-ins and scripts
+ - Add PDF export plugin
+ - Lots of cairo porting here too
+ - UTF-8 fixes in script-fu
+ - Set the progress to 1.0 when done
+ - Merge a lot of upstream fixes into script-fu's Tinyscheme
+ - Add "New Layer" option to MapObject
+ - Support loading of 16-bit raw PPM files
+ - Add web-page, a new plug-in which renders images of web pages
+ - Fix some more plug-ins to not warn if applied on an empty region
+
+
+Data:
+
+ - Remove "Untitled" from palette names entries
+
+
+Developer documentation:
+
+ - Move libgimp documentation from templates to inline comments
+ - Generate standard deprecated sections
+
+
+Source and build system:
+
+ - Add more code documentation
+ - Add more unit tests and refactor existing ones to use global
+   test utility functions
+ - Add a manifest to executables (app and plug-ins, Win32)
+ - Depend on GLib 2.28, GTK+ 2.24, Cairo 1.10
+ - Make WebKit available to all plug-ins, not just the help browser
+ - Run UI tests on Xvfb if available
+ - Check for GdkPixbuf separately because it's now a separate library
+ - Allow tests to use uninstalled plug-ins from the build dir
+ - Remove, comment out, or build for GIMP_UNSTABLE some stuff that
+   should not be in a stable release
+
+
+General:
+
+ - Improve safety on Win32 by calling SetDllDirectory() and
+   SetProcessDEPPolicy()
+ - Switch from GtkObject::destroy() to GObject::dispose() all over
+   the place
+ - Various changes that make maintaining the gtk3-port branch easier,
+   such as s/GtkAnchorType/GimpHandleAnchor/ and s/GtkObject/GtkAdjustment/
+ - Don't use gtk_container_add() for adding to GtkBoxes
+ - Inherit from GtkBox directly, not from GtkHBox/GtkVBox
+ - Add namespace to the ink blob types and functions
+ - Remove all useless calls to gtk_range_set_update_policy()
+ - Use GObject::constructed() instead of GObject::constructor() all
+   over the place
+ - Move more members to private and add accessors for them
+ - Stop using GdkNativeWindow, use guint32 instead
+ - Plug memory leaks
+ - Remove ps-menurc, we are not a PS clone
+ - Use the new g_[s]list_free_full() instead of foreach() and free()
+ - Don't use newly deprecated GTK+ API
+ - Use the new GDK_KEY_foo key names
+ - Lots of bug fixes and cleanup
+ - Lots of translation updates
+
+
+Changes in GIMP 2.7.1
+=====================
+
+
+UI:
+
+ - Add "lock content" button to the layers, channels and paths dialogs,
+   make the lock buttons more compact
+ - Refuse to edit locked items
+ - Add support for layer groups
+ - Improve internals and GUI of the save/export functionality
+ - Move the shortcut dialog's "clear" button into the entry
+ - Clean up UI code by introducing GimpDockWindow and GimpImageWindow
+   classes
+ - Support multi-column dock windows
+ - Get rid of docking bars, use highlights in existing widget hierarchy instead
+ - Remove toolbox-window-hint gimprc setting and use dock-window-hint
+   for both toolbox and docks instead
+ - Move GimpDock::default-height style property to GimpDockWindow
+ - Polish save+export path-part precedence rules
+ - Merge the GSoC 2009 Advanced GUI for Brush Dynamics project
+ - Default to non-fixed-aspect in Canvas Size dialog
+ - Add a still incomplete and Single-window mode
+ - Have an Export button, not Save, in export dialogs
+ - Improve Free Select Tool handle highlighting
+ - Support changing user interface language from preferences
+ - Update ps-menurc with PS CS4 keyboard shortcuts
+ - Reduce spacing around canvas and use it for the canvas itself
+ - Put name of active dockables in dock window titles
+ - Don't have Toolbox in list of Recently Closed Docks, handle that
+   directly in the Windows menu
+ - Support selecting and tagging multiple objects in resource lists
+ - Improve on-canvas text editing and text attribute setting
+ - Add GimpContainerTreeStore and use it in all GtkTreeStore based views
+ - Add a new default "automatic" tab style that makes sure dockable tabs
+   always show as much detail as possible
+ - Remove the dockable title bar and add the menu arrow button next to the
+   notebook tabs
+ - Add an icon for the desaturate tool
+ - Add 'Rule of fifths' crop guide overlay
+ - Make Alt+Click on layers not affect active layer
+
+
+Core:
+
+ - Make all GimpItems lockable so their contents can't be changed
+ - Make more sense when naming imported layers
+ - Make group layers work except for layer masks and save them in
+   the XCF
+ - Change GimpProjectable::update to GimpProjectable:invalidate
+ - Make sure we don't mix font backends (and crash) by explicitly
+   asking for FT/Fontconfig backends
+ - Move members of GimpObject to a private struct
+ - gimp_object_get_name() takes a gconstpointer now, remove casts
+   from all callers
+ - Let drawables connect to their floating selection's "update" signal
+   instead of letting the image do this job
+ - Fix brush rotation artifacts at even 90 degree rotation
+ - Don't leak shared tile memory on Solaris
+ - Add a PDB procedure to access a text layer's markup
+ - Remove legacy cruft from pdbgen and make sure number ranges are correct
+ - Move all image creation functions to a common file
+ - Add translation context to all undo descriptions
+
+
+GEGL:
+
+ - Make sure all nodes are added to their resp. graphs
+ - Use GEGL for layer scaling if use-gegl is TRUE
+
+
+Plug-ins:
+
+ - Updated script-fu's scheme to latest upstream fixes
+ - Don't store image-specific print settings globally
+ - Add fundamental OpenRaster (.ora) import and export support
+ - Add RGB565 support to the csource plug-in
+
+
+Data:
+
+ - Add texture/grunge brushes made by Johannes Engelhardt
+
+
+Developer documentation:
+
+ - Explain GimpContext
+ - Add SVG graphic with GIMP application core module dependencies
+ - Add a schedule for 2.8 development
+
+
+Source and build system:
+
+ - Add more code documentation
+ - Clean up subsystem linking dependencies in app/
+ - Add unit testing framework in app/tests/ and some basic tests,
+   including basic UI tests and XCF tests
+ - Tentatively introduce usage of using Glade + GtkBuilder
+ - Depend on GLib 2.24.0 and GTK+ 2.20.0
+ - Add git commit hash in --verbose --version output
+ - Don't version control gtk-doc.m4, get it from gtkdocize
+ - Add GimpObject tracking code
+ - Plug memory leaks
+ - Lots of bug fixes and cleanup
+ - Lots of translation updates
+
+
+Changes in GIMP 2.7.0
+=====================
+
+UI:
+ - Change the Text Tool to perform text editing on-canvas (GSoC 2008)
+   and add the ability to mix different text styles in the same layer
+ - Add support for tagging GIMP resources such as brushes and allow
+   filtering based on these tags (GSoC 2008)
+ - Separate the activities of saving an image and exporting it, there is
+   now a 'File->Export...' for example
+ - Port file plug-ins to new export API which gets rid of many
+   annoying export dialogs
+ - Add a simple parser to size entry widgets, images can be scaled
+   to e.g. "50%" or "2 * 37px + 10in"
+ - Arrange layer modes into more logical and useful groups
+ - Added support for rotation of brushes
+ - Make the Pointer dockable show information about selection position
+   and size
+ - Get rid of the Tools dockable and move toolbox configuration to
+   Preferences
+ - Allow closing the toolbox without closing the whole application
+ - Add status bar feedback for keyboard changes to brush parameters
+ - Add diagonal guides to the Crop Tool
+ - New docks are created at the pointer position
+ - Add support for printing crop marks for images
+ - Move 'Text along path' from tool options to text context menu
+ - Change default shortcuts for "Shrink Wrap" and "Fit in Window" to
+   Ctrl+J and Ctrl+Shift+J respectively since the previous shortcuts
+   are now used for the save+export feature
+ - Make Alt+Click on layers in Layers dockable create a selection from
+   the layer
+ - Allow to specify written language in the Text Tool
+ - Support custom mapping curves for input device properties like "Pressure"
+ - New desktop launcher icon
+ - Add 'Windows→Hide docks' menu item that does what 'Tab' does and also displays
+   its state. Make the state persistent across sessions, too.
+ - Make dock window title separators translatable
+
+
+Plug-ins:
+
+ - Map the 'Linear Dodge' layer mode in PSD files to the 'Addition'
+   layer mode in GIMP
+ - Add JPEG2000 load plug-in
+ - Add X11 mouse cursor plug-in
+ - Add support for loading 16bit (RGB565) raw data
+ - Add palette exporter for CSS, PHP, Python, txt and Java, accessed
+   through palette context menu
+ - Add plug-in API for getting image URI, for manipulating size of
+   text layers, for getting and setting text layer hint, and for
+   unified export dialog appearance
+ - Add an 'As Animation' toggle to the GIF export options
+ - Add 'active_vectors' getsetter to Python 'gimp.Image'
+
+
+Data:
+
+ - Add large variants of round brushes and remove duplicate and
+   useless brushes
+ - Add "FG to BG (Hardedge)" gradient
+
+
+GEGL:
+
+ - Port the projection code, the code that composes a single image
+   from a stack of layers, to GEGL
+ - Port layer modes to GEGL
+ - Port the floating selection code to GEGL
+ - Refactor the layer stack code to prepare for layer groups later
+ - Prepare better and more intuitive handling of the floating
+   selection
+ - Add File->Debug->Show Image Graph that show the GEGL graph of an
+   image
+ - Allow to benchmark projection performance with
+   File->Debug->Benchmark Projection
+ - When using GEGL for the projection, use CIELCH instead of HSV/HSL
+   for color based layer modes
+
+
+Core:
+
+ - Make painting strokes Catmull-Rom Spline interpolated
+ - Add support for arbitrary affine transforms of brushes
+ - Add support for brush dynamics to depend on tilt
+ - Add aspect ratio to brush dynamics
+ - Add infrastructure to soon support vector layers (GSoC 2006)
+ - Rearrange legacy layer mode code to increase maintainability
+ - Drop support for the obsolete GnomeVFS file-uri backend
+ - Allow to dump keyboard shortcuts with File->Debug->Dump Keyboard
+   Shortcuts
+ - Prepare data structures for layer groups
+ - Remove gimprc setting "menu-mnemonics",
+   "GtkSettings:gtk-enable-mnemonics" shall be used instead
+ - Remove "transient-docks" gimprc setting, the 'Utility window' hint
+   and a sane window manager does a better job
+ - Remove "web-browser" gimprc setting and use gtk_show_uri() instead
+
+
+General:
+
+ - Changed license to (L)GPLv3+
+ - Use the automake 1.11 feature 'silent build rules' by default
+ - Lots of bug fixes and cleanup

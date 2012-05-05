@@ -4,9 +4,9 @@
  * Major improvement to support polygonal segments
  * Copyright (C) 2008 Martin Nordholts
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -31,26 +31,27 @@
 
 #include "tools-types.h"
 
+#include "core/gimp-utils.h"
 #include "core/gimpchannel.h"
 #include "core/gimpchannel-select.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer-floating-sel.h"
 
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpwidgets-utils.h"
 
+#include "display/gimpcanvasgroup.h"
 #include "display/gimpdisplay.h"
 
 #include "gimpfreeselecttool.h"
 #include "gimpselectionoptions.h"
 #include "gimptoolcontrol.h"
-#include "tools-utils.h"
 
 #include "gimp-intl.h"
 
 
-#define HANDLE_SIZE             12
-#define POINT_GRAB_THRESHOLD_SQ SQR(HANDLE_SIZE / 2)
-#define POINT_SHOW_THRESHOLD_SQ SQR(HANDLE_SIZE * 7)
+#define POINT_GRAB_THRESHOLD_SQ SQR (GIMP_TOOL_HANDLE_SIZE_CIRCLE / 2)
+#define POINT_SHOW_THRESHOLD_SQ SQR (GIMP_TOOL_HANDLE_SIZE_CIRCLE * 7)
 #define N_ITEMS_PER_ALLOC       1024
 #define INVALID_INDEX           (-1)
 #define NO_CLICK_TIME_AVAILABLE 0
@@ -64,9 +65,6 @@ typedef struct
 {
   /* Index of grabbed segment index. */
   gint               grabbed_segment_index;
-
-  /* Wether or not button 1 is down. */
-  gboolean           button1_down;
 
   /* We need to keep track of a number of points when we move a
    * segment vertex
@@ -134,27 +132,28 @@ static void     gimp_free_select_tool_control             (GimpTool             
                                                            GimpToolAction         action,
                                                            GimpDisplay           *display);
 static void     gimp_free_select_tool_oper_update         (GimpTool              *tool,
-                                                           GimpCoords            *coords,
+                                                           const GimpCoords      *coords,
                                                            GdkModifierType        state,
                                                            gboolean               proximity,
                                                            GimpDisplay           *display);
 static void     gimp_free_select_tool_cursor_update       (GimpTool              *tool,
-                                                           GimpCoords            *coords,
+                                                           const GimpCoords      *coords,
                                                            GdkModifierType        state,
                                                            GimpDisplay           *display);
 static void     gimp_free_select_tool_button_press        (GimpTool              *tool,
-                                                           GimpCoords            *coords,
+                                                           const GimpCoords      *coords,
                                                            guint32                time,
                                                            GdkModifierType        state,
+                                                           GimpButtonPressType    press_type,
                                                            GimpDisplay           *display);
 static void     gimp_free_select_tool_button_release      (GimpTool              *tool,
-                                                           GimpCoords            *coords,
+                                                           const GimpCoords      *coords,
                                                            guint32                time,
                                                            GdkModifierType        state,
                                                            GimpButtonReleaseType  release_type,
                                                            GimpDisplay           *display);
 static void     gimp_free_select_tool_motion              (GimpTool              *tool,
-                                                           GimpCoords            *coords,
+                                                           const GimpCoords      *coords,
                                                            guint32                time,
                                                            GdkModifierType        state,
                                                            GimpDisplay           *display);
@@ -234,7 +233,6 @@ gimp_free_select_tool_init (GimpFreeSelectTool *fst)
   GimpTool                  *tool = GIMP_TOOL (fst);
   GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
 
-  gimp_tool_control_set_scroll_lock (tool->control, FALSE);
   gimp_tool_control_set_wants_click (tool->control, TRUE);
   gimp_tool_control_set_precision   (tool->control,
                                      GIMP_CURSOR_PRECISION_SUBPIXEL);
@@ -242,8 +240,6 @@ gimp_free_select_tool_init (GimpFreeSelectTool *fst)
                                      GIMP_TOOL_CURSOR_FREE_SELECT);
 
   priv->grabbed_segment_index             = INVALID_INDEX;
-
-  priv->button1_down                      = FALSE;
 
   priv->saved_points_lower_segment        = NULL;
   priv->saved_points_higher_segment       = NULL;
@@ -343,14 +339,14 @@ static gboolean
 gimp_free_select_tool_should_close (GimpFreeSelectTool *fst,
                                     GimpDisplay        *display,
                                     guint32             time,
-                                    GimpCoords         *coords)
+                                    const GimpCoords   *coords)
 {
   GimpFreeSelectToolPrivate *priv         = GET_PRIVATE (fst);
   gboolean                   double_click = FALSE;
   gdouble                    dist         = G_MAXDOUBLE;
 
   if (priv->polygon_modified       ||
-      priv->n_segment_indices <= 1 ||
+      priv->n_segment_indices <= 0 ||
       GIMP_TOOL (fst)->display == NULL)
     return FALSE;
 
@@ -396,7 +392,7 @@ gimp_free_select_tool_should_close (GimpFreeSelectTool *fst,
 static void
 gimp_free_select_tool_handle_segment_selection (GimpFreeSelectTool *fst,
                                                 GimpDisplay        *display,
-                                                GimpCoords         *coords)
+                                                const GimpCoords   *coords)
 {
   GimpFreeSelectToolPrivate *priv                  = GET_PRIVATE (fst);
   GimpDrawTool              *draw_tool             = GIMP_DRAW_TOOL (fst);
@@ -430,33 +426,12 @@ gimp_free_select_tool_handle_segment_selection (GimpFreeSelectTool *fst,
 
   if (grabbed_segment_index != priv->grabbed_segment_index)
     {
-      gimp_draw_tool_pause(draw_tool);
+      gimp_draw_tool_pause (draw_tool);
 
       priv->grabbed_segment_index = grabbed_segment_index;
 
-      gimp_draw_tool_resume(draw_tool);
+      gimp_draw_tool_resume (draw_tool);
     }
-}
-
-static void
-gimp_free_select_tool_halt (GimpFreeSelectTool *fst)
-{
-  GimpTool                  *tool      = GIMP_TOOL (fst);
-  GimpDrawTool              *draw_tool = GIMP_DRAW_TOOL (fst);
-  GimpFreeSelectToolPrivate *priv      = GET_PRIVATE (fst);
-
-  if (gimp_draw_tool_is_active (draw_tool))
-    gimp_draw_tool_stop (draw_tool);
-
-  if (gimp_tool_control_is_active (tool->control))
-    gimp_tool_control_halt (tool->control);
-
-  priv->grabbed_segment_index = INVALID_INDEX;
-  priv->show_pending_point    = FALSE;
-  priv->n_points              = 0;
-  priv->n_segment_indices     = 0;
-
-  tool->display              = NULL;
 }
 
 static void
@@ -465,15 +440,6 @@ gimp_free_select_tool_revert_to_last_segment (GimpFreeSelectTool *fst)
   GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
 
   priv->n_points = priv->segment_indices[priv->n_segment_indices - 1] + 1;
-}
-
-static void
-gimp_free_select_tool_update_button_state (GimpFreeSelectTool *fst,
-                                           GdkModifierType     state)
-{
-  GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
-
-  priv->button1_down = state & GDK_BUTTON1_MASK ? TRUE : FALSE;
 }
 
 static void
@@ -489,7 +455,8 @@ gimp_free_select_tool_remove_last_segment (GimpFreeSelectTool *fst)
 
   if (priv->n_segment_indices <= 0)
     {
-      gimp_free_select_tool_halt (fst);
+      gimp_tool_control (GIMP_TOOL (fst), GIMP_TOOL_ACTION_HALT,
+                         GIMP_TOOL (fst)->display);
     }
   else
     {
@@ -546,32 +513,6 @@ gimp_free_select_tool_is_point_grabbed (GimpFreeSelectTool *fst)
   GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
 
   return priv->grabbed_segment_index != INVALID_INDEX;
-}
-
-static void
-gimp_free_select_tool_start (GimpFreeSelectTool *fst,
-                             GimpCoords         *coords,
-                             GimpDisplay        *display)
-{
-  GimpTool                  *tool      = GIMP_TOOL (fst);
-  GimpDrawTool              *draw_tool = GIMP_DRAW_TOOL (tool);
-  GimpSelectionOptions      *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (fst);
-  GimpFreeSelectToolPrivate *priv      = GET_PRIVATE (fst);
-
-  gimp_free_select_tool_halt (fst);
-
-  gimp_tool_control_activate (tool->control);
-
-  tool->display = display;
-
-  gimp_draw_tool_start (draw_tool, display);
-
-  /* We want to apply the selection operation that was current when
-   * the tool was started, so we save this information */
-  priv->operation_at_start = options->operation;
-
-  gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (fst),
-                                  coords);
 }
 
 static void
@@ -789,7 +730,7 @@ gimp_free_select_tool_commit (GimpFreeSelectTool *fst,
       gimp_free_select_tool_select (fst, display);
     }
 
-  gimp_image_flush (display->image);
+  gimp_image_flush (gimp_display_get_image (display));
 }
 
 static void
@@ -842,17 +783,19 @@ gimp_free_select_tool_revert_to_saved_state (GimpFreeSelectTool *fst)
 
 static void
 gimp_free_select_tool_handle_click (GimpFreeSelectTool *fst,
-                                    GimpCoords         *coords,
+                                    const GimpCoords   *coords,
                                     guint32             time,
                                     GimpDisplay        *display)
 {
-  GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
+  GimpFreeSelectToolPrivate *priv  = GET_PRIVATE (fst);
+  GimpImage                 *image = gimp_display_get_image (display);
 
   /*  If there is a floating selection, anchor it  */
-  if (gimp_image_floating_sel (display->image))
+  if (gimp_image_get_floating_selection (image))
     {
-      floating_sel_anchor (gimp_image_floating_sel (display->image));
-      gimp_free_select_tool_halt (fst);
+      floating_sel_anchor (gimp_image_get_floating_selection (image));
+
+      gimp_tool_control (GIMP_TOOL (fst), GIMP_TOOL_ACTION_HALT, display);
     }
   else
     {
@@ -886,7 +829,7 @@ gimp_free_select_tool_handle_click (GimpFreeSelectTool *fst,
 
 static void
 gimp_free_select_tool_handle_normal_release (GimpFreeSelectTool *fst,
-                                             GimpCoords         *coords,
+                                             const GimpCoords   *coords,
                                              GimpDisplay        *display)
 {
   /* First finish of the free segment if no point was grabbed */
@@ -994,36 +937,6 @@ gimp_free_select_tool_prepare_for_move (GimpFreeSelectTool *fst)
     }
 }
 
-static gboolean
-gimp_free_select_tool_delegate_button_press (GimpFreeSelectTool *fst,
-                                             GimpCoords         *coords,
-                                             GimpDisplay        *display)
-{
-  GimpTool *tool                   = GIMP_TOOL (fst);
-  gboolean  button_press_delegated = FALSE;
-
-  /* Only consider delegating if the tool is not active */
-  if (tool->display == NULL)
-    {
-      tool->display = display;
-      gimp_tool_control_activate (tool->control);
-
-      button_press_delegated =
-        gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (fst), coords);
-
-      if (! button_press_delegated)
-        {
-          /* Nope, the selection mask edit stuff was not interested, reset
-           * the situation
-           */
-          gimp_tool_control_halt (tool->control);
-          tool->display = NULL;
-        }
-    }
-
-  return button_press_delegated;
-}
-
 static void
 gimp_free_select_tool_update_motion (GimpFreeSelectTool *fst,
                                      gdouble             new_x,
@@ -1060,11 +973,11 @@ gimp_free_select_tool_update_motion (GimpFreeSelectTool *fst,
                                                    &start_point_y,
                                                    segment_index);
 
-          gimp_tool_motion_constrain (start_point_x,
-                                      start_point_y,
-                                      &new_x,
-                                      &new_y,
-                                      GIMP_TOOL_CONSTRAIN_15_DEGREES);
+          gimp_constrain_line (start_point_x,
+                               start_point_y,
+                               &new_x,
+                               &new_y,
+                               GIMP_CONSTRAIN_LINE_15_DEGREES);
         }
 
       gimp_free_select_tool_move_segment_vertex_to (fst,
@@ -1095,7 +1008,7 @@ gimp_free_select_tool_update_motion (GimpFreeSelectTool *fst,
 static void
 gimp_free_select_tool_status_update (GimpFreeSelectTool *fst,
                                      GimpDisplay        *display,
-                                     GimpCoords         *coords,
+                                     const GimpCoords   *coords,
                                      gboolean            proximity)
 {
   GimpTool                  *tool = GIMP_TOOL (fst);
@@ -1142,6 +1055,9 @@ gimp_free_select_tool_control (GimpTool       *tool,
                                GimpToolAction  action,
                                GimpDisplay    *display)
 {
+  GimpFreeSelectTool        *fst  = GIMP_FREE_SELECT_TOOL (tool);
+  GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
+
   switch (action)
     {
     case GIMP_TOOL_ACTION_PAUSE:
@@ -1149,7 +1065,10 @@ gimp_free_select_tool_control (GimpTool       *tool,
       break;
 
     case GIMP_TOOL_ACTION_HALT:
-      gimp_free_select_tool_halt (GIMP_FREE_SELECT_TOOL (tool));
+      priv->grabbed_segment_index = INVALID_INDEX;
+      priv->show_pending_point    = FALSE;
+      priv->n_points              = 0;
+      priv->n_segment_indices     = 0;
       break;
     }
 
@@ -1157,11 +1076,11 @@ gimp_free_select_tool_control (GimpTool       *tool,
 }
 
 static void
-gimp_free_select_tool_oper_update (GimpTool        *tool,
-                                   GimpCoords      *coords,
-                                   GdkModifierType  state,
-                                   gboolean         proximity,
-                                   GimpDisplay     *display)
+gimp_free_select_tool_oper_update (GimpTool         *tool,
+                                   const GimpCoords *coords,
+                                   GdkModifierType   state,
+                                   gboolean          proximity,
+                                   GimpDisplay      *display)
 {
   GimpFreeSelectTool        *fst  = GIMP_FREE_SELECT_TOOL (tool);
   GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
@@ -1183,7 +1102,8 @@ gimp_free_select_tool_oper_update (GimpTool        *tool,
 
   if (priv->n_points == 0 ||
       (gimp_free_select_tool_is_point_grabbed (fst) &&
-       ! hovering_first_point))
+       ! hovering_first_point) ||
+      ! proximity)
     {
       priv->show_pending_point = FALSE;
     }
@@ -1209,10 +1129,10 @@ gimp_free_select_tool_oper_update (GimpTool        *tool,
                                                     &start_point_x,
                                                     &start_point_y);
 
-              gimp_tool_motion_constrain (start_point_x, start_point_y,
-                                          &priv->pending_point.x,
-                                          &priv->pending_point.y,
-                                          GIMP_TOOL_CONSTRAIN_15_DEGREES);
+              gimp_constrain_line (start_point_x, start_point_y,
+                                   &priv->pending_point.x,
+                                   &priv->pending_point.y,
+                                   GIMP_CONSTRAIN_LINE_15_DEGREES);
             }
         }
     }
@@ -1234,10 +1154,10 @@ gimp_free_select_tool_oper_update (GimpTool        *tool,
 }
 
 static void
-gimp_free_select_tool_cursor_update (GimpTool        *tool,
-                                     GimpCoords      *coords,
-                                     GdkModifierType  state,
-                                     GimpDisplay     *display)
+gimp_free_select_tool_cursor_update (GimpTool         *tool,
+                                     const GimpCoords *coords,
+                                     GdkModifierType   state,
+                                     GimpDisplay      *display)
 {
   GimpFreeSelectTool *fst = GIMP_FREE_SELECT_TOOL (tool);
 
@@ -1273,36 +1193,45 @@ gimp_free_select_tool_cursor_update (GimpTool        *tool,
 }
 
 static void
-gimp_free_select_tool_button_press (GimpTool        *tool,
-                                    GimpCoords      *coords,
-                                    guint32          time,
-                                    GdkModifierType  state,
-                                    GimpDisplay     *display)
+gimp_free_select_tool_button_press (GimpTool            *tool,
+                                    const GimpCoords    *coords,
+                                    guint32              time,
+                                    GdkModifierType      state,
+                                    GimpButtonPressType  press_type,
+                                    GimpDisplay         *display)
 {
   GimpDrawTool              *draw_tool = GIMP_DRAW_TOOL (tool);
   GimpFreeSelectTool        *fst       = GIMP_FREE_SELECT_TOOL (tool);
   GimpFreeSelectToolPrivate *priv      = GET_PRIVATE (fst);
+  GimpSelectionOptions      *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
 
-  /* First of all handle delegation to the selection mask edit logic
-   * if appropriate
-   */
-  if (gimp_free_select_tool_delegate_button_press (fst,
-                                                   coords,
-                                                   display))
+  if (tool->display && tool->display != display)
+    gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
+
+  if (tool->display == NULL)
     {
-      return;
+      /* First of all handle delegation to the selection mask edit logic
+       * if appropriate.
+       */
+      if (gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (fst),
+                                          display, coords))
+        {
+          return;
+        }
+
+      tool->display = display;
+
+      gimp_draw_tool_start (draw_tool, display);
+
+      /* We want to apply the selection operation that was current when
+       * the tool was started, so we save this information
+       */
+      priv->operation_at_start = options->operation;
     }
+
+  gimp_tool_control_activate (tool->control);
 
   gimp_draw_tool_pause (draw_tool);
-
-  gimp_free_select_tool_update_button_state (fst, state);
-
-  if (display != tool->display)
-    {
-      gimp_free_select_tool_start (fst,
-                                   coords,
-                                   display);
-    }
 
   if (gimp_free_select_tool_is_point_grabbed (fst))
     {
@@ -1343,7 +1272,7 @@ gimp_free_select_tool_button_press (GimpTool        *tool,
 
 static void
 gimp_free_select_tool_button_release (GimpTool              *tool,
-                                      GimpCoords            *coords,
+                                      const GimpCoords      *coords,
                                       guint32                time,
                                       GdkModifierType        state,
                                       GimpButtonReleaseType  release_type,
@@ -1352,12 +1281,9 @@ gimp_free_select_tool_button_release (GimpTool              *tool,
   GimpFreeSelectTool        *fst  = GIMP_FREE_SELECT_TOOL (tool);
   GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
 
-  if (tool->display != display)
-    return;
+  gimp_tool_control_halt (tool->control);
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (fst));
-
-  gimp_free_select_tool_update_button_state (fst, state);
 
   switch (release_type)
     {
@@ -1393,18 +1319,15 @@ gimp_free_select_tool_button_release (GimpTool              *tool,
 }
 
 static void
-gimp_free_select_tool_motion (GimpTool        *tool,
-                              GimpCoords      *coords,
-                              guint32          time,
-                              GdkModifierType  state,
-                              GimpDisplay     *display)
+gimp_free_select_tool_motion (GimpTool         *tool,
+                              const GimpCoords *coords,
+                              guint32           time,
+                              GdkModifierType   state,
+                              GimpDisplay      *display)
 {
   GimpFreeSelectTool        *fst       = GIMP_FREE_SELECT_TOOL (tool);
   GimpFreeSelectToolPrivate *priv      = GET_PRIVATE (fst);
   GimpDrawTool              *draw_tool = GIMP_DRAW_TOOL (tool);
-
-  if (tool->display != display)
-    return;
 
   gimp_draw_tool_pause (draw_tool);
 
@@ -1427,18 +1350,18 @@ gimp_free_select_tool_key_press (GimpTool    *tool,
 
   switch (kevent->keyval)
     {
-    case GDK_BackSpace:
+    case GDK_KEY_BackSpace:
       gimp_free_select_tool_remove_last_segment (fst);
       return TRUE;
 
-    case GDK_Return:
-    case GDK_KP_Enter:
-    case GDK_ISO_Enter:
+    case GDK_KEY_Return:
+    case GDK_KEY_KP_Enter:
+    case GDK_KEY_ISO_Enter:
       gimp_free_select_tool_commit (fst, display);
       return TRUE;
 
-    case GDK_Escape:
-      gimp_free_select_tool_halt (fst);
+    case GDK_KEY_Escape:
+      gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
       return TRUE;
 
     default:
@@ -1462,9 +1385,10 @@ gimp_free_select_tool_modifier_key (GimpTool        *tool,
     {
       gimp_draw_tool_pause (draw_tool);
 
-      priv->constrain_angle = state & GDK_CONTROL_MASK ? TRUE : FALSE;
+      priv->constrain_angle = state & (gimp_get_constrain_behavior_mask () ?
+                                       TRUE : FALSE);
 
-      priv->supress_handles = state & GDK_SHIFT_MASK   ? TRUE : FALSE;
+      priv->supress_handles = state & GDK_SHIFT_MASK ? TRUE : FALSE;
 
       gimp_draw_tool_resume (draw_tool);
     }
@@ -1491,7 +1415,8 @@ gimp_free_select_tool_active_modifier_key (GimpTool        *tool,
 
   gimp_draw_tool_pause (draw_tool);
 
-  priv->constrain_angle = state & GDK_CONTROL_MASK ? TRUE : FALSE;
+  priv->constrain_angle = state & (gimp_get_constrain_behavior_mask () ?
+                                   TRUE : FALSE);
 
   /* If we didn't came here due to a mouse release, immediately update
    * the position of the thing we move.
@@ -1512,30 +1437,70 @@ gimp_free_select_tool_active_modifier_key (GimpTool        *tool,
                                                        display);
 }
 
+/**
+ * gimp_free_select_tool_draw:
+ * @draw_tool:
+ *
+ * Draw the line segments and handles around segment vertices, the
+ * latter if the they are in proximity to cursor.
+ **/
 static void
 gimp_free_select_tool_draw (GimpDrawTool *draw_tool)
 {
-  GimpFreeSelectTool        *fst  = GIMP_FREE_SELECT_TOOL (draw_tool);
-  GimpFreeSelectToolPrivate *priv = GET_PRIVATE (fst);
-  GimpTool                  *tool = GIMP_TOOL (draw_tool);
-
+  GimpFreeSelectTool        *fst                   = GIMP_FREE_SELECT_TOOL (draw_tool);
+  GimpFreeSelectToolPrivate *priv                  = GET_PRIVATE (fst);
+  GimpTool                  *tool                  = GIMP_TOOL (draw_tool);
+  GimpCanvasGroup           *stroke_group;
+  gboolean                   hovering_first_point  = FALSE;
+  gboolean                   handles_wants_to_show = FALSE;
+  GimpCoords                 coords                = { priv->last_coords.x,
+                                                       priv->last_coords.y,
+                                                       /* pad with 0 */ };
   if (! tool->display)
     return;
 
-  gimp_draw_tool_draw_lines (draw_tool,
-                             priv->points, priv->n_points,
-                             FALSE, FALSE);
+  hovering_first_point =
+    gimp_free_select_tool_should_close (fst,
+                                        tool->display,
+                                        NO_CLICK_TIME_AVAILABLE,
+                                        &coords);
 
-  /* Draw handles around segment vertices in the proximity */
-  if (! priv->button1_down &&
+  stroke_group = gimp_draw_tool_add_stroke_group (draw_tool);
+
+  gimp_draw_tool_push_group (draw_tool, stroke_group);
+  gimp_draw_tool_add_lines (draw_tool,
+                            priv->points, priv->n_points,
+                            FALSE);
+  gimp_draw_tool_pop_group (draw_tool);
+
+  /* We always show the handle for the first point, even with button1
+   * down, since releasing the button on the first point will close
+   * the polygon, so it's a significant state which we must give
+   * feedback for
+   */
+  handles_wants_to_show = (hovering_first_point ||
+                           ! gimp_tool_control_is_active (tool->control));
+
+  if (handles_wants_to_show &&
       ! priv->supress_handles)
     {
-      gint i;
+      gint i = 0;
+      gint n = 0;
 
-      for (i = 0; i < priv->n_segment_indices; i++)
+      /* If the first point is hovered while button1 is held down,
+       * only draw the first handle, the other handles are not
+       * relevant (see comment a few lines up)
+       */
+      if (gimp_tool_control_is_active (tool->control) && hovering_first_point)
+        n = MIN (priv->n_segment_indices, 1);
+      else
+        n = priv->n_segment_indices;
+
+      for (i = 0; i < n; i++)
         {
-          GimpVector2 *point;
-          gdouble      dist;
+          GimpVector2   *point       = NULL;
+          gdouble        dist        = 0.0;
+          GimpHandleType handle_type = -1;
 
           point = &priv->points[priv->segment_indices[i]];
 
@@ -1546,14 +1511,27 @@ gimp_free_select_tool_draw (GimpDrawTool *draw_tool)
                                                        point->x,
                                                        point->y);
 
-          if (dist < POINT_SHOW_THRESHOLD_SQ)
-            {
-              gimp_draw_tool_draw_handle (draw_tool, GIMP_HANDLE_CIRCLE,
-                                          point->x,
-                                          point->y,
-                                          HANDLE_SIZE, HANDLE_SIZE,
-                                          GTK_ANCHOR_CENTER, FALSE);
+          /* If the cursor is over the point, fill, if it's just
+           * close, draw an outline
+           */
+          if (dist < POINT_GRAB_THRESHOLD_SQ)
+            handle_type = GIMP_HANDLE_FILLED_CIRCLE;
+          else if (dist < POINT_SHOW_THRESHOLD_SQ)
+            handle_type = GIMP_HANDLE_CIRCLE;
 
+          if (handle_type != -1)
+            {
+              GimpCanvasItem *item;
+
+              item = gimp_draw_tool_add_handle (draw_tool, handle_type,
+                                                point->x,
+                                                point->y,
+                                                GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                                GIMP_TOOL_HANDLE_SIZE_CIRCLE,
+                                                GIMP_HANDLE_ANCHOR_CENTER);
+
+              if (dist < POINT_GRAB_THRESHOLD_SQ)
+                gimp_canvas_item_set_highlight (item, TRUE);
             }
         }
     }
@@ -1562,12 +1540,13 @@ gimp_free_select_tool_draw (GimpDrawTool *draw_tool)
     {
       GimpVector2 last = priv->points[priv->n_points - 1];
 
-      gimp_draw_tool_draw_line (draw_tool,
-                                last.x,
-                                last.y,
-                                priv->pending_point.x,
-                                priv->pending_point.y,
-                                FALSE);
+      gimp_draw_tool_push_group (draw_tool, stroke_group);
+      gimp_draw_tool_add_line (draw_tool,
+                               last.x,
+                               last.y,
+                               priv->pending_point.x,
+                               priv->pending_point.y);
+      gimp_draw_tool_pop_group (draw_tool);
     }
 }
 
@@ -1577,8 +1556,9 @@ gimp_free_select_tool_real_select (GimpFreeSelectTool *fst,
 {
   GimpSelectionOptions      *options = GIMP_SELECTION_TOOL_GET_OPTIONS (fst);
   GimpFreeSelectToolPrivate *priv    = GET_PRIVATE (fst);
+  GimpImage                 *image   = gimp_display_get_image (display);
 
-  gimp_channel_select_polygon (gimp_image_get_mask (display->image),
+  gimp_channel_select_polygon (gimp_image_get_mask (image),
                                C_("command", "Free Select"),
                                priv->n_points,
                                priv->points,
@@ -1589,7 +1569,7 @@ gimp_free_select_tool_real_select (GimpFreeSelectTool *fst,
                                options->feather_radius,
                                TRUE);
 
-  gimp_free_select_tool_halt (fst);
+  gimp_tool_control (GIMP_TOOL (fst), GIMP_TOOL_ACTION_HALT, display);
 }
 
 void

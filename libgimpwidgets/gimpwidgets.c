@@ -4,10 +4,10 @@
  * gimpwidgets.c
  * Copyright (C) 2000 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,18 +27,24 @@
 #include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
 
-#include "gimpwidgetstypes.h"
-
-#include "gimpchainbutton.h"
-
-#include "gimpsizeentry.h"
-#include "gimpunitmenu.h"
-
-#undef GIMP_DISABLE_DEPRECATED
-#include "gimppixmap.h"
 #include "gimpwidgets.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/*  hack: declare prototype here instead of #undef GIMP_DISABLE_DEPRECATED  */
+void   gimp_toggle_button_sensitive_update (GtkToggleButton *toggle_button);
+
+
+/**
+ * SECTION: gimpwidgets
+ * @title: GimpWidgets
+ * @short_description: A collection of convenient widget constructors,
+ *                     standard callbacks and helper functions.
+ *
+ * A collection of convenient widget constructors, standard callbacks
+ * and helper functions.
+ **/
 
 
 /**
@@ -49,9 +54,9 @@
  * @...:         A %NULL-terminated @va_list describing the radio buttons.
  *
  * Convenience function to create a group of radio buttons embedded into
- * a #GtkFrame or #GtkVbox.
+ * a #GtkFrame or #GtkVBox.
  *
- * Returns: A #GtkFrame or #GtkVbox (depending on @in_frame).
+ * Returns: A #GtkFrame or #GtkVBox (depending on @in_frame).
  **/
 GtkWidget *
 gimp_radio_group_new (gboolean            in_frame,
@@ -82,7 +87,7 @@ gimp_radio_group_new (gboolean            in_frame,
 
   va_list args;
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   group = NULL;
 
@@ -158,9 +163,9 @@ gimp_radio_group_new (gboolean            in_frame,
  *                         the radio buttons.
  *
  * Convenience function to create a group of radio buttons embedded into
- * a #GtkFrame or #GtkVbox.
+ * a #GtkFrame or #GtkVBox.
  *
- * Returns: A #GtkFrame or #GtkVbox (depending on @in_frame).
+ * Returns: A #GtkFrame or #GtkVBox (depending on @in_frame).
  **/
 GtkWidget *
 gimp_radio_group_new2 (gboolean         in_frame,
@@ -188,7 +193,7 @@ gimp_radio_group_new2 (gboolean         in_frame,
 
   va_list args;
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   group = NULL;
 
@@ -262,12 +267,12 @@ gimp_radio_group_new2 (gboolean         in_frame,
  *                         the radio buttons.
  *
  * Convenience function to create a group of radio buttons embedded into
- * a #GtkFrame or #GtkVbox. This function does the same thing as
+ * a #GtkFrame or #GtkVBox. This function does the same thing as
  * gimp_radio_group_new2(), but it takes integers as @item_data instead of
  * pointers, since that is a very common case (mapping an enum to a radio
  * group).
  *
- * Returns: A #GtkFrame or #GtkVbox (depending on @in_frame).
+ * Returns: A #GtkFrame or #GtkVBox (depending on @in_frame).
  **/
 GtkWidget *
 gimp_int_radio_group_new (gboolean         in_frame,
@@ -296,7 +301,7 @@ gimp_int_radio_group_new (gboolean         in_frame,
 
   va_list args;
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   group = NULL;
 
@@ -415,7 +420,7 @@ gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
  * @upper:          The uppper boundary.
  * @step_increment: The spinbutton's step increment.
  * @page_increment: The spinbutton's page increment (mouse button 2).
- * @page_size:      The spinbutton's page size.
+ * @page_size:      Ignored, spin buttons must always have a zero page size.
  * @climb_rate:     The spinbutton's climb rate.
  * @digits:         The spinbutton's number of decimal digits.
  *
@@ -424,7 +429,7 @@ gimp_int_radio_group_set_active (GtkRadioButton *radio_button,
  * gtk_spin_button_set_numeric() so that non-numeric text cannot be
  * entered.
  *
- * Returns: A #GtkSpinbutton and it's #GtkAdjustment.
+ * Returns: A #GtkSpinButton and its #GtkAdjustment.
  **/
 GtkWidget *
 gimp_spin_button_new (GtkObject **adjustment,  /* return value */
@@ -440,7 +445,7 @@ gimp_spin_button_new (GtkObject **adjustment,  /* return value */
   GtkWidget *spinbutton;
 
   *adjustment = gtk_adjustment_new (value, lower, upper,
-                                    step_increment, page_increment, page_size);
+                                    step_increment, page_increment, 0);
 
   spinbutton = gtk_spin_button_new (GTK_ADJUSTMENT (*adjustment),
                                     climb_rate, digits);
@@ -492,7 +497,7 @@ gimp_random_seed_new (guint    *seed,
   g_return_val_if_fail (seed != NULL, NULL);
   g_return_val_if_fail (random_seed != NULL, NULL);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
   /* If we're being asked to generate a random seed, generate one. */
   if (*random_seed)
@@ -547,14 +552,12 @@ gimp_random_seed_new (guint    *seed,
   g_object_set_data (G_OBJECT (hbox), "button", button);
   g_object_set_data (G_OBJECT (hbox), "toggle", toggle);
 
-  /* Set sensitivity data for the toggle, this stuff makes
-   * gimp_toggle_button_sensitive_update work
-   */
-  g_object_set_data (G_OBJECT (toggle), "inverse_sensitive", spinbutton);
-  g_object_set_data (G_OBJECT (spinbutton), "inverse_sensitive", button);
-
-  /* Initialise sensitivity */
-  gimp_toggle_button_update (toggle, random_seed);
+  g_object_bind_property (toggle,     "active",
+                          spinbutton, "sensitive",
+                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+  g_object_bind_property (toggle, "active",
+                          button, "sensitive",
+                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
 
   return hbox;
 }
@@ -611,16 +614,12 @@ gimp_coordinates_callback (GtkWidget           *widget,
         {
           if (new_x != data->last_x)
             {
-              new_y = new_x;
-
               gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 1, new_x);
               data->last_y = data->last_x
                 = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 1);
             }
           else if (new_y != data->last_y)
             {
-              new_x = new_y;
-
               gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (widget), 0, new_y);
               data->last_x = data->last_y
                 = gimp_size_entry_get_refval (GIMP_SIZE_ENTRY (widget), 0);
@@ -815,58 +814,6 @@ gimp_coordinates_new (GimpUnit         unit,
 }
 
 
-/**
- * gimp_pixmap_button_new:
- * @xpm_data: The XPM data which will be passed to gimp_pixmap_new().
- * @text:     An optional text which will appear right of the pixmap.
- *
- * Convenience function that creates a #GtkButton with a #GimpPixmap
- * and an optional #GtkLabel.
- *
- * Returns: The new #GtkButton.
- **/
-GtkWidget *
-gimp_pixmap_button_new (gchar       **xpm_data,
-                        const gchar  *text)
-{
-  GtkWidget *button;
-  GtkWidget *pixmap;
-
-  button = gtk_button_new ();
-  pixmap = gimp_pixmap_new (xpm_data);
-
-  if (text)
-    {
-      GtkWidget *abox;
-      GtkWidget *hbox;
-      GtkWidget *label;
-
-      abox = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
-      gtk_container_add (GTK_CONTAINER (button), abox);
-      gtk_widget_show (abox);
-
-      hbox = gtk_hbox_new (FALSE, 0);
-      gtk_container_add (GTK_CONTAINER (abox), hbox);
-      gtk_widget_show (hbox);
-
-      gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, FALSE, 4);
-      gtk_widget_show (pixmap);
-
-      label = gtk_label_new_with_mnemonic (text);
-      gtk_label_set_mnemonic_widget (GTK_LABEL (label), button);
-      gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 4);
-      gtk_widget_show (label);
-    }
-  else
-    {
-      gtk_container_add (GTK_CONTAINER (button), pixmap);
-      gtk_widget_show (pixmap);
-    }
-
-
-  return button;
-}
-
 /*
  *  Standard Callbacks
  */
@@ -887,6 +834,9 @@ gimp_pixmap_button_new (gchar       **xpm_data,
  * This function can also set the sensitive state according to the toggle
  * button's inverse "active" state by attaching widgets with the
  * "inverse_sensitive" key.
+ *
+ * Deprecated: use g_object_bind_property() instead of using the
+ *             "set_sensitive" and "inverse_sensitive" data pointers.
  **/
 void
 gimp_toggle_button_sensitive_update (GtkToggleButton *toggle_button)
@@ -921,7 +871,9 @@ gimp_toggle_button_sensitive_update (GtkToggleButton *toggle_button)
  * @data:   A pointer to a #gint variable which will store the value of
  *          gtk_toggle_button_get_active().
  *
- * Note that this function calls gimp_toggle_button_sensitive_update().
+ * Note that this function calls gimp_toggle_button_sensitive_update()
+ * which is a deprecated hack you shouldn't use. See that function's
+ * documentation for a proper replacement of its functionality.
  **/
 void
 gimp_toggle_button_update (GtkWidget *widget,
@@ -943,7 +895,9 @@ gimp_toggle_button_update (GtkWidget *widget,
  * @data:   A pointer to a #gint variable which will store the value of
  *          GPOINTER_TO_INT (g_object_get_data (@widget, "gimp-item-data")).
  *
- * Note that this function calls gimp_toggle_button_sensitive_update().
+ * Note that this function calls gimp_toggle_button_sensitive_update()
+ * which is a deprecated hack you shouldn't use. See that function's
+ * documentation for a proper replacement of its functionality.
  **/
 void
 gimp_radio_button_update (GtkWidget *widget,
@@ -1027,44 +981,6 @@ gimp_double_adjustment_update (GtkAdjustment *adjustment,
   *val = gtk_adjustment_get_value (adjustment);
 }
 
-/**
- * gimp_unit_menu_update:
- * @widget: A #GimpUnitMenu.
- * @data:   A pointer to a #GimpUnit variable which will store the unit menu's
- *          value.
- *
- * This callback can set the number of decimal digits of an arbitrary number
- * of #GtkSpinButton's. To use this functionality, attach the spinbuttons
- * as list of data pointers attached with g_object_set_data() with the
- * "set_digits" key.
- *
- * See gimp_toggle_button_sensitive_update() for a description of how
- * to set up the list.
- **/
-void
-gimp_unit_menu_update (GtkWidget *widget,
-                       gpointer   data)
-{
-  GimpUnit  *val = (GimpUnit *) data;
-  GtkWidget *spinbutton;
-  gint       digits;
-
-  *val = gimp_unit_menu_get_unit (GIMP_UNIT_MENU (widget));
-
-  digits = ((*val == GIMP_UNIT_PIXEL) ? 0 :
-            ((*val == GIMP_UNIT_PERCENT) ? 2 :
-             (MIN (6, MAX (3, gimp_unit_get_digits (*val))))));
-
-  digits += gimp_unit_menu_get_pixel_digits (GIMP_UNIT_MENU (widget));
-
-  spinbutton = g_object_get_data (G_OBJECT (widget), "set_digits");
-  while (spinbutton)
-    {
-      gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spinbutton), digits);
-      spinbutton = g_object_get_data (G_OBJECT (spinbutton), "set_digits");
-    }
-}
-
 
 /*
  *  Helper Functions
@@ -1074,9 +990,12 @@ static GtkWidget *
 find_mnemonic_widget (GtkWidget *widget,
                       gint       level)
 {
+  gboolean can_focus;
+
+  g_object_get (widget, "can-focus", &can_focus, NULL);
 
   if (GTK_WIDGET_GET_CLASS (widget)->activate_signal ||
-      GTK_WIDGET_CAN_FOCUS (widget)                  ||
+      can_focus                                      ||
       GTK_WIDGET_GET_CLASS (widget)->mnemonic_activate !=
       GTK_WIDGET_CLASS (g_type_class_peek (GTK_TYPE_WIDGET))->mnemonic_activate)
     {
@@ -1166,7 +1085,7 @@ gimp_table_attach_aligned (GtkTable    *table,
 
   if (left_align)
     {
-      GtkWidget *hbox = gtk_hbox_new (FALSE, 0);
+      GtkWidget *hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
       gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
       gtk_widget_show (widget);
@@ -1218,7 +1137,10 @@ gimp_label_set_attributes (GtkLabel *label,
 
   do
     {
-      PangoAttrType   attr_type = va_arg (args, PangoAttrType);
+      PangoAttrType attr_type = va_arg (args, PangoAttrType);
+
+      if (attr_type == -1)
+        attr_type = PANGO_ATTR_INVALID;
 
       switch (attr_type)
         {
@@ -1294,7 +1216,6 @@ gimp_label_set_attributes (GtkLabel *label,
         default:
           g_warning ("%s: invalid PangoAttribute type %d",
                      G_STRFUNC, attr_type);
-        case -1:
         case PANGO_ATTR_INVALID:
           attr = NULL;
           break;

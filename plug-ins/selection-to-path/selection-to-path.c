@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1999 Andy Thomas  alt@gimp.org
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -47,6 +46,7 @@
 
 
 #define PLUG_IN_BINARY "selection-to-path"
+#define PLUG_IN_ROLE   "gimp-selection-to-path"
 
 #define RESPONSE_RESET 1
 #define MID_POINT      127
@@ -91,14 +91,14 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable (unused)" },
   };
 
   static const GimpParamDef advanced_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",                    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",                    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",                       "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",                    "Input drawable (unused)" },
     { GIMP_PDB_FLOAT,    "align-threshold",             "align_threshold"},
@@ -300,7 +300,7 @@ sel2path_dialog (SELVALS *sels)
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
   dlg = gimp_dialog_new (_("Selection to Path Advanced Settings"),
-                         PLUG_IN_BINARY,
+                         PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, "plug-in-sel2path-advanced",
 
@@ -327,7 +327,8 @@ sel2path_dialog (SELVALS *sels)
 
   table = dialog_create_selection_area (sels);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dlg)->vbox), table);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   gtk_widget_show (dlg);
@@ -477,7 +478,7 @@ do_points (spline_list_array_type in_splines,
                                      sel_x1, sel_y1 + sel_height + 1);
     }
 
-   gimp_image_add_vectors (image_ID, vectors, -1);
+  gimp_image_insert_vectors (image_ID, vectors, -1, -1);
 }
 
 

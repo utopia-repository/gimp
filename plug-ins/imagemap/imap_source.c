@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2002 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -33,6 +32,10 @@
 #include "imap_source.h"
 
 #include "libgimp/stdplugins-intl.h"
+
+static void   save_to_view (GtkTextBuffer *buffer,
+                            const char    *format,
+                            ...) G_GNUC_PRINTF(2,3);
 
 static void
 save_to_view(GtkTextBuffer *buffer, const char* format, ...)
@@ -72,12 +75,12 @@ do_source_dialog(void)
 
       swin = gtk_scrolled_window_new(NULL, NULL);
       gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(swin),
-					  GTK_SHADOW_IN);
+                                          GTK_SHADOW_IN);
       gtk_widget_set_size_request(swin, 400, 300);
       gtk_box_pack_start(GTK_BOX(dialog->vbox), swin, TRUE, TRUE, 0);
       gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(swin),
-				     GTK_POLICY_AUTOMATIC,
-				     GTK_POLICY_AUTOMATIC);
+                                     GTK_POLICY_AUTOMATIC,
+                                     GTK_POLICY_AUTOMATIC);
       gtk_widget_show(swin);
       gtk_container_add(GTK_CONTAINER(swin), text);
    }

@@ -7,6 +7,7 @@ plug-ins/pygimp/gimpfu.py
 plug-ins/pygimp/gimpui.py
 
 plug-ins/pygimp/plug-ins/colorxhtml.py
+plug-ins/pygimp/plug-ins/gradients-save-as-css.py
 plug-ins/pygimp/plug-ins/foggify.py
 plug-ins/pygimp/plug-ins/palette-offset.py
 plug-ins/pygimp/plug-ins/palette-sort.py
@@ -14,3 +15,4 @@ plug-ins/pygimp/plug-ins/palette-to-gradient.py
 plug-ins/pygimp/plug-ins/py-slice.py
 plug-ins/pygimp/plug-ins/python-console.py
 plug-ins/pygimp/plug-ins/shadow_bevel.py
+plug-ins/pygimp/plug-ins/text-brush.py

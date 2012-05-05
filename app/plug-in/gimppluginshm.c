@@ -3,9 +3,9 @@
  *
  * gimppluginhsm.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -68,6 +67,8 @@
 #include "base/tile.h"
 
 #include "gimppluginshm.h"
+
+#include "gimp-log.h"
 
 
 #define TILE_MAP_SIZE (TILE_WIDTH * TILE_HEIGHT * 4)
@@ -235,6 +236,10 @@ gimp_plug_in_shm_new (void)
       g_slice_free (GimpPlugInShm, shm);
       shm = NULL;
     }
+  else
+    {
+      GIMP_LOG (SHM, "attached shared memory segment ID = %d", shm->shm_ID);
+    }
 
   return shm;
 }
@@ -249,12 +254,11 @@ gimp_plug_in_shm_free (GimpPlugInShm *shm)
 
 #if defined (USE_SYSV_SHM)
 
+      shmdt (shm->shm_addr);
+
 #ifndef IPC_RMID_DEFERRED_RELEASE
-      shmdt (shm->shm_addr);
       shmctl (shm->shm_ID, IPC_RMID, NULL);
-#else
-      shmdt (shm->shm_addr);
-#endif /* IPC_RMID_DEFERRED_RELEASE */
+#endif
 
 #elif defined(USE_WIN32_SHM)
 
@@ -274,6 +278,7 @@ gimp_plug_in_shm_free (GimpPlugInShm *shm)
 
 #endif
 
+      GIMP_LOG (SHM, "detached shared memory segment ID = %d", shm->shm_ID);
     }
 
   g_slice_free (GimpPlugInShm, shm);

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,30 +38,30 @@
 static const GimpActionEntry buffers_actions[] =
 {
   { "buffers-popup", GIMP_STOCK_BUFFER,
-    N_("Buffers Menu"), NULL, NULL, NULL,
+    NC_("buffers-action", "Buffers Menu"), NULL, NULL, NULL,
     GIMP_HELP_BUFFER_DIALOG },
 
   { "buffers-paste", GTK_STOCK_PASTE,
-    N_("_Paste Buffer"), "",
-    N_("Paste the selected buffer"),
+    NC_("buffers-action", "_Paste Buffer"), "",
+    NC_("buffers-action", "Paste the selected buffer"),
     G_CALLBACK (buffers_paste_cmd_callback),
     GIMP_HELP_BUFFER_PASTE },
 
   { "buffers-paste-into", GIMP_STOCK_PASTE_INTO,
-    N_("Paste Buffer _Into"), NULL,
-    N_("Paste the selected buffer into the selection"),
+    NC_("buffers-action", "Paste Buffer _Into"), NULL,
+    NC_("buffers-action", "Paste the selected buffer into the selection"),
     G_CALLBACK (buffers_paste_into_cmd_callback),
     GIMP_HELP_BUFFER_PASTE_INTO },
 
   { "buffers-paste-as-new", GIMP_STOCK_PASTE_AS_NEW,
-    N_("Paste Buffer as _New"), NULL,
-    N_("Paste the selected buffer as new image"),
+    NC_("buffers-action", "Paste Buffer as _New"), NULL,
+    NC_("buffers-action", "Paste the selected buffer as a new image"),
     G_CALLBACK (buffers_paste_as_new_cmd_callback),
     GIMP_HELP_BUFFER_PASTE_AS_NEW },
 
   { "buffers-delete", GTK_STOCK_DELETE,
-    N_("_Delete Buffer"), "",
-    N_("Delete the selected buffer"),
+    NC_("buffers-action", "_Delete Buffer"), "",
+    NC_("buffers-action", "Delete the selected buffer"),
     G_CALLBACK (buffers_delete_cmd_callback),
     GIMP_HELP_BUFFER_DELETE }
 };
@@ -71,7 +70,7 @@ static const GimpActionEntry buffers_actions[] =
 void
 buffers_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "buffers-action",
                                  buffers_actions,
                                  G_N_ELEMENTS (buffers_actions));
 }

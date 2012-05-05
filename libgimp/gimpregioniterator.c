@@ -3,10 +3,10 @@
  *
  * gimpregioniterator.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,19 +14,27 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
-
-#include <stdio.h>
 
 #include <glib.h>
 
 #include "gimp.h"
 #include "gimpregioniterator.h"
+
+
+/**
+ * SECTION: gimpregioniterator
+ * @title: gimpregioniterator
+ * @short_description: Functions to traverse a pixel regions.
+ *
+ * The GimpRgnIterator functions provide a variety of common ways to
+ * traverse a PixelRegion, using a pre-defined function pointer per
+ * pixel.
+ **/
 
 
 struct _GimpRgnIterator
@@ -173,7 +181,7 @@ gimp_rgn_iterator_src_dest (GimpRgnIterator    *iter,
 
       area_so_far += srcPR.w * srcPR.h;
 
-      if ((count % 8) == 0)
+      if ((count % 16) == 0)
         gimp_progress_update ((gdouble) area_so_far / (gdouble) total_area);
     }
 
@@ -256,7 +264,7 @@ gimp_rgn_iterate1 (GimpDrawable *drawable,
 
       area_so_far += srcPR.w * srcPR.h;
 
-      if ((count % 8) == 0)
+      if ((count % 16) == 0)
         gimp_progress_update ((gdouble) area_so_far / (gdouble) total_area);
     }
 }
@@ -298,7 +306,7 @@ gimp_rgn_iterate2 (GimpDrawable *drawable,
 
       area_so_far += srcPR.w * srcPR.h;
 
-      if ((count % 8) == 0)
+      if ((count % 16) == 0)
         gimp_progress_update ((gdouble) area_so_far / (gdouble) total_area);
     }
 
@@ -345,7 +353,7 @@ gimp_rgn_iterator_iter_single (GimpRgnIterator *iter,
 
       area_so_far += srcPR->w * srcPR->h;
 
-      if ((count % 8) == 0)
+      if ((count % 16) == 0)
         gimp_progress_update ((gdouble) area_so_far / (gdouble) total_area);
     }
 }

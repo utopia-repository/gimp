@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,16 +12,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "libgimpbase/gimpbase.h"
@@ -31,11 +32,12 @@
 #include "config/gimpdisplayconfig.h"
 
 #include "core/gimpcontainer.h"
+#include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
-#include "core/gimpunit.h"
 
 #include "file/file-utils.h"
+#include "file/gimp-file.h"
 
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
@@ -55,14 +57,14 @@ static gint     gimp_display_shell_format_title      (GimpDisplayShell *display,
                                                       gchar            *title,
                                                       gint              title_len,
                                                       const gchar      *format);
+static gint     gimp_display_shell_format_filename   (gchar            *buf,
+                                                      gint              len,
+                                                      gint              start,
+                                                      GimpImage        *image,
+                                                      const gchar      *filename);
 
 
 /*  public functions  */
-
-void
-gimp_display_shell_title_init (GimpDisplayShell *shell)
-{
-}
 
 void
 gimp_display_shell_title_update (GimpDisplayShell *shell)
@@ -86,10 +88,11 @@ gimp_display_shell_update_title_idle (gpointer data)
 
   shell->title_idle_id = 0;
 
-  if (shell->display->image)
+  if (gimp_display_get_image (shell->display))
     {
       GimpDisplayConfig *config = shell->display->config;
       gchar              title[MAX_TITLE_BUF];
+      gchar              status[MAX_TITLE_BUF];
       gint               len;
 
       /* format the title */
@@ -101,26 +104,47 @@ gimp_display_shell_update_title_idle (gpointer data)
 
       g_strlcpy (title + len, GIMP_ACRONYM, sizeof (title) - len);
 
-      gdk_window_set_title (GTK_WIDGET (shell)->window, title);
-
       /* format the statusbar */
-      gimp_display_shell_format_title (shell, title, sizeof (title),
+      gimp_display_shell_format_title (shell, status, sizeof (status),
                                        config->image_status_format);
 
-      gimp_statusbar_replace (GIMP_STATUSBAR (shell->statusbar), "title",
-                              NULL, "%s", title);
+      g_object_set (shell,
+                    "title",  title,
+                    "status", status,
+                    NULL);
     }
   else
     {
-      gdk_window_set_title (GTK_WIDGET (shell)->window, GIMP_NAME);
-
-      gimp_statusbar_replace (GIMP_STATUSBAR (shell->statusbar), "title",
-                              NULL, " ");
+      g_object_set (shell,
+                    "title",  GIMP_NAME,
+                    "status", " ",
+                    NULL);
     }
 
   return FALSE;
 }
 
+static const gchar *
+gimp_display_shell_title_image_type (GimpImage *image)
+{
+  const gchar *name = "";
+
+  gimp_enum_get_value (GIMP_TYPE_IMAGE_BASE_TYPE,
+                       gimp_image_base_type (image), NULL, NULL, &name, NULL);
+
+  return name;
+}
+
+static const gchar *
+gimp_display_shell_title_drawable_type (GimpDrawable *drawable)
+{
+  const gchar *name = "";
+
+  gimp_enum_get_value (GIMP_TYPE_IMAGE_TYPE,
+                       gimp_drawable_type (drawable), NULL, NULL, &name, NULL);
+
+  return name;
+}
 
 static gint print (gchar       *buf,
                    gint         len,
@@ -155,15 +179,13 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                                  gint              title_len,
                                  const gchar      *format)
 {
-  Gimp      *gimp;
   GimpImage *image;
   gint       num, denom;
   gint       i = 0;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), 0);
 
-  image = shell->display->image;
-  gimp  = shell->display->gimp;
+  image = gimp_display_get_image (shell->display);
 
   if (! image)
     {
@@ -188,27 +210,22 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
               title[i++] = '%';
               break;
 
-            case 'f': /* pruned filename */
+            case 'f': /* base filename */
               {
-                const gchar *uri = gimp_image_get_uri (image);
-                gchar       *basename;
+                const gchar *name = gimp_image_get_display_name (image);
 
-                basename = file_utils_uri_display_basename (uri);
-
-                i += print (title, title_len, i, "%s", basename);
-
-                g_free (basename);
+                i += gimp_display_shell_format_filename (title, title_len, i, image, name);
               }
               break;
 
             case 'F': /* full filename */
               {
-                gchar *filename;
-                const gchar *uri = gimp_image_get_uri (image);
+                gchar       *filename;
+                const gchar *uri = gimp_image_get_uri_or_untitled (image);
 
                 filename = file_utils_uri_display_name (uri);
 
-                i += print (title, title_len, i, "%s", filename);
+                i += gimp_display_shell_format_filename (title, title_len, i, image, filename);
 
                 g_free (filename);
               }
@@ -219,31 +236,22 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
               break;
 
             case 'i': /* instance */
-              i += print (title, title_len, i, "%d", shell->display->instance);
+              i += print (title, title_len, i, "%d",
+                          gimp_display_get_instance (shell->display));
               break;
 
-            case 't': /* type */
+            case 't': /* image type */
+              i += print (title, title_len, i, "%s",
+                          gimp_display_shell_title_image_type (image));
+              break;
+
+            case 'T': /* drawable type */
               {
-                const gchar *image_type_str = NULL;
-                gboolean     empty          = gimp_image_is_empty (image);
+                GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
-                switch (gimp_image_base_type (image))
-                  {
-                  case GIMP_RGB:
-                    image_type_str = empty ? _("RGB-empty") : _("RGB");
-                    break;
-                  case GIMP_GRAY:
-                    image_type_str = empty ? _("grayscale-empty") : _("grayscale");
-                    break;
-                  case GIMP_INDEXED:
-                    image_type_str = empty ? _("indexed-empty") : _("indexed");
-                    break;
-                  default:
-                    g_assert_not_reached ();
-                    break;
-                  }
-
-                i += print (title, title_len, i, "%s", image_type_str);
+                if (drawable)
+                  i += print (title, title_len, i, "%s",
+                              gimp_display_shell_title_drawable_type (drawable));
               }
               break;
 
@@ -271,7 +279,7 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                   i += print (title, title_len, i, "%%D");
                   break;
                 }
-              if (image->dirty)
+              if (gimp_image_is_dirty (image))
                 title[i++] = format[1];
               format++;
               break;
@@ -283,18 +291,18 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                   i += print (title, title_len, i, "%%C");
                   break;
                 }
-              if (! image->dirty)
+              if (! gimp_image_is_dirty (image))
                 title[i++] = format[1];
               format++;
               break;
 
             case 'B': /* dirty flag (long) */
-              if (image->dirty)
+              if (gimp_image_is_dirty (image))
                 i += print (title, title_len, i, "%s", _("(modified)"));
               break;
 
             case 'A': /* clean flag (long) */
-              if (! image->dirty)
+              if (! gimp_image_is_dirty (image))
                 i += print (title, title_len, i, "%s", _("(clean)"));
               break;
 
@@ -303,23 +311,26 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                 GimpObject *object = GIMP_OBJECT (image);
                 gchar      *str;
 
-                str = g_format_size_for_display (gimp_object_get_memsize (object,
-                                                                          NULL));
-
+                str = g_format_size (gimp_object_get_memsize (object, NULL));
                 i += print (title, title_len, i, "%s", str);
-
                 g_free (str);
               }
               break;
 
+            case 'M': /* image size in megapixels */
+              i += print (title, title_len, i, "%.1f",
+                          (gdouble) gimp_image_get_width (image) *
+                          (gdouble) gimp_image_get_height (image) / 1000000.0);
+              break;
+
             case 'l': /* number of layers */
               i += print (title, title_len, i, "%d",
-                          gimp_container_num_children (image->layers));
+                          gimp_image_get_n_layers (image));
               break;
 
             case 'L': /* number of layers (long) */
               {
-                gint num = gimp_container_num_children (image->layers);
+                gint num = gimp_image_get_n_layers (image);
 
                 i += print (title, title_len, i,
                             ngettext ("%d layer", "%d layers", num), num);
@@ -370,11 +381,10 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                   gimp_image_get_resolution (image, &xres, &yres);
 
                   g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
-                              _gimp_unit_get_digits (gimp, shell->unit) + 1);
+                              gimp_unit_get_digits (shell->unit) + 1);
                   i += print (title, title_len, i, unit_format,
-                              (gimp_image_get_width (image) *
-                               _gimp_unit_get_factor (gimp, shell->unit) /
-                               xres));
+                              gimp_pixels_to_units (gimp_image_get_width (image),
+                                                    shell->unit, xres));
                   break;
                 }
               /* else fallthru */
@@ -393,11 +403,10 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                   gimp_image_get_resolution (image, &xres, &yres);
 
                   g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
-                              _gimp_unit_get_digits (gimp, shell->unit) + 1);
+                              gimp_unit_get_digits (shell->unit) + 1);
                   i += print (title, title_len, i, unit_format,
-                              (gimp_image_get_height (image) *
-                               _gimp_unit_get_factor (gimp, shell->unit) /
-                               yres));
+                              gimp_pixels_to_units (gimp_image_get_height (image),
+                                                    shell->unit, yres));
                   break;
                 }
               /* else fallthru */
@@ -408,12 +417,12 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
 
             case 'u': /* unit symbol */
               i += print (title, title_len, i, "%s",
-                          _gimp_unit_get_symbol (gimp, shell->unit));
+                          gimp_unit_get_symbol (shell->unit));
               break;
 
             case 'U': /* unit abbreviation */
               i += print (title, title_len, i, "%s",
-                          _gimp_unit_get_abbreviation (gimp, shell->unit));
+                          gimp_unit_get_abbreviation (shell->unit));
               break;
 
               /* Other cool things to be added:
@@ -441,4 +450,70 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
   title[MIN (i, title_len - 1)] = '\0';
 
   return i;
+}
+
+static gint
+gimp_display_shell_format_filename (gchar       *buf,
+                                    gint         len,
+                                    gint         start,
+                                    GimpImage   *image,
+                                    const gchar *filename)
+{
+  const gchar *source        = NULL;
+  const gchar *name_format   = NULL;
+  const gchar *export_status = NULL;
+  gchar       *format_string = NULL;
+  gchar       *name          = NULL;
+  gboolean     is_imported   = FALSE;
+  gint         incr          = 0;
+
+  source = gimp_image_get_imported_uri (image);
+
+  /* Note that as soon as the image is saved, it is not considered
+   * imported any longer (gimp_image_set_imported_uri (image, NULL) is
+   * called)
+   */
+  is_imported = (source != NULL);
+
+  /* Calculate filename and format */
+  if (! is_imported)
+    {
+      name        = g_strdup (filename);
+      name_format = "%s";
+    }
+  else
+    {
+      gchar *source_no_ext = file_utils_uri_with_new_ext (source, NULL);
+      name = file_utils_uri_display_basename (source_no_ext);
+      g_free (source_no_ext);
+
+      name_format = "[%s]";
+    }
+
+  /* Calculate filename suffix */
+  if (! gimp_image_is_export_dirty (image))
+    {
+      gboolean is_exported;
+      is_exported = (gimp_image_get_exported_uri (image) != NULL);
+      if (is_exported)
+        export_status = _(" (exported)");
+      else if (is_imported)
+        export_status = _(" (overwritten)");
+      else
+        g_warning ("Unexpected code path, Save+export implementation is buggy!");
+    }
+  else if (is_imported)
+    {
+      export_status = _(" (imported)");
+    }
+
+  /* Merge strings and print the result */
+  format_string = g_strconcat (name_format, export_status, NULL);
+  incr = print (buf, len, start, format_string, name);
+  g_free (format_string);
+
+  /* Cleanup */
+  g_free (name);
+
+  return incr;
 }

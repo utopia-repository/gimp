@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,7 @@
 #include "gegl/gimpposterizeconfig.h"
 
 #include "core/gimpdrawable.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -100,7 +100,7 @@ gimp_posterize_tool_class_init (GimpPosterizeToolClass *klass)
 
   tool_class->initialize       = gimp_posterize_tool_initialize;
 
-  im_tool_class->shell_desc    = _("Posterize (Reduce Number of Colors)");
+  im_tool_class->dialog_desc   = _("Posterize (Reduce Number of Colors)");
 
   im_tool_class->get_operation = gimp_posterize_tool_get_operation;
   im_tool_class->map           = gimp_posterize_tool_map;
@@ -138,23 +138,27 @@ gimp_posterize_tool_initialize (GimpTool     *tool,
                                 GError      **error)
 {
   GimpPosterizeTool *posterize_tool = GIMP_POSTERIZE_TOOL (tool);
+  GimpImage         *image          = gimp_display_get_image (display);
   GimpDrawable      *drawable;
 
-  drawable = gimp_image_get_active_drawable (display->image);
+  drawable = gimp_image_get_active_drawable (image);
 
   if (! drawable)
     return FALSE;
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Posterize does not operate on indexed layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Posterize does not operate on indexed layers."));
       return FALSE;
     }
 
   gimp_config_reset (GIMP_CONFIG (posterize_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
+  if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
+    {
+      return FALSE;
+    }
 
   gtk_adjustment_set_value (posterize_tool->levels_data,
                             posterize_tool->config->levels);
@@ -172,7 +176,7 @@ gimp_posterize_tool_get_operation (GimpImageMapTool  *image_map_tool,
   GeglNode          *node;
 
   node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp-posterize",
+                       "operation", "gimp:posterize",
                        NULL);
 
   posterize_tool->config = g_object_new (GIMP_TYPE_POSTERIZE_CONFIG, NULL);
@@ -211,7 +215,6 @@ gimp_posterize_tool_dialog (GimpImageMapTool *image_map_tool)
   GimpPosterizeTool *posterize_tool = GIMP_POSTERIZE_TOOL (image_map_tool);
   GtkWidget         *main_vbox;
   GtkWidget         *table;
-  GtkWidget         *slider;
   GtkObject         *data;
 
   main_vbox = gimp_image_map_tool_dialog_get_vbox (image_map_tool);
@@ -232,9 +235,6 @@ gimp_posterize_tool_dialog (GimpImageMapTool *image_map_tool)
   gimp_scale_entry_set_logarithmic (data, TRUE);
 
   posterize_tool->levels_data = GTK_ADJUSTMENT (data);
-
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_DELAYED);
 
   g_signal_connect (posterize_tool->levels_data, "value-changed",
                     G_CALLBACK (gimp_posterize_tool_levels_changed),

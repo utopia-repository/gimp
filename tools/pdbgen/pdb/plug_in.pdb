@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -79,7 +78,7 @@ sub plugin_domain_register {
 This procedure adds a textdomain to the list of domains Gimp searches 
 for strings when translating its menu entries. There is no need to 
 call this function for plug-ins that have their strings included in 
-the gimp-std-plugins domain as that is used by default. If the compiled 
+the 'gimp-std-plugins' domain as that is used by default. If the compiled 
 message catalog is not in the standard location, you may specify an 
 absolute path to another location. This procedure can only be called 
 in the query function of a plug-in and it has to be called before any
@@ -119,9 +118,12 @@ sub plugin_help_register {
     $blurb = "Register a help path for a plug-in.";
 
     $help = <<HELP;
-This procedure changes the help rootdir for the plug-in which calls it. All
-subsequent calls of gimp_help() from this plug-in will be interpreted relative
-to this rootdir.
+
+This procedure registers user documentation for the calling plug-in
+with the GIMP help system. The domain_uri parameter points to the root
+directory where the plug-in help is installed. For each supported
+language there should be a file called 'gimp-help.xml' that maps the
+help IDs to the actual help files.
 HELP
 
     &mitch_pdb_misc('2000');
@@ -374,5 +376,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs[1,2,3,4,5,6,7]]);
 
 $desc = 'Plug-in';
+$doc_title = 'gimpplugin';
+$doc_short_desc = 'Functions useful for plugins, e.g. registration and progress indicators.';
+$doc_long_desc = 'Functions useful for plugins, e.g. registration and progress indicators.';
 
 1;

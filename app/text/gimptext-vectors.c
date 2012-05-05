@@ -1,12 +1,12 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * GimpText
+ * GimpText-vectors
  * Copyright (C) 2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,20 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
-#define PANGO_ENABLE_ENGINE
-#include <pango/pangoft2.h>
-
-#include <ft2build.h>
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#include <pango/pangocairo.h>
 
 #include "text-types.h"
 
@@ -39,35 +33,20 @@
 #include "vectors/gimpanchor.h"
 
 #include "gimptext.h"
-#include "gimptext-private.h"
 #include "gimptext-vectors.h"
 #include "gimptextlayout.h"
 #include "gimptextlayout-render.h"
 
 
-/* for compatibility with older freetype versions */
-#ifndef FT_GLYPH_FORMAT_OUTLINE
-#define FT_GLYPH_FORMAT_OUTLINE ft_glyph_format_outline
-#endif
-
-typedef struct _RenderContext  RenderContext;
-
-struct _RenderContext
+typedef struct
 {
-  GimpVectors  *vectors;
-  GimpStroke   *stroke;
-  GimpAnchor   *anchor;
-  gdouble       offset_x;
-  gdouble       offset_y;
-};
+  GimpVectors *vectors;
+  GimpStroke  *stroke;
+  GimpAnchor  *anchor;
+} RenderContext;
 
 
-static void  gimp_text_render_vectors (PangoFont     *font,
-                                       PangoGlyph     glyph,
-                                       FT_Int32       flags,
-                                       FT_Matrix     *matrix,
-                                       gint           x,
-                                       gint           y,
+static void  gimp_text_render_vectors (cairo_t       *cr,
                                        RenderContext *context);
 
 
@@ -75,28 +54,46 @@ GimpVectors *
 gimp_text_vectors_new (GimpImage *image,
                        GimpText  *text)
 {
-  GimpVectors    *vectors;
-  GimpTextLayout *layout;
-  RenderContext   context = { 0, };
+  GimpVectors   *vectors;
+  RenderContext  context = { NULL, };
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
 
   vectors = gimp_vectors_new (image, NULL);
 
-  if (text->text)
+  if (text->text || text->markup)
     {
-      gimp_object_set_name_safe (GIMP_OBJECT (vectors), text->text);
+      GimpTextLayout  *layout;
+      cairo_surface_t *surface;
+      cairo_t         *cr;
+      gdouble          xres;
+      gdouble          yres;
 
-      layout = gimp_text_layout_new (text, image);
+      if (text->text)
+        gimp_object_set_name_safe (GIMP_OBJECT (vectors), text->text);
 
       context.vectors = vectors;
 
-      gimp_text_layout_render (layout,
-                               (GimpTextRenderFunc) gimp_text_render_vectors,
-                               &context);
+      /* A cairo_t needs an image surface to function, so "surface" is
+       * created temporarily for this purpose. Nothing is drawn to
+       * "surface", but it is still needed to be connected to "cr" for
+       * "cr" to execute cr_glyph_path(). The size of surface is
+       * therefore irrelevant.
+       */
+      surface = cairo_image_surface_create (CAIRO_FORMAT_A8, 2, 2);
+      cr = cairo_create (surface);
 
+      gimp_image_get_resolution (image, &xres, &yres);
+
+      layout = gimp_text_layout_new (text, xres, yres);
+      gimp_text_layout_render (layout, cr, text->base_dir, TRUE);
       g_object_unref (layout);
+
+      gimp_text_render_vectors (cr, &context);
+
+      cairo_destroy (cr);
+      cairo_surface_destroy (surface);
 
       if (context.stroke)
         gimp_stroke_close (context.stroke);
@@ -107,29 +104,30 @@ gimp_text_vectors_new (GimpImage *image,
 
 
 static inline void
-gimp_text_vector_coords (RenderContext   *context,
-                         const FT_Vector *vector,
-                         GimpCoords      *coords)
+gimp_text_vector_coords (const double  x,
+                         const double  y,
+                         GimpCoords   *coords)
 {
   const GimpCoords default_values = GIMP_COORDS_DEFAULT_VALUES;
 
-  *coords   = default_values;
-  coords->x = context->offset_x + (gdouble) vector->x / 64.0;
-  coords->y = context->offset_y - (gdouble) vector->y / 64.0;
+  *coords = default_values;
+
+  coords->x = x;
+  coords->y = y;
 }
 
 static gint
-moveto (const FT_Vector *to,
-        gpointer         data)
+moveto (RenderContext *context,
+        const double   x,
+        const double   y)
 {
-  RenderContext *context = data;
   GimpCoords     start;
 
 #if GIMP_TEXT_DEBUG
-  g_printerr ("moveto  %f, %f\n", to->x / 64.0, to->y / 64.0);
+  g_printerr ("moveto  %f, %f\n", x, y);
 #endif
 
-  gimp_text_vector_coords (context, to, &start);
+  gimp_text_vector_coords (x, y, &start);
 
   if (context->stroke)
     gimp_stroke_close (context->stroke);
@@ -143,20 +141,20 @@ moveto (const FT_Vector *to,
 }
 
 static gint
-lineto (const FT_Vector *to,
-        gpointer         data)
+lineto (RenderContext *context,
+        const double   x,
+        const double   y)
 {
-  RenderContext *context = data;
   GimpCoords     end;
 
 #if GIMP_TEXT_DEBUG
-  g_printerr ("lineto  %f, %f\n", to->x / 64.0, to->y / 64.0);
+  g_printerr ("lineto  %f, %f\n", x, y);
 #endif
 
   if (! context->stroke)
     return 0;
 
-  gimp_text_vector_coords (context, to, &end);
+  gimp_text_vector_coords (x, y, &end);
 
   gimp_bezier_stroke_lineto (context->stroke, &end);
 
@@ -164,96 +162,93 @@ lineto (const FT_Vector *to,
 }
 
 static gint
-conicto (const FT_Vector *ftcontrol,
-         const FT_Vector *to,
-         gpointer         data)
+cubicto (RenderContext *context,
+         const double   x1,
+         const double   y1,
+         const double   x2,
+         const double   y2,
+         const double   x3,
+         const double   y3)
 {
-  RenderContext *context = data;
-  GimpCoords     control;
-  GimpCoords     end;
-
-#if GIMP_TEXT_DEBUG
-  g_printerr ("conicto %f, %f\n", to->x / 64.0, to->y / 64.0);
-#endif
-
-  if (! context->stroke)
-    return 0;
-
-  gimp_text_vector_coords (context, ftcontrol, &control);
-  gimp_text_vector_coords (context, to, &end);
-
-  gimp_bezier_stroke_conicto (context->stroke, &control, &end);
-
-  return 0;
-}
-
-static gint
-cubicto (const FT_Vector *ftcontrol1,
-         const FT_Vector *ftcontrol2,
-         const FT_Vector *to,
-         gpointer         data)
-{
-  RenderContext *context = data;
   GimpCoords     control1;
   GimpCoords     control2;
   GimpCoords     end;
 
 #if GIMP_TEXT_DEBUG
-  g_printerr ("cubicto %f, %f\n", to->x / 64.0, to->y / 64.0);
+  g_printerr ("cubicto %f, %f\n", x3, y3);
 #endif
 
   if (! context->stroke)
     return 0;
 
-  gimp_text_vector_coords (context, ftcontrol1, &control1);
-  gimp_text_vector_coords (context, ftcontrol2, &control2);
-  gimp_text_vector_coords (context, to, &end);
+  gimp_text_vector_coords (x1, y1, &control1);
+  gimp_text_vector_coords (x2, y2, &control2);
+  gimp_text_vector_coords (x3, y3, &end);
 
   gimp_bezier_stroke_cubicto (context->stroke, &control1, &control2, &end);
 
   return 0;
 }
 
+static gint
+closepath (RenderContext *context)
+{
+#if GIMP_TEXT_DEBUG
+  g_printerr ("moveto\n");
+#endif
+
+  if (! context->stroke)
+    return 0;
+
+  gimp_stroke_close (context->stroke);
+
+  context->stroke = NULL;
+
+  return 0;
+}
 
 static void
-gimp_text_render_vectors (PangoFont     *font,
-                          PangoGlyph     pango_glyph,
-                          FT_Int32       flags,
-                          FT_Matrix     *trafo,
-                          gint           x,
-                          gint           y,
+gimp_text_render_vectors (cairo_t       *cr,
                           RenderContext *context)
 {
-  const FT_Outline_Funcs  outline_funcs =
-  {
-    moveto,
-    lineto,
-    conicto,
-    cubicto,
-    0,
-    0
-  };
+  cairo_path_t *path;
+  gint          i;
 
-  FT_Face   face;
-  FT_Glyph  glyph;
+  path = cairo_copy_path (cr);
 
-  face = pango_fc_font_lock_face (PANGO_FC_FONT (font));
-
-  FT_Load_Glyph (face, (FT_UInt) pango_glyph, flags);
-
-  FT_Get_Glyph (face->glyph, &glyph);
-
-  if (face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
+  for (i = 0; i < path->num_data; i += path->data[i].header.length)
     {
-      FT_OutlineGlyph outline_glyph = (FT_OutlineGlyph) glyph;
+      cairo_path_data_t *data = &path->data[i];
 
-      context->offset_x = (gdouble) x / PANGO_SCALE;
-      context->offset_y = (gdouble) y / PANGO_SCALE;
+      /* if the drawing operation is the final moveto of the glyph,
+       * break to avoid creating an empty point. This is because cairo
+       * always adds a moveto after each closepath.
+       */
+      if (i + data->header.length >= path->num_data)
+        break;
 
-      FT_Outline_Decompose (&outline_glyph->outline, &outline_funcs, context);
+      switch (data->header.type)
+        {
+        case CAIRO_PATH_MOVE_TO:
+          moveto (context, data[1].point.x, data[1].point.y);
+          break;
+
+        case CAIRO_PATH_LINE_TO:
+          lineto (context, data[1].point.x, data[1].point.y);
+          break;
+
+        case CAIRO_PATH_CURVE_TO:
+          cubicto (context,
+                   data[1].point.x, data[1].point.y,
+                   data[2].point.x, data[2].point.y,
+                   data[3].point.x, data[3].point.y);
+          break;
+
+        case CAIRO_PATH_CLOSE_PATH:
+          closepath (context);
+          break;
+        }
     }
 
-  FT_Done_Glyph (glyph);
-
-  pango_fc_font_unlock_face (PANGO_FC_FONT (font));
+  cairo_path_destroy (path);
 }

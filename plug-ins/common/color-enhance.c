@@ -6,9 +6,9 @@
  * You can contact me at martweb@gmx.net
  * You can contact the original GIMP authors at gimp@xcf.berkeley.edu
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -60,29 +59,29 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"    },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-			  N_("Stretch color saturation to cover maximum possible range"),
-			  "This simple plug-in does an automatic saturation "
-			  "stretch.  For each channel in the image, it finds "
-			  "the minimum and maximum values... it uses those "
-			  "values to stretch the individual histograms to the "
-			  "full range.  For some images it may do just what "
-			  "you want; for others it may not work that well.  "
-			  "This version differs from Contrast Autostretch in "
-			  "that it works in HSV space, and preserves hue.",
-			  "Martin Weber",
-		 	  "Martin Weber",
-		  	  "1997",
-			  N_("_Color Enhance"),
-	   	  	  "RGB*, INDEXED*",
- 			  GIMP_PLUGIN,
-	 	  	  G_N_ELEMENTS (args), 0,
- 			  args, NULL);
+                          N_("Stretch color saturation to cover maximum possible range"),
+                          "This simple plug-in does an automatic saturation "
+                          "stretch.  For each channel in the image, it finds "
+                          "the minimum and maximum values... it uses those "
+                          "values to stretch the individual histograms to the "
+                          "full range.  For some images it may do just what "
+                          "you want; for others it may not work that well.  "
+                          "This version differs from Contrast Autostretch in "
+                          "that it works in HSV space, and preserves hue.",
+                          "Martin Weber",
+                          "Martin Weber",
+                          "1997",
+                          N_("_Color Enhance"),
+                          "RGB*, INDEXED*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Auto");
 }
@@ -117,14 +116,14 @@ run (const gchar      *name,
       Color_Enhance (drawable);
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	gimp_displays_flush ();
+        gimp_displays_flush ();
     }
   else if (gimp_drawable_is_indexed (drawable->drawable_id))
     {
       indexed_Color_Enhance (image_ID);
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	gimp_displays_flush ();
+        gimp_displays_flush ();
     }
   else
     {

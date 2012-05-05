@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
@@ -48,35 +47,38 @@
 
 /*  local function prototypes  */
 
-static void      gimp_ink_finalize       (GObject          *object);
+static void       gimp_ink_finalize       (GObject          *object);
 
-static void      gimp_ink_paint          (GimpPaintCore    *paint_core,
-                                          GimpDrawable     *drawable,
-                                          GimpPaintOptions *paint_options,
-                                          GimpPaintState    paint_state,
-                                          guint32           time);
-static TempBuf * gimp_ink_get_paint_area (GimpPaintCore    *paint_core,
-                                          GimpDrawable     *drawable,
-                                          GimpPaintOptions *paint_options);
-static GimpUndo* gimp_ink_push_undo      (GimpPaintCore    *core,
-                                          GimpImage        *image,
-                                          const gchar      *undo_desc);
+static void       gimp_ink_paint          (GimpPaintCore    *paint_core,
+                                           GimpDrawable     *drawable,
+                                           GimpPaintOptions *paint_options,
+                                           const GimpCoords *coords,
+                                           GimpPaintState    paint_state,
+                                           guint32           time);
+static TempBuf  * gimp_ink_get_paint_area (GimpPaintCore    *paint_core,
+                                           GimpDrawable     *drawable,
+                                           GimpPaintOptions *paint_options,
+                                           const GimpCoords *coords);
+static GimpUndo * gimp_ink_push_undo      (GimpPaintCore    *core,
+                                           GimpImage        *image,
+                                           const gchar      *undo_desc);
 
-static void      gimp_ink_motion         (GimpPaintCore    *paint_core,
-                                          GimpDrawable     *drawable,
-                                          GimpPaintOptions *paint_options,
-                                          guint32           time);
+static void       gimp_ink_motion         (GimpPaintCore    *paint_core,
+                                           GimpDrawable     *drawable,
+                                           GimpPaintOptions *paint_options,
+                                           const GimpCoords *coords,
+                                           guint32           time);
 
-static Blob    * ink_pen_ellipse         (GimpInkOptions   *options,
-                                          gdouble           x_center,
-                                          gdouble           y_center,
-                                          gdouble           pressure,
-                                          gdouble           xtilt,
-                                          gdouble           ytilt,
-                                          gdouble           velocity);
+static GimpBlob * ink_pen_ellipse         (GimpInkOptions   *options,
+                                           gdouble           x_center,
+                                           gdouble           y_center,
+                                           gdouble           pressure,
+                                           gdouble           xtilt,
+                                           gdouble           ytilt,
+                                           gdouble           velocity);
 
-static void      render_blob             (Blob             *blob,
-                                          PixelRegion      *dest);
+static void      render_blob              (GimpBlob         *blob,
+                                           PixelRegion      *dest);
 
 
 G_DEFINE_TYPE (GimpInk, gimp_ink, GIMP_TYPE_PAINT_CORE)
@@ -138,16 +140,22 @@ static void
 gimp_ink_paint (GimpPaintCore    *paint_core,
                 GimpDrawable     *drawable,
                 GimpPaintOptions *paint_options,
+                const GimpCoords *coords,
                 GimpPaintState    paint_state,
                 guint32           time)
 {
   GimpInk *ink = GIMP_INK (paint_core);
+  GimpCoords last_coords;
+
+  gimp_paint_core_get_last_coords (paint_core, &last_coords);
 
   switch (paint_state)
     {
+
     case GIMP_PAINT_STATE_INIT:
-      if (paint_core->cur_coords.x == paint_core->last_coords.x &&
-          paint_core->cur_coords.y == paint_core->last_coords.y)
+
+      if (coords->x == last_coords.x &&
+          coords->y == last_coords.y)
         {
           /*  start with new blobs if we're not interpolating  */
 
@@ -170,12 +178,12 @@ gimp_ink_paint (GimpPaintCore    *paint_core,
           if (ink->start_blob)
             g_free (ink->start_blob);
 
-          ink->start_blob = blob_duplicate (ink->last_blob);
+          ink->start_blob = gimp_blob_duplicate (ink->last_blob);
         }
       break;
 
     case GIMP_PAINT_STATE_MOTION:
-      gimp_ink_motion (paint_core, drawable, paint_options, time);
+      gimp_ink_motion (paint_core, drawable, paint_options, coords, time);
       break;
 
     case GIMP_PAINT_STATE_FINISH:
@@ -186,7 +194,8 @@ gimp_ink_paint (GimpPaintCore    *paint_core,
 static TempBuf *
 gimp_ink_get_paint_area (GimpPaintCore    *paint_core,
                          GimpDrawable     *drawable,
-                         GimpPaintOptions *paint_options)
+                         GimpPaintOptions *paint_options,
+                         const GimpCoords *coords)
 {
   GimpInk *ink = GIMP_INK (paint_core);
   gint     x, y;
@@ -197,10 +206,10 @@ gimp_ink_get_paint_area (GimpPaintCore    *paint_core,
 
   bytes = gimp_drawable_bytes_with_alpha (drawable);
 
-  blob_bounds (ink->cur_blob, &x, &y, &width, &height);
+  gimp_blob_bounds (ink->cur_blob, &x, &y, &width, &height);
 
-  dwidth  = gimp_item_width  (GIMP_ITEM (drawable));
-  dheight = gimp_item_height (GIMP_ITEM (drawable));
+  dwidth  = gimp_item_get_width  (GIMP_ITEM (drawable));
+  dheight = gimp_item_get_height (GIMP_ITEM (drawable));
 
   x1 = CLAMP (x / SUBSAMPLE - 1,            0, dwidth);
   y1 = CLAMP (y / SUBSAMPLE - 1,            0, dheight);
@@ -234,14 +243,15 @@ static void
 gimp_ink_motion (GimpPaintCore    *paint_core,
                  GimpDrawable     *drawable,
                  GimpPaintOptions *paint_options,
+                 const GimpCoords *coords,
                  guint32           time)
 {
   GimpInk        *ink     = GIMP_INK (paint_core);
   GimpInkOptions *options = GIMP_INK_OPTIONS (paint_options);
   GimpContext    *context = GIMP_CONTEXT (paint_options);
   GimpImage      *image;
-  Blob           *blob_union = NULL;
-  Blob           *blob_to_render;
+  GimpBlob       *blob_union = NULL;
+  GimpBlob       *blob_to_render;
   TempBuf        *area;
   guchar          col[MAX_CHANNELS];
   PixelRegion     blob_maskPR;
@@ -251,31 +261,31 @@ gimp_ink_motion (GimpPaintCore    *paint_core,
   if (! ink->last_blob)
     {
       ink->last_blob = ink_pen_ellipse (options,
-                                        paint_core->cur_coords.x,
-                                        paint_core->cur_coords.y,
-                                        paint_core->cur_coords.pressure,
-                                        paint_core->cur_coords.xtilt,
-                                        paint_core->cur_coords.ytilt,
+                                        coords->x,
+                                        coords->y,
+                                        coords->pressure,
+                                        coords->xtilt,
+                                        coords->ytilt,
                                         100);
 
       if (ink->start_blob)
         g_free (ink->start_blob);
 
-      ink->start_blob = blob_duplicate (ink->last_blob);
+      ink->start_blob = gimp_blob_duplicate (ink->last_blob);
 
       blob_to_render = ink->last_blob;
     }
   else
     {
-      Blob *blob = ink_pen_ellipse (options,
-                                    paint_core->cur_coords.x,
-                                    paint_core->cur_coords.y,
-                                    paint_core->cur_coords.pressure,
-                                    paint_core->cur_coords.xtilt,
-                                    paint_core->cur_coords.ytilt,
-                                    paint_core->cur_coords.velocity * 100);
+      GimpBlob *blob = ink_pen_ellipse (options,
+                                        coords->x,
+                                        coords->y,
+                                        coords->pressure,
+                                        coords->xtilt,
+                                        coords->ytilt,
+                                        coords->velocity * 100);
 
-      blob_union = blob_convex_union (ink->last_blob, blob);
+      blob_union = gimp_blob_convex_union (ink->last_blob, blob);
 
       g_free (ink->last_blob);
       ink->last_blob = blob;
@@ -285,7 +295,8 @@ gimp_ink_motion (GimpPaintCore    *paint_core,
 
   /* Get the buffer */
   ink->cur_blob = blob_to_render;
-  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options);
+  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,
+                                         coords);
   ink->cur_blob = NULL;
 
   if (! area)
@@ -298,7 +309,7 @@ gimp_ink_motion (GimpPaintCore    *paint_core,
   col[paint_core->canvas_buf->bytes - 1] = OPAQUE_OPACITY;
 
   /*  color the pixels  */
-  color_pixels (temp_buf_data (paint_core->canvas_buf), col,
+  color_pixels (temp_buf_get_data (paint_core->canvas_buf), col,
                 area->width * area->height, area->bytes);
 
   gimp_paint_core_validate_canvas_tiles (paint_core,
@@ -335,7 +346,7 @@ gimp_ink_motion (GimpPaintCore    *paint_core,
     g_free (blob_union);
 }
 
-static Blob *
+static GimpBlob *
 ink_pen_ellipse (GimpInkOptions *options,
                  gdouble         x_center,
                  gdouble         y_center,
@@ -344,14 +355,14 @@ ink_pen_ellipse (GimpInkOptions *options,
                  gdouble         ytilt,
                  gdouble         velocity)
 {
-  BlobFunc blob_function;
-  gdouble  size;
-  gdouble  tsin, tcos;
-  gdouble  aspect, radmin;
-  gdouble  x,y;
-  gdouble  tscale;
-  gdouble  tscale_c;
-  gdouble  tscale_s;
+  GimpBlobFunc blob_function;
+  gdouble      size;
+  gdouble      tsin, tcos;
+  gdouble      aspect, radmin;
+  gdouble      x,y;
+  gdouble      tscale;
+  gdouble      tscale_c;
+  gdouble      tscale_s;
 
   /* Adjust the size depending on pressure. */
 
@@ -428,16 +439,16 @@ ink_pen_ellipse (GimpInkOptions *options,
 
   switch (options->blob_type)
     {
-    case GIMP_INK_BLOB_TYPE_ELLIPSE:
-      blob_function = blob_ellipse;
+    case GIMP_INK_BLOB_TYPE_CIRCLE:
+      blob_function = gimp_blob_ellipse;
       break;
 
     case GIMP_INK_BLOB_TYPE_SQUARE:
-      blob_function = blob_square;
+      blob_function = gimp_blob_square;
       break;
 
     case GIMP_INK_BLOB_TYPE_DIAMOND:
-      blob_function = blob_diamond;
+      blob_function = gimp_blob_diamond;
       break;
 
     default:
@@ -523,11 +534,11 @@ fill_run (guchar *dest,
 }
 
 static void
-render_blob_line (Blob   *blob,
-                  guchar *dest,
-                  gint    x,
-                  gint    y,
-                  gint    width)
+render_blob_line (GimpBlob *blob,
+                  guchar   *dest,
+                  gint      x,
+                  gint      y,
+                  gint      width)
 {
   gint  buf[4 * SUBSAMPLE];
   gint *data    = buf;
@@ -630,7 +641,7 @@ render_blob_line (Blob   *blob,
 }
 
 static void
-render_blob (Blob        *blob,
+render_blob (GimpBlob    *blob,
              PixelRegion *dest)
 {
   gpointer  pr;

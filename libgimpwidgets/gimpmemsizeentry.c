@@ -4,10 +4,10 @@
  * gimpmemsizeentry.c
  * Copyright (C) 2000-2003  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,18 @@
 #include "gimpwidgets.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpmemsizeentry
+ * @title: GimpMemSizeEntry
+ * @short_description: A composite widget that allows to enter a memory size.
+ *
+ * Similar to a #GimpSizeEntry but instead of lengths, this widget is
+ * used to let the user enter memory sizes. An option menu allows to
+ * switch between Kilobytes, Megabytes and Gigabytes. Used in the GIMP
+ * preferences dialog.
+ **/
 
 
 enum
@@ -47,7 +58,7 @@ static void  gimp_memsize_entry_unit_callback (GtkWidget        *widget,
                                                GimpMemsizeEntry *entry);
 
 
-G_DEFINE_TYPE (GimpMemsizeEntry, gimp_memsize_entry, GTK_TYPE_HBOX)
+G_DEFINE_TYPE (GimpMemsizeEntry, gimp_memsize_entry, GTK_TYPE_BOX)
 
 #define parent_class gimp_memsize_entry_parent_class
 
@@ -76,6 +87,9 @@ gimp_memsize_entry_class_init (GimpMemsizeEntryClass *klass)
 static void
 gimp_memsize_entry_init (GimpMemsizeEntry *entry)
 {
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (entry),
+                                  GTK_ORIENTATION_HORIZONTAL);
+
   gtk_box_set_spacing (GTK_BOX (entry), 4);
 
   entry->value      = 0;
@@ -129,13 +143,15 @@ gimp_memsize_entry_unit_callback (GtkWidget        *widget,
     {
       entry->shift = shift;
 
-      entry->adjustment->value = CAST entry->value >> shift;
-      entry->adjustment->lower = CAST entry->lower >> shift;
-      entry->adjustment->upper = CAST entry->upper >> shift;
-
-      gtk_adjustment_value_changed (entry->adjustment);
-      gtk_adjustment_changed (entry->adjustment);
+      gtk_adjustment_configure (entry->adjustment,
+                                CAST entry->value >> shift,
+                                CAST entry->lower >> shift,
+                                CAST entry->upper >> shift,
+                                gtk_adjustment_get_step_increment (entry->adjustment),
+                                gtk_adjustment_get_page_increment (entry->adjustment),
+                                gtk_adjustment_get_page_size (entry->adjustment));
     }
+
 #undef CAST
 }
 

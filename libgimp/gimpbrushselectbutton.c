@@ -4,10 +4,10 @@
  * gimpbrushselectbutton.c
  * Copyright (C) 1998 Andy Thomas
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,15 @@
 #include "gimpuimarshal.h"
 
 #include "libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpbrushselectbutton
+ * @title: gimpbrushselectbutton
+ * @short_description: A button that pops up a brush selection dialog.
+ *
+ * A button that pops up a brush selection dialog.
+ **/
 
 
 #define CELL_SIZE 20
@@ -735,20 +743,23 @@ gimp_brush_select_preview_update (GtkWidget    *preview,
                                   const guchar *mask_data)
 {
   GimpPreviewArea *area = GIMP_PREVIEW_AREA (preview);
+  GtkAllocation    allocation;
   gint             x, y;
   gint             width, height;
 
-  width  = MIN (brush_width,  preview->allocation.width);
-  height = MIN (brush_height, preview->allocation.height);
+  gtk_widget_get_allocation (preview, &allocation);
 
-  x = ((preview->allocation.width  - width)  / 2);
-  y = ((preview->allocation.height - height) / 2);
+  width  = MIN (brush_width,  allocation.width);
+  height = MIN (brush_height, allocation.height);
+
+  x = ((allocation.width  - width)  / 2);
+  y = ((allocation.height - height) / 2);
 
   if (x || y)
     gimp_preview_area_fill (area,
                             0, 0,
-                            preview->allocation.width,
-                            preview->allocation.height,
+                            allocation.width,
+                            allocation.height,
                             0xFF, 0xFF, 0xFF);
 
   gimp_brush_select_preview_draw (area,
@@ -795,7 +806,8 @@ gimp_brush_select_button_open_popup (GimpBrushSelectButton *button,
   gtk_widget_show (preview);
 
   /* decide where to put the popup */
-  gdk_window_get_origin (priv->preview->window, &x_org, &y_org);
+  gdk_window_get_origin (gtk_widget_get_window (priv->preview),
+                         &x_org, &y_org);
 
   scr_w = gdk_screen_get_width (screen);
   scr_h = gdk_screen_get_height (screen);
@@ -840,15 +852,17 @@ gimp_brush_select_drag_data_received (GimpBrushSelectButton *button,
                                       guint                  info,
                                       guint                  time)
 {
+  gint   length = gtk_selection_data_get_length (selection);
   gchar *str;
 
-  if ((selection->format != 8) || (selection->length < 1))
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
     {
-      g_warning ("Received invalid brush data!");
+      g_warning ("%s: received invalid brush data", G_STRFUNC);
       return;
     }
 
-  str = g_strndup ((const gchar *) selection->data, selection->length);
+  str = g_strndup ((const gchar *) gtk_selection_data_get_data (selection),
+                   length);
 
   if (g_utf8_validate (str, -1, NULL))
     {
@@ -880,7 +894,7 @@ gimp_brush_select_button_create_inside (GimpBrushSelectButton *brush_button)
 
   gtk_widget_push_composite_child ();
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);

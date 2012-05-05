@@ -4,10 +4,10 @@
  * gimppropwidgets.h
  * Copyright (C) 2002 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_PROP_WIDGETS_H__
 #define __GIMP_PROP_WIDGETS_H__
@@ -203,9 +206,13 @@ GtkWidget     * gimp_prop_color_area_new          (GObject       *config,
 
 /*  GimpParamUnit  */
 
+GtkWidget     * gimp_prop_unit_combo_box_new      (GObject       *config,
+                                                   const gchar   *property_name);
+#ifndef GIMP_DISABLE_DEPRECATED
 GtkWidget     * gimp_prop_unit_menu_new           (GObject       *config,
                                                    const gchar   *property_name,
                                                    const gchar   *unit_format);
+#endif /* GIMP_DISABLE_DEPRECATED */
 
 
 /*  GParamString (stock_id)  */

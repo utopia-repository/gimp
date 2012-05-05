@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <stdlib.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -29,7 +28,6 @@
 #include "base/pixel-region.h"
 #include "base/temp-buf.h"
 #include "base/tile-manager.h"
-#include "base/tile-manager-crop.h"
 
 #include "paint-funcs/paint-funcs.h"
 
@@ -58,8 +56,6 @@ static GimpBuffer * gimp_edit_extract         (GimpImage            *image,
                                                GimpContext          *context,
                                                gboolean              cut_pixels,
                                                GError              **error);
-static GimpBuffer * gimp_edit_make_buffer     (Gimp                 *gimp,
-                                               TileManager          *tiles);
 static gboolean     gimp_edit_fill_internal   (GimpImage            *image,
                                                GimpDrawable         *drawable,
                                                GimpContext          *context,
@@ -132,13 +128,16 @@ gimp_edit_copy_visible (GimpImage    *image,
                         GimpContext  *context,
                         GError      **error)
 {
-  GimpBuffer *buffer;
+  GimpProjection *projection;
+  GimpBuffer     *buffer;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  buffer = gimp_edit_extract (image, GIMP_PICKABLE (image->projection),
+  projection = gimp_image_get_projection (image);
+
+  buffer = gimp_edit_extract (image, GIMP_PICKABLE (projection),
                               context, FALSE, error);
 
   if (buffer)
@@ -203,8 +202,9 @@ gimp_edit_paste (GimpImage    *image,
       gint     paste_width, paste_height;
       gboolean have_mask;
 
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
-      have_mask = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
+      gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+      have_mask = gimp_item_mask_bounds (GIMP_ITEM (drawable),
+                                         &x1, &y1, &x2, &y2);
 
       if (! have_mask         &&
           viewport_width  > 0 &&
@@ -240,8 +240,8 @@ gimp_edit_paste (GimpImage    *image,
       center_y = gimp_image_get_height (image) / 2;
     }
 
-  width  = gimp_item_width  (GIMP_ITEM (layer));
-  height = gimp_item_height (GIMP_ITEM (layer));
+  width  = gimp_item_get_width  (GIMP_ITEM (layer));
+  height = gimp_item_get_height (GIMP_ITEM (layer));
 
   offset_x = center_x - width  / 2;
   offset_y = center_y - height / 2;
@@ -254,12 +254,11 @@ gimp_edit_paste (GimpImage    *image,
   offset_x = MAX (offset_x, 0);
   offset_y = MAX (offset_y, 0);
 
-  GIMP_ITEM (layer)->offset_x = offset_x;
-  GIMP_ITEM (layer)->offset_y = offset_y;
+  gimp_item_set_offset (GIMP_ITEM (layer), offset_x, offset_y);
 
   /*  Start a group undo  */
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
-                               _("Paste"));
+                               C_("undo-type", "Paste"));
 
   /*  If there is a selection mask clear it--
    *  this might not always be desired, but in general,
@@ -272,71 +271,12 @@ gimp_edit_paste (GimpImage    *image,
   if (drawable)
     floating_sel_attach (layer, drawable);
   else
-    gimp_image_add_layer (image, layer, 0);
+    gimp_image_add_layer (image, layer, NULL, 0, TRUE);
 
   /*  end the group undo  */
   gimp_image_undo_group_end (image);
 
   return layer;
-}
-
-GimpImage *
-gimp_edit_paste_as_new (Gimp       *gimp,
-                        GimpImage  *invoke,
-                        GimpBuffer *paste)
-{
-  GimpImage     *image;
-  GimpLayer     *layer;
-  GimpImageType  type;
-
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (invoke == NULL || GIMP_IS_IMAGE (invoke), NULL);
-  g_return_val_if_fail (GIMP_IS_BUFFER (paste), NULL);
-
-  switch (tile_manager_bpp (paste->tiles))
-    {
-    case 1: type = GIMP_GRAY_IMAGE;  break;
-    case 2: type = GIMP_GRAYA_IMAGE; break;
-    case 3: type = GIMP_RGB_IMAGE;   break;
-    case 4: type = GIMP_RGBA_IMAGE;  break;
-    default:
-      g_return_val_if_reached (NULL);
-      break;
-    }
-
-  /*  create a new image  (always of type GIMP_RGB)  */
-  image = gimp_create_image (gimp,
-                             gimp_buffer_get_width (paste),
-                             gimp_buffer_get_height (paste),
-                             GIMP_IMAGE_TYPE_BASE_TYPE (type),
-                             TRUE);
-  gimp_image_undo_disable (image);
-
-  if (invoke)
-    {
-      gdouble xres;
-      gdouble yres;
-
-      gimp_image_get_resolution (invoke, &xres, &yres);
-      gimp_image_set_resolution (image, xres, yres);
-      gimp_image_set_unit (image, gimp_image_get_unit (invoke));
-    }
-
-  layer = gimp_layer_new_from_tiles (paste->tiles, image, type,
-                                     _("Pasted Layer"),
-                                     GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
-
-  if (! layer)
-    {
-      g_object_unref (image);
-      return NULL;
-    }
-
-  gimp_image_add_layer (image, layer, 0);
-
-  gimp_image_undo_enable (image);
-
-  return image;
 }
 
 const gchar *
@@ -364,7 +304,7 @@ gimp_edit_named_cut (GimpImage     *image,
       gimp_container_add (image->gimp->named_buffers, GIMP_OBJECT (buffer));
       g_object_unref (buffer);
 
-      return gimp_object_get_name (GIMP_OBJECT (buffer));
+      return gimp_object_get_name (buffer);
     }
 
   return NULL;
@@ -395,7 +335,7 @@ gimp_edit_named_copy (GimpImage     *image,
       gimp_container_add (image->gimp->named_buffers, GIMP_OBJECT (buffer));
       g_object_unref (buffer);
 
-      return gimp_object_get_name (GIMP_OBJECT (buffer));
+      return gimp_object_get_name (buffer);
     }
 
   return NULL;
@@ -407,14 +347,17 @@ gimp_edit_named_copy_visible (GimpImage    *image,
                               GimpContext  *context,
                               GError      **error)
 {
-  GimpBuffer *buffer;
+  GimpProjection *projection;
+  GimpBuffer     *buffer;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (name != NULL, NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  buffer = gimp_edit_extract (image, GIMP_PICKABLE (image->projection),
+  projection = gimp_image_get_projection (image);
+
+  buffer = gimp_edit_extract (image, GIMP_PICKABLE (projection),
                               context, FALSE, error);
 
   if (buffer)
@@ -423,7 +366,7 @@ gimp_edit_named_copy_visible (GimpImage    *image,
       gimp_container_add (image->gimp->named_buffers, GIMP_OBJECT (buffer));
       g_object_unref (buffer);
 
-      return gimp_object_get_name (GIMP_OBJECT (buffer));
+      return gimp_object_get_name (buffer);
     }
 
   return NULL;
@@ -442,7 +385,7 @@ gimp_edit_clear (GimpImage    *image,
   return gimp_edit_fill_internal (image, drawable, context,
                                   GIMP_TRANSPARENT_FILL,
                                   GIMP_OPACITY_OPAQUE, GIMP_ERASE_MODE,
-                                  _("Clear"));
+                                  C_("undo-type", "Clear"));
 }
 
 gboolean
@@ -461,23 +404,23 @@ gimp_edit_fill (GimpImage    *image,
   switch (fill_type)
     {
     case GIMP_FOREGROUND_FILL:
-      undo_desc = _("Fill with Foreground Color");
+      undo_desc = C_("undo-type", "Fill with Foreground Color");
       break;
 
     case GIMP_BACKGROUND_FILL:
-      undo_desc = _("Fill with Background Color");
+      undo_desc = C_("undo-type", "Fill with Background Color");
       break;
 
     case GIMP_WHITE_FILL:
-      undo_desc = _("Fill with White");
+      undo_desc = C_("undo-type", "Fill with White");
       break;
 
     case GIMP_TRANSPARENT_FILL:
-      undo_desc = _("Fill with Transparency");
+      undo_desc = C_("undo-type", "Fill with Transparency");
       break;
 
     case GIMP_PATTERN_FILL:
-      undo_desc = _("Fill with Pattern");
+      undo_desc = C_("undo-type", "Fill with Pattern");
       break;
 
     case GIMP_NO_FILL:
@@ -525,10 +468,10 @@ gimp_edit_fade (GimpImage   *image,
 
       gimp_drawable_apply_region (drawable, &src2PR,
                                   TRUE,
-                                  gimp_object_get_name (GIMP_OBJECT (undo)),
+                                  gimp_object_get_name (undo),
                                   gimp_context_get_opacity (context),
                                   gimp_context_get_paint_mode (context),
-                                  NULL,
+                                  NULL, NULL,
                                   undo->x,
                                   undo->y);
 
@@ -552,25 +495,32 @@ gimp_edit_extract (GimpImage     *image,
                    GError       **error)
 {
   TileManager *tiles;
+  gint         offset_x;
+  gint         offset_y;
 
   if (cut_pixels)
-    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_CUT, _("Cut"));
+    gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_CUT, C_("undo-type", "Cut"));
 
   /*  Cut/copy the mask portion from the image  */
-  tiles = gimp_selection_extract (gimp_image_get_mask (image), pickable,
-                                  context, cut_pixels, FALSE, FALSE, error);
+  tiles = gimp_selection_extract (GIMP_SELECTION (gimp_image_get_mask (image)),
+                                  pickable, context,
+                                  cut_pixels, FALSE, FALSE,
+                                  &offset_x, &offset_y, error);
 
   if (cut_pixels)
     gimp_image_undo_group_end (image);
 
-  return gimp_edit_make_buffer (image->gimp, tiles);
-}
+  if (tiles)
+    {
+      GimpBuffer *buffer = gimp_buffer_new (tiles, _("Global Buffer"),
+                                            offset_x, offset_y, FALSE);
 
-static GimpBuffer *
-gimp_edit_make_buffer (Gimp        *gimp,
-                       TileManager *tiles)
-{
-  return tiles ? gimp_buffer_new (tiles, _("Global Buffer"), FALSE) : NULL;
+      tile_manager_unref (tiles);
+
+      return buffer;
+    }
+
+  return NULL;
 }
 
 static gboolean
@@ -591,7 +541,7 @@ gimp_edit_fill_internal (GimpImage            *image,
   TempBuf       *pat_buf = NULL;
   gboolean       new_buf;
 
-  if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
+  if (! gimp_item_mask_intersect (GIMP_ITEM (drawable), &x, &y, &width, &height))
     return TRUE;  /*  nothing to do, but the fill succeded  */
 
   drawable_type = gimp_drawable_type (drawable);
@@ -612,9 +562,9 @@ gimp_edit_fill_internal (GimpImage            *image,
       {
         guchar tmp_col[MAX_CHANNELS];
 
-        tmp_col[RED_PIX]   = 255;
-        tmp_col[GREEN_PIX] = 255;
-        tmp_col[BLUE_PIX]  = 255;
+        tmp_col[RED]   = 255;
+        tmp_col[GREEN] = 255;
+        tmp_col[BLUE]  = 255;
         gimp_image_transform_color (image, drawable_type, col,
                                     GIMP_RGB, tmp_col);
       }
@@ -660,7 +610,7 @@ gimp_edit_fill_internal (GimpImage            *image,
   gimp_drawable_apply_region (drawable, &bufPR,
                               TRUE, undo_desc,
                               opacity, paint_mode,
-                              NULL, x, y);
+                              NULL, NULL, x, y);
 
   tile_manager_unref (buf_tiles);
 

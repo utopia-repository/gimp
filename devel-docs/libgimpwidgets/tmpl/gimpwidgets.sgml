@@ -2,8 +2,7 @@
 GimpWidgets
 
 <!-- ##### SECTION Short_Description ##### -->
-A collection of convenient widget constructors, standard callbacks and
-helper functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -20,6 +19,13 @@ helper functions.
 
 <!-- ##### SECTION Image ##### -->
 
+
+<!-- ##### ENUM GimpWidgetsError ##### -->
+<para>
+
+</para>
+
+@GIMP_WIDGETS_PARSE_ERROR: 
 
 <!-- ##### FUNCTION gimp_radio_group_new ##### -->
 <para>
@@ -97,42 +103,42 @@ helper functions.
 
 <!-- ##### MACRO GIMP_SCALE_ENTRY_LABEL ##### -->
 <para>
-Returns the scale_entry's #GtkLabel.
+
 </para>
 
-@adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+@adj: 
 
 
 <!-- ##### MACRO GIMP_SCALE_ENTRY_SCALE ##### -->
 <para>
-Returns the scale_entry's #GtkHScale.
+
 </para>
 
-@adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+@adj: 
 
 
 <!-- ##### MACRO GIMP_SCALE_ENTRY_SCALE_ADJ ##### -->
 <para>
-Returns the #GtkAdjustment of the scale_entry's #GtkHScale.
+
 </para>
 
-@adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+@adj: 
 
 
 <!-- ##### MACRO GIMP_SCALE_ENTRY_SPINBUTTON ##### -->
 <para>
-Returns the scale_entry's #GtkSpinButton.
+
 </para>
 
-@adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+@adj: 
 
 
 <!-- ##### MACRO GIMP_SCALE_ENTRY_SPINBUTTON_ADJ ##### -->
 <para>
-Returns the #GtkAdjustment of the scale_entry's #GtkSpinButton.
+
 </para>
 
-@adj: The #GtkAdjustment returned by gimp_scale_entry_new().
+@adj: 
 
 
 <!-- ##### FUNCTION gimp_scale_entry_new ##### -->
@@ -211,18 +217,18 @@ Returns the #GtkAdjustment of the scale_entry's #GtkSpinButton.
 
 <!-- ##### MACRO GIMP_RANDOM_SEED_SPINBUTTON ##### -->
 <para>
-Returns the random_seed's #GtkSpinButton.
+
 </para>
 
-@hbox: The #GtkHBox returned by gimp_random_seed_new().
+@hbox: 
 
 
 <!-- ##### MACRO GIMP_RANDOM_SEED_SPINBUTTON_ADJ ##### -->
 <para>
-Returns the #GtkAdjustment of the random_seed's #GtkSpinButton.
+
 </para>
 
-@hbox: The #GtkHBox returned by gimp_random_seed_new().
+@hbox: 
 
 
 <!-- ##### MACRO GIMP_RANDOM_SEED_TOGGLE ##### -->
@@ -245,10 +251,10 @@ Returns the #GtkAdjustment of the random_seed's #GtkSpinButton.
 
 <!-- ##### MACRO GIMP_COORDINATES_CHAINBUTTON ##### -->
 <para>
-Returns the #GimpChainButton which is attached to the #GimpSizeEntry.
+
 </para>
 
-@sizeentry: The #GimpSizeEntry returned by gimp_coordinates_new().
+@sizeentry: 
 
 
 <!-- ##### FUNCTION gimp_coordinates_new ##### -->
@@ -279,24 +285,6 @@ Returns the #GimpChainButton which is attached to the #GimpSizeEntry.
 @ysize_0: 
 @ysize_100: 
 @Returns: 
-
-
-<!-- ##### FUNCTION gimp_pixmap_button_new ##### -->
-<para>
-
-</para>
-
-@xpm_data: 
-@text: 
-@Returns: 
-
-
-<!-- ##### FUNCTION gimp_toggle_button_sensitive_update ##### -->
-<para>
-
-</para>
-
-@toggle_button: 
 
 
 <!-- ##### FUNCTION gimp_toggle_button_update ##### -->
@@ -353,15 +341,6 @@ Returns the #GimpChainButton which is attached to the #GimpSizeEntry.
 @data: 
 
 
-<!-- ##### FUNCTION gimp_unit_menu_update ##### -->
-<para>
-
-</para>
-
-@widget: 
-@data: 
-
-
 <!-- ##### FUNCTION gimp_table_attach_aligned ##### -->
 <para>
 
@@ -386,5 +365,21 @@ Returns the #GimpChainButton which is attached to the #GimpSizeEntry.
 
 @label: 
 @...: 
+
+
+<!-- ##### MACRO GIMP_WIDGETS_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gimp_widgets_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
 
 

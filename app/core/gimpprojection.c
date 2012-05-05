@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
 #include "base/tile.h"
+#include "base/tile-rowhints.h" /* EEK */
+#include "base/tile-private.h"  /* EEK */
 #include "base/tile-manager.h"
 #include "base/tile-pyramid.h"
 
@@ -31,6 +32,7 @@
 #include "gimpimage.h"
 #include "gimpmarshal.h"
 #include "gimppickable.h"
+#include "gimpprojectable.h"
 #include "gimpprojection.h"
 #include "gimpprojection-construct.h"
 
@@ -48,59 +50,62 @@ enum
 
 /*  local function prototypes  */
 
-static void   gimp_projection_pickable_iface_init (GimpPickableInterface *iface);
+static void   gimp_projection_pickable_iface_init (GimpPickableInterface  *iface);
 
-static void       gimp_projection_finalize              (GObject        *object);
+static void        gimp_projection_finalize              (GObject         *object);
 
-static gint64     gimp_projection_get_memsize           (GimpObject     *object,
-                                                         gint64         *gui_size);
+static gint64      gimp_projection_get_memsize           (GimpObject      *object,
+                                                          gint64          *gui_size);
 
-static void       gimp_projection_pickable_flush        (GimpPickable   *pickable);
-static gboolean   gimp_projection_get_pixel_at          (GimpPickable   *pickable,
-                                                         gint            x,
-                                                         gint            y,
-                                                         guchar         *pixel);
-static gint       gimp_projection_get_opacity_at        (GimpPickable   *pickable,
-                                                         gint            x,
-                                                         gint            y);
+static void        gimp_projection_pickable_flush        (GimpPickable    *pickable);
+static GimpImage * gimp_projection_get_image             (GimpPickable    *pickable);
+static GimpImageType gimp_projection_get_image_type      (GimpPickable    *pickable);
+static gint        gimp_projection_get_bytes             (GimpPickable    *pickable);
+static TileManager * gimp_projection_get_tiles           (GimpPickable    *pickable);
+static gboolean    gimp_projection_get_pixel_at          (GimpPickable    *pickable,
+                                                          gint             x,
+                                                          gint             y,
+                                                          guchar          *pixel);
+static gint        gimp_projection_get_opacity_at        (GimpPickable    *pickable,
+                                                          gint             x,
+                                                          gint             y);
 
-static void       gimp_projection_add_update_area       (GimpProjection *proj,
-                                                         gint            x,
-                                                         gint            y,
-                                                         gint            w,
-                                                         gint            h);
-static void       gimp_projection_flush_whenever        (GimpProjection *proj,
-                                                         gboolean        now);
-static void       gimp_projection_idle_render_init      (GimpProjection *proj);
-static gboolean   gimp_projection_idle_render_callback  (gpointer        data);
-static gboolean   gimp_projection_idle_render_next_area (GimpProjection *proj);
-static void       gimp_projection_paint_area            (GimpProjection *proj,
-                                                         gboolean        now,
-                                                         gint            x,
-                                                         gint            y,
-                                                         gint            w,
-                                                         gint            h);
-static void       gimp_projection_invalidate            (GimpProjection *proj,
-                                                         guint           x,
-                                                         guint           y,
-                                                         guint           w,
-                                                         guint           h);
-static void       gimp_projection_validate_tile         (TileManager    *tm,
-                                                         Tile           *tile,
-                                                         GimpProjection *proj);
-static void       gimp_projection_image_update          (GimpImage      *image,
-                                                         gint            x,
-                                                         gint            y,
-                                                         gint            w,
-                                                         gint            h,
-                                                         GimpProjection *proj);
-static void       gimp_projection_image_size_changed    (GimpImage      *image,
-                                                         GimpProjection *proj);
-static void       gimp_projection_image_mode_changed    (GimpImage      *image,
-                                                         GimpProjection *proj);
-static void       gimp_projection_image_flush           (GimpImage      *image,
-                                                         gboolean        invalidate_preview,
-                                                         GimpProjection *proj);
+static void        gimp_projection_add_update_area       (GimpProjection  *proj,
+                                                          gint             x,
+                                                          gint             y,
+                                                          gint             w,
+                                                          gint             h);
+static void        gimp_projection_flush_whenever        (GimpProjection  *proj,
+                                                          gboolean         now);
+static void        gimp_projection_idle_render_init      (GimpProjection  *proj);
+static gboolean    gimp_projection_idle_render_callback  (gpointer         data);
+static gboolean    gimp_projection_idle_render_next_area (GimpProjection  *proj);
+static void        gimp_projection_paint_area            (GimpProjection  *proj,
+                                                          gboolean         now,
+                                                          gint             x,
+                                                          gint             y,
+                                                          gint             w,
+                                                          gint             h);
+static void        gimp_projection_invalidate            (GimpProjection  *proj,
+                                                          guint            x,
+                                                          guint            y,
+                                                          guint            w,
+                                                          guint            h);
+static void        gimp_projection_validate_tile         (TileManager     *tm,
+                                                          Tile            *tile,
+                                                          GimpProjection  *proj);
+
+static void        gimp_projection_projectable_invalidate(GimpProjectable *projectable,
+                                                          gint             x,
+                                                          gint             y,
+                                                          gint             w,
+                                                          gint             h,
+                                                          GimpProjection  *proj);
+static void        gimp_projection_projectable_flush     (GimpProjectable *projectable,
+                                                          gboolean         invalidate_preview,
+                                                          GimpProjection  *proj);
+static void        gimp_projection_projectable_changed   (GimpProjectable *projectable,
+                                                          GimpProjection  *proj);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpProjection, gimp_projection, GIMP_TYPE_OBJECT,
@@ -140,7 +145,7 @@ gimp_projection_class_init (GimpProjectionClass *klass)
 static void
 gimp_projection_init (GimpProjection *proj)
 {
-  proj->image                    = NULL;
+  proj->projectable              = NULL;
   proj->pyramid                  = NULL;
   proj->update_areas             = NULL;
   proj->idle_render.idle_id      = 0;
@@ -148,16 +153,14 @@ gimp_projection_init (GimpProjection *proj)
   proj->construct_flag           = FALSE;
 }
 
-/* sorry for the evil casts */
-
 static void
 gimp_projection_pickable_iface_init (GimpPickableInterface *iface)
 {
   iface->flush          = gimp_projection_pickable_flush;
-  iface->get_image      = (GimpImage     * (*) (GimpPickable *pickable)) gimp_projection_get_image;
-  iface->get_image_type = (GimpImageType   (*) (GimpPickable *pickable)) gimp_projection_get_image_type;
-  iface->get_bytes      = (gint            (*) (GimpPickable *pickable)) gimp_projection_get_bytes;
-  iface->get_tiles      = (TileManager   * (*) (GimpPickable *pickable)) gimp_projection_get_tiles;
+  iface->get_image      = gimp_projection_get_image;
+  iface->get_image_type = gimp_projection_get_image_type;
+  iface->get_bytes      = gimp_projection_get_bytes;
+  iface->get_tiles      = gimp_projection_get_tiles;
   iface->get_pixel_at   = gimp_projection_get_pixel_at;
   iface->get_opacity_at = gimp_projection_get_opacity_at;
 }
@@ -185,6 +188,19 @@ gimp_projection_finalize (GObject *object)
       proj->pyramid = NULL;
     }
 
+  if (proj->graph)
+    {
+      g_object_unref (proj->graph);
+      proj->graph     = NULL;
+      proj->sink_node = NULL;
+    }
+
+  if (proj->processor)
+    {
+      g_object_unref (proj->processor);
+      proj->processor = NULL;
+    }
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -205,8 +221,8 @@ gimp_projection_get_memsize (GimpObject *object,
 /**
  * gimp_projection_estimate_memsize:
  * @type:   the image base type
- * @width:  image width
- * @height: image height
+ * @width:  projection width
+ * @height: projection height
  *
  * Calculates a rough estimate of the memory that is required for the
  * projection of an image with the given @width and @height.
@@ -252,8 +268,53 @@ gimp_projection_pickable_flush (GimpPickable *pickable)
        */
       proj->invalidate_preview = FALSE;
 
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (proj->image));
+      gimp_projectable_invalidate_preview (proj->projectable);
     }
+}
+
+static GimpImage *
+gimp_projection_get_image (GimpPickable *pickable)
+{
+  GimpProjection *proj = GIMP_PROJECTION (pickable);
+
+  return gimp_projectable_get_image (proj->projectable);
+}
+
+static GimpImageType
+gimp_projection_get_image_type (GimpPickable *pickable)
+{
+  GimpProjection *proj = GIMP_PROJECTION (pickable);
+  GimpImageType   type;
+
+  type = gimp_projectable_get_image_type (proj->projectable);
+
+  switch (GIMP_IMAGE_TYPE_BASE_TYPE (type))
+    {
+    case GIMP_RGB:
+    case GIMP_INDEXED:
+      return GIMP_RGBA_IMAGE;
+
+    case GIMP_GRAY:
+      return GIMP_GRAYA_IMAGE;
+    }
+
+  g_assert_not_reached ();
+
+  return 0;
+}
+
+static gint
+gimp_projection_get_bytes (GimpPickable *pickable)
+{
+  return GIMP_IMAGE_TYPE_BYTES (gimp_projection_get_image_type (pickable));
+}
+
+static TileManager *
+gimp_projection_get_tiles (GimpPickable *pickable)
+{
+  return gimp_projection_get_tiles_at_level (GIMP_PROJECTION (pickable),
+                                             0, NULL);
+
 }
 
 static gboolean
@@ -262,15 +323,15 @@ gimp_projection_get_pixel_at (GimpPickable *pickable,
                               gint          y,
                               guchar       *pixel)
 {
-  GimpProjection *proj = GIMP_PROJECTION (pickable);
+  TileManager *tiles = gimp_projection_get_tiles (pickable);
 
-  if (x <  0                                   ||
-      y <  0                                   ||
-      x >= gimp_image_get_width  (proj->image) ||
-      y >= gimp_image_get_height (proj->image))
+  if (x <  0                           ||
+      y <  0                           ||
+      x >= tile_manager_width  (tiles) ||
+      y >= tile_manager_height (tiles))
     return FALSE;
 
-  read_pixel_data_1 (gimp_projection_get_tiles (proj), x, y, pixel);
+  tile_manager_read_pixel_data_1 (tiles, x, y, pixel);
 
   return TRUE;
 }
@@ -284,37 +345,59 @@ gimp_projection_get_opacity_at (GimpPickable *pickable,
 }
 
 GimpProjection *
-gimp_projection_new (GimpImage *image)
+gimp_projection_new (GimpProjectable *projectable)
 {
   GimpProjection *proj;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_PROJECTABLE (projectable), NULL);
 
   proj = g_object_new (GIMP_TYPE_PROJECTION, NULL);
 
-  proj->image = image;
+  proj->projectable = projectable;
 
-  g_signal_connect_object (image, "update",
-                           G_CALLBACK (gimp_projection_image_update),
+  g_signal_connect_object (projectable, "invalidate",
+                           G_CALLBACK (gimp_projection_projectable_invalidate),
                            proj, 0);
-  g_signal_connect_object (image, "size-changed",
-                           G_CALLBACK (gimp_projection_image_size_changed),
+  g_signal_connect_object (projectable, "flush",
+                           G_CALLBACK (gimp_projection_projectable_flush),
                            proj, 0);
-  g_signal_connect_object (image, "mode-changed",
-                           G_CALLBACK (gimp_projection_image_mode_changed),
-                           proj, 0);
-  g_signal_connect_object (image, "flush",
-                           G_CALLBACK (gimp_projection_image_flush),
+  g_signal_connect_object (projectable, "structure-changed",
+                           G_CALLBACK (gimp_projection_projectable_changed),
                            proj, 0);
 
   return proj;
 }
 
-TileManager *
-gimp_projection_get_tiles (GimpProjection *proj)
+GeglNode *
+gimp_projection_get_sink_node (GimpProjection *proj)
 {
-  return gimp_projection_get_tiles_at_level (proj, 0, NULL);
+  GeglNode *graph;
 
+  g_return_val_if_fail (GIMP_IS_PROJECTION (proj), NULL);
+
+  if (proj->sink_node)
+    return proj->sink_node;
+
+  proj->graph = gegl_node_new ();
+
+  g_object_set (proj->graph,
+                "dont-cache", TRUE,
+                NULL);
+
+  graph = gimp_projectable_get_graph (proj->projectable);
+  gegl_node_add_child (proj->graph, graph);
+
+  proj->sink_node =
+    gegl_node_new_child (proj->graph,
+                         "operation",    "gimp:tilemanager-sink",
+                         "tile-manager", gimp_projection_get_tiles (GIMP_PICKABLE (proj)),
+                         "linear",       TRUE,
+                         NULL);
+
+  gegl_node_connect_to (graph,           "output",
+                        proj->sink_node, "input");
+
+  return proj->sink_node;
 }
 
 TileManager *
@@ -326,13 +409,27 @@ gimp_projection_get_tiles_at_level (GimpProjection *proj,
 
   if (! proj->pyramid)
     {
-      proj->pyramid = tile_pyramid_new (gimp_projection_get_image_type (proj),
-                                        gimp_image_get_width  (proj->image),
-                                        gimp_image_get_height (proj->image));
+      GimpImageType type;
+      gint          width;
+      gint          height;
+
+      type = gimp_projection_get_image_type (GIMP_PICKABLE (proj));
+      gimp_projectable_get_size (proj->projectable, &width, &height);
+
+      proj->pyramid = tile_pyramid_new (type, width, height);
 
       tile_pyramid_set_validate_proc (proj->pyramid,
                                       (TileValidateProc) gimp_projection_validate_tile,
                                       proj);
+
+      if (proj->sink_node)
+        {
+          TileManager *tiles = tile_pyramid_get_tiles (proj->pyramid, 0, NULL);
+
+          gegl_node_set (proj->sink_node,
+                         "tile-manager", tiles,
+                         NULL);
+        }
     }
 
   return tile_pyramid_get_tiles (proj->pyramid, level, is_premult);
@@ -353,45 +450,11 @@ gimp_projection_get_level (GimpProjection *proj,
                            gdouble         scale_x,
                            gdouble         scale_y)
 {
-  return tile_pyramid_get_level (gimp_image_get_width  (proj->image),
-                                 gimp_image_get_height (proj->image),
-                                 MAX (scale_x, scale_y));
-}
+  gint width, height;
 
-GimpImage *
-gimp_projection_get_image (const GimpProjection *proj)
-{
-  g_return_val_if_fail (GIMP_IS_PROJECTION (proj), NULL);
+  gimp_projectable_get_size (proj->projectable, &width, &height);
 
-  return proj->image;
-}
-
-GimpImageType
-gimp_projection_get_image_type (const GimpProjection *proj)
-{
-  g_return_val_if_fail (GIMP_IS_PROJECTION (proj), -1);
-
-  switch (gimp_image_base_type (proj->image))
-    {
-    case GIMP_RGB:
-    case GIMP_INDEXED:
-      return GIMP_RGBA_IMAGE;
-
-    case GIMP_GRAY:
-      return GIMP_GRAYA_IMAGE;
-    }
-
-  g_assert_not_reached ();
-
-  return 0;
-}
-
-gint
-gimp_projection_get_bytes (const GimpProjection *proj)
-{
-  g_return_val_if_fail (GIMP_IS_PROJECTION (proj), 0);
-
-  return GIMP_IMAGE_TYPE_BYTES (gimp_projection_get_image_type (proj));
+  return tile_pyramid_get_level (width, height, MAX (scale_x, scale_y));
 }
 
 void
@@ -441,13 +504,23 @@ gimp_projection_add_update_area (GimpProjection *proj,
                                  gint            h)
 {
   GimpArea *area;
+  gint      off_x, off_y;
+  gint      width, height;
 
-  g_return_if_fail (GIMP_IS_PROJECTION (proj));
+  gimp_projectable_get_offset (proj->projectable, &off_x, &off_y);
+  gimp_projectable_get_size   (proj->projectable, &width, &height);
 
-  area = gimp_area_new (CLAMP (x,     0, gimp_image_get_width  (proj->image)),
-                        CLAMP (y,     0, gimp_image_get_height (proj->image)),
-                        CLAMP (x + w, 0, gimp_image_get_width  (proj->image)),
-                        CLAMP (y + h, 0, gimp_image_get_height (proj->image)));
+  /*  subtract the projectable's offsets because the list of update
+   *  areas is in tile-pyramid coordinates, but our external API is
+   *  always in terms of image coordinates.
+   */
+  x -= off_x;
+  y -= off_y;
+
+  area = gimp_area_new (CLAMP (x,     0, width),
+                        CLAMP (y,     0, height),
+                        CLAMP (x + w, 0, width),
+                        CLAMP (y + h, 0, height));
 
   proj->update_areas = gimp_area_list_process (proj->update_areas, area);
 }
@@ -494,7 +567,7 @@ gimp_projection_flush_whenever (GimpProjection *proj,
        */
       proj->invalidate_preview = FALSE;
 
-      gimp_viewable_invalidate_preview (GIMP_VIEWABLE (proj->image));
+      gimp_projectable_invalidate_preview (proj->projectable);
     }
 }
 
@@ -611,7 +684,7 @@ gimp_projection_idle_render_callback (gpointer data)
                    */
                   proj->invalidate_preview = FALSE;
 
-                  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (proj->image));
+                  gimp_projectable_invalidate_preview (proj->projectable);
                 }
 
               return FALSE;
@@ -654,19 +727,31 @@ gimp_projection_paint_area (GimpProjection *proj,
                             gint            w,
                             gint            h)
 {
-  const gint width  = gimp_image_get_width  (proj->image);
-  const gint height = gimp_image_get_height (proj->image);
+  gint off_x, off_y;
+  gint width, height;
+  gint x1, y1, x2, y2;
+
+  gimp_projectable_get_offset (proj->projectable, &off_x, &off_y);
+  gimp_projectable_get_size   (proj->projectable, &width, &height);
 
   /*  Bounds check  */
-  gint x1 = CLAMP (x,     0, width);
-  gint y1 = CLAMP (y,     0, height);
-  gint x2 = CLAMP (x + w, 0, width);
-  gint y2 = CLAMP (y + h, 0, height);
+  x1 = CLAMP (x,     0, width);
+  y1 = CLAMP (y,     0, height);
+  x2 = CLAMP (x + w, 0, width);
+  y2 = CLAMP (y + h, 0, height);
 
   gimp_projection_invalidate (proj, x1, y1, x2 - x1, y2 - y1);
 
+  /*  add the projectable's offsets because the list of update areas
+   *  is in tile-pyramid coordinates, but our external API is always
+   *  in terms of image coordinates.
+   */
   g_signal_emit (proj, projection_signals[UPDATE], 0,
-                 now, x1, y1, x2 - x1, y2 - y1);
+                 now,
+                 x1 + off_x,
+                 y1 + off_y,
+                 x2 - x1,
+                 y2 - y1);
 }
 
 static void
@@ -685,68 +770,110 @@ gimp_projection_validate_tile (TileManager    *tm,
                                Tile           *tile,
                                GimpProjection *proj)
 {
-  gint x, y;
+  Tile *additional[7];
+  gint  n_additional = 0;
+  gint  x, y;
+  gint  width, height;
+  gint  tile_width, tile_height;
+  gint  col, row;
+  gint  i;
 
   /*  Find the coordinates of this tile  */
   tile_manager_get_tile_coordinates (tm, tile, &x, &y);
 
-  gimp_projection_construct (proj,
-                             x, y,
-                             tile_ewidth (tile), tile_eheight (tile));
+  width  = tile_width  = tile_ewidth (tile);
+  height = tile_height = tile_eheight (tile);
+
+  tile_manager_get_tile_col_row (tm, tile, &col, &row);
+
+  /*  try to validate up to 8 invalid tiles in a row  */
+  while (tile_width == TILE_WIDTH && n_additional < 7)
+    {
+      Tile *t;
+
+      col++;
+
+      /*  get the next tile without any read or write access, so it
+       *  won't be locked (and validated)
+       */
+      t = tile_manager_get_at (tm, col, row, FALSE, FALSE);
+
+      /*  if we hit the right border, or a valid tile, bail out
+       */
+      if (! t || tile_is_valid (t))
+        break;
+
+      /*  HACK: mark the tile as valid, so locking it with r/w access
+       *  won't validate it
+       */
+      t->valid = TRUE;
+      t = tile_manager_get_at (tm, col, row, TRUE, TRUE);
+
+      /*  add the tile's width to the chunk to validate  */
+      tile_width = tile_ewidth (t);
+      width += tile_width;
+
+      additional[n_additional++] = t;
+    }
+
+  gimp_projection_construct (proj, x, y, width, height);
+
+  for (i = 0; i < n_additional; i++)
+    {
+      /*  HACK: mark the tile as valid, because we know it is  */
+      additional[i]->valid = TRUE;
+      tile_release (additional[i], TRUE);
+    }
 }
 
 /*  image callbacks  */
 
 static void
-gimp_projection_image_update (GimpImage      *image,
-                              gint            x,
-                              gint            y,
-                              gint            w,
-                              gint            h,
-                              GimpProjection *proj)
+gimp_projection_projectable_invalidate (GimpProjectable *projectable,
+                                        gint             x,
+                                        gint             y,
+                                        gint             w,
+                                        gint             h,
+                                        GimpProjection  *proj)
 {
   gimp_projection_add_update_area (proj, x, y, w, h);
 }
 
 static void
-gimp_projection_image_size_changed (GimpImage      *image,
-                                    GimpProjection *proj)
-{
-  if (proj->pyramid)
-    {
-      tile_pyramid_destroy (proj->pyramid);
-      proj->pyramid = NULL;
-    }
-
-  gimp_projection_add_update_area (proj,
-                                   0, 0,
-                                   gimp_image_get_width  (image),
-                                   gimp_image_get_height (image));
-}
-
-static void
-gimp_projection_image_mode_changed (GimpImage      *image,
-                                    GimpProjection *proj)
-{
-  if (proj->pyramid)
-    {
-      tile_pyramid_destroy (proj->pyramid);
-      proj->pyramid = NULL;
-    }
-
-  gimp_projection_add_update_area (proj,
-                                   0, 0,
-                                   gimp_image_get_width  (image),
-                                   gimp_image_get_height (image));
-}
-
-static void
-gimp_projection_image_flush (GimpImage      *image,
-                             gboolean        invalidate_preview,
-                             GimpProjection *proj)
+gimp_projection_projectable_flush (GimpProjectable *projectable,
+                                   gboolean         invalidate_preview,
+                                   GimpProjection  *proj)
 {
   if (invalidate_preview)
     proj->invalidate_preview = TRUE;
 
   gimp_projection_flush (proj);
+}
+
+static void
+gimp_projection_projectable_changed (GimpProjectable *projectable,
+                                     GimpProjection  *proj)
+{
+  gint off_x, off_y;
+  gint width, height;
+
+  if (proj->idle_render.idle_id)
+    {
+      g_source_remove (proj->idle_render.idle_id);
+      proj->idle_render.idle_id = 0;
+    }
+
+  gimp_area_list_free (proj->update_areas);
+  proj->update_areas = NULL;
+
+  if (proj->pyramid)
+    {
+      tile_pyramid_destroy (proj->pyramid);
+      proj->pyramid = NULL;
+    }
+
+  gimp_projectable_get_offset (proj->projectable, &off_x, &off_y);
+  gimp_projectable_get_size (projectable, &width, &height);
+
+  gimp_projection_add_update_area (proj, off_x, off_y, width, height);
 }

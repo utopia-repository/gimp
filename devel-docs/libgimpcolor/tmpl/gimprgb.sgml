@@ -2,11 +2,11 @@
 GimpRGB
 
 <!-- ##### SECTION Short_Description ##### -->
-Definitions and Functions relating to RGB colors.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Definitions and Functions relating to RGB colors.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -359,13 +359,12 @@ Definitions and Functions relating to RGB colors.
 
 <!-- ##### MACRO GIMP_RGB_INTENSITY ##### -->
 <para>
-This macro calculates the intensity of an RGB value based on
-coefficients taken from the NTSC analog television standard.
+
 </para>
 
-@r: red
-@g: green
-@b: blue
+@r: 
+@g: 
+@b: 
 
 
 <!-- ##### MACRO GIMP_RGB_INTENSITY_RED ##### -->
@@ -391,7 +390,7 @@ coefficients taken from the NTSC analog television standard.
 
 <!-- ##### MACRO GIMP_TYPE_RGB ##### -->
 <para>
-#GIMP_TYPE_RGB is a #GType derived from #G_TYPE_BOXED.
+
 </para>
 
 

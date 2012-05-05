@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,24 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __APP_GIMP_UTILS_H__
 #define __APP_GIMP_UTILS_H__
+
+
+#define GIMP_TIMER_START() \
+  { GTimer *_timer = g_timer_new ();
+
+#define GIMP_TIMER_END(message) \
+  g_printerr ("%s: " message " took %0.2f seconds\n", \
+              G_STRFUNC, g_timer_elapsed (_timer, NULL)); \
+  g_timer_destroy (_timer); }
+
+
+#define MIN4(a,b,c,d) MIN (MIN ((a), (b)), MIN ((c), (d)))
+#define MAX4(a,b,c,d) MAX (MAX ((a), (b)), MAX ((c), (d)))
 
 
 gint64       gimp_g_type_instance_get_memsize      (GTypeInstance   *instance);
@@ -64,9 +76,23 @@ void         gimp_value_array_truncate             (GValueArray     *args,
 gchar      * gimp_get_temp_filename                (Gimp            *gimp,
                                                     const gchar     *extension);
 
-GimpObject * gimp_container_get_neighbor_of_active (GimpContainer   *container,
-                                                    GimpContext     *context,
-                                                    GimpObject      *active);
+gchar      * gimp_markup_extract_text              (const gchar     *markup);
+
+const gchar* gimp_enum_get_value_name              (GType            enum_type,
+                                                    gint             value);
+
+/* Common values for the n_snap_lines parameter of
+ * gimp_constrain_line.
+ */
+#define GIMP_CONSTRAIN_LINE_90_DEGREES 2
+#define GIMP_CONSTRAIN_LINE_45_DEGREES 4
+#define GIMP_CONSTRAIN_LINE_15_DEGREES 12
+
+void         gimp_constrain_line                   (gdouble          start_x,
+                                                    gdouble          start_y,
+                                                    gdouble         *end_x,
+                                                    gdouble         *end_y,
+                                                    gint             n_snap_lines);
 
 
 #endif /* __APP_GIMP_UTILS_H__ */

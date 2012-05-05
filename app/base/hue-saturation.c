@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -116,7 +116,7 @@ hue_saturation (HueSaturation *hs,
   h     = srcPR->h;
   src   = srcPR->data;
   dest  = destPR->data;
-  alpha = (srcPR->bytes == 4) ? TRUE : FALSE;
+  alpha = pixel_region_has_alpha (srcPR);
 
   while (h--)
     {
@@ -126,9 +126,9 @@ hue_saturation (HueSaturation *hs,
 
       while (w--)
         {
-          r = s[RED_PIX];
-          g = s[GREEN_PIX];
-          b = s[BLUE_PIX];
+          r = s[RED];
+          g = s[GREEN];
+          b = s[BLUE];
 
           gimp_rgb_to_hsl_int (&r, &g, &b);
 
@@ -194,12 +194,12 @@ hue_saturation (HueSaturation *hs,
 
           gimp_hsl_to_rgb_int (&r, &g, &b);
 
-          d[RED_PIX]   = r;
-          d[GREEN_PIX] = g;
-          d[BLUE_PIX]  = b;
+          d[RED]   = r;
+          d[GREEN] = g;
+          d[BLUE]  = b;
 
           if (alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
+            d[ALPHA] = s[ALPHA];
 
           s += srcPR->bytes;
           d += destPR->bytes;

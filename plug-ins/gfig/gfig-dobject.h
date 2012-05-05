@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GFIG_DOBJECT_H__
@@ -28,6 +27,7 @@
 #include "gfig-types.h"
 #include "gfig-style.h"
 
+typedef void        (*DobjDrawFunc)   (GfigObject *, cairo_t *);
 typedef void        (*DobjFunc)       (GfigObject *);
 typedef GfigObject *(*DobjGenFunc)    (GfigObject *);
 
@@ -44,7 +44,7 @@ typedef struct
   const gchar  *name;
 
   /* virtuals */
-  DobjFunc      drawfunc;   /* How do I draw myself */
+  DobjDrawFunc  drawfunc;   /* How do I draw myself */
   DobjFunc      paintfunc;  /* Draw me on canvas */
   DobjGenFunc   copyfunc;   /* copy */
   void         (*update) (GdkPoint   *pnt);
@@ -83,7 +83,8 @@ void        d_delete_dobjpoints      (DobjPoints *pnts);
 void        object_update            (GdkPoint   *pnt);
 GList      *copy_all_objs            (GList      *objs);
 void        draw_objects             (GList      *objs,
-                                      gboolean    show_single);
+                                      gboolean    show_single,
+                                      cairo_t    *cr);
 
 GfigObject *d_load_object            (gchar      *desc,
                                       FILE       *fp);

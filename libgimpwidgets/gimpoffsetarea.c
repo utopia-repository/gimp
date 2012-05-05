@@ -4,10 +4,10 @@
  * gimpoffsetarea.c
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,15 @@
 
 #include "gimpwidgetsmarshal.h"
 #include "gimpoffsetarea.h"
+
+
+/**
+ * SECTION: gimpoffsetarea
+ * @title: GimpOffsetArea
+ * @short_description: Widget to control image offsets.
+ *
+ * Widget to control image offsets.
+ **/
 
 
 #define DRAWING_AREA_SIZE 200
@@ -92,7 +100,10 @@ gimp_offset_area_init (GimpOffsetArea *area)
   area->display_ratio_x = 1.0;
   area->display_ratio_y = 1.0;
 
-  gtk_widget_add_events (GTK_WIDGET (area), GDK_BUTTON_PRESS_MASK);
+  gtk_widget_add_events (GTK_WIDGET (area),
+                         GDK_BUTTON_PRESS_MASK   |
+                         GDK_BUTTON_RELEASE_MASK |
+                         GDK_BUTTON1_MOTION_MASK);
 }
 
 /**
@@ -322,7 +333,7 @@ gimp_offset_area_realize (GtkWidget *widget)
 
   cursor = gdk_cursor_new_for_display (gtk_widget_get_display (widget),
                                        GDK_FLEUR);
-  gdk_window_set_cursor (widget->window, cursor);
+  gdk_window_set_cursor (gtk_widget_get_window (widget), cursor);
   gdk_cursor_unref (cursor);
 }
 
@@ -345,15 +356,15 @@ gimp_offset_area_event (GtkWidget *widget,
   switch (event->type)
     {
     case GDK_BUTTON_PRESS:
-      gdk_pointer_grab (widget->window, FALSE,
-                        (GDK_BUTTON1_MOTION_MASK |
-                         GDK_BUTTON_RELEASE_MASK),
-                        NULL, NULL, event->button.time);
+      if (event->button.button == 1)
+        {
+          gtk_grab_add (widget);
 
-      orig_offset_x = area->offset_x;
-      orig_offset_y = area->offset_y;
-      start_x = event->button.x;
-      start_y = event->button.y;
+          orig_offset_x = area->offset_x;
+          orig_offset_y = area->offset_y;
+          start_x = event->button.x;
+          start_y = event->button.y;
+        }
       break;
 
     case GDK_MOTION_NOTIFY:
@@ -373,27 +384,39 @@ gimp_offset_area_event (GtkWidget *widget,
       break;
 
     case GDK_BUTTON_RELEASE:
-      gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                  event->button.time);
-      start_x = start_y = 0;
+      if (event->button.button == 1)
+        {
+          gtk_grab_remove (widget);
+
+          start_x = start_y = 0;
+        }
       break;
 
     default:
-      break;
+      return FALSE;
     }
 
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
 gimp_offset_area_expose_event (GtkWidget      *widget,
                                GdkEventExpose *eevent)
 {
-  GimpOffsetArea *area  = GIMP_OFFSET_AREA (widget);
-  GtkStyle       *style = gtk_widget_get_style (widget);
+  GimpOffsetArea *area   = GIMP_OFFSET_AREA (widget);
+  GtkStyle       *style  = gtk_widget_get_style (widget);
+  GdkWindow      *window = gtk_widget_get_window (widget);
+  cairo_t        *cr;
+  GtkAllocation   allocation;
   GdkPixbuf      *pixbuf;
   gint            w, h;
   gint            x, y;
+
+  cr = gdk_cairo_create (eevent->window);
+  gdk_cairo_region (cr, eevent->region);
+  cairo_clip (cr);
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   x = (area->display_ratio_x *
        ((area->orig_width <= area->width) ?
@@ -415,14 +438,17 @@ gimp_offset_area_expose_event (GtkWidget      *widget,
 
   if (pixbuf)
     {
-      gdk_draw_pixbuf (widget->window, style->black_gc,
-                       pixbuf, 0, 0, x, y, w, h, GDK_RGB_DITHER_NORMAL, 0, 0);
-      gdk_draw_rectangle (widget->window, style->black_gc, FALSE,
-                          x, y, w - 1, h - 1);
+      gdk_cairo_set_source_pixbuf (cr, pixbuf, x, y);
+      cairo_paint (cr);
+
+      cairo_rectangle (cr, x + 0.5, y + 0.5, w - 1, h - 1);
+      cairo_set_line_width (cr, 1.0);
+      gdk_cairo_set_source_color (cr, &style->black);
+      cairo_stroke (cr);
     }
   else
     {
-      gtk_paint_shadow (style, widget->window, GTK_STATE_NORMAL,
+      gtk_paint_shadow (style, window, GTK_STATE_NORMAL,
                         GTK_SHADOW_OUT,
                         NULL, widget, NULL,
                         x, y, w, h);
@@ -430,6 +456,8 @@ gimp_offset_area_expose_event (GtkWidget      *widget,
 
   if (area->orig_width > area->width || area->orig_height > area->height)
     {
+      gint line_width;
+
        if (area->orig_width > area->width)
         {
           x = area->display_ratio_x * (area->orig_width - area->width);
@@ -438,7 +466,7 @@ gimp_offset_area_expose_event (GtkWidget      *widget,
       else
         {
           x = -1;
-          w = widget->allocation.width + 2;
+          w = allocation.width + 2;
         }
 
       if (area->orig_height > area->height)
@@ -449,36 +477,30 @@ gimp_offset_area_expose_event (GtkWidget      *widget,
       else
         {
           y = -1;
-          h = widget->allocation.height + 2;
+          h = allocation.height + 2;
         }
 
       w = MAX (w, 1);
       h = MAX (h, 1);
 
-      if (pixbuf)
-        {
-          GdkGC *gc   = gdk_gc_new (widget->window);
-          gint   line = MIN (3, MIN (w, h));
+      line_width = MIN (3, MIN (w, h));
 
-          gdk_gc_set_function (gc, GDK_INVERT);
-          gdk_gc_set_line_attributes (gc, line,
-                                      GDK_LINE_SOLID, GDK_CAP_BUTT,
-                                      GDK_JOIN_ROUND);
+      cairo_rectangle (cr,
+                       x + line_width / 2.0,
+                       y + line_width / 2.0,
+                       MAX (w - line_width, 1),
+                       MAX (h - line_width, 1));
 
-          gdk_draw_rectangle (widget->window, gc, FALSE,
-                              x + line / 2,
-                              y + line / 2,
-                              MAX (w - line, 1),
-                              MAX (h - line, 1));
+      cairo_set_line_width (cr, line_width);
+      cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+      cairo_stroke_preserve (cr);
 
-          g_object_unref (gc);
-       }
-      else
-        {
-          gdk_draw_rectangle (widget->window, style->black_gc, FALSE,
-                              x, y, w, h);
-        }
+      cairo_set_line_width (cr, 1.0);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.8);
+      cairo_stroke (cr);
     }
+
+  cairo_destroy (cr);
 
   return FALSE;
 }

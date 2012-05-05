@@ -4,9 +4,9 @@
  * gimpactionview.c
  * Copyright (C) 2004-2005  Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -205,7 +204,7 @@ gimp_action_view_new (GimpUIManager *manager,
 
   g_return_val_if_fail (GIMP_IS_UI_MANAGER (manager), NULL);
 
-  store = gtk_tree_store_new (GIMP_ACTION_VIEW_NUM_COLUMNS,
+  store = gtk_tree_store_new (GIMP_ACTION_VIEW_N_COLUMNS,
                               G_TYPE_BOOLEAN,         /* COLUMN_VISIBLE        */
                               GTK_TYPE_ACTION,        /* COLUMN_ACTION         */
                               G_TYPE_STRING,          /* COLUMN_STOCK_ID       */
@@ -242,10 +241,9 @@ gimp_action_view_new (GimpUIManager *manager,
         {
           GtkAction       *action        = list2->data;
           const gchar     *name          = gtk_action_get_name (action);
-          gchar           *stock_id;
+          const gchar     *stock_id      = gtk_action_get_stock_id (action);
           gchar           *label;
           gchar           *label_casefold;
-          gchar           *tmp;
           guint            accel_key     = 0;
           GdkModifierType  accel_mask    = 0;
           GClosure        *accel_closure = NULL;
@@ -256,13 +254,7 @@ gimp_action_view_new (GimpUIManager *manager,
               name[0] == '<')
             continue;
 
-          g_object_get (action,
-                        "stock-id", &stock_id,
-                        "label",    &tmp,
-                        NULL);
-
-          label = gimp_strip_uline (tmp);
-          g_free (tmp);
+          label = gimp_strip_uline (gtk_action_get_label (action));
 
           if (! (label && strlen (label)))
             {
@@ -308,7 +300,6 @@ gimp_action_view_new (GimpUIManager *manager,
                               GIMP_ACTION_VIEW_COLUMN_ACCEL_CLOSURE,  accel_closure,
                               -1);
 
-          g_free (stock_id);
           g_free (label);
           g_free (label_casefold);
 
@@ -636,9 +627,9 @@ gimp_action_view_conflict_response (GtkWidget   *dialog,
                                         confirm_data->accel_mask,
                                         TRUE))
         {
-          gimp_message (confirm_data->manager->gimp, G_OBJECT (dialog),
-                        GIMP_MESSAGE_ERROR,
-                        _("Changing shortcut failed."));
+          gimp_message_literal (confirm_data->manager->gimp, G_OBJECT (dialog),
+				GIMP_MESSAGE_ERROR,
+				_("Changing shortcut failed."));
         }
     }
 
@@ -656,19 +647,14 @@ gimp_action_view_conflict_confirm (GimpActionView  *view,
 {
   GimpActionGroup *group;
   gchar           *label;
-  gchar           *tmp;
   gchar           *accel_string;
   ConfirmData     *confirm_data;
   GtkWidget       *dialog;
   GimpMessageBox  *box;
 
-  g_object_get (action,
-                "action-group", &group,
-                "label",        &tmp,
-                NULL);
+  g_object_get (action, "action-group", &group, NULL);
 
-  label = gimp_strip_uline (tmp);
-  g_free (tmp);
+  label = gimp_strip_uline (gtk_action_get_label (action));
 
   accel_string = gtk_accelerator_get_label (accel_key, accel_mask);
 
@@ -776,9 +762,9 @@ gimp_action_view_accel_edited (GtkCellRendererAccel *accel,
 
   if (! accel_key)
     {
-      gimp_message (view->manager->gimp, G_OBJECT (view),
-                    GIMP_MESSAGE_ERROR,
-                    _("Invalid shortcut."));
+      gimp_message_literal (view->manager->gimp,
+			    G_OBJECT (view), GIMP_MESSAGE_ERROR,
+			    _("Invalid shortcut."));
     }
   else if (! gtk_accel_map_change_entry (accel_path,
                                          accel_key, accel_mask, FALSE))
@@ -841,9 +827,9 @@ gimp_action_view_accel_edited (GtkCellRendererAccel *accel,
             }
           else
             {
-              gimp_message (view->manager->gimp, G_OBJECT (view),
-                            GIMP_MESSAGE_ERROR,
-                            _("Changing shortcut failed."));
+              gimp_message_literal (view->manager->gimp,
+				    G_OBJECT (view), GIMP_MESSAGE_ERROR,
+				    _("Changing shortcut failed."));
             }
         }
     }
@@ -865,8 +851,8 @@ gimp_action_view_accel_cleared (GtkCellRendererAccel *accel,
 
   if (! gtk_accel_map_change_entry (accel_path, 0, 0, FALSE))
     {
-      gimp_message (view->manager->gimp, G_OBJECT (view),
-                    GIMP_MESSAGE_ERROR,
-                    _("Removing shortcut failed."));
+      gimp_message_literal (view->manager->gimp,
+			    G_OBJECT (view), GIMP_MESSAGE_ERROR,
+			    _("Removing shortcut failed."));
     }
 }

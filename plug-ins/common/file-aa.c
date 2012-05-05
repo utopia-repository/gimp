@@ -11,9 +11,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,8 +22,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -40,6 +39,7 @@
 
 #define SAVE_PROC      "file-aa-save"
 #define PLUG_IN_BINARY "file-aa"
+#define PLUG_IN_ROLE   "gimp-file-aa"
 
 
 /*
@@ -80,7 +80,7 @@ query (void)
 {
   static const GimpParamDef save_args[] =
   {
-    {GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive"},
+    {GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"},
     {GIMP_PDB_IMAGE,    "image",        "Input image"},
     {GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"},
     {GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in"},
@@ -160,7 +160,7 @@ run (const gchar      *name,
     case GIMP_RUN_INTERACTIVE:
     case GIMP_RUN_WITH_LAST_VALS:
       gimp_ui_init (PLUG_IN_BINARY, FALSE);
-      export = gimp_export_image (&image_ID, &drawable_ID, "AA",
+      export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                   (GIMP_EXPORT_CAN_HANDLE_RGB  |
                                    GIMP_EXPORT_CAN_HANDLE_GRAY |
                                    GIMP_EXPORT_CAN_HANDLE_ALPHA ));
@@ -346,25 +346,11 @@ aa_dialog (gint selected)
   gint       i;
 
   /* Create the actual window. */
-  dialog = gimp_dialog_new (_("Save as Text"), PLUG_IN_BINARY,
-                         NULL, 0,
-                         gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("Text"), PLUG_IN_BINARY, SAVE_PROC);
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                         NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __TILE_PRIVATE_H__
 #define __TILE_PRIVATE_H__
 
-#include <sys/types.h>
+
+/*  Uncomment to enable global counters to profile the tile system. */
+/*  #define TILE_PROFILING */
+
 
 typedef struct _TileLink TileLink;
 
@@ -34,6 +36,7 @@ struct _TileLink
                           */
 };
 
+
 struct _Tile
 {
   gshort  ref_count;    /* reference count. when the reference count is
@@ -44,10 +47,22 @@ struct _Tile
                          */
   gshort  write_count;  /* write count: number of references that are
                            for write access */
-  gshort  share_count;  /* share count: number of tile managers that
+  guint   share_count;  /* share count: number of tile managers that
                            hold this tile */
   guint   dirty : 1;    /* is the tile dirty? has it been modified? */
   guint   valid : 1;    /* is the tile valid? */
+  guint  cached : 1;    /* is the tile cached */
+
+#ifdef TILE_PROFILING
+
+  guint zorched : 1;    /* was the tile flushed due to cache pressure
+			   [zorched]? */
+  guint zorchout: 1;    /* was the tile swapped out due to cache
+			   pressure [zorched]? */
+  guint  inonce : 1;    /* has the tile been swapped in at least once? */
+  guint outonce : 1;    /* has the tile been swapped out at least once? */
+
+#endif
 
   guchar  bpp;          /* the bytes per pixel (1, 2, 3 or 4) */
   gushort ewidth;       /* the effective width of the tile */
@@ -73,15 +88,18 @@ struct _Tile
 
   Tile     *next;       /* List pointers for the tile cache lists */
   Tile     *prev;
-  gpointer  listhead;   /* Pointer to the head of the list this tile is on */
 };
 
 
-/*  tile_data_pointer() as a macro so that it can be inlined  */
-
+/*  tile_data_pointer() as a macro so that it can be inlined
+ *
+ *  Note that (y) & (TILE_HEIGHT-1) is equivalent to (y) % TILE_HEIGHT
+ *  for positive power-of-two divisors
+ */
 #define TILE_DATA_POINTER(tile,x,y) \
   ((tile)->data + \
-   (((y) % TILE_HEIGHT) * (tile)->ewidth + ((x) % TILE_WIDTH)) * (tile)->bpp)
+   (((y) & (TILE_HEIGHT-1)) * \
+    (tile)->ewidth + ((x) & (TILE_WIDTH-1))) * (tile)->bpp)
 
 
 #endif /* __TILE_PRIVATE_H__ */

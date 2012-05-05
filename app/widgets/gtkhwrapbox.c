@@ -4,10 +4,10 @@
  * GtkHWrapBox: Horizontal wrapping box widget
  * Copyright (C) 1999 Tim Janik
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,12 +15,14 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
+
+#undef GSEAL_ENABLE
+#undef GTK_DISABLE_DEPRECATED
 
 #include "gtkhwrapbox.h"
 
@@ -76,14 +78,10 @@ gtk_hwrap_box_get_type (void)
 static void
 gtk_hwrap_box_class_init (GtkHWrapBoxClass *class)
 {
-  GObjectClass *object_class;
   GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
   GtkWrapBoxClass *wrap_box_class;
 
-  object_class = G_OBJECT_CLASS (class);
   widget_class = GTK_WIDGET_CLASS (class);
-  container_class = GTK_CONTAINER_CLASS (class);
   wrap_box_class = GTK_WRAP_BOX_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);

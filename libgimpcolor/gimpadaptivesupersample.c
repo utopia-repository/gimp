@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,16 @@
 
 #include "gimpadaptivesupersample.h"
 #include "gimprgb.h"
+
+
+/**
+ * SECTION: gimpadaptivesupersample
+ * @title: GimpAdaptiveSupersample
+ * @short_description: Functions to perform adaptive supersampling on
+ *                     an area.
+ *
+ * Functions to perform adaptive supersampling on an area.
+ **/
 
 
 /*********************************************************************/
@@ -71,6 +80,8 @@ gimp_render_sub_pixel (gint             max_depth,
   gulong   num_samples = 0;
   gint     cnt;
 
+  g_return_val_if_fail (render_func != NULL, 0);
+
   /* Get offsets for corners */
 
   dx1 = (gdouble) (x1 - sub_pixel_size / 2) / sub_pixel_size;
@@ -85,8 +96,7 @@ gimp_render_sub_pixel (gint             max_depth,
     {
       num_samples++;
 
-      if (render_func)
-        (* render_func) (x + dx1, y + dy1, &c[0], render_data);
+      render_func (x + dx1, y + dy1, &c[0], render_data);
 
       block[y1][x1].ready = TRUE;
       block[y1][x1].color = c[0];
@@ -102,8 +112,7 @@ gimp_render_sub_pixel (gint             max_depth,
     {
       num_samples++;
 
-      if (render_func)
-        (* render_func) (x + dx3, y + dy1, &c[1], render_data);
+      render_func (x + dx3, y + dy1, &c[1], render_data);
 
       block[y1][x3].ready = TRUE;
       block[y1][x3].color = c[1];
@@ -119,8 +128,7 @@ gimp_render_sub_pixel (gint             max_depth,
     {
       num_samples++;
 
-      if (render_func)
-        (* render_func) (x + dx1, y + dy3, &c[2], render_data);
+      render_func (x + dx1, y + dy3, &c[2], render_data);
 
       block[y3][x1].ready = TRUE;
       block[y3][x1].color = c[2];
@@ -136,8 +144,7 @@ gimp_render_sub_pixel (gint             max_depth,
     {
       num_samples++;
 
-      if (render_func)
-        (* render_func) (x + dx3, y + dy3, &c[3], render_data);
+      render_func (x + dx3, y + dy3, &c[3], render_data);
 
       block[y3][x3].ready = TRUE;
       block[y3][x3].color = c[3];

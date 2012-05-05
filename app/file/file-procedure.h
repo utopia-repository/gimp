@@ -3,9 +3,9 @@
  *
  * file-procedure.h
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,21 +14,31 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __FILE_PROCEDURE_H__
 #define __FILE_PROCEDURE_H__
 
 
-GimpPlugInProcedure * file_procedure_find              (GSList       *procs,
-                                                        const gchar  *filename,
-                                                        GError      **error);
-GimpPlugInProcedure * file_procedure_find_by_prefix    (GSList       *procs,
-                                                        const gchar  *uri);
-GimpPlugInProcedure * file_procedure_find_by_extension (GSList       *procs,
-                                                        const gchar  *uri);
+typedef enum
+{
+  FILE_PROCEDURE_GROUP_ANY,
+  FILE_PROCEDURE_GROUP_OPEN,
+  FILE_PROCEDURE_GROUP_SAVE,
+  FILE_PROCEDURE_GROUP_EXPORT
+} FileProcedureGroup;
+
+
+GimpPlugInProcedure *file_procedure_find              (GSList               *procs,
+                                                       const gchar          *filename,
+                                                       GError              **error);
+GimpPlugInProcedure *file_procedure_find_by_prefix    (GSList               *procs,
+                                                       const gchar          *uri);
+GimpPlugInProcedure *file_procedure_find_by_extension (GSList               *procs,
+                                                       const gchar          *uri);
+gboolean             file_procedure_in_group          (GimpPlugInProcedure  *file_proc,
+                                                       FileProcedureGroup    group);
 
 
 #endif /* __FILE_PROCEDURE_H__ */

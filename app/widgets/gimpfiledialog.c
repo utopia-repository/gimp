@@ -4,9 +4,9 @@
  * gimpfiledialog.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -37,6 +37,7 @@
 #include "config/gimpguiconfig.h"
 
 #include "file/file-utils.h"
+#include "file/gimp-file.h"
 
 #include "pdb/gimppdb.h"
 
@@ -55,61 +56,73 @@
 #include "gimp-intl.h"
 
 
+/*  an arbitrary limit to keep the file dialog from becoming too wide  */
+#define MAX_EXTENSIONS  4
+
+
 struct _GimpFileDialogState
 {
   gchar *filter_name;
 };
 
 
-static void     gimp_file_dialog_progress_iface_init (GimpProgressInterface *iface);
+static void     gimp_file_dialog_progress_iface_init    (GimpProgressInterface *iface);
 
-static void     gimp_file_dialog_destroy             (GtkObject        *object);
-static gboolean gimp_file_dialog_delete_event        (GtkWidget        *widget,
-                                                      GdkEventAny      *event);
-static void     gimp_file_dialog_response            (GtkDialog        *dialog,
-                                                      gint              response_id);
+static void     gimp_file_dialog_dispose                (GObject          *object);
 
+static gboolean gimp_file_dialog_delete_event           (GtkWidget        *widget,
+                                                         GdkEventAny      *event);
+static void     gimp_file_dialog_response               (GtkDialog        *dialog,
+                                                         gint              response_id);
 static GimpProgress *
-                    gimp_file_dialog_progress_start  (GimpProgress     *progress,
-                                                      const gchar      *message,
-                                                      gboolean          cancelable);
-static void     gimp_file_dialog_progress_end        (GimpProgress     *progress);
-static gboolean gimp_file_dialog_progress_is_active  (GimpProgress     *progress);
-static void     gimp_file_dialog_progress_set_text   (GimpProgress     *progress,
-                                                      const gchar      *message);
-static void     gimp_file_dialog_progress_set_value  (GimpProgress     *progress,
-                                                      gdouble           percentage);
-static gdouble  gimp_file_dialog_progress_get_value  (GimpProgress     *progress);
-static void     gimp_file_dialog_progress_pulse      (GimpProgress     *progress);
-static guint32  gimp_file_dialog_progress_get_window (GimpProgress     *progress);
+                gimp_file_dialog_progress_start         (GimpProgress     *progress,
+                                                         const gchar      *message,
+                                                         gboolean          cancelable);
+static void     gimp_file_dialog_progress_end           (GimpProgress     *progress);
+static gboolean gimp_file_dialog_progress_is_active     (GimpProgress     *progress);
+static void     gimp_file_dialog_progress_set_text      (GimpProgress     *progress,
+                                                         const gchar      *message);
+static void     gimp_file_dialog_progress_set_value     (GimpProgress     *progress,
+                                                         gdouble           percentage);
+static gdouble  gimp_file_dialog_progress_get_value     (GimpProgress     *progress);
+static void     gimp_file_dialog_progress_pulse         (GimpProgress     *progress);
+static guint32  gimp_file_dialog_progress_get_window_id (GimpProgress     *progress);
 
-static void     gimp_file_dialog_add_user_dir        (GimpFileDialog   *dialog,
-                                                      GUserDirectory    directory);
-static void     gimp_file_dialog_add_preview         (GimpFileDialog   *dialog,
-                                                      Gimp             *gimp);
-static void     gimp_file_dialog_add_filters         (GimpFileDialog   *dialog,
-                                                      Gimp             *gimp,
-                                                      GSList           *file_procs);
-static void     gimp_file_dialog_add_proc_selection  (GimpFileDialog   *dialog,
-                                                      Gimp             *gimp,
-                                                      GSList           *file_procs,
-                                                      const gchar      *automatic,
-                                                      const gchar      *automatic_help_id);
+static void     gimp_file_dialog_add_user_dir           (GimpFileDialog   *dialog,
+                                                         GUserDirectory    directory);
+static void     gimp_file_dialog_add_preview            (GimpFileDialog   *dialog,
+                                                         Gimp             *gimp);
+static void     gimp_file_dialog_add_filters            (GimpFileDialog   *dialog,
+                                                         Gimp             *gimp,
+                                                         GSList           *file_procs,
+                                                         GSList           *file_procs_all_images);
+static void     gimp_file_dialog_process_procedure      (GimpPlugInProcedure
+                                                                          *file_proc,
+                                                         GtkFileFilter    **filter_out,
+                                                         GtkFileFilter    *all);
+static void     gimp_file_dialog_add_proc_selection     (GimpFileDialog   *dialog,
+                                                         Gimp             *gimp,
+                                                         GSList           *file_procs,
+                                                         const gchar      *automatic,
+                                                         const gchar      *automatic_help_id);
 
-static void     gimp_file_dialog_selection_changed   (GtkFileChooser   *chooser,
-                                                      GimpFileDialog   *dialog);
-static void     gimp_file_dialog_update_preview      (GtkFileChooser   *chooser,
-                                                      GimpFileDialog   *dialog);
+static void     gimp_file_dialog_selection_changed      (GtkFileChooser   *chooser,
+                                                         GimpFileDialog   *dialog);
+static void     gimp_file_dialog_update_preview         (GtkFileChooser   *chooser,
+                                                         GimpFileDialog   *dialog);
 
-static void     gimp_file_dialog_proc_changed        (GimpFileProcView *view,
-                                                      GimpFileDialog   *dialog);
+static void     gimp_file_dialog_proc_changed           (GimpFileProcView *view,
+                                                         GimpFileDialog   *dialog);
 
-static void     gimp_file_dialog_help_func           (const gchar      *help_id,
-                                                      gpointer          help_data);
-static void     gimp_file_dialog_help_clicked        (GtkWidget        *widget,
-                                                      gpointer          dialog);
+static void     gimp_file_dialog_help_func              (const gchar      *help_id,
+                                                         gpointer          help_data);
+static void     gimp_file_dialog_help_clicked           (GtkWidget        *widget,
+                                                         gpointer          dialog);
 
 static gchar  * gimp_file_dialog_pattern_from_extension (const gchar   *extension);
+static gchar  * gimp_file_dialog_get_documents_uri      (void);
+static gchar  * gimp_file_dialog_get_dirname_from_uri   (const gchar   *uri);
+
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpFileDialog, gimp_file_dialog,
@@ -123,11 +136,11 @@ G_DEFINE_TYPE_WITH_CODE (GimpFileDialog, gimp_file_dialog,
 static void
 gimp_file_dialog_class_init (GimpFileDialogClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkDialogClass *dialog_class = GTK_DIALOG_CLASS (klass);
 
-  object_class->destroy      = gimp_file_dialog_destroy;
+  object_class->dispose      = gimp_file_dialog_dispose;
 
   widget_class->delete_event = gimp_file_dialog_delete_event;
 
@@ -142,22 +155,22 @@ gimp_file_dialog_init (GimpFileDialog *dialog)
 static void
 gimp_file_dialog_progress_iface_init (GimpProgressInterface *iface)
 {
-  iface->start      = gimp_file_dialog_progress_start;
-  iface->end        = gimp_file_dialog_progress_end;
-  iface->is_active  = gimp_file_dialog_progress_is_active;
-  iface->set_text   = gimp_file_dialog_progress_set_text;
-  iface->set_value  = gimp_file_dialog_progress_set_value;
-  iface->get_value  = gimp_file_dialog_progress_get_value;
-  iface->pulse      = gimp_file_dialog_progress_pulse;
-  iface->get_window = gimp_file_dialog_progress_get_window;
+  iface->start         = gimp_file_dialog_progress_start;
+  iface->end           = gimp_file_dialog_progress_end;
+  iface->is_active     = gimp_file_dialog_progress_is_active;
+  iface->set_text      = gimp_file_dialog_progress_set_text;
+  iface->set_value     = gimp_file_dialog_progress_set_value;
+  iface->get_value     = gimp_file_dialog_progress_get_value;
+  iface->pulse         = gimp_file_dialog_progress_pulse;
+  iface->get_window_id = gimp_file_dialog_progress_get_window_id;
 }
 
 static void
-gimp_file_dialog_destroy (GtkObject *object)
+gimp_file_dialog_dispose (GObject *object)
 {
   GimpFileDialog *dialog = GIMP_FILE_DIALOG (object);
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 
   dialog->progress = NULL;
 }
@@ -273,29 +286,31 @@ gimp_file_dialog_progress_pulse (GimpProgress *progress)
 }
 
 static guint32
-gimp_file_dialog_progress_get_window (GimpProgress *progress)
+gimp_file_dialog_progress_get_window_id (GimpProgress *progress)
 {
   GimpFileDialog *dialog = GIMP_FILE_DIALOG (progress);
 
-  return (guint32) gimp_window_get_native (GTK_WINDOW (dialog));
+  return gimp_window_get_native_id (GTK_WINDOW (dialog));
 }
 
 
 /*  public functions  */
 
 GtkWidget *
-gimp_file_dialog_new (Gimp                 *gimp,
-                      GtkFileChooserAction  action,
-                      const gchar          *title,
-                      const gchar          *role,
-                      const gchar          *stock_id,
-                      const gchar          *help_id)
+gimp_file_dialog_new (Gimp                  *gimp,
+                      GimpFileChooserAction  action,
+                      const gchar           *title,
+                      const gchar           *role,
+                      const gchar           *stock_id,
+                      const gchar           *help_id)
 {
-  GimpFileDialog *dialog;
-  GSList         *file_procs;
-  const gchar    *automatic;
-  const gchar    *automatic_help_id;
-  gboolean        local_only;
+  GimpFileDialog       *dialog                = NULL;
+  GSList               *file_procs            = NULL;
+  GSList               *file_procs_all_images = NULL;
+  const gchar          *automatic             = NULL;
+  const gchar          *automatic_help_id     = NULL;
+  gboolean              local_only            = FALSE;
+  GtkFileChooserAction  gtk_action            = 0;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (title != NULL, NULL);
@@ -305,20 +320,29 @@ gimp_file_dialog_new (Gimp                 *gimp,
 
   switch (action)
     {
-    case GTK_FILE_CHOOSER_ACTION_OPEN:
-      file_procs = gimp->plug_in_manager->load_procs;
-      automatic  = _("Automatically Detected");
-      automatic_help_id = GIMP_HELP_FILE_OPEN_BY_EXTENSION;
+    case GIMP_FILE_CHOOSER_ACTION_OPEN:
+      gtk_action            = GTK_FILE_CHOOSER_ACTION_OPEN;
+      file_procs            = gimp->plug_in_manager->load_procs;
+      file_procs_all_images = NULL;
+      automatic             = _("Automatically Detected");
+      automatic_help_id     = GIMP_HELP_FILE_OPEN_BY_EXTENSION;
 
       /* FIXME */
       local_only = (gimp_pdb_lookup_procedure (gimp->pdb,
                                                "file-uri-load") == NULL);
       break;
 
-    case GTK_FILE_CHOOSER_ACTION_SAVE:
-      file_procs = gimp->plug_in_manager->save_procs;
-      automatic  = _("By Extension");
-      automatic_help_id = GIMP_HELP_FILE_SAVE_BY_EXTENSION;
+    case GIMP_FILE_CHOOSER_ACTION_SAVE:
+    case GIMP_FILE_CHOOSER_ACTION_EXPORT:
+      gtk_action            = GTK_FILE_CHOOSER_ACTION_SAVE;
+      file_procs            = (action == GIMP_FILE_CHOOSER_ACTION_SAVE ?
+                               gimp->plug_in_manager->save_procs :
+                               gimp->plug_in_manager->export_procs);
+      file_procs_all_images = (action == GIMP_FILE_CHOOSER_ACTION_SAVE ?
+                               gimp->plug_in_manager->export_procs :
+                               gimp->plug_in_manager->save_procs);
+      automatic             = _("By Extension");
+      automatic_help_id     = GIMP_HELP_FILE_SAVE_BY_EXTENSION;
 
       /* FIXME */
       local_only = (gimp_pdb_lookup_procedure (gimp->pdb,
@@ -333,7 +357,7 @@ gimp_file_dialog_new (Gimp                 *gimp,
   dialog = g_object_new (GIMP_TYPE_FILE_DIALOG,
                          "title",                     title,
                          "role",                      role,
-                         "action",                    action,
+                         "action",                    gtk_action,
                          "local-only",                local_only,
                          "do-overwrite-confirmation", TRUE,
                          NULL);
@@ -354,7 +378,7 @@ gimp_file_dialog_new (Gimp                 *gimp,
 
   if (GIMP_GUI_CONFIG (gimp->config)->show_help_button && help_id)
     {
-      GtkWidget *action_area = GTK_DIALOG (dialog)->action_area;
+      GtkWidget *action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
       GtkWidget *button      = gtk_button_new_from_stock (GTK_STOCK_HELP);
 
       gtk_box_pack_end (GTK_BOX (action_area), button, FALSE, TRUE, 0);
@@ -378,14 +402,17 @@ gimp_file_dialog_new (Gimp                 *gimp,
 
   gimp_file_dialog_add_preview (dialog, gimp);
 
-  gimp_file_dialog_add_filters (dialog, gimp, file_procs);
+  gimp_file_dialog_add_filters (dialog,
+                                gimp,
+                                file_procs,
+                                file_procs_all_images);
 
   gimp_file_dialog_add_proc_selection (dialog, gimp, file_procs, automatic,
                                        automatic_help_id);
 
   dialog->progress = gimp_progress_box_new ();
-  gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), dialog->progress,
-                    FALSE, FALSE, 0);
+  gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                    dialog->progress, FALSE, FALSE, 0);
 
   return GTK_WIDGET (dialog);
 }
@@ -394,8 +421,9 @@ void
 gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
                                 gboolean        sensitive)
 {
-  GList *children;
-  GList *list;
+  GtkWidget *content_area;
+  GList     *children;
+  GList     *list;
 
   g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
 
@@ -403,8 +431,9 @@ gimp_file_dialog_set_sensitive (GimpFileDialog *dialog,
   if (! dialog->progress)
     return;
 
-  children =
-    gtk_container_get_children (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox));
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+
+  children = gtk_container_get_children (GTK_CONTAINER (content_area));
 
   for (list = children; list; list = g_list_next (list))
     {
@@ -451,95 +480,196 @@ gimp_file_dialog_set_open_image (GimpFileDialog *dialog,
 
 void
 gimp_file_dialog_set_save_image (GimpFileDialog *dialog,
+                                 Gimp           *gimp,
                                  GimpImage      *image,
                                  gboolean        save_a_copy,
+                                 gboolean        export,
                                  gboolean        close_after_saving)
 {
-  const gchar *uri = NULL;
-  gchar       *dirname;
-  gchar       *basename;
+  const gchar *dir_uri  = NULL;
+  const gchar *name_uri = NULL;
+  const gchar *ext_uri  = NULL;
+  gchar       *docs_uri = NULL;
+  gchar       *dirname  = NULL;
+  gchar       *basename = NULL;
 
   g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
+  docs_uri = gimp_file_dialog_get_documents_uri ();
+
   dialog->image              = image;
   dialog->save_a_copy        = save_a_copy;
+  dialog->export             = export;
   dialog->close_after_saving = close_after_saving;
-
-  if (save_a_copy)
-    uri = g_object_get_data (G_OBJECT (image), "gimp-image-save-a-copy");
-
-  if (! uri)
-    uri = gimp_image_get_uri (image);
 
   gimp_file_dialog_set_file_proc (dialog, NULL);
 
-#ifndef G_OS_WIN32
-  dirname  = g_path_get_dirname (uri);
-#else
-  /* g_path_get_dirname() is supposed to work on pathnames, not URIs.
-   *
-   * If uri points to a file on the root of a drive
-   * "file:///d:/foo.png", g_path_get_dirname() would return
-   * "file:///d:". (What we really would want is "file:///d:/".) When
-   * this then is passed inside gtk+ to g_filename_from_uri() we get
-   * "d:" which is not an absolute pathname. This currently causes an
-   * assertion failure in gtk+. This scenario occurs if we have opened
-   * an image from the root of a drive and then do Save As.
-   *
-   * Of course, gtk+ shouldn't assert even if we feed it slighly bogus
-   * data, and that problem should be fixed, too. But to get the
-   * correct default current folder in the filechooser combo box, we
-   * need to pass it the proper URI for an absolute path anyway. So
-   * don't use g_path_get_dirname() on file: URIs.
-   */
-  if (g_str_has_prefix (uri, "file:///"))
+  if (! export)
     {
-      gchar *filepath = g_filename_from_uri (uri, NULL, NULL);
-      gchar *dirpath  = NULL;
+      /*
+       * Priority of default paths for Save:
+       *
+       *   1. Last Save a copy-path (applies only to Save a copy)
+       *   2. Last Save path
+       *   3. Path of source XCF
+       *   4. Path of Import source
+       *   5. Last Save path of any GIMP document
+       *   6. The OS 'Documents' path
+       */
 
-      if (filepath != NULL)
-	{
-	  dirpath = g_path_get_dirname (filepath);
-	  g_free (filepath);
-	}
+      if (save_a_copy)
+        dir_uri = gimp_image_get_save_a_copy_uri (image);
 
-      if (dirpath != NULL)
-	{
-	  dirname = g_filename_to_uri (dirpath, NULL, NULL);
-	  g_free (dirpath);
-	}
-      else
-        {
-          dirname = NULL;
-        }
+      if (! dir_uri)
+        dir_uri = gimp_image_get_uri (image);
+
+      if (! dir_uri)
+        dir_uri = g_object_get_data (G_OBJECT (image),
+                                     "gimp-image-source-uri");
+
+      if (! dir_uri)
+        dir_uri = gimp_image_get_imported_uri (image);
+
+      if (! dir_uri)
+        dir_uri = g_object_get_data (G_OBJECT (gimp),
+                                     GIMP_FILE_SAVE_LAST_URI_KEY);
+
+      if (! dir_uri)
+        dir_uri = docs_uri;
+
+
+      /* Priority of default basenames for Save:
+       *
+       *   1. Last Save a copy-name (applies only to Save a copy)
+       *   2. Last Save name
+       *   3. Last Export name
+       *   3. The source image path
+       *   3. 'Untitled'
+       */
+
+      if (save_a_copy)
+        name_uri = gimp_image_get_save_a_copy_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_exported_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_imported_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_string_untitled ();
+
+
+      /* Priority of default type/extension for Save:
+       *
+       *   1. Type of last Save
+       *   2. .xcf (which we don't explicitly append)
+       */
+      ext_uri = gimp_image_get_uri (image);
+
+      if (! ext_uri)
+        ext_uri = "file:///we/only/care/about/extension.xcf";
+    }
+  else /* if (export) */
+    {
+      /*
+       * Priority of default paths for Export:
+       *
+       *   1. Last Export path
+       *   2. Path of import source
+       *   3. Path of XCF source
+       *   4. Last path of any save to XCF
+       *   5. Last Export path of any document
+       *   6. The OS 'Documents' path
+       */
+
+      dir_uri = gimp_image_get_exported_uri (image);
+
+      if (! dir_uri)
+        dir_uri = g_object_get_data (G_OBJECT (image),
+                                     "gimp-image-source-uri");
+
+      if (! dir_uri)
+        dir_uri = gimp_image_get_imported_uri (image);
+
+      if (! dir_uri)
+        dir_uri = gimp_image_get_uri (image);
+
+      if (! dir_uri)
+        dir_uri = g_object_get_data (G_OBJECT (gimp),
+                                     GIMP_FILE_SAVE_LAST_URI_KEY);
+
+      if (! dir_uri)
+        dir_uri = g_object_get_data (G_OBJECT (gimp),
+                                     GIMP_FILE_EXPORT_LAST_URI_KEY);
+
+      if (! dir_uri)
+        dir_uri = docs_uri;
+
+
+      /* Priority of default basenames for Export:
+       *
+       *   1. Last Export name
+       *   3. Save URI
+       *   2. Source file name
+       *   3. 'Untitled'
+       */
+
+      name_uri = gimp_image_get_exported_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_imported_uri (image);
+
+      if (! name_uri)
+        name_uri = gimp_image_get_string_untitled ();
+
+
+      /* Priority of default type/extension for Export:
+       *
+       *   1. Type of last Export
+       *   2. Type of latest Export of any document
+       *   3. Type of the image Import
+       *   4. .png
+       */
+      ext_uri = gimp_image_get_exported_uri (image);
+
+      if (! ext_uri)
+        ext_uri = g_object_get_data (G_OBJECT (gimp),
+                                     GIMP_FILE_EXPORT_LAST_URI_KEY);
+      if (! ext_uri)
+        ext_uri = gimp_image_get_imported_uri (image);
+
+      if (! ext_uri)
+        ext_uri = "file:///we/only/care/about/extension.png";
+    }
+
+  dirname = gimp_file_dialog_get_dirname_from_uri (dir_uri);
+
+  if (ext_uri)
+    {
+      gchar *uri_new_ext = file_utils_uri_with_new_ext (name_uri,
+                                                        ext_uri);
+      basename = file_utils_uri_display_basename (uri_new_ext);
+      g_free (uri_new_ext);
     }
   else
     {
-      dirname = g_path_get_dirname (uri);
-    }
-#endif
-
-  if (dirname && strlen (dirname) && strcmp (dirname, "."))
-    {
-      gtk_file_chooser_set_current_folder_uri (GTK_FILE_CHOOSER (dialog),
-                                               dirname);
-    }
-  else
-    {
-      const gchar *folder;
-
-      folder = g_object_get_data (G_OBJECT (image), "gimp-image-dirname");
-
-      if (folder)
-        gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), folder);
+      basename = file_utils_uri_display_basename (name_uri);
     }
 
-  g_free (dirname);
-
-  basename = file_utils_uri_display_basename (uri);
+  gtk_file_chooser_set_current_folder_uri (GTK_FILE_CHOOSER (dialog), dirname);
   gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), basename);
+
+  g_free (docs_uri);
   g_free (basename);
+  g_free (dirname);
 }
 
 GimpFileDialogState *
@@ -640,10 +770,21 @@ gimp_file_dialog_add_preview (GimpFileDialog *dialog,
 #endif
 }
 
+/**
+ * gimp_file_dialog_add_filters:
+ * @dialog:
+ * @gimp:
+ * @file_procs:            The image types that can be chosen from
+ *                         the drop down
+ * @file_procs_all_images: The additional images types shown when
+ *                         "All images" is selected
+ *
+ **/
 static void
 gimp_file_dialog_add_filters (GimpFileDialog *dialog,
                               Gimp           *gimp,
-                              GSList         *file_procs)
+                              GSList         *file_procs,
+                              GSList         *file_procs_all_images)
 {
   GtkFileFilter *all;
   GSList        *list;
@@ -657,67 +798,114 @@ gimp_file_dialog_add_filters (GimpFileDialog *dialog,
   gtk_file_filter_set_name (all, _("All images"));
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), all);
 
+  /* Add the normal file procs */
   for (list = file_procs; list; list = g_slist_next (list))
     {
       GimpPlugInProcedure *file_proc = list->data;
+      GtkFileFilter       *filter    = NULL;
 
-      if (file_proc->extensions_list)
+      gimp_file_dialog_process_procedure (file_proc,
+                                          &filter,
+                                          all);
+      if (filter)
         {
-          GtkFileFilter *filter = gtk_file_filter_new ();
-          GString       *str;
-          GSList        *ext;
-          gint           i;
-
-          str = g_string_new (gimp_plug_in_procedure_get_label (file_proc));
-
-/*  an arbitrary limit to keep the file dialog from becoming too wide  */
-#define MAX_EXTENSIONS  4
-
-          for (ext = file_proc->extensions_list, i = 0;
-               ext;
-               ext = g_slist_next (ext), i++)
-            {
-              const gchar *extension = ext->data;
-              gchar       *pattern;
-
-              pattern = gimp_file_dialog_pattern_from_extension (extension);
-              gtk_file_filter_add_pattern (filter, pattern);
-              gtk_file_filter_add_pattern (all, pattern);
-              g_free (pattern);
-
-              if (i == 0)
-                {
-                  g_string_append (str, " (");
-                }
-              else if (i <= MAX_EXTENSIONS)
-                {
-                  g_string_append (str, ", ");
-                }
-
-              if (i < MAX_EXTENSIONS)
-                {
-                  g_string_append (str, "*.");
-                  g_string_append (str, extension);
-                }
-              else if (i == MAX_EXTENSIONS)
-                {
-                  g_string_append (str, "...");
-                }
-
-              if (! ext->next)
-                {
-                  g_string_append (str, ")");
-                }
-            }
-
-          gtk_file_filter_set_name (filter, str->str);
-          g_string_free (str, TRUE);
-
-          gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter);
+          gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),
+                                       filter);
+          g_object_unref (filter);
         }
     }
 
+  /* Add the "rest" of the file procs only as filters to
+   * "All images"
+   */
+  for (list = file_procs_all_images; list; list = g_slist_next (list))
+    {
+      GimpPlugInProcedure *file_proc = list->data;
+
+      gimp_file_dialog_process_procedure (file_proc,
+                                          NULL,
+                                          all);
+    }
+
   gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), all);
+}
+
+
+/**
+ * gimp_file_dialog_process_procedure:
+ * @file_proc:
+ * @filter_out:
+ * @all:
+ *
+ * Creates a #GtkFileFilter of @file_proc and adds the extensions to
+ * the @all filter. The returned #GtkFileFilter has a normal ref and
+ * must be unreffed when used.
+ **/
+static void
+gimp_file_dialog_process_procedure (GimpPlugInProcedure  *file_proc,
+                                    GtkFileFilter       **filter_out,
+                                    GtkFileFilter        *all)
+{
+  GtkFileFilter *filter = NULL;
+  GString       *str    = NULL;
+  GSList        *ext    = NULL;
+  gint           i      = 0;
+
+  if (!file_proc->extensions_list)
+    return;
+
+  filter = gtk_file_filter_new ();
+  str    = g_string_new (gimp_plug_in_procedure_get_label (file_proc));
+
+  /* Take ownership directly so we don't have to mess with a floating
+   * ref
+   */
+  g_object_ref_sink (filter);
+
+  for (ext = file_proc->extensions_list, i = 0;
+       ext;
+       ext = g_slist_next (ext), i++)
+    {
+      const gchar *extension = ext->data;
+      gchar       *pattern;
+
+      pattern = gimp_file_dialog_pattern_from_extension (extension);
+      gtk_file_filter_add_pattern (filter, pattern);
+      gtk_file_filter_add_pattern (all, pattern);
+      g_free (pattern);
+
+      if (i == 0)
+        {
+          g_string_append (str, " (");
+        }
+      else if (i <= MAX_EXTENSIONS)
+        {
+          g_string_append (str, ", ");
+        }
+
+      if (i < MAX_EXTENSIONS)
+        {
+          g_string_append (str, "*.");
+          g_string_append (str, extension);
+        }
+      else if (i == MAX_EXTENSIONS)
+        {
+          g_string_append (str, "...");
+        }
+
+      if (! ext->next)
+        {
+          g_string_append (str, ")");
+        }
+    }
+
+  gtk_file_filter_set_name (filter, str->str);
+  g_string_free (str, TRUE);
+
+  if (filter_out)
+    *filter_out = g_object_ref (filter);
+
+  g_object_unref (filter);
 }
 
 static void
@@ -927,4 +1115,75 @@ gimp_file_dialog_pattern_from_extension (const gchar *extension)
   *p = '\0';
 
   return pattern;
+}
+
+static gchar *
+gimp_file_dialog_get_documents_uri (void)
+{
+  gchar *path;
+  gchar *uri;
+
+  /* Make sure it ends in '/' */
+  path = g_build_path ("/",
+                       g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS),
+                       "/",
+                       NULL);
+  uri = g_filename_to_uri (path, NULL, NULL);
+  g_free (path);
+
+  return uri;
+}
+
+static gchar *
+gimp_file_dialog_get_dirname_from_uri (const gchar *uri)
+{
+  gchar *dirname = NULL;
+
+#ifndef G_OS_WIN32
+  dirname  = g_path_get_dirname (uri);
+#else
+  /* g_path_get_dirname() is supposed to work on pathnames, not URIs.
+   *
+   * If uri points to a file on the root of a drive
+   * "file:///d:/foo.png", g_path_get_dirname() would return
+   * "file:///d:". (What we really would want is "file:///d:/".) When
+   * this then is passed inside gtk+ to g_filename_from_uri() we get
+   * "d:" which is not an absolute pathname. This currently causes an
+   * assertion failure in gtk+. This scenario occurs if we have opened
+   * an image from the root of a drive and then do Save As.
+   *
+   * Of course, gtk+ shouldn't assert even if we feed it slighly bogus
+   * data, and that problem should be fixed, too. But to get the
+   * correct default current folder in the filechooser combo box, we
+   * need to pass it the proper URI for an absolute path anyway. So
+   * don't use g_path_get_dirname() on file: URIs.
+   */
+  if (g_str_has_prefix (uri, "file:///"))
+    {
+      gchar *filepath = g_filename_from_uri (uri, NULL, NULL);
+      gchar *dirpath  = NULL;
+
+      if (filepath != NULL)
+        {
+          dirpath = g_path_get_dirname (filepath);
+          g_free (filepath);
+        }
+
+      if (dirpath != NULL)
+        {
+          dirname = g_filename_to_uri (dirpath, NULL, NULL);
+          g_free (dirpath);
+        }
+      else
+        {
+          dirname = NULL;
+        }
+    }
+  else
+    {
+      dirname = g_path_get_dirname (uri);
+    }
+#endif
+
+  return dirname;
 }

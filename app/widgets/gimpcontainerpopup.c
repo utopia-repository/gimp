@@ -4,9 +4,9 @@
  * gimpcontainerpopup.c
  * Copyright (C) 2003-2005 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,7 @@
 
 #include "widgets-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpmarshal.h"
@@ -36,9 +36,11 @@
 #include "gimpcontainerbox.h"
 #include "gimpcontainereditor.h"
 #include "gimpcontainerpopup.h"
+#include "gimpcontainertreeview.h"
 #include "gimpcontainerview.h"
 #include "gimpdialogfactory.h"
 #include "gimpviewrenderer.h"
+#include "gimpwindowstrategy.h"
 
 #include "gimp-intl.h"
 
@@ -117,17 +119,17 @@ gimp_container_popup_class_init (GimpContainerPopupClass *klass)
 
   binding_set = gtk_binding_set_by_class (klass);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_Escape, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Escape, 0,
                                 "cancel", 0);
-  gtk_binding_entry_add_signal (binding_set, GDK_Return, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Return, 0,
                                 "confirm", 0);
-  gtk_binding_entry_add_signal (binding_set, GDK_KP_Enter, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Enter, 0,
                                 "confirm", 0);
-  gtk_binding_entry_add_signal (binding_set, GDK_ISO_Enter, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_ISO_Enter, 0,
                                 "confirm", 0);
-  gtk_binding_entry_add_signal (binding_set, GDK_space, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_space, 0,
                                 "confirm", 0);
-  gtk_binding_entry_add_signal (binding_set, GDK_KP_Space, 0,
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Space, 0,
                                 "confirm", 0);
 }
 
@@ -209,12 +211,13 @@ gimp_container_popup_map (GtkWidget *widget)
    *  receive events. we filter away events outside this toplevel
    *  away in button_press()
    */
-  if (gdk_pointer_grab (widget->window, TRUE,
+  if (gdk_pointer_grab (gtk_widget_get_window (widget), TRUE,
                         GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                         GDK_POINTER_MOTION_MASK,
                         NULL, NULL, GDK_CURRENT_TIME) == 0)
     {
-      if (gdk_keyboard_grab (widget->window, TRUE, GDK_CURRENT_TIME) == 0)
+      if (gdk_keyboard_grab (gtk_widget_get_window (widget), TRUE,
+                             GDK_CURRENT_TIME) == 0)
         {
           gtk_grab_add (widget);
 
@@ -251,13 +254,17 @@ gimp_container_popup_button_press (GtkWidget      *widget,
 
   if (event_widget == widget)
     {
+      GtkAllocation allocation;
+
+      gtk_widget_get_allocation (widget, &allocation);
+
       /*  the event was on the popup, which can either be really on the
        *  popup or outside gimp (owner_events == TRUE, see map())
        */
-      if (bevent->x < 0                        ||
-          bevent->y < 0                        ||
-          bevent->x > widget->allocation.width ||
-          bevent->y > widget->allocation.height)
+      if (bevent->x < 0                ||
+          bevent->y < 0                ||
+          bevent->x > allocation.width ||
+          bevent->y > allocation.height)
         {
           /*  the event was outsde gimp  */
 
@@ -318,9 +325,9 @@ gimp_container_popup_real_confirm (GimpContainerPopup *popup)
   GimpObject *object;
 
   object = gimp_context_get_by_type (popup->context,
-                                     popup->container->children_type);
+                                     gimp_container_get_children_type (popup->container));
   gimp_context_set_by_type (popup->orig_context,
-                            popup->container->children_type,
+                            gimp_container_get_children_type (popup->container),
                             object);
 
   if (gtk_grab_get_current () == widget)
@@ -400,7 +407,7 @@ gimp_container_popup_new (GimpContainer     *container,
   popup->view_border_width = view_border_width;
 
   g_signal_connect (popup->context,
-                    gimp_context_type_to_signal_name (container->children_type),
+                    gimp_context_type_to_signal_name (gimp_container_get_children_type (container)),
                     G_CALLBACK (gimp_container_popup_context_changed),
                     popup);
 
@@ -423,6 +430,7 @@ gimp_container_popup_show (GimpContainerPopup *popup,
 {
   GdkScreen      *screen;
   GtkRequisition  requisition;
+  GtkAllocation   allocation;
   GdkRectangle    rect;
   gint            monitor;
   gint            orig_x;
@@ -434,12 +442,14 @@ gimp_container_popup_show (GimpContainerPopup *popup,
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
   gtk_widget_size_request (GTK_WIDGET (popup), &requisition);
-  gdk_window_get_origin (widget->window, &orig_x, &orig_y);
 
-  if (GTK_WIDGET_NO_WINDOW (widget))
+  gtk_widget_get_allocation (widget, &allocation);
+  gdk_window_get_origin (gtk_widget_get_window (widget), &orig_x, &orig_y);
+
+  if (! gtk_widget_get_has_window (widget))
     {
-      orig_x += widget->allocation.x;
-      orig_y += widget->allocation.y;
+      orig_x += allocation.x;
+      orig_y += allocation.y;
     }
 
   screen = gtk_widget_get_screen (widget);
@@ -449,20 +459,20 @@ gimp_container_popup_show (GimpContainerPopup *popup,
 
   if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
     {
-      x = orig_x + widget->allocation.width - requisition.width;
+      x = orig_x + allocation.width - requisition.width;
 
       if (x < rect.x)
-        x -= widget->allocation.width - requisition.width;
+        x -= allocation.width - requisition.width;
     }
   else
     {
       x = orig_x;
 
       if (x + requisition.width > rect.x + rect.width)
-        x += widget->allocation.width - requisition.width;
+        x += allocation.width - requisition.width;
     }
 
-  y = orig_y + widget->allocation.height;
+  y = orig_y + allocation.height;
 
   if (y + requisition.height > rect.y + rect.height)
     y = orig_y - requisition.height;
@@ -489,8 +499,7 @@ gimp_container_popup_set_view_type (GimpContainerPopup *popup,
     {
       popup->view_type = view_type;
 
-      gtk_container_remove (GTK_CONTAINER (popup->frame),
-                            GTK_WIDGET (popup->editor));
+      gtk_widget_destroy (GTK_WIDGET (popup->editor));
       gimp_container_popup_create_view (popup);
     }
 }
@@ -507,20 +516,20 @@ void
 gimp_container_popup_set_view_size (GimpContainerPopup *popup,
                                     gint                view_size)
 {
-  GtkWidget *scrolled_win;
-  GtkWidget *viewport;
-  gint       viewport_width;
+  GtkWidget     *scrolled_win;
+  GtkWidget     *viewport;
+  GtkAllocation  allocation;
 
   g_return_if_fail (GIMP_IS_CONTAINER_POPUP (popup));
 
   scrolled_win = GIMP_CONTAINER_BOX (popup->editor->view)->scrolled_win;
   viewport     = gtk_bin_get_child (GTK_BIN (scrolled_win));
 
-  viewport_width = viewport->allocation.width;
+  gtk_widget_get_allocation (viewport, &allocation);
 
   view_size = CLAMP (view_size, GIMP_VIEW_SIZE_TINY,
                      MIN (GIMP_VIEW_SIZE_GIGANTIC,
-                          viewport_width - 2 * popup->view_border_width));
+                          allocation.width - 2 * popup->view_border_width));
 
   if (view_size != popup->view_size)
     {
@@ -541,17 +550,28 @@ gimp_container_popup_create_view (GimpContainerPopup *popup)
   GimpEditor *editor;
   GtkWidget  *button;
 
-  popup->editor = g_object_new (GIMP_TYPE_CONTAINER_EDITOR, NULL);
-  gimp_container_editor_construct (popup->editor,
-                                   popup->view_type,
-                                   popup->container,
-                                   popup->context,
-                                   popup->view_size,
-                                   popup->view_border_width,
-                                   NULL, NULL, NULL);
+  popup->editor = g_object_new (GIMP_TYPE_CONTAINER_EDITOR,
+                                "view-type",         popup->view_type,
+                                "container",         popup->container,
+                                "context",           popup->context,
+                                "view-size",         popup->view_size,
+                                "view-border-width", popup->view_border_width,
+                                NULL);
 
   gimp_container_view_set_reorderable (GIMP_CONTAINER_VIEW (popup->editor->view),
                                        FALSE);
+
+  if (popup->view_type == GIMP_VIEW_TYPE_LIST)
+    {
+      GtkWidget *search_entry;
+
+      search_entry = gtk_entry_new ();
+      gtk_box_pack_end (GTK_BOX (popup->editor->view), search_entry,
+                        FALSE, FALSE, 0);
+      gtk_tree_view_set_search_entry (GTK_TREE_VIEW (GIMP_CONTAINER_TREE_VIEW (GIMP_CONTAINER_VIEW (popup->editor->view))->view),
+                                      GTK_ENTRY (search_entry));
+      gtk_widget_show (search_entry);
+    }
 
   gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (popup->editor->view),
                                        6  * (popup->default_view_size +
@@ -634,8 +654,10 @@ static void
 gimp_container_popup_dialog_clicked (GtkWidget          *button,
                                      GimpContainerPopup *popup)
 {
-  gimp_dialog_factory_dialog_raise (popup->dialog_factory,
-                                    gtk_widget_get_screen (button),
-                                    popup->dialog_identifier, -1);
+  gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (popup->context->gimp)),
+                                             popup->context->gimp,
+                                             popup->dialog_factory,
+                                             gtk_widget_get_screen (button),
+                                             popup->dialog_identifier);
   g_signal_emit (popup, popup_signals[CONFIRM], 0);
 }

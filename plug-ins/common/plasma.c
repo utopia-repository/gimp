@@ -3,9 +3,9 @@
  *
  * Copyright (C) 1996 Stephen Norris
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -69,6 +68,7 @@
 
 #define PLUG_IN_PROC     "plug-in-plasma"
 #define PLUG_IN_BINARY   "plasma"
+#define PLUG_IN_ROLE     "gimp-plasma"
 #define SCALE_WIDTH      48
 #define TILE_CACHE_SIZE  32
 
@@ -165,11 +165,11 @@ query (void)
 {
   static const GimpParamDef args[]=
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"         },
-    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"               },
-    { GIMP_PDB_INT32,    "seed",       "Random seed"                  },
-    { GIMP_PDB_FLOAT,    "turbulence", "Turbulence of plasma"         }
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",      "Input image (unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"       },
+    { GIMP_PDB_INT32,    "seed",       "Random seed"          },
+    { GIMP_PDB_FLOAT,    "turbulence", "Turbulence of plasma" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -297,7 +297,7 @@ plasma_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Plasma"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Plasma"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -313,9 +313,10 @@ plasma_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_aspect_preview_new (drawable, NULL);
@@ -389,6 +390,9 @@ plasma (GimpDrawable *drawable,
 
   pft = init_plasma (drawable, preview_mode, gr);
 
+  if (!preview_mode && !pft)
+    return;
+
   if (ix1 != ix2 && iy1 != iy2)
     {
       /*
@@ -407,6 +411,8 @@ plasma (GimpDrawable *drawable,
         {
           depth++;
         }
+      if (pft)
+        gimp_progress_update (1.0);
     }
 
   end_plasma (drawable, pft, gr);
@@ -432,12 +438,16 @@ init_plasma (GimpDrawable *drawable,
 
       pft = NULL;
     }
+  else if (gimp_drawable_mask_intersect (drawable->drawable_id,
+                                         &ix1, &iy1, &ix2, &iy2))
+    {
+      ix2 += ix1;
+      iy2 += iy1;
+      pft = gimp_pixel_fetcher_new (drawable, TRUE);
+    }
   else
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id,
-                                 &ix1, &iy1, &ix2, &iy2);
-
-      pft = gimp_pixel_fetcher_new (drawable, TRUE);
+      return NULL;
     }
 
   bpp       = drawable->bpp;

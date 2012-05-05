@@ -4,9 +4,9 @@
  * gimpcolordisplayeditor.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -55,7 +54,7 @@ enum
 };
 
 
-static void   gimp_color_display_editor_destroy        (GtkObject             *object);
+static void   gimp_color_display_editor_dispose        (GObject               *object);
 
 static void   gimp_color_display_editor_add_clicked    (GtkWidget             *widget,
                                                         GimpColorDisplayEditor *editor);
@@ -95,7 +94,7 @@ static void   gimp_color_display_editor_enable_toggled (GtkCellRendererToggle  *
 static void   gimp_color_display_editor_update_buttons (GimpColorDisplayEditor *editor);
 
 
-G_DEFINE_TYPE (GimpColorDisplayEditor, gimp_color_display_editor, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpColorDisplayEditor, gimp_color_display_editor, GTK_TYPE_BOX)
 
 #define parent_class gimp_color_display_editor_parent_class
 
@@ -103,9 +102,9 @@ G_DEFINE_TYPE (GimpColorDisplayEditor, gimp_color_display_editor, GTK_TYPE_VBOX)
 static void
 gimp_color_display_editor_class_init (GimpColorDisplayEditorClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->destroy = gimp_color_display_editor_destroy;
+  object_class->dispose = gimp_color_display_editor_dispose;
 }
 
 static void
@@ -121,11 +120,14 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   GtkTreeViewColumn *column;
   GtkCellRenderer   *rend;
 
-  paned = gtk_vpaned_new ();
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+                                  GTK_ORIENTATION_VERTICAL);
+
+  paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_box_pack_start (GTK_BOX (editor), paned, TRUE, TRUE, 0);
   gtk_widget_show (paned);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_paned_pack1 (GTK_PANED (paned), hbox, FALSE, FALSE);
   gtk_widget_show (hbox);
 
@@ -173,7 +175,8 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
                     G_CALLBACK (gimp_color_display_editor_src_changed),
                     editor);
 
-  vbox = gtk_vbox_new (TRUE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (vbox), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -234,7 +237,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (ed), scrolled_win);
+  gtk_box_pack_start (GTK_BOX (ed), scrolled_win, TRUE, TRUE, 0);
   gtk_widget_show (scrolled_win);
 
   editor->dest = gtk_list_store_new (N_DEST_COLUMNS,
@@ -291,11 +294,11 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
 
   /*  the config frame  */
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_paned_pack2 (GTK_PANED (paned), vbox, TRUE, FALSE);
   gtk_widget_show (vbox);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -303,11 +306,11 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   gtk_box_pack_start (GTK_BOX (vbox), editor->config_frame, TRUE, TRUE, 0);
   gtk_widget_show (editor->config_frame);
 
-  editor->config_box = gtk_vbox_new (FALSE, 6);
+  editor->config_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (editor->config_frame), editor->config_box);
   gtk_widget_show (editor->config_box);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_end (GTK_BOX (editor->config_box), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -327,7 +330,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
 }
 
 static void
-gimp_color_display_editor_destroy (GtkObject *object)
+gimp_color_display_editor_dispose (GObject *object)
 {
   GimpColorDisplayEditor *editor = GIMP_COLOR_DISPLAY_EDITOR (object);
 
@@ -337,7 +340,7 @@ gimp_color_display_editor_destroy (GtkObject *object)
       editor->stack = NULL;
     }
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 GtkWidget *

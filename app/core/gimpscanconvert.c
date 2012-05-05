@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,6 +31,7 @@
 #include "base/pixel-region.h"
 #include "base/tile-manager.h"
 
+#include "gimpbezierdesc.h"
 #include "gimpscanconvert.h"
 
 
@@ -54,12 +54,8 @@ struct _GimpScanConvert
   gdouble         dash_offset;
   GArray         *dash_info;
 
-  guint           num_nodes;
   GArray         *path_data;
 };
-
-/* private functions */
-static gint   gimp_cairo_stride_for_width        (gint             width);
 
 
 /*  public functions  */
@@ -186,7 +182,6 @@ gimp_scan_convert_add_polyline (GimpScanConvert   *sc,
           pd.point.x = points[i].x;
           pd.point.y = points[i].y;
           sc->path_data = g_array_append_val (sc->path_data, pd);
-          sc->num_nodes++;
           prev = points[i];
         }
     }
@@ -200,6 +195,26 @@ gimp_scan_convert_add_polyline (GimpScanConvert   *sc,
     }
 }
 
+/**
+ * gimp_scan_convert_add_polyline:
+ * @sc:     a #GimpScanConvert context
+ * @bezier: a #GimpBezierDesc
+ *
+ * Adds a @bezier path to @sc.
+ *
+ * Please note that you should use gimp_scan_convert_stroke() if you
+ * specify open paths.
+ **/
+void
+gimp_scan_convert_add_bezier (GimpScanConvert       *sc,
+                              const GimpBezierDesc  *bezier)
+{
+  g_return_if_fail (sc != NULL);
+  g_return_if_fail (bezier != NULL);
+
+  sc->path_data = g_array_append_vals (sc->path_data,
+                                       bezier->data, bezier->num_data);
+}
 
 /**
  * gimp_scan_convert_stroke:
@@ -301,7 +316,8 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
 
       if (n_dashes >= 2)
         {
-          sc->dash_info = g_array_sized_new (FALSE, FALSE, sizeof (gdouble), n_dashes);
+          sc->dash_info = g_array_sized_new (FALSE, FALSE,
+                                             sizeof (gdouble), n_dashes);
           sc->dash_info = g_array_append_vals (sc->dash_info, dashes, n_dashes);
           sc->dash_offset = dash_offset;
         }
@@ -343,9 +359,10 @@ gimp_scan_convert_render (GimpScanConvert *sc,
  * @off_y:        vertical offset into the @tile_manager
  * @value:        value to use for covered pixels
  *
- * This is a wrapper around gimp_scan_convert_render_full() that doesn't do
- * antialiasing but gives control over the value that should be used for pixels
- * covered by the scan conversion. Uncovered pixels are set to zero.
+ * This is a wrapper around gimp_scan_convert_render_full() that
+ * doesn't do antialiasing but gives control over the value that
+ * should be used for pixels covered by the scan conversion. Uncovered
+ * pixels are set to zero.
  *
  * You cannot add additional polygons after this command.
  */
@@ -413,7 +430,8 @@ gimp_scan_convert_compose_value (GimpScanConvert *sc,
  * @tile_manager: the #TileManager to render to
  * @off_x:        horizontal offset into the @tile_manager
  * @off_y:        vertical offset into the @tile_manager
- * @replace:      if true the original content of the @tile_manager gets destroyed
+ * @replace:      if true the original content of the @tile_manager gets
+ *                destroyed
  * @antialias:    if true the rendering happens antialiased
  * @value:        value to use for covered pixels
  *
@@ -438,26 +456,24 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
 {
   PixelRegion      maskPR;
   gpointer         pr;
-  gint             x, y;
-  gint             width, height;
-
   cairo_t         *cr;
   cairo_surface_t *surface;
   cairo_path_t     path;
+  gint             x, y;
+  gint             width, height;
 
   g_return_if_fail (sc != NULL);
   g_return_if_fail (tile_manager != NULL);
 
-  x = 0;
-  y = 0;
+  x      = 0;
+  y      = 0;
   width  = tile_manager_width (tile_manager);
   height = tile_manager_height (tile_manager);
 
-  if (sc->clip &&
-      ! gimp_rectangle_intersect (x, y, width, height,
-                                  sc->clip_x, sc->clip_y,
-                                  sc->clip_w, sc->clip_h,
-                                  &x, &y, &width, &height))
+  if (sc->clip && ! gimp_rectangle_intersect (x, y, width, height,
+                                              sc->clip_x, sc->clip_y,
+                                              sc->clip_w, sc->clip_h,
+                                              &x, &y, &width, &height))
     return;
 
   pixel_region_init (&maskPR, tile_manager, x, y, width, height, TRUE);
@@ -472,23 +488,21 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      guchar *tmp_buf = NULL;
-      gint    stride;
-
-      stride = gimp_cairo_stride_for_width (maskPR.w);
-
-      g_assert (stride > 0);
+      guchar     *tmp_buf = NULL;
+      const gint stride   = cairo_format_stride_for_width (CAIRO_FORMAT_A8,
+                                                           maskPR.w);
 
       if (maskPR.rowstride != stride)
         {
           const guchar *src = maskPR.data;
           guchar       *dest;
-          gint          i;
 
           dest = tmp_buf = g_alloca (stride * maskPR.h);
 
-          if (!replace)
+          if (! replace)
             {
+              gint i;
+
               for (i = 0; i < maskPR.h; i++)
                 {
                   memcpy (dest, src, maskPR.w);
@@ -510,27 +524,39 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
                                        -off_y - maskPR.y);
       cr = cairo_create (surface);
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+
       if (replace)
         {
           cairo_set_source_rgba (cr, 0, 0, 0, 0);
           cairo_paint (cr);
         }
+
       cairo_set_source_rgba (cr, 0, 0, 0, value / 255.0);
       cairo_append_path (cr, &path);
-      cairo_set_antialias (cr, antialias ? CAIRO_ANTIALIAS_GRAY : CAIRO_ANTIALIAS_NONE);
+
+      cairo_set_antialias (cr, antialias ?
+                           CAIRO_ANTIALIAS_GRAY : CAIRO_ANTIALIAS_NONE);
       cairo_set_miter_limit (cr, sc->miter);
+
       if (sc->do_stroke)
         {
-          cairo_set_line_cap (cr, sc->cap == GIMP_CAP_BUTT ? CAIRO_LINE_CAP_BUTT :
-                                  sc->cap == GIMP_CAP_ROUND ? CAIRO_LINE_CAP_ROUND :
-                                  CAIRO_LINE_CAP_SQUARE);
-          cairo_set_line_join (cr, sc->join == GIMP_JOIN_MITER ? CAIRO_LINE_JOIN_MITER :
-                                   sc->join == GIMP_JOIN_ROUND ? CAIRO_LINE_JOIN_ROUND :
-                                   CAIRO_LINE_JOIN_BEVEL);
+          cairo_set_line_cap (cr,
+                              sc->cap == GIMP_CAP_BUTT ? CAIRO_LINE_CAP_BUTT :
+                              sc->cap == GIMP_CAP_ROUND ? CAIRO_LINE_CAP_ROUND :
+                              CAIRO_LINE_CAP_SQUARE);
+          cairo_set_line_join (cr,
+                               sc->join == GIMP_JOIN_MITER ? CAIRO_LINE_JOIN_MITER :
+                               sc->join == GIMP_JOIN_ROUND ? CAIRO_LINE_JOIN_ROUND :
+                               CAIRO_LINE_JOIN_BEVEL);
 
           cairo_set_line_width (cr, sc->width);
+
           if (sc->dash_info)
-            cairo_set_dash (cr, (double *) sc->dash_info->data, sc->dash_info->len, sc->dash_offset);
+            cairo_set_dash (cr,
+                            (double *) sc->dash_info->data,
+                            sc->dash_info->len,
+                            sc->dash_offset);
+
           cairo_scale (cr, 1.0, sc->ratio_xy);
           cairo_stroke (cr);
         }
@@ -559,21 +585,3 @@ gimp_scan_convert_render_full (GimpScanConvert *sc,
         }
     }
 }
-
-static gint
-gimp_cairo_stride_for_width (gint width)
-{
-#ifdef __GNUC__
-#warning use cairo_format_stride_for_width() as soon as we depend on cairo 1.6
-#endif
-#if 0
-  return cairo_format_stride_for_width (CAIRO_FORMAT_A8, width);
-#endif
-
-#define CAIRO_STRIDE_ALIGNMENT (sizeof (guint32))
-#define CAIRO_STRIDE_FOR_WIDTH_BPP(w,bpp) \
-   (((bpp)*(w)+7)/8 + CAIRO_STRIDE_ALIGNMENT-1) & ~(CAIRO_STRIDE_ALIGNMENT-1)
-
-  return CAIRO_STRIDE_FOR_WIDTH_BPP (width, 8);
-}
-

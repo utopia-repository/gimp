@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -22,7 +21,6 @@
 
 #include <gegl.h>
 #include <gegl-plugin.h>
-#include <gegl-paramspecs.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -32,9 +30,12 @@
 #include "tools-types.h"
 
 #include "core/gimpdrawable.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagemap.h"
+#include "core/gimpparamspecs-duplicate.h"
 
+#include "widgets/gimphelp-ids.h"
 #include "widgets/gimppropwidgets.h"
 
 #include "display/gimpdisplay.h"
@@ -50,7 +51,7 @@ enum
   COLUMN_NAME,
   COLUMN_LABEL,
   COLUMN_STOCK_ID,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 
@@ -92,7 +93,7 @@ gimp_gegl_tool_register (GimpToolRegisterCallback  callback,
                 _("GEGL Operation"),
                 _("GEGL Tool: Use an arbitrary GEGL operation"),
                 N_("_GEGL Operation..."), NULL,
-                NULL, "foo", /* GIMP_HELP_TOOL_GEGL, */
+                NULL, GIMP_HELP_TOOL_GEGL,
                 GIMP_STOCK_GEGL,
                 data);
 }
@@ -108,7 +109,7 @@ gimp_gegl_tool_class_init (GimpGeglToolClass *klass)
 
   tool_class->initialize       = gimp_gegl_tool_initialize;
 
-  im_tool_class->shell_desc    = _("GEGL Operation");
+  im_tool_class->dialog_desc   = _("GEGL Operation");
 
   im_tool_class->get_operation = gimp_gegl_tool_get_operation;
   im_tool_class->map           = gimp_gegl_tool_map;
@@ -147,24 +148,23 @@ gimp_gegl_tool_initialize (GimpTool     *tool,
                            GError      **error)
 {
   GimpGeglTool *g_tool   = GIMP_GEGL_TOOL (tool);
-  GimpDrawable *drawable = gimp_image_get_active_drawable (display->image);
+  GimpImage    *image    = gimp_display_get_image (display);
+  GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
   if (! drawable)
     return FALSE;
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("GEGL operations do not operate on indexed layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                           _("GEGL operations do not operate on indexed layers."));
       return FALSE;
     }
 
   if (g_tool->config)
     gimp_config_reset (GIMP_CONFIG (g_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
-
-  return TRUE;
+  return GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
 }
 
 static GeglNode *
@@ -185,7 +185,7 @@ gimp_gegl_tool_map (GimpImageMapTool *image_map_tool)
   if (! tool->config)
     return;
 
-  pspecs = gegl_list_properties (tool->operation, &n_pspecs);
+  pspecs = gegl_operation_list_properties (tool->operation, &n_pspecs);
 
   for (i = 0; i < n_pspecs; i++)
     {
@@ -231,25 +231,68 @@ gimp_gegl_tool_map (GimpImageMapTool *image_map_tool)
 }
 
 static gboolean
-gimp_gegl_tool_operation_blacklisted (const gchar *name)
+gimp_gegl_tool_operation_blacklisted (const gchar *name,
+                                      const gchar *categories_str)
 {
-  static const gchar * const blacklist[] =
+  static const gchar * const category_blacklist[] =
   {
+    "compositors",
+    "core",
+    "debug",
+    "hidden",
+    "input",
+    "output",
+    "programming",
+    "transform",
+    "video"
+  };
+  static const gchar * const name_blacklist[] =
+  {
+    "gegl:convert-format",
+    "gegl:introspect",
+    "gegl:path",
+    "gegl:text",
+    "gegl:layer",
+    "gegl:contrast-curve",
+    "gegl:fill-path",
+    "gegl:vector-stroke",
+    "gegl:lens-correct",
+    "gegl:hstack",
     "gimp-",
-    "convert-format", "gegl:convert-format",
-    "introspect",     "gegl:introspect",
-    "path",           "gegl:path",
-    "stress",         "gegl:stress",
-    "text",           "gegl:text"
+    "gimp:"
   };
 
-  gint i;
+  gchar **categories;
+  gint    i;
 
-  for (i = 0; i < G_N_ELEMENTS (blacklist); i++)
+  /* Operations with no name are abstract base classes */
+  if (! name)
+    return TRUE;
+
+  for (i = 0; i < G_N_ELEMENTS (name_blacklist); i++)
     {
-      if (g_str_has_prefix (name, blacklist[i]))
+      if (g_str_has_prefix (name, name_blacklist[i]))
         return TRUE;
     }
+
+  if (! categories_str)
+    return FALSE;
+
+  categories = g_strsplit (categories_str, ":", 0);
+
+  for (i = 0; i < G_N_ELEMENTS (category_blacklist); i++)
+    {
+      gint j;
+
+      for (j = 0; categories[j]; j++)
+        if (! strcmp (categories[j], category_blacklist[i]))
+          {
+            g_strfreev (categories);
+            return TRUE;
+          }
+    }
+
+  g_strfreev (categories);
 
   return FALSE;
 }
@@ -272,14 +315,10 @@ gimp_get_subtype_classes (GType  type,
   klass = GEGL_OPERATION_CLASS (g_type_class_ref (type));
   ops = g_type_children (type, &n_ops);
 
-  /* only add classes which have a name, this avoids
-   * the abstract base classes
-   */
-  if (klass->name)
-    {
-      if (! gimp_gegl_tool_operation_blacklisted (klass->name))
-        classes = g_list_prepend (classes, klass);
-    }
+  if (! gimp_gegl_tool_operation_blacklisted (klass->name,
+                                              gegl_operation_class_get_key (klass,
+                                                "categories")))
+    classes = g_list_prepend (classes, klass);
 
   for (i = 0; i < n_ops; i++)
     classes = gimp_get_subtype_classes (ops[i], classes);
@@ -332,7 +371,7 @@ gimp_gegl_tool_dialog (GimpImageMapTool *image_map_tool)
   main_vbox = gimp_image_map_tool_dialog_get_vbox (image_map_tool);
 
   /*  The operation combo box  */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -340,47 +379,33 @@ gimp_gegl_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  store = gtk_list_store_new (NUM_COLUMNS,
-			      G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+  store = gtk_list_store_new (N_COLUMNS,
+                              G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
   opclasses = gimp_get_geglopclasses ();
 
   for (iter = opclasses; iter; iter = iter->next)
     {
       GeglOperationClass *opclass = GEGL_OPERATION_CLASS (iter->data);
+      const gchar        *stock_id;
+      const gchar        *label;
 
-      if (strstr (opclass->categories, "color")   ||
-          strstr (opclass->categories, "enhance") ||
-          strstr (opclass->categories, "misc")    ||
-          strstr (opclass->categories, "blur")    ||
-          strstr (opclass->categories, "edge")    ||
-          strstr (opclass->categories, "render"))
+      if (g_str_has_prefix (opclass->name, "gegl:"))
         {
-	  const gchar *stock_id;
-	  const gchar *label;
-	  
-	  if (g_str_has_prefix (opclass->name, "gegl:"))
-	    {
-	      label    = opclass->name + strlen ("gegl:");
-	      stock_id = GIMP_STOCK_GEGL;
-	    }
-	  else if (g_str_has_prefix (opclass->name, "gimp:"))
-	    {
-	      label    = opclass->name + strlen ("gimp:");
-	      stock_id = GIMP_STOCK_WILBER;
-	    }
-	  else
-	    {
-	      label    = opclass->name;
-	      stock_id = NULL;
-	    }
-
-          gtk_list_store_insert_with_values (store, NULL, -1,
-                                             COLUMN_NAME,     opclass->name,
-					     COLUMN_LABEL,    label,
-					     COLUMN_STOCK_ID, stock_id,
-                                             -1);
+          label    = opclass->name + strlen ("gegl:");
+          stock_id = GIMP_STOCK_GEGL;
         }
+      else
+        {
+          label    = opclass->name;
+          stock_id = NULL;
+        }
+
+      gtk_list_store_insert_with_values (store, NULL, -1,
+                                         COLUMN_NAME,     opclass->name,
+                                         COLUMN_LABEL,    label,
+                                         COLUMN_STOCK_ID, stock_id,
+                                         -1);
     }
 
   g_list_free (opclasses);
@@ -414,7 +439,7 @@ gimp_gegl_tool_dialog (GimpImageMapTool *image_map_tool)
                       FALSE, FALSE, 0);
   gtk_widget_show (tool->options_frame);
 
-  tool->options_table = gtk_label_new ("Select an operation from the list above");
+  tool->options_table = gtk_label_new (_("Select an operation from the list above"));
   gimp_label_set_attributes (GTK_LABEL (tool->options_table),
                              PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
                              -1);
@@ -438,170 +463,6 @@ gimp_gegl_tool_config_notify (GObject      *object,
                               GimpGeglTool *tool)
 {
   gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
-}
-
-static GParamSpec *
-gimp_param_spec_duplicate (GParamSpec *pspec)
-{
-  if (G_IS_PARAM_SPEC_STRING (pspec))
-    {
-      GParamSpecString *spec = G_PARAM_SPEC_STRING (pspec);
-
-#if (GEGL_MAJOR_VERSION > 0 || \
-     (GEGL_MAJOR_VERSION == 0 && GEGL_MINOR_VERSION > 0) || \
-     (GEGL_MAJOR_VERSION == 0 && GEGL_MINOR_VERSION == 0 && GEGL_MICRO_VERSION >= 21))
-       if (GEGL_IS_PARAM_SPEC_FILE_PATH (pspec))
-#else
-      if (GEGL_IS_PARAM_SPEC_PATH (pspec))
-#endif
-        {
-          return gimp_param_spec_config_path (pspec->name,
-                                              g_param_spec_get_nick (pspec),
-                                              g_param_spec_get_blurb (pspec),
-                                              GIMP_CONFIG_PATH_FILE,
-                                              spec->default_value,
-                                              pspec->flags);
-        }
-      else
-        {
-          static GQuark  multiline_quark = 0;
-          GParamSpec    *new;
-
-          if (! multiline_quark)
-            multiline_quark = g_quark_from_static_string ("multiline");
-
-          new = g_param_spec_string (pspec->name,
-                                     g_param_spec_get_nick (pspec),
-                                     g_param_spec_get_blurb (pspec),
-                                     spec->default_value,
-                                     pspec->flags);
-
-          if (GEGL_IS_PARAM_SPEC_MULTILINE (pspec))
-            {
-              g_param_spec_set_qdata (new, multiline_quark,
-                                      GINT_TO_POINTER (TRUE));
-            }
-
-          return new;
-        }
-    }
-  else if (G_IS_PARAM_SPEC_BOOLEAN (pspec))
-    {
-      GParamSpecBoolean *spec = G_PARAM_SPEC_BOOLEAN (pspec);
-
-      return g_param_spec_boolean (pspec->name,
-                                   g_param_spec_get_nick (pspec),
-                                   g_param_spec_get_blurb (pspec),
-                                   spec->default_value,
-                                   pspec->flags);
-    }
-  else if (G_IS_PARAM_SPEC_ENUM (pspec))
-    {
-      GParamSpecEnum *spec = G_PARAM_SPEC_ENUM (pspec);
-
-      return g_param_spec_enum (pspec->name,
-                                g_param_spec_get_nick (pspec),
-                                g_param_spec_get_blurb (pspec),
-                                G_TYPE_FROM_CLASS (spec->enum_class),
-                                spec->default_value,
-                                pspec->flags);
-    }
-  else if (G_IS_PARAM_SPEC_DOUBLE (pspec))
-    {
-      GParamSpecDouble *spec = G_PARAM_SPEC_DOUBLE (pspec);
-
-      return g_param_spec_double (pspec->name,
-                                  g_param_spec_get_nick (pspec),
-                                  g_param_spec_get_blurb (pspec),
-                                  spec->minimum,
-                                  spec->maximum,
-                                  spec->default_value,
-                                  pspec->flags);
-    }
-  else if (G_IS_PARAM_SPEC_FLOAT (pspec))
-    {
-      GParamSpecFloat *spec = G_PARAM_SPEC_FLOAT (pspec);
-
-      return g_param_spec_float (pspec->name,
-                                 g_param_spec_get_nick (pspec),
-                                 g_param_spec_get_blurb (pspec),
-                                 spec->minimum,
-                                 spec->maximum,
-                                 spec->default_value,
-                                 pspec->flags);
-    }
-  else if (G_IS_PARAM_SPEC_INT (pspec))
-    {
-      GParamSpecInt *spec = G_PARAM_SPEC_INT (pspec);
-
-      return g_param_spec_int (pspec->name,
-                               g_param_spec_get_nick (pspec),
-                               g_param_spec_get_blurb (pspec),
-                               spec->minimum,
-                               spec->maximum,
-                               spec->default_value,
-                               pspec->flags);
-    }
-  else if (G_IS_PARAM_SPEC_UINT (pspec))
-    {
-      GParamSpecUInt *spec = G_PARAM_SPEC_UINT (pspec);
-
-      return g_param_spec_uint (pspec->name,
-                                g_param_spec_get_nick (pspec),
-                                g_param_spec_get_blurb (pspec),
-                                spec->minimum,
-                                spec->maximum,
-                                spec->default_value,
-                                pspec->flags);
-    }
-  else if (GEGL_IS_PARAM_SPEC_COLOR (pspec))
-    {
-      GeglColor *gegl_color;
-      GimpRGB    gimp_color;
-#if (GEGL_MAJOR_VERSION > 0 || \
-     (GEGL_MAJOR_VERSION == 0 && GEGL_MINOR_VERSION > 0) || \
-     (GEGL_MAJOR_VERSION == 0 && GEGL_MINOR_VERSION == 0 && GEGL_MICRO_VERSION >= 23))
-      gdouble    r = 0.0;
-      gdouble    g = 0.0;
-      gdouble    b = 0.0;
-      gdouble    a = 1.0;
-#else
-      gfloat     r = 0.0;
-      gfloat     g = 0.0;
-      gfloat     b = 0.0;
-      gfloat     a = 1.0;
-#endif
-      GValue     value = { 0, };
-
-      g_value_init (&value, GEGL_TYPE_COLOR);
-      g_param_value_set_default (pspec, &value);
-
-      gegl_color = g_value_get_object (&value);
-      if (gegl_color)
-        gegl_color_get_rgba (gegl_color, &r, &g, &b, &a);
-
-      gimp_rgba_set (&gimp_color, r, g, b, a);
-
-      g_value_unset (&value);
-
-      return gimp_param_spec_rgb (pspec->name,
-                                  g_param_spec_get_nick (pspec),
-                                  g_param_spec_get_blurb (pspec),
-                                  TRUE,
-                                  &gimp_color,
-                                  pspec->flags);
-    }
-  else if (G_IS_PARAM_SPEC_OBJECT (pspec) ||
-           G_IS_PARAM_SPEC_POINTER (pspec))
-    {
-      /*  ignore object properties  */
-      return NULL;
-    }
-
-  g_warning ("%s: not supported: %s (%s)\n", G_STRFUNC,
-             g_type_name (G_TYPE_FROM_INSTANCE (pspec)), pspec->name);
-
-  return NULL;
 }
 
 static GValue *
@@ -691,7 +552,7 @@ gimp_gegl_tool_config_class_init (GObjectClass *klass,
   klass->set_property = gimp_gegl_tool_config_set_property;
   klass->get_property = gimp_gegl_tool_config_get_property;
 
-  pspecs = gegl_list_properties (operation, &n_pspecs);
+  pspecs = gegl_operation_list_properties (operation, &n_pspecs);
 
   for (i = 0; i < n_pspecs; i++)
     {
@@ -819,8 +680,7 @@ gimp_gegl_tool_operation_changed (GtkWidget    *widget,
 
   if (tool->options_table)
     {
-      gtk_container_remove (GTK_CONTAINER (tool->options_frame),
-                            tool->options_table);
+      gtk_widget_destroy (tool->options_table);
       tool->options_table = NULL;
     }
 

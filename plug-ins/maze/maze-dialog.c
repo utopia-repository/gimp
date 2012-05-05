@@ -8,9 +8,9 @@
  */
 
 /*
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -57,7 +56,7 @@ typedef void (* EntscaleIntCallback) (gint     value,
 
 typedef struct
 {
-  GtkObject           *adjustment;
+  GtkAdjustment       *adjustment;
   GtkWidget           *entry;
   gboolean             constraint;
   EntscaleIntCallback  callback;
@@ -103,16 +102,7 @@ static gchar buffer[BUFSIZE];
     We need to block signal handlers for div_entry this time.  We
       happen to know that div_entry's callback data is our old
       "friend", so we pull our friend out from where we stuck him in
-      the entry's userdata...  Hopefully that does it.  */
-
-/* Questions:
-
-     Gosh that was dumb.  Is there a way to
-       signal_handler_block_by_name?
-     That would make life so much nicer.
-
-         You could pass the handler_id around and use
-         gtk_signal_handler_block ().   (Sven)
+      the entry's userdata...  Hopefully that does it.
 */
 
 static void        maze_message          (const gchar *message);
@@ -123,7 +113,7 @@ static void        div_entry_callback    (GtkWidget   *entry,
 static void        height_width_callback (gint         width,
                                           GtkWidget  **div_entry);
 
-static GtkWidget * divbox_new            (guint       *max,
+static GtkWidget * divbox_new            (gint        *max,
                                           GtkWidget   *friend,
                                           GtkWidget  **div_entry);
 
@@ -169,7 +159,7 @@ maze_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Maze"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Maze"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -185,9 +175,9 @@ maze_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                       vbox, FALSE, FALSE, 0);
 
   /* The maze size frame */
@@ -245,7 +235,7 @@ maze_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox2 = gtk_vbox_new (FALSE, 6);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox2);
   gtk_widget_show (vbox2);
 
@@ -299,7 +289,7 @@ maze_dialog (void)
 }
 
 static GtkWidget*
-divbox_new (guint      *max,
+divbox_new (gint       *max,
 	    GtkWidget  *friend,
 	    GtkWidget **div_entry)
 {
@@ -312,7 +302,7 @@ divbox_new (guint      *max,
 #endif
 
   align = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_container_add (GTK_CONTAINER (align), hbox);
 
 #if DIVBOX_LOOKS_LIKE_SPINBUTTON
@@ -340,7 +330,7 @@ divbox_new (guint      *max,
   gtk_widget_set_size_request (*div_entry, ENTRY_WIDTH, -1);
 
 #if DIVBOX_LOOKS_LIKE_SPINBUTTON
-  buttonbox = gtk_vbox_new (FALSE, 0);
+  buttonbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_box_pack_start (GTK_BOX (buttonbox), buttonr, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (buttonbox), buttonl, FALSE, FALSE, 0);
@@ -374,12 +364,12 @@ div_button_callback (GtkWidget *button,
 		     GtkWidget *entry)
 {
   const gchar *text;
-  guint        max, divs;
+  gint         max, divs;
   gint         direction;
 
   direction = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button),
                                                   "direction"));
-  max = *((guint*) g_object_get_data (G_OBJECT (entry), "max"));
+  max = *((gint*) g_object_get_data (G_OBJECT (entry), "max"));
 
   /* Tileable mazes shall have only an even number of divisions.
      Other mazes have odd. */
@@ -477,7 +467,7 @@ static void
 div_entry_callback (GtkWidget *entry,
 		    GtkWidget *friend)
 {
-  guint divs, width, max;
+  gint divs, width, max;
   EntscaleIntData *userdata;
   EntscaleIntCallback friend_callback;
 
@@ -485,7 +475,7 @@ div_entry_callback (GtkWidget *entry,
   if (divs < 4) /* If this is under 4 (e.g. 0), something's weird.      */
     return;     /* But it'll probably be ok, so just return and ignore. */
 
-  max = *((guint*) g_object_get_data (G_OBJECT (entry), "max"));
+  max = *((gint*) g_object_get_data (G_OBJECT (entry), "max"));
 
   /* I say "width" here, but it could be height.*/
 
@@ -506,10 +496,10 @@ static void
 height_width_callback (gint        width,
 		       GtkWidget **div_entry)
 {
-  guint divs, max;
+  gint divs, max;
   gpointer data;
 
-  max = *((guint*) g_object_get_data(G_OBJECT(*div_entry), "max"));
+  max = *((gint*) g_object_get_data(G_OBJECT(*div_entry), "max"));
   divs = max / width;
 
   g_snprintf (buffer, BUFSIZE, "%d", divs );
@@ -572,12 +562,12 @@ entscale_int_new (GtkWidget           *table,
 		  gpointer             call_data)
 {
   EntscaleIntData *userdata;
-  GtkWidget *hbox;
-  GtkWidget *label;
-  GtkWidget *entry;
-  GtkWidget *scale;
-  GtkObject *adjustment;
-  gint	     constraint_val;
+  GtkWidget       *hbox;
+  GtkWidget       *label;
+  GtkWidget       *entry;
+  GtkWidget       *scale;
+  GtkAdjustment   *adjustment;
+  gint	           constraint_val;
 
   userdata = g_new (EntscaleIntData, 1);
 
@@ -598,8 +588,8 @@ entscale_int_new (GtkWidget           *table,
     constraint_val = ( *intvar < min ? min : *intvar > max ? max : *intvar );
 
   userdata->adjustment = adjustment =
-    gtk_adjustment_new (constraint_val, min, max, 1.0, 1.0, 0.0);
-  scale = gtk_hscale_new (GTK_ADJUSTMENT (adjustment));
+    GTK_ADJUSTMENT (gtk_adjustment_new (constraint_val, min, max, 1.0, 1.0, 0.0));
+  scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, adjustment);
   gtk_widget_set_size_request (scale, ENTSCALE_INT_SCALE_WIDTH, -1);
   gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
 
@@ -627,7 +617,7 @@ entscale_int_new (GtkWidget           *table,
                             userdata);
 
   /* start packing */
-  hbox = gtk_hbox_new (FALSE, 5);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
   gtk_box_pack_start (GTK_BOX (hbox), scale, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, TRUE, 0);
 
@@ -656,7 +646,7 @@ entscale_int_scale_update (GtkAdjustment *adjustment,
 
   userdata = g_object_get_data (G_OBJECT (adjustment), "userdata");
 
-  new_val = (gint) adjustment->value;
+  new_val = (gint) gtk_adjustment_get_value (adjustment);
 
   *intvar = new_val;
 
@@ -688,27 +678,27 @@ entscale_int_entry_update (GtkWidget *widget,
   gint		  *intvar = data;
 
   userdata = g_object_get_data (G_OBJECT (widget), "userdata");
-  adjustment = GTK_ADJUSTMENT (userdata->adjustment);
+  adjustment = userdata->adjustment;
 
   new_val = atoi (gtk_entry_get_text (GTK_ENTRY (widget)));
   constraint_val = new_val;
-  if ( constraint_val < adjustment->lower )
-    constraint_val = adjustment->lower;
-  if ( constraint_val > adjustment->upper )
-    constraint_val = adjustment->upper;
+
+  if (constraint_val < gtk_adjustment_get_lower (adjustment))
+    constraint_val = gtk_adjustment_get_lower (adjustment);
+
+  if (constraint_val > gtk_adjustment_get_upper (adjustment))
+    constraint_val = gtk_adjustment_get_upper (adjustment);
 
   if ( userdata->constraint )
     *intvar = constraint_val;
   else
     *intvar = new_val;
 
-  adjustment->value = constraint_val;
-
   g_signal_handlers_block_by_func (adjustment,
                                    entscale_int_scale_update,
                                    data);
 
-  gtk_adjustment_value_changed (adjustment);
+  gtk_adjustment_set_value (adjustment, constraint_val);
 
   g_signal_handlers_unblock_by_func (adjustment,
                                      entscale_int_scale_update,

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PAINT_OPTIONS_H__
@@ -27,31 +26,15 @@
                                         GIMP_CONTEXT_BACKGROUND_MASK | \
                                         GIMP_CONTEXT_OPACITY_MASK    | \
                                         GIMP_CONTEXT_PAINT_MODE_MASK | \
-                                        GIMP_CONTEXT_BRUSH_MASK
+                                        GIMP_CONTEXT_BRUSH_MASK      | \
+                                        GIMP_CONTEXT_DYNAMICS_MASK   | \
+                                        GIMP_CONTEXT_PALETTE_MASK
 
 
-typedef struct _GimpDynamicOptions  GimpDynamicOptions;
-typedef struct _GimpFadeOptions     GimpFadeOptions;
 typedef struct _GimpJitterOptions   GimpJitterOptions;
+typedef struct _GimpFadeOptions     GimpFadeOptions;
 typedef struct _GimpGradientOptions GimpGradientOptions;
-
-struct _GimpDynamicOptions
-{
-  gboolean  opacity;
-  gboolean  hardness;
-  gboolean  rate;
-  gboolean  size;
-  gboolean  inverse_size;
-  gboolean  color;
-  gdouble   prescale;
-};
-
-struct _GimpFadeOptions
-{
-  gboolean  use_fade;
-  gdouble   fade_length;
-  GimpUnit  fade_unit;
-};
+typedef struct _GimpSmoothingOptions GimpSmoothingOptions;
 
 struct _GimpJitterOptions
 {
@@ -59,13 +42,25 @@ struct _GimpJitterOptions
   gdouble   jitter_amount;
 };
 
+struct _GimpFadeOptions
+{
+  gboolean        fade_reverse;
+  gdouble         fade_length;
+  GimpUnit        fade_unit;
+  GimpRepeatMode  fade_repeat;
+};
+
 struct _GimpGradientOptions
 {
-  gboolean        use_gradient;
   gboolean        gradient_reverse;
-  gdouble         gradient_length;
-  GimpUnit        gradient_unit;
   GimpRepeatMode  gradient_repeat;
+};
+
+struct _GimpSmoothingOptions
+{
+  gboolean use_smoothing;
+  gint     smoothing_quality;
+  gdouble  smoothing_factor;
 };
 
 
@@ -76,8 +71,6 @@ struct _GimpGradientOptions
 #define GIMP_IS_PAINT_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINT_OPTIONS))
 #define GIMP_PAINT_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_OPTIONS, GimpPaintOptionsClass))
 
-#define GIMP_PAINT_PRESSURE_SCALE 1.5
-#define GIMP_PAINT_VELOCITY_SCALE 1.0
 
 typedef struct _GimpPaintOptionsClass GimpPaintOptionsClass;
 
@@ -87,24 +80,26 @@ struct _GimpPaintOptions
 
   GimpPaintInfo            *paint_info;
 
-  gdouble                   brush_scale;
+  gdouble                   brush_size;
+  gdouble                   brush_angle;
+  gdouble                   brush_aspect_ratio;
 
   GimpPaintApplicationMode  application_mode;
   GimpPaintApplicationMode  application_mode_save;
 
   gboolean                  hard;
 
-  gboolean                  dynamics_expanded;
-  GimpDynamicOptions        *pressure_options;
-  GimpDynamicOptions        *velocity_options;
-  GimpDynamicOptions        *random_options;
-
-  GimpFadeOptions          *fade_options;
   GimpJitterOptions        *jitter_options;
+
+  gboolean                  dynamics_expanded;
+  GimpFadeOptions          *fade_options;
   GimpGradientOptions      *gradient_options;
+  GimpSmoothingOptions     *smoothing_options;
 
   GimpViewType              brush_view_type;
   GimpViewSize              brush_view_size;
+  GimpViewType              dynamics_view_type;
+  GimpViewSize              dynamics_view_size;
   GimpViewType              pattern_view_type;
   GimpViewSize              pattern_view_size;
   GimpViewType              gradient_view_type;
@@ -137,22 +132,12 @@ gboolean gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
 GimpBrushApplicationMode
              gimp_paint_options_get_brush_mode (GimpPaintOptions *paint_options);
 
-
-gdouble gimp_paint_options_get_dynamic_opacity (GimpPaintOptions *paint_options,
-                                                const GimpCoords *coords);
-
-gdouble gimp_paint_options_get_dynamic_size    (GimpPaintOptions *paint_options,
-                                                const GimpCoords *coords,
-                                                gboolean          use_dynamics);
-
-gdouble gimp_paint_options_get_dynamic_rate    (GimpPaintOptions *paint_options,
-                                                const GimpCoords *coords);
-
-gdouble gimp_paint_options_get_dynamic_color   (GimpPaintOptions *paint_options,
-                                                const GimpCoords *coords);
-
-gdouble gimp_paint_options_get_dynamic_hardness(GimpPaintOptions *paint_options,
-                                                const GimpCoords *coords);
+void    gimp_paint_options_copy_brush_props    (GimpPaintOptions *src,
+                                                GimpPaintOptions *dest);
+void    gimp_paint_options_copy_dynamics_props (GimpPaintOptions *src,
+                                                GimpPaintOptions *dest);
+void    gimp_paint_options_copy_gradient_props (GimpPaintOptions *src,
+                                                GimpPaintOptions *dest);
 
 
 #endif  /*  __GIMP_PAINT_OPTIONS_H__  */

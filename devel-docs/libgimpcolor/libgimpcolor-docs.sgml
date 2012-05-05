@@ -20,6 +20,7 @@
     <xi:include href="xml/gimpcolormanaged.xml" />
     <xi:include href="xml/gimpadaptivesupersample.xml" />
     <xi:include href="xml/gimpbilinear.xml" />
+    <xi:include href="xml/gimpcairocolor.xml" />
   </part>
 
   <index id="libgimpcolor-index">
@@ -33,6 +34,9 @@
   </index>
   <index role="GIMP 2.6" id="libgimpcolor-index-new-in-2-6">
     <title>Index of new symbols in GIMP 2.6</title>
+  </index>
+  <index role="GIMP 2.8" id="libgimpcolor-index-new-in-2-8">
+    <title>Index of new symbols in GIMP 2.8</title>
   </index>
   <index role="deprecated" id="libgimpcolor-index-deprecated">
     <title>Index of deprecated symbols</title>

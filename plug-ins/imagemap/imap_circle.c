@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -40,12 +39,12 @@
 static gboolean circle_is_valid(Object_t *obj);
 static Object_t *circle_clone(Object_t *obj);
 static void circle_assign(Object_t *obj, Object_t *des);
-static void circle_draw(Object_t* obj, GdkWindow *window, GdkGC* gc);
-static void circle_draw_sashes(Object_t* obj, GdkWindow *window, GdkGC* gc);
+static void circle_draw(Object_t* obj, cairo_t *cr);
+static void circle_draw_sashes(Object_t* obj, cairo_t *cr);
 static MoveSashFunc_t circle_near_sash(Object_t *obj, gint x, gint y);
 static gboolean circle_point_is_on(Object_t *obj, gint x, gint y);
 static void circle_get_dimensions(Object_t *obj, gint *x, gint *y,
-				  gint *width, gint *height);
+                                  gint *width, gint *height);
 static void circle_resize(Object_t *obj, gint percentage_x, gint percentage_y);
 static void circle_move(Object_t *obj, gint dx, gint dy);
 static gpointer circle_create_info_widget(GtkWidget *frame);
@@ -53,24 +52,24 @@ static void circle_fill_info_tab(Object_t *obj, gpointer data);
 static void circle_set_initial_focus(Object_t *obj, gpointer data);
 static void circle_update(Object_t* obj, gpointer data);
 static void circle_write_csim(Object_t* obj, gpointer param,
-			      OutputFunc_t output);
+                              OutputFunc_t output);
 static void circle_write_cern(Object_t* obj, gpointer param,
-			      OutputFunc_t output);
+                              OutputFunc_t output);
 static void circle_write_ncsa(Object_t* obj, gpointer param,
-			      OutputFunc_t output);
+                              OutputFunc_t output);
 static const gchar* circle_get_stock_icon_name(void);
 
 static ObjectClass_t circle_class = {
    N_("C_ircle"),
-   NULL,			/* info_dialog */
-   NULL,			/* icon */
-   NULL,			/* mask */
+   NULL,                        /* info_dialog */
+   NULL,                        /* icon */
+   NULL,                        /* mask */
 
    circle_is_valid,
-   NULL,			/* circle_destruct */
+   NULL,                        /* circle_destruct */
    circle_clone,
    circle_assign,
-   NULL,			/* circle_normalize */
+   NULL,                        /* circle_normalize */
    circle_draw,
    circle_draw_sashes,
    circle_near_sash,
@@ -79,7 +78,7 @@ static ObjectClass_t circle_class = {
    circle_resize,
    circle_move,
    circle_create_info_widget,
-   circle_fill_info_tab,	/* circle_update_info_widget */
+   circle_fill_info_tab,        /* circle_update_info_widget */
    circle_fill_info_tab,
    circle_set_initial_focus,
    circle_update,
@@ -129,20 +128,20 @@ circle_assign(Object_t *obj, Object_t *des)
 }
 
 static void
-circle_draw(Object_t *obj, GdkWindow *window, GdkGC *gc)
+circle_draw(Object_t *obj, cairo_t *cr)
 {
    Circle_t *circle = ObjectToCircle(obj);
-   draw_circle(window, gc, FALSE, circle->x, circle->y, circle->r);
+   draw_circle(cr, circle->x, circle->y, circle->r);
 }
 
 static void
-circle_draw_sashes(Object_t *obj, GdkWindow *window, GdkGC *gc)
+circle_draw_sashes(Object_t *obj, cairo_t *cr)
 {
    Circle_t *circle = ObjectToCircle(obj);
-   draw_sash(window, gc, circle->x - circle->r, circle->y - circle->r);
-   draw_sash(window, gc, circle->x + circle->r, circle->y - circle->r);
-   draw_sash(window, gc, circle->x - circle->r, circle->y + circle->r);
-   draw_sash(window, gc, circle->x + circle->r, circle->y + circle->r);
+   draw_sash(cr, circle->x - circle->r, circle->y - circle->r);
+   draw_sash(cr, circle->x + circle->r, circle->y - circle->r);
+   draw_sash(cr, circle->x - circle->r, circle->y + circle->r);
+   draw_sash(cr, circle->x + circle->r, circle->y + circle->r);
 }
 
 static gint sash_x;
@@ -168,7 +167,7 @@ circle_resize(Object_t *obj, gint percentage_x, gint percentage_y)
    circle->x = circle->x * percentage_x / 100;
    circle->y = circle->y * percentage_y / 100;
    circle->r = circle->r * ((percentage_x < percentage_y)
-			    ? percentage_x : percentage_y) / 100;
+                            ? percentage_x : percentage_y) / 100;
 }
 
 static MoveSashFunc_t
@@ -196,7 +195,7 @@ circle_point_is_on(Object_t *obj, gint x, gint y)
 
 static void
 circle_get_dimensions(Object_t *obj, gint *x, gint *y,
-		      gint *width, gint *height)
+                      gint *width, gint *height)
 {
    Circle_t *circle = ObjectToCircle(obj);
    *x = circle->x - circle->r;
@@ -263,14 +262,14 @@ circle_create_info_widget(GtkWidget *frame)
 
    label = create_label_in_table(table, 0, 0, _("Center _x:"));
    props->x = create_spin_button_in_table(table, label, 0, 1, 1, 0,
-					  max_width - 1);
+                                          max_width - 1);
    g_signal_connect(props->x, "value-changed",
                     G_CALLBACK (x_changed_cb), (gpointer) props);
    create_label_in_table(table, 0, 2, _("pixels"));
 
    label = create_label_in_table(table, 1, 0, _("Center _y:"));
    props->y = create_spin_button_in_table(table, label, 1, 1, 1, 0,
-					  max_height - 1);
+                                          max_height - 1);
    g_signal_connect(props->y, "value-changed",
                     G_CALLBACK (y_changed_cb), (gpointer) props);
    create_label_in_table(table, 1, 2, _("pixels"));
@@ -319,7 +318,7 @@ circle_write_csim(Object_t *obj, gpointer param, OutputFunc_t output)
 {
    Circle_t *circle = ObjectToCircle(obj);
    output(param, "\"circle\" coords=\"%d,%d,%d\"", circle->x, circle->y,
-	  circle->r);
+          circle->r);
 }
 
 static void
@@ -334,7 +333,7 @@ circle_write_ncsa(Object_t *obj, gpointer param, OutputFunc_t output)
 {
    Circle_t *circle = ObjectToCircle(obj);
    output(param, "circle %s %d,%d %d,%d", obj->url,
-	  circle->x, circle->y, circle->x, circle->y + circle->r);
+          circle->x, circle->y, circle->x, circle->y + circle->r);
 }
 
 static const gchar*
@@ -368,9 +367,9 @@ circle_factory_set_xy1(Object_t *obj, guint state, gint x, gint y)
 }
 
 static ObjectFactory_t circle_factory1 = {
-   NULL,			/* Object pointer */
-   NULL,			/* Finish func */
-   NULL,			/* Cancel func */
+   NULL,                        /* Object pointer */
+   NULL,                        /* Finish func */
+   NULL,                        /* Cancel func */
    circle_factory_create_object1,
    circle_factory_set_xy1
 };
@@ -394,9 +393,9 @@ circle_factory_set_xy2(Object_t *obj, guint state, gint x, gint y)
 }
 
 static ObjectFactory_t circle_factory2 = {
-   NULL,			/* Object pointer */
-   NULL,			/* Finish func */
-   NULL,			/* Cancel func */
+   NULL,                        /* Object pointer */
+   NULL,                        /* Finish func */
+   NULL,                        /* Cancel func */
    circle_factory_create_object2,
    circle_factory_set_xy2
 };

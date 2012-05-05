@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -26,11 +26,13 @@
 
 #include "core/gimp.h"
 #include "core/gimpdrawable-bucket-fill.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
 #include "core/gimppickable.h"
 
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpwidgets-utils.h"
 
 #include "display/gimpdisplay.h"
 
@@ -43,8 +45,11 @@
 
 /*  local function prototypes  */
 
+static gboolean gimp_bucket_fill_tool_initialize   (GimpTool              *tool,
+                                                    GimpDisplay           *display,
+                                                    GError               **error);
 static void   gimp_bucket_fill_tool_button_release (GimpTool              *tool,
-                                                    GimpCoords            *coords,
+                                                    const GimpCoords      *coords,
                                                     guint32                time,
                                                     GdkModifierType        state,
                                                     GimpButtonReleaseType  release_type,
@@ -55,7 +60,7 @@ static void   gimp_bucket_fill_tool_modifier_key   (GimpTool              *tool,
                                                     GdkModifierType        state,
                                                     GimpDisplay           *display);
 static void   gimp_bucket_fill_tool_cursor_update  (GimpTool              *tool,
-                                                    GimpCoords            *coords,
+                                                    const GimpCoords      *coords,
                                                     GdkModifierType        state,
                                                     GimpDisplay           *display);
 
@@ -91,6 +96,7 @@ gimp_bucket_fill_tool_class_init (GimpBucketFillToolClass *klass)
 {
   GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
 
+  tool_class->initialize     = gimp_bucket_fill_tool_initialize;
   tool_class->button_release = gimp_bucket_fill_tool_button_release;
   tool_class->modifier_key   = gimp_bucket_fill_tool_modifier_key;
   tool_class->cursor_update  = gimp_bucket_fill_tool_cursor_update;
@@ -111,22 +117,53 @@ gimp_bucket_fill_tool_init (GimpBucketFillTool *bucket_fill_tool)
                                          "context/context-pattern-select-set");
 }
 
+static gboolean
+gimp_bucket_fill_tool_initialize (GimpTool     *tool,
+                                  GimpDisplay  *display,
+                                  GError      **error)
+{
+  GimpImage    *image    = gimp_display_get_image (display);
+  GimpDrawable *drawable = gimp_image_get_active_drawable (image);
+
+  if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
+    {
+      return FALSE;
+    }
+
+  if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
+    {
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Cannot modify the pixels of layer groups."));
+      return FALSE;
+    }
+
+  if (gimp_item_is_content_locked (GIMP_ITEM (drawable)))
+    {
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("The active layer's pixels are locked."));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 static void
 gimp_bucket_fill_tool_button_release (GimpTool              *tool,
-                                      GimpCoords            *coords,
+                                      const GimpCoords      *coords,
                                       guint32                time,
                                       GdkModifierType        state,
                                       GimpButtonReleaseType  release_type,
                                       GimpDisplay           *display)
 {
   GimpBucketFillOptions *options = GIMP_BUCKET_FILL_TOOL_GET_OPTIONS (tool);
+  GimpImage             *image   = gimp_display_get_image (display);
 
   if ((release_type == GIMP_BUTTON_RELEASE_CLICK ||
        release_type == GIMP_BUTTON_RELEASE_NO_MOTION) &&
-      gimp_image_coords_in_active_pickable (display->image, coords,
+      gimp_image_coords_in_active_pickable (image, coords,
                                             options->sample_merged, TRUE))
     {
-      GimpDrawable *drawable = gimp_image_get_active_drawable (display->image);
+      GimpDrawable *drawable = gimp_image_get_active_drawable (image);
       GimpContext  *context  = GIMP_CONTEXT (options);
       gint          x, y;
       GError       *error    = NULL;
@@ -138,7 +175,7 @@ gimp_bucket_fill_tool_button_release (GimpTool              *tool,
         {
           gint off_x, off_y;
 
-          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+          gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
           x -= off_x;
           y -= off_y;
@@ -156,19 +193,21 @@ gimp_bucket_fill_tool_button_release (GimpTool              *tool,
                                        options->sample_merged,
                                        x, y, &error))
         {
-          gimp_message (display->image->gimp, G_OBJECT (display),
-                        GIMP_MESSAGE_WARNING,
-                        "%s", error->message);
+          gimp_message_literal (display->gimp, G_OBJECT (display),
+                                GIMP_MESSAGE_WARNING, error->message);
           g_clear_error (&error);
         }
       else
         {
-          gimp_image_flush (display->image);
+          gimp_image_flush (image);
         }
     }
 
   GIMP_TOOL_CLASS (parent_class)->button_release (tool, coords, time, state,
                                                   release_type, display);
+
+  tool->display  = NULL;
+  tool->drawable = NULL;
 }
 
 static void
@@ -180,7 +219,7 @@ gimp_bucket_fill_tool_modifier_key (GimpTool        *tool,
 {
   GimpBucketFillOptions *options = GIMP_BUCKET_FILL_TOOL_GET_OPTIONS (tool);
 
-  if (key == GDK_CONTROL_MASK)
+  if (key == gimp_get_toggle_behavior_mask ())
     {
       switch (options->fill_mode)
         {
@@ -203,30 +242,37 @@ gimp_bucket_fill_tool_modifier_key (GimpTool        *tool,
 }
 
 static void
-gimp_bucket_fill_tool_cursor_update (GimpTool        *tool,
-                                     GimpCoords      *coords,
-                                     GdkModifierType  state,
-                                     GimpDisplay     *display)
+gimp_bucket_fill_tool_cursor_update (GimpTool         *tool,
+                                     const GimpCoords *coords,
+                                     GdkModifierType   state,
+                                     GimpDisplay      *display)
 {
   GimpBucketFillOptions *options  = GIMP_BUCKET_FILL_TOOL_GET_OPTIONS (tool);
   GimpCursorModifier     modifier = GIMP_CURSOR_MODIFIER_BAD;
+  GimpImage             *image    = gimp_display_get_image (display);
 
-  if (gimp_image_coords_in_active_pickable (display->image, coords,
+  if (gimp_image_coords_in_active_pickable (image, coords,
                                             options->sample_merged, TRUE))
     {
-      switch (options->fill_mode)
+      GimpDrawable *drawable = gimp_image_get_active_drawable (image);
+
+      if (! gimp_viewable_get_children (GIMP_VIEWABLE (drawable)) &&
+          ! gimp_item_is_content_locked (GIMP_ITEM (drawable)))
         {
-        case GIMP_FG_BUCKET_FILL:
-          modifier = GIMP_CURSOR_MODIFIER_FOREGROUND;
-          break;
+          switch (options->fill_mode)
+            {
+            case GIMP_FG_BUCKET_FILL:
+              modifier = GIMP_CURSOR_MODIFIER_FOREGROUND;
+              break;
 
-        case GIMP_BG_BUCKET_FILL:
-          modifier = GIMP_CURSOR_MODIFIER_BACKGROUND;
-          break;
+            case GIMP_BG_BUCKET_FILL:
+              modifier = GIMP_CURSOR_MODIFIER_BACKGROUND;
+              break;
 
-        case GIMP_PATTERN_BUCKET_FILL:
-          modifier = GIMP_CURSOR_MODIFIER_PATTERN;
-          break;
+            case GIMP_PATTERN_BUCKET_FILL:
+              modifier = GIMP_CURSOR_MODIFIER_PATTERN;
+              break;
+            }
         }
     }
 

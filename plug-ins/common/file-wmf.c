@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* WMF loading file filter for GIMP
@@ -36,8 +35,9 @@
 #define LOAD_PROC               "file-wmf-load"
 #define LOAD_THUMB_PROC         "file-wmf-load-thumb"
 #define PLUG_IN_BINARY          "file-wmf"
+#define PLUG_IN_ROLE            "gimp-file-wmf"
 
-#define WMF_DEFAULT_RESOLUTION	90.0
+#define WMF_DEFAULT_RESOLUTION  90.0
 #define WMF_DEFAULT_SIZE        500
 #define WMF_PREVIEW_SIZE        128
 
@@ -95,7 +95,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" },
     { GIMP_PDB_FLOAT,  "resolution",   "Resolution to use for rendering the WMF (defaults to 72 dpi"     },
@@ -144,8 +144,8 @@ query (void)
                           "Dom Lachowicz <cinamod@hotmail.com>",
                           "Dom Lachowicz <cinamod@hotmail.com>",
                           "(c) 2003 - Version 0.3.0",
-			  NULL,
-			  NULL,
+                          NULL,
+                          NULL,
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (thumb_args),
                           G_N_ELEMENTS (thumb_return_vals),
@@ -340,7 +340,7 @@ load_wmf_size (const gchar *filename,
     success = FALSE;
 
   wmf_mem_close (API);
-  g_mapped_file_free (file);
+  g_mapped_file_unref (file);
 
   if (width < 1 || height < 1)
     {
@@ -497,7 +497,7 @@ load_dialog (const gchar *filename)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Render Windows Metafile"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Render Windows Metafile"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
@@ -515,14 +515,14 @@ load_dialog (const gchar *filename)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
   /*  The WMF preview  */
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -580,7 +580,7 @@ load_dialog (const gchar *filename)
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 1, 2, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
@@ -590,7 +590,7 @@ load_dialog (const gchar *filename)
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 1, 2, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
@@ -619,13 +619,13 @@ load_dialog (const gchar *filename)
   gimp_size_entry_set_resolution (size, 1, load_vals.resolution, FALSE);
 
   g_signal_connect (size, "value-changed",
-		    G_CALLBACK (load_dialog_size_callback),
+                    G_CALLBACK (load_dialog_size_callback),
                     NULL);
 
   /*  Scale ratio  */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 1, 2, 2, 4,
-		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+                    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
 
   table2 = gtk_table_new (2, 2, FALSE);
@@ -645,14 +645,14 @@ load_dialog (const gchar *filename)
   gtk_widget_show (spinbutton);
 
   g_signal_connect (xadj, "value-changed",
-		    G_CALLBACK (load_dialog_ratio_callback),
-		    NULL);
+                    G_CALLBACK (load_dialog_ratio_callback),
+                    NULL);
 
   label = gtk_label_new_with_mnemonic (_("_X ratio:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
-		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+                    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   spinbutton =
@@ -667,14 +667,14 @@ load_dialog (const gchar *filename)
   gtk_widget_show (spinbutton);
 
   g_signal_connect (yadj, "value-changed",
-		    G_CALLBACK (load_dialog_ratio_callback),
-		    NULL);
+                    G_CALLBACK (load_dialog_ratio_callback),
+                    NULL);
 
   label = gtk_label_new_with_mnemonic (_("_Y ratio:"));
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-		    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+                    GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
   /*  the constrain ratio chainbutton  */
@@ -871,7 +871,7 @@ wmf_get_pixbuf (const gchar *filename,
       wmf_api_destroy (API);
     }
 
-  g_mapped_file_free (file);
+  g_mapped_file_unref (file);
 
   return pixels;
 }
@@ -956,7 +956,7 @@ wmf_load_file (const gchar  *filename,
       wmf_api_destroy (API);
     }
 
-  g_mapped_file_free (file);
+  g_mapped_file_unref (file);
 
   /* FIXME: improve error message */
   g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
@@ -974,10 +974,10 @@ load_image (const gchar  *filename,
             GError      **error)
 {
   gint32        image;
-  gint32	layer;
+  gint32        layer;
   GimpDrawable *drawable;
   guchar       *pixels;
-  GimpPixelRgn	pixel_rgn;
+  GimpPixelRgn  pixel_rgn;
   guint         width, height;
   guint         rowstride;
   guint         count = 0;
@@ -1038,7 +1038,7 @@ load_image (const gchar  *filename,
 
   /* Tell GIMP to display the image.
    */
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
   gimp_drawable_flush (drawable);
 
   return image;

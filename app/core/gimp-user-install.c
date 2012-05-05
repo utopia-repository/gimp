@@ -4,9 +4,9 @@
  * gimp-user-install.c
  * Copyright (C) 2000-2008 Michael Natterer and Sven Neumann
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* This file contains functions to help migrate the settings from a
+ * previous GIMP version to be used with the current (newer) version.
  */
 
 #include "config.h"
@@ -47,6 +50,7 @@
 #include "config/gimprc.h"
 
 #include "gimp-templates.h"
+#include "gimp-tags.h"
 #include "gimp-user-install.h"
 
 #include "gimp-intl.h"
@@ -82,10 +86,12 @@ gimp_user_install_items[] =
   { "gtkrc",           USER_INSTALL_COPY  },
   { "menurc",          USER_INSTALL_COPY  },
   { "brushes",         USER_INSTALL_MKDIR },
+  { "dynamics",        USER_INSTALL_MKDIR },
   { "fonts",           USER_INSTALL_MKDIR },
   { "gradients",       USER_INSTALL_MKDIR },
   { "palettes",        USER_INSTALL_MKDIR },
   { "patterns",        USER_INSTALL_MKDIR },
+  { "tool-presets",    USER_INSTALL_MKDIR },
   { "plug-ins",        USER_INSTALL_MKDIR },
   { "modules",         USER_INSTALL_MKDIR },
   { "interpreters",    USER_INSTALL_MKDIR },
@@ -168,9 +174,10 @@ gimp_user_install_run (GimpUserInstall *install)
     return FALSE;
 
   if (install->migrate)
-    return user_install_migrate_files (install);
-  else
-    return user_install_create_files (install);
+    if (! user_install_migrate_files (install))
+      return FALSE;
+
+  return user_install_create_files (install);
 }
 
 void
@@ -212,7 +219,7 @@ gimp_user_install_detect_old (GimpUserInstall *install)
     {
       gint i;
 
-      for (i = 4; i >= 0; i -= 2)
+      for (i = (GIMP_MINOR_VERSION & ~1); i >= 0; i -= 2)
         {
           /*  we assume that GIMP_APP_VERSION is in the form '2.x'  */
           g_snprintf (version + 2, 2, "%d", i);
@@ -437,9 +444,9 @@ user_install_dir_copy (GimpUserInstall *install,
 static gboolean
 user_install_create_files (GimpUserInstall *install)
 {
-  gchar     dest[1024];
-  gchar     source[1024];
-  gint      i;
+  gchar dest[1024];
+  gchar source[1024];
+  gint  i;
 
   for (i = 0; i < G_N_ELEMENTS (gimp_user_install_items); i++)
     {
@@ -447,6 +454,9 @@ user_install_create_files (GimpUserInstall *install)
                   gimp_directory (),
                   G_DIR_SEPARATOR,
                   gimp_user_install_items[i].name);
+
+      if (g_file_test (dest, G_FILE_TEST_EXISTS))
+        continue;
 
       switch (gimp_user_install_items[i].action)
         {
@@ -463,6 +473,19 @@ user_install_create_files (GimpUserInstall *install)
           if (! user_install_file_copy (install, source, dest))
             return FALSE;
           break;
+        }
+    }
+
+  g_snprintf (dest, sizeof (dest), "%s%c%s",
+              gimp_directory (), G_DIR_SEPARATOR, "tags.xml");
+
+  if (! g_file_test (dest, G_FILE_TEST_IS_REGULAR))
+    {
+      /* if there was no tags.xml, install it with default tag set.
+       */
+      if (! gimp_tags_user_install ())
+        {
+          return FALSE;
         }
     }
 

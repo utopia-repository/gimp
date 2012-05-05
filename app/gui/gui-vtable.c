@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #ifdef GDK_WINDOWING_X11
@@ -65,12 +65,12 @@
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpsinglewindowstrategy.h"
+#include "display/gimpmultiwindowstrategy.h"
 
 #include "actions/plug-in-actions.h"
 
 #include "menus/menus.h"
-
-#include "dialogs/dialogs.h"
 
 #include "gui-message.h"
 #include "gui-vtable.h"
@@ -79,59 +79,60 @@
 
 /*  local function prototypes  */
 
-static void           gui_ungrab               (Gimp                *gimp);
+static void           gui_ungrab                (Gimp                *gimp);
 
-static void           gui_threads_enter        (Gimp                *gimp);
-static void           gui_threads_leave        (Gimp                *gimp);
-static void           gui_set_busy             (Gimp                *gimp);
-static void           gui_unset_busy           (Gimp                *gimp);
-static void           gui_help                 (Gimp                *gimp,
-                                                GimpProgress        *progress,
-                                                const gchar         *help_domain,
-                                                const gchar         *help_id);
-static const gchar  * gui_get_program_class    (Gimp                *gimp);
-static gchar        * gui_get_display_name     (Gimp                *gimp,
-                                                gint                 display_ID,
-                                                gint                *monitor_number);
-static guint32        gui_get_user_time        (Gimp                *gimp);
-static const gchar  * gui_get_theme_dir        (Gimp                *gimp);
-static GimpObject   * gui_get_empty_display    (Gimp                *gimp);
-static GimpObject   * gui_display_get_by_ID    (Gimp                *gimp,
-                                                gint                 ID);
-static gint           gui_display_get_ID       (GimpObject          *display);
-static guint32        gui_display_get_window   (GimpObject          *display);
-static GimpObject   * gui_display_create       (Gimp                *gimp,
-                                                GimpImage           *image,
-                                                GimpUnit             unit,
-                                                gdouble              scale);
-static void           gui_display_delete       (GimpObject          *display);
-static void           gui_displays_reconnect   (Gimp                *gimp,
-                                                GimpImage           *old_image,
-                                                GimpImage           *new_image);
-static GimpProgress * gui_new_progress         (Gimp                *gimp,
-                                                GimpObject          *display);
-static void           gui_free_progress        (Gimp                *gimp,
-                                                GimpProgress        *progress);
-static gboolean       gui_pdb_dialog_new       (Gimp                *gimp,
-                                                GimpContext         *context,
-                                                GimpProgress        *progress,
-                                                GimpContainer       *container,
-                                                const gchar         *title,
-                                                const gchar         *callback_name,
-                                                const gchar         *object_name,
-                                                va_list              args);
-static gboolean       gui_pdb_dialog_set       (Gimp                *gimp,
-                                                GimpContainer       *container,
-                                                const gchar         *callback_name,
-                                                const gchar         *object_name,
-                                                va_list              args);
-static gboolean       gui_pdb_dialog_close     (Gimp                *gimp,
-                                                GimpContainer       *container,
-                                                const gchar         *callback_name);
-static gboolean       gui_recent_list_add_uri  (Gimp                *gimp,
-                                                const gchar         *uri,
-                                                const gchar         *mime_type);
-static void           gui_recent_list_load     (Gimp                *gimp);
+static void           gui_threads_enter         (Gimp                *gimp);
+static void           gui_threads_leave         (Gimp                *gimp);
+static void           gui_set_busy              (Gimp                *gimp);
+static void           gui_unset_busy            (Gimp                *gimp);
+static void           gui_help                  (Gimp                *gimp,
+                                                 GimpProgress        *progress,
+                                                 const gchar         *help_domain,
+                                                 const gchar         *help_id);
+static const gchar  * gui_get_program_class     (Gimp                *gimp);
+static gchar        * gui_get_display_name      (Gimp                *gimp,
+                                                 gint                 display_ID,
+                                                 gint                *monitor_number);
+static guint32        gui_get_user_time         (Gimp                *gimp);
+static const gchar  * gui_get_theme_dir         (Gimp                *gimp);
+static GimpObject   * gui_get_window_strategy   (Gimp                *gimp);
+static GimpObject   * gui_get_empty_display     (Gimp                *gimp);
+static GimpObject   * gui_display_get_by_ID     (Gimp                *gimp,
+                                                 gint                 ID);
+static gint           gui_display_get_ID        (GimpObject          *display);
+static guint32        gui_display_get_window_id (GimpObject          *display);
+static GimpObject   * gui_display_create        (Gimp                *gimp,
+                                                 GimpImage           *image,
+                                                 GimpUnit             unit,
+                                                 gdouble              scale);
+static void           gui_display_delete        (GimpObject          *display);
+static void           gui_displays_reconnect    (Gimp                *gimp,
+                                                 GimpImage           *old_image,
+                                                 GimpImage           *new_image);
+static GimpProgress * gui_new_progress          (Gimp                *gimp,
+                                                 GimpObject          *display);
+static void           gui_free_progress         (Gimp                *gimp,
+                                                 GimpProgress        *progress);
+static gboolean       gui_pdb_dialog_new        (Gimp                *gimp,
+                                                 GimpContext         *context,
+                                                 GimpProgress        *progress,
+                                                 GimpContainer       *container,
+                                                 const gchar         *title,
+                                                 const gchar         *callback_name,
+                                                 const gchar         *object_name,
+                                                 va_list              args);
+static gboolean       gui_pdb_dialog_set        (Gimp                *gimp,
+                                                 GimpContainer       *container,
+                                                 const gchar         *callback_name,
+                                                 const gchar         *object_name,
+                                                 va_list              args);
+static gboolean       gui_pdb_dialog_close      (Gimp                *gimp,
+                                                 GimpContainer       *container,
+                                                 const gchar         *callback_name);
+static gboolean       gui_recent_list_add_uri   (Gimp                *gimp,
+                                                 const gchar         *uri,
+                                                 const gchar         *mime_type);
+static void           gui_recent_list_load      (Gimp                *gimp);
 
 
 /*  public functions  */
@@ -141,31 +142,32 @@ gui_vtable_init (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  gimp->gui.ungrab              = gui_ungrab;
-  gimp->gui.threads_enter       = gui_threads_enter;
-  gimp->gui.threads_leave       = gui_threads_leave;
-  gimp->gui.set_busy            = gui_set_busy;
-  gimp->gui.unset_busy          = gui_unset_busy;
-  gimp->gui.show_message        = gui_message;
-  gimp->gui.help                = gui_help;
-  gimp->gui.get_program_class   = gui_get_program_class;
-  gimp->gui.get_display_name    = gui_get_display_name;
-  gimp->gui.get_user_time       = gui_get_user_time;
-  gimp->gui.get_theme_dir       = gui_get_theme_dir;
-  gimp->gui.get_empty_display   = gui_get_empty_display;
-  gimp->gui.display_get_by_id   = gui_display_get_by_ID;
-  gimp->gui.display_get_id      = gui_display_get_ID;
-  gimp->gui.display_get_window  = gui_display_get_window;
-  gimp->gui.display_create      = gui_display_create;
-  gimp->gui.display_delete      = gui_display_delete;
-  gimp->gui.displays_reconnect  = gui_displays_reconnect;
-  gimp->gui.progress_new        = gui_new_progress;
-  gimp->gui.progress_free       = gui_free_progress;
-  gimp->gui.pdb_dialog_new      = gui_pdb_dialog_new;
-  gimp->gui.pdb_dialog_set      = gui_pdb_dialog_set;
-  gimp->gui.pdb_dialog_close    = gui_pdb_dialog_close;
-  gimp->gui.recent_list_add_uri = gui_recent_list_add_uri;
-  gimp->gui.recent_list_load    = gui_recent_list_load;
+  gimp->gui.ungrab                = gui_ungrab;
+  gimp->gui.threads_enter         = gui_threads_enter;
+  gimp->gui.threads_leave         = gui_threads_leave;
+  gimp->gui.set_busy              = gui_set_busy;
+  gimp->gui.unset_busy            = gui_unset_busy;
+  gimp->gui.show_message          = gui_message;
+  gimp->gui.help                  = gui_help;
+  gimp->gui.get_program_class     = gui_get_program_class;
+  gimp->gui.get_display_name      = gui_get_display_name;
+  gimp->gui.get_user_time         = gui_get_user_time;
+  gimp->gui.get_theme_dir         = gui_get_theme_dir;
+  gimp->gui.get_window_strategy   = gui_get_window_strategy;
+  gimp->gui.get_empty_display     = gui_get_empty_display;
+  gimp->gui.display_get_by_id     = gui_display_get_by_ID;
+  gimp->gui.display_get_id        = gui_display_get_ID;
+  gimp->gui.display_get_window_id = gui_display_get_window_id;
+  gimp->gui.display_create        = gui_display_create;
+  gimp->gui.display_delete        = gui_display_delete;
+  gimp->gui.displays_reconnect    = gui_displays_reconnect;
+  gimp->gui.progress_new          = gui_new_progress;
+  gimp->gui.progress_free         = gui_free_progress;
+  gimp->gui.pdb_dialog_new        = gui_pdb_dialog_new;
+  gimp->gui.pdb_dialog_set        = gui_pdb_dialog_set;
+  gimp->gui.pdb_dialog_close      = gui_pdb_dialog_close;
+  gimp->gui.recent_list_add_uri   = gui_recent_list_add_uri;
+  gimp->gui.recent_list_load      = gui_recent_list_load;
 }
 
 
@@ -199,7 +201,7 @@ static void
 gui_set_busy (Gimp *gimp)
 {
   gimp_displays_set_busy (gimp);
-  gimp_dialog_factories_set_busy ();
+  gimp_dialog_factory_set_busy (gimp_dialog_factory_get_singleton ());
 
   gdk_flush ();
 }
@@ -208,7 +210,7 @@ static void
 gui_unset_busy (Gimp *gimp)
 {
   gimp_displays_unset_busy (gimp);
-  gimp_dialog_factories_unset_busy ();
+  gimp_dialog_factory_unset_busy (gimp_dialog_factory_get_singleton ());
 
   gdk_flush ();
 }
@@ -242,9 +244,11 @@ gui_get_display_name (Gimp *gimp,
 
   if (display)
     {
-      screen  = gtk_widget_get_screen (display->shell);
-      monitor = gdk_screen_get_monitor_at_window (screen,
-                                                  display->shell->window);
+      GimpDisplayShell *shell  = gimp_display_get_shell (display);
+      GdkWindow        *window = gtk_widget_get_window (GTK_WIDGET (shell));
+
+      screen  = gtk_widget_get_screen (GTK_WIDGET (shell));
+      monitor = gdk_screen_get_monitor_at_window (screen, window);
     }
   else
     {
@@ -279,15 +283,24 @@ gui_get_theme_dir (Gimp *gimp)
 }
 
 static GimpObject *
+gui_get_window_strategy (Gimp *gimp)
+{
+  if (GIMP_GUI_CONFIG (gimp->config)->single_window_mode)
+    return gimp_single_window_strategy_get_singleton ();
+  else
+    return gimp_multi_window_strategy_get_singleton ();
+}
+
+static GimpObject *
 gui_get_empty_display (Gimp *gimp)
 {
   GimpObject *display = NULL;
 
-  if (gimp_container_num_children (gimp->displays) == 1)
+  if (gimp_container_get_n_children (gimp->displays) == 1)
     {
       display = gimp_container_get_first_child (gimp->displays);
 
-      if (GIMP_DISPLAY (display)->image)
+      if (gimp_display_get_image (GIMP_DISPLAY (display)))
         {
           /* The display was not empty */
           display = NULL;
@@ -311,12 +324,18 @@ gui_display_get_ID (GimpObject *display)
 }
 
 static guint32
-gui_display_get_window (GimpObject *display)
+gui_display_get_window_id (GimpObject *display)
 {
-  GimpDisplay *disp = GIMP_DISPLAY (display);
+  GimpDisplay      *disp  = GIMP_DISPLAY (display);
+  GimpDisplayShell *shell = gimp_display_get_shell (disp);
 
-  if (disp->shell)
-    return (guint32) gimp_window_get_native (GTK_WINDOW (disp->shell));
+  if (shell)
+    {
+      GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+
+      if (GTK_IS_WINDOW (toplevel))
+        return gimp_window_get_native_id (GTK_WINDOW (toplevel));
+    }
 
   return 0;
 }
@@ -343,7 +362,7 @@ gui_display_create (Gimp      *gimp,
       display = gimp_display_new (gimp, image, unit, scale,
                                   global_menu_factory,
                                   image_managers->data,
-                                  global_display_factory);
+                                  gimp_dialog_factory_get_singleton ());
    }
 
   if (gimp_context_get_display (context) == display)
@@ -355,9 +374,6 @@ gui_display_create (Gimp      *gimp,
     {
       gimp_context_set_display (context, display);
     }
-
-  gimp_ui_manager_update (GIMP_DISPLAY_SHELL (display->shell)->menubar_manager,
-                          display);
 
   return GIMP_OBJECT (display);
 }
@@ -420,31 +436,31 @@ gui_pdb_dialog_new (Gimp          *gimp,
   const gchar *dialog_role = NULL;
   const gchar *help_id     = NULL;
 
-  if (container->children_type == GIMP_TYPE_BRUSH)
+  if (gimp_container_get_children_type (container) == GIMP_TYPE_BRUSH)
     {
       dialog_type = GIMP_TYPE_BRUSH_SELECT;
       dialog_role = "gimp-brush-selection";
       help_id     = GIMP_HELP_BRUSH_DIALOG;
     }
-  else if (container->children_type == GIMP_TYPE_FONT)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_FONT)
     {
       dialog_type = GIMP_TYPE_FONT_SELECT;
       dialog_role = "gimp-font-selection";
       help_id     = GIMP_HELP_FONT_DIALOG;
     }
-  else if (container->children_type == GIMP_TYPE_GRADIENT)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_GRADIENT)
     {
       dialog_type = GIMP_TYPE_GRADIENT_SELECT;
       dialog_role = "gimp-gradient-selection";
       help_id     = GIMP_HELP_GRADIENT_DIALOG;
     }
-  else if (container->children_type == GIMP_TYPE_PALETTE)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_PALETTE)
     {
       dialog_type = GIMP_TYPE_PALETTE_SELECT;
       dialog_role = "gimp-palette-selection";
       help_id     = GIMP_HELP_PALETTE_DIALOG;
     }
-  else if (container->children_type == GIMP_TYPE_PATTERN)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_PATTERN)
     {
       dialog_type = GIMP_TYPE_PATTERN_SELECT;
       dialog_role = "gimp-pattern-selection";
@@ -459,7 +475,8 @@ gui_pdb_dialog_new (Gimp          *gimp,
         object = gimp_container_get_child_by_name (container, object_name);
 
       if (! object)
-        object = gimp_context_get_by_type (context, container->children_type);
+        object = gimp_context_get_by_type (context,
+                                           gimp_container_get_children_type (container));
 
       if (object)
         {
@@ -475,7 +492,7 @@ gui_pdb_dialog_new (Gimp          *gimp,
                                            "help-id",        help_id,
                                            "pdb",            gimp->pdb,
                                            "context",        context,
-                                           "select-type",    container->children_type,
+                                           "select-type",    gimp_container_get_children_type (container),
                                            "initial-object", object,
                                            "callback-name",  callback_name,
                                            "menu-factory",   global_menu_factory,
@@ -495,10 +512,10 @@ gui_pdb_dialog_new (Gimp          *gimp,
 
           if (progress)
             {
-              guint32 window = gimp_progress_get_window (progress);
+              guint32 window_id = gimp_progress_get_window_id (progress);
 
-              if (window)
-                gimp_window_set_transient_for (GTK_WINDOW (dialog), window);
+              if (window_id)
+                gimp_window_set_transient_for (GTK_WINDOW (dialog), window_id);
             }
 
           gtk_widget_show (dialog);
@@ -532,15 +549,15 @@ gui_pdb_dialog_set (Gimp          *gimp,
 {
   GimpPdbDialogClass *klass = NULL;
 
-  if (container->children_type == GIMP_TYPE_BRUSH)
+  if (gimp_container_get_children_type (container) == GIMP_TYPE_BRUSH)
     klass = g_type_class_peek (GIMP_TYPE_BRUSH_SELECT);
-  else if (container->children_type == GIMP_TYPE_FONT)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_FONT)
     klass = g_type_class_peek (GIMP_TYPE_FONT_SELECT);
-  else if (container->children_type == GIMP_TYPE_GRADIENT)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_GRADIENT)
     klass = g_type_class_peek (GIMP_TYPE_GRADIENT_SELECT);
-  else if (container->children_type == GIMP_TYPE_PALETTE)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_PALETTE)
     klass = g_type_class_peek (GIMP_TYPE_PALETTE_SELECT);
-  else if (container->children_type == GIMP_TYPE_PATTERN)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_PATTERN)
     klass = g_type_class_peek (GIMP_TYPE_PATTERN_SELECT);
 
   if (klass)
@@ -549,7 +566,7 @@ gui_pdb_dialog_set (Gimp          *gimp,
 
       dialog = gimp_pdb_dialog_get_by_callback (klass, callback_name);
 
-      if (dialog && dialog->select_type == container->children_type)
+      if (dialog && dialog->select_type == gimp_container_get_children_type (container))
         {
           GimpObject *object;
 
@@ -582,15 +599,15 @@ gui_pdb_dialog_close (Gimp          *gimp,
 {
   GimpPdbDialogClass *klass = NULL;
 
-  if (container->children_type == GIMP_TYPE_BRUSH)
+  if (gimp_container_get_children_type (container) == GIMP_TYPE_BRUSH)
     klass = g_type_class_peek (GIMP_TYPE_BRUSH_SELECT);
-  else if (container->children_type == GIMP_TYPE_FONT)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_FONT)
     klass = g_type_class_peek (GIMP_TYPE_FONT_SELECT);
-  else if (container->children_type == GIMP_TYPE_GRADIENT)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_GRADIENT)
     klass = g_type_class_peek (GIMP_TYPE_GRADIENT_SELECT);
-  else if (container->children_type == GIMP_TYPE_PALETTE)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_PALETTE)
     klass = g_type_class_peek (GIMP_TYPE_PALETTE_SELECT);
-  else if (container->children_type == GIMP_TYPE_PATTERN)
+  else if (gimp_container_get_children_type (container) == GIMP_TYPE_PATTERN)
     klass = g_type_class_peek (GIMP_TYPE_PATTERN_SELECT);
 
   if (klass)
@@ -599,7 +616,7 @@ gui_pdb_dialog_close (Gimp          *gimp,
 
       dialog = gimp_pdb_dialog_get_by_callback (klass, callback_name);
 
-      if (dialog && dialog->select_type == container->children_type)
+      if (dialog && dialog->select_type == gimp_container_get_children_type (container))
         {
           gtk_widget_destroy (GTK_WIDGET (dialog));
           return TRUE;

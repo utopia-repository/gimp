@@ -2,11 +2,10 @@
 gimpconfig-serialize
 
 <!-- ##### SECTION Short_Description ##### -->
-Serializing for libgimpconfig.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Serializing interface for libgimpconfig.
 
 </para>
 

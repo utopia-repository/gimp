@@ -3,9 +3,9 @@
  *
  * gimppluginmanager-restore.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,9 +31,9 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
-#include "core/gimpcontext.h"
 
 #include "pdb/gimppdb.h"
+#include "pdb/gimppdbcontext.h"
 
 #include "gimpinterpreterdb.h"
 #include "gimpplugindef.h"
@@ -95,6 +94,9 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
 
   gimp = manager->gimp;
 
+  /* need a GimpPDBContext for calling gimp_plug_in_manager_run_foo() */
+  context = gimp_pdb_context_new (gimp, context, TRUE);
+
   /* search for binaries in the plug-in directory path */
   gimp_plug_in_manager_search (manager, status_callback);
 
@@ -129,7 +131,8 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
 
       if (! plug_in_rc_write (manager->plug_in_defs, pluginrc, &error))
         {
-          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+          gimp_message_literal (gimp,
+				NULL, GIMP_MESSAGE_ERROR, error->message);
           g_clear_error (&error);
         }
 
@@ -164,8 +167,7 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
     }
 
   /* we're done with the plug-in-defs */
-  g_slist_foreach (manager->plug_in_defs, (GFunc) g_object_unref, NULL);
-  g_slist_free (manager->plug_in_defs);
+  g_slist_free_full (manager->plug_in_defs, (GDestroyNotify) g_object_unref);
   manager->plug_in_defs = NULL;
 
   /* bind plug-in text domains  */
@@ -177,15 +179,20 @@ gimp_plug_in_manager_restore (GimpPlugInManager  *manager,
       gimp_plug_in_manager_add_to_db (manager, context, list->data);
     }
 
-  /* sort the load and save procedures  */
+  /* sort the load, save and export procedures  */
   manager->load_procs =
     g_slist_sort_with_data (manager->load_procs,
                             gimp_plug_in_manager_file_proc_compare, manager);
   manager->save_procs =
     g_slist_sort_with_data (manager->save_procs,
                             gimp_plug_in_manager_file_proc_compare, manager);
+  manager->export_procs =
+    g_slist_sort_with_data (manager->export_procs,
+                            gimp_plug_in_manager_file_proc_compare, manager);
 
   gimp_plug_in_manager_run_extensions (manager, context, status_callback);
+
+  g_object_unref (context);
 }
 
 
@@ -221,8 +228,14 @@ gimp_plug_in_manager_search (GimpPlugInManager  *manager,
 
   status_callback (_("Searching Plug-Ins"), "", 0.0);
 
-  path = gimp_config_path_expand (manager->gimp->config->plug_in_path,
-                                  TRUE, NULL);
+  /* Give automatic tests a chance to use plug-ins from the build
+   * dir
+   */
+  path = g_strdup(g_getenv("GIMP_TESTING_PLUGINDIRS"));
+
+  if (! path) 
+    path = gimp_config_path_expand (manager->gimp->config->plug_in_path,
+                                    TRUE, NULL);
 
   gimp_datafiles_read_directories (path,
                                    G_FILE_TEST_IS_EXECUTABLE,
@@ -288,8 +301,8 @@ gimp_plug_in_manager_read_pluginrc (GimpPlugInManager  *manager,
   else if (error)
     {
       if (error->code != GIMP_CONFIG_ERROR_OPEN_ENOENT)
-        gimp_message (manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                      "%s", error->message);
+        gimp_message_literal (manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+			      error->message);
 
       g_clear_error (&error);
     }
@@ -435,9 +448,9 @@ gimp_plug_in_manager_run_extensions (GimpPlugInManager  *manager,
           GError              *error = NULL;
 
           if (gimp->be_verbose)
-            g_print ("Starting extension: '%s'\n", GIMP_OBJECT (proc)->name);
+            g_print ("Starting extension: '%s'\n", gimp_object_get_name (proc));
 
-          status_callback (NULL, GIMP_OBJECT (proc)->name,
+          status_callback (NULL, gimp_object_get_name (proc),
                            (gdouble) nth / (gdouble) n_extensions);
 
           args = g_value_array_new (0);
@@ -450,8 +463,8 @@ gimp_plug_in_manager_run_extensions (GimpPlugInManager  *manager,
 
           if (error)
             {
-              gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
-                            "%s", error->message);
+              gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR,
+				    error->message);
               g_clear_error (&error);
             }
         }
@@ -486,6 +499,45 @@ gimp_plug_in_manager_bind_text_domains (GimpPlugInManager *manager)
   g_strfreev (locale_paths);
 }
 
+/**
+ * gimp_plug_in_manager_ignore_plugin_basename:
+ * @basename: Basename to test with
+ *
+ * Checks the environment variable
+ * GIMP_TESTING_PLUGINDIRS_BASENAME_IGNORES for file basenames.
+ *
+ * Returns: %TRUE if @basename was in GIMP_TESTING_PLUGINDIRS_BASENAME_IGNORES
+ **/
+static gboolean
+gimp_plug_in_manager_ignore_plugin_basename (const gchar *plugin_basename)
+{
+  const gchar *ignore_basenames_string;
+  GList       *ignore_basenames;
+  GList       *iter;
+  gboolean     ignore = FALSE;
+
+  ignore_basenames_string = g_getenv("GIMP_TESTING_PLUGINDIRS_BASENAME_IGNORES");
+  ignore_basenames        = gimp_path_parse (ignore_basenames_string,
+                                             256 /*max_paths*/,
+                                             FALSE /*check*/,
+                                             NULL /*check_failed*/);
+
+  for (iter = ignore_basenames; iter; iter = g_list_next (iter))
+    {
+      const gchar *ignore_basename = iter->data;
+
+      if (g_ascii_strcasecmp (ignore_basename, plugin_basename) == 0)
+        {
+          ignore = TRUE;
+          break;
+        }
+    }
+  
+  gimp_path_free (ignore_basenames);
+
+  return ignore;
+}
+
 static void
 gimp_plug_in_manager_add_from_file (const GimpDatafileData *file_data,
                                     gpointer                data)
@@ -493,6 +545,14 @@ gimp_plug_in_manager_add_from_file (const GimpDatafileData *file_data,
   GimpPlugInManager *manager = data;
   GimpPlugInDef     *plug_in_def;
   GSList            *list;
+
+  /* When we scan build dirs for plug-ins, there will be some
+   * executable files that are not plug-ins that we want to ignore,
+   * for example plug-ins/common/mkgen.pl if
+   * GIMP_TESTING_PLUGINDIRS=plug-ins/common
+   */
+  if (gimp_plug_in_manager_ignore_plugin_basename (file_data->basename))
+      return;
 
   for (list = manager->plug_in_defs; list; list = list->next)
     {
@@ -630,7 +690,7 @@ gimp_plug_in_manager_add_to_db (GimpPlugInManager   *manager,
             gimp_pdb_execute_procedure_by_name (manager->gimp->pdb,
                                                 context, NULL, &error,
                                                 "gimp-register-save-handler",
-                                                G_TYPE_STRING, GIMP_OBJECT (proc)->name,
+                                                G_TYPE_STRING, gimp_object_get_name (proc),
                                                 G_TYPE_STRING, proc->extensions,
                                                 G_TYPE_STRING, proc->prefixes,
                                                 G_TYPE_NONE);
@@ -641,7 +701,7 @@ gimp_plug_in_manager_add_to_db (GimpPlugInManager   *manager,
             gimp_pdb_execute_procedure_by_name (manager->gimp->pdb,
                                                 context, NULL, &error,
                                                 "gimp-register-magic-load-handler",
-                                                G_TYPE_STRING, GIMP_OBJECT (proc)->name,
+                                                G_TYPE_STRING, gimp_object_get_name (proc),
                                                 G_TYPE_STRING, proc->extensions,
                                                 G_TYPE_STRING, proc->prefixes,
                                                 G_TYPE_STRING, proc->magics,
@@ -652,8 +712,8 @@ gimp_plug_in_manager_add_to_db (GimpPlugInManager   *manager,
 
       if (error)
         {
-          gimp_message (manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "%s", error->message);
+          gimp_message_literal (manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+			        error->message);
           g_error_free (error);
         }
     }

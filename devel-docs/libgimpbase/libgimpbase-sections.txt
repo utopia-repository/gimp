@@ -4,6 +4,8 @@ GimpEnumDesc
 GimpFlagsDesc
 gimp_type_set_translation_domain
 gimp_type_get_translation_domain
+gimp_type_set_translation_context
+gimp_type_get_translation_context
 gimp_enum_set_value_descriptions
 gimp_enum_get_value_descriptions
 gimp_flags_get_value_descriptions
@@ -41,6 +43,7 @@ GimpRunMode
 GimpSizeType
 GimpStackTraceMode
 GimpTextDirection
+GimpTextHintStyle
 GimpTextJustification
 GimpTransferMode
 GimpTransformDirection
@@ -77,6 +80,7 @@ GIMP_TYPE_RUN_MODE
 GIMP_TYPE_SIZE_TYPE
 GIMP_TYPE_STACK_TRACE_MODE
 GIMP_TYPE_TEXT_DIRECTION
+GIMP_TYPE_TEXT_HINT_STYLE
 GIMP_TYPE_TEXT_JUSTIFICATION
 GIMP_TYPE_TRANSFER_MODE
 GIMP_TYPE_TRANSFORM_DIRECTION
@@ -112,6 +116,7 @@ gimp_run_mode_get_type
 gimp_size_type_get_type
 gimp_stack_trace_mode_get_type
 gimp_text_direction_get_type
+gimp_text_hint_style_get_type
 gimp_text_justification_get_type
 gimp_transfer_mode_get_type
 gimp_transform_direction_get_type
@@ -180,6 +185,7 @@ gimp_param_memsize_get_type
 <SECTION>
 <FILE>gimprectangle</FILE>
 gimp_rectangle_intersect
+gimp_rectangle_union
 </SECTION>
 
 <SECTION>
@@ -226,6 +232,7 @@ gimp_param_parasite_get_type
 <SECTION>
 <FILE>gimpparasiteio</FILE>
 GIMP_PIXPIPE_MAXDIM
+GimpPixPipeParams
 gimp_pixpipe_params_init
 gimp_pixpipe_params_parse
 gimp_pixpipe_params_build
@@ -252,6 +259,10 @@ gimp_unit_get_symbol
 gimp_unit_get_abbreviation
 gimp_unit_get_singular
 gimp_unit_get_plural
+gimp_unit_format_string 
+gimp_pixels_to_units
+gimp_units_to_pixels
+gimp_units_to_points
 GIMP_TYPE_UNIT
 GIMP_TYPE_PARAM_UNIT
 GIMP_IS_PARAM_SPEC_UNIT

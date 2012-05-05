@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "tools-types.h"
@@ -31,7 +31,9 @@
 
 #include "widgets/gimpwidgets-utils.h"
 
+#include "display/gimpcanvashandle.h"
 #include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell-items.h"
 
 #include "gimpsourcetool.h"
 #include "gimptoolcontrol.h"
@@ -39,42 +41,43 @@
 #include "gimp-intl.h"
 
 
-#define TARGET_SIZE  15
+static gboolean      gimp_source_tool_has_display   (GimpTool            *tool,
+                                                     GimpDisplay         *display);
+static GimpDisplay * gimp_source_tool_has_image     (GimpTool            *tool,
+                                                     GimpImage           *image);
+static void          gimp_source_tool_control       (GimpTool            *tool,
+                                                     GimpToolAction       action,
+                                                     GimpDisplay         *display);
+static void          gimp_source_tool_button_press  (GimpTool            *tool,
+                                                     const GimpCoords    *coords,
+                                                     guint32              time,
+                                                     GdkModifierType      state,
+                                                     GimpButtonPressType  press_type,
+                                                     GimpDisplay         *display);
+static void          gimp_source_tool_motion        (GimpTool            *tool,
+                                                     const GimpCoords    *coords,
+                                                     guint32              time,
+                                                     GdkModifierType      state,
+                                                     GimpDisplay         *display);
+static void          gimp_source_tool_cursor_update (GimpTool            *tool,
+                                                     const GimpCoords    *coords,
+                                                     GdkModifierType      state,
+                                                     GimpDisplay         *display);
+static void          gimp_source_tool_modifier_key  (GimpTool            *tool,
+                                                     GdkModifierType      key,
+                                                     gboolean             press,
+                                                     GdkModifierType      state,
+                                                     GimpDisplay         *display);
+static void          gimp_source_tool_oper_update   (GimpTool            *tool,
+                                                     const GimpCoords    *coords,
+                                                     GdkModifierType      state,
+                                                     gboolean             proximity,
+                                                     GimpDisplay         *display);
 
+static void          gimp_source_tool_draw          (GimpDrawTool        *draw_tool);
 
-static gboolean      gimp_source_tool_has_display   (GimpTool        *tool,
-                                                     GimpDisplay     *display);
-static GimpDisplay * gimp_source_tool_has_image     (GimpTool        *tool,
-                                                     GimpImage       *image);
-static void          gimp_source_tool_control       (GimpTool        *tool,
-                                                     GimpToolAction   action,
-                                                     GimpDisplay     *display);
-static void          gimp_source_tool_button_press  (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-                                                     guint32          time,
-                                                     GdkModifierType  state,
-                                                     GimpDisplay     *display);
-static void          gimp_source_tool_motion        (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-                                                     guint32          time,
-                                                     GdkModifierType  state,
-                                                     GimpDisplay     *display);
-static void          gimp_source_tool_cursor_update (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-                                                     GdkModifierType  state,
-                                                     GimpDisplay     *display);
-static void          gimp_source_tool_modifier_key  (GimpTool        *tool,
-                                                     GdkModifierType  key,
-                                                     gboolean         press,
-                                                     GdkModifierType  state,
-                                                     GimpDisplay     *display);
-static void          gimp_source_tool_oper_update   (GimpTool        *tool,
-                                                     GimpCoords      *coords,
-                                                     GdkModifierType  state,
-                                                     gboolean         proximity,
-                                                     GimpDisplay     *display);
-
-static void          gimp_source_tool_draw          (GimpDrawTool    *draw_tool);
+static void          gimp_source_tool_set_src_display (GimpSourceTool      *source_tool,
+                                                       GimpDisplay         *display);
 
 
 G_DEFINE_TYPE (GimpSourceTool, gimp_source_tool, GIMP_TYPE_BRUSH_TOOL)
@@ -127,7 +130,7 @@ gimp_source_tool_has_image (GimpTool  *tool,
 
   if (! display && source_tool->src_display)
     {
-      if (image && source_tool->src_display->image == image)
+      if (image && gimp_display_get_image (source_tool->src_display) == image)
         display = source_tool->src_display;
 
       /*  NULL image means any display  */
@@ -145,11 +148,6 @@ gimp_source_tool_control (GimpTool       *tool,
 {
   GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
 
-  /*  chain up early so the draw tool can undraw the source marker
-   *  while we still know about source drawable and display
-   */
-  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
-
   switch (action)
     {
     case GIMP_TOOL_ACTION_PAUSE:
@@ -157,32 +155,36 @@ gimp_source_tool_control (GimpTool       *tool,
       break;
 
     case GIMP_TOOL_ACTION_HALT:
-      source_tool->src_display = NULL;
+      gimp_source_tool_set_src_display (source_tool, NULL);
       g_object_set (GIMP_PAINT_TOOL (tool)->core,
                     "src-drawable", NULL,
                     NULL);
       break;
     }
+
+  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
 
 static void
-gimp_source_tool_button_press (GimpTool        *tool,
-                               GimpCoords      *coords,
-                               guint32          time,
-                               GdkModifierType  state,
-                               GimpDisplay     *display)
+gimp_source_tool_button_press (GimpTool            *tool,
+                               const GimpCoords    *coords,
+                               guint32              time,
+                               GdkModifierType      state,
+                               GimpButtonPressType  press_type,
+                               GimpDisplay         *display)
 {
   GimpPaintTool  *paint_tool  = GIMP_PAINT_TOOL (tool);
   GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
   GimpSourceCore *source      = GIMP_SOURCE_CORE (paint_tool->core);
+  GdkModifierType toggle_mask = gimp_get_toggle_behavior_mask ();
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  if ((state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) == GDK_CONTROL_MASK)
+  if ((state & (toggle_mask | GDK_SHIFT_MASK)) == toggle_mask)
     {
       source->set_source = TRUE;
 
-      source_tool->src_display = display;
+      gimp_source_tool_set_src_display (source_tool, display);
     }
   else
     {
@@ -190,7 +192,7 @@ gimp_source_tool_button_press (GimpTool        *tool,
     }
 
   GIMP_TOOL_CLASS (parent_class)->button_press (tool, coords, time, state,
-                                                display);
+                                                press_type, display);
 
   source_tool->src_x = source->src_x;
   source_tool->src_y = source->src_y;
@@ -199,11 +201,11 @@ gimp_source_tool_button_press (GimpTool        *tool,
 }
 
 static void
-gimp_source_tool_motion (GimpTool        *tool,
-                         GimpCoords      *coords,
-                         guint32          time,
-                         GdkModifierType  state,
-                         GimpDisplay     *display)
+gimp_source_tool_motion (GimpTool         *tool,
+                         const GimpCoords *coords,
+                         guint32           time,
+                         GdkModifierType   state,
+                         GimpDisplay      *display)
 {
   GimpSourceTool *source_tool = GIMP_SOURCE_TOOL (tool);
   GimpPaintTool  *paint_tool  = GIMP_PAINT_TOOL (tool);
@@ -230,7 +232,7 @@ gimp_source_tool_modifier_key (GimpTool        *tool,
   GimpPaintTool     *paint_tool  = GIMP_PAINT_TOOL (tool);
   GimpSourceOptions *options     = GIMP_SOURCE_TOOL_GET_OPTIONS (tool);
 
-  if (options->use_source && key == GDK_CONTROL_MASK)
+  if (options->use_source && key == gimp_get_toggle_behavior_mask ())
     {
       gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
@@ -255,10 +257,10 @@ gimp_source_tool_modifier_key (GimpTool        *tool,
 }
 
 static void
-gimp_source_tool_cursor_update (GimpTool        *tool,
-                                GimpCoords      *coords,
-                                GdkModifierType  state,
-                                GimpDisplay     *display)
+gimp_source_tool_cursor_update (GimpTool         *tool,
+                                const GimpCoords *coords,
+                                GdkModifierType   state,
+                                GimpDisplay      *display)
 {
   GimpSourceOptions  *options  = GIMP_SOURCE_TOOL_GET_OPTIONS (tool);
   GimpCursorType      cursor   = GIMP_CURSOR_MOUSE;
@@ -266,7 +268,9 @@ gimp_source_tool_cursor_update (GimpTool        *tool,
 
   if (options->use_source)
     {
-      if ((state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) == GDK_CONTROL_MASK)
+      GdkModifierType toggle_mask = gimp_get_toggle_behavior_mask ();
+
+      if ((state & (toggle_mask | GDK_SHIFT_MASK)) == toggle_mask)
         {
           cursor = GIMP_CURSOR_CROSSHAIR_SMALL;
         }
@@ -283,11 +287,11 @@ gimp_source_tool_cursor_update (GimpTool        *tool,
 }
 
 static void
-gimp_source_tool_oper_update (GimpTool        *tool,
-                              GimpCoords      *coords,
-                              GdkModifierType  state,
-                              gboolean         proximity,
-                              GimpDisplay     *display)
+gimp_source_tool_oper_update (GimpTool         *tool,
+                              const GimpCoords *coords,
+                              GdkModifierType   state,
+                              gboolean          proximity,
+                              GimpDisplay      *display)
 {
   GimpSourceTool    *source_tool = GIMP_SOURCE_TOOL (tool);
   GimpSourceOptions *options     = GIMP_SOURCE_TOOL_GET_OPTIONS (tool);
@@ -311,19 +315,18 @@ gimp_source_tool_oper_update (GimpTool        *tool,
 
       if (source->src_drawable == NULL)
         {
-          if (state & GDK_CONTROL_MASK)
-            gimp_tool_replace_status (tool, display,
-                                      "%s", source_tool->status_set_source);
+          GdkModifierType toggle_mask = gimp_get_toggle_behavior_mask ();
+
+          if (state & toggle_mask)
+            {
+              gimp_tool_replace_status (tool, display, "%s",
+                                        source_tool->status_set_source);
+            }
           else
             {
-              gchar *status;
-
-              status = g_strconcat (gimp_get_mod_name_control (),
-                                    gimp_get_mod_separator (),
-                                    source_tool->status_set_source,
-                                    NULL);
-              gimp_tool_replace_status (tool, display, "%s", status);
-              g_free (status);
+              gimp_tool_replace_status (tool, display, "%s-%s",
+                                        gimp_get_mod_string (toggle_mask),
+                                        source_tool->status_set_source);
             }
         }
       else
@@ -366,32 +369,92 @@ gimp_source_tool_draw (GimpDrawTool *draw_tool)
 
   source = GIMP_SOURCE_CORE (GIMP_PAINT_TOOL (draw_tool)->core);
 
+  GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
+
   if (options->use_source && source->src_drawable && source_tool->src_display)
     {
-      GimpDisplay   *tmp_display = draw_tool->display;
-      gint           off_x;
-      gint           off_y;
+      GimpDisplayShell *src_shell;
+      gint              off_x;
+      gint              off_y;
 
-      draw_tool->display = source_tool->src_display;
+      src_shell = gimp_display_get_shell (source_tool->src_display);
 
-      gimp_item_offsets (GIMP_ITEM (source->src_drawable), &off_x, &off_y);
+      gimp_item_get_offset (GIMP_ITEM (source->src_drawable), &off_x, &off_y);
+
+      if (source_tool->src_outline)
+        {
+          gimp_display_shell_remove_tool_item (src_shell,
+                                               source_tool->src_outline);
+          source_tool->src_outline = NULL;
+        }
 
       if (source_tool->show_source_outline)
-        gimp_brush_tool_draw_brush (GIMP_BRUSH_TOOL (source_tool),
+        {
+          source_tool->src_outline =
+            gimp_brush_tool_create_outline (GIMP_BRUSH_TOOL (source_tool),
+                                            source_tool->src_display,
+                                            source_tool->src_x + off_x,
+                                            source_tool->src_y + off_y,
+                                            FALSE);
+
+          if (source_tool->src_outline)
+            {
+              gimp_display_shell_add_tool_item (src_shell,
+                                                source_tool->src_outline);
+              g_object_unref (source_tool->src_outline);
+            }
+        }
+
+      if (! source_tool->src_handle)
+        {
+          source_tool->src_handle =
+            gimp_canvas_handle_new (src_shell,
+                                    GIMP_HANDLE_CROSS,
+                                    GIMP_HANDLE_ANCHOR_CENTER,
                                     source_tool->src_x + off_x,
                                     source_tool->src_y + off_y,
-                                    FALSE);
-
-      gimp_draw_tool_draw_handle (draw_tool,
-                                  GIMP_HANDLE_CROSS,
-                                  source_tool->src_x + off_x,
-                                  source_tool->src_y + off_y,
-                                  TARGET_SIZE, TARGET_SIZE,
-                                  GTK_ANCHOR_CENTER,
-                                  FALSE);
-
-      draw_tool->display = tmp_display;
+                                    GIMP_TOOL_HANDLE_SIZE_CROSS,
+                                    GIMP_TOOL_HANDLE_SIZE_CROSS);
+          gimp_display_shell_add_tool_item (src_shell,
+                                            source_tool->src_handle);
+          g_object_unref (source_tool->src_handle);
+        }
+      else
+        {
+          gimp_canvas_handle_set_position (source_tool->src_handle,
+                                           source_tool->src_x + off_x,
+                                           source_tool->src_y + off_y);
+        }
     }
+}
 
-  GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
+static void
+gimp_source_tool_set_src_display (GimpSourceTool *source_tool,
+                                  GimpDisplay    *display)
+{
+  if (source_tool->src_display != display)
+    {
+      if (source_tool->src_display)
+        {
+          GimpDisplayShell *src_shell;
+
+          src_shell = gimp_display_get_shell (source_tool->src_display);
+
+          if (source_tool->src_handle)
+            {
+              gimp_display_shell_remove_tool_item (src_shell,
+                                                   source_tool->src_handle);
+              source_tool->src_handle = NULL;
+            }
+
+          if (source_tool->src_outline)
+            {
+              gimp_display_shell_remove_tool_item (src_shell,
+                                                   source_tool->src_outline);
+              source_tool->src_outline = NULL;
+            }
+        }
+
+      source_tool->src_display = display;
+    }
 }

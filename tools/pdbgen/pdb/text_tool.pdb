@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -59,7 +58,7 @@ HELP
           desc => 'Antialiasing' },
         { name => 'size', type => '0 < float',
           desc => 'The size of text in either pixels or points' },
-        { name => 'size_type', type => 'enum GimpSizeType',
+        { name => 'size_type', type => 'enum GimpSizeType', dead => 1,
           desc => 'The units of specified size' },
         { name => 'fontname', type => 'string',
           desc => 'The name of the font' }
@@ -73,7 +72,9 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (drawable && ! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (drawable &&
+      (! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), image, TRUE, error) ||
+       ! gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error)))
     success = FALSE;
 
   if (success)
@@ -112,7 +113,7 @@ HELP
           desc => 'The text to generate (in UTF-8 encoding)' },
         { name => 'size', type => '0 < float',
           desc => 'The size of text in either pixels or points' },
-        { name => 'size_type', type => 'enum GimpSizeType',
+        { name => 'size_type', type => 'enum GimpSizeType', dead => 1,
           desc => 'The units of specified size' },
         { name => 'fontname', type => 'string',
           desc => 'The name of the font' }
@@ -165,23 +166,23 @@ sub text {
           desc => 'Antialiasing' },
         { name => 'size', type => '0 < float',
           desc => 'The size of text in either pixels or points' },
-        { name => 'size_type', type => 'enum GimpSizeType',
+        { name => 'size_type', type => 'enum GimpSizeType', dead => 1,
           desc => 'The units of specified size' },
-        { name => 'foundry', type => 'string', allow_non_utf8 => 1,
+        { name => 'foundry', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font foundry' },
         { name => 'family', type => 'string', allow_non_utf8 => 1,
           desc => 'The font family' },
-        { name => 'weight', type => 'string', allow_non_utf8 => 1,
+        { name => 'weight', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font weight' },
-        { name => 'slant', type => 'string', allow_non_utf8 => 1,
+        { name => 'slant', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font slant' },
-        { name => 'set_width', type => 'string', allow_non_utf8 => 1,
+        { name => 'set_width', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font set-width' },
-        { name => 'spacing', type => 'string', allow_non_utf8 => 1,
+        { name => 'spacing', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font spacing' },
-        { name => 'registry', type => 'string', allow_non_utf8 => 1,
+        { name => 'registry', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font registry' },
-        { name => 'encoding', type => 'string', allow_non_utf8 => 1,
+        { name => 'encoding', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font encoding' }
     );
 
@@ -193,7 +194,9 @@ sub text {
     %invoke = (
         code => <<'CODE'
 {
-  if (drawable && ! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (drawable &&
+      (! gimp_pdb_item_is_attached (GIMP_ITEM (drawable), image, TRUE, error) ||
+       ! gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error)))
     success = FALSE;
 
   if (success)
@@ -219,23 +222,23 @@ sub text_get_extents {
           desc => 'The text to generate (in UTF-8 encoding)' },
         { name => 'size', type => '0 < float',
           desc => 'The size of text in either pixels or points' },
-        { name => 'size_type', type => 'enum GimpSizeType',
+        { name => 'size_type', type => 'enum GimpSizeType', dead => 1,
           desc => 'The units of specified size' },
-        { name => 'foundry', type => 'string', allow_non_utf8 => 1,
+        { name => 'foundry', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font foundry' },
         { name => 'family', type => 'string', allow_non_utf8 => 1,
           desc => 'The font family' },
-        { name => 'weight', type => 'string', allow_non_utf8 => 1,
+        { name => 'weight', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font weight' },
-        { name => 'slant', type => 'string', allow_non_utf8 => 1,
+        { name => 'slant', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font slant' },
-        { name => 'set_width', type => 'string', allow_non_utf8 => 1,
+        { name => 'set_width', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font set-width' },
-        { name => 'spacing', type => 'string', allow_non_utf8 => 1,
+        { name => 'spacing', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font spacing' },
-        { name => 'registry', type => 'string', allow_non_utf8 => 1,
+        { name => 'registry', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font registry' },
-        { name => 'encoding', type => 'string', allow_non_utf8 => 1,
+        { name => 'encoding', type => 'string', allow_non_utf8 => 1, dead => 1,
           desc => 'The font encoding' }
     );
 
@@ -276,5 +279,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Text procedures';
+$doc_title = 'gimptexttool';
+$doc_short_desc = 'Functions for controlling the text tool.';
+$doc_long_desc = 'Functions for controlling the text tool.';
 
 1;

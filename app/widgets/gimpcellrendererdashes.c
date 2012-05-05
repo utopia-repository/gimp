@@ -4,9 +4,9 @@
  * gimpcellrendererdashes.c
  * Copyright (C) 2005 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <config.h>
@@ -149,6 +148,12 @@ gimp_cell_renderer_dashes_get_size (GtkCellRenderer *cell,
                                     gint            *width,
                                     gint            *height)
 {
+  gfloat xalign, yalign;
+  gint   xpad, ypad;
+
+  gtk_cell_renderer_get_alignment (cell, &xalign, &yalign);
+  gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+
   if (cell_area)
     {
       if (x_offset)
@@ -156,16 +161,16 @@ gimp_cell_renderer_dashes_get_size (GtkCellRenderer *cell,
           gdouble align;
 
           align = ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
-                   1.0 - cell->xalign : cell->xalign);
+                   1.0 - xalign : xalign);
 
           *x_offset = align * (cell_area->width - DASHES_WIDTH);
-          *x_offset = MAX (*x_offset, 0) + cell->xpad;
+          *x_offset = MAX (*x_offset, 0) + xpad;
         }
 
       if (y_offset)
         {
-          *y_offset = cell->yalign * (cell_area->height - DASHES_HEIGHT);
-          *y_offset = MAX (*y_offset, 0) + cell->ypad;
+          *y_offset = yalign * (cell_area->height - DASHES_HEIGHT);
+          *y_offset = MAX (*y_offset, 0) + ypad;
         }
     }
   else
@@ -177,8 +182,8 @@ gimp_cell_renderer_dashes_get_size (GtkCellRenderer *cell,
         *y_offset = 0;
     }
 
-  *width  = DASHES_WIDTH  + 2 * cell->xpad;
-  *height = DASHES_HEIGHT + 2 * cell->ypad;
+  *width  = DASHES_WIDTH  + 2 * xpad;
+  *height = DASHES_HEIGHT + 2 * ypad;
 }
 
 static void
@@ -193,36 +198,39 @@ gimp_cell_renderer_dashes_render (GtkCellRenderer      *cell,
   GimpCellRendererDashes *dashes = GIMP_CELL_RENDERER_DASHES (cell);
   GtkStyle               *style  = gtk_widget_get_style (widget);
   GtkStateType            state;
+  gint                    xpad, ypad;
   cairo_t                *cr;
   gint                    width;
   gint                    x, y;
 
-  if (! cell->sensitive)
+  gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+
+  if (! gtk_cell_renderer_get_sensitive (cell))
     {
       state = GTK_STATE_INSENSITIVE;
     }
   else if ((flags & GTK_CELL_RENDERER_SELECTED) == GTK_CELL_RENDERER_SELECTED)
     {
-      if (GTK_WIDGET_HAS_FOCUS (widget))
+      if (gtk_widget_has_focus (widget))
         state = GTK_STATE_SELECTED;
       else
         state = GTK_STATE_ACTIVE;
     }
   else if ((flags & GTK_CELL_RENDERER_PRELIT) == GTK_CELL_RENDERER_PRELIT &&
-           GTK_WIDGET_STATE (widget) == GTK_STATE_PRELIGHT)
+           gtk_widget_get_state (widget) == GTK_STATE_PRELIGHT)
     {
       state = GTK_STATE_PRELIGHT;
     }
   else
     {
-      if (GTK_WIDGET_STATE (widget) == GTK_STATE_INSENSITIVE)
-        state = GTK_STATE_INSENSITIVE;
-      else
+      if (gtk_widget_is_sensitive (widget))
         state = GTK_STATE_NORMAL;
+      else
+        state = GTK_STATE_INSENSITIVE;
     }
 
   y = cell_area->y + (cell_area->height - DASHES_HEIGHT) / 2;
-  width = cell_area->width - 2 * cell->xpad;
+  width = cell_area->width - 2 * xpad;
 
   cr = gdk_cairo_create (window);
 
@@ -236,7 +244,7 @@ gimp_cell_renderer_dashes_render (GtkCellRenderer      *cell,
       if (dashes->segments[index])
         {
           cairo_rectangle (cr,
-                           cell_area->x + cell->xpad + x, y,
+                           cell_area->x + xpad + x, y,
                            MIN (BLOCK_WIDTH, width - x), DASHES_HEIGHT);
         }
     }

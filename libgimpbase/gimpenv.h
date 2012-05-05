@@ -4,10 +4,10 @@
  * gimpenv.h
  * Copyright (C) 1999 Tor Lillqvist <tml@iki.fi>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,13 +15,16 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GIMPENV_H__
-#define __GIMPENV_H__
+#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#error "Only <libgimpbase/gimpbase.h> can be included directly."
+#endif
+
+#ifndef __GIMP_ENV_H__
+#define __GIMP_ENV_H__
 
 
 G_BEGIN_DECLS
@@ -30,11 +33,11 @@ G_BEGIN_DECLS
 
 
 #ifdef G_OS_WIN32
-#  ifdef LIBGIMP_COMPILATION
+#  ifdef __GIMP_ENV_C__
 #    define GIMPVAR __declspec(dllexport)
-#  else  /* !LIBGIMP_COMPILATION */
+#  else  /* !__GIMP_ENV_C__ */
 #    define GIMPVAR extern __declspec(dllimport)
-#  endif /* !LIBGIMP_COMPILATION */
+#  endif /* !__GIMP_ENV_C__ */
 #else  /* !G_OS_WIN32 */
 #  define GIMPVAR extern
 #endif
@@ -73,4 +76,4 @@ void          gimp_env_init                   (gboolean            plug_in);
 
 G_END_DECLS
 
-#endif  /*  __GIMPENV_H__  */
+#endif  /*  __GIMP_ENV_H__  */

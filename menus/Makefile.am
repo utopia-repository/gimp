@@ -17,6 +17,8 @@ menudata_DATA = \
 	colormap-menu.xml		\
 	cursor-info-menu.xml		\
 	documents-menu.xml		\
+	dynamics-editor-menu.xml	\
+	dynamics-menu.xml		\
 	error-console-menu.xml		\
 	fonts-menu.xml			\
 	gradient-editor-menu.xml	\
@@ -26,13 +28,15 @@ menudata_DATA = \
 	palette-editor-menu.xml		\
 	palettes-menu.xml		\
 	patterns-menu.xml		\
+	tool-preset-editor-menu.xml	\
+	tool-presets-menu.xml		\
 	quick-mask-menu.xml		\
 	sample-points-menu.xml		\
 	selection-menu.xml		\
 	templates-menu.xml		\
 	text-editor-toolbar.xml		\
+	text-tool-menu.xml		\
 	tool-options-menu.xml		\
-	tools-menu.xml			\
 	undo-menu.xml			\
 	vectors-menu.xml
 
@@ -41,23 +45,27 @@ EXTRA_DIST = \
 	$(menudata_in_files)		\
 	dialogs-menuitems.xml		\
 	gtkuimanager.dtd		\
-	menus.xsl			\
-	makefile.msc
+	menus.xsl
 
 MAINTAINERCLEANFILES = $(menudata_built_files)
 
 
 if GIMP_UNSTABLE
-DEBUG_MENU_PARAMS = --stringparam debug-menu yes
+UNSTABLE_MENU_PARAMS = --stringparam unstable-menus yes
 endif
 
-%.xml: %.xml.in $(top_srcdir)/configure.in $(srcdir)/menus.xsl dialogs-menuitems.xml
+SUFFIXES = .xml.in .xml
+
+.xml.in.xml:
 if HAVE_XSLTPROC
-	$(XSLTPROC) --xinclude $(DEBUG_MENU_PARAMS) $(srcdir)/menus.xsl $< > $(@) || rm -f $(@)
+	$(XSLTPROC) --xinclude $(UNSTABLE_MENU_PARAMS) $(srcdir)/menus.xsl $< > $(@) || rm -f $(@)
 else
 	@echo "*** xsltproc is required to build the menus XML files ***"; exit 1;
 endif
 
+# Specifying dependencies in the implicit rule above does not work, so
+# specify them here instead
+dockable-menu.xml image-menu.xml: $(top_srcdir)/configure.ac $(srcdir)/menus.xsl dialogs-menuitems.xml
 
 validate: $(menudata_DATA)
 if HAVE_XMLLINT

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -124,8 +124,8 @@ resize_dialog_new (GimpViewable       *viewable,
 
       image = gimp_item_get_image (item);
 
-      width  = gimp_item_width (item);
-      height = gimp_item_height (item);
+      width  = gimp_item_get_width  (item);
+      height = gimp_item_get_height (item);
 
       text = _("Layer Size");
     }
@@ -174,7 +174,7 @@ resize_dialog_new (GimpViewable       *viewable,
                                "unit",            unit,
                                "xresolution",     xres,
                                "yresolution",     yres,
-                               "keep-aspect",     TRUE,
+                               "keep-aspect",     FALSE,
                                "edit-resolution", FALSE,
                                NULL);
 
@@ -182,9 +182,10 @@ resize_dialog_new (GimpViewable       *viewable,
                     G_CALLBACK (resize_dialog_response),
                     private);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   frame = gimp_frame_new (text);
@@ -198,7 +199,7 @@ resize_dialog_new (GimpViewable       *viewable,
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -287,7 +288,7 @@ resize_dialog_new (GimpViewable       *viewable,
       gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
       gtk_widget_show (frame);
 
-      hbox = gtk_hbox_new (FALSE, 6);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
       gtk_container_add (GTK_CONTAINER (frame), hbox);
       gtk_widget_show (hbox);
 
@@ -361,10 +362,6 @@ resize_dialog_reset (ResizeDialog *private)
                 "width",       private->old_width,
                 "height",      private->old_height,
                 "unit",        private->old_unit,
-                NULL);
-
-  g_object_set (private->box,
-                "keep-aspect", TRUE,
                 NULL);
 }
 

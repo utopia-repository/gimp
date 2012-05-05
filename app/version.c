@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,19 +12,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <glib.h>
-
+#include <cairo.h>
 #include <fontconfig/fontconfig.h>
-
 #include <pango/pango.h>
 #include <pango/pangoft2.h>
-
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #ifndef GIMP_CONSOLE_COMPILATION
@@ -35,6 +33,7 @@
 
 #include "about.h"
 #include "version.h"
+#include "git-version.h"
 
 #include "gimp-intl.h"
 
@@ -96,6 +95,14 @@ gimp_show_library_versions (void)
                              glib_minor_version,
                              glib_micro_version);
 
+  gimp_show_library_version ("GdkPixbuf",
+                             GDK_PIXBUF_MAJOR,
+                             GDK_PIXBUF_MINOR,
+                             GDK_PIXBUF_MICRO,
+                             gdk_pixbuf_major_version,
+                             gdk_pixbuf_minor_version,
+                             gdk_pixbuf_micro_version);
+
 #ifndef GIMP_CONSOLE_COMPILATION
   gimp_show_library_version ("GTK+",
                              GTK_MAJOR_VERSION,
@@ -119,6 +126,10 @@ gimp_show_library_versions (void)
                              FcGetVersion () / 100 / 100,
                              FcGetVersion () / 100 % 100,
                              FcGetVersion () % 100);
+
+  g_print (_("using %s version %s (compiled against version %s)"),
+           "Cairo", cairo_version_string (), CAIRO_VERSION_STRING);
+  g_print ("\n");
 }
 
 void
@@ -129,6 +140,9 @@ gimp_version_show (gboolean be_verbose)
 
   if (be_verbose)
     {
+      g_print ("git-describe: %s", GIMP_GIT_VERSION);
+      g_print ("\n");
+
       g_print ("\n");
       gimp_show_library_versions ();
     }

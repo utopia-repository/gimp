@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -28,7 +28,9 @@
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimpwidgets-utils.h"
 
+#include "display/gimpcanvasrectangle.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-scale.h"
@@ -41,18 +43,19 @@
 
 
 static void   gimp_magnify_tool_button_press   (GimpTool              *tool,
-                                                GimpCoords            *coords,
+                                                const GimpCoords      *coords,
                                                 guint32                time,
                                                 GdkModifierType        state,
+                                                GimpButtonPressType    press_type,
                                                 GimpDisplay           *display);
 static void   gimp_magnify_tool_button_release (GimpTool              *tool,
-                                                GimpCoords            *coords,
+                                                const GimpCoords      *coords,
                                                 guint32                time,
                                                 GdkModifierType        state,
                                                 GimpButtonReleaseType  release_type,
                                                 GimpDisplay           *display);
 static void   gimp_magnify_tool_motion         (GimpTool              *tool,
-                                                GimpCoords            *coords,
+                                                const GimpCoords      *coords,
                                                 guint32                time,
                                                 GdkModifierType        state,
                                                 GimpDisplay           *display);
@@ -62,11 +65,13 @@ static void   gimp_magnify_tool_modifier_key   (GimpTool              *tool,
                                                 GdkModifierType        state,
                                                 GimpDisplay           *display);
 static void   gimp_magnify_tool_cursor_update  (GimpTool              *tool,
-                                                GimpCoords            *coords,
+                                                const GimpCoords      *coords,
                                                 GdkModifierType        state,
                                                 GimpDisplay           *display);
 
 static void   gimp_magnify_tool_draw           (GimpDrawTool          *draw_tool);
+
+static void   gimp_magnify_tool_update_items   (GimpMagnifyTool       *magnify);
 
 
 G_DEFINE_TYPE (GimpMagnifyTool, gimp_magnify_tool, GIMP_TYPE_DRAW_TOOL)
@@ -85,7 +90,7 @@ gimp_magnify_tool_register (GimpToolRegisterCallback  callback,
                 "gimp-zoom-tool",
                 _("Zoom"),
                 _("Zoom Tool: Adjust the zoom level"),
-                N_("tool|_Zoom"), "Z",
+                N_("_Zoom"), "Z",
                 NULL, GIMP_HELP_TOOL_ZOOM,
                 GIMP_STOCK_TOOL_ZOOM,
                 data);
@@ -111,32 +116,31 @@ gimp_magnify_tool_init (GimpMagnifyTool *magnify_tool)
 {
   GimpTool *tool = GIMP_TOOL (magnify_tool);
 
-  magnify_tool->x = 0;
-  magnify_tool->y = 0;
-  magnify_tool->w = 0;
-  magnify_tool->h = 0;
-
   gimp_tool_control_set_scroll_lock            (tool->control, TRUE);
   gimp_tool_control_set_handle_empty_image     (tool->control, TRUE);
   gimp_tool_control_set_wants_click            (tool->control, TRUE);
   gimp_tool_control_set_snap_to                (tool->control, FALSE);
 
-  gimp_tool_control_set_cursor                 (tool->control,
-                                                GIMP_CURSOR_MOUSE);
   gimp_tool_control_set_tool_cursor            (tool->control,
                                                 GIMP_TOOL_CURSOR_ZOOM);
   gimp_tool_control_set_cursor_modifier        (tool->control,
                                                 GIMP_CURSOR_MODIFIER_PLUS);
   gimp_tool_control_set_toggle_cursor_modifier (tool->control,
                                                 GIMP_CURSOR_MODIFIER_MINUS);
+
+  magnify_tool->x = 0;
+  magnify_tool->y = 0;
+  magnify_tool->w = 0;
+  magnify_tool->h = 0;
 }
 
 static void
-gimp_magnify_tool_button_press (GimpTool        *tool,
-                                GimpCoords      *coords,
-                                guint32          time,
-                                GdkModifierType  state,
-                                GimpDisplay     *display)
+gimp_magnify_tool_button_press (GimpTool            *tool,
+                                const GimpCoords    *coords,
+                                guint32              time,
+                                GdkModifierType      state,
+                                GimpButtonPressType  press_type,
+                                GimpDisplay         *display)
 {
   GimpMagnifyTool *magnify = GIMP_MAGNIFY_TOOL (tool);
 
@@ -153,7 +157,7 @@ gimp_magnify_tool_button_press (GimpTool        *tool,
 
 static void
 gimp_magnify_tool_button_release (GimpTool              *tool,
-                                  GimpCoords            *coords,
+                                  const GimpCoords      *coords,
                                   guint32                time,
                                   GdkModifierType        state,
                                   GimpButtonReleaseType  release_type,
@@ -161,149 +165,155 @@ gimp_magnify_tool_button_release (GimpTool              *tool,
 {
   GimpMagnifyTool    *magnify = GIMP_MAGNIFY_TOOL (tool);
   GimpMagnifyOptions *options = GIMP_MAGNIFY_TOOL_GET_OPTIONS (tool);
-  GimpDisplayShell   *shell   = GIMP_DISPLAY_SHELL (tool->display->shell);
+  GimpDisplayShell   *shell   = gimp_display_get_shell (tool->display);
 
   gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
   gimp_tool_control_halt (tool->control);
 
-  if (release_type != GIMP_BUTTON_RELEASE_CANCEL)
+  switch (release_type)
     {
-      gdouble x1, y1, x2, y2;
-      gdouble width, height;
-      gdouble current_scale;
-      gdouble new_scale;
+    case GIMP_BUTTON_RELEASE_CLICK:
+    case GIMP_BUTTON_RELEASE_NO_MOTION:
+      gimp_display_shell_scale (shell,
+                                options->zoom_type,
+                                0.0,
+                                GIMP_ZOOM_FOCUS_POINTER);
+      break;
 
-      x1     = (magnify->w < 0) ?  magnify->x + magnify->w : magnify->x;
-      y1     = (magnify->h < 0) ?  magnify->y + magnify->h : magnify->y;
-      width  = (magnify->w < 0) ? -magnify->w : magnify->w;
-      height = (magnify->h < 0) ? -magnify->h : magnify->h;
-      x2     = x1 + width;
-      y2     = y1 + height;
+    case GIMP_BUTTON_RELEASE_NORMAL:
+      {
+        gdouble x1, y1, x2, y2;
+        gdouble width, height;
+        gdouble current_scale;
+        gdouble new_scale;
+        gdouble display_width;
+        gdouble display_height;
+        gdouble factor = 1.0;
 
-      width  = MAX (1.0, width);
-      height = MAX (1.0, height);
+        x1     = (magnify->w < 0) ?  magnify->x + magnify->w : magnify->x;
+        y1     = (magnify->h < 0) ?  magnify->y + magnify->h : magnify->y;
+        width  = (magnify->w < 0) ? -magnify->w : magnify->w;
+        height = (magnify->h < 0) ? -magnify->h : magnify->h;
+        x2     = x1 + width;
+        y2     = y1 + height;
 
-      current_scale = gimp_zoom_model_get_factor (shell->zoom);
+        width  = MAX (1.0, width);
+        height = MAX (1.0, height);
 
-      if (release_type == GIMP_BUTTON_RELEASE_CLICK ||
-          release_type == GIMP_BUTTON_RELEASE_NO_MOTION)
-        {
-          gimp_display_shell_scale (shell,
-                                    options->zoom_type,
-                                    0.0,
-                                    GIMP_ZOOM_FOCUS_BEST_GUESS);
-        }
-      else
-        {
-          gdouble display_width;
-          gdouble display_height;
-          gdouble factor = 1.0;
+        current_scale = gimp_zoom_model_get_factor (shell->zoom);
 
-          display_width  = FUNSCALEX (shell, shell->disp_width);
-          display_height = FUNSCALEY (shell, shell->disp_height);
+        display_width  = FUNSCALEX (shell, shell->disp_width);
+        display_height = FUNSCALEY (shell, shell->disp_height);
 
-          switch (options->zoom_type)
-            {
-            case GIMP_ZOOM_IN:
-              factor = MIN ((display_width  / width),
-                            (display_height / height));
-              break;
+        switch (options->zoom_type)
+          {
+          case GIMP_ZOOM_IN:
+            factor = MIN ((display_width  / width),
+                          (display_height / height));
+            break;
 
-            case GIMP_ZOOM_OUT:
-              factor = MAX ((width  / display_width),
-                            (height / display_height));
-              break;
+          case GIMP_ZOOM_OUT:
+            factor = MAX ((width  / display_width),
+                          (height / display_height));
+            break;
 
-            default:
-              break;
-            }
+          default:
+            break;
+          }
 
-          new_scale = current_scale * factor;
+        new_scale = current_scale * factor;
 
-          if (new_scale != current_scale)
-            {
-              gdouble xres;
-              gdouble yres;
-              gint    offset_x = 0;
-              gint    offset_y = 0;
+        if (new_scale != current_scale)
+          {
+            gint    offset_x = 0;
+            gint    offset_y = 0;
+            gdouble xres;
+            gdouble yres;
+            gdouble screen_xres;
+            gdouble screen_yres;
 
-              gimp_image_get_resolution (display->image, &xres, &yres);
+            gimp_image_get_resolution (gimp_display_get_image (display),
+                                       &xres, &yres);
+            gimp_display_shell_get_screen_resolution (shell,
+                                                      &screen_xres, &screen_yres);
 
-              switch (options->zoom_type)
-                {
-                case GIMP_ZOOM_IN:
-                  /*  move the center of the rectangle to the center of the
-                   *  viewport:
-                   *
-                   *  new_offset = center of rectangle in new scale screen coords
-                   *               including offset
-                   *               -
-                   *               center of viewport in screen coords without
-                   *               offset
-                   */
-                  offset_x = RINT (new_scale * ((x1 + x2) / 2.0) *
-                                   SCREEN_XRES (shell) / xres -
-                                   (shell->disp_width / 2.0));
+            switch (options->zoom_type)
+              {
+              case GIMP_ZOOM_IN:
+                /*  move the center of the rectangle to the center of the
+                 *  viewport:
+                 *
+                 *  new_offset = center of rectangle in new scale screen coords
+                 *               including offset
+                 *               -
+                 *               center of viewport in screen coords without
+                 *               offset
+                 */
+                offset_x = RINT (new_scale * ((x1 + x2) / 2.0) *
+                                 screen_xres / xres -
+                                 (shell->disp_width / 2.0));
 
-                  offset_y = RINT (new_scale * ((y1 + y2) / 2.0) *
-                                   SCREEN_YRES (shell) / yres -
-                                   (shell->disp_height / 2.0));
-                  break;
+                offset_y = RINT (new_scale * ((y1 + y2) / 2.0) *
+                                 screen_yres / yres -
+                                 (shell->disp_height / 2.0));
+                break;
 
-                case GIMP_ZOOM_OUT:
-                  /*  move the center of the viewport to the center of the
-                   *  rectangle:
-                   *
-                   *  new_offset = center of viewport in new scale screen coords
-                   *               including offset
-                   *               -
-                   *               center of rectangle in screen coords without
-                   *               offset
-                   */
-                  offset_x = RINT (new_scale * UNSCALEX (shell,
-                                                         shell->offset_x +
-                                                         shell->disp_width / 2.0) *
-                                   SCREEN_XRES (shell) / xres -
-                                   (SCALEX (shell, (x1 + x2) / 2.0) -
-                                    shell->offset_x));
+              case GIMP_ZOOM_OUT:
+                /*  move the center of the viewport to the center of the
+                 *  rectangle:
+                 *
+                 *  new_offset = center of viewport in new scale screen coords
+                 *               including offset
+                 *               -
+                 *               center of rectangle in screen coords without
+                 *               offset
+                 */
+                offset_x = RINT (new_scale * UNSCALEX (shell,
+                                                       shell->offset_x +
+                                                       shell->disp_width / 2.0) *
+                                 screen_xres / xres -
+                                 (SCALEX (shell, (x1 + x2) / 2.0) -
+                                  shell->offset_x));
 
-                  offset_y = RINT (new_scale * UNSCALEY (shell,
-                                                         shell->offset_y +
-                                                         shell->disp_height / 2.0) *
-                                   SCREEN_YRES (shell) / yres -
-                                   (SCALEY (shell, (y1 + y2) / 2.0) -
-                                    shell->offset_y));
-                  break;
+                offset_y = RINT (new_scale * UNSCALEY (shell,
+                                                       shell->offset_y +
+                                                       shell->disp_height / 2.0) *
+                                 screen_yres / yres -
+                                 (SCALEY (shell, (y1 + y2) / 2.0) -
+                                  shell->offset_y));
+                break;
 
-                default:
-                  break;
-                }
+              default:
+                break;
+              }
 
-              gimp_display_shell_scale_by_values (shell,
-                                                  new_scale,
-                                                  offset_x, offset_y,
-                                                  options->auto_resize);
-            }
-        }
+            gimp_display_shell_scale_by_values (shell,
+                                                new_scale,
+                                                offset_x, offset_y,
+                                                options->auto_resize);
+          }
+      }
+      break;
+
+    default:
+      break;
     }
 }
 
 static void
-gimp_magnify_tool_motion (GimpTool        *tool,
-                          GimpCoords      *coords,
-                          guint32          time,
-                          GdkModifierType  state,
-                          GimpDisplay     *display)
+gimp_magnify_tool_motion (GimpTool         *tool,
+                          const GimpCoords *coords,
+                          guint32           time,
+                          GdkModifierType   state,
+                          GimpDisplay      *display)
 {
   GimpMagnifyTool *magnify = GIMP_MAGNIFY_TOOL (tool);
-
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
   magnify->w = coords->x - magnify->x;
   magnify->h = coords->y - magnify->y;
 
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+  gimp_magnify_tool_update_items (magnify);
 }
 
 static void
@@ -315,7 +325,7 @@ gimp_magnify_tool_modifier_key (GimpTool        *tool,
 {
   GimpMagnifyOptions *options = GIMP_MAGNIFY_TOOL_GET_OPTIONS (tool);
 
-  if (key == GDK_CONTROL_MASK)
+  if (key == gimp_get_toggle_behavior_mask ())
     {
       switch (options->zoom_type)
         {
@@ -334,10 +344,10 @@ gimp_magnify_tool_modifier_key (GimpTool        *tool,
 }
 
 static void
-gimp_magnify_tool_cursor_update (GimpTool        *tool,
-                                 GimpCoords      *coords,
-                                 GdkModifierType  state,
-                                 GimpDisplay     *display)
+gimp_magnify_tool_cursor_update (GimpTool         *tool,
+                                 const GimpCoords *coords,
+                                 GdkModifierType   state,
+                                 GimpDisplay      *display)
 {
   GimpMagnifyOptions *options = GIMP_MAGNIFY_TOOL_GET_OPTIONS (tool);
 
@@ -352,11 +362,23 @@ gimp_magnify_tool_draw (GimpDrawTool *draw_tool)
 {
   GimpMagnifyTool *magnify = GIMP_MAGNIFY_TOOL (draw_tool);
 
-  gimp_draw_tool_draw_rectangle (draw_tool,
-                                 FALSE,
+  magnify->rectangle =
+    gimp_draw_tool_add_rectangle (draw_tool, FALSE,
+                                  magnify->x,
+                                  magnify->y,
+                                  magnify->w,
+                                  magnify->h);
+}
+
+static void
+gimp_magnify_tool_update_items (GimpMagnifyTool *magnify)
+{
+  if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (magnify)))
+    {
+      gimp_canvas_rectangle_set (magnify->rectangle,
                                  magnify->x,
                                  magnify->y,
                                  magnify->w,
-                                 magnify->h,
-                                 FALSE);
+                                 magnify->h);
+    }
 }

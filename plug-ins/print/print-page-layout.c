@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -59,6 +58,10 @@ enum
 
 
 static void        print_page_setup_notify            (GtkPrintOperation *operation);
+static void        update_custom_widget               (GtkPrintOperation *operation,
+                                                       GtkWidget         *custom_widget,
+                                                       GtkPageSetup      *page_setup,
+                                                       GtkPrintSettings  *print_settings);
 
 static GtkWidget * print_size_frame                   (PrintData    *data,
                                                        GtkSizeGroup *label_group,
@@ -88,6 +91,8 @@ static void        print_size_info_set_resolution     (PrintSizeInfo *info,
 
 
 static void        print_size_info_set_page_setup     (PrintSizeInfo *info);
+
+static void        print_draw_crop_marks_toggled      (GtkWidget     *widget);
 
 
 static PrintSizeInfo  info;
@@ -119,11 +124,11 @@ print_page_layout_gui (PrintData   *data,
     }
 
   /*  main hbox  */
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
 
   /*  main vbox  */
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), main_vbox, FALSE, FALSE, 0);
   gtk_widget_show (main_vbox);
 
@@ -155,6 +160,17 @@ print_page_layout_gui (PrintData   *data,
                     NULL);
   gtk_widget_show (button);
 
+  /* crop marks toggle */
+  button = gtk_check_button_new_with_mnemonic (_("_Draw Crop Marks"));
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                data->draw_crop_marks);
+  gtk_box_pack_start (GTK_BOX (main_vbox), button, FALSE, FALSE, 0);
+  g_signal_connect (button, "toggled",
+                    G_CALLBACK (print_draw_crop_marks_toggled),
+                    NULL);
+  gtk_widget_show (button);
+
   /* preview */
   frame = gimp_frame_new (_("Preview"));
   gtk_box_pack_start (GTK_BOX (main_hbox), frame, TRUE, TRUE, 0);
@@ -175,6 +191,9 @@ print_page_layout_gui (PrintData   *data,
   g_signal_connect_object (data->operation, "notify::default-page-setup",
                            G_CALLBACK (print_page_setup_notify),
                            main_hbox, 0);
+  g_signal_connect_object (data->operation, "update-custom-widget",
+                           G_CALLBACK (update_custom_widget),
+                           main_hbox, 0);
 
   gimp_help_connect (main_hbox, gimp_standard_help_func, help_id, NULL);
 
@@ -190,6 +209,15 @@ print_page_setup_notify (GtkPrintOperation *operation)
 
   print_size_info_set_page_setup (&info);
   print_preview_set_page_setup (PRINT_PREVIEW (info.preview), setup);
+}
+
+static void
+update_custom_widget (GtkPrintOperation *operation,
+                      GtkWidget         *custom_widget,
+                      GtkPageSetup      *page_setup,
+                      GtkPrintSettings  *print_settings)
+{
+  gtk_print_operation_set_default_page_setup (operation, page_setup);
 }
 
 
@@ -218,13 +246,13 @@ print_size_frame (PrintData    *data,
 
   frame = gimp_frame_new (_("Size"));
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
   /*  the print size entry  */
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -265,7 +293,7 @@ print_size_frame (PrintData    *data,
 
   /*  the resolution entry  */
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -342,7 +370,7 @@ print_offset_frame (PrintData    *data,
 
   frame = gimp_frame_new (_("Position"));
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -435,7 +463,7 @@ print_offset_frame (PrintData    *data,
                     G_CALLBACK (print_size_info_size_changed),
                     NULL);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -446,10 +474,10 @@ print_offset_frame (PrintData    *data,
   gtk_widget_show (label);
 
   /*  if and how to center the image on the page  */
-  combo = gimp_int_combo_box_new (_("None"),         CENTER_NONE,
-                                  _("Horizontally"), CENTER_HORIZONTALLY,
-                                  _("Vertically"),   CENTER_VERTICALLY,
-                                  _("Both"),         CENTER_BOTH,
+  combo = gimp_int_combo_box_new (C_("center-mode", "None"), CENTER_NONE,
+                                  _("Horizontally"),         CENTER_HORIZONTALLY,
+                                  _("Vertically"),           CENTER_VERTICALLY,
+                                  _("Both"),                 CENTER_BOTH,
                                   NULL);
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
   gtk_widget_show (combo);
@@ -696,7 +724,9 @@ print_size_info_offset_max_changed (GtkAdjustment *adj,
   g_signal_handlers_block_by_func (info.size_entry,
                                    print_size_info_size_changed, NULL);
 
-  gimp_size_entry_set_value (info.size_entry, index, adj->upper - adj->value);
+  gimp_size_entry_set_value (info.size_entry, index,
+                             gtk_adjustment_get_upper (adj) -
+                             gtk_adjustment_get_value (adj));
 
   g_signal_handlers_unblock_by_func (info.size_entry,
                                      print_size_info_size_changed, NULL);
@@ -715,7 +745,7 @@ print_size_info_resolution_changed (GtkWidget *widget)
 static void
 print_size_info_use_full_page_toggled (GtkWidget *widget)
 {
-  gboolean active = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  gboolean active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
   info.data->use_full_page = active;
 
@@ -804,14 +834,11 @@ print_size_info_set_resolution (PrintSizeInfo *info,
 static void
 print_size_info_set_page_setup (PrintSizeInfo *info)
 {
-  GtkPageSetup *setup;
   PrintData    *data = info->data;
   gdouble       page_width;
   gdouble       page_height;
   gdouble       x;
   gdouble       y;
-
-  setup = gtk_print_operation_get_default_page_setup (data->operation);
 
   print_size_info_get_page_dimensions (info,
                                        &page_width, &page_height,
@@ -874,3 +901,12 @@ print_size_info_set_page_setup (PrintSizeInfo *info)
   gimp_size_entry_set_refval_boundaries (info->resolution_entry, 1,
                                          y, GIMP_MAX_RESOLUTION);
 }
+
+static void
+print_draw_crop_marks_toggled (GtkWidget *widget)
+{
+  gboolean active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
+
+  info.data->draw_crop_marks = active;
+}
+

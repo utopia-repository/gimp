@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DRAW_TOOL_H__
@@ -23,14 +22,10 @@
 #include "gimptool.h"
 
 
-typedef enum
-{
-  GIMP_HANDLE_SQUARE,
-  GIMP_HANDLE_FILLED_SQUARE,
-  GIMP_HANDLE_CIRCLE,
-  GIMP_HANDLE_FILLED_CIRCLE,
-  GIMP_HANDLE_CROSS
-} GimpHandleType;
+#define GIMP_TOOL_HANDLE_SIZE_CIRCLE 13
+#define GIMP_TOOL_HANDLE_SIZE_CROSS  15
+#define GIMP_TOOL_HANDLE_SIZE_LARGE  25
+#define GIMP_TOOL_HANDLE_SIZE_SMALL   7
 
 
 #define GIMP_TYPE_DRAW_TOOL            (gimp_draw_tool_get_type ())
@@ -45,17 +40,18 @@ typedef struct _GimpDrawToolClass GimpDrawToolClass;
 
 struct _GimpDrawTool
 {
-  GimpTool      parent_instance;
+  GimpTool        parent_instance;
 
-  GimpDisplay  *display;      /*  The display we are drawing to (may be
-                               *  a different one than tool->display)
-                               */
+  GimpDisplay    *display;      /*  The display we are drawing to (may be
+                                 *  a different one than tool->display)
+                                 */
 
-  gint          paused_count; /*  count to keep track of multiple pauses */
-  gboolean      is_drawn;     /*  is the stuff we draw currently visible */
+  gint            paused_count; /*  count to keep track of multiple pauses  */
+  guint           draw_timeout; /*  draw delay timeout ID                   */
 
-  GList        *vectors;      /*  GimpVectors to render                  */
-  GimpMatrix3  *transform;    /*  Transformation matrix of the vectors   */
+  GimpCanvasItem *preview;
+  GimpCanvasItem *item;
+  GList          *group_stack;
 };
 
 struct _GimpDrawToolClass
@@ -68,184 +64,194 @@ struct _GimpDrawToolClass
 };
 
 
-GType      gimp_draw_tool_get_type                 (void) G_GNUC_CONST;
+GType            gimp_draw_tool_get_type             (void) G_GNUC_CONST;
 
-void       gimp_draw_tool_start                    (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display);
-void       gimp_draw_tool_stop                     (GimpDrawTool     *draw_tool);
+void             gimp_draw_tool_start                (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display);
+void             gimp_draw_tool_stop                 (GimpDrawTool     *draw_tool);
 
-gboolean   gimp_draw_tool_is_active                (GimpDrawTool     *draw_tool);
+gboolean         gimp_draw_tool_is_active            (GimpDrawTool     *draw_tool);
 
-void       gimp_draw_tool_pause                    (GimpDrawTool     *draw_tool);
-void       gimp_draw_tool_resume                   (GimpDrawTool     *draw_tool);
+void             gimp_draw_tool_pause                (GimpDrawTool     *draw_tool);
+void             gimp_draw_tool_resume               (GimpDrawTool     *draw_tool);
 
-gboolean   gimp_draw_tool_is_drawn                 (GimpDrawTool     *draw_tool);
+gdouble          gimp_draw_tool_calc_distance        (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display,
+                                                      gdouble           x1,
+                                                      gdouble           y1,
+                                                      gdouble           x2,
+                                                      gdouble           y2);
+gdouble          gimp_draw_tool_calc_distance_square (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display,
+                                                      gdouble           x1,
+                                                      gdouble           y1,
+                                                      gdouble           x2,
+                                                      gdouble           y2);
 
-void       gimp_draw_tool_set_vectors              (GimpDrawTool     *draw_tool,
-                                                    GList            *vectors);
-void       gimp_draw_tool_set_transform            (GimpDrawTool     *draw_tool,
-                                                    GimpMatrix3      *transform);
+void             gimp_draw_tool_add_preview          (GimpDrawTool     *draw_tool,
+                                                      GimpCanvasItem   *item);
+void             gimp_draw_tool_remove_preview       (GimpDrawTool     *draw_tool,
+                                                      GimpCanvasItem   *item);
 
-gdouble    gimp_draw_tool_calc_distance            (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    gdouble           x1,
-                                                    gdouble           y1,
-                                                    gdouble           x2,
-                                                    gdouble           y2);
-gdouble    gimp_draw_tool_calc_distance_square     (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    gdouble           x1,
-                                                    gdouble           y1,
-                                                    gdouble           x2,
-                                                    gdouble           y2);
-gboolean   gimp_draw_tool_in_radius                (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    gdouble           x1,
-                                                    gdouble           y1,
-                                                    gdouble           x2,
-                                                    gdouble           y2,
-                                                    gint              radius);
+void             gimp_draw_tool_add_item             (GimpDrawTool     *draw_tool,
+                                                      GimpCanvasItem   *item);
+void             gimp_draw_tool_remove_item          (GimpDrawTool     *draw_tool,
+                                                      GimpCanvasItem   *item);
 
-void       gimp_draw_tool_draw_line                (GimpDrawTool     *draw_tool,
-                                                    gdouble           x1,
-                                                    gdouble           y1,
-                                                    gdouble           x2,
-                                                    gdouble           y2,
-                                                    gboolean          use_offsets);
-void       gimp_draw_tool_draw_dashed_line         (GimpDrawTool     *draw_tool,
-                                                    gdouble           x1,
-                                                    gdouble           y1,
-                                                    gdouble           x2,
-                                                    gdouble           y2,
-                                                    gboolean          use_offsets);
-void       gimp_draw_tool_draw_guide_line          (GimpDrawTool     *draw_tool,
-                                                    GimpOrientationType  orientation,
-                                                    gint              position);
-void       gimp_draw_tool_draw_rectangle           (GimpDrawTool     *draw_tool,
-                                                    gboolean          filled,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gdouble           width,
-                                                    gdouble           height,
-                                                    gboolean          use_offsets);
-void       gimp_draw_tool_draw_arc                 (GimpDrawTool     *draw_tool,
-                                                    gboolean          filled,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gdouble           width,
-                                                    gdouble           height,
-                                                    gint              angle1,
-                                                    gint              angle2,
-                                                    gboolean          use_offsets);
+GimpCanvasGroup* gimp_draw_tool_add_stroke_group     (GimpDrawTool     *draw_tool);
+GimpCanvasGroup* gimp_draw_tool_add_fill_group       (GimpDrawTool     *draw_tool);
 
-void       gimp_draw_tool_draw_rectangle_by_anchor (GimpDrawTool     *draw_tool,
-                                                    gboolean          filled,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GtkAnchorType     anchor,
-                                                    gboolean          use_offsets);
-void       gimp_draw_tool_draw_arc_by_anchor       (GimpDrawTool     *draw_tool,
-                                                    gboolean          filled,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gint              width,
-                                                    gint              height,
-                                                    gint              angle1,
-                                                    gint              angle2,
-                                                    GtkAnchorType     anchor,
-                                                    gboolean          use_offsets);
-void       gimp_draw_tool_draw_cross_by_anchor     (GimpDrawTool     *draw_tool,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GtkAnchorType     anchor,
-                                                    gboolean          use_offsets);
+void             gimp_draw_tool_push_group           (GimpDrawTool     *draw_tool,
+                                                      GimpCanvasGroup  *group);
+void             gimp_draw_tool_pop_group            (GimpDrawTool     *draw_tool);
 
-void       gimp_draw_tool_draw_handle              (GimpDrawTool     *draw_tool,
-                                                    GimpHandleType    type,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GtkAnchorType     anchor,
-                                                    gboolean          use_offsets);
-void       gimp_draw_tool_draw_corner              (GimpDrawTool     *draw_tool,
-                                                    gboolean          highlight,
-                                                    gboolean          put_outside,
-                                                    gdouble           x1,
-                                                    gdouble           y1,
-                                                    gdouble           x2,
-                                                    gdouble           y2,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GtkAnchorType     anchor,
-                                                    gboolean          use_offsets);
-gboolean   gimp_draw_tool_on_handle                (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    gdouble           x,
-                                                    gdouble           y,
-                                                    GimpHandleType    type,
-                                                    gdouble           handle_x,
-                                                    gdouble           handle_y,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GtkAnchorType     anchor,
-                                                    gboolean          use_offsets);
-gboolean   gimp_draw_tool_on_vectors_handle        (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    GimpVectors      *vectors,
-                                                    const GimpCoords *coord,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GimpAnchorType    preferred,
-                                                    gboolean          exclusive,
-                                                    GimpAnchor      **ret_anchor,
-                                                    GimpStroke      **ret_stroke);
-gboolean   gimp_draw_tool_on_vectors_curve         (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    GimpVectors      *vectors,
-                                                    const GimpCoords *coord,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GimpCoords       *ret_coords,
-                                                    gdouble          *ret_pos,
-                                                    GimpAnchor      **ret_segment_start,
-                                                    GimpAnchor      **ret_segment_end,
-                                                    GimpStroke      **ret_stroke);
+GimpCanvasItem * gimp_draw_tool_add_line             (GimpDrawTool     *draw_tool,
+                                                      gdouble           x1,
+                                                      gdouble           y1,
+                                                      gdouble           x2,
+                                                      gdouble           y2);
+GimpCanvasItem * gimp_draw_tool_add_guide            (GimpDrawTool     *draw_tool,
+                                                      GimpOrientationType  orientation,
+                                                      gint              position,
+                                                      gboolean          guide_style);
+GimpCanvasItem * gimp_draw_tool_add_crosshair        (GimpDrawTool     *draw_tool,
+                                                      gint              position_x,
+                                                      gint              position_y);
+GimpCanvasItem * gimp_draw_tool_add_sample_point     (GimpDrawTool     *draw_tool,
+                                                      gint              x,
+                                                      gint              y,
+                                                      gint              index);
+GimpCanvasItem * gimp_draw_tool_add_rectangle        (GimpDrawTool     *draw_tool,
+                                                      gboolean          filled,
+                                                      gdouble           x,
+                                                      gdouble           y,
+                                                      gdouble           width,
+                                                      gdouble           height);
+GimpCanvasItem * gimp_draw_tool_add_rectangle_guides (GimpDrawTool     *draw_tool,
+                                                      GimpGuidesType    type,
+                                                      gdouble           x,
+                                                      gdouble           y,
+                                                      gdouble           width,
+                                                      gdouble           height);
+GimpCanvasItem * gimp_draw_tool_add_arc              (GimpDrawTool     *draw_tool,
+                                                      gboolean          filled,
+                                                      gdouble           x,
+                                                      gdouble           y,
+                                                      gdouble           width,
+                                                      gdouble           height,
+                                                      gdouble           start_angle,
+                                                      gdouble           slice_angle);
+GimpCanvasItem * gimp_draw_tool_add_transform_guides (GimpDrawTool     *draw_tool,
+                                                      const GimpMatrix3 *transform,
+                                                      GimpGuidesType    type,
+                                                      gint              n_guides,
+                                                      gdouble           x1,
+                                                      gdouble           y1,
+                                                      gdouble           x2,
+                                                      gdouble           y2);
+GimpCanvasItem * gimp_draw_tool_add_transform_preview(GimpDrawTool     *draw_tool,
+                                                      GimpDrawable     *drawable,
+                                                      const GimpMatrix3 *transform,
+                                                      gdouble           x1,
+                                                      gdouble           y1,
+                                                      gdouble           x2,
+                                                      gdouble           y2,
+                                                      gboolean          perspective,
+                                                      gdouble            opacity);
 
-gboolean   gimp_draw_tool_on_vectors               (GimpDrawTool     *draw_tool,
-                                                    GimpDisplay      *display,
-                                                    const GimpCoords *coord,
-                                                    gint              width,
-                                                    gint              height,
-                                                    GimpCoords       *ret_coords,
-                                                    gdouble          *ret_pos,
-                                                    GimpAnchor      **ret_segment_start,
-                                                    GimpAnchor      **ret_segment_end,
-                                                    GimpStroke      **ret_stroke,
-                                                    GimpVectors     **ret_vectors);
+GimpCanvasItem * gimp_draw_tool_add_handle           (GimpDrawTool     *draw_tool,
+                                                      GimpHandleType    type,
+                                                      gdouble           x,
+                                                      gdouble           y,
+                                                      gint              width,
+                                                      gint              height,
+                                                      GimpHandleAnchor  anchor);
+GimpCanvasItem * gimp_draw_tool_add_corner           (GimpDrawTool     *draw_tool,
+                                                      gboolean          highlight,
+                                                      gboolean          put_outside,
+                                                      gdouble           x1,
+                                                      gdouble           y1,
+                                                      gdouble           x2,
+                                                      gdouble           y2,
+                                                      gint              width,
+                                                      gint              height,
+                                                      GimpHandleAnchor  anchor);
 
-void       gimp_draw_tool_draw_lines               (GimpDrawTool     *draw_tool,
-                                                    const GimpVector2 *points,
-                                                    gint              n_points,
-                                                    gboolean          filled,
-                                                    gboolean          use_offsets);
+GimpCanvasItem * gimp_draw_tool_add_lines            (GimpDrawTool     *draw_tool,
+                                                      const GimpVector2 *points,
+                                                      gint              n_points,
+                                                      gboolean          filled);
 
-void       gimp_draw_tool_draw_strokes             (GimpDrawTool     *draw_tool,
-                                                    const GimpCoords *points,
-                                                    gint              n_points,
-                                                    gboolean          filled,
-                                                    gboolean          use_offsets);
+GimpCanvasItem * gimp_draw_tool_add_strokes          (GimpDrawTool     *draw_tool,
+                                                      const GimpCoords *points,
+                                                      gint              n_points,
+                                                      gboolean          filled);
+GimpCanvasItem * gimp_draw_tool_add_path             (GimpDrawTool     *draw_tool,
+                                                      const GimpBezierDesc *desc,
+                                                      gdouble           x,
+                                                      gdouble           y);
 
-void       gimp_draw_tool_draw_boundary            (GimpDrawTool     *draw_tool,
-                                                    const BoundSeg   *bound_segs,
-                                                    gint              n_bound_segs,
-                                                    gdouble           offset_x,
-                                                    gdouble           offset_y,
-                                                    gboolean          use_offsets);
+GimpCanvasItem * gimp_draw_tool_add_pen              (GimpDrawTool     *draw_tool,
+                                                      const GimpVector2 *points,
+                                                      gint              n_points,
+                                                      GimpContext      *context,
+                                                      GimpActiveColor   color,
+                                                      gint              width);
+
+GimpCanvasItem * gimp_draw_tool_add_boundary         (GimpDrawTool     *draw_tool,
+                                                      const BoundSeg   *bound_segs,
+                                                      gint              n_bound_segs,
+                                                      GimpMatrix3      *transform,
+                                                      gdouble           offset_x,
+                                                      gdouble           offset_y);
+
+GimpCanvasItem * gimp_draw_tool_add_text_cursor      (GimpDrawTool     *draw_tool,
+                                                      PangoRectangle   *cursor,
+                                                      gboolean          overwrite);
+
+gboolean         gimp_draw_tool_on_handle            (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display,
+                                                      gdouble           x,
+                                                      gdouble           y,
+                                                      GimpHandleType    type,
+                                                      gdouble           handle_x,
+                                                      gdouble           handle_y,
+                                                      gint              width,
+                                                      gint              height,
+                                                      GimpHandleAnchor  anchor);
+gboolean         gimp_draw_tool_on_vectors_handle    (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display,
+                                                      GimpVectors      *vectors,
+                                                      const GimpCoords *coord,
+                                                      gint              width,
+                                                      gint              height,
+                                                      GimpAnchorType    preferred,
+                                                      gboolean          exclusive,
+                                                      GimpAnchor      **ret_anchor,
+                                                      GimpStroke      **ret_stroke);
+gboolean         gimp_draw_tool_on_vectors_curve     (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display,
+                                                      GimpVectors      *vectors,
+                                                      const GimpCoords *coord,
+                                                      gint              width,
+                                                      gint              height,
+                                                      GimpCoords       *ret_coords,
+                                                      gdouble          *ret_pos,
+                                                      GimpAnchor      **ret_segment_start,
+                                                      GimpAnchor      **ret_segment_end,
+                                                      GimpStroke      **ret_stroke);
+
+gboolean         gimp_draw_tool_on_vectors           (GimpDrawTool     *draw_tool,
+                                                      GimpDisplay      *display,
+                                                      const GimpCoords *coord,
+                                                      gint              width,
+                                                      gint              height,
+                                                      GimpCoords       *ret_coords,
+                                                      gdouble          *ret_pos,
+                                                      GimpAnchor      **ret_segment_start,
+                                                      GimpAnchor      **ret_segment_end,
+                                                      GimpStroke      **ret_stroke,
+                                                      GimpVectors     **ret_vectors);
 
 
 #endif  /*  __GIMP_DRAW_TOOL_H__  */

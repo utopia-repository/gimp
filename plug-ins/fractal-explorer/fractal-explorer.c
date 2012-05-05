@@ -11,9 +11,9 @@
    GIMP - The GNU Image Manipulation Program
    Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
+   the Free Software Foundation; either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -22,8 +22,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *********************************************************************/
 
 /**********************************************************************
@@ -83,10 +82,8 @@ gdouble              xbild;
 gdouble              ybild;
 gdouble              xdiff;
 gdouble              ydiff;
-gint                 sel_x1;
-gint                 sel_y1;
-gint                 sel_x2;
-gint                 sel_y2;
+gint                 sel_x;
+gint                 sel_y;
 gint                 preview_width;
 gint                 preview_height;
 gdouble             *gg;
@@ -202,7 +199,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32, "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE, "image", "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
     { GIMP_PDB_INT8, "fractaltype", "0: Mandelbrot; "
@@ -262,7 +259,6 @@ run (const gchar      *name,
      GimpParam       **return_vals)
 {
   static GimpParam   values[1];
-  gint32             image_ID;
   GimpRunMode        run_mode;
   gint               pwidth;
   gint               pheight;
@@ -282,13 +278,11 @@ run (const gchar      *name,
 
   /*  Get the specified drawable  */
   drawable = gimp_drawable_get (param[2].data.d_drawable);
-  image_ID = param[1].data.d_image;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
-
-  sel_width  = sel_x2 - sel_x1;
-  sel_height = sel_y2 - sel_y1;
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &sel_x, &sel_y,
+                                      &sel_width, &sel_height))
+    return;
 
   /* Calculate preview size */
   if (sel_width > sel_height)
@@ -470,6 +464,7 @@ explorer (GimpDrawable * drawable)
       if ((row % 10) == 0)
         gimp_progress_update ((double) row / (double) (y2 - y1));
     }
+  gimp_progress_update (1.0);
 
   /*  update the processed region  */
   gimp_drawable_flush (drawable);
@@ -908,8 +903,7 @@ fractalexplorer_free_everything (fractalexplorerOBJ *fractalexplorer)
 static void
 fractalexplorer_list_free_all (void)
 {
-  g_list_foreach (fractalexplorer_list, (GFunc) fractalexplorer_free, NULL);
-  g_list_free (fractalexplorer_list);
+  g_list_free_full (fractalexplorer_list, (GDestroyNotify) fractalexplorer_free);
   fractalexplorer_list = NULL;
 }
 
@@ -950,6 +944,7 @@ fractalexplorer_load (const gchar *filename,
       g_message (_("File '%s' is not a FractalExplorer file"),
                  gimp_filename_to_utf8 (filename));
       fclose (fp);
+      fractalexplorer_free (fractalexplorer);
 
       return NULL;
     }
@@ -959,6 +954,7 @@ fractalexplorer_load (const gchar *filename,
       g_message (_("File '%s' is corrupt.\nLine %d Option section incorrect"),
                  gimp_filename_to_utf8 (filename), line_no);
       fclose (fp);
+      fractalexplorer_free (fractalexplorer);
 
       return NULL;
     }
@@ -1111,7 +1107,7 @@ fractalexplorer_rescan_list (GtkWidget *widget,
       return;
     }
 
-  dlg = gimp_dialog_new (_("Rescan for Fractals"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Rescan for Fractals"), PLUG_IN_ROLE,
                          gtk_widget_get_toplevel (view),
                          GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                          gimp_standard_help_func, PLUG_IN_PROC,
@@ -1133,8 +1129,8 @@ fractalexplorer_rescan_list (GtkWidget *widget,
   patheditor = gimp_path_editor_new (_("Add FractalExplorer Path"),
                                      fractalexplorer_path);
   gtk_container_set_border_width (GTK_CONTAINER (patheditor), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), patheditor,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      patheditor, TRUE, TRUE, 0);
   gtk_widget_show (patheditor);
 
   if (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK)

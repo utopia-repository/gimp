@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -40,11 +39,11 @@ object_handle_popup(ObjectPopup_t *popup, Object_t *obj, GdkEventButton *event)
 #ifdef _TEMP_
    gtk_widget_set_sensitive(popup->up, (position > 1) ? TRUE : FALSE);
    gtk_widget_set_sensitive(popup->down,
-			    (position < g_list_length(obj->list->list))
-			    ? TRUE : FALSE);
+                            (position < g_list_length(obj->list->list))
+                            ? TRUE : FALSE);
 #endif
    gtk_menu_popup(GTK_MENU(popup->menu), NULL, NULL, NULL, NULL,
-		  event->button, event->time);
+                  event->button, event->time);
 }
 
 void

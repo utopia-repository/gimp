@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __TILE_MANAGER_H__
@@ -25,6 +24,9 @@
 
 GType         gimp_tile_manager_get_type     (void) G_GNUC_CONST;
 
+#ifdef GIMP_UNSTABLE
+void          tile_manager_exit              (void);
+#endif
 
 /* Creates a new tile manager with the specified size */
 TileManager * tile_manager_new               (gint width,
@@ -35,6 +37,10 @@ TileManager * tile_manager_new               (gint width,
  */
 TileManager * tile_manager_ref               (TileManager *tm);
 void          tile_manager_unref             (TileManager *tm);
+
+/* Make a copy of the tile manager.
+ */
+TileManager * tile_manager_duplicate         (TileManager *tm);
 
 /* Set the validate procedure for the tile manager.  The validate
  *  procedure is called when an invalid tile is referenced. If the
@@ -89,15 +95,6 @@ void          tile_manager_invalidate_area   (TileManager       *tm,
 gint          tile_manager_width             (const TileManager *tm);
 gint          tile_manager_height            (const TileManager *tm);
 gint          tile_manager_bpp               (const TileManager *tm);
-gint          tile_manager_tiles_per_col     (const TileManager *tm);
-gint          tile_manager_tiles_per_row     (const TileManager *tm);
-
-void          tile_manager_get_offsets       (const TileManager *tm,
-                                              gint              *x,
-                                              gint              *y);
-void          tile_manager_set_offsets       (TileManager       *tm,
-                                              gint               x,
-                                              gint               y);
 
 gint64        tile_manager_get_memsize       (const TileManager *tm,
                                               gboolean           sparse);
@@ -115,33 +112,33 @@ void          tile_manager_map_over_tile        (TileManager *tm,
                                                  Tile        *tile,
                                                  Tile        *srctile);
 
-void              read_pixel_data    (TileManager  *tm,
-                                      gint          x1,
-                                      gint          y1,
-                                      gint          x2,
-                                      gint          y2,
-                                      guchar       *buffer,
-                                      guint         stride);
+void          tile_manager_read_pixel_data      (TileManager  *tm,
+                                                 gint          x1,
+                                                 gint          y1,
+                                                 gint          x2,
+                                                 gint          y2,
+                                                 guchar       *buffer,
+                                                 guint         stride);
 
-void              write_pixel_data   (TileManager  *tm,
-                                      gint          x1,
-                                      gint          y1,
-                                      gint          x2,
-                                      gint          y2,
-                                      const guchar *buffer,
-                                      guint         stride);
+void          tile_manager_write_pixel_data     (TileManager  *tm,
+                                                 gint          x1,
+                                                 gint          y1,
+                                                 gint          x2,
+                                                 gint          y2,
+                                                 const guchar *buffer,
+                                                 guint         stride);
 
 /*   Fill buffer with the pixeldata for the pixel at coordinates x,y
  *   if x,y is outside the area of the tilemanger, nothing is done.
  */
-void              read_pixel_data_1  (TileManager  *tm,
-                                      gint          x,
-                                      gint          y,
-                                      guchar       *buffer);
+void          tile_manager_read_pixel_data_1    (TileManager  *tm,
+                                                 gint          x,
+                                                 gint          y,
+                                                 guchar       *buffer);
 
-void              write_pixel_data_1 (TileManager  *tm,
-                                      gint          x,
-                                      gint          y,
-                                      const guchar *buffer);
+void          tile_manager_write_pixel_data_1   (TileManager  *tm,
+                                                 gint          x,
+                                                 gint          y,
+                                                 const guchar *buffer);
 
 #endif /* __TILE_MANAGER_H__ */

@@ -5,9 +5,9 @@
  * Copyright (C) 1996 Torsten Martinsen
  * Copyright (C) 2007 Daniel Richard G.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,6 +33,7 @@
 #define PLUG_IN_PROC          "plug-in-oilify"
 #define PLUG_IN_ENHANCED_PROC "plug-in-oilify-enhanced"
 #define PLUG_IN_BINARY        "oilify"
+#define PLUG_IN_ROLE          "gimp-oilify"
 
 #define SCALE_WIDTH    125
 #define HISTSIZE       256
@@ -96,23 +96,23 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive"       },
-    { GIMP_PDB_IMAGE,    "image",     "Input image (unused)"               },
-    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"                     },
-    { GIMP_PDB_INT32,    "mask-size", "Oil paint mask size"                },
-    { GIMP_PDB_INT32,    "mode",      "Algorithm {RGB (0), INTENSITY (1)}" }
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"       },
+    { GIMP_PDB_IMAGE,    "image",     "Input image (unused)"                 },
+    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"                       },
+    { GIMP_PDB_INT32,    "mask-size", "Oil paint mask size"                  },
+    { GIMP_PDB_INT32,    "mode",      "Algorithm { RGB (0), INTENSITY (1) }" }
   };
 
   static const GimpParamDef args_enhanced[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive"       },
-    { GIMP_PDB_IMAGE,    "image",     "Input image (unused)"               },
-    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"                     },
-    { GIMP_PDB_INT32,    "mode",      "Algorithm {RGB (0), INTENSITY (1)}" },
-    { GIMP_PDB_INT32,    "mask-size", "Oil paint mask size"                },
-    { GIMP_PDB_DRAWABLE, "mask-size-map", "Mask size control map"          },
-    { GIMP_PDB_INT32,    "exponent",      "Oil paint exponent"             },
-    { GIMP_PDB_DRAWABLE, "exponent-map",  "Exponent control map"           }
+    { GIMP_PDB_INT32,    "run-mode",      "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"       },
+    { GIMP_PDB_IMAGE,    "image",         "Input image (unused)"             },
+    { GIMP_PDB_DRAWABLE, "drawable",      "Input drawable"                   },
+    { GIMP_PDB_INT32,    "mode",          "Algorithm { RGB (0), INTENSITY (1) }" },
+    { GIMP_PDB_INT32,    "mask-size",     "Oil paint mask size"              },
+    { GIMP_PDB_DRAWABLE, "mask-size-map", "Mask size control map"            },
+    { GIMP_PDB_INT32,    "exponent",      "Oil paint exponent"               },
+    { GIMP_PDB_DRAWABLE, "exponent-map",  "Exponent control map"             }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -731,6 +731,7 @@ oilify (GimpDrawable *drawable,
 
   if (!preview)
     {
+      gimp_progress_update (1.0);
       /*  Update the oil-painted region  */
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
@@ -774,7 +775,7 @@ oilify_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Oilify"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Oilify"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -790,9 +791,10 @@ oilify_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -856,8 +858,9 @@ oilify_dialog (GimpDrawable *drawable)
                     GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
   gtk_widget_show (combo);
 
-  gtk_widget_set_sensitive (combo, ovals.use_mask_size_map);
-  g_object_set_data (G_OBJECT (toggle), "set_sensitive", combo);
+  g_object_bind_property (toggle, "active",
+                          combo,  "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   /*
    * Exponent scale
@@ -908,8 +911,9 @@ oilify_dialog (GimpDrawable *drawable)
                     GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
   gtk_widget_show (combo);
 
-  gtk_widget_set_sensitive (combo, ovals.use_exponent_map);
-  g_object_set_data (G_OBJECT (toggle), "set_sensitive", combo);
+  g_object_bind_property (toggle, "active",
+                          combo,  "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   /*
    * Intensity algorithm check button

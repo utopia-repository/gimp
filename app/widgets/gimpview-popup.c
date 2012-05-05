@@ -4,9 +4,9 @@
  * gimpview-popup.c
  * Copyright (C) 2003-2006 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -109,14 +108,8 @@ gimp_view_popup_show (GtkWidget      *widget,
   popup->popup_height = popup_height;
   popup->dot_for_dot  = dot_for_dot;
   popup->button       = bevent->button;
-  popup->button_x     = bevent->x;
-  popup->button_y     = bevent->y;
-
-  if (GTK_WIDGET_NO_WINDOW (widget))
-    {
-      popup->button_x += widget->allocation.x;
-      popup->button_y += widget->allocation.y;
-    }
+  popup->button_x     = bevent->x_root;
+  popup->button_y     = bevent->y_root;
 
   g_signal_connect (widget, "button-release-event",
                     G_CALLBACK (gimp_view_popup_button_release),
@@ -229,10 +222,8 @@ gimp_view_popup_timeout (GimpViewPopup *popup)
   gtk_container_add (GTK_CONTAINER (frame), view);
   gtk_widget_show (view);
 
-  gdk_window_get_origin (popup->widget->window, &x, &y);
-
-  x += popup->button_x - (popup->popup_width  >> 1);
-  y += popup->button_y - (popup->popup_height >> 1);
+  x = popup->button_x - (popup->popup_width  / 2);
+  y = popup->button_y - (popup->popup_height / 2);
 
   monitor = gdk_screen_get_monitor_at_point (screen, x, y);
   gdk_screen_get_monitor_geometry (screen, monitor, &rect);

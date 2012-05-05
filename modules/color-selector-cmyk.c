@@ -1,9 +1,9 @@
 /* GIMP CMYK ColorSelector
  * Copyright (C) 2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -219,25 +218,28 @@ colorsel_cmyk_adj_update (GtkAdjustment *adj,
                           ColorselCmyk  *module)
 {
   GimpColorSelector *selector = GIMP_COLOR_SELECTOR (module);
+  gdouble            value;
   gint               i;
 
   for (i = 0; i < 4; i++)
     if (module->adj[i] == adj)
       break;
 
+  value = gtk_adjustment_get_value (adj);
+
   switch (i)
     {
     case 0:
-      module->cmyk.c = adj->value / 100.0;
+      module->cmyk.c = value / 100.0;
       break;
     case 1:
-      module->cmyk.m = adj->value / 100.0;
+      module->cmyk.m = value / 100.0;
       break;
     case 2:
-      module->cmyk.y = adj->value / 100.0;
+      module->cmyk.y = value / 100.0;
       break;
     case 3:
-      module->cmyk.k = adj->value / 100.0;
+      module->cmyk.k = value / 100.0;
       break;
     default:
       return;
@@ -255,7 +257,7 @@ colorsel_cmyk_pullout_update (GtkAdjustment *adj,
 {
   GimpColorSelector *selector = GIMP_COLOR_SELECTOR (module);
 
-  module->pullout = adj->value / 100.0;
+  module->pullout = gtk_adjustment_get_value (adj) / 100.0;
 
   gimp_color_selector_set_color (selector, &selector->rgb, &selector->hsv);
 }

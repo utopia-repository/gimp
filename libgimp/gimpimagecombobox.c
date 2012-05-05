@@ -4,10 +4,10 @@
  * gimpimagecombobox.c
  * Copyright (C) 2004 Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,15 @@
 #include "gimpuitypes.h"
 #include "gimpimagecombobox.h"
 #include "gimppixbuf.h"
+
+
+/**
+ * SECTION: gimpimagecombobox
+ * @title: GimpImageComboBox
+ * @short_description: A widget providing a popup menu of images.
+ *
+ * A widget providing a popup menu of images.
+ **/
 
 
 #define THUMBNAIL_SIZE   24
@@ -102,10 +110,10 @@ gimp_image_combo_box_init (GimpImageComboBox *combo_box)
  * each image and only if the function returns %TRUE, the image is
  * added to the combobox.
  *
- * You should use gimp_int_combo_connect() to initialize and connect
- * the combo. Use gimp_int_combo_box_set_active() to get the active
- * image ID and gimp_int_combo_box_get_active() to retrieve the ID of
- * the selected image.
+ * You should use gimp_int_combo_box_connect() to initialize and
+ * connect the combo. Use gimp_int_combo_box_set_active() to get the
+ * active image ID and gimp_int_combo_box_get_active() to retrieve the
+ * ID of the selected image.
  *
  * Return value: a new #GimpIntComboBox.
  *
@@ -191,15 +199,17 @@ gimp_image_combo_box_drag_data_received (GtkWidget        *widget,
                                          guint             info,
                                          guint             time)
 {
+  gint   length = gtk_selection_data_get_length (selection);
   gchar *str;
 
-  if ((selection->format != 8) || (selection->length < 1))
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
     {
-      g_warning ("Received invalid image ID data!");
+      g_warning ("%s: received invalid image ID data", G_STRFUNC);
       return;
     }
 
-  str = g_strndup ((const gchar *) selection->data, selection->length);
+  str = g_strndup ((const gchar *) gtk_selection_data_get_data (selection),
+                   length);
 
   if (g_utf8_validate (str, -1, NULL))
     {

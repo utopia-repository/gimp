@@ -4,9 +4,9 @@
  * gimpview.c
  * Copyright (C) 2001-2006 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -53,7 +52,8 @@ enum
 };
 
 
-static void        gimp_view_destroy              (GtkObject        *object);
+static void        gimp_view_dispose              (GObject          *object);
+
 static void        gimp_view_realize              (GtkWidget        *widget);
 static void        gimp_view_unrealize            (GtkWidget        *widget);
 static void        gimp_view_map                  (GtkWidget        *widget);
@@ -97,7 +97,7 @@ static guint view_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_view_class_init (GimpViewClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   view_signals[SET_VIEWABLE] =
@@ -138,7 +138,7 @@ gimp_view_class_init (GimpViewClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  object_class->destroy              = gimp_view_destroy;
+  object_class->dispose              = gimp_view_dispose;
 
   widget_class->activate_signal      = view_signals[CLICKED];
   widget_class->realize              = gimp_view_realize;
@@ -162,12 +162,12 @@ gimp_view_class_init (GimpViewClass *klass)
 static void
 gimp_view_init (GimpView *view)
 {
-  GTK_WIDGET_SET_FLAGS (view, GTK_NO_WINDOW);
-
-  gtk_widget_add_events (GTK_WIDGET (view), (GDK_BUTTON_PRESS_MASK   |
-                                             GDK_BUTTON_RELEASE_MASK |
-                                             GDK_ENTER_NOTIFY_MASK   |
-                                             GDK_LEAVE_NOTIFY_MASK));
+  gtk_widget_set_has_window (GTK_WIDGET (view), FALSE);
+  gtk_widget_add_events (GTK_WIDGET (view),
+                         GDK_BUTTON_PRESS_MASK   |
+                         GDK_BUTTON_RELEASE_MASK |
+                         GDK_ENTER_NOTIFY_MASK   |
+                         GDK_LEAVE_NOTIFY_MASK);
 
   view->event_window      = NULL;
   view->viewable          = NULL;
@@ -184,7 +184,7 @@ gimp_view_init (GimpView *view)
 }
 
 static void
-gimp_view_destroy (GtkObject *object)
+gimp_view_dispose (GObject *object)
 {
   GimpView *view = GIMP_VIEW (object);
 
@@ -197,29 +197,32 @@ gimp_view_destroy (GtkObject *object)
       view->renderer = NULL;
     }
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
 gimp_view_realize (GtkWidget *widget)
 {
   GimpView      *view = GIMP_VIEW (widget);
+  GtkAllocation  allocation;
   GdkWindowAttr  attributes;
   gint           attributes_mask;
 
   GTK_WIDGET_CLASS (parent_class)->realize (widget);
 
+  gtk_widget_get_allocation (widget, &allocation);
+
   attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.x           = widget->allocation.x;
-  attributes.y           = widget->allocation.y;
-  attributes.width       = widget->allocation.width;
-  attributes.height      = widget->allocation.height;
+  attributes.x           = allocation.x;
+  attributes.y           = allocation.y;
+  attributes.width       = allocation.width;
+  attributes.height      = allocation.height;
   attributes.wclass      = GDK_INPUT_ONLY;
   attributes.event_mask  = gtk_widget_get_events (widget);
 
   attributes_mask = GDK_WA_X | GDK_WA_Y;
 
-  view->event_window = gdk_window_new (widget->window,
+  view->event_window = gdk_window_new (gtk_widget_get_window (widget),
                                        &attributes, attributes_mask);
   gdk_window_set_user_data (view->event_window, view);
 }
@@ -285,9 +288,6 @@ gimp_view_size_request (GtkWidget      *widget,
       requisition->height = (view->renderer->height +
                              2 * view->renderer->border_width);
     }
-
-  if (GTK_WIDGET_CLASS (parent_class)->size_request)
-    GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 }
 
 static void
@@ -370,9 +370,9 @@ gimp_view_size_allocate (GtkWidget     *widget,
   allocation->width  = width;
   allocation->height = height;
 
-  widget->allocation = *allocation;
+  gtk_widget_set_allocation (widget, allocation);
 
-  if (GTK_WIDGET_REALIZED (widget))
+  if (gtk_widget_get_realized (widget))
     gdk_window_move_resize (view->event_window,
                             allocation->x,
                             allocation->y,
@@ -384,12 +384,25 @@ static gboolean
 gimp_view_expose_event (GtkWidget      *widget,
                         GdkEventExpose *event)
 {
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (gtk_widget_is_drawable (widget))
     {
+      GtkAllocation  allocation;
+      cairo_t       *cr;
+
+      gtk_widget_get_allocation (widget, &allocation);
+
+      cr = gdk_cairo_create (event->window);
+      gdk_cairo_region (cr, event->region);
+      cairo_clip (cr);
+
+      cairo_translate (cr, allocation.x, allocation.y);
+
       gimp_view_renderer_draw (GIMP_VIEW (widget)->renderer,
-                               widget->window, widget,
-                               &widget->allocation,
-                               &event->area);
+                               widget, cr,
+                               allocation.width,
+                               allocation.height);
+
+      cairo_destroy (cr);
     }
 
   return FALSE;
@@ -423,12 +436,18 @@ gimp_view_button_press_event (GtkWidget      *widget,
       ! view->show_popup)
     return FALSE;
 
-  if (! GTK_WIDGET_REALIZED (widget))
+  if (! gtk_widget_get_realized (widget))
     return FALSE;
 
   if (bevent->type == GDK_BUTTON_PRESS)
     {
-      if (bevent->button == 1)
+      if (gdk_event_triggers_context_menu ((GdkEvent *) bevent))
+        {
+          view->press_state = 0;
+
+          g_signal_emit (widget, view_signals[CONTEXT], 0);
+        }
+      else if (bevent->button == 1)
         {
           gtk_grab_add (widget);
 
@@ -457,10 +476,7 @@ gimp_view_button_press_event (GtkWidget      *widget,
                                   view->renderer->height,
                                   view->renderer->dot_for_dot);
 
-          if (bevent->button == 3)
-            g_signal_emit (widget, view_signals[CONTEXT], 0);
-          else
-            return FALSE;
+          return FALSE;
         }
     }
   else if (bevent->type == GDK_2BUTTON_PRESS)
@@ -771,19 +787,19 @@ static void
 gimp_view_update_callback (GimpViewRenderer *renderer,
                            GimpView         *view)
 {
-  GtkWidget *widget = GTK_WIDGET (view);
-  gint       width;
-  gint       height;
+  GtkWidget      *widget = GTK_WIDGET (view);
+  GtkRequisition  requisition;
+  gint            width;
+  gint            height;
+
+  gtk_widget_get_requisition (widget, &requisition);
 
   width  = renderer->width  + 2 * renderer->border_width;
   height = renderer->height + 2 * renderer->border_width;
 
-  if (width  != widget->requisition.width ||
-      height != widget->requisition.height)
+  if (width  != requisition.width ||
+      height != requisition.height)
     {
-      widget->requisition.width  = width;
-      widget->requisition.height = height;
-
       gtk_widget_queue_resize (widget);
     }
   else

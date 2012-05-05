@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -30,7 +29,7 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  gimp_data_factory_data_refresh (gimp->brush_factory);
+  gimp_data_factory_data_refresh (gimp->brush_factory, context);
 }
 CODE
     );
@@ -63,7 +62,7 @@ HELP
         headers => [ qw("core/gimpcontainer-filter.h") ],
 	code    => <<'CODE'
 {
-  brush_list = gimp_container_get_filtered_name_array (gimp->brush_factory->container,
+  brush_list = gimp_container_get_filtered_name_array (gimp_data_factory_get_container (gimp->brush_factory),
                                                        filter, &num_brushes);
 }
 CODE
@@ -91,7 +90,7 @@ sub brushes_get_brush {
 
   if (brush)
     {
-      name    = g_strdup (gimp_object_get_name (GIMP_OBJECT (brush)));
+      name    = g_strdup (gimp_object_get_name (brush));
       width   = brush->mask->width;
       height  = brush->mask->height;
       spacing = gimp_brush_get_spacing (brush);
@@ -181,14 +180,14 @@ sub brushes_get_brush_data {
 
   if (brush)
     {
-      actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (brush)));
+      actual_name = g_strdup (gimp_object_get_name (brush));
       opacity     = 1.0;
       spacing     = gimp_brush_get_spacing (brush);
       paint_mode  = 0;
       width       = brush->mask->width;
       height      = brush->mask->height;
       length      = brush->mask->height * brush->mask->width;
-      mask_data   = g_memdup (temp_buf_data (brush->mask), length);
+      mask_data   = g_memdup (temp_buf_get_data (brush->mask), length);
     }
   else
     success = FALSE;
@@ -215,5 +214,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Brushes';
+$doc_title = 'gimpbrushes';
+$doc_short_desc = 'Functions for manipulating brushes.';
+$doc_long_desc = 'Functions related to getting and setting brushes.';
 
 1;

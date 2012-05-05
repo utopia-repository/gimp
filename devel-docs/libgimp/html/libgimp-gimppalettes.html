@@ -37,15 +37,15 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimp-gimppalettes.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-refresh" title="gimp_palettes_refresh ()">gimp_palettes_refresh</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-list" title="gimp_palettes_get_list ()">gimp_palettes_get_list</a>              (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filter</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_palettes</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette" title="gimp_palettes_get_palette ()">gimp_palettes_get_palette</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_colors</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-set-palette" title="gimp_palettes_set_palette ()">gimp_palettes_set_palette</a>           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette-entry" title="gimp_palettes_get_palette_entry ()">gimp_palettes_get_palette_entry</a>     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> entry_num</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_colors</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+<pre class="synopsis"><span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-refresh" title="gimp_palettes_refresh ()">gimp_palettes_refresh</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-list" title="gimp_palettes_get_list ()">gimp_palettes_get_list</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *filter</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *num_palettes</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette" title="gimp_palettes_get_palette ()">gimp_palettes_get_palette</a>           (<em class="parameter"><code><span class="type">gint</span> *num_colors</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-set-palette" title="gimp_palettes_set_palette ()">gimp_palettes_set_palette</a>           (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette-entry" title="gimp_palettes_get_palette_entry ()">gimp_palettes_get_palette_entry</a>     (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> entry_num</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *num_colors</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -58,7 +58,7 @@ Operations related to palettes.
 <a name="libgimp-gimppalettes.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gimp-palettes-refresh"></a><h3>gimp_palettes_refresh ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_palettes_refresh               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_palettes_refresh               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Refreshes current palettes. This function always succeeds.
 </p>
@@ -77,8 +77,8 @@ palette path and updates the palette dialogs accordingly.
 <hr>
 <div class="refsect2">
 <a name="gimp-palettes-get-list"></a><h3>gimp_palettes_get_list ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            gimp_palettes_get_list              (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filter</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_palettes</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            gimp_palettes_get_list              (<em class="parameter"><code>const <span class="type">gchar</span> *filter</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *num_palettes</code></em>);</pre>
 <p>
 Retrieves a list of all of the available palettes
 </p>
@@ -108,15 +108,11 @@ Each name returned can be used as input to the command
 <hr>
 <div class="refsect2">
 <a name="gimp-palettes-get-palette"></a><h3>gimp_palettes_get_palette ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_palettes_get_palette           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_colors</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_palettes_get_palette           (<em class="parameter"><code><span class="type">gint</span> *num_colors</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">gimp_palettes_get_palette</code> is deprecated and should not be used in newly-written code.</p>
+<p><code class="literal">gimp_palettes_get_palette</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-palette" title="gimp_context_get_palette ()"><code class="function">gimp_context_get_palette()</code></a> instead.</p>
 </div>
-<p>
-This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-palette" title="gimp_context_get_palette ()"><code class="function">gimp_context_get_palette()</code></a>
-instead.
-</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -134,7 +130,7 @@ instead.
 <hr>
 <div class="refsect2">
 <a name="gimp-palettes-set-palette"></a><h3>gimp_palettes_set_palette ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_palettes_set_palette           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_palettes_set_palette           (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_set_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -159,18 +155,14 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <hr>
 <div class="refsect2">
 <a name="gimp-palettes-get-palette-entry"></a><h3>gimp_palettes_get_palette_entry ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_palettes_get_palette_entry     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> entry_num</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *num_colors</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_palettes_get_palette_entry     (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> entry_num</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *num_colors</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">gimp_palettes_get_palette_entry</code> is deprecated and should not be used in newly-written code.</p>
+<p><code class="literal">gimp_palettes_get_palette_entry</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimppalette.html#gimp-palette-entry-get-color" title="gimp_palette_entry_get_color ()"><code class="function">gimp_palette_entry_get_color()</code></a> instead.</p>
 </div>
-<p>
-This procedure is deprecated! Use <a class="link" href="libgimp-gimppalette.html#gimp-palette-entry-get-color" title="gimp_palette_entry_get_color ()"><code class="function">gimp_palette_entry_get_color()</code></a>
-instead.
-</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

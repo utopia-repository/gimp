@@ -4,9 +4,9 @@
  * gimpdataeditor.c
  * Copyright (C) 2002-2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -59,9 +58,8 @@ enum
 
 static void       gimp_data_editor_docked_iface_init (GimpDockedInterface *iface);
 
-static GObject  * gimp_data_editor_constructor       (GType            type,
-                                                      guint            n_params,
-                                                      GObjectConstructParam *params);
+static void       gimp_data_editor_constructed       (GObject        *object);
+static void       gimp_data_editor_dispose           (GObject        *object);
 static void       gimp_data_editor_set_property      (GObject        *object,
                                                       guint           property_id,
                                                       const GValue   *value,
@@ -70,7 +68,6 @@ static void       gimp_data_editor_get_property      (GObject        *object,
                                                       guint           property_id,
                                                       GValue         *value,
                                                       GParamSpec     *pspec);
-static void       gimp_data_editor_dispose           (GObject        *object);
 
 static void       gimp_data_editor_style_set         (GtkWidget      *widget,
                                                       GtkStyle       *prev_style);
@@ -122,10 +119,10 @@ gimp_data_editor_class_init (GimpDataEditorClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->constructor  = gimp_data_editor_constructor;
+  object_class->constructed  = gimp_data_editor_constructed;
+  object_class->dispose      = gimp_data_editor_dispose;
   object_class->set_property = gimp_data_editor_set_property;
   object_class->get_property = gimp_data_editor_get_property;
-  object_class->dispose      = gimp_data_editor_dispose;
 
   widget_class->style_set    = gimp_data_editor_style_set;
 
@@ -142,7 +139,8 @@ gimp_data_editor_class_init (GimpDataEditorClass *klass)
                                    g_param_spec_object ("context",
                                                         NULL, NULL,
                                                         GIMP_TYPE_CONTEXT,
-                                                        GIMP_PARAM_READWRITE));
+                                                        GIMP_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
 
   g_object_class_install_property (object_class, PROP_DATA,
                                    g_param_spec_object ("data",
@@ -157,6 +155,20 @@ gimp_data_editor_class_init (GimpDataEditorClass *klass)
                                                              G_MAXINT,
                                                              DEFAULT_MINIMAL_HEIGHT,
                                                              GIMP_PARAM_READABLE));
+}
+
+static void
+gimp_data_editor_docked_iface_init (GimpDockedInterface *iface)
+{
+  parent_docked_iface = g_type_interface_peek_parent (iface);
+
+  if (! parent_docked_iface)
+    parent_docked_iface = g_type_default_interface_peek (GIMP_TYPE_DOCKED);
+
+  iface->set_context  = gimp_data_editor_set_context;
+  iface->set_aux_info = gimp_data_editor_set_aux_info;
+  iface->get_aux_info = gimp_data_editor_get_aux_info;
+  iface->get_title    = gimp_data_editor_get_title;
 }
 
 static void
@@ -185,32 +197,15 @@ gimp_data_editor_init (GimpDataEditor *editor)
 }
 
 static void
-gimp_data_editor_docked_iface_init (GimpDockedInterface *iface)
+gimp_data_editor_constructed (GObject *object)
 {
-  parent_docked_iface = g_type_interface_peek_parent (iface);
+  GimpDataEditor *editor = GIMP_DATA_EDITOR (object);
 
-  if (! parent_docked_iface)
-    parent_docked_iface = g_type_default_interface_peek (GIMP_TYPE_DOCKED);
-
-  iface->set_context  = gimp_data_editor_set_context;
-  iface->set_aux_info = gimp_data_editor_set_aux_info;
-  iface->get_aux_info = gimp_data_editor_get_aux_info;
-  iface->get_title    = gimp_data_editor_get_title;
-}
-
-static GObject *
-gimp_data_editor_constructor (GType                  type,
-                              guint                  n_params,
-                              GObjectConstructParam *params)
-{
-  GObject        *object;
-  GimpDataEditor *editor;
-
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  editor = GIMP_DATA_EDITOR (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_DATA_FACTORY (editor->data_factory));
+  g_assert (GIMP_IS_CONTEXT (editor->context));
 
   gimp_data_editor_set_edit_active (editor, TRUE);
 
@@ -229,12 +224,26 @@ gimp_data_editor_constructor (GType                  type,
                             G_CALLBACK (gimp_data_editor_revert_clicked),
                             NULL,
                             editor);
-  /*
-   * Set insensitive because revert buttons are not yet implemented.
-   */
-  gtk_widget_set_sensitive (editor->revert_button, FALSE);
+  /* Hide because revert buttons are not yet implemented */
+  gtk_widget_hide (editor->revert_button);
+}
 
-  return object;
+static void
+gimp_data_editor_dispose (GObject *object)
+{
+  GimpDataEditor *editor = GIMP_DATA_EDITOR (object);
+
+  if (editor->data)
+    {
+      /* Save dirty data before we clear out */
+      gimp_data_editor_save_dirty (editor);
+      gimp_data_editor_set_data (editor, NULL);
+    }
+
+  if (editor->context)
+    gimp_docked_set_context (GIMP_DOCKED (editor), NULL);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -289,24 +298,6 @@ gimp_data_editor_get_property (GObject    *object,
 }
 
 static void
-gimp_data_editor_dispose (GObject *object)
-{
-  GimpDataEditor *editor = GIMP_DATA_EDITOR (object);
-
-  if (editor->data)
-    {
-      /* Save dirty data before we clear out */
-      gimp_data_editor_save_dirty (editor);
-      gimp_data_editor_set_data (editor, NULL);
-    }
-
-  if (editor->context)
-    gimp_docked_set_context (GIMP_DOCKED (editor), NULL);
-
-  G_OBJECT_CLASS (parent_class)->dispose (object);
-}
-
-static void
 gimp_data_editor_style_set (GtkWidget *widget,
                             GtkStyle  *prev_style)
 {
@@ -353,7 +344,7 @@ gimp_data_editor_set_context (GimpDocked  *docked,
 
       g_object_ref (editor->context);
 
-      data_type = editor->data_factory->container->children_type;
+      data_type = gimp_container_get_children_type (gimp_data_factory_get_container (editor->data_factory));
       data = GIMP_DATA (gimp_context_get_by_type (editor->context, data_type));
 
       g_signal_connect (editor->context,
@@ -396,7 +387,7 @@ gimp_data_editor_set_aux_info (GimpDocked *docked,
               GimpData *data;
 
               data = (GimpData *)
-                gimp_container_get_child_by_name (editor->data_factory->container,
+                gimp_container_get_child_by_name (gimp_data_factory_get_container (editor->data_factory),
                                                   aux->value);
 
               if (data)
@@ -423,7 +414,7 @@ gimp_data_editor_get_aux_info (GimpDocked *docked)
     {
       const gchar *value;
 
-      value = gimp_object_get_name (GIMP_OBJECT (editor->data));
+      value = gimp_object_get_name (editor->data);
 
       aux = gimp_session_info_aux_new (AUX_INFO_CURRENT_DATA, value);
       aux_info = g_list_append (aux_info, aux);
@@ -470,14 +461,14 @@ gimp_data_editor_real_set_data (GimpDataEditor *editor,
                         editor);
 
       gtk_entry_set_text (GTK_ENTRY (editor->name_entry),
-                          gimp_object_get_name (GIMP_OBJECT (editor->data)));
+                          gimp_object_get_name (editor->data));
     }
   else
     {
       gtk_entry_set_text (GTK_ENTRY (editor->name_entry), "");
     }
 
-  editable = (editor->data && editor->data->writable);
+  editable = (editor->data && gimp_data_is_writable (editor->data));
 
   if (editor->data_editable != editable)
     {
@@ -496,7 +487,7 @@ gimp_data_editor_set_data (GimpDataEditor *editor,
   g_return_if_fail (data == NULL || GIMP_IS_DATA (data));
   g_return_if_fail (data == NULL ||
                     g_type_is_a (G_TYPE_FROM_INSTANCE (data),
-                                 editor->data_factory->container->children_type));
+                                 gimp_container_get_children_type (gimp_data_factory_get_container (editor->data_factory))));
 
   if (editor->data != data)
     {
@@ -504,9 +495,9 @@ gimp_data_editor_set_data (GimpDataEditor *editor,
 
       g_object_notify (G_OBJECT (editor), "data");
 
-      if (GIMP_EDITOR (editor)->ui_manager)
-        gimp_ui_manager_update (GIMP_EDITOR (editor)->ui_manager,
-                                GIMP_EDITOR (editor)->popup_data);
+      if (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)))
+        gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
+                                gimp_editor_get_popup_data (GIMP_EDITOR (editor)));
     }
 }
 
@@ -533,7 +524,7 @@ gimp_data_editor_set_edit_active (GimpDataEditor *editor,
           GType     data_type;
           GimpData *data;
 
-          data_type = editor->data_factory->container->children_type;
+          data_type = gimp_container_get_children_type (gimp_data_factory_get_container (editor->data_factory));
           data = GIMP_DATA (gimp_context_get_by_type (editor->context,
                                                       data_type));
 
@@ -567,10 +558,10 @@ gimp_data_editor_name_key_press (GtkWidget      *widget,
                                  GdkEventKey    *kevent,
                                  GimpDataEditor *editor)
 {
-  if (kevent->keyval == GDK_Escape)
+  if (kevent->keyval == GDK_KEY_Escape)
     {
       gtk_entry_set_text (GTK_ENTRY (editor->name_entry),
-                          gimp_object_get_name (GIMP_OBJECT (editor->data)));
+                          gimp_object_get_name (editor->data));
       return TRUE;
     }
 
@@ -595,7 +586,7 @@ gimp_data_editor_name_activate (GtkWidget      *widget,
       else
         {
           gtk_entry_set_text (GTK_ENTRY (widget),
-                              gimp_object_get_name (GIMP_OBJECT (editor->data)));
+                              gimp_object_get_name (editor->data));
           g_free (new_name);
         }
     }
@@ -638,16 +629,19 @@ gimp_data_editor_save_dirty (GimpDataEditor *editor)
 {
   GimpData *data = editor->data;
 
-  if (data && data->dirty && data->writable)
+  if (data                      &&
+      gimp_data_is_dirty (data) &&
+      gimp_data_is_writable (data))
     {
       GError *error = NULL;
 
       if (! gimp_data_factory_data_save_single (editor->data_factory, data,
                                                 &error))
         {
-          gimp_message (editor->data_factory->gimp, G_OBJECT (editor),
-                        GIMP_MESSAGE_ERROR,
-                        "%s", error->message);
+          gimp_message_literal (gimp_data_factory_get_gimp (editor->data_factory),
+                                G_OBJECT (editor),
+				GIMP_MESSAGE_ERROR,
+				error->message);
           g_clear_error (&error);
         }
     }

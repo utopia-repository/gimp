@@ -39,13 +39,13 @@
 <a name="libgimpbase-gimpdatafiles.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData">GimpDatafileData</a>;
 <span class="returnvalue">void</span>                (<a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()">*GimpDatafileLoaderFunc</a>)           (<em class="parameter"><code>const <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData"><span class="type">GimpDatafileData</span></a> *file_data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension" title="gimp_datafiles_check_extension ()">gimp_datafiles_check_extension</a>      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *extension</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories" title="gimp_datafiles_read_directories ()">gimp_datafiles_read_directories</a>     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path_str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-File-Utilities.html#GFileTest"><span class="type">GFileTest</span></a> flags</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension" title="gimp_datafiles_check_extension ()">gimp_datafiles_check_extension</a>      (<em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *extension</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories" title="gimp_datafiles_read_directories ()">gimp_datafiles_read_directories</a>     (<em class="parameter"><code>const <span class="type">gchar</span> *path_str</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFileTest</span> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()"><span class="type">GimpDatafileLoaderFunc</span></a> loader_func</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -69,31 +69,63 @@ Functions to handle GIMP data files.
 } GimpDatafileData;
 </pre>
 <p>
+This structure is passed to the <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()"><span class="type">GimpDatafileLoaderFunc</span></a> given to
+<a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories" title="gimp_datafiles_read_directories ()"><code class="function">gimp_datafiles_read_directories()</code></a> for each file encountered in the
+data path.
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">const <span class="type">gchar</span> *<em class="structfield"><code><a name="GimpDatafileData.filename"></a>filename</code></em>;</span></p></td>
+<td>the data file's full path.</td>
+</tr>
+<tr>
+<td><p><span class="term">const <span class="type">gchar</span> *<em class="structfield"><code><a name="GimpDatafileData.dirname"></a>dirname</code></em>;</span></p></td>
+<td>the folder the data file is is.</td>
+</tr>
+<tr>
+<td><p><span class="term">const <span class="type">gchar</span> *<em class="structfield"><code><a name="GimpDatafileData.basename"></a>basename</code></em>;</span></p></td>
+<td>the data file's basename.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">time_t</span> <em class="structfield"><code><a name="GimpDatafileData.atime"></a>atime</code></em>;</span></p></td>
+<td>the last time the file was accessed for reading.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">time_t</span> <em class="structfield"><code><a name="GimpDatafileData.mtime"></a>mtime</code></em>;</span></p></td>
+<td>the last time the file was modified.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">time_t</span> <em class="structfield"><code><a name="GimpDatafileData.ctime"></a>ctime</code></em>;</span></p></td>
+<td>the time the file was created.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpDatafileLoaderFunc"></a><h3>GimpDatafileLoaderFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                (*GimpDatafileLoaderFunc)           (<em class="parameter"><code>const <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData"><span class="type">GimpDatafileData</span></a> *file_data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-datafiles-check-extension"></a><h3>gimp_datafiles_check_extension ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_datafiles_check_extension      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *extension</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_datafiles_check_extension      (<em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *extension</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-datafiles-read-directories"></a><h3>gimp_datafiles_read_directories ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_datafiles_read_directories     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path_str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-File-Utilities.html#GFileTest"><span class="type">GFileTest</span></a> flags</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_datafiles_read_directories     (<em class="parameter"><code>const <span class="type">gchar</span> *path_str</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFileTest</span> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()"><span class="type">GimpDatafileLoaderFunc</span></a> loader_func</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 <p>
 </p>
 </div>

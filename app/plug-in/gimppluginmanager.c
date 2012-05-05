@@ -3,9 +3,9 @@
  *
  * gimppluginmanager.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -146,6 +145,7 @@ gimp_plug_in_manager_init (GimpPlugInManager *manager)
   manager->plug_in_procedures = NULL;
   manager->load_procs         = NULL;
   manager->save_procs         = NULL;
+  manager->export_procs       = NULL;
 
   manager->current_plug_in    = NULL;
   manager->open_plug_ins      = NULL;
@@ -186,18 +186,23 @@ gimp_plug_in_manager_finalize (GObject *object)
       manager->save_procs = NULL;
     }
 
+  if (manager->export_procs)
+    {
+      g_slist_free (manager->export_procs);
+      manager->export_procs = NULL;
+    }
+
   if (manager->plug_in_procedures)
     {
-      g_slist_foreach (manager->plug_in_procedures,
-                       (GFunc) g_object_unref, NULL);
-      g_slist_free (manager->plug_in_procedures);
+      g_slist_free_full (manager->plug_in_procedures,
+                         (GDestroyNotify) g_object_unref);
       manager->plug_in_procedures = NULL;
     }
 
   if (manager->plug_in_defs)
     {
-      g_slist_foreach (manager->plug_in_defs, (GFunc) g_object_unref, NULL);
-      g_slist_free (manager->plug_in_defs);
+      g_slist_free_full (manager->plug_in_defs,
+                         (GDestroyNotify) g_object_unref);
       manager->plug_in_defs = NULL;
     }
 
@@ -242,6 +247,7 @@ gimp_plug_in_manager_get_memsize (GimpObject *object,
   memsize += gimp_g_slist_get_memsize (manager->plug_in_procedures, 0);
   memsize += gimp_g_slist_get_memsize (manager->load_procs, 0);
   memsize += gimp_g_slist_get_memsize (manager->save_procs, 0);
+  memsize += gimp_g_slist_get_memsize (manager->export_procs, 0);
 
   memsize += gimp_g_slist_get_memsize (manager->menu_branches,  0 /* FIXME */);
   memsize += gimp_g_slist_get_memsize (manager->locale_domains, 0 /* FIXME */);
@@ -342,8 +348,8 @@ gimp_plug_in_manager_add_procedure (GimpPlugInManager   *manager,
     {
       GimpPlugInProcedure *tmp_proc = list->data;
 
-      if (strcmp (GIMP_OBJECT (procedure)->name,
-                  GIMP_OBJECT (tmp_proc)->name) == 0)
+      if (strcmp (gimp_object_get_name (procedure),
+                  gimp_object_get_name (tmp_proc)) == 0)
         {
           GSList *list2;
 
@@ -351,7 +357,7 @@ gimp_plug_in_manager_add_procedure (GimpPlugInManager   *manager,
 
           g_printerr ("Removing duplicate PDB procedure '%s' "
                       "registered by '%s'\n",
-                      GIMP_OBJECT (tmp_proc)->name,
+                      gimp_object_get_name (tmp_proc),
                       gimp_filename_to_utf8 (tmp_proc->prog));
 
           /* search the plugin list to see if any plugins had references to
@@ -365,9 +371,10 @@ gimp_plug_in_manager_add_procedure (GimpPlugInManager   *manager,
                 gimp_plug_in_def_remove_procedure (plug_in_def, tmp_proc);
             }
 
-          /* also remove it from the lists of load and save procs */
-          manager->load_procs = g_slist_remove (manager->load_procs, tmp_proc);
-          manager->save_procs = g_slist_remove (manager->save_procs, tmp_proc);
+          /* also remove it from the lists of load, save and export procs */
+          manager->load_procs   = g_slist_remove (manager->load_procs,   tmp_proc);
+          manager->save_procs   = g_slist_remove (manager->save_procs,   tmp_proc);
+          manager->export_procs = g_slist_remove (manager->export_procs, tmp_proc);
 
           /* and from the history */
           gimp_plug_in_manager_history_remove (manager, tmp_proc);

@@ -4,9 +4,9 @@
  * gimpviewrenderer.h
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_VIEW_RENDERER_H__
@@ -78,18 +77,19 @@ struct _GimpViewRendererClass
   gint           frame_top;
 
   /*  signals  */
-  void (* update)      (GimpViewRenderer   *renderer);
+  void (* update)      (GimpViewRenderer *renderer);
 
   /*  virtual functions  */
-  void (* set_context) (GimpViewRenderer   *renderer,
-                        GimpContext        *context);
-  void (* invalidate)  (GimpViewRenderer   *renderer);
-  void (* draw)        (GimpViewRenderer   *renderer,
-                        GtkWidget          *widget,
-                        cairo_t            *cr,
-                        const GdkRectangle *area);
-  void (* render)      (GimpViewRenderer   *renderer,
-                        GtkWidget          *widget);
+  void (* set_context) (GimpViewRenderer *renderer,
+                        GimpContext      *context);
+  void (* invalidate)  (GimpViewRenderer *renderer);
+  void (* draw)        (GimpViewRenderer *renderer,
+                        GtkWidget        *widget,
+                        cairo_t          *cr,
+                        gint              available_width,
+                        gint              available_height);
+  void (* render)      (GimpViewRenderer *renderer,
+                        GtkWidget        *widget);
 };
 
 
@@ -133,27 +133,25 @@ void   gimp_view_renderer_update_idle      (GimpViewRenderer   *renderer);
 void   gimp_view_renderer_remove_idle      (GimpViewRenderer   *renderer);
 
 void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,
-                                            GdkWindow          *window,
                                             GtkWidget          *widget,
-                                            const GdkRectangle *draw_area,
-                                            const GdkRectangle *expose_area);
+                                            cairo_t            *cr,
+                                            gint                available_width,
+                                            gint                available_height);
 
 /*  protected  */
 
-void   gimp_view_renderer_default_render_surface (GimpViewRenderer *renderer,
-                                                  GtkWidget        *widget,
+void   gimp_view_renderer_render_temp_buf_simple (GimpViewRenderer *renderer,
                                                   TempBuf          *temp_buf);
-void   gimp_view_renderer_default_render_stock   (GimpViewRenderer *renderer,
-                                                  GtkWidget        *widget,
-                                                  const gchar      *stock_id);
-void   gimp_view_renderer_render_surface         (GimpViewRenderer *renderer,
+void   gimp_view_renderer_render_temp_buf        (GimpViewRenderer *renderer,
                                                   TempBuf          *temp_buf,
                                                   gint              channel,
                                                   GimpViewBG        inside_bg,
                                                   GimpViewBG        outside_bg);
-
 void   gimp_view_renderer_render_pixbuf          (GimpViewRenderer *renderer,
                                                   GdkPixbuf        *pixbuf);
+void   gimp_view_renderer_render_stock           (GimpViewRenderer *renderer,
+                                                  GtkWidget        *widget,
+                                                  const gchar      *stock_id);
 
 
 

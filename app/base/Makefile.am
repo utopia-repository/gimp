@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(CAIRO_CFLAGS)		\
 	$(GLIB_CFLAGS)		\
 	-I$(includedir)
 
@@ -62,8 +63,6 @@ libappbase_a_SOURCES = \
 	tile-cache.h		\
 	tile-manager.c		\
 	tile-manager.h		\
-	tile-manager-crop.c	\
-	tile-manager-crop.h	\
 	tile-manager-preview.c	\
 	tile-manager-preview.h	\
 	tile-manager-private.h	\
@@ -73,8 +72,6 @@ libappbase_a_SOURCES = \
 	tile-rowhints.h		\
 	tile-swap.c		\
 	tile-swap.h
-
-EXTRA_DIST = makefile.msc
 
 #
 # rules to generate built sources
@@ -92,7 +89,7 @@ base-enums.c: $(srcdir)/base-enums.h $(GIMP_MKENUMS)
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
 		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
-		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
 		$(srcdir)/base-enums.h > xgen-bec \
 	&& cp xgen-bec $(@F) \
 	&& rm -f xgen-bec

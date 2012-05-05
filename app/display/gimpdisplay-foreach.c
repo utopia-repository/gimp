@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "display-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 #include "core/gimplist.h"
@@ -40,13 +41,14 @@ gimp_displays_dirty (Gimp *gimp)
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
 
-  for (list = GIMP_LIST (gimp->displays)->list;
+  for (list = gimp_get_display_iter (gimp);
        list;
        list = g_list_next (list))
     {
       GimpDisplay *display = list->data;
+      GimpImage   *image   = gimp_display_get_image (display);
 
-      if (display->image && display->image->dirty)
+      if (image && gimp_image_is_dirty (image))
         return TRUE;
     }
 
@@ -58,7 +60,8 @@ gimp_displays_image_dirty_callback (GimpImage     *image,
                                     GimpDirtyMask  dirty_mask,
                                     GimpContainer *container)
 {
-  if (image->dirty && image->disp_count > 0 &&
+  if (gimp_image_is_dirty (image)              &&
+      gimp_image_get_display_count (image) > 0 &&
       ! gimp_container_have (container, GIMP_OBJECT (image)))
     gimp_container_add (container, GIMP_OBJECT (image));
 }
@@ -83,7 +86,7 @@ gimp_displays_image_clean_callback (GimpImage     *image,
                                     GimpDirtyMask  dirty_mask,
                                     GimpContainer *container)
 {
-  if (! image->dirty)
+  if (! gimp_image_is_dirty (image))
     gimp_container_remove (container, GIMP_OBJECT (image));
 }
 
@@ -123,13 +126,14 @@ gimp_displays_get_dirty_images (Gimp *gimp)
                                   G_CALLBACK (gimp_displays_image_clean_callback),
                                   container);
 
-      for (list = GIMP_LIST (gimp->images)->list;
+      for (list = gimp_get_image_iter (gimp);
            list;
            list = g_list_next (list))
         {
           GimpImage *image = list->data;
 
-          if (image->dirty && image->disp_count > 0)
+          if (gimp_image_is_dirty (image) &&
+              gimp_image_get_display_count (image) > 0)
             gimp_container_add (container, GIMP_OBJECT (image));
         }
 
@@ -155,7 +159,7 @@ gimp_displays_delete (Gimp *gimp)
    */
   while (! gimp_container_is_empty (gimp->displays))
     {
-      GimpDisplay *display = GIMP_LIST (gimp->displays)->list->data;
+      GimpDisplay *display = gimp_get_display_iter (gimp)->data;
 
       gimp_display_delete (display);
     }
@@ -176,7 +180,7 @@ gimp_displays_close (Gimp *gimp)
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  list = g_list_copy (GIMP_LIST (gimp->displays)->list);
+  list = g_list_copy (gimp_get_display_iter (gimp));
 
   for (iter = list; iter; iter = g_list_next (iter))
     {
@@ -209,13 +213,13 @@ gimp_displays_reconnect (Gimp      *gimp,
         contexts = g_list_prepend (contexts, list->data);
     }
 
-  for (list = GIMP_LIST (gimp->displays)->list;
+  for (list = gimp_get_display_iter (gimp);
        list;
        list = g_list_next (list))
     {
       GimpDisplay *display = list->data;
 
-      if (display->image == old)
+      if (gimp_display_get_image (display) == old)
         gimp_display_set_image (display, new);
     }
 
@@ -227,6 +231,42 @@ gimp_displays_reconnect (Gimp      *gimp,
   g_list_free (contexts);
 }
 
+gint
+gimp_displays_get_num_visible (Gimp *gimp)
+{
+  GList *list;
+  gint   visible = 0;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), 0);
+
+  for (list = gimp_get_display_iter (gimp);
+       list;
+       list = g_list_next (list))
+    {
+      GimpDisplay      *display = list->data;
+      GimpDisplayShell *shell   = gimp_display_get_shell (display);
+
+      if (gtk_widget_is_drawable (GTK_WIDGET (shell)))
+        {
+          GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+
+          if (GTK_IS_WINDOW (toplevel))
+            {
+              GdkWindow      *window = gtk_widget_get_window (toplevel);
+              GdkWindowState  state  = gdk_window_get_state (window);
+
+              if ((state & (GDK_WINDOW_STATE_WITHDRAWN |
+                            GDK_WINDOW_STATE_ICONIFIED)) == 0)
+                {
+                  visible++;
+                }
+            }
+        }
+    }
+
+  return visible;
+}
+
 void
 gimp_displays_set_busy (Gimp *gimp)
 {
@@ -234,12 +274,12 @@ gimp_displays_set_busy (Gimp *gimp)
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  for (list = GIMP_LIST (gimp->displays)->list;
+  for (list = gimp_get_display_iter (gimp);
        list;
        list = g_list_next (list))
     {
       GimpDisplayShell *shell =
-        GIMP_DISPLAY_SHELL (GIMP_DISPLAY (list->data)->shell);
+        gimp_display_get_shell (GIMP_DISPLAY (list->data));
 
       gimp_display_shell_set_override_cursor (shell, GDK_WATCH);
     }
@@ -252,12 +292,12 @@ gimp_displays_unset_busy (Gimp *gimp)
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  for (list = GIMP_LIST (gimp->displays)->list;
+  for (list = gimp_get_display_iter (gimp);
        list;
        list = g_list_next (list))
     {
       GimpDisplayShell *shell =
-        GIMP_DISPLAY_SHELL (GIMP_DISPLAY (list->data)->shell);
+        gimp_display_get_shell (GIMP_DISPLAY (list->data));
 
       gimp_display_shell_unset_override_cursor (shell);
     }

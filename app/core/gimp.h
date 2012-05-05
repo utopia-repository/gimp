@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_H__
@@ -47,6 +46,7 @@ struct _Gimp
   gboolean                no_data;
   gboolean                no_fonts;
   gboolean                no_interface;
+  gboolean                show_gui;
   gboolean                use_shm;
   GimpMessageHandlerType  message_handler;
   gboolean                console_messages;
@@ -74,16 +74,16 @@ struct _Gimp
   GimpPlugInManager      *plug_in_manager;
 
   GimpContainer          *images;
-  gint                    next_image_ID;
   guint32                 next_guide_ID;
   guint32                 next_sample_point_ID;
-  GHashTable             *image_table;
+  GimpIdTable            *image_table;
 
-  gint                    next_item_ID;
-  GHashTable             *item_table;
+  GimpIdTable            *item_table;
 
   GimpContainer          *displays;
   gint                    next_display_ID;
+
+  GList                  *image_windows;
 
   GimpBuffer             *global_buffer;
   GimpContainer          *named_buffers;
@@ -91,9 +91,13 @@ struct _Gimp
   GimpContainer          *fonts;
 
   GimpDataFactory        *brush_factory;
+  GimpDataFactory        *dynamics_factory;
   GimpDataFactory        *pattern_factory;
   GimpDataFactory        *gradient_factory;
   GimpDataFactory        *palette_factory;
+  GimpDataFactory        *tool_preset_factory;
+
+  GimpTagCache           *tag_cache;
 
   GimpPDB                *pdb;
 
@@ -132,7 +136,7 @@ struct _GimpClass
 
   /*  emitted if an image is loaded and opened with a display  */
   void     (* image_opened)   (Gimp               *gimp,
-			       const gchar        *uri);
+                               const gchar        *uri);
 };
 
 
@@ -148,6 +152,9 @@ Gimp         * gimp_new                  (const gchar         *name,
                                           gboolean             console_messages,
                                           GimpStackTraceMode   stack_trace_mode,
                                           GimpPDBCompatMode    pdb_compat_mode);
+void           gimp_set_show_gui         (Gimp                *gimp,
+                                          gboolean             show_gui);
+gboolean       gimp_get_show_gui         (Gimp                *gimp);
 
 void           gimp_load_config          (Gimp                *gimp,
                                           const gchar         *alternate_system_gimprc,
@@ -160,6 +167,12 @@ gboolean       gimp_is_restored          (Gimp                *gimp);
 
 void           gimp_exit                 (Gimp                *gimp,
                                           gboolean             force);
+
+GList        * gimp_get_image_iter       (Gimp                *gimp);
+GList        * gimp_get_display_iter     (Gimp                *gimp);
+GList        * gimp_get_image_windows    (Gimp                *gimp);
+GList        * gimp_get_paint_info_iter  (Gimp                *gimp);
+GList        * gimp_get_tool_info_iter   (Gimp                *gimp);
 
 void           gimp_set_global_buffer    (Gimp                *gimp,
                                           GimpBuffer          *buffer);
@@ -191,9 +204,13 @@ void           gimp_message_valist       (Gimp                *gimp,
                                           GimpMessageSeverity  severity,
                                           const gchar         *format,
                                           va_list              args);
+void           gimp_message_literal      (Gimp                *gimp,
+                                          GObject             *handler,
+                                          GimpMessageSeverity  severity,
+                                          const gchar         *message);
 
 void           gimp_image_opened         (Gimp                *gimp,
-					  const gchar         *uri);
+                                          const gchar         *uri);
 
 gboolean       gimp_use_gegl             (Gimp                *gimp);
 

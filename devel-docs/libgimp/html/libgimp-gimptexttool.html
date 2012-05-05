@@ -37,56 +37,56 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimp-gimptexttool.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimptexttool.html#gimp-text-fontname" title="gimp_text_fontname ()">gimp_text_fontname</a>                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> border</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> antialias</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *fontname</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname" title="gimp_text_get_extents_fontname ()">gimp_text_get_extents_fontname</a>      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *fontname</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *ascent</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *descent</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimptexttool.html#gimp-text" title="gimp_text ()">gimp_text</a>                           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> border</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> antialias</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *foundry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *family</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *weight</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *slant</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *set_width</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *spacing</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *registry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *encoding</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents" title="gimp_text_get_extents ()">gimp_text_get_extents</a>               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *foundry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *family</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *weight</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *slant</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *set_width</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *spacing</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *registry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *encoding</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *ascent</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *descent</code></em>);
+<pre class="synopsis"><span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimptexttool.html#gimp-text-fontname" title="gimp_text_fontname ()">gimp_text_fontname</a>                  (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> border</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> antialias</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname" title="gimp_text_get_extents_fontname ()">gimp_text_get_extents_fontname</a>      (<em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *ascent</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *descent</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimptexttool.html#gimp-text" title="gimp_text ()">gimp_text</a>                           (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> border</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> antialias</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *foundry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *family</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *weight</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *slant</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *set_width</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *spacing</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *registry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *encoding</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents" title="gimp_text_get_extents ()">gimp_text_get_extents</a>               (<em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *foundry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *family</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *weight</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *slant</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *set_width</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *spacing</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *registry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *encoding</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *ascent</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *descent</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -99,16 +99,16 @@ Functions for controlling the text tool.
 <a name="libgimp-gimptexttool.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gimp-text-fontname"></a><h3>gimp_text_fontname ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_text_fontname                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> border</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> antialias</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *fontname</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_text_fontname                  (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> border</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> antialias</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>);</pre>
 <p>
 Add text at the specified location as a floating selection or a new
 layer.
@@ -181,14 +181,14 @@ vertical resolution.
 <hr>
 <div class="refsect2">
 <a name="gimp-text-get-extents-fontname"></a><h3>gimp_text_get_extents_fontname ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_text_get_extents_fontname      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *fontname</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *ascent</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *descent</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_text_get_extents_fontname      (<em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *ascent</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *descent</code></em>);</pre>
 <p>
 Get extents of the bounding box for the specified text.
 </p>
@@ -246,30 +246,27 @@ into account.
 <hr>
 <div class="refsect2">
 <a name="gimp-text"></a><h3>gimp_text ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_text                           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> border</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> antialias</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *foundry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *family</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *weight</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *slant</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *set_width</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *spacing</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *registry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *encoding</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_text                           (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> border</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> antialias</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *foundry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *family</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *weight</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *slant</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *set_width</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *spacing</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *registry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *encoding</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">gimp_text</code> is deprecated and should not be used in newly-written code.</p>
+<p><code class="literal">gimp_text</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimptexttool.html#gimp-text-fontname" title="gimp_text_fontname ()"><code class="function">gimp_text_fontname()</code></a> instead.</p>
 </div>
-<p>
-This procedure is deprecated! Use <a class="link" href="libgimp-gimptexttool.html#gimp-text-fontname" title="gimp_text_fontname ()"><code class="function">gimp_text_fontname()</code></a> instead.
-</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -351,29 +348,25 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimptexttool.htm
 <hr>
 <div class="refsect2">
 <a name="gimp-text-get-extents"></a><h3>gimp_text_get_extents ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_text_get_extents               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *foundry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *family</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *weight</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *slant</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *set_width</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *spacing</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *registry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *encoding</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *ascent</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *descent</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_text_get_extents               (<em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> size</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"><span class="type">GimpSizeType</span></a> size_type</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *foundry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *family</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *weight</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *slant</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *set_width</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *spacing</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *registry</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *encoding</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *ascent</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *descent</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">gimp_text_get_extents</code> is deprecated and should not be used in newly-written code.</p>
+<p><code class="literal">gimp_text_get_extents</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname" title="gimp_text_get_extents_fontname ()"><code class="function">gimp_text_get_extents_fontname()</code></a> instead.</p>
 </div>
-<p>
-This procedure is deprecated! Use <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname" title="gimp_text_get_extents_fontname ()"><code class="function">gimp_text_get_extents_fontname()</code></a>
-instead.
-</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

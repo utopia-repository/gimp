@@ -1,9 +1,9 @@
 /* gimptool in C
  * Copyright (C) 2001-2007 Tor Lillqvist
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -33,9 +32,9 @@
 
 #include <sys/stat.h>
 
-#include <glib.h>
+#include <glib-object.h>
 
-#include "libgimpbase/gimpversion.h"
+#include "libgimpbase/gimpbase.h"
 
 #ifdef G_OS_WIN32
 #include "libgimpbase/gimpwin32-io.h"
@@ -94,6 +93,10 @@ static struct {
   { "gimpplugindir",  GIMPPLUGINDIR  },
   { "gimpdatadir",    GIMPDATADIR    }
 };
+
+
+static void  usage (int exit_status) G_GNUC_NORETURN;
+
 
 #ifdef G_OS_WIN32
 
@@ -329,7 +332,7 @@ user directory.\n\
 \n\
 For plug-ins which do not use GTK+, the --build and --install options can be\n\
 appended with -noui for appropriate settings. For plug-ins that use GTK+ but\n\
-not libgumpui, append -nogimpui.\n");
+not libgimpui, append -nogimpui.\n");
   exit (exit_status);
 }
 
@@ -523,33 +526,24 @@ do_build_nogimpui (const gchar *what)
 }
 
 static gchar *
-get_user_plugin_dir (gboolean forward_slashes)
+get_user_plugin_dir (void)
 {
-#ifdef G_OS_WIN32
-  /* In the --install-bin and --uninstall modes we want
-   * to use backward slashes on Win32, because we invoke
-   * the COPY and DEL commands directly with system().
-   */
-
-  const gchar slash = forward_slashes ? '/' : '\\';
-#else
-  const gchar slash = '/';
-#endif
-
-  return g_strdup_printf ("%s%c" GIMPDIR "%cplug-ins",
-			  g_get_home_dir (), slash, slash);
+  return g_build_filename (g_get_home_dir (),
+                           GIMPDIR,
+                           "plug-ins",
+                           NULL);
 }
 
 static void
 do_install (const gchar *what)
 {
-  do_build_2 (get_cflags (), get_libs (), get_user_plugin_dir (FALSE), what);
+  do_build_2 (get_cflags (), get_libs (), get_user_plugin_dir (), what);
 }
 
 static void
 do_install_noui (const gchar *what)
 {
-  do_build_2 (get_cflags_noui (), get_libs_noui (), get_user_plugin_dir (FALSE), what);
+  do_build_2 (get_cflags_noui (), get_libs_noui (), get_user_plugin_dir (), what);
 }
 
 static void
@@ -561,15 +555,16 @@ do_install_nogimpui (const gchar *what)
 static gchar *
 get_sys_plugin_dir (gboolean forward_slashes)
 {
-#ifdef G_OS_WIN32
-  const gchar slash = forward_slashes ? '/' : '\\';
-#else
-  const gchar slash = '/';
-#endif
+  const gchar *rprefix;
 
-  return g_strdup_printf ("%s%clib%cgimp%c" GIMP_PLUGIN_VERSION "%cplug-ins",
-			  get_runtime_prefix (slash),
-			  slash, slash, slash, slash);
+  rprefix = get_runtime_prefix (forward_slashes ? '/' : G_DIR_SEPARATOR);
+
+  return g_build_path (forward_slashes ? "/" : G_DIR_SEPARATOR_S,
+                       rprefix,
+                       "lib", "gimp",
+                       GIMP_PLUGIN_VERSION,
+                       "plug-ins",
+                       NULL);
 }
 
 static void
@@ -605,7 +600,7 @@ do_install_bin_2 (const gchar *dir,
 static void
 do_install_bin (const gchar *what)
 {
-  do_install_bin_2 (get_user_plugin_dir (FALSE), what);
+  do_install_bin_2 (get_user_plugin_dir (), what);
 }
 
 static void
@@ -637,7 +632,7 @@ maybe_append_exe (const gchar *what)
 static void
 do_uninstall_bin (const gchar *what)
 {
-  do_uninstall (get_user_plugin_dir (FALSE), maybe_append_exe (what));
+  do_uninstall (get_user_plugin_dir (), maybe_append_exe (what));
 }
 
 static void
@@ -647,56 +642,46 @@ do_uninstall_admin_bin (const gchar *what)
 }
 
 static gchar *
-get_user_script_dir (gboolean forward_slashes)
+get_user_script_dir (void)
 {
-#ifdef G_OS_WIN32
-  const gchar slash = forward_slashes ? '/' : '\\';
-#else
-  const gchar slash = '/';
-#endif
-
-  return g_strdup_printf ("%s%c" GIMPDIR "%cscripts",
-			  g_get_home_dir (), slash, slash);
+  return g_build_filename (g_get_home_dir (),
+                           GIMPDIR,
+                           "scripts",
+                           NULL);
 }
 
 static void
 do_install_script (const gchar *what)
 {
-  do_install_bin_2 (get_user_script_dir (FALSE), what);
+  do_install_bin_2 (get_user_script_dir (), what);
 }
 
 static gchar *
-get_sys_script_dir (gboolean forward_slashes)
+get_sys_script_dir (void)
 {
-#ifdef G_OS_WIN32
-  const gchar slash = forward_slashes ? '/' : '\\';
-#else
-  const gchar slash = '/';
-#endif
-
-  return g_strdup_printf ("%s%cshare%cgimp%c%d.%d%cscripts",
-			  get_runtime_prefix (slash),
-			  slash, slash, slash,
-			  GIMP_MAJOR_VERSION, GIMP_MINOR_VERSION,
-			  slash);
+  return g_build_filename (get_runtime_prefix (G_DIR_SEPARATOR),
+                           "share", "gimp",
+                           GIMP_PLUGIN_VERSION,
+                           "scripts",
+                           NULL);
 }
 
 static void
 do_install_admin_script (const gchar *what)
 {
-  do_install_bin_2 (get_sys_script_dir (FALSE), what);
+  do_install_bin_2 (get_sys_script_dir (), what);
 }
 
 static void
 do_uninstall_script (const gchar *what)
 {
-  do_uninstall (get_user_script_dir (FALSE), what);
+  do_uninstall (get_user_script_dir (), what);
 }
 
 static void
 do_uninstall_admin_script (const gchar *what)
 {
-  do_uninstall (get_sys_script_dir (FALSE), what);
+  do_uninstall (get_sys_script_dir (), what);
 }
 
 int

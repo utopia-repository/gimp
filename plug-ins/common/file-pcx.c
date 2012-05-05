@@ -1,9 +1,9 @@
 /*
  * pcx.c GIMP plug-in for loading & saving PCX files
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* This code is based in parts on code by Francisco Bustamante, but the
@@ -36,6 +35,7 @@
 #define LOAD_PROC      "file-pcx-load"
 #define SAVE_PROC      "file-pcx-save"
 #define PLUG_IN_BINARY "file-pcx"
+#define PLUG_IN_ROLE   "gimp-file-pcx"
 
 /* Declare local functions.  */
 
@@ -81,13 +81,13 @@ static gint   save_image (const gchar      *filename,
 static void   save_8     (FILE             *fp,
                           gint              width,
                           gint              height,
-                          guchar           *buffer);
+                          const guchar     *buffer);
 static void   save_24    (FILE             *fp,
                           gint              width,
                           gint              height,
-                          guchar           *buffer);
+                          const guchar     *buffer);
 static void   writeline  (FILE             *fp,
-                          guchar           *buffer,
+                          const guchar     *buffer,
                           gint              bytes);
 
 
@@ -106,7 +106,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
@@ -117,7 +117,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -211,7 +211,7 @@ run (const gchar      *name,
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-          export = gimp_export_image (&image_ID, &drawable_ID, "PCX",
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_INDEXED));
@@ -269,7 +269,7 @@ run (const gchar      *name,
   values[0].data.d_status = status;
 }
 
-static guchar mono[6]= { 0, 0, 0, 255, 255, 255 };
+static const guchar mono[6]= { 0, 0, 0, 255, 255, 255 };
 
 static struct
 {
@@ -292,23 +292,23 @@ static struct
 static struct {
   size_t   size;
   gpointer address;
-} pcx_header_buf_xlate[] = {
+} const pcx_header_buf_xlate[] = {
   { 1,  &pcx_header.manufacturer },
-  { 1,  &pcx_header.version },
-  { 1,  &pcx_header.compression },
-  { 1,  &pcx_header.bpp },
-  { 2,  &pcx_header.x1 },
-  { 2,  &pcx_header.y1 },
-  { 2,  &pcx_header.x2 },
-  { 2,  &pcx_header.y2 },
-  { 2,  &pcx_header.hdpi },
-  { 2,  &pcx_header.vdpi },
-  { 48, &pcx_header.colormap },
-  { 1,  &pcx_header.reserved },
-  { 1,  &pcx_header.planes },
+  { 1,  &pcx_header.version      },
+  { 1,  &pcx_header.compression  },
+  { 1,  &pcx_header.bpp          },
+  { 2,  &pcx_header.x1           },
+  { 2,  &pcx_header.y1           },
+  { 2,  &pcx_header.x2           },
+  { 2,  &pcx_header.y2           },
+  { 2,  &pcx_header.hdpi         },
+  { 2,  &pcx_header.vdpi         },
+  { 48, &pcx_header.colormap     },
+  { 1,  &pcx_header.reserved     },
+  { 1,  &pcx_header.planes       },
   { 2,  &pcx_header.bytesperline },
-  { 2,  &pcx_header.color },
-  { 58, &pcx_header.filler },
+  { 2,  &pcx_header.color        },
+  { 58, &pcx_header.filler       },
   { 0,  NULL }
 };
 
@@ -371,6 +371,7 @@ load_image (const gchar  *filename,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("Could not read header from '%s'"),
                    gimp_filename_to_utf8 (filename));
+      fclose (fd);
       return -1;
     }
 
@@ -381,28 +382,32 @@ load_image (const gchar  *filename,
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a PCX file"),
                    gimp_filename_to_utf8 (filename));
+      fclose (fd);
       return -1;
     }
 
-  offset_x = GUINT16_FROM_LE (pcx_header.x1);
-  offset_y = GUINT16_FROM_LE (pcx_header.y1);
-  width = GUINT16_FROM_LE (pcx_header.x2) - offset_x + 1;
-  height = GUINT16_FROM_LE (pcx_header.y2) - offset_y + 1;
+  offset_x     = GUINT16_FROM_LE (pcx_header.x1);
+  offset_y     = GUINT16_FROM_LE (pcx_header.y1);
+  width        = GUINT16_FROM_LE (pcx_header.x2) - offset_x + 1;
+  height       = GUINT16_FROM_LE (pcx_header.y2) - offset_y + 1;
   bytesperline = GUINT16_FROM_LE (pcx_header.bytesperline);
 
   if ((width < 0) || (width > GIMP_MAX_IMAGE_SIZE))
     {
       g_message (_("Unsupported or invalid image width: %d"), width);
+      fclose (fd);
       return -1;
     }
   if ((height < 0) || (height > GIMP_MAX_IMAGE_SIZE))
     {
       g_message (_("Unsupported or invalid image height: %d"), height);
+      fclose (fd);
       return -1;
     }
   if (bytesperline < (width * pcx_header.bpp) / 8)
     {
       g_message (_("Invalid number of bytes per line in PCX header"));
+      fclose (fd);
       return -1;
     }
 
@@ -410,6 +415,7 @@ load_image (const gchar  *filename,
   if (G_MAXSIZE / width / height < 3)
     {
       g_message (_("Image dimensions too large: width %d x height %d"), width, height);
+      fclose (fd);
       return -1;
     }
 
@@ -426,7 +432,7 @@ load_image (const gchar  *filename,
                              GIMP_INDEXED_IMAGE, 100, GIMP_NORMAL_MODE);
     }
   gimp_image_set_filename (image, filename);
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
   gimp_layer_set_offsets (layer, offset_x, offset_y);
   drawable = gimp_drawable_get (layer);
 
@@ -458,12 +464,16 @@ load_image (const gchar  *filename,
   else
     {
       g_message (_("Unusual PCX flavour, giving up"));
+      fclose (fd);
       return -1;
     }
+
+  gimp_progress_update (1.0);
 
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, width, height, TRUE, FALSE);
   gimp_pixel_rgn_set_rect (&pixel_rgn, dest, 0, 0, width, height);
 
+  fclose (fd);
   g_free (dest);
 
   gimp_drawable_flush (drawable);
@@ -667,14 +677,6 @@ save_image (const gchar  *filename,
       return FALSE;
   }
 
-  if ((fp = g_fopen (filename, "wb")) == NULL)
-    {
-      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-                   _("Could not open '%s' for writing: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
-      return FALSE;
-    }
-
   pixels = (guchar *) g_malloc (width * height * pcx_header.planes);
   gimp_pixel_rgn_get_rect (&pixel_rgn, pixels, 0, 0, width, height);
 
@@ -701,6 +703,14 @@ save_image (const gchar  *filename,
     {
       g_message (_("Bottom border out of bounds (must be < %d): %d"), (1<<16),
                  offset_y + height - 1);
+      return FALSE;
+    }
+
+  if ((fp = g_fopen (filename, "wb")) == NULL)
+    {
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+                   _("Could not open '%s' for writing: %s"),
+                   gimp_filename_to_utf8 (filename), g_strerror (errno));
       return FALSE;
     }
 
@@ -765,10 +775,10 @@ save_image (const gchar  *filename,
 }
 
 static void
-save_8 (FILE   *fp,
-        gint    width,
-        gint    height,
-        guchar *buffer)
+save_8 (FILE         *fp,
+        gint          width,
+        gint          height,
+        const guchar *buffer)
 {
   int row;
 
@@ -781,10 +791,10 @@ save_8 (FILE   *fp,
 }
 
 static void
-save_24 (FILE   *fp,
-         gint    width,
-         gint    height,
-         guchar *buffer)
+save_24 (FILE         *fp,
+         gint          width,
+         gint          height,
+         const guchar *buffer)
 {
   int     x, y, c;
   guchar *line;
@@ -808,12 +818,13 @@ save_24 (FILE   *fp,
 }
 
 static void
-writeline (FILE   *fp,
-           guchar *buffer,
-           gint    bytes)
+writeline (FILE         *fp,
+           const guchar *buffer,
+           gint          bytes)
 {
-  guchar  value, count;
-  guchar *finish = buffer + bytes;
+  const guchar *finish = buffer + bytes;
+  guchar        value;
+  guchar        count;
 
   while (buffer < finish)
     {

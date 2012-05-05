@@ -1,27 +1,25 @@
 /* -*- Mode: C; c-basic-offset: 4 -*-
-    Gimp-Python - allows the writing of Gimp plugins in Python.
-    Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Gimp-Python - allows the writing of Gimp plugins in Python.
+ * Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
 
-#undef GIMP_DISABLE_DEPRECATED
 #include "pygimp.h"
 
 static PyObject *
@@ -34,9 +32,37 @@ img_add_channel(PyGimpImage *self, PyObject *args)
 	                        &PyGimpChannel_Type, &chn, &pos))
 	return NULL;
 
-    if (!gimp_image_add_channel(self->ID, chn->ID, pos)) {
+    if (!gimp_image_insert_channel(self->ID, chn->ID, -1, pos)) {
 	PyErr_Format(pygimp_error,
 		     "could not add channel (ID %d) to image (ID %d)",
+		     chn->ID, self->ID);
+	return NULL;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+img_insert_channel(PyGimpImage *self, PyObject *args, PyObject *kwargs)
+{
+    PyGimpChannel *chn;
+    PyGimpChannel *parent = NULL;
+    int pos = -1;
+
+    static char *kwlist[] = { "channel", "parent", "position", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "O!|O!i:insert_channel", kwlist,
+                                     &PyGimpChannel_Type, &chn,
+                                     &PyGimpChannel_Type, &parent,
+                                     &pos))
+	return NULL;
+
+    if (!gimp_image_insert_channel(self->ID,
+                                   chn->ID, parent ? parent->ID : -1, pos)) {
+	PyErr_Format(pygimp_error,
+		     "could not insert channel (ID %d) to image (ID %d)",
 		     chn->ID, self->ID);
 	return NULL;
     }
@@ -55,9 +81,37 @@ img_add_layer(PyGimpImage *self, PyObject *args)
 			  &pos))
 	return NULL;
 
-    if (!gimp_image_add_layer(self->ID, lay->ID, pos)) {
+    if (!gimp_image_insert_layer(self->ID, lay->ID, -1, pos)) {
 	PyErr_Format(pygimp_error,
 		     "could not add layer (ID %d) to image (ID %d)",
+		     lay->ID, self->ID);
+	return NULL;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+img_insert_layer(PyGimpImage *self, PyObject *args, PyObject *kwargs)
+{
+    PyGimpLayer *lay;
+    PyGimpLayer *parent = NULL;
+    int pos = -1;
+
+    static char *kwlist[] = { "layer", "parent", "position", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "O!|O!i:insert_layer", kwlist,
+                                     &PyGimpLayer_Type, &lay,
+                                     &PyGimpLayer_Type, &parent,
+                                     &pos))
+	return NULL;
+
+    if (!gimp_image_insert_layer(self->ID,
+                                 lay->ID, parent ? parent->ID : -1, pos)) {
+	PyErr_Format(pygimp_error,
+		     "could not insert layer (ID %d) to image (ID %d)",
 		     lay->ID, self->ID);
 	return NULL;
     }
@@ -127,15 +181,15 @@ img_new_layer(PyGimpImage *self, PyObject *args, PyObject *kwargs)
     }
 
     if (!gimp_drawable_fill(layer_id, fill_mode)) {
-        gimp_drawable_delete(layer_id);
+        gimp_item_delete(layer_id);
         PyErr_Format(pygimp_error,
                      "could not fill new layer with fill mode %d",
                      fill_mode);
         return NULL;
     }
 
-    if (!gimp_image_add_layer(self->ID, layer_id, pos)) {
-        gimp_drawable_delete(layer_id);
+    if (!gimp_image_insert_layer(self->ID, layer_id, -1, pos)) {
+        gimp_item_delete(layer_id);
         PyErr_Format(pygimp_error,
                      "could not add layer (ID %d) to image (ID %d)",
                      layer_id, self->ID);
@@ -150,7 +204,7 @@ img_new_layer(PyGimpImage *self, PyObject *args, PyObject *kwargs)
         return NULL;
     }
 
-    return pygimp_layer_new(layer_id);
+    return pygimp_group_layer_new(layer_id);
 }
 
 
@@ -182,7 +236,7 @@ img_enable_undo(PyGimpImage *self)
 static PyObject *
 img_flatten(PyGimpImage *self)
 {
-    return pygimp_layer_new(gimp_image_flatten(self->ID));
+    return pygimp_group_layer_new(gimp_image_flatten(self->ID));
 }
 
 static PyObject *
@@ -193,7 +247,7 @@ img_lower_channel(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!:lower_channel", &PyGimpChannel_Type, &chn))
 	return NULL;
 
-    if (!gimp_image_lower_channel(self->ID, chn->ID)) {
+    if (!gimp_image_lower_item(self->ID, chn->ID)) {
 	PyErr_Format(pygimp_error,
 		     "could not lower channel (ID %d) on image (ID %d)",
 		     chn->ID, self->ID);
@@ -212,7 +266,7 @@ img_lower_layer(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!:lower_layer", &PyGimpLayer_Type, &lay))
 	return NULL;
 
-    if (!gimp_image_lower_layer(self->ID, lay->ID)) {
+    if (!gimp_image_lower_item(self->ID, lay->ID)) {
 	PyErr_Format(pygimp_error,
 		     "could not lower layer (ID %d) on image (ID %d)",
 		     lay->ID, self->ID);
@@ -232,7 +286,7 @@ img_lower_layer_to_bottom(PyGimpImage *self, PyObject *args)
 			  &PyGimpLayer_Type, &lay))
 	return NULL;
 
-    if (!gimp_image_lower_layer_to_bottom(self->ID, lay->ID)) {
+    if (!gimp_image_lower_item_to_bottom(self->ID, lay->ID)) {
 	PyErr_Format(pygimp_error,
 		     "could not lower layer (ID %d) to bottom on image (ID %d)",
 		     lay->ID, self->ID);
@@ -262,7 +316,7 @@ img_merge_visible_layers(PyGimpImage *self, PyObject *args)
 	return NULL;
     }
 
-    return pygimp_layer_new(id);
+    return pygimp_group_layer_new(id);
 }
 
 static PyObject *
@@ -286,7 +340,7 @@ img_merge_down(PyGimpImage *self, PyObject *args)
 	return NULL;
     }
 
-    return pygimp_layer_new(id);
+    return pygimp_group_layer_new(id);
 }
 
 static PyObject *
@@ -305,7 +359,7 @@ img_pick_correlate_layer(PyGimpImage *self, PyObject *args)
 	return Py_None;
     }
 
-    return pygimp_layer_new(id);
+    return pygimp_group_layer_new(id);
 }
 
 static PyObject *
@@ -316,7 +370,7 @@ img_raise_channel(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!:raise_channel", &PyGimpChannel_Type, &chn))
 	return NULL;
 
-    if (!gimp_image_raise_channel(self->ID, chn->ID)) {
+    if (!gimp_image_raise_item(self->ID, chn->ID)) {
 	PyErr_Format(pygimp_error,
 		     "could not raise channel (ID %d) on image (ID %d)",
 		     chn->ID, self->ID);
@@ -335,7 +389,7 @@ img_raise_layer(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!:raise_layer", &PyGimpLayer_Type, &lay))
 	return NULL;
 
-    if (!gimp_image_raise_layer(self->ID, lay->ID)) {
+    if (!gimp_image_raise_item(self->ID, lay->ID)) {
 	PyErr_Format(pygimp_error,
 		     "could not raise layer (ID %d) on image (ID %d)",
 		     lay->ID, self->ID);
@@ -355,7 +409,7 @@ img_raise_layer_to_top(PyGimpImage *self, PyObject *args)
 			  &PyGimpLayer_Type, &lay))
 	return NULL;
 
-    if (!gimp_image_raise_layer_to_top(self->ID, lay->ID)) {
+    if (!gimp_image_raise_item_to_top(self->ID, lay->ID)) {
 	PyErr_Format(pygimp_error,
 		     "could not raise layer (ID %d) to top on image (ID %d)",
 		     lay->ID, self->ID);
@@ -455,18 +509,21 @@ img_scale(PyGimpImage *self, PyObject *args, PyObject *kwargs)
 	return NULL;
 
     if (interpolation != -1) {
-        if (!gimp_image_scale_full(self->ID,
-                                   new_width, new_height, interpolation)) {
-            PyErr_Format(pygimp_error, "could not scale image (ID %d) to %dx%d",
-                         self->ID, new_width, new_height);
-            return NULL;
+        gimp_context_push();
+        gimp_context_set_interpolation(interpolation);
+    }
+
+    if (!gimp_image_scale(self->ID, new_width, new_height)) {
+        PyErr_Format(pygimp_error, "could not scale image (ID %d) to %dx%d",
+                     self->ID, new_width, new_height);
+        if (interpolation != -1) {
+            gimp_context_pop();
         }
-    } else {
-        if (!gimp_image_scale(self->ID, new_width, new_height)) {
-            PyErr_Format(pygimp_error, "could not scale image (ID %d) to %dx%d",
-                         self->ID, new_width, new_height);
-            return NULL;
-        }
+        return NULL;
+    }
+
+    if (interpolation != -1) {
+        gimp_context_pop();
     }
 
     Py_INCREF(Py_None);
@@ -500,11 +557,7 @@ img_crop(PyGimpImage *self, PyObject *args, PyObject *kwargs)
 static PyObject *
 img_free_shadow(PyGimpImage *self)
 {
-    if (!gimp_image_free_shadow(self->ID)) {
-	PyErr_Format(pygimp_error, "could not free shadow tiles on image (ID %d)",
-		     self->ID);
-	return NULL;
-    }
+    /* this procedure is deprecated and does absolutely nothing */
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -594,7 +647,7 @@ img_parasite_find(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s:parasite_find", &name))
 	return NULL;
 
-    return pygimp_parasite_new(gimp_image_parasite_find(self->ID, name));
+    return pygimp_parasite_new (gimp_image_get_parasite (self->ID, name));
 }
 
 static PyObject *
@@ -606,7 +659,7 @@ img_parasite_attach(PyGimpImage *self, PyObject *args)
 			  &parasite))
 	return NULL;
 
-    if (!gimp_image_parasite_attach(self->ID, parasite->para)) {
+    if (! gimp_image_attach_parasite (self->ID, parasite->para)) {
 	PyErr_Format(pygimp_error,
 		     "could not attach parasite '%s' to image (ID %d)",
 		     parasite->para->name, self->ID);
@@ -623,6 +676,8 @@ img_attach_new_parasite(PyGimpImage *self, PyObject *args, PyObject *kwargs)
     char *name;
     int flags, size;
     guint8 *data;
+    GimpParasite *parasite;
+    gboolean success;
 
     static char *kwlist[] = { "name", "flags", "data", NULL };
 
@@ -631,7 +686,11 @@ img_attach_new_parasite(PyGimpImage *self, PyObject *args, PyObject *kwargs)
 				     &name, &flags, &data, &size))
 	return NULL;
 
-    if (!gimp_image_attach_new_parasite(self->ID, name, flags, size, data)) {
+    parasite = gimp_parasite_new (name, flags, size, data);
+    success = gimp_image_attach_parasite (self->ID, parasite);
+    gimp_parasite_free (parasite);
+
+    if (!success) {
 	PyErr_Format(pygimp_error,
 		     "could not attach new parasite '%s' to image (ID %d)",
 		     name, self->ID);
@@ -650,7 +709,7 @@ img_parasite_detach(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s:parasite_detach", &name))
 	return NULL;
 
-    if (!gimp_image_parasite_detach(self->ID, name)) {
+    if (!gimp_image_detach_parasite (self->ID, name)) {
 	PyErr_Format(pygimp_error,
 		     "could not detach parasite '%s' from image (ID %d)",
 		     name, self->ID);
@@ -667,7 +726,9 @@ img_parasite_list(PyGimpImage *self)
     gint num_parasites;
     gchar **parasites;
 
-    if (gimp_image_parasite_list(self->ID, &num_parasites, &parasites)) {
+    parasites = gimp_image_get_parasite_list (self->ID, &num_parasites);
+
+    if (parasites) {
 	PyObject *ret;
 	gint i;
 
@@ -695,7 +756,7 @@ img_get_layer_by_tattoo(PyGimpImage *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i:get_layer_by_tattoo", &tattoo))
 	return NULL;
 
-    return pygimp_layer_new(gimp_image_get_layer_by_tattoo(self->ID, tattoo));
+    return pygimp_group_layer_new(gimp_image_get_layer_by_tattoo(self->ID, tattoo));
 }
 
 static PyObject *
@@ -838,7 +899,9 @@ img_undo_group_end(PyGimpImage *self)
 
 static PyMethodDef img_methods[] = {
     {"add_channel",	(PyCFunction)img_add_channel,	METH_VARARGS},
+    {"insert_channel",	(PyCFunction)img_insert_channel,	METH_VARARGS | METH_KEYWORDS},
     {"add_layer",	(PyCFunction)img_add_layer,	METH_VARARGS},
+    {"insert_layer",	(PyCFunction)img_insert_layer,	METH_VARARGS | METH_KEYWORDS},
     {"new_layer",       (PyCFunction)img_new_layer, METH_VARARGS | METH_KEYWORDS},
     {"clean_all",	(PyCFunction)img_clean_all,	METH_NOARGS},
     {"disable_undo",	(PyCFunction)img_disable_undo,	METH_NOARGS},
@@ -956,7 +1019,7 @@ img_get_active_layer(PyGimpImage *self, void *closure)
 	return Py_None;
     }
 
-    return pygimp_layer_new(id);
+    return pygimp_group_layer_new(id);
 }
 
 static int
@@ -1101,6 +1164,23 @@ img_set_filename(PyGimpImage *self, PyObject *value, void *closure)
 }
 
 static PyObject *
+img_get_uri(PyGimpImage *self, void *closure)
+{
+    gchar *uri;
+
+    uri = gimp_image_get_uri(self->ID);
+
+    if (uri) {
+	PyObject *ret = PyString_FromString(uri);
+	g_free(uri);
+	return ret;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
 img_get_floating_selection(PyGimpImage *self, void *closure)
 {
     gint32 id;
@@ -1142,7 +1222,7 @@ img_get_layers(PyGimpImage *self, void *closure)
     ret = PyList_New(n_layers);
 
     for (i = 0; i < n_layers; i++)
-	PyList_SetItem(ret, i, pygimp_layer_new(layers[i]));
+	PyList_SetItem(ret, i, pygimp_group_layer_new(layers[i]));
 
     g_free(layers);
 
@@ -1289,6 +1369,46 @@ img_get_vectors(PyGimpImage *self, void *closure)
     return ret;
 }
 
+static PyObject *
+img_get_active_vectors(PyGimpImage *self, void *closure)
+{
+    gint32 id = gimp_image_get_active_vectors(self->ID);
+
+    if (id == -1) {
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    return pygimp_vectors_new(id);
+}
+
+static int
+img_set_active_vectors(PyGimpImage *self, PyObject *value, void *closure)
+{
+    PyGimpVectors *vtr;
+
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "cannot delete active_vectors");
+        return -1;
+    }
+
+    if (!pygimp_vectors_check(value)) {
+        PyErr_SetString(PyExc_TypeError, "type mismatch");
+        return -1;
+    }
+
+    vtr = (PyGimpVectors *)value;
+
+    if (!gimp_image_set_active_vectors(self->ID, vtr->ID)) {
+        PyErr_Format(pygimp_error,
+                     "could not set active vectors (ID %d) on image (ID %d)",
+                     vtr->ID, self->ID);
+        return -1;
+    }
+
+    return 0;
+}
+
 static PyGetSetDef img_getsets[] = {
     { "ID", (getter)img_get_ID, (setter)0 },
     { "active_channel", (getter)img_get_active_channel,
@@ -1296,6 +1416,8 @@ static PyGetSetDef img_getsets[] = {
     { "active_drawable", (getter)img_get_active_drawable, (setter)0 },
     { "active_layer", (getter)img_get_active_layer,
       (setter)img_set_active_layer },
+    { "active_vectors", (getter)img_get_active_vectors,
+      (setter)img_set_active_vectors},
     { "base_type", (getter)img_get_base_type, (setter)0 },
     { "channels", (getter)img_get_channels, (setter)0 },
     { "colormap", (getter)img_get_colormap, (setter)img_set_colormap },
@@ -1312,6 +1434,7 @@ static PyGetSetDef img_getsets[] = {
     { "tattoo_state", (getter)img_get_tattoo_state,
       (setter)img_set_tattoo_state },
     { "unit", (getter)img_get_unit, (setter)img_set_unit },
+    { "uri", (getter)img_get_uri, (setter)0 },
     { "vectors", (getter)img_get_vectors, (setter)0 },
     { "width", (getter)img_get_width, (setter)0 },
     { NULL, (getter)0, (setter)0 }

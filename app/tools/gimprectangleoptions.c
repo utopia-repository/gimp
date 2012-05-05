@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -43,7 +42,7 @@ enum
   COLUMN_LEFT_NUMBER,
   COLUMN_RIGHT_NUMBER,
   COLUMN_TEXT,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 
@@ -101,7 +100,9 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
     {
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("auto-shrink",
-                                                                 NULL, NULL,
+                                                                 NULL,
+                                                                 N_("Automatically shrink to the nearest "
+                                                                    "rectangular shape in a layer"),
                                                                  FALSE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
@@ -117,15 +118,17 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_enum ("guide",
-                                                              NULL, NULL,
-                                                              GIMP_TYPE_RECTANGLE_GUIDE,
-                                                              GIMP_RECTANGLE_GUIDE_NONE,
+                                                              NULL,
+                                                              N_("Composition guides such as rule of thirds"),
+                                                              GIMP_TYPE_GUIDES_TYPE,
+                                                              GIMP_GUIDES_NONE,
                                                               GIMP_CONFIG_PARAM_FLAGS |
                                                               GIMP_PARAM_STATIC_STRINGS));
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("x",
-                                                                NULL, NULL,
+                                                                NULL,
+                                                                N_("X coordinate of top left corner"),
                                                                 -GIMP_MAX_IMAGE_SIZE,
                                                                 GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
@@ -134,7 +137,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("y",
-                                                                NULL, NULL,
+                                                                NULL,
+                                                                N_("Y coordinate of top left corner"),
                                                                 -GIMP_MAX_IMAGE_SIZE,
                                                                 GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
@@ -143,7 +147,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("width",
-                                                                NULL, NULL,
+                                                                NULL,
+                                                                N_("Width of selection"),
                                                                 0.0, GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
                                                                 GIMP_PARAM_READWRITE |
@@ -151,7 +156,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("height",
-                                                                NULL, NULL,
+                                                                NULL,
+                                                                N_("Height of selection"),
                                                                 0.0, GIMP_MAX_IMAGE_SIZE,
                                                                 0.0,
                                                                 GIMP_PARAM_READWRITE |
@@ -159,7 +165,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            gimp_param_spec_unit ("position-unit",
-                                                                 NULL, NULL,
+                                                                 NULL,
+                                                                 N_("Unit of top left corner coordinate"),
                                                                  TRUE, TRUE,
                                                                  GIMP_UNIT_PIXEL,
                                                                  GIMP_PARAM_READWRITE |
@@ -167,7 +174,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            gimp_param_spec_unit ("size-unit",
-                                                                 NULL, NULL,
+                                                                 NULL,
+                                                                 N_("Unit of selection size"),
                                                                  TRUE, TRUE,
                                                                  GIMP_UNIT_PIXEL,
                                                                  GIMP_PARAM_READWRITE |
@@ -175,14 +183,17 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("fixed-rule-active",
-                                                                 NULL, NULL,
+                                                                 NULL,
+                                                                 N_("Enable lock of aspect ratio, "
+                                                                    "width, height or size"),
                                                                  FALSE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
 
       g_object_interface_install_property (iface,
                                            g_param_spec_enum ("fixed-rule",
-                                                              NULL, NULL,
+                                                              NULL,
+                                                              N_("Choose what has to be locked"),
                                                               GIMP_TYPE_RECTANGLE_TOOL_FIXED_RULE,
                                                               GIMP_RECTANGLE_TOOL_FIXED_ASPECT,
                                                               GIMP_CONFIG_PARAM_FLAGS |
@@ -190,7 +201,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("desired-fixed-width",
-                                                                NULL, NULL,
+                                                                NULL,
+                                                                N_("Custom fixed width"),
                                                                 0.0, GIMP_MAX_IMAGE_SIZE,
                                                                 100.0,
                                                                 GIMP_CONFIG_PARAM_FLAGS |
@@ -198,7 +210,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_double ("desired-fixed-height",
-                                                                NULL, NULL,
+                                                                NULL,
+                                                                N_("Custom fixed height"),
                                                                 0.0, GIMP_MAX_IMAGE_SIZE,
                                                                 100.0,
                                                                 GIMP_CONFIG_PARAM_FLAGS |
@@ -291,7 +304,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            gimp_param_spec_unit ("fixed-unit",
-                                                                 NULL, NULL,
+                                                                 NULL,
+                                                                 N_("Unit of fixed width, height or size"),
                                                                  TRUE, TRUE,
                                                                  GIMP_UNIT_PIXEL,
                                                                  GIMP_PARAM_READWRITE |
@@ -299,7 +313,8 @@ gimp_rectangle_options_iface_base_init (GimpRectangleOptionsInterface *iface)
 
       g_object_interface_install_property (iface,
                                            g_param_spec_boolean ("fixed-center",
-                                                                 NULL, NULL,
+                                                                 NULL,
+                                                                 N_("Expand selection from center outwards"),
                                                                  FALSE,
                                                                  GIMP_CONFIG_PARAM_FLAGS |
                                                                  GIMP_PARAM_STATIC_STRINGS));
@@ -335,12 +350,12 @@ gimp_rectangle_options_get_private (GimpRectangleOptions *options)
     {
       private = g_slice_new0 (GimpRectangleOptionsPrivate);
 
-      private->aspect_history = gtk_list_store_new (NUM_COLUMNS,
+      private->aspect_history = gtk_list_store_new (N_COLUMNS,
                                                     G_TYPE_DOUBLE,
                                                     G_TYPE_DOUBLE,
                                                     G_TYPE_STRING);
 
-      private->size_history = gtk_list_store_new (NUM_COLUMNS,
+      private->size_history = gtk_list_store_new (N_COLUMNS,
                                                   G_TYPE_DOUBLE,
                                                   G_TYPE_DOUBLE,
                                                   G_TYPE_STRING);
@@ -658,6 +673,23 @@ gimp_rectangle_options_get_property (GObject      *object,
 }
 
 /**
+ * gimp_rectangle_options_get_width_entry:
+ * @rectangle_options:
+ *
+ * Returns: GtkEntry used to enter desired width of rectangle. For
+ *          testing purposes.
+ **/
+GtkWidget *
+gimp_rectangle_options_get_width_entry (GimpRectangleOptions *rectangle_options)
+{
+  GimpRectangleOptionsPrivate *private;
+
+  private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (rectangle_options);
+
+  return private->width_entry;
+}
+  
+/**
  * gimp_rectangle_options_fixed_rule_changed:
  * @combo_box:
  * @private:
@@ -750,7 +782,7 @@ gimp_rectangle_options_prop_dimension_frame_new (GObject      *config,
   frame = gimp_frame_new (NULL);
 
   /*  title  */
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_frame_set_label_widget (GTK_FRAME (frame), hbox);
   gtk_widget_show (hbox);
 
@@ -758,12 +790,12 @@ gimp_rectangle_options_prop_dimension_frame_new (GObject      *config,
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  menu = gimp_prop_unit_menu_new (config, unit_property_name, "%a");
+  menu = gimp_prop_unit_combo_box_new (config, unit_property_name);
   gtk_box_pack_end (GTK_BOX (hbox), menu, FALSE, FALSE, 0);
   gtk_widget_show (menu);
 
   /*  content  */
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
@@ -822,7 +854,7 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
 
     /* Setup frame title widgets */
 
-    hbox = gtk_hbox_new (FALSE, 2);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
     gtk_frame_set_label_widget (GTK_FRAME (frame), hbox);
     gtk_widget_show (hbox);
 
@@ -845,19 +877,22 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
 
     /* Setup frame content */
 
-    vbox2 = gtk_vbox_new (FALSE, 0);
+    vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add (GTK_CONTAINER (frame), vbox2);
     gtk_widget_show (vbox2);
 
     size_group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
 
     /* Fixed aspect entry/buttons */
-    private->fixed_aspect_hbox = gtk_hbox_new (FALSE, 2);
+    private->fixed_aspect_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
     gtk_box_pack_start (GTK_BOX (vbox2), private->fixed_aspect_hbox,
                         FALSE, FALSE, 0);
     gtk_size_group_add_widget (size_group, private->fixed_aspect_hbox);
     g_object_unref (size_group);
     /* don't show */
+
+    g_object_add_weak_pointer (G_OBJECT (private->fixed_aspect_hbox),
+                               (gpointer) &private->fixed_aspect_hbox);
 
     entry = gimp_prop_number_pair_entry_new (config,
                                              "aspect-numerator",
@@ -866,7 +901,7 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
                                              "default-aspect-denominator",
                                              "overridden-fixed-aspect",
                                              FALSE, TRUE,
-                                             ":/",
+                                             ":/" "xX*",
                                              TRUE,
                                              0.001, GIMP_MAX_IMAGE_SIZE);
     gtk_box_pack_start (GTK_BOX (private->fixed_aspect_hbox), entry,
@@ -891,6 +926,9 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
                         private->aspect_button_box, FALSE, FALSE, 0);
     gtk_widget_show (private->aspect_button_box);
 
+    g_object_add_weak_pointer (G_OBJECT (private->aspect_button_box),
+                               (gpointer) &private->aspect_button_box);
+
     /* hide "square" */
     children =
       gtk_container_get_children (GTK_CONTAINER (private->aspect_button_box));
@@ -907,6 +945,9 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
     gtk_size_group_add_widget (size_group, private->fixed_width_entry);
     /* don't show */
 
+    g_object_add_weak_pointer (G_OBJECT (private->fixed_width_entry),
+                               (gpointer) &private->fixed_width_entry);
+
     /* Fixed height entry */
     private->fixed_height_entry =
       gimp_prop_size_entry_new (config,
@@ -917,12 +958,18 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
     gtk_size_group_add_widget (size_group, private->fixed_height_entry);
     /* don't show */
 
+    g_object_add_weak_pointer (G_OBJECT (private->fixed_height_entry),
+                               (gpointer) &private->fixed_height_entry);
+
     /* Fixed size entry */
-    private->fixed_size_hbox = gtk_hbox_new (FALSE, 2);
+    private->fixed_size_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
     gtk_box_pack_start (GTK_BOX (vbox2), private->fixed_size_hbox,
                         FALSE, FALSE, 0);
     gtk_size_group_add_widget (size_group, private->fixed_size_hbox);
     /* don't show */
+
+    g_object_add_weak_pointer (G_OBJECT (private->fixed_size_hbox),
+                               (gpointer) &private->fixed_size_hbox);
 
     entry = gimp_prop_number_pair_entry_new (config,
                                              "desired-fixed-size-width",
@@ -931,7 +978,7 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
                                              "default-fixed-size-height",
                                              "overridden-fixed-size",
                                              TRUE, FALSE,
-                                             "xX*",
+                                             "xX*" ":/",
                                              FALSE,
                                              1, GIMP_MAX_IMAGE_SIZE);
     gtk_box_pack_start (GTK_BOX (private->fixed_size_hbox), entry,
@@ -983,7 +1030,9 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
 
   /*  Guide  */
-  combo = gimp_prop_enum_combo_box_new (config, "guide", 0, 0);
+  combo = gimp_prop_enum_combo_box_new (config, "guide",
+                                        GIMP_GUIDES_NONE,
+                                        GIMP_GUIDES_DIAGONALS);
   gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
 
@@ -993,6 +1042,9 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
                       FALSE, FALSE, 0);
   gtk_widget_set_sensitive (private->auto_shrink_button, FALSE);
   gtk_widget_show (private->auto_shrink_button);
+
+  g_object_add_weak_pointer (G_OBJECT (private->auto_shrink_button),
+                             (gpointer) &private->auto_shrink_button);
 
   button = gimp_prop_check_button_new (config, "shrink-merged",
                                        _("Shrink merged"));
@@ -1031,10 +1083,7 @@ gimp_rectangle_options_setup_ratio_completion (GimpRectangleOptions *rectangle_o
                                                GtkWidget            *entry,
                                                GtkListStore         *history)
 {
-  GimpRectangleOptionsPrivate *private;
-  GtkEntryCompletion          *completion;
-
-  private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (rectangle_options);
+  GtkEntryCompletion *completion;
 
   completion = g_object_new (GTK_TYPE_ENTRY_COMPLETION,
                              "model", history,

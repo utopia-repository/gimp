@@ -4,9 +4,9 @@
  * gimpcurvesconfig.c
  * Copyright (C) 2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <cairo.h>
 #include <gegl.h>
 #include <glib/gstdio.h>
 
@@ -229,6 +229,9 @@ gimp_curves_config_serialize (GimpConfig       *config,
   GimpHistogramChannel  old_channel;
   gboolean              success = TRUE;
 
+  if (! gimp_config_serialize_property_by_name (config, "time", writer))
+    return FALSE;
+
   old_channel = c_config->channel;
 
   for (channel = GIMP_HISTOGRAM_VALUE;
@@ -380,8 +383,9 @@ gimp_curves_config_load_cruft (GimpCurvesConfig  *config,
   if (! fgets (buf, sizeof (buf), file) ||
       strcmp (buf, "# GIMP Curves File\n") != 0)
     {
-      g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
-                   _("not a GIMP Curves file"));
+      g_set_error_literal (error,
+			   GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+			   _("not a GIMP Curves file"));
       return FALSE;
     }
 
@@ -394,8 +398,9 @@ gimp_curves_config_load_cruft (GimpCurvesConfig  *config,
             {
               /*  FIXME: should have a helpful error message here  */
               g_printerr ("fields != 2");
-              g_set_error (error, GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
-                           _("parse error"));
+              g_set_error_literal (error,
+				   GIMP_CONFIG_ERROR, GIMP_CONFIG_ERROR_PARSE,
+				   _("parse error"));
               return FALSE;
             }
         }

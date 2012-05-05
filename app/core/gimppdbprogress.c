@@ -4,9 +4,9 @@
  * gimppdbprogress.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -53,9 +52,7 @@ static void      gimp_pdb_progress_init           (GimpPdbProgress      *progres
                                                    GimpPdbProgressClass *klass);
 static void gimp_pdb_progress_progress_iface_init (GimpProgressInterface *iface);
 
-static GObject * gimp_pdb_progress_constructor    (GType               type,
-                                                   guint               n_params,
-                                                   GObjectConstructParam *params);
+static void      gimp_pdb_progress_constructed    (GObject            *object);
 static void      gimp_pdb_progress_dispose        (GObject            *object);
 static void      gimp_pdb_progress_finalize       (GObject            *object);
 static void      gimp_pdb_progress_set_property   (GObject            *object,
@@ -63,18 +60,18 @@ static void      gimp_pdb_progress_set_property   (GObject            *object,
                                                    const GValue       *value,
                                                    GParamSpec         *pspec);
 
-static GimpProgress * gimp_pdb_progress_progress_start(GimpProgress *progress,
-                                                       const gchar  *message,
-                                                       gboolean      cancelable);
-static void     gimp_pdb_progress_progress_end        (GimpProgress *progress);
-static gboolean gimp_pdb_progress_progress_is_active  (GimpProgress *progress);
-static void     gimp_pdb_progress_progress_set_text   (GimpProgress *progress,
-                                                       const gchar  *message);
-static void     gimp_pdb_progress_progress_set_value  (GimpProgress *progress,
-                                                       gdouble       percentage);
-static gdouble  gimp_pdb_progress_progress_get_value  (GimpProgress *progress);
-static void     gimp_pdb_progress_progress_pulse      (GimpProgress *progress);
-static guint32  gimp_pdb_progress_progress_get_window (GimpProgress *progress);
+static GimpProgress * gimp_pdb_progress_progress_start   (GimpProgress *progress,
+                                                          const gchar  *message,
+                                                          gboolean      cancelable);
+static void     gimp_pdb_progress_progress_end           (GimpProgress *progress);
+static gboolean gimp_pdb_progress_progress_is_active     (GimpProgress *progress);
+static void     gimp_pdb_progress_progress_set_text      (GimpProgress *progress,
+                                                          const gchar  *message);
+static void     gimp_pdb_progress_progress_set_value     (GimpProgress *progress,
+                                                          gdouble       percentage);
+static gdouble  gimp_pdb_progress_progress_get_value     (GimpProgress *progress);
+static void     gimp_pdb_progress_progress_pulse         (GimpProgress *progress);
+static guint32  gimp_pdb_progress_progress_get_window_id (GimpProgress *progress);
 
 
 static GObjectClass *parent_class = NULL;
@@ -125,7 +122,7 @@ gimp_pdb_progress_class_init (GimpPdbProgressClass *klass)
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->constructor  = gimp_pdb_progress_constructor;
+  object_class->constructed  = gimp_pdb_progress_constructed;
   object_class->dispose      = gimp_pdb_progress_dispose;
   object_class->finalize     = gimp_pdb_progress_finalize;
   object_class->set_property = gimp_pdb_progress_set_property;
@@ -160,32 +157,26 @@ gimp_pdb_progress_init (GimpPdbProgress      *progress,
 static void
 gimp_pdb_progress_progress_iface_init (GimpProgressInterface *iface)
 {
-  iface->start      = gimp_pdb_progress_progress_start;
-  iface->end        = gimp_pdb_progress_progress_end;
-  iface->is_active  = gimp_pdb_progress_progress_is_active;
-  iface->set_text   = gimp_pdb_progress_progress_set_text;
-  iface->set_value  = gimp_pdb_progress_progress_set_value;
-  iface->get_value  = gimp_pdb_progress_progress_get_value;
-  iface->pulse      = gimp_pdb_progress_progress_pulse;
-  iface->get_window = gimp_pdb_progress_progress_get_window;
+  iface->start         = gimp_pdb_progress_progress_start;
+  iface->end           = gimp_pdb_progress_progress_end;
+  iface->is_active     = gimp_pdb_progress_progress_is_active;
+  iface->set_text      = gimp_pdb_progress_progress_set_text;
+  iface->set_value     = gimp_pdb_progress_progress_set_value;
+  iface->get_value     = gimp_pdb_progress_progress_get_value;
+  iface->pulse         = gimp_pdb_progress_progress_pulse;
+  iface->get_window_id = gimp_pdb_progress_progress_get_window_id;
 }
 
-static GObject *
-gimp_pdb_progress_constructor (GType                  type,
-                               guint                  n_params,
-                               GObjectConstructParam *params)
+static void
+gimp_pdb_progress_constructed (GObject *object)
 {
-  GObject         *object;
-  GimpPdbProgress *progress;
+  GimpPdbProgress *progress = GIMP_PDB_PROGRESS (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  progress = GIMP_PDB_PROGRESS (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_PDB (progress->pdb));
   g_assert (GIMP_IS_CONTEXT (progress->context));
-
-  return object;
 }
 
 static void
@@ -397,7 +388,7 @@ gimp_pdb_progress_progress_pulse (GimpProgress *progress)
 }
 
 static guint32
-gimp_pdb_progress_progress_get_window (GimpProgress *progress)
+gimp_pdb_progress_progress_get_window_id (GimpProgress *progress)
 {
   GimpPdbProgress *pdb_progress = GIMP_PDB_PROGRESS (progress);
 
@@ -420,8 +411,7 @@ gimp_pdb_progress_get_by_callback (GimpPdbProgressClass *klass,
     {
       GimpPdbProgress *progress = list->data;
 
-      if (progress->callback_name &&
-          strcmp (callback_name, progress->callback_name) == 0)
+      if (! g_strcmp0 (callback_name, progress->callback_name))
         return progress;
     }
 

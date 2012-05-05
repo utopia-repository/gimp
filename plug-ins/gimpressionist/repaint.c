@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -354,7 +353,7 @@ repaint (ppm_t *p, ppm_t *a)
   int         tx = 0, ty = 0;
   ppm_t       tmp = {0, 0, NULL};
   ppm_t       atmp = {0, 0, NULL};
-  int         r, g, b, n, h, i, j, on, sn;
+  int         r, g, b, h, i, j, on, sn;
   int         num_brushes, maxbrushwidth, maxbrushheight;
   guchar      back[3] = {0, 0, 0};
   ppm_t      *brushes, *shadows;
@@ -362,13 +361,11 @@ repaint (ppm_t *p, ppm_t *a)
   double     *brushes_sum;
   int         cx, cy, maxdist;
   double      scale, relief, startangle, anglespan, density, bgamma;
-  double      thissum;
   int         max_progress;
   ppm_t       paper_ppm = {0, 0, NULL};
   ppm_t       dirmap = {0, 0, NULL};
   ppm_t       sizmap = {0, 0, NULL};
   int        *xpos = NULL, *ypos = NULL;
-  int         step = 1;
   int         progstep;
   static int  running = 0;
 
@@ -467,7 +464,6 @@ repaint (ppm_t *p, ppm_t *a)
     }
 
   brush = &brushes[0];
-  thissum = brushes_sum[0];
 
   maxbrushwidth = maxbrushheight = 0;
   for (i = 0; i < num_brushes; i++)
@@ -790,9 +786,8 @@ repaint (ppm_t *p, ppm_t *a)
     {
       i = (int)(tmp.width * density / maxbrushwidth) *
           (int)(tmp.height * density / maxbrushheight);
-      step = i;
 #if 0
-    g_printerr("step=%d i=%d\n", step, i);
+    g_printerr("i=%d\n", i);
 #endif
     }
 
@@ -831,6 +826,9 @@ repaint (ppm_t *p, ppm_t *a)
 
   for (; i; i--)
     {
+      int n;
+      double thissum;
+
       if (i % progstep == 0)
         {
           if(runningvals.run)
@@ -886,7 +884,7 @@ repaint (ppm_t *p, ppm_t *a)
             continue;
         }
 
-      n = sn = on = 0;
+      sn = on = 0;
 
       switch (runningvals.orient_type)
         {

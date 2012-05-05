@@ -55,7 +55,6 @@ plug-ins/common/emboss.c
 plug-ins/common/engrave.c
 plug-ins/common/file-aa.c
 plug-ins/common/file-cel.c
-plug-ins/common/file-compressor.c
 plug-ins/common/file-csource.c
 plug-ins/common/file-desktop-link.c
 plug-ins/common/file-dicom.c
@@ -66,10 +65,12 @@ plug-ins/common/file-gih.c
 plug-ins/common/file-glob.c
 plug-ins/common/file-header.c
 plug-ins/common/file-html-table.c
+plug-ins/common/file-jp2-load.c
 plug-ins/common/file-mng.c
 plug-ins/common/file-pat.c
 plug-ins/common/file-pcx.c
-plug-ins/common/file-pdf.c
+plug-ins/common/file-pdf-load.c
+plug-ins/common/file-pdf-save.c
 plug-ins/common/file-pix.c
 plug-ins/common/file-png.c
 plug-ins/common/file-pnm.c
@@ -83,13 +84,12 @@ plug-ins/common/file-tiff-load.c
 plug-ins/common/file-tiff-save.c
 plug-ins/common/file-wmf.c
 plug-ins/common/file-xbm.c
+plug-ins/common/file-xmc.c
 plug-ins/common/file-xpm.c
 plug-ins/common/file-xwd.c
 plug-ins/common/film.c
 plug-ins/common/filter-pack.c
 plug-ins/common/fractal-trace.c
-plug-ins/common/gee-zoom.c
-plug-ins/common/gee.c
 plug-ins/common/gradient-map.c
 plug-ins/common/grid.c
 plug-ins/common/guillotine.c
@@ -148,11 +148,13 @@ plug-ins/common/video.c
 plug-ins/common/warp.c
 plug-ins/common/waves.c
 plug-ins/common/web-browser.c
+plug-ins/common/web-page.c
 plug-ins/common/whirl-pinch.c
 plug-ins/common/wind.c
 plug-ins/file-bmp/bmp-read.c
 plug-ins/file-bmp/bmp-write.c
 plug-ins/file-bmp/bmp.c
+plug-ins/file-compressor/file-compressor.c
 plug-ins/file-faxg3/faxg3.c
 plug-ins/file-fits/fits.c
 plug-ins/file-fli/fli-gimp.c
@@ -171,8 +173,6 @@ plug-ins/file-psd/psd-thumb-load.c
 plug-ins/file-psd/psd-util.c
 plug-ins/file-psd/psd.c
 plug-ins/file-sgi/sgi.c
-plug-ins/file-uri/gimpmountoperation.c
-plug-ins/file-uri/uri-backend-gnomevfs.c
 plug-ins/file-uri/uri-backend-gvfs.c
 plug-ins/file-uri/uri-backend-libcurl.c
 plug-ins/file-uri/uri-backend-wget.c
@@ -207,6 +207,8 @@ plug-ins/gimpressionist/repaint.c
 plug-ins/gimpressionist/size.c
 plug-ins/gimpressionist/sizemap.c
 plug-ins/gimpressionist/utils.c
+[type: gettext/glade]plug-ins/ui/plug-in-file-gif.ui
+[type: gettext/glade]plug-ins/ui/plug-in-file-png.ui
 plug-ins/gradient-flare/gradient-flare.c
 plug-ins/help-browser/dialog.c
 plug-ins/help-browser/help-browser.c
@@ -268,6 +270,7 @@ plug-ins/maze/maze-algorithms.c
 plug-ins/maze/maze-dialog.c
 plug-ins/maze/maze.c
 plug-ins/maze/maze.h
+plug-ins/metadata/interface.c
 plug-ins/metadata/metadata.c
 plug-ins/metadata/xmp-parse.c
 plug-ins/pagecurl/pagecurl.c

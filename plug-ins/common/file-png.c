@@ -7,9 +7,9 @@
  *   Daniel Skarda (0rfelyus@atrey.karlin.mff.cuni.cz).
  *   and 1999-2000 Nick Lamb (njl195@zepler.org.uk)
  *
- *   This program is free software; you can redistribute it and/or modify
+ *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
+ *   the Free Software Foundation; either version 3 of the License, or
  *   (at your option) any later version.
  *
  *   This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contents:
  *
@@ -27,6 +26,7 @@
  *   query()                     - Respond to a plug-in query...
  *   run()                       - Run the plug-in...
  *   load_image()                - Load a PNG image into a new image window.
+ *   offsets_dialog()            - Asks the user about offsets when loading.
  *   respin_cmap()               - Re-order a Gimp colormap for PNG tRNS
  *   save_image()                - Save the specified image to a PNG file.
  *   save_compression_callback() - Update the image compression level.
@@ -64,6 +64,7 @@
 #define GET_DEFAULTS_PROC      "file-png-get-defaults"
 #define SET_DEFAULTS_PROC      "file-png-set-defaults"
 #define PLUG_IN_BINARY         "file-png"
+#define PLUG_IN_ROLE           "gimp-file-png"
 
 #define PLUG_IN_VERSION        "1.3.4 - 03 September 2002"
 #define SCALE_WIDTH            125
@@ -102,7 +103,7 @@ typedef struct
   GtkWidget *time;
   GtkWidget *comment;
   GtkWidget *save_transp_pixels;
-  GtkObject *compression_level;
+  GtkAdjustment *compression_level;
 }
 PngSaveGui;
 
@@ -150,6 +151,9 @@ static gboolean  save_dialog               (gint32            image_ID,
 static void      save_dialog_response      (GtkWidget        *widget,
                                             gint              response_id,
                                             gpointer          data);
+
+static gboolean  offsets_dialog            (gint              offset_x,
+                                            gint              offset_y);
 
 static gboolean  ia_has_transparent_pixels (GimpDrawable     *drawable);
 
@@ -205,7 +209,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
@@ -215,7 +219,7 @@ query (void)
   };
 
 #define COMMON_SAVE_ARGS \
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" }, \
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" }, \
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  }, \
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             }, \
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in"}, \
@@ -446,7 +450,7 @@ run (const gchar      *name,
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image_ID, &drawable_ID, "PNG",
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_INDEXED |
@@ -702,7 +706,7 @@ load_image (const gchar  *filename,
     end,                        /* Ending tile row */
     num;                        /* Number of rows to load */
   FILE *fp;                     /* File pointer */
-  volatile gint32 image;        /* Image -- preserved against setjmp() */
+  volatile gint32 image = -1;   /* Image -- preserved against setjmp() */
   gint32 layer;                 /* Layer */
   GimpDrawable *drawable;       /* Drawable for layer */
   GimpPixelRgn pixel_rgn;       /* Pixel region for layer */
@@ -875,7 +879,7 @@ load_image (const gchar  *filename,
   if (image == -1)
     {
       g_set_error (error, 0, 0,
-                   "Could not create new image for '%s': %s",
+                   _("Could not create new image for '%s': %s"),
                    gimp_filename_to_utf8 (filename), gimp_get_pdb_error ());
       return -1;
     }
@@ -888,7 +892,7 @@ load_image (const gchar  *filename,
                           png_get_image_width (pp, info),
                           png_get_image_height (pp, info),
                           layer_type, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
 
   /*
    * Find out everything we can about the image resolution
@@ -909,7 +913,7 @@ load_image (const gchar  *filename,
       parasite = gimp_parasite_new ("gamma",
                                     GIMP_PARASITE_PERSISTENT,
                                     strlen (buf) + 1, buf);
-      gimp_image_parasite_attach (image, parasite);
+      gimp_image_attach_parasite (image, parasite);
       gimp_parasite_free (parasite);
     }
 
@@ -918,14 +922,20 @@ load_image (const gchar  *filename,
       gint offset_x = png_get_x_offset_pixels (pp, info);
       gint offset_y = png_get_y_offset_pixels (pp, info);
 
-      gimp_layer_set_offsets (layer, offset_x, offset_y);
-
-      if ((abs (offset_x) > png_get_image_width (pp, info)) ||
-          (abs (offset_y) > png_get_image_height (pp, info)))
+      if (! interactive)
         {
-          if (interactive)
-            g_message (_("The PNG file specifies an offset that caused "
-                         "the layer to be positioned outside the image."));
+          gimp_layer_set_offsets (layer, offset_x, offset_y);
+        }
+      else if (offsets_dialog (offset_x, offset_y))
+        {
+          gimp_layer_set_offsets (layer, offset_x, offset_y);
+
+          if ((abs (offset_x) > png_get_image_width (pp, info)) ||
+              (abs (offset_y) > png_get_image_height (pp, info)))
+            {
+              g_message (_("The PNG file specifies an offset that caused "
+                           "the layer to be positioned outside the image."));
+            }
         }
     }
 
@@ -1103,7 +1113,7 @@ load_image (const gchar  *filename,
           parasite = gimp_parasite_new ("gimp-comment",
                                         GIMP_PARASITE_PERSISTENT,
                                         strlen (comment) + 1, comment);
-          gimp_image_parasite_attach (image, parasite);
+          gimp_image_attach_parasite (image, parasite);
           gimp_parasite_free (parasite);
         }
 
@@ -1130,7 +1140,7 @@ load_image (const gchar  *filename,
                                       GIMP_PARASITE_UNDOABLE,
                                       proflen, profile);
 
-        gimp_image_parasite_attach (image, parasite);
+        gimp_image_attach_parasite (image, parasite);
         gimp_parasite_free (parasite);
 
         if (profname)
@@ -1144,7 +1154,7 @@ load_image (const gchar  *filename,
                                               GIMP_PARASITE_PERSISTENT |
                                               GIMP_PARASITE_UNDOABLE,
                                               strlen (tmp), tmp);
-                gimp_image_parasite_attach (image, parasite);
+                gimp_image_attach_parasite (image, parasite);
                 gimp_parasite_free (parasite);
 
                 g_free (tmp);
@@ -1209,6 +1219,69 @@ load_image (const gchar  *filename,
   return image;
 }
 
+/*
+ * 'offsets_dialog ()' - Asks the user about offsets when loading.
+ */
+static gboolean
+offsets_dialog (gint offset_x,
+                gint offset_y)
+{
+  GtkWidget *dialog;
+  GtkWidget *hbox;
+  GtkWidget *image;
+  GtkWidget *label;
+  gchar     *message;
+  gboolean   run;
+
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
+
+  dialog = gimp_dialog_new (_("Apply PNG Offset"), PLUG_IN_ROLE,
+                            NULL, 0,
+                            gimp_standard_help_func, LOAD_PROC,
+
+                            _("Ignore PNG offset"),         GTK_RESPONSE_NO,
+                            _("Apply PNG offset to layer"), GTK_RESPONSE_YES,
+
+                            NULL);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_YES,
+                                           GTK_RESPONSE_NO,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  image = gtk_image_new_from_stock (GIMP_STOCK_QUESTION, GTK_ICON_SIZE_DIALOG);
+  gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  gtk_widget_show (image);
+
+  message = g_strdup_printf (_("The PNG image you are importing specifies an "
+                               "offset of %d, %d. Do you want to apply "
+                               "this offset to the layer?"),
+                             offset_x, offset_y);
+  label = gtk_label_new (message);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.0);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+  gtk_widget_show (label);
+
+  gtk_widget_show (dialog);
+
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_YES);
+
+  gtk_widget_destroy (dialog);
+
+  return run;
+}
 
 /*
  * 'save_image ()' - Save the specified image to a PNG file.
@@ -1405,7 +1478,7 @@ save_image (const gchar  *filename,
       GimpParasite *parasite;
       gdouble       gamma = 1.0 / DEFAULT_GAMMA;
 
-      parasite = gimp_image_parasite_find (orig_image_ID, "gamma");
+      parasite = gimp_image_get_parasite (orig_image_ID, "gamma");
       if (parasite)
         {
           gamma = g_ascii_strtod (gimp_parasite_data (parasite), NULL);
@@ -1450,12 +1523,12 @@ save_image (const gchar  *filename,
     GimpParasite *profile_parasite;
     gchar        *profile_name = NULL;
 
-    profile_parasite = gimp_image_parasite_find (orig_image_ID, "icc-profile");
+    profile_parasite = gimp_image_get_parasite (orig_image_ID, "icc-profile");
 
     if (profile_parasite)
       {
-        GimpParasite *parasite = gimp_image_parasite_find (orig_image_ID,
-                                                           "icc-profile-name");
+        GimpParasite *parasite = gimp_image_get_parasite (orig_image_ID,
+                                                          "icc-profile-name");
         if (parasite)
           profile_name = g_convert (gimp_parasite_data (parasite),
                                     gimp_parasite_data_size (parasite),
@@ -1468,10 +1541,6 @@ save_image (const gchar  *filename,
 
         g_free (profile_name);
       }
-    else if (! pngvals.gama)
-      {
-        png_set_sRGB (pp, info, 0);
-      }
   }
 #endif
 
@@ -1482,7 +1551,7 @@ save_image (const gchar  *filename,
       gsize text_length = 0;
 #endif /* PNG_iTXt_SUPPORTED */
 
-      parasite = gimp_image_parasite_find (orig_image_ID, "gimp-comment");
+      parasite = gimp_image_get_parasite (orig_image_ID, "gimp-comment");
       if (parasite)
         {
           gchar *comment = g_strndup (gimp_parasite_data (parasite),
@@ -1632,6 +1701,8 @@ save_image (const gchar  *filename,
                                 (double) num_passes);
         }
     }
+
+  gimp_progress_update (1.0);
 
   png_write_end (pp, info);
   png_destroy_write_struct (&pp, &info);
@@ -1848,35 +1919,36 @@ respin_cmap (png_structp   pp,
   return get_bit_depth_for_palette (colors);
 }
 
+static GtkWidget *
+toggle_button_init (GtkBuilder  *builder,
+                    const gchar *name,
+                    gboolean     initial_value,
+                    gboolean    *value_pointer)
+{
+  GtkWidget *toggle = NULL;
+
+  toggle = GTK_WIDGET (gtk_builder_get_object (builder, name));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), initial_value);
+  g_signal_connect (toggle, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    value_pointer);
+
+  return toggle;
+}
+
 static gboolean
 save_dialog (gint32    image_ID,
              gboolean  alpha)
 {
   PngSaveGui    pg;
   GtkWidget    *dialog;
-  GtkWidget    *table;
-  GtkWidget    *toggle;
-  GtkObject    *scale;
-  GtkWidget    *hbox;
-  GtkWidget    *button;
+  GtkBuilder   *builder;
+  gchar        *ui_file;
   GimpParasite *parasite;
+  GError       *error = NULL;
 
-  dialog = gimp_dialog_new (_("Save as PNG"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
+  /* Dialog init */
+  dialog = gimp_export_dialog_new (_("PNG"), PLUG_IN_BINARY, SAVE_PROC);
   g_signal_connect (dialog, "response",
                     G_CALLBACK (save_dialog_response),
                     &pg);
@@ -1884,136 +1956,85 @@ save_dialog (gint32    image_ID,
                     G_CALLBACK (gtk_main_quit),
                     NULL);
 
-  table = gtk_table_new (10, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                      table, TRUE, TRUE, 0);
-  gtk_widget_show (table);
+  /* GtkBuilder init */
+  builder = gtk_builder_new ();
+  ui_file = g_build_filename (gimp_data_directory (),
+                              "ui/plug-ins/plug-in-file-png.ui",
+                              NULL);
+  if (! gtk_builder_add_from_file (builder, ui_file, &error))
+    {
+      gchar *display_name = g_filename_display_name (ui_file);
 
-  pg.interlaced = toggle =
-    gtk_check_button_new_with_mnemonic (_("_Interlacing (Adam7)"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 0, 1, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                pngvals.interlaced);
-  gtk_widget_show (toggle);
+      g_printerr (_("Error loading UI file '%s': %s"),
+                  display_name, error ? error->message : _("Unknown error"));
 
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.interlaced);
+      g_free (display_name);
+    }
 
-  pg.bkgd = toggle =
-    gtk_check_button_new_with_mnemonic (_("Save _background color"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 1, 2, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), pngvals.bkgd);
-  gtk_widget_show (toggle);
+  g_free (ui_file);
 
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update), &pngvals.bkgd);
+  /* Table */
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      GTK_WIDGET (gtk_builder_get_object (builder, "table")),
+                      TRUE, TRUE, 0);
 
-  pg.gama = toggle = gtk_check_button_new_with_mnemonic (_("Save _gamma"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 2, 3, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), pngvals.gama);
-  gtk_widget_show (toggle);
+  /* Toggles */
+  pg.interlaced = toggle_button_init (builder, "interlace",
+                                      pngvals.interlaced,
+                                      &pngvals.interlaced);
+  pg.bkgd = toggle_button_init (builder, "save-background-color",
+                                pngvals.bkgd,
+                                &pngvals.bkgd);
+  pg.gama = toggle_button_init (builder, "save-gamma",
+                                pngvals.gama,
+                                &pngvals.gama);
+  pg.offs = toggle_button_init (builder, "save-layer-offset",
+                                pngvals.offs,
+                                &pngvals.offs);
+  pg.phys = toggle_button_init (builder, "save-resolution",
+                                pngvals.phys,
+                                &pngvals.phys);
+  pg.time = toggle_button_init (builder, "save-creation-time",
+                                pngvals.time,
+                                &pngvals.time);
 
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.gama);
-
-  pg.offs = toggle =
-    gtk_check_button_new_with_mnemonic (_("Save layer o_ffset"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 3, 4, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), pngvals.offs);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.offs);
-
-  pg.phys = toggle = gtk_check_button_new_with_mnemonic (_("Save _resolution"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 4, 5, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), pngvals.phys);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.phys);
-
-  pg.time = toggle =
-    gtk_check_button_new_with_mnemonic (_("Save creation _time"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 5, 6, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), pngvals.time);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.time);
-
-  pg.comment = toggle = gtk_check_button_new_with_mnemonic (_("Save comme_nt"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 6, 7, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), pngvals.comment);
-  gtk_widget_show (toggle);
-
-  parasite = gimp_image_parasite_find (image_ID, "gimp-comment");
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                pngvals.comment && parasite != NULL);
-  gtk_widget_set_sensitive (toggle, parasite != NULL);
+  /* Comment toggle */
+  parasite = gimp_image_get_parasite (image_ID, "gimp-comment");
+  pg.comment =
+    toggle_button_init (builder, "save-comment",
+                        pngvals.comment && parasite != NULL,
+                        &pngvals.comment);
+  gtk_widget_set_sensitive (pg.comment, parasite != NULL);
   gimp_parasite_free (parasite);
 
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.comment);
+  /* Transparent pixels toggle */
+  pg.save_transp_pixels =
+    toggle_button_init (builder,
+                        "save-transparent-pixels",
+                        alpha && pngvals.save_transp_pixels,
+                        &pngvals.save_transp_pixels);
+  gtk_widget_set_sensitive (pg.save_transp_pixels, alpha);
 
-  pg.save_transp_pixels = toggle =
-    gtk_check_button_new_with_mnemonic (_("Save color _values from "
-                                          "transparent pixels"));
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 3, 7, 8, GTK_FILL, 0, 0, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                alpha && pngvals.save_transp_pixels);
-  gtk_widget_set_sensitive (toggle, alpha);
-  gtk_widget_show (toggle);
-
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &pngvals.save_transp_pixels);
-
-  pg.compression_level = scale =
-    gimp_scale_entry_new (GTK_TABLE (table), 0, 8,
-                          _("Co_mpression level:"),
-                          SCALE_WIDTH, 0,
-                          pngvals.compression_level,
-                          0.0, 9.0, 1.0, 1.0, 0, TRUE, 0.0, 0.0,
-                          _("Choose a high compression level "
-                            "for small file size"), NULL);
-
-  g_signal_connect (scale, "value-changed",
+  /* Compression level scale */
+  pg.compression_level =
+    GTK_ADJUSTMENT (gtk_builder_get_object (builder, "compression-level"));
+  gtk_adjustment_set_value (pg.compression_level, pngvals.compression_level);
+  g_signal_connect (pg.compression_level, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &pngvals.compression_level);
 
-  hbox = gtk_hbutton_box_new ();
-  gtk_box_set_spacing (GTK_BOX (hbox), 6);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
-  gtk_table_attach (GTK_TABLE (table), hbox, 0, 3, 9, 10,
-                    GTK_FILL | GTK_EXPAND, 0, 0, 0);
-  gtk_widget_show (hbox);
-
-  button = gtk_button_new_with_mnemonic (_("_Load Defaults"));
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  g_signal_connect_swapped (button, "clicked",
+  /* Load/save defaults buttons */
+  g_signal_connect_swapped (gtk_builder_get_object (builder, "load-defaults"),
+                            "clicked",
                             G_CALLBACK (load_gui_defaults),
                             &pg);
 
-  button = gtk_button_new_with_mnemonic (_("S_ave Defaults"));
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  g_signal_connect_swapped (button, "clicked",
+  g_signal_connect_swapped (gtk_builder_get_object (builder, "save-defaults"),
+                            "clicked",
                             G_CALLBACK (save_defaults),
                             &pg);
 
+  /* Show dialog and run */
   gtk_widget_show (dialog);
 
   pg.run = FALSE;
@@ -2046,7 +2067,7 @@ load_defaults (void)
 {
   GimpParasite *parasite;
 
-  parasite = gimp_parasite_find (PNG_DEFAULTS_PARASITE);
+  parasite = gimp_get_parasite (PNG_DEFAULTS_PARASITE);
 
   if (parasite)
     {
@@ -2103,7 +2124,7 @@ save_defaults (void)
                                 GIMP_PARASITE_PERSISTENT,
                                 strlen (def_str), def_str);
 
-  gimp_parasite_attach (parasite);
+  gimp_attach_parasite (parasite);
 
   gimp_parasite_free (parasite);
   g_free (def_str);
@@ -2115,7 +2136,7 @@ load_gui_defaults (PngSaveGui *pg)
   load_defaults ();
 
 #define SET_ACTIVE(field) \
-  if (GTK_WIDGET_IS_SENSITIVE (pg->field)) \
+  if (gtk_widget_is_sensitive (pg->field)) \
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pg->field), pngvals.field)
 
   SET_ACTIVE (interlaced);
@@ -2129,6 +2150,6 @@ load_gui_defaults (PngSaveGui *pg)
 
 #undef SET_ACTIVE
 
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (pg->compression_level),
+  gtk_adjustment_set_value (pg->compression_level,
                             pngvals.compression_level);
 }

@@ -4,9 +4,9 @@
  * gimpstroke.c
  * Copyright (C) 2002 Simon Budig  <simon@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -333,8 +332,7 @@ gimp_stroke_finalize (GObject *object)
 
   if (stroke->anchors)
     {
-      g_list_foreach (stroke->anchors, (GFunc) gimp_anchor_free, NULL);
-      g_list_free (stroke->anchors);
+      g_list_free_full (stroke->anchors, (GDestroyNotify) gimp_anchor_free);
       stroke->anchors = NULL;
     }
 
@@ -989,7 +987,7 @@ gimp_stroke_real_duplicate (const GimpStroke *stroke)
   GList      *list;
 
   new_stroke = g_object_new (G_TYPE_FROM_INSTANCE (stroke),
-                             "name", GIMP_OBJECT (stroke)->name,
+                             "name", gimp_object_get_name (stroke),
                              NULL);
 
   new_stroke->anchors = g_list_copy (stroke->anchors);
@@ -1321,8 +1319,6 @@ gimp_stroke_real_control_points_get (const GimpStroke *stroke,
   GList *list;
 
   num_anchors = g_list_length (stroke->anchors);
-  list = g_list_first (stroke->anchors);
-
   ret_array = g_array_sized_new (FALSE, FALSE,
                                  sizeof (GimpAnchor), num_anchors);
 

@@ -4,9 +4,9 @@
  * gimpprogressbox.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,7 +36,7 @@
 
 static void     gimp_progress_box_progress_iface_init (GimpProgressInterface *iface);
 
-static void     gimp_progress_box_destroy            (GtkObject    *object);
+static void     gimp_progress_box_dispose            (GObject      *object);
 
 static GimpProgress *
                 gimp_progress_box_progress_start     (GimpProgress *progress,
@@ -53,7 +52,7 @@ static gdouble  gimp_progress_box_progress_get_value (GimpProgress *progress);
 static void     gimp_progress_box_progress_pulse     (GimpProgress *progress);
 
 
-G_DEFINE_TYPE_WITH_CODE (GimpProgressBox, gimp_progress_box, GTK_TYPE_VBOX,
+G_DEFINE_TYPE_WITH_CODE (GimpProgressBox, gimp_progress_box, GTK_TYPE_BOX,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
                                                 gimp_progress_box_progress_iface_init))
 
@@ -63,14 +62,17 @@ G_DEFINE_TYPE_WITH_CODE (GimpProgressBox, gimp_progress_box, GTK_TYPE_VBOX,
 static void
 gimp_progress_box_class_init (GimpProgressBoxClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->destroy = gimp_progress_box_destroy;
+  object_class->dispose = gimp_progress_box_dispose;
 }
 
 static void
 gimp_progress_box_init (GimpProgressBox *box)
 {
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
+                                  GTK_ORIENTATION_VERTICAL);
+
   gtk_box_set_spacing (GTK_BOX (box), 6);
 
   box->progress = gtk_progress_bar_new ();
@@ -101,11 +103,11 @@ gimp_progress_box_progress_iface_init (GimpProgressInterface *iface)
 }
 
 static void
-gimp_progress_box_destroy (GtkObject *object)
+gimp_progress_box_dispose (GObject *object)
 {
   GimpProgressBox *box = GIMP_PROGRESS_BOX (object);
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 
   box->progress = NULL;
 }
@@ -131,8 +133,9 @@ gimp_progress_box_progress_start (GimpProgress *progress,
       box->cancelable = cancelable;
       box->value      = 0.0;
 
-      if (GTK_WIDGET_DRAWABLE (box->progress))
-        gdk_window_process_updates (box->progress->window, TRUE);
+      if (gtk_widget_is_drawable (box->progress))
+        gdk_window_process_updates (gtk_widget_get_window (box->progress),
+                                    TRUE);
 
       return progress;
     }
@@ -175,8 +178,9 @@ gimp_progress_box_progress_set_text (GimpProgress *progress,
 
       gtk_label_set_text (GTK_LABEL (box->label), message);
 
-      if (GTK_WIDGET_DRAWABLE (box->progress))
-        gdk_window_process_updates (box->progress->window, TRUE);
+      if (gtk_widget_is_drawable (box->progress))
+        gdk_window_process_updates (gtk_widget_get_window (box->progress),
+                                    TRUE);
     }
 }
 
@@ -188,17 +192,21 @@ gimp_progress_box_progress_set_value (GimpProgress *progress,
     {
       GimpProgressBox *box = GIMP_PROGRESS_BOX (progress);
       GtkProgressBar  *bar = GTK_PROGRESS_BAR (box->progress);
+      GtkAllocation    allocation;
+
+      gtk_widget_get_allocation (GTK_WIDGET (bar), &allocation);
 
       box->value = percentage;
 
       /* only update the progress bar if this causes a visible change */
-      if (fabs (GTK_WIDGET (bar)->allocation.width *
+      if (fabs (allocation.width *
                 (percentage - gtk_progress_bar_get_fraction (bar))) > 1.0)
         {
           gtk_progress_bar_set_fraction (bar, box->value);
 
-          if (GTK_WIDGET_DRAWABLE (box->progress))
-            gdk_window_process_updates (box->progress->window, TRUE);
+          if (gtk_widget_is_drawable (box->progress))
+            gdk_window_process_updates (gtk_widget_get_window (box->progress),
+                                        TRUE);
         }
     }
 }
@@ -224,8 +232,9 @@ gimp_progress_box_progress_pulse (GimpProgress *progress)
 
       gtk_progress_bar_pulse (bar);
 
-      if (GTK_WIDGET_DRAWABLE (box->progress))
-        gdk_window_process_updates (box->progress->window, TRUE);
+      if (gtk_widget_is_drawable (box->progress))
+        gdk_window_process_updates (gtk_widget_get_window (box->progress),
+                                    TRUE);
     }
 }
 

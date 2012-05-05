@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -111,19 +110,19 @@ tool_options_menu_update_after (GimpUIManager *manager,
 
   tool_options_menu_update_presets (manager, merge_id, ui_path,
                                     "Save", "save",
-                                    GIMP_CONTAINER (tool_info->presets));
+                                    tool_info->presets);
 
   tool_options_menu_update_presets (manager, merge_id, ui_path,
                                     "Restore", "restore",
-                                    GIMP_CONTAINER (tool_info->presets));
+                                    tool_info->presets);
 
   tool_options_menu_update_presets (manager, merge_id, ui_path,
-                                    "Rename", "rename",
-                                    GIMP_CONTAINER (tool_info->presets));
+                                    "Edit", "edit",
+                                    tool_info->presets);
 
   tool_options_menu_update_presets (manager, merge_id, ui_path,
                                     "Delete", "delete",
-                                    GIMP_CONTAINER (tool_info->presets));
+                                    tool_info->presets);
 
   gtk_ui_manager_ensure_update (GTK_UI_MANAGER (manager));
 }
@@ -139,14 +138,15 @@ tool_options_menu_update_presets (GimpUIManager *manager,
   gint n_children;
   gint i;
 
-  n_children = gimp_container_num_children (presets);
+  n_children = gimp_container_get_n_children (presets);
 
   for (i = 0; i < n_children; i++)
     {
       gchar *action_name;
       gchar *path;
 
-      action_name = g_strdup_printf ("tool-options-%s-%03d", which_action, i);
+      action_name = g_strdup_printf ("tool-options-%s-preset-%03d",
+                                     which_action, i);
       path        = g_strdup_printf ("%s/%s", ui_path, menu_path);
 
       gtk_ui_manager_add_ui (GTK_UI_MANAGER (manager), merge_id,

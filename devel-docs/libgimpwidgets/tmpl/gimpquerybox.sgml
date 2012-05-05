@@ -2,30 +2,16 @@
 GimpQueryBox
 
 <!-- ##### SECTION Short_Description ##### -->
-Some simple dialogs to enter a single int, double, string or boolean value.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide simple dialogs for entering a single string,
-integer, double, boolean or pixel size value.
-</para>
-<para>
-They return a pointer to a #GtkDialog which has to be shown with
-gtk_widget_show() by the caller.
-</para>
-<para>
-The dialogs contain an entry widget for the kind of value they ask for
-and "OK" and "Cancel" buttons. On "Cancel", all query boxes except the
-boolean one silently destroy themselves. On "OK" the user defined
-callback function is called and returns the entered value.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-GimpSizeEntry
-</para>
-<para>
-GimpUnitMenu
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -36,12 +22,12 @@ GimpUnitMenu
 
 <!-- ##### USER_FUNCTION GimpQueryStringCallback ##### -->
 <para>
-Note that you have to g_free() the returned string.
+
 </para>
 
-@query_box: The query box.
-@string: The entered string.
-@data: The user data.
+@query_box: 
+@string: 
+@data: 
 
 
 <!-- ##### USER_FUNCTION GimpQueryIntCallback ##### -->
@@ -49,9 +35,9 @@ Note that you have to g_free() the returned string.
 
 </para>
 
-@query_box: The query box.
-@value: The entered integer value.
-@data: The user data.
+@query_box: 
+@value: 
+@data: 
 
 
 <!-- ##### USER_FUNCTION GimpQueryDoubleCallback ##### -->
@@ -59,9 +45,9 @@ Note that you have to g_free() the returned string.
 
 </para>
 
-@query_box: The query box.
-@value: The entered double value.
-@data: The user data.
+@query_box: 
+@value: 
+@data: 
 
 
 <!-- ##### USER_FUNCTION GimpQuerySizeCallback ##### -->
@@ -69,10 +55,10 @@ Note that you have to g_free() the returned string.
 
 </para>
 
-@query_box: The query box.
-@size: The entered size in pixels.
-@unit: The selected unit from the #GimpUnitMenu.
-@data: The user data.
+@query_box: 
+@size: 
+@unit: 
+@data: 
 
 
 <!-- ##### USER_FUNCTION GimpQueryBooleanCallback ##### -->
@@ -80,9 +66,9 @@ Note that you have to g_free() the returned string.
 
 </para>
 
-@query_box: The query box.
-@value: The entered boolean value.
-@data: The user data.
+@query_box: 
+@value: 
+@data: 
 
 
 <!-- ##### FUNCTION gimp_query_string_box ##### -->
@@ -190,8 +176,7 @@ Note that you have to g_free() the returned string.
 
 <!-- ##### MACRO GIMP_QUERY_BOX_VBOX ##### -->
 <para>
-A macro to access the #GtkVBox in a #GimpQueryBox. Useful if you want to add
-more widgets.
+
 </para>
 
 @qbox: 

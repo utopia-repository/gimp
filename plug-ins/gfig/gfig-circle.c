@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -37,7 +36,8 @@
 
 static gint        calc_radius     (GdkPoint *center,
                                     GdkPoint *edge);
-static void        d_draw_circle   (GfigObject *obj);
+static void        d_draw_circle   (GfigObject *obj,
+                                    cairo_t    *cr);
 static void        d_paint_circle  (GfigObject *obj);
 static GfigObject *d_copy_circle   (GfigObject *obj);
 
@@ -53,7 +53,8 @@ calc_radius (GdkPoint *center, GdkPoint *edge)
 }
 
 static void
-d_draw_circle (GfigObject *obj)
+d_draw_circle (GfigObject *obj,
+               cairo_t    *cr)
 {
   DobjPoints *center_pnt;
   DobjPoints *edge_pnt;
@@ -64,19 +65,22 @@ d_draw_circle (GfigObject *obj)
   if (!center_pnt)
     return; /* End-of-line */
 
+  draw_sqr (&center_pnt->pnt, obj == gfig_context->selected_obj, cr);
+
   edge_pnt = center_pnt->next;
 
   if (!edge_pnt)
-    {
-      g_warning ("Internal error - circle no edge pnt");
-    }
+    return;
 
   radius = calc_radius (&center_pnt->pnt, &edge_pnt->pnt);
-  draw_sqr (&center_pnt->pnt, obj == gfig_context->selected_obj);
-  draw_sqr (&edge_pnt->pnt, obj == gfig_context->selected_obj);
+
+  if (obj_creating == obj)
+    draw_circle (&edge_pnt->pnt, TRUE, cr);
+  else
+    draw_sqr (&edge_pnt->pnt, obj == gfig_context->selected_obj, cr);
 
   gfig_draw_arc (center_pnt->pnt.x, center_pnt->pnt.y,
-                 radius, radius, 0, 360);
+                 radius, radius, 0, 360, cr);
 }
 
 static void
@@ -89,10 +93,6 @@ d_paint_circle (GfigObject *obj)
 
   g_assert (obj != NULL);
 
-  /* Drawing circles is hard .
-   * 1) select circle
-   * 2) stroke it
-   */
   center_pnt = obj->points;
 
   if (!center_pnt)
@@ -117,21 +117,47 @@ d_paint_circle (GfigObject *obj)
   else
     scale_to_xy (&dpnts[0], 2);
 
-  gimp_ellipse_select (gfig_context->image_id,
-                       dpnts[0], dpnts[1],
-                       dpnts[2], dpnts[3],
-                       selopt.type,
-                       selopt.antia,
-                       selopt.feather,
-                       selopt.feather_radius);
+  if (gfig_context_get_current_style ()->fill_type != FILL_NONE)
+    {
+      gimp_context_push ();
+      gimp_context_set_antialias (selopt.antia);
+      gimp_context_set_feather (selopt.feather);
+      gimp_context_set_feather_radius (selopt.feather_radius, selopt.feather_radius);
+      gimp_image_select_ellipse (gfig_context->image_id,
+                                 selopt.type,
+                                 dpnts[0], dpnts[1],
+                                 dpnts[2], dpnts[3]);
+      gimp_context_pop ();
 
-  paint_layer_fill (center_pnt->pnt.x - radius,
-                    center_pnt->pnt.y - radius,
-                    center_pnt->pnt.x + radius,
-                    center_pnt->pnt.y + radius);
+      paint_layer_fill (center_pnt->pnt.x - radius,
+                        center_pnt->pnt.y - radius,
+                        center_pnt->pnt.x + radius,
+                        center_pnt->pnt.y + radius);
+      gimp_selection_none (gfig_context->image_id);
+    }
 
+  /* Drawing a circle may be harder than stroking a circular selection,
+   * but we have to do it or we will not be able to draw outside of the
+   * layer. */
   if (obj->style.paint_type == PAINT_BRUSH_TYPE)
-    gimp_edit_stroke (gfig_context->drawable_id);
+    {
+      const gdouble r = dpnts[2] / 2;
+      const gdouble cx = dpnts[0] + r, cy = dpnts[1] + r;
+      gdouble       line_pnts[362];
+      gdouble       angle = 0;
+      gint          i = 0;
+
+      while (i < 362)
+        {
+          static const gdouble step = 2 * G_PI / 180;
+
+          line_pnts[i++] = cx + r * cos (angle);
+          line_pnts[i++] = cy + r * sin (angle);
+          angle += step;
+        }
+
+      gfig_paint (selvals.brshtype, gfig_context->drawable_id, i, line_pnts);
+    }
 }
 
 static GfigObject *
@@ -164,9 +190,7 @@ static void
 d_update_circle (GdkPoint *pnt)
 {
   DobjPoints *center_pnt, *edge_pnt;
-  gint        radius;
 
-  /* Undraw last one then draw new one */
   center_pnt = obj_creating->points;
 
   if (!center_pnt)
@@ -174,19 +198,6 @@ d_update_circle (GdkPoint *pnt)
 
   if ((edge_pnt = center_pnt->next))
     {
-      /* Undraw current */
-      draw_circle (&edge_pnt->pnt, TRUE);
-      radius = calc_radius (&center_pnt->pnt, &edge_pnt->pnt);
-
-      gdk_draw_arc (gfig_context->preview->window,
-                    gfig_gc,
-                    0,
-                    center_pnt->pnt.x - (gint) RINT (radius),
-                    center_pnt->pnt.y - (gint) RINT (radius),
-                    (gint) RINT (radius) * 2,
-                    (gint) RINT (radius) * 2,
-                    0,
-                    360 * 64);
       edge_pnt->pnt = *pnt;
     }
   else
@@ -194,20 +205,6 @@ d_update_circle (GdkPoint *pnt)
       edge_pnt = new_dobjpoint (pnt->x, pnt->y);
       center_pnt->next = edge_pnt;
     }
-
-  draw_circle (&edge_pnt->pnt, TRUE);
-
-  radius = calc_radius (&center_pnt->pnt, &edge_pnt->pnt);
-
-  gdk_draw_arc (gfig_context->preview->window,
-                gfig_gc,
-                0,
-                center_pnt->pnt.x - (gint) RINT (radius),
-                center_pnt->pnt.y - (gint) RINT (radius),
-                (gint) RINT (radius) * 2,
-                (gint) RINT (radius) * 2,
-                0,
-                360 * 64);
 }
 
 void
@@ -229,7 +226,6 @@ d_circle_end (GdkPoint *pnt,
     }
   else
     {
-      draw_circle (pnt, TRUE);
       add_to_all_obj (gfig_context->current_obj, obj_creating);
     }
 

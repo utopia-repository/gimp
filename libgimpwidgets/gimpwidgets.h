@@ -4,10 +4,10 @@
  * gimpwidgets.h
  * Copyright (C) 2000 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,14 +15,14 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_WIDGETS_H__
 #define __GIMP_WIDGETS_H__
 
+#define __GIMP_WIDGETS_H_INSIDE__
 
 #include <libgimpwidgets/gimpwidgetstypes.h>
 
@@ -73,11 +73,16 @@
 #include <libgimpwidgets/gimpsizeentry.h>
 #include <libgimpwidgets/gimpstock.h>
 #include <libgimpwidgets/gimpstringcombobox.h>
+#include <libgimpwidgets/gimpunitcombobox.h>
 #include <libgimpwidgets/gimpunitmenu.h>
+#include <libgimpwidgets/gimpunitstore.h>
+#include <libgimpwidgets/gimpwidgets-error.h>
 #include <libgimpwidgets/gimpzoommodel.h>
 
+#include <libgimpwidgets/gimp3migration.h>
 #include <libgimpwidgets/gimpoldwidgets.h>
 
+#undef __GIMP_WIDGETS_H_INSIDE__
 
 G_BEGIN_DECLS
 
@@ -149,17 +154,44 @@ GtkWidget * gimp_spin_button_new   (/* return value: */
                                     gdouble             climb_rate,
                                     guint               digits);
 
+/**
+ * GIMP_RANDOM_SEED_SPINBUTTON:
+ * @hbox: The #GtkHBox returned by gimp_random_seed_new().
+ *
+ * Returns: the random_seed's #GtkSpinButton.
+ **/
 #define GIMP_RANDOM_SEED_SPINBUTTON(hbox) \
         (g_object_get_data (G_OBJECT (hbox), "spinbutton"))
-#define GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox) \
+
+/**
+ * GIMP_RANDOM_SEED_SPINBUTTON_ADJ:
+ * @hbox: The #GtkHBox returned by gimp_random_seed_new().
+ *
+ * Returns: the #GtkAdjustment of the random_seed's #GtkSpinButton.
+ **/
+#define GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)       \
         gtk_spin_button_get_adjustment \
         (GTK_SPIN_BUTTON (g_object_get_data (G_OBJECT (hbox), "spinbutton")))
+
+/**
+ * GIMP_RANDOM_SEED_TOGGLE:
+ * @hbox: The #GtkHBox returned by gimp_random_seed_new().
+ *
+ * Returns: the random_seed's #GtkToggleButton.
+ **/
 #define GIMP_RANDOM_SEED_TOGGLE(hbox) \
         (g_object_get_data (G_OBJECT(hbox), "toggle"))
 
 GtkWidget * gimp_random_seed_new   (guint32            *seed,
                                     gboolean           *random_seed);
 
+/**
+ * GIMP_COORDINATES_CHAINBUTTON:
+ * @sizeentry: The #GimpSizeEntry returned by gimp_coordinates_new().
+ *
+ * Returns: the #GimpChainButton which is attached to the
+ *          #GimpSizeEntry.
+ **/
 #define GIMP_COORDINATES_CHAINBUTTON(sizeentry) \
         (g_object_get_data (G_OBJECT (sizeentry), "chainbutton"))
 
@@ -190,19 +222,9 @@ GtkWidget * gimp_coordinates_new   (GimpUnit            unit,
                                     gdouble             ysize_100  /* % */);
 
 
-#ifndef GIMP_DISABLE_DEPRECATED
-
-GtkWidget * gimp_pixmap_button_new  (gchar             **xpm_data,
-                                     const gchar        *text);
-
-#endif
-
-
 /*
  *  Standard Callbacks
  */
-
-void gimp_toggle_button_sensitive_update (GtkToggleButton *toggle_button);
 
 void gimp_toggle_button_update           (GtkWidget       *widget,
                                           gpointer         data);
@@ -220,9 +242,6 @@ void gimp_float_adjustment_update        (GtkAdjustment   *adjustment,
                                           gpointer         data);
 
 void gimp_double_adjustment_update       (GtkAdjustment   *adjustment,
-                                          gpointer         data);
-
-void gimp_unit_menu_update               (GtkWidget       *widget,
                                           gpointer         data);
 
 

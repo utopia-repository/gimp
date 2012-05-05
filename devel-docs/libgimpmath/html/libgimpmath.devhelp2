@@ -22,9 +22,9 @@
     <keyword type="macro" name="CLAMP0255()" link="libgimpmath-GimpMath.html#CLAMP0255:CAPS"/>
     <keyword type="macro" name="gimp_deg_to_rad()" link="libgimpmath-GimpMath.html#gimp-deg-to-rad"/>
     <keyword type="macro" name="gimp_rad_to_deg()" link="libgimpmath-GimpMath.html#gimp-rad-to-deg"/>
-    <keyword type="struct" name="GimpMatrix2" link="libgimpmath-GimpMatrix.html#GimpMatrix2"/>
-    <keyword type="struct" name="GimpMatrix3" link="libgimpmath-GimpMatrix.html#GimpMatrix3"/>
-    <keyword type="struct" name="GimpMatrix4" link="libgimpmath-GimpMatrix.html#GimpMatrix4"/>
+    <keyword type="struct" name="struct GimpMatrix2" link="libgimpmath-GimpMatrix.html#GimpMatrix2"/>
+    <keyword type="struct" name="struct GimpMatrix3" link="libgimpmath-GimpMatrix.html#GimpMatrix3"/>
+    <keyword type="struct" name="struct GimpMatrix4" link="libgimpmath-GimpMatrix.html#GimpMatrix4"/>
     <keyword type="function" name="gimp_matrix2_identity ()" link="libgimpmath-GimpMatrix.html#gimp-matrix2-identity"/>
     <keyword type="function" name="gimp_matrix2_mult ()" link="libgimpmath-GimpMatrix.html#gimp-matrix2-mult"/>
     <keyword type="function" name="gimp_matrix3_identity ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-identity"/>
@@ -48,15 +48,22 @@
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2:CAPS"/>
     <keyword type="function" name="gimp_param_spec_matrix2 ()" link="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2" since="GIMP 2.4"/>
     <keyword type="macro" name="GIMP_VALUE_HOLDS_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2:CAPS"/>
-    <keyword type="struct" name="GimpVector2" link="libgimpmath-GimpVector.html#GimpVector2"/>
-    <keyword type="struct" name="GimpVector3" link="libgimpmath-GimpVector.html#GimpVector3"/>
-    <keyword type="struct" name="GimpVector4" link="libgimpmath-GimpVector.html#GimpVector4"/>
+    <keyword type="macro" name="GIMP_TYPE_MATRIX3" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX3:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX3" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX3:CAPS"/>
+    <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MATRIX3()" link="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX3:CAPS"/>
+    <keyword type="function" name="gimp_param_spec_matrix3 ()" link="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix3" since="GIMP 2.8"/>
+    <keyword type="macro" name="GIMP_VALUE_HOLDS_MATRIX3()" link="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX3:CAPS"/>
+    <keyword type="struct" name="struct GimpVector2" link="libgimpmath-GimpVector.html#GimpVector2"/>
+    <keyword type="struct" name="struct GimpVector3" link="libgimpmath-GimpVector.html#GimpVector3"/>
+    <keyword type="struct" name="struct GimpVector4" link="libgimpmath-GimpVector.html#GimpVector4"/>
     <keyword type="function" name="gimp_vector2_new ()" link="libgimpmath-GimpVector.html#gimp-vector2-new"/>
     <keyword type="function" name="gimp_vector2_set ()" link="libgimpmath-GimpVector.html#gimp-vector2-set"/>
     <keyword type="function" name="gimp_vector2_length ()" link="libgimpmath-GimpVector.html#gimp-vector2-length"/>
     <keyword type="function" name="gimp_vector2_length_val ()" link="libgimpmath-GimpVector.html#gimp-vector2-length-val"/>
     <keyword type="function" name="gimp_vector2_mul ()" link="libgimpmath-GimpVector.html#gimp-vector2-mul"/>
     <keyword type="function" name="gimp_vector2_mul_val ()" link="libgimpmath-GimpVector.html#gimp-vector2-mul-val"/>
+    <keyword type="function" name="gimp_vector2_normal ()" link="libgimpmath-GimpVector.html#gimp-vector2-normal" since="2.8"/>
+    <keyword type="function" name="gimp_vector2_normal_val ()" link="libgimpmath-GimpVector.html#gimp-vector2-normal-val" since="2.8"/>
     <keyword type="function" name="gimp_vector2_normalize ()" link="libgimpmath-GimpVector.html#gimp-vector2-normalize"/>
     <keyword type="function" name="gimp_vector2_normalize_val ()" link="libgimpmath-GimpVector.html#gimp-vector2-normalize-val"/>
     <keyword type="function" name="gimp_vector2_neg ()" link="libgimpmath-GimpVector.html#gimp-vector2-neg"/>

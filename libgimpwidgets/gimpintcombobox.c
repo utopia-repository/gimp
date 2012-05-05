@@ -4,10 +4,10 @@
  * gimpintcombobox.c
  * Copyright (C) 2004  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,16 @@
 
 #include "gimpintcombobox.h"
 #include "gimpintstore.h"
+
+
+/**
+ * SECTION: gimpintcombobox
+ * @title: GimpIntComboBox
+ * @short_description: A widget providing a popup menu of integer
+ *                     values (e.g. enums).
+ *
+ * A widget providing a popup menu of integer values (e.g. enums).
+ **/
 
 
 enum
@@ -120,12 +129,10 @@ gimp_int_combo_box_init (GimpIntComboBox *combo_box)
   gtk_combo_box_set_model (GTK_COMBO_BOX (combo_box), GTK_TREE_MODEL (store));
   g_object_unref (store);
 
-  priv = GIMP_INT_COMBO_BOX_GET_PRIVATE (combo_box);
-
   priv->pixbuf_renderer = cell = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo_box), cell, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo_box), cell,
-                                  "stock_id", GIMP_INT_STORE_STOCK_ID,
+                                  "stock-id", GIMP_INT_STORE_STOCK_ID,
                                   "pixbuf",   GIMP_INT_STORE_PIXBUF,
                                   NULL);
 
@@ -259,7 +266,7 @@ gimp_int_combo_box_new_valist (const gchar *first_label,
        label;
        label = va_arg (values, const gchar *), value = va_arg (values, gint))
     {
-      GtkTreeIter  iter;
+      GtkTreeIter  iter = { 0, };
 
       gtk_list_store_append (store, &iter);
       gtk_list_store_set (store, &iter,

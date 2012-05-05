@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,13 +12,21 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_BASE_ENUMS_H__
 #define __GIMP_BASE_ENUMS_H__
+
+
+/**
+ * SECTION: gimpbaseenums
+ * @title: gimpbaseenums
+ * @short_description: Basic GIMP enumeration data types.
+ *
+ * Basic GIMP enumeration data types.
+ **/
 
 
 G_BEGIN_DECLS
@@ -172,7 +180,7 @@ GType gimp_gradient_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_GRADIENT_LINEAR,                /*< desc="gradient|Linear"   >*/
+  GIMP_GRADIENT_LINEAR,                /*< desc="Linear"            >*/
   GIMP_GRADIENT_BILINEAR,              /*< desc="Bi-linear"         >*/
   GIMP_GRADIENT_RADIAL,                /*< desc="Radial"            >*/
   GIMP_GRADIENT_SQUARE,                /*< desc="Square"            >*/
@@ -245,10 +253,10 @@ GType gimp_interpolation_type_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_INTERPOLATION_NONE,   /*< desc="interpolation|None"   >*/
-  GIMP_INTERPOLATION_LINEAR, /*< desc="interpolation|Linear" >*/
-  GIMP_INTERPOLATION_CUBIC,  /*< desc="Cubic"                >*/
-  GIMP_INTERPOLATION_LANCZOS /*< desc="Sinc (Lanczos3)"      >*/
+  GIMP_INTERPOLATION_NONE,   /*< desc="None"            >*/
+  GIMP_INTERPOLATION_LINEAR, /*< desc="Linear"          >*/
+  GIMP_INTERPOLATION_CUBIC,  /*< desc="Cubic"           >*/
+  GIMP_INTERPOLATION_LANCZOS /*< desc="Sinc (Lanczos3)" >*/
 } GimpInterpolationType;
 
 
@@ -366,7 +374,7 @@ typedef enum
   GIMP_PDB_FLOATARRAY,
   GIMP_PDB_STRINGARRAY,
   GIMP_PDB_COLOR,
-  GIMP_PDB_REGION,
+  GIMP_PDB_ITEM,
   GIMP_PDB_DISPLAY,
   GIMP_PDB_IMAGE,
   GIMP_PDB_LAYER,
@@ -381,7 +389,8 @@ typedef enum
 
   /*  the following aliases are deprecated  */
   GIMP_PDB_PATH     = GIMP_PDB_VECTORS,     /*< skip >*/
-  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY   /*< skip >*/
+  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY,  /*< skip >*/
+  GIMP_PDB_REGION   = GIMP_PDB_ITEM         /*< skip >*/
 } GimpPDBArgType;
 
 
@@ -471,6 +480,19 @@ typedef enum
   GIMP_TEXT_DIRECTION_LTR,   /*< desc="From left to right" >*/
   GIMP_TEXT_DIRECTION_RTL    /*< desc="From right to left" >*/
 } GimpTextDirection;
+
+
+#define GIMP_TYPE_TEXT_HINT_STYLE (gimp_text_hint_style_get_type ())
+
+GType gimp_text_hint_style_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_TEXT_HINT_STYLE_NONE,     /*< desc="None"   >*/
+  GIMP_TEXT_HINT_STYLE_SLIGHT,   /*< desc="Slight" >*/
+  GIMP_TEXT_HINT_STYLE_MEDIUM,   /*< desc="Medium" >*/
+  GIMP_TEXT_HINT_STYLE_FULL      /*< desc="Full"   >*/
+} GimpTextHintStyle;
 
 
 #define GIMP_TYPE_TEXT_JUSTIFICATION (gimp_text_justification_get_type ())

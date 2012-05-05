@@ -4,9 +4,9 @@
  * GIMP Plug-in for Windows Icon files.
  * Copyright (C) 2002 Christian Kreibich <christian@whoop.org>.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -557,7 +556,7 @@ ico_image_get_reduced_buf (guint32   layer,
 
   if (bpp <= 8 || bpp == 24 || drawable->bpp != 4)
     {
-      gint32        image = gimp_drawable_get_image (layer);
+      gint32        image = gimp_item_get_image (layer);
       GimpDrawable *tmp;
 
       tmp_image = gimp_image_new (gimp_drawable_width (layer),
@@ -578,7 +577,7 @@ ico_image_get_reduced_buf (guint32   layer,
       tmp_layer = gimp_layer_new (tmp_image, "tmp", w, h,
                                   gimp_drawable_type (layer),
                                   100, GIMP_NORMAL_MODE);
-      gimp_image_add_layer (tmp_image, tmp_layer, 0);
+      gimp_image_insert_layer (tmp_image, tmp_layer, -1, 0);
 
       tmp = gimp_drawable_get (tmp_layer);
 
@@ -1026,6 +1025,7 @@ ico_save_image (const gchar  *filename,
   if (fwrite (entries, sizeof (IcoFileEntry), info.num_icons, fp) <= 0)
     {
       ico_save_info_free (&info);
+      g_free (entries);
       fclose (fp);
       return GIMP_PDB_EXECUTION_ERROR;
     }
@@ -1090,6 +1090,7 @@ ico_save_image (const gchar  *filename,
 
   ico_save_info_free (&info);
   fclose (fp);
+  g_free (entries);
 
   return GIMP_PDB_SUCCESS;
 }

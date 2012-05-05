@@ -2,8 +2,7 @@
 GimpDialog
 
 <!-- ##### SECTION Short_Description ##### -->
-Constructors for #GtkDialog's and action_areas as well as other
-dialog-related stuff.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -33,6 +32,11 @@ dialog-related stuff.
 </para>
 
 <!-- ##### ARG GimpDialog:help-id ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GimpDialog:parent ##### -->
 <para>
 
 </para>

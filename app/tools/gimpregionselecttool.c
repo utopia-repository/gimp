@@ -3,9 +3,9 @@
  *
  * gimpregionselecttool.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,12 +14,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -34,11 +34,9 @@
 #include "core/gimpimage.h"
 #include "core/gimplayer-floating-sel.h"
 
-#include "display/gimpcanvas.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-cursor.h"
-#include "display/gimpdisplayshell-transform.h"
 
 #include "gimpregionselectoptions.h"
 #include "gimpregionselecttool.h"
@@ -50,31 +48,32 @@
 static void   gimp_region_select_tool_finalize       (GObject               *object);
 
 static void   gimp_region_select_tool_button_press   (GimpTool              *tool,
-                                                      GimpCoords            *coords,
+                                                      const GimpCoords      *coords,
                                                       guint32                time,
                                                       GdkModifierType        state,
+                                                      GimpButtonPressType    press_type,
                                                       GimpDisplay           *display);
 static void   gimp_region_select_tool_button_release (GimpTool              *tool,
-                                                      GimpCoords            *coords,
+                                                      const GimpCoords      *coords,
                                                       guint32                time,
                                                       GdkModifierType        state,
                                                       GimpButtonReleaseType  release_type,
                                                       GimpDisplay           *display);
 static void   gimp_region_select_tool_motion         (GimpTool              *tool,
-                                                      GimpCoords            *coords,
+                                                      const GimpCoords      *coords,
                                                       guint32                time,
                                                       GdkModifierType        state,
                                                       GimpDisplay           *display);
 static void   gimp_region_select_tool_cursor_update  (GimpTool              *tool,
-                                                      GimpCoords            *coords,
+                                                      const GimpCoords      *coords,
                                                       GdkModifierType        state,
                                                       GimpDisplay           *display);
 
 static void   gimp_region_select_tool_draw           (GimpDrawTool          *draw_tool);
 
-static GdkSegment *gimp_region_select_tool_calculate (GimpRegionSelectTool  *region_sel,
+static BoundSeg * gimp_region_select_tool_calculate  (GimpRegionSelectTool  *region_sel,
                                                       GimpDisplay           *display,
-                                                      gint                  *num_segs);
+                                                      gint                  *n_segs);
 
 
 G_DEFINE_TYPE (GimpRegionSelectTool, gimp_region_select_tool,
@@ -114,7 +113,7 @@ gimp_region_select_tool_init (GimpRegionSelectTool *region_select)
 
   region_select->region_mask     = NULL;
   region_select->segs            = NULL;
-  region_select->num_segs        = 0;
+  region_select->n_segs          = 0;
 }
 
 static void
@@ -131,19 +130,20 @@ gimp_region_select_tool_finalize (GObject *object)
   if (region_sel->segs)
     {
       g_free (region_sel->segs);
-      region_sel->segs     = NULL;
-      region_sel->num_segs = 0;
+      region_sel->segs   = NULL;
+      region_sel->n_segs = 0;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gimp_region_select_tool_button_press (GimpTool        *tool,
-                                      GimpCoords      *coords,
-                                      guint32          time,
-                                      GdkModifierType  state,
-                                      GimpDisplay     *display)
+gimp_region_select_tool_button_press (GimpTool            *tool,
+                                      const GimpCoords    *coords,
+                                      guint32              time,
+                                      GdkModifierType      state,
+                                      GimpButtonPressType  press_type,
+                                      GimpDisplay         *display)
 {
   GimpRegionSelectTool    *region_sel = GIMP_REGION_SELECT_TOOL (tool);
   GimpRegionSelectOptions *options    = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
@@ -152,25 +152,28 @@ gimp_region_select_tool_button_press (GimpTool        *tool,
   region_sel->y               = coords->y;
   region_sel->saved_threshold = options->threshold;
 
+  if (gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (region_sel),
+                                      display, coords))
+    {
+      return;
+    }
+
   gimp_tool_control_activate (tool->control);
   tool->display = display;
-
-  if (gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (region_sel), coords))
-    return;
 
   gimp_tool_push_status (tool, display,
                          _("Move the mouse to change threshold"));
 
   /*  calculate the region boundary  */
   region_sel->segs = gimp_region_select_tool_calculate (region_sel, display,
-                                                        &region_sel->num_segs);
+                                                        &region_sel->n_segs);
 
   gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
 }
 
 static void
 gimp_region_select_tool_button_release (GimpTool              *tool,
-                                        GimpCoords            *coords,
+                                        const GimpCoords      *coords,
                                         guint32                time,
                                         GdkModifierType        state,
                                         GimpButtonReleaseType  release_type,
@@ -179,6 +182,7 @@ gimp_region_select_tool_button_release (GimpTool              *tool,
   GimpRegionSelectTool    *region_sel  = GIMP_REGION_SELECT_TOOL (tool);
   GimpSelectionOptions    *sel_options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
   GimpRegionSelectOptions *options     = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
+  GimpImage               *image       = gimp_display_get_image (display);
 
   gimp_tool_pop_status (tool, display);
 
@@ -188,41 +192,34 @@ gimp_region_select_tool_button_release (GimpTool              *tool,
 
   if (release_type != GIMP_BUTTON_RELEASE_CANCEL)
     {
-      gint off_x, off_y;
-
       if (GIMP_SELECTION_TOOL (tool)->function == SELECTION_ANCHOR)
         {
-          if (gimp_image_floating_sel (display->image))
+          if (gimp_image_get_floating_selection (image))
             {
               /*  If there is a floating selection, anchor it  */
-              floating_sel_anchor (gimp_image_floating_sel (display->image));
+              floating_sel_anchor (gimp_image_get_floating_selection (image));
             }
           else
             {
               /*  Otherwise, clear the selection mask  */
-              gimp_channel_clear (gimp_image_get_mask (display->image), NULL,
-                                  TRUE);
+              gimp_channel_clear (gimp_image_get_mask (image), NULL, TRUE);
             }
 
-          gimp_image_flush (display->image);
+          gimp_image_flush (image);
         }
       else if (region_sel->region_mask)
         {
-          if (options->sample_merged)
-            {
-              off_x = 0;
-              off_y = 0;
-            }
-          else
-            {
-              GimpDrawable *drawable;
+          gint off_x = 0;
+          gint off_y = 0;
 
-              drawable = gimp_image_get_active_drawable (display->image);
+          if (! options->sample_merged)
+            {
+              GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
-              gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+              gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
             }
 
-          gimp_channel_select_channel (gimp_image_get_mask (display->image),
+          gimp_channel_select_channel (gimp_image_get_mask (image),
                                        GIMP_REGION_SELECT_TOOL_GET_CLASS (tool)->undo_desc,
                                        region_sel->region_mask,
                                        off_x,
@@ -233,7 +230,7 @@ gimp_region_select_tool_button_release (GimpTool              *tool,
                                        sel_options->feather_radius);
 
 
-          gimp_image_flush (display->image);
+          gimp_image_flush (image);
         }
     }
 
@@ -246,8 +243,8 @@ gimp_region_select_tool_button_release (GimpTool              *tool,
   if (region_sel->segs)
     {
       g_free (region_sel->segs);
-      region_sel->segs     = NULL;
-      region_sel->num_segs = 0;
+      region_sel->segs   = NULL;
+      region_sel->n_segs = 0;
     }
 
   /*  Restore the original threshold  */
@@ -257,16 +254,14 @@ gimp_region_select_tool_button_release (GimpTool              *tool,
 }
 
 static void
-gimp_region_select_tool_motion (GimpTool        *tool,
-                                GimpCoords      *coords,
-                                guint32          time,
-                                GdkModifierType  state,
-                                GimpDisplay     *display)
+gimp_region_select_tool_motion (GimpTool         *tool,
+                                const GimpCoords *coords,
+                                guint32           time,
+                                GdkModifierType   state,
+                                GimpDisplay      *display)
 {
   GimpRegionSelectTool    *region_sel = GIMP_REGION_SELECT_TOOL (tool);
   GimpRegionSelectOptions *options    = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
-  GdkSegment              *new_segs;
-  gint                     num_new_segs;
   gint                     diff_x, diff_y;
   gdouble                  diff;
 
@@ -287,32 +282,28 @@ gimp_region_select_tool_motion (GimpTool        *tool,
                 "threshold", CLAMP (region_sel->saved_threshold + diff, 0, 255),
                 NULL);
 
-  /*  calculate the new region boundary  */
-  new_segs = gimp_region_select_tool_calculate (region_sel, display,
-                                                &num_new_segs);
-
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  /*  make sure the XSegment array is freed before we assign the new one  */
   if (region_sel->segs)
     g_free (region_sel->segs);
 
-  region_sel->segs     = new_segs;
-  region_sel->num_segs = num_new_segs;
+  region_sel->segs = gimp_region_select_tool_calculate (region_sel, display,
+                                                        &region_sel->n_segs);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }
 
 static void
-gimp_region_select_tool_cursor_update (GimpTool        *tool,
-                                       GimpCoords      *coords,
-                                       GdkModifierType  state,
-                                       GimpDisplay     *display)
+gimp_region_select_tool_cursor_update (GimpTool         *tool,
+                                       const GimpCoords *coords,
+                                       GdkModifierType   state,
+                                       GimpDisplay      *display)
 {
   GimpRegionSelectOptions *options  = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
   GimpCursorModifier       modifier = GIMP_CURSOR_MODIFIER_NONE;
+  GimpImage               *image    = gimp_display_get_image (display);
 
-  if (! gimp_image_coords_in_active_pickable (display->image, coords,
+  if (! gimp_image_coords_in_active_pickable (image, coords,
                                               options->sample_merged, FALSE))
     modifier = GIMP_CURSOR_MODIFIER_BAD;
 
@@ -324,34 +315,38 @@ gimp_region_select_tool_cursor_update (GimpTool        *tool,
 static void
 gimp_region_select_tool_draw (GimpDrawTool *draw_tool)
 {
-  GimpRegionSelectTool *region_sel = GIMP_REGION_SELECT_TOOL (draw_tool);
+  GimpRegionSelectTool    *region_sel = GIMP_REGION_SELECT_TOOL (draw_tool);
+  GimpRegionSelectOptions *options    = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (draw_tool);
 
   if (region_sel->segs)
     {
-      GimpDisplayShell *shell;
+      gint off_x = 0;
+      gint off_y = 0;
 
-      shell = GIMP_DISPLAY_SHELL (GIMP_TOOL (draw_tool)->display->shell);
+      if (! options->sample_merged)
+        {
+          GimpImage    *image    = gimp_display_get_image (draw_tool->display);
+          GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
-      gimp_canvas_draw_segments (GIMP_CANVAS (shell->canvas),
-                                 GIMP_CANVAS_STYLE_XOR,
-                                 region_sel->segs, region_sel->num_segs);
+          gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
+        }
+
+      gimp_draw_tool_add_boundary (draw_tool,
+                                   region_sel->segs,
+                                   region_sel->n_segs,
+                                   NULL,
+                                   off_x, off_y);
     }
 }
 
-static GdkSegment *
+static BoundSeg *
 gimp_region_select_tool_calculate (GimpRegionSelectTool *region_sel,
                                    GimpDisplay          *display,
-                                   gint                 *num_segs)
+                                   gint                 *n_segs)
 {
-  GimpTool                *tool    = GIMP_TOOL (region_sel);
-  GimpRegionSelectOptions *options = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
-  GimpDisplayShell        *shell   = GIMP_DISPLAY_SHELL (display->shell);
-  GimpDrawable            *drawable;
-  GdkSegment              *segs;
-  BoundSeg                *bsegs;
-  PixelRegion              maskPR;
-
-  drawable = gimp_image_get_active_drawable (display->image);
+  GimpDisplayShell *shell = gimp_display_get_shell (display);
+  BoundSeg         *segs;
+  PixelRegion       maskPR;
 
   gimp_display_shell_set_override_cursor (shell, GDK_WATCH);
 
@@ -366,7 +361,7 @@ gimp_region_select_tool_calculate (GimpRegionSelectTool *region_sel,
     {
       gimp_display_shell_unset_override_cursor (shell);
 
-      *num_segs = 0;
+      *n_segs = 0;
       return NULL;
     }
 
@@ -376,22 +371,16 @@ gimp_region_select_tool_calculate (GimpRegionSelectTool *region_sel,
   pixel_region_init (&maskPR,
                      gimp_drawable_get_tiles (GIMP_DRAWABLE (region_sel->region_mask)),
                      0, 0,
-                     gimp_item_width  (GIMP_ITEM (region_sel->region_mask)),
-                     gimp_item_height (GIMP_ITEM (region_sel->region_mask)),
+                     gimp_item_get_width  (GIMP_ITEM (region_sel->region_mask)),
+                     gimp_item_get_height (GIMP_ITEM (region_sel->region_mask)),
                      FALSE);
 
-  bsegs = boundary_find (&maskPR, BOUNDARY_WITHIN_BOUNDS,
-                         0, 0,
-                         gimp_item_width  (GIMP_ITEM (region_sel->region_mask)),
-                         gimp_item_height (GIMP_ITEM (region_sel->region_mask)),
-                         BOUNDARY_HALF_WAY,
-                         num_segs);
-
-  segs = g_new (GdkSegment, *num_segs);
-
-  gimp_display_shell_transform_segments (shell, bsegs, segs, *num_segs,
-                                         ! options->sample_merged);
-  g_free (bsegs);
+  segs = boundary_find (&maskPR, BOUNDARY_WITHIN_BOUNDS,
+                        0, 0,
+                        gimp_item_get_width  (GIMP_ITEM (region_sel->region_mask)),
+                        gimp_item_get_height (GIMP_ITEM (region_sel->region_mask)),
+                        BOUNDARY_HALF_WAY,
+                        n_segs);
 
   gimp_display_shell_unset_override_cursor (shell);
 

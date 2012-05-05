@@ -19,6 +19,10 @@ twain_LDFLAGS = -mwindows -luser32
 twainplatform = tw_win.c
 endif
 
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+twain_RC = twain.rc.o
+endif
 
 if HAVE_MAC_TWAIN
 twain_LDFLAGS = -framework Carbon -framework TWAIN
@@ -51,7 +55,7 @@ EXTRA_DIST = \
 
 INCLUDES = \
 	-I$(top_srcdir)	\
-	$(GLIB_CFLAGS)	\
+	$(GTK_CFLAGS)	\
 	-I$(includedir)
 
 LDADD = \
@@ -61,4 +65,5 @@ LDADD = \
 	$(GLIB_LIBS)	\
 	$(RT_LIBS)	\
 	$(INTLLIBS)	\
-	$(twain_LIBS)
+	$(twain_LIBS)	\
+	$(twain_RC)

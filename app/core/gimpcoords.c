@@ -4,9 +4,9 @@
  * gimpcoords.c
  * Copyright (C) 2002 Simon Budig  <simon@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -44,23 +43,25 @@ gimp_coords_mix (const gdouble     amul,
 {
   if (b)
     {
-      ret_val->x        = amul * a->x        + bmul * b->x;
-      ret_val->y        = amul * a->y        + bmul * b->y;
-      ret_val->pressure = amul * a->pressure + bmul * b->pressure;
-      ret_val->xtilt    = amul * a->xtilt    + bmul * b->xtilt;
-      ret_val->ytilt    = amul * a->ytilt    + bmul * b->ytilt;
-      ret_val->wheel    = amul * a->wheel    + bmul * b->wheel;
-      ret_val->velocity = amul * a->velocity + bmul * b->velocity;
+      ret_val->x         = amul * a->x         + bmul * b->x;
+      ret_val->y         = amul * a->y         + bmul * b->y;
+      ret_val->pressure  = amul * a->pressure  + bmul * b->pressure;
+      ret_val->xtilt     = amul * a->xtilt     + bmul * b->xtilt;
+      ret_val->ytilt     = amul * a->ytilt     + bmul * b->ytilt;
+      ret_val->wheel     = amul * a->wheel     + bmul * b->wheel;
+      ret_val->velocity  = amul * a->velocity  + bmul * b->velocity;
+      ret_val->direction = amul * a->direction + bmul * b->direction;
     }
   else
     {
-      ret_val->x        = amul * a->x;
-      ret_val->y        = amul * a->y;
-      ret_val->pressure = amul * a->pressure;
-      ret_val->xtilt    = amul * a->xtilt;
-      ret_val->ytilt    = amul * a->ytilt;
-      ret_val->wheel    = amul * a->wheel;
-      ret_val->velocity = amul * a->velocity;
+      ret_val->x         = amul * a->x;
+      ret_val->y         = amul * a->y;
+      ret_val->pressure  = amul * a->pressure;
+      ret_val->xtilt     = amul * a->xtilt;
+      ret_val->ytilt     = amul * a->ytilt;
+      ret_val->wheel     = amul * a->wheel;
+      ret_val->velocity  = amul * a->velocity;
+      ret_val->direction = amul * a->direction;
     }
 }
 
@@ -115,13 +116,14 @@ gdouble
 gimp_coords_scalarprod (const GimpCoords *a,
                         const GimpCoords *b)
 {
-  return (a->x        * b->x        +
-          a->y        * b->y        +
-          a->pressure * b->pressure +
-          a->xtilt    * b->xtilt    +
-          a->ytilt    * b->ytilt    +
-          a->wheel    * b->wheel    +
-          a->velocity * a->velocity);
+  return (a->x         * b->x        +
+          a->y         * b->y        +
+          a->pressure  * b->pressure +
+          a->xtilt     * b->xtilt    +
+          a->ytilt     * b->ytilt    +
+          a->wheel     * b->wheel    +
+          a->velocity  * b->velocity +
+          a->direction * b->direction);
 }
 
 
@@ -136,13 +138,14 @@ gimp_coords_length_squared (const GimpCoords *a)
 {
   GimpCoords upscaled_a;
 
-  upscaled_a.x        = a->x;
-  upscaled_a.y        = a->y;
-  upscaled_a.pressure = a->pressure * INPUT_RESOLUTION;
-  upscaled_a.xtilt    = a->xtilt    * INPUT_RESOLUTION;
-  upscaled_a.ytilt    = a->ytilt    * INPUT_RESOLUTION;
-  upscaled_a.wheel    = a->wheel    * INPUT_RESOLUTION;
-  upscaled_a.velocity = a->velocity * INPUT_RESOLUTION;
+  upscaled_a.x         = a->x;
+  upscaled_a.y         = a->y;
+  upscaled_a.pressure  = a->pressure  * INPUT_RESOLUTION;
+  upscaled_a.xtilt     = a->xtilt     * INPUT_RESOLUTION;
+  upscaled_a.ytilt     = a->ytilt     * INPUT_RESOLUTION;
+  upscaled_a.wheel     = a->wheel     * INPUT_RESOLUTION;
+  upscaled_a.velocity  = a->velocity  * INPUT_RESOLUTION;
+  upscaled_a.direction = a->direction * INPUT_RESOLUTION;
 
   return gimp_coords_scalarprod (&upscaled_a, &upscaled_a);
 }
@@ -170,6 +173,7 @@ gimp_coords_manhattan_dist (const GimpCoords *a,
   dist += ABS (a->ytilt - b->ytilt);
   dist += ABS (a->wheel - b->wheel);
   dist += ABS (a->velocity - b->velocity);
+  dist += ABS (a->direction - b->direction);
 
   dist *= INPUT_RESOLUTION;
 
@@ -183,11 +187,56 @@ gboolean
 gimp_coords_equal (const GimpCoords *a,
                    const GimpCoords *b)
 {
-  return (       a->x == b->x        &&
-                 a->y == b->y        &&
-          a->pressure == b->pressure &&
-             a->xtilt == b->xtilt    &&
-             a->ytilt == b->ytilt    &&
-             a->wheel == b->wheel    &&
-          a->velocity == b->velocity);
+  return (a->x         == b->x        &&
+          a->y         == b->y        &&
+          a->pressure  == b->pressure &&
+          a->xtilt     == b->xtilt    &&
+          a->ytilt     == b->ytilt    &&
+          a->wheel     == b->wheel    &&
+          a->velocity  == b->velocity &&
+          a->direction == b->direction);
+}
+
+/* helper for calculating direction of two gimpcoords. */
+
+gdouble
+gimp_coords_direction (const GimpCoords *a,
+                       const GimpCoords *b)
+{
+  gdouble direction;
+  gdouble delta_x, delta_y;
+
+  delta_x = a->x - b->x;
+  delta_y = a->y - b->y;
+
+  if ((delta_x == 0) && (delta_y == 0))
+    {
+      direction = a->direction;
+    }
+  else if (delta_x == 0)
+    {
+      if (delta_y > 0)
+        direction = 0.25;
+      else
+        direction = 0.75;
+    }
+  else if (delta_y == 0)
+    {
+      if (delta_x < 0)
+        direction = 0.0;
+      else
+        direction = 0.5;
+    }
+  else
+    {
+      direction = atan ((- 1.0 * delta_y) / delta_x) / (2 * G_PI);
+
+      if (delta_x > 0.0)
+        direction = direction + 0.5;
+
+      if (direction < 0.0)
+        direction = direction + 1.0;
+    }
+
+  return direction;
 }

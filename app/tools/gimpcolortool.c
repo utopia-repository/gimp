@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -42,11 +42,12 @@
 #include "widgets/gimpdockable.h"
 #include "widgets/gimppaletteeditor.h"
 #include "widgets/gimpsessioninfo.h"
+#include "widgets/gimpwindowstrategy.h"
 
+#include "display/gimpcanvasitem.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-appearance.h"
-#include "display/gimpdisplayshell-draw.h"
 #include "display/gimpdisplayshell-selection.h"
 #include "display/gimpdisplayshell-transform.h"
 
@@ -55,6 +56,9 @@
 #include "gimptoolcontrol.h"
 
 #include "gimp-intl.h"
+
+
+#define SAMPLE_POINT_POSITION_INVALID G_MININT
 
 
 enum
@@ -68,32 +72,30 @@ enum
 
 static void   gimp_color_tool_finalize       (GObject               *object);
 
-static void   gimp_color_tool_control        (GimpTool              *tool,
-                                              GimpToolAction         action,
-                                              GimpDisplay           *display);
 static void   gimp_color_tool_button_press   (GimpTool              *tool,
-                                              GimpCoords            *coords,
+                                              const GimpCoords      *coords,
                                               guint32                time,
                                               GdkModifierType        state,
+                                              GimpButtonPressType    press_type,
                                               GimpDisplay           *display);
 static void   gimp_color_tool_button_release (GimpTool              *tool,
-                                              GimpCoords            *coords,
+                                              const GimpCoords      *coords,
                                               guint32                time,
                                               GdkModifierType        state,
                                               GimpButtonReleaseType  release_type,
                                               GimpDisplay           *display);
 static void   gimp_color_tool_motion         (GimpTool              *tool,
-                                              GimpCoords            *coords,
+                                              const GimpCoords      *coords,
                                               guint32                time,
                                               GdkModifierType        state,
                                               GimpDisplay           *display);
 static void   gimp_color_tool_oper_update    (GimpTool              *tool,
-                                              GimpCoords            *coords,
+                                              const GimpCoords      *coords,
                                               GdkModifierType        state,
                                               gboolean               proximity,
                                               GimpDisplay           *display);
 static void   gimp_color_tool_cursor_update  (GimpTool              *tool,
-                                              GimpCoords            *coords,
+                                              const GimpCoords      *coords,
                                               GdkModifierType        state,
                                               GimpDisplay           *display);
 
@@ -112,7 +114,7 @@ static void   gimp_color_tool_pick           (GimpColorTool         *tool,
 static void   gimp_color_tool_real_picked    (GimpColorTool         *color_tool,
                                               GimpColorPickState     pick_state,
                                               GimpImageType          sample_type,
-                                              GimpRGB               *color,
+                                              const GimpRGB         *color,
                                               gint                   color_index);
 
 
@@ -145,7 +147,6 @@ gimp_color_tool_class_init (GimpColorToolClass *klass)
 
   object_class->finalize     = gimp_color_tool_finalize;
 
-  tool_class->control        = gimp_color_tool_control;
   tool_class->button_press   = gimp_color_tool_button_press;
   tool_class->button_release = gimp_color_tool_button_release;
   tool_class->motion         = gimp_color_tool_motion;
@@ -175,8 +176,8 @@ gimp_color_tool_init (GimpColorTool *color_tool)
 
   color_tool->sample_point        = NULL;
   color_tool->moving_sample_point = FALSE;
-  color_tool->sample_point_x      = -1;
-  color_tool->sample_point_y      = -1;
+  color_tool->sample_point_x      = SAMPLE_POINT_POSITION_INVALID;
+  color_tool->sample_point_y      = SAMPLE_POINT_POSITION_INVALID;
 }
 
 static void
@@ -194,49 +195,19 @@ gimp_color_tool_finalize (GObject *object)
 }
 
 static void
-gimp_color_tool_control (GimpTool       *tool,
-                         GimpToolAction  action,
-                         GimpDisplay    *display)
+gimp_color_tool_button_press (GimpTool            *tool,
+                              const GimpCoords    *coords,
+                              guint32              time,
+                              GdkModifierType      state,
+                              GimpButtonPressType  press_type,
+                              GimpDisplay         *display)
 {
   GimpColorTool    *color_tool = GIMP_COLOR_TOOL (tool);
-  GimpDisplayShell *shell      = GIMP_DISPLAY_SHELL (display->shell);
-
-  switch (action)
-    {
-    case GIMP_TOOL_ACTION_PAUSE:
-      break;
-
-    case GIMP_TOOL_ACTION_RESUME:
-      if (color_tool->sample_point &&
-          gimp_display_shell_get_show_sample_points (shell))
-        gimp_display_shell_draw_sample_point (shell,
-                                              color_tool->sample_point, TRUE);
-      break;
-
-    case GIMP_TOOL_ACTION_HALT:
-      if (color_tool->sample_point &&
-          gimp_display_shell_get_show_sample_points (shell))
-        gimp_display_shell_draw_sample_point (shell,
-                                              color_tool->sample_point, FALSE);
-      break;
-    }
-
-  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
-}
-
-static void
-gimp_color_tool_button_press (GimpTool        *tool,
-                              GimpCoords      *coords,
-                              guint32          time,
-                              GdkModifierType  state,
-                              GimpDisplay     *display)
-{
-  GimpColorTool    *color_tool = GIMP_COLOR_TOOL (tool);
-  GimpDisplayShell *shell      = GIMP_DISPLAY_SHELL (display->shell);
+  GimpDisplayShell *shell      = gimp_display_get_shell (display);
 
   /*  Chain up to activate the tool  */
   GIMP_TOOL_CLASS (parent_class)->button_press (tool, coords, time, state,
-                                                display);
+                                                press_type, display);
 
   if (! color_tool->enabled)
     return;
@@ -249,9 +220,10 @@ gimp_color_tool_button_press (GimpTool        *tool,
 
       gimp_tool_control_set_scroll_lock (tool->control, TRUE);
 
-      gimp_display_shell_selection_control (shell, GIMP_SELECTION_PAUSE);
+      gimp_display_shell_selection_pause (shell);
 
-      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
+      if (! gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tool)))
+        gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
 
       gimp_tool_push_status_coords (tool, display,
                                     gimp_tool_control_get_precision (tool->control),
@@ -263,13 +235,8 @@ gimp_color_tool_button_press (GimpTool        *tool,
     }
   else
     {
-      gint off_x, off_y;
-
-      /*  Keep the coordinates of the target  */
-      gimp_item_offsets (GIMP_ITEM (tool->drawable), &off_x, &off_y);
-
-      color_tool->center_x = coords->x - off_x;
-      color_tool->center_y = coords->y - off_y;
+      color_tool->center_x = coords->x;
+      color_tool->center_y = coords->y;
 
       gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
 
@@ -280,14 +247,15 @@ gimp_color_tool_button_press (GimpTool        *tool,
 
 static void
 gimp_color_tool_button_release (GimpTool              *tool,
-                                GimpCoords            *coords,
+                                const GimpCoords      *coords,
                                 guint32                time,
                                 GdkModifierType        state,
                                 GimpButtonReleaseType  release_type,
                                 GimpDisplay           *display)
 {
   GimpColorTool    *color_tool = GIMP_COLOR_TOOL (tool);
-  GimpDisplayShell *shell      = GIMP_DISPLAY_SHELL (display->shell);
+  GimpDisplayShell *shell      = gimp_display_get_shell (display);
+  GimpImage        *image      = gimp_display_get_image (display);
 
   /*  Chain up to halt the tool  */
   GIMP_TOOL_CLASS (parent_class)->button_release (tool, coords, time, state,
@@ -308,10 +276,10 @@ gimp_color_tool_button_release (GimpTool              *tool,
       if (release_type == GIMP_BUTTON_RELEASE_CANCEL)
         {
           color_tool->moving_sample_point = FALSE;
-          color_tool->sample_point_x      = -1;
-          color_tool->sample_point_y      = -1;
+          color_tool->sample_point_x      = SAMPLE_POINT_POSITION_INVALID;
+          color_tool->sample_point_y      = SAMPLE_POINT_POSITION_INVALID;
 
-          gimp_display_shell_selection_control (shell, GIMP_SELECTION_RESUME);
+          gimp_display_shell_selection_resume (shell);
           return;
         }
 
@@ -324,7 +292,7 @@ gimp_color_tool_button_release (GimpTool              *tool,
         {
           if (color_tool->sample_point)
             {
-              gimp_image_remove_sample_point (display->image,
+              gimp_image_remove_sample_point (image,
                                               color_tool->sample_point, TRUE);
               color_tool->sample_point = NULL;
             }
@@ -333,7 +301,7 @@ gimp_color_tool_button_release (GimpTool              *tool,
         {
           if (color_tool->sample_point)
             {
-              gimp_image_move_sample_point (display->image,
+              gimp_image_move_sample_point (image,
                                             color_tool->sample_point,
                                             color_tool->sample_point_x,
                                             color_tool->sample_point_y,
@@ -342,23 +310,22 @@ gimp_color_tool_button_release (GimpTool              *tool,
           else
             {
               color_tool->sample_point =
-                gimp_image_add_sample_point_at_pos (display->image,
+                gimp_image_add_sample_point_at_pos (image,
                                                     color_tool->sample_point_x,
                                                     color_tool->sample_point_y,
                                                     TRUE);
             }
         }
 
-      gimp_display_shell_selection_control (shell, GIMP_SELECTION_RESUME);
-      gimp_image_flush (display->image);
-
-      if (color_tool->sample_point)
-        gimp_display_shell_draw_sample_point (shell, color_tool->sample_point,
-                                              TRUE);
+      gimp_display_shell_selection_resume (shell);
+      gimp_image_flush (image);
 
       color_tool->moving_sample_point = FALSE;
-      color_tool->sample_point_x      = -1;
-      color_tool->sample_point_y      = -1;
+      color_tool->sample_point_x      = SAMPLE_POINT_POSITION_INVALID;
+      color_tool->sample_point_y      = SAMPLE_POINT_POSITION_INVALID;
+
+      if (color_tool->sample_point)
+        gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
     }
   else
     {
@@ -367,14 +334,14 @@ gimp_color_tool_button_release (GimpTool              *tool,
 }
 
 static void
-gimp_color_tool_motion (GimpTool        *tool,
-                        GimpCoords      *coords,
-                        guint32          time,
-                        GdkModifierType  state,
-                        GimpDisplay     *display)
+gimp_color_tool_motion (GimpTool         *tool,
+                        const GimpCoords *coords,
+                        guint32           time,
+                        GdkModifierType   state,
+                        GimpDisplay      *display)
 {
   GimpColorTool    *color_tool = GIMP_COLOR_TOOL (tool);
-  GimpDisplayShell *shell      = GIMP_DISPLAY_SHELL (display->shell);
+  GimpDisplayShell *shell      = gimp_display_get_shell (display);
 
   if (! color_tool->enabled)
     return;
@@ -388,14 +355,13 @@ gimp_color_tool_motion (GimpTool        *tool,
 
       gimp_display_shell_transform_xy (shell,
                                        coords->x, coords->y,
-                                       &tx, &ty,
-                                       FALSE);
+                                       &tx, &ty);
 
       if (tx < 0 || tx > shell->disp_width ||
           ty < 0 || ty > shell->disp_height)
         {
-          color_tool->sample_point_x = -1;
-          color_tool->sample_point_y = -1;
+          color_tool->sample_point_x = SAMPLE_POINT_POSITION_INVALID;
+          color_tool->sample_point_y = SAMPLE_POINT_POSITION_INVALID;
 
           delete_point = TRUE;
         }
@@ -444,14 +410,10 @@ gimp_color_tool_motion (GimpTool        *tool,
     }
   else
     {
-      gint off_x, off_y;
-
       gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-      gimp_item_offsets (GIMP_ITEM (tool->drawable), &off_x, &off_y);
-
-      color_tool->center_x = coords->x - off_x;
-      color_tool->center_y = coords->y - off_y;
+      color_tool->center_x = coords->x;
+      color_tool->center_y = coords->y;
 
       gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 
@@ -461,49 +423,57 @@ gimp_color_tool_motion (GimpTool        *tool,
 }
 
 static void
-gimp_color_tool_oper_update (GimpTool        *tool,
-                             GimpCoords      *coords,
-                             GdkModifierType  state,
-                             gboolean         proximity,
-                             GimpDisplay     *display)
+gimp_color_tool_oper_update (GimpTool         *tool,
+                             const GimpCoords *coords,
+                             GdkModifierType   state,
+                             gboolean          proximity,
+                             GimpDisplay      *display)
 {
   GimpColorTool    *color_tool   = GIMP_COLOR_TOOL (tool);
-  GimpDisplayShell *shell        = GIMP_DISPLAY_SHELL (display->shell);
+  GimpDisplayShell *shell        = gimp_display_get_shell (display);
+  GimpImage        *image        = gimp_display_get_image (display);
   GimpSamplePoint  *sample_point = NULL;
 
-  if (color_tool->enabled &&
-      gimp_display_shell_get_show_sample_points (shell) && proximity)
+  if (color_tool->enabled                               &&
+      gimp_display_shell_get_show_sample_points (shell) &&
+      proximity)
     {
-      gint snap_distance;
-
-      snap_distance =
-        GIMP_DISPLAY_CONFIG (display->image->gimp->config)->snap_distance;
+      gint snap_distance = display->config->snap_distance;
 
       sample_point =
-        gimp_image_find_sample_point (display->image,
+        gimp_image_find_sample_point (image,
                                       coords->x, coords->y,
                                       FUNSCALEX (shell, snap_distance),
                                       FUNSCALEY (shell, snap_distance));
     }
 
-  if (color_tool->sample_point && color_tool->sample_point != sample_point)
-    gimp_image_update_sample_point (shell->display->image,
-                                    color_tool->sample_point);
+  if (color_tool->sample_point != sample_point)
+    {
+      GimpDrawTool *draw_tool = GIMP_DRAW_TOOL (tool);
 
-  color_tool->sample_point = sample_point;
+      gimp_draw_tool_pause (draw_tool);
 
-  if (color_tool->sample_point)
-    gimp_display_shell_draw_sample_point (shell, color_tool->sample_point,
-                                          TRUE);
+      if (gimp_draw_tool_is_active (draw_tool) &&
+          draw_tool->display != display)
+        gimp_draw_tool_stop (draw_tool);
+
+      color_tool->sample_point = sample_point;
+
+      if (! gimp_draw_tool_is_active (draw_tool))
+        gimp_draw_tool_start (draw_tool, display);
+
+      gimp_draw_tool_resume (draw_tool);
+    }
 }
 
 static void
-gimp_color_tool_cursor_update (GimpTool        *tool,
-                               GimpCoords      *coords,
-                               GdkModifierType  state,
-                               GimpDisplay     *display)
+gimp_color_tool_cursor_update (GimpTool         *tool,
+                               const GimpCoords *coords,
+                               GdkModifierType   state,
+                               GimpDisplay      *display)
 {
   GimpColorTool *color_tool = GIMP_COLOR_TOOL (tool);
+  GimpImage     *image      = gimp_display_get_image (display);
 
   if (color_tool->enabled)
     {
@@ -518,7 +488,7 @@ gimp_color_tool_cursor_update (GimpTool        *tool,
         {
           GimpCursorModifier modifier = GIMP_CURSOR_MODIFIER_BAD;
 
-          if (gimp_image_coords_in_active_pickable (display->image, coords,
+          if (gimp_image_coords_in_active_pickable (image, coords,
                                                     color_tool->options->sample_merged,
                                                     FALSE))
             {
@@ -558,43 +528,45 @@ gimp_color_tool_draw (GimpDrawTool *draw_tool)
 
   if (color_tool->enabled)
     {
+      if (color_tool->sample_point)
+        {
+          GimpImage      *image = gimp_display_get_image (draw_tool->display);
+          GimpCanvasItem *item;
+          gint            index;
+
+          index = g_list_index (gimp_image_get_sample_points (image),
+                                color_tool->sample_point) + 1;
+
+          item = gimp_draw_tool_add_sample_point (draw_tool,
+                                                  color_tool->sample_point->x,
+                                                  color_tool->sample_point->y,
+                                                  index);
+          gimp_canvas_item_set_highlight (item, TRUE);
+        }
+
       if (color_tool->moving_sample_point)
         {
-          if (color_tool->sample_point_x != -1 &&
-              color_tool->sample_point_y != -1)
+          if (color_tool->sample_point_x != SAMPLE_POINT_POSITION_INVALID &&
+              color_tool->sample_point_y != SAMPLE_POINT_POSITION_INVALID)
             {
-              GimpImage *image = draw_tool->display->image;
-
-              gimp_draw_tool_draw_line (draw_tool,
-                                        0, color_tool->sample_point_y + 0.5,
-                                        gimp_image_get_width (image),
-                                        color_tool->sample_point_y + 0.5,
-                                        FALSE);
-              gimp_draw_tool_draw_line (draw_tool,
-                                        color_tool->sample_point_x + 0.5, 0,
-                                        color_tool->sample_point_x + 0.5,
-                                        gimp_image_get_height (image),
-                                        FALSE);
+              gimp_draw_tool_add_crosshair (draw_tool,
+                                            color_tool->sample_point_x,
+                                            color_tool->sample_point_y);
             }
         }
-      else
+      else if (color_tool->options->sample_average &&
+               gimp_tool_control_is_active (GIMP_TOOL (draw_tool)->control))
         {
-          if (color_tool->options->sample_average)
-            {
-              gdouble radius = color_tool->options->average_radius;
+          gdouble radius = color_tool->options->average_radius;
 
-              gimp_draw_tool_draw_rectangle (draw_tool,
-                                             FALSE,
-                                             color_tool->center_x - radius,
-                                             color_tool->center_y - radius,
-                                             2 * radius + 1,
-                                             2 * radius + 1,
-                                             TRUE);
-            }
+          gimp_draw_tool_add_rectangle (draw_tool,
+                                        FALSE,
+                                        color_tool->center_x - radius,
+                                        color_tool->center_y - radius,
+                                        2 * radius + 1,
+                                        2 * radius + 1);
         }
     }
-
-  GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
 }
 
 static gboolean
@@ -605,12 +577,13 @@ gimp_color_tool_real_pick (GimpColorTool *color_tool,
                            GimpRGB       *color,
                            gint          *color_index)
 {
-  GimpTool *tool = GIMP_TOOL (color_tool);
+  GimpTool  *tool  = GIMP_TOOL (color_tool);
+  GimpImage *image = gimp_display_get_image (tool->display);
 
   g_return_val_if_fail (tool->display != NULL, FALSE);
   g_return_val_if_fail (tool->drawable != NULL, FALSE);
 
-  return gimp_image_pick_color (tool->display->image, tool->drawable, x, y,
+  return gimp_image_pick_color (image, tool->drawable, x, y,
                                 color_tool->options->sample_merged,
                                 color_tool->options->sample_average,
                                 color_tool->options->average_radius,
@@ -623,32 +596,29 @@ static void
 gimp_color_tool_real_picked (GimpColorTool      *color_tool,
                              GimpColorPickState  pick_state,
                              GimpImageType       sample_type,
-                             GimpRGB            *color,
+                             const GimpRGB      *color,
                              gint                color_index)
 {
   GimpTool          *tool = GIMP_TOOL (color_tool);
   GimpContext       *context;
-  GimpDialogFactory *dialog_factory;
 
   /*  use this tool's own options here (NOT color_tool->options)  */
   context = GIMP_CONTEXT (gimp_tool_get_options (tool));
 
-  dialog_factory = gimp_dialog_factory_from_name ("dock");
-
   if (color_tool->pick_mode == GIMP_COLOR_PICK_MODE_FOREGROUND ||
       color_tool->pick_mode == GIMP_COLOR_PICK_MODE_BACKGROUND)
     {
-      GimpSessionInfo *info;
+      GtkWidget *widget;
 
       if (GIMP_IMAGE_TYPE_IS_INDEXED (sample_type))
         {
-          info = gimp_dialog_factory_find_session_info (dialog_factory,
-                                                        "gimp-indexed-palette");
-          if (info && info->widget)
+          widget = gimp_dialog_factory_find_widget (gimp_dialog_factory_get_singleton (),
+                                                    "gimp-indexed-palette");
+          if (widget)
             {
               GimpColormapEditor *editor;
 
-              editor = GIMP_COLORMAP_EDITOR (gtk_bin_get_child (GTK_BIN (info->widget)));
+              editor = GIMP_COLORMAP_EDITOR (gtk_bin_get_child (GTK_BIN (widget)));
 
               gimp_colormap_editor_set_index (editor, color_index, NULL);
             }
@@ -656,14 +626,14 @@ gimp_color_tool_real_picked (GimpColorTool      *color_tool,
 
       if (TRUE)
         {
-          info = gimp_dialog_factory_find_session_info (dialog_factory,
-                                                        "gimp-palette-editor");
-          if (info && info->widget)
+          widget = gimp_dialog_factory_find_widget (gimp_dialog_factory_get_singleton (),
+                                                    "gimp-palette-editor");
+          if (widget)
             {
               GimpPaletteEditor *editor;
               gint               index;
 
-              editor = GIMP_PALETTE_EDITOR (gtk_bin_get_child (GTK_BIN (info->widget)));
+              editor = GIMP_PALETTE_EDITOR (gtk_bin_get_child (GTK_BIN (widget)));
 
               index = gimp_palette_editor_get_index (editor, color);
               if (index != -1)
@@ -687,13 +657,17 @@ gimp_color_tool_real_picked (GimpColorTool      *color_tool,
 
     case GIMP_COLOR_PICK_MODE_PALETTE:
       {
-        GdkScreen *screen;
-        GtkWidget *dockable;
+        GimpDisplayShell *shell  = gimp_display_get_shell (tool->display);
+        GdkScreen        *screen = gtk_widget_get_screen (GTK_WIDGET (shell));
+        GtkWidget        *dockable;
 
-        screen = gtk_widget_get_screen (tool->display->shell);
-        dockable = gimp_dialog_factory_dialog_raise (dialog_factory, screen,
-                                                     "gimp-palette-editor",
-                                                     -1);
+        dockable =
+          gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (tool->display->gimp)),
+                                                     tool->display->gimp,
+                                                     gimp_dialog_factory_get_singleton (),
+                                                     screen,
+                                                     "gimp-palette-editor");
+
         if (dockable)
           {
             GtkWidget *palette_editor;
@@ -811,21 +785,19 @@ gimp_color_tool_start_sample_point (GimpTool    *tool,
 
   color_tool = GIMP_COLOR_TOOL (tool);
 
-  gimp_display_shell_selection_control (GIMP_DISPLAY_SHELL (display->shell),
-                                        GIMP_SELECTION_PAUSE);
+  gimp_display_shell_selection_pause (gimp_display_get_shell (display));
 
   tool->display = display;
   gimp_tool_control_activate (tool->control);
   gimp_tool_control_set_scroll_lock (tool->control, TRUE);
 
-  if (color_tool->sample_point)
-    gimp_display_shell_draw_sample_point (GIMP_DISPLAY_SHELL (display->shell),
-                                          color_tool->sample_point, FALSE);
+  if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tool)))
+    gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
   color_tool->sample_point        = NULL;
   color_tool->moving_sample_point = TRUE;
-  color_tool->sample_point_x      = -1;
-  color_tool->sample_point_y      = -1;
+  color_tool->sample_point_x      = SAMPLE_POINT_POSITION_INVALID;
+  color_tool->sample_point_y      = SAMPLE_POINT_POSITION_INVALID;
 
   gimp_tool_set_cursor (tool, display,
                         GIMP_CURSOR_MOUSE,

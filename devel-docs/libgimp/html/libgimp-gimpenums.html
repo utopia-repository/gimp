@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="prev" href="libgimp-gimp.html" title="gimp">
+<link rel="prev" href="libgimp-Gimp.html" title="Gimp">
 <link rel="next" href="libgimp-gimpbuffer.html" title="gimpbuffer">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libgimp-gimp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libgimp-Gimp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
@@ -49,6 +49,7 @@ enum                <a class="link" href="libgimp-gimpenums.html#GimpGradientSeg
 enum                <a class="link" href="libgimp-gimpenums.html#GimpGradientSegmentType" title="enum GimpGradientSegmentType">GimpGradientSegmentType</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpHueRange" title="enum GimpHueRange">GimpHueRange</a>;
+enum                <a class="link" href="libgimp-gimpenums.html#GimpInkBlobType" title="enum GimpInkBlobType">GimpInkBlobType</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpMaskApplyMode" title="enum GimpMaskApplyMode">GimpMaskApplyMode</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpMergeType" title="enum GimpMergeType">GimpMergeType</a>;
@@ -56,7 +57,7 @@ enum                <a class="link" href="libgimp-gimpenums.html#GimpOffsetType"
 enum                <a class="link" href="libgimp-gimpenums.html#GimpOrientationType" title="enum GimpOrientationType">GimpOrientationType</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpRotationType" title="enum GimpRotationType">GimpRotationType</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a>;
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      <a class="link" href="libgimp-gimpenums.html#gimp-enums-get-type-names" title="gimp_enums_get_type_names ()">gimp_enums_get_type_names</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *n_type_names</code></em>);
+const <span class="returnvalue">gchar</span> **      <a class="link" href="libgimp-gimpenums.html#gimp-enums-get-type-names" title="gimp_enums_get_type_names ()">gimp_enums_get_type_names</a>           (<em class="parameter"><code><span class="type">gint</span> *n_type_names</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -72,11 +73,10 @@ Enums and definitions.
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_enums_init                     (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 This function makes sure all the enum types are registered
-with the GObject type system. This is intended for use by
-language bindings that need the symbols early, before gimp_main
-is run. It's not necessary for plug-ins to call this directly,
-as the normal plug-in initialization code will handle it
-implicitly.
+with the <span class="type">GType</span> system. This is intended for use by language
+bindings that need the symbols early, before gimp_main is run.
+It's not necessary for plug-ins to call this directly, because
+the normal plug-in initialization code will handle it implicitly.
 </p>
 <p class="since">Since GIMP 2.4</p>
 </div>
@@ -101,7 +101,28 @@ implicitly.
 } GimpBrushGeneratedShape;
 </pre>
 <p>
+The possible shapes generated brushes can take.
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GIMP-BRUSH-GENERATED-CIRCLE:CAPS"></a><span class="term"><code class="literal">GIMP_BRUSH_GENERATED_CIRCLE</code></span></p></td>
+<td> The brush has a circle shape.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-BRUSH-GENERATED-SQUARE:CAPS"></a><span class="term"><code class="literal">GIMP_BRUSH_GENERATED_SQUARE</code></span></p></td>
+<td> The brush has a square shape.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-BRUSH-GENERATED-DIAMOND:CAPS"></a><span class="term"><code class="literal">GIMP_BRUSH_GENERATED_DIAMOND</code></span></p></td>
+<td>The brush has a diamond shape.
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -151,7 +172,23 @@ implicitly.
 } GimpConvolveType;
 </pre>
 <p>
+Operation modes of the convolve tool.
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GIMP-BLUR-CONVOLVE:CAPS"></a><span class="term"><code class="literal">GIMP_BLUR_CONVOLVE</code></span></p></td>
+<td>   Blur the drawable.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-SHARPEN-CONVOLVE:CAPS"></a><span class="term"><code class="literal">GIMP_SHARPEN_CONVOLVE</code></span></p></td>
+<td>Sharpen the drawable.
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -219,6 +256,18 @@ implicitly.
   GIMP_BLUE_HUES,
   GIMP_MAGENTA_HUES
 } GimpHueRange;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GimpInkBlobType"></a><h3>enum GimpInkBlobType</h3>
+<pre class="programlisting">typedef enum {
+  GIMP_INK_BLOB_TYPE_CIRCLE,
+  GIMP_INK_BLOB_TYPE_SQUARE,
+  GIMP_INK_BLOB_TYPE_DIAMOND
+} GimpInkBlobType;
 </pre>
 <p>
 </p>
@@ -300,7 +349,28 @@ implicitly.
 } GimpOrientationType;
 </pre>
 <p>
+Orientation values for all kinds of purposes, like guides.
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GIMP-ORIENTATION-HORIZONTAL:CAPS"></a><span class="term"><code class="literal">GIMP_ORIENTATION_HORIZONTAL</code></span></p></td>
+<td>Horizontal ortientation.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ORIENTATION-VERTICAL:CAPS"></a><span class="term"><code class="literal">GIMP_ORIENTATION_VERTICAL</code></span></p></td>
+<td>  Vertical orientation.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ORIENTATION-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GIMP_ORIENTATION_UNKNOWN</code></span></p></td>
+<td>   Undetermined orientation.
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -312,7 +382,28 @@ implicitly.
 } GimpRotationType;
 </pre>
 <p>
+Steps for simple rotation based on multpiles of 90 degrees.
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GIMP-ROTATE-90:CAPS"></a><span class="term"><code class="literal">GIMP_ROTATE_90</code></span></p></td>
+<td> Rotate by 90 degrees.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ROTATE-180:CAPS"></a><span class="term"><code class="literal">GIMP_ROTATE_180</code></span></p></td>
+<td>Rotate by 180 degrees.
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ROTATE-270:CAPS"></a><span class="term"><code class="literal">GIMP_ROTATE_270</code></span></p></td>
+<td>Rotate by 270 degrees.
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -333,7 +424,7 @@ implicitly.
 <hr>
 <div class="refsect2">
 <a name="gimp-enums-get-type-names"></a><h3>gimp_enums_get_type_names ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      gimp_enums_get_type_names           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *n_type_names</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> **      gimp_enums_get_type_names           (<em class="parameter"><code><span class="type">gint</span> *n_type_names</code></em>);</pre>
 <p>
 This function gives access to the list of enums registered by libgimp.
 The returned array is static and must not be modified.

@@ -3,9 +3,9 @@
  *
  * gimppluginmanager-file.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,6 +25,8 @@
 
 #include "core/gimp.h"
 #include "core/gimpparamspecs.h"
+
+#include "file/file-procedure.h"
 
 #include "gimpplugin.h"
 #include "gimpplugindef.h"
@@ -135,8 +136,16 @@ gimp_plug_in_manager_register_save_handler (GimpPlugInManager *manager,
   gimp_plug_in_procedure_set_file_proc (file_proc,
                                         extensions, prefixes, NULL);
 
-  if (! g_slist_find (manager->save_procs, file_proc))
-    manager->save_procs = g_slist_prepend (manager->save_procs, file_proc);
+  if (file_procedure_in_group (file_proc, FILE_PROCEDURE_GROUP_SAVE))
+    {
+      if (! g_slist_find (manager->save_procs, file_proc))
+        manager->save_procs = g_slist_prepend (manager->save_procs, file_proc);
+    }
+  else
+    {
+      if (! g_slist_find (manager->export_procs, file_proc))
+        manager->export_procs = g_slist_prepend (manager->export_procs, file_proc);
+    }
 
   return TRUE;
 }
@@ -193,4 +202,11 @@ gimp_plug_in_manager_register_thumb_loader (GimpPlugInManager *manager,
   gimp_plug_in_procedure_set_thumb_loader (file_proc, thumb_proc);
 
   return TRUE;
+}
+
+gboolean
+gimp_plug_in_manager_uri_has_exporter (GimpPlugInManager *manager,
+                                       const gchar       *uri)
+{
+  return file_procedure_find (manager->export_procs, uri, NULL) != NULL;
 }

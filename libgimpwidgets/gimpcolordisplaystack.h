@@ -4,10 +4,10 @@
  * gimpcolordisplaystack.h
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_COLOR_DISPLAY_STACK_H__
 #define __GIMP_COLOR_DISPLAY_STACK_H__
@@ -72,24 +75,26 @@ GType                   gimp_color_display_stack_get_type (void) G_GNUC_CONST;
 GimpColorDisplayStack * gimp_color_display_stack_new      (void);
 GimpColorDisplayStack * gimp_color_display_stack_clone    (GimpColorDisplayStack *stack);
 
-void   gimp_color_display_stack_changed      (GimpColorDisplayStack *stack);
+void   gimp_color_display_stack_changed         (GimpColorDisplayStack *stack);
 
-void   gimp_color_display_stack_add          (GimpColorDisplayStack *stack,
-                                              GimpColorDisplay      *display);
-void   gimp_color_display_stack_remove       (GimpColorDisplayStack *stack,
-                                              GimpColorDisplay      *display);
-void   gimp_color_display_stack_reorder_up   (GimpColorDisplayStack *stack,
-                                              GimpColorDisplay      *display);
-void   gimp_color_display_stack_reorder_down (GimpColorDisplayStack *stack,
-                                              GimpColorDisplay      *display);
-
-void   gimp_color_display_stack_convert      (GimpColorDisplayStack *stack,
-                                              guchar                *buf,
-                                              gint                   width,
-                                              gint                   height,
-                                              gint                   bpp,
-                                              gint                   bpl);
-
+void   gimp_color_display_stack_add             (GimpColorDisplayStack *stack,
+                                                 GimpColorDisplay      *display);
+void   gimp_color_display_stack_remove          (GimpColorDisplayStack *stack,
+                                                 GimpColorDisplay      *display);
+void   gimp_color_display_stack_reorder_up      (GimpColorDisplayStack *stack,
+                                                 GimpColorDisplay      *display);
+void   gimp_color_display_stack_reorder_down    (GimpColorDisplayStack *stack,
+                                                 GimpColorDisplay      *display);
+void   gimp_color_display_stack_convert_surface (GimpColorDisplayStack *stack,
+                                                 cairo_surface_t       *surface);
+#ifndef GIMP_DISABLE_DEPRECATED
+void   gimp_color_display_stack_convert         (GimpColorDisplayStack *stack,
+                                                 guchar                *buf,
+                                                 gint                   width,
+                                                 gint                   height,
+                                                 gint                   bpp,
+                                                 gint                   bpl);
+#endif
 
 G_END_DECLS
 

@@ -4,9 +4,9 @@
  * gimppaletteselect.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,9 +38,7 @@
 #include "gimppaletteselect.h"
 
 
-static GObject     * gimp_palette_select_constructor  (GType           type,
-                                                       guint           n_params,
-                                                       GObjectConstructParam *params);
+static void          gimp_palette_select_constructed  (GObject        *object);
 
 static GValueArray * gimp_palette_select_run_callback (GimpPdbDialog  *dialog,
                                                        GimpObject     *object,
@@ -60,7 +57,7 @@ gimp_palette_select_class_init (GimpPaletteSelectClass *klass)
   GObjectClass       *object_class = G_OBJECT_CLASS (klass);
   GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
 
-  object_class->constructor = gimp_palette_select_constructor;
+  object_class->constructed = gimp_palette_select_constructed;
 
   pdb_class->run_callback   = gimp_palette_select_run_callback;
 }
@@ -70,17 +67,14 @@ gimp_palette_select_init (GimpPaletteSelect *dialog)
 {
 }
 
-static GObject *
-gimp_palette_select_constructor (GType                  type,
-                                 guint                  n_params,
-                                 GObjectConstructParam *params)
+static void
+gimp_palette_select_constructed (GObject *object)
 {
-  GObject       *object;
-  GimpPdbDialog *dialog;
+  GimpPdbDialog *dialog = GIMP_PDB_DIALOG (object);
+  GtkWidget     *content_area;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  dialog = GIMP_PDB_DIALOG (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   dialog->view =
     gimp_data_factory_view_new (GIMP_VIEW_TYPE_LIST,
@@ -96,10 +90,10 @@ gimp_palette_select_constructor (GType                  type,
                                        8 * (GIMP_VIEW_SIZE_MEDIUM + 2));
 
   gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), dialog->view);
-  gtk_widget_show (dialog->view);
 
-  return object;
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+  gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);
+  gtk_widget_show (dialog->view);
 }
 
 static GValueArray *
@@ -114,8 +108,8 @@ gimp_palette_select_run_callback (GimpPdbDialog  *dialog,
                                              dialog->caller_context,
                                              NULL, error,
                                              dialog->callback_name,
-                                             G_TYPE_STRING,   object->name,
-                                             GIMP_TYPE_INT32, palette->n_colors,
+                                             G_TYPE_STRING,   gimp_object_get_name (object),
+                                             GIMP_TYPE_INT32, gimp_palette_get_n_colors (palette),
                                              GIMP_TYPE_INT32, closing,
                                              G_TYPE_NONE);
 }

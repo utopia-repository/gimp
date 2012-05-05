@@ -4,9 +4,9 @@
  * gimpstrokeeditor.h
  * Copyright (C) 2003 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_STROKE_EDITOR_H__
 #define __GIMP_STROKE_EDITOR_H__
+
+
+#include "gimpfilleditor.h"
 
 
 #define GIMP_TYPE_STROKE_EDITOR            (gimp_stroke_editor_get_type ())
@@ -35,22 +37,22 @@ typedef struct _GimpStrokeEditorClass GimpStrokeEditorClass;
 
 struct _GimpStrokeEditor
 {
-  GtkVBox            parent_instance;
+  GimpFillEditor  parent_instance;
 
-  GimpStrokeOptions *options;
-  gdouble            resolution;
+  gdouble         resolution;
 };
 
 struct _GimpStrokeEditorClass
 {
-  GtkVBoxClass       parent_class;
+  GimpFillEditorClass  parent_class;
 };
 
 
-GType        gimp_stroke_editor_get_type (void) G_GNUC_CONST;
+GType       gimp_stroke_editor_get_type (void) G_GNUC_CONST;
 
-GtkWidget  * gimp_stroke_editor_new      (GimpStrokeOptions *options,
-                                          gdouble            resolution);
+GtkWidget * gimp_stroke_editor_new      (GimpStrokeOptions *options,
+                                         gdouble            resolution,
+                                         gboolean           edit_context);
 
 
-#endif  /*  __GIMP_STROKE_EDITOR_H__  */
+#endif /* __GIMP_STROKE_EDITOR_H__ */

@@ -4,9 +4,9 @@
  * GIMP PSD Plug-in
  * Copyright 2007 by John Marshall
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -103,6 +102,7 @@ fread_pascal_string (gint32         *bytes_read,
   if (fread (str, len, 1, f) < 1)
     {
       psd_set_error (feof (f), errno, error);
+      g_free (str);
       return NULL;
     }
   *bytes_read += len;
@@ -115,6 +115,7 @@ fread_pascal_string (gint32         *bytes_read,
           if (fseek (f, 1, SEEK_CUR) < 0)
             {
               psd_set_error (feof (f), errno, error);
+              g_free (str);
               return NULL;
             }
           (*bytes_read)++;
@@ -174,12 +175,14 @@ fwrite_pascal_string (const gchar    *src,
           || fwrite (pascal_str, pascal_len, 1, f) < 1)
         {
           psd_set_error (feof (f), errno, error);
+          g_free (pascal_str);
           return -1;
         }
       bytes_written++;
       bytes_written += pascal_len;
       IFDBG(2) g_debug ("Pascal string: %s, bytes_written: %d",
                         pascal_str, bytes_written);
+      g_free (pascal_str);
     }
 
   /* Pad with nulls */
@@ -248,6 +251,7 @@ fread_unicode_string (gint32         *bytes_read,
       if (fread (&utf16_str[i], 2, 1, f) < 1)
         {
           psd_set_error (feof (f), errno, error);
+          g_free (utf16_str);
           return NULL;
         }
       *bytes_read += 2;
@@ -262,6 +266,7 @@ fread_unicode_string (gint32         *bytes_read,
           if (fseek (f, 1, SEEK_CUR) < 0)
             {
               psd_set_error (feof (f), errno, error);
+              g_free (utf16_str);
               return NULL;
             }
           (*bytes_read)++;
@@ -635,6 +640,8 @@ psd_to_gimp_blend_mode (const gchar *psd_mode)
     }
   if (g_ascii_strncasecmp (psd_mode, "mul ", 4) == 0)           /* Multiply (ps3) */
     return GIMP_MULTIPLY_MODE;
+  if (g_ascii_strncasecmp (psd_mode, "lddg", 4) == 0)           /* Linear Dodge (cs2) */
+    return GIMP_ADDITION_MODE;
   if (g_ascii_strncasecmp (psd_mode, "scrn", 4) == 0)           /* Screen (ps3) */
     return GIMP_SCREEN_MODE;
   if (g_ascii_strncasecmp (psd_mode, "diss", 4) == 0)           /* Dissolve (ps3) */

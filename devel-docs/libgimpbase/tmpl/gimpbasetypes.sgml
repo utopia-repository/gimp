@@ -2,11 +2,11 @@
 gimpbasetypes
 
 <!-- ##### SECTION Short_Description ##### -->
-Translation between gettext translation domain identifier and GType.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Translation between gettext translation domain identifier and GType.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -48,6 +48,24 @@ Translation between gettext translation domain identifier and GType.
 
 
 <!-- ##### FUNCTION gimp_type_get_translation_domain ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_type_set_translation_context ##### -->
+<para>
+
+</para>
+
+@type: 
+@context: 
+
+
+<!-- ##### FUNCTION gimp_type_get_translation_context ##### -->
 <para>
 
 </para>

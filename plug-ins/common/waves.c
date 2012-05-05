@@ -34,6 +34,7 @@
 
 #define PLUG_IN_PROC   "plug-in-waves"
 #define PLUG_IN_BINARY "waves"
+#define PLUG_IN_ROLE   "gimp-waves"
 
 typedef enum
 {
@@ -106,7 +107,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "The Image"                    },
     { GIMP_PDB_DRAWABLE, "drawable",   "The Drawable"                 },
     { GIMP_PDB_FLOAT,    "amplitude",  "The Amplitude of the Waves"   },
@@ -245,7 +246,7 @@ waves_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Waves"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Waves"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -261,9 +262,10 @@ waves_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_zoom_preview_new (drawable);
@@ -429,7 +431,6 @@ wave (guchar  *src,
   gint    x1_in, y1_in, x2_in, y2_in;
 
   gdouble xhsiz, yhsiz;       /* Half size of selection */
-  gdouble radius, radius2;    /* Radius and radius^2 */
   gdouble amnt, d;
   gdouble needx, needy;
   gdouble dx, dy;
@@ -475,9 +476,6 @@ wave (guchar  *src,
       xscale = 1.0;
       yscale = 1.0;
     }
-
-  radius  = MAX (xhsiz, yhsiz);
-  radius2 = radius * radius;
 
   /* Wave the image! */
 

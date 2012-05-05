@@ -14,9 +14,9 @@
  * It does not contain any code written for other TGA file loaders.
  * Not even the RLE handling. ;)
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -25,8 +25,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -96,6 +95,7 @@
 #define LOAD_PROC      "file-tga-load"
 #define SAVE_PROC      "file-tga-save"
 #define PLUG_IN_BINARY "file-tga"
+#define PLUG_IN_ROLE   "gimp-file-tga"
 
 typedef enum
 {
@@ -215,7 +215,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
@@ -227,7 +227,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -331,7 +331,7 @@ run (const gchar      *name,
         {
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
-          export = gimp_export_image (&image_ID, &drawable_ID, "TGA",
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_INDEXED |
@@ -1066,7 +1066,7 @@ ReadImage (FILE        *fp,
                              dtype, 100,
                              GIMP_NORMAL_MODE);
 
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
   drawable = gimp_drawable_get (layer_ID);
 
@@ -1118,6 +1118,7 @@ ReadImage (FILE        *fp,
                                    info->width, tileheight);
         }
     }
+  gimp_progress_update (1.0);
 
   g_free (data);
   g_free (buffer);
@@ -1340,6 +1341,7 @@ save_image (const gchar  *filename,
       if (row % 16 == 0)
         gimp_progress_update ((gdouble) row / (gdouble) height);
     }
+  gimp_progress_update (1.0);
 
   gimp_drawable_detach (drawable);
 
@@ -1367,25 +1369,11 @@ save_dialog (void)
   GtkWidget *hbox;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as TGA"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("TGA"), PLUG_IN_BINARY, SAVE_PROC);
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -1400,7 +1388,7 @@ save_dialog (void)
                     &tsvals.rle);
 
   /*  origin  */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

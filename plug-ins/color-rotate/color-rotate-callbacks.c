@@ -9,9 +9,9 @@
  *                    Based on code from Pavel Grinfeld (pavel@ml.com)
  *
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,8 +20,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*---------------------------------------------------------------------------
@@ -84,15 +83,10 @@ void
 rcm_360_degrees (GtkWidget *button,
 		 RcmCircle *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-  circle->action_flag = DO_NOTHING;
   gtk_widget_queue_draw (circle->preview);
+
   circle->angle->beta = circle->angle->alpha-circle->angle->cw_ccw * 0.001;
-  color_rotate_draw_arrows (circle->preview->window,
-                            style->black_gc,
-                            circle->angle);
-  circle->action_flag = VIRGIN;
+
   rcm_render_preview (Current.Bna->after);
 }
 
@@ -117,18 +111,10 @@ void
 rcm_a_to_b (GtkWidget *button,
 	    RcmCircle *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-  circle->action_flag = DO_NOTHING;
   gtk_widget_queue_draw (circle->preview);
 
   SWAP (circle->angle->alpha, circle->angle->beta);
 
-  color_rotate_draw_arrows (circle->preview->window,
-                            style->black_gc,
-                            circle->angle);
-
-  circle->action_flag = VIRGIN;
   rcm_render_preview (Current.Bna->after);
 }
 
@@ -143,10 +129,13 @@ rcm_spinbutton_to_degrees (GtkWidget *button,
   GtkAdjustment *adj;
 
   adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (button));
-  adj->value = value * rcm_units_factor (Current.Units);
-  adj->upper = 360.0;
-  adj->step_increment = 0.01;
-  adj->page_increment = 1.0;
+
+  gtk_adjustment_configure (adj,
+                            value * rcm_units_factor (Current.Units),
+                            gtk_adjustment_get_lower (adj), 360.0,
+                            0.01, 1.0,
+                            gtk_adjustment_get_page_size (adj));
+
   gtk_spin_button_set_digits (GTK_SPIN_BUTTON (button), 2);
 
   gtk_label_set_text (GTK_LABEL (label), rcm_units_string (Current.Units));
@@ -179,10 +168,6 @@ rcm_switch_to_degrees (GtkWidget *button,
       rcm_spinbutton_to_degrees (Current.Gray->hue_entry,
                                  Current.Gray->hue,
                                  Current.Gray->hue_units_label);
-
-      Current.From->action_flag = VIRGIN;
-      Current.To->action_flag   = VIRGIN;
-      Current.Gray->action_flag = VIRGIN;
     }
 }
 
@@ -194,10 +179,13 @@ rcm_spinbutton_to_radians (GtkWidget *button,
   GtkAdjustment *adj;
 
   adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (button));
-  adj->value = value * rcm_units_factor (Current.Units);
-  adj->upper = TP;
-  adj->step_increment = 0.0001;
-  adj->page_increment = 0.001;
+
+  gtk_adjustment_configure (adj,
+                            value * rcm_units_factor (Current.Units),
+                            gtk_adjustment_get_lower (adj), TP,
+                            0.0001, 0.001,
+                            gtk_adjustment_get_page_size (adj));
+
   gtk_spin_button_set_digits (GTK_SPIN_BUTTON (button), 4);
 
   gtk_label_set_text (GTK_LABEL (label), rcm_units_string (Current.Units));
@@ -230,10 +218,6 @@ rcm_switch_to_radians (GtkWidget *button,
       rcm_spinbutton_to_radians (Current.Gray->hue_entry,
                                  Current.Gray->hue,
                                  Current.Gray->hue_units_label);
-
-      Current.From->action_flag = VIRGIN;
-      Current.To->action_flag   = VIRGIN;
-      Current.Gray->action_flag = VIRGIN;
     }
 }
 
@@ -245,10 +229,13 @@ rcm_spinbutton_to_radians_over_PI (GtkWidget *button,
   GtkAdjustment *adj;
 
   adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (button));
-  adj->value = value * rcm_units_factor (Current.Units);
-  adj->upper = 2.0;
-  adj->step_increment = 0.0001;
-  adj->page_increment = 0.001;
+
+  gtk_adjustment_configure (adj,
+                            value * rcm_units_factor (Current.Units),
+                            gtk_adjustment_get_lower (adj), 2.0,
+                            0.0001, 0.001,
+                            gtk_adjustment_get_page_size (adj));
+
   gtk_spin_button_set_digits (GTK_SPIN_BUTTON (button), 4);
 
   gtk_label_set_text (GTK_LABEL (label), rcm_units_string (Current.Units));
@@ -281,10 +268,6 @@ rcm_switch_to_radians_over_PI (GtkWidget *button,
       rcm_spinbutton_to_radians_over_PI (Current.Gray->hue_entry,
                                          Current.Gray->hue,
                                          Current.Gray->hue_units_label);
-
-      Current.From->action_flag = VIRGIN;
-      Current.To->action_flag   = VIRGIN;
-      Current.Gray->action_flag = VIRGIN;
     }
 }
 
@@ -352,14 +335,13 @@ rcm_expose_event (GtkWidget      *widget,
 		  GdkEventExpose *event,
 		  RcmCircle      *circle)
 {
-  if (circle->action_flag == VIRGIN)
-    {
-      GtkStyle *style = gtk_widget_get_style (widget);
+  cairo_t *cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
-      color_rotate_draw_arrows (widget->window,
-                                style->black_gc,
-                                circle->angle);
-    }
+  cairo_translate (cr, 0.5, 0.5);
+
+  color_rotate_draw_arrows (cr, circle->angle);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }
@@ -376,7 +358,6 @@ rcm_button_press_event (GtkWidget      *widget,
   alpha  = &circle->angle->alpha;
   beta   = &circle->angle->beta;
 
-  circle->action_flag = DRAG_START;
   clicked_angle = angle_mod_2PI (arctg (CENTER - event->y, event->x - CENTER));
   circle->prev_clicked = clicked_angle;
 
@@ -389,13 +370,8 @@ rcm_button_press_event (GtkWidget      *widget,
 
       if (*(circle->target) != clicked_angle)
         {
-          GtkStyle *style = gtk_widget_get_style (widget);
-
           *(circle->target) = clicked_angle;
           gtk_widget_queue_draw (circle->preview);
-          color_rotate_draw_arrows (widget->window,
-                                    style->black_gc,
-                                    circle->angle);
 
           gtk_spin_button_set_value (GTK_SPIN_BUTTON (circle->alpha_entry),
                                      circle->angle->alpha *
@@ -420,18 +396,6 @@ rcm_release_event (GtkWidget      *widget,
 		   GdkEventButton *event,
 		   RcmCircle      *circle)
 {
-  if (circle->action_flag == DRAGING)
-    {
-      GtkStyle *style = gtk_widget_get_style (widget);
-
-      gtk_widget_queue_draw (circle->preview);
-      color_rotate_draw_arrows (widget->window,
-                                style->black_gc,
-                                circle->angle);
-    }
-
-  circle->action_flag = VIRGIN;
-
   rcm_render_preview (Current.Bna->after);
 
   return TRUE;
@@ -442,20 +406,7 @@ rcm_motion_notify_event (GtkWidget      *widget,
 			 GdkEventMotion *event,
 			 RcmCircle      *circle)
 {
-  gfloat       clicked_angle, delta;
-  gfloat      *alpha, *beta;
-  gint         cw_ccw;
-  GdkGCValues  values;
-
-  alpha  = &(circle->angle->alpha);
-  beta   = &(circle->angle->beta);
-  cw_ccw = circle->angle->cw_ccw;
-  delta  = angle_mod_2PI (cw_ccw * (*beta - *alpha));
-
-  values.function = GDK_INVERT;
-  xor_gc = gdk_gc_new_with_values (Current.From->preview->window,
-                                   &values,
-                                   GDK_GC_FUNCTION);
+  gfloat  clicked_angle, delta;
 
   clicked_angle = angle_mod_2PI (arctg (CENTER - event->y, event->x - CENTER));
 
@@ -464,29 +415,18 @@ rcm_motion_notify_event (GtkWidget      *widget,
 
   if (delta)
     {
-      if (circle->action_flag == DRAG_START)
-        {
-          gtk_widget_queue_draw (circle->preview);
-          circle->action_flag = DRAGING;
-        }
-      else
-        {
-          /* this should be erasing entire angle */
-          color_rotate_draw_arrows (widget->window, xor_gc, circle->angle);
-        }
-
       if (circle->mode == EACH)
         {
-          *(circle->target)=clicked_angle;
+          *(circle->target) = clicked_angle;
         }
       else
         {
-          circle->angle->alpha=angle_mod_2PI(circle->angle->alpha + delta);
-          circle->angle->beta =angle_mod_2PI(circle->angle->beta  + delta);
+          circle->angle->alpha = angle_mod_2PI (circle->angle->alpha + delta);
+          circle->angle->beta  = angle_mod_2PI (circle->angle->beta  + delta);
         }
 
-      gdk_window_process_updates (widget->window, FALSE);
-      color_rotate_draw_arrows (widget->window, xor_gc, circle->angle);
+      gtk_widget_queue_draw (widget);
+      gdk_window_process_updates (gtk_widget_get_window (widget), FALSE);
 
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (circle->alpha_entry),
                                  circle->angle->alpha *
@@ -513,18 +453,14 @@ rcm_gray_expose_event (GtkWidget      *widget,
 		       GdkEventExpose *event,
 		       RcmGray        *circle)
 {
-  if (circle->action_flag == VIRGIN)
-    {
-      GtkStyle *style = gtk_widget_get_style (widget);
+  cairo_t *cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
-      color_rotate_draw_little_circle (widget->window,
-                                       style->black_gc,
-                                       circle->hue, circle->satur);
+  cairo_translate (cr, 0.5, 0.5);
 
-      color_rotate_draw_large_circle (widget->window,
-                                      style->black_gc,
-                                      circle->gray_sat);
-    }
+  color_rotate_draw_little_circle (cr, circle->hue, circle->satur);
+  color_rotate_draw_large_circle (cr, circle->gray_sat);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }
@@ -534,27 +470,18 @@ rcm_gray_button_press_event (GtkWidget      *widget,
 			     GdkEventButton *event,
 			     RcmGray        *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (widget);
-  int       x, y;
+  gint x, y;
 
   x = event->x - GRAY_CENTER - LITTLE_RADIUS;
   y = GRAY_CENTER - event->y + LITTLE_RADIUS;
 
-  circle->action_flag = DRAG_START;
-  circle->hue         = angle_mod_2PI(arctg(y, x));
-  circle->satur       = sqrt (SQR (x) + SQR (y)) / GRAY_RADIUS;
+  circle->hue   = angle_mod_2PI(arctg(y, x));
+  circle->satur = sqrt (SQR (x) + SQR (y)) / GRAY_RADIUS;
 
   if (circle->satur > 1.0)
     circle->satur = 1;
 
   gtk_widget_queue_draw (circle->preview);
-  color_rotate_draw_little_circle (widget->window,
-                                   style->black_gc,
-                                   circle->hue, circle->satur);
-
-  color_rotate_draw_large_circle (circle->preview->window,
-                                  gtk_widget_get_style (circle->preview)->black_gc,
-                                  circle->gray_sat);
 
   gtk_spin_button_set_value (GTK_SPIN_BUTTON (circle->hue_entry),
                              circle->hue * rcm_units_factor (Current.Units));
@@ -573,18 +500,6 @@ rcm_gray_release_event (GtkWidget      *widget,
 			GdkEventButton *event,
 			RcmGray        *circle)
 {
-  if (circle->action_flag == DRAGING)
-    {
-      GtkStyle *style = gtk_widget_get_style (widget);
-
-      color_rotate_draw_little_circle (widget->window,
-                                       style->black_gc,
-                                       circle->hue,
-                                       circle->satur);
-    }
-
-  circle->action_flag = VIRGIN;
-
   rcm_render_preview (Current.Bna->after);
 
   return TRUE;
@@ -595,30 +510,9 @@ rcm_gray_motion_notify_event (GtkWidget      *widget,
 			      GdkEventMotion *event,
 			      RcmGray        *circle)
 {
-  gint        x, y;
-  GdkGCValues values;
+  gint x, y;
 
-  values.function = GDK_INVERT;
-  xor_gc = gdk_gc_new_with_values (Current.From->preview->window,
-				   &values,
-                                   GDK_GC_FUNCTION);
-
-  if (circle->action_flag == DRAG_START)
-    {
-      GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-      gtk_widget_queue_draw (circle->preview);
-      color_rotate_draw_large_circle (circle->preview->window,
-                                      style->black_gc,
-                                      circle->gray_sat);
-
-      circle->action_flag = DRAGING;
-    }
-  else
-    {
-      color_rotate_draw_little_circle (widget->window, xor_gc,
-                                       circle->hue, circle->satur); /* erase */
-    }
+  gtk_widget_queue_draw (circle->preview);
 
   x = event->x - GRAY_CENTER - LITTLE_RADIUS;
   y = GRAY_CENTER - event->y + LITTLE_RADIUS;
@@ -628,9 +522,6 @@ rcm_gray_motion_notify_event (GtkWidget      *widget,
 
   if (circle->satur > 1.0)
     circle->satur = 1;
-
-  color_rotate_draw_little_circle (widget->window, xor_gc,
-                                   circle->hue, circle->satur);
 
   gtk_spin_button_set_value (GTK_SPIN_BUTTON (circle->hue_entry),
                              circle->hue * rcm_units_factor(Current.Units));
@@ -653,19 +544,10 @@ void
 rcm_set_alpha (GtkWidget *entry,
                RcmCircle *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-  if (circle->action_flag != VIRGIN)
-    return;
-
   circle->angle->alpha = (gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry)) /
                           rcm_units_factor (Current.Units));
 
   gtk_widget_queue_draw (circle->preview);
-
-  color_rotate_draw_arrows (circle->preview->window,
-                            style->black_gc,
-                            circle->angle);
 
   rcm_render_preview (Current.Bna->after);
 }
@@ -674,19 +556,10 @@ void
 rcm_set_beta (GtkWidget *entry,
               RcmCircle *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-  if (circle->action_flag != VIRGIN)
-    return;
-
   circle->angle->beta = (gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry)) /
                          rcm_units_factor(Current.Units));
 
   gtk_widget_queue_draw (circle->preview);
-
-  color_rotate_draw_arrows (circle->preview->window,
-                            style->black_gc,
-                            circle->angle);
 
   rcm_render_preview (Current.Bna->after);
 }
@@ -695,23 +568,10 @@ void
 rcm_set_hue (GtkWidget *entry,
              RcmGray   *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-  if (circle->action_flag != VIRGIN)
-    return;
-
   circle->hue = (gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry)) /
                  rcm_units_factor(Current.Units));
 
   gtk_widget_queue_draw (circle->preview);
-
-  color_rotate_draw_little_circle (circle->preview->window,
-                                   style->black_gc,
-                                   circle->hue, circle->satur);
-
-  color_rotate_draw_large_circle (circle->preview->window,
-                                  style->black_gc,
-                                  circle->gray_sat);
 
   rcm_render_preview (Current.Bna->after);
 }
@@ -720,22 +580,9 @@ void
 rcm_set_satur (GtkWidget *entry,
                RcmGray   *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
-  if (circle->action_flag != VIRGIN)
-    return;
-
   circle->satur = gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry));
 
   gtk_widget_queue_draw (circle->preview);
-
-  color_rotate_draw_little_circle (circle->preview->window,
-                                   style->black_gc,
-                                   circle->hue, circle->satur);
-
-  color_rotate_draw_large_circle (circle->preview->window,
-                                  style->black_gc,
-                                  circle->gray_sat);
 
   rcm_render_preview (Current.Bna->after);
 }
@@ -744,15 +591,9 @@ void
 rcm_set_gray_sat (GtkWidget *entry,
                   RcmGray   *circle)
 {
-  GtkStyle *style = gtk_widget_get_style (circle->preview);
-
   circle->gray_sat = gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry));
 
   gtk_widget_queue_draw (circle->preview);
-
-  color_rotate_draw_large_circle (circle->preview->window,
-                                  style->black_gc,
-                                  circle->gray_sat);
 
   rcm_render_preview (Current.Bna->after);
 }

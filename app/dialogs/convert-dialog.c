@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -156,10 +156,10 @@ convert_dialog_new (GimpImage    *image,
 
   palette_box = convert_dialog_palette_box (dialog);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog->dialog)->vbox),
-                     main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog->dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
 
@@ -182,8 +182,9 @@ convert_dialog_new (GimpImage    *image,
   gtk_widget_show (frame);
 
   /*  max n_colors  */
-  hbox = gtk_hbox_new (FALSE, 6);
-  gimp_enum_radio_frame_add (GTK_FRAME (frame), hbox, GIMP_MAKE_PALETTE);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gimp_enum_radio_frame_add (GTK_FRAME (frame), hbox,
+                             GIMP_MAKE_PALETTE, TRUE);
   gtk_widget_show (hbox);
 
   label = gtk_label_new_with_mnemonic (_("_Maximum number of colors:"));
@@ -206,8 +207,8 @@ convert_dialog_new (GimpImage    *image,
   /*  custom palette  */
   if (palette_box)
     {
-      gimp_enum_radio_frame_add (GTK_FRAME (frame),
-                                 palette_box, GIMP_CUSTOM_PALETTE);
+      gimp_enum_radio_frame_add (GTK_FRAME (frame), palette_box,
+                                 GIMP_CUSTOM_PALETTE, TRUE);
       gtk_widget_show (palette_box);
     }
 
@@ -224,8 +225,9 @@ convert_dialog_new (GimpImage    *image,
                     G_CALLBACK (gimp_toggle_button_update),
                     &dialog->remove_dups);
 
-  g_object_set_data (G_OBJECT (button), "inverse_sensitive", toggle);
-  gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (button));
+  g_object_bind_property (button, "active",
+                          toggle, "sensitive",
+                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
 
   /*  dithering  */
 
@@ -233,11 +235,11 @@ convert_dialog_new (GimpImage    *image,
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -296,9 +298,8 @@ convert_dialog_response (GtkWidget     *widget,
                                 dialog->custom_palette,
                                 progress, &error))
         {
-          gimp_message (dialog->image->gimp, G_OBJECT (dialog->dialog),
-                        GIMP_MESSAGE_WARNING,
-                        "%s", error->message);
+          gimp_message_literal (dialog->image->gimp, G_OBJECT (dialog->dialog),
+				GIMP_MESSAGE_WARNING, error->message);
           g_clear_error (&error);
 
           if (progress)
@@ -334,7 +335,7 @@ convert_dialog_palette_box (IndexedDialog *dialog)
   gboolean     default_found = FALSE;
 
   /* We can't dither to > 256 colors */
-  dialog->container = gimp_container_filter (gimp->palette_factory->container,
+  dialog->container = gimp_container_filter (gimp_data_factory_get_container (gimp->palette_factory),
                                              convert_dialog_palette_filter,
                                              NULL);
 
@@ -361,7 +362,7 @@ convert_dialog_palette_box (IndexedDialog *dialog)
 
       /* Preferentially, the initial default is 'Web' if available */
       if (web_palette == NULL &&
-          g_ascii_strcasecmp (GIMP_OBJECT (palette)->name, "Web") == 0)
+          g_ascii_strcasecmp (gimp_object_get_name (palette), "Web") == 0)
         {
           web_palette = palette;
         }
@@ -387,7 +388,7 @@ convert_dialog_palette_box (IndexedDialog *dialog)
                     G_CALLBACK (convert_dialog_palette_changed),
                     dialog);
 
-  return gimp_palette_box_new (dialog->container, dialog->context, 4);
+  return gimp_palette_box_new (dialog->container, dialog->context, NULL, 4);
 }
 
 static gboolean
@@ -396,7 +397,8 @@ convert_dialog_palette_filter (const GimpObject *object,
 {
   GimpPalette *palette = GIMP_PALETTE (object);
 
-  return palette->n_colors > 0 && palette->n_colors <= 256;
+  return (gimp_palette_get_n_colors (palette) > 0 &&
+          gimp_palette_get_n_colors (palette) <= 256);
 }
 
 static void
@@ -407,7 +409,7 @@ convert_dialog_palette_changed (GimpContext   *context,
   if (! palette)
     return;
 
-  if (palette->n_colors > 256)
+  if (gimp_palette_get_n_colors (palette) > 256)
     {
       gimp_message (dialog->image->gimp, G_OBJECT (dialog->dialog),
                     GIMP_MESSAGE_WARNING,

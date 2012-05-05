@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -33,6 +32,8 @@
 #include "gimpdrawableundo.h"
 #include "gimpfloatingselundo.h"
 #include "gimpgrid.h"
+#include "gimpgrouplayer.h"
+#include "gimpgrouplayerundo.h"
 #include "gimpguide.h"
 #include "gimpguideundo.h"
 #include "gimpimage.h"
@@ -40,7 +41,6 @@
 #include "gimpimage-undo-push.h"
 #include "gimpimageundo.h"
 #include "gimpitempropundo.h"
-#include "gimplayer.h"
 #include "gimplayermask.h"
 #include "gimplayermaskpropundo.h"
 #include "gimplayermaskundo.h"
@@ -232,10 +232,10 @@ gimp_image_undo_push_drawable (GimpImage    *image,
 
   g_return_val_if_fail (gimp_item_is_attached (item), NULL);
   g_return_val_if_fail (sparse == FALSE ||
-                        tile_manager_width (tiles) == gimp_item_width (item),
+                        tile_manager_width (tiles) == gimp_item_get_width (item),
                         NULL);
   g_return_val_if_fail (sparse == FALSE ||
-                        tile_manager_height (tiles) == gimp_item_height (item),
+                        tile_manager_height (tiles) == gimp_item_get_height (item),
                         NULL);
 
   return gimp_image_undo_push (image, GIMP_TYPE_DRAWABLE_UNDO,
@@ -254,7 +254,8 @@ gimp_image_undo_push_drawable (GimpImage    *image,
 GimpUndo *
 gimp_image_undo_push_drawable_mod (GimpImage    *image,
                                    const gchar  *undo_desc,
-                                   GimpDrawable *drawable)
+                                   GimpDrawable *drawable,
+                                   gboolean      copy_tiles)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
@@ -263,7 +264,8 @@ gimp_image_undo_push_drawable_mod (GimpImage    *image,
   return gimp_image_undo_push (image, GIMP_TYPE_DRAWABLE_MOD_UNDO,
                                GIMP_UNDO_DRAWABLE_MOD, undo_desc,
                                GIMP_DIRTY_ITEM | GIMP_DIRTY_DRAWABLE,
-                               "item", drawable,
+                               "item",       drawable,
+                               "copy-tiles", copy_tiles,
                                NULL);
 }
 
@@ -294,6 +296,22 @@ gimp_image_undo_push_mask (GimpImage   *image,
 /****************/
 /*  Item Undos  */
 /****************/
+
+GimpUndo *
+gimp_image_undo_push_item_reorder (GimpImage   *image,
+                                   const gchar *undo_desc,
+                                   GimpItem    *item)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
+  g_return_val_if_fail (gimp_item_is_attached (item), NULL);
+
+  return gimp_image_undo_push (image, GIMP_TYPE_ITEM_PROP_UNDO,
+                               GIMP_UNDO_ITEM_REORDER, undo_desc,
+                               GIMP_DIRTY_IMAGE_STRUCTURE,
+                               "item", item,
+                               NULL);
+}
 
 GimpUndo *
 gimp_image_undo_push_item_rename (GimpImage   *image,
@@ -428,12 +446,15 @@ GimpUndo *
 gimp_image_undo_push_layer_remove (GimpImage   *image,
                                    const gchar *undo_desc,
                                    GimpLayer   *layer,
+                                   GimpLayer   *prev_parent,
                                    gint         prev_position,
                                    GimpLayer   *prev_layer)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_LAYER (layer), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)), NULL);
+  g_return_val_if_fail (prev_parent == NULL || GIMP_IS_LAYER (prev_parent),
+                        NULL);
   g_return_val_if_fail (prev_layer == NULL || GIMP_IS_LAYER (prev_layer),
                         NULL);
 
@@ -441,24 +462,9 @@ gimp_image_undo_push_layer_remove (GimpImage   *image,
                                GIMP_UNDO_LAYER_REMOVE, undo_desc,
                                GIMP_DIRTY_IMAGE_STRUCTURE,
                                "item",          layer,
+                               "prev-parent",   prev_parent,
                                "prev-position", prev_position,
                                "prev-layer",    prev_layer,
-                               NULL);
-}
-
-GimpUndo *
-gimp_image_undo_push_layer_reposition (GimpImage   *image,
-                                       const gchar *undo_desc,
-                                       GimpLayer   *layer)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (GIMP_IS_LAYER (layer), NULL);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)), NULL);
-
-  return gimp_image_undo_push (image, GIMP_TYPE_LAYER_PROP_UNDO,
-                               GIMP_UNDO_LAYER_REPOSITION, undo_desc,
-                               GIMP_DIRTY_IMAGE_STRUCTURE,
-                               "item", layer,
                                NULL);
 }
 
@@ -507,6 +513,59 @@ gimp_image_undo_push_layer_lock_alpha (GimpImage   *image,
                                GIMP_UNDO_LAYER_LOCK_ALPHA, undo_desc,
                                GIMP_DIRTY_ITEM_META,
                                "item", layer,
+                               NULL);
+}
+
+
+/***********************/
+/*  Group Layer Undos  */
+/***********************/
+
+GimpUndo *
+gimp_image_undo_push_group_layer_suspend (GimpImage      *image,
+                                          const gchar    *undo_desc,
+                                          GimpGroupLayer *group)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_GROUP_LAYER (group), NULL);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (group)), NULL);
+
+  return gimp_image_undo_push (image, GIMP_TYPE_GROUP_LAYER_UNDO,
+                               GIMP_UNDO_GROUP_LAYER_SUSPEND, undo_desc,
+                               GIMP_DIRTY_ITEM | GIMP_DIRTY_DRAWABLE,
+                               "item",  group,
+                               NULL);
+}
+
+GimpUndo *
+gimp_image_undo_push_group_layer_resume (GimpImage      *image,
+                                         const gchar    *undo_desc,
+                                         GimpGroupLayer *group)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_GROUP_LAYER (group), NULL);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (group)), NULL);
+
+  return gimp_image_undo_push (image, GIMP_TYPE_GROUP_LAYER_UNDO,
+                               GIMP_UNDO_GROUP_LAYER_RESUME, undo_desc,
+                               GIMP_DIRTY_ITEM | GIMP_DIRTY_DRAWABLE,
+                               "item",  group,
+                               NULL);
+}
+
+GimpUndo *
+gimp_image_undo_push_group_layer_convert (GimpImage      *image,
+                                          const gchar    *undo_desc,
+                                          GimpGroupLayer *group)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_GROUP_LAYER (group), NULL);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (group)), NULL);
+
+  return gimp_image_undo_push (image, GIMP_TYPE_GROUP_LAYER_UNDO,
+                               GIMP_UNDO_GROUP_LAYER_CONVERT, undo_desc,
+                               GIMP_DIRTY_ITEM | GIMP_DIRTY_DRAWABLE,
+                               "item", group,
                                NULL);
 }
 
@@ -657,12 +716,15 @@ GimpUndo *
 gimp_image_undo_push_channel_remove (GimpImage   *image,
                                      const gchar *undo_desc,
                                      GimpChannel *channel,
+                                     GimpChannel *prev_parent,
                                      gint         prev_position,
                                      GimpChannel *prev_channel)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_CHANNEL (channel), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)), NULL);
+  g_return_val_if_fail (prev_parent == NULL || GIMP_IS_CHANNEL (prev_parent),
+                        NULL);
   g_return_val_if_fail (prev_channel == NULL || GIMP_IS_CHANNEL (prev_channel),
                         NULL);
 
@@ -670,24 +732,9 @@ gimp_image_undo_push_channel_remove (GimpImage   *image,
                                GIMP_UNDO_CHANNEL_REMOVE, undo_desc,
                                GIMP_DIRTY_IMAGE_STRUCTURE,
                                "item",          channel,
+                               "prev-parent",   prev_parent,
                                "prev-position", prev_position,
                                "prev-channel",  prev_channel,
-                               NULL);
-}
-
-GimpUndo *
-gimp_image_undo_push_channel_reposition (GimpImage   *image,
-                                         const gchar *undo_desc,
-                                         GimpChannel *channel)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (GIMP_IS_CHANNEL (channel), NULL);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)), NULL);
-
-  return gimp_image_undo_push (image, GIMP_TYPE_CHANNEL_PROP_UNDO,
-                               GIMP_UNDO_CHANNEL_REPOSITION, undo_desc,
-                               GIMP_DIRTY_IMAGE_STRUCTURE,
-                               "item", channel,
                                NULL);
 }
 
@@ -736,12 +783,15 @@ GimpUndo *
 gimp_image_undo_push_vectors_remove (GimpImage   *image,
                                      const gchar *undo_desc,
                                      GimpVectors *vectors,
+                                     GimpVectors *prev_parent,
                                      gint         prev_position,
                                      GimpVectors *prev_vectors)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_VECTORS (vectors), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (vectors)), NULL);
+  g_return_val_if_fail (prev_parent == NULL || GIMP_IS_VECTORS (prev_parent),
+                        NULL);
   g_return_val_if_fail (prev_vectors == NULL || GIMP_IS_VECTORS (prev_vectors),
                         NULL);
 
@@ -749,6 +799,7 @@ gimp_image_undo_push_vectors_remove (GimpImage   *image,
                                GIMP_UNDO_VECTORS_REMOVE, undo_desc,
                                GIMP_DIRTY_IMAGE_STRUCTURE,
                                "item",          vectors,
+                               "prev-parent",   prev_parent,
                                "prev-position", prev_position,
                                "prev-vectors",  prev_vectors,
                                NULL);
@@ -766,22 +817,6 @@ gimp_image_undo_push_vectors_mod (GimpImage   *image,
   return gimp_image_undo_push (image, GIMP_TYPE_VECTORS_MOD_UNDO,
                                GIMP_UNDO_VECTORS_MOD, undo_desc,
                                GIMP_DIRTY_ITEM | GIMP_DIRTY_VECTORS,
-                               "item", vectors,
-                               NULL);
-}
-
-GimpUndo *
-gimp_image_undo_push_vectors_reposition (GimpImage   *image,
-                                         const gchar *undo_desc,
-                                         GimpVectors *vectors)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (GIMP_IS_VECTORS (vectors), NULL);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (vectors)), NULL);
-
-  return gimp_image_undo_push (image, GIMP_TYPE_VECTORS_PROP_UNDO,
-                               GIMP_UNDO_VECTORS_REPOSITION, undo_desc,
-                               GIMP_DIRTY_IMAGE_STRUCTURE,
                                "item", vectors,
                                NULL);
 }
@@ -807,43 +842,7 @@ gimp_image_undo_push_fs_to_layer (GimpImage    *image,
                                "item", floating_layer,
                                NULL);
 
-  if (! undo)
-    {
-      tile_manager_unref (floating_layer->fs.backing_store);
-      floating_layer->fs.backing_store = NULL;
-    }
-
   return undo;
-}
-
-GimpUndo *
-gimp_image_undo_push_fs_rigor (GimpImage    *image,
-                               const gchar  *undo_desc,
-                               GimpLayer    *floating_layer)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (GIMP_IS_LAYER (floating_layer), NULL);
-
-  return gimp_image_undo_push (image, GIMP_TYPE_FLOATING_SEL_UNDO,
-                               GIMP_UNDO_FS_RIGOR, undo_desc,
-                               GIMP_DIRTY_NONE,
-                               "item", floating_layer,
-                               NULL);
-}
-
-GimpUndo *
-gimp_image_undo_push_fs_relax (GimpImage   *image,
-                               const gchar *undo_desc,
-                               GimpLayer   *floating_layer)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
-  g_return_val_if_fail (GIMP_IS_LAYER (floating_layer), NULL);
-
-  return gimp_image_undo_push (image, GIMP_TYPE_FLOATING_SEL_UNDO,
-                               GIMP_UNDO_FS_RELAX, undo_desc,
-                               GIMP_DIRTY_NONE,
-                               "item", floating_layer,
-                               NULL);
 }
 
 
@@ -860,7 +859,7 @@ undo_pop_cantundo (GimpUndo            *undo,
     {
     case GIMP_UNDO_MODE_UNDO:
       gimp_message (undo->image->gimp, NULL, GIMP_MESSAGE_WARNING,
-                    _("Can't undo %s"), GIMP_OBJECT (undo)->name);
+                    _("Can't undo %s"), gimp_object_get_name (undo));
       break;
 
     case GIMP_UNDO_MODE_REDO:

@@ -1,9 +1,9 @@
 /*
  * This is a plug-in for GIMP.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -37,6 +36,7 @@
 
 #define PLUG_IN_PROC   "plug-in-ccanalyze"
 #define PLUG_IN_BINARY "color-cube-analyze"
+#define PLUG_IN_ROLE   "gimp-color-cube-analyze"
 
 /* size of histogram image */
 #define PREWIDTH  256
@@ -92,9 +92,9 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"    },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
   };
 
   static const GimpParamDef return_vals[] =
@@ -216,8 +216,8 @@ analyze (GimpDrawable *drawable)
   gimp_pixel_rgn_init (&srcPR, drawable, 0, 0, width, height, FALSE, FALSE);
 
   cmap = gimp_image_get_colormap (imageID, &numcol);
-  gray = (gimp_drawable_is_gray (drawable->drawable_id)
-          || gimp_drawable_is_channel (drawable->drawable_id));
+  gray = (gimp_drawable_is_gray (drawable->drawable_id) ||
+          gimp_item_is_channel (drawable->drawable_id));
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
   selDrawable = gimp_drawable_get (gimp_image_get_selection (imageID));
@@ -353,7 +353,7 @@ doDialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Colorcube Analysis"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Colorcube Analysis"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -363,12 +363,12 @@ doDialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      vbox, TRUE, TRUE, 0);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   frame = gtk_frame_new (NULL);

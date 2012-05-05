@@ -14,9 +14,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -25,8 +25,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* TODO:
@@ -67,9 +66,6 @@
 
 #include <glib/gstdio.h>
 
-#ifdef __GNUC__
-#warning GIMP_DISABLE_DEPRECATED
-#endif
 #undef GIMP_DISABLE_DEPRECATED
 
 #include <libgimp/gimp.h>
@@ -87,6 +83,7 @@
 #define LOAD_PROC      "file-xjt-load"
 #define SAVE_PROC      "file-xjt-save"
 #define PLUG_IN_BINARY "flie-xjt"
+#define PLUG_IN_ROLE   "gimp-flie-xjt"
 
 #ifdef _MSC_VER
 typedef int pid_t;
@@ -457,7 +454,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" },
   };
@@ -468,7 +465,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",        "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",           "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",        "is ignored" },
     { GIMP_PDB_STRING,   "filename",        "The name of the file to save the image in" },
@@ -863,27 +860,14 @@ save_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (_("Save as XJT"), PLUG_IN_BINARY,
-                         NULL, 0,
-                         gimp_standard_help_func, "file-xjt-save",
-
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                         NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dlg));
+  dlg = gimp_export_dialog_new (_("XJT"), PLUG_IN_BINARY, "file-xjt-save");
 
   table = gtk_table_new (4, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), table, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dlg)),
+                      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   toggle = gtk_check_button_new_with_label (_("Optimize"));
@@ -1380,12 +1364,14 @@ p_write_image_parasites(const gchar *dirname,
   gchar        **l_parasite_names = NULL;
   gint32         l_num_parasites = 0;
 
-  if (!gimp_image_parasite_list (image_id, &l_num_parasites, &l_parasite_names))
+  l_parasite_names = gimp_image_get_parasite_list (image_id, &l_num_parasites);
+
+  if (!l_parasite_names)
     return;
 
   for(l_idx = 0; l_idx < l_num_parasites; l_idx++)
   {
-    l_parasite = gimp_image_parasite_find(image_id, l_parasite_names[l_idx]);
+    l_parasite = gimp_image_get_parasite (image_id, l_parasite_names[l_idx]);
     if(l_parasite)
     {
        if(xjt_debug) printf("p_write_image_parasites NAME:%s:\n",  l_parasite_names[l_idx]);
@@ -1406,12 +1392,14 @@ p_write_drawable_parasites (const gchar *dirname,
   gchar        **l_parasite_names = NULL;
   gint32         l_num_parasites = 0;
 
-  if (!gimp_drawable_parasite_list (drawable_id, &l_num_parasites, &l_parasite_names))
+  l_parasite_names = gimp_item_get_parasite_list (drawable_id, &l_num_parasites);
+
+  if (! l_parasite_names)
     return;
 
   for(l_idx = 0; l_idx < l_num_parasites; l_idx++)
   {
-    l_parasite = gimp_drawable_parasite_find(drawable_id, l_parasite_names[l_idx]);
+    l_parasite = gimp_item_get_parasite (drawable_id, l_parasite_names[l_idx]);
     if(l_parasite)
     {
        if(xjt_debug) printf("p_write_drawable_parasites NAME:%s:\n",  l_parasite_names[l_idx]);
@@ -1456,10 +1444,10 @@ p_write_layer_prp(const gchar *dirname,
   l_param.int_val1 = (gint32)p_to_XJTLayerModeEffects(gimp_layer_get_mode(layer_id));
   p_write_prop (fp, PROP_MODE, &l_param, wr_all_prp);
 
-  l_param.int_val1 = p_invert(gimp_drawable_get_visible(layer_id));
+  l_param.int_val1 = p_invert (gimp_item_get_visible (layer_id));
   p_write_prop (fp, PROP_VISIBLE, &l_param, wr_all_prp);
 
-  l_param.int_val1 = gimp_drawable_get_linked (layer_id);
+  l_param.int_val1 = gimp_item_get_linked (layer_id);
   p_write_prop (fp, PROP_LINKED, &l_param, wr_all_prp);
 
   l_param.int_val1 = gimp_layer_get_lock_alpha (layer_id);
@@ -1479,10 +1467,10 @@ p_write_layer_prp(const gchar *dirname,
   l_param.int_val2 = l_ofsy;
   p_write_prop (fp, PROP_OFFSETS, &l_param, wr_all_prp);
 
-  l_param.int_val1 = gimp_drawable_get_tattoo(layer_id);
+  l_param.int_val1 = gimp_item_get_tattoo (layer_id);
   p_write_prop (fp, PROP_TATTOO, &l_param, wr_all_prp);
 
-  l_param.string_val = gimp_drawable_get_name(layer_id);
+  l_param.string_val = gimp_item_get_name (layer_id);
   p_write_prop (fp, PROP_NAME, &l_param, wr_all_prp);
 
   p_write_drawable_parasites(dirname, fp, layer_id, wr_all_prp);
@@ -1526,10 +1514,10 @@ p_write_channel_prp(const gchar *dirname,
   l_param.flt_val1 = gimp_channel_get_opacity(channel_id);
   p_write_prop (fp, PROP_OPACITY, &l_param, wr_all_prp);
 
-  l_param.int_val1 = p_invert(gimp_drawable_get_visible(channel_id));
+  l_param.int_val1 = p_invert (gimp_item_get_visible (channel_id));
   p_write_prop (fp, PROP_VISIBLE, &l_param, wr_all_prp);
 
-  l_param.int_val1 = gimp_channel_get_show_masked(channel_id);
+  l_param.int_val1 = gimp_channel_get_show_masked (channel_id);
   p_write_prop (fp, PROP_SHOW_MASKED, &l_param, wr_all_prp);
 
   gimp_channel_get_color(channel_id, &color);
@@ -1544,10 +1532,10 @@ p_write_channel_prp(const gchar *dirname,
   l_param.int_val2 = l_ofsy;
   p_write_prop (fp, PROP_OFFSETS, &l_param, wr_all_prp);
 
-  l_param.int_val1 = gimp_drawable_get_tattoo (channel_id);
+  l_param.int_val1 = gimp_item_get_tattoo (channel_id);
   p_write_prop (fp, PROP_TATTOO, &l_param, wr_all_prp);
 
-  l_param.string_val = gimp_drawable_get_name(channel_id);
+  l_param.string_val = gimp_item_get_name (channel_id);
   p_write_prop (fp, PROP_NAME, &l_param, wr_all_prp);
 
   p_write_drawable_parasites(dirname, fp, channel_id, wr_all_prp);
@@ -1667,7 +1655,6 @@ save_xjt_image (const gchar  *filename,
   gint    l_nchannels;
   gint32  l_layer_id;
   gint32  l_channel_id;
-  gint32  l_floating_layer_id;
   gint32  l_selection_channel_id;
   int     l_sel;
   gint32  l_x1, l_x2, l_y1, l_y2;
@@ -1676,7 +1663,6 @@ save_xjt_image (const gchar  *filename,
   gint    l_wr_all_prp;
 
   l_rc = -1;  /* init retcode to Errorstate */
-  l_floating_layer_id = -1;
   l_fp_prp = NULL;
   l_layers_list = NULL;
   l_channels_list = NULL;
@@ -1734,15 +1720,6 @@ save_xjt_image (const gchar  *filename,
   /* write image properties */
   p_write_image_prp (l_dirname, l_fp_prp, image_id, l_wr_all_prp);
 
-
-  l_floating_layer_id = gimp_image_get_floating_sel (image_id);
-  if (l_floating_layer_id >= 0)
-    {
-      if (xjt_debug) printf ("XJT-DEBUG: call floating_sel_relax fsel_id=%d\n",
-                             (int) l_floating_layer_id);
-
-      gimp_floating_sel_relax (l_floating_layer_id, FALSE);
-    }
 
   l_layers_list = gimp_image_get_layers (image_id, &l_nlayers);
 
@@ -1905,14 +1882,6 @@ cleanup:
    if (l_fp_prp)
      {
        fclose (l_fp_prp);
-     }
-
-   if (l_floating_layer_id >= 0)
-     {
-       if (xjt_debug)
-         printf("XJT-DEBUG: here we should call floating_sel_rigor sel_id=%d\n",
-                (int)l_floating_layer_id);
-       gimp_floating_sel_rigor (l_floating_layer_id, FALSE);
      }
 
    g_free (l_layers_list);
@@ -2594,14 +2563,14 @@ p_create_and_attach_parasite (gint32            gimp_obj_id,
    */
   if(parasite_props->parasite_type == XJT_IMAGE_PARASITE)
   {
-     if(xjt_debug) printf("XJT:   gimp_image_parasite_attach  name:%s\n", l_parasite.name);
-     gimp_image_parasite_attach(gimp_obj_id, &l_parasite);
+     if(xjt_debug) printf("XJT:   gimp_image_attach_parasite  name:%s\n", l_parasite.name);
+     gimp_image_attach_parasite(gimp_obj_id, &l_parasite);
 
   }
   else
   {
      if(xjt_debug) printf("XJT:   gimp_drawable_parasite_attach  name:%s\n", l_parasite.name);
-     gimp_drawable_parasite_attach(gimp_obj_id, &l_parasite);
+     gimp_item_attach_parasite (gimp_obj_id, &l_parasite);
   }
 
   if(l_parasite.data) g_free(l_parasite.data);
@@ -3170,6 +3139,7 @@ p_load_linefile (const gchar *filename,
   l_fp = g_fopen(filename, "rb");
   if(l_fp == NULL)
   {
+    g_free(l_file_buff);
     return(NULL);
   }
   fread(l_file_buff, *len, 1, l_fp);
@@ -3489,7 +3459,7 @@ load_xjt_image (const gchar  *filename,
       else
         {
           /* add the layer on top of the images layerstak */
-          gimp_image_add_layer (l_image_id, l_layer_id, 0);
+          gimp_image_insert_layer (l_image_id, l_layer_id, -1, 0);
 
           if(l_layer_prp_ptr->floating_attached)
             {
@@ -3513,12 +3483,12 @@ load_xjt_image (const gchar  *filename,
 
       /* adjust offsets and other layerproperties */
       gimp_layer_set_offsets(l_layer_id, l_layer_prp_ptr->offx, l_layer_prp_ptr->offy);
-      gimp_drawable_set_visible (l_layer_id, l_layer_prp_ptr->visible);
-      gimp_drawable_set_linked (l_layer_id, l_layer_prp_ptr->linked);
+      gimp_item_set_visible (l_layer_id, l_layer_prp_ptr->visible);
+      gimp_item_set_linked (l_layer_id, l_layer_prp_ptr->linked);
       gimp_layer_set_lock_alpha (l_layer_id, l_layer_prp_ptr->lock_alpha);
       if (l_layer_prp_ptr->tattoo >= 0)
         {
-         gimp_drawable_set_tattoo (l_layer_id, l_layer_prp_ptr->tattoo);
+         gimp_item_set_tattoo (l_layer_id, l_layer_prp_ptr->tattoo);
         }
 
       if (l_layer_prp_ptr->active_layer)
@@ -3571,8 +3541,8 @@ load_xjt_image (const gchar  *filename,
 
                   if (l_channel_prp_ptr->tattoo >= 0)
                     {
-                      gimp_drawable_set_tattoo (l_channel_id,
-                                                l_channel_prp_ptr->tattoo);
+                      gimp_item_set_tattoo (l_channel_id,
+                                            l_channel_prp_ptr->tattoo);
                     }
 
                   /* gimp_layer_set_offsets(l_channel_id, l_layer_prp_ptr->offx, l_layer_prp_ptr->offy); */
@@ -3628,7 +3598,7 @@ load_xjt_image (const gchar  *filename,
 
       if (l_channel_prp_ptr->tattoo >= 0)
         {
-          gimp_drawable_set_tattoo (l_channel_id, l_channel_prp_ptr->tattoo);
+          gimp_item_set_tattoo (l_channel_id, l_channel_prp_ptr->tattoo);
         }
 
       if (l_channel_prp_ptr->selection)
@@ -3636,18 +3606,20 @@ load_xjt_image (const gchar  *filename,
           if (xjt_debug) printf ("XJT-DEBUG: SELECTION loaded channel id = %d\n",
                                  (int) l_channel_id);
 
-          gimp_selection_load (l_channel_id);
+          gimp_image_select_item (l_image_id,
+                                  GIMP_CHANNEL_OP_REPLACE,
+                                  l_channel_id);
 
           /* delete the channel after load into selection */
-          gimp_drawable_delete (l_channel_id);
+          gimp_item_delete (l_channel_id);
         }
       else
         {
           /* add channel on top of the channelstack */
-          gimp_image_add_channel (l_image_id, l_channel_id, 0);
+          gimp_image_insert_channel (l_image_id, l_channel_id, -1, 0);
 
           /* adjust offsets and other channelproperties */
-          gimp_drawable_set_visible (l_channel_id, l_channel_prp_ptr->visible);
+          gimp_item_set_visible (l_channel_id, l_channel_prp_ptr->visible);
           gimp_channel_set_show_masked (l_channel_id, l_channel_prp_ptr->show_masked);
 
           if (l_channel_prp_ptr->floating_attached)
@@ -3673,7 +3645,7 @@ load_xjt_image (const gchar  *filename,
            * (if patches are not installed you'll get the error for sure)
            */
           printf("XJT: floating_selection is added as top-layer (attach failed)\n");
-          gimp_image_add_layer (l_image_id, l_fsel_id, 0);
+          gimp_image_insert_layer (l_image_id, l_fsel_id, -1, 0);
         }
     }
 

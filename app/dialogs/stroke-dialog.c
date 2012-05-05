@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2003  Henrik Brix Andersen <brix@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,12 +14,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -31,7 +31,6 @@
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimppaintinfo.h"
-#include "core/gimpstrokedesc.h"
 #include "core/gimpstrokeoptions.h"
 #include "core/gimptoolinfo.h"
 
@@ -50,13 +49,9 @@
 
 /*  local functions  */
 
-static void  stroke_dialog_response            (GtkWidget         *widget,
-                                                gint               response_id,
-                                                GtkWidget         *dialog);
-static void  stroke_dialog_paint_info_selected (GimpContainerView *view,
-                                                GimpViewable      *viewable,
-                                                gpointer           insert_data,
-                                                GimpStrokeDesc    *desc);
+static void  stroke_dialog_response (GtkWidget *widget,
+                                     gint       response_id,
+                                     GtkWidget *dialog);
 
 
 /*  public function  */
@@ -69,16 +64,16 @@ stroke_dialog_new (GimpItem    *item,
                    const gchar *help_id,
                    GtkWidget   *parent)
 {
-  GimpStrokeDesc *desc;
-  GimpStrokeDesc *saved_desc;
-  GimpImage      *image;
-  GtkWidget      *dialog;
-  GtkWidget      *main_vbox;
-  GtkWidget      *radio_box;
-  GtkWidget      *libart_radio;
-  GtkWidget      *paint_radio;
-  GSList         *group;
-  GtkWidget      *frame;
+  GimpStrokeOptions *options;
+  GimpStrokeOptions *saved_options;
+  GimpImage         *image;
+  GtkWidget         *dialog;
+  GtkWidget         *main_vbox;
+  GtkWidget         *radio_box;
+  GtkWidget         *cairo_radio;
+  GtkWidget         *paint_radio;
+  GSList            *group;
+  GtkWidget         *frame;
 
   g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
@@ -88,13 +83,13 @@ stroke_dialog_new (GimpItem    *item,
 
   image = gimp_item_get_image (item);
 
-  desc = gimp_stroke_desc_new (context->gimp, context);
+  options = gimp_stroke_options_new (context->gimp, context, TRUE);
 
-  saved_desc = g_object_get_data (G_OBJECT (context->gimp),
-                                  "saved-stroke-desc");
+  saved_options = g_object_get_data (G_OBJECT (context->gimp),
+                                     "saved-stroke-options");
 
-  if (saved_desc)
-    gimp_config_sync (G_OBJECT (saved_desc), G_OBJECT (desc), 0);
+  if (saved_options)
+    gimp_config_sync (G_OBJECT (saved_options), G_OBJECT (options), 0);
 
   dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (item), context,
                                      title, "gimp-stroke-options",
@@ -123,21 +118,23 @@ stroke_dialog_new (GimpItem    *item,
                     dialog);
 
   g_object_set_data (G_OBJECT (dialog), "gimp-item", item);
-  g_object_set_data_full (G_OBJECT (dialog), "gimp-stroke-desc", desc,
+  g_object_set_data_full (G_OBJECT (dialog), "gimp-stroke-options", options,
                           (GDestroyNotify) g_object_unref);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  radio_box = gimp_prop_enum_radio_box_new (G_OBJECT (desc), "method", -1, -1);
+  radio_box = gimp_prop_enum_radio_box_new (G_OBJECT (options), "method",
+                                            -1, -1);
 
   group = gtk_radio_button_get_group (g_object_get_data (G_OBJECT (radio_box),
                                                          "radio-button"));
 
-  libart_radio = g_object_ref (group->next->data);
-  gtk_container_remove (GTK_CONTAINER (radio_box), libart_radio);
+  cairo_radio = g_object_ref (group->next->data);
+  gtk_container_remove (GTK_CONTAINER (radio_box), cairo_radio);
 
   paint_radio = g_object_ref (group->data);
   gtk_container_remove (GTK_CONTAINER (radio_box), paint_radio);
@@ -151,7 +148,7 @@ stroke_dialog_new (GimpItem    *item,
     font_desc = pango_font_description_new ();
     pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
 
-    gtk_widget_modify_font (gtk_bin_get_child (GTK_BIN (libart_radio)),
+    gtk_widget_modify_font (gtk_bin_get_child (GTK_BIN (cairo_radio)),
                             font_desc);
     gtk_widget_modify_font (gtk_bin_get_child (GTK_BIN (paint_radio)),
                             font_desc);
@@ -166,12 +163,8 @@ stroke_dialog_new (GimpItem    *item,
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  gtk_frame_set_label_widget (GTK_FRAME (frame), libart_radio);
-  g_object_unref (libart_radio);
-
-  g_signal_connect (libart_radio, "toggled",
-                    G_CALLBACK (gimp_toggle_button_sensitive_update),
-                    NULL);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), cairo_radio);
+  g_object_unref (cairo_radio);
 
   {
     GtkWidget *stroke_editor;
@@ -180,13 +173,13 @@ stroke_dialog_new (GimpItem    *item,
 
     gimp_image_get_resolution (image, &xres, &yres);
 
-    stroke_editor = gimp_stroke_editor_new (desc->stroke_options, yres);
+    stroke_editor = gimp_stroke_editor_new (options, yres, FALSE);
     gtk_container_add (GTK_CONTAINER (frame), stroke_editor);
     gtk_widget_show (stroke_editor);
 
-    gtk_widget_set_sensitive (stroke_editor,
-                              desc->method == GIMP_STROKE_METHOD_LIBART);
-    g_object_set_data (G_OBJECT (libart_radio), "set_sensitive", stroke_editor);
+    g_object_bind_property (cairo_radio,   "active",
+                            stroke_editor, "sensitive",
+                            G_BINDING_SYNC_CREATE);
   }
 
 
@@ -199,10 +192,6 @@ stroke_dialog_new (GimpItem    *item,
   gtk_frame_set_label_widget (GTK_FRAME (frame), paint_radio);
   g_object_unref (paint_radio);
 
-  g_signal_connect (paint_radio, "toggled",
-                    G_CALLBACK (gimp_toggle_button_sensitive_update),
-                    NULL);
-
   {
     GtkWidget *vbox;
     GtkWidget *hbox;
@@ -210,15 +199,15 @@ stroke_dialog_new (GimpItem    *item,
     GtkWidget *combo;
     GtkWidget *button;
 
-    vbox = gtk_vbox_new (FALSE, 6);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_container_add (GTK_CONTAINER (frame), vbox);
     gtk_widget_show (vbox);
 
-    gtk_widget_set_sensitive (vbox,
-                              desc->method == GIMP_STROKE_METHOD_PAINT_CORE);
-    g_object_set_data (G_OBJECT (paint_radio), "set_sensitive", vbox);
+    g_object_bind_property (paint_radio, "active",
+                            vbox,        "sensitive",
+                            G_BINDING_SYNC_CREATE);
 
-    hbox = gtk_hbox_new (FALSE, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 
@@ -227,21 +216,14 @@ stroke_dialog_new (GimpItem    *item,
     gtk_widget_show (label);
 
     combo = gimp_container_combo_box_new (image->gimp->paint_info_list,
-                                          context,
+                                          GIMP_CONTEXT (options),
                                           16, 0);
-    gimp_container_view_select_item (GIMP_CONTAINER_VIEW (combo),
-                                     GIMP_VIEWABLE (desc->paint_info));
     gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
     gtk_widget_show (combo);
 
-    g_signal_connect (combo, "select-item",
-                      G_CALLBACK (stroke_dialog_paint_info_selected),
-                      desc);
-
-
     g_object_set_data (G_OBJECT (dialog), "gimp-tool-menu", combo);
 
-    button = gimp_prop_check_button_new (G_OBJECT (desc),
+    button = gimp_prop_check_button_new (G_OBJECT (options),
                                          "emulate-brush-dynamics",
                                          _("_Emulate brush dynamics"));
     gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
@@ -259,13 +241,15 @@ stroke_dialog_response (GtkWidget  *widget,
                         gint        response_id,
                         GtkWidget  *dialog)
 {
-  GimpStrokeDesc *desc;
-  GimpItem       *item;
-  GimpImage      *image;
-  GimpContext    *context;
+  GimpStrokeOptions *options;
+  GimpItem          *item;
+  GimpImage         *image;
+  GimpContext       *context;
+  GtkWidget         *combo;
 
-  item = g_object_get_data (G_OBJECT (dialog), "gimp-item");
-  desc = g_object_get_data (G_OBJECT (dialog), "gimp-stroke-desc");
+  item    = g_object_get_data (G_OBJECT (dialog), "gimp-item");
+  options = g_object_get_data (G_OBJECT (dialog), "gimp-stroke-options");
+  combo   = g_object_get_data (G_OBJECT (dialog), "gimp-tool-menu");;
 
   image   = gimp_item_get_image (item);
   context = GIMP_VIEWABLE_DIALOG (dialog)->context;
@@ -275,10 +259,8 @@ stroke_dialog_response (GtkWidget  *widget,
     case RESPONSE_RESET:
       {
         GimpToolInfo *tool_info = gimp_context_get_tool (context);
-        GtkWidget    *combo     = g_object_get_data (G_OBJECT (dialog),
-                                                     "gimp-tool-menu");;
 
-        gimp_config_reset (GIMP_CONFIG (desc));
+        gimp_config_reset (GIMP_CONFIG (options));
 
         gimp_container_view_select_item (GIMP_CONTAINER_VIEW (combo),
                                          GIMP_VIEWABLE (tool_info->paint_info));
@@ -288,41 +270,41 @@ stroke_dialog_response (GtkWidget  *widget,
 
     case GTK_RESPONSE_OK:
       {
-        GimpDrawable   *drawable = gimp_image_get_active_drawable (image);
-        GimpStrokeDesc *saved_desc;
-        GError         *error    = NULL;
+        GimpDrawable      *drawable = gimp_image_get_active_drawable (image);
+        GimpStrokeOptions *saved_options;
+        GError            *error    = NULL;
 
         if (! drawable)
           {
-            gimp_message (context->gimp, G_OBJECT (widget),
-                          GIMP_MESSAGE_WARNING,
-                          _("There is no active layer or channel "
-                            "to stroke to."));
+            gimp_message_literal (context->gimp, G_OBJECT (widget),
+				  GIMP_MESSAGE_WARNING,
+				  _("There is no active layer or channel "
+				    "to stroke to."));
             return;
           }
 
-        saved_desc = g_object_get_data (G_OBJECT (context->gimp),
-                                        "saved-stroke-desc");
+        saved_options = g_object_get_data (G_OBJECT (context->gimp),
+                                           "saved-stroke-options");
 
-        if (saved_desc)
-          g_object_ref (saved_desc);
+        if (saved_options)
+          g_object_ref (saved_options);
         else
-          saved_desc = gimp_stroke_desc_new (context->gimp, context);
+          saved_options = gimp_stroke_options_new (context->gimp, context, TRUE);
 
-        gimp_config_sync (G_OBJECT (desc), G_OBJECT (saved_desc), 0);
+        gimp_config_sync (G_OBJECT (options), G_OBJECT (saved_options), 0);
 
-        g_object_set_data_full (G_OBJECT (context->gimp), "saved-stroke-desc",
-                                saved_desc,
+        g_object_set_data_full (G_OBJECT (context->gimp), "saved-stroke-options",
+                                saved_options,
                                 (GDestroyNotify) g_object_unref);
 
-        if (! gimp_item_stroke (item, drawable, context, desc, FALSE, NULL,
-                                &error))
+        if (! gimp_item_stroke (item, drawable, context, options, FALSE, TRUE,
+                                NULL, &error))
           {
-            gimp_message (context->gimp,
-                          G_OBJECT (widget),
-                          GIMP_MESSAGE_WARNING,
-                          "%s",
-                          error ? error->message : "NULL");
+            gimp_message_literal (context->gimp,
+                                  G_OBJECT (widget),
+                                  GIMP_MESSAGE_WARNING,
+                                  error ? error->message : "NULL");
+
             g_clear_error (&error);
             return;
           }
@@ -335,13 +317,4 @@ stroke_dialog_response (GtkWidget  *widget,
       gtk_widget_destroy (dialog);
       break;
     }
-}
-
-static void
-stroke_dialog_paint_info_selected (GimpContainerView *view,
-                                   GimpViewable      *viewable,
-                                   gpointer           insert_data,
-                                   GimpStrokeDesc    *desc)
-{
-  g_object_set (desc, "paint-info", viewable, NULL);
 }

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,6 +31,7 @@
 #include "gegl/gimpdesaturateconfig.h"
 
 #include "core/gimpdrawable.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -90,7 +90,7 @@ gimp_desaturate_tool_class_init (GimpDesaturateToolClass *klass)
 
   tool_class->initialize       = gimp_desaturate_tool_initialize;
 
-  im_tool_class->shell_desc    = _("Desaturate (Remove Colors)");
+  im_tool_class->dialog_desc   = _("Desaturate (Remove Colors)");
 
   im_tool_class->get_operation = gimp_desaturate_tool_get_operation;
   im_tool_class->map           = gimp_desaturate_tool_map;
@@ -112,23 +112,25 @@ gimp_desaturate_tool_initialize (GimpTool     *tool,
                                 GError      **error)
 {
   GimpDesaturateTool *desaturate_tool = GIMP_DESATURATE_TOOL (tool);
-  GimpDrawable       *drawable;
-
-  drawable = gimp_image_get_active_drawable (display->image);
+  GimpImage          *image           = gimp_display_get_image (display);
+  GimpDrawable       *drawable        = gimp_image_get_active_drawable (image);
 
   if (! drawable)
     return FALSE;
 
   if (! gimp_drawable_is_rgb (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Desaturate does only operate on RGB layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Desaturate only operates on RGB layers."));
       return FALSE;
     }
 
   gimp_config_reset (GIMP_CONFIG (desaturate_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
+  if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
+    {
+      return FALSE;
+    }
 
   gimp_int_radio_group_set_active (GTK_RADIO_BUTTON (desaturate_tool->button),
                                    desaturate_tool->config->mode);
@@ -146,7 +148,7 @@ gimp_desaturate_tool_get_operation (GimpImageMapTool  *image_map_tool,
   GeglNode           *node;
 
   node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp-desaturate",
+                       "operation", "gimp:desaturate",
                        NULL);
 
   desaturate_tool->config = g_object_new (GIMP_TYPE_DESATURATE_CONFIG, NULL);

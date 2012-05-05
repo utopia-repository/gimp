@@ -12,6 +12,11 @@ if OS_WIN32
 mwindows = -mwindows
 endif
 
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+metadata_RC = metadata.rc.o
+endif
+
 AM_LDFLAGS = $(mwindows)
 
 libexecdir = $(gimpplugindir)/plug-ins
@@ -19,32 +24,40 @@ libexecdir = $(gimpplugindir)/plug-ins
 libexec_PROGRAMS = metadata
 
 metadata_SOURCES = \
-	metadata.c	\
-	metadata.h	\
-	base64.h	\
-	base64.c	\
-	xmp-model.h	\
-	xmp-model.c	\
-	xmp-parse.h	\
-	xmp-parse.c	\
-	xmp-encode.h	\
-	xmp-encode.c	\
-	xmp-schemas.h	\
-	xmp-schemas.c	
-#	interface.h	\
-#	interface.c	\
-#	exif-decode.h	\
-#	exif-decode.c	\
-#	exif-encode.h	\
-#	exif-encode.c	\
-#	iptc-decode.h	\
+	metadata.c		\
+	metadata.h		\
+	xmp-model.h		\
+	xmp-model.c		\
+	xmp-parse.h		\
+	xmp-parse.c		\
+	xmp-encode.h		\
+	xmp-encode.c		\
+	xmp-schemas.h		\
+	xmp-schemas.c		\
+	interface.h		\
+	interface.c		\
+	gimpxmpmodelwidget.h	\
+	gimpxmpmodelwidget.c	\
+	gimpxmpmodelentry.h	\
+	gimpxmpmodelentry.c	\
+	gimpxmpmodeltext.h	\
+	gimpxmpmodeltext.c	\
+	exif-decode.h		\
+	exif-decode.c
+#	exif-encode.h		\
+#	exif-encode.c		\
+#	iptc-decode.h		\
 #	iptc-decode.c	
 
 noinst_PROGRAMS = xmpdump
 xmpdump_SOURCES = \
 	xmpdump.c	\
-	base64.h	\
-	base64.c	\
+	xmp-schemas.h	\
+	xmp-schemas.c	\
+	xmp-encode.h	\
+	xmp-encode.c	\
+	xmp-model.h	\
+	xmp-model.c	\
 	xmp-parse.h	\
 	xmp-parse.c	
 
@@ -65,17 +78,5 @@ LDADD = \
 	$(EXIF_LIBS)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-# test program, not built by default
-
-TESTS = testbase64$(EXEEXT)
-
-EXTRA_PROGRAMS = testbase64
-
-testbase64_SOURCES = \
-	base64.h	\
-	base64.c	\
-	testbase64.c	
-
-CLEANFILES = $(EXTRA_PROGRAMS)
+	$(INTLLIBS)		\
+	$(metadata_RC)

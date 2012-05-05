@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,6 +33,7 @@
 #include "pdb/gimppdb.h"
 
 #include "about.h"
+#include "git-version.h"
 
 #include "about-dialog.h"
 #include "authors.h"
@@ -41,26 +41,30 @@
 #include "gimp-intl.h"
 
 
-#define PDB_URL_LOAD   "plug-in-web-browser"
+/* The first authors are the creators and maintainers, don't shuffle
+ * them
+ */
+#define START_INDEX (G_N_ELEMENTS (creators)    - 1 /*NULL*/ + \
+                     G_N_ELEMENTS (maintainers) - 1 /*NULL*/)
 
 
 typedef struct
 {
-  GtkWidget    *dialog;
+  GtkWidget   *dialog;
 
-  GtkWidget    *anim_area;
-  PangoLayout  *layout;
+  GtkWidget   *anim_area;
+  PangoLayout *layout;
 
-  gint          n_authors;
-  gint          shuffle[G_N_ELEMENTS (authors) - 1];  /* NULL terminated */
+  gint         n_authors;
+  gint         shuffle[G_N_ELEMENTS (authors) - 1];  /* NULL terminated */
 
-  guint         timer;
+  guint        timer;
 
-  gint          index;
-  gint          animstep;
-  gint          textrange[2];
-  gint          state;
-  gboolean      visible;
+  gint         index;
+  gint         animstep;
+  gint         textrange[2];
+  gint         state;
+  gboolean     visible;
 } GimpAboutDialog;
 
 
@@ -68,9 +72,6 @@ static void        about_dialog_map           (GtkWidget       *widget,
                                                GimpAboutDialog *dialog);
 static void        about_dialog_unmap         (GtkWidget       *widget,
                                                GimpAboutDialog *dialog);
-static void        about_dialog_load_url      (GtkAboutDialog  *dialog,
-                                               const gchar     *url,
-                                               gpointer         data);
 static GdkPixbuf * about_dialog_load_logo     (void);
 static void        about_dialog_add_animation (GtkWidget       *vbox,
                                                GimpAboutDialog *dialog);
@@ -80,41 +81,40 @@ static gboolean    about_dialog_anim_expose   (GtkWidget       *widget,
 static void        about_dialog_reshuffle     (GimpAboutDialog *dialog);
 static gboolean    about_dialog_timer         (gpointer         data);
 
-static void        about_dialog_add_message   (GtkWidget       *vbox);
+#ifdef GIMP_UNSTABLE
+static void        about_dialog_add_unstable_message
+                                              (GtkWidget       *vbox);
+#endif /* GIMP_UNSTABLE */
 
 
 GtkWidget *
 about_dialog_create (GimpContext *context)
 {
-  static GimpAboutDialog *dialog = NULL;
+  static GimpAboutDialog dialog;
 
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  if (! dialog)
+  if (! dialog.dialog)
     {
       GtkWidget *widget;
       GtkWidget *container;
       GdkPixbuf *pixbuf;
       GList     *children;
+      gchar     *copyright;
 
-      if (gimp_pdb_lookup_procedure (context->gimp->pdb, PDB_URL_LOAD))
-        gtk_about_dialog_set_url_hook (about_dialog_load_url,
-                                       g_object_ref (context),
-                                       (GDestroyNotify) g_object_unref);
-
-      dialog = g_new0 (GimpAboutDialog, 1);
-
-      dialog->n_authors = G_N_ELEMENTS (authors) - 1;
+      dialog.n_authors = G_N_ELEMENTS (authors) - 1;
 
       pixbuf = about_dialog_load_logo ();
 
+      copyright = g_strdup_printf (GIMP_COPYRIGHT, GIMP_GIT_LAST_COMMIT_YEAR);
+
       widget = g_object_new (GTK_TYPE_ABOUT_DIALOG,
-                             "role",               "about-dialog",
+                             "role",               "gimp-about",
                              "window-position",    GTK_WIN_POS_CENTER,
                              "title",              _("About GIMP"),
                              "program-name",       GIMP_ACRONYM,
                              "version",            GIMP_VERSION,
-                             "copyright",          GIMP_COPYRIGHT,
+                             "copyright",          copyright,
                              "comments",           GIMP_NAME,
                              "license",            GIMP_LICENSE,
                              "wrap-license",       TRUE,
@@ -124,16 +124,19 @@ about_dialog_create (GimpContext *context)
                              "authors",            authors,
                              "artists",            artists,
                              "documenters",        documenters,
-                             /* Translators: insert your names here, separated by newline */
+                             /* Translators: insert your names here,
+                                separated by newline */
                              "translator-credits", _("translator-credits"),
                              NULL);
 
       if (pixbuf)
         g_object_unref (pixbuf);
 
-      dialog->dialog = widget;
+      g_free (copyright);
 
-      g_object_add_weak_pointer (G_OBJECT (widget), (gpointer) &dialog);
+      dialog.dialog = widget;
+
+      g_object_add_weak_pointer (G_OBJECT (widget), (gpointer) &dialog.dialog);
 
       g_signal_connect (widget, "response",
                         G_CALLBACK (gtk_widget_destroy),
@@ -141,29 +144,31 @@ about_dialog_create (GimpContext *context)
 
       g_signal_connect (widget, "map",
                         G_CALLBACK (about_dialog_map),
-                        dialog);
+                        &dialog);
       g_signal_connect (widget, "unmap",
                         G_CALLBACK (about_dialog_unmap),
-                        dialog);
+                        &dialog);
 
       /*  kids, don't try this at home!  */
-      container = GTK_DIALOG (widget)->vbox;
+      container = gtk_dialog_get_content_area (GTK_DIALOG (widget));
       children = gtk_container_get_children (GTK_CONTAINER (container));
 
-      if (GTK_IS_VBOX (children->data))
+      if (GTK_IS_BOX (children->data))
         {
-          about_dialog_add_animation (children->data, dialog);
-          about_dialog_add_message (children->data);
+          about_dialog_add_animation (children->data, &dialog);
+#ifdef GIMP_UNSTABLE
+          about_dialog_add_unstable_message (children->data);
+#endif /* GIMP_UNSTABLE */
         }
       else
-        g_warning ("%s: ooops, no vbox in this container?", G_STRLOC);
+        g_warning ("%s: ooops, no box in this container?", G_STRLOC);
 
       g_list_free (children);
     }
 
-  gtk_window_present (GTK_WINDOW (dialog->dialog));
+  gtk_window_present (GTK_WINDOW (dialog.dialog));
 
-  return dialog->dialog;
+  return dialog.dialog;
 }
 
 static void
@@ -194,22 +199,6 @@ about_dialog_unmap (GtkWidget       *widget,
     }
 }
 
-static void
-about_dialog_load_url (GtkAboutDialog *dialog,
-                       const gchar    *url,
-                       gpointer        data)
-{
-  GimpContext *context = GIMP_CONTEXT (data);
-  GValueArray *return_vals;
-
-  return_vals = gimp_pdb_execute_procedure_by_name (context->gimp->pdb,
-                                                    context, NULL, NULL,
-                                                    PDB_URL_LOAD,
-                                                    G_TYPE_STRING, url,
-                                                    G_TYPE_NONE);
-  g_value_array_free (return_vals);
-}
-
 static GdkPixbuf *
 about_dialog_load_logo (void)
 {
@@ -217,7 +206,11 @@ about_dialog_load_logo (void)
   gchar     *filename;
 
   filename = g_build_filename (gimp_data_directory (), "images",
+#ifdef GIMP_UNSTABLE
+                               "gimp-devel-logo.png",
+#else
                                "gimp-logo.png",
+#endif
                                NULL);
 
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
@@ -259,9 +252,6 @@ about_dialog_reshuffle (GimpAboutDialog *dialog)
   for (i = 0; i < dialog->n_authors; i++)
     dialog->shuffle[i] = i;
 
-  /* here we rely on the authors array having Peter and Spencer first */
-#define START_INDEX 2
-
   for (i = START_INDEX; i < dialog->n_authors; i++)
     {
       gint j = g_rand_int_range (gr, START_INDEX, dialog->n_authors);
@@ -276,8 +266,6 @@ about_dialog_reshuffle (GimpAboutDialog *dialog)
         }
     }
 
-#undef START_INDEX
-
   g_rand_free (gr);
 }
 
@@ -286,42 +274,46 @@ about_dialog_anim_expose (GtkWidget       *widget,
                           GdkEventExpose  *event,
                           GimpAboutDialog *dialog)
 {
-  GtkStyle *style = gtk_widget_get_style (widget);
-  GdkGC    *text_gc;
-  gint      x, y;
-  gint      width, height;
+  GtkStyle      *style = gtk_widget_get_style (widget);
+  cairo_t       *cr;
+  GtkAllocation  allocation;
+  gint           x, y;
+  gint           width, height;
 
   if (! dialog->visible)
     return FALSE;
 
-  text_gc = style->text_gc[GTK_STATE_NORMAL];
+  cr = gdk_cairo_create (event->window);
 
+  gdk_cairo_set_source_color (cr, &style->text[GTK_STATE_NORMAL]);
+
+  gtk_widget_get_allocation (widget, &allocation);
   pango_layout_get_pixel_size (dialog->layout, &width, &height);
 
-  x = (widget->allocation.width - width) / 2;
-  y = (widget->allocation.height - height) / 2;
+  x = (allocation.width  - width)  / 2;
+  y = (allocation.height - height) / 2;
 
   if (dialog->textrange[1] > 0)
     {
-      GdkRegion *covered_region = NULL;
-      GdkRegion *rect_region;
+      GdkRegion *covered_region;
 
       covered_region = gdk_pango_layout_get_clip_region (dialog->layout,
                                                          x, y,
                                                          dialog->textrange, 1);
 
-      rect_region = gdk_region_rectangle (&event->area);
+      gdk_region_intersect (covered_region, event->region);
 
-      gdk_region_intersect (covered_region, rect_region);
-      gdk_region_destroy (rect_region);
+      gdk_cairo_region (cr, covered_region);
+      cairo_clip (cr);
 
-      gdk_gc_set_clip_region (text_gc, covered_region);
       gdk_region_destroy (covered_region);
     }
 
-  gdk_draw_layout (widget->window, text_gc, x, y, dialog->layout);
+  cairo_move_to (cr, x, y);
 
-  gdk_gc_set_clip_region (text_gc, NULL);
+  pango_cairo_show_layout (cr, dialog->layout);
+
+  cairo_destroy (cr);
 
   return FALSE;
 }
@@ -594,10 +586,11 @@ about_dialog_timer (gpointer data)
   return TRUE;
 }
 
-static void
-about_dialog_add_message (GtkWidget *vbox)
-{
 #ifdef GIMP_UNSTABLE
+
+static void
+about_dialog_add_unstable_message (GtkWidget *vbox)
+{
   GtkWidget *label;
 
   label = gtk_label_new (_("This is an unstable development release."));
@@ -607,6 +600,6 @@ about_dialog_add_message (GtkWidget *vbox)
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_box_reorder_child (GTK_BOX (vbox), label, 2);
   gtk_widget_show (label);
-#endif
 }
 
+#endif /* GIMP_UNSTABLE */

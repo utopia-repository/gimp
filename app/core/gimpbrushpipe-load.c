@@ -2,9 +2,9 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1999 Adrian Likins and Tor Lillqvist
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -56,7 +55,8 @@
 
 
 GList *
-gimp_brush_pipe_load (const gchar  *filename,
+gimp_brush_pipe_load (GimpContext  *context,
+                      const gchar  *filename,
                       GError      **error)
 {
   GimpBrushPipe     *pipe = NULL;
@@ -208,13 +208,14 @@ gimp_brush_pipe_load (const gchar  *filename,
 
   pipe->brushes = g_new0 (GimpBrush *, num_of_brushes);
 
-  while (pipe->nbrushes < num_of_brushes)
+  while (pipe->n_brushes < num_of_brushes)
     {
-      pipe->brushes[pipe->nbrushes] = gimp_brush_load_brush (fd, filename, NULL);
+      pipe->brushes[pipe->n_brushes] = gimp_brush_load_brush (context,
+                                                              fd, filename, NULL);
 
-      if (pipe->brushes[pipe->nbrushes])
+      if (pipe->brushes[pipe->n_brushes])
         {
-          gimp_object_set_name (GIMP_OBJECT (pipe->brushes[pipe->nbrushes]),
+          gimp_object_set_name (GIMP_OBJECT (pipe->brushes[pipe->n_brushes]),
                                 NULL);
         }
       else
@@ -228,7 +229,7 @@ gimp_brush_pipe_load (const gchar  *filename,
           return NULL;
         }
 
-      pipe->nbrushes++;
+      pipe->n_brushes++;
     }
 
   close (fd);

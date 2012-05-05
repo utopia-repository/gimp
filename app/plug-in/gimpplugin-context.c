@@ -3,9 +3,9 @@
  *
  * gimpplugin-context.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,7 +24,8 @@
 #include "plug-in-types.h"
 
 #include "core/gimp.h"
-#include "core/gimpcontext.h"
+
+#include "pdb/gimppdbcontext.h"
 
 #include "gimpplugin.h"
 #include "gimpplugin-context.h"
@@ -48,8 +48,7 @@ gimp_plug_in_context_push (GimpPlugIn *plug_in)
   else
     parent = proc_frame->main_context;
 
-  context = gimp_context_new (plug_in->manager->gimp, "plug-in context", NULL);
-  gimp_context_copy_properties (parent, context, GIMP_CONTEXT_ALL_PROPS_MASK);
+  context = gimp_pdb_context_new (plug_in->manager->gimp, parent, FALSE);
 
   proc_frame->context_stack = g_list_prepend (proc_frame->context_stack,
                                               context);

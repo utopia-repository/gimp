@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -53,11 +52,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-airbrush", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-airbrush");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "pressure", pressure,
@@ -65,7 +68,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -98,15 +101,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-airbrush", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-airbrush");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -154,11 +161,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-clone", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-clone");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "clone-type", clone_type,
@@ -166,7 +177,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc",    info->blurb,
+                                    "undo-desc",    options->paint_info->blurb,
                                     "src-drawable", src_drawable,
                                     "src-x",        src_x,
                                     "src-y",        src_y,
@@ -203,15 +214,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-clone", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-clone");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -244,15 +259,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-convolve", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-convolve");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -287,11 +306,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-convolve", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-convolve");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "type", convolve_type,
@@ -300,7 +323,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -331,15 +354,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-eraser", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-eraser");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -375,11 +402,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-eraser", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-eraser");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "application-mode", method,
@@ -388,7 +419,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -424,11 +455,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-eraser", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-eraser");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "application-mode", method,
@@ -438,7 +473,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -478,15 +513,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-heal", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-heal");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc",    info->blurb,
+				    "undo-desc",    options->paint_info->blurb,
                                     "src-drawable", src_drawable,
                                     "src-x",        src_x,
                                     "src-y",        src_y,
@@ -523,15 +562,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-heal", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-heal");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -575,24 +618,56 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-paintbrush", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-paintbrush");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      GimpDynamics *pdb_dynamics  = GIMP_DYNAMICS (gimp_dynamics_new (context, "pdb"));
+      GimpDynamics *user_dynamics = gimp_context_get_dynamics (context);
+
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "application-mode", method,
-                    "use-fade",         fade_out > 0.0,
-                    "fade-length",      fade_out,
-                    "use-gradient",     gradient_length > 0.0,
-                    "gradient-length",  gradient_length,
+                    "fade-length",      MAX (fade_out, gradient_length),
                     NULL);
+
+      if (fade_out > 0)
+        {
+           GimpDynamicsOutput *opacity_output =
+             gimp_dynamics_get_output (pdb_dynamics,
+                                       GIMP_DYNAMICS_OUTPUT_OPACITY);
+
+           g_object_set (opacity_output,
+                         "use-fade", TRUE,
+                         NULL);
+        }
+
+      if (gradient_length > 0)
+        {
+          GimpDynamicsOutput *color_output =
+            gimp_dynamics_get_output (pdb_dynamics,
+                                      GIMP_DYNAMICS_OUTPUT_COLOR);
+
+          g_object_set (color_output,
+                        "use-fade", TRUE,
+                        NULL);
+        }
+
+      gimp_context_set_dynamics (context, pdb_dynamics);
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
+
+      gimp_context_set_dynamics (context, user_dynamics);
+
+      g_object_unref (pdb_dynamics);
     }
   else
     success = FALSE;
@@ -632,15 +707,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-paintbrush", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-paintbrush");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -672,15 +751,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-pencil", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-pencil");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -711,11 +794,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-smudge", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-smudge");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "rate", pressure,
@@ -723,7 +810,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -756,15 +843,19 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-smudge", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-smudge");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -800,11 +891,15 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-dodge-burn", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-dodge-burn");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       g_object_set (options,
                     "type",     dodgeburn_type,
@@ -814,7 +909,7 @@ HELP
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
@@ -847,38 +942,25 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  GimpPaintInfo *info = gimp_pdb_get_paint_info (gimp, "gimp-dodge-burn", error);
+  GimpPaintOptions *options =
+    gimp_pdb_context_get_paint_options (GIMP_PDB_CONTEXT (context),
+                                        "gimp-dodge-burn");
 
-  if (info && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+  if (options &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), NULL, TRUE, error) &&
+      gimp_pdb_item_is_not_group (GIMP_ITEM (drawable), error))
     {
-      GimpPaintOptions *options = gimp_paint_options_new (info);
+      options = gimp_config_duplicate (GIMP_CONFIG (options));
 
       success = paint_tools_stroke (gimp, context, options, drawable,
                                     num_strokes, strokes, error,
-				    "undo-desc", info->blurb,
+				    "undo-desc", options->paint_info->blurb,
 				    NULL);
     }
   else
     success = FALSE;
 }
 CODE
-    );
-}
-
-
-# Incomplete
-
-sub ink {
-    $blurb = 'Paint in the current brush without sub-pixel sampling.';
-
-    $help = 'fixme fixme';
-
-    &std_pdb_misc;
-
-    @inargs = (
-	{ name => 'drawable', type => 'drawable',
-	  desc => 'The affected drawable' },
-	&stroke_arg
     );
 }
 
@@ -899,11 +981,22 @@ paint_tools_stroke (Gimp              *gimp,
 {
   GimpPaintCore *core;
   GimpCoords    *coords;
+  GimpBrush     *brush;
   gboolean       retval;
+  gdouble        brush_size;
+  gint           height, width;
   gint           i;
   va_list        args;
 
   n_strokes /= 2;  /* #doubles -> #points */
+
+  brush = gimp_context_get_brush (context);
+  gimp_brush_transform_size (brush, 1.0, 1.0, 0.0, &height, &width);
+  brush_size = MAX (height, width);
+
+  g_object_set (options,
+                "brush-size", brush_size,
+                NULL);
 
   /*  undefine the paint-relevant context properties and get them
    *  from the current context
@@ -928,7 +1021,7 @@ paint_tools_stroke (Gimp              *gimp,
     }
 
   retval = gimp_paint_core_stroke (core, drawable, options,
-                                   coords, n_strokes,
+                                   coords, n_strokes, TRUE,
                                    error);
 
   g_free (coords);
@@ -942,10 +1035,14 @@ CODE
 
 
 @headers = qw("libgimpmath/gimpmath.h"
+              "libgimpconfig/gimpconfig.h"
+              "core/gimpbrush.h"
+              "core/gimpdynamics.h"
               "core/gimppaintinfo.h"
               "paint/gimppaintcore.h"
               "paint/gimppaintcore-stroke.h"
               "paint/gimppaintoptions.h"
+              "gimppdbcontext.h"
               "gimppdb-utils.h");
 
 @procs = qw(airbrush airbrush_default
@@ -961,5 +1058,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Paint Tool procedures';
+$doc_title = 'gimppainttools';
+$doc_short_desc = 'Access to toolbox paint tools.';
+$doc_long_desc = 'Functions giving access to toolbox paint tools.';
 
 1;

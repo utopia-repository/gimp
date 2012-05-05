@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -33,10 +32,10 @@ static CmdExecuteValue_t move_selected_command_execute(Command_t *parent);
 static void move_selected_command_undo(Command_t *parent);
 
 static CommandClass_t move_selected_command_class = {
-   NULL,			/* move_selected_command_destruct */
+   NULL,                        /* move_selected_command_destruct */
    move_selected_command_execute,
    move_selected_command_undo,
-   NULL				/* move_selected_command_redo */
+   NULL                         /* move_selected_command_redo */
 };
 
 typedef struct {
@@ -54,7 +53,7 @@ move_selected_command_new(ObjectList_t *list, gint dx, gint dy)
    command->dx = dx;
    command->dy = dy;
    return command_init(&command->parent, _("Move Selected Objects"),
-		       &move_selected_command_class);
+                       &move_selected_command_class);
 }
 
 static CmdExecuteValue_t

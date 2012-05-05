@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -38,8 +37,8 @@ static CmdExecuteValue_t move_command_execute(Command_t *parent);
 static CommandClass_t move_command_class = {
    move_command_destruct,
    move_command_execute,
-   NULL,			/* move_command_undo */
-   NULL				/* move_command_redo */
+   NULL,                        /* move_command_undo */
+   NULL                         /* move_command_redo */
 };
 
 typedef struct {
@@ -59,7 +58,7 @@ typedef struct {
    gint image_width;
    gint image_height;
 
-   GdkCursorType cursor;	/* Remember previous cursor */
+   GdkCursorType cursor;        /* Remember previous cursor */
    gboolean moved_first_time;
 } MoveCommand_t;
 
@@ -74,7 +73,7 @@ move_command_new(Preview_t *preview, Object_t *obj, gint x, gint y)
    command->start_x = x;
    command->start_y = y;
    object_get_dimensions(obj, &command->obj_x, &command->obj_y,
-			 &command->obj_width, &command->obj_height);
+                         &command->obj_width, &command->obj_height);
    command->obj_start_x = command->obj_x;
    command->obj_start_y = command->obj_y;
 
@@ -104,8 +103,6 @@ button_motion(GtkWidget *widget, GdkEventMotion *event, gpointer data)
    if (command->moved_first_time) {
       command->moved_first_time = FALSE;
       command->cursor = preview_set_cursor(command->preview, GDK_FLEUR);
-      gdk_gc_set_function(command->preferences->normal_gc, GDK_XOR);
-      gdk_gc_set_function(command->preferences->selected_gc, GDK_XOR);
       hide_url();
    }
 
@@ -119,14 +116,15 @@ button_motion(GtkWidget *widget, GdkEventMotion *event, gpointer data)
       dy = command->image_height - command->obj_height - command->obj_y;
 
    if (dx || dy) {
+
       command->start_x = get_real_coord((gint) event->x);
       command->start_y = get_real_coord((gint) event->y);
       command->obj_x += dx;
       command->obj_y += dy;
 
-      object_draw(obj, widget->window);
       object_move(obj, dx, dy);
-      object_draw(obj, widget->window);
+
+      preview_redraw ();
    }
 }
 
@@ -142,15 +140,13 @@ button_release(GtkWidget *widget, GdkEventButton *event, gpointer data)
 
    if (!command->moved_first_time) {
       preview_set_cursor(command->preview, command->cursor);
-      gdk_gc_set_function(command->preferences->normal_gc, GDK_COPY);
-      gdk_gc_set_function(command->preferences->selected_gc, GDK_COPY);
       show_url();
    }
    command->obj_x -= command->obj_start_x;
    command->obj_y -= command->obj_start_y;
    if (command->obj_x || command->obj_y)
       command_list_add(object_move_command_new(command->obj, command->obj_x,
-					       command->obj_y));
+                                               command->obj_y));
 
    /*   preview_thaw(); */
 }

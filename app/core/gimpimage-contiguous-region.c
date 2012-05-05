@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <stdlib.h>
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -128,7 +128,7 @@ gimp_image_contiguous_region_by_seed (GimpImage           *image,
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
 
   if (sample_merged)
-    pickable = GIMP_PICKABLE (image->projection);
+    pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
   else
     pickable = GIMP_PICKABLE (drawable);
 
@@ -148,8 +148,8 @@ gimp_image_contiguous_region_by_seed (GimpImage           *image,
   mask = gimp_channel_new_mask (image, srcPR.w, srcPR.h);
   pixel_region_init (&maskPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
                      0, 0,
-                     gimp_item_width  (GIMP_ITEM (mask)),
-                     gimp_item_height (GIMP_ITEM (mask)),
+                     gimp_item_get_width  (GIMP_ITEM (mask)),
+                     gimp_item_get_height (GIMP_ITEM (mask)),
                      TRUE);
 
   tile = tile_manager_get_tile (srcPR.tiles, x, y, TRUE, FALSE);
@@ -235,7 +235,7 @@ gimp_image_contiguous_region_by_color (GimpImage            *image,
                        cont.color + 3);
 
   if (sample_merged)
-    pickable = GIMP_PICKABLE (image->projection);
+    pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
   else
     pickable = GIMP_PICKABLE (drawable);
 

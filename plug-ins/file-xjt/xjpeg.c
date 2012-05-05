@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* JPEG loading and saving routines adapted for the GIMP XJT fileformat
@@ -108,8 +107,6 @@ xjpg_load_layer (const char    *filename,
   /* We set up the normal JPEG error routines. */
   cinfo.err = jpeg_std_error (&jerr.pub);
   jerr.pub.error_exit = my_error_exit;
-
-  l_layer_type = GIMP_GRAY_IMAGE;
 
   if ((infile = g_fopen (filename, "rb")) == NULL)
   {
@@ -228,6 +225,7 @@ xjpg_load_layer (const char    *filename,
 
       gimp_progress_update ((double) cinfo.output_scanline / (double) cinfo.output_height);
   }
+  gimp_progress_update (1.0);
 
   /* Step 7: Finish decompression */
 
@@ -274,7 +272,6 @@ xjpg_load_layer_alpha (const char *filename,
 {
   GimpPixelRgn l_pixel_rgn;
   GimpDrawable *l_drawable;
-  GimpImageType  l_layer_type;
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;
   FILE *infile;
@@ -291,8 +288,6 @@ xjpg_load_layer_alpha (const char *filename,
   /* We set up the normal JPEG error routines. */
   cinfo.err = jpeg_std_error (&jerr.pub);
   jerr.pub.error_exit = my_error_exit;
-
-  l_layer_type = GIMP_GRAY_IMAGE;
 
   /* add alpha channel */
   gimp_layer_add_alpha (layer_id);
@@ -422,6 +417,7 @@ xjpg_load_layer_alpha (const char *filename,
 
       gimp_progress_update ((double) cinfo.output_scanline / (double) cinfo.output_height);
   }
+  gimp_progress_update (1.0);
 
   /* Step 7: Finish decompression */
 
@@ -619,6 +615,7 @@ xjpg_load_channel (const char   *filename,
 
       gimp_progress_update ((double) cinfo.output_scanline / (double) cinfo.output_height);
   }
+  gimp_progress_update (1.0);
 
   /* Step 7: Finish decompression */
 
@@ -691,8 +688,6 @@ xjpg_save_drawable (const char     *filename,
   guchar alpha_byte;
   guchar volatile l_alpha_sum;
 
-  alpha_offset = 0;
-  has_alpha = 0;
   src = NULL;
   temp = NULL;
   data = NULL;
@@ -914,6 +909,7 @@ xjpg_save_drawable (const char     *filename,
       if ((cinfo.next_scanline % 5) == 0)
 	gimp_progress_update ((double) cinfo.next_scanline / (double) cinfo.image_height);
   }
+  gimp_progress_update (1.0);
 
   /* Step 6: Finish compression */
   jpeg_finish_compress (&cinfo);

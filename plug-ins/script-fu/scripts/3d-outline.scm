@@ -7,9 +7,9 @@
 ; 3d-outline creates outlined border of a text with patterns
 ; Copyright (C) 1998 Hrvoje Horvat
 ;
-; This program is free software; you can redistribute it and/or modify
+; This program is free software: you can redistribute it and/or modify
 ; it under the terms of the GNU General Public License as published by
-; the Free Software Foundation; either version 2 of the License, or
+; the Free Software Foundation; either version 3 of the License, or
 ; (at your option) any later version.
 ;
 ; This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
 ; GNU General Public License for more details.
 ;
 ; You should have received a copy of the GNU General Public License
-; along with this program; if not, write to the Free Software
-; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define (apply-3d-outline-logo-effect img
                                       logo-layer
@@ -57,12 +56,12 @@
     (gimp-layer-set-lock-alpha logo-layer FALSE)
     (plug-in-gauss-iir RUN-NONINTERACTIVE img logo-layer outline-blur-radius TRUE TRUE)
 
-    (gimp-drawable-set-visible pattern-layer FALSE)
+    (gimp-item-set-visible pattern-layer FALSE)
     (set! alpha-layer (car (gimp-image-merge-visible-layers img CLIP-TO-IMAGE)))
     (plug-in-edge RUN-NONINTERACTIVE img alpha-layer 2 1 0)
-    (gimp-drawable-set-name alpha-layer "Bump map")
+    (gimp-item-set-name alpha-layer "Bump map")
     (set! shadow-layer (car (gimp-layer-copy alpha-layer TRUE)))
-    (gimp-drawable-set-name shadow-layer "Edges")
+    (gimp-item-set-name shadow-layer "Edges")
     (script-fu-util-image-add-layers img shadow-layer)
     (plug-in-gauss-iir RUN-NONINTERACTIVE img alpha-layer bump-map-blur-radius TRUE TRUE)
 
@@ -83,14 +82,14 @@
 
     (gimp-layer-remove-mask pattern-layer MASK-APPLY)
     (gimp-invert shadow-layer)
-    (gimp-drawable-set-name shadow-layer "Drop shadow")
+    (gimp-item-set-name shadow-layer "Drop shadow")
     (plug-in-gauss-iir RUN-NONINTERACTIVE img shadow-layer shadow-blur-radius TRUE TRUE)
 
     (gimp-drawable-offset shadow-layer
                           FALSE OFFSET-BACKGROUND s-offset-x s-offset-y)
 
-    (gimp-drawable-set-visible alpha-layer FALSE)
-    (gimp-drawable-set-visible pattern-layer TRUE)
+    (gimp-item-set-visible alpha-layer FALSE)
+    (gimp-item-set-visible pattern-layer TRUE)
     ;;(set! final (car (gimp-image-flatten img)))
 
     (gimp-context-pop)

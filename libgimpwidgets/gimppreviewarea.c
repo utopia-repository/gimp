@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,16 @@
 #include "gimppreviewarea.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimppreviewarea
+ * @title: GimpPreviewArea
+ * @short_description: A general purpose preview widget which caches
+ *                     its pixel data.
+ *
+ * A general purpose preview widget which caches its pixel data.
+ **/
 
 
 enum
@@ -221,36 +230,39 @@ gimp_preview_area_expose (GtkWidget      *widget,
                           GdkEventExpose *event)
 {
   GimpPreviewArea *area = GIMP_PREVIEW_AREA (widget);
+  GtkAllocation    allocation;
+  GdkPixbuf       *pixbuf;
   GdkRectangle     rect;
-  GdkRectangle     render;
+  cairo_t         *cr;
 
   if (! area->buf)
     return FALSE;
 
-  rect.x      = (widget->allocation.width  - area->width)  / 2;
-  rect.y      = (widget->allocation.height - area->height) / 2;
+  gtk_widget_get_allocation (widget, &allocation);
+
+  rect.x      = (allocation.width  - area->width)  / 2;
+  rect.y      = (allocation.height - area->height) / 2;
   rect.width  = area->width;
   rect.height = area->height;
 
-  if (gdk_rectangle_intersect (&rect, &event->area, &render))
-    {
-      GtkStyle *style = gtk_widget_get_style (widget);
-      gint      x     = render.x - rect.x;
-      gint      y     = render.y - rect.y;
-      guchar   *buf   = area->buf + x * 3 + y * area->rowstride;
+  pixbuf = gdk_pixbuf_new_from_data (area->buf,
+                                     GDK_COLORSPACE_RGB,
+                                     FALSE,
+                                     8,
+                                     rect.width,
+                                     rect.height,
+                                     area->rowstride,
+                                     NULL, NULL);
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
-      gdk_draw_rgb_image_dithalign (widget->window,
-                                    style->fg_gc[widget->state],
-                                    render.x,
-                                    render.y,
-                                    render.width,
-                                    render.height,
-                                    GDK_RGB_DITHER_MAX,
-                                    buf,
-                                    area->rowstride,
-                                    area->offset_x - render.x,
-                                    area->offset_y - render.y);
-    }
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  gdk_cairo_set_source_pixbuf (cr, pixbuf, rect.x, rect.y);
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
+  g_object_unref (pixbuf);
 
   return FALSE;
 }
@@ -262,10 +274,13 @@ gimp_preview_area_queue_draw (GimpPreviewArea *area,
                               gint             width,
                               gint             height)
 {
-  GtkWidget *widget = GTK_WIDGET (area);
+  GtkWidget     *widget = GTK_WIDGET (area);
+  GtkAllocation  allocation;
 
-  x += (widget->allocation.width  - area->width)  / 2;
-  y += (widget->allocation.height - area->height) / 2;
+  gtk_widget_get_allocation (widget, &allocation);
+
+  x += (allocation.width  - area->width)  / 2;
+  y += (allocation.height - area->height) / 2;
 
   gtk_widget_queue_draw_area (widget, x, y, width, height);
 }

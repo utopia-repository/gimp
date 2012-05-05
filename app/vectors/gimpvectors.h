@@ -4,9 +4,9 @@
  * gimpvectors.h
  * Copyright (C) 2002 Simon Budig  <simon@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_VECTORS_H__
@@ -36,13 +35,22 @@ typedef struct _GimpVectorsClass  GimpVectorsClass;
 
 struct _GimpVectors
 {
-  GimpItem  parent_instance;
+  GimpItem        parent_instance;
 
-  GList    *strokes;            /* The List of GimpStrokes        */
-  gint      last_stroke_ID;
+  GList          *strokes;        /* The List of GimpStrokes      */
+  gint            last_stroke_ID;
 
-  gint      freeze_count;
-  gdouble   precision;
+  gint            freeze_count;
+  gdouble         precision;
+
+  GimpBezierDesc *bezier_desc;    /* Cached bezier representation */
+
+  gboolean        bounds_valid;   /* Cached bounding box          */
+  gboolean        bounds_empty;
+  gdouble         bounds_x1;
+  gdouble         bounds_y1;
+  gdouble         bounds_x2;
+  gdouble         bounds_y2;
 };
 
 struct _GimpVectorsClass
@@ -89,6 +97,8 @@ GType           gimp_vectors_get_type           (void) G_GNUC_CONST;
 GimpVectors   * gimp_vectors_new                (GimpImage         *image,
                                                  const gchar       *name);
 
+GimpVectors   * gimp_vectors_get_parent         (GimpVectors       *vectors);
+
 void            gimp_vectors_freeze             (GimpVectors       *vectors);
 void            gimp_vectors_thaw               (GimpVectors       *vectors);
 
@@ -96,7 +106,6 @@ void            gimp_vectors_copy_strokes       (const GimpVectors *src_vectors,
                                                  GimpVectors       *dest_vectors);
 void            gimp_vectors_add_strokes        (const GimpVectors *src_vectors,
                                                  GimpVectors       *dest_vectors);
-
 
 
 /* accessing / modifying the anchors */
@@ -156,7 +165,8 @@ gdouble         gimp_vectors_get_length         (const GimpVectors  *vectors,
                                                  const GimpAnchor   *start);
 gdouble         gimp_vectors_get_distance       (const GimpVectors  *vectors,
                                                  const GimpCoords   *coord);
-gboolean        gimp_vectors_bounds             (const GimpVectors  *vectors,
+
+gboolean        gimp_vectors_bounds             (GimpVectors        *vectors,
                                                  gdouble            *x1,
                                                  gdouble            *y1,
                                                  gdouble            *x2,
@@ -172,8 +182,8 @@ gint            gimp_vectors_interpolate        (const GimpVectors  *vectors,
 
 /* usually overloaded */
 
-/* creates a bezier representation. */
+/* returns a bezier representation */
+const GimpBezierDesc * gimp_vectors_get_bezier  (GimpVectors        *vectors);
 
-GimpBezierDesc * gimp_vectors_make_bezier       (const GimpVectors  *vectors);
 
 #endif /* __GIMP_VECTORS_H__ */

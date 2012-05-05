@@ -10,9 +10,9 @@
  *   http://www.newplanetsoftware.com/xds/
  *   http://rox.sourceforge.net/xds.html
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -21,14 +21,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#undef GSEAL_ENABLE
+
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -120,7 +122,8 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
   gint                 length;
   guchar              *data;
   gchar               *uri;
-  GError              *error = NULL;
+  gboolean             export = FALSE;
+  GError              *error  = NULL;
 
   g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (GIMP_IS_IMAGE (image));
@@ -141,6 +144,13 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
 
   proc = file_procedure_find (image->gimp->plug_in_manager->save_procs, uri,
                               NULL);
+  if (! proc)
+    {
+      proc = file_procedure_find (image->gimp->plug_in_manager->export_procs, uri,
+                                  NULL);
+
+      export = TRUE;
+    }
 
   if (proc)
     {
@@ -152,18 +162,20 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
           ! g_file_test (filename, G_FILE_TEST_EXISTS) ||
           gimp_file_overwrite_dialog (NULL, uri))
         {
-          if (file_save (image,
-                         gimp_get_user_context (image->gimp), NULL,
-                         uri, proc, GIMP_RUN_INTERACTIVE, FALSE,
+          if (file_save (image->gimp,
+                         image, NULL,
+                         uri, proc, GIMP_RUN_INTERACTIVE, TRUE, export,
                          &error) == GIMP_PDB_SUCCESS)
             {
-              gtk_selection_data_set (selection, selection->target, 8,
-                                      (const guchar *) "S", 1);
+              gtk_selection_data_set (selection,
+                                      gtk_selection_data_get_target (selection),
+                                      8, (const guchar *) "S", 1);
             }
           else
             {
-              gtk_selection_data_set (selection, selection->target, 8,
-                                      (const guchar *) "E", 1);
+              gtk_selection_data_set (selection,
+                                      gtk_selection_data_get_target (selection),
+                                      8, (const guchar *) "E", 1);
 
               if (error)
                 {
@@ -183,12 +195,13 @@ gimp_dnd_xds_save_image (GdkDragContext   *context,
     }
   else
     {
-      gtk_selection_data_set (selection, selection->target, 8,
-                              (const guchar *) "E", 1);
+      gtk_selection_data_set (selection,
+                              gtk_selection_data_get_target (selection),
+                              8, (const guchar *) "E", 1);
 
-      gimp_message (image->gimp, NULL, GIMP_MESSAGE_ERROR,
-                    _("The given filename does not have any known "
-                      "file extension."));
+      gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_ERROR,
+			    _("The given filename does not have any known "
+			      "file extension."));
     }
 
   g_free (uri);

@@ -7,9 +7,9 @@
  * partly based on app/nav_window
  * Copyright (C) 1999 Andy Thomas <alt@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,12 +18,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -36,6 +36,7 @@
 
 #include "gimpnavigationview.h"
 #include "gimpviewrenderer.h"
+#include "gimpwidgets-utils.h"
 
 
 #define BORDER_WIDTH 2
@@ -155,10 +156,11 @@ gimp_navigation_view_class_init (GimpNavigationViewClass *klass)
 static void
 gimp_navigation_view_init (GimpNavigationView *view)
 {
-  GTK_WIDGET_SET_FLAGS (view, GTK_CAN_FOCUS);
+  gtk_widget_set_can_focus (GTK_WIDGET (view), TRUE);
+  gtk_widget_add_events (GTK_WIDGET (view),
+                         GDK_POINTER_MOTION_MASK |
+                         GDK_KEY_PRESS_MASK);
 
-  gtk_widget_add_events (GTK_WIDGET (view), (GDK_POINTER_MOTION_MASK |
-                                             GDK_KEY_PRESS_MASK));
   view->x               = 0.0;
   view->y               = 0.0;
   view->width           = 0.0;
@@ -188,13 +190,13 @@ static gboolean
 gimp_navigation_view_expose (GtkWidget      *widget,
                              GdkEventExpose *event)
 {
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (gtk_widget_is_drawable (widget))
     {
       cairo_t *cr;
 
       GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 
-      cr = gdk_cairo_create (widget->window);
+      cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
       gdk_cairo_region (cr, event->region);
       cairo_clip (cr);
@@ -245,9 +247,8 @@ gimp_navigation_view_button_press (GtkWidget      *widget,
   tx = bevent->x;
   ty = bevent->y;
 
-  switch (bevent->button)
+  if (bevent->type == GDK_BUTTON_PRESS && bevent->button == 1)
     {
-    case 1:
       if (! (tx >  nav_view->p_x &&
              tx < (nav_view->p_x + nav_view->p_width) &&
              ty >  nav_view->p_y &&
@@ -275,10 +276,6 @@ gimp_navigation_view_button_press (GtkWidget      *widget,
         }
 
       gimp_navigation_view_grab_pointer (nav_view);
-      break;
-
-    default:
-      break;
     }
 
   return TRUE;
@@ -290,18 +287,13 @@ gimp_navigation_view_button_release (GtkWidget      *widget,
 {
   GimpNavigationView *nav_view = GIMP_NAVIGATION_VIEW (widget);
 
-  switch (bevent->button)
+  if (bevent->button == 1 && nav_view->has_grab)
     {
-    case 1:
       nav_view->has_grab = FALSE;
 
       gtk_grab_remove (widget);
       gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
                                   GDK_CURRENT_TIME);
-      break;
-
-    default:
-      break;
     }
 
   return TRUE;
@@ -311,7 +303,7 @@ static gboolean
 gimp_navigation_view_scroll (GtkWidget      *widget,
                              GdkEventScroll *sevent)
 {
-  if (sevent->state & GDK_CONTROL_MASK)
+  if (sevent->state & gimp_get_toggle_behavior_mask ())
     {
       switch (sevent->direction)
         {
@@ -403,19 +395,19 @@ gimp_navigation_view_key_press (GtkWidget   *widget,
 
   switch (kevent->keyval)
     {
-    case GDK_Up:
+    case GDK_KEY_Up:
       scroll_y = -1;
       break;
 
-    case GDK_Left:
+    case GDK_KEY_Left:
       scroll_x = -1;
       break;
 
-    case GDK_Right:
+    case GDK_KEY_Right:
       scroll_x = 1;
       break;
 
-    case GDK_Down:
+    case GDK_KEY_Down:
       scroll_y = 1;
       break;
 
@@ -514,12 +506,15 @@ gimp_navigation_view_draw_marker (GimpNavigationView *nav_view,
 
   if (view->renderer->viewable && nav_view->width && nav_view->height)
     {
-      GtkWidget *widget = GTK_WIDGET (view);
+      GtkWidget     *widget = GTK_WIDGET (view);
+      GtkAllocation  allocation;
 
-      cairo_translate (cr, widget->allocation.x, widget->allocation.y);
+      gtk_widget_get_allocation (widget, &allocation);
+
+      cairo_translate (cr, allocation.x, allocation.y);
       cairo_rectangle (cr,
                        0, 0,
-                       widget->allocation.width, widget->allocation.height);
+                       allocation.width, allocation.height);
       cairo_rectangle (cr,
                        nav_view->p_x, nav_view->p_y,
                        nav_view->p_width, nav_view->p_height);

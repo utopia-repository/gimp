@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -28,6 +28,7 @@
 #include "actions-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontext.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 
@@ -80,29 +81,48 @@ static void     plug_in_actions_build_path           (GimpActionGroup     *group
 
 static const GimpActionEntry plug_in_actions[] =
 {
-  { "plug-in-menu",                   NULL, N_("Filte_rs")          },
-  { "plug-in-recent-menu",            NULL, N_("Recently Used")     },
-  { "plug-in-blur-menu",              NULL, N_("_Blur")             },
-  { "plug-in-noise-menu",             NULL, N_("_Noise")            },
-  { "plug-in-edge-detect-menu",       NULL, N_("Edge-De_tect")      },
-  { "plug-in-enhance-menu",           NULL, N_("En_hance")          },
-  { "plug-in-combine-menu",           NULL, N_("C_ombine")          },
-  { "plug-in-generic-menu",           NULL, N_("_Generic")          },
-  { "plug-in-light-shadow-menu",      NULL, N_("_Light and Shadow") },
-  { "plug-in-distorts-menu",          NULL, N_("_Distorts")         },
-  { "plug-in-artistic-menu",          NULL, N_("_Artistic")         },
-  { "plug-in-decor-menu",             NULL, N_("_Decor")            },
-  { "plug-in-map-menu",               NULL, N_("_Map")              },
-  { "plug-in-render-menu",            NULL, N_("_Render")           },
-  { "plug-in-render-clouds-menu",     NULL, N_("_Clouds")           },
-  { "plug-in-render-nature-menu",     NULL, N_("_Nature")           },
-  { "plug-in-render-pattern-menu",    NULL, N_("_Pattern")          },
-  { "plug-in-web-menu",               NULL, N_("_Web")              },
-  { "plug-in-animation-menu",         NULL, N_("An_imation")        },
+  { "plug-in-menu",                NULL, NC_("plug-in-action",
+                                             "Filte_rs")          },
+  { "plug-in-recent-menu",         NULL, NC_("plug-in-action",
+                                             "Recently Used")     },
+  { "plug-in-blur-menu",           NULL, NC_("plug-in-action",
+                                             "_Blur")             },
+  { "plug-in-noise-menu",          NULL, NC_("plug-in-action",
+                                             "_Noise")            },
+  { "plug-in-edge-detect-menu",    NULL, NC_("plug-in-action",
+                                             "Edge-De_tect")      },
+  { "plug-in-enhance-menu",        NULL, NC_("plug-in-action",
+                                             "En_hance")          },
+  { "plug-in-combine-menu",        NULL, NC_("plug-in-action",
+                                             "C_ombine")          },
+  { "plug-in-generic-menu",        NULL, NC_("plug-in-action",
+                                             "_Generic")          },
+  { "plug-in-light-shadow-menu",   NULL, NC_("plug-in-action",
+                                             "_Light and Shadow") },
+  { "plug-in-distorts-menu",       NULL, NC_("plug-in-action",
+                                             "_Distorts")         },
+  { "plug-in-artistic-menu",       NULL, NC_("plug-in-action",
+                                             "_Artistic")         },
+  { "plug-in-decor-menu",          NULL, NC_("plug-in-action",
+                                             "_Decor")            },
+  { "plug-in-map-menu",            NULL, NC_("plug-in-action",
+                                             "_Map")              },
+  { "plug-in-render-menu",         NULL, NC_("plug-in-action",
+                                             "_Render")           },
+  { "plug-in-render-clouds-menu",  NULL, NC_("plug-in-action",
+                                             "_Clouds")           },
+  { "plug-in-render-nature-menu",  NULL, NC_("plug-in-action",
+                                             "_Nature")           },
+  { "plug-in-render-pattern-menu", NULL, NC_("plug-in-action",
+                                             "_Pattern")          },
+  { "plug-in-web-menu",            NULL, NC_("plug-in-action",
+                                             "_Web")              },
+  { "plug-in-animation-menu",      NULL, NC_("plug-in-action",
+                                             "An_imation")        },
 
   { "plug-in-reset-all", GIMP_STOCK_RESET,
-    N_("Reset all _Filters"), NULL,
-    N_("Reset all plug-ins to their default settings"),
+    NC_("plug-in-action", "Reset all _Filters"), NULL,
+    NC_("plug-in-action", "Reset all plug-ins to their default settings"),
     G_CALLBACK (plug_in_reset_all_cmd_callback),
     GIMP_HELP_FILTER_RESET_ALL }
 };
@@ -110,14 +130,15 @@ static const GimpActionEntry plug_in_actions[] =
 static const GimpEnumActionEntry plug_in_repeat_actions[] =
 {
   { "plug-in-repeat", GTK_STOCK_EXECUTE,
-    N_("Re_peat Last"), "<control>F",
-    N_("Rerun the last used plug-in using the same settings"),
+    NC_("plug-in-action", "Re_peat Last"), "<primary>F",
+    NC_("plug-in-action",
+        "Rerun the last used plug-in using the same settings"),
     GIMP_RUN_WITH_LAST_VALS, FALSE,
     GIMP_HELP_FILTER_REPEAT },
 
   { "plug-in-reshow", GIMP_STOCK_RESHOW_FILTER,
-    N_("R_e-Show Last"), "<control><shift>F",
-    N_("Show the last used plug-in dialog again"),
+    NC_("plug-in-action", "R_e-Show Last"), "<primary><shift>F",
+    NC_("plug-in-action", "Show the last used plug-in dialog again"),
     GIMP_RUN_INTERACTIVE, FALSE,
     GIMP_HELP_FILTER_RESHOW }
 };
@@ -134,11 +155,11 @@ plug_in_actions_setup (GimpActionGroup *group)
   gint                   n_entries;
   gint                   i;
 
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "plug-in-action",
                                  plug_in_actions,
                                  G_N_ELEMENTS (plug_in_actions));
 
-  gimp_action_group_add_enum_actions (group,
+  gimp_action_group_add_enum_actions (group, "plug-in-action",
                                       plug_in_repeat_actions,
                                       G_N_ELEMENTS (plug_in_repeat_actions),
                                       G_CALLBACK (plug_in_repeat_cmd_callback));
@@ -217,19 +238,14 @@ void
 plug_in_actions_update (GimpActionGroup *group,
                         gpointer         data)
 {
-  GimpImage         *image   = action_data_get_image (data);
-  GimpPlugInManager *manager = group->gimp->plug_in_manager;
-  GimpImageType      type    = -1;
+  GimpImage         *image    = action_data_get_image (data);
+  GimpPlugInManager *manager  = group->gimp->plug_in_manager;
+  GimpDrawable      *drawable = NULL;
   GSList            *list;
   gint               i;
 
   if (image)
-    {
-      GimpDrawable *drawable = gimp_image_get_active_drawable (image);
-
-      if (drawable)
-        type = gimp_drawable_type (drawable);
-    }
+    drawable = gimp_image_get_active_drawable (image);
 
   for (list = manager->plug_in_procedures; list; list = g_slist_next (list))
     {
@@ -240,16 +256,16 @@ plug_in_actions_update (GimpActionGroup *group,
           proc->image_types_val)
         {
           gboolean sensitive = gimp_plug_in_procedure_get_sensitive (proc,
-                                                                     type);
+                                                                     drawable);
 
           gimp_action_group_set_action_sensitive (group,
-                                                  GIMP_OBJECT (proc)->name,
+                                                  gimp_object_get_name (proc),
                                                   sensitive);
         }
     }
 
   if (manager->history &&
-      gimp_plug_in_procedure_get_sensitive (manager->history->data, type))
+      gimp_plug_in_procedure_get_sensitive (manager->history->data, drawable))
     {
       gimp_action_group_set_action_sensitive (group, "plug-in-repeat", TRUE);
       gimp_action_group_set_action_sensitive (group, "plug-in-reshow", TRUE);
@@ -267,7 +283,7 @@ plug_in_actions_update (GimpActionGroup *group,
                                                    i + 1);
       gboolean             sensitive;
 
-      sensitive = gimp_plug_in_procedure_get_sensitive (proc, type);
+      sensitive = gimp_plug_in_procedure_get_sensitive (proc, drawable);
 
       gimp_action_group_set_action_sensitive (group, name, sensitive);
 
@@ -327,7 +343,7 @@ plug_in_actions_register_procedure (GimpPDB         *pdb,
         {
 #if 0
           g_print ("%s: %s\n", G_STRFUNC,
-                   gimp_object_get_name (GIMP_OBJECT (procedure)));
+                   gimp_object_get_name (procedure));
 #endif
 
           plug_in_actions_add_proc (group, plug_in_proc);
@@ -355,11 +371,11 @@ plug_in_actions_unregister_procedure (GimpPDB         *pdb,
 
 #if 0
           g_print ("%s: %s\n", G_STRFUNC,
-                   gimp_object_get_name (GIMP_OBJECT (procedure)));
+                   gimp_object_get_name (procedure));
 #endif
 
           action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
-                                                GIMP_OBJECT (procedure)->name);
+                                                gimp_object_get_name (procedure));
 
           if (action)
             gtk_action_group_remove_action (GTK_ACTION_GROUP (group), action);
@@ -377,7 +393,7 @@ plug_in_actions_menu_path_added (GimpPlugInProcedure *plug_in_proc,
 
 #if 0
   g_print ("%s: %s (%s)\n", G_STRFUNC,
-           gimp_object_get_name (GIMP_OBJECT (plug_in_proc)), menu_path);
+           gimp_object_get_name (plug_in_proc), menu_path);
 #endif
 
   locale_domain = gimp_plug_in_procedure_get_locale_domain (plug_in_proc);
@@ -423,13 +439,26 @@ plug_in_actions_add_proc (GimpActionGroup     *group,
       p1 = strrchr (path_original, '/');
       p2 = strrchr (path_translated, '/');
 
-      *p1 = '\0';
-      *p2 = '\0';
+      if (p1 && p2)
+        {
+          *p1 = '\0';
+          *p2 = '\0';
 
-      label = p2 + 1;
+          label = p2 + 1;
+        }
+      else
+        {
+          g_warning ("bad menu path for procedure \"%s\": \"%s\"",
+                     gimp_object_get_name (proc), path_original);
+
+          g_free (path_original);
+          g_free (path_translated);
+
+          return;
+        }
     }
 
-  entry.name        = GIMP_OBJECT (proc)->name;
+  entry.name        = gimp_object_get_name (proc);
   entry.stock_id    = gimp_plug_in_procedure_get_stock_id (proc);
   entry.label       = label;
   entry.accelerator = NULL;
@@ -439,7 +468,7 @@ plug_in_actions_add_proc (GimpActionGroup     *group,
 
 #if 0
   g_print ("adding plug-in action '%s' (%s)\n",
-           GIMP_OBJECT (proc)->name, label);
+           gimp_object_get_name (proc), label);
 #endif
 
   gimp_action_group_add_plug_in_actions (group, &entry, 1,
@@ -469,6 +498,25 @@ plug_in_actions_add_proc (GimpActionGroup     *group,
       g_free (path_original);
       g_free (path_translated);
     }
+
+  if ((proc->menu_label || proc->menu_paths) &&
+      ! proc->file_proc                      &&
+      proc->image_types_val)
+    {
+      GimpContext  *context  = gimp_get_user_context (group->gimp);
+      GimpImage    *image    = gimp_context_get_image (context);
+      GimpDrawable *drawable = NULL;
+      gboolean      sensitive;
+
+      if (image)
+        drawable = gimp_image_get_active_drawable (image);
+
+      sensitive = gimp_plug_in_procedure_get_sensitive (proc, drawable);
+
+      gimp_action_group_set_action_sensitive (group,
+                                              gimp_object_get_name (proc),
+                                              sensitive);
+    }
 }
 
 static void
@@ -496,7 +544,7 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
        *  all images' actions. See bug #517683.
        */
       actual_action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
-                                                   GIMP_OBJECT (proc)->name);
+                                                   gimp_object_get_name (proc));
       if (actual_action)
         sensitive = gtk_action_get_sensitive (actual_action);
 
@@ -551,7 +599,7 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
 
       /*  see comment above  */
       actual_action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
-                                                   GIMP_OBJECT (proc)->name);
+                                                   gimp_object_get_name (proc));
       if (actual_action)
         sensitive = gtk_action_get_sensitive (actual_action);
 

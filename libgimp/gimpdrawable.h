@@ -3,10 +3,10 @@
  *
  * gimpdrawable.h
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,10 +14,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_H_INSIDE__) && !defined (GIMP_COMPILATION)
+#error "Only <libgimp/gimp.h> can be included directly."
+#endif
 
 #ifndef __GIMP_DRAWABLE_H__
 #define __GIMP_DRAWABLE_H__
@@ -69,11 +72,41 @@ guchar       * gimp_drawable_get_sub_thumbnail_data (gint32         drawable_ID,
                                                      gint          *dest_height,
                                                      gint          *bpp);
 
-gboolean       gimp_drawable_attach_new_parasite    (gint32         drawable_ID,
-                                                     const gchar   *name,
-                                                     gint           flags,
-                                                     gint           size,
-                                                     gconstpointer  data);
+#ifndef GIMP_DISABLE_DEPRECATED
+gboolean       gimp_drawable_is_valid               (gint32              drawable_ID);
+gboolean       gimp_drawable_is_layer               (gint32              drawable_ID);
+gboolean       gimp_drawable_is_text_layer          (gint32              drawable_ID);
+gboolean       gimp_drawable_is_layer_mask          (gint32              drawable_ID);
+gboolean       gimp_drawable_is_channel             (gint32              drawable_ID);
+gboolean       gimp_drawable_delete                 (gint32              drawable_ID);
+gint32         gimp_drawable_get_image              (gint32              drawable_ID);
+gchar*         gimp_drawable_get_name               (gint32              drawable_ID);
+gboolean       gimp_drawable_set_name               (gint32              drawable_ID,
+                                                     const gchar        *name);
+gboolean       gimp_drawable_get_visible            (gint32              drawable_ID);
+gboolean       gimp_drawable_set_visible            (gint32              drawable_ID,
+                                                     gboolean            visible);
+gboolean       gimp_drawable_get_linked             (gint32              drawable_ID);
+gboolean       gimp_drawable_set_linked             (gint32              drawable_ID,
+                                                     gboolean            linked);
+gint           gimp_drawable_get_tattoo             (gint32              drawable_ID);
+gboolean       gimp_drawable_set_tattoo             (gint32              drawable_ID,
+                                                     gint                tattoo);
+GimpParasite * gimp_drawable_parasite_find          (gint32              drawable_ID,
+                                                     const gchar        *name);
+gboolean       gimp_drawable_parasite_attach        (gint32              drawable_ID,
+                                                     const GimpParasite *parasite);
+gboolean       gimp_drawable_parasite_detach        (gint32              drawable_ID,
+                                                     const gchar        *name);
+gboolean       gimp_drawable_parasite_list          (gint32              drawable_ID,
+                                                     gint               *num_parasites,
+                                                     gchar            ***parasites);
+gboolean       gimp_drawable_attach_new_parasite    (gint32              drawable_ID,
+                                                     const gchar        *name,
+                                                     gint                flags,
+                                                     gint                size,
+                                                     gconstpointer       data);
+#endif /* GIMP_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

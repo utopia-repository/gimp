@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -36,9 +35,11 @@
 
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimppickable.h"
 #include "core/gimp-transform-region.h"
+#include "core/gimp-utils.h"
 
 #include "gimpperspectiveclone.h"
 #include "gimpperspectivecloneoptions.h"
@@ -46,20 +47,17 @@
 #include "gimp-intl.h"
 
 
-#define MIN4(a,b,c,d) MIN(MIN(a,b),MIN(c,d))
-#define MAX4(a,b,c,d) MAX(MAX(a,b),MAX(c,d))
-
-
 static void     gimp_perspective_clone_finalize   (GObject          *object);
 
 static gboolean gimp_perspective_clone_start      (GimpPaintCore    *paint_core,
                                                    GimpDrawable     *drawable,
                                                    GimpPaintOptions *paint_options,
-                                                   GimpCoords       *coords,
+                                                   const GimpCoords *coords,
                                                    GError          **error);
 static void     gimp_perspective_clone_paint      (GimpPaintCore    *paint_core,
                                                    GimpDrawable     *drawable,
                                                    GimpPaintOptions *paint_options,
+                                                   const GimpCoords *coords,
                                                    GimpPaintState    paint_state,
                                                    guint32           time);
 
@@ -144,7 +142,7 @@ static gboolean
 gimp_perspective_clone_start (GimpPaintCore     *paint_core,
                               GimpDrawable      *drawable,
                               GimpPaintOptions  *paint_options,
-                              GimpCoords        *coords,
+                              const GimpCoords  *coords,
                               GError           **error)
 {
   GimpSourceCore *source_core = GIMP_SOURCE_CORE (paint_core);
@@ -158,8 +156,9 @@ gimp_perspective_clone_start (GimpPaintCore     *paint_core,
 
   if (! source_core->set_source && gimp_drawable_is_indexed (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Perspective Clone does not operate on indexed layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Perspective Clone does not operate on "
+			     "indexed layers."));
       return FALSE;
     }
 
@@ -170,6 +169,7 @@ static void
 gimp_perspective_clone_paint (GimpPaintCore    *paint_core,
                               GimpDrawable     *drawable,
                               GimpPaintOptions *paint_options,
+                              const GimpCoords *coords,
                               GimpPaintState    paint_state,
                               guint32           time)
 {
@@ -184,8 +184,8 @@ gimp_perspective_clone_paint (GimpPaintCore    *paint_core,
         {
           g_object_set (source_core, "src-drawable", drawable, NULL);
 
-          source_core->src_x = paint_core->cur_coords.x;
-          source_core->src_y = paint_core->cur_coords.y;
+          source_core->src_x = coords->x;
+          source_core->src_y = coords->y;
 
           /* get source coordinates in front view perspective */
           gimp_matrix3_transform_point (&clone->transform_inv,
@@ -210,8 +210,8 @@ gimp_perspective_clone_paint (GimpPaintCore    *paint_core,
         {
           /*  If the control key is down, move the src target and return */
 
-          source_core->src_x = paint_core->cur_coords.x;
-          source_core->src_y = paint_core->cur_coords.y;
+          source_core->src_x = coords->x;
+          source_core->src_y = coords->y;
 
           /* get source coordinates in front view perspective */
           gimp_matrix3_transform_point (&clone->transform_inv,
@@ -229,8 +229,8 @@ gimp_perspective_clone_paint (GimpPaintCore    *paint_core,
           gint dest_x;
           gint dest_y;
 
-          dest_x = paint_core->cur_coords.x;
-          dest_y = paint_core->cur_coords.y;
+          dest_x = coords->x;
+          dest_y = coords->y;
 
           if (options->align_mode == GIMP_SOURCE_ALIGN_REGISTERED)
             {
@@ -257,7 +257,7 @@ gimp_perspective_clone_paint (GimpPaintCore    *paint_core,
               source_core->first_stroke = FALSE;
             }
 
-          gimp_source_core_motion (source_core, drawable, paint_options);
+          gimp_source_core_motion (source_core, drawable, paint_options, coords);
         }
       break;
 
@@ -357,11 +357,15 @@ gimp_perspective_clone_get_source (GimpSourceCore   *source_core,
       if (options->sample_merged)
         orig = gimp_paint_core_get_orig_proj (paint_core,
                                               src_pickable,
-                                              xmin, ymin, xmax, ymax);
+                                              xmin, ymin,
+                                              xmax - xmin,
+                                              ymax - ymin);
       else
         orig = gimp_paint_core_get_orig_image (paint_core,
                                                GIMP_DRAWABLE (src_pickable),
-                                               xmin, ymin, xmax, ymax);
+                                               xmin, ymin,
+                                               xmax - xmin,
+                                               ymax - ymin);
 
       pixel_region_init_temp_buf (&origPR, orig,
                                   0, 0, xmax - xmin, ymax - ymin);
@@ -372,8 +376,6 @@ gimp_perspective_clone_get_source (GimpSourceCore   *source_core,
   bytes = GIMP_IMAGE_TYPE_BYTES (GIMP_IMAGE_TYPE_WITH_ALPHA (src_type));
 
   orig_tiles = tile_manager_new (xmax - xmin, ymax - ymin, bytes);
-
-  tile_manager_set_offsets (orig_tiles, xmin, ymin);
 
   pixel_region_init (&destPR, orig_tiles,
                      0, 0, xmax - xmin, ymax - ymin,
@@ -398,6 +400,7 @@ gimp_perspective_clone_get_source (GimpSourceCore   *source_core,
   gimp_transform_region (src_pickable,
                          GIMP_CONTEXT (paint_options),
                          orig_tiles,
+                         xmin, ymin,
                          &destPR,
                          x1d, y1d, x2d, y2d,
                          &matrix,

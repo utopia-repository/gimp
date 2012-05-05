@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,12 +16,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 #include <gtk/gtk.h>
+
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "imap_browse.h"
 
@@ -67,14 +68,14 @@ browse_cb (GtkWidget      *widget,
        GtkWidget *dialog;
 
        dialog = browse->file_chooser =
-	 gtk_file_chooser_dialog_new (browse->name,
-				      GTK_WINDOW (gtk_widget_get_toplevel (widget)),
-				      GTK_FILE_CHOOSER_ACTION_OPEN,
+         gtk_file_chooser_dialog_new (browse->name,
+                                      GTK_WINDOW (gtk_widget_get_toplevel (widget)),
+                                      GTK_FILE_CHOOSER_ACTION_OPEN,
 
-				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
+                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
-				      NULL);
+                                      NULL);
 
        gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                                 GTK_RESPONSE_OK,
@@ -84,8 +85,8 @@ browse_cb (GtkWidget      *widget,
        gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
        g_signal_connect (dialog, "destroy",
-			 G_CALLBACK (gtk_widget_destroyed),
-			 &dialog);
+                         G_CALLBACK (gtk_widget_destroyed),
+                         &dialog);
        g_signal_connect (dialog, "response",
                          G_CALLBACK (select_cb),
                          browse);
@@ -95,13 +96,14 @@ browse_cb (GtkWidget      *widget,
 
 static void
 handle_drop(GtkWidget *widget, GdkDragContext *context, gint x, gint y,
-	    GtkSelectionData *data, guint info, guint time)
+            GtkSelectionData *data, guint info, guint time)
 {
    gboolean success = FALSE;
 
-   if (data->length >= 0 && data->format == 8)
+   if (gtk_selection_data_get_length (data) >= 0 &&
+       gtk_selection_data_get_format (data) == 8)
      {
-       const gchar *text = (const gchar *) data->data;
+       const gchar *text = (const gchar *) gtk_selection_data_get_data (data);
 
        if (g_utf8_validate (text, -1, NULL))
          {
@@ -124,15 +126,15 @@ browse_widget_new (const gchar *name)
    browse->name = name;
    browse->filter = NULL;
 
-   browse->hbox = gtk_hbox_new (FALSE, 1);
+   browse->hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 1);
    gtk_widget_show (browse->hbox);
 
    browse->file = gtk_entry_new ();
    gtk_box_pack_start (GTK_BOX(browse->hbox), browse->file, TRUE, TRUE, 0);
    gtk_drag_dest_set (browse->file, GTK_DEST_DEFAULT_ALL, target_table,
-		      2, GDK_ACTION_COPY);
+                      2, GDK_ACTION_COPY);
    g_signal_connect (browse->file, "drag-data-received",
-		     G_CALLBACK(handle_drop), NULL);
+                     G_CALLBACK(handle_drop), NULL);
 
    gtk_widget_show (browse->file);
 
@@ -143,7 +145,7 @@ browse_widget_new (const gchar *name)
 
    gtk_box_pack_end(GTK_BOX (browse->hbox), button, FALSE, FALSE, 0);
    g_signal_connect (button, "clicked",
-		     G_CALLBACK(browse_cb), (gpointer) browse);
+                     G_CALLBACK(browse_cb), (gpointer) browse);
    gtk_widget_show (button);
 
    return browse;
@@ -157,7 +159,7 @@ browse_widget_set_filename(BrowseWidget_t *browse, const gchar *filename)
 
 void
 browse_widget_set_filter(BrowseWidget_t *browse, BrowseFilter_t filter,
-			 gpointer data)
+                         gpointer data)
 {
    browse->filter = filter;
    browse->filter_data = data;

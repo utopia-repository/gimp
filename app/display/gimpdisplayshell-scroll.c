@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <stdlib.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -38,6 +38,7 @@
 #include "gimpdisplay-foreach.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-draw.h"
+#include "gimpdisplayshell-expose.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
 
@@ -121,7 +122,8 @@ gimp_display_shell_scroll (GimpDisplayShell *shell,
       shell->offset_x += x_offset;
       shell->offset_y += y_offset;
 
-      gimp_canvas_scroll (GIMP_CANVAS (shell->canvas), -x_offset, -y_offset);
+      gimp_overlay_box_scroll (GIMP_OVERLAY_BOX (shell->canvas),
+                               -x_offset, -y_offset);
 
       /*  Update scrollbars and rulers  */
       gimp_display_shell_update_scrollbars_and_rulers (shell);
@@ -164,9 +166,13 @@ gimp_display_shell_scroll_set_offset (GimpDisplayShell *shell,
 void
 gimp_display_shell_scroll_clamp_offsets (GimpDisplayShell *shell)
 {
+  GimpImage *image;
+
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  if (shell->display->image)
+  image = gimp_display_get_image (shell->display);
+
+  if (image)
     {
       gint sw, sh;
       gint min_offset_x;
@@ -174,8 +180,8 @@ gimp_display_shell_scroll_clamp_offsets (GimpDisplayShell *shell)
       gint min_offset_y;
       gint max_offset_y;
 
-      sw = SCALEX (shell, gimp_image_get_width  (shell->display->image));
-      sh = SCALEY (shell, gimp_image_get_height (shell->display->image));
+      sw = SCALEX (shell, gimp_image_get_width  (image));
+      sh = SCALEY (shell, gimp_image_get_height (image));
 
       if (shell->disp_width < sw)
         {
@@ -336,8 +342,8 @@ gimp_display_shell_scroll_center_image (GimpDisplayShell *shell,
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  if (! shell->display ||
-      ! shell->display->image ||
+  if (! shell->display                          ||
+      ! gimp_display_get_image (shell->display) ||
       (! vertically && ! horizontally))
     return;
 
@@ -541,34 +547,36 @@ void
 gimp_display_shell_scroll_setup_hscrollbar (GimpDisplayShell *shell,
                                             gdouble           value)
 {
-  gint sw;
+  gint    sw;
+  gdouble lower;
+  gdouble upper;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   if (! shell->display ||
-      ! shell->display->image)
+      ! gimp_display_get_image (shell->display))
     return;
 
   gimp_display_shell_draw_get_scaled_image_size (shell, &sw, NULL);
 
   if (shell->disp_width < sw)
     {
-      shell->hsbdata->lower = MIN (value,
-                                   0);
-
-      shell->hsbdata->upper = MAX (value + shell->disp_width,
-                                   sw);
+      lower = MIN (value, 0);
+      upper = MAX (value + shell->disp_width, sw);
     }
   else
     {
-      shell->hsbdata->lower = MIN (value,
-                                   -(shell->disp_width - sw) / 2);
-
-      shell->hsbdata->upper = MAX (value + shell->disp_width,
-                                   sw + (shell->disp_width - sw) / 2);
+      lower = MIN (value, -(shell->disp_width - sw) / 2);
+      upper = MAX (value + shell->disp_width,
+                   sw + (shell->disp_width - sw) / 2);
     }
 
-  shell->hsbdata->step_increment = MAX (shell->scale_x, MINIMUM_STEP_AMOUNT);
+  g_object_set (shell->hsbdata,
+                "lower",          lower,
+                "upper",          upper,
+                "step-increment", (gdouble) MAX (shell->scale_x,
+                                                 MINIMUM_STEP_AMOUNT),
+                NULL);
 }
 
 /**
@@ -583,32 +591,34 @@ void
 gimp_display_shell_scroll_setup_vscrollbar (GimpDisplayShell *shell,
                                             gdouble           value)
 {
-  gint sh;
+  gint    sh;
+  gdouble lower;
+  gdouble upper;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   if (! shell->display ||
-      ! shell->display->image)
+      ! gimp_display_get_image (shell->display))
     return;
 
   gimp_display_shell_draw_get_scaled_image_size (shell, NULL, &sh);
 
   if (shell->disp_height < sh)
     {
-      shell->vsbdata->lower = MIN (value,
-                                   0);
-
-      shell->vsbdata->upper = MAX (value + shell->disp_height,
-                                   sh);
+      lower = MIN (value, 0);
+      upper = MAX (value + shell->disp_height, sh);
     }
   else
     {
-      shell->vsbdata->lower = MIN (value,
-                                   -(shell->disp_height - sh) / 2);
-
-      shell->vsbdata->upper = MAX (value + shell->disp_height,
-                                   sh + (shell->disp_height - sh) / 2);
+      lower = MIN (value, -(shell->disp_height - sh) / 2);
+      upper = MAX (value + shell->disp_height,
+                   sh + (shell->disp_height - sh) / 2);
     }
 
-  shell->vsbdata->step_increment = MAX (shell->scale_y, MINIMUM_STEP_AMOUNT);
+  g_object_set (shell->vsbdata,
+                "lower",          lower,
+                "upper",          upper,
+                "step-increment", (gdouble) MAX (shell->scale_y,
+                                                 MINIMUM_STEP_AMOUNT),
+                NULL);
 }

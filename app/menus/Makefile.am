@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(GEGL_CFLAGS)		\
 	$(GTK_CFLAGS)		\
 	-I$(includedir)
 
@@ -31,5 +32,3 @@ libappmenus_a_SOURCES = \
 	window-menu.h		\
 	windows-menu.c		\
 	windows-menu.h
-
-EXTRA_DIST = makefile.msc

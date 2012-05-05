@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -27,7 +26,6 @@
 #include "gimpimage-item-list.h"
 #include "gimpimage-undo.h"
 #include "gimpitem.h"
-#include "gimplist.h"
 #include "gimpprogress.h"
 
 #include "gimp-intl.h"
@@ -50,7 +48,7 @@ gimp_image_item_list_translate (GimpImage *image,
 
       if (push_undo)
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_DISPLACE,
-                                     _("Translate Items"));
+                                     C_("undo-type", "Translate Items"));
 
       for (l = list; l; l = g_list_next (l))
         gimp_item_translate (GIMP_ITEM (l->data),
@@ -77,7 +75,7 @@ gimp_image_item_list_flip (GimpImage           *image,
       GList *l;
 
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
-                                   _("Flip Items"));
+                                   C_("undo-type", "Flip Items"));
 
       for (l = list; l; l = g_list_next (l))
         gimp_item_flip (GIMP_ITEM (l->data), context,
@@ -104,7 +102,7 @@ gimp_image_item_list_rotate (GimpImage        *image,
       GList *l;
 
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
-                                   _("Rotate Items"));
+                                   C_("undo-type", "Rotate Items"));
 
       for (l = list; l; l = g_list_next (l))
         gimp_item_rotate (GIMP_ITEM (l->data), context,
@@ -134,7 +132,7 @@ gimp_image_item_list_transform (GimpImage              *image,
       GList *l;
 
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,
-                                   _("Transform Items"));
+                                   C_("undo-type", "Transform Items"));
 
       for (l = list; l; l = g_list_next (l))
         gimp_item_transform (GIMP_ITEM (l->data), context,
@@ -164,6 +162,7 @@ gimp_image_item_list_get_list (const GimpImage  *image,
                                GimpItemTypeMask  type,
                                GimpItemSet       set)
 {
+  GList *all_items;
   GList *list;
   GList *return_list = NULL;
 
@@ -172,42 +171,119 @@ gimp_image_item_list_get_list (const GimpImage  *image,
 
   if (type & GIMP_ITEM_TYPE_LAYERS)
     {
-      for (list = GIMP_LIST (image->layers)->list;
-           list;
-           list = g_list_next (list))
+      all_items = gimp_image_get_layer_list (image);
+
+      for (list = all_items; list; list = g_list_next (list))
         {
           GimpItem *item = list->data;
 
           if (item != exclude && gimp_item_is_in_set (item, set))
             return_list = g_list_prepend (return_list, item);
         }
+
+      g_list_free (all_items);
     }
 
   if (type & GIMP_ITEM_TYPE_CHANNELS)
     {
-      for (list = GIMP_LIST (image->channels)->list;
-           list;
-           list = g_list_next (list))
+      all_items = gimp_image_get_channel_list (image);
+
+      for (list = all_items; list; list = g_list_next (list))
         {
           GimpItem *item = list->data;
 
           if (item != exclude && gimp_item_is_in_set (item, set))
             return_list = g_list_prepend (return_list, item);
         }
+
+      g_list_free (all_items);
     }
 
   if (type & GIMP_ITEM_TYPE_VECTORS)
     {
-      for (list = GIMP_LIST (image->vectors)->list;
-           list;
-           list = g_list_next (list))
+      all_items = gimp_image_get_vectors_list (image);
+
+      for (list = all_items; list; list = g_list_next (list))
         {
           GimpItem *item = list->data;
 
           if (item != exclude && gimp_item_is_in_set (item, set))
             return_list = g_list_prepend (return_list, item);
         }
+
+      g_list_free (all_items);
     }
 
   return g_list_reverse (return_list);
+}
+
+static GList *
+gimp_image_item_list_remove_children (GList          *list,
+                                      const GimpItem *parent)
+{
+  GList *l = list;
+
+  while (l)
+    {
+      GimpItem *item = l->data;
+
+      l = g_list_next (l);
+
+      if (gimp_viewable_is_ancestor (GIMP_VIEWABLE (parent),
+                                     GIMP_VIEWABLE (item)))
+        {
+          list = g_list_remove (list, item);
+        }
+    }
+
+  return list;
+}
+
+GList *
+gimp_image_item_list_filter (const GimpItem *exclude,
+                             GList          *list,
+                             gboolean        remove_children,
+                             gboolean        remove_locked)
+{
+  GList *l;
+
+  g_return_val_if_fail (exclude == NULL || GIMP_IS_ITEM (exclude), NULL);
+
+  if (! list)
+    return NULL;
+
+  if (remove_children)
+    {
+      if (exclude)
+        list = gimp_image_item_list_remove_children (list, exclude);
+
+      for (l = list; l; l = g_list_next (l))
+        {
+          GimpItem *item = l->data;
+          GList    *next;
+
+          next = gimp_image_item_list_remove_children (g_list_next (l), item);
+
+          l->next = next;
+          if (next)
+            next->prev = l;
+        }
+    }
+
+  if (remove_locked)
+    {
+      l = list;
+
+      while (l)
+        {
+          GimpItem *item = l->data;
+
+          l = g_list_next (l);
+
+          if (gimp_item_is_content_locked (item))
+            list = g_list_remove (list, item);
+        }
+    }
+
+  return list;
 }

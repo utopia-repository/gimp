@@ -6,7 +6,7 @@
  * Copyright (C) 1997 Owen Taylor
  *
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* TODO
@@ -56,6 +55,7 @@
 #define PLUG_IN_PARASITE "ifscompose-parasite"
 #define PLUG_IN_PROC     "plug-in-ifscompose"
 #define PLUG_IN_BINARY   "ifs-compose"
+#define PLUG_IN_ROLE     "gimp-ifs-compose"
 
 typedef enum
 {
@@ -72,11 +72,12 @@ typedef enum
 
 typedef struct
 {
-  GtkObject *adjustment;
-  GtkWidget *scale;
-  GtkWidget *spin;
+  GtkAdjustment *adjustment;
+  GtkWidget     *scale;
+  GtkWidget     *spin;
 
   ValuePairType type;
+  guint         timeout_id;
 
   union
   {
@@ -127,8 +128,6 @@ typedef struct
   gdouble       op_center_y;
   guint         button_state;
   gint          num_selected;
-
-  GdkGC        *selected_gc;
 } IfsDesignArea;
 
 typedef struct
@@ -322,7 +321,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
   };
@@ -387,8 +386,8 @@ run (const gchar      *name,
       /*  Possibly retrieve data; first look for a parasite -
        *  if not found, fall back to global values
        */
-      parasite = gimp_drawable_parasite_find (drawable->drawable_id,
-                                              PLUG_IN_PARASITE);
+      parasite = gimp_item_get_parasite (drawable->drawable_id,
+                                         PLUG_IN_PARASITE);
       if (parasite)
         {
           found_parasite = ifsvals_parse_string (gimp_parasite_data (parasite),
@@ -475,7 +474,7 @@ run (const gchar      *name,
                                         GIMP_PARASITE_PERSISTENT |
                                         GIMP_PARASITE_UNDOABLE,
                                         strlen (str) + 1, str);
-          gimp_drawable_parasite_attach (drawable->drawable_id, parasite);
+          gimp_item_attach_parasite (drawable->drawable_id, parasite);
           gimp_parasite_free (parasite);
 
           g_free (str);
@@ -509,7 +508,7 @@ ifs_compose_trans_page (void)
   GtkWidget *table;
   GtkWidget *label;
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
 
   table = gtk_table_new (3, 6, FALSE);
@@ -627,7 +626,7 @@ ifs_compose_color_page (void)
   GSList    *group = NULL;
   GimpRGB    color;
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
 
   table = gtk_table_new (3, 5, FALSE);
@@ -767,7 +766,7 @@ ifs_compose_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("IFS Fractal"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("IFS Fractal"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -802,19 +801,19 @@ ifs_compose_dialog (GimpDrawable *drawable)
 
   toolbar = gtk_ui_manager_get_widget (ifsDesign->ui_manager,
                                        "/ifs-compose-toolbar");
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), toolbar,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      toolbar, FALSE, FALSE, 0);
   gtk_widget_show (toolbar);
 
   /*  The main vbox */
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
 
   /*  The design area */
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
 
   aspect_frame = gtk_aspect_frame_new (NULL,
@@ -854,7 +853,7 @@ ifs_compose_dialog (GimpDrawable *drawable)
   gtk_box_pack_start (GTK_BOX (main_vbox), ifsD->current_frame,
                       FALSE, FALSE, 0);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (ifsD->current_frame), vbox);
 
   /* The notebook */
@@ -878,7 +877,7 @@ ifs_compose_dialog (GimpDrawable *drawable)
 
   /* The probability entry */
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   label = gtk_label_new (_("Relative probability:"));
@@ -983,8 +982,6 @@ ifs_compose_dialog (GimpDrawable *drawable)
     gtk_widget_destroy (ifsOptD->dialog);
 
   gdk_flush ();
-
-  g_object_unref (ifsDesign->selected_gc);
 
   g_free (ifsD);
 
@@ -1174,7 +1171,7 @@ ifs_options_dialog (GtkWidget *parent)
       ifsOptD = g_new0 (IfsOptionsDialog, 1);
 
       ifsOptD->dialog =
-        gimp_dialog_new (_("IFS Fractal Render Options"), PLUG_IN_BINARY,
+        gimp_dialog_new (_("IFS Fractal Render Options"), PLUG_IN_ROLE,
                          parent, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1192,8 +1189,8 @@ ifs_options_dialog (GtkWidget *parent)
       gtk_container_set_border_width (GTK_CONTAINER (table), 12);
       gtk_table_set_row_spacings (GTK_TABLE (table), 6);
       gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-      gtk_box_pack_start (GTK_BOX (GTK_DIALOG (ifsOptD->dialog)->vbox), table,
-                          FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (ifsOptD->dialog))),
+                          table, FALSE, FALSE, 0);
       gtk_widget_show (table);
 
       label = gtk_label_new (_("Max. memory:"));
@@ -1491,7 +1488,7 @@ design_area_realize (GtkWidget *widget)
   GdkDisplay *display = gtk_widget_get_display (widget);
   GdkCursor  *cursor  = gdk_cursor_new_for_display (display,
                                                     cursors[ifsDesign->op]);
-  gdk_window_set_cursor (widget->window, cursor);
+  gdk_window_set_cursor (gtk_widget_get_window (widget), cursor);
   gdk_cursor_unref (cursor);
 }
 
@@ -1499,58 +1496,65 @@ static gboolean
 design_area_expose (GtkWidget      *widget,
                     GdkEventExpose *event)
 {
-  GtkStyle    *style = gtk_widget_get_style (widget);
-  PangoLayout *layout;
-  gint         i;
-  gint         cx, cy;
+  GtkStyle      *style = gtk_widget_get_style (widget);
+  GtkStateType   state = gtk_widget_get_state (widget);
+  cairo_t       *cr;
+  GtkAllocation  allocation;
+  PangoLayout   *layout;
+  gint           i;
+  gint           cx, cy;
 
-  if (!ifsDesign->selected_gc)
-    {
-      ifsDesign->selected_gc = gdk_gc_new (ifsDesign->area->window);
-      gdk_gc_set_line_attributes (ifsDesign->selected_gc, 2,
-                                 GDK_LINE_SOLID, GDK_CAP_ROUND,
-                                 GDK_JOIN_ROUND);
-    }
+  gtk_widget_get_allocation (widget, &allocation);
 
-  gdk_draw_rectangle (ifsDesign->pixmap,
-                      style->bg_gc[widget->state],
-                      TRUE,
-                      event->area.x,
-                      event->area.y,
-                      event->area.width, event->area.height);
+  cr = gdk_cairo_create (ifsDesign->pixmap);
+
+  gdk_cairo_set_source_color (cr, &style->bg[state]);
+  cairo_paint (cr);
+
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+  cairo_translate (cr, 0.5, 0.5);
 
   /* draw an indicator for the center */
 
-  cx = ifsvals.center_x * widget->allocation.width;
-  cy = ifsvals.center_y * widget->allocation.width;
-  gdk_draw_line (ifsDesign->pixmap,
-                 style->fg_gc[widget->state],
-                 cx - 10, cy, cx + 10, cy);
-  gdk_draw_line (ifsDesign->pixmap,
-                 style->fg_gc[widget->state],
-                 cx, cy - 10, cx, cy + 10);
+  cx = ifsvals.center_x * allocation.width;
+  cy = ifsvals.center_y * allocation.width;
+
+  cairo_move_to (cr, cx - 10, cy);
+  cairo_line_to (cr, cx + 10, cy);
+
+  cairo_move_to (cr, cx, cy - 10);
+  cairo_line_to (cr, cx, cy + 10);
+
+  gdk_cairo_set_source_color (cr, &style->fg[state]);
+  cairo_set_line_width (cr, 1.0);
+  cairo_stroke (cr);
 
   layout = gtk_widget_create_pango_layout (widget, NULL);
 
   for (i = 0; i < ifsvals.num_elements; i++)
     {
       aff_element_draw (elements[i], element_selected[i],
-                        widget->allocation.width,
-                        widget->allocation.height,
-                        ifsDesign->pixmap,
-                        style->fg_gc[widget->state],
-                        ifsDesign->selected_gc,
+                        allocation.width,
+                        allocation.height,
+                        cr,
+                        &style->fg[state],
                         layout);
     }
 
   g_object_unref (layout);
 
-  gdk_draw_drawable (widget->window,
-                     style->fg_gc[GTK_WIDGET_STATE (widget)],
-                     ifsDesign->pixmap,
-                     event->area.x, event->area.y,
-                     event->area.x, event->area.y,
-                     event->area.width, event->area.height);
+  cairo_destroy (cr);
+
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  gdk_cairo_set_source_pixmap (cr, ifsDesign->pixmap, 0.0, 0.0);
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
 
   return FALSE;
 }
@@ -1559,25 +1563,29 @@ static gboolean
 design_area_configure (GtkWidget         *widget,
                        GdkEventConfigure *event)
 {
-  gint i;
-  gdouble width = widget->allocation.width;
-  gdouble height = widget->allocation.height;
+  GtkAllocation allocation;
+  gint          i;
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   for (i = 0; i < ifsvals.num_elements; i++)
-    aff_element_compute_trans (elements[i],width, height,
-                              ifsvals.center_x, ifsvals.center_y);
+    aff_element_compute_trans (elements[i],
+                               allocation.width, allocation.height,
+                               ifsvals.center_x, ifsvals.center_y);
+
   for (i = 0; i < ifsvals.num_elements; i++)
-    aff_element_compute_boundary (elements[i],width, height,
-                                 elements, ifsvals.num_elements);
+    aff_element_compute_boundary (elements[i],
+                                  allocation.width, allocation.height,
+                                  elements, ifsvals.num_elements);
 
   if (ifsDesign->pixmap)
     {
       g_object_unref (ifsDesign->pixmap);
     }
-  ifsDesign->pixmap = gdk_pixmap_new (widget->window,
-                                     widget->allocation.width,
-                                     widget->allocation.height,
-                                     -1); /* Is this correct? */
+  ifsDesign->pixmap = gdk_pixmap_new (gtk_widget_get_window (widget),
+                                      allocation.width,
+                                      allocation.height,
+                                      -1); /* Is this correct? */
 
   return FALSE;
 }
@@ -1586,31 +1594,30 @@ static gint
 design_area_button_press (GtkWidget      *widget,
                           GdkEventButton *event)
 {
-  gdouble width = ifsDesign->area->allocation.width;
-  gint    i;
-  gint    old_current;
+  GtkAllocation allocation;
+  gint          i;
+  gint          old_current;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   gtk_widget_grab_focus (widget);
 
-  if (event->button != 1 || (ifsDesign->button_state & GDK_BUTTON1_MASK))
+  if (gdk_event_triggers_context_menu ((GdkEvent *) event))
     {
-      if (event->button == 3)
-        {
-          GtkWidget *menu =
-            gtk_ui_manager_get_widget (ifsDesign->ui_manager,
-                                       "/dummy-menubar/ifs-compose-menu");
+      GtkWidget *menu =
+        gtk_ui_manager_get_widget (ifsDesign->ui_manager,
+                                   "/dummy-menubar/ifs-compose-menu");
 
-          if (GTK_IS_MENU_ITEM (menu))
-            menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (menu));
+      if (GTK_IS_MENU_ITEM (menu))
+        menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (menu));
 
-          gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));
+      gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));
 
-          gtk_menu_popup (GTK_MENU (menu),
-                          NULL, NULL, NULL, NULL,
-                          event->button, event->time);
+      gtk_menu_popup (GTK_MENU (menu),
+                      NULL, NULL, NULL, NULL,
+                      event->button, event->time);
 
-          return FALSE;
-        }
+      return FALSE;
     }
 
   old_current = ifsD->current_element;
@@ -1661,8 +1668,8 @@ design_area_button_press (GtkWidget      *widget,
         }
       ifsDesign->op_xcenter /= ifsDesign->num_selected;
       ifsDesign->op_ycenter /= ifsDesign->num_selected;
-      ifsDesign->op_x = (gdouble)event->x / width;
-      ifsDesign->op_y = (gdouble)event->y / width;
+      ifsDesign->op_x = (gdouble)event->x / allocation.width;
+      ifsDesign->op_y = (gdouble)event->y / allocation.width;
       ifsDesign->op_center_x = ifsvals.center_x;
       ifsDesign->op_center_y = ifsvals.center_y;
     }
@@ -1694,52 +1701,54 @@ static gint
 design_area_motion (GtkWidget      *widget,
                     GdkEventMotion *event)
 {
-  gint    i;
-  gdouble xo;
-  gdouble yo;
-  gdouble xn;
-  gdouble yn;
-  gdouble width  = ifsDesign->area->allocation.width;
-  gdouble height = ifsDesign->area->allocation.height;
-
-  Aff2 trans, t1, t2, t3;
+  GtkAllocation allocation;
+  gint          i;
+  gdouble       xo;
+  gdouble       yo;
+  gdouble       xn;
+  gdouble       yn;
+  Aff2          trans, t1, t2, t3;
 
   if (! (ifsDesign->button_state & GDK_BUTTON1_MASK))
     return FALSE;
 
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
+
   xo = (ifsDesign->op_x - ifsDesign->op_xcenter);
   yo = (ifsDesign->op_y - ifsDesign->op_ycenter);
-  xn = (gdouble) event->x / width - ifsDesign->op_xcenter;
-  yn = (gdouble) event->y / width - ifsDesign->op_ycenter;
+  xn = (gdouble) event->x / allocation.width - ifsDesign->op_xcenter;
+  yn = (gdouble) event->y / allocation.width - ifsDesign->op_ycenter;
 
   switch (ifsDesign->op)
     {
     case OP_ROTATE:
-      aff2_translate (&t1,-ifsDesign->op_xcenter*width,
-                      -ifsDesign->op_ycenter*width);
+      aff2_translate (&t1,-ifsDesign->op_xcenter * allocation.width,
+                      -ifsDesign->op_ycenter * allocation.width);
       aff2_scale (&t2,
                   sqrt((SQR(xn)+SQR(yn))/(SQR(xo)+SQR(yo))),
                   0);
       aff2_compose (&t3, &t2, &t1);
       aff2_rotate (&t1, - atan2(yn, xn) + atan2(yo, xo));
       aff2_compose (&t2, &t1, &t3);
-      aff2_translate (&t3, ifsDesign->op_xcenter*width,
-                      ifsDesign->op_ycenter*width);
+      aff2_translate (&t3, ifsDesign->op_xcenter * allocation.width,
+                      ifsDesign->op_ycenter * allocation.width);
       aff2_compose (&trans, &t3, &t2);
       break;
 
     case OP_STRETCH:
-      aff2_translate (&t1,-ifsDesign->op_xcenter*width,
-                      -ifsDesign->op_ycenter*width);
+      aff2_translate (&t1,-ifsDesign->op_xcenter * allocation.width,
+                      -ifsDesign->op_ycenter * allocation.width);
       aff2_compute_stretch (&t2, xo, yo, xn, yn);
       aff2_compose (&t3, &t2, &t1);
-      aff2_translate (&t1, ifsDesign->op_xcenter*width,
-                      ifsDesign->op_ycenter*width);
+      aff2_translate (&t1, ifsDesign->op_xcenter * allocation.width,
+                      ifsDesign->op_ycenter * allocation.width);
       aff2_compose (&trans, &t1, &t3);
       break;
 
     case OP_TRANSLATE:
-      aff2_translate (&trans,(xn-xo)*width,(yn-yo)*width);
+      aff2_translate (&trans,
+                      (xn-xo) * allocation.width,
+                      (yn-yo) * allocation.width);
       break;
     }
 
@@ -1753,11 +1762,11 @@ design_area_motion (GtkWidget      *widget,
             aff2_compose (&t2, &trans, &ifsD->selected_orig[i].trans);
             aff2_compose (&elements[i]->trans, &t2, &t1);
 
-            cx = ifsDesign->op_center_x * width;
-            cy = ifsDesign->op_center_y * width;
+            cx = ifsDesign->op_center_x * allocation.width;
+            cy = ifsDesign->op_center_y * allocation.width;
             aff2_apply (&trans, cx, cy, &cx, &cy);
-            ifsvals.center_x = cx / width;
-            ifsvals.center_y = cy / width;
+            ifsvals.center_x = cx / allocation.width;
+            ifsvals.center_y = cy / allocation.width;
           }
         else
           {
@@ -1766,9 +1775,10 @@ design_area_motion (GtkWidget      *widget,
           }
 
         aff_element_decompose_trans (elements[i],&elements[i]->trans,
-                                    width, height, ifsvals.center_x,
-                                    ifsvals.center_y);
-        aff_element_compute_trans (elements[i],width, height,
+                                     allocation.width, allocation.height,
+                                     ifsvals.center_x, ifsvals.center_y);
+        aff_element_compute_trans (elements[i],
+                                   allocation.width, allocation.height,
                                    ifsvals.center_x, ifsvals.center_y);
       }
 
@@ -1784,12 +1794,14 @@ design_area_motion (GtkWidget      *widget,
 static void
 design_area_redraw (void)
 {
-  gdouble width  = ifsDesign->area->allocation.width;
-  gdouble height = ifsDesign->area->allocation.height;
-  gint    i;
+  GtkAllocation allocation;
+  gint          i;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   for (i = 0; i < ifsvals.num_elements; i++)
-    aff_element_compute_boundary (elements[i],width, height,
+    aff_element_compute_boundary (elements[i],
+                                  allocation.width, allocation.height,
                                   elements, ifsvals.num_elements);
 
   gtk_widget_queue_draw (ifsDesign->area);
@@ -1862,13 +1874,14 @@ undo_update (gint el)
 static void
 undo_exchange (gint el)
 {
-  gint i;
-  AffElement **telements;
-  gboolean *tselected;
-  IfsComposeVals tifsvals;
-  gint tcurrent;
-  gdouble width = ifsDesign->area->allocation.width;
-  gdouble height = ifsDesign->area->allocation.height;
+  GtkAllocation   allocation;
+  gint            i;
+  AffElement    **telements;
+  gboolean       *tselected;
+  IfsComposeVals  tifsvals;
+  gint            tcurrent;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   /* swap the arrays and values*/
   telements = elements;
@@ -1895,8 +1908,9 @@ undo_exchange (gint el)
         undo_ring[el].elements[i] = NULL;
       }
     else
-      aff_element_compute_trans (elements[i],width, height,
-                                ifsvals.center_x, ifsvals.center_y);
+      aff_element_compute_trans (elements[i],
+                                 allocation.width, allocation.height,
+                                 ifsvals.center_x, ifsvals.center_y);
 
   set_current_element (ifsD->current_element);
 
@@ -1946,15 +1960,14 @@ design_area_select_all_callback (GtkWidget *widget,
 static void
 val_changed_update (void)
 {
-  AffElement *cur;
-  gdouble     width;
-  gdouble     height;
+  GtkAllocation  allocation;
+  AffElement    *cur;
 
   if (ifsD->in_update)
     return;
 
-  width = ifsDesign->area->allocation.width;
-  height = ifsDesign->area->allocation.height;
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
+
   cur = elements[ifsD->current_element];
 
   undo_begin ();
@@ -1962,8 +1975,9 @@ val_changed_update (void)
 
   cur->v = ifsD->current_vals;
   cur->v.theta *= G_PI/180.0;
-  aff_element_compute_trans (cur, width, height,
-                              ifsvals.center_x, ifsvals.center_y);
+  aff_element_compute_trans (cur,
+                             allocation.width, allocation.height,
+                             ifsvals.center_x, ifsvals.center_y);
   aff_element_compute_color_trans (cur);
 
   design_area_redraw ();
@@ -1988,7 +2002,7 @@ color_map_create (const gchar *name,
   gimp_rgb_set_alpha (data, 1.0);
   color_map->color       = data;
   color_map->fixed_point = fixed_point;
-  color_map->hbox        = gtk_hbox_new (FALSE, 2);
+  color_map->hbox        = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -2107,8 +2121,9 @@ value_pair_create (gpointer      data,
 
   value_pair->data.d = data;
   value_pair->type   = type;
+  value_pair->timeout_id = 0;
 
-  value_pair->spin = gimp_spin_button_new (&value_pair->adjustment,
+  value_pair->spin = gimp_spin_button_new ((GtkObject **) &value_pair->adjustment,
                                            1.0, lower, upper,
                                            (upper - lower) / 100,
                                            (upper - lower) / 10,
@@ -2121,8 +2136,8 @@ value_pair_create (gpointer      data,
 
   if (create_scale)
     {
-      value_pair->scale =
-        gtk_hscale_new (GTK_ADJUSTMENT (value_pair->adjustment));
+      value_pair->scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                         value_pair->adjustment);
 
       if (type == VALUE_PAIR_INT)
         gtk_scale_set_digits (GTK_SCALE (value_pair->scale), 0);
@@ -2130,8 +2145,6 @@ value_pair_create (gpointer      data,
         gtk_scale_set_digits (GTK_SCALE (value_pair->scale), 3);
 
       gtk_scale_set_draw_value (GTK_SCALE (value_pair->scale), FALSE);
-      gtk_range_set_update_policy (GTK_RANGE (value_pair->scale),
-                                   GTK_UPDATE_DELAYED);
     }
   else
     {
@@ -2145,39 +2158,55 @@ static void
 value_pair_update (ValuePair *value_pair)
 {
   if (value_pair->type == VALUE_PAIR_INT)
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (value_pair->adjustment),
-                                *value_pair->data.i);
+    gtk_adjustment_set_value (value_pair->adjustment, *value_pair->data.i);
   else
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (value_pair->adjustment),
-                                *value_pair->data.d);
+    gtk_adjustment_set_value (value_pair->adjustment, *value_pair->data.d);
 
+}
+
+static gboolean
+value_pair_scale_callback_real (gpointer data)
+{
+  ValuePair *value_pair = data;
+  gint changed = FALSE;
+
+  if (value_pair->type == VALUE_PAIR_DOUBLE)
+    {
+      if ((gdouble) *value_pair->data.d !=
+          gtk_adjustment_get_value (value_pair->adjustment))
+        {
+          changed = TRUE;
+          *value_pair->data.d = gtk_adjustment_get_value (value_pair->adjustment);
+        }
+    }
+  else
+    {
+      if (*value_pair->data.i !=
+          (gint) gtk_adjustment_get_value (value_pair->adjustment))
+        {
+          changed = TRUE;
+          *value_pair->data.i = gtk_adjustment_get_value (value_pair->adjustment);
+        }
+    }
+
+  if (changed)
+    val_changed_update ();
+
+  value_pair->timeout_id = 0;
+
+  return FALSE;
 }
 
 static void
 value_pair_scale_callback (GtkAdjustment *adjustment,
                            ValuePair     *value_pair)
 {
-  gint changed = FALSE;
+  if (value_pair->timeout_id != 0)
+    return;
 
-  if (value_pair->type == VALUE_PAIR_DOUBLE)
-    {
-      if ((gdouble) *value_pair->data.d != adjustment->value)
-        {
-          changed = TRUE;
-          *value_pair->data.d = adjustment->value;
-        }
-    }
-  else
-    {
-      if (*value_pair->data.i != (gint) adjustment->value)
-        {
-          changed = TRUE;
-          *value_pair->data.i = adjustment->value;
-        }
-    }
-
-  if (changed)
-    val_changed_update ();
+  value_pair->timeout_id = g_timeout_add (500, /* update every half second */
+                                          value_pair_scale_callback_real,
+                                          value_pair);
 }
 
 static void
@@ -2188,7 +2217,7 @@ design_op_update_callback (GtkRadioAction *action,
   ifsDesign->op = gtk_radio_action_get_current_value (action);
 
   /* cursor switch */
-  if (GTK_WIDGET_REALIZED (ifsDesign->area))
+  if (gtk_widget_get_realized (ifsDesign->area))
     design_area_realize (ifsDesign->area);
 }
 
@@ -2202,12 +2231,13 @@ recompute_center_cb (GtkWidget *widget,
 static void
 recompute_center (gboolean save_undo)
 {
-  gint    i;
-  gdouble x, y;
-  gdouble center_x = 0.0;
-  gdouble center_y = 0.0;
-  gdouble width    = ifsDesign->area->allocation.width;
-  gdouble height   = ifsDesign->area->allocation.height;
+  GtkAllocation allocation;
+  gint          i;
+  gdouble       x, y;
+  gdouble       center_x = 0.0;
+  gdouble       center_y = 0.0;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   if (save_undo)
     undo_begin ();
@@ -2234,11 +2264,12 @@ recompute_center (gboolean save_undo)
                                     ifsvals.center_x, ifsvals.center_y);
     }
 
-  if (width > 1 && height > 1)
+  if (allocation.width > 1 && allocation.height > 1)
     {
       for (i = 0; i < ifsvals.num_elements; i++)
-        aff_element_compute_trans (elements[i],width, height,
-                                  ifsvals.center_x, ifsvals.center_y);
+        aff_element_compute_trans (elements[i],
+                                   allocation.width, allocation.height,
+                                   ifsvals.center_x, ifsvals.center_y);
       design_area_redraw ();
       update_values ();
     }
@@ -2248,13 +2279,14 @@ static void
 flip_check_button_callback (GtkWidget *widget,
                             gpointer   data)
 {
-  guint    i;
-  gdouble  width  = ifsDesign->area->allocation.width;
-  gdouble  height = ifsDesign->area->allocation.height;
-  gboolean active;
+  GtkAllocation allocation;
+  guint         i;
+  gboolean      active;
 
   if (ifsD->in_update)
     return;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
@@ -2265,7 +2297,8 @@ flip_check_button_callback (GtkWidget *widget,
         {
           undo_update (i);
           elements[i]->v.flip = active;
-          aff_element_compute_trans (elements[i], width, height,
+          aff_element_compute_trans (elements[i],
+                                     allocation.width, allocation.height,
                                      ifsvals.center_x, ifsvals.center_y);
         }
     }
@@ -2342,7 +2375,7 @@ ifscompose_message_dialog (GtkMessageType  type,
   GtkWidget *dialog;
 
   dialog = gtk_message_dialog_new (parent, 0, type, GTK_BUTTONS_OK,
-                                   "%s", message);
+				   "%s", message);
 
   if (title)
     gtk_window_set_title (GTK_WINDOW (dialog), title);
@@ -2398,9 +2431,10 @@ static void
 ifsfile_replace_ifsvals (IfsComposeVals  *new_ifsvals,
                          AffElement     **new_elements)
 {
-  gdouble width  = ifsDesign->area->allocation.width;
-  gdouble height = ifsDesign->area->allocation.height;
-  guint   i;
+  GtkAllocation allocation;
+  guint         i;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   for (i = 0; i < ifsvals.num_elements; i++)
     aff_element_free (elements[i]);
@@ -2410,7 +2444,8 @@ ifsfile_replace_ifsvals (IfsComposeVals  *new_ifsvals,
   elements = new_elements;
   for (i = 0; i < ifsvals.num_elements; i++)
     {
-      aff_element_compute_trans (elements[i], width, height,
+      aff_element_compute_trans (elements[i],
+                                 allocation.width, allocation.height,
                                  ifsvals.center_x, ifsvals.center_y);
       aff_element_compute_color_trans (elements[i]);
     }
@@ -2574,17 +2609,19 @@ static void
 ifs_compose_new_callback (GtkAction *action,
                           gpointer   data)
 {
-  GimpRGB     color;
-  gdouble     width  = ifsDesign->area->allocation.width;
-  gdouble     height = ifsDesign->area->allocation.height;
-  gint        i;
-  AffElement *elem;
+  GtkAllocation  allocation;
+  GimpRGB        color;
+  gint           i;
+  AffElement    *elem;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   undo_begin ();
 
   gimp_context_get_foreground (&color);
 
-  elem = aff_element_new (0.5, 0.5 * height / width, &color,
+  elem = aff_element_new (0.5, 0.5 * allocation.height / allocation.width,
+                          &color,
                           ++count_for_naming);
 
   ifsvals.num_elements++;
@@ -2601,8 +2638,9 @@ ifs_compose_new_callback (GtkAction *action,
 
   ifsD->selected_orig = g_realloc (ifsD->selected_orig,
                                   ifsvals.num_elements * sizeof(AffElement));
-  aff_element_compute_trans (elem, width, height,
-                              ifsvals.center_x, ifsvals.center_y);
+  aff_element_compute_trans (elem,
+                             allocation.width, allocation.height,
+                             ifsvals.center_x, ifsvals.center_y);
 
   design_area_redraw ();
 
@@ -2661,35 +2699,37 @@ ifs_compose_options_callback (GtkAction *action,
 static gint
 preview_idle_render (gpointer data)
 {
-  gint width  = ifsD->preview_width;
-  gint height = ifsD->preview_height;
-  gint iterations = PREVIEW_RENDER_CHUNK;
-  gint i;
+  GtkAllocation allocation;
+  gint          iterations = PREVIEW_RENDER_CHUNK;
+  gint          i;
+
+  gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
   if (iterations > ifsD->preview_iterations)
     iterations = ifsD->preview_iterations;
 
   for (i = 0; i < ifsvals.num_elements; i++)
-    aff_element_compute_trans (elements[i], width, height,
-                              ifsvals.center_x, ifsvals.center_y);
+    aff_element_compute_trans (elements[i],
+                               allocation.width, allocation.height,
+                               ifsvals.center_x, ifsvals.center_y);
 
-  ifs_render (elements, ifsvals.num_elements, width, height,
-             iterations,&ifsvals, 0, height,
-             ifsD->preview_data, NULL, NULL, TRUE);
+  ifs_render (elements, ifsvals.num_elements,
+              allocation.width, allocation.height,
+              iterations,&ifsvals, 0, allocation.height,
+              ifsD->preview_data, NULL, NULL, TRUE);
 
   for (i = 0; i < ifsvals.num_elements; i++)
     aff_element_compute_trans (elements[i],
-                              ifsDesign->area->allocation.width,
-                              ifsDesign->area->allocation.height,
-                              ifsvals.center_x, ifsvals.center_y);
+                               allocation.width, allocation.height,
+                               ifsvals.center_x, ifsvals.center_y);
 
   ifsD->preview_iterations -= iterations;
 
   gimp_preview_area_draw (GIMP_PREVIEW_AREA (ifsD->preview),
-                          0, 0, width, height,
+                          0, 0, allocation.width, allocation.height,
                           GIMP_RGB_IMAGE,
                           ifsD->preview_data,
-                          width * 3);
+                          allocation.width * 3);
 
   return (ifsD->preview_iterations != 0);
 }
@@ -2744,9 +2784,10 @@ ifs_compose_response (GtkWidget *widget,
 
     case RESPONSE_RESET:
       {
-        gint    i;
-        gdouble width  = ifsDesign->area->allocation.width;
-        gdouble height = ifsDesign->area->allocation.height;
+        GtkAllocation allocation;
+        gint          i;
+
+        gtk_widget_get_allocation (ifsDesign->area, &allocation);
 
         undo_begin ();
         for (i = 0; i < ifsvals.num_elements; i++)
@@ -2757,7 +2798,8 @@ ifs_compose_response (GtkWidget *widget,
         ifs_compose_preview ();
 
         for (i = 0; i < ifsvals.num_elements; i++)
-          aff_element_compute_trans (elements[i], width, height,
+          aff_element_compute_trans (elements[i],
+                                     allocation.width, allocation.height,
                                      ifsvals.center_x, ifsvals.center_y);
 
         design_area_redraw ();

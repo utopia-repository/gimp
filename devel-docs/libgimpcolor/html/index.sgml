@@ -57,6 +57,7 @@
 <ANCHOR id="gimp-hsv-set" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsv-set">
 <ANCHOR id="gimp-hsv-clamp" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsv-clamp">
 <ANCHOR id="gimp-hsva-set" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsva-set">
+<ANCHOR id="gimp-hsl-set" href="libgimpcolor/libgimpcolor-GimpHSV.html#gimp-hsl-set">
 <ANCHOR id="GIMP-TYPE-HSV:CAPS" href="libgimpcolor/libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS">
 <ANCHOR id="GIMP-TYPE-HSL:CAPS" href="libgimpcolor/libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS">
 <ANCHOR id="libgimpcolor-GimpCMYK" href="libgimpcolor/libgimpcolor-GimpCMYK.html">
@@ -119,3 +120,14 @@
 <ANCHOR id="gimp-bilinear-rgb" href="libgimpcolor/libgimpcolor-GimpBilinear.html#gimp-bilinear-rgb">
 <ANCHOR id="gimp-bilinear-rgba" href="libgimpcolor/libgimpcolor-GimpBilinear.html#gimp-bilinear-rgba">
 <ANCHOR id="gimp-bilinear-pixels-8" href="libgimpcolor/libgimpcolor-GimpBilinear.html#gimp-bilinear-pixels-8">
+<ANCHOR id="libgimpcolor-GimpCairoColor" href="libgimpcolor/libgimpcolor-GimpCairoColor.html">
+<ANCHOR id="libgimpcolor-GimpCairoColor.synopsis" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#libgimpcolor-GimpCairoColor.synopsis">
+<ANCHOR id="libgimpcolor-GimpCairoColor.description" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#libgimpcolor-GimpCairoColor.description">
+<ANCHOR id="libgimpcolor-GimpCairoColor.details" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#libgimpcolor-GimpCairoColor.details">
+<ANCHOR id="gimp-cairo-set-source-rgb" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#gimp-cairo-set-source-rgb">
+<ANCHOR id="gimp-cairo-set-source-rgba" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#gimp-cairo-set-source-rgba">
+<ANCHOR id="gimp-cairo-checkerboard-create" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#gimp-cairo-checkerboard-create">
+<ANCHOR id="GIMP-CAIRO-RGB24-SET-PIXEL:CAPS" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-RGB24-SET-PIXEL:CAPS">
+<ANCHOR id="GIMP-CAIRO-RGB24-GET-PIXEL:CAPS" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-RGB24-GET-PIXEL:CAPS">
+<ANCHOR id="GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS">
+<ANCHOR id="GIMP-CAIRO-ARGB32-GET-PIXEL:CAPS" href="libgimpcolor/libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-ARGB32-GET-PIXEL:CAPS">

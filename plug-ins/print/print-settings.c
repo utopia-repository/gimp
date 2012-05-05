@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -96,6 +95,8 @@ print_settings_save (PrintData *data)
                               "center-mode", data->center);
       g_key_file_set_boolean (key_file, "image-setup",
                               "use-full-page", data->use_full_page);
+      g_key_file_set_boolean (key_file, "image-setup",
+                              "crop-marks", data->draw_crop_marks);
 
       print_utils_key_file_save_as_parasite (key_file,
                                              data->image_id,
@@ -234,38 +235,44 @@ print_settings_load_from_key_file (PrintData *data,
 
   if (g_key_file_has_key (key_file, "image-setup", "unit", NULL))
     {
-      data->unit = g_key_file_get_integer (key_file,
-                                           "image-setup", "unit", NULL);
+      data->unit = g_key_file_get_integer (key_file, "image-setup",
+                                           "unit", NULL);
     }
 
   if (g_key_file_has_key (key_file, "image-setup", "x-resolution", NULL) &&
       g_key_file_has_key (key_file, "image-setup", "y-resolution", NULL))
     {
-      data->xres = g_key_file_get_double (key_file,
-                                          "image-setup", "x-resolution", NULL);
-      data->yres = g_key_file_get_double (key_file,
-                                          "image-setup", "y-resolution", NULL);
+      data->xres = g_key_file_get_double (key_file, "image-setup",
+                                          "x-resolution", NULL);
+      data->yres = g_key_file_get_double (key_file, "image-setup",
+                                          "y-resolution", NULL);
     }
 
   if (g_key_file_has_key (key_file, "image-setup", "x-offset", NULL) &&
       g_key_file_has_key (key_file, "image-setup", "y-offset", NULL))
     {
-      data->offset_x = g_key_file_get_double (key_file,
-                                              "image-setup", "x-offset", NULL);
-      data->offset_y = g_key_file_get_double (key_file,
-                                              "image-setup", "y-offset", NULL);
+      data->offset_x = g_key_file_get_double (key_file, "image-setup",
+                                              "x-offset", NULL);
+      data->offset_y = g_key_file_get_double (key_file, "image-setup",
+                                              "y-offset", NULL);
     }
 
   if (g_key_file_has_key (key_file, "image-setup", "center-mode", NULL))
     {
-      data->center = g_key_file_get_integer (key_file,
-                                             "image-setup", "center-mode", NULL);
+      data->center = g_key_file_get_integer (key_file, "image-setup",
+                                             "center-mode", NULL);
     }
 
   if (g_key_file_has_key (key_file, "image-setup", "use-full-page", NULL))
     {
-      data->use_full_page = g_key_file_get_boolean (key_file,
-                                                    "image-setup", "use-full-page", NULL);
+      data->use_full_page = g_key_file_get_boolean (key_file, "image-setup",
+                                                    "use-full-page", NULL);
+    }
+
+  if (g_key_file_has_key (key_file, "image-setup", "crop-marks", NULL))
+    {
+      data->draw_crop_marks = g_key_file_get_boolean (key_file, "image-setup",
+                                                      "crop-marks", NULL);
     }
 
   gtk_print_operation_set_print_settings (operation, settings);

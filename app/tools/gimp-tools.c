@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,11 +26,13 @@
 
 #include "tools-types.h"
 
+#include "widgets/gimpwidgets-utils.h"
+
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
+#include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
-#include "core/gimptoolpresets.h"
 
 #include "gimp-tools.h"
 #include "gimptooloptions-gui.h"
@@ -43,6 +44,7 @@
 #include "gimpbrightnesscontrasttool.h"
 #include "gimpbucketfilltool.h"
 #include "gimpbycolorselecttool.h"
+#include "gimpcagetool.h"
 #include "gimpclonetool.h"
 #include "gimpcolorbalancetool.h"
 #include "gimpcolorizetool.h"
@@ -93,7 +95,7 @@ static void   gimp_tools_register (GType                   tool_type,
                                    const gchar            *identifier,
                                    const gchar            *blurb,
                                    const gchar            *help,
-                                   const gchar            *menu_path,
+                                   const gchar            *menu_label,
                                    const gchar            *menu_accel,
                                    const gchar            *help_domain,
                                    const gchar            *help_data,
@@ -146,6 +148,7 @@ gimp_tools_init (Gimp *gimp)
 
     /*  transform tools  */
 
+    gimp_cage_tool_register,
     gimp_flip_tool_register,
     gimp_perspective_tool_register,
     gimp_shear_tool_register,
@@ -195,7 +198,7 @@ gimp_tools_init (Gimp *gimp)
 
   gimp_container_thaw (gimp->tool_info_list);
 
-  for (list = GIMP_LIST (gimp->tool_info_list)->list;
+  for (list = gimp_get_tool_info_iter (gimp);
        list;
        list = g_list_next (list))
     {
@@ -214,16 +217,28 @@ void
 gimp_tools_exit (Gimp *gimp)
 {
   GList *default_order;
+  GList *list;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
   default_order = g_object_get_data (G_OBJECT (gimp),
                                      "gimp-tools-default-order");
 
-  g_list_foreach (default_order, (GFunc) g_free, NULL);
-  g_list_free (default_order);
+  g_list_free_full (default_order, (GDestroyNotify) g_free);
 
   g_object_set_data (G_OBJECT (gimp), "gimp-tools-default-order", NULL);
+
+  for (list = gimp_get_tool_info_iter (gimp);
+       list;
+       list = g_list_next (list))
+    {
+      GimpToolInfo *tool_info = list->data;
+      GtkWidget    *options_gui;
+
+      options_gui = gimp_tools_get_tool_options_gui (tool_info->tool_options);
+      gtk_widget_destroy (options_gui);
+      gimp_tools_set_tool_options_gui (tool_info->tool_options, NULL);
+    }
 
   tool_manager_exit (gimp);
 }
@@ -248,7 +263,7 @@ gimp_tools_restore (Gimp *gimp)
   if (gimp_config_deserialize_file (GIMP_CONFIG (gimp_list), filename,
                                     NULL, NULL))
     {
-      gint n = gimp_container_num_children (gimp->tool_info_list);
+      gint n = gimp_container_get_n_children (gimp->tool_info_list);
       gint i;
 
       gimp_list_reverse (GIMP_LIST (gimp_list));
@@ -280,7 +295,7 @@ gimp_tools_restore (Gimp *gimp)
   g_free (filename);
   g_object_unref (gimp_list);
 
-  for (list = GIMP_LIST (gimp->tool_info_list)->list;
+  for (list = gimp_get_tool_info_iter (gimp);
        list;
        list = g_list_next (list))
     {
@@ -292,12 +307,11 @@ gimp_tools_restore (Gimp *gimp)
 
   if (! gimp_contexts_load (gimp, &error))
     {
-      gimp_message (gimp, NULL, GIMP_MESSAGE_WARNING,
-                    "%s", error->message);
+      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING, error->message);
       g_clear_error (&error);
     }
 
-  for (list = GIMP_LIST (gimp->tool_info_list)->list;
+  for (list = gimp_get_tool_info_iter (gimp);
        list;
        list = g_list_next (list))
     {
@@ -315,7 +329,9 @@ gimp_tools_restore (Gimp *gimp)
       gimp_context_copy_properties (gimp_get_user_context (gimp),
                                     GIMP_CONTEXT (tool_info->tool_options),
                                     GIMP_CONTEXT_ALL_PROPS_MASK &~
-                                    tool_info->context_props);
+                                    (tool_info->context_props |
+                                     GIMP_CONTEXT_TOOL_MASK   |
+                                     GIMP_CONTEXT_PAINT_INFO_MASK));
 
       gimp_tool_options_deserialize (tool_info->tool_options, NULL);
 
@@ -341,11 +357,8 @@ gimp_tools_restore (Gimp *gimp)
           gtk_widget_show (label);
         }
 
-      g_object_set_data (G_OBJECT (tool_info->tool_options),
-                         "gimp-tool-options-gui", options_gui);
-
-      if (tool_info->presets)
-        gimp_tool_presets_load (tool_info->presets, NULL);
+      gimp_tools_set_tool_options_gui (tool_info->tool_options,
+                                       g_object_ref_sink (options_gui));
     }
 }
 
@@ -365,14 +378,14 @@ gimp_tools_save (Gimp     *gimp,
 
       if (! gimp_contexts_save (gimp, &error))
         {
-          gimp_message (gimp, NULL, GIMP_MESSAGE_WARNING,
-                        "%s", error->message);
+          gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING,
+				error->message);
           g_clear_error (&error);
         }
 
       gimp_tool_options_create_folder ();
 
-      for (list = GIMP_LIST (gimp->tool_info_list)->list;
+      for (list = gimp_get_tool_info_iter (gimp);
            list;
            list = g_list_next (list))
         {
@@ -404,7 +417,7 @@ gimp_tools_clear (Gimp    *gimp,
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
 
-  for (list = GIMP_LIST (gimp->tool_info_list)->list;
+  for (list = gimp_get_tool_info_iter (gimp);
        list && success;
        list = g_list_next (list))
     {
@@ -442,7 +455,7 @@ gimp_tools_register (GType                   tool_type,
                      const gchar            *identifier,
                      const gchar            *blurb,
                      const gchar            *help,
-                     const gchar            *menu_path,
+                     const gchar            *menu_label,
                      const gchar            *menu_accel,
                      const gchar            *help_domain,
                      const gchar            *help_data,
@@ -518,7 +531,7 @@ gimp_tools_register (GType                   tool_type,
                                   identifier,
                                   blurb,
                                   help,
-                                  menu_path,
+                                  menu_label,
                                   menu_accel,
                                   help_domain,
                                   help_data,

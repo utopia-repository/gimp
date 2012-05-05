@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -74,17 +73,20 @@ gimp_rectangle_select_options_class_init (GimpRectangleSelectOptionsClass *klass
    */
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class,
                                     GIMP_RECTANGLE_OPTIONS_PROP_HIGHLIGHT,
-                                    "highlight", NULL,
+                                    "highlight",
+                                    N_("Dim everything outside selection"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ROUND_CORNERS,
-                                    "round-corners", NULL,
+                                    "round-corners",
+                                    N_("Round corners of selection"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_CORNER_RADIUS,
-                                   "corner-radius", NULL,
+                                   "corner-radius",
+                                   N_("Radius of rounding in pixels"),
                                    0.0, 100.0, 5.0,
                                    GIMP_PARAM_STATIC_STRINGS);
 
@@ -154,29 +156,25 @@ gimp_rectangle_select_options_gui (GimpToolOptions *tool_options)
   if (tool_options->tool_info->tool_type == GIMP_TYPE_RECTANGLE_SELECT_TOOL)
     {
       GtkWidget *frame;
-      GtkWidget *button;
-      GtkWidget *table;
+      GtkWidget *scale;
+      GtkWidget *toggle;
 
-      table = gtk_table_new (1, 3, FALSE);
-      gtk_table_set_col_spacings (GTK_TABLE (table), 2);
+      scale = gimp_prop_spin_scale_new (config, "corner-radius",
+                                        _("Radius"),
+                                        1.0, 10.0, 1);
 
       frame = gimp_prop_expanding_frame_new (config, "round-corners",
                                              _("Rounded corners"),
-                                             table, &button);
+                                             scale, NULL);
       gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
       gtk_widget_show (frame);
 
-      g_object_set_data (G_OBJECT (button), "set_sensitive",
-                         GIMP_SELECTION_OPTIONS (tool_options)->antialias_toggle);
-      gtk_widget_set_sensitive (GIMP_SELECTION_OPTIONS (tool_options)->antialias_toggle,
-                                GIMP_RECTANGLE_SELECT_OPTIONS (tool_options)->round_corners);
+      toggle = GIMP_SELECTION_OPTIONS (tool_options)->antialias_toggle;
 
-      gimp_prop_scale_entry_new (config, "corner-radius",
-                                 GTK_TABLE (table), 0, 0,
-                                 _("Radius:"),
-                                 1.0, 10.0, 1,
-                                 FALSE, 0.0, 0.0);
-  }
+      g_object_bind_property (config, "round-corners",
+                              toggle, "sensitive",
+                              G_BINDING_SYNC_CREATE);
+    }
 
   /*  the rectangle options  */
   {

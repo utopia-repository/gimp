@@ -73,6 +73,7 @@
 
 #define LOAD_PROC      "file-tiff-load"
 #define PLUG_IN_BINARY "file-tiff-load"
+#define PLUG_IN_ROLE   "gimp-file-tiff-load"
 
 
 typedef struct
@@ -137,7 +138,6 @@ static void      load_paths    (TIFF         *tif,
 static void      read_separate (const guchar *source,
                                 channel_data *channel,
                                 gushort       bps,
-                                gushort       photomet,
                                 gint          startcol,
                                 gint          startrow,
                                 gint          rows,
@@ -222,7 +222,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
@@ -397,12 +397,12 @@ tiff_warning (const gchar *module,
 
   if (! strcmp (fmt, "%s: unknown field with tag %d (0x%x) encountered"))
     {
-      const char *name;
-      va_list     ap_test;
+      va_list ap_test;
 
       G_VA_COPY (ap_test, ap);
 
-      name = va_arg (ap_test, const char *);
+      va_arg (ap_test, const char *); /* ignore first arg */
+
       tag  = va_arg (ap_test, int);
     }
   /* for older versions of libtiff? */
@@ -475,7 +475,7 @@ load_dialog (TIFF              *tif,
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Import from TIFF"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Import from TIFF"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
@@ -491,9 +491,10 @@ load_dialog (TIFF              *tif,
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   /* Page Selector */
@@ -578,7 +579,6 @@ load_image (const gchar        *filename,
   gboolean      is_bw;
 
   gint          i, j;
-  gint          ilayer;
   gboolean      worst_case = FALSE;
 
   TiffSaveVals  save_vals;
@@ -605,10 +605,10 @@ load_image (const gchar        *filename,
   /* We will loop through the all pages in case of multipage TIFF
      and load every page as a separate layer. */
 
-  ilayer = 0;
-
   for (li = 0; li < pages->n_pages; li++)
     {
+      gint ilayer;
+
       TIFFSetDirectory (tif, pages->pages[li]);
       ilayer = pages->pages[li];
 
@@ -801,7 +801,7 @@ load_image (const gchar        *filename,
                                         GIMP_PARASITE_PERSISTENT |
                                         GIMP_PARASITE_UNDOABLE,
                                         profile_size, icc_profile);
-          gimp_image_parasite_attach (image, parasite);
+          gimp_image_attach_parasite (image, parasite);
           gimp_parasite_free (parasite);
         }
 #endif
@@ -833,7 +833,7 @@ load_image (const gchar        *filename,
 
       parasite = gimp_parasite_new ("tiff-save-options", 0,
                                     sizeof (save_vals), &save_vals);
-      gimp_image_parasite_attach (image, parasite);
+      gimp_image_attach_parasite (image, parasite);
       gimp_parasite_free (parasite);
 
       /* Attach a parasite containing the image description.  Pretend to
@@ -848,7 +848,7 @@ load_image (const gchar        *filename,
             parasite = gimp_parasite_new ("gimp-comment",
                                           GIMP_PARASITE_PERSISTENT,
                                           strlen (img_desc) + 1, img_desc);
-            gimp_image_parasite_attach (image, parasite);
+            gimp_image_attach_parasite (image, parasite);
             gimp_parasite_free (parasite);
           }
       }
@@ -1015,7 +1015,7 @@ load_image (const gchar        *filename,
               channel[i].ID = gimp_channel_new (image, _("TIFF Channel"),
                                                 cols, rows,
                                                 100.0, &color);
-              gimp_image_add_channel (image, channel[i].ID, 0);
+              gimp_image_insert_channel (image, channel[i].ID, -1, 0);
               channel[i].drawable = gimp_drawable_get (channel[i].ID);
             }
         }
@@ -1067,14 +1067,16 @@ load_image (const gchar        *filename,
             }
 
           if (flip_horizontal)
-            gimp_drawable_transform_flip_simple (layer,
-                                                 GIMP_ORIENTATION_HORIZONTAL,
-                                                 TRUE, 0.0, TRUE);
+            gimp_item_transform_flip_simple (layer,
+                                             GIMP_ORIENTATION_HORIZONTAL,
+                                             TRUE /*auto_center*/,
+                                             -1.0 /*axis*/);
 
           if (flip_vertical)
-            gimp_drawable_transform_flip_simple (layer,
-                                                 GIMP_ORIENTATION_VERTICAL,
-                                                 TRUE, 0.0, TRUE);
+            gimp_item_transform_flip_simple (layer,
+                                             GIMP_ORIENTATION_VERTICAL,
+                                             TRUE /*auto_center*/,
+                                             -1.0 /*axis*/);
         }
 
       gimp_drawable_flush (channel[0].drawable);
@@ -1117,7 +1119,7 @@ load_image (const gchar        *filename,
       if (ilayer > 0 && !alpha)
         gimp_layer_add_alpha (layer);
 
-      gimp_image_add_layer (image, layer, -1);
+      gimp_image_insert_layer (image, layer, -1, -1);
 
       if (target == GIMP_PAGE_SELECTOR_TARGET_IMAGES)
         {
@@ -1288,7 +1290,7 @@ load_paths (TIFF *tif, gint image)
           gboolean closed = FALSE;
 
           vectors = gimp_vectors_new (image, name);
-          gimp_image_add_vectors (image, vectors, path_index);
+          gimp_image_insert_vectors (image, vectors, -1, path_index);
           path_index++;
 
           while (rec < pos + len)
@@ -1551,7 +1553,7 @@ load_lines (TIFF         *tif,
               for (i = 0; i < rows; ++i)
                 TIFFReadScanline(tif, buffer + i * lineSize, y + i, s);
 
-              read_separate (buffer, channel, bps, photomet,
+              read_separate (buffer, channel, bps,
                              y, 0, rows, cols, alpha, extra, s);
             }
         }
@@ -2140,7 +2142,6 @@ static void
 read_separate (const guchar *source,
                channel_data *channel,
                gushort       bps,
-               gushort       photomet,
                gint          startrow,
                gint          startcol,
                gint          rows,
@@ -2160,14 +2161,9 @@ read_separate (const guchar *source,
     }
 
   if (sample < channel[0].drawable->bpp)
-    {
-      c = 0;
-    }
+    c = 0;
   else
-    {
-      c = (sample - channel[0].drawable->bpp) + 4;
-      photomet = PHOTOMETRIC_MINISBLACK;
-    }
+    c = (sample - channel[0].drawable->bpp) + 4;
 
   gimp_pixel_rgn_init (&(channel[c].pixel_rgn), channel[c].drawable,
                          startcol, startrow, cols, rows, TRUE, FALSE);

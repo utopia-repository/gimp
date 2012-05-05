@@ -2,13 +2,11 @@
 GimpButton
 
 <!-- ##### SECTION Short_Description ##### -->
-A #GtkButton with a little extra functionality.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#GimpButton adds an extra signal to the #GtkButton widget that allows
-to distinguish a normal click from a click that was performed with
-modifier keys pressed.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -34,7 +32,7 @@ modifier keys pressed.
 </para>
 
 @gimpbutton: the object which received the signal.
-@arg1: the state of modifier keys when the button was clicked
+@arg1: 
 
 <!-- ##### FUNCTION gimp_button_new ##### -->
 <para>

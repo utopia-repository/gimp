@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -411,7 +410,7 @@ gimp_curve_get_description (GimpViewable  *viewable,
 {
   GimpCurve *curve = GIMP_CURVE (viewable);
 
-  return g_strdup_printf ("%s", GIMP_OBJECT (curve)->name);
+  return g_strdup_printf ("%s", gimp_object_get_name (curve));
 }
 
 static void
@@ -435,12 +434,10 @@ gimp_curve_get_extension (GimpData *data)
 static GimpData *
 gimp_curve_duplicate (GimpData *data)
 {
-  GimpCurve *curve = GIMP_CURVE (data);
-  GimpCurve *new;
+  GimpCurve *new = g_object_new (GIMP_TYPE_CURVE, NULL);
 
-  new = g_object_new (GIMP_TYPE_CURVE,
-                      "curve-type", curve->curve_type,
-                      NULL);
+  gimp_config_copy (GIMP_CONFIG (data),
+                    GIMP_CONFIG (new), 0);
 
   return GIMP_DATA (new);
 }
@@ -533,8 +530,9 @@ gimp_curve_get_standard (void)
     {
       standard_curve = gimp_curve_new ("Standard");
 
-      standard_curve->dirty = FALSE;
-      gimp_data_make_internal (standard_curve);
+      gimp_data_clean (standard_curve);
+      gimp_data_make_internal (standard_curve,
+                               "gimp-curve-standard");
 
       g_object_ref (standard_curve);
     }
@@ -800,6 +798,34 @@ gimp_curve_move_point (GimpCurve *curve,
 }
 
 void
+gimp_curve_delete_point (GimpCurve *curve,
+                         gint       point)
+{
+  g_return_if_fail (GIMP_IS_CURVE (curve));
+  g_return_if_fail (point >= 0 && point < curve->n_points);
+
+  if (point == 0)
+    {
+      curve->points[0].x = 0.0;
+      curve->points[0].y = 0.0;
+    }
+  else if (point == curve->n_points - 1)
+    {
+      curve->points[curve->n_points - 1].x = 1.0;
+      curve->points[curve->n_points - 1].y = 1.0;
+    }
+  else
+    {
+      curve->points[point].x = -1.0;
+      curve->points[point].y = -1.0;
+    }
+
+  g_object_notify (G_OBJECT (curve), "points");
+
+  gimp_data_dirty (GIMP_DATA (curve));
+}
+
+void
 gimp_curve_get_point (GimpCurve *curve,
                       gint       point,
                       gdouble   *x,
@@ -868,9 +894,7 @@ gimp_curve_get_uchar (GimpCurve *curve,
   gint i;
 
   g_return_if_fail (GIMP_IS_CURVE (curve));
-#ifdef __GNUC__
-#warning: FIXME: support n_samples != curve->n_samples
-#endif
+  /* FIXME: support n_samples != curve->n_samples */
   g_return_if_fail (n_samples == curve->n_samples);
   g_return_if_fail (samples != NULL);
 
@@ -889,7 +913,7 @@ gimp_curve_calculate (GimpCurve *curve)
   gint  num_pts;
   gint  p1, p2, p3, p4;
 
-  if (GIMP_DATA (curve)->freeze_count > 0)
+  if (gimp_data_is_frozen (GIMP_DATA (curve)))
     return;
 
   points = g_newa (gint, curve->n_points);

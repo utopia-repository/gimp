@@ -4,9 +4,9 @@
  * gimpfiledialog.h
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_FILE_DIALOG_H__
@@ -44,6 +43,7 @@ struct _GimpFileDialog
   GimpImage            *image;
   gboolean              open_as_layers;
   gboolean              save_a_copy;
+  gboolean              export;
   gboolean              close_after_saving;
 
   GtkWidget            *thumb_box;
@@ -67,7 +67,7 @@ typedef struct _GimpFileDialogState GimpFileDialogState;
 GType       gimp_file_dialog_get_type       (void) G_GNUC_CONST;
 
 GtkWidget * gimp_file_dialog_new            (Gimp                 *gimp,
-                                             GtkFileChooserAction  action,
+                                             GimpFileChooserAction action,
                                              const gchar          *title,
                                              const gchar          *role,
                                              const gchar          *stock_id,
@@ -83,8 +83,10 @@ void        gimp_file_dialog_set_open_image (GimpFileDialog       *dialog,
                                              GimpImage            *image,
                                              gboolean              open_as_layers);
 void        gimp_file_dialog_set_save_image (GimpFileDialog       *dialog,
+                                             Gimp                 *gimp,
                                              GimpImage            *image,
                                              gboolean              save_a_copy,
+                                             gboolean              export,
                                              gboolean              close_after_saving);
 
 GimpFileDialogState * gimp_file_dialog_get_state     (GimpFileDialog      *dialog);

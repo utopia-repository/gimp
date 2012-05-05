@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -208,6 +207,14 @@ menus_init (Gimp              *gimp,
                                       "brushes-menu.xml", plug_in_menus_setup,
                                       NULL);
 
+  gimp_menu_factory_manager_register (global_menu_factory, "<Dynamics>",
+                                      "dynamics",
+                                      "plug-in",
+                                      NULL,
+                                      "/dynamics-popup",
+                                      "dynamics-menu.xml", plug_in_menus_setup,
+                                      NULL);
+
   gimp_menu_factory_manager_register (global_menu_factory, "<Patterns>",
                                       "patterns",
                                       "plug-in",
@@ -230,6 +237,15 @@ menus_init (Gimp              *gimp,
                                       NULL,
                                       "/palettes-popup",
                                       "palettes-menu.xml", plug_in_menus_setup,
+                                      NULL);
+
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<ToolPresets>",
+                                      "tool-presets",
+                                      "plug-in",
+                                      NULL,
+                                      "/tool-presets-popup",
+                                      "tool-presets-menu.xml", plug_in_menus_setup,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Fonts>",
@@ -269,18 +285,18 @@ menus_init (Gimp              *gimp,
                                       "images-menu.xml", NULL,
                                       NULL);
 
-  gimp_menu_factory_manager_register (global_menu_factory, "<Tools>",
-                                      "tools",
-                                      NULL,
-                                      "/tools-popup",
-                                      "tools-menu.xml", NULL,
-                                      NULL);
-
   gimp_menu_factory_manager_register (global_menu_factory, "<BrushEditor>",
                                       "brush-editor",
                                       NULL,
                                       "/brush-editor-popup",
                                       "brush-editor-menu.xml", NULL,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<DynamicsEditor>",
+                                      "dynamics-editor",
+                                      NULL,
+                                      "/dynamics-editor-popup",
+                                      "dynamics-editor-menu.xml", NULL,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<GradientEditor>",
@@ -295,6 +311,13 @@ menus_init (Gimp              *gimp,
                                       NULL,
                                       "/palette-editor-popup",
                                       "palette-editor-menu.xml", NULL,
+                                      NULL);
+
+  gimp_menu_factory_manager_register (global_menu_factory, "<ToolPresetEditor>",
+                                      "tool-preset-editor",
+                                      NULL,
+                                      "/tool-preset-editor-popup",
+                                      "tool-preset-editor-menu.xml", NULL,
                                       NULL);
 
   gimp_menu_factory_manager_register (global_menu_factory, "<Selection>",
@@ -340,6 +363,14 @@ menus_init (Gimp              *gimp,
                                       NULL,
                                       NULL);
 
+  gimp_menu_factory_manager_register (global_menu_factory, "<TextTool>",
+                                      "text-tool",
+                                      NULL,
+                                      "/text-tool-popup",
+                                      "text-tool-menu.xml",
+                                      NULL,
+                                      NULL);
+
   gimp_menu_factory_manager_register (global_menu_factory, "<CursorInfo>",
                                       "cursor-info",
                                       NULL,
@@ -362,7 +393,6 @@ menus_exit (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (global_menu_factory != NULL);
-  g_return_if_fail (global_menu_factory->gimp == gimp);
 
   g_object_unref (global_menu_factory);
   global_menu_factory = NULL;
@@ -430,7 +460,8 @@ menus_clear (Gimp    *gimp,
     }
   else if (g_unlink (filename) != 0 && errno != ENOENT)
     {
-      g_set_error (error, 0, 0, _("Deleting \"%s\" failed: %s"),
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+		   _("Deleting \"%s\" failed: %s"),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       success = FALSE;
     }

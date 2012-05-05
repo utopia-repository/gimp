@@ -18,6 +18,11 @@ libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la $(l
 libtinyscheme=tinyscheme/libtinyscheme.a $(libm)
 libftx=ftx/libftx.a
 
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+script_fu_RC = script-fu.rc.o
+endif
+
 AM_CFLAGS = \
 	-DSTANDALONE=0     \
 	-DUSE_INTERFACE=1  \
@@ -76,4 +81,20 @@ LDADD = \
 	$(SOCKET_LIBS)		\
 	$(WINSOCK_LIBS)		\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
+	$(INTLLIBS)		\
+	$(script_fu_RC)
+
+
+# Perform static analysis on all *.scm files and look for usage of
+# deprecated pdb procedures
+check-for-deprecated-procedures-in-script-fu:
+	@echo "Looking for deprecated procedures in *.scm files"
+	@scm_files=`find $(top_srcdir)/plug-ins/script-fu -name "*.scm"`;       \
+	deprecated_procs=`$(top_builddir)/app/gimp-$(GIMP_APP_VERSION)$(EXEEXT) --dump-pdb-procedures-deprecated`; \
+	for scm_file in $$scm_files; do                                         \
+	  for proc in $$deprecated_procs; do                                    \
+	    if grep -qw $$proc $$scm_file; then                                 \
+	      echo "$${scm_file} uses deprecated procedure '$${proc}'";         \
+	    fi                                                                  \
+	  done                                                                  \
+	done

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,7 @@
 #include "paint/gimpconvolveoptions.h"
 
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpconvolvetool.h"
@@ -42,11 +42,11 @@ static void   gimp_convolve_tool_modifier_key  (GimpTool         *tool,
                                                 GdkModifierType   state,
                                                 GimpDisplay      *display);
 static void   gimp_convolve_tool_cursor_update (GimpTool         *tool,
-                                                GimpCoords       *coords,
+                                                const GimpCoords *coords,
                                                 GdkModifierType   state,
                                                 GimpDisplay      *display);
 static void   gimp_convolve_tool_oper_update   (GimpTool         *tool,
-                                                GimpCoords       *coords,
+                                                const GimpCoords *coords,
                                                 GdkModifierType   state,
                                                 gboolean          proximity,
                                                 GimpDisplay      *display);
@@ -108,11 +108,25 @@ gimp_convolve_tool_modifier_key (GimpTool        *tool,
                                  GdkModifierType  state,
                                  GimpDisplay     *display)
 {
-  GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
+  GimpConvolveTool    *convolve = GIMP_CONVOLVE_TOOL (tool);
+  GimpConvolveOptions *options  = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
+  GdkModifierType      toggle_mask;
 
-  if ((key == GDK_CONTROL_MASK) &&
-      ! (state & GDK_SHIFT_MASK)) /* leave stuff untouched in line draw mode */
+  toggle_mask = gimp_get_toggle_behavior_mask ();
+
+  if (((key == toggle_mask)       &&
+       ! (state & GDK_SHIFT_MASK) && /* leave stuff untouched in line draw mode */
+       press != convolve->toggled)
+
+      ||
+
+      (key == GDK_SHIFT_MASK && /* toggle back after keypresses CTRL(hold)->  */
+       ! press               && /* SHIFT(hold)->CTRL(release)->SHIFT(release) */
+       convolve->toggled     &&
+       ! (state & toggle_mask)))
     {
+      convolve->toggled = press;
+
       switch (options->type)
         {
         case GIMP_BLUR_CONVOLVE:
@@ -130,10 +144,10 @@ gimp_convolve_tool_modifier_key (GimpTool        *tool,
 }
 
 static void
-gimp_convolve_tool_cursor_update (GimpTool        *tool,
-                                  GimpCoords      *coords,
-                                  GdkModifierType  state,
-                                  GimpDisplay     *display)
+gimp_convolve_tool_cursor_update (GimpTool         *tool,
+                                  const GimpCoords *coords,
+                                  GdkModifierType   state,
+                                  GimpDisplay      *display)
 {
   GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
 
@@ -144,11 +158,11 @@ gimp_convolve_tool_cursor_update (GimpTool        *tool,
 }
 
 static void
-gimp_convolve_tool_oper_update (GimpTool        *tool,
-                                GimpCoords      *coords,
-                                GdkModifierType  state,
-                                gboolean         proximity,
-                                GimpDisplay     *display)
+gimp_convolve_tool_oper_update (GimpTool         *tool,
+                                const GimpCoords *coords,
+                                GdkModifierType   state,
+                                gboolean          proximity,
+                                GimpDisplay      *display)
 {
   GimpConvolveOptions *options = GIMP_CONVOLVE_TOOL_GET_OPTIONS (tool);
 
@@ -189,15 +203,18 @@ gimp_convolve_tool_status_update (GimpTool         *tool,
 static GtkWidget *
 gimp_convolve_options_gui (GimpToolOptions *tool_options)
 {
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_paint_options_gui (tool_options);
-  GtkWidget *table;
-  GtkWidget *frame;
-  gchar     *str;
+  GObject         *config = G_OBJECT (tool_options);
+  GtkWidget       *vbox   = gimp_paint_options_gui (tool_options);
+  GtkWidget       *frame;
+  GtkWidget       *scale;
+  gchar           *str;
+  GdkModifierType  toggle_mask;
+
+  toggle_mask = gimp_get_toggle_behavior_mask ();
 
   /*  the type radio box  */
   str = g_strdup_printf (_("Convolve Type  (%s)"),
-                         gimp_get_mod_string (GDK_CONTROL_MASK));
+                         gimp_get_mod_string (toggle_mask));
 
   frame = gimp_prop_enum_radio_frame_new (config, "type",
                                           str, 0, 0);
@@ -207,16 +224,11 @@ gimp_convolve_options_gui (GimpToolOptions *tool_options)
   g_free (str);
 
   /*  the rate scale  */
-  table = gtk_table_new (1, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
-
-  gimp_prop_scale_entry_new (config, "rate",
-                             GTK_TABLE (table), 0, 0,
-                             _("Rate:"),
-                             1.0, 10.0, 1,
-                             FALSE, 0.0, 0.0);
+  scale = gimp_prop_spin_scale_new (config, "rate",
+                                    _("Rate"),
+                                    1.0, 10.0, 1);
+  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
 
   return vbox;
 }

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,6 +20,8 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
+
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -154,62 +155,68 @@ static gboolean
 gimp_color_bar_expose (GtkWidget      *widget,
                        GdkEventExpose *event)
 {
-  GimpColorBar *bar   = GIMP_COLOR_BAR (widget);
-  GtkStyle     *style = gtk_widget_get_style (widget);
-  guchar       *buf;
-  guchar       *b;
-  gint          x, y;
-  gint          width, height;
-  gint          i, j;
+  GimpColorBar    *bar = GIMP_COLOR_BAR (widget);
+  cairo_t         *cr;
+  GtkAllocation    allocation;
+  cairo_surface_t *surface;
+  cairo_pattern_t *pattern;
+  guchar          *src;
+  guchar          *dest;
+  gint             x, y;
+  gint             width, height;
+  gint             i;
+
+  cr = gdk_cairo_create (event->window);
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   x = y = gtk_container_get_border_width (GTK_CONTAINER (bar));
 
-  width  = widget->allocation.width  - 2 * x;
-  height = widget->allocation.height - 2 * y;
+  width  = allocation.width  - 2 * x;
+  height = allocation.height - 2 * y;
 
   if (width < 1 || height < 1)
     return TRUE;
 
-  buf = g_alloca (width * height * 3);
+  cairo_translate (cr, allocation.x + x, allocation.y + y);
+  cairo_rectangle (cr, 0, 0, width, height);
+  cairo_clip (cr);
 
-  switch (bar->orientation)
+  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, 256, 1);
+
+  for (i = 0, src = bar->buf, dest = cairo_image_surface_get_data (surface);
+       i < 256;
+       i++, src += 3, dest += 4)
     {
-    case GTK_ORIENTATION_HORIZONTAL:
-      for (i = 0, b = buf; i < width; i++, b += 3)
-        {
-          const guchar *src = bar->buf + 3 * ((i * 256) / width);
-
-          b[0] = src[0];
-          b[1] = src[1];
-          b[2] = src[2];
-        }
-
-      for (i = 1; i < height; i++)
-        memcpy (buf + i * width * 3, buf, width * 3);
-
-      break;
-
-    case GTK_ORIENTATION_VERTICAL:
-      for (i = 0, b = buf; i < height; i++, b += 3 * width)
-        {
-          const guchar *src  = bar->buf + 3 * (255 - ((i * 256) / height));
-          guchar       *dest = b;
-
-          for (j = 0; j < width; j++, dest += 3)
-            {
-              dest[0] = src[0];
-              dest[1] = src[1];
-              dest[2] = src[2];
-            }
-        }
-      break;
+      GIMP_CAIRO_RGB24_SET_PIXEL(dest, src[0], src[1], src[2]);
     }
 
-  gdk_draw_rgb_image (widget->window, style->black_gc,
-                      widget->allocation.x + x, widget->allocation.y + y,
-                      width, height,
-                      GDK_RGB_DITHER_NORMAL,
-                      buf, 3 * width);
+  cairo_surface_mark_dirty (surface);
+
+  pattern = cairo_pattern_create_for_surface (surface);
+  cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REFLECT);
+  cairo_surface_destroy (surface);
+
+  if (bar->orientation == GTK_ORIENTATION_HORIZONTAL)
+    {
+      cairo_scale (cr, (gdouble) width / 256.0, 1.0);
+    }
+  else
+    {
+      cairo_translate (cr, 0, height);
+      cairo_scale (cr, 1.0, (gdouble) height / 256.0);
+      cairo_rotate (cr, - G_PI / 2);
+    }
+
+  cairo_set_source (cr, pattern);
+  cairo_pattern_destroy (pattern);
+
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }

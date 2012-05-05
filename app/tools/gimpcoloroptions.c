@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -24,6 +23,8 @@
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
+
+#include "widgets/gimppropwidgets.h"
 
 #include "gimphistogramoptions.h"
 #include "gimpcoloroptions.h"
@@ -72,7 +73,8 @@ gimp_color_options_class_init (GimpColorOptionsClass *klass)
                                     TRUE,
                                     GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_AVERAGE_RADIUS,
-                                   "average-radius", NULL,
+                                   "average-radius",
+                                   _("Color Picker Average Radius"),
                                    1.0, 300.0, 3.0,
                                    GIMP_PARAM_STATIC_STRINGS);
 }
@@ -138,9 +140,8 @@ gimp_color_options_gui (GimpToolOptions *tool_options)
   GObject   *config = G_OBJECT (tool_options);
   GtkWidget *vbox;
   GtkWidget *frame;
-  GtkWidget *table;
+  GtkWidget *scale;
   GtkWidget *button;
-  GtkObject *adj;
 
   if (GIMP_IS_HISTOGRAM_OPTIONS (tool_options))
     vbox = gimp_histogram_options_gui (tool_options);
@@ -152,26 +153,20 @@ gimp_color_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  table = gtk_table_new (1, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_widget_show (table);
+  scale = gimp_prop_spin_scale_new (config, "average-radius",
+                                    _("Radius"),
+                                    1.0, 10.0, 0);
+  gtk_container_add (GTK_CONTAINER (frame), scale);
+  gtk_widget_show (scale);
 
   button = gimp_prop_check_button_new (config, "sample-average",
                                        _("Sample average"));
   gtk_frame_set_label_widget (GTK_FRAME (frame), button);
   gtk_widget_show (button);
 
-  gtk_widget_set_sensitive (table,
-                            GIMP_COLOR_OPTIONS (config)->sample_average);
-  g_object_set_data (G_OBJECT (button), "set_sensitive", table);
-
-  adj = gimp_prop_scale_entry_new (config, "average-radius",
-                                   GTK_TABLE (table), 0, 0,
-                                   _("Radius:"),
-                                   1.0, 10.0, 0,
-                                   FALSE, 0.0, 0.0);
-  gimp_scale_entry_set_logarithmic (adj, TRUE);
+  g_object_bind_property (config, "sample-average",
+                          scale,  "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   return vbox;
 }

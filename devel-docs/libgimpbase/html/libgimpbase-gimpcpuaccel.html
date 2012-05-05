@@ -31,7 +31,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimpbase-gimpcpuaccel.top_of_page"></a>gimpcpuaccel</span></h2>
-<p>gimpcpuaccel</p>
+<p>gimpcpuaccel — Functions to query and configure CPU acceleration.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -39,12 +39,13 @@
 <a name="libgimpbase-gimpcpuaccel.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">enum                <a class="link" href="libgimpbase-gimpcpuaccel.html#GimpCpuAccelFlags" title="enum GimpCpuAccelFlags">GimpCpuAccelFlags</a>;
 <a class="link" href="libgimpbase-gimpcpuaccel.html#GimpCpuAccelFlags" title="enum GimpCpuAccelFlags"><span class="returnvalue">GimpCpuAccelFlags</span></a>   <a class="link" href="libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-get-support" title="gimp_cpu_accel_get_support ()">gimp_cpu_accel_get_support</a>          (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-set-use" title="gimp_cpu_accel_set_use ()">gimp_cpu_accel_set_use</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> use</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-set-use" title="gimp_cpu_accel_set_use ()">gimp_cpu_accel_set_use</a>              (<em class="parameter"><code><span class="type">gboolean</span> use</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="libgimpbase-gimpcpuaccel.description"></a><h2>Description</h2>
 <p>
+Functions to query and configure CPU acceleration.
 </p>
 </div>
 <div class="refsect1">
@@ -89,7 +90,7 @@ Query for CPU acceleration support.
 <hr>
 <div class="refsect2">
 <a name="gimp-cpu-accel-set-use"></a><h3>gimp_cpu_accel_set_use ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gimp_cpu_accel_set_use              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> use</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_cpu_accel_set_use              (<em class="parameter"><code><span class="type">gboolean</span> use</code></em>);</pre>
 <p>
 This function is for internal use only.
 </p>

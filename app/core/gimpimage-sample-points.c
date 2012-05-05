@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
@@ -26,6 +25,7 @@
 
 #include "gimp.h"
 #include "gimpimage.h"
+#include "gimpimage-private.h"
 #include "gimpimage-sample-points.h"
 #include "gimpimage-undo-push.h"
 #include "gimpsamplepoint.h"
@@ -50,7 +50,7 @@ gimp_image_add_sample_point_at_pos (GimpImage *image,
   sample_point = gimp_sample_point_new (image->gimp->next_sample_point_ID++);
 
   if (push_undo)
-    gimp_image_undo_push_sample_point (image, _("Add Sample Point"),
+    gimp_image_undo_push_sample_point (image, C_("undo-type", "Add Sample Point"),
                                        sample_point);
 
   gimp_image_add_sample_point (image, sample_point, x, y);
@@ -65,21 +65,20 @@ gimp_image_add_sample_point (GimpImage       *image,
                              gint             x,
                              gint             y)
 {
+  GimpImagePrivate *private;
+
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (sample_point != NULL);
-  g_return_if_fail (x >= 0);
-  g_return_if_fail (y >= 0);
-  g_return_if_fail (x < gimp_image_get_width  (image));
-  g_return_if_fail (y < gimp_image_get_height (image));
 
-  image->sample_points = g_list_append (image->sample_points, sample_point);
+  private = GIMP_IMAGE_GET_PRIVATE (image);
+
+  private->sample_points = g_list_append (private->sample_points, sample_point);
 
   sample_point->x = x;
   sample_point->y = y;
   gimp_sample_point_ref (sample_point);
 
   gimp_image_sample_point_added (image, sample_point);
-  gimp_image_update_sample_point (image, sample_point);
 }
 
 void
@@ -87,34 +86,25 @@ gimp_image_remove_sample_point (GimpImage       *image,
                                 GimpSamplePoint *sample_point,
                                 gboolean         push_undo)
 {
-  GList *list;
+  GimpImagePrivate *private;
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (sample_point != NULL);
 
-  gimp_image_update_sample_point (image, sample_point);
+  private = GIMP_IMAGE_GET_PRIVATE (image);
 
   if (push_undo)
-    gimp_image_undo_push_sample_point (image, _("Remove Sample Point"),
+    gimp_image_undo_push_sample_point (image,
+                                       C_("undo-type", "Remove Sample Point"),
                                        sample_point);
 
-  list = g_list_find (image->sample_points, sample_point);
-  if (list)
-    list = g_list_next (list);
-
-  image->sample_points = g_list_remove (image->sample_points, sample_point);
+  private->sample_points = g_list_remove (private->sample_points, sample_point);
 
   gimp_image_sample_point_removed (image, sample_point);
 
   sample_point->x = -1;
   sample_point->y = -1;
   gimp_sample_point_unref (sample_point);
-
-  while (list)
-    {
-      gimp_image_update_sample_point (image, list->data);
-      list = g_list_next (list);
-    }
 }
 
 void
@@ -132,13 +122,14 @@ gimp_image_move_sample_point (GimpImage       *image,
   g_return_if_fail (y < gimp_image_get_height (image));
 
   if (push_undo)
-    gimp_image_undo_push_sample_point (image, _("Move Sample Point"),
+    gimp_image_undo_push_sample_point (image,
+                                       C_("undo-type", "Move Sample Point"),
                                        sample_point);
 
-  gimp_image_update_sample_point (image, sample_point);
   sample_point->x = x;
   sample_point->y = y;
-  gimp_image_update_sample_point (image, sample_point);
+
+  gimp_image_sample_point_moved (image, sample_point);
 }
 
 GList *
@@ -146,7 +137,7 @@ gimp_image_get_sample_points (GimpImage *image)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
-  return image->sample_points;
+  return GIMP_IMAGE_GET_PRIVATE (image)->sample_points;
 }
 
 GimpSamplePoint *
@@ -169,7 +160,9 @@ gimp_image_find_sample_point (GimpImage *image,
       return NULL;
     }
 
-  for (list = image->sample_points; list; list = g_list_next (list))
+  for (list = GIMP_IMAGE_GET_PRIVATE (image)->sample_points;
+       list;
+       list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
       gdouble          dist;

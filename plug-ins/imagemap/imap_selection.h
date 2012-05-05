@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -28,22 +27,18 @@
 #include "imap_object.h"
 
 typedef struct {
-  GtkListStore		*store;
-  GtkTreeSelection	*selection;
+  GtkListStore          *store;
+  GtkTreeSelection      *selection;
 
-  GtkWidget	*container;
-  GtkWidget	*list;
-  GtkWidget	*selected_child;
-  GtkWidget	*arrow_up;
-  GtkWidget	*arrow_down;
-  GtkWidget	*remove;
-  GtkWidget	*edit;
+  GtkWidget    *container;
+  GtkWidget    *list;
+  GtkWidget    *selected_child;
   ObjectList_t *object_list;
-  gint		selected_row;
-  gint		nr_rows;
-  gboolean	is_visible;
-  gboolean 	select_lock;
-  gboolean	doubleclick;
+  gint          selected_row;
+  gint          nr_rows;
+  gboolean      is_visible;
+  gboolean      select_lock;
+  gboolean      doubleclick;
 
   CommandFactory_t cmd_move_up;
   CommandFactory_t cmd_move_down;
@@ -57,13 +52,13 @@ void selection_freeze(Selection_t *selection);
 void selection_thaw(Selection_t *selection);
 
 #define selection_set_move_up_command(selection, command) \
-	((selection)->cmd_move_up = (command))
+        ((selection)->cmd_move_up = (command))
 #define selection_set_move_down_command(selection, command) \
-	((selection)->cmd_move_down = (command))
+        ((selection)->cmd_move_down = (command))
 #define selection_set_delete_command(selection, command) \
-	((selection)->cmd_delete = (command))
+        ((selection)->cmd_delete = (command))
 #define selection_set_edit_command(selection, command) \
-	((selection)->cmd_edit = (command))
+        ((selection)->cmd_edit = (command))
 
 #endif /* _IMAP_SELECTION_H */
 

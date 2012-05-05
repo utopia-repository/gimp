@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -42,14 +41,14 @@ window_close_cmd_callback (GtkAction *action,
   GtkWidget *widget;
   return_if_no_widget (widget, data);
 
-  if (! GTK_WIDGET_TOPLEVEL (widget))
+  if (! gtk_widget_is_toplevel (widget))
     widget = gtk_widget_get_toplevel (widget);
 
-  if (widget && widget->window)
+  if (widget && gtk_widget_get_window (widget))
     {
       GdkEvent *event = gdk_event_new (GDK_DELETE);
 
-      event->any.window     = g_object_ref (widget->window);
+      event->any.window     = g_object_ref (gtk_widget_get_window (widget));
       event->any.send_event = TRUE;
 
       gtk_main_do_event (event);
@@ -89,7 +88,8 @@ window_open_display_cmd_callback (GtkAction *action,
 
   entry = gtk_entry_new ();
   gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
-  gtk_container_add (GTK_CONTAINER (GIMP_MESSAGE_DIALOG (dialog)->box), entry);
+  gtk_box_pack_start (GTK_BOX (GIMP_MESSAGE_DIALOG (dialog)->box), entry,
+                      TRUE, TRUE, 0);
 
   gtk_widget_grab_focus (entry);
   gtk_widget_show_all (dialog);
@@ -137,7 +137,7 @@ window_move_to_screen_cmd_callback (GtkAction *action,
   GdkScreen *screen;
   return_if_no_widget (widget, data);
 
-  if (! GTK_WIDGET_TOPLEVEL (widget))
+  if (! gtk_widget_is_toplevel (widget))
     widget = gtk_widget_get_toplevel (widget);
 
   screen = g_object_get_data (G_OBJECT (current), "screen");

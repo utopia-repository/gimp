@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,36 +38,36 @@
 static const GimpActionEntry templates_actions[] =
 {
   { "templates-popup", GIMP_STOCK_TEMPLATE,
-    N_("Templates Menu"), NULL, NULL, NULL,
+    NC_("templates-action", "Templates Menu"), NULL, NULL, NULL,
     GIMP_HELP_TEMPLATE_DIALOG },
 
   { "templates-create-image", GIMP_STOCK_IMAGE,
-    N_("_Create Image from Template"), "",
-    N_("Create a new image from the selected template"),
+    NC_("templates-action", "_Create Image from Template"), "",
+    NC_("templates-action", "Create a new image from the selected template"),
     G_CALLBACK (templates_create_image_cmd_callback),
     GIMP_HELP_TEMPLATE_IMAGE_NEW },
 
   { "templates-new", GTK_STOCK_NEW,
-    N_("_New Template..."), "",
-    N_("Create a new template"),
+    NC_("templates-action", "_New Template..."), "",
+    NC_("templates-action", "Create a new template"),
     G_CALLBACK (templates_new_cmd_callback),
     GIMP_HELP_TEMPLATE_NEW },
 
   { "templates-duplicate", GIMP_STOCK_DUPLICATE,
-    N_("D_uplicate Template..."), "",
-    N_("Duplicate the selected template"),
+    NC_("templates-action", "D_uplicate Template..."), "",
+    NC_("templates-action", "Duplicate this template"),
     G_CALLBACK (templates_duplicate_cmd_callback),
     GIMP_HELP_TEMPLATE_DUPLICATE },
 
   { "templates-edit", GTK_STOCK_EDIT,
-    N_("_Edit Template..."), "",
-    N_("Edit the selected template"),
+    NC_("templates-action", "_Edit Template..."), "",
+    NC_("templates-action", "Edit this template"),
     G_CALLBACK (templates_edit_cmd_callback),
     GIMP_HELP_TEMPLATE_EDIT },
 
   { "templates-delete", GTK_STOCK_DELETE,
-    N_("_Delete Template"), "",
-    N_("Delete the selected template"),
+    NC_("templates-action", "_Delete Template"), "",
+    NC_("templates-action", "Delete this template"),
     G_CALLBACK (templates_delete_cmd_callback),
     GIMP_HELP_TEMPLATE_DELETE }
 };
@@ -77,7 +76,7 @@ static const GimpActionEntry templates_actions[] =
 void
 templates_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "templates-action",
                                  templates_actions,
                                  G_N_ELEMENTS (templates_actions));
 }

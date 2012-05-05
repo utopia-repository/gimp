@@ -4,9 +4,9 @@
  * gimpoperationhuesaturation.c
  * Copyright (C) 2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <gegl.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -36,7 +36,8 @@ static gboolean gimp_operation_hue_saturation_process (GeglOperation       *oper
                                                        void                *in_buf,
                                                        void                *out_buf,
                                                        glong                samples,
-                                                       const GeglRectangle *roi);
+                                                       const GeglRectangle *roi,
+                                                       gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationHueSaturation, gimp_operation_hue_saturation,
@@ -55,9 +56,11 @@ gimp_operation_hue_saturation_class_init (GimpOperationHueSaturationClass *klass
   object_class->set_property   = gimp_operation_point_filter_set_property;
   object_class->get_property   = gimp_operation_point_filter_get_property;
 
-  operation_class->name        = "gimp-hue-saturation";
-  operation_class->categories  = "color";
-  operation_class->description = "GIMP Hue-Saturation operation";
+  gegl_operation_class_set_keys (operation_class,
+           "name"       , "gimp:hue-saturation",
+           "categories" , "color",
+           "description", "GIMP Hue-Saturation operation",
+           NULL);
 
   point_class->process         = gimp_operation_hue_saturation_process;
 
@@ -129,7 +132,8 @@ gimp_operation_hue_saturation_process (GeglOperation       *operation,
                                        void                *in_buf,
                                        void                *out_buf,
                                        glong                samples,
-                                       const GeglRectangle *roi)
+                                       const GeglRectangle *roi,
+                                       gint                 level)
 {
   GimpOperationPointFilter *point  = GIMP_OPERATION_POINT_FILTER (operation);
   GimpHueSaturationConfig  *config = GIMP_HUE_SATURATION_CONFIG (point->config);
@@ -154,9 +158,9 @@ gimp_operation_hue_saturation_process (GeglOperation       *operation,
       gfloat   primary_intensity   = 0.0;
       gfloat   secondary_intensity = 0.0;
 
-      rgb.r = src[RED_PIX];
-      rgb.g = src[GREEN_PIX];
-      rgb.b = src[BLUE_PIX];
+      rgb.r = src[RED];
+      rgb.g = src[GREEN];
+      rgb.b = src[BLUE];
 
       gimp_rgb_to_hsl (&rgb, &hsl);
 
@@ -245,10 +249,10 @@ gimp_operation_hue_saturation_process (GeglOperation       *operation,
 
       gimp_hsl_to_rgb (&hsl, &rgb);
 
-      dest[RED_PIX]   = rgb.r;
-      dest[GREEN_PIX] = rgb.g;
-      dest[BLUE_PIX]  = rgb.b;
-      dest[ALPHA_PIX] = src[ALPHA_PIX];
+      dest[RED]   = rgb.r;
+      dest[GREEN] = rgb.g;
+      dest[BLUE]  = rgb.b;
+      dest[ALPHA] = src[ALPHA];
 
       src  += 4;
       dest += 4;

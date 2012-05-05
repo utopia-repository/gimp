@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -54,7 +53,7 @@ static void        fp_pnt_add      (gdouble     p1,
                                     gdouble     p3,
                                     gdouble     p4);
 static gdouble    *d_bz_get_array  (gint       *sz);
-static void        d_bz_line       (void);
+static void        d_bz_line       (cairo_t *cr);
 static void        DrawBezier      (fp_pnt      points,
                                     gint        np,
                                     gdouble     mid,
@@ -103,7 +102,7 @@ d_bz_get_array (gint *sz)
 }
 
 static void
-d_bz_line (void)
+d_bz_line (cairo_t *cr)
 {
   gint i, x0, y0, x1, y1;
 
@@ -116,7 +115,7 @@ d_bz_line (void)
       x1 = fp_pnt_pnts[i + 2];
       y1 = fp_pnt_pnts[i + 3];
 
-      gfig_draw_line (x0, y0, x1, y1);
+      gfig_draw_line (x0, y0, x1, y1, cr);
     }
 }
 
@@ -180,7 +179,8 @@ DrawBezier (fp_pnt  points,
 }
 
 void
-d_draw_bezier (GfigObject *obj)
+d_draw_bezier (GfigObject *obj,
+               cairo_t    *cr)
 {
   DobjPoints *spnt;
   gint        seg_count = 0;
@@ -201,7 +201,10 @@ d_draw_bezier (GfigObject *obj)
   /* Go around all the points drawing a line from one to the next */
   for (spnt = obj->points; spnt; spnt = spnt->next)
     {
-      draw_sqr (&spnt->pnt, obj == gfig_context->selected_obj);
+      if (! spnt->next && obj == obj_creating)
+        draw_circle (&spnt->pnt, TRUE, cr);
+      else
+        draw_sqr (&spnt->pnt, obj == gfig_context->selected_obj, cr);
       line_pnts[i][0] = spnt->pnt.x;
       line_pnts[i][1] = spnt->pnt.y;
       i++;
@@ -213,13 +216,12 @@ d_draw_bezier (GfigObject *obj)
     {
       fp_pnt_start ();
       DrawBezier (line_pnts, seg_count, 0.5, 0);
-      d_bz_line ();
+      d_bz_line (cr);
     }
 
   fp_pnt_start ();
   DrawBezier (line_pnts, seg_count, 0.5, 3);
-  d_bz_line ();
-  /*bezier4 (line_pnts, seg_count, 20);*/
+  d_bz_line (cr);
 
   g_free (line_pnts);
 }
@@ -303,30 +305,21 @@ static void
 d_update_bezier (GdkPoint *pnt)
 {
   DobjPoints *s_pnt, *l_pnt;
-  gint        saved_cnt_pnt = selvals.opts.showcontrol;
 
   g_assert (tmp_bezier != NULL);
 
-  /* Undraw last one then draw new one */
   s_pnt = tmp_bezier->points;
 
   if (!s_pnt)
     return; /* No points */
 
-  /* Hack - turn off cnt points in draw routine
-   */
-
   if ((l_pnt = s_pnt->next))
     {
-      /* Undraw */
       while (l_pnt->next)
         {
           l_pnt = l_pnt->next;
         }
 
-      draw_circle (&l_pnt->pnt, TRUE);
-      selvals.opts.showcontrol = 0;
-      d_draw_bezier (tmp_bezier);
       l_pnt->pnt = *pnt;
     }
   else
@@ -334,16 +327,7 @@ d_update_bezier (GdkPoint *pnt)
       /* Radius is a few pixels away */
       /* First edge point */
       d_pnt_add_line (tmp_bezier, pnt->x, pnt->y,-1);
-      l_pnt = s_pnt->next;
     }
-
-  /* draw it */
-  selvals.opts.showcontrol = 0;
-  d_draw_bezier (tmp_bezier);
-  selvals.opts.showcontrol = saved_cnt_pnt;
-
-  /* Realy draw the control points */
-  draw_circle (&l_pnt->pnt, TRUE);
 }
 
 void
@@ -375,7 +359,6 @@ d_bezier_end (GdkPoint *pnt,
 
   if (shift_down)
     {
-      /* Undraw circle on last pnt */
       while (l_pnt->next)
         {
           l_pnt = l_pnt->next;
@@ -383,29 +366,12 @@ d_bezier_end (GdkPoint *pnt,
 
       if (l_pnt)
         {
-          draw_circle (&l_pnt->pnt, TRUE);
-          draw_sqr (&l_pnt->pnt, TRUE);
-
           if (bezier_closed)
             {
-              gboolean tmp_frame = bezier_line_frame;
               /* if closed then add first point */
-              d_draw_bezier (tmp_bezier);
               d_pnt_add_line (tmp_bezier,
                               tmp_bezier->points->pnt.x,
                               tmp_bezier->points->pnt.y, -1);
-              /* Final has no frame */
-              bezier_line_frame = FALSE;
-              d_draw_bezier (tmp_bezier);
-              bezier_line_frame = tmp_frame; /* What is was */
-            }
-          else if (bezier_line_frame)
-            {
-              gboolean tmp_frame = bezier_line_frame;
-              d_draw_bezier (tmp_bezier);
-              bezier_line_frame = FALSE;
-              d_draw_bezier (tmp_bezier);
-              bezier_line_frame = tmp_frame; /* What is was */
             }
 
           add_to_all_obj (gfig_context->current_obj, obj_creating);
@@ -417,15 +383,7 @@ d_bezier_end (GdkPoint *pnt,
     }
   else
     {
-      if (!tmp_bezier->points->next)
-        {
-          draw_circle (&tmp_bezier->points->pnt, TRUE);
-          draw_sqr (&tmp_bezier->points->pnt, TRUE);
-        }
-
-      d_draw_bezier (tmp_bezier);
       d_pnt_add_line (tmp_bezier, pnt->x, pnt->y,-1);
-      d_draw_bezier (tmp_bezier);
     }
 }
 
@@ -435,7 +393,7 @@ tool_options_bezier (GtkWidget *notebook)
   GtkWidget *vbox;
   GtkWidget *toggle;
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox, NULL);
   gtk_widget_show (vbox);

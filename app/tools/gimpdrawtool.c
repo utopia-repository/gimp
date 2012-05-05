@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,66 +12,70 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
 
 #include "tools-types.h"
 
-#include "base/boundary.h"
-
+#include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
-#include "core/gimplist.h"
 
 #include "vectors/gimpanchor.h"
 #include "vectors/gimpstroke.h"
 #include "vectors/gimpvectors.h"
 
 #include "display/gimpcanvas.h"
+#include "display/gimpcanvasarc.h"
+#include "display/gimpcanvasboundary.h"
+#include "display/gimpcanvascorner.h"
+#include "display/gimpcanvasgroup.h"
+#include "display/gimpcanvasguide.h"
+#include "display/gimpcanvashandle.h"
+#include "display/gimpcanvasitem-utils.h"
+#include "display/gimpcanvasline.h"
+#include "display/gimpcanvaspath.h"
+#include "display/gimpcanvaspen.h"
+#include "display/gimpcanvaspolygon.h"
+#include "display/gimpcanvasrectangle.h"
+#include "display/gimpcanvasrectangleguides.h"
+#include "display/gimpcanvassamplepoint.h"
+#include "display/gimpcanvastextcursor.h"
+#include "display/gimpcanvastransformguides.h"
+#include "display/gimpcanvastransformpreview.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpdisplayshell-items.h"
 #include "display/gimpdisplayshell-transform.h"
 
 #include "gimpdrawtool.h"
 
 
-static void          gimp_draw_tool_finalize    (GObject        *object);
+#define DRAW_TIMEOUT 4
+#define USE_TIMEOUT  1
 
-static gboolean      gimp_draw_tool_has_display (GimpTool       *tool,
-                                                 GimpDisplay    *display);
-static GimpDisplay * gimp_draw_tool_has_image   (GimpTool       *tool,
-                                                 GimpImage      *image);
-static void          gimp_draw_tool_control     (GimpTool       *tool,
-                                                 GimpToolAction  action,
-                                                 GimpDisplay    *display);
 
-static void          gimp_draw_tool_draw        (GimpDrawTool   *draw_tool);
-static void          gimp_draw_tool_real_draw   (GimpDrawTool   *draw_tool);
+static void          gimp_draw_tool_dispose      (GObject          *object);
 
-static inline void   gimp_draw_tool_shift_to_north_west
-                                                (gdouble         x,
-                                                 gdouble         y,
-                                                 gint            handle_width,
-                                                 gint            handle_height,
-                                                 GtkAnchorType   anchor,
-                                                 gdouble        *shifted_x,
-                                                 gdouble        *shifted_y);
-static inline void   gimp_draw_tool_shift_to_center
-                                                (gdouble         x,
-                                                 gdouble         y,
-                                                 gint            handle_width,
-                                                 gint            handle_height,
-                                                 GtkAnchorType   anchor,
-                                                 gdouble        *shifted_x,
-                                                 gdouble        *shifted_y);
+static gboolean      gimp_draw_tool_has_display  (GimpTool         *tool,
+                                                  GimpDisplay      *display);
+static GimpDisplay * gimp_draw_tool_has_image    (GimpTool         *tool,
+                                                  GimpImage        *image);
+static void          gimp_draw_tool_control      (GimpTool         *tool,
+                                                  GimpToolAction    action,
+                                                  GimpDisplay      *display);
+
+static void          gimp_draw_tool_draw         (GimpDrawTool     *draw_tool);
+static void          gimp_draw_tool_undraw       (GimpDrawTool     *draw_tool);
+static void          gimp_draw_tool_real_draw    (GimpDrawTool     *draw_tool);
 
 
 G_DEFINE_TYPE (GimpDrawTool, gimp_draw_tool, GIMP_TYPE_TOOL)
@@ -85,7 +89,7 @@ gimp_draw_tool_class_init (GimpDrawToolClass *klass)
   GObjectClass  *object_class = G_OBJECT_CLASS (klass);
   GimpToolClass *tool_class   = GIMP_TOOL_CLASS (klass);
 
-  object_class->finalize  = gimp_draw_tool_finalize;
+  object_class->dispose   = gimp_draw_tool_dispose;
 
   tool_class->has_display = gimp_draw_tool_has_display;
   tool_class->has_image   = gimp_draw_tool_has_image;
@@ -98,33 +102,23 @@ static void
 gimp_draw_tool_init (GimpDrawTool *draw_tool)
 {
   draw_tool->display      = NULL;
-
   draw_tool->paused_count = 0;
-  draw_tool->is_drawn     = FALSE;
-
-  draw_tool->vectors      = NULL;
-  draw_tool->transform    = NULL;
+  draw_tool->preview      = NULL;
+  draw_tool->item         = NULL;
 }
 
 static void
-gimp_draw_tool_finalize (GObject *object)
+gimp_draw_tool_dispose (GObject *object)
 {
   GimpDrawTool *draw_tool = GIMP_DRAW_TOOL (object);
 
-  if (draw_tool->vectors)
+  if (draw_tool->draw_timeout)
     {
-      g_list_foreach (draw_tool->vectors, (GFunc) g_object_unref, NULL);
-      g_list_free (draw_tool->vectors);
-      draw_tool->vectors = NULL;
+      g_source_remove (draw_tool->draw_timeout);
+      draw_tool->draw_timeout = 0;
     }
 
-  if (draw_tool->transform)
-    {
-      g_slice_free (GimpMatrix3, draw_tool->transform);
-      draw_tool->transform = NULL;
-    }
-
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static gboolean
@@ -148,7 +142,7 @@ gimp_draw_tool_has_image (GimpTool  *tool,
 
   if (! display && draw_tool->display)
     {
-      if (image && draw_tool->display->image == image)
+      if (image && gimp_display_get_image (draw_tool->display) == image)
         display = draw_tool->display;
 
       /*  NULL image means any display  */
@@ -169,92 +163,98 @@ gimp_draw_tool_control (GimpTool       *tool,
   switch (action)
     {
     case GIMP_TOOL_ACTION_PAUSE:
-      gimp_draw_tool_pause (draw_tool);
-      break;
-
     case GIMP_TOOL_ACTION_RESUME:
-      gimp_draw_tool_resume (draw_tool);
       break;
 
     case GIMP_TOOL_ACTION_HALT:
-      gimp_draw_tool_stop (draw_tool);
+      if (gimp_draw_tool_is_active (draw_tool))
+        gimp_draw_tool_stop (draw_tool);
       break;
     }
 
   GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
 
+#ifdef USE_TIMEOUT
+static gboolean
+gimp_draw_tool_draw_timeout (GimpDrawTool *draw_tool)
+{
+  draw_tool->draw_timeout = 0;
+
+  gimp_draw_tool_draw (draw_tool);
+
+  return FALSE;
+}
+#endif
+
 static void
 gimp_draw_tool_draw (GimpDrawTool *draw_tool)
 {
-  if (draw_tool->paused_count == 0 && draw_tool->display)
+  if (draw_tool->display &&
+      draw_tool->paused_count == 0 &&
+      ! draw_tool->draw_timeout)
     {
+      GimpDisplayShell *shell = gimp_display_get_shell (draw_tool->display);
+
+      gimp_draw_tool_undraw (draw_tool);
+
       GIMP_DRAW_TOOL_GET_CLASS (draw_tool)->draw (draw_tool);
 
-      draw_tool->is_drawn = ! draw_tool->is_drawn;
+      if (draw_tool->group_stack)
+        {
+          g_warning ("%s: draw_tool->group_stack not empty after calling "
+                     "GimpDrawTool::draw() of %s",
+                     G_STRFUNC,
+                     g_type_name (G_TYPE_FROM_INSTANCE (draw_tool)));
+
+          while (draw_tool->group_stack)
+            gimp_draw_tool_pop_group (draw_tool);
+        }
+
+      if (draw_tool->preview)
+        gimp_display_shell_add_preview_item (shell, draw_tool->preview);
+
+      if (draw_tool->item)
+        gimp_display_shell_add_tool_item (shell, draw_tool->item);
+    }
+}
+
+static void
+gimp_draw_tool_undraw (GimpDrawTool *draw_tool)
+{
+  if (draw_tool->display)
+    {
+      GimpDisplayShell *shell = gimp_display_get_shell (draw_tool->display);
+
+      if (draw_tool->preview)
+        {
+          gimp_display_shell_remove_preview_item (shell, draw_tool->preview);
+          g_object_unref (draw_tool->preview);
+          draw_tool->preview = NULL;
+        }
+
+      if (draw_tool->item)
+        {
+          gimp_display_shell_remove_tool_item (shell, draw_tool->item);
+          g_object_unref (draw_tool->item);
+          draw_tool->item = NULL;
+        }
     }
 }
 
 static void
 gimp_draw_tool_real_draw (GimpDrawTool *draw_tool)
 {
-  GList *list;
-
-  if (! draw_tool->vectors)
-    return;
-
-  for (list = draw_tool->vectors; list; list = g_list_next (list))
-    {
-      GimpVectors *vectors = list->data;
-      GimpStroke  *stroke  = NULL;
-
-      while ((stroke = gimp_vectors_stroke_get_next (vectors, stroke)))
-        {
-          GArray   *coords;
-          gboolean  closed;
-
-          coords = gimp_stroke_interpolate (stroke, 1.0, &closed);
-
-          if (coords && coords->len)
-            {
-              if (draw_tool->transform)
-                {
-                  gint i;
-
-                  for (i = 0; i < coords->len; i++)
-                    {
-                      GimpCoords *curr = &g_array_index (coords, GimpCoords, i);
-
-                      gimp_matrix3_transform_point (draw_tool->transform,
-                                                    curr->x, curr->y,
-                                                    &curr->x, &curr->y);
-                    }
-                }
-
-              gimp_draw_tool_draw_strokes (draw_tool,
-                                           &g_array_index (coords,
-                                                           GimpCoords, 0),
-                                           coords->len, FALSE, FALSE);
-            }
-
-          if (coords)
-            g_array_free (coords, TRUE);
-        }
-    }
+  /* the default implementation does nothing */
 }
 
 void
 gimp_draw_tool_start (GimpDrawTool *draw_tool,
                       GimpDisplay  *display)
 {
-  GimpDisplayShell *shell;
-
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
   g_return_if_fail (GIMP_IS_DISPLAY (display));
-
-  shell = GIMP_DISPLAY_SHELL (display->shell);
-
-  gimp_draw_tool_stop (draw_tool);
+  g_return_if_fail (gimp_draw_tool_is_active (draw_tool) == FALSE);
 
   draw_tool->display = display;
 
@@ -265,8 +265,15 @@ void
 gimp_draw_tool_stop (GimpDrawTool *draw_tool)
 {
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (gimp_draw_tool_is_active (draw_tool) == TRUE);
 
-  gimp_draw_tool_draw (draw_tool);
+  gimp_draw_tool_undraw (draw_tool);
+
+  if (draw_tool->draw_timeout)
+    {
+      g_source_remove (draw_tool->draw_timeout);
+      draw_tool->draw_timeout = 0;
+    }
 
   draw_tool->display = NULL;
 }
@@ -284,78 +291,33 @@ gimp_draw_tool_pause (GimpDrawTool *draw_tool)
 {
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
 
-  gimp_draw_tool_draw (draw_tool);
-
   draw_tool->paused_count++;
+
+  if (draw_tool->draw_timeout)
+    {
+      g_source_remove (draw_tool->draw_timeout);
+      draw_tool->draw_timeout = 0;
+    }
 }
 
 void
 gimp_draw_tool_resume (GimpDrawTool *draw_tool)
 {
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (draw_tool->paused_count > 0);
 
-  if (draw_tool->paused_count > 0)
-    {
-      draw_tool->paused_count--;
+  draw_tool->paused_count--;
 
-      gimp_draw_tool_draw (draw_tool);
-    }
-  else
-    {
-      g_warning ("%s: called with draw_tool->paused_count == 0", G_STRFUNC);
-    }
-}
-
-gboolean
-gimp_draw_tool_is_drawn (GimpDrawTool *draw_tool)
-{
-  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), FALSE);
-
-  return draw_tool->is_drawn;
-}
-
-void
-gimp_draw_tool_set_vectors (GimpDrawTool *draw_tool,
-                            GList        *vectors)
-{
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  gimp_draw_tool_pause (draw_tool);
-
-  if (draw_tool->vectors)
-    {
-      g_list_foreach (draw_tool->vectors, (GFunc) g_object_unref, NULL);
-      g_list_free (draw_tool->vectors);
-      draw_tool->vectors = NULL;
-    }
-
-  if (vectors)
-    {
-      draw_tool->vectors = g_list_copy (vectors);
-      g_list_foreach (draw_tool->vectors, (GFunc) g_object_ref, NULL);
-    }
-
-  gimp_draw_tool_resume (draw_tool);
-}
-
-void
-gimp_draw_tool_set_transform (GimpDrawTool *draw_tool,
-                              GimpMatrix3  *transform)
-{
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  gimp_draw_tool_pause (draw_tool);
-
-  if (draw_tool->transform)
-    {
-      g_slice_free (GimpMatrix3, draw_tool->transform);
-      draw_tool->transform = NULL;
-    }
-
-  if (transform)
-    draw_tool->transform = g_slice_dup (GimpMatrix3, transform);
-
-  gimp_draw_tool_resume (draw_tool);
+#ifdef USE_TIMEOUT
+  if (draw_tool->paused_count == 0 && ! draw_tool->draw_timeout)
+    draw_tool->draw_timeout =
+      gdk_threads_add_timeout_full (G_PRIORITY_HIGH_IDLE,
+                                    DRAW_TIMEOUT,
+                                    (GSourceFunc) gimp_draw_tool_draw_timeout,
+                                    draw_tool, NULL);
+#else
+  gimp_draw_tool_draw (draw_tool);
+#endif
 }
 
 /**
@@ -398,7 +360,7 @@ gimp_draw_tool_calc_distance (GimpDrawTool *draw_tool,
  * distances.
  *
  * Returns: the square of the distance between the given points in
-            display coordinates
+ *          display coordinates
  **/
 gdouble
 gimp_draw_tool_calc_distance_square (GimpDrawTool *draw_tool,
@@ -415,485 +377,344 @@ gimp_draw_tool_calc_distance_square (GimpDrawTool *draw_tool,
   g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), 0.0);
   g_return_val_if_fail (GIMP_IS_DISPLAY (display), 0.0);
 
-  shell = GIMP_DISPLAY_SHELL (display->shell);
+  shell = gimp_display_get_shell (display);
 
-  gimp_display_shell_transform_xy_f (shell, x1, y1, &tx1, &ty1, FALSE);
-  gimp_display_shell_transform_xy_f (shell, x2, y2, &tx2, &ty2, FALSE);
+  gimp_display_shell_transform_xy_f (shell, x1, y1, &tx1, &ty1);
+  gimp_display_shell_transform_xy_f (shell, x2, y2, &tx2, &ty2);
 
   return SQR (tx2 - tx1) + SQR (ty2 - ty1);
 }
 
-/**
- * gimp_draw_tool_in_radius:
- * @draw_tool: a #GimpDrawTool
- * @display:   a #GimpDisplay
- * @x1:        start point X in image coordinates
- * @y1:        start point Y in image coordinates
- * @x2:        end point X in image coordinates
- * @y2:        end point Y in image coordinates
- * @radius:    distance in screen coordinates, not image coordinates
- *
- * The points are in image space coordinates.
- *
- * Returns: %TRUE if the points are within radius of each other,
- *          %FALSE otherwise
- **/
-gboolean
-gimp_draw_tool_in_radius (GimpDrawTool *draw_tool,
-                          GimpDisplay  *display,
-                          gdouble       x1,
-                          gdouble       y1,
-                          gdouble       x2,
-                          gdouble       y2,
-                          gint          radius)
+void
+gimp_draw_tool_add_preview (GimpDrawTool   *draw_tool,
+                            GimpCanvasItem *item)
 {
-  return (gimp_draw_tool_calc_distance_square (draw_tool, display,
-                                               x1, y1, x2, y2) < SQR (radius));
+  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (GIMP_IS_CANVAS_ITEM (item));
+
+  if (! draw_tool->preview)
+    draw_tool->preview =
+      gimp_canvas_group_new (gimp_display_get_shell (draw_tool->display));
+
+  gimp_canvas_group_add_item (GIMP_CANVAS_GROUP (draw_tool->preview), item);
+}
+
+void
+gimp_draw_tool_remove_preview (GimpDrawTool   *draw_tool,
+                               GimpCanvasItem *item)
+{
+  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (GIMP_IS_CANVAS_ITEM (item));
+  g_return_if_fail (draw_tool->preview != NULL);
+
+  gimp_canvas_group_remove_item (GIMP_CANVAS_GROUP (draw_tool->preview), item);
+}
+
+void
+gimp_draw_tool_add_item (GimpDrawTool   *draw_tool,
+                         GimpCanvasItem *item)
+{
+  GimpCanvasGroup *group;
+
+  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (GIMP_IS_CANVAS_ITEM (item));
+
+  if (! draw_tool->item)
+    draw_tool->item =
+      gimp_canvas_group_new (gimp_display_get_shell (draw_tool->display));
+
+  group = GIMP_CANVAS_GROUP (draw_tool->item);
+
+  if (draw_tool->group_stack)
+    group = draw_tool->group_stack->data;
+
+  gimp_canvas_group_add_item (group, item);
+}
+
+void
+gimp_draw_tool_remove_item (GimpDrawTool   *draw_tool,
+                            GimpCanvasItem *item)
+{
+  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (GIMP_IS_CANVAS_ITEM (item));
+  g_return_if_fail (draw_tool->item != NULL);
+
+  gimp_canvas_group_remove_item (GIMP_CANVAS_GROUP (draw_tool->item), item);
+}
+
+GimpCanvasGroup *
+gimp_draw_tool_add_stroke_group (GimpDrawTool *draw_tool)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+
+  item = gimp_canvas_group_new (gimp_display_get_shell (draw_tool->display));
+  gimp_canvas_group_set_group_stroking (GIMP_CANVAS_GROUP (item), TRUE);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return GIMP_CANVAS_GROUP (item);
+}
+
+GimpCanvasGroup *
+gimp_draw_tool_add_fill_group (GimpDrawTool *draw_tool)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+
+  item = gimp_canvas_group_new (gimp_display_get_shell (draw_tool->display));
+  gimp_canvas_group_set_group_filling (GIMP_CANVAS_GROUP (item), TRUE);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return GIMP_CANVAS_GROUP (item);
+}
+
+void
+gimp_draw_tool_push_group (GimpDrawTool    *draw_tool,
+                           GimpCanvasGroup *group)
+{
+  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (GIMP_IS_CANVAS_GROUP (group));
+
+  draw_tool->group_stack = g_list_prepend (draw_tool->group_stack, group);
+}
+
+void
+gimp_draw_tool_pop_group (GimpDrawTool *draw_tool)
+{
+  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_if_fail (draw_tool->group_stack != NULL);
+
+  draw_tool->group_stack = g_list_remove (draw_tool->group_stack,
+                                          draw_tool->group_stack->data);
 }
 
 /**
- * gimp_draw_tool_draw_line:
+ * gimp_draw_tool_add_line:
  * @draw_tool:   the #GimpDrawTool
  * @x1:          start point X in image coordinates
  * @y1:          start point Y in image coordinates
  * @x2:          end point X in image coordinates
  * @y2:          end point Y in image coordinates
- * @use_offsets: whether to use the image pixel offsets of the tool's display
  *
  * This function takes image space coordinates and transforms them to
  * screen window coordinates, then draws a line between the resulting
  * coordindates.
  **/
-void
-gimp_draw_tool_draw_line (GimpDrawTool *draw_tool,
-                          gdouble       x1,
-                          gdouble       y1,
-                          gdouble       x2,
-                          gdouble       y2,
-                          gboolean      use_offsets)
+GimpCanvasItem *
+gimp_draw_tool_add_line (GimpDrawTool *draw_tool,
+                         gdouble       x1,
+                         gdouble       y1,
+                         gdouble       x2,
+                         gdouble       y2)
 {
-  GimpDisplayShell *shell;
-  gdouble           tx1, ty1;
-  gdouble           tx2, ty2;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  item = gimp_canvas_line_new (gimp_display_get_shell (draw_tool->display),
+                               x1, y1, x2, y2);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     x1, y1,
-                                     &tx1, &ty1,
-                                     use_offsets);
-  gimp_display_shell_transform_xy_f (shell,
-                                     x2, y2,
-                                     &tx2, &ty2,
-                                     use_offsets);
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_XOR,
-                         PROJ_ROUND (tx1), PROJ_ROUND (ty1),
-                         PROJ_ROUND (tx2), PROJ_ROUND (ty2));
+  return item;
 }
 
 /**
- * gimp_draw_tool_draw_dashed_line:
- * @draw_tool:   the #GimpDrawTool
- * @x1:          start point X in image coordinates
- * @y1:          start point Y in image coordinates
- * @x2:          end point X in image coordinates
- * @y2:          end point Y in image coordinates
- * @use_offsets: whether to use the image pixel offsets of the tool's display
- *
- * This function takes image space coordinates and transforms them to
- * screen window coordinates, then draws a dashed line between the
- * resulting coordindates.
- **/
-void
-gimp_draw_tool_draw_dashed_line (GimpDrawTool *draw_tool,
-                                 gdouble       x1,
-                                 gdouble       y1,
-                                 gdouble       x2,
-                                 gdouble       y2,
-                                 gboolean      use_offsets)
-{
-  GimpDisplayShell *shell;
-  gdouble           tx1, ty1;
-  gdouble           tx2, ty2;
-
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-
-  gimp_display_shell_transform_xy_f (shell,
-                                     x1, y1,
-                                     &tx1, &ty1,
-                                     use_offsets);
-  gimp_display_shell_transform_xy_f (shell,
-                                     x2, y2,
-                                     &tx2, &ty2,
-                                     use_offsets);
-
-  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas),
-                         GIMP_CANVAS_STYLE_XOR_DASHED,
-                         PROJ_ROUND (tx1), PROJ_ROUND (ty1),
-                         PROJ_ROUND (tx2), PROJ_ROUND (ty2));
-}
-
-/**
- * gimp_draw_tool_draw_guide:
+ * gimp_draw_tool_add_guide:
  * @draw_tool:   the #GimpDrawTool
  * @orientation: the orientation of the guide line
  * @position:    the position of the guide line in image coordinates
  *
  * This function draws a guide line across the canvas.
  **/
-void
-gimp_draw_tool_draw_guide_line (GimpDrawTool        *draw_tool,
-                                GimpOrientationType  orientation,
-                                gint                 position)
+GimpCanvasItem *
+gimp_draw_tool_add_guide (GimpDrawTool        *draw_tool,
+                          GimpOrientationType  orientation,
+                          gint                 position,
+                          gboolean             guide_style)
 {
-  GimpDisplayShell *shell;
-  gint              x1, y1, x2, y2;
-  gint              x, y;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  item = gimp_canvas_guide_new (gimp_display_get_shell (draw_tool->display),
+                                orientation, position, guide_style);
 
-  x1 = 0;
-  y1 = 0;
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  gdk_drawable_get_size (shell->canvas->window, &x2, &y2);
-
-  switch (orientation)
-    {
-    case GIMP_ORIENTATION_HORIZONTAL:
-      gimp_display_shell_transform_xy (shell, 0, position, &x, &y, FALSE);
-      y1 = y2 = y;
-      break;
-
-    case GIMP_ORIENTATION_VERTICAL:
-      gimp_display_shell_transform_xy (shell, position, 0, &x, &y, FALSE);
-      x1 = x2 = x;
-      break;
-
-    case GIMP_ORIENTATION_UNKNOWN:
-      return;
-    }
-
-  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_XOR,
-                         x1, y1, x2, y2);
+  return item;
 }
 
 /**
- * gimp_draw_tool_draw_rectangle:
+ * gimp_draw_tool_add_crosshair:
+ * @draw_tool:  the #GimpDrawTool
+ * @position_x: the position of the vertical guide line in image coordinates
+ * @position_y: the position of the horizontal guide line in image coordinates
+ *
+ * This function draws two crossing guide lines across the canvas.
+ **/
+GimpCanvasItem *
+gimp_draw_tool_add_crosshair (GimpDrawTool *draw_tool,
+                              gint          position_x,
+                              gint          position_y)
+{
+  GimpCanvasGroup *group;
+
+  group = gimp_draw_tool_add_stroke_group (draw_tool);
+
+  gimp_draw_tool_push_group (draw_tool, group);
+  gimp_draw_tool_add_guide (draw_tool,
+                            GIMP_ORIENTATION_VERTICAL, position_x, FALSE);
+  gimp_draw_tool_add_guide (draw_tool,
+                            GIMP_ORIENTATION_HORIZONTAL, position_y, FALSE);
+  gimp_draw_tool_pop_group (draw_tool);
+
+  return GIMP_CANVAS_ITEM (group);
+}
+
+/**
+ * gimp_draw_tool_add_sample_point:
+ * @draw_tool: the #GimpDrawTool
+ * @x:         X position of the sample point
+ * @y:         Y position of the sample point
+ * @index:     Index of the sample point
+ *
+ * This function draws a sample point
+ **/
+GimpCanvasItem *
+gimp_draw_tool_add_sample_point (GimpDrawTool *draw_tool,
+                                 gint          x,
+                                 gint          y,
+                                 gint          index)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+
+  item = gimp_canvas_sample_point_new (gimp_display_get_shell (draw_tool->display),
+                                       x, y, index, TRUE);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return item;
+}
+
+/**
+ * gimp_draw_tool_add_rectangle:
  * @draw_tool:   the #GimpDrawTool
  * @filled:      whether to fill the rectangle
  * @x:           horizontal image coordinate
  * @y:           vertical image coordinate
  * @width:       width in image coordinates
  * @height:      height in image coordinates
- * @use_offsets: whether to use the image pixel offsets of the tool's display
  *
  * This function takes image space coordinates and transforms them to
  * screen window coordinates, then draws the resulting rectangle.
  **/
-void
-gimp_draw_tool_draw_rectangle (GimpDrawTool *draw_tool,
-                               gboolean      filled,
-                               gdouble       x,
-                               gdouble       y,
-                               gdouble       width,
-                               gdouble       height,
-                               gboolean      use_offsets)
+GimpCanvasItem *
+gimp_draw_tool_add_rectangle (GimpDrawTool *draw_tool,
+                              gboolean      filled,
+                              gdouble       x,
+                              gdouble       y,
+                              gdouble       width,
+                              gdouble       height)
 {
-  GimpDisplayShell *shell;
-  gdouble           tx1, ty1;
-  gdouble           tx2, ty2;
-  guint             w, h;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  item = gimp_canvas_rectangle_new (gimp_display_get_shell (draw_tool->display),
+                                    x, y, width, height, filled);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     MIN (x, x + width), MIN (y, y + height),
-                                     &tx1, &ty1,
-                                     use_offsets);
-  gimp_display_shell_transform_xy_f (shell,
-                                     MAX (x, x + width), MAX (y, y + height),
-                                     &tx2, &ty2,
-                                     use_offsets);
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  tx1 = CLAMP (tx1, -1, shell->disp_width  + 1);
-  ty1 = CLAMP (ty1, -1, shell->disp_height + 1);
-  tx2 = CLAMP (tx2, -1, shell->disp_width  + 1);
-  ty2 = CLAMP (ty2, -1, shell->disp_height + 1);
-
-  tx2 -= tx1;
-  ty2 -= ty1;
-  w = PROJ_ROUND (MAX (0.0, tx2));
-  h = PROJ_ROUND (MAX (0.0, ty2));
-
-  if (w > 0 && h > 0)
-    gimp_canvas_draw_rectangle (GIMP_CANVAS (shell->canvas),
-                                GIMP_CANVAS_STYLE_XOR,
-                                filled,
-                                PROJ_ROUND (tx1), PROJ_ROUND (ty1),
-                                w - 1, h - 1);
+  return item;
 }
 
-void
-gimp_draw_tool_draw_arc (GimpDrawTool *draw_tool,
-                         gboolean      filled,
-                         gdouble       x,
-                         gdouble       y,
-                         gdouble       width,
-                         gdouble       height,
-                         gint          angle1,
-                         gint          angle2,
-                         gboolean      use_offsets)
+GimpCanvasItem *
+gimp_draw_tool_add_rectangle_guides (GimpDrawTool   *draw_tool,
+                                     GimpGuidesType  type,
+                                     gdouble         x,
+                                     gdouble         y,
+                                     gdouble         width,
+                                     gdouble         height)
 {
-  GimpDisplayShell *shell;
-  gdouble           tx1, ty1;
-  gdouble           tx2, ty2;
-  guint             w, h;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  item = gimp_canvas_rectangle_guides_new (gimp_display_get_shell (draw_tool->display),
+                                           x, y, width, height, type, 4);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     MIN (x, x + width), MIN (y, y + height),
-                                     &tx1, &ty1,
-                                     use_offsets);
-  gimp_display_shell_transform_xy_f (shell,
-                                     MAX (x, x + width), MAX (y, y + height),
-                                     &tx2, &ty2,
-                                     use_offsets);
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  tx2 -= tx1;
-  ty2 -= ty1;
-  w = PROJ_ROUND (MAX (0.0, tx2));
-  h = PROJ_ROUND (MAX (0.0, ty2));
-
-  if (w > 0 && h > 0)
-    {
-      if (w != 1 && h != 1)
-        {
-          gimp_canvas_draw_arc (GIMP_CANVAS (shell->canvas),
-                                GIMP_CANVAS_STYLE_XOR,
-                                filled,
-                                PROJ_ROUND (tx1), PROJ_ROUND (ty1),
-                                w - 1, h - 1,
-                                angle1, angle2);
-        }
-      else
-        {
-          /* work around the problem of an 1xN or Nx1 arc not being shown
-           * properly
-           */
-          gimp_canvas_draw_rectangle (GIMP_CANVAS (shell->canvas),
-                                      GIMP_CANVAS_STYLE_XOR,
-                                      filled,
-                                      PROJ_ROUND (tx1), PROJ_ROUND (ty1),
-                                      w - 1, h - 1);
-        }
-    }
+  return item;
 }
 
-void
-gimp_draw_tool_draw_rectangle_by_anchor (GimpDrawTool   *draw_tool,
-                                         gboolean        filled,
-                                         gdouble         x,
-                                         gdouble         y,
-                                         gint            width,
-                                         gint            height,
-                                         GtkAnchorType   anchor,
-                                         gboolean        use_offsets)
+GimpCanvasItem *
+gimp_draw_tool_add_arc (GimpDrawTool *draw_tool,
+                        gboolean      filled,
+                        gdouble       x,
+                        gdouble       y,
+                        gdouble       width,
+                        gdouble       height,
+                        gdouble       start_angle,
+                        gdouble       slice_angle)
 {
-  GimpDisplayShell *shell;
-  gdouble           tx, ty;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  item = gimp_canvas_arc_new (gimp_display_get_shell (draw_tool->display),
+                              x + width  / 2.0,
+                              y + height / 2.0,
+                              width  / 2.0,
+                              height / 2.0,
+                              start_angle,
+                              slice_angle,
+                              filled);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     x, y,
-                                     &tx, &ty,
-                                     use_offsets);
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  gimp_draw_tool_shift_to_north_west (tx, ty,
-                                      width, height,
-                                      anchor,
-                                      &tx, &ty);
-
-  if (! filled)
-    {
-      width  -= 1;
-      height -= 1;
-    }
-
-  gimp_canvas_draw_rectangle (GIMP_CANVAS (shell->canvas),
-                              GIMP_CANVAS_STYLE_XOR,
-                              filled,
-                              PROJ_ROUND (tx), PROJ_ROUND (ty),
-                              width, height);
+  return item;
 }
 
-void
-gimp_draw_tool_draw_arc_by_anchor (GimpDrawTool  *draw_tool,
-                                   gboolean       filled,
-                                   gdouble        x,
-                                   gdouble        y,
-                                   gint           width,
-                                   gint           height,
-                                   gint           angle1,
-                                   gint           angle2,
-                                   GtkAnchorType  anchor,
-                                   gboolean       use_offsets)
+GimpCanvasItem *
+gimp_draw_tool_add_handle (GimpDrawTool     *draw_tool,
+                           GimpHandleType    type,
+                           gdouble           x,
+                           gdouble           y,
+                           gint              width,
+                           gint              height,
+                           GimpHandleAnchor  anchor)
 {
-  GimpDisplayShell *shell;
-  gdouble           tx, ty;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  item = gimp_canvas_handle_new (gimp_display_get_shell (draw_tool->display),
+                                 type, anchor, x, y, width, height);
 
-  gimp_display_shell_transform_xy_f (shell,
-                                     x, y,
-                                     &tx, &ty,
-                                     use_offsets);
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  gimp_draw_tool_shift_to_north_west (tx, ty,
-                                      width, height,
-                                      anchor,
-                                      &tx, &ty);
-
-  if (! filled)
-    {
-      width  -= 1;
-      height -= 1;
-    }
-
-  gimp_canvas_draw_arc (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_XOR,
-                        filled,
-                        PROJ_ROUND (tx), PROJ_ROUND (ty),
-                        width, height,
-                        angle1, angle2);
-}
-
-void
-gimp_draw_tool_draw_cross_by_anchor (GimpDrawTool  *draw_tool,
-                                     gdouble        x,
-                                     gdouble        y,
-                                     gint           width,
-                                     gint           height,
-                                     GtkAnchorType  anchor,
-                                     gboolean       use_offsets)
-{
-  GimpDisplayShell *shell;
-  gdouble           tx, ty;
-
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-
-  gimp_display_shell_transform_xy_f (shell,
-                                     x, y,
-                                     &tx, &ty,
-                                     use_offsets);
-
-  gimp_draw_tool_shift_to_center (tx, ty,
-                                  width, height,
-                                  anchor,
-                                  &tx, &ty);
-
-  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_XOR,
-                         PROJ_ROUND (tx),
-                         PROJ_ROUND (ty) - (height >> 1),
-                         PROJ_ROUND (tx),
-                         PROJ_ROUND (ty) + ((height + 1) >> 1));
-  gimp_canvas_draw_line (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_XOR,
-                         PROJ_ROUND (tx) - (width >> 1),
-                         PROJ_ROUND (ty),
-                         PROJ_ROUND (tx) + ((width + 1) >> 1),
-                         PROJ_ROUND (ty));
-}
-
-void
-gimp_draw_tool_draw_handle (GimpDrawTool   *draw_tool,
-                            GimpHandleType  type,
-                            gdouble         x,
-                            gdouble         y,
-                            gint            width,
-                            gint            height,
-                            GtkAnchorType   anchor,
-                            gboolean        use_offsets)
-{
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  switch (type)
-    {
-    case GIMP_HANDLE_SQUARE:
-      gimp_draw_tool_draw_rectangle_by_anchor (draw_tool,
-                                               FALSE,
-                                               x, y,
-                                               width,
-                                               height,
-                                               anchor,
-                                               use_offsets);
-      break;
-
-    case GIMP_HANDLE_FILLED_SQUARE:
-      gimp_draw_tool_draw_rectangle_by_anchor (draw_tool,
-                                               TRUE,
-                                               x, y,
-                                               width,
-                                               height,
-                                               anchor,
-                                               use_offsets);
-      break;
-
-    case GIMP_HANDLE_CIRCLE:
-      gimp_draw_tool_draw_arc_by_anchor (draw_tool,
-                                         FALSE,
-                                         x, y,
-                                         width,
-                                         height,
-                                         0, 360 * 64,
-                                         anchor,
-                                         use_offsets);
-      break;
-
-    case GIMP_HANDLE_FILLED_CIRCLE:
-      gimp_draw_tool_draw_arc_by_anchor (draw_tool,
-                                         TRUE,
-                                         x, y,
-                                         width,
-                                         height,
-                                         0, 360 * 64,
-                                         anchor,
-                                         use_offsets);
-      break;
-
-    case GIMP_HANDLE_CROSS:
-      gimp_draw_tool_draw_cross_by_anchor (draw_tool,
-                                           x, y,
-                                           width,
-                                           height,
-                                           anchor,
-                                           use_offsets);
-      break;
-
-    default:
-      g_warning ("%s: invalid handle type %d", G_STRFUNC, type);
-      break;
-    }
+  return item;
 }
 
 /**
- * gimp_draw_tool_draw_corner:
+ * gimp_draw_tool_add_corner:
  * @draw_tool:   the #GimpDrawTool
  * @highlight:
  * @put_outside: whether to put the handles on the outside of the rectangle
@@ -904,439 +725,247 @@ gimp_draw_tool_draw_handle (GimpDrawTool   *draw_tool,
  * @width:       corner width
  * @height:      corner height
  * @anchor:      which corner to draw
- * @use_offsets: whether to use the image pixel offsets of the tool's display
  *
  * This function takes image space coordinates and transforms them to
  * screen window coordinates. It draws a corner into an already drawn
  * rectangle outline, taking care of not drawing over an already drawn line.
  **/
-void
-gimp_draw_tool_draw_corner (GimpDrawTool   *draw_tool,
-                            gboolean        highlight,
-                            gboolean        put_outside,
-                            gdouble         x1,
-                            gdouble         y1,
-                            gdouble         x2,
-                            gdouble         y2,
-                            gint            width,
-                            gint            height,
-                            GtkAnchorType   anchor,
-                            gboolean        use_offsets)
+GimpCanvasItem *
+gimp_draw_tool_add_corner (GimpDrawTool     *draw_tool,
+                           gboolean          highlight,
+                           gboolean          put_outside,
+                           gdouble           x1,
+                           gdouble           y1,
+                           gdouble           x2,
+                           gdouble           y2,
+                           gint              width,
+                           gint              height,
+                           GimpHandleAnchor  anchor)
 {
-  GimpDisplayShell *shell;
-  GimpCanvas       *canvas;
-  gint              tx1, ty1;
-  gint              tx2, ty2;
-  gint              tw,  th;
-  gint              top_and_bottom_handle_x_offset;
-  gint              left_and_right_handle_y_offset;
+  GimpCanvasItem *item;
 
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  shell  = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-  canvas = GIMP_CANVAS (shell->canvas);
+  item = gimp_canvas_corner_new (gimp_display_get_shell (draw_tool->display),
+                                 x1, y1, x2 - x1, y2 - y1,
+                                 anchor, width, height, put_outside);
+  gimp_canvas_item_set_highlight (item, highlight);
 
-  gimp_display_shell_transform_xy (shell, x1, y1, &tx1, &ty1, use_offsets);
-  gimp_display_shell_transform_xy (shell, x2, y2, &tx2, &ty2, use_offsets);
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  tw = tx2 - tx1;
-  th = ty2 - ty1;
+  return item;
+}
 
-  if ((! put_outside && (tw <= width || th <= height)) ||
-      width <= 2 || height <= 2)
-    return;
+GimpCanvasItem *
+gimp_draw_tool_add_lines (GimpDrawTool      *draw_tool,
+                          const GimpVector2 *points,
+                          gint               n_points,
+                          gboolean           filled)
+{
+  GimpCanvasItem *item;
 
-  top_and_bottom_handle_x_offset = (tw - width)  / 2;
-  left_and_right_handle_y_offset = (th - height) / 2;
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-  switch (anchor)
-    {
-    case GTK_ANCHOR_CENTER:
-      break;
+  if (points == NULL || n_points < 2)
+    return NULL;
 
-    case GTK_ANCHOR_NORTH_WEST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - 1,         ty1,
-                                 tx1 - width + 1, ty1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - width + 1, ty1,
-                                 tx1 - width + 1, ty1 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - width + 1, ty1 - height + 1,
-                                 tx1,             ty1 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1,             ty1 - height + 1,
-                                 tx1,             ty1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + 1,         ty1 + height - 1,
-                                 tx1 + width - 1, ty1 + height - 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + width - 1, ty1 + 1,
-                                 tx1 + width - 1, ty1 + height);
-        }
-      break;
+  item = gimp_canvas_polygon_new (gimp_display_get_shell (draw_tool->display),
+                                  points, n_points, filled);
 
-    case GTK_ANCHOR_NORTH_EAST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2,             ty1,
-                                 tx2 + width - 2, ty1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 + width - 2, ty1,
-                                 tx2 + width - 2, ty1 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 + width - 2, ty1 - height + 1,
-                                 tx2 - 1,         ty1 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 1,         ty1 - height + 1,
-                                 tx2 - 1,         ty1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 2,         ty1 + height - 1,
-                                 tx2 - width,     ty1 + height - 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - width,     ty1 + 1,
-                                 tx2 - width,     ty1 + height);
-        }
-      break;
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-    case GTK_ANCHOR_SOUTH_WEST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - 1,         ty2 - 1,
-                                 tx1 - width + 1, ty2 - 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - width + 1, ty2 - 1,
-                                 tx1 - width + 1, ty2 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - width + 1, ty2 + height - 2,
-                                 tx1,             ty2 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1,             ty2 + height - 2,
-                                 tx1,             ty2 - 1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + 1,         ty2 - height,
-                                 tx1 + width - 1, ty2 - height);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + width - 1, ty2 - height,
-                                 tx1 + width - 1, ty2 - 1);
-        }
-      break;
+  return item;
+}
 
-    case GTK_ANCHOR_SOUTH_EAST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2,             ty2 - 1,
-                                 tx2 + width - 2, ty2 - 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 + width - 2, ty2 - 1,
-                                 tx2 + width - 2, ty2 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 + width - 2, ty2 + height - 2,
-                                 tx2 - 1,         ty2 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 1,         ty2 + height - 2,
-                                 tx2 - 1,         ty2 - 1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 2,         ty2 - height,
-                                 tx2 - width,     ty2 - height);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - width,     ty2 - height,
-                                 tx2 - width,     ty2 - 1);
-        }
-      break;
+GimpCanvasItem *
+gimp_draw_tool_add_strokes (GimpDrawTool     *draw_tool,
+                            const GimpCoords *points,
+                            gint              n_points,
+                            gboolean          filled)
+{
+  GimpCanvasItem *item;
 
-    case GTK_ANCHOR_NORTH:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1,             ty1 - 1,
-                                 tx1,             ty1 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1,             ty1 - height + 1,
-                                 tx2 - 1,         ty1 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 1,         ty1 - height + 1,
-                                 tx2 - 1,         ty1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + 1, ty1 + height - 1,
-                                 tx2 - 1, ty1 + height - 1);
-        }
-      break;
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-    case GTK_ANCHOR_SOUTH:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1,             ty2,
-                                 tx1,             ty2 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1,             ty2 + height - 2,
-                                 tx2 - 1,         ty2 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 1,         ty2 + height - 2,
-                                 tx2 - 1,         ty2 - 1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + 1, ty2 - height,
-                                 tx2 - 1, ty2 - height);
-        }
-      break;
+  if (points == NULL || n_points < 2)
+    return NULL;
 
-    case GTK_ANCHOR_WEST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - 1,         ty1,
-                                 tx1 - width + 1, ty1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - width + 1, ty1,
-                                 tx1 - width + 1, ty2 - 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 - width + 1, ty2 - 1,
-                                 tx1,             ty2 - 1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + width - 1, ty1 + 1,
-                                 tx1 + width - 1, ty2 - 1);
-        }
-      break;
+  item = gimp_canvas_polygon_new_from_coords (gimp_display_get_shell (draw_tool->display),
+                                              points, n_points, filled);
 
-    case GTK_ANCHOR_EAST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2,             ty1,
-                                 tx2 + width - 2, ty1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 + width - 2, ty1,
-                                 tx2 + width - 2, ty2 - 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 + width - 2, ty2 - 1,
-                                 tx2 - 1,         ty2 - 1);
-        }
-      else
-        {
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - width, ty1 + 1,
-                                 tx2 - width, ty2 - 1);
-        }
-      break;
-    }
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-  if (! highlight)
-    return;
+  return item;
+}
 
-  switch (anchor)
-    {
-    case GTK_ANCHOR_NORTH_WEST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 - width + 2, ty1 - height + 2,
-                                      width - 3,       height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + 1,         ty1 + 1,
-                                      width - 3,       height - 3);
-        }
-      break;
+GimpCanvasItem *
+gimp_draw_tool_add_path (GimpDrawTool         *draw_tool,
+                         const GimpBezierDesc *desc,
+                         gdouble               x,
+                         gdouble               y)
+{
+  GimpCanvasItem *item;
 
-    case GTK_ANCHOR_NORTH_EAST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx2,             ty1 - height + 2,
-                                      width - 3,       height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx2 - width + 1, ty1 + 1,
-                                      width - 3,       height - 3);
-        }
-      break;
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+  g_return_val_if_fail (desc != NULL, NULL);
 
-    case GTK_ANCHOR_SOUTH_WEST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 - width + 2, ty2,
-                                      width - 3,       height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + 1,         ty2 - height + 1,
-                                      width - 3,       height - 3);
-        }
-      break;
+  item = gimp_canvas_path_new (gimp_display_get_shell (draw_tool->display),
+                               desc, x, y, FALSE, GIMP_PATH_STYLE_DEFAULT);
 
-    case GTK_ANCHOR_SOUTH_EAST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx2,             ty2,
-                                      width - 3,       height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx2 - width + 1, ty2 - height + 1,
-                                      width - 3,       height - 3);
-        }
-      break;
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
 
-    case GTK_ANCHOR_NORTH:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + top_and_bottom_handle_x_offset + 1,
-                                      ty1 - height + 2,
-                                      width - 3, height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + top_and_bottom_handle_x_offset,
-                                      ty1 + 1,
-                                      width, height - 3);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + top_and_bottom_handle_x_offset + 1,
-                                 ty1 + 2,
-                                 tx1 + top_and_bottom_handle_x_offset + 1,
-                                 ty1 + height - 2);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + top_and_bottom_handle_x_offset + width - 1,
-                                 ty1 + 2,
-                                 tx1 + top_and_bottom_handle_x_offset + width - 1,
-                                 ty1 + height - 2);
-        }
-      break;
+  return item;
+}
 
-    case GTK_ANCHOR_SOUTH:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + top_and_bottom_handle_x_offset + 1,
-                                      ty2,
-                                      width - 3, height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + top_and_bottom_handle_x_offset,
-                                      ty2 - height + 1,
-                                      width, height - 3);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + top_and_bottom_handle_x_offset + 1,
-                                 ty2 - 3,
-                                 tx1 + top_and_bottom_handle_x_offset + 1,
-                                 ty2 - height + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + top_and_bottom_handle_x_offset + width - 1,
-                                 ty2 - 3,
-                                 tx1 + top_and_bottom_handle_x_offset + width - 1,
-                                 ty2 - height + 1);
-        }
-      break;
+GimpCanvasItem *
+gimp_draw_tool_add_pen (GimpDrawTool      *draw_tool,
+                        const GimpVector2 *points,
+                        gint               n_points,
+                        GimpContext       *context,
+                        GimpActiveColor    color,
+                        gint               width)
+{
+  GimpCanvasItem *item;
 
-    case GTK_ANCHOR_WEST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 - width + 2,
-                                      ty1 + left_and_right_handle_y_offset + 1,
-                                      width - 3, height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx1 + 1,
-                                      ty1 + left_and_right_handle_y_offset,
-                                      width - 3, height);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + 2,
-                                 ty1 + left_and_right_handle_y_offset + 1,
-                                 tx1 + width - 2,
-                                 ty1 + left_and_right_handle_y_offset + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx1 + 2,
-                                 ty1 + left_and_right_handle_y_offset + height - 1,
-                                 tx1 + width - 2,
-                                 ty1 + left_and_right_handle_y_offset + height - 1);
-        }
-      break;
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
 
-    case GTK_ANCHOR_EAST:
-      if (put_outside)
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx2,
-                                      ty1 + left_and_right_handle_y_offset + 1,
-                                      width - 3, height - 3);
-        }
-      else
-        {
-          gimp_canvas_draw_rectangle (canvas, GIMP_CANVAS_STYLE_XOR, FALSE,
-                                      tx2 - width + 1,
-                                      ty1 + left_and_right_handle_y_offset,
-                                      width - 3, height);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 3,
-                                 ty1 + left_and_right_handle_y_offset + 1,
-                                 tx2 - width + 1,
-                                 ty1 + left_and_right_handle_y_offset + 1);
-          gimp_canvas_draw_line (canvas, GIMP_CANVAS_STYLE_XOR,
-                                 tx2 - 3,
-                                 ty1 + left_and_right_handle_y_offset + height - 1,
-                                 tx2 - width + 1,
-                                 ty1 + left_and_right_handle_y_offset + height - 1);
-        }
-      break;
+  if (points == NULL || n_points < 2)
+    return NULL;
 
-    default:
-      break;
-    }
+  item = gimp_canvas_pen_new (gimp_display_get_shell (draw_tool->display),
+                              points, n_points, context, color, width);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return item;
+}
+
+/**
+ * gimp_draw_tool_add_boundary:
+ * @draw_tool:    a #GimpDrawTool
+ * @bound_segs:   the sorted brush outline
+ * @n_bound_segs: the number of segments in @bound_segs
+ * @matrix:       transform matrix for the boundary
+ * @offset_x:     x offset
+ * @offset_y:     y offset
+ *
+ * Draw the boundary of the brush that @draw_tool uses. The boundary
+ * should be sorted with sort_boundary(), and @n_bound_segs should
+ * include the sentinel segments inserted by sort_boundary() that
+ * indicate the end of connected segment sequences (groups) .
+ */
+GimpCanvasItem *
+gimp_draw_tool_add_boundary (GimpDrawTool   *draw_tool,
+                             const BoundSeg *bound_segs,
+                             gint            n_bound_segs,
+                             GimpMatrix3    *transform,
+                             gdouble         offset_x,
+                             gdouble         offset_y)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+  g_return_val_if_fail (n_bound_segs > 0, NULL);
+  g_return_val_if_fail (bound_segs != NULL, NULL);
+
+  item = gimp_canvas_boundary_new (gimp_display_get_shell (draw_tool->display),
+                                   bound_segs, n_bound_segs,
+                                   transform,
+                                   offset_x, offset_y);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return item;
+}
+
+GimpCanvasItem *
+gimp_draw_tool_add_text_cursor (GimpDrawTool   *draw_tool,
+                                PangoRectangle *cursor,
+                                gboolean        overwrite)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+
+  item = gimp_canvas_text_cursor_new (gimp_display_get_shell (draw_tool->display),
+                                      cursor, overwrite);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return item;
+}
+
+GimpCanvasItem *
+gimp_draw_tool_add_transform_guides (GimpDrawTool      *draw_tool,
+                                     const GimpMatrix3 *transform,
+                                     GimpGuidesType     type,
+                                     gint               n_guides,
+                                     gdouble            x1,
+                                     gdouble            y1,
+                                     gdouble            x2,
+                                     gdouble            y2)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+  g_return_val_if_fail (transform != NULL, NULL);
+
+  item = gimp_canvas_transform_guides_new (gimp_display_get_shell (draw_tool->display),
+                                           transform, x1, y1, x2, y2,
+                                           type, n_guides);
+
+  gimp_draw_tool_add_item (draw_tool, item);
+  g_object_unref (item);
+
+  return item;
+}
+
+GimpCanvasItem *
+gimp_draw_tool_add_transform_preview (GimpDrawTool      *draw_tool,
+                                      GimpDrawable      *drawable,
+                                      const GimpMatrix3 *transform,
+                                      gdouble            x1,
+                                      gdouble            y1,
+                                      gdouble            x2,
+                                      gdouble            y2,
+                                      gboolean           perspective,
+                                      gdouble            opacity)
+{
+  GimpCanvasItem *item;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), NULL);
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (transform != NULL, NULL);
+
+  item = gimp_canvas_transform_preview_new (gimp_display_get_shell (draw_tool->display),
+                                            drawable, transform,
+                                            x1, y1, x2, y2,
+                                            perspective, opacity);
+
+  gimp_draw_tool_add_preview (draw_tool, item);
+  g_object_unref (item);
+
+  return item;
 }
 
 gboolean
-gimp_draw_tool_on_handle (GimpDrawTool   *draw_tool,
-                          GimpDisplay    *display,
-                          gdouble         x,
-                          gdouble         y,
-                          GimpHandleType  type,
-                          gdouble         handle_x,
-                          gdouble         handle_y,
-                          gint            width,
-                          gint            height,
-                          GtkAnchorType   anchor,
-                          gboolean        use_offsets)
+gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,
+                          GimpDisplay      *display,
+                          gdouble           x,
+                          gdouble           y,
+                          GimpHandleType    type,
+                          gdouble           handle_x,
+                          gdouble           handle_y,
+                          gint              width,
+                          gint              height,
+                          GimpHandleAnchor  anchor)
 {
   GimpDisplayShell *shell;
   gdouble           tx, ty;
@@ -1345,36 +974,34 @@ gimp_draw_tool_on_handle (GimpDrawTool   *draw_tool,
   g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), FALSE);
   g_return_val_if_fail (GIMP_IS_DISPLAY (display), FALSE);
 
-  shell = GIMP_DISPLAY_SHELL (display->shell);
+  shell = gimp_display_get_shell (display);
 
   gimp_display_shell_transform_xy_f (shell,
                                      x, y,
-                                     &tx, &ty,
-                                     use_offsets);
+                                     &tx, &ty);
   gimp_display_shell_transform_xy_f (shell,
                                      handle_x, handle_y,
-                                     &handle_tx, &handle_ty,
-                                     use_offsets);
+                                     &handle_tx, &handle_ty);
 
   switch (type)
     {
     case GIMP_HANDLE_SQUARE:
     case GIMP_HANDLE_FILLED_SQUARE:
     case GIMP_HANDLE_CROSS:
-      gimp_draw_tool_shift_to_north_west (handle_tx, handle_ty,
-                                          width, height,
-                                          anchor,
-                                          &handle_tx, &handle_ty);
+      gimp_canvas_item_shift_to_north_west (anchor,
+                                            handle_tx, handle_ty,
+                                            width, height,
+                                            &handle_tx, &handle_ty);
 
       return (tx == CLAMP (tx, handle_tx, handle_tx + width) &&
               ty == CLAMP (ty, handle_ty, handle_ty + height));
 
     case GIMP_HANDLE_CIRCLE:
     case GIMP_HANDLE_FILLED_CIRCLE:
-      gimp_draw_tool_shift_to_center (handle_tx, handle_ty,
-                                      width, height,
-                                      anchor,
-                                      &handle_tx, &handle_ty);
+      gimp_canvas_item_shift_to_center (anchor,
+                                        handle_tx, handle_ty,
+                                        width, height,
+                                        &handle_tx, &handle_ty);
 
       /* FIXME */
       if (width != height)
@@ -1422,7 +1049,7 @@ gimp_draw_tool_on_vectors_handle (GimpDrawTool      *draw_tool,
 
   while ((stroke = gimp_vectors_stroke_get_next (vectors, stroke)))
     {
-      GList *anchor_list = gimp_stroke_get_draw_anchors (stroke);
+      GList *anchor_list;
       GList *list;
 
       anchor_list = g_list_concat (gimp_stroke_get_draw_anchors (stroke),
@@ -1463,8 +1090,7 @@ gimp_draw_tool_on_vectors_handle (GimpDrawTool      *draw_tool,
                                 (*ret_anchor)->position.x,
                                 (*ret_anchor)->position.y,
                                 width, height,
-                                GTK_ANCHOR_CENTER,
-                                FALSE) &&
+                                GIMP_HANDLE_ANCHOR_CENTER) &&
       (*ret_anchor)->type == preferred)
     {
       if (ret_stroke) *ret_stroke = pref_stroke;
@@ -1479,8 +1105,7 @@ gimp_draw_tool_on_vectors_handle (GimpDrawTool      *draw_tool,
                                                pref_anchor->position.x,
                                                pref_anchor->position.y,
                                                width, height,
-                                               GTK_ANCHOR_CENTER,
-                                               FALSE))
+                                               GIMP_HANDLE_ANCHOR_CENTER))
     {
       if (ret_anchor) *ret_anchor = pref_anchor;
       if (ret_stroke) *ret_stroke = pref_stroke;
@@ -1495,8 +1120,7 @@ gimp_draw_tool_on_vectors_handle (GimpDrawTool      *draw_tool,
                                      anchor->position.x,
                                      anchor->position.y,
                                      width, height,
-                                     GTK_ANCHOR_CENTER,
-                                     FALSE))
+                                     GIMP_HANDLE_ANCHOR_CENTER))
     {
       if (ret_anchor)
         *ret_anchor = anchor;
@@ -1575,8 +1199,7 @@ gimp_draw_tool_on_vectors_curve (GimpDrawTool      *draw_tool,
                                 min_coords.x,
                                 min_coords.y,
                                 width, height,
-                                GTK_ANCHOR_CENTER,
-                                FALSE))
+                                GIMP_HANDLE_ANCHOR_CENTER))
     {
       return TRUE;
     }
@@ -1597,6 +1220,7 @@ gimp_draw_tool_on_vectors (GimpDrawTool      *draw_tool,
                            GimpStroke       **ret_stroke,
                            GimpVectors      **ret_vectors)
 {
+  GList *all_vectors;
   GList *list;
 
   if (ret_coords)        *ret_coords         = *coords;
@@ -1606,9 +1230,9 @@ gimp_draw_tool_on_vectors (GimpDrawTool      *draw_tool,
   if (ret_stroke)        *ret_stroke         = NULL;
   if (ret_vectors)       *ret_vectors        = NULL;
 
-  for (list = GIMP_LIST (display->image->vectors)->list;
-       list;
-       list = g_list_next (list))
+  all_vectors = gimp_image_get_vectors_list (gimp_display_get_image (display));
+
+  for (list = all_vectors; list; list = g_list_next (list))
     {
       GimpVectors *vectors = list->data;
 
@@ -1628,340 +1252,13 @@ gimp_draw_tool_on_vectors (GimpDrawTool      *draw_tool,
           if (ret_vectors)
             *ret_vectors = vectors;
 
+          g_list_free (all_vectors);
+
           return TRUE;
         }
     }
 
+  g_list_free (all_vectors);
+
   return FALSE;
-}
-
-void
-gimp_draw_tool_draw_lines (GimpDrawTool      *draw_tool,
-                           const GimpVector2 *points,
-                           gint               n_points,
-                           gboolean           filled,
-                           gboolean           use_offsets)
-{
-  GimpDisplayShell *shell;
-  GdkPoint         *coords;
-
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  if (points == NULL || n_points == 0)
-    return;
-
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-
-  coords = g_new (GdkPoint, n_points);
-
-  gimp_display_shell_transform_points (shell,
-                                       points, coords, n_points, use_offsets);
-
-  if (filled)
-    {
-      gimp_canvas_draw_polygon (GIMP_CANVAS (shell->canvas),
-                                GIMP_CANVAS_STYLE_XOR,
-                                TRUE, coords, n_points);
-    }
-  else
-    {
-      gimp_canvas_draw_lines (GIMP_CANVAS (shell->canvas),
-                              GIMP_CANVAS_STYLE_XOR,
-                              coords, n_points);
-    }
-
-  g_free (coords);
-}
-
-void
-gimp_draw_tool_draw_strokes (GimpDrawTool     *draw_tool,
-                             const GimpCoords *points,
-                             gint              n_points,
-                             gboolean          filled,
-                             gboolean          use_offsets)
-{
-  GimpDisplayShell *shell;
-  GdkPoint         *coords;
-
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-
-  if (n_points == 0)
-    return;
-
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-
-  coords = g_new (GdkPoint, n_points);
-
-  gimp_display_shell_transform_coords (shell,
-                                       points, coords, n_points, use_offsets);
-
-  if (filled)
-    {
-      gimp_canvas_draw_polygon (GIMP_CANVAS (shell->canvas),
-                                GIMP_CANVAS_STYLE_XOR,
-                                TRUE, coords, n_points);
-    }
-  else
-    {
-      gimp_canvas_draw_lines (GIMP_CANVAS (shell->canvas),
-                              GIMP_CANVAS_STYLE_XOR,
-                              coords, n_points);
-    }
-
-  g_free (coords);
-}
-
-/**
- * gimp_draw_tool_draw_boundary:
- * @draw_tool:    a #GimpDrawTool
- * @bound_segs:   the sorted brush outline
- * @n_bound_segs: the number of segments in @bound_segs
- * @offset_x:     x offset
- * @offset_y:     y offset
- * @use_offsets:  whether to use offsets
- *
- * Draw the boundary of the brush that @draw_tool uses. The boundary
- * should be sorted with sort_boundary(), and @n_bound_segs should
- * include the sentinel segments inserted by sort_boundary() that
- * indicate the end of connected segment sequences (groups) .
- */
-void
-gimp_draw_tool_draw_boundary (GimpDrawTool   *draw_tool,
-                              const BoundSeg *bound_segs,
-                              gint            n_bound_segs,
-                              gdouble         offset_x,
-                              gdouble         offset_y,
-                              gboolean        use_offsets)
-{
-  GimpDisplayShell *shell;
-  GdkPoint         *gdk_points;
-  gint              n_gdk_points;
-  gint              xmax, ymax;
-  gdouble           x, y;
-  gint              i;
-
-  g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-  g_return_if_fail (n_bound_segs > 0);
-  g_return_if_fail (bound_segs != NULL);
-
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-
-  gdk_points = g_new0 (GdkPoint, n_bound_segs + 1);
-  n_gdk_points = 0;
-
-  xmax = shell->disp_width  + 1;
-  ymax = shell->disp_height + 1;
-
-  /* The sorted boundary has sentinel segments inserted at the end of
-   * each group.
-   */
-  for (i = 0; i < n_bound_segs; i++)
-    {
-      if (bound_segs[i].x1 == -1 &&
-          bound_segs[i].y1 == -1 &&
-          bound_segs[i].x2 == -1 &&
-          bound_segs[i].y2 == -1)
-        {
-          /* Group ends */
-          gimp_canvas_draw_lines (GIMP_CANVAS (shell->canvas),
-                                  GIMP_CANVAS_STYLE_XOR_DOTTED,
-                                  gdk_points, n_gdk_points);
-          n_gdk_points = 0;
-          continue;
-        }
-
-      if (n_gdk_points == 0)
-        {
-          gimp_display_shell_transform_xy_f (shell,
-                                             bound_segs[i].x1 + offset_x,
-                                             bound_segs[i].y1 + offset_y,
-                                             &x, &y,
-                                             use_offsets);
-
-          gdk_points[0].x = PROJ_ROUND (CLAMP (x, -1, xmax));
-          gdk_points[0].y = PROJ_ROUND (CLAMP (y, -1, ymax));
-
-          /*  If this segment is a closing segment && the segments lie inside
-           *  the region, OR if this is an opening segment and the segments
-           *  lie outside the region...
-           *  we need to transform it by one display pixel
-           */
-          if (! bound_segs[i].open)
-            {
-              /*  If it is vertical  */
-              if (bound_segs[i].x1 == bound_segs[i].x2)
-                {
-                  gdk_points[0].x -= 1;
-                }
-              else
-                {
-                  gdk_points[0].y -= 1;
-                }
-            }
-
-          n_gdk_points++;
-        }
-
-      g_assert (n_gdk_points < n_bound_segs + 1);
-
-      gimp_display_shell_transform_xy_f (shell,
-                                         bound_segs[i].x2 + offset_x,
-                                         bound_segs[i].y2 + offset_y,
-                                         &x, &y,
-                                         use_offsets);
-
-      gdk_points[n_gdk_points].x = PROJ_ROUND (CLAMP (x, -1, xmax));
-      gdk_points[n_gdk_points].y = PROJ_ROUND (CLAMP (y, -1, ymax));
-
-      /*  If this segment is a closing segment && the segments lie inside
-       *  the region, OR if this is an opening segment and the segments
-       *  lie outside the region...
-       *  we need to transform it by one display pixel
-       */
-      if (! bound_segs[i].open)
-        {
-          /*  If it is vertical  */
-          if (bound_segs[i].x1 == bound_segs[i].x2)
-            {
-              gdk_points[n_gdk_points    ].x -= 1;
-              gdk_points[n_gdk_points - 1].x -= 1;
-            }
-          else
-            {
-              gdk_points[n_gdk_points    ].y -= 1;
-              gdk_points[n_gdk_points - 1].y -= 1;
-            }
-        }
-
-      n_gdk_points++;
-    }
-
-  g_free (gdk_points);
-}
-
-
-/*  private functions  */
-
-static inline void
-gimp_draw_tool_shift_to_north_west (gdouble        x,
-                                    gdouble        y,
-                                    gint           handle_width,
-                                    gint           handle_height,
-                                    GtkAnchorType  anchor,
-                                    gdouble       *shifted_x,
-                                    gdouble       *shifted_y)
-{
-  switch (anchor)
-    {
-    case GTK_ANCHOR_CENTER:
-      x -= (handle_width >> 1);
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH:
-      x -= (handle_width >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH_WEST:
-      /*  nothing, this is the default  */
-      break;
-
-    case GTK_ANCHOR_NORTH_EAST:
-      x -= handle_width;
-      break;
-
-    case GTK_ANCHOR_SOUTH:
-      x -= (handle_width >> 1);
-      y -= handle_height;
-      break;
-
-    case GTK_ANCHOR_SOUTH_WEST:
-      y -= handle_height;
-      break;
-
-    case GTK_ANCHOR_SOUTH_EAST:
-      x -= handle_width;
-      y -= handle_height;
-      break;
-
-    case GTK_ANCHOR_WEST:
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_EAST:
-      x -= handle_width;
-      y -= (handle_height >> 1);
-      break;
-
-    default:
-      break;
-    }
-
-  if (shifted_x)
-    *shifted_x = x;
-
-  if (shifted_y)
-    *shifted_y = y;
-}
-
-static inline void
-gimp_draw_tool_shift_to_center (gdouble        x,
-                                gdouble        y,
-                                gint           handle_width,
-                                gint           handle_height,
-                                GtkAnchorType  anchor,
-                                gdouble       *shifted_x,
-                                gdouble       *shifted_y)
-{
-  switch (anchor)
-    {
-    case GTK_ANCHOR_CENTER:
-      /*  nothing, this is the default  */
-      break;
-
-    case GTK_ANCHOR_NORTH:
-      y += (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH_WEST:
-      x += (handle_width >> 1);
-      y += (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH_EAST:
-      x -= (handle_width >> 1);
-      y += (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_SOUTH:
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_SOUTH_WEST:
-      x += (handle_width >> 1);
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_SOUTH_EAST:
-      x -= (handle_width >> 1);
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_WEST:
-      x += (handle_width >> 1);
-      break;
-
-    case GTK_ANCHOR_EAST:
-      x -= (handle_width >> 1);
-      break;
-
-    default:
-      break;
-    }
-
-  if (shifted_x)
-    *shifted_x = x;
-
-  if (shifted_y)
-    *shifted_y = y;
 }

@@ -14,9 +14,9 @@
  * by GIMP but it is also supposed to be able to extract paths and
  * shapes from foreign SVG documents.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -25,8 +25,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,7 +33,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -43,6 +42,7 @@
 
 #include "config/gimpxmlparser.h"
 
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 
@@ -97,6 +97,7 @@ static gboolean  gimp_vectors_import  (GimpImage            *image,
                                        gsize                 len,
                                        gboolean              merge,
                                        gboolean              scale,
+                                       GimpVectors          *parent,
                                        gint                  position,
                                        GList               **ret_vectors,
                                        GError              **error);
@@ -198,16 +199,32 @@ gimp_vectors_import_file (GimpImage    *image,
                           const gchar  *filename,
                           gboolean      merge,
                           gboolean      scale,
+                          GimpVectors  *parent,
                           gint          position,
                           GList       **ret_vectors,
                           GError      **error)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        GIMP_IS_VECTORS (parent), FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        gimp_item_is_attached (GIMP_ITEM (parent)), FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        gimp_item_get_image (GIMP_ITEM (parent)) == image,
+                        FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        gimp_viewable_get_children (GIMP_VIEWABLE (parent)),
+                        FALSE);
   g_return_val_if_fail (ret_vectors == NULL || *ret_vectors == NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return gimp_vectors_import (image, filename, NULL, 0, merge, scale, position,
+  return gimp_vectors_import (image, filename, NULL, 0, merge, scale,
+                              parent, position,
                               ret_vectors, error);
 }
 
@@ -230,16 +247,32 @@ gimp_vectors_import_buffer (GimpImage    *image,
                             gsize         len,
                             gboolean      merge,
                             gboolean      scale,
+                            GimpVectors  *parent,
                             gint          position,
                             GList       **ret_vectors,
                             GError      **error)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (buffer != NULL || len == 0, FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        GIMP_IS_VECTORS (parent), FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        gimp_item_is_attached (GIMP_ITEM (parent)), FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        gimp_item_get_image (GIMP_ITEM (parent)) == image,
+                        FALSE);
+  g_return_val_if_fail (parent == NULL ||
+                        parent == GIMP_IMAGE_ACTIVE_PARENT ||
+                        gimp_viewable_get_children (GIMP_VIEWABLE (parent)),
+                        FALSE);
   g_return_val_if_fail (ret_vectors == NULL || *ret_vectors == NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return gimp_vectors_import (image, NULL, buffer, len, merge, scale, position,
+  return gimp_vectors_import (image, NULL, buffer, len, merge, scale,
+                              parent, position,
                               ret_vectors, error);
 }
 
@@ -250,6 +283,7 @@ gimp_vectors_import (GimpImage    *image,
                      gsize         len,
                      gboolean      merge,
                      gboolean      scale,
+                     GimpVectors  *parent,
                      gint          position,
                      GList       **ret_vectors,
                      GError      **error)
@@ -300,12 +334,13 @@ gimp_vectors_import (GimpImage    *image,
               SvgPath *path = paths->data;
               GList   *list;
 
-              if (!merge || !vectors)
+              if (! merge || ! vectors)
                 {
                   vectors = gimp_vectors_new (image,
-                                              ((merge || !path->id) ?
+                                              ((merge || ! path->id) ?
                                                _("Imported Path") : path->id));
-                  gimp_image_add_vectors (image, vectors, position);
+                  gimp_image_add_vectors (image, vectors,
+                                          parent, position, TRUE);
                   gimp_vectors_freeze (vectors);
 
                   if (ret_vectors)
@@ -318,10 +353,10 @@ gimp_vectors_import (GimpImage    *image,
               for (list = path->strokes; list; list = list->next)
                 gimp_vectors_stroke_add (vectors, GIMP_STROKE (list->data));
 
-              if (!merge)
+              if (! merge)
                 gimp_vectors_thaw (vectors);
 
-              g_list_free (path->strokes);
+              g_list_free_full (path->strokes, g_object_unref);
               path->strokes = NULL;
             }
 
@@ -333,10 +368,12 @@ gimp_vectors_import (GimpImage    *image,
       else
         {
           if (filename)
-            g_set_error (error, 0, 0, _("No paths found in '%s'"),
+            g_set_error (error, GIMP_ERROR, GIMP_FAILED,
+                         _("No paths found in '%s'"),
                          gimp_filename_to_utf8 (filename));
           else
-            g_set_error (error, 0, 0, _("No paths found in the buffer"));
+            g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+                                 _("No paths found in the buffer"));
 
           success = FALSE;
         }
@@ -560,7 +597,7 @@ svg_handler_group_start (SvgHandler   *handler,
 {
   while (*names)
     {
-      if (strcmp (*names, "transform") == 0 && !handler->transform)
+      if (strcmp (*names, "transform") == 0 && ! handler->transform)
         {
           GimpMatrix3  matrix;
 
@@ -602,17 +639,17 @@ svg_handler_path_start (SvgHandler   *handler,
       switch (*names[0])
         {
         case 'i':
-          if (strcmp (*names, "id") == 0 && !path->id)
+          if (strcmp (*names, "id") == 0 && ! path->id)
             path->id = g_strdup (*values);
           break;
 
         case 'd':
-          if (strcmp (*names, "d") == 0 && !path->strokes)
+          if (strcmp (*names, "d") == 0 && ! path->strokes)
             path->strokes = parse_path_data (*values);
           break;
 
         case 't':
-          if (strcmp (*names, "transform") == 0 && !handler->transform)
+          if (strcmp (*names, "transform") == 0 && ! handler->transform)
             {
               GimpMatrix3  matrix;
 
@@ -654,7 +691,7 @@ svg_handler_rect_start (SvgHandler   *handler,
       switch (*names[0])
         {
         case 'i':
-          if (strcmp (*names, "id") == 0 && !path->id)
+          if (strcmp (*names, "id") == 0 && ! path->id)
             path->id = g_strdup (*values);
           break;
 
@@ -686,7 +723,7 @@ svg_handler_rect_start (SvgHandler   *handler,
           break;
 
         case 't':
-          if (strcmp (*names, "transform") == 0 && !handler->transform)
+          if (strcmp (*names, "transform") == 0 && ! handler->transform)
             {
               GimpMatrix3  matrix;
 
@@ -800,7 +837,7 @@ svg_handler_ellipse_start (SvgHandler   *handler,
       switch (*names[0])
         {
         case 'i':
-          if (strcmp (*names, "id") == 0 && !path->id)
+          if (strcmp (*names, "id") == 0 && ! path->id)
             path->id = g_strdup (*values);
           break;
 
@@ -828,7 +865,7 @@ svg_handler_ellipse_start (SvgHandler   *handler,
           break;
 
         case 't':
-          if (strcmp (*names, "transform") == 0 && !handler->transform)
+          if (strcmp (*names, "transform") == 0 && ! handler->transform)
             {
               GimpMatrix3  matrix;
 
@@ -873,7 +910,7 @@ svg_handler_line_start (SvgHandler   *handler,
       switch (*names[0])
         {
         case 'i':
-          if (strcmp (*names, "id") == 0 && !path->id)
+          if (strcmp (*names, "id") == 0 && ! path->id)
             path->id = g_strdup (*values);
           break;
 
@@ -892,7 +929,7 @@ svg_handler_line_start (SvgHandler   *handler,
           break;
 
         case 't':
-          if (strcmp (*names, "transform") == 0 && !handler->transform)
+          if (strcmp (*names, "transform") == 0 && ! handler->transform)
             {
               GimpMatrix3  matrix;
 
@@ -930,12 +967,12 @@ svg_handler_poly_start (SvgHandler   *handler,
       switch (*names[0])
         {
         case 'i':
-          if (strcmp (*names, "id") == 0 && !path->id)
+          if (strcmp (*names, "id") == 0 && ! path->id)
             path->id = g_strdup (*values);
           break;
 
         case 'p':
-          if (strcmp (*names, "points") == 0 && !points)
+          if (strcmp (*names, "points") == 0 && ! points)
             {
               const gchar *p = *values;
               const gchar *m = NULL;
@@ -957,10 +994,11 @@ svg_handler_poly_start (SvgHandler   *handler,
                       break;
                     }
 
-                  while (*p && !g_ascii_isspace (*p) && *p != ',')
-                    p++;
+                  if (*p)
+                    n++;
 
-                  n++;
+                  while (*p && ! g_ascii_isspace (*p) && *p != ',')
+                    p++;
                 }
 
               if ((n > 3) && (n % 2 == 0))
@@ -980,7 +1018,7 @@ svg_handler_poly_start (SvgHandler   *handler,
           break;
 
         case 't':
-          if (strcmp (*names, "transform") == 0 && !handler->transform)
+          if (strcmp (*names, "transform") == 0 && ! handler->transform)
             {
               GimpMatrix3  matrix;
 
@@ -1235,7 +1273,7 @@ parse_svg_transform (const gchar *value,
 
       /* OK, have parsed keyword and args, now calculate the transform matrix */
 
-      if (!strcmp (keyword, "matrix"))
+      if (strcmp (keyword, "matrix") == 0)
         {
           if (n_args != 6)
             return FALSE;
@@ -1245,7 +1283,7 @@ parse_svg_transform (const gchar *value,
                                args[2], args[3],
                                args[4], args[5]);
         }
-      else if (!strcmp (keyword, "translate"))
+      else if (strcmp (keyword, "translate") == 0)
         {
           if (n_args == 1)
             args[1] = 0.0;
@@ -1254,7 +1292,7 @@ parse_svg_transform (const gchar *value,
 
           gimp_matrix3_translate (&trafo, args[0], args[1]);
         }
-      else if (!strcmp (keyword, "scale"))
+      else if (strcmp (keyword, "scale") == 0)
         {
           if (n_args == 1)
             args[1] = args[0];
@@ -1263,7 +1301,7 @@ parse_svg_transform (const gchar *value,
 
           gimp_matrix3_scale (&trafo, args[0], args[1]);
         }
-      else if (!strcmp (keyword, "rotate"))
+      else if (strcmp (keyword, "rotate") == 0)
         {
           if (n_args == 1)
             {
@@ -1278,14 +1316,14 @@ parse_svg_transform (const gchar *value,
           else
             return FALSE;
         }
-      else if (!strcmp (keyword, "skewX"))
+      else if (strcmp (keyword, "skewX") == 0)
         {
           if (n_args != 1)
             return FALSE;
 
           gimp_matrix3_xshear (&trafo, tan (gimp_deg_to_rad (args[0])));
         }
-      else if (!strcmp (keyword, "skewY"))
+      else if (strcmp (keyword, "skewY") == 0)
         {
           if (n_args != 1)
             return FALSE;
@@ -1355,6 +1393,7 @@ parse_path_data (const gchar *data)
   for (i = 0; ; i++)
     {
       c = data[i];
+
       if (c >= '0' && c <= '9')
         {
           /* digit */
@@ -1384,11 +1423,12 @@ parse_path_data (const gchar *data)
         }
       else if (c == '.')
         {
-          if (!in_num)
+          if (! in_num)
             {
               in_num = TRUE;
               val = 0;
             }
+
           in_frac = TRUE;
           frac = 1;
         }
@@ -1408,6 +1448,7 @@ parse_path_data (const gchar *data)
           /* end of number */
 
           val *= sign * pow (10, exp_sign * exp);
+
           if (ctx.rel)
             {
               /* Handle relative coordinates. This switch statement attempts
@@ -1437,10 +1478,12 @@ parse_path_data (const gchar *data)
                   else if (ctx.param == 6)
                     val += ctx.cpy;
                   break;
+
                 case 'h':
                   /* rule: x-relative */
                   val += ctx.cpx;
                   break;
+
                 case 'v':
                   /* rule: y-relative */
                   val += ctx.cpy;
@@ -1454,8 +1497,10 @@ parse_path_data (const gchar *data)
         }
 
       if (c == '\0')
-        break;
-      else if ((c == '+' || c == '-') && !exp_wait_sign)
+        {
+          break;
+        }
+      else if ((c == '+' || c == '-') && ! exp_wait_sign)
         {
           sign = c == '+' ? 1 : -1;
           val = 0;
@@ -1470,6 +1515,7 @@ parse_path_data (const gchar *data)
         {
           if (ctx.param)
             parse_path_do_cmd (&ctx, TRUE);
+
           if (ctx.stroke)
             gimp_stroke_close (ctx.stroke);
         }
@@ -1477,6 +1523,7 @@ parse_path_data (const gchar *data)
         {
           if (ctx.param)
             parse_path_do_cmd (&ctx, TRUE);
+
           ctx.cmd = c + 'a' - 'A';
           ctx.rel = FALSE;
         }
@@ -1484,6 +1531,7 @@ parse_path_data (const gchar *data)
         {
           if (ctx.param)
             parse_path_do_cmd (&ctx, TRUE);
+
           ctx.cmd = c;
           ctx.rel = TRUE;
         }

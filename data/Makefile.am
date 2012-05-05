@@ -2,13 +2,16 @@
 
 SUBDIRS = \
 	brushes		\
+	dynamics	\
 	environ		\
 	gradients	\
 	images		\
 	interpreters	\
 	palettes	\
 	patterns	\
-	tips
+	tips		\
+	tags		\
+	tool-presets
 
 fontdir = $(gimpdatadir)/fonts
 

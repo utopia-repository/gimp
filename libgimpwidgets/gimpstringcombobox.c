@@ -4,10 +4,10 @@
  * gimpstringcombobox.c
  * Copyright (C) 2007  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,6 +28,15 @@
 #include "gimpwidgetstypes.h"
 
 #include "gimpstringcombobox.h"
+
+
+/**
+ * SECTION: gimpstringcombobox
+ * @title: GimpStringComboBox
+ * @short_description: A #GtkComboBox subclass to select strings.
+ *
+ * A #GtkComboBox subclass to select strings.
+ **/
 
 
 enum
@@ -51,18 +59,15 @@ typedef struct
   ((GimpStringComboBoxPrivate *) ((GimpStringComboBox *) (obj))->priv)
 
 
-static GObject * gimp_string_combo_box_constructor (GType                  type,
-                                                    guint                  n_params,
-                                                    GObjectConstructParam *params);
-
-static void  gimp_string_combo_box_set_property (GObject         *object,
-                                                 guint            property_id,
-                                                 const GValue    *value,
-                                                 GParamSpec      *pspec);
-static void  gimp_string_combo_box_get_property (GObject         *object,
-                                                 guint            property_id,
-                                                 GValue          *value,
-                                                 GParamSpec      *pspec);
+static void   gimp_string_combo_box_constructed  (GObject      *object);
+static void   gimp_string_combo_box_set_property (GObject      *object,
+                                                  guint         property_id,
+                                                  const GValue *value,
+                                                  GParamSpec   *pspec);
+static void   gimp_string_combo_box_get_property (GObject      *object,
+                                                  guint         property_id,
+                                                  GValue       *value,
+                                                  GParamSpec   *pspec);
 
 
 G_DEFINE_TYPE (GimpStringComboBox, gimp_string_combo_box, GTK_TYPE_COMBO_BOX)
@@ -75,7 +80,7 @@ gimp_string_combo_box_class_init (GimpStringComboBoxClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_string_combo_box_constructor;
+  object_class->constructed  = gimp_string_combo_box_constructed;
   object_class->set_property = gimp_string_combo_box_set_property;
   object_class->get_property = gimp_string_combo_box_get_property;
 
@@ -137,18 +142,14 @@ gimp_string_combo_box_init (GimpStringComboBox *combo_box)
                                                  GimpStringComboBoxPrivate);
 }
 
-static GObject *
-gimp_string_combo_box_constructor (GType                  type,
-                                   guint                  n_params,
-                                   GObjectConstructParam *params)
+static void
+gimp_string_combo_box_constructed (GObject *object)
 {
-  GObject                   *object;
-  GimpStringComboBoxPrivate *priv;
+  GimpStringComboBoxPrivate *priv = GIMP_STRING_COMBO_BOX_GET_PRIVATE (object);
   GtkCellRenderer           *cell;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  priv = GIMP_STRING_COMBO_BOX_GET_PRIVATE (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   priv->text_renderer = cell = gtk_cell_renderer_text_new ();
 
@@ -156,8 +157,6 @@ gimp_string_combo_box_constructor (GType                  type,
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (object), cell,
                                   "text", priv->label_column,
                                   NULL);
-
-  return object;
 }
 
 static void
@@ -283,7 +282,7 @@ gimp_string_combo_box_new (GtkTreeModel *model,
 /**
  * gimp_string_combo_box_set_active:
  * @combo_box: a #GimpStringComboBox
- * @id:
+ * @id:        the ID of the item to select
  *
  * Looks up the item that belongs to the given @id and makes it the
  * selected item in the @combo_box.

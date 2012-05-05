@@ -4,10 +4,10 @@
  * gimpquerybox.c
  * Copyright (C) 1999-2000 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,6 +34,27 @@
 #include "gimpwidgets.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpquerybox
+ * @title: GimpQueryBox
+ * @short_description: Some simple dialogs to enter a single int,
+ *                     double, string or boolean value.
+ * @see_also: #GimpSizeEntry, #GimpUnitMenu
+ *
+ * These functions provide simple dialogs for entering a single
+ * string, integer, double, boolean or pixel size value.
+ *
+ * They return a pointer to a #GtkDialog which has to be shown with
+ * gtk_widget_show() by the caller.
+ *
+ * The dialogs contain an entry widget for the kind of value they ask
+ * for and "OK" and "Cancel" buttons. On "Cancel", all query boxes
+ * except the boolean one silently destroy themselves. On "OK" the
+ * user defined callback function is called and returns the entered
+ * value.
+ **/
 
 
 /*
@@ -159,12 +179,14 @@ create_query_box (const gchar   *title,
 
   if (stock_id)
     {
+      GtkWidget *content_area;
       GtkWidget *image;
 
-      hbox = gtk_hbox_new (FALSE, 12);
+      content_area = gtk_dialog_get_content_area (GTK_DIALOG (query_box->qbox));
+
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
       gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (query_box->qbox)->vbox),
-                         hbox);
+      gtk_box_pack_start (GTK_BOX (content_area), hbox, TRUE, TRUE, 0);
       gtk_widget_show (hbox);
 
       image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_DIALOG);
@@ -173,7 +195,7 @@ create_query_box (const gchar   *title,
       gtk_widget_show (image);
     }
 
-  query_box->vbox = gtk_vbox_new (FALSE, 12);
+  query_box->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
 
   g_object_set_data (G_OBJECT (query_box->qbox), "gimp-query-box-vbox",
                      query_box->vbox);
@@ -184,9 +206,13 @@ create_query_box (const gchar   *title,
     }
   else
     {
+      GtkWidget *content_area;
+
+      content_area = gtk_dialog_get_content_area (GTK_DIALOG (query_box->qbox));
+
       gtk_container_set_border_width (GTK_CONTAINER (query_box->vbox), 12);
-      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (query_box->qbox)->vbox),
-                         query_box->vbox);
+      gtk_box_pack_start (GTK_BOX (content_area), query_box->vbox,
+                          TRUE, TRUE, 0);
     }
 
   gtk_widget_show (query_box->vbox);

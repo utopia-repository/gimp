@@ -2,11 +2,11 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpchanneltreeview.c
- * Copyright (C) 2001-2004 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2001-2009 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -36,38 +36,47 @@
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
 
+#include "gimpactiongroup.h"
 #include "gimpchanneltreeview.h"
 #include "gimpcomponenteditor.h"
 #include "gimpcontainerview.h"
 #include "gimpdnd.h"
 #include "gimpdocked.h"
 #include "gimphelp-ids.h"
+#include "gimpuimanager.h"
 #include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
 
+struct _GimpChannelTreeViewPriv
+{
+  GtkWidget *component_editor;
+
+  GtkWidget *toselection_button;
+};
+
+
 static void  gimp_channel_tree_view_view_iface_init   (GimpContainerViewInterface *iface);
 
-static GObject * gimp_channel_tree_view_constructor   (GType              type,
-                                                       guint              n_params,
-                                                       GObjectConstructParam *params);
-static void   gimp_channel_tree_view_drop_viewable    (GimpContainerTreeView *view,
-                                                       GimpViewable      *src_viewable,
-                                                       GimpViewable      *dest_viewable,
-                                                       GtkTreeViewDropPosition  drop_pos);
-static void   gimp_channel_tree_view_drop_component   (GimpContainerTreeView *tree_view,
-                                                       GimpImage         *image,
-                                                       GimpChannelType    component,
-                                                       GimpViewable      *dest_viewable,
-                                                       GtkTreeViewDropPosition drop_pos);
-static void   gimp_channel_tree_view_set_image        (GimpItemTreeView  *item_view,
-                                                       GimpImage         *image);
-static GimpItem * gimp_channel_tree_view_item_new     (GimpImage         *image);
+static void   gimp_channel_tree_view_constructed      (GObject                 *object);
 
-static void   gimp_channel_tree_view_set_context      (GimpContainerView *view,
-                                                       GimpContext       *context);
-static void   gimp_channel_tree_view_set_view_size    (GimpContainerView *view);
+static void   gimp_channel_tree_view_drop_viewable    (GimpContainerTreeView   *view,
+                                                       GimpViewable            *src_viewable,
+                                                       GimpViewable            *dest_viewable,
+                                                       GtkTreeViewDropPosition  drop_pos);
+static void   gimp_channel_tree_view_drop_component   (GimpContainerTreeView   *tree_view,
+                                                       GimpImage               *image,
+                                                       GimpChannelType          component,
+                                                       GimpViewable            *dest_viewable,
+                                                       GtkTreeViewDropPosition  drop_pos);
+static void   gimp_channel_tree_view_set_image        (GimpItemTreeView        *item_view,
+                                                       GimpImage               *image);
+static GimpItem * gimp_channel_tree_view_item_new     (GimpImage               *image);
+
+static void   gimp_channel_tree_view_set_context      (GimpContainerView       *view,
+                                                       GimpContext             *context);
+static void   gimp_channel_tree_view_set_view_size    (GimpContainerView       *view);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpChannelTreeView, gimp_channel_tree_view,
@@ -87,7 +96,7 @@ gimp_channel_tree_view_class_init (GimpChannelTreeViewClass *klass)
   GimpContainerTreeViewClass *view_class   = GIMP_CONTAINER_TREE_VIEW_CLASS (klass);
   GimpItemTreeViewClass      *iv_class     = GIMP_ITEM_TREE_VIEW_CLASS (klass);
 
-  object_class->constructor  = gimp_channel_tree_view_constructor;
+  object_class->constructed  = gimp_channel_tree_view_constructed;
 
   view_class->drop_viewable  = gimp_channel_tree_view_drop_viewable;
   view_class->drop_component = gimp_channel_tree_view_drop_component;
@@ -100,7 +109,6 @@ gimp_channel_tree_view_class_init (GimpChannelTreeViewClass *klass)
   iv_class->get_container    = gimp_image_get_channels;
   iv_class->get_active_item  = (GimpGetItemFunc) gimp_image_get_active_channel;
   iv_class->set_active_item  = (GimpSetItemFunc) gimp_image_set_active_channel;
-  iv_class->reorder_item     = (GimpReorderItemFunc) gimp_image_position_channel;
   iv_class->add_item         = (GimpAddItemFunc) gimp_image_add_channel;
   iv_class->remove_item      = (GimpRemoveItemFunc) gimp_image_remove_channel;
   iv_class->new_item         = gimp_channel_tree_view_item_new;
@@ -116,7 +124,8 @@ gimp_channel_tree_view_class_init (GimpChannelTreeViewClass *klass)
   iv_class->lower_bottom_action = "channels-lower-to-bottom";
   iv_class->duplicate_action    = "channels-duplicate";
   iv_class->delete_action       = "channels-delete";
-  iv_class->reorder_desc        = _("Reorder Channel");
+
+  g_type_class_add_private (klass, sizeof (GimpChannelTreeViewPriv));
 }
 
 static void
@@ -131,23 +140,29 @@ gimp_channel_tree_view_view_iface_init (GimpContainerViewInterface *view_iface)
 static void
 gimp_channel_tree_view_init (GimpChannelTreeView *view)
 {
+  view->priv = G_TYPE_INSTANCE_GET_PRIVATE (view,
+                                            GIMP_TYPE_CHANNEL_TREE_VIEW,
+                                            GimpChannelTreeViewPriv);
+
+  view->priv->component_editor   = NULL;
+  view->priv->toselection_button = NULL;
 }
 
-static GObject *
-gimp_channel_tree_view_constructor (GType                  type,
-                                    guint                  n_params,
-                                    GObjectConstructParam *params)
+static void
+gimp_channel_tree_view_constructed (GObject *object)
 {
-  GObject               *object;
-  GimpEditor            *editor;
-  GimpChannelTreeView   *view;
-  GimpContainerTreeView *tree_view;
+  GimpChannelTreeView   *view      = GIMP_CHANNEL_TREE_VIEW (object);
+  GimpContainerTreeView *tree_view = GIMP_CONTAINER_TREE_VIEW (object);
+  GdkModifierType        extend_mask;
+  GdkModifierType        modify_mask;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  editor    = GIMP_EDITOR (object);
-  view      = GIMP_CHANNEL_TREE_VIEW (object);
-  tree_view = GIMP_CONTAINER_TREE_VIEW (object);
+  extend_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
+                                              GDK_MODIFIER_INTENT_EXTEND_SELECTION);
+  modify_mask = gtk_widget_get_modifier_mask (GTK_WIDGET (object),
+                                              GDK_MODIFIER_INTENT_MODIFY_SELECTION);
 
   gimp_dnd_viewable_dest_add  (GTK_WIDGET (tree_view->view), GIMP_TYPE_LAYER,
                                NULL, tree_view);
@@ -156,23 +171,21 @@ gimp_channel_tree_view_constructor (GType                  type,
   gimp_dnd_component_dest_add (GTK_WIDGET (tree_view->view),
                                NULL, tree_view);
 
-  view->toselection_button =
+  view->priv->toselection_button =
     gimp_editor_add_action_button (GIMP_EDITOR (view), "channels",
                                    "channels-selection-replace",
                                    "channels-selection-add",
-                                   GDK_SHIFT_MASK,
+                                   extend_mask,
                                    "channels-selection-subtract",
-                                   GDK_CONTROL_MASK,
+                                   modify_mask,
                                    "channels-selection-intersect",
-                                   GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+                                   extend_mask | modify_mask,
                                    NULL);
   gimp_container_view_enable_dnd (GIMP_CONTAINER_VIEW (view),
-                                  GTK_BUTTON (view->toselection_button),
+                                  GTK_BUTTON (view->priv->toselection_button),
                                   GIMP_TYPE_CHANNEL);
-  gtk_box_reorder_child (GTK_BOX (GIMP_EDITOR (view)->button_box),
-                         view->toselection_button, 5);
-
-  return object;
+  gtk_box_reorder_child (gimp_editor_get_button_box (GIMP_EDITOR (view)),
+                         view->priv->toselection_button, 5);
 }
 
 
@@ -185,34 +198,33 @@ gimp_channel_tree_view_drop_viewable (GimpContainerTreeView   *tree_view,
                                       GtkTreeViewDropPosition  drop_pos)
 {
   GimpItemTreeView      *item_view = GIMP_ITEM_TREE_VIEW (tree_view);
+  GimpImage             *image     = gimp_item_tree_view_get_image (item_view);
   GimpItemTreeViewClass *item_view_class;
 
   item_view_class = GIMP_ITEM_TREE_VIEW_GET_CLASS (item_view);
 
   if (GIMP_IS_DRAWABLE (src_viewable) &&
-      (item_view->image != gimp_item_get_image (GIMP_ITEM (src_viewable)) ||
+      (image != gimp_item_get_image (GIMP_ITEM (src_viewable)) ||
        G_TYPE_FROM_INSTANCE (src_viewable) != item_view_class->item_type))
     {
       GimpItem *new_item;
-      gint      index = -1;
+      GimpItem *parent;
+      gint      index;
 
-      if (dest_viewable)
-        {
-          index = gimp_image_get_channel_index (item_view->image,
-                                                GIMP_CHANNEL (dest_viewable));
-
-          if (drop_pos == GTK_TREE_VIEW_DROP_AFTER)
-            index++;
-        }
+      index = gimp_item_tree_view_get_drop_index (item_view, dest_viewable,
+                                                  drop_pos,
+                                                  (GimpViewable **) &parent);
 
       new_item = gimp_item_convert (GIMP_ITEM (src_viewable),
-                                    item_view->image,
+                                    gimp_item_tree_view_get_image (item_view),
                                     item_view_class->item_type);
 
       gimp_item_set_linked (new_item, FALSE, FALSE);
 
-      item_view_class->add_item (item_view->image, new_item, index);
-      gimp_image_flush (item_view->image);
+      item_view_class->add_item (image, new_item, parent, index, TRUE);
+
+      gimp_image_flush (image);
+
       return;
     }
 
@@ -230,19 +242,16 @@ gimp_channel_tree_view_drop_component (GimpContainerTreeView   *tree_view,
                                        GtkTreeViewDropPosition  drop_pos)
 {
   GimpItemTreeView *item_view = GIMP_ITEM_TREE_VIEW (tree_view);
+  GimpImage        *image     = gimp_item_tree_view_get_image (item_view);
   GimpItem         *new_item;
-  gint              index     = -1;
+  GimpChannel      *parent;
+  gint              index;
   const gchar      *desc;
   gchar            *name;
 
-  if (dest_viewable)
-    {
-      index = gimp_image_get_channel_index (item_view->image,
-                                            GIMP_CHANNEL (dest_viewable));
-
-      if (drop_pos == GTK_TREE_VIEW_DROP_AFTER)
-        index++;
-    }
+  index = gimp_item_tree_view_get_drop_index (item_view, dest_viewable,
+                                              drop_pos,
+                                              (GimpViewable **) &parent);
 
   gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,
                        NULL, NULL, &desc, NULL);
@@ -258,11 +267,12 @@ gimp_channel_tree_view_drop_component (GimpContainerTreeView   *tree_view,
 
   g_free (name);
 
-  if (src_image != item_view->image)
-    GIMP_ITEM_GET_CLASS (new_item)->convert (new_item, item_view->image);
+  if (src_image != image)
+    GIMP_ITEM_GET_CLASS (new_item)->convert (new_item, image);
 
-  gimp_image_add_channel (item_view->image, GIMP_CHANNEL (new_item), index);
-  gimp_image_flush (item_view->image);
+  gimp_image_add_channel (image, GIMP_CHANNEL (new_item), parent, index, TRUE);
+
+  gimp_image_flush (image);
 }
 
 
@@ -274,34 +284,34 @@ gimp_channel_tree_view_set_image (GimpItemTreeView *item_view,
 {
   GimpChannelTreeView *channel_view = GIMP_CHANNEL_TREE_VIEW (item_view);
 
-  if (! channel_view->component_editor)
+  if (! channel_view->priv->component_editor)
     {
       GimpContainerView *view = GIMP_CONTAINER_VIEW (item_view);
       gint               view_size;
 
       view_size = gimp_container_view_get_view_size (view, NULL);
 
-      channel_view->component_editor =
+      channel_view->priv->component_editor =
         gimp_component_editor_new (view_size,
-                                   GIMP_EDITOR (item_view)->menu_factory);
-      gimp_docked_set_context (GIMP_DOCKED (channel_view->component_editor),
+                                   gimp_editor_get_menu_factory (GIMP_EDITOR (item_view)));
+      gimp_docked_set_context (GIMP_DOCKED (channel_view->priv->component_editor),
                                gimp_container_view_get_context (view));
-      gtk_box_pack_start (GTK_BOX (item_view), channel_view->component_editor,
+      gtk_box_pack_start (GTK_BOX (item_view), channel_view->priv->component_editor,
                           FALSE, FALSE, 0);
       gtk_box_reorder_child (GTK_BOX (item_view),
-                             channel_view->component_editor, 0);
+                             channel_view->priv->component_editor, 0);
     }
 
   if (! image)
-    gtk_widget_hide (channel_view->component_editor);
+    gtk_widget_hide (channel_view->priv->component_editor);
 
-  gimp_image_editor_set_image (GIMP_IMAGE_EDITOR (channel_view->component_editor),
+  gimp_image_editor_set_image (GIMP_IMAGE_EDITOR (channel_view->priv->component_editor),
                                image);
 
   GIMP_ITEM_TREE_VIEW_CLASS (parent_class)->set_image (item_view, image);
 
-  if (item_view->image)
-    gtk_widget_show (channel_view->component_editor);
+  if (gimp_item_tree_view_get_image (item_view))
+    gtk_widget_show (channel_view->priv->component_editor);
 }
 
 static GimpItem *
@@ -318,9 +328,10 @@ gimp_channel_tree_view_item_new (GimpImage *image)
   new_channel = gimp_channel_new (image,
                                   gimp_image_get_width (image),
                                   gimp_image_get_height (image),
-                                  _("Empty Channel"), &color);
+                                  _("Channel"), &color);
 
-  gimp_image_add_channel (image, new_channel, -1);
+  gimp_image_add_channel (image, new_channel,
+                          GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
 
   gimp_image_undo_group_end (image);
 
@@ -338,8 +349,8 @@ gimp_channel_tree_view_set_context (GimpContainerView *view,
 
   parent_view_iface->set_context (view, context);
 
-  if (channel_view->component_editor)
-    gimp_docked_set_context (GIMP_DOCKED (channel_view->component_editor),
+  if (channel_view->priv->component_editor)
+    gimp_docked_set_context (GIMP_DOCKED (channel_view->priv->component_editor),
                              context);
 }
 
@@ -353,7 +364,7 @@ gimp_channel_tree_view_set_view_size (GimpContainerView *view)
 
   view_size = gimp_container_view_get_view_size (view, NULL);
 
-  if (channel_view->component_editor)
-    gimp_component_editor_set_view_size (GIMP_COMPONENT_EDITOR (channel_view->component_editor),
+  if (channel_view->priv->component_editor)
+    gimp_component_editor_set_view_size (GIMP_COMPONENT_EDITOR (channel_view->priv->component_editor),
                                          view_size);
 }

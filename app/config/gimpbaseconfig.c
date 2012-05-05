@@ -4,9 +4,9 @@
  * GimpBaseConfig class
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,6 +38,8 @@
 #include "gimprc-blurbs.h"
 #include "gimpbaseconfig.h"
 
+#include "gimp-debug.h"
+
 #include "gimp-intl.h"
 
 
@@ -55,27 +56,58 @@ enum
 };
 
 
-static void   gimp_base_config_finalize     (GObject      *object);
-static void   gimp_base_config_set_property (GObject      *object,
-                                             guint         property_id,
-                                             const GValue *value,
-                                             GParamSpec   *pspec);
-static void   gimp_base_config_get_property (GObject      *object,
-                                             guint         property_id,
-                                             GValue       *value,
-                                             GParamSpec   *pspec);
+static void   gimp_base_config_class_init   (GimpBaseConfigClass *klass);
+static void   gimp_base_config_init         (GimpBaseConfig      *config,
+                                             GimpBaseConfigClass *klass);
+static void   gimp_base_config_finalize     (GObject             *object);
+static void   gimp_base_config_set_property (GObject             *object,
+                                             guint                property_id,
+                                             const GValue        *value,
+                                             GParamSpec          *pspec);
+static void   gimp_base_config_get_property (GObject             *object,
+                                             guint                property_id,
+                                             GValue              *value,
+                                             GParamSpec          *pspec);
 
 
-G_DEFINE_TYPE (GimpBaseConfig, gimp_base_config, G_TYPE_OBJECT)
+static GObjectClass *parent_class = NULL;
 
-#define parent_class gimp_base_config_parent_class
 
+GType
+gimp_base_config_get_type (void)
+{
+  static GType config_type = 0;
+
+  if (! config_type)
+    {
+      const GTypeInfo config_info =
+      {
+        sizeof (GimpBaseConfigClass),
+        (GBaseInitFunc) NULL,
+        (GBaseFinalizeFunc) NULL,
+        (GClassInitFunc) gimp_base_config_class_init,
+        NULL,           /* class_finalize */
+        NULL,           /* class_data     */
+        sizeof (GimpBaseConfig),
+        0,              /* n_preallocs    */
+        (GInstanceInitFunc) gimp_base_config_init,
+      };
+
+      config_type = g_type_register_static (G_TYPE_OBJECT,
+                                            "GimpBaseConfig",
+                                            &config_info, 0);
+    }
+
+  return config_type;
+}
 
 static void
 gimp_base_config_class_init (GimpBaseConfigClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   gint          num_processors;
+
+  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize     = gimp_base_config_finalize;
   object_class->set_property = gimp_base_config_set_property;
@@ -100,6 +132,8 @@ gimp_base_config_class_init (GimpBaseConfigClass *klass)
   num_processors = num_processors * 2;
 #endif
 
+  num_processors = MIN (num_processors, GIMP_MAX_NUM_THREADS);
+
   GIMP_CONFIG_INSTALL_PROP_UINT (object_class, PROP_NUM_PROCESSORS,
                                  "num-processors", NUM_PROCESSORS_BLURB,
                                  1, GIMP_MAX_NUM_THREADS, num_processors,
@@ -119,8 +153,10 @@ gimp_base_config_class_init (GimpBaseConfigClass *klass)
 }
 
 static void
-gimp_base_config_init (GimpBaseConfig *config)
+gimp_base_config_init (GimpBaseConfig      *config,
+                       GimpBaseConfigClass *klass)
 {
+  gimp_debug_add_instance (G_OBJECT (config), G_OBJECT_CLASS (klass));
 }
 
 static void
@@ -130,6 +166,8 @@ gimp_base_config_finalize (GObject *object)
 
   g_free (base_config->temp_path);
   g_free (base_config->swap_path);
+
+  gimp_debug_remove_instance (object);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

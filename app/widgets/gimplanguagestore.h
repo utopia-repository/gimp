@@ -2,11 +2,11 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimplanguagestore.h
- * Copyright (C) 2008  Sven Neumann <sven@gimp.org>
+ * Copyright (C) 2008, 2009  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_LANGUAGE_STORE_H__
@@ -25,8 +24,8 @@
 
 enum
 {
-  GIMP_LANGUAGE_STORE_LANGUAGE,
-  GIMP_LANGUAGE_STORE_ISO_639_1
+  GIMP_LANGUAGE_STORE_LABEL,
+  GIMP_LANGUAGE_STORE_CODE
 };
 
 
@@ -43,19 +42,29 @@ typedef struct _GimpLanguageStoreClass  GimpLanguageStoreClass;
 struct _GimpLanguageStoreClass
 {
   GtkListStoreClass  parent_class;
+
+  void (* add) (GimpLanguageStore *store,
+                const gchar       *label,
+                const gchar       *code);
 };
 
 struct _GimpLanguageStore
 {
-  GtkListStore       parent_instance;
+  GtkListStore     parent_instance;
 };
 
 
 GType          gimp_language_store_get_type (void) G_GNUC_CONST;
 
 GtkListStore * gimp_language_store_new      (void);
+
+gboolean       gimp_language_store_lookup   (GimpLanguageStore *store,
+                                             const gchar       *code,
+                                             GtkTreeIter       *iter);
+
+/*  used from gimplanguagestore-parser.c  */
 void           gimp_language_store_add      (GimpLanguageStore *store,
-                                             const gchar       *lang,
+                                             const gchar       *label,
                                              const gchar       *code);
 
 

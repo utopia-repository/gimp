@@ -4,10 +4,10 @@
  * gimpcolorselection.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -42,6 +41,15 @@
 #include "gimpwidgetsmarshal.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpcolorselection
+ * @title: GimpColorSelection
+ * @short_description: Widget for doing a color selection.
+ *
+ * Widget for doing a color selection.
+ **/
 
 
 #define COLOR_AREA_SIZE  20
@@ -79,7 +87,7 @@ static void   gimp_color_selection_set_property      (GObject            *object
                                                       GParamSpec         *pspec);
 
 static void   gimp_color_selection_switch_page       (GtkWidget          *widget,
-                                                      GtkNotebookPage    *page,
+                                                      gpointer            page,
                                                       guint               page_num,
                                                       GimpColorSelection *selection);
 static void   gimp_color_selection_notebook_changed  (GimpColorSelector  *selector,
@@ -105,7 +113,7 @@ static void   gimp_color_selection_update            (GimpColorSelection *select
                                                       UpdateType          update);
 
 
-G_DEFINE_TYPE (GimpColorSelection, gimp_color_selection, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpColorSelection, gimp_color_selection, GTK_TYPE_BOX)
 
 #define parent_class gimp_color_selection_parent_class
 
@@ -141,27 +149,32 @@ gimp_color_selection_class_init (GimpColorSelectionClass *klass)
 static void
 gimp_color_selection_init (GimpColorSelection *selection)
 {
-  GtkWidget *main_hbox;
-  GtkWidget *frame;
-  GtkWidget *table;
-  GtkWidget *hbox;
-  GtkWidget *label;
-  GtkWidget *entry;
-  GtkWidget *button;
+  GtkWidget    *main_hbox;
+  GtkWidget    *hbox;
+  GtkWidget    *vbox;
+  GtkWidget    *frame;
+  GtkWidget    *label;
+  GtkWidget    *entry;
+  GtkWidget    *button;
+  GtkSizeGroup *new_group;
+  GtkSizeGroup *old_group;
 
   selection->show_alpha = TRUE;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (selection),
+                                  GTK_ORIENTATION_VERTICAL);
 
   gimp_rgba_set (&selection->rgb, 0.0, 0.0, 0.0, 1.0);
   gimp_rgb_to_hsv (&selection->rgb, &selection->hsv);
 
   selection->channel = GIMP_COLOR_SELECTOR_HUE;
 
-  main_hbox = gtk_hbox_new (FALSE, 6);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_add (GTK_CONTAINER (selection), main_hbox);
   gtk_widget_show (main_hbox);
 
   /*  The left vbox with the notebook  */
-  selection->left_vbox = gtk_vbox_new (FALSE, 6);
+  selection->left_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (main_hbox), selection->left_vbox,
                       TRUE, TRUE, 0);
   gtk_widget_show (selection->left_vbox);
@@ -194,21 +207,43 @@ gimp_color_selection_init (GimpColorSelection *selection)
                     G_CALLBACK (gimp_color_selection_switch_page),
                     selection);
 
-  /*  The table for the color_areas  */
-  table = gtk_table_new (2, 2, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_end (GTK_BOX (selection->left_vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
+  /*  The hbox for the color_areas  */
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_pack_end (GTK_BOX (selection->left_vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
 
-  /*  The new color area  */
+  /*  The labels  */
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
+  gtk_widget_show (vbox);
+
+  label = gtk_label_new (_("Current:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
+  gtk_widget_show (label);
+
+  new_group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
+  gtk_size_group_add_widget (new_group, label);
+  g_object_unref (new_group);
+
+  label = gtk_label_new (_("Old:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
+  gtk_widget_show (label);
+
+  old_group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
+  gtk_size_group_add_widget (old_group, label);
+  g_object_unref (old_group);
+
+  /*  The color areas  */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_widget_set_size_request (frame, -1, COLOR_AREA_SIZE);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show (frame);
 
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                             _("Current:"), 1.0, 0.5,
-                             frame, 1, FALSE);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_widget_show (vbox);
 
   selection->new_color = gimp_color_area_new (&selection->rgb,
                                               selection->show_alpha ?
@@ -216,21 +251,13 @@ gimp_color_selection_init (GimpColorSelection *selection)
                                               GIMP_COLOR_AREA_FLAT,
                                               GDK_BUTTON1_MASK |
                                               GDK_BUTTON2_MASK);
-  gtk_container_add (GTK_CONTAINER (frame), selection->new_color);
+  gtk_size_group_add_widget (new_group, selection->new_color);
+  gtk_box_pack_start (GTK_BOX (vbox), selection->new_color, FALSE, FALSE, 0);
   gtk_widget_show (selection->new_color);
 
   g_signal_connect (selection->new_color, "color-changed",
                     G_CALLBACK (gimp_color_selection_new_color_changed),
                     selection);
-
-  /*  The old color area  */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_widget_set_size_request (frame, -1, COLOR_AREA_SIZE);
-
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-                             _("Old:"), 1.0, 0.5,
-                             frame, 1, FALSE);
 
   selection->old_color = gimp_color_area_new (&selection->rgb,
                                               selection->show_alpha ?
@@ -239,11 +266,12 @@ gimp_color_selection_init (GimpColorSelection *selection)
                                               GDK_BUTTON1_MASK |
                                               GDK_BUTTON2_MASK);
   gtk_drag_dest_unset (selection->old_color);
-  gtk_container_add (GTK_CONTAINER (frame), selection->old_color);
+  gtk_size_group_add_widget (old_group, selection->old_color);
+  gtk_box_pack_start (GTK_BOX (vbox), selection->old_color, FALSE, FALSE, 0);
   gtk_widget_show (selection->old_color);
 
   /*  The right vbox with color scales  */
-  selection->right_vbox = gtk_vbox_new (FALSE, 6);
+  selection->right_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (main_hbox), selection->right_vbox,
                       TRUE, TRUE, 0);
   gtk_widget_show (selection->right_vbox);
@@ -267,7 +295,7 @@ gimp_color_selection_init (GimpColorSelection *selection)
                     G_CALLBACK (gimp_color_selection_scales_changed),
                     selection);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (selection->right_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -490,8 +518,8 @@ gimp_color_selection_color_changed (GimpColorSelection *selection)
 
 /**
  * gimp_color_selection_set_config:
- * @selection:
- * @config:
+ * @selection: A #GimpColorSelection widget.
+ * @config:    A #GimpColorConfig object.
  *
  * Sets the color management configuration to use with this color selection.
  *
@@ -514,7 +542,7 @@ gimp_color_selection_set_config (GimpColorSelection *selection,
 
 static void
 gimp_color_selection_switch_page (GtkWidget          *widget,
-                                  GtkNotebookPage    *page,
+                                  gpointer            page,
                                   guint               page_num,
                                   GimpColorSelection *selection)
 {

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2003 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <stdlib.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -170,6 +169,8 @@ void
 gimp_transform_region (GimpPickable          *pickable,
                        GimpContext           *context,
                        TileManager           *orig_tiles,
+                       gint                   orig_offset_x,
+                       gint                   orig_offset_y,
                        PixelRegion           *destPR,
                        gint                   dest_x1,
                        gint                   dest_y1,
@@ -188,15 +189,13 @@ gimp_transform_region (GimpPickable          *pickable,
 
   g_return_if_fail (GIMP_IS_PICKABLE (pickable));
 
-  tile_manager_get_offsets (orig_tiles, &u1, &v1);
-
+  u1 = orig_offset_x;
+  v1 = orig_offset_y;
   u2 = u1 + tile_manager_width (orig_tiles);
   v2 = v1 + tile_manager_height (orig_tiles);
 
   m = *matrix;
   gimp_matrix3_invert (&m);
-
-  alpha = 0;
 
   /*  turn interpolation off for simple transformations (e.g. rot90)  */
   if (gimp_matrix3_is_simple (matrix))
@@ -211,18 +210,18 @@ gimp_transform_region (GimpPickable          *pickable,
   switch (GIMP_IMAGE_TYPE_BASE_TYPE (pickable_type))
     {
     case GIMP_RGB:
-      bg_color[ALPHA_PIX] = TRANSPARENT_OPACITY;
-      alpha = ALPHA_PIX;
+      bg_color[ALPHA] = TRANSPARENT_OPACITY;
+      alpha = ALPHA;
       break;
 
     case GIMP_GRAY:
-      bg_color[ALPHA_G_PIX] = TRANSPARENT_OPACITY;
-      alpha = ALPHA_G_PIX;
+      bg_color[ALPHA_G] = TRANSPARENT_OPACITY;
+      alpha = ALPHA_G;
       break;
 
     case GIMP_INDEXED:
-      bg_color[ALPHA_I_PIX] = TRANSPARENT_OPACITY;
-      alpha = ALPHA_I_PIX;
+      bg_color[ALPHA_I] = TRANSPARENT_OPACITY;
+      alpha = ALPHA_I;
       /*  If the image is indexed color, ignore interpolation value  */
       interpolation_type = GIMP_INTERPOLATION_NONE;
       break;
@@ -339,7 +338,8 @@ gimp_transform_region_nearest (TileManager        *orig_tiles,
               if (iu >= u1 && iu < u2 &&
                   iv >= v1 && iv < v2)
                 {
-                  read_pixel_data_1 (orig_tiles, iu - u1, iv - v1, d);
+                  tile_manager_read_pixel_data_1 (orig_tiles, iu - u1, iv - v1,
+                                                  d);
 
                   d += destPR->bytes;
                 }
@@ -856,16 +856,17 @@ sample_bi (TileManager  *tm,
   guchar     C[4][4];
   gint       i;
 
-  /*  fill the color with default values, since read_pixel_data_1
-   *  does nothing, when accesses are out of bounds.
+  /*  fill the color with default values, since
+   *  tile_manager_read_pixel_data_1 does nothing, when accesses are
+   *  out of bounds.
    */
   for (i = 0; i < 4; i++)
     *(guint*) (&C[i]) = *(guint*) (bg_color);
 
-  read_pixel_data_1 (tm, x0, y0, C[0]);
-  read_pixel_data_1 (tm, x1, y0, C[2]);
-  read_pixel_data_1 (tm, x0, y1, C[1]);
-  read_pixel_data_1 (tm, x1, y1, C[3]);
+  tile_manager_read_pixel_data_1 (tm, x0, y0, C[0]);
+  tile_manager_read_pixel_data_1 (tm, x1, y0, C[2]);
+  tile_manager_read_pixel_data_1 (tm, x0, y1, C[1]);
+  tile_manager_read_pixel_data_1 (tm, x1, y1, C[3]);
 
 #define lerp(v1, v2, r) \
         (((guint)(v1) * (FIXED_UNIT - (guint)(r)) + \

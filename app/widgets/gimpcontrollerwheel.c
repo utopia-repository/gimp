@@ -4,9 +4,9 @@
  * gimpcontrollerwheel.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -48,9 +47,7 @@ struct _WheelEvent
 };
 
 
-static GObject     * gimp_controller_wheel_constructor     (GType           type,
-                                                            guint           n_params,
-                                                            GObjectConstructParam *params);
+static void          gimp_controller_wheel_constructed     (GObject        *object);
 
 static gint          gimp_controller_wheel_get_n_events    (GimpController *controller);
 static const gchar * gimp_controller_wheel_get_event_name  (GimpController *controller,
@@ -175,7 +172,7 @@ gimp_controller_wheel_class_init (GimpControllerWheelClass *klass)
   GObjectClass        *object_class     = G_OBJECT_CLASS (klass);
   GimpControllerClass *controller_class = GIMP_CONTROLLER_CLASS (klass);
 
-  object_class->constructor         = gimp_controller_wheel_constructor;
+  object_class->constructed         = gimp_controller_wheel_constructed;
 
   controller_class->name            = _("Mouse Wheel");
   controller_class->help_id         = GIMP_HELP_CONTROLLER_WHEEL;
@@ -211,21 +208,16 @@ gimp_controller_wheel_init (GimpControllerWheel *wheel)
     }
 }
 
-static GObject *
-gimp_controller_wheel_constructor (GType                  type,
-                                   guint                  n_params,
-                                   GObjectConstructParam *params)
+static void
+gimp_controller_wheel_constructed (GObject *object)
 {
-  GObject *object;
-
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_object_set (object,
                 "name",  _("Mouse Wheel Events"),
                 "state", _("Ready"),
                 NULL);
-
-  return object;
 }
 
 static gint

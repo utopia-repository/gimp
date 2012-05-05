@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
 #include "gimp.h"
+#include "gimpcontainer.h"
 #include "gimpcontext.h"
 #include "gimpguide.h"
 #include "gimpimage.h"
@@ -32,7 +32,6 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimpitem.h"
-#include "gimplist.h"
 #include "gimpprogress.h"
 #include "gimpsamplepoint.h"
 
@@ -79,9 +78,9 @@ gimp_image_rotate (GimpImage        *image,
   center_x              = previous_image_width  / 2.0;
   center_y              = previous_image_height / 2.0;
 
-  progress_max = (image->channels->num_children +
-                  image->layers->num_children   +
-                  image->vectors->num_children  +
+  progress_max = (gimp_container_get_n_children (gimp_image_get_channels (image)) +
+                  gimp_container_get_n_children (gimp_image_get_layers (image))   +
+                  gimp_container_get_n_children (gimp_image_get_vectors (image))  +
                   1 /* selection */);
 
   g_object_freeze_notify (G_OBJECT (image));
@@ -114,7 +113,7 @@ gimp_image_rotate (GimpImage        *image,
     }
 
   /*  Rotate all channels  */
-  for (list = GIMP_LIST (image->channels)->list;
+  for (list = gimp_image_get_channel_iter (image);
        list;
        list = g_list_next (list))
     {
@@ -122,15 +121,14 @@ gimp_image_rotate (GimpImage        *image,
 
       gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
 
-      item->offset_x = 0;
-      item->offset_y = 0;
+      gimp_item_set_offset (item, 0, 0);
 
       if (progress)
         gimp_progress_set_value (progress, progress_current++ / progress_max);
     }
 
   /*  Rotate all vectors  */
-  for (list = GIMP_LIST (image->vectors)->list;
+  for (list = gimp_image_get_vectors_iter (image);
        list;
        list = g_list_next (list))
     {
@@ -138,10 +136,8 @@ gimp_image_rotate (GimpImage        *image,
 
       gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
 
-      item->width    = new_image_width;
-      item->height   = new_image_height;
-      item->offset_x = 0;
-      item->offset_y = 0;
+      gimp_item_set_offset (item, 0, 0);
+      gimp_item_set_size (item, new_image_width, new_image_height);
 
       gimp_item_translate (item,
                            (new_image_width  - gimp_image_get_width  (image)) / 2,
@@ -159,15 +155,14 @@ gimp_image_rotate (GimpImage        *image,
     gimp_item_rotate (GIMP_ITEM (mask), context,
                       rotate_type, center_x, center_y, FALSE);
 
-    GIMP_ITEM (mask)->offset_x = 0;
-    GIMP_ITEM (mask)->offset_y = 0;
+    gimp_item_set_offset (GIMP_ITEM (mask), 0, 0);
 
     if (progress)
       gimp_progress_set_value (progress, progress_current++ / progress_max);
   }
 
   /*  Rotate all layers  */
-  for (list = GIMP_LIST (image->layers)->list;
+  for (list = gimp_image_get_layer_iter (image);
        list;
        list = g_list_next (list))
     {
@@ -175,7 +170,7 @@ gimp_image_rotate (GimpImage        *image,
       gint      off_x;
       gint      off_y;
 
-      gimp_item_offsets (item, &off_x, &off_y);
+      gimp_item_get_offset (item, &off_x, &off_y);
 
       gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
 
@@ -243,20 +238,20 @@ gimp_image_rotate_item_offset (GimpImage        *image,
   switch (rotate_type)
     {
     case GIMP_ROTATE_90:
-      x = gimp_image_get_height (image) - off_y - gimp_item_width (item);
+      x = gimp_image_get_height (image) - off_y - gimp_item_get_width (item);
       y = off_x;
       break;
 
     case GIMP_ROTATE_270:
       x = off_y;
-      y = gimp_image_get_width (image) - off_x - gimp_item_height (item);
+      y = gimp_image_get_width (image) - off_x - gimp_item_get_height (item);
       break;
 
     case GIMP_ROTATE_180:
       return;
     }
 
-  gimp_item_offsets (item, &off_x, &off_y);
+  gimp_item_get_offset (item, &off_x, &off_y);
 
   x -= off_x;
   y -= off_y;
@@ -272,7 +267,9 @@ gimp_image_rotate_guides (GimpImage        *image,
   GList *list;
 
   /*  Rotate all Guides  */
-  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image);
+       list;
+       list = g_list_next (list))
     {
       GimpGuide           *guide       = list->data;
       GimpOrientationType  orientation = gimp_guide_get_orientation (guide);
@@ -351,7 +348,9 @@ gimp_image_rotate_sample_points (GimpImage        *image,
   GList *list;
 
   /*  Rotate all sample points  */
-  for (list = gimp_image_get_sample_points (image); list; list = g_list_next (list))
+  for (list = gimp_image_get_sample_points (image);
+       list;
+       list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
       gint             old_x;

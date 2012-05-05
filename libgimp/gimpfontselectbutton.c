@@ -4,10 +4,10 @@
  * gimpfontselectbutton.c
  * Copyright (C) 2003  Sven Neumann  <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,15 @@
 #include "gimpuimarshal.h"
 
 #include "libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpfontselectbutton
+ * @title: GimpFontSelectButton
+ * @short_description: A button which pops up a font selection dialog.
+ *
+ * A button which pops up a font selection dialog.
+ **/
 
 
 #define GIMP_FONT_SELECT_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GIMP_TYPE_FONT_SELECT_BUTTON, GimpFontSelectButtonPrivate))
@@ -391,15 +399,17 @@ gimp_font_select_drag_data_received (GimpFontSelectButton *button,
                                      guint                 info,
                                      guint                 time)
 {
+  gint   length = gtk_selection_data_get_length (selection);
   gchar *str;
 
-  if ((selection->format != 8) || (selection->length < 1))
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
     {
-      g_warning ("Received invalid font data!");
+      g_warning ("%s: received invalid font data", G_STRFUNC);
       return;
     }
 
-  str = g_strndup ((const gchar *) selection->data, selection->length);
+  str = g_strndup ((const gchar *) gtk_selection_data_get_data (selection),
+                   length);
 
   if (g_utf8_validate (str, -1, NULL))
     {
@@ -433,7 +443,7 @@ gimp_font_select_button_create_inside (GimpFontSelectButton *font_button)
 
   button = gtk_button_new ();
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_container_add (GTK_CONTAINER (button), hbox);
 
   image = gtk_image_new_from_stock (GIMP_STOCK_FONT, GTK_ICON_SIZE_BUTTON);

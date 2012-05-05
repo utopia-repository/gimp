@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_COLORMAP_EDITOR_H__
@@ -37,17 +36,10 @@ struct _GimpColormapEditor
 {
   GimpImageEditor  parent_instance;
 
-  GtkWidget       *preview;
+  GtkWidget       *view;
   gint             col_index;
-  gint             dnd_col_index;
-  gint             xn;
-  gint             yn;
-  gint             cellsize;
 
   PangoLayout     *layout;
-
-  GtkWidget       *edit_button;
-  GtkWidget       *add_button;
 
   GtkAdjustment   *index_adjustment;
   GtkWidget       *index_spinbutton;
@@ -59,9 +51,6 @@ struct _GimpColormapEditor
 struct _GimpColormapEditorClass
 {
   GimpImageEditorClass  parent_class;
-
-  void (* selected) (GimpColormapEditor *editor,
-                     GdkModifierType     state);
 };
 
 

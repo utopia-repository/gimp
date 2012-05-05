@@ -4,9 +4,9 @@
  * gimpfileprocview.c
  * Copyright (C) 2004  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -43,7 +42,7 @@ enum
   COLUMN_LABEL,
   COLUMN_EXTENSIONS,
   COLUMN_HELP_ID,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 enum
@@ -97,8 +96,7 @@ gimp_file_proc_view_finalize (GObject *object)
 
   if (view->meta_extensions)
     {
-      g_list_foreach (view->meta_extensions, (GFunc) g_free, NULL);
-      g_list_free (view->meta_extensions);
+      g_list_free_full (view->meta_extensions, (GDestroyNotify) g_free);
       view->meta_extensions = NULL;
     }
 
@@ -120,7 +118,7 @@ gimp_file_proc_view_new (Gimp        *gimp,
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-  store = gtk_list_store_new (NUM_COLUMNS,
+  store = gtk_list_store_new (N_COLUMNS,
                               GIMP_TYPE_PLUG_IN_PROCEDURE, /*  COLUMN_PROC   */
                               G_TYPE_STRING,          /*  COLUMN_LABEL       */
                               G_TYPE_STRING,          /*  COLUMN_EXTENSIONS  */

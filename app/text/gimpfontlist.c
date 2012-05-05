@@ -6,9 +6,9 @@
  *                          Sven Neumann <sven@gimp.org>
  *                          Manish Singh <yosh@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,13 +25,12 @@
 #include <string.h>
 
 #include <glib-object.h>
-#include <pango/pangoft2.h>
+#include <pango/pangocairo.h>
 #include <pango/pangofc-fontmap.h>
 
 #include "text-types.h"
 
 #include "gimpfont.h"
-#include "gimpfont-utils.h"
 #include "gimpfontlist.h"
 
 #include "gimp-intl.h"
@@ -44,12 +42,8 @@
 #define USE_FONTCONFIG_DIRECTLY
 
 #ifdef USE_FONTCONFIG_DIRECTLY
-/* PangoFT2 is assumed, so we should have this in our cflags */
 #include <fontconfig/fontconfig.h>
 #endif
-
-
-typedef char * (* GimpFontDescToStringFunc) (const PangoFontDescription *desc);
 
 
 static void   gimp_font_list_add_font   (GimpFontList         *list,
@@ -62,8 +56,6 @@ static void   gimp_font_list_load_names (GimpFontList         *list,
 
 
 G_DEFINE_TYPE (GimpFontList, gimp_font_list, GIMP_TYPE_LIST)
-
-static GimpFontDescToStringFunc font_desc_to_string = NULL;
 
 
 static void
@@ -104,37 +96,19 @@ gimp_font_list_restore (GimpFontList *list)
 
   g_return_if_fail (GIMP_IS_FONT_LIST (list));
 
-  if (font_desc_to_string == NULL)
-    {
-      PangoFontDescription *desc;
-      gchar                *name;
-      gchar                 last_char;
+  fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+  if (! fontmap)
+    g_error ("You are using a Pango that has been built against a cairo "
+             "that lacks the Freetype font backend");
 
-      desc = pango_font_description_new ();
-      pango_font_description_set_family (desc, "Wilber 12");
-
-      name = pango_font_description_to_string (desc);
-      last_char = name[strlen (name) - 1];
-
-      g_free (name);
-      pango_font_description_free (desc);
-
-      if (last_char != ',')
-        font_desc_to_string = &gimp_font_util_pango_font_description_to_string;
-      else
-        font_desc_to_string = &pango_font_description_to_string;
-    }
-
-  fontmap = pango_ft2_font_map_new ();
-  pango_ft2_font_map_set_resolution (PANGO_FT2_FONT_MAP (fontmap),
-                                     list->xresolution, list->yresolution);
-
-  context = pango_ft2_font_map_create_context (PANGO_FT2_FONT_MAP (fontmap));
+  pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (fontmap),
+                                       list->yresolution);
+  context = pango_font_map_create_context (fontmap);
   g_object_unref (fontmap);
 
   gimp_container_freeze (GIMP_CONTAINER (list));
 
-  gimp_font_list_load_names (list, fontmap, context);
+  gimp_font_list_load_names (list, PANGO_FONT_MAP (fontmap), context);
   g_object_unref (context);
 
   gimp_list_sort_by_name (GIMP_LIST (list));
@@ -152,7 +126,7 @@ gimp_font_list_add_font (GimpFontList         *list,
   if (! desc)
     return;
 
-  name = font_desc_to_string (desc);
+  name = pango_font_description_to_string (desc);
 
   if (g_utf8_validate (name, -1, NULL))
     {

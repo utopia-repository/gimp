@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -22,10 +21,12 @@
 
 #include "display-types.h"
 
+#include "widgets/gimpdeviceinfo.h"
+#include "widgets/gimpdeviceinfo-coords.h"
+
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-autoscroll.h"
-#include "gimpdisplayshell-coords.h"
 #include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-transform.h"
 
@@ -42,7 +43,7 @@
 typedef struct
 {
   GdkEventMotion  *mevent;
-  GdkDevice       *device;
+  GimpDeviceInfo  *device;
   guint32          time;
   GdkModifierType  state;
   guint            timeout_id;
@@ -71,7 +72,7 @@ gimp_display_shell_autoscroll_start (GimpDisplayShell *shell,
   info = g_slice_new0 (ScrollInfo);
 
   info->mevent     = mevent;
-  info->device     = mevent->device;
+  info->device     = gimp_device_info_get_by_device (mevent->device);
   info->time       = gdk_event_get_time ((GdkEvent *) mevent);
   info->state      = state;
   info->timeout_id = g_timeout_add (AUTOSCROLL_DT,
@@ -116,7 +117,9 @@ gimp_display_shell_autoscroll_timeout (gpointer data)
   gint              dx = 0;
   gint              dy = 0;
 
-  gimp_display_shell_get_device_coords (shell, info->device, &device_coords);
+  gimp_device_info_get_device_coords (info->device,
+                                      gtk_widget_get_window (shell->canvas),
+                                      &device_coords);
 
   if (device_coords.x < 0)
     dx = device_coords.x;
@@ -147,9 +150,9 @@ gimp_display_shell_autoscroll_timeout (gpointer data)
                                  scroll_amount_x,
                                  scroll_amount_y);
 
-      gimp_display_shell_untransform_coordinate (shell,
-                                                 &device_coords,
-                                                 &image_coords);
+      gimp_display_shell_untransform_coords (shell,
+                                             &device_coords,
+                                             &image_coords);
 
       if (gimp_tool_control_get_snap_to (active_tool->control))
         {

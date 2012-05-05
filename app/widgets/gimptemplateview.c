@@ -4,9 +4,9 @@
  * gimptemplateview.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -36,8 +36,10 @@
 #include "core/gimpimage.h"
 #include "core/gimptemplate.h"
 
+#include "gimpcontainertreestore.h"
 #include "gimpcontainertreeview.h"
 #include "gimpcontainerview.h"
+#include "gimpmenufactory.h"
 #include "gimptemplateview.h"
 #include "gimpdnd.h"
 #include "gimphelp-ids.h"
@@ -90,18 +92,26 @@ gimp_template_view_new (GimpViewType     view_type,
   GimpTemplateView    *template_view;
   GimpContainerEditor *editor;
 
-  template_view = g_object_new (GIMP_TYPE_TEMPLATE_VIEW, NULL);
+  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (view_size > 0 &&
+                        view_size <= GIMP_VIEWABLE_MAX_PREVIEW_SIZE, NULL);
+  g_return_val_if_fail (view_border_width >= 0 &&
+                        view_border_width <= GIMP_VIEW_MAX_BORDER_WIDTH,
+                        NULL);
+  g_return_val_if_fail (menu_factory == NULL ||
+                        GIMP_IS_MENU_FACTORY (menu_factory), NULL);
 
-  if (! gimp_container_editor_construct (GIMP_CONTAINER_EDITOR (template_view),
-                                         view_type,
-                                         container, context,
-                                         view_size, view_border_width,
-                                         menu_factory, "<Templates>",
-                                         "/templates-popup"))
-    {
-      g_object_unref (template_view);
-      return NULL;
-    }
+  template_view = g_object_new (GIMP_TYPE_TEMPLATE_VIEW,
+                                "view-type",         view_type,
+                                "container",         container,
+                                "context",           context,
+                                "view-size",         view_size,
+                                "view-border-width", view_border_width,
+                                "menu-factory",      menu_factory,
+                                "menu-identifier",   "<Templates>",
+                                "ui-path",           "/templates-popup",
+                                NULL);
 
   editor = GIMP_CONTAINER_EDITOR (template_view);
 
@@ -149,7 +159,8 @@ gimp_template_view_new (GimpViewType     view_type,
                                   GTK_BUTTON (template_view->delete_button),
                                   GIMP_TYPE_TEMPLATE);
 
-  gimp_ui_manager_update (GIMP_EDITOR (editor->view)->ui_manager, editor);
+  gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)),
+                          editor);
 
   return GTK_WIDGET (template_view);
 }
@@ -160,13 +171,11 @@ gimp_template_view_activate_item (GimpContainerEditor *editor,
 {
   GimpTemplateView *view = GIMP_TEMPLATE_VIEW (editor);
   GimpContainer    *container;
-  GimpContext      *context;
 
   if (GIMP_CONTAINER_EDITOR_CLASS (parent_class)->activate_item)
     GIMP_CONTAINER_EDITOR_CLASS (parent_class)->activate_item (editor, viewable);
 
   container = gimp_container_view_get_container (editor->view);
-  context   = gimp_container_view_get_context (editor->view);
 
   if (viewable && gimp_container_have (container, GIMP_OBJECT (viewable)))
     {
@@ -195,7 +204,7 @@ gimp_template_view_tree_name_edited (GtkCellRendererText *cell,
       const gchar      *old_name;
 
       gtk_tree_model_get (tree_view->model, &iter,
-                          tree_view->model_column_renderer, &renderer,
+                          GIMP_CONTAINER_TREE_STORE_COLUMN_RENDERER, &renderer,
                           -1);
 
       object = GIMP_OBJECT (renderer->viewable);
@@ -214,8 +223,8 @@ gimp_template_view_tree_name_edited (GtkCellRendererText *cell,
           gchar *name = gimp_viewable_get_description (renderer->viewable,
                                                        NULL);
 
-          gtk_list_store_set (GTK_LIST_STORE (tree_view->model), &iter,
-                              tree_view->model_column_name, name,
+          gtk_tree_store_set (GTK_TREE_STORE (tree_view->model), &iter,
+                              GIMP_CONTAINER_TREE_STORE_COLUMN_NAME, name,
                               -1);
           g_free (name);
         }

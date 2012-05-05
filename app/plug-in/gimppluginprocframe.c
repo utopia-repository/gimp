@@ -3,9 +3,9 @@
  *
  * gimppluginprocframe.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,9 +25,9 @@
 
 #include "plug-in-types.h"
 
-#include "core/gimpcontext.h"
 #include "core/gimpprogress.h"
 
+#include "pdb/gimppdbcontext.h"
 #include "pdb/gimppdberror.h"
 
 #include "gimpplugin.h"
@@ -48,7 +47,7 @@ gimp_plug_in_proc_frame_new (GimpContext         *context,
 {
   GimpPlugInProcFrame *proc_frame;
 
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
 
@@ -68,7 +67,7 @@ gimp_plug_in_proc_frame_init (GimpPlugInProcFrame *proc_frame,
                               GimpPlugInProcedure *procedure)
 {
   g_return_if_fail (proc_frame != NULL);
-  g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_if_fail (GIMP_IS_PDB_CONTEXT (context));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
   g_return_if_fail (procedure == NULL ||
                     GIMP_IS_PLUG_IN_PROCEDURE (procedure));
@@ -107,8 +106,8 @@ gimp_plug_in_proc_frame_dispose (GimpPlugInProcFrame *proc_frame,
 
   if (proc_frame->context_stack)
     {
-      g_list_foreach (proc_frame->context_stack, (GFunc) g_object_unref, NULL);
-      g_list_free (proc_frame->context_stack);
+      g_list_free_full (proc_frame->context_stack,
+                        (GDestroyNotify) g_object_unref);
       proc_frame->context_stack = NULL;
     }
 
@@ -205,9 +204,9 @@ gimp_plug_in_proc_frame_get_return_values (GimpPlugInProcFrame *proc_frame)
       GimpProcedure *procedure = proc_frame->procedure;
       GError        *error;
 
-      error = g_error_new (GIMP_PDB_ERROR, GIMP_PDB_INVALID_RETURN_VALUE,
+      error = g_error_new (GIMP_PDB_ERROR, GIMP_PDB_ERROR_INVALID_RETURN_VALUE,
                            _("Procedure '%s' returned no return values"),
-                           gimp_object_get_name (GIMP_OBJECT (procedure)));
+                           gimp_object_get_name (procedure));
 
       return_vals = gimp_procedure_get_return_values (procedure, FALSE,
                                                       error);

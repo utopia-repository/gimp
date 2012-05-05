@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -27,18 +27,17 @@
 
 #include "core/gimp.h"
 #include "core/gimpchannel.h"
-#include "core/gimpchannel-select.h"
 #include "core/gimpimage.h"
 #include "core/gimpselection.h"
-#include "core/gimpstrokedesc.h"
+#include "core/gimpstrokeoptions.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpwindowstrategy.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 
-#include "dialogs/dialogs.h"
 #include "dialogs/stroke-dialog.h"
 
 #include "actions.h"
@@ -123,7 +122,7 @@ select_float_cmd_callback (GtkAction *action,
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
 
-  if (gimp_selection_float (gimp_image_get_mask (image),
+  if (gimp_selection_float (GIMP_SELECTION (gimp_image_get_mask (image)),
                             gimp_image_get_active_drawable (image),
                             action_data_get_context (data),
                             TRUE, 0, 0, &error))
@@ -132,8 +131,9 @@ select_float_cmd_callback (GtkAction *action,
     }
   else
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    "%s", error->message);
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    error->message);
       g_clear_error (&error);
     }
 }
@@ -143,24 +143,27 @@ select_feather_cmd_callback (GtkAction *action,
                              gpointer   data)
 {
   GimpDisplay *display;
+  GimpImage   *image;
   GtkWidget   *dialog;
   gdouble      xres;
   gdouble      yres;
   return_if_no_display (display, data);
 
-  gimp_image_get_resolution (display->image, &xres, &yres);
+  image = gimp_display_get_image (display);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Feather Selection"),
-                                display->shell,
+                                GTK_WIDGET (gimp_display_get_shell (display)),
                                 gimp_standard_help_func,
                                 GIMP_HELP_SELECTION_FEATHER,
                                 _("Feather selection by"),
                                 select_feather_radius, 0, 32767, 3,
-                                GIMP_DISPLAY_SHELL (display->shell)->unit,
+                                gimp_display_get_shell (display)->unit,
                                 MIN (xres, yres),
                                 FALSE,
-                                G_OBJECT (display->image), "disconnect",
-                                select_feather_callback, display->image);
+                                G_OBJECT (image), "disconnect",
+                                select_feather_callback, image);
   gtk_widget_show (dialog);
 }
 
@@ -180,25 +183,28 @@ select_shrink_cmd_callback (GtkAction *action,
                             gpointer   data)
 {
   GimpDisplay *display;
+  GimpImage   *image;
   GtkWidget   *dialog;
   GtkWidget   *button;
   gdouble      xres;
   gdouble      yres;
   return_if_no_display (display, data);
 
-  gimp_image_get_resolution (display->image, &xres, &yres);
+  image = gimp_display_get_image (display);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Shrink Selection"),
-                                display->shell,
+                                GTK_WIDGET (gimp_display_get_shell (display)),
                                 gimp_standard_help_func,
                                 GIMP_HELP_SELECTION_SHRINK,
                                 _("Shrink selection by"),
                                 select_shrink_pixels, 1, 32767, 0,
-                                GIMP_DISPLAY_SHELL (display->shell)->unit,
+                                gimp_display_get_shell (display)->unit,
                                 MIN (xres, yres),
                                 FALSE,
-                                G_OBJECT (display->image), "disconnect",
-                                select_shrink_callback, display->image);
+                                G_OBJECT (image), "disconnect",
+                                select_shrink_callback, image);
 
   button = gtk_check_button_new_with_mnemonic (_("_Shrink from image border"));
 
@@ -218,24 +224,27 @@ select_grow_cmd_callback (GtkAction *action,
                           gpointer   data)
 {
   GimpDisplay *display;
+  GimpImage   *image;
   GtkWidget   *dialog;
   gdouble      xres;
   gdouble      yres;
   return_if_no_display (display, data);
 
-  gimp_image_get_resolution (display->image, &xres, &yres);
+  image = gimp_display_get_image (display);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Grow Selection"),
-                                display->shell,
+                                GTK_WIDGET (gimp_display_get_shell (display)),
                                 gimp_standard_help_func,
                                 GIMP_HELP_SELECTION_GROW,
                                 _("Grow selection by"),
                                 select_grow_pixels, 1, 32767, 0,
-                                GIMP_DISPLAY_SHELL (display->shell)->unit,
+                                gimp_display_get_shell (display)->unit,
                                 MIN (xres, yres),
                                 FALSE,
-                                G_OBJECT (display->image), "disconnect",
-                                select_grow_callback, display->image);
+                                G_OBJECT (image), "disconnect",
+                                select_grow_callback, image);
   gtk_widget_show (dialog);
 }
 
@@ -244,25 +253,28 @@ select_border_cmd_callback (GtkAction *action,
                             gpointer   data)
 {
   GimpDisplay *display;
+  GimpImage   *image;
   GtkWidget   *dialog;
   GtkWidget   *button;
   gdouble      xres;
   gdouble      yres;
   return_if_no_display (display, data);
 
-  gimp_image_get_resolution (display->image, &xres, &yres);
+  image = gimp_display_get_image (display);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Border Selection"),
-                                display->shell,
+                                GTK_WIDGET (gimp_display_get_shell (display)),
                                 gimp_standard_help_func,
                                 GIMP_HELP_SELECTION_BORDER,
                                 _("Border selection by"),
                                 select_border_radius, 1, 32767, 0,
-                                GIMP_DISPLAY_SHELL (display->shell)->unit,
+                                gimp_display_get_shell (display)->unit,
                                 MIN (xres, yres),
                                 FALSE,
-                                G_OBJECT (display->image), "disconnect",
-                                select_border_callback, display->image);
+                                G_OBJECT (image), "disconnect",
+                                select_border_callback, image);
 
   /* Feather button */
   button = gtk_check_button_new_with_mnemonic (_("_Feather border"));
@@ -303,12 +315,14 @@ select_save_cmd_callback (GtkAction *action,
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
 
-  gimp_selection_save (gimp_image_get_mask (image));
+  gimp_selection_save (GIMP_SELECTION (gimp_image_get_mask (image)));
   gimp_image_flush (image);
 
-  gimp_dialog_factory_dialog_raise (global_dock_factory,
-                                    gtk_widget_get_screen (widget),
-                                    "gimp-channel-list", -1);
+  gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (image->gimp)),
+                                             image->gimp,
+                                             gimp_dialog_factory_get_singleton (),
+                                             gtk_widget_get_screen (widget),
+                                             "gimp-channel-list");
 }
 
 void
@@ -326,8 +340,9 @@ select_stroke_cmd_callback (GtkAction *action,
 
   if (! drawable)
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("There is no active layer or channel to stroke to."));
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    _("There is no active layer or channel to stroke to."));
       return;
     }
 
@@ -344,12 +359,12 @@ void
 select_stroke_last_vals_cmd_callback (GtkAction *action,
                                       gpointer   data)
 {
-  GimpImage      *image;
-  GimpDrawable   *drawable;
-  GimpContext    *context;
-  GtkWidget      *widget;
-  GimpStrokeDesc *desc;
-  GError         *error = NULL;
+  GimpImage         *image;
+  GimpDrawable      *drawable;
+  GimpContext       *context;
+  GtkWidget         *widget;
+  GimpStrokeOptions *options;
+  GError            *error = NULL;
   return_if_no_image (image, data);
   return_if_no_context (context, data);
   return_if_no_widget (widget, data);
@@ -358,23 +373,25 @@ select_stroke_last_vals_cmd_callback (GtkAction *action,
 
   if (! drawable)
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("There is no active layer or channel to stroke to."));
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    _("There is no active layer or channel to stroke to."));
       return;
     }
 
-  desc = g_object_get_data (G_OBJECT (image->gimp), "saved-stroke-desc");
+  options = g_object_get_data (G_OBJECT (image->gimp), "saved-stroke-options");
 
-  if (desc)
-    g_object_ref (desc);
+  if (options)
+    g_object_ref (options);
   else
-    desc = gimp_stroke_desc_new (image->gimp, context);
+    options = gimp_stroke_options_new (image->gimp, context, TRUE);
 
   if (! gimp_item_stroke (GIMP_ITEM (gimp_image_get_mask (image)),
-                          drawable, context, desc, FALSE, NULL, &error))
+                          drawable, context, options, FALSE, TRUE, NULL, &error))
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    "%s", error->message);
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    error->message);
       g_clear_error (&error);
     }
   else
@@ -382,7 +399,7 @@ select_stroke_last_vals_cmd_callback (GtkAction *action,
       gimp_image_flush (image);
     }
 
-  g_object_unref (desc);
+  g_object_unref (options);
 }
 
 

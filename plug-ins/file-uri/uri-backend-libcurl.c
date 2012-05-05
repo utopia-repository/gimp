@@ -4,9 +4,9 @@
  * libcurl backend for the URI plug-in
  * Copyright (C) 2006 Mukund Sivaraman <muks@mukund.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -24,7 +23,6 @@
 #include <errno.h>
 
 #include <curl/curl.h>
-#include <curl/types.h>
 #include <curl/easy.h>
 
 #include <glib/gstdio.h>
@@ -63,7 +61,7 @@ uri_backend_init (const gchar  *plugin_name,
 
   vinfo = curl_version_info (CURLVERSION_NOW);
 
-  protocols = g_string_new ("http:,ftp:");
+  protocols = g_string_new ("http:,ftp:,gopher:");
 
   if (vinfo->features & CURL_VERSION_SSL)
     {
@@ -125,14 +123,14 @@ progress_callback (void   *clientp,
 
   if (dltotal > 0.0)
     {
-      memsize = g_format_size_for_display (dltotal);
+      memsize = g_format_size (dltotal);
       gimp_progress_set_text_printf (_("Downloading %s of image data"),
                                      memsize);
       gimp_progress_update (dlnow / dltotal);
     }
   else
     {
-      memsize = g_format_size_for_display (dlnow);
+      memsize = g_format_size (dlnow);
       gimp_progress_set_text_printf (_("Downloaded %s of image data"),
                                      memsize);
       gimp_progress_pulse ();
@@ -153,7 +151,12 @@ uri_backend_load_image (const gchar  *uri,
   FILE      *out_file;
   CURL      *curl_handle;
   CURLcode   result;
-  gint       response_code;
+  glong      response_code;
+  gchar     *eff_url   = NULL;
+  gchar     *proto     = NULL;
+  gboolean   is_http   = FALSE;
+  gboolean   is_ftp    = FALSE;
+  gboolean   is_gopher = FALSE;
 
   gimp_progress_init (_("Connecting to server"));
 
@@ -195,13 +198,52 @@ uri_backend_load_image (const gchar  *uri,
 
   curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
 
-  if (response_code != 200)
+  /* protocol could be not specified in provided uri
+     get complete url guessed by curl */
+  curl_easy_getinfo (curl_handle, CURLINFO_EFFECTIVE_URL, &eff_url);
+
+  /* detect uri protocol */
+  if (! g_ascii_strncasecmp (eff_url, "http://", 7))
+    {
+      is_http = TRUE;
+      proto = "HTTP";
+    }
+  else
+  if (! g_ascii_strncasecmp (eff_url, "https://", 8))
+    {
+      is_http = TRUE;
+      proto = "HTTPS";
+    }
+  else
+  if (! g_ascii_strncasecmp (eff_url, "ftp://", 6))
+    {
+      is_ftp = TRUE;
+      proto = "FTP";
+    }
+  else
+  if (! g_ascii_strncasecmp (eff_url, "ftps://", 7))
+    {
+      is_ftp = TRUE;
+      proto = "FTPS";
+    }
+  else
+  if (! g_ascii_strncasecmp (eff_url ,"gopher://", 9))
+    {
+      is_gopher = TRUE;
+      proto = "GOPHER";
+    }
+  else
+    {
+      proto = "UNKNOWN";
+    }
+
+  if (! ((is_http && response_code == 200) || (is_ftp && response_code == 226) || (is_gopher)))
     {
       fclose (out_file);
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("Opening '%s' for reading resulted in HTTP "
-                     "response code: %d"),
-                   uri, response_code);
+                   _("Opening '%s' for reading resulted in %s "
+                     "response code: %ld"),
+                   uri, proto, response_code);
       curl_easy_cleanup (curl_handle);
       return FALSE;
     }
@@ -223,4 +265,11 @@ uri_backend_save_image (const gchar  *uri,
   g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, "not implemented");
 
   return FALSE;
+}
+
+gchar *
+uri_backend_map_image (const gchar  *uri,
+                       GimpRunMode   run_mode)
+{
+  return NULL;
 }

@@ -3,9 +3,9 @@
  *
  * gimpplugin.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -80,8 +79,9 @@
 #include "plug-in-types.h"
 
 #include "core/gimp.h"
-#include "core/gimpcontext.h"
 #include "core/gimpprogress.h"
+
+#include "pdb/gimppdbcontext.h"
 
 #include "gimpenvirontable.h"
 #include "gimpinterpreterdb.h"
@@ -192,7 +192,7 @@ gimp_plug_in_new (GimpPlugInManager   *manager,
   GimpPlugIn *plug_in;
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN_MANAGER (manager), NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (procedure == NULL ||
                         GIMP_IS_PLUG_IN_PROCEDURE (procedure), NULL);
@@ -246,7 +246,7 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
     {
       gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
                     "Unable to run plug-in \"%s\"\n(%s)\n\npipe() failed: %s",
-                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_object_get_name (plug_in),
                     gimp_filename_to_utf8 (plug_in->prog),
                     g_strerror (errno));
       return FALSE;
@@ -367,7 +367,7 @@ gimp_plug_in_open (GimpPlugIn         *plug_in,
     {
       gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
                     "Unable to run plug-in \"%s\"\n(%s)\n\n%s",
-                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_object_get_name (plug_in),
                     gimp_filename_to_utf8 (plug_in->prog),
                     error->message);
       g_error_free (error);
@@ -540,7 +540,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
 #ifdef GIMP_UNSTABLE
       g_printerr ("plug-in '%s' aborted before sending its "
                   "temporary procedure return values\n",
-                  gimp_object_get_name (GIMP_OBJECT (plug_in)));
+                  gimp_object_get_name (plug_in));
 #endif
 
       if (proc_frame->main_loop &&
@@ -556,7 +556,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
 #ifdef GIMP_UNSTABLE
       g_printerr ("plug-in '%s' aborted before sending its "
                   "procedure return values\n",
-                  gimp_object_get_name (GIMP_OBJECT (plug_in)));
+                  gimp_object_get_name (plug_in));
 #endif
 
       g_main_loop_quit (plug_in->main_proc_frame.main_loop);
@@ -568,7 +568,7 @@ gimp_plug_in_close (GimpPlugIn *plug_in,
 #ifdef GIMP_UNSTABLE
       g_printerr ("extension '%s' aborted before sending its "
                   "extension_ack message\n",
-                  gimp_object_get_name (GIMP_OBJECT (plug_in)));
+                  gimp_object_get_name (plug_in));
 #endif
 
       g_main_loop_quit (plug_in->ext_main_loop);
@@ -640,7 +640,7 @@ gimp_plug_in_recv_message (GIOChannel   *channel,
                       "The dying plug-in may have messed up GIMP's internal "
                       "state. You may want to save your images and restart "
                       "GIMP to be on the safe side."),
-                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_object_get_name (plug_in),
                     gimp_filename_to_utf8 (plug_in->prog));
     }
 
@@ -774,7 +774,7 @@ gimp_plug_in_proc_frame_push (GimpPlugIn             *plug_in,
   GimpPlugInProcFrame *proc_frame;
 
   g_return_val_if_fail (GIMP_IS_PLUG_IN (plug_in), NULL);
-  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (GIMP_IS_PDB_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (procedure), NULL);
 
@@ -860,7 +860,7 @@ gimp_plug_in_get_undo_desc (GimpPlugIn *plug_in)
         undo_desc = gimp_plug_in_procedure_get_label (proc);
     }
 
-  return undo_desc ? undo_desc : gimp_object_get_name (GIMP_OBJECT (plug_in));
+  return undo_desc ? undo_desc : gimp_object_get_name (plug_in);
 }
 
 /*  called from the PDB (gimp_plugin_menu_register)  */
@@ -891,7 +891,7 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
                     "for the procedure \"%s\".\n"
                     "It has however not installed that procedure.  This "
                     "is not allowed.",
-                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_object_get_name (plug_in),
                     gimp_filename_to_utf8 (plug_in->prog),
                     menu_path, proc_name);
 
@@ -923,17 +923,30 @@ gimp_plug_in_menu_register (GimpPlugIn  *plug_in,
                     "already contained a path.  To make this work, "
                     "pass just the menu's label to "
                     "gimp_install_procedure().",
-                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_object_get_name (plug_in),
                     gimp_filename_to_utf8 (plug_in->prog),
                     menu_path, proc_name);
 
       return FALSE;
     }
 
-  if (! gimp_plug_in_procedure_add_menu_path (proc, menu_path, &error))
+  if (! strlen (proc->menu_label))
     {
       gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                    "%s", error->message);
+                    "Plug-in \"%s\"\n(%s)\n"
+                    "attempted to register the procedure \"%s\" "
+                    "in the menu \"%s\", but the procedure has no label.  "
+                    "This is not allowed.",
+                    gimp_object_get_name (plug_in),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    proc_name, menu_path);
+
+      return FALSE;
+    }
+  if (! gimp_plug_in_procedure_add_menu_path (proc, menu_path, &error))
+    {
+      gimp_message_literal (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+			    error->message);
       g_clear_error (&error);
 
       return FALSE;
@@ -984,7 +997,7 @@ gimp_plug_in_add_temp_proc (GimpPlugIn             *plug_in,
   g_return_if_fail (GIMP_IS_TEMPORARY_PROCEDURE (proc));
 
   overridden = gimp_plug_in_procedure_find (plug_in->temp_procedures,
-                                            GIMP_OBJECT (proc)->name);
+                                            gimp_object_get_name (proc));
 
   if (overridden)
     gimp_plug_in_remove_temp_proc (plug_in,

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -129,7 +129,7 @@ gimp_color_frame_init (GimpColorFrame *frame)
                     G_CALLBACK (gimp_color_frame_menu_callback),
                     frame);
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -143,7 +143,8 @@ gimp_color_frame_init (GimpColorFrame *frame)
                   NULL);
   gtk_box_pack_start (GTK_BOX (vbox), frame->color_area, FALSE, FALSE, 0);
 
-  vbox2 = gtk_vbox_new (TRUE, 2);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  gtk_box_set_homogeneous (GTK_BOX (vbox2), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), vbox2, FALSE, FALSE, 0);
   gtk_widget_show (vbox2);
 
@@ -151,7 +152,7 @@ gimp_color_frame_init (GimpColorFrame *frame)
     {
       GtkWidget *hbox;
 
-      hbox = gtk_hbox_new (FALSE, 6);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
       gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
 
@@ -271,13 +272,25 @@ gimp_color_frame_expose (GtkWidget      *widget,
 
   if (frame->has_number)
     {
-      GtkStyle *style = gtk_widget_get_style (widget);
-      cairo_t  *cr;
-      gchar     buf[8];
-      gint      w, h;
-      gdouble   scale;
+      GtkStyle      *style = gtk_widget_get_style (widget);
+      GtkAllocation  allocation;
+      GtkAllocation  menu_allocation;
+      GtkAllocation  color_area_allocation;
+      cairo_t       *cr;
+      gchar          buf[8];
+      gint           w, h;
+      gdouble        scale;
 
-      cr = gdk_cairo_create (widget->window);
+      gtk_widget_get_allocation (widget, &allocation);
+      gtk_widget_get_allocation (frame->menu, &menu_allocation);
+      gtk_widget_get_allocation (frame->color_area, &color_area_allocation);
+
+      cr = gdk_cairo_create (gtk_widget_get_window (widget));
+      gdk_cairo_region (cr, eevent->region);
+      cairo_clip (cr);
+
+      cairo_translate (cr, allocation.x, allocation.y);
+
       gdk_cairo_set_source_color (cr, &style->light[GTK_STATE_NORMAL]);
 
       g_snprintf (buf, sizeof (buf), "%d", frame->number);
@@ -288,22 +301,19 @@ gimp_color_frame_expose (GtkWidget      *widget,
       pango_layout_set_text (frame->number_layout, buf, -1);
       pango_layout_get_pixel_size (frame->number_layout, &w, &h);
 
-      scale = ((gdouble) (widget->allocation.height -
-                          frame->menu->allocation.height -
-                          frame->color_area->allocation.height) /
+      scale = ((gdouble) (allocation.height -
+                          menu_allocation.height -
+                          color_area_allocation.height) /
                (gdouble) h);
 
       cairo_scale (cr, scale, scale);
 
       cairo_move_to (cr,
-                     (widget->allocation.x +
-                      widget->allocation.width / 2.0) / scale - w / 2.0,
-                     (widget->allocation.y +
-                      widget->allocation.height / 2.0 +
-                      frame->menu->allocation.height / 2.0 +
-                      frame->color_area->allocation.height / 2.0) / scale - h / 2.0);
+                     (allocation.width / 2.0) / scale - w / 2.0,
+                     (allocation.height / 2.0 +
+                      menu_allocation.height / 2.0 +
+                      color_area_allocation.height / 2.0) / scale - h / 2.0);
       pango_cairo_show_layout (cr, frame->number_layout);
-      cairo_fill (cr);
 
       cairo_destroy (cr);
     }

@@ -4,9 +4,9 @@
  * URI plug-in, GIO/GVfs backend
  * Copyright (C) 2008  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,7 +27,6 @@
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
-#include "gimpmountoperation.h"
 #include "uri-backend.h"
 
 #include "libgimp/stdplugins-intl.h"
@@ -41,12 +39,14 @@ typedef enum
 } Mode;
 
 
-static gchar    * get_protocols (void);
-static gboolean   copy_uri      (const gchar  *src_uri,
-                                 const gchar  *dest_uri,
-                                 Mode          mode,
-                                 GimpRunMode   run_mode,
-                                 GError      **error);
+static gchar    * get_protocols          (void);
+static gboolean   copy_uri               (const gchar  *src_uri,
+                                          const gchar  *dest_uri,
+                                          Mode          mode,
+                                          GimpRunMode   run_mode,
+                                          GError      **error);
+static gboolean   mount_enclosing_volume (GFile        *file,
+                                          GError      **error);
 
 static gchar *supported_protocols = NULL;
 
@@ -140,6 +140,39 @@ uri_backend_save_image (const gchar  *uri,
   return FALSE;
 }
 
+gchar *
+uri_backend_map_image (const gchar  *uri,
+                       GimpRunMode   run_mode)
+{
+  GFile    *file    = g_file_new_for_uri (uri);
+  gchar    *path    = NULL;
+  gboolean  success = TRUE;
+
+  if (! file)
+    return NULL;
+
+  if (run_mode == GIMP_RUN_INTERACTIVE)
+    {
+      GError *error = NULL;
+
+      if (! mount_enclosing_volume (file, &error))
+        {
+          if (error->domain != G_IO_ERROR ||
+              error->code   != G_IO_ERROR_ALREADY_MOUNTED)
+            success = FALSE;
+
+          g_error_free (error);
+        }
+    }
+
+  if (success)
+    path = g_file_get_path (file);
+
+  g_object_unref (file);
+
+  return path;
+}
+
 
 /*  private functions  */
 
@@ -191,8 +224,8 @@ uri_progress_callback (goffset  current_num_bytes,
   if (total_num_bytes > 0)
     {
       const gchar *format;
-      gchar       *done  = g_format_size_for_display (current_num_bytes);
-      gchar       *total = g_format_size_for_display (total_num_bytes);
+      gchar       *done  = g_format_size (current_num_bytes);
+      gchar       *total = g_format_size (total_num_bytes);
 
       switch (progress->mode)
         {
@@ -218,7 +251,7 @@ uri_progress_callback (goffset  current_num_bytes,
   else
     {
       const gchar *format;
-      gchar       *done = g_format_size_for_display (current_num_bytes);
+      gchar       *done = g_format_size (current_num_bytes);
 
       switch (progress->mode)
         {
@@ -255,7 +288,7 @@ static gboolean
 mount_enclosing_volume (GFile   *file,
                         GError **error)
 {
-  GMountOperation *operation = gimp_mount_operation_new (NULL);
+  GMountOperation *operation = gtk_mount_operation_new (NULL);
 
   g_file_mount_enclosing_volume (file, G_MOUNT_MOUNT_NONE,
                                  operation,
@@ -276,31 +309,22 @@ copy_uri (const gchar  *src_uri,
           GimpRunMode   run_mode,
           GError      **error)
 {
-  GVfs        *vfs;
   GFile       *src_file;
   GFile       *dest_file;
   UriProgress  progress = { 0, };
   gboolean     success;
 
-  vfs = g_vfs_get_default ();
-
-  if (! g_vfs_is_active (vfs))
-    {
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   "Initialization of GVfs failed");
-      return FALSE;
-    }
-
-  src_file  = g_vfs_get_file_for_uri (vfs, src_uri);
-  dest_file = g_vfs_get_file_for_uri (vfs, dest_uri);
-
   gimp_progress_init (_("Connecting to server"));
 
   progress.mode = mode;
 
+  src_file  = g_file_new_for_uri (src_uri);
+  dest_file = g_file_new_for_uri (dest_uri);
+
   success = g_file_copy (src_file, dest_file, G_FILE_COPY_OVERWRITE, NULL,
                          uri_progress_callback, &progress,
                          error);
+  gimp_progress_update (1.0);
 
   if (! success &&
       run_mode == GIMP_RUN_INTERACTIVE &&

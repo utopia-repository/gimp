@@ -5,9 +5,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,7 @@
 
 #define PLUG_IN_PROC     "plug-in-video"
 #define PLUG_IN_BINARY   "video"
+#define PLUG_IN_ROLE     "gimp-video"
 
 #define MAX_PATTERNS       9
 #define MAX_PATTERN_SIZE 108
@@ -1795,7 +1795,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",       "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",       "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",          "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable",       "Input drawable"               },
     { GIMP_PDB_INT32,    "pattern-number", "Type of RGB pattern to use"   },
@@ -2014,7 +2014,7 @@ video_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("Video"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Video"), PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -2030,9 +2030,10 @@ video_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), hbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
   /* frame for the radio buttons */
@@ -2041,7 +2042,7 @@ video_dialog (void)
   gtk_widget_show (frame);
 
   /* vbox for RGB pattern typees */
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -2066,7 +2067,7 @@ video_dialog (void)
     }
 
   /* vbox for preview and toggles */
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 

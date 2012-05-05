@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2006 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -167,9 +166,9 @@ static const GtkActionEntry entries[] = {
     N_("Edit selected area info"), do_edit_selected_shape},
   { "Preferences", GTK_STOCK_PREFERENCES, NULL, NULL, N_("Preferences"),
     do_preferences_dialog},
-  { "MoveToFront", IMAP_STOCK_TO_FRONT, "", NULL, N_("Move to Front"),
+  { "MoveToFront", IMAP_STOCK_TO_FRONT, "", NULL, N_("Move Area to Front"),
     do_move_to_front},
-  { "SendToBack", IMAP_STOCK_TO_BACK, "", NULL, N_("Send to Back"),
+  { "SendToBack", IMAP_STOCK_TO_BACK, "", NULL, N_("Move Area to Bottom"),
     do_send_to_back},
   { "DeleteArea", NULL, N_("Delete Area"), NULL, NULL, NULL},
   { "MoveUp", GTK_STOCK_GO_UP, N_("Move Up"), NULL, NULL, NULL},
@@ -394,19 +393,19 @@ make_menu(GtkWidget *main_vbox, GtkWidget *window)
   gtk_action_group_set_translation_domain (action_group, NULL);
 
   gtk_action_group_add_actions (action_group, entries, G_N_ELEMENTS (entries),
-				window);
+                                window);
   gtk_action_group_add_toggle_actions (action_group, toggle_entries,
-				       G_N_ELEMENTS (toggle_entries), window);
+                                       G_N_ELEMENTS (toggle_entries), window);
 
   gtk_action_group_add_radio_actions (action_group, color_entries,
-				      G_N_ELEMENTS (color_entries), 0,
-				      G_CALLBACK (set_preview_color), NULL);
+                                      G_N_ELEMENTS (color_entries), 0,
+                                      G_CALLBACK (set_preview_color), NULL);
   gtk_action_group_add_radio_actions (action_group, zoom_entries,
-				      G_N_ELEMENTS (zoom_entries), 0,
-				      G_CALLBACK (set_zoom_factor), NULL);
+                                      G_N_ELEMENTS (zoom_entries), 0,
+                                      G_CALLBACK (set_zoom_factor), NULL);
   gtk_action_group_add_radio_actions (action_group, mapping_entries,
-				      G_N_ELEMENTS (mapping_entries), 0,
-				      G_CALLBACK (set_func), window);
+                                      G_N_ELEMENTS (mapping_entries), 0,
+                                      G_CALLBACK (set_func), window);
 
   ui_manager = gtk_ui_manager_new ();
   gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);
@@ -416,7 +415,7 @@ make_menu(GtkWidget *main_vbox, GtkWidget *window)
 
   error = NULL;
   if (!gtk_ui_manager_add_ui_from_string (ui_manager, ui_description, -1,
-					  &error))
+                                          &error))
     {
       g_warning ("building menus failed: %s", error->message);
       g_error_free (error);
@@ -457,7 +456,7 @@ menu_build_mru_items(MRU_t *mru)
       children = gtk_container_get_children(GTK_CONTAINER(_menu.open_recent));
       p = g_list_nth(children, position);
       for (i = 0; i < _menu.nr_off_mru_items; i++, p = p->next) {
-	 gtk_widget_destroy((GtkWidget*) p->data);
+         gtk_widget_destroy((GtkWidget*) p->data);
       }
       g_list_free(children);
    }
@@ -465,11 +464,11 @@ menu_build_mru_items(MRU_t *mru)
    i = 0;
    for (p = mru->list; p; p = p->next, i++) {
       GtkWidget *item = insert_item_with_label(_menu.open_recent, position++,
-					       (gchar*) p->data,
-					       menu_mru, p->data);
+                                               (gchar*) p->data,
+                                               menu_mru, p->data);
       if (i < 9) {
-	 guchar accelerator_key = '1' + i;
-	 add_accelerator(item, accelerator_key, GDK_CONTROL_MASK);
+         guchar accelerator_key = '1' + i;
+         add_accelerator(item, accelerator_key, GDK_CONTROL_MASK);
       }
    }
    _menu.nr_off_mru_items = i;
@@ -480,14 +479,14 @@ do_main_popup_menu(GdkEventButton *event)
 {
   GtkWidget *popup = gtk_ui_manager_get_widget (ui_manager, "/PopupMenu");
   gtk_menu_popup (GTK_MENU (popup), NULL, NULL, NULL, NULL,
-		  event->button, event->time);
+                  event->button, event->time);
 }
 
 void
 menu_check_grid(gboolean check)
 {
   GtkAction *action = gtk_ui_manager_get_action (ui_manager,
-						 "/MainMenu/ToolsMenu/Grid");
+                                                 "/MainMenu/ToolsMenu/Grid");
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), check);
 }
 
@@ -517,8 +516,8 @@ make_tools(GtkWidget *window)
 
   handlebox = gtk_handle_box_new ();
   toolbar = gtk_ui_manager_get_widget (ui_manager, "/Tools");
-  gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar),
-			       GTK_ORIENTATION_VERTICAL);
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (toolbar),
+                                  GTK_ORIENTATION_VERTICAL);
 
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
@@ -537,9 +536,10 @@ make_selection_toolbar(void)
 
   toolbar = gtk_ui_manager_get_widget (ui_manager, "/Selection");
 
-  gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar), GTK_ORIENTATION_VERTICAL);
-  gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (toolbar),
+                                  GTK_ORIENTATION_VERTICAL);
+  gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
 
   gtk_widget_show (toolbar);
   return toolbar;

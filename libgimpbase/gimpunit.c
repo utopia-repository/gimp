@@ -4,10 +4,10 @@
  * gimpunit.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,18 @@
 
 #include "gimpbase-private.h"
 #include "gimpunit.h"
+
+
+/**
+ * SECTION: gimpunit
+ * @title: gimpunit
+ * @short_description: Provides a collection of predefined units and
+ *                     functions for creating user-defined units.
+ * @see_also: #GimpUnitMenu, #GimpSizeEntry.
+ *
+ * Provides a collection of predefined units and functions for
+ * creating user-defined units.
+ **/
 
 
 static void   unit_to_string (const GValue *src_value,
@@ -334,6 +345,144 @@ gimp_unit_get_plural (GimpUnit unit)
   return _gimp_unit_vtable.unit_get_plural (unit);
 }
 
+static gint
+print (gchar       *buf,
+       gint         len,
+       gint         start,
+       const gchar *fmt,
+       ...)
+{
+  va_list args;
+  gint printed;
+
+  va_start (args, fmt);
+
+  printed = g_vsnprintf (buf + start, len - start, fmt, args);
+  if (printed < 0)
+    printed = len - start;
+
+  va_end (args);
+
+  return printed;
+}
+
+/**
+ * gimp_unit_format_string:
+ * @format: A printf-like format string which is used to create the unit
+ *          string.
+ * @unit:   A unit.
+ *
+ * The @format string supports the following percent expansions:
+ *
+ * <informaltable pgwide="1" frame="none" role="enum">
+ *   <tgroup cols="2"><colspec colwidth="1*"/><colspec colwidth="8*"/>
+ *     <tbody>
+ *       <row>
+ *         <entry>% f</entry>
+ *         <entry>Factor (how many units make up an inch)</entry>
+ *        </row>
+ *       <row>
+ *         <entry>% y</entry>
+ *         <entry>Symbol (e.g. "''" for GIMP_UNIT_INCH)</entry>
+ *       </row>
+ *       <row>
+ *         <entry>% a</entry>
+ *         <entry>Abbreviation</entry>
+ *       </row>
+ *       <row>
+ *         <entry>% s</entry>
+ *         <entry>Singular</entry>
+ *       </row>
+ *       <row>
+ *         <entry>% p</entry>
+ *         <entry>Plural</entry>
+ *       </row>
+ *       <row>
+ *         <entry>%%</entry>
+ *         <entry>Literal percent</entry>
+ *       </row>
+ *     </tbody>
+ *   </tgroup>
+ * </informaltable>
+ *
+ * Returns: A newly allocated string with above percent expressions
+ *          replaced with the resp. strings for @unit.
+ *
+ * Since: GIMP 2.8
+ **/
+gchar *
+gimp_unit_format_string (const gchar *format,
+                         GimpUnit     unit)
+{
+  gchar buffer[1024];
+  gint  i = 0;
+
+  g_return_val_if_fail (format != NULL, NULL);
+  g_return_val_if_fail (unit == GIMP_UNIT_PERCENT ||
+                        (unit >= GIMP_UNIT_PIXEL &&
+                         unit < gimp_unit_get_number_of_units ()), NULL);
+
+  while (i < (sizeof (buffer) - 1) && *format)
+    {
+      switch (*format)
+        {
+        case '%':
+          format++;
+          switch (*format)
+            {
+            case 0:
+              g_warning ("%s: unit-menu-format string ended within %%-sequence",
+                         G_STRFUNC);
+              break;
+
+            case '%':
+              buffer[i++] = '%';
+              break;
+
+            case 'f': /* factor (how many units make up an inch) */
+              i += print (buffer, sizeof (buffer), i, "%f",
+                          gimp_unit_get_factor (unit));
+              break;
+
+            case 'y': /* symbol ("''" for inch) */
+              i += print (buffer, sizeof (buffer), i, "%s",
+                          gimp_unit_get_symbol (unit));
+              break;
+
+            case 'a': /* abbreviation */
+              i += print (buffer, sizeof (buffer), i, "%s",
+                          gimp_unit_get_abbreviation (unit));
+              break;
+
+            case 's': /* singular */
+              i += print (buffer, sizeof (buffer), i, "%s",
+                          gimp_unit_get_singular (unit));
+              break;
+
+            case 'p': /* plural */
+              i += print (buffer, sizeof (buffer), i, "%s",
+                          gimp_unit_get_plural (unit));
+              break;
+
+            default:
+              g_warning ("%s: unit-menu-format contains unknown format "
+                         "sequence '%%%c'", G_STRFUNC, *format);
+              break;
+            }
+          break;
+
+        default:
+          buffer[i++] = *format;
+          break;
+        }
+
+      format++;
+    }
+
+  buffer[MIN (i, sizeof (buffer) - 1)] = 0;
+
+  return g_strdup (buffer);
+}
 
 /*
  * GIMP_TYPE_PARAM_UNIT
@@ -460,3 +609,75 @@ gimp_param_spec_unit (const gchar *name,
   return G_PARAM_SPEC (pspec);
 }
 
+/**
+ * gimp_pixels_to_units:
+ * @pixels:     value in pixels
+ * @unit:       unit to convert to
+ * @resolution: resloution in DPI
+ *
+ * Converts a @value specified in pixels to @unit.
+ *
+ * Returns: @pixels converted to units.
+ *
+ * Since: GIMP 2.8
+ **/
+gdouble
+gimp_pixels_to_units (gdouble  pixels,
+                      GimpUnit unit,
+                      gdouble  resolution)
+{
+  if (unit == GIMP_UNIT_PIXEL)
+    return pixels;
+
+  return pixels * gimp_unit_get_factor (unit) / resolution;
+}
+
+/**
+ * gimp_units_to_pixels:
+ * @value:      value in units
+ * @unit:       unit of @value
+ * @resolution: resloution in DPI
+ *
+ * Converts a @value specified in @unit to pixels.
+ *
+ * Returns: @value converted to pixels.
+ *
+ * Since: GIMP 2.8
+ **/
+gdouble
+gimp_units_to_pixels (gdouble  value,
+                      GimpUnit unit,
+                      gdouble  resolution)
+{
+  if (unit == GIMP_UNIT_PIXEL)
+    return value;
+
+  return value * resolution / gimp_unit_get_factor (unit);
+}
+
+/**
+ * gimp_units_to_points:
+ * @value:      value in units
+ * @unit:       unit of @value
+ * @resolution: resloution in DPI
+ *
+ * Converts a @value specified in @unit to points.
+ *
+ * Returns: @value converted to points.
+ *
+ * Since: GIMP 2.8
+ **/
+gdouble
+gimp_units_to_points (gdouble  value,
+                      GimpUnit unit,
+                      gdouble  resolution)
+{
+  if (unit == GIMP_UNIT_POINT)
+    return value;
+
+  if (unit == GIMP_UNIT_PIXEL)
+    return (value * gimp_unit_get_factor (GIMP_UNIT_POINT) / resolution);
+
+  return (value *
+          gimp_unit_get_factor (GIMP_UNIT_POINT) / gimp_unit_get_factor (unit));
+}

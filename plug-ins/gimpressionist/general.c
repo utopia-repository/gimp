@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -63,13 +62,13 @@ void
 general_store (void)
 {
   pcvals.general_paint_edges = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (general_paint_edges));
-  pcvals.general_dark_edge = GTK_ADJUSTMENT (general_dark_edge_adjust)->value;
+  pcvals.general_dark_edge = gtk_adjustment_get_value (GTK_ADJUSTMENT (general_dark_edge_adjust));
   pcvals.general_tileable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (general_tileable));
   pcvals.general_drop_shadow = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (general_drop_shadow));
-  pcvals.general_shadow_darkness = GTK_ADJUSTMENT (general_shadow_adjust)->value;
-  pcvals.general_shadow_depth = GTK_ADJUSTMENT (general_shadow_depth)->value;
-  pcvals.general_shadow_blur = GTK_ADJUSTMENT (general_shadow_blur)->value;
-  pcvals.devthresh = GTK_ADJUSTMENT (dev_thresh_adjust)->value;
+  pcvals.general_shadow_darkness = gtk_adjustment_get_value (GTK_ADJUSTMENT (general_shadow_adjust));
+  pcvals.general_shadow_depth = gtk_adjustment_get_value (GTK_ADJUSTMENT (general_shadow_depth));
+  pcvals.general_shadow_blur = gtk_adjustment_get_value (GTK_ADJUSTMENT (general_shadow_blur));
+  pcvals.devthresh = gtk_adjustment_get_value (GTK_ADJUSTMENT (dev_thresh_adjust));
 }
 
 int
@@ -133,7 +132,7 @@ create_generalpage (GtkNotebook *notebook)
 
   label = gtk_label_new_with_mnemonic (_("_General"));
 
-  thispage = gtk_vbox_new (FALSE, 12);
+  thispage = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (thispage), 12);
   gtk_widget_show (thispage);
 
@@ -141,7 +140,7 @@ create_generalpage (GtkNotebook *notebook)
   gtk_box_pack_start (GTK_BOX (thispage), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  box3 = gtk_vbox_new (FALSE, 6);
+  box3 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), box3);
   gtk_widget_show (box3);
 
@@ -157,7 +156,7 @@ create_generalpage (GtkNotebook *notebook)
                          _("Copy the texture of the selected paper as a background"),
                          &radio_group);
 
-  box4 = gtk_hbox_new (FALSE, 6);
+  box4 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (box3), box4, FALSE, FALSE, 0);
   gtk_widget_show (box4);
 
@@ -192,11 +191,11 @@ create_generalpage (GtkNotebook *notebook)
   gtk_toggle_button_set_active
     (GTK_TOGGLE_BUTTON (general_bg_radio[pcvals.general_background_type]), TRUE);
 
-  box1 = gtk_hbox_new (FALSE, 12);
+  box1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (thispage), box1, FALSE, FALSE, 0);
   gtk_widget_show (box1);
 
-  box2 = gtk_vbox_new (FALSE, 6);
+  box2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (box1), box2, FALSE, FALSE, 0);
   gtk_widget_show (box2);
 

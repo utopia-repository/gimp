@@ -6,9 +6,9 @@
  *                         Michael Natterer <mitch@gimp.org>
  *                         Henrik Brix Andersen <brix@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*  This code is written so that it can also be compiled standalone.
@@ -452,6 +451,7 @@ locale_parser_parse_item (LocaleParser  *parser,
   const gchar *id     = NULL;
   const gchar *ref    = NULL;
   const gchar *title  = NULL;
+  const gchar *sort   = NULL;  /* optional sort key provided by doc team */
   const gchar *parent = NULL;
 
   for (; *names && *values; names++, values++)
@@ -464,6 +464,9 @@ locale_parser_parse_item (LocaleParser  *parser,
 
       if (! strcmp (*names, "title"))
         title = *values;
+
+      if (! strcmp (*names, "sort"))
+        sort = *values;
 
       if (! strcmp (*names, "parent"))
         parent = *values;
@@ -480,7 +483,7 @@ locale_parser_parse_item (LocaleParser  *parser,
 
       g_hash_table_insert (parser->locale->help_id_mapping,
                            g_strdup (id),
-                           gimp_help_item_new (ref, title, parent));
+                           gimp_help_item_new (ref, title, sort, parent));
 
 #ifdef GIMP_HELP_DEBUG
       g_printerr ("help (%s): added mapping \"%s\" -> \"%s\"\n",

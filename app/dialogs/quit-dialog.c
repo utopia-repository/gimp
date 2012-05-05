@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2004  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,11 +28,12 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
-#include "core/gimplist.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
+#include "display/gimpdisplayshell.h"
 
 #include "widgets/gimpcontainertreeview.h"
 #include "widgets/gimpcontainerview.h"
@@ -92,9 +92,7 @@ quit_close_all_dialog_new (Gimp     *gimp,
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
-#ifdef __GNUC__
-#warning FIXME: need container of dirty images
-#endif
+  /* FIXME: need container of dirty images */
 
   images  = gimp_displays_get_dirty_images (gimp);
   context = gimp_context_new (gimp, "close-all-dialog",
@@ -143,7 +141,7 @@ quit_close_all_dialog_new (Gimp     *gimp,
                                            -1);
 
   view_size = gimp->config->layer_preview_size;
-  rows      = CLAMP (gimp_container_num_children (images), 3, 6);
+  rows      = CLAMP (gimp_container_get_n_children (images), 3, 6);
 
   view = gimp_container_tree_view_new (images, context, view_size, 1);
   gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (view),
@@ -205,19 +203,18 @@ quit_close_all_dialog_container_changed (GimpContainer  *images,
                                          GimpObject     *image,
                                          GimpMessageBox *box)
 {
-  gint       num_images = gimp_container_num_children (images);
+  gint       num_images = gimp_container_get_n_children (images);
   GtkWidget *label      = g_object_get_data (G_OBJECT (box), "lost-label");
   GtkWidget *button     = g_object_get_data (G_OBJECT (box), "ok-button");
   GtkWidget *dialog     = gtk_widget_get_toplevel (button);
   gboolean   do_quit    = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (box),
                                                               "do-quit"));
-  gchar     *text;
-
-  text = g_strdup_printf (ngettext ("There is one image with unsaved changes:",
-                                    "There are %d images with unsaved changes:",
-                                    num_images), num_images);
-  gimp_message_box_set_primary_text (box, "%s", text);
-  g_free (text);
+  gimp_message_box_set_primary_text (box,
+				     ngettext ("There is one image with "
+					       "unsaved changes:",
+					       "There are %d images with "
+					       "unsaved changes:",
+					       num_images), num_images);
 
   if (num_images == 0)
     {
@@ -252,13 +249,13 @@ quit_close_all_dialog_image_activated (GimpContainerView *view,
 {
   GList *list;
 
-  for (list = GIMP_LIST (gimp->displays)->list;
+  for (list = gimp_get_display_iter (gimp);
        list;
        list = g_list_next (list))
     {
       GimpDisplay *display = list->data;
 
-      if (display->image == image)
-        gtk_window_present (GTK_WINDOW (display->shell));
+      if (gimp_display_get_image (display) == image)
+        gimp_display_shell_present (gimp_display_get_shell (display));
     }
 }

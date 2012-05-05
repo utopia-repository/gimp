@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GIMP 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-01 03:51+0000\n"
-"PO-Revision-Date: 2008-11-01 11:59+0100\n"
+"POT-Creation-Date: 2008-11-01 07:36+0000\n"
+"PO-Revision-Date: 2008-11-01 10:54+0100\n"
 "Last-Translator: Filip Vervloesem <filip.vervloesem@member.fsf.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -337,27 +337,27 @@ msgstr[1] "%d procedures gevonden"
 msgid "No matches"
 msgstr "Geen resultaten"
 
-#: ../libgimp/gimpprocview.c:143
+#: ../libgimp/gimpprocview.c:163
 msgid "Parameters"
 msgstr "Parameters"
 
-#: ../libgimp/gimpprocview.c:156
+#: ../libgimp/gimpprocview.c:176
 msgid "Return Values"
 msgstr "Teruggeefwaardes"
 
-#: ../libgimp/gimpprocview.c:169
+#: ../libgimp/gimpprocview.c:189
 msgid "Additional Information"
 msgstr "Aanvullende informatie"
 
-#: ../libgimp/gimpprocview.c:209
+#: ../libgimp/gimpprocview.c:229
 msgid "Author:"
 msgstr "Auteur:"
 
-#: ../libgimp/gimpprocview.c:221
+#: ../libgimp/gimpprocview.c:241
 msgid "Date:"
 msgstr "Datum:"
 
-#: ../libgimp/gimpprocview.c:233
+#: ../libgimp/gimpprocview.c:253
 msgid "Copyright:"
 msgstr "Auteursrecht:"
 
@@ -672,9 +672,8 @@ msgid "Incremental"
 msgstr "Oplopend"
 
 #: ../libgimpbase/gimpbaseenums.c:624
-#: ../modules/display-filter-lcms.c:191
-msgid "None"
-msgstr "Geen"
+msgid "repeat|None"
+msgstr "herhaling|Geen"
 
 #: ../libgimpbase/gimpbaseenums.c:625
 msgid "Sawtooth wave"
@@ -766,18 +765,34 @@ msgid "From right to left"
 msgstr "Van rechts naar links"
 
 #: ../libgimpbase/gimpbaseenums.c:1105
+msgid "hinting|None"
+msgstr "hinting|Geen"
+
+#: ../libgimpbase/gimpbaseenums.c:1106
+msgid "hinting|Slight"
+msgstr "hinting|Licht"
+
+#: ../libgimpbase/gimpbaseenums.c:1107
+msgid "hinting|Medium"
+msgstr "hinting|Medium"
+
+#: ../libgimpbase/gimpbaseenums.c:1108
+msgid "hinting|Full"
+msgstr "hinting|Volledig"
+
+#: ../libgimpbase/gimpbaseenums.c:1138
 msgid "Left justified"
 msgstr "Links uitgevuld"
 
-#: ../libgimpbase/gimpbaseenums.c:1106
+#: ../libgimpbase/gimpbaseenums.c:1139
 msgid "Right justified"
 msgstr "Rechts uitgevuld"
 
-#: ../libgimpbase/gimpbaseenums.c:1107
+#: ../libgimpbase/gimpbaseenums.c:1140
 msgid "Centered"
 msgstr "Gecentreerd"
 
-#: ../libgimpbase/gimpbaseenums.c:1108
+#: ../libgimpbase/gimpbaseenums.c:1141
 msgid "Filled"
 msgstr "Gevuld"
 
@@ -1401,6 +1416,10 @@ msgstr "Kleurbeheer weergavefilter met ICC-kleurpofielen"
 msgid "Color Management"
 msgstr "Kleurbeheer"
 
+#: ../modules/display-filter-lcms.c:191
+msgid "None"
+msgstr "Geen"
+
 #: ../modules/display-filter-lcms.c:212
 msgid "This filter takes its configuration from the Color Management section in the Preferences dialog."
 msgstr "Dit filter haalt zijn configuratie uit de sectie Kleurbeheer in het dialoogvenster Voorkeuren."
@@ -1899,15 +1918,4 @@ msgstr "GIMP"
 #: ../modules/controller-midi.c:428
 msgid "GIMP MIDI Input Controller"
 msgstr "GIMP MIDI invoercontroller"
-
-#~ msgid "repeat|None"
-#~ msgstr "herhaling|Geen"
-#~ msgid "hinting|None"
-#~ msgstr "hinting|Geen"
-#~ msgid "hinting|Slight"
-#~ msgstr "hinting|Licht"
-#~ msgid "hinting|Medium"
-#~ msgstr "hinting|Medium"
-#~ msgid "hinting|Full"
-#~ msgstr "hinting|Volledig"
 

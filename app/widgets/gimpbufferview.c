@@ -4,9 +4,9 @@
  * gimpbufferview.c
  * Copyright (C) 2001-2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -127,18 +127,24 @@ gimp_buffer_view_new (GimpViewType     view_type,
   GtkWidget           *frame;
   GtkWidget           *hbox;
 
-  buffer_view = g_object_new (GIMP_TYPE_BUFFER_VIEW, NULL);
+  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (view_size > 0 &&
+                        view_size <= GIMP_VIEWABLE_MAX_PREVIEW_SIZE, FALSE);
+  g_return_val_if_fail (view_border_width >= 0 &&
+                        view_border_width <= GIMP_VIEW_MAX_BORDER_WIDTH,
+                        FALSE);
 
-  if (! gimp_container_editor_construct (GIMP_CONTAINER_EDITOR (buffer_view),
-                                         view_type,
-                                         container, context,
-                                         view_size, view_border_width,
-                                         menu_factory, "<Buffers>",
-                                         "/buffers-popup"))
-    {
-      g_object_unref (buffer_view);
-      return NULL;
-    }
+  buffer_view = g_object_new (GIMP_TYPE_BUFFER_VIEW,
+                              "view-type",         view_type,
+                              "container",         container,
+                              "context",           context,
+                              "view-size",         view_size,
+                              "view-border-width", view_border_width,
+                              "menu-factory",      menu_factory,
+                              "menu-identifier",   "<Buffers>",
+                              "ui-path",           "/buffers-popup",
+                              NULL);
 
   editor = GIMP_CONTAINER_EDITOR (buffer_view);
 
@@ -148,7 +154,7 @@ gimp_buffer_view_new (GimpViewType     view_type,
   gtk_box_reorder_child (GTK_BOX (editor), frame, 0);
   gtk_widget_show (frame);
 
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
@@ -210,7 +216,8 @@ gimp_buffer_view_new (GimpViewType     view_type,
                                   GTK_BUTTON (buffer_view->delete_button),
                                   GIMP_TYPE_BUFFER);
 
-  gimp_ui_manager_update (GIMP_EDITOR (editor->view)->ui_manager, editor);
+  gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)),
+                          editor);
 
   return GTK_WIDGET (buffer_view);
 }

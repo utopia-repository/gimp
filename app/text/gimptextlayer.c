@@ -4,9 +4,9 @@
  * GimpTextLayer
  * Copyright (C) 2002-2004  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,17 +15,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
-#include <pango/pangoft2.h>
+#include <cairo.h>
+#include <gegl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <pango/pangocairo.h>
 
+#include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
 #include "libgimpconfig/gimpconfig.h"
 
 #include "text-types.h"
@@ -36,16 +39,16 @@
 #include "paint-funcs/paint-funcs.h"
 
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpcontext.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage-undo-push.h"
+#include "core/gimpitemtree.h"
 #include "core/gimpparasitelist.h"
 
 #include "gimptext.h"
-#include "gimptext-bitmap.h"
-#include "gimptext-private.h"
 #include "gimptextlayer.h"
 #include "gimptextlayer-transform.h"
 #include "gimptextlayout.h"
@@ -57,9 +60,11 @@
 enum
 {
   PROP_0,
+  PROP_TEXT,
   PROP_AUTO_RENAME,
   PROP_MODIFIED
 };
+
 
 static void       gimp_text_layer_finalize       (GObject         *object);
 static void       gimp_text_layer_get_property   (GObject         *object,
@@ -97,7 +102,7 @@ static void       gimp_text_layer_push_undo      (GimpDrawable    *drawable,
                                                   gint             width,
                                                   gint             height);
 
-static void       gimp_text_layer_text_notify    (GimpTextLayer   *layer);
+static void       gimp_text_layer_text_changed   (GimpTextLayer   *layer);
 static gboolean   gimp_text_layer_render         (GimpTextLayer   *layer);
 static void       gimp_text_layer_render_layout  (GimpTextLayer   *layer,
                                                   GimpTextLayout  *layout);
@@ -147,10 +152,16 @@ gimp_text_layer_class_init (GimpTextLayerClass *klass)
   drawable_class->set_tiles        = gimp_text_layer_set_tiles;
   drawable_class->push_undo        = gimp_text_layer_push_undo;
 
+  GIMP_CONFIG_INSTALL_PROP_OBJECT (object_class, PROP_TEXT,
+                                   "text", NULL,
+                                   GIMP_TYPE_TEXT,
+                                   GIMP_PARAM_STATIC_STRINGS);
+
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_AUTO_RENAME,
                                     "auto-rename", NULL,
                                     TRUE,
                                     GIMP_PARAM_STATIC_STRINGS);
+
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MODIFIED,
                                     "modified", NULL,
                                     FALSE,
@@ -188,12 +199,16 @@ gimp_text_layer_get_property (GObject      *object,
 
   switch (property_id)
     {
+    case PROP_TEXT:
+      g_value_set_object (value, text_layer->text);
+      break;
     case PROP_AUTO_RENAME:
       g_value_set_boolean (value, text_layer->auto_rename);
       break;
     case PROP_MODIFIED:
       g_value_set_boolean (value, text_layer->modified);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -210,12 +225,16 @@ gimp_text_layer_set_property (GObject      *object,
 
   switch (property_id)
     {
+    case PROP_TEXT:
+      gimp_text_layer_set_text (text_layer, g_value_get_object (value));
+      break;
     case PROP_AUTO_RENAME:
       text_layer->auto_rename = g_value_get_boolean (value);
       break;
     case PROP_MODIFIED:
       text_layer->modified = g_value_get_boolean (value);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -348,6 +367,8 @@ gimp_text_layer_push_undo (GimpDrawable *drawable,
 }
 
 
+/*  public functions  */
+
 /**
  * gimp_text_layer_new:
  * @image: the #GimpImage the layer should belong to
@@ -362,20 +383,20 @@ gimp_text_layer_new (GimpImage *image,
                      GimpText  *text)
 {
   GimpTextLayer *layer;
+  GimpImageType  type;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
 
-  if (! text->text)
+  if (! text->text && ! text->markup)
     return NULL;
 
-  layer = g_object_new (GIMP_TYPE_TEXT_LAYER, NULL);
+  type = gimp_image_base_type_with_alpha (image);
 
-  gimp_drawable_configure (GIMP_DRAWABLE (layer),
-                           image,
-                           0, 0, 1, 1,
-                           gimp_image_base_type_with_alpha (image),
-                           NULL);
+  layer = GIMP_TEXT_LAYER (gimp_drawable_new (GIMP_TYPE_TEXT_LAYER,
+                                              image, NULL,
+                                              0, 0, 1, 1,
+                                              type));
 
   gimp_text_layer_set_text (layer, text);
 
@@ -401,7 +422,7 @@ gimp_text_layer_set_text (GimpTextLayer *layer,
   if (layer->text)
     {
       g_signal_handlers_disconnect_by_func (layer->text,
-                                            G_CALLBACK (gimp_text_layer_text_notify),
+                                            G_CALLBACK (gimp_text_layer_text_changed),
                                             layer);
 
       g_object_unref (layer->text);
@@ -412,11 +433,12 @@ gimp_text_layer_set_text (GimpTextLayer *layer,
     {
       layer->text = g_object_ref (text);
 
-      g_signal_connect_object (text, "notify",
-                               G_CALLBACK (gimp_text_layer_text_notify),
+      g_signal_connect_object (text, "changed",
+                               G_CALLBACK (gimp_text_layer_text_changed),
                                layer, G_CONNECT_SWAPPED);
     }
 
+  g_object_notify (G_OBJECT (layer), "text");
   gimp_viewable_invalidate_preview (GIMP_VIEWABLE (layer));
 }
 
@@ -438,7 +460,7 @@ gimp_text_layer_set (GimpTextLayer *layer,
   GimpText  *text;
   va_list    var_args;
 
-  g_return_if_fail (gimp_drawable_is_text_layer ((GimpDrawable *) layer));
+  g_return_if_fail (gimp_item_is_text_layer (GIMP_ITEM (layer)));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)));
 
   text = gimp_text_layer_get_text (layer);
@@ -454,7 +476,16 @@ gimp_text_layer_set (GimpTextLayer *layer,
   if (layer->modified)
     {
       gimp_image_undo_push_text_layer_modified (image, NULL, layer);
-      gimp_image_undo_push_drawable_mod (image, NULL, GIMP_DRAWABLE (layer));
+
+      /*  pass copy_tiles = TRUE so we not only ref the tiles; after
+       *  being a text layer again, undo doesn't care about the
+       *  layer's pixels any longer because they are generated, so
+       *  changing the text would happily overwrite the layer's
+       *  pixels, changing the pixels on the undo stack too without
+       *  any chance to ever undo again.
+       */
+      gimp_image_undo_push_drawable_mod (image, NULL,
+                                         GIMP_DRAWABLE (layer), TRUE);
     }
 
   gimp_image_undo_push_text_layer (image, undo_desc, layer, NULL);
@@ -496,24 +527,29 @@ gimp_text_layer_discard (GimpTextLayer *layer)
 }
 
 gboolean
-gimp_drawable_is_text_layer (GimpDrawable *drawable)
+gimp_item_is_text_layer (GimpItem *item)
 {
-  return (GIMP_IS_TEXT_LAYER (drawable)    &&
-          GIMP_TEXT_LAYER (drawable)->text &&
-          GIMP_TEXT_LAYER (drawable)->modified == FALSE);
+  return (GIMP_IS_TEXT_LAYER (item)    &&
+          GIMP_TEXT_LAYER (item)->text &&
+          GIMP_TEXT_LAYER (item)->modified == FALSE);
 }
 
 
+/*  private functions  */
+
 static void
-gimp_text_layer_text_notify (GimpTextLayer *layer)
+gimp_text_layer_text_changed (GimpTextLayer *layer)
 {
-  /*   If the text layer was created from a parasite, it's time to
-   *   remove that parasite now.
+  /*  If the text layer was created from a parasite, it's time to
+   *  remove that parasite now.
    */
   if (layer->text_parasite)
     {
-      gimp_parasite_list_remove (GIMP_ITEM (layer)->parasites,
-                                 layer->text_parasite);
+      /*  Don't push an undo because the parasite only exists temporarily
+       *  while the text layer is loaded from XCF.
+       */
+      gimp_item_parasite_detach (GIMP_ITEM (layer), layer->text_parasite,
+                                 FALSE);
       layer->text_parasite = NULL;
     }
 
@@ -527,6 +563,8 @@ gimp_text_layer_render (GimpTextLayer *layer)
   GimpItem       *item;
   GimpImage      *image;
   GimpTextLayout *layout;
+  gdouble         xres;
+  gdouble         yres;
   gint            width;
   gint            height;
 
@@ -539,24 +577,27 @@ gimp_text_layer_render (GimpTextLayer *layer)
 
   if (gimp_container_is_empty (image->gimp->fonts))
     {
-      gimp_message (image->gimp, NULL, GIMP_MESSAGE_ERROR,
-                    _("Due to lack of any fonts, "
-                      "text functionality is not available."));
+      gimp_message_literal (image->gimp, NULL, GIMP_MESSAGE_ERROR,
+			    _("Due to lack of any fonts, "
+			      "text functionality is not available."));
       return FALSE;
     }
 
-  layout = gimp_text_layout_new (layer->text, image);
+  gimp_image_get_resolution (image, &xres, &yres);
+
+  layout = gimp_text_layout_new (layer->text, xres, yres);
 
   g_object_freeze_notify (G_OBJECT (drawable));
 
   if (gimp_text_layout_get_size (layout, &width, &height) &&
-      (width  != gimp_item_width (item) ||
-       height != gimp_item_height (item)))
+      (width  != gimp_item_get_width  (item) ||
+       height != gimp_item_get_height (item)))
     {
       TileManager *new_tiles = tile_manager_new (width, height,
-                                                 drawable->bytes);
+                                                 gimp_drawable_bytes (drawable));
 
-      gimp_drawable_set_tiles (drawable, FALSE, NULL, new_tiles);
+      gimp_drawable_set_tiles (drawable, FALSE, NULL, new_tiles,
+                               gimp_drawable_type (drawable));
 
       tile_manager_unref (new_tiles);
 
@@ -574,11 +615,38 @@ gimp_text_layer_render (GimpTextLayer *layer)
     }
 
   if (layer->auto_rename)
-    gimp_object_set_name_safe (GIMP_OBJECT (layer),
-                               layer->text->text ?
-                               layer->text->text : _("Empty Text Layer"));
+    {
+      GimpItem *item = GIMP_ITEM (layer);
+      gchar    *name = NULL;
+
+      if (layer->text->text)
+        {
+          name = gimp_utf8_strtrim (layer->text->text, 30);
+        }
+      else if (layer->text->markup)
+        {
+          gchar *tmp = gimp_markup_extract_text (layer->text->markup);
+          name = gimp_utf8_strtrim (tmp, 30);
+          g_free (tmp);
+        }
+
+      if (! name)
+        name = g_strdup (_("Empty Text Layer"));
+
+      if (gimp_item_is_attached (item))
+        {
+          gimp_item_tree_rename_item (gimp_item_get_tree (item), item,
+                                      name, FALSE, NULL);
+          g_free (name);
+        }
+      else
+        {
+          gimp_object_take_name (GIMP_OBJECT (layer), name);
+        }
+    }
 
   gimp_text_layer_render_layout (layer, layout);
+
   g_object_unref (layout);
 
   g_object_thaw_notify (G_OBJECT (drawable));
@@ -590,48 +658,79 @@ static void
 gimp_text_layer_render_layout (GimpTextLayer  *layer,
                                GimpTextLayout *layout)
 {
-  GimpDrawable *drawable = GIMP_DRAWABLE (layer);
-  GimpItem     *item     = GIMP_ITEM (layer);
-  TileManager  *mask;
-  FT_Bitmap     bitmap;
-  PixelRegion   textPR;
-  PixelRegion   maskPR;
-  gint          i;
+  GimpDrawable    *drawable = GIMP_DRAWABLE (layer);
+  GimpItem        *item     = GIMP_ITEM (layer);
+  GimpImage       *image    = gimp_item_get_image (item);
+  cairo_t         *cr;
+  cairo_surface_t *surface;
+  PixelRegion      layerPR;
+  const guchar    *data;
+  GimpImageType    layer_type;
+  gint             layer_alpha_byte;
+  gint             rowstride;
+  gint             width;
+  gint             height;
+  gpointer         pr;
 
-  gimp_drawable_fill (drawable, &layer->text->color, NULL);
+  g_return_if_fail (gimp_drawable_has_alpha (drawable));
 
-  bitmap.width = gimp_item_width  (item);
-  bitmap.rows  = gimp_item_height (item);
-  bitmap.pitch = bitmap.width;
-  if (bitmap.pitch & 3)
-    bitmap.pitch += 4 - (bitmap.pitch & 3);
+  width  = gimp_item_get_width  (item);
+  height = gimp_item_get_height (item);
 
-  bitmap.buffer = g_malloc0 (bitmap.rows * bitmap.pitch);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
 
-  gimp_text_layout_render (layout,
-                           (GimpTextRenderFunc) gimp_text_render_bitmap,
-                           &bitmap);
+  cr = cairo_create (surface);
+  gimp_text_layout_render (layout, cr, layer->text->base_dir, FALSE);
+  cairo_destroy (cr);
 
-  mask = tile_manager_new (bitmap.width, bitmap.rows, 1);
-  pixel_region_init (&maskPR, mask, 0, 0, bitmap.width, bitmap.rows, TRUE);
+  pixel_region_init (&layerPR, gimp_drawable_get_tiles (drawable),
+                     0, 0, width, height, TRUE);
 
-  for (i = 0; i < bitmap.rows; i++)
-    pixel_region_set_row (&maskPR,
-                          0, i, bitmap.width,
-                          bitmap.buffer + i * bitmap.pitch);
+  layer_type = gimp_drawable_type (drawable);
+  layer_alpha_byte = layerPR.bytes - 1;
 
-  g_free (bitmap.buffer);
+  cairo_surface_flush (surface);
+  data      = cairo_image_surface_get_data (surface);
+  rowstride = cairo_image_surface_get_stride (surface);
 
-  pixel_region_init (&textPR, gimp_drawable_get_tiles (drawable),
-                     0, 0, bitmap.width, bitmap.rows, TRUE);
-  pixel_region_init (&maskPR, mask,
-                     0, 0, bitmap.width, bitmap.rows, FALSE);
+  for (pr = pixel_regions_register (1, &layerPR);
+       pr != NULL;
+       pr = pixel_regions_process (pr))
+    {
+      const guchar *src  = data + layerPR.y * rowstride + layerPR.x * 4;
+      guchar       *dest = layerPR.data;
+      gint          rows = layerPR.h;
 
-  apply_mask_to_region (&textPR, &maskPR, OPAQUE_OPACITY);
+      while (rows--)
+        {
+          const guchar *s = src;
+          guchar       *d = dest;
+          gint          w = layerPR.w;
 
-  tile_manager_unref (mask);
+          while (w--)
+            {
+              guchar color[4];
 
-  /*  no need to gimp_drawable_update() since gimp_drawable_fill()
-   *  did that for us.
-   */
+              GIMP_CAIRO_ARGB32_GET_PIXEL (s,
+                                           color[0],
+                                           color[1],
+                                           color[2],
+                                           color[3]);
+
+              gimp_image_transform_color (image,
+                                          layer_type, d, GIMP_RGB, color);
+              d[layer_alpha_byte] = color[3];
+
+              s += 4;
+              d += layerPR.bytes;
+            }
+
+          src  += rowstride;
+          dest += layerPR.rowstride;
+        }
+    }
+
+  cairo_surface_destroy (surface);
+
+  gimp_drawable_update (drawable, 0, 0, width, height);
 }

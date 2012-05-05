@@ -4,9 +4,9 @@
  * gimpdocumentview.c
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -35,7 +35,9 @@
 #include "gimpeditor.h"
 #include "gimpimageview.h"
 #include "gimpdnd.h"
+#include "gimpmenufactory.h"
 #include "gimpuimanager.h"
+#include "gimpviewrenderer.h"
 
 #include "gimp-intl.h"
 
@@ -76,18 +78,26 @@ gimp_image_view_new (GimpViewType     view_type,
   GimpImageView       *image_view;
   GimpContainerEditor *editor;
 
-  image_view = g_object_new (GIMP_TYPE_IMAGE_VIEW, NULL);
+  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (view_size > 0 &&
+                        view_size <= GIMP_VIEWABLE_MAX_PREVIEW_SIZE, NULL);
+  g_return_val_if_fail (view_border_width >= 0 &&
+                        view_border_width <= GIMP_VIEW_MAX_BORDER_WIDTH,
+                        NULL);
+  g_return_val_if_fail (menu_factory == NULL ||
+                        GIMP_IS_MENU_FACTORY (menu_factory), NULL);
 
-  if (! gimp_container_editor_construct (GIMP_CONTAINER_EDITOR (image_view),
-                                         view_type,
-                                         container, context,
-                                         view_size, view_border_width,
-                                         menu_factory, "<Images>",
-                                         "/images-popup"))
-    {
-      g_object_unref (image_view);
-      return NULL;
-    }
+  image_view = g_object_new (GIMP_TYPE_IMAGE_VIEW,
+                             "view-type",         view_type,
+                             "container",         container,
+                             "context",           context,
+                             "view-size",         view_size,
+                             "view-border-width", view_border_width,
+                             "menu-factory",      menu_factory,
+                             "menu-identifier",   "<Images>",
+                             "ui-path",           "/images-popup",
+                             NULL);
 
   editor = GIMP_CONTAINER_EDITOR (image_view);
 
@@ -124,7 +134,7 @@ gimp_image_view_new (GimpViewType     view_type,
                                   GTK_BUTTON (image_view->delete_button),
                                   GIMP_TYPE_IMAGE);
 
-  gimp_ui_manager_update (GIMP_EDITOR (editor->view)->ui_manager,
+  gimp_ui_manager_update (gimp_editor_get_ui_manager (GIMP_EDITOR (editor->view)),
                           editor);
 
   return GTK_WIDGET (image_view);

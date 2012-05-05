@@ -4,9 +4,9 @@
  * gimpmodules.c
  * (C) 1999 Austin Donnelly <austin@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -138,7 +137,7 @@ gimp_modules_load (Gimp *gimp)
 
       if (error)
         {
-          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+          gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
           g_clear_error (&error);
         }
 
@@ -165,8 +164,8 @@ add_to_inhibit_string (gpointer data,
 
   if (module->load_inhibit)
     {
-      str = g_string_append_c (str, G_SEARCHPATH_SEPARATOR);
-      str = g_string_append (str, module->filename);
+      g_string_append_c (str, G_SEARCHPATH_SEPARATOR);
+      g_string_append (str, module->filename);
     }
 }
 
@@ -214,7 +213,7 @@ gimp_modules_unload (Gimp *gimp)
 
       if (error)
         {
-          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+          gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
           g_clear_error (&error);
         }
     }

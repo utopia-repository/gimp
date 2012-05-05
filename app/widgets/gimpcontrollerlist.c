@@ -4,9 +4,9 @@
  * gimpcontrollerlist.c
  * Copyright (C) 2005 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -41,6 +40,7 @@
 #include "gimpcontrollerlist.h"
 #include "gimpcontrollerinfo.h"
 #include "gimpcontrollerkeyboard.h"
+#include "gimpcontrollermouse.h"
 #include "gimpcontrollerwheel.h"
 #include "gimpcontrollers.h"
 #include "gimpdialogfactory.h"
@@ -65,13 +65,12 @@ enum
   COLUMN_ICON,
   COLUMN_NAME,
   COLUMN_TYPE,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 
-static GObject * gimp_controller_list_constructor (GType               type,
-                                                   guint               n_params,
-                                                   GObjectConstructParam *params);
+static void gimp_controller_list_constructed     (GObject            *object);
+static void gimp_controller_list_finalize        (GObject            *object);
 static void gimp_controller_list_set_property    (GObject            *object,
                                                   guint               property_id,
                                                   const GValue       *value,
@@ -80,8 +79,6 @@ static void gimp_controller_list_get_property    (GObject            *object,
                                                   guint               property_id,
                                                   GValue             *value,
                                                   GParamSpec         *pspec);
-
-static void gimp_controller_list_finalize        (GObject            *object);
 
 static void gimp_controller_list_src_sel_changed (GtkTreeSelection   *sel,
                                                   GimpControllerList *list);
@@ -114,7 +111,7 @@ static void gimp_controller_list_down_clicked    (GtkWidget          *button,
                                                   GimpControllerList *list);
 
 
-G_DEFINE_TYPE (GimpControllerList, gimp_controller_list, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpControllerList, gimp_controller_list, GTK_TYPE_BOX)
 
 #define parent_class gimp_controller_list_parent_class
 
@@ -124,10 +121,10 @@ gimp_controller_list_class_init (GimpControllerListClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_controller_list_constructor;
+  object_class->constructed  = gimp_controller_list_constructed;
+  object_class->finalize     = gimp_controller_list_finalize;
   object_class->set_property = gimp_controller_list_set_property;
   object_class->get_property = gimp_controller_list_get_property;
-  object_class->finalize     = gimp_controller_list_finalize;
 
   g_object_class_install_property (object_class, PROP_GIMP,
                                    g_param_spec_object ("gimp",
@@ -154,9 +151,12 @@ gimp_controller_list_init (GimpControllerList *list)
   guint              n_controller_types;
   gint               i;
 
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (list),
+                                  GTK_ORIENTATION_VERTICAL);
+
   list->gimp = NULL;
 
-  list->hbox = hbox = gtk_hbox_new (FALSE, 6);
+  list->hbox = hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (list), hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
@@ -169,7 +169,7 @@ gimp_controller_list_init (GimpControllerList *list)
   gtk_box_pack_start (GTK_BOX (hbox), sw, TRUE, TRUE, 0);
   gtk_widget_show (sw);
 
-  list->src = gtk_list_store_new (NUM_COLUMNS,
+  list->src = gtk_list_store_new (N_COLUMNS,
                                   G_TYPE_STRING,
                                   G_TYPE_STRING,
                                   G_TYPE_GTYPE);
@@ -230,7 +230,10 @@ gimp_controller_list_init (GimpControllerList *list)
       g_type_class_unref (controller_class);
     }
 
-  vbox = gtk_vbox_new (TRUE, 0);
+  g_free (controller_types);
+
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_box_set_homogeneous (GTK_BOX (vbox), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -270,8 +273,8 @@ gimp_controller_list_init (GimpControllerList *list)
                                      icon_size, &icon_width, &icon_height);
 
   list->dest = gimp_container_tree_view_new (NULL, NULL, icon_height, 0);
-  gtk_tree_view_column_set_title (GIMP_CONTAINER_TREE_VIEW (list->dest)->main_column,
-                                  _("Active Controllers"));
+  gimp_container_tree_view_set_main_column_title (GIMP_CONTAINER_TREE_VIEW (list->dest),
+                                                  _("Active Controllers"));
   gtk_tree_view_set_headers_visible (GIMP_CONTAINER_TREE_VIEW (list->dest)->view,
                                      TRUE);
   gtk_box_pack_start (GTK_BOX (list->hbox), list->dest, TRUE, TRUE, 0);
@@ -314,17 +317,13 @@ gimp_controller_list_init (GimpControllerList *list)
   gtk_widget_set_sensitive (list->down_button, FALSE);
 }
 
-static GObject *
-gimp_controller_list_constructor (GType                  type,
-                                  guint                  n_params,
-                                  GObjectConstructParam *params)
+static void
+gimp_controller_list_constructed (GObject *object)
 {
-  GObject            *object;
-  GimpControllerList *list;
+  GimpControllerList *list = GIMP_CONTROLLER_LIST (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  list = GIMP_CONTROLLER_LIST (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_GIMP (list->gimp));
 
@@ -333,8 +332,20 @@ gimp_controller_list_constructor (GType                  type,
 
   gimp_container_view_set_context (GIMP_CONTAINER_VIEW (list->dest),
                                    gimp_get_user_context (list->gimp));
+}
 
-  return object;
+static void
+gimp_controller_list_finalize (GObject *object)
+{
+  GimpControllerList *list = GIMP_CONTROLLER_LIST (object);
+
+  if (list->gimp)
+    {
+      g_object_unref (list->gimp);
+      list->gimp = NULL;
+    }
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -375,20 +386,6 @@ gimp_controller_list_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-static void
-gimp_controller_list_finalize (GObject *object)
-{
-  GimpControllerList *list = GIMP_CONTROLLER_LIST (object);
-
-  if (list->gimp)
-    {
-      g_object_unref (list->gimp);
-      list->gimp = NULL;
-    }
-
-  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -453,7 +450,7 @@ gimp_controller_list_row_activated (GtkTreeView        *tv,
                                     GtkTreeViewColumn  *column,
                                     GimpControllerList *list)
 {
-  if (GTK_WIDGET_IS_SENSITIVE (list->add_button))
+  if (gtk_widget_is_sensitive (list->add_button))
     gtk_button_clicked (GTK_BUTTON (list->add_button));
 }
 
@@ -496,7 +493,7 @@ gimp_controller_list_activate_item (GimpContainerView  *view,
                                     gpointer            insert_data,
                                     GimpControllerList *list)
 {
-  if (GTK_WIDGET_IS_SENSITIVE (list->edit_button))
+  if (gtk_widget_is_sensitive (list->edit_button))
     gtk_button_clicked (GTK_BUTTON (list->edit_button));
 }
 
@@ -510,21 +507,34 @@ gimp_controller_list_add_clicked (GtkWidget          *button,
   if (list->src_gtype == GIMP_TYPE_CONTROLLER_KEYBOARD &&
       gimp_controllers_get_keyboard (list->gimp) != NULL)
     {
-      gimp_message (list->gimp, G_OBJECT (button), GIMP_MESSAGE_WARNING,
-                    _("There can only be one active keyboard "
-                      "controller.\n\n"
-                      "You already have a keyboard controller in "
-                      "your list of active controllers."));
+      gimp_message_literal (list->gimp,
+			    G_OBJECT (button), GIMP_MESSAGE_WARNING,
+			    _("There can only be one active keyboard "
+			      "controller.\n\n"
+			      "You already have a keyboard controller in "
+			      "your list of active controllers."));
       return;
     }
   else if (list->src_gtype == GIMP_TYPE_CONTROLLER_WHEEL &&
            gimp_controllers_get_wheel (list->gimp) != NULL)
     {
-      gimp_message (list->gimp, G_OBJECT (button), GIMP_MESSAGE_WARNING,
-                    _("There can only be one active wheel "
-                      "controller.\n\n"
-                      "You already have a wheel controller in "
-                      "your list of active controllers."));
+      gimp_message_literal (list->gimp,
+			    G_OBJECT (button), GIMP_MESSAGE_WARNING,
+			    _("There can only be one active wheel "
+			      "controller.\n\n"
+			      "You already have a wheel controller in "
+			      "your list of active controllers."));
+      return;
+    }
+  else if (list->src_gtype == GIMP_TYPE_CONTROLLER_MOUSE &&
+           gimp_controllers_get_mouse (list->gimp) != NULL)
+    {
+      gimp_message_literal (list->gimp,
+			    G_OBJECT (button), GIMP_MESSAGE_WARNING,
+			    _("There can only be one active mouse "
+			      "controller.\n\n"
+			      "You already have a mouse controller in "
+			      "your list of active controllers."));
       return;
     }
 
@@ -542,9 +552,8 @@ static void
 gimp_controller_list_remove_clicked (GtkWidget          *button,
                                      GimpControllerList *list)
 {
-  GtkWidget *dialog;
-  gchar     *primary;
-  gchar     *secondary;
+  GtkWidget   *dialog;
+  const gchar *name;
 
 #define RESPONSE_DISABLE 1
 
@@ -565,24 +574,17 @@ gimp_controller_list_remove_clicked (GtkWidget          *button,
                                            RESPONSE_DISABLE,
                                            -1);
 
-  primary =
-    g_strdup_printf (_("Remove Controller '%s'?"),
-                     gimp_object_get_name (GIMP_OBJECT (list->dest_info)));
-
-  secondary =
-    g_strdup_printf (_("Removing this controller from the list of "
-                       "active controllers will permanently delete "
-                       "all event mappings you have configured.\n\n"
-                       "Selecting \"Disable Controller\" will disable "
-                       "the controller without removing it."));
-
+  name = gimp_object_get_name (list->dest_info);
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                     "%s", primary);
-  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                             "%s", secondary);
+                                     _("Remove Controller '%s'?"), name);
 
-  g_free (primary);
-  g_free (secondary);
+  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+			     "%s",
+                             _("Removing this controller from the list of "
+			       "active controllers will permanently delete "
+			       "all event mappings you have configured.\n\n"
+			       "Selecting \"Disable Controller\" will disable "
+			       "the controller without removing it."));
 
   switch (gimp_dialog_run (GIMP_DIALOG (dialog)))
     {
@@ -641,7 +643,7 @@ gimp_controller_list_edit_clicked (GtkWidget          *button,
 
                             NULL);
 
-  gimp_dialog_factory_add_foreign (gimp_dialog_factory_from_name ("toplevel"),
+  gimp_dialog_factory_add_foreign (gimp_dialog_factory_get_singleton (),
                                    "gimp-controller-editor-dialog",
                                    dialog);
 
@@ -652,7 +654,8 @@ gimp_controller_list_edit_clicked (GtkWidget          *button,
   editor = gimp_controller_editor_new (list->dest_info,
                                        gimp_get_user_context (list->gimp));
   gtk_container_set_border_width (GTK_CONTAINER (editor), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), editor);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      editor, TRUE, TRUE, 0);
   gtk_widget_show (editor);
 
   g_object_set_data (G_OBJECT (list->dest_info), "gimp-controller-editor-dialog",
@@ -710,7 +713,7 @@ gimp_controller_list_down_clicked (GtkWidget          *button,
   index = gimp_container_get_child_index (container,
                                           GIMP_OBJECT (list->dest_info));
 
-  if (index < gimp_container_num_children (container) - 1)
+  if (index < gimp_container_get_n_children (container) - 1)
     gimp_container_reorder (container, GIMP_OBJECT (list->dest_info),
                             index + 1);
 }

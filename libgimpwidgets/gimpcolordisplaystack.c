@@ -4,10 +4,10 @@
  * gimpcolordisplaystack.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,9 +27,20 @@
 
 #include "gimpwidgetstypes.h"
 
+#undef GIMP_DISABLE_DEPRECATED
 #include "gimpcolordisplay.h"
 #include "gimpcolordisplaystack.h"
 #include "gimpwidgetsmarshal.h"
+
+
+/**
+ * SECTION: gimpcolordisplaystack
+ * @title: GimpColorDisplayStack
+ * @short_description: A stack of color correction modules.
+ * @see_also: #GimpColorDisplay
+ *
+ * A stack of color correction modules.
+ **/
 
 
 enum
@@ -274,6 +284,47 @@ gimp_color_display_stack_reorder_down (GimpColorDisplayStack *stack,
     }
 }
 
+/**
+ * gimp_color_display_stack_convert_surface:
+ * @stack: a #GimpColorDisplayStack
+ * @surface: a #cairo_image_surface_t of type ARGB32
+ *
+ * Runs all the stack's filters on all pixels in @surface.
+ *
+ * Since: GIMP 2.8
+ **/
+void
+gimp_color_display_stack_convert_surface (GimpColorDisplayStack *stack,
+                                          cairo_surface_t       *surface)
+{
+  GList *list;
+
+  g_return_if_fail (GIMP_IS_COLOR_DISPLAY_STACK (stack));
+  g_return_if_fail (surface != NULL);
+  g_return_if_fail (cairo_surface_get_type (surface) ==
+                    CAIRO_SURFACE_TYPE_IMAGE);
+
+  for (list = stack->filters; list; list = g_list_next (list))
+    {
+      GimpColorDisplay *display = list->data;
+
+      gimp_color_display_convert_surface (display, surface);
+    }
+}
+
+/**
+ * gimp_color_display_stack_convert:
+ * @stack: a #GimpColorDisplayStack
+ * @buf: the pixel buffer to convert
+ * @width: the width of the buffer
+ * @height: the height of the buffer
+ * @bpp: the number of bytes per pixel
+ * @bpl: the buffer's rowstride
+ *
+ * Converts all pixels in @buf.
+ *
+ * Deprecated: GIMP 2.8: Use gimp_color_display_stack_convert_surface() instead.
+ **/
 void
 gimp_color_display_stack_convert (GimpColorDisplayStack *stack,
                                   guchar                *buf,

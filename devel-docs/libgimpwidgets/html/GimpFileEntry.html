@@ -44,38 +44,37 @@
 <div class="refsynopsisdiv">
 <a name="GimpFileEntry.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpFileEntry.html#GimpFileEntry-struct" title="GimpFileEntry">GimpFileEntry</a>;
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpFileEntry.html#gimp-file-entry-new" title="gimp_file_entry_new ()">gimp_file_entry_new</a>                 (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dir_only</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> check_valid</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="GimpFileEntry.html#gimp-file-entry-get-filename" title="gimp_file_entry_get_filename ()">gimp_file_entry_get_filename</a>        (<em class="parameter"><code><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *entry</code></em>);
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpFileEntry.html#gimp-file-entry-new" title="gimp_file_entry_new ()">gimp_file_entry_new</a>                 (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> dir_only</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> check_valid</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="GimpFileEntry.html#gimp-file-entry-get-filename" title="gimp_file_entry_get_filename ()">gimp_file_entry_get_filename</a>        (<em class="parameter"><code><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *entry</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpFileEntry.html#gimp-file-entry-set-filename" title="gimp_file_entry_set_filename ()">gimp_file_entry_set_filename</a>        (<em class="parameter"><code><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *entry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpFileEntry.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
-               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
-                     +----<a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
-                           +----<a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
-                                 +----<a href="http://library.gnome.org/devel/gtk3/GtkHBox.html">GtkHBox</a>
-                                       +----GimpFileEntry
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GimpFileEntry
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpFileEntry.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpFileEntry implements
- AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
+ AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
 </div>
 <div class="refsect1">
 <a name="GimpFileEntry.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpFileEntry.html#GimpFileEntry-filename-changed" title='The "filename-changed" signal'>filename-changed</a>"                               : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a>
+  "<a class="link" href="GimpFileEntry.html#GimpFileEntry-filename-changed" title='The "filename-changed" signal'>filename-changed</a>"                               : <code class="literal">Run First</code>
 </pre>
 </div>
 <div class="refsect1">
@@ -84,21 +83,22 @@ GimpFileEntry implements
 This widget is used to enter filenames or directories.
 </p>
 <p>
-There is a <a href="http://library.gnome.org/devel/gtk3/GtkEntry.html"><span class="type">GtkEntry</span></a> for entering the filename manually and a "..."
-button which will pop up a <a href="http://library.gnome.org/devel/gtk3/GtkFileSelection.html"><span class="type">GtkFileSelection</span></a> dialog.
+There is a <span class="type">GtkEntry</span> for entering the filename manually and a "..."
+button which will pop up a <span class="type">GtkFileChooserDialog</span>.
 </p>
 <p>
-You can restrict the <span class="type">GimpFileSelection</span> to directories. In this case
-the filename listbox of the <a href="http://library.gnome.org/devel/gtk3/GtkFileSelection.html"><span class="type">GtkFileSelection</span></a> dialog will be hidden.
+You can restrict the <a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> to directories. In this
+case the filename listbox of the <span class="type">GtkFileChooser</span> dialog will be
+set to directory mode.
 </p>
 <p>
-If you specify <em class="parameter"><code>check_valid</code></em> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> in <a class="link" href="GimpFileEntry.html#gimp-file-entry-new" title="gimp_file_entry_new ()"><code class="function">gimp_file_entry_new()</code></a>
-the entered filename will be checked for validity and a pixmap will be
+If you specify <em class="parameter"><code>check_valid</code></em> as <span class="type">TRUE</span> in <a class="link" href="GimpFileEntry.html#gimp-file-entry-new" title="gimp_file_entry_new ()"><code class="function">gimp_file_entry_new()</code></a> the
+entered filename will be checked for validity and a pixmap will be
 shown which indicates if the file exists or not.
 </p>
 <p>
-Whenever the user changes the filename, the "filename_changed" signal
-will be emitted.
+Whenever the user changes the filename, the "filename_changed"
+signal will be emitted.
 </p>
 </div>
 <div class="refsect1">
@@ -116,23 +116,23 @@ will be emitted.
 <hr>
 <div class="refsect2">
 <a name="gimp-file-entry-new"></a><h3>gimp_file_entry_new ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_file_entry_new                 (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dir_only</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> check_valid</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_file_entry_new                 (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> dir_only</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> check_valid</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_file_entry_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-You should use <a href="http://library.gnome.org/devel/gtk3/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a> instead.
+You should use <span class="type">GtkFileChooserButton</span> instead.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>The title of the <span class="type">GtkFileEntry</span> dialog.</td>
+<td>The title of the <a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> dialog.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
@@ -141,12 +141,12 @@ You should use <a href="http://library.gnome.org/devel/gtk3/GtkFileChooserButton
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dir_only</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the file entry should accept directories only.</td>
+<code class="literal">TRUE</code> if the file entry should accept directories only.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>check_valid</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the widget should check if the entered file
+<code class="literal">TRUE</code> if the widget should check if the entered file
 really exists.</td>
 </tr>
 <tr>
@@ -159,13 +159,13 @@ really exists.</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-file-entry-get-filename"></a><h3>gimp_file_entry_get_filename ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_file_entry_get_filename        (<em class="parameter"><code><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *entry</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             gimp_file_entry_get_filename        (<em class="parameter"><code><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *entry</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_file_entry_get_filename</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Note that you have to <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> the returned string.
+Note that you have to <code class="function">g_free()</code> the returned string.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -185,13 +185,13 @@ Note that you have to <a href="http://library.gnome.org/devel/glib/unstable/glib
 <div class="refsect2">
 <a name="gimp-file-entry-set-filename"></a><h3>gimp_file_entry_set_filename ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_file_entry_set_filename        (<em class="parameter"><code><a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *entry</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_file_entry_set_filename</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-If you specified <em class="parameter"><code>check_valid</code></em> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> in <a class="link" href="GimpFileEntry.html#gimp-file-entry-new" title="gimp_file_entry_new ()"><code class="function">gimp_file_entry_new()</code></a>
+If you specified <em class="parameter"><code>check_valid</code></em> as <code class="literal">TRUE</code> in <a class="link" href="GimpFileEntry.html#gimp-file-entry-new" title="gimp_file_entry_new ()"><code class="function">gimp_file_entry_new()</code></a>
 the <a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> will immediately check the validity of the file
 name.
 </p>
@@ -215,7 +215,7 @@ name.
 <div class="refsect2">
 <a name="GimpFileEntry-filename-changed"></a><h3>The <code class="literal">"filename-changed"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpFileEntry.html" title="GimpFileEntry"><span class="type">GimpFileEntry</span></a> *arg0,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a></pre>
+                                                        <span class="type">gpointer</span>       user_data)      : <code class="literal">Run First</code></pre>
 <p>
 This signal is emitted whenever the user changes the filename.
 </p>
@@ -230,9 +230,7 @@ This signal is emitted whenever the user changes the filename.
 </div>
 <div class="refsect1">
 <a name="GimpFileEntry.see-also"></a><h2>See Also</h2>
-<p>
 <a class="link" href="GimpPathEditor.html" title="GimpPathEditor"><span class="type">GimpPathEditor</span></a>
-</p>
 </div>
 </div>
 <div class="footer">

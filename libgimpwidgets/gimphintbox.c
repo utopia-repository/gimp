@@ -4,10 +4,10 @@
  * gimphintbox.c
  * Copyright (C) 2006 Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,14 +26,23 @@
 #include "gimpwidgets.h"
 
 
-typedef GtkHBoxClass  GimpHintBoxClass;
+/**
+ * SECTION: gimphintbox
+ * @title: GimpHintBox
+ * @short_description: Displays a wilber icon and a text.
+ *
+ * Displays a wilber icon and a text.
+ **/
+
+
+typedef GtkBoxClass  GimpHintBoxClass;
 
 typedef struct
 {
-  GtkHBox    parent_instance;
+  GtkBox    parent_instance;
 
-  gchar     *stock_id;
-  gchar     *hint;
+  gchar    *stock_id;
+  gchar    *hint;
 } GimpHintBox;
 
 #define GIMP_HINT_BOX(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HINT_BOX, GimpHintBox))
@@ -47,20 +55,20 @@ enum
   PROP_HINT
 };
 
-static GObject * gimp_hint_box_constructor  (GType                  type,
-                                             guint                  n_params,
-                                             GObjectConstructParam *params);
-static void      gimp_hint_box_finalize     (GObject               *object);
-static void      gimp_hint_box_set_property (GObject               *object,
-                                             guint                  property_id,
-                                             const GValue          *value,
-                                             GParamSpec            *pspec);
-static void      gimp_hint_box_get_property (GObject               *object,
-                                             guint                  property_id,
-                                             GValue                *value,
-                                             GParamSpec            *pspec);
 
-G_DEFINE_TYPE (GimpHintBox, gimp_hint_box, GTK_TYPE_HBOX)
+static void   gimp_hint_box_constructed  (GObject      *object);
+static void   gimp_hint_box_finalize     (GObject      *object);
+static void   gimp_hint_box_set_property (GObject      *object,
+                                          guint         property_id,
+                                          const GValue *value,
+                                          GParamSpec   *pspec);
+static void   gimp_hint_box_get_property (GObject      *object,
+                                          guint         property_id,
+                                          GValue       *value,
+                                          GParamSpec   *pspec);
+
+
+G_DEFINE_TYPE (GimpHintBox, gimp_hint_box, GTK_TYPE_BOX)
 
 #define parent_class gimp_hint_box_parent_class
 
@@ -70,7 +78,7 @@ gimp_hint_box_class_init (GimpHintBoxClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor   = gimp_hint_box_constructor;
+  object_class->constructed   = gimp_hint_box_constructed;
   object_class->finalize      = gimp_hint_box_finalize;
   object_class->set_property  = gimp_hint_box_set_property;
   object_class->get_property  = gimp_hint_box_get_property;
@@ -90,22 +98,21 @@ gimp_hint_box_class_init (GimpHintBoxClass *klass)
 static void
 gimp_hint_box_init (GimpHintBox *box)
 {
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
+                                  GTK_ORIENTATION_HORIZONTAL);
+
   box->stock_id = NULL;
   box->hint     = NULL;
 }
 
-static GObject *
-gimp_hint_box_constructor (GType                  type,
-                           guint                  n_params,
-                           GObjectConstructParam *params)
+static void
+gimp_hint_box_constructed (GObject *object)
 {
-  GObject     *object;
-  GimpHintBox *box;
+  GimpHintBox *box = GIMP_HINT_BOX (object);
   GtkWidget   *label;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  box = GIMP_HINT_BOX (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   gtk_box_set_spacing (GTK_BOX (box), 12);
 
@@ -131,8 +138,6 @@ gimp_hint_box_constructor (GType                  type,
                              -1);
   gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
-
-  return object;
 }
 
 static void

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -11,8 +11,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gimpfu import *
 
@@ -20,7 +19,10 @@ gettext.install("gimp20-python", gimp.locale_directory, unicode=True)
 
 def make_gradient(palette, num_segments, num_colors):
     gradient = pdb.gimp_gradient_new(palette)
-    pdb.gimp_gradient_segment_range_split_uniform(gradient, 0, -1, num_segments)
+
+    if (num_segments > 1):
+        pdb.gimp_gradient_segment_range_split_uniform(gradient, 0, -1,
+                                                      num_segments)
 
     for color_number in range(0,num_segments):
         if (color_number == num_colors-1):color_number_next = 0

@@ -8,9 +8,9 @@
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -120,7 +119,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable (unused)"      }
   };
@@ -645,7 +644,7 @@ do_optimizations (GimpRunMode run_mode,
                                     100.0,
                                     GIMP_NORMAL_MODE);
 
-      gimp_image_add_layer (new_image_id, new_layer_id, 0);
+      gimp_image_insert_layer (new_image_id, new_layer_id, -1, 0);
 
       drawable = gimp_drawable_get (new_layer_id);
 
@@ -1005,7 +1004,7 @@ do_optimizations (GimpRunMode run_mode,
            */
 
           oldlayer_name =
-            gimp_drawable_get_name(layers[total_frames-(this_frame_num+1)]);
+            gimp_item_get_name(layers[total_frames-(this_frame_num+1)]);
 
           buflen = strlen(oldlayer_name) + 40;
 
@@ -1033,7 +1032,7 @@ do_optimizations (GimpRunMode run_mode,
 
               g_free (newlayer_name);
 
-              oldlayer_name = gimp_drawable_get_name (last_true_frame);
+              oldlayer_name = gimp_item_get_name (last_true_frame);
 
               buflen = strlen (oldlayer_name) + 40;
 
@@ -1051,7 +1050,7 @@ do_optimizations (GimpRunMode run_mode,
                           (this_frame_num ==  0) ? "" :
                           can_combine ? "(combine)" : "(replace)");
 
-              gimp_drawable_set_name (last_true_frame, newlayer_name);
+              gimp_item_set_name (last_true_frame, newlayer_name);
 
               g_free (newlayer_name);
             }
@@ -1069,7 +1068,7 @@ do_optimizations (GimpRunMode run_mode,
                                                GIMP_NORMAL_MODE);
               g_free (newlayer_name);
 
-              gimp_image_add_layer (new_image_id, new_layer_id, 0);
+              gimp_image_insert_layer (new_image_id, new_layer_id, -1, 0);
 
               drawable = gimp_drawable_get (new_layer_id);
 
@@ -1088,6 +1087,7 @@ do_optimizations (GimpRunMode run_mode,
           gimp_progress_update (((gdouble) this_frame_num + 1.0) /
                                 ((gdouble) total_frames));
         }
+      gimp_progress_update (1.0);
     }
 
   gimp_image_undo_enable (new_image_id);
@@ -1121,7 +1121,7 @@ get_frame_disposal (guint whichframe)
   gchar       *layer_name;
   DisposeType  disposal;
 
-  layer_name = gimp_drawable_get_name(layers[total_frames-(whichframe+1)]);
+  layer_name = gimp_item_get_name(layers[total_frames-(whichframe+1)]);
   disposal = parse_disposal_tag(layer_name);
   g_free(layer_name);
 
@@ -1134,7 +1134,7 @@ get_frame_duration (guint whichframe)
   gchar* layer_name;
   gint   duration = 0;
 
-  layer_name = gimp_drawable_get_name(layers[total_frames-(whichframe+1)]);
+  layer_name = gimp_item_get_name(layers[total_frames-(whichframe+1)]);
   if (layer_name)
     {
       duration = parse_ms_tag(layer_name);

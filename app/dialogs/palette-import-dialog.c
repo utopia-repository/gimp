@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -36,8 +36,6 @@
 #include "core/gimpimage.h"
 #include "core/gimppalette.h"
 #include "core/gimppalette-import.h"
-
-#include "file/file-utils.h"
 
 #include "widgets/gimpcontainercombobox.h"
 #include "widgets/gimpdnd.h"
@@ -189,13 +187,13 @@ palette_import_dialog_new (GimpContext *context)
                               import_dialog_drop_callback,
                               dialog);
 
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog->dialog)->vbox),
-                     main_hbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog->dialog))),
+                      main_hbox, TRUE, TRUE, 0);
   gtk_widget_show (main_hbox);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -276,7 +274,7 @@ palette_import_dialog_new (GimpContext *context)
 
   /*  The gradient menu  */
   dialog->gradient_combo =
-    gimp_container_combo_box_new (context->gimp->gradient_factory->container,
+    gimp_container_combo_box_new (gimp_data_factory_get_container (context->gimp->gradient_factory),
                                   dialog->context, 24, 1);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              NULL, 0.0, 0.5, dialog->gradient_combo, 1, FALSE);
@@ -316,7 +314,7 @@ palette_import_dialog_new (GimpContext *context)
   dialog->entry = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY (dialog->entry),
                       gradient ?
-                      GIMP_OBJECT (gradient)->name : _("New import"));
+                      gimp_object_get_name (gradient) : _("New import"));
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Palette _name:"), 0.0, 0.5,
                              dialog->entry, 2, FALSE);
@@ -364,7 +362,7 @@ palette_import_dialog_new (GimpContext *context)
   gtk_box_pack_start (GTK_BOX (main_hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -459,7 +457,7 @@ palette_import_response (GtkWidget    *widget,
           if (name && *name)
             gimp_object_set_name (GIMP_OBJECT (dialog->palette), name);
 
-          gimp_container_add (gimp->palette_factory->container,
+          gimp_container_add (gimp_data_factory_get_container (gimp->palette_factory),
                               GIMP_OBJECT (dialog->palette));
         }
     }
@@ -478,7 +476,7 @@ palette_import_gradient_changed (GimpContext  *context,
   if (gradient && dialog->import_type == GRADIENT_IMPORT)
     {
       gtk_entry_set_text (GTK_ENTRY (dialog->entry),
-                          GIMP_OBJECT (gradient)->name);
+                          gimp_object_get_name (gradient));
 
       palette_import_make_palette (dialog);
     }
@@ -507,12 +505,11 @@ palette_import_image_changed (GimpContext  *context,
 
       if (image)
         {
-          gchar *name;
           gchar *label;
 
-          name = file_utils_uri_display_basename (gimp_image_get_uri (image));
-          label = g_strdup_printf ("%s-%d", name, gimp_image_get_ID (image));
-          g_free (name);
+          label = g_strdup_printf ("%s-%d",
+				   gimp_image_get_display_name (image),
+				   gimp_image_get_ID (image));
 
           gtk_entry_set_text (GTK_ENTRY (dialog->entry), label);
           g_free (label);
@@ -657,7 +654,7 @@ palette_import_grad_callback (GtkWidget    *widget,
   gradient = gimp_context_get_gradient (dialog->context);
 
   gtk_entry_set_text (GTK_ENTRY (dialog->entry),
-                      GIMP_OBJECT (gradient)->name);
+                      gimp_object_get_name (gradient));
 
   palette_import_set_sensitive (dialog);
 
@@ -737,7 +734,7 @@ palette_import_image_add (GimpContainer *container,
                           GimpImage     *image,
                           ImportDialog  *dialog)
 {
-  if (! GTK_WIDGET_IS_SENSITIVE (dialog->image_radio))
+  if (! gtk_widget_is_sensitive (dialog->image_radio))
     {
       gtk_widget_set_sensitive (dialog->image_radio, TRUE);
       gimp_context_set_image (dialog->context, image);
@@ -749,7 +746,7 @@ palette_import_image_remove (GimpContainer *container,
                              GimpImage     *image,
                              ImportDialog  *dialog)
 {
-  if (! gimp_container_num_children (dialog->context->gimp->images))
+  if (! gimp_container_get_n_children (dialog->context->gimp->images))
     {
       if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dialog->image_radio)))
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dialog->gradient_radio),
@@ -810,11 +807,13 @@ palette_import_make_palette (ImportDialog *dialog)
         if (gimp_image_base_type (image) == GIMP_INDEXED)
           {
             palette = gimp_palette_import_from_indexed_image (image,
+                                                              dialog->context,
                                                               palette_name);
           }
         else if (sample_merged)
           {
             palette = gimp_palette_import_from_image (image,
+                                                      dialog->context,
                                                       palette_name,
                                                       n_colors,
                                                       threshold,
@@ -827,6 +826,7 @@ palette_import_make_palette (ImportDialog *dialog)
             drawable = GIMP_DRAWABLE (gimp_image_get_active_layer (image));
 
             palette = gimp_palette_import_from_drawable (drawable,
+                                                         dialog->context,
                                                          palette_name,
                                                          n_colors,
                                                          threshold,
@@ -843,15 +843,16 @@ palette_import_make_palette (ImportDialog *dialog)
         filename =
           gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog->file_chooser));
 
-        palette = gimp_palette_import_from_file (filename,
+        palette = gimp_palette_import_from_file (dialog->context,
+                                                 filename,
                                                  palette_name, &error);
         g_free (filename);
 
         if (! palette)
           {
-            gimp_message (dialog->context->gimp, G_OBJECT (dialog->dialog),
-                          GIMP_MESSAGE_ERROR,
-                          "%s", error->message);
+            gimp_message_literal (dialog->context->gimp,
+				  G_OBJECT (dialog->dialog), GIMP_MESSAGE_ERROR,
+				  error->message);
             g_error_free (error);
           }
       }
@@ -863,7 +864,7 @@ palette_import_make_palette (ImportDialog *dialog)
       if (dialog->palette)
         g_object_unref (dialog->palette);
 
-      palette->n_columns = n_columns;
+      gimp_palette_set_columns (palette, n_columns);
 
       gimp_view_set_viewable (GIMP_VIEW (dialog->preview),
                               GIMP_VIEWABLE (palette));
@@ -871,8 +872,7 @@ palette_import_make_palette (ImportDialog *dialog)
       dialog->palette = palette;
     }
 
-  if (dialog->palette && dialog->palette->n_colors > 0)
-    gtk_widget_hide (dialog->no_colors_label);
-  else
-    gtk_widget_show (dialog->no_colors_label);
+  gtk_widget_set_visible (dialog->no_colors_label,
+                          dialog->palette &&
+                          gimp_palette_get_n_colors (dialog->palette) > 0);
 }

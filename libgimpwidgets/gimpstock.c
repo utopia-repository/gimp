@@ -4,10 +4,10 @@
  * gimpstock.c
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,6 +28,22 @@
 #include "themes/Default/images/gimp-stock-pixbufs.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpstock
+ * @title: GimpStock
+ * @short_description: Prebuilt common menu/toolbar items and
+ *                     corresponding icons
+ *
+ * GIMP registers a set of menu/toolbar items and corresponding icons
+ * in addition to the standard GTK+ stock items. These can be used
+ * just like GTK+ stock items. GIMP also overrides a few of the GTK+
+ * icons (namely the ones in dialog size).
+ *
+ * Stock icons may have a RTL variant which gets used for
+ * right-to-left locales.
+ **/
 
 
 #define LIBGIMP_DOMAIN     GETTEXT_PACKAGE "-libgimp"
@@ -198,8 +213,11 @@ static const GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_TOOLS,                    NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_OPTIONS,             NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_DEVICE_STATUS,            NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_INPUT_DEVICE,             NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_CURSOR,                   NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_SAMPLE_POINT,             NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_DYNAMICS,                 NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_TOOL_PRESET,              NULL,        0, 0, LIBGIMP_DOMAIN },
 
   { GIMP_STOCK_IMAGE,                    NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_LAYER,                    NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -289,12 +307,14 @@ static const GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST, NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_BUCKET_FILL,         NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_BY_COLOR_SELECT,     NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_TOOL_CAGE,                NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_CLONE,               NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_COLOR_BALANCE,       NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_COLOR_PICKER,        NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_COLORIZE,            NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_CROP,         N_("Cr_op"),        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_CURVES,              NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_TOOL_DESATURATE,          NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_DODGE,               NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_ELLIPSE_SELECT,      NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_ERASER,              NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -391,8 +411,11 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_TOOLS,                    stock_tools_24                    },
   { GIMP_STOCK_TOOL_OPTIONS,             stock_tool_options_24             },
   { GIMP_STOCK_DEVICE_STATUS,            stock_device_status_24            },
+  { GIMP_STOCK_INPUT_DEVICE,             stock_input_device_22             },
   { GIMP_STOCK_CURSOR,                   stock_cursor_24                   },
   { GIMP_STOCK_SAMPLE_POINT,             stock_sample_point_24             },
+  { GIMP_STOCK_DYNAMICS,                 stock_dynamics_22                 },
+  { GIMP_STOCK_TOOL_PRESET,              stock_tool_preset_22              },
 
   { GIMP_STOCK_CONTROLLER,               stock_controller_24               },
   { GIMP_STOCK_CONTROLLER_KEYBOARD,      stock_controller_keyboard_24      },
@@ -439,12 +462,14 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST, stock_tool_brightness_contrast_22 },
   { GIMP_STOCK_TOOL_BUCKET_FILL,         stock_tool_bucket_fill_22         },
   { GIMP_STOCK_TOOL_BY_COLOR_SELECT,     stock_tool_by_color_select_22     },
+  { GIMP_STOCK_TOOL_CAGE,                stock_tool_cage_22                },
   { GIMP_STOCK_TOOL_CLONE,               stock_tool_clone_22               },
   { GIMP_STOCK_TOOL_COLOR_BALANCE,       stock_tool_color_balance_22       },
   { GIMP_STOCK_TOOL_COLOR_PICKER,        stock_tool_color_picker_22        },
   { GIMP_STOCK_TOOL_COLORIZE,            stock_tool_colorize_22            },
   { GIMP_STOCK_TOOL_CROP,                stock_tool_crop_22                },
   { GIMP_STOCK_TOOL_CURVES,              stock_tool_curves_22              },
+  { GIMP_STOCK_TOOL_DESATURATE,          stock_tool_desaturate_22          },
   { GIMP_STOCK_TOOL_DODGE,               stock_tool_dodge_22               },
   { GIMP_STOCK_TOOL_ELLIPSE_SELECT,      stock_tool_ellipse_select_22      },
   { GIMP_STOCK_TOOL_ERASER,              stock_tool_eraser_22              },
@@ -517,8 +542,11 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_TOOLS,                    stock_tools_16                    },
   { GIMP_STOCK_TOOL_OPTIONS,             stock_tool_options_16             },
   { GIMP_STOCK_DEVICE_STATUS,            stock_device_status_16            },
+  { GIMP_STOCK_INPUT_DEVICE,             stock_input_device_16             },
   { GIMP_STOCK_CURSOR,                   stock_cursor_16                   },
   { GIMP_STOCK_SAMPLE_POINT,             stock_sample_point_16             },
+  { GIMP_STOCK_DYNAMICS,                 stock_dynamics_16                 },
+  { GIMP_STOCK_TOOL_PRESET,              stock_tool_preset_16              },
 
   { GIMP_STOCK_CONTROLLER,               stock_controller_16               },
   { GIMP_STOCK_CONTROLLER_KEYBOARD,      stock_controller_keyboard_16      },
@@ -601,12 +629,14 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST, stock_tool_brightness_contrast_16 },
   { GIMP_STOCK_TOOL_BUCKET_FILL,         stock_tool_bucket_fill_16         },
   { GIMP_STOCK_TOOL_BY_COLOR_SELECT,     stock_tool_by_color_select_16     },
+  { GIMP_STOCK_TOOL_CAGE,                stock_tool_cage_16                },
   { GIMP_STOCK_TOOL_CLONE,               stock_tool_clone_16               },
   { GIMP_STOCK_TOOL_COLOR_BALANCE,       stock_tool_color_balance_16       },
   { GIMP_STOCK_TOOL_COLOR_PICKER,        stock_tool_color_picker_16        },
   { GIMP_STOCK_TOOL_COLORIZE,            stock_tool_colorize_16            },
   { GIMP_STOCK_TOOL_CROP,                stock_tool_crop_16                },
   { GIMP_STOCK_TOOL_CURVES,              stock_tool_curves_16              },
+  { GIMP_STOCK_TOOL_DESATURATE,          stock_tool_desaturate_16          },
   { GIMP_STOCK_TOOL_DODGE,               stock_tool_dodge_16               },
   { GIMP_STOCK_TOOL_ELLIPSE_SELECT,      stock_tool_ellipse_select_16      },
   { GIMP_STOCK_TOOL_ERASER,              stock_tool_eraser_16              },

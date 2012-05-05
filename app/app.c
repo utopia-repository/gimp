@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -21,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -31,6 +31,11 @@
 #endif
 
 #include <gegl.h>
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#include <winnls.h>
+#endif
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
@@ -59,13 +64,15 @@
 #include "batch.h"
 #include "errors.h"
 #include "units.h"
+#include "language.h"
+#include "gimp-debug.h"
 
 #include "gimp-intl.h"
 
 
 /*  local prototypes  */
 
-static void       app_init_update_none    (const gchar *text1,
+static void       app_init_update_noop    (const gchar *text1,
                                            const gchar *text2,
                                            gdouble      percentage);
 static gboolean   app_exit_after_callback (Gimp        *gimp,
@@ -184,10 +191,13 @@ app_run (const gchar         *full_prog_name,
 
   config = GIMP_BASE_CONFIG (gimp->config);
 
+  /*  change the locale if a language if specified  */
+  language_init (gimp->config->language);
+
   /*  initialize lowlevel stuff  */
   swap_is_ok = base_init (config, be_verbose, use_cpu_accel);
 
-  gimp_gegl_init ();
+  gimp_gegl_init (gimp);
 
 #ifndef GIMP_CONSOLE_COMPILATION
   if (! no_interface)
@@ -195,7 +205,7 @@ app_run (const gchar         *full_prog_name,
 #endif
 
   if (! update_status_func)
-    update_status_func = app_init_update_none;
+    update_status_func = app_init_update_noop;
 
   /*  Create all members of the global Gimp instance which need an already
    *  parsed gimprc, e.g. the data factories
@@ -250,6 +260,8 @@ app_run (const gchar         *full_prog_name,
 
   g_object_unref (gimp);
 
+  gimp_debug_instances ();
+
   errors_exit ();
   gegl_exit ();
   base_exit ();
@@ -259,10 +271,11 @@ app_run (const gchar         *full_prog_name,
 /*  private functions  */
 
 static void
-app_init_update_none (const gchar *text1,
+app_init_update_noop (const gchar *text1,
                       const gchar *text2,
                       gdouble      percentage)
 {
+  /*  deliberately do nothing  */
 }
 
 static gboolean

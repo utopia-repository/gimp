@@ -4,10 +4,10 @@
  * gimpfileentry.c
  * Copyright (C) 1999-2004 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,6 +35,30 @@
 #include "libgimp/libgimp-intl.h"
 
 
+/**
+ * SECTION: gimpfileentry
+ * @title: GimpFileEntry
+ * @short_description: Widget for entering a filename.
+ * @see_also: #GimpPathEditor
+ *
+ * This widget is used to enter filenames or directories.
+ *
+ * There is a #GtkEntry for entering the filename manually and a "..."
+ * button which will pop up a #GtkFileChooserDialog.
+ *
+ * You can restrict the #GimpFileEntry to directories. In this
+ * case the filename listbox of the #GtkFileChooser dialog will be
+ * set to directory mode.
+ *
+ * If you specify @check_valid as #TRUE in gimp_file_entry_new() the
+ * entered filename will be checked for validity and a pixmap will be
+ * shown which indicates if the file exists or not.
+ *
+ * Whenever the user changes the filename, the "filename_changed"
+ * signal will be emitted.
+ **/
+
+
 enum
 {
   FILENAME_CHANGED,
@@ -43,7 +66,7 @@ enum
 };
 
 
-static void   gimp_file_entry_destroy         (GtkObject     *object);
+static void   gimp_file_entry_dispose         (GObject       *object);
 
 static void   gimp_file_entry_entry_activate  (GtkWidget     *widget,
                                                GimpFileEntry *entry);
@@ -55,7 +78,7 @@ static void   gimp_file_entry_browse_clicked  (GtkWidget     *widget,
 static void   gimp_file_entry_check_filename  (GimpFileEntry *entry);
 
 
-G_DEFINE_TYPE (GimpFileEntry, gimp_file_entry, GTK_TYPE_HBOX)
+G_DEFINE_TYPE (GimpFileEntry, gimp_file_entry, GTK_TYPE_BOX)
 
 #define parent_class gimp_file_entry_parent_class
 
@@ -65,7 +88,7 @@ static guint gimp_file_entry_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_file_entry_class_init (GimpFileEntryClass *klass)
 {
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   /**
    * GimpFileEntry::filename-changed:
@@ -81,7 +104,7 @@ gimp_file_entry_class_init (GimpFileEntryClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  object_class->destroy   = gimp_file_entry_destroy;
+  object_class->dispose   = gimp_file_entry_dispose;
 
   klass->filename_changed = NULL;
 }
@@ -95,6 +118,9 @@ gimp_file_entry_init (GimpFileEntry *entry)
   entry->file_dialog = NULL;
   entry->check_valid = FALSE;
   entry->file_exists = NULL;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (entry),
+                                  GTK_ORIENTATION_HORIZONTAL);
 
   gtk_box_set_spacing (GTK_BOX (entry), 4);
   gtk_box_set_homogeneous (GTK_BOX (entry), FALSE);
@@ -124,7 +150,7 @@ gimp_file_entry_init (GimpFileEntry *entry)
 }
 
 static void
-gimp_file_entry_destroy (GtkObject *object)
+gimp_file_entry_dispose (GObject *object)
 {
   GimpFileEntry *entry = GIMP_FILE_ENTRY (object);
 
@@ -140,12 +166,12 @@ gimp_file_entry_destroy (GtkObject *object)
       entry->title = NULL;
     }
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 /**
  * gimp_file_entry_new:
- * @title:       The title of the #GtkFileEntry dialog.
+ * @title:       The title of the #GimpFileEntry dialog.
  * @filename:    The initial filename.
  * @dir_only:    %TRUE if the file entry should accept directories only.
  * @check_valid: %TRUE if the widget should check if the entered file

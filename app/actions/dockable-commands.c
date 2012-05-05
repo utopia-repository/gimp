@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,8 +34,6 @@
 #include "widgets/gimpdocked.h"
 #include "widgets/gimpsessioninfo.h"
 
-#include "dialogs/dialogs.h"
-
 #include "dockable-commands.h"
 
 
@@ -52,33 +49,9 @@ dockable_add_tab_cmd_callback (GtkAction   *action,
 {
   GimpDockbook *dockbook = GIMP_DOCKBOOK (data);
 
-  if (value)
-    {
-      GtkWidget *dockable;
-      gchar     *identifier;
-      gchar     *p;
-
-      identifier = g_strdup (value);
-
-      p = strchr (identifier, '|');
-
-      if (p)
-        *p = '\0';
-
-      dockable =
-        gimp_dialog_factory_dockable_new (dockbook->dock->dialog_factory,
-                                          dockbook->dock,
-                                          identifier, -1);
-
-      g_free (identifier);
-
-      /*  Maybe gimp_dialog_factory_dockable_new() returned an already
-       *  existing singleton dockable, so check if it already is
-       *  attached to a dockbook.
-       */
-      if (dockable && ! GIMP_DOCKABLE (dockable)->dockbook)
-        gimp_dockbook_add (dockbook, GIMP_DOCKABLE (dockable), -1);
-    }
+  gimp_dockbook_add_from_dialog_factory (dockbook,
+                                         value /*identifiers*/,
+                                         -1);
 }
 
 void
@@ -89,7 +62,12 @@ dockable_close_tab_cmd_callback (GtkAction *action,
   GimpDockable *dockable = dockable_get_current (dockbook);
 
   if (dockable)
-    gimp_dockbook_remove (dockbook, dockable);
+    {
+      g_object_ref (dockable);
+      gimp_dockbook_remove (dockbook, dockable);
+      gtk_widget_destroy (GTK_WIDGET (dockable));
+      g_object_unref (dockable);
+    }
 }
 
 void
@@ -152,20 +130,27 @@ dockable_toggle_view_cmd_callback (GtkAction *action,
           substring = strstr (identifier, "grid");
 
           if (substring && view_type == GIMP_VIEW_TYPE_GRID)
-            return;
+            {
+              g_free (identifier);
+              return;
+            }
 
           if (! substring)
             {
               substring = strstr (identifier, "list");
 
               if (substring && view_type == GIMP_VIEW_TYPE_LIST)
-                return;
+                {
+                  g_free (identifier);
+                  return;
+                }
             }
 
           if (substring)
             {
               GimpContainerView *old_view;
               GtkWidget         *new_dockable;
+              GimpDock          *dock;
               gint               view_size = -1;
 
               if (view_type == GIMP_VIEW_TYPE_LIST)
@@ -178,12 +163,11 @@ dockable_toggle_view_cmd_callback (GtkAction *action,
               if (old_view)
                 view_size = gimp_container_view_get_view_size (old_view, NULL);
 
-
-              new_dockable =
-                gimp_dialog_factory_dockable_new (dockbook->dock->dialog_factory,
-                                                  dockbook->dock,
-                                                  identifier,
-                                                  view_size);
+              dock         = gimp_dockbook_get_dock (dockbook);
+              new_dockable = gimp_dialog_factory_dockable_new (gimp_dock_get_dialog_factory (dock),
+                                                               dock,
+                                                               identifier,
+                                                               view_size);
 
               if (new_dockable)
                 {
@@ -199,21 +183,24 @@ dockable_toggle_view_cmd_callback (GtkAction *action,
 
                   show = gimp_docked_get_show_button_bar (old);
                   gimp_docked_set_show_button_bar (new, show);
-                }
 
-              /*  Maybe gimp_dialog_factory_dockable_new() returned
-               *  an already existing singleton dockable, so check
-               *  if it already is attached to a dockbook.
-               */
-              if (new_dockable && ! GIMP_DOCKABLE (new_dockable)->dockbook)
-                {
-                  gimp_dockbook_add (dockbook, GIMP_DOCKABLE (new_dockable),
-                                     page_num);
+                  /*  Maybe gimp_dialog_factory_dockable_new() returned
+                   *  an already existing singleton dockable, so check
+                   *  if it already is attached to a dockbook.
+                   */
+                  if (! gimp_dockable_get_dockbook (GIMP_DOCKABLE (new_dockable)))
+                    {
+                      gimp_dockbook_add (dockbook, GIMP_DOCKABLE (new_dockable),
+                                         page_num);
 
-                  gimp_dockbook_remove (dockbook, dockable);
+                      g_object_ref (dockable);
+                      gimp_dockbook_remove (dockbook, dockable);
+                      gtk_widget_destroy (GTK_WIDGET (dockable));
+                      g_object_unref (dockable);
 
-                  gtk_notebook_set_current_page (GTK_NOTEBOOK (dockbook),
-                                                 page_num);
+                      gtk_notebook_set_current_page (GTK_NOTEBOOK (dockbook),
+                                                     page_num);
+                    }
                 }
             }
 
@@ -262,7 +249,7 @@ dockable_tab_style_cmd_callback (GtkAction *action,
   tab_style = (GimpTabStyle)
     gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
 
-  if (dockable && dockable->tab_style != tab_style)
+  if (dockable && gimp_dockable_get_tab_style (dockable) != tab_style)
     {
       GtkWidget *tab_widget;
 

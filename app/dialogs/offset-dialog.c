@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -142,10 +142,10 @@ offset_dialog_new (GimpDrawable *drawable,
                     G_CALLBACK (offset_response),
                     dialog);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog->dialog)->vbox),
-                     main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog->dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   /*  The offset frame  */
@@ -153,11 +153,11 @@ offset_dialog_new (GimpDrawable *drawable,
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (6, FALSE);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -196,16 +196,16 @@ offset_dialog_new (GimpDrawable *drawable,
                                   yres, FALSE);
 
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (dialog->off_se), 0,
-                                         - gimp_item_width (item),
-                                         gimp_item_width (item));
+                                         - gimp_item_get_width (item),
+                                         gimp_item_get_width (item));
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (dialog->off_se), 1,
-                                         - gimp_item_height (item),
-                                         gimp_item_height (item));
+                                         - gimp_item_get_height (item),
+                                         gimp_item_get_height (item));
 
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (dialog->off_se), 0,
-                            0, gimp_item_width (item));
+                            0, gimp_item_get_width (item));
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (dialog->off_se), 1,
-                            0, gimp_item_height (item));
+                            0, gimp_item_get_height (item));
 
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se), 0, 0);
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se), 1, 0);
@@ -290,9 +290,9 @@ offset_halfheight_callback (GtkWidget    *widget,
       GimpItem *item = GIMP_ITEM (gimp_image_get_active_drawable (image));
 
       gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se),
-                                  0, gimp_item_width (item) / 2);
+                                  0, gimp_item_get_width (item) / 2);
       gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se),
-                                  1, gimp_item_height (item) / 2);
+                                  1, gimp_item_get_height (item) / 2);
    }
 }
 

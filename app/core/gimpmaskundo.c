@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -31,18 +30,16 @@
 #include "gimpmaskundo.h"
 
 
-static GObject * gimp_mask_undo_constructor (GType                  type,
-                                             guint                  n_params,
-                                             GObjectConstructParam *params);
+static void     gimp_mask_undo_constructed (GObject             *object);
 
-static gint64    gimp_mask_undo_get_memsize (GimpObject            *object,
-                                             gint64                *gui_size);
+static gint64   gimp_mask_undo_get_memsize (GimpObject          *object,
+                                            gint64              *gui_size);
 
-static void      gimp_mask_undo_pop         (GimpUndo              *undo,
-                                             GimpUndoMode           undo_mode,
-                                             GimpUndoAccumulator   *accum);
-static void      gimp_mask_undo_free        (GimpUndo              *undo,
-                                             GimpUndoMode           undo_mode);
+static void     gimp_mask_undo_pop         (GimpUndo            *undo,
+                                            GimpUndoMode         undo_mode,
+                                            GimpUndoAccumulator *accum);
+static void     gimp_mask_undo_free        (GimpUndo            *undo,
+                                            GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpMaskUndo, gimp_mask_undo, GIMP_TYPE_ITEM_UNDO)
@@ -57,7 +54,7 @@ gimp_mask_undo_class_init (GimpMaskUndoClass *klass)
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor      = gimp_mask_undo_constructor;
+  object_class->constructed      = gimp_mask_undo_constructed;
 
   gimp_object_class->get_memsize = gimp_mask_undo_get_memsize;
 
@@ -70,19 +67,15 @@ gimp_mask_undo_init (GimpMaskUndo *undo)
 {
 }
 
-static GObject *
-gimp_mask_undo_constructor (GType                  type,
-                            guint                  n_params,
-                            GObjectConstructParam *params)
+static void
+gimp_mask_undo_constructed (GObject *object)
 {
-  GObject      *object;
-  GimpMaskUndo *mask_undo;
+  GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (object);
   GimpChannel  *channel;
   gint          x1, y1, x2, y2;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  mask_undo = GIMP_MASK_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_CHANNEL (GIMP_ITEM_UNDO (object)->item));
 
@@ -105,8 +98,6 @@ gimp_mask_undo_constructor (GType                  type,
 
       copy_region (&srcPR, &destPR);
     }
-
-  return object;
 }
 
 static gint64
@@ -192,8 +183,8 @@ gimp_mask_undo_pop (GimpUndo            *undo,
       channel->empty = TRUE;
       channel->x1    = 0;
       channel->y1    = 0;
-      channel->x2    = gimp_item_width  (GIMP_ITEM (channel));
-      channel->y2    = gimp_item_height (GIMP_ITEM (channel));
+      channel->x2    = gimp_item_get_width  (GIMP_ITEM (channel));
+      channel->y2    = gimp_item_get_height (GIMP_ITEM (channel));
     }
 
   /* we know the bounds */
@@ -206,8 +197,8 @@ gimp_mask_undo_pop (GimpUndo            *undo,
 
   gimp_drawable_update (GIMP_DRAWABLE (channel),
                         0, 0,
-                        gimp_item_width  (GIMP_ITEM (channel)),
-                        gimp_item_height (GIMP_ITEM (channel)));
+                        gimp_item_get_width  (GIMP_ITEM (channel)),
+                        gimp_item_get_height (GIMP_ITEM (channel)));
 }
 
 static void

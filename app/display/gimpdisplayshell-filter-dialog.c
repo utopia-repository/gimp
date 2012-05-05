@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1999 Manish Singh
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -62,15 +62,18 @@ static void gimp_display_shell_filter_dialog_free     (ColorDisplayDialog *cdd);
 GtkWidget *
 gimp_display_shell_filter_dialog_new (GimpDisplayShell *shell)
 {
+  GimpImage          *image;
   ColorDisplayDialog *cdd;
   GtkWidget          *editor;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), NULL);
 
+  image = gimp_display_get_image (shell->display);
+
   cdd = g_slice_new0 (ColorDisplayDialog);
 
   cdd->shell  = shell;
-  cdd->dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (shell->display->image),
+  cdd->dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (image),
                                           gimp_get_user_context (shell->display->gimp),
                                           _("Color Display Filters"),
                                           "gimp-display-filters",
@@ -116,7 +119,8 @@ gimp_display_shell_filter_dialog_new (GimpDisplayShell *shell)
 
   editor = gimp_color_display_editor_new (shell->filter_stack);
   gtk_container_set_border_width (GTK_CONTAINER (editor), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (cdd->dialog)->vbox), editor);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (cdd->dialog))),
+                      editor, TRUE, TRUE, 0);
   gtk_widget_show (editor);
 
   return cdd->dialog;

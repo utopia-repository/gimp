@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_BASE_TYPES_H__
@@ -43,6 +42,15 @@ typedef void (* GimpDatafileLoaderFunc) (const GimpDatafileData *file_data,
                                          gpointer                user_data);
 
 
+/**
+ * GimpEnumDesc:
+ * @value:      An enum value.
+ * @value_desc: The value's description.
+ * @value_help: The value's help text.
+ *
+ * This structure is used to register translatable descriptions and
+ * help texts for enum values. See gimp_enum_set_value_descriptions().
+ **/
 struct _GimpEnumDesc
 {
   gint         value;
@@ -50,6 +58,15 @@ struct _GimpEnumDesc
   const gchar *value_help;
 };
 
+/**
+ * GimpFlagsDesc:
+ * @value:      A flag value.
+ * @value_desc: The value's description.
+ * @value_help: The value's help text.
+ *
+ * This structure is used to register translatable descriptions and
+ * help texts for flag values. See gimp_flags_set_value_descriptions().
+ **/
 struct _GimpFlagsDesc
 {
   guint        value;
@@ -61,6 +78,10 @@ struct _GimpFlagsDesc
 void                  gimp_type_set_translation_domain  (GType                type,
                                                          const gchar         *domain);
 const gchar         * gimp_type_get_translation_domain  (GType                type);
+
+void                  gimp_type_set_translation_context (GType                type,
+                                                         const gchar         *context);
+const gchar         * gimp_type_get_translation_context (GType                type);
 
 void                  gimp_enum_set_value_descriptions  (GType                enum_type,
                                                          const GimpEnumDesc  *descriptions);

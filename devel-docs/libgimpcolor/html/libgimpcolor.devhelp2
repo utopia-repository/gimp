@@ -10,11 +10,13 @@
       <sub name="GimpColorManaged" link="libgimpcolor-GimpColorManaged.html"/>
       <sub name="GimpAdaptiveSupersample" link="libgimpcolor-GimpAdaptiveSupersample.html"/>
       <sub name="GimpBilinear" link="libgimpcolor-GimpBilinear.html"/>
+      <sub name="GimpCairoColor" link="libgimpcolor-GimpCairoColor.html"/>
     </sub>
     <sub name="Index" link="libgimpcolor-index.html"/>
     <sub name="Index of new symbols in GIMP 2.2" link="libgimpcolor-index-new-in-2-2.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpcolor-index-new-in-2-4.html"/>
     <sub name="Index of new symbols in GIMP 2.6" link="libgimpcolor-index-new-in-2-6.html"/>
+    <sub name="Index of new symbols in GIMP 2.8" link="libgimpcolor-index-new-in-2-8.html"/>
     <sub name="Index of deprecated symbols" link="libgimpcolor-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -69,6 +71,7 @@
     <keyword type="function" name="gimp_hsv_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-set"/>
     <keyword type="function" name="gimp_hsv_clamp ()" link="libgimpcolor-GimpHSV.html#gimp-hsv-clamp"/>
     <keyword type="function" name="gimp_hsva_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsva-set"/>
+    <keyword type="function" name="gimp_hsl_set ()" link="libgimpcolor-GimpHSV.html#gimp-hsl-set" since="GIMP 2.8"/>
     <keyword type="macro" name="GIMP_TYPE_HSV" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS"/>
     <keyword type="macro" name="GIMP_TYPE_HSL" link="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS"/>
     <keyword type="struct" name="struct GimpCMYK" link="libgimpcolor-GimpCMYK.html#GimpCMYK"/>
@@ -111,5 +114,12 @@
     <keyword type="function" name="gimp_bilinear_rgb ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgb"/>
     <keyword type="function" name="gimp_bilinear_rgba ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-rgba"/>
     <keyword type="function" name="gimp_bilinear_pixels_8 ()" link="libgimpcolor-GimpBilinear.html#gimp-bilinear-pixels-8"/>
+    <keyword type="function" name="gimp_cairo_set_source_rgb ()" link="libgimpcolor-GimpCairoColor.html#gimp-cairo-set-source-rgb" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_cairo_set_source_rgba ()" link="libgimpcolor-GimpCairoColor.html#gimp-cairo-set-source-rgba" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_cairo_checkerboard_create ()" link="libgimpcolor-GimpCairoColor.html#gimp-cairo-checkerboard-create" since="GIMP 2.6"/>
+    <keyword type="macro" name="GIMP_CAIRO_RGB24_SET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-RGB24-SET-PIXEL:CAPS" since="GIMP 2.6"/>
+    <keyword type="macro" name="GIMP_CAIRO_RGB24_GET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-RGB24-GET-PIXEL:CAPS" since="GIMP 2.8"/>
+    <keyword type="macro" name="GIMP_CAIRO_ARGB32_SET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS" since="GIMP 2.6"/>
+    <keyword type="macro" name="GIMP_CAIRO_ARGB32_GET_PIXEL()" link="libgimpcolor-GimpCairoColor.html#GIMP-CAIRO-ARGB32-GET-PIXEL:CAPS" since="GIMP 2.8"/>
   </functions>
 </book>

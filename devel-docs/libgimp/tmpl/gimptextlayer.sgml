@@ -52,6 +52,15 @@ gimptextlayer
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_text_layer_get_markup ##### -->
+<para>
+
+</para>
+
+@layer_ID: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_text_layer_get_font ##### -->
 <para>
 
@@ -282,6 +291,36 @@ gimptextlayer
 
 @layer_ID: 
 @letter_spacing: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_text_layer_get_hint_style ##### -->
+<para>
+
+</para>
+
+@layer_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_text_layer_set_hint_style ##### -->
+<para>
+
+</para>
+
+@layer_ID: 
+@style: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_text_layer_resize ##### -->
+<para>
+
+</para>
+
+@layer_ID: 
+@width: 
+@height: 
 @Returns: 
 
 

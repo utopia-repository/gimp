@@ -4,9 +4,9 @@
  * gimpmenufactory.c
  * Copyright (C) 2001-2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,6 +35,14 @@
 #include "gimpuimanager.h"
 
 
+struct _GimpMenuFactoryPrivate
+{
+  Gimp              *gimp;
+  GimpActionFactory *action_factory;
+  GList             *registered_menus;
+};
+
+
 static void   gimp_menu_factory_finalize (GObject *object);
 
 
@@ -50,13 +57,16 @@ gimp_menu_factory_class_init (GimpMenuFactoryClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = gimp_menu_factory_finalize;
+
+  g_type_class_add_private (klass, sizeof (GimpMenuFactoryPrivate));
 }
 
 static void
 gimp_menu_factory_init (GimpMenuFactory *factory)
 {
-  factory->gimp             = NULL;
-  factory->registered_menus = NULL;
+  factory->p = G_TYPE_INSTANCE_GET_PRIVATE (factory,
+                                            GIMP_TYPE_MENU_FACTORY,
+                                            GimpMenuFactoryPrivate);
 }
 
 static void
@@ -65,15 +75,14 @@ gimp_menu_factory_finalize (GObject *object)
   GimpMenuFactory *factory = GIMP_MENU_FACTORY (object);
   GList           *list;
 
-  for (list = factory->registered_menus; list; list = g_list_next (list))
+  for (list = factory->p->registered_menus; list; list = g_list_next (list))
     {
       GimpMenuFactoryEntry *entry = list->data;
       GList                *uis;
 
       g_free (entry->identifier);
 
-      g_list_foreach (entry->action_groups, (GFunc) g_free, NULL);
-      g_list_free (entry->action_groups);
+      g_list_free_full (entry->action_groups, (GDestroyNotify) g_free);
 
       for (uis = entry->managed_uis; uis; uis = g_list_next (uis))
         {
@@ -90,8 +99,8 @@ gimp_menu_factory_finalize (GObject *object)
       g_slice_free (GimpMenuFactoryEntry, entry);
     }
 
-  g_list_free (factory->registered_menus);
-  factory->registered_menus = NULL;
+  g_list_free (factory->p->registered_menus);
+  factory->p->registered_menus = NULL;
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -107,8 +116,8 @@ gimp_menu_factory_new (Gimp              *gimp,
 
   factory = g_object_new (GIMP_TYPE_MENU_FACTORY, NULL);
 
-  factory->gimp           = gimp;
-  factory->action_factory = action_factory;
+  factory->p->gimp           = gimp;
+  factory->p->action_factory = action_factory;
 
   return factory;
 }
@@ -132,7 +141,7 @@ gimp_menu_factory_manager_register (GimpMenuFactory *factory,
 
   entry->identifier = g_strdup (identifier);
 
-  factory->registered_menus = g_list_prepend (factory->registered_menus, entry);
+  factory->p->registered_menus = g_list_prepend (factory->p->registered_menus, entry);
 
   va_start (args, first_group);
 
@@ -173,6 +182,14 @@ gimp_menu_factory_manager_register (GimpMenuFactory *factory,
   va_end (args);
 }
 
+GList *
+gimp_menu_factory_get_registered_menus (GimpMenuFactory *factory)
+{
+  g_return_val_if_fail (GIMP_IS_MENU_FACTORY (factory), NULL);
+
+  return factory->p->registered_menus;
+}
+
 GimpUIManager *
 gimp_menu_factory_manager_new (GimpMenuFactory *factory,
                                const gchar     *identifier,
@@ -184,7 +201,7 @@ gimp_menu_factory_manager_new (GimpMenuFactory *factory,
   g_return_val_if_fail (GIMP_IS_MENU_FACTORY (factory), NULL);
   g_return_val_if_fail (identifier != NULL, NULL);
 
-  for (list = factory->registered_menus; list; list = g_list_next (list))
+  for (list = factory->p->registered_menus; list; list = g_list_next (list))
     {
       GimpMenuFactoryEntry *entry = list->data;
 
@@ -194,7 +211,7 @@ gimp_menu_factory_manager_new (GimpMenuFactory *factory,
           GtkAccelGroup *accel_group;
           GList         *list;
 
-          manager = gimp_ui_manager_new (factory->gimp, entry->identifier);
+          manager = gimp_ui_manager_new (factory->p->gimp, entry->identifier);
           gtk_ui_manager_set_add_tearoffs (GTK_UI_MANAGER (manager),
                                            create_tearoff);
 
@@ -206,7 +223,7 @@ gimp_menu_factory_manager_new (GimpMenuFactory *factory,
               GList           *actions;
               GList           *list2;
 
-              group = gimp_action_factory_group_new (factory->action_factory,
+              group = gimp_action_factory_group_new (factory->p->action_factory,
                                                      (const gchar *) list->data,
                                                      callback_data);
 

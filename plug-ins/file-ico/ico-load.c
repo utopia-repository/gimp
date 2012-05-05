@@ -4,9 +4,9 @@
  * GIMP Plug-in for Windows Icon files.
  * Copyright (C) 2002 Christian Kreibich <christian@whoop.org>.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -287,22 +286,14 @@ ico_read_png (FILE    *fp,
   switch (color_type)
     {
     case PNG_COLOR_TYPE_GRAY:
-#if PNG_LIBPNG_VER < 10227
-      png_set_gray_1_2_4_to_8 (png_ptr);
-#else
       png_set_expand_gray_1_2_4_to_8 (png_ptr);
-#endif
       if ( bit_depth == 16 )
         png_set_strip_16 (png_ptr);
       png_set_gray_to_rgb (png_ptr);
       png_set_add_alpha (png_ptr, 0xff, PNG_FILLER_AFTER);
       break;
     case PNG_COLOR_TYPE_GRAY_ALPHA:
-#if PNG_LIBPNG_VER < 10227
-      png_set_gray_1_2_4_to_8 (png_ptr);
-#else
       png_set_expand_gray_1_2_4_to_8 (png_ptr);
-#endif
       if ( bit_depth == 16 )
         png_set_strip_16 (png_ptr);
       png_set_gray_to_rgb (png_ptr);
@@ -624,7 +615,7 @@ ico_load_layer (FILE        *fp,
   g_snprintf (buf, sizeof (buf), _("Icon #%i"), icon_num+1);
   layer = gimp_layer_new (image, buf, width, height,
                           GIMP_RGBA_IMAGE, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image, layer, icon_num);
+  gimp_image_insert_layer (image, layer, -1, icon_num);
   drawable = gimp_drawable_get (layer);
   gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
                        drawable->width, drawable->height, TRUE, FALSE);
@@ -646,7 +637,6 @@ ico_load_image (const gchar  *filename,
   gint         max_width, max_height;
   gint         i;
   gint32       image;
-  gint32       layer;
   guchar      *buffer;
   guint        icon_count;
   gint         maxsize;
@@ -702,7 +692,7 @@ ico_load_image (const gchar  *filename,
   buffer = g_new (guchar, max_width * max_height * 4);
   for (i = 0; i < icon_count; i++)
     {
-      layer = ico_load_layer (fp, image, i, buffer, maxsize, info+i);
+      ico_load_layer (fp, image, i, buffer, maxsize, info+i);
     }
   g_free (buffer);
   g_free (info);
@@ -722,7 +712,6 @@ ico_load_thumbnail_image (const gchar  *filename,
   FILE        *fp;
   IcoLoadInfo *info;
   gint32       image;
-  gint32       layer;
   gint         w     = 0;
   gint         h     = 0;
   gint         bpp   = 0;
@@ -786,7 +775,7 @@ ico_load_thumbnail_image (const gchar  *filename,
 
   image = gimp_image_new (w, h, GIMP_RGB);
   buffer = g_new (guchar, w*h*4);
-  layer = ico_load_layer (fp, image, match, buffer, w*h*4, info+match);
+  ico_load_layer (fp, image, match, buffer, w*h*4, info+match);
   g_free (buffer);
 
   *width  = w;

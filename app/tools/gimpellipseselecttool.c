@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -54,8 +54,6 @@ G_DEFINE_TYPE (GimpEllipseSelectTool, gimp_ellipse_select_tool,
 #define parent_class gimp_ellipse_select_tool_parent_class
 
 
-/*  public functions  */
-
 void
 gimp_ellipse_select_tool_register (GimpToolRegisterCallback  callback,
                                    gpointer                  data)
@@ -72,9 +70,6 @@ gimp_ellipse_select_tool_register (GimpToolRegisterCallback  callback,
                 GIMP_STOCK_TOOL_ELLIPSE_SELECT,
                 data);
 }
-
-
-/*  private functions  */
 
 static void
 gimp_ellipse_select_tool_class_init (GimpEllipseSelectToolClass *klass)
@@ -110,12 +105,11 @@ gimp_ellipse_select_tool_draw (GimpDrawTool *draw_tool)
                 "y2", &y2,
                 NULL);
 
-  gimp_draw_tool_draw_arc (draw_tool,
-                           FALSE,
-                           x1, y1,
-                           x2 - x1, y2 - y1,
-                           0, 360 * 64,
-                           FALSE);
+  gimp_draw_tool_add_arc (draw_tool,
+                          FALSE,
+                          x1, y1,
+                          x2 - x1, y2 - y1,
+                          0.0, 2 * G_PI);
 }
 
 static void
@@ -128,8 +122,9 @@ gimp_ellipse_select_tool_select (GimpRectangleSelectTool *rect_tool,
 {
   GimpTool             *tool    = GIMP_TOOL (rect_tool);
   GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (rect_tool);
+  GimpImage            *image   = gimp_display_get_image (tool->display);
 
-  gimp_channel_select_ellipse (gimp_image_get_mask (tool->display->image),
+  gimp_channel_select_ellipse (gimp_image_get_mask (image),
                                x, y, w, h,
                                operation,
                                options->antialias,

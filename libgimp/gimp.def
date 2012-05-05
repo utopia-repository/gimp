@@ -2,6 +2,7 @@ EXPORTS
 	gimp_airbrush
 	gimp_airbrush_default
 	gimp_attach_new_parasite
+	gimp_attach_parasite
 	gimp_brightness_contrast
 	gimp_brush_application_mode_get_type
 	gimp_brush_delete
@@ -68,30 +69,80 @@ EXPORTS
 	gimp_clone_default
 	gimp_color_balance
 	gimp_colorize
+	gimp_context_get_antialias
 	gimp_context_get_background
 	gimp_context_get_brush
+	gimp_context_get_brush_angle
+	gimp_context_get_brush_aspect_ratio
+	gimp_context_get_brush_size
+	gimp_context_get_dynamics
+	gimp_context_get_feather
+	gimp_context_get_feather_radius
 	gimp_context_get_font
 	gimp_context_get_foreground
 	gimp_context_get_gradient
+	gimp_context_get_ink_angle
+	gimp_context_get_ink_blob_angle
+	gimp_context_get_ink_blob_aspect_ratio
+	gimp_context_get_ink_blob_type
+	gimp_context_get_ink_size
+	gimp_context_get_ink_size_sensitivity
+	gimp_context_get_ink_speed_sensitivity
+	gimp_context_get_ink_tilt_sensitivity
+	gimp_context_get_interpolation
 	gimp_context_get_opacity
 	gimp_context_get_paint_method
 	gimp_context_get_paint_mode
 	gimp_context_get_palette
 	gimp_context_get_pattern
+	gimp_context_get_sample_criterion
+	gimp_context_get_sample_merged
+	gimp_context_get_sample_threshold
+	gimp_context_get_sample_threshold_int
+	gimp_context_get_sample_transparent
+	gimp_context_get_transform_direction
+	gimp_context_get_transform_recursion
+	gimp_context_get_transform_resize
 	gimp_context_list_paint_methods
 	gimp_context_pop
 	gimp_context_push
+	gimp_context_set_antialias
 	gimp_context_set_background
 	gimp_context_set_brush
+	gimp_context_set_brush_angle
+	gimp_context_set_brush_aspect_ratio
+	gimp_context_set_brush_default_size
+	gimp_context_set_brush_size
 	gimp_context_set_default_colors
+	gimp_context_set_defaults
+	gimp_context_set_dynamics
+	gimp_context_set_feather
+	gimp_context_set_feather_radius
 	gimp_context_set_font
 	gimp_context_set_foreground
 	gimp_context_set_gradient
+	gimp_context_set_ink_angle
+	gimp_context_set_ink_blob_angle
+	gimp_context_set_ink_blob_aspect_ratio
+	gimp_context_set_ink_blob_type
+	gimp_context_set_ink_size
+	gimp_context_set_ink_size_sensitivity
+	gimp_context_set_ink_speed_sensitivity
+	gimp_context_set_ink_tilt_sensitivity
+	gimp_context_set_interpolation
 	gimp_context_set_opacity
 	gimp_context_set_paint_method
 	gimp_context_set_paint_mode
 	gimp_context_set_palette
 	gimp_context_set_pattern
+	gimp_context_set_sample_criterion
+	gimp_context_set_sample_merged
+	gimp_context_set_sample_threshold
+	gimp_context_set_sample_threshold_int
+	gimp_context_set_sample_transparent
+	gimp_context_set_transform_direction
+	gimp_context_set_transform_recursion
+	gimp_context_set_transform_resize
 	gimp_context_swap_colors
 	gimp_convert_dither_type_get_type
 	gimp_convert_palette_type_get_type
@@ -106,6 +157,7 @@ EXPORTS
 	gimp_desaturate_full
 	gimp_destroy_paramdefs
 	gimp_destroy_params
+	gimp_detach_parasite
 	gimp_display_delete
 	gimp_display_get_window_handle
 	gimp_display_is_valid
@@ -129,8 +181,10 @@ EXPORTS
 	gimp_drawable_get_linked
 	gimp_drawable_get_name
 	gimp_drawable_get_pixel
+	gimp_drawable_get_sub_thumbnail
 	gimp_drawable_get_sub_thumbnail_data
 	gimp_drawable_get_tattoo
+	gimp_drawable_get_thumbnail
 	gimp_drawable_get_thumbnail_data
 	gimp_drawable_get_tile
 	gimp_drawable_get_tile2
@@ -180,6 +234,8 @@ EXPORTS
 	gimp_drawable_type_with_alpha
 	gimp_drawable_update
 	gimp_drawable_width
+	gimp_dynamics_get_list
+	gimp_dynamics_refresh
 	gimp_edit_blend
 	gimp_edit_bucket_fill
 	gimp_edit_bucket_fill_full
@@ -235,6 +291,8 @@ EXPORTS
 	gimp_get_default_unit
 	gimp_get_module_load_inhibit
 	gimp_get_monitor_resolution
+	gimp_get_parasite
+	gimp_get_parasite_list
 	gimp_get_path_by_tattoo
 	gimp_get_pdb_error
 	gimp_get_progname
@@ -300,6 +358,7 @@ EXPORTS
 	gimp_image_add_vectors
 	gimp_image_add_vguide
 	gimp_image_attach_new_parasite
+	gimp_image_attach_parasite
 	gimp_image_base_type
 	gimp_image_clean_all
 	gimp_image_convert_grayscale
@@ -309,6 +368,7 @@ EXPORTS
 	gimp_image_crop
 	gimp_image_delete
 	gimp_image_delete_guide
+	gimp_image_detach_parasite
 	gimp_image_duplicate
 	gimp_image_find_next_guide
 	gimp_image_flatten
@@ -319,6 +379,7 @@ EXPORTS
 	gimp_image_get_active_drawable
 	gimp_image_get_active_layer
 	gimp_image_get_active_vectors
+	gimp_image_get_channel_by_name
 	gimp_image_get_channel_by_tattoo
 	gimp_image_get_channel_position
 	gimp_image_get_channels
@@ -326,22 +387,32 @@ EXPORTS
 	gimp_image_get_colormap
 	gimp_image_get_component_active
 	gimp_image_get_component_visible
+	gimp_image_get_exported_uri
 	gimp_image_get_filename
 	gimp_image_get_floating_sel
 	gimp_image_get_guide_orientation
 	gimp_image_get_guide_position
+	gimp_image_get_imported_uri
+	gimp_image_get_item_position
+	gimp_image_get_layer_by_name
 	gimp_image_get_layer_by_tattoo
 	gimp_image_get_layer_position
 	gimp_image_get_layers
 	gimp_image_get_name
+	gimp_image_get_parasite
+	gimp_image_get_parasite_list
 	gimp_image_get_resolution
 	gimp_image_get_selection
 	gimp_image_get_tattoo_state
+	gimp_image_get_thumbnail
 	gimp_image_get_thumbnail_data
 	gimp_image_get_unit
+	gimp_image_get_uri
 	gimp_image_get_vectors
+	gimp_image_get_vectors_by_name
 	gimp_image_get_vectors_by_tattoo
 	gimp_image_get_vectors_position
+	gimp_image_get_xcf_uri
 	gimp_image_grid_get_background_color
 	gimp_image_grid_get_foreground_color
 	gimp_image_grid_get_offset
@@ -353,10 +424,15 @@ EXPORTS
 	gimp_image_grid_set_spacing
 	gimp_image_grid_set_style
 	gimp_image_height
+	gimp_image_insert_channel
+	gimp_image_insert_layer
+	gimp_image_insert_vectors
 	gimp_image_is_dirty
 	gimp_image_is_valid
 	gimp_image_list
 	gimp_image_lower_channel
+	gimp_image_lower_item
+	gimp_image_lower_item_to_bottom
 	gimp_image_lower_layer
 	gimp_image_lower_layer_to_bottom
 	gimp_image_lower_vectors
@@ -371,6 +447,8 @@ EXPORTS
 	gimp_image_pick_color
 	gimp_image_pick_correlate_layer
 	gimp_image_raise_channel
+	gimp_image_raise_item
+	gimp_image_raise_item_to_top
 	gimp_image_raise_layer
 	gimp_image_raise_layer_to_top
 	gimp_image_raise_vectors
@@ -378,11 +456,19 @@ EXPORTS
 	gimp_image_remove_channel
 	gimp_image_remove_layer
 	gimp_image_remove_vectors
+	gimp_image_reorder_item
 	gimp_image_resize
 	gimp_image_resize_to_layers
 	gimp_image_rotate
 	gimp_image_scale
 	gimp_image_scale_full
+	gimp_image_select_color
+	gimp_image_select_contiguous_color
+	gimp_image_select_ellipse
+	gimp_image_select_item
+	gimp_image_select_polygon
+	gimp_image_select_rectangle
+	gimp_image_select_round_rectangle
 	gimp_image_set_active_channel
 	gimp_image_set_active_layer
 	gimp_image_set_active_vectors
@@ -403,10 +489,47 @@ EXPORTS
 	gimp_image_undo_thaw
 	gimp_image_unset_active_channel
 	gimp_image_width
+	gimp_ink_blob_type_get_type
 	gimp_install_cmap
 	gimp_install_procedure
 	gimp_install_temp_proc
 	gimp_invert
+	gimp_item_attach_parasite
+	gimp_item_delete
+	gimp_item_detach_parasite
+	gimp_item_get_children
+	gimp_item_get_image
+	gimp_item_get_linked
+	gimp_item_get_lock_content
+	gimp_item_get_name
+	gimp_item_get_parasite
+	gimp_item_get_parasite_list
+	gimp_item_get_parent
+	gimp_item_get_tattoo
+	gimp_item_get_visible
+	gimp_item_is_channel
+	gimp_item_is_drawable
+	gimp_item_is_group
+	gimp_item_is_layer
+	gimp_item_is_layer_mask
+	gimp_item_is_selection
+	gimp_item_is_text_layer
+	gimp_item_is_valid
+	gimp_item_is_vectors
+	gimp_item_set_linked
+	gimp_item_set_lock_content
+	gimp_item_set_name
+	gimp_item_set_tattoo
+	gimp_item_set_visible
+	gimp_item_transform_2d
+	gimp_item_transform_flip
+	gimp_item_transform_flip_simple
+	gimp_item_transform_matrix
+	gimp_item_transform_perspective
+	gimp_item_transform_rotate
+	gimp_item_transform_rotate_simple
+	gimp_item_transform_scale
+	gimp_item_transform_shear
 	gimp_layer_add_alpha
 	gimp_layer_add_mask
 	gimp_layer_copy
@@ -421,10 +544,13 @@ EXPORTS
 	gimp_layer_get_opacity
 	gimp_layer_get_preserve_trans
 	gimp_layer_get_show_mask
+	gimp_layer_group_new
 	gimp_layer_is_floating_sel
 	gimp_layer_mode_effects_get_type
 	gimp_layer_new
 	gimp_layer_new_from_drawable
+	gimp_layer_new_from_pixbuf
+	gimp_layer_new_from_surface
 	gimp_layer_new_from_visible
 	gimp_layer_remove_mask
 	gimp_layer_resize
@@ -619,33 +745,37 @@ EXPORTS
 	gimp_text_fontname
 	gimp_text_get_extents
 	gimp_text_get_extents_fontname
- 	gimp_text_layer_get_antialias
- 	gimp_text_layer_get_base_direction
- 	gimp_text_layer_get_color
- 	gimp_text_layer_get_font
- 	gimp_text_layer_get_font_size
- 	gimp_text_layer_get_hinting
- 	gimp_text_layer_get_indent
- 	gimp_text_layer_get_justification
- 	gimp_text_layer_get_kerning
- 	gimp_text_layer_get_language
- 	gimp_text_layer_get_letter_spacing
- 	gimp_text_layer_get_line_spacing
- 	gimp_text_layer_get_text
- 	gimp_text_layer_new
- 	gimp_text_layer_set_antialias
- 	gimp_text_layer_set_base_direction
- 	gimp_text_layer_set_color
- 	gimp_text_layer_set_font
- 	gimp_text_layer_set_font_size
- 	gimp_text_layer_set_hinting
- 	gimp_text_layer_set_indent
- 	gimp_text_layer_set_justification
- 	gimp_text_layer_set_kerning
- 	gimp_text_layer_set_language
- 	gimp_text_layer_set_letter_spacing
- 	gimp_text_layer_set_line_spacing
- 	gimp_text_layer_set_text
+	gimp_text_layer_get_antialias
+	gimp_text_layer_get_base_direction
+	gimp_text_layer_get_color
+	gimp_text_layer_get_font
+	gimp_text_layer_get_font_size
+	gimp_text_layer_get_hint_style
+	gimp_text_layer_get_hinting
+	gimp_text_layer_get_indent
+	gimp_text_layer_get_justification
+	gimp_text_layer_get_kerning
+	gimp_text_layer_get_language
+	gimp_text_layer_get_letter_spacing
+	gimp_text_layer_get_line_spacing
+	gimp_text_layer_get_markup
+	gimp_text_layer_get_text
+	gimp_text_layer_new
+	gimp_text_layer_resize
+	gimp_text_layer_set_antialias
+	gimp_text_layer_set_base_direction
+	gimp_text_layer_set_color
+	gimp_text_layer_set_font
+	gimp_text_layer_set_font_size
+	gimp_text_layer_set_hint_style
+	gimp_text_layer_set_hinting
+	gimp_text_layer_set_indent
+	gimp_text_layer_set_justification
+	gimp_text_layer_set_kerning
+	gimp_text_layer_set_language
+	gimp_text_layer_set_letter_spacing
+	gimp_text_layer_set_line_spacing
+	gimp_text_layer_set_text
 	gimp_threshold
 	gimp_tile_cache_ntiles
 	gimp_tile_cache_size
@@ -663,7 +793,7 @@ EXPORTS
 	gimp_vectors_bezier_stroke_lineto
 	gimp_vectors_bezier_stroke_new_ellipse
 	gimp_vectors_bezier_stroke_new_moveto
-        gimp_vectors_copy
+	gimp_vectors_copy
 	gimp_vectors_export_to_file
 	gimp_vectors_export_to_string
 	gimp_vectors_get_image

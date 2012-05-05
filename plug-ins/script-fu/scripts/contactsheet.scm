@@ -4,9 +4,9 @@
 ; GIMP - The GNU Image Manipulation Program
 ; Copyright (C) 1995 Spencer Kimball and Peter Mattis
 ;
-; This program is free software; you can redistribute it and/or modify
+; This program is free software: you can redistribute it and/or modify
 ; it under the terms of the GNU General Public License as published by
-; the Free Software Foundation; either version 2 of the License, or
+; the Free Software Foundation; either version 3 of the License, or
 ; (at your option) any later version.
 ;
 ; This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
 ; GNU General Public License for more details.
 ;
 ; You should have received a copy of the GNU General Public License
-; along with this program; if not, write to the Free Software
-; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 ; Version 1.0 (July 27, 2004)
 ; Created
@@ -177,6 +176,7 @@
         )
 
     (gimp-context-push)
+    (gimp-context-set-defaults)
     (gimp-context-set-foreground text-color)
     (gimp-context-set-background bg-color)
 
@@ -202,7 +202,7 @@
     (set! sheet-layer (car (gimp-layer-new sheet-img sheet-width sheet-height
                             RGB-IMAGE "Background"
                             100 NORMAL-MODE)))
-    (gimp-image-add-layer sheet-img sheet-layer 0)
+    (gimp-image-insert-layer sheet-img sheet-layer 0 0)
 
     (init-sheet-img sheet-img sheet-num sheet-width border-y off-y)
 
@@ -230,7 +230,7 @@
                             (car (gimp-image-get-active-drawable new-img))
                                   sheet-img)))
 
-              (gimp-image-add-layer sheet-img tmp-layer 0)
+              (gimp-image-insert-layer sheet-img tmp-layer 0 0)
 
               ;Move thumbnail in to position and center it in area available.
               (gimp-layer-set-offsets tmp-layer

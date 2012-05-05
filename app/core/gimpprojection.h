@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PROJECTION_H__
@@ -53,22 +52,27 @@ struct _GimpProjection
 {
   GimpObject                parent_instance;
 
-  GimpImage                *image;
+  GimpProjectable          *projectable;
 
   TilePyramid              *pyramid;
+  GeglNode                 *graph;
+  GeglNode                 *sink_node;
+  GeglProcessor            *processor;
 
   GSList                   *update_areas;
   GimpProjectionIdleRender  idle_render;
 
   gboolean                  construct_flag;
   gboolean                  invalidate_preview;
+
+  gboolean                  use_gegl;
 };
 
 struct _GimpProjectionClass
 {
   GimpObjectClass  parent_class;
 
-  void (* update) (GimpProjection *image,
+  void (* update) (GimpProjection *proj,
                    gboolean        now,
                    gint            x,
                    gint            y,
@@ -79,9 +83,9 @@ struct _GimpProjectionClass
 
 GType            gimp_projection_get_type         (void) G_GNUC_CONST;
 
-GimpProjection * gimp_projection_new              (GimpImage            *image);
+GimpProjection * gimp_projection_new              (GimpProjectable      *projectable);
 
-TileManager    * gimp_projection_get_tiles        (GimpProjection       *proj);
+GeglNode       * gimp_projection_get_sink_node    (GimpProjection       *proj);
 
 TileManager    * gimp_projection_get_tiles_at_level
                                                   (GimpProjection       *proj,
@@ -90,10 +94,6 @@ TileManager    * gimp_projection_get_tiles_at_level
 gint             gimp_projection_get_level        (GimpProjection       *proj,
                                                    gdouble               scale_x,
                                                    gdouble               scale_y);
-
-GimpImage      * gimp_projection_get_image        (const GimpProjection *proj);
-GimpImageType    gimp_projection_get_image_type   (const GimpProjection *proj);
-gint             gimp_projection_get_bytes        (const GimpProjection *proj);
 
 void             gimp_projection_flush            (GimpProjection       *proj);
 void             gimp_projection_flush_now        (GimpProjection       *proj);

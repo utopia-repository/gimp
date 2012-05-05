@@ -5,9 +5,9 @@
  *
  * You can contact me at scott@poverty.bloomington.in.us
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -59,30 +58,30 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"    },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-			  N_("Stretch image contrast to cover the maximum possible range"),
-			  "This simple plug-in does an automatic contrast "
-			  "stretch.  For each channel in the image, it finds "
-			  "the minimum and maximum values... it uses those "
-			  "values to stretch the individual histograms to the "
-			  "full contrast range.  For some images it may do "
-			  "just what you want; for others it may be total "
-			  "crap :).  This version differs from Contrast "
-			  "Autostretch in that it works in HSV space, and "
-			  "preserves hue.",
-			  "Scott Goehring and Federico Mena Quintero",
-			  "Scott Goehring and Federico Mena Quintero",
-			  "1997",
-			  N_("Stretch _HSV"),
-			  "RGB*, INDEXED*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          N_("Stretch image contrast to cover the maximum possible range"),
+                          "This simple plug-in does an automatic contrast "
+                          "stretch.  For each channel in the image, it finds "
+                          "the minimum and maximum values... it uses those "
+                          "values to stretch the individual histograms to the "
+                          "full contrast range.  For some images it may do "
+                          "just what you want; for others it may be total "
+                          "crap :).  This version differs from Contrast "
+                          "Autostretch in that it works in HSV space, and "
+                          "preserves hue.",
+                          "Scott Goehring and Federico Mena Quintero",
+                          "Scott Goehring and Federico Mena Quintero",
+                          "1997",
+                          N_("Stretch _HSV"),
+                          "RGB*, INDEXED*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Auto");
 }
@@ -118,14 +117,14 @@ run (const gchar      *name,
       autostretch_hsv (drawable);
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	gimp_displays_flush ();
+        gimp_displays_flush ();
     }
   else if (gimp_drawable_is_indexed (drawable->drawable_id))
     {
       indexed_autostretch_hsv (image_ID);
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	gimp_displays_flush ();
+        gimp_displays_flush ();
     }
   else
     {
@@ -163,7 +162,7 @@ find_max (guchar *src, gint bpp, AutostretchData *data)
 
 static void
 autostretch_hsv_func (guchar *src, guchar *dest, gint bpp,
-		      AutostretchData *data)
+                      AutostretchData *data)
 {
   double h, s, v;
 
@@ -213,5 +212,5 @@ autostretch_hsv (GimpDrawable *drawable)
 
   gimp_rgn_iterate1 (drawable, 0 /* unused */, (GimpRgnFunc1) find_max, &data);
   gimp_rgn_iterate2 (drawable, 0 /* unused */, (GimpRgnFunc2) autostretch_hsv_func,
-		     &data);
+                     &data);
 }

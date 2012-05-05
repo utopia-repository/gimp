@@ -20,6 +20,12 @@ gimpconfig-path
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### TYPEDEF GimpConfigPath ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### ENUM GimpConfigPathType ##### -->
 <para>
 

@@ -44,21 +44,21 @@
 <div class="refsynopsisdiv">
 <a name="GimpColorHexEntry.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-struct" title="GimpColorHexEntry">GimpColorHexEntry</a>;
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-new" title="gimp_color_hex_entry_new ()">gimp_color_hex_entry_new</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-new" title="gimp_color_hex_entry_new ()">gimp_color_hex_entry_new</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-set-color" title="gimp_color_hex_entry_set_color ()">gimp_color_hex_entry_set_color</a>      (<em class="parameter"><code><a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> *entry</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpColorHexEntry.html#gimp-color-hex-entry-get-color" title="gimp_color_hex_entry_get_color ()">gimp_color_hex_entry_get_color</a>      (<em class="parameter"><code><a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> *entry</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpColorHexEntry.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
-               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
-                     +----<a href="http://library.gnome.org/devel/gtk3/GtkEntry.html">GtkEntry</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkEntry
                            +----GimpColorHexEntry
 </pre>
 </div>
@@ -66,12 +66,12 @@
 <a name="GimpColorHexEntry.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorHexEntry implements
- AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>,  <a href="http://library.gnome.org/devel/gtk3/GtkEditable.html">GtkEditable</a> and  <a href="http://library.gnome.org/devel/gtk3/GtkCellEditable.html">GtkCellEditable</a>.</p>
+ AtkImplementorIface,  GtkBuildable,  GtkEditable and  GtkCellEditable.</p>
 </div>
 <div class="refsect1">
 <a name="GimpColorHexEntry.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-color-changed" title='The "color-changed" signal'>color-changed</a>"                                  : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a>
+  "<a class="link" href="GimpColorHexEntry.html#GimpColorHexEntry-color-changed" title='The "color-changed" signal'>color-changed</a>"                                  : <code class="literal">Run First</code>
 </pre>
 </div>
 <div class="refsect1">
@@ -91,7 +91,7 @@ Widget for entering a color's hex triplet.
 <hr>
 <div class="refsect2">
 <a name="gimp-color-hex-entry-new"></a><h3>gimp_color_hex_entry_new ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_color_hex_entry_new            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_color_hex_entry_new            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -105,7 +105,7 @@ Widget for entering a color's hex triplet.
 <div class="refsect2">
 <a name="gimp-color-hex-entry-set-color"></a><h3>gimp_color_hex_entry_set_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_hex_entry_set_color      (<em class="parameter"><code><a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> *entry</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Sets the color displayed by a <a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a>. If the new color
 is different to the previously set color, the "color-changed"
@@ -120,7 +120,7 @@ signal is emitted.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>pointer to a <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>
+<td>pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>
 </td>
 </tr>
 </tbody>
@@ -131,7 +131,7 @@ signal is emitted.
 <div class="refsect2">
 <a name="gimp-color-hex-entry-get-color"></a><h3>gimp_color_hex_entry_get_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_hex_entry_get_color      (<em class="parameter"><code><a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> *entry</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Retrieves the color value displayed by a <a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a>.
 </p>
@@ -144,7 +144,7 @@ Retrieves the color value displayed by a <a class="link" href="GimpColorHexEntry
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>pointer to a <a href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>
+<td>pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>
 </td>
 </tr>
 </tbody>
@@ -157,7 +157,7 @@ Retrieves the color value displayed by a <a class="link" href="GimpColorHexEntry
 <div class="refsect2">
 <a name="GimpColorHexEntry-color-changed"></a><h3>The <code class="literal">"color-changed"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> *gimpcolorhexentry,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)              : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS"><code class="literal">Run First</code></a></pre>
+                                                        <span class="type">gpointer</span>           user_data)              : <code class="literal">Run First</code></pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">

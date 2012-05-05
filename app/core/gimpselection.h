@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_SELECTION_H__
@@ -37,7 +36,7 @@ struct _GimpSelection
 {
   GimpChannel parent_instance;
 
-  gboolean    stroking;
+  gint        stroking_count;
 };
 
 struct _GimpSelectionClass
@@ -46,31 +45,36 @@ struct _GimpSelectionClass
 };
 
 
-GType         gimp_selection_get_type   (void) G_GNUC_CONST;
+GType         gimp_selection_get_type      (void) G_GNUC_CONST;
 
-GimpChannel * gimp_selection_new        (GimpImage     *image,
-                                         gint           width,
-                                         gint           height);
+GimpChannel * gimp_selection_new           (GimpImage     *image,
+                                            gint           width,
+                                            gint           height);
 
-void          gimp_selection_load       (GimpChannel   *selection,
-                                         GimpChannel   *channel);
-GimpChannel * gimp_selection_save       (GimpChannel   *selection);
+gint          gimp_selection_push_stroking (GimpSelection *selection);
+gint          gimp_selection_pop_stroking  (GimpSelection *selection);
 
-TileManager * gimp_selection_extract    (GimpChannel   *selection,
-                                         GimpPickable  *pickable,
-                                         GimpContext   *context,
-                                         gboolean       cut_image,
-                                         gboolean       keep_indexed,
-                                         gboolean       add_alpha,
-                                         GError       **error);
+void          gimp_selection_load          (GimpSelection *selection,
+                                            GimpChannel   *channel);
+GimpChannel * gimp_selection_save          (GimpSelection *selection);
 
-GimpLayer   * gimp_selection_float      (GimpChannel   *selection,
-                                         GimpDrawable  *drawable,
-                                         GimpContext   *context,
-                                         gboolean       cut_image,
-                                         gint           off_x,
-                                         gint           off_y,
-                                         GError       **error);
+TileManager * gimp_selection_extract       (GimpSelection *selection,
+                                            GimpPickable  *pickable,
+                                            GimpContext   *context,
+                                            gboolean       cut_image,
+                                            gboolean       keep_indexed,
+                                            gboolean       add_alpha,
+                                            gint          *offset_x,
+                                            gint          *offset_y,
+                                            GError       **error);
+
+GimpLayer   * gimp_selection_float         (GimpSelection *selection,
+                                            GimpDrawable  *drawable,
+                                            GimpContext   *context,
+                                            gboolean       cut_image,
+                                            gint           off_x,
+                                            gint           off_y,
+                                            GError       **error);
 
 
 #endif /* __GIMP_SELECTION_H__ */

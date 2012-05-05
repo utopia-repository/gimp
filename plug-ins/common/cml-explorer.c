@@ -7,9 +7,9 @@
  * Version: 1.0.11
  * URL: http://www.inetq.or.jp/~narazaki/TheGIMP/
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Comment:
  *  CML is the abbreviation of Coupled-Map Lattice that is a model of
@@ -85,6 +84,7 @@
 #define PARAM_FILE_FORMAT_VERSION 1.0
 #define PLUG_IN_PROC              "plug-in-cml-explorer"
 #define PLUG_IN_BINARY            "cml-explorer"
+#define PLUG_IN_ROLE              "gimp-cml-explorer"
 #define VALS                      CML_explorer_vals
 #define PROGRESS_UPDATE_NUM        100
 #define CML_LINE_SIZE             1024
@@ -163,7 +163,7 @@ enum
 
 static const gchar *composition_names[COMP_NUM_VALUES] =
 {
-  N_("None"),
+  NC_("cml-composition", "None"),
   N_("Max (x, -)"),
   N_("Max (x+d, -)"),
   N_("Max (x-d, -)"),
@@ -406,6 +406,10 @@ const GimpPlugInInfo PLUG_IN_INFO =
 static GtkWidget   *preview;
 static WidgetEntry  widget_pointers[4][CML_PARAM_NUM];
 
+static guchar          *img;
+static gint             img_stride;
+static cairo_surface_t *buffer;
+
 typedef struct
 {
   GtkWidget *widget;
@@ -413,6 +417,7 @@ typedef struct
 } CML_sensitive_widget_table;
 
 #define RANDOM_SENSITIVES_NUM 5
+#define GRAPHSIZE 256
 
 static CML_sensitive_widget_table random_sensitives[RANDOM_SENSITIVES_NUM] =
 {
@@ -445,7 +450,7 @@ query (void)
 {
   static const GimpParamDef args [] =
   {
-    { GIMP_PDB_INT32,    "ru-_mode",           "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "ru-_mode",           "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",              "Input image (not used)" },
     { GIMP_PDB_DRAWABLE, "drawable",           "Input drawable"  },
     { GIMP_PDB_STRING,   "parameter-filename", "The name of parameter file. CML_explorer makes an image with its settings." }
@@ -1174,7 +1179,7 @@ CML_explorer_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Coupled-Map-Lattice Explorer"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Coupled-Map-Lattice Explorer"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1192,13 +1197,13 @@ CML_explorer_dialog (void)
 
   CML_preview_defer = TRUE;
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -1217,7 +1222,7 @@ CML_explorer_dialog (void)
   gtk_container_add (GTK_CONTAINER (frame), preview);
   gtk_widget_show (preview);
 
-  bbox = gtk_vbutton_box_new ();
+  bbox = gtk_button_box_new (GTK_ORIENTATION_VERTICAL);
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
@@ -1254,7 +1259,7 @@ CML_explorer_dialog (void)
   random_sensitives[2].widget = button;
   random_sensitives[2].logic  = FALSE;
 
-  bbox = gtk_vbutton_box_new ();
+  bbox = gtk_button_box_new (GTK_ORIENTATION_VERTICAL);
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
@@ -1308,7 +1313,7 @@ CML_explorer_dialog (void)
       GtkWidget    *vbox;
       GtkObject    *adj;
 
-      vbox = gtk_vbox_new (FALSE, 12);
+      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
       gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
       gtk_widget_show (vbox);
 
@@ -1413,7 +1418,7 @@ CML_explorer_dialog (void)
       GtkWidget    *combo;
       GtkWidget    *vbox;
 
-      vbox = gtk_vbox_new (FALSE, 12);
+      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
       gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
       gtk_widget_show (vbox);
 
@@ -1511,17 +1516,27 @@ CML_explorer_dialog (void)
 
   CML_initial_value_sensitives_update ();
 
+  gtk_widget_show (dialog);
+
+  img_stride = cairo_format_stride_for_width (CAIRO_FORMAT_RGB24, GRAPHSIZE);
+  img = g_malloc0 (img_stride * GRAPHSIZE);
+
+  buffer = cairo_image_surface_create_for_data (img, CAIRO_FORMAT_RGB24,
+                                                GRAPHSIZE,
+                                                GRAPHSIZE,
+                                                img_stride);
+
   /*  Displaying preview might takes a long time. Thus, first, dialog itself
    *  should be shown before making preview in it.
    */
-  gtk_widget_show (dialog);
-
   CML_preview_defer = FALSE;
   preview_update ();
 
   run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
   gtk_widget_destroy (dialog);
+  g_free (img);
+  cairo_surface_destroy (buffer);
 
   return run;
 }
@@ -1697,7 +1712,7 @@ CML_dialog_advanced_panel_new (void)
   gint       channel_id;
   CML_PARAM *param;
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_widget_show (vbox);
 
@@ -1758,53 +1773,68 @@ preview_update (void)
 
 static gboolean
 function_graph_expose (GtkWidget      *widget,
-                       GdkEventExpose *ev,
+                       GdkEventExpose *event,
                        gpointer       *data)
 {
   GtkStyle  *style = gtk_widget_get_style (widget);
-  gint       x, y, last_y;
+  gint       x, y;
   gint       rgbi[3];
-  guchar    *buffer;
   gint       channel_id = GPOINTER_TO_INT (data[0]);
   CML_PARAM *param      = data[1];
+  cairo_t   *cr;
 
-  buffer = g_new (guchar, 256*256*3);
-  for (x = 0; x < 256; x++)
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  cairo_set_line_width (cr, 1.0);
+
+  cairo_surface_flush (buffer);
+
+  for (x = 0; x < GRAPHSIZE; x++)
     {
       /* hue */
       rgbi[0] = rgbi[1] = rgbi[2] = 127;
       if ((0 <= channel_id) && (channel_id <= 2))
         rgbi[channel_id] = CANNONIZE ((*param), ((gdouble) x / (gdouble) 255));
       gimp_hsv_to_rgb_int (rgbi, rgbi+1, rgbi+2);
-      for (y = 0; y < 256; y++)
+      for (y = 0; y < GRAPHSIZE; y++)
       {
-        buffer[(y*256+x)*3+0] = rgbi[0];
-        buffer[(y*256+x)*3+1] = rgbi[1];
-        buffer[(y*256+x)*3+2] = rgbi[2];
+        GIMP_CAIRO_RGB24_SET_PIXEL((img+(y*img_stride+x*4)),
+                                   rgbi[0],
+                                   rgbi[1],
+                                   rgbi[2]);
       }
     }
 
-  gdk_draw_rgb_image (widget->window, style->black_gc,
-                      0, 0, 256, 256,
-                      GDK_RGB_DITHER_NORMAL,
-                      buffer,
-                      3 * 256);
+  cairo_surface_mark_dirty (buffer);
 
-  g_free (buffer);
+  cairo_set_source_surface (cr, buffer, 0.0, 0.0);
 
-  gdk_draw_line (widget->window, style->white_gc, 0,255, 255, 0);
+  cairo_paint (cr);
+  cairo_translate (cr, 0.5, 0.5);
+
+  cairo_move_to (cr, 0, 255);
+  cairo_line_to (cr, 255, 0);
+  gdk_cairo_set_source_color (cr, &style->white);
+  cairo_stroke (cr);
 
   y = 255 * CLAMP (logistic_function (param, 0, param->power),
                      0, 1.0);
-  for (x = 0; x < 256; x++)
+  cairo_move_to (cr, 0, 255-y);
+  for (x = 0; x < GRAPHSIZE; x++)
     {
-      last_y = y;
       /* curve */
       y = 255 * CLAMP (logistic_function (param, x/(gdouble)255, param->power),
                        0, 1.0);
-      gdk_draw_line (widget->window, style->black_gc,
-                     x, 255-last_y, x, 255-y);
+      cairo_line_to (cr, x, 255-y);
     }
+
+  gdk_cairo_set_source_color (cr, &style->black);
+  cairo_stroke (cr);
+  cairo_destroy (cr);
+
   return TRUE;
 }
 
@@ -1816,7 +1846,7 @@ function_graph_new (GtkWidget *widget,
   GtkWidget *frame;
   GtkWidget *preview;
 
-  dialog = gimp_dialog_new (_("Graph of the Current Settings"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Graph of the Current Settings"), PLUG_IN_ROLE,
                             gtk_widget_get_toplevel (widget), 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1827,12 +1857,12 @@ function_graph_new (GtkWidget *widget,
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), frame,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   preview = gtk_drawing_area_new ();
-  gtk_widget_set_size_request (preview, 256, 256);
+  gtk_widget_set_size_request (preview, GRAPHSIZE, GRAPHSIZE);
   gtk_container_add (GTK_CONTAINER (frame), preview);
   gtk_widget_show (preview);
   g_signal_connect (preview, "expose-event",

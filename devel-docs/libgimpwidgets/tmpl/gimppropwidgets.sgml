@@ -373,6 +373,16 @@ GimpPropWidgets
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_prop_unit_combo_box_new ##### -->
+<para>
+
+</para>
+
+@config: 
+@property_name: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_prop_unit_menu_new ##### -->
 <para>
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -42,58 +42,67 @@
 static const GimpActionEntry drawable_actions[] =
 {
   { "drawable-equalize", NULL,
-    N_("_Equalize"), NULL,
-    N_("Automatic contrast enhancement"),
+    NC_("drawable-action", "_Equalize"), NULL,
+    NC_("drawable-action", "Automatic contrast enhancement"),
     G_CALLBACK (drawable_equalize_cmd_callback),
     GIMP_HELP_LAYER_EQUALIZE },
 
   { "drawable-invert", GIMP_STOCK_INVERT,
-    N_("In_vert"), NULL,
-    N_("Invert the colors"),
+    NC_("drawable-action", "In_vert"), NULL,
+    NC_("drawable-action", "Invert the colors"),
     G_CALLBACK (drawable_invert_cmd_callback),
     GIMP_HELP_LAYER_INVERT },
 
   { "drawable-levels-stretch", NULL,
-    N_("_White Balance"), NULL,
-    N_("Automatic white balance correction"),
+    NC_("drawable-action", "_White Balance"), NULL,
+    NC_("drawable-action", "Automatic white balance correction"),
     G_CALLBACK (drawable_levels_stretch_cmd_callback),
     GIMP_HELP_LAYER_WHITE_BALANCE},
 
   { "drawable-offset", NULL,
-    N_("_Offset..."), "<control><shift>O",
-    N_("Shift the pixels, optionally wrapping them at the borders"),
+    NC_("drawable-action", "_Offset..."), "<primary><shift>O",
+    NC_("drawable-action",
+        "Shift the pixels, optionally wrapping them at the borders"),
     G_CALLBACK (drawable_offset_cmd_callback),
     GIMP_HELP_LAYER_OFFSET }
 };
 
 static const GimpToggleActionEntry drawable_toggle_actions[] =
 {
+  { "drawable-visible", GIMP_STOCK_VISIBLE,
+    NC_("drawable-action", "_Visible"), NULL,
+    NC_("drawable-action", "Toggle visibility"),
+    G_CALLBACK (drawable_visible_cmd_callback),
+    FALSE,
+    GIMP_HELP_LAYER_VISIBLE },
+
   { "drawable-linked", GIMP_STOCK_LINKED,
-    N_("_Linked"), NULL,
-    N_("Toggle the linked state"),
+    NC_("drawable-action", "_Linked"), NULL,
+    NC_("drawable-action", "Toggle the linked state"),
     G_CALLBACK (drawable_linked_cmd_callback),
     FALSE,
     GIMP_HELP_LAYER_LINKED },
 
-  { "drawable-visible", GIMP_STOCK_VISIBLE,
-    N_("_Visible"), NULL,
-    N_("Toggle visibility"),
-    G_CALLBACK (drawable_visible_cmd_callback),
+  { "drawable-lock-content", NULL /* GIMP_STOCK_LOCK */,
+    NC_("drawable-action", "L_ock pixels"), NULL,
+    NC_("drawable-action",
+        "Keep the pixels on this drawable from being modified"),
+    G_CALLBACK (drawable_lock_content_cmd_callback),
     FALSE,
-    GIMP_HELP_LAYER_VISIBLE }
+    NULL, /* GIMP_HELP_LAYER_LOCK_PIXELS */ }
 };
 
 static const GimpEnumActionEntry drawable_flip_actions[] =
 {
   { "drawable-flip-horizontal", GIMP_STOCK_FLIP_HORIZONTAL,
-    N_("Flip _Horizontally"), NULL,
-    N_("Flip horizontally"),
+    NC_("drawable-action", "Flip _Horizontally"), NULL,
+    NC_("drawable-action", "Flip horizontally"),
     GIMP_ORIENTATION_HORIZONTAL, FALSE,
     GIMP_HELP_LAYER_FLIP_HORIZONTAL },
 
   { "drawable-flip-vertical", GIMP_STOCK_FLIP_VERTICAL,
-    N_("Flip _Vertically"), NULL,
-    N_("Flip vertically"),
+    NC_("drawable-action", "Flip _Vertically"), NULL,
+    NC_("drawable-action", "Flip vertically"),
     GIMP_ORIENTATION_VERTICAL, FALSE,
     GIMP_HELP_LAYER_FLIP_VERTICAL }
 };
@@ -101,20 +110,20 @@ static const GimpEnumActionEntry drawable_flip_actions[] =
 static const GimpEnumActionEntry drawable_rotate_actions[] =
 {
   { "drawable-rotate-90", GIMP_STOCK_ROTATE_90,
-    N_("Rotate 90° _clockwise"), NULL,
-    N_("Rotate 90 degrees to the right"),
+    NC_("drawable-action", "Rotate 90° _clockwise"), NULL,
+    NC_("drawable-action", "Rotate 90 degrees to the right"),
     GIMP_ROTATE_90, FALSE,
     GIMP_HELP_LAYER_ROTATE_90 },
 
   { "drawable-rotate-180", GIMP_STOCK_ROTATE_180,
-    N_("Rotate _180°"), NULL,
-    N_("Turn upside-down"),
+    NC_("drawable-action", "Rotate _180°"), NULL,
+    NC_("drawable-action", "Turn upside-down"),
     GIMP_ROTATE_180, FALSE,
     GIMP_HELP_LAYER_ROTATE_180 },
 
   { "drawable-rotate-270", GIMP_STOCK_ROTATE_270,
-    N_("Rotate 90° counter-clock_wise"), NULL,
-    N_("Rotate 90 degrees to the left"),
+    NC_("drawable-action", "Rotate 90° counter-clock_wise"), NULL,
+    NC_("drawable-action", "Rotate 90 degrees to the left"),
     GIMP_ROTATE_270, FALSE,
     GIMP_HELP_LAYER_ROTATE_270 }
 };
@@ -123,23 +132,32 @@ static const GimpEnumActionEntry drawable_rotate_actions[] =
 void
 drawable_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "drawable-action",
                                  drawable_actions,
                                  G_N_ELEMENTS (drawable_actions));
 
-  gimp_action_group_add_toggle_actions (group,
+  gimp_action_group_add_toggle_actions (group, "drawable-action",
                                         drawable_toggle_actions,
                                         G_N_ELEMENTS (drawable_toggle_actions));
 
-  gimp_action_group_add_enum_actions (group,
+  gimp_action_group_add_enum_actions (group, "drawable-action",
                                       drawable_flip_actions,
                                       G_N_ELEMENTS (drawable_flip_actions),
                                       G_CALLBACK (drawable_flip_cmd_callback));
 
-  gimp_action_group_add_enum_actions (group,
+  gimp_action_group_add_enum_actions (group, "drawable-action",
                                       drawable_rotate_actions,
                                       G_N_ELEMENTS (drawable_rotate_actions),
                                       G_CALLBACK (drawable_rotate_cmd_callback));
+
+#define SET_ALWAYS_SHOW_IMAGE(action,show) \
+        gimp_action_group_set_action_always_show_image (group, action, show)
+
+  SET_ALWAYS_SHOW_IMAGE ("drawable-rotate-90",  TRUE);
+  SET_ALWAYS_SHOW_IMAGE ("drawable-rotate-180", TRUE);
+  SET_ALWAYS_SHOW_IMAGE ("drawable-rotate-270", TRUE);
+
+#undef SET_ALWAYS_SHOW_IMAGE
 }
 
 void
@@ -149,10 +167,13 @@ drawable_actions_update (GimpActionGroup *group,
   GimpImage    *image;
   GimpDrawable *drawable   = NULL;
   gboolean      is_rgb     = FALSE;
-  gboolean      is_gray    = FALSE;
   gboolean      is_indexed = FALSE;
   gboolean      visible    = FALSE;
   gboolean      linked     = FALSE;
+  gboolean      locked     = FALSE;
+  gboolean      can_lock   = FALSE;
+  gboolean      writable   = FALSE;
+  gboolean      children   = FALSE;
 
   image = action_data_get_image (data);
 
@@ -166,7 +187,6 @@ drawable_actions_update (GimpActionGroup *group,
           GimpItem      *item;
 
           is_rgb     = GIMP_IMAGE_TYPE_IS_RGB     (drawable_type);
-          is_gray    = GIMP_IMAGE_TYPE_IS_GRAY    (drawable_type);
           is_indexed = GIMP_IMAGE_TYPE_IS_INDEXED (drawable_type);
 
           if (GIMP_IS_LAYER_MASK (drawable))
@@ -174,8 +194,14 @@ drawable_actions_update (GimpActionGroup *group,
           else
             item = GIMP_ITEM (drawable);
 
-          visible = gimp_item_get_visible (item);
-          linked  = gimp_item_get_linked  (item);
+          visible  = gimp_item_get_visible (item);
+          linked   = gimp_item_get_linked (item);
+          locked   = gimp_item_get_lock_content (item);
+          can_lock = gimp_item_can_lock_content (item);
+          writable = ! gimp_item_is_content_locked (item);
+
+          if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
+            children = TRUE;
         }
     }
 
@@ -184,23 +210,25 @@ drawable_actions_update (GimpActionGroup *group,
 #define SET_ACTIVE(action,condition) \
         gimp_action_group_set_action_active (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("drawable-equalize",       drawable && ! is_indexed);
-  SET_SENSITIVE ("drawable-invert",         drawable && ! is_indexed);
-  SET_SENSITIVE ("drawable-levels-stretch", drawable &&   is_rgb);
-  SET_SENSITIVE ("drawable-offset",         drawable);
+  SET_SENSITIVE ("drawable-equalize",       writable && !children && !is_indexed);
+  SET_SENSITIVE ("drawable-invert",         writable && !children && !is_indexed);
+  SET_SENSITIVE ("drawable-levels-stretch", writable && !children &&  is_rgb);
+  SET_SENSITIVE ("drawable-offset",         writable && !children);
 
-  SET_SENSITIVE ("drawable-visible", drawable);
-  SET_SENSITIVE ("drawable-linked",  drawable);
+  SET_SENSITIVE ("drawable-visible",      drawable);
+  SET_SENSITIVE ("drawable-linked",       drawable);
+  SET_SENSITIVE ("drawable-lock-content", can_lock);
 
-  SET_ACTIVE ("drawable-visible", visible);
-  SET_ACTIVE ("drawable-linked",  linked);
+  SET_ACTIVE ("drawable-visible",      visible);
+  SET_ACTIVE ("drawable-linked",       linked);
+  SET_ACTIVE ("drawable-lock-content", locked);
 
-  SET_SENSITIVE ("drawable-flip-horizontal", drawable);
-  SET_SENSITIVE ("drawable-flip-vertical",   drawable);
+  SET_SENSITIVE ("drawable-flip-horizontal", writable);
+  SET_SENSITIVE ("drawable-flip-vertical",   writable);
 
-  SET_SENSITIVE ("drawable-rotate-90",  drawable);
-  SET_SENSITIVE ("drawable-rotate-180", drawable);
-  SET_SENSITIVE ("drawable-rotate-270", drawable);
+  SET_SENSITIVE ("drawable-rotate-90",  writable);
+  SET_SENSITIVE ("drawable-rotate-180", writable);
+  SET_SENSITIVE ("drawable-rotate-270", writable);
 
 #undef SET_SENSITIVE
 #undef SET_ACTIVE

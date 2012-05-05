@@ -4,10 +4,10 @@
  * gimpquerybox.h
  * Copyright (C) 1999-2000 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_QUERY_BOX_H__
 #define __GIMP_QUERY_BOX_H__
@@ -28,29 +31,76 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
-/*  query box callback prototypes  */
+/**
+ * GimpQueryStringCallback:
+ * @query_box: The query box.
+ * @string:    The entered string.
+ * @data:      The user data.
+ *
+ * Note that you must not g_free() the passed string.
+ **/
 typedef void (* GimpQueryStringCallback)  (GtkWidget   *query_box,
                                            const gchar *string,
                                            gpointer     data);
 
+/**
+ * GimpQueryIntCallback:
+ * @query_box: The query box.
+ * @value:     The entered integer value.
+ * @data:      The user data.
+ *
+ * The callback for an int query box.
+ **/
 typedef void (* GimpQueryIntCallback)     (GtkWidget   *query_box,
                                            gint         value,
                                            gpointer     data);
 
+/**
+ * GimpQueryDoubleCallback:
+ * @query_box: The query box.
+ * @value:     The entered double value.
+ * @data:      The user data.
+ *
+ * The callback for a double query box.
+ **/
 typedef void (* GimpQueryDoubleCallback)  (GtkWidget   *query_box,
                                            gdouble      value,
                                            gpointer     data);
 
+/**
+ * GimpQuerySizeCallback:
+ * @query_box: The query box.
+ * @size:      The entered size in pixels.
+ * @unit:      The selected unit from the #GimpUnitMenu.
+ * @data:      The user data.
+ *
+ * The callback for a size query box.
+ **/
 typedef void (* GimpQuerySizeCallback)    (GtkWidget   *query_box,
                                            gdouble      size,
                                            GimpUnit     unit,
                                            gpointer     data);
 
+/**
+ * GimpQueryBooleanCallback:
+ * @query_box: The query box.
+ * @value:     The entered boolean value.
+ * @data:      The user data.
+ *
+ * The callback for a boolean query box.
+ **/
 typedef void (* GimpQueryBooleanCallback) (GtkWidget   *query_box,
                                            gboolean     value,
                                            gpointer     data);
 
 
+/**
+ * GIMP_QUERY_BOX_VBOX:
+ * @qbox: The query box.
+ *
+ * A macro to access the #GtkVBox in a #libgimpwidgets-gimpquerybox.
+ * Useful if you want to add more widgets.
+ **/
 #define GIMP_QUERY_BOX_VBOX(qbox) g_object_get_data (G_OBJECT (qbox), \
                                                      "gimp-query-box-vbox")
 

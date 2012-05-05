@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -30,7 +29,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  gimp_data_factory_data_refresh (gimp->palette_factory);
+  gimp_data_factory_data_refresh (gimp->palette_factory, context);
 }
 CODE
     );
@@ -62,7 +61,7 @@ HELP
         headers => [ qw("core/gimpcontainer-filter.h") ],
         code    => <<'CODE'
 {
-  palette_list = gimp_container_get_filtered_name_array (gimp->palette_factory->container,
+  palette_list = gimp_container_get_filtered_name_array (gimp_data_factory_get_container (gimp->palette_factory),
                                                          filter, &num_palettes);
 }
 CODE
@@ -86,8 +85,8 @@ sub palettes_get_palette {
 
   if (palette)
     {
-      name       = g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)));
-      num_colors = palette->n_colors;
+      name       = g_strdup (gimp_object_get_name (palette));
+      num_colors = gimp_palette_get_n_colors (palette);
     }
   else
     success = FALSE;
@@ -127,12 +126,12 @@ sub palettes_get_palette_entry {
 
   if (palette)
     {
-      if (entry_num >= 0 && entry_num < palette->n_colors)
-        {
-          GimpPaletteEntry *entry = g_list_nth_data (palette->colors, entry_num);
+      GimpPaletteEntry *entry = gimp_palette_get_entry (palette, entry_num);
 
-          actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (palette)));
-          num_colors  = palette->n_colors;
+      if (entry)
+        {
+          actual_name = g_strdup (gimp_object_get_name (palette));
+          num_colors  = gimp_palette_get_n_colors (palette);
           color       = entry->color;
         }
       else
@@ -161,5 +160,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Palettes';
+$doc_title = 'gimppalettes';
+$doc_short_desc = 'Operations related to palettes.';
+$doc_long_desc = 'Operations related to palettes.';
 
 1;

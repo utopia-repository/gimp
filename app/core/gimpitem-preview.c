@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
@@ -74,8 +73,8 @@ gimp_item_get_preview_size (GimpViewable *viewable,
     }
   else
     {
-      gimp_viewable_calc_preview_size (gimp_item_width  (item),
-                                       gimp_item_height (item),
+      gimp_viewable_calc_preview_size (gimp_item_get_width  (item),
+                                       gimp_item_get_height (item),
                                        size,
                                        size,
                                        dot_for_dot, 1.0, 1.0,
@@ -99,8 +98,8 @@ gimp_item_get_popup_size (GimpViewable *viewable,
   if (image && ! image->gimp->config->layer_previews)
     return FALSE;
 
-  if (gimp_item_width  (item) > width ||
-      gimp_item_height (item) > height)
+  if (gimp_item_get_width  (item) > width ||
+      gimp_item_get_height (item) > height)
     {
       gboolean scaling_up;
       gdouble  xres = 1.0;
@@ -109,8 +108,8 @@ gimp_item_get_popup_size (GimpViewable *viewable,
       if (image)
         gimp_image_get_resolution (image, &xres, &yres);
 
-      gimp_viewable_calc_preview_size (gimp_item_width  (item),
-                                       gimp_item_height (item),
+      gimp_viewable_calc_preview_size (gimp_item_get_width  (item),
+                                       gimp_item_get_height (item),
                                        width  * 2,
                                        height * 2,
                                        dot_for_dot,
@@ -122,8 +121,8 @@ gimp_item_get_popup_size (GimpViewable *viewable,
 
       if (scaling_up)
         {
-          *popup_width = gimp_item_width  (item);
-          *popup_width = gimp_item_height (item);
+          *popup_width = gimp_item_get_width  (item);
+          *popup_width = gimp_item_get_height (item);
         }
 
       return TRUE;

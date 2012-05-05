@@ -4,9 +4,9 @@
  * gimpdockable.h
  * Copyright (C) 2001-2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DOCKABLE_H__
@@ -34,33 +33,21 @@
 #define GIMP_DOCKABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DOCKABLE, GimpDockableClass))
 
 
-typedef struct _GimpDockableClass GimpDockableClass;
+typedef struct _GimpDockablePrivate GimpDockablePrivate;
+typedef struct _GimpDockableClass   GimpDockableClass;
 
+/**
+ * GimpDockable:
+ *
+ * A kind of adpater to make other widgets dockable. The widget to
+ * dock is put inside the GimpDockable, which is put in a
+ * GimpDockbook.
+ */
 struct _GimpDockable
 {
-  GtkBin        parent_instance;
+  GtkBin               parent_instance;
 
-  gchar        *name;
-  gchar        *blurb;
-  gchar        *stock_id;
-  gchar        *help_id;
-  GimpTabStyle  tab_style;
-  gboolean      locked;
-
-  GimpDockbook *dockbook;
-
-  GimpContext  *context;
-
-  PangoLayout  *title_layout;
-  GdkWindow    *title_window;
-  GtkWidget    *menu_button;
-
-  guint         blink_timeout_id;
-  gint          blink_counter;
-
-  /*  drag icon hotspot  */
-  gint          drag_x;
-  gint          drag_y;
+  GimpDockablePrivate *p;
 };
 
 struct _GimpDockableClass
@@ -69,38 +56,59 @@ struct _GimpDockableClass
 };
 
 
-GType           gimp_dockable_get_type        (void) G_GNUC_CONST;
+GType           gimp_dockable_get_type         (void) G_GNUC_CONST;
 
-GtkWidget     * gimp_dockable_new             (const gchar    *name,
-                                               const gchar    *blurb,
-                                               const gchar    *stock_id,
-                                               const gchar    *help_id);
+GtkWidget     * gimp_dockable_new              (const gchar    *name,
+                                                const gchar    *blurb,
+                                                const gchar    *stock_id,
+                                                const gchar    *help_id);
+void            gimp_dockable_set_dockbook     (GimpDockable   *dockable,
+                                                GimpDockbook   *dockbook);
+GimpDockbook  * gimp_dockable_get_dockbook     (GimpDockable   *dockable);
+GimpTabStyle    gimp_dockable_get_tab_style    (GimpDockable   *dockable);
+const gchar   * gimp_dockable_get_name         (GimpDockable   *dockable);
+const gchar   * gimp_dockable_get_blurb        (GimpDockable   *dockable);
+const gchar   * gimp_dockable_get_help_id      (GimpDockable   *dockable);
+const gchar   * gimp_dockable_get_stock_id     (GimpDockable   *dockable);
+GtkWidget     * gimp_dockable_get_icon         (GimpDockable   *dockable,
+                                                GtkIconSize     size);
 
-void            gimp_dockable_set_aux_info    (GimpDockable   *dockable,
-                                               GList          *aux_info);
-GList         * gimp_dockable_get_aux_info    (GimpDockable   *dockable);
+gboolean        gimp_dockable_get_locked       (GimpDockable   *dockable);
+void            gimp_dockable_set_drag_pos     (GimpDockable   *dockable,
+                                                gint            drag_x,
+                                                gint            drag_y);
+void            gimp_dockable_get_drag_pos     (GimpDockable   *dockable,
+                                                gint           *drag_x,
+                                                gint           *drag_y);
+GimpPanedBox  * gimp_dockable_get_drag_handler (GimpDockable  *dockable);
 
-void            gimp_dockable_set_locked      (GimpDockable   *dockable,
-                                               gboolean        lock);
-gboolean        gimp_dockable_is_locked       (GimpDockable   *dockable);
+void            gimp_dockable_set_locked       (GimpDockable   *dockable,
+                                                gboolean        lock);
+gboolean        gimp_dockable_is_locked        (GimpDockable   *dockable);
 
-void            gimp_dockable_set_tab_style   (GimpDockable   *dockable,
-                                               GimpTabStyle    tab_style);
-GtkWidget     * gimp_dockable_get_tab_widget  (GimpDockable   *dockable,
-                                               GimpContext    *context,
-                                               GimpTabStyle    tab_style,
-                                               GtkIconSize     size);
-GtkWidget     * gimp_dockable_get_drag_widget (GimpDockable   *dockable);
-void            gimp_dockable_set_context     (GimpDockable   *dockable,
-                                               GimpContext    *context);
-GimpUIManager * gimp_dockable_get_menu        (GimpDockable   *dockable,
-                                               const gchar   **ui_path,
-                                               gpointer       *popup_data);
+                                                      
+void            gimp_dockable_set_tab_style           (GimpDockable   *dockable,
+                                                       GimpTabStyle    tab_style);
+gboolean        gimp_dockable_set_actual_tab_style    (GimpDockable   *dockable,
+                                                       GimpTabStyle    tab_style);
+GimpTabStyle    gimp_dockable_get_actual_tab_style    (GimpDockable   *dockable);
+GtkWidget     * gimp_dockable_create_tab_widget       (GimpDockable   *dockable,
+                                                       GimpContext    *context,
+                                                       GimpTabStyle    tab_style,
+                                                       GtkIconSize     size);
+GtkWidget     * gimp_dockable_create_drag_widget      (GimpDockable   *dockable);
+void            gimp_dockable_set_context             (GimpDockable   *dockable,
+                                                       GimpContext    *context);
+GimpUIManager * gimp_dockable_get_menu                (GimpDockable   *dockable,
+                                                const gchar   **ui_path,
+                                                gpointer       *popup_data);
+void            gimp_dockable_set_drag_handler (GimpDockable   *dockable,
+                                                GimpPanedBox   *drag_handler);
 
-void            gimp_dockable_detach          (GimpDockable   *dockable);
+void            gimp_dockable_detach           (GimpDockable   *dockable);
 
-void            gimp_dockable_blink           (GimpDockable   *dockable);
-void            gimp_dockable_blink_cancel    (GimpDockable   *dockable);
+void            gimp_dockable_blink            (GimpDockable   *dockable);
+void            gimp_dockable_blink_cancel     (GimpDockable   *dockable);
 
 
 #endif /* __GIMP_DOCKABLE_H__ */

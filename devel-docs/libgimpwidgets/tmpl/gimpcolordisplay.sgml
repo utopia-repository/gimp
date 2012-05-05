@@ -2,23 +2,16 @@
 GimpColorDisplay
 
 <!-- ##### SECTION Short_Description ##### -->
-Pluggable GIMP display color correction modules.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Functions and definitions for creating pluggable GIMP
-display color correction modules.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#GModule
-</para>
-<para>
-#GTypeModule
-</para>
-<para>
-#libgimp-gimpmodule
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -120,6 +113,15 @@ display color correction modules.
 @height: 
 @bpp: 
 @bpl: 
+
+
+<!-- ##### FUNCTION gimp_color_display_convert_surface ##### -->
+<para>
+
+</para>
+
+@display: 
+@surface: 
 
 
 <!-- ##### FUNCTION gimp_color_display_load_state ##### -->

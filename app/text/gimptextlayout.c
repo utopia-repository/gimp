@@ -4,9 +4,9 @@
  * GimpText
  * Copyright (C) 2002-2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,43 +15,46 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
-#include <pango/pangoft2.h>
+#include <string.h>
+
+#include <gegl.h>
+#include <pango/pangocairo.h>
+
+#include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
+#include "libgimpmath/gimpmath.h"
 
 #include "text-types.h"
 
-#include "libgimpmath/gimpmath.h"
-
-#include "core/gimpimage.h"
-#include "core/gimpunit.h"
-
 #include "gimptext.h"
-#include "gimptext-private.h"
 #include "gimptextlayout.h"
 
 
-static void   gimp_text_layout_finalize           (GObject        *object);
+struct _GimpTextLayout
+{
+  GObject         object;
 
-static void   gimp_text_layout_position           (GimpTextLayout *layout);
+  GimpText       *text;
+  gdouble         xres;
+  gdouble         yres;
+  PangoLayout    *layout;
+  PangoRectangle  extents;
+};
+
+
+static void           gimp_text_layout_finalize   (GObject        *object);
+
+static void           gimp_text_layout_position   (GimpTextLayout *layout);
+static void           gimp_text_layout_set_markup (GimpTextLayout *layout);
 
 static PangoContext * gimp_text_get_pango_context (GimpText       *text,
                                                    gdouble         xres,
                                                    gdouble         yres);
-
-static gint   gimp_text_layout_pixel_size         (Gimp           *gimp,
-                                                   gdouble         value,
-                                                   GimpUnit        unit,
-                                                   gdouble         res);
-static gint   gimp_text_layout_point_size         (Gimp           *gimp,
-                                                   gdouble         value,
-                                                   GimpUnit        unit,
-                                                   gdouble         res);
 
 
 G_DEFINE_TYPE (GimpTextLayout, gimp_text_layout, G_TYPE_OBJECT)
@@ -96,47 +99,43 @@ gimp_text_layout_finalize (GObject *object)
 
 GimpTextLayout *
 gimp_text_layout_new (GimpText  *text,
-                      GimpImage *image)
+                      gdouble    xres,
+                      gdouble    yres)
 {
   GimpTextLayout       *layout;
   PangoContext         *context;
   PangoFontDescription *font_desc;
   PangoAlignment        alignment = PANGO_ALIGN_LEFT;
-  gdouble               xres, yres;
   gint                  size;
 
   g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
 
   font_desc = pango_font_description_from_string (text->font);
   g_return_val_if_fail (font_desc != NULL, NULL);
 
-  gimp_image_get_resolution (image, &xres, &yres);
-
-  size = gimp_text_layout_point_size (image->gimp,
-                                      text->font_size,
-                                      text->unit,
-                                      yres);
+  size = pango_units_from_double (gimp_units_to_points (text->font_size,
+                                                        text->unit,
+                                                        yres));
 
   pango_font_description_set_size (font_desc, MAX (1, size));
 
   context = gimp_text_get_pango_context (text, xres, yres);
 
   layout = g_object_new (GIMP_TYPE_TEXT_LAYOUT, NULL);
+
   layout->text   = g_object_ref (text);
   layout->layout = pango_layout_new (context);
-  layout->xres = xres;
-  layout->yres = yres;
+  layout->xres   = xres;
+  layout->yres   = yres;
+
+  pango_layout_set_wrap (layout->layout, PANGO_WRAP_WORD_CHAR);
 
   g_object_unref (context);
 
   pango_layout_set_font_description (layout->layout, font_desc);
   pango_font_description_free (font_desc);
 
-  if (text->text)
-    pango_layout_set_text (layout->layout, text->text, -1);
-  else
-    pango_layout_set_text (layout->layout, NULL, 0);
+  gimp_text_layout_set_markup (layout);
 
   switch (text->justify)
     {
@@ -163,38 +162,23 @@ gimp_text_layout_new (GimpText  *text,
       break;
     case GIMP_TEXT_BOX_FIXED:
       pango_layout_set_width (layout->layout,
-                              gimp_text_layout_pixel_size (image->gimp,
-                                                           text->box_width,
-                                                           text->box_unit,
-                                                           xres));
+                              pango_units_from_double
+                              (gimp_units_to_pixels (text->box_width,
+                                                     text->box_unit,
+                                                     xres)));
       break;
     }
 
   pango_layout_set_indent (layout->layout,
-                           gimp_text_layout_pixel_size (image->gimp,
-                                                        text->indent,
-                                                        text->unit,
-                                                        xres));
+                           pango_units_from_double
+                           (gimp_units_to_pixels (text->indent,
+                                                  text->unit,
+                                                  xres)));
   pango_layout_set_spacing (layout->layout,
-                            gimp_text_layout_pixel_size (image->gimp,
-                                                         text->line_spacing,
-                                                         text->unit,
-                                                         yres));
-  if (fabs (text->letter_spacing) > 0.1)
-    {
-      PangoAttrList  *attrs = pango_attr_list_new ();
-      PangoAttribute *attr;
-
-      attr = pango_attr_letter_spacing_new (text->letter_spacing * PANGO_SCALE);
-
-      attr->start_index = 0;
-      attr->end_index   = -1;
-
-      pango_attr_list_insert (attrs, attr);
-
-      pango_layout_set_attributes (layout->layout, attrs);
-      pango_attr_list_unref (attrs);
-    }
+                            pango_units_from_double
+                            (gimp_units_to_pixels (text->line_spacing,
+                                                   text->unit,
+                                                   yres)));
 
   gimp_text_layout_position (layout);
 
@@ -203,16 +187,19 @@ gimp_text_layout_new (GimpText  *text,
     case GIMP_TEXT_BOX_DYNAMIC:
       break;
     case GIMP_TEXT_BOX_FIXED:
-      layout->extents.width =
-        PANGO_PIXELS (gimp_text_layout_pixel_size (image->gimp,
-                                                   text->box_width,
-                                                   text->box_unit,
-                                                   xres));
-      layout->extents.height =
-        PANGO_PIXELS (gimp_text_layout_pixel_size (image->gimp,
-                                                   text->box_height,
-                                                   text->box_unit,
-                                                   yres));
+      layout->extents.width  = ceil (gimp_units_to_pixels (text->box_width,
+                                                           text->box_unit,
+                                                           xres));
+      layout->extents.height = ceil (gimp_units_to_pixels (text->box_height,
+                                                           text->box_unit,
+                                                           yres));
+
+/* #define VERBOSE */
+
+#ifdef VERBOSE
+      g_printerr ("extents set to %d x %d\n",
+                  layout->extents.width, layout->extents.height);
+#endif
       break;
     }
 
@@ -228,6 +215,7 @@ gimp_text_layout_get_size (GimpTextLayout *layout,
 
   if (width)
     *width = layout->extents.width;
+
   if (height)
     *height = layout->extents.height;
 
@@ -243,8 +231,326 @@ gimp_text_layout_get_offsets (GimpTextLayout *layout,
 
   if (x)
     *x = layout->extents.x;
+
   if (y)
     *y = layout->extents.y;
+}
+
+void
+gimp_text_layout_get_resolution (GimpTextLayout *layout,
+                                 gdouble        *xres,
+                                 gdouble        *yres)
+{
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+
+  if (xres)
+    *xres = layout->xres;
+
+  if (yres)
+    *yres = layout->yres;
+}
+
+GimpText *
+gimp_text_layout_get_text (GimpTextLayout *layout)
+{
+  g_return_val_if_fail (GIMP_IS_TEXT_LAYOUT (layout), NULL);
+
+  return layout->text;
+}
+
+PangoLayout *
+gimp_text_layout_get_pango_layout (GimpTextLayout *layout)
+{
+  g_return_val_if_fail (GIMP_IS_TEXT_LAYOUT (layout), NULL);
+
+  return layout->layout;
+}
+
+void
+gimp_text_layout_get_transform (GimpTextLayout *layout,
+                                cairo_matrix_t *matrix)
+{
+  GimpText *text;
+  gdouble   xres;
+  gdouble   yres;
+  gdouble   norm;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+  g_return_if_fail (matrix != NULL);
+
+  text = gimp_text_layout_get_text (layout);
+
+  gimp_text_layout_get_resolution (layout, &xres, &yres);
+
+  norm = 1.0 / yres * xres;
+
+  matrix->xx = text->transformation.coeff[0][0] * norm;
+  matrix->xy = text->transformation.coeff[0][1] * 1.0;
+  matrix->yx = text->transformation.coeff[1][0] * norm;
+  matrix->yy = text->transformation.coeff[1][1] * 1.0;
+  matrix->x0 = 0;
+  matrix->y0 = 0;
+}
+
+void
+gimp_text_layout_transform_rect (GimpTextLayout *layout,
+                                 PangoRectangle *rect)
+{
+  cairo_matrix_t matrix;
+  gdouble        x, y;
+  gdouble        width, height;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+  g_return_if_fail (rect != NULL);
+
+  x      = rect->x;
+  y      = rect->y;
+  width  = rect->width;
+  height = rect->height;
+
+  gimp_text_layout_get_transform (layout, &matrix);
+
+  cairo_matrix_transform_point (&matrix, &x, &y);
+  cairo_matrix_transform_distance (&matrix, &width, &height);
+
+  rect->x      = ROUND (x);
+  rect->y      = ROUND (y);
+  rect->width  = ROUND (width);
+  rect->height = ROUND (height);
+}
+
+void
+gimp_text_layout_transform_point (GimpTextLayout *layout,
+                                  gdouble        *x,
+                                  gdouble        *y)
+{
+  cairo_matrix_t matrix;
+  gdouble        _x = 0.0;
+  gdouble        _y = 0.0;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+
+  if (x) _x = *x;
+  if (y) _y = *y;
+
+  gimp_text_layout_get_transform (layout, &matrix);
+
+  cairo_matrix_transform_point (&matrix, &_x, &_y);
+
+  if (x) *x = _x;
+  if (y) *y = _y;
+}
+
+void
+gimp_text_layout_transform_distance (GimpTextLayout *layout,
+                                     gdouble        *x,
+                                     gdouble        *y)
+{
+  cairo_matrix_t matrix;
+  gdouble        _x = 0.0;
+  gdouble        _y = 0.0;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+
+  if (x) _x = *x;
+  if (y) _y = *y;
+
+  gimp_text_layout_get_transform (layout, &matrix);
+
+  cairo_matrix_transform_distance (&matrix, &_x, &_y);
+
+  if (x) *x = _x;
+  if (y) *y = _y;
+}
+
+void
+gimp_text_layout_untransform_rect (GimpTextLayout *layout,
+                                   PangoRectangle *rect)
+{
+  cairo_matrix_t matrix;
+  gdouble        x, y;
+  gdouble        width, height;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+  g_return_if_fail (rect != NULL);
+
+  x      = rect->x;
+  y      = rect->y;
+  width  = rect->width;
+  height = rect->height;
+
+  gimp_text_layout_get_transform (layout, &matrix);
+
+  if (cairo_matrix_invert (&matrix) == CAIRO_STATUS_SUCCESS)
+    {
+      cairo_matrix_transform_point (&matrix, &x, &y);
+      cairo_matrix_transform_distance (&matrix, &width, &height);
+
+      rect->x      = ROUND (x);
+      rect->y      = ROUND (y);
+      rect->width  = ROUND (width);
+      rect->height = ROUND (height);
+    }
+}
+
+void
+gimp_text_layout_untransform_point (GimpTextLayout *layout,
+                                    gdouble        *x,
+                                    gdouble        *y)
+{
+  cairo_matrix_t matrix;
+  gdouble        _x = 0.0;
+  gdouble        _y = 0.0;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+
+  if (x) _x = *x;
+  if (y) _y = *y;
+
+  gimp_text_layout_get_transform (layout, &matrix);
+
+  if (cairo_matrix_invert (&matrix) == CAIRO_STATUS_SUCCESS)
+    {
+      cairo_matrix_transform_point (&matrix, &_x, &_y);
+
+      if (x) *x = _x;
+      if (y) *y = _y;
+    }
+}
+
+void
+gimp_text_layout_untransform_distance (GimpTextLayout *layout,
+                                       gdouble        *x,
+                                       gdouble        *y)
+{
+  cairo_matrix_t matrix;
+  gdouble        _x = 0.0;
+  gdouble        _y = 0.0;
+
+  g_return_if_fail (GIMP_IS_TEXT_LAYOUT (layout));
+
+  if (x) _x = *x;
+  if (y) _y = *y;
+
+  gimp_text_layout_get_transform (layout, &matrix);
+
+  if (cairo_matrix_invert (&matrix) == CAIRO_STATUS_SUCCESS)
+    {
+      cairo_matrix_transform_distance (&matrix, &_x, &_y);
+
+      if (x) *x = _x;
+      if (y) *y = _y;
+    }
+}
+
+static gboolean
+gimp_text_layout_split_markup (const gchar  *markup,
+                               gchar       **open_tag,
+                               gchar       **content,
+                               gchar       **close_tag)
+{
+  gchar *p_open;
+  gchar *p_close;
+
+  p_open = strstr (markup, "<markup>");
+  if (! p_open)
+    return FALSE;
+
+  *open_tag = g_strndup (markup, p_open - markup + strlen ("<markup>"));
+
+  p_close = g_strrstr (markup, "</markup>");
+  if (! p_close)
+    {
+      g_free (*open_tag);
+      return FALSE;
+    }
+
+  *close_tag = g_strdup (p_close);
+
+  if (p_open + strlen ("<markup>") < p_close)
+    {
+      *content = g_strndup (p_open + strlen ("<markup>"),
+                            p_close - p_open - strlen ("<markup>"));
+    }
+  else
+    {
+      *content = g_strdup ("");
+    }
+
+  return TRUE;
+}
+
+static gchar *
+gimp_text_layout_apply_tags (GimpTextLayout *layout,
+                             const gchar    *markup)
+{
+  GimpText *text = layout->text;
+  gchar    *result;
+
+  {
+    guchar r, g, b;
+
+    gimp_rgb_get_uchar (&text->color, &r, &g, &b);
+
+    result = g_strdup_printf ("<span color=\"#%02x%02x%02x\">%s</span>",
+                              r, g, b, markup);
+  }
+
+  if (fabs (text->letter_spacing) > 0.1)
+    {
+      gchar *tmp = g_strdup_printf ("<span letter_spacing=\"%d\">%s</span>",
+                                    (gint) (text->letter_spacing * PANGO_SCALE),
+                                    result);
+      g_free (result);
+      result = tmp;
+    }
+
+  return result;
+}
+
+static void
+gimp_text_layout_set_markup (GimpTextLayout *layout)
+{
+  GimpText *text      = layout->text;
+  gchar    *open_tag  = NULL;
+  gchar    *content   = NULL;
+  gchar    *close_tag = NULL;
+  gchar    *tagged;
+  gchar    *markup;
+
+  if (text->markup)
+    {
+      if (! gimp_text_layout_split_markup (text->markup,
+                                           &open_tag, &content, &close_tag))
+        {
+          open_tag  = g_strdup ("<markup>");
+          content   = g_strdup ("");
+          close_tag = g_strdup ("</markup>");
+        }
+    }
+  else
+    {
+      open_tag  = g_strdup ("<markup>");
+      close_tag = g_strdup ("</markup>");
+
+      if (text->text)
+        content = g_markup_escape_text (text->text, -1);
+      else
+        content = g_strdup ("");
+    }
+
+  tagged = gimp_text_layout_apply_tags (layout, content);
+
+  g_free (content);
+
+  markup = g_strconcat (open_tag, tagged, close_tag, NULL);
+
+  g_free (open_tag);
+  g_free (tagged);
+  g_free (close_tag);
+
+  pango_layout_set_markup (layout->layout, markup, -1);
+  g_free (markup);
 }
 
 static void
@@ -256,7 +562,7 @@ gimp_text_layout_position (GimpTextLayout *layout)
   gint            x2, y2;
 
   layout->extents.x      = 0;
-  layout->extents.x      = 0;
+  layout->extents.y      = 0;
   layout->extents.width  = 0;
   layout->extents.height = 0;
 
@@ -266,10 +572,10 @@ gimp_text_layout_position (GimpTextLayout *layout)
   logical.width = ceil ((gdouble) logical.width * layout->xres / layout->yres);
 
 #ifdef VERBOSE
-  g_print ("ink rect: %d x %d @ %d, %d\n",
-           ink.width, ink.height, ink.x, ink.y);
-  g_print ("logical rect: %d x %d @ %d, %d\n",
-           logical.width, logical.height, logical.x, logical.y);
+  g_printerr ("ink rect: %d x %d @ %d, %d\n",
+              ink.width, ink.height, ink.x, ink.y);
+  g_printerr ("logical rect: %d x %d @ %d, %d\n",
+              logical.width, logical.height, logical.x, logical.y);
 #endif
 
   if (ink.width < 1 || ink.height < 1)
@@ -285,6 +591,31 @@ gimp_text_layout_position (GimpTextLayout *layout)
   layout->extents.width  = x2 - x1;
   layout->extents.height = y2 - y1;
 
+  /* If the width of the layout is > 0, then the text-box is FIXED and
+   * the layout position should be offset if the alignment is centered
+   * or right-aligned, also adjust for RTL text direction.
+   */
+  if (pango_layout_get_width (layout->layout) > 0)
+    {
+      PangoAlignment    align    = pango_layout_get_alignment (layout->layout);
+      GimpTextDirection base_dir = layout->text->base_dir;
+      gint              width;
+
+      pango_layout_get_pixel_size (layout->layout, &width, NULL);
+
+      if ((base_dir == GIMP_TEXT_DIRECTION_LTR && align == PANGO_ALIGN_RIGHT) ||
+          (base_dir == GIMP_TEXT_DIRECTION_RTL && align == PANGO_ALIGN_LEFT))
+        {
+          layout->extents.x +=
+            PANGO_PIXELS (pango_layout_get_width (layout->layout)) - width;
+        }
+      else if (align == PANGO_ALIGN_CENTER)
+        {
+          layout->extents.x +=
+            (PANGO_PIXELS (pango_layout_get_width (layout->layout)) - width) / 2;
+       }
+    }
+
   if (layout->text->border > 0)
     {
       gint border = layout->text->border;
@@ -296,22 +627,41 @@ gimp_text_layout_position (GimpTextLayout *layout)
     }
 
 #ifdef VERBOSE
-  g_print ("layout extents: %d x %d @ %d, %d\n",
-           layout->extents.width, layout->extents.height,
-           layout->extents.x, layout->extents.y);
+  g_printerr ("layout extents: %d x %d @ %d, %d\n",
+              layout->extents.width, layout->extents.height,
+              layout->extents.x, layout->extents.y);
 #endif
 }
 
-
-static void
-gimp_text_ft2_subst_func (FcPattern *pattern,
-                          gpointer   data)
+static cairo_font_options_t *
+gimp_text_get_font_options (GimpText *text)
 {
-  GimpText *text = GIMP_TEXT (data);
+  cairo_font_options_t *options = cairo_font_options_create ();
 
-  FcPatternAddBool (pattern, FC_HINTING,   text->hinting);
-  FcPatternAddBool (pattern, FC_AUTOHINT,  text->autohint);
-  FcPatternAddBool (pattern, FC_ANTIALIAS, text->antialias);
+  cairo_font_options_set_antialias (options, (text->antialias ?
+                                              CAIRO_ANTIALIAS_DEFAULT :
+                                              CAIRO_ANTIALIAS_NONE));
+
+  switch (text->hint_style)
+    {
+    case GIMP_TEXT_HINT_STYLE_NONE:
+      cairo_font_options_set_hint_style (options, CAIRO_HINT_STYLE_NONE);
+      break;
+
+    case GIMP_TEXT_HINT_STYLE_SLIGHT:
+      cairo_font_options_set_hint_style (options, CAIRO_HINT_STYLE_SLIGHT);
+      break;
+
+    case GIMP_TEXT_HINT_STYLE_MEDIUM:
+      cairo_font_options_set_hint_style (options, CAIRO_HINT_STYLE_MEDIUM);
+      break;
+
+    case GIMP_TEXT_HINT_STYLE_FULL:
+      cairo_font_options_set_hint_style (options, CAIRO_HINT_STYLE_FULL);
+      break;
+    }
+
+  return options;
 }
 
 static PangoContext *
@@ -319,31 +669,23 @@ gimp_text_get_pango_context (GimpText *text,
                              gdouble   xres,
                              gdouble   yres)
 {
-  PangoContext    *context;
-  PangoFT2FontMap *fontmap;
+  PangoContext         *context;
+  PangoFontMap         *fontmap;
+  cairo_font_options_t *options;
 
-  fontmap = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
+  fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+  if (! fontmap)
+    g_error ("You are using a Pango that has been built against a cairo "
+             "that lacks the Freetype font backend");
 
-  pango_ft2_font_map_set_resolution (fontmap, xres, yres);
+  pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (fontmap), yres);
 
-  pango_ft2_font_map_set_default_substitute (fontmap,
-                                             gimp_text_ft2_subst_func,
-                                             g_object_ref (text),
-                                             (GDestroyNotify) g_object_unref);
-
-  context = pango_ft2_font_map_create_context (fontmap);
+  context = pango_font_map_create_context (fontmap);
   g_object_unref (fontmap);
 
-  /*  Workaround for bug #143542 (PangoFT2Fontmap leak),
-   *  see also bug #148997 (Text layer rendering leaks font file descriptor):
-   *
-   *  Calling pango_ft2_font_map_substitute_changed() causes the
-   *  font_map cache to be flushed, thereby removing the circular
-   *  reference that causes the leak.
-   */
-  g_object_weak_ref (G_OBJECT (context),
-                     (GWeakNotify) pango_ft2_font_map_substitute_changed,
-                     fontmap);
+  options = gimp_text_get_font_options (text);
+  pango_cairo_context_set_font_options (context, options);
+  cairo_font_options_destroy (options);
 
   if (text->language)
     pango_context_set_language (context,
@@ -354,58 +696,11 @@ gimp_text_get_pango_context (GimpText *text,
     case GIMP_TEXT_DIRECTION_LTR:
       pango_context_set_base_dir (context, PANGO_DIRECTION_LTR);
       break;
+
     case GIMP_TEXT_DIRECTION_RTL:
       pango_context_set_base_dir (context, PANGO_DIRECTION_RTL);
       break;
     }
 
   return context;
-}
-
-static gint
-gimp_text_layout_pixel_size (Gimp     *gimp,
-                             gdouble   value,
-                             GimpUnit  unit,
-                             gdouble   res)
-{
-  gdouble factor;
-
-  switch (unit)
-    {
-    case GIMP_UNIT_PIXEL:
-      return PANGO_SCALE * value;
-
-    default:
-      factor = _gimp_unit_get_factor (gimp, unit);
-      g_return_val_if_fail (factor > 0.0, 0);
-
-      return PANGO_SCALE * value * res / factor;
-    }
-}
-
-static gint
-gimp_text_layout_point_size (Gimp     *gimp,
-                             gdouble   value,
-                             GimpUnit  unit,
-                             gdouble   res)
-{
-  gdouble factor;
-
-  switch (unit)
-    {
-    case GIMP_UNIT_POINT:
-      return PANGO_SCALE * value;
-
-    case GIMP_UNIT_PIXEL:
-      g_return_val_if_fail (res > 0.0, 0);
-      return (PANGO_SCALE * value *
-              _gimp_unit_get_factor (gimp, GIMP_UNIT_POINT) / res);
-
-    default:
-      factor = _gimp_unit_get_factor (gimp, unit);
-      g_return_val_if_fail (factor > 0.0, 0);
-
-      return (PANGO_SCALE * value *
-              _gimp_unit_get_factor (gimp, GIMP_UNIT_POINT) / factor);
-    }
 }

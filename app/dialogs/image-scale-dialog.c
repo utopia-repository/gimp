@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -234,13 +234,13 @@ image_scale_confirm_large (ImageScaleDialog *dialog,
   GtkWidget *widget = image_scale_confirm_dialog (dialog);
   gchar     *size;
 
-  size = g_format_size_for_display (new_memsize);
+  size = g_format_size (new_memsize);
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (widget)->box,
                                      _("You are trying to create an image "
                                        "with a size of %s."), size);
   g_free (size);
 
-  size = g_format_size_for_display (max_memsize);
+  size = g_format_size (max_memsize);
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (widget)->box,
                              _("Scaling the image to the chosen size will "
                                "make it use more memory than what is "

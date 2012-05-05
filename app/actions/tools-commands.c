@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -99,160 +98,8 @@ tools_select_cmd_callback (GtkAction   *action,
 
   display = gimp_context_get_display (context);
 
-  if (display && display->image)
+  if (display && gimp_display_get_image (display))
     tool_manager_initialize_active (gimp, display);
-}
-
-void
-tools_toggle_visibility_cmd_callback (GtkAction *action,
-                                      gpointer   data)
-{
-  GimpContext  *context;
-  GimpToolInfo *tool_info;
-  return_if_no_context (context, data);
-
-  tool_info = gimp_context_get_tool (context);
-
-  if (tool_info)
-    {
-      gboolean active =
-        gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
-
-      if (active != tool_info->visible)
-        g_object_set (tool_info, "visible", active, NULL);
-    }
-}
-
-void
-tools_raise_cmd_callback (GtkAction *action,
-                          gpointer   data)
-{
-  GimpContext  *context;
-  GimpToolInfo *tool_info;
-  return_if_no_context (context, data);
-
-  tool_info = gimp_context_get_tool (context);
-
-  if (tool_info)
-    {
-      GimpContainer *container;
-      gint           index;
-
-      container = context->gimp->tool_info_list;
-      index     = gimp_container_get_child_index (container,
-                                                  GIMP_OBJECT (tool_info));
-
-      if (index > 0)
-        gimp_container_reorder (container, GIMP_OBJECT (tool_info), index - 1);
-    }
-}
-
-void
-tools_raise_to_top_cmd_callback (GtkAction *action,
-                                 gpointer   data)
-{
-  GimpContext  *context;
-  GimpToolInfo *tool_info;
-  return_if_no_context (context, data);
-
-  tool_info = gimp_context_get_tool (context);
-
-  if (tool_info)
-    {
-      GimpContainer *container;
-      gint           index;
-
-      container = context->gimp->tool_info_list;
-      index     = gimp_container_get_child_index (container,
-                                                  GIMP_OBJECT (tool_info));
-
-      if (index > 0)
-        gimp_container_reorder (container, GIMP_OBJECT (tool_info), 0);
-    }
-}
-
-void
-tools_lower_cmd_callback (GtkAction *action,
-                          gpointer   data)
-{
-  GimpContext  *context;
-  GimpToolInfo *tool_info;
-  return_if_no_context (context, data);
-
-  tool_info = gimp_context_get_tool (context);
-
-  if (tool_info)
-    {
-      GimpContainer *container;
-      gint           index;
-
-      container = context->gimp->tool_info_list;
-      index     = gimp_container_get_child_index (container,
-                                                  GIMP_OBJECT (tool_info));
-
-      if (index + 1 < gimp_container_num_children (container))
-        gimp_container_reorder (container, GIMP_OBJECT (tool_info), index + 1);
-    }
-}
-
-void
-tools_lower_to_bottom_cmd_callback (GtkAction *action,
-                                    gpointer   data)
-{
-  GimpContext  *context;
-  GimpToolInfo *tool_info;
-  return_if_no_context (context, data);
-
-  tool_info = gimp_context_get_tool (context);
-
-  if (tool_info)
-    {
-      GimpContainer *container;
-      gint           index;
-
-      container = context->gimp->tool_info_list;
-      index     = gimp_container_num_children (container) - 1;
-
-      index = index >= 0 ? index : 0;
-
-      gimp_container_reorder (container, GIMP_OBJECT (tool_info), index);
-    }
-}
-
-void
-tools_reset_cmd_callback (GtkAction *action,
-                          gpointer   data)
-{
-  GimpContext   *context;
-  GimpContainer *container;
-  GList         *list;
-  gint           i = 0;
-  return_if_no_context (context, data);
-
-  container = context->gimp->tool_info_list;
-
-  for (list = gimp_tools_get_default_order (context->gimp);
-       list;
-       list = g_list_next (list))
-    {
-      GimpObject *object = gimp_container_get_child_by_name (container,
-                                                             list->data);
-
-      if (object)
-        {
-          gboolean visible;
-
-          gimp_container_reorder (container, object, i);
-
-          visible =
-            GPOINTER_TO_INT (g_object_get_data (G_OBJECT (object),
-                                                "gimp-tool-default-visible"));
-
-          g_object_set (object, "visible", visible, NULL);
-
-          i++;
-        }
-    }
 }
 
 void
@@ -269,14 +116,36 @@ tools_color_average_radius_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_COLOR_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
                               "average-radius",
-                              1.0, 1.0, 10.0, FALSE);
+                              1.0, 1.0, 10.0, 0.1, FALSE);
     }
 }
 
 void
-tools_paint_brush_scale_cmd_callback (GtkAction *action,
+tools_paint_brush_size_cmd_callback (GtkAction *action,
+                                     gint       value,
+                                     gpointer   data)
+{
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
+  return_if_no_context (context, data);
+
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (tool_info->tool_options),
+                              "brush-size",
+                              0.1, 1.0, 10.0, 1.0, FALSE);
+    }
+}
+
+void
+tools_paint_brush_angle_cmd_callback (GtkAction *action,
                                       gint       value,
                                       gpointer   data)
 {
@@ -289,9 +158,31 @@ tools_paint_brush_scale_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
-                              "brush-scale",
-                              0.01, 0.1, 1.0, FALSE);
+                              "brush-angle",
+                              0.1, 1.0, 15.0, 0.1, TRUE);
+    }
+}
+
+void
+tools_paint_brush_aspect_ratio_cmd_callback (GtkAction *action,
+                                             gint       value,
+                                             gpointer   data)
+{
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
+  return_if_no_context (context, data);
+
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_PAINT_OPTIONS (tool_info->tool_options))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (tool_info->tool_options),
+                              "brush-aspect-ratio",
+                              0.01, 0.1, 1.0, 0.1, TRUE);
     }
 }
 
@@ -309,9 +200,10 @@ tools_ink_blob_size_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
                               "size",
-                              1.0, 1.0, 10.0, FALSE);
+                              1.0, 1.0, 10.0, 0.1, FALSE);
     }
 }
 
@@ -329,9 +221,10 @@ tools_ink_blob_aspect_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
                               "blob-aspect",
-                              1.0, 0.1, 1.0, FALSE);
+                              1.0, 0.1, 1.0, 0.1, FALSE);
     }
 }
 
@@ -349,9 +242,10 @@ tools_ink_blob_angle_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_INK_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
                               "blob-angle",
-                              1.0, 1.0, 15.0, TRUE);
+                              1.0, 1.0, 15.0, 0.1, TRUE);
     }
 }
 
@@ -369,9 +263,10 @@ tools_fg_select_brush_size_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_FOREGROUND_SELECT_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
                               "stroke-width",
-                              1.0, 4.0, 16.0, FALSE);
+                              1.0, 4.0, 16.0, 0.1, FALSE);
     }
 }
 
@@ -389,9 +284,10 @@ tools_transform_preview_opacity_cmd_callback (GtkAction *action,
   if (tool_info && GIMP_IS_TRANSFORM_OPTIONS (tool_info->tool_options))
     {
       action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
                               G_OBJECT (tool_info->tool_options),
                               "preview-opacity",
-                              0.01, 0.1, 0.5, FALSE);
+                              0.01, 0.1, 0.5, 0.1, FALSE);
     }
 }
 

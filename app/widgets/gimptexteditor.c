@@ -4,9 +4,9 @@
  * GimpTextEditor
  * Copyright (C) 2002-2003, 2008  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,12 +26,16 @@
 
 #include "widgets-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpmarshal.h"
+
+#include "text/gimptext.h"
 
 #include "gimphelp-ids.h"
 #include "gimpmenufactory.h"
-#include "gimplanguageentry.h"
+#include "gimptextbuffer.h"
 #include "gimptexteditor.h"
+#include "gimptextstyleeditor.h"
 #include "gimpuimanager.h"
 
 #include "gimp-intl.h"
@@ -129,16 +132,25 @@ gimp_text_editor_finalize (GObject *object)
 GtkWidget *
 gimp_text_editor_new (const gchar     *title,
                       GtkWindow       *parent,
-                      GimpMenuFactory *menu_factory)
+                      Gimp            *gimp,
+                      GimpMenuFactory *menu_factory,
+                      GimpText        *text,
+                      GimpTextBuffer  *text_buffer,
+                      gdouble          xres,
+                      gdouble          yres)
 {
   GimpTextEditor *editor;
-  GtkTextBuffer  *buffer;
+  GtkWidget      *content_area;
   GtkWidget      *toolbar;
+  GtkWidget      *style_editor;
   GtkWidget      *scrolled_window;
 
   g_return_val_if_fail (title != NULL, NULL);
   g_return_val_if_fail (parent == NULL || GTK_IS_WINDOW (parent), NULL);
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_MENU_FACTORY (menu_factory), NULL);
+  g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
+  g_return_val_if_fail (GIMP_IS_TEXT_BUFFER (text_buffer), NULL);
 
   editor = g_object_new (GIMP_TYPE_TEXT_EDITOR,
                          "title",         title,
@@ -155,68 +167,44 @@ gimp_text_editor_new (const gchar     *title,
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
 
+  g_signal_connect_object (text_buffer, "changed",
+                           G_CALLBACK (gimp_text_editor_text_changed),
+                           editor, 0);
+
   editor->ui_manager = gimp_menu_factory_manager_new (menu_factory,
                                                       "<TextEditor>",
                                                       editor, FALSE);
+
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (editor));
 
   toolbar = gtk_ui_manager_get_widget (GTK_UI_MANAGER (editor->ui_manager),
                                        "/text-editor-toolbar");
 
   if (toolbar)
     {
-      gtk_box_pack_start (GTK_BOX (GTK_DIALOG (editor)->vbox), toolbar,
-                          FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (content_area), toolbar, FALSE, FALSE, 0);
       gtk_widget_show (toolbar);
-
-      /*  language entry, disabled until it works  */
-      if (FALSE)
-        {
-          GtkToolItem *item;
-          GtkWidget   *hbox;
-          GtkWidget   *label;
-          GtkWidget   *entry;
-
-          item = gtk_tool_item_new ();
-          gtk_tool_item_set_expand (item, TRUE);
-          gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-          gtk_widget_show (GTK_WIDGET (item));
-
-          hbox = gtk_hbox_new (FALSE, 6);
-          gtk_container_add (GTK_CONTAINER (item), hbox);
-          gtk_widget_show (hbox);
-
-          label = gtk_label_new_with_mnemonic (_("_Language:"));
-          gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-          gtk_widget_show (label);
-
-          entry = gimp_language_entry_new ();
-          gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
-          gtk_widget_show (entry);
-
-          gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
-        }
     }
+
+  style_editor = gimp_text_style_editor_new (gimp, text, text_buffer,
+                                             gimp->fonts,
+                                             xres, yres);
+  gtk_box_pack_start (GTK_BOX (content_area), style_editor, FALSE, FALSE, 0);
+  gtk_widget_show (style_editor);
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
   gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 2);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (editor)->vbox),
-                      scrolled_window, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (content_area), scrolled_window, TRUE, TRUE, 0);
   gtk_widget_show (scrolled_window);
 
-  editor->view = gtk_text_view_new ();
+  editor->view = gtk_text_view_new_with_buffer (GTK_TEXT_BUFFER (text_buffer));
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (editor->view),
                                GTK_WRAP_WORD_CHAR);
   gtk_container_add (GTK_CONTAINER (scrolled_window), editor->view);
   gtk_widget_show (editor->view);
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
-
-  g_signal_connect (buffer, "changed",
-                    G_CALLBACK (gimp_text_editor_text_changed),
-                    editor);
 
   switch (editor->base_dir)
     {
@@ -232,8 +220,8 @@ gimp_text_editor_new (const gchar     *title,
 
   editor->font_toggle =
     gtk_check_button_new_with_mnemonic (_("_Use selected font"));
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (editor)->vbox),
-                      editor->font_toggle, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (content_area), editor->font_toggle,
+                      FALSE, FALSE, 0);
   gtk_widget_show (editor->font_toggle);
 
   g_signal_connect (editor->font_toggle, "toggled",
@@ -269,16 +257,12 @@ gchar *
 gimp_text_editor_get_text (GimpTextEditor *editor)
 {
   GtkTextBuffer *buffer;
-  GtkTextIter    start_iter;
-  GtkTextIter    end_iter;
 
   g_return_val_if_fail (GIMP_IS_TEXT_EDITOR (editor), NULL);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
 
-  gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
-
-  return gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, FALSE);
+  return gimp_text_buffer_get_text (GIMP_TEXT_BUFFER (buffer));
 }
 
 void

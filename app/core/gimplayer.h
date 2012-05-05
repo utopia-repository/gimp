@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_LAYER_H__
@@ -43,13 +42,12 @@ struct _GimpLayer
 
   GimpLayerMask        *mask;             /*  possible layer mask        */
 
+  GeglNode             *opacity_node;
+
   /*  Floating selections  */
   struct
   {
-    TileManager  *backing_store;      /*  for obscured regions           */
     GimpDrawable *drawable;           /*  floating sel is attached to    */
-    gboolean      initial;            /*  is fs composited yet?          */
-
     gboolean      boundary_known;     /*  is the current boundary valid  */
     BoundSeg     *segs;               /*  boundary of floating sel       */
     gint          num_segs;           /*  number of segs in boundary     */
@@ -98,6 +96,9 @@ GimpLayer     * gimp_layer_new_from_region     (PixelRegion          *region,
                                                 gdouble               opacity,
                                                 GimpLayerModeEffects  mode);
 
+GimpLayer     * gimp_layer_get_parent          (GimpLayer            *layer);
+
+GimpLayerMask * gimp_layer_get_mask            (const GimpLayer      *layer);
 GimpLayerMask * gimp_layer_create_mask         (const GimpLayer      *layer,
                                                 GimpAddMaskType       mask_type,
                                                 GimpChannel          *channel);
@@ -108,17 +109,17 @@ GimpLayerMask * gimp_layer_add_mask            (GimpLayer            *layer,
 void            gimp_layer_apply_mask          (GimpLayer            *layer,
                                                 GimpMaskApplyMode     mode,
                                                 gboolean              push_undo);
+
 void            gimp_layer_add_alpha           (GimpLayer            *layer);
 void            gimp_layer_flatten             (GimpLayer            *layer,
                                                 GimpContext          *context);
 
 void            gimp_layer_resize_to_image     (GimpLayer            *layer,
                                                 GimpContext          *context);
-BoundSeg      * gimp_layer_boundary            (GimpLayer            *layer,
-                                                gint                 *num_segs);
 
-GimpLayerMask * gimp_layer_get_mask            (const GimpLayer      *layer);
-
+GimpDrawable * gimp_layer_get_floating_sel_drawable (const GimpLayer *layer);
+void           gimp_layer_set_floating_sel_drawable (GimpLayer       *layer,
+                                                     GimpDrawable    *drawable);
 gboolean        gimp_layer_is_floating_sel     (const GimpLayer      *layer);
 
 void            gimp_layer_set_opacity         (GimpLayer            *layer,
@@ -135,6 +136,7 @@ void            gimp_layer_set_lock_alpha      (GimpLayer            *layer,
                                                 gboolean              lock_alpha,
                                                 gboolean              push_undo);
 gboolean        gimp_layer_get_lock_alpha      (const GimpLayer      *layer);
+gboolean        gimp_layer_can_lock_alpha      (const GimpLayer      *layer);
 
 
 #endif /* __GIMP_LAYER_H__ */

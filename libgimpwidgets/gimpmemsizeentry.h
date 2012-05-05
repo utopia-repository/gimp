@@ -4,10 +4,10 @@
  * gimpmemsizeentry.h
  * Copyright (C) 2000-2003  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_MEMSIZE_ENTRY_H__
 #define __GIMP_MEMSIZE_ENTRY_H__
@@ -38,22 +41,23 @@ typedef struct _GimpMemsizeEntryClass  GimpMemsizeEntryClass;
 
 struct _GimpMemsizeEntry
 {
-  GtkHBox            parent_instance;
+  GtkBox         parent_instance;
 
-  guint64            value;
-  guint64            lower;
-  guint64            upper;
+  /*< private >*/
+  guint64        value;
+  guint64        lower;
+  guint64        upper;
 
-  guint              shift;
+  guint          shift;
 
-  GtkAdjustment     *adjustment;
-  GtkWidget         *spinbutton;
-  GtkWidget         *menu;
+  GtkAdjustment *adjustment;
+  GtkWidget     *spinbutton;
+  GtkWidget     *menu;
 };
 
 struct _GimpMemsizeEntryClass
 {
-  GtkHBoxClass       parent_class;
+  GtkBoxClass  parent_class;
 
   void (* value_changed)  (GimpMemsizeEntry *entry);
 

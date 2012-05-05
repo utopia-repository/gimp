@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -47,9 +46,9 @@ typedef struct
 {
   GimpDisplayShell *shell;
   GimpZoomModel    *model;
-  GtkObject        *scale_adj;
-  GtkObject        *num_adj;
-  GtkObject        *denom_adj;
+  GtkAdjustment    *scale_adj;
+  GtkAdjustment    *num_adj;
+  GtkAdjustment    *denom_adj;
 } ScaleDialogData;
 
 
@@ -79,6 +78,7 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
 {
   ScaleDialogData *data;
   GimpImage       *image;
+  GtkWidget       *toplevel;
   GtkWidget       *hbox;
   GtkWidget       *table;
   GtkWidget       *spin;
@@ -99,7 +99,7 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
       shell->other_scale = gimp_zoom_model_get_factor (shell->zoom);
     }
 
-  image = shell->display->image;
+  image = gimp_display_get_image (shell->display);
 
   data = g_slice_new (ScaleDialogData);
 
@@ -136,8 +136,10 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
   g_object_add_weak_pointer (G_OBJECT (shell->scale_dialog),
                              (gpointer) &shell->scale_dialog);
 
+  toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+
   gtk_window_set_transient_for (GTK_WINDOW (shell->scale_dialog),
-                                GTK_WINDOW (shell));
+                                GTK_WINDOW (toplevel));
   gtk_window_set_destroy_with_parent (GTK_WINDOW (shell->scale_dialog), TRUE);
 
   g_signal_connect (shell->scale_dialog, "response",
@@ -148,20 +150,20 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (shell->scale_dialog)->vbox),
-                     table);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (shell->scale_dialog))),
+                      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   row = 0;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Zoom ratio:"), 0.0, 0.5,
                              hbox, 1, FALSE);
 
   gimp_zoom_model_get_fraction (data->model, &num, &denom);
 
-  spin = gimp_spin_button_new (&data->num_adj,
+  spin = gimp_spin_button_new ((GtkObject **) &data->num_adj,
                                num, 1, 256,
                                1, 8, 0, 1, 0);
   gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
@@ -172,19 +174,19 @@ gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  spin = gimp_spin_button_new (&data->denom_adj,
+  spin = gimp_spin_button_new ((GtkObject **) &data->denom_adj,
                                denom, 1, 256,
                                1, 8, 0, 1, 0);
   gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
   gtk_widget_show (spin);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                              _("Zoom:"), 0.0, 0.5,
                              hbox, 1, FALSE);
 
-  spin = gimp_spin_button_new (&data->scale_adj,
+  spin = gimp_spin_button_new ((GtkObject **) &data->scale_adj,
                                fabs (shell->other_scale) * 100,
                                100.0 / 256.0, 25600.0,
                                10, 50, 0, 1, 2);
@@ -215,7 +217,7 @@ gimp_display_shell_scale_dialog_response (GtkWidget       *widget,
     {
       gdouble scale;
 
-      scale = gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->scale_adj));
+      scale = gtk_adjustment_get_value (dialog->scale_adj);
 
       gimp_display_shell_scale (dialog->shell,
                                 GIMP_ZOOM_TO,
@@ -246,45 +248,41 @@ update_zoom_values (GtkAdjustment   *adj,
   gint    num, denom;
   gdouble scale;
 
-  g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->scale_adj),
-                                   G_CALLBACK (update_zoom_values),
+  g_signal_handlers_block_by_func (dialog->scale_adj,
+                                   update_zoom_values,
+                                   dialog);
+  g_signal_handlers_block_by_func (dialog->num_adj,
+                                   update_zoom_values,
+                                   dialog);
+  g_signal_handlers_block_by_func (dialog->denom_adj,
+                                   update_zoom_values,
                                    dialog);
 
-  g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->num_adj),
-                                   G_CALLBACK (update_zoom_values),
-                                   dialog);
-
-  g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->denom_adj),
-                                   G_CALLBACK (update_zoom_values),
-                                   dialog);
-
-  if (GTK_OBJECT (adj) == dialog->scale_adj)
+  if (adj == dialog->scale_adj)
     {
-      scale = gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->scale_adj));
+      scale = gtk_adjustment_get_value (dialog->scale_adj);
 
       gimp_zoom_model_zoom (dialog->model, GIMP_ZOOM_TO, scale / 100.0);
       gimp_zoom_model_get_fraction (dialog->model, &num, &denom);
 
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->num_adj), num);
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->denom_adj), denom);
+      gtk_adjustment_set_value (dialog->num_adj, num);
+      gtk_adjustment_set_value (dialog->denom_adj, denom);
     }
-  else   /* fraction adjustments */
+  else /* fraction adjustments */
     {
-      scale = (gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->num_adj)) /
-               gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->denom_adj)));
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->scale_adj),
-                                scale * 100);
+      scale = (gtk_adjustment_get_value (dialog->num_adj) /
+               gtk_adjustment_get_value (dialog->denom_adj));
+
+      gtk_adjustment_set_value (dialog->scale_adj, scale * 100);
     }
 
-  g_signal_handlers_unblock_by_func (GTK_ADJUSTMENT (dialog->scale_adj),
-                                     G_CALLBACK (update_zoom_values),
+  g_signal_handlers_unblock_by_func (dialog->scale_adj,
+                                     update_zoom_values,
                                      dialog);
-
-  g_signal_handlers_unblock_by_func (GTK_ADJUSTMENT (dialog->num_adj),
-                                     G_CALLBACK (update_zoom_values),
+  g_signal_handlers_unblock_by_func (dialog->num_adj,
+                                     update_zoom_values,
                                      dialog);
-
-  g_signal_handlers_unblock_by_func (GTK_ADJUSTMENT (dialog->denom_adj),
-                                     G_CALLBACK (update_zoom_values),
+  g_signal_handlers_unblock_by_func (dialog->denom_adj,
+                                     update_zoom_values,
                                      dialog);
 }

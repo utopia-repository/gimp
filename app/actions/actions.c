@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,24 +12,24 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "actions-types.h"
 
-#include "config/gimpguiconfig.h"
-
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
+#include "core/gimptooloptions.h"
+#include "core/gimptoolinfo.h"
 
 #include "widgets/gimpactionfactory.h"
 #include "widgets/gimpactiongroup.h"
@@ -37,12 +37,15 @@
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpdock.h"
 #include "widgets/gimpdockable.h"
+#include "widgets/gimpdockwindow.h"
 #include "widgets/gimpimageeditor.h"
 #include "widgets/gimpitemtreeview.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpimagewindow.h"
 #include "display/gimpnavigationeditor.h"
+#include "display/gimpstatusbar.h"
 
 #include "dialogs/dialogs.h"
 
@@ -61,6 +64,8 @@
 #include "dockable-actions.h"
 #include "documents-actions.h"
 #include "drawable-actions.h"
+#include "dynamics-actions.h"
+#include "dynamics-editor-actions.h"
 #include "edit-actions.h"
 #include "error-console-actions.h"
 #include "file-actions.h"
@@ -80,7 +85,10 @@
 #include "select-actions.h"
 #include "templates-actions.h"
 #include "text-editor-actions.h"
+#include "text-tool-actions.h"
 #include "tool-options-actions.h"
+#include "tool-presets-actions.h"
+#include "tool-preset-editor-actions.h"
 #include "tools-actions.h"
 #include "vectors-actions.h"
 #include "view-actions.h"
@@ -96,7 +104,7 @@ GimpActionFactory *global_action_factory = NULL;
 
 /*  private variables  */
 
-static GimpActionFactoryEntry action_groups[] =
+static const GimpActionFactoryEntry action_groups[] =
 {
   { "brush-editor", N_("Brush Editor"), GIMP_STOCK_BRUSH,
     brush_editor_actions_setup,
@@ -140,6 +148,12 @@ static GimpActionFactoryEntry action_groups[] =
   { "drawable", N_("Drawable"), GIMP_STOCK_LAYER,
     drawable_actions_setup,
     drawable_actions_update },
+  { "dynamics", N_("Paint Dynamics"), GIMP_STOCK_DYNAMICS,
+    dynamics_actions_setup,
+    dynamics_actions_update },
+  { "dynamics-editor", N_("Paint Dynamics Editor"), GIMP_STOCK_DYNAMICS,
+    dynamics_editor_actions_setup,
+    dynamics_editor_actions_update },
   { "edit", N_("Edit"), GTK_STOCK_EDIT,
     edit_actions_setup,
     edit_actions_update },
@@ -158,6 +172,12 @@ static GimpActionFactoryEntry action_groups[] =
   { "gradients", N_("Gradients"), GIMP_STOCK_GRADIENT,
     gradients_actions_setup,
     gradients_actions_update },
+  { "tool-presets", N_("Tool Presets"), GIMP_STOCK_TOOL_PRESET,
+    tool_presets_actions_setup,
+    tool_presets_actions_update },
+  { "tool-preset-editor", N_("Tool Preset Editor"), GIMP_STOCK_TOOL_PRESET,
+    tool_preset_editor_actions_setup,
+    tool_preset_editor_actions_update },
   { "help", N_("Help"), GTK_STOCK_HELP,
     help_actions_setup,
     help_actions_update },
@@ -194,6 +214,9 @@ static GimpActionFactoryEntry action_groups[] =
   { "templates", N_("Templates"), GIMP_STOCK_TEMPLATE,
     templates_actions_setup,
     templates_actions_update },
+  { "text-tool", N_("Text Tool"), GTK_STOCK_EDIT,
+    text_tool_actions_setup,
+    text_tool_actions_update },
   { "text-editor", N_("Text Editor"), GTK_STOCK_EDIT,
     text_editor_actions_setup,
     text_editor_actions_update },
@@ -220,16 +243,12 @@ static GimpActionFactoryEntry action_groups[] =
 void
 actions_init (Gimp *gimp)
 {
-  GimpGuiConfig *gui_config;
-  gint           i;
+  gint i;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (global_action_factory == NULL);
 
-  gui_config = GIMP_GUI_CONFIG (gimp->config);
-
-  global_action_factory = gimp_action_factory_new (gimp,
-                                                   gui_config->menu_mnemonics);
+  global_action_factory = gimp_action_factory_new (gimp);
 
   for (i = 0; i < G_N_ELEMENTS (action_groups); i++)
     gimp_action_factory_group_register (global_action_factory,
@@ -261,10 +280,17 @@ action_data_get_gimp (gpointer data)
 
   if (GIMP_IS_DISPLAY (data))
     return ((GimpDisplay *) data)->gimp;
+  else if (GIMP_IS_IMAGE_WINDOW (data))
+    {
+      GimpDisplayShell *shell = gimp_image_window_get_active_shell (data);
+      return shell ? shell->display->gimp : NULL;
+    }
   else if (GIMP_IS_GIMP (data))
     return data;
   else if (GIMP_IS_DOCK (data))
-    context = ((GimpDock *) data)->context;
+    context = gimp_dock_get_context (((GimpDock *) data));
+  else if (GIMP_IS_DOCK_WINDOW (data))
+    context = gimp_dock_window_get_context (((GimpDockWindow *) data));
   else if (GIMP_IS_CONTAINER_VIEW (data))
     context = gimp_container_view_get_context ((GimpContainerView *) data);
   else if (GIMP_IS_CONTAINER_EDITOR (data))
@@ -288,10 +314,17 @@ action_data_get_context (gpointer data)
 
   if (GIMP_IS_DISPLAY (data))
     return gimp_get_user_context (((GimpDisplay *) data)->gimp);
+  else if (GIMP_IS_IMAGE_WINDOW (data))
+    {
+      GimpDisplayShell *shell = gimp_image_window_get_active_shell (data);
+      return shell ? gimp_get_user_context (shell->display->gimp) : NULL;
+    }
   else if (GIMP_IS_GIMP (data))
     return gimp_get_user_context (data);
   else if (GIMP_IS_DOCK (data))
-    return ((GimpDock *) data)->context;
+    return gimp_dock_get_context ((GimpDock *) data);
+  else if (GIMP_IS_DOCK_WINDOW (data))
+    return gimp_dock_window_get_context (((GimpDockWindow *) data));
   else if (GIMP_IS_CONTAINER_VIEW (data))
     return gimp_container_view_get_context ((GimpContainerView *) data);
   else if (GIMP_IS_CONTAINER_EDITOR (data))
@@ -308,18 +341,26 @@ GimpImage *
 action_data_get_image (gpointer data)
 {
   GimpContext *context = NULL;
+  GimpDisplay *display = NULL;
 
   if (! data)
     return NULL;
 
   if (GIMP_IS_DISPLAY (data))
-    return ((GimpDisplay *) data)->image;
+    display = (GimpDisplay *) data;
+  else if (GIMP_IS_IMAGE_WINDOW (data))
+    {
+      GimpDisplayShell *shell = gimp_image_window_get_active_shell (data);
+      display = shell ? shell->display : NULL;
+    }
   else if (GIMP_IS_GIMP (data))
     context = gimp_get_user_context (data);
   else if (GIMP_IS_DOCK (data))
-    context = ((GimpDock *) data)->context;
+    context = gimp_dock_get_context ((GimpDock *) data);
+  else if (GIMP_IS_DOCK_WINDOW (data))
+    context = gimp_dock_window_get_context (((GimpDockWindow *) data));
   else if (GIMP_IS_ITEM_TREE_VIEW (data))
-    return ((GimpItemTreeView *) data)->image;
+    return gimp_item_tree_view_get_image ((GimpItemTreeView *) data);
   else if (GIMP_IS_IMAGE_EDITOR (data))
     return ((GimpImageEditor *) data)->image;
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
@@ -327,6 +368,8 @@ action_data_get_image (gpointer data)
 
   if (context)
     return gimp_context_get_image (context);
+  else if (display)
+    return gimp_display_get_image (display);
 
   return NULL;
 }
@@ -341,10 +384,17 @@ action_data_get_display (gpointer data)
 
   if (GIMP_IS_DISPLAY (data))
     return data;
+  else if (GIMP_IS_IMAGE_WINDOW (data))
+    {
+      GimpDisplayShell *shell = gimp_image_window_get_active_shell (data);
+      return shell ? shell->display : NULL;
+    }
   else if (GIMP_IS_GIMP (data))
     context = gimp_get_user_context (data);
   else if (GIMP_IS_DOCK (data))
-    context = ((GimpDock *) data)->context;
+    context = gimp_dock_get_context ((GimpDock *) data);
+  else if (GIMP_IS_DOCK_WINDOW (data))
+    context = gimp_dock_window_get_context (((GimpDockWindow *) data));
   else if (GIMP_IS_NAVIGATION_EDITOR (data))
     context = ((GimpNavigationEditor *) data)->context;
 
@@ -352,6 +402,20 @@ action_data_get_display (gpointer data)
     return gimp_context_get_display (context);
 
   return NULL;
+}
+
+GimpDisplayShell *
+action_data_get_shell (gpointer data)
+{
+  GimpDisplay      *display = NULL;
+  GimpDisplayShell *shell   = NULL;
+
+  display = action_data_get_display (data);
+
+  if (display)
+    shell = gimp_display_get_shell (display);
+
+  return shell;
 }
 
 GtkWidget *
@@ -370,9 +434,25 @@ action_data_get_widget (gpointer data)
     return data;
 
   if (display)
-    return display->shell;
+    return GTK_WIDGET (gimp_display_get_shell (display));
 
   return dialogs_get_toolbox ();
+}
+
+gint
+action_data_sel_count (gpointer data)
+{
+  if (GIMP_IS_CONTAINER_EDITOR (data))
+    {
+      GimpContainerEditor  *editor;
+
+      editor = GIMP_CONTAINER_EDITOR (data);
+      return gimp_container_view_get_selected (editor->view, NULL);
+    }
+  else
+    {
+      return 0;
+    }
 }
 
 gdouble
@@ -461,15 +541,18 @@ action_select_value (GimpActionSelectType  select_type,
 
 void
 action_select_property (GimpActionSelectType  select_type,
+                        GimpDisplay          *display,
                         GObject              *object,
                         const gchar          *property_name,
                         gdouble               small_inc,
                         gdouble               inc,
                         gdouble               skip_inc,
+                        gdouble               delta_factor,
                         gboolean              wrap)
 {
   GParamSpec *pspec;
 
+  g_return_if_fail (display == NULL || GIMP_IS_DISPLAY (display));
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (property_name != NULL);
 
@@ -487,9 +570,20 @@ action_select_property (GimpActionSelectType  select_type,
                                    G_PARAM_SPEC_DOUBLE (pspec)->minimum,
                                    G_PARAM_SPEC_DOUBLE (pspec)->maximum,
                                    G_PARAM_SPEC_DOUBLE (pspec)->default_value,
-                                   small_inc, inc, skip_inc, 0, wrap);
+                                   small_inc, inc, skip_inc, delta_factor, wrap);
 
       g_object_set (object, property_name, value, NULL);
+
+      if (display)
+        {
+          const gchar *blurb = g_param_spec_get_blurb (pspec);
+
+          if (blurb)
+            {
+              /*  value description and new value shown in the status bar  */
+              action_message (display, object, _("%s: %.2f"), blurb, value);
+            }
+        }
     }
   else if (G_IS_PARAM_SPEC_INT (pspec))
     {
@@ -502,9 +596,20 @@ action_select_property (GimpActionSelectType  select_type,
                                    G_PARAM_SPEC_INT (pspec)->minimum,
                                    G_PARAM_SPEC_INT (pspec)->maximum,
                                    G_PARAM_SPEC_INT (pspec)->default_value,
-                                   small_inc, inc, skip_inc, 0, wrap);
+                                   small_inc, inc, skip_inc, delta_factor, wrap);
 
       g_object_set (object, property_name, value, NULL);
+
+      if (display)
+        {
+          const gchar *blurb = g_param_spec_get_blurb (pspec);
+
+          if (blurb)
+            {
+              /*  value description and new value shown in the status bar  */
+              action_message (display, object, _("%s: %d"), blurb, value);
+            }
+        }
     }
   else
     {
@@ -526,7 +631,7 @@ action_select_object (GimpActionSelectType  select_type,
   if (! current)
     return NULL;
 
-  n_children = gimp_container_num_children (container);
+  n_children = gimp_container_get_n_children (container);
 
   if (n_children == 0)
     return NULL;
@@ -568,4 +673,32 @@ action_select_object (GimpActionSelectType  select_type,
   select_index = CLAMP (select_index, 0, n_children - 1);
 
   return gimp_container_get_child_by_index (container, select_index);
+}
+
+void
+action_message (GimpDisplay *display,
+                GObject     *object,
+                const gchar *format,
+                ...)
+{
+  GimpDisplayShell *shell     = gimp_display_get_shell (display);
+  GimpStatusbar    *statusbar = gimp_display_shell_get_statusbar (shell);
+  const gchar      *stock_id  = NULL;
+  va_list           args;
+
+  if (GIMP_IS_TOOL_OPTIONS (object))
+    {
+      GimpToolInfo *tool_info = GIMP_TOOL_OPTIONS (object)->tool_info;
+
+      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_info));
+    }
+  else if (GIMP_IS_VIEWABLE (object))
+    {
+      stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (object));
+    }
+
+  va_start (args, format);
+  gimp_statusbar_push_temp_valist (statusbar, GIMP_MESSAGE_INFO,
+                                   stock_id, format, args);
+  va_end (args);
 }

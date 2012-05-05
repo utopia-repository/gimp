@@ -7,10 +7,10 @@
  * Copyright (C) 2001-2003  Sven Neumann <sven@gimp.org>
  *                          Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,10 +18,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_THUMB_H_INSIDE__) && !defined (GIMP_THUMB_COMPILATION)
+#error "Only <libgimpthumb/gimpthumb.h> can be included directly."
+#endif
 
 #ifndef __GIMP_THUMB_ERROR_H__
 #define __GIMP_THUMB_ERROR_H__
@@ -29,14 +32,28 @@
 G_BEGIN_DECLS
 
 
+/**
+ * GimpThumbError:
+ * @GIMP_THUMB_ERROR_OPEN:         there was a problem opening the file
+ * @GIMP_THUMB_ERROR_OPEN_ENOENT:  the file doesn't exist
+ * @GIMP_THUMB_ERROR_MKDIR:        there was a problem creating a directory
+ *
+ * These are the possible error codes used when a #GError is set by
+ * libgimpthumb.
+ **/
 typedef enum
 {
-  GIMP_THUMB_ERROR_OPEN,         /*  open failed                            */
-  GIMP_THUMB_ERROR_OPEN_ENOENT,  /*  file does not exist                    */
-  GIMP_THUMB_ERROR_MKDIR         /*  mkdir failed                           */
+  GIMP_THUMB_ERROR_OPEN,
+  GIMP_THUMB_ERROR_OPEN_ENOENT,
+  GIMP_THUMB_ERROR_MKDIR
 } GimpThumbError;
 
 
+/**
+ * GIMP_THUMB_ERROR:
+ *
+ * Identifier for the libgimpthumb error domain.
+ **/
 #define GIMP_THUMB_ERROR (gimp_thumb_error_quark ())
 
 GQuark  gimp_thumb_error_quark (void) G_GNUC_CONST;

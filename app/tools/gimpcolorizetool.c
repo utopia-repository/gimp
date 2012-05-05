@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,6 +32,7 @@
 #include "gegl/gimpcolorizeconfig.h"
 
 #include "core/gimpdrawable.h"
+#include "core/gimperror.h"
 #include "core/gimpimage.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -106,7 +106,7 @@ gimp_colorize_tool_class_init (GimpColorizeToolClass *klass)
 
   tool_class->initialize             = gimp_colorize_tool_initialize;
 
-  im_tool_class->shell_desc          = _("Colorize the Image");
+  im_tool_class->dialog_desc         = _("Colorize the Image");
   im_tool_class->settings_name       = "colorize";
   im_tool_class->import_dialog_title = _("Import Colorize Settings");
   im_tool_class->export_dialog_title = _("Export Colorize Settings");
@@ -145,21 +145,25 @@ gimp_colorize_tool_initialize (GimpTool     *tool,
                                GError      **error)
 {
   GimpColorizeTool *col_tool = GIMP_COLORIZE_TOOL (tool);
-  GimpDrawable     *drawable = gimp_image_get_active_drawable (display->image);
+  GimpImage        *image    = gimp_display_get_image (display);
+  GimpDrawable     *drawable = gimp_image_get_active_drawable (image);
 
   if (! drawable)
     return FALSE;
 
   if (! gimp_drawable_is_rgb (drawable))
     {
-      g_set_error (error, 0, 0,
-                   _("Colorize operates only on RGB color layers."));
+      g_set_error_literal (error, GIMP_ERROR, GIMP_FAILED,
+			   _("Colorize operates only on RGB color layers."));
       return FALSE;
     }
 
   gimp_config_reset (GIMP_CONFIG (col_tool->config));
 
-  GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error);
+  if (! GIMP_TOOL_CLASS (parent_class)->initialize (tool, display, error))
+    {
+      return FALSE;
+    }
 
   gimp_image_map_tool_preview (GIMP_IMAGE_MAP_TOOL (tool));
 
@@ -174,7 +178,7 @@ gimp_colorize_tool_get_operation (GimpImageMapTool  *im_tool,
   GeglNode         *node;
 
   node = g_object_new (GEGL_TYPE_NODE,
-                       "operation", "gimp-colorize",
+                       "operation", "gimp:colorize",
                        NULL);
 
   col_tool->config = g_object_new (GIMP_TYPE_COLORIZE_CONFIG, NULL);
@@ -211,7 +215,6 @@ gimp_colorize_tool_dialog (GimpImageMapTool *image_map_tool)
   GimpColorizeTool *col_tool = GIMP_COLORIZE_TOOL (image_map_tool);
   GtkWidget        *main_vbox;
   GtkWidget        *table;
-  GtkWidget        *slider;
   GtkWidget        *frame;
   GtkWidget        *vbox;
   GtkObject        *data;
@@ -223,7 +226,7 @@ gimp_colorize_tool_dialog (GimpImageMapTool *image_map_tool)
   gtk_widget_show (frame);
 
   /*  The table containing sliders  */
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -241,8 +244,6 @@ gimp_colorize_tool_dialog (GimpImageMapTool *image_map_tool)
                                TRUE, 0.0, 0.0,
                                NULL, NULL);
   col_tool->hue_data = GTK_ADJUSTMENT (data);
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
 
   g_signal_connect (data, "value-changed",
                     G_CALLBACK (colorize_hue_changed),
@@ -256,8 +257,6 @@ gimp_colorize_tool_dialog (GimpImageMapTool *image_map_tool)
                                TRUE, 0.0, 0.0,
                                NULL, NULL);
   col_tool->saturation_data = GTK_ADJUSTMENT (data);
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
 
   g_signal_connect (data, "value-changed",
                     G_CALLBACK (colorize_saturation_changed),
@@ -271,8 +270,6 @@ gimp_colorize_tool_dialog (GimpImageMapTool *image_map_tool)
                                TRUE, 0.0, 0.0,
                                NULL, NULL);
   col_tool->lightness_data = GTK_ADJUSTMENT (data);
-  slider = GIMP_SCALE_ENTRY_SCALE (data);
-  gtk_range_set_update_policy (GTK_RANGE (slider), GTK_UPDATE_CONTINUOUS);
 
   g_signal_connect (data, "value-changed",
                     G_CALLBACK (colorize_lightness_changed),

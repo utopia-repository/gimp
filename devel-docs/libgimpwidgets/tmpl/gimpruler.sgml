@@ -128,3 +128,21 @@ GimpRuler
 @max_size: 
 
 
+<!-- ##### FUNCTION gimp_ruler_add_track_widget ##### -->
+<para>
+
+</para>
+
+@ruler: 
+@widget: 
+
+
+<!-- ##### FUNCTION gimp_ruler_remove_track_widget ##### -->
+<para>
+
+</para>
+
+@ruler: 
+@widget: 
+
+

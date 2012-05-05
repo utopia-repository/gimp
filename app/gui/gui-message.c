@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -41,15 +40,15 @@
 #include "widgets/gimpprogressdialog.h"
 #include "widgets/gimpsessioninfo.h"
 #include "widgets/gimpwidgets-utils.h"
-
-#include "dialogs/dialogs.h"
+#include "widgets/gimpwindowstrategy.h"
 
 #include "gui-message.h"
 
 #include "gimp-intl.h"
 
 
-static gboolean  gui_message_error_console (GimpMessageSeverity  severity,
+static gboolean  gui_message_error_console (Gimp                *gimp,
+                                            GimpMessageSeverity  severity,
                                             const gchar         *domain,
                                             const gchar         *message);
 static gboolean  gui_message_error_dialog  (Gimp                *gimp,
@@ -72,7 +71,7 @@ gui_message (Gimp                *gimp,
   switch (gimp->message_handler)
     {
     case GIMP_ERROR_CONSOLE:
-      if (gui_message_error_console (severity, domain, message))
+      if (gui_message_error_console (gimp, severity, domain, message))
         return;
 
       gimp->message_handler = GIMP_MESSAGE_BOX;
@@ -92,7 +91,8 @@ gui_message (Gimp                *gimp,
 }
 
 static gboolean
-gui_message_error_console (GimpMessageSeverity  severity,
+gui_message_error_console (Gimp                *gimp,
+                           GimpMessageSeverity  severity,
                            const gchar         *domain,
                            const gchar         *message)
 {
@@ -101,19 +101,20 @@ gui_message_error_console (GimpMessageSeverity  severity,
   /* try to avoid raising the error console for not so severe messages */
   if (severity < GIMP_MESSAGE_ERROR)
     {
-      GimpSessionInfo *info;
-
-      info = gimp_dialog_factory_find_session_info (global_dock_factory,
-                                                    "gimp-error-console");
-
-      if (info && GIMP_IS_DOCKABLE (info->widget))
-        dockable = info->widget;
+      GtkWidget *widget =
+        gimp_dialog_factory_find_widget (gimp_dialog_factory_get_singleton (),
+                                         "gimp-error-console");
+      if (GIMP_IS_DOCKABLE (widget))
+        dockable = widget;
     }
 
   if (! dockable)
-    dockable = gimp_dialog_factory_dialog_raise (global_dock_factory,
+    dockable =
+      gimp_window_strategy_show_dockable_dialog (GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)),
+                                                 gimp,
+                                                 gimp_dialog_factory_get_singleton (),
                                                  gdk_screen_get_default (),
-                                                 "gimp-error-console", -1);
+                                                 "gimp-error-console");
 
   if (dockable)
     {
@@ -163,10 +164,10 @@ progress_error_dialog (GimpProgress *progress)
         }
       else
         {
-          guint32 window = gimp_progress_get_window (progress);
+          guint32 window_id = gimp_progress_get_window_id (progress);
 
-          if (window)
-            gimp_window_set_transient_for (GTK_WINDOW (dialog), window);
+          if (window_id)
+            gimp_window_set_transient_for (GTK_WINDOW (dialog), window_id);
         }
     }
 
@@ -176,8 +177,9 @@ progress_error_dialog (GimpProgress *progress)
 static GtkWidget *
 global_error_dialog (void)
 {
-  return gimp_dialog_factory_dialog_new (global_dialog_factory,
+  return gimp_dialog_factory_dialog_new (gimp_dialog_factory_get_singleton (),
                                          gdk_screen_get_default (),
+                                         NULL /*ui_manager*/,
                                          "gimp-error-dialog", -1,
                                          FALSE);
 }

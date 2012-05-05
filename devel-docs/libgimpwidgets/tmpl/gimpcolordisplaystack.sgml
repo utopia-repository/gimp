@@ -134,3 +134,12 @@ GimpColorDisplayStack
 @bpl: 
 
 
+<!-- ##### FUNCTION gimp_color_display_stack_convert_surface ##### -->
+<para>
+
+</para>
+
+@stack: 
+@surface: 
+
+

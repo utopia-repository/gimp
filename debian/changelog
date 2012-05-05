@@ -6,6 +6,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
     X Mourse Cursor and others), as per configure.ac.
   * Build depend on unversioned libpng-dev (closes: #662347).
   * Don't pass --without-hal to configure, it's obsolete.
+  * Build-Depend on gnome-pkg-tools and include check-dist.mk.
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 12:50:49 +0200
 

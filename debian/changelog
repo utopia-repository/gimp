@@ -17,6 +17,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Rename fix_gimp4hurd.patch to 01_hurd_ftbfs.patch.
   * Drop part of 01_hurd_ftbfs.patch which has been applied upstream, and
     add a patch header.
+  * Update watch file so it works for any new stable release directories.
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 12:50:49 +0200
 

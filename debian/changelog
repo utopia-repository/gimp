@@ -14,6 +14,9 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
     shebang.
   * Drop 01_debian_gimprc.patch, obsolete. The web-browser config option
     is now gone and by default gimp will open help internally.
+  * Rename fix_gimp4hurd.patch to 01_hurd_ftbfs.patch.
+  * Drop part of 01_hurd_ftbfs.patch which has been applied upstream, and
+    add a patch header.
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 12:50:49 +0200
 

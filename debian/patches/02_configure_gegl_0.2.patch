@@ -1,0 +1,13 @@
+Index: gimp/configure.in
+===================================================================
+--- gimp.orig/configure.in	2012-05-06 16:14:09.212177214 +0200
++++ gimp/configure.in	2012-05-06 16:20:07.512190494 +0200
+@@ -443,7 +443,7 @@
+ ###############################
+ 
+ PKG_CHECK_MODULES(BABL, babl >= babl_required_version)
+-PKG_CHECK_MODULES(GEGL, gegl >= gegl_required_version)
++PKG_CHECK_MODULES(GEGL, gegl-0.2 >= gegl_required_version)
+ 
+ AM_PATH_GLIB_2_0(glib_required_version, :,
+   AC_MSG_ERROR(Test for GLIB failed. See the file 'INSTALL' for help.),

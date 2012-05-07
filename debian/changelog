@@ -27,6 +27,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
     the distribution.
   * Add myself to Uploaders.
   * Configure with --disable-static and stop distributing .a files.
+  * Update libgimp2.0.symbols.
 
  -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 17:41:01 +0200
 

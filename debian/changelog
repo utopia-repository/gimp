@@ -19,7 +19,8 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Drop part of 01_hurd_ftbfs.patch which has been applied upstream, and
     add a patch header.
   * Update watch file so it works for any new stable release directories.
-  * Rewrite copyright file in machine-readable format 1.0.
+  * Rewrite copyright file in machine-readable format 1.0. The GIMP is now
+    licensed under the (L)GPLv3+.
   * Pass -- -V -c4 to dh_makeshlibs.
   * Rename all .files files to .install, and stop calling dh_movefiles.
   * Rename BUILDDIR to “builddir”, as “build” is now a real directory in

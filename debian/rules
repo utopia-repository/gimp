@@ -20,8 +20,10 @@ LDFLAGS = -Wl,--as-needed
 # will just end up depending on the pythonX.X package, and we don't want a
 # version mismatch between the installed python binary and the private python
 # modules.
-DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary \
-    --enable-gtk-doc PYTHON=/usr/bin/`pyversions -d`
+DEB_CONFIGURE_EXTRA_FLAGS := --disable-static \
+			--enable-python \
+			--enable-default-binary \
+			--enable-gtk-doc PYTHON=/usr/bin/`pyversions -d`
 DEB_BUILDDIR := $(DEB_SRCDIR)/builddir
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib

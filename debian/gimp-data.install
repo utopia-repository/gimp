@@ -1,4 +1,4 @@
-etc/
+debian/tmp/etc/
 usr/share/gimp/
 usr/share/icons/
 usr/share/locale/*/LC_MESSAGES/gimp??.mo

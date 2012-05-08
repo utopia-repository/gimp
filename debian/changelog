@@ -1,4 +1,4 @@
-gimp (2.8.0-1) UNRELEASED; urgency=low
+gimp (2.8.0-1) experimental; urgency=low
 
   * New upstream stable release (closes: #644182, #671399).
     - “Create” menu item is now accessible via a mnemonic (closes: #610579).
@@ -33,7 +33,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
     proper cross-reference links in generated gtk-doc API documentation.
   * Bump Standards-Version to 3.9.3, with no further changes.
 
- -- Jordi Mallach <jordi@debian.org>  Tue, 08 May 2012 10:52:05 +0200
+ -- Jordi Mallach <jordi@debian.org>  Tue, 08 May 2012 18:50:03 +0200
 
 gimp (2.6.12-1) unstable; urgency=low
 

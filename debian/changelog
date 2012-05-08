@@ -31,6 +31,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Update libgimp2.0.symbols.
   * Build-Depend on GTK-2.0, GDK-Pixbuf and GLib -doc packages to ensure
     proper cross-reference links in generated gtk-doc API documentation.
+  * Bump Standards-Version to 3.9.3, with no further changes.
 
  -- Jordi Mallach <jordi@debian.org>  Tue, 08 May 2012 10:52:05 +0200
 

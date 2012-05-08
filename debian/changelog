@@ -2,6 +2,7 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
 
   * New upstream stable release (closes: #644182, #671399).
     - “Create” menu item is now accessible via a mnemonic (closes: #610579).
+    - fixes build error with GEGL 0.2 (closes: #671982).
   * Massive update of Build-Depends, to ensure all new features are
     enabled (bzip2 compression, JPEG 2000, Ghostscript, PDF export, GUdev,
     X Mourse Cursor and others), as per configure.ac.

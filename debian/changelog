@@ -28,8 +28,10 @@ gimp (2.8.0-1) UNRELEASED; urgency=low
   * Add myself to Uploaders.
   * Configure with --disable-static and stop distributing .a files.
   * Update libgimp2.0.symbols.
+  * Build-Depend on GTK-2.0, GDK-Pixbuf and GLib -doc packages to ensure
+    proper cross-reference links in generated gtk-doc API documentation.
 
- -- Jordi Mallach <jordi@debian.org>  Sat, 05 May 2012 17:41:01 +0200
+ -- Jordi Mallach <jordi@debian.org>  Tue, 08 May 2012 10:52:05 +0200
 
 gimp (2.6.12-1) unstable; urgency=low
 

@@ -183,10 +183,10 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_drawable_get_linked@Base 2.4.0
  gimp_drawable_get_name@Base 2.4.0
  gimp_drawable_get_pixel@Base 2.4.0
- gimp_drawable_get_sub_thumbnail@Base 2.8.0
+ gimp_drawable_get_sub_thumbnail@Base 2.4.0
  gimp_drawable_get_sub_thumbnail_data@Base 2.4.0
  gimp_drawable_get_tattoo@Base 2.4.0
- gimp_drawable_get_thumbnail@Base 2.8.0
+ gimp_drawable_get_thumbnail@Base 2.4.0
  gimp_drawable_get_thumbnail_data@Base 2.4.0
  gimp_drawable_get_tile2@Base 2.4.0
  gimp_drawable_get_tile@Base 2.4.0
@@ -406,7 +406,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_image_get_resolution@Base 2.4.0
  gimp_image_get_selection@Base 2.4.0
  gimp_image_get_tattoo_state@Base 2.4.0
- gimp_image_get_thumbnail@Base 2.8.0
+ gimp_image_get_thumbnail@Base 2.4.0
  gimp_image_get_thumbnail_data@Base 2.4.0
  gimp_image_get_unit@Base 2.4.0
  gimp_image_get_uri@Base 2.8.0
@@ -551,7 +551,7 @@ libgimp-2.0.so.0 libgimp2.0 #MINVER#
  gimp_layer_mode_effects_get_type@Base 2.4.0
  gimp_layer_new@Base 2.4.0
  gimp_layer_new_from_drawable@Base 2.4.0
- gimp_layer_new_from_pixbuf@Base 2.8.0
+ gimp_layer_new_from_pixbuf@Base 2.4.0
  gimp_layer_new_from_surface@Base 2.8.0
  gimp_layer_new_from_visible@Base 2.6.0
  gimp_layer_remove_mask@Base 2.4.0
@@ -998,9 +998,9 @@ libgimpcolor-2.0.so.0 libgimp2.0 #MINVER#
  gimp_bilinear_pixels_8@Base 2.4.0
  gimp_bilinear_rgb@Base 2.4.0
  gimp_bilinear_rgba@Base 2.4.0
- gimp_cairo_checkerboard_create@Base 2.8.0
- gimp_cairo_set_source_rgb@Base 2.8.0
- gimp_cairo_set_source_rgba@Base 2.8.0
+ gimp_cairo_checkerboard_create@Base 2.6.0
+ gimp_cairo_set_source_rgb@Base 2.6.0
+ gimp_cairo_set_source_rgba@Base 2.6.0
  gimp_cmyk_get_type@Base 2.4.0
  gimp_cmyk_get_uchar@Base 2.4.0
  gimp_cmyk_set@Base 2.4.0
@@ -1279,8 +1279,6 @@ libgimpui-2.0.so.0 libgimp2.0 #MINVER#
  gimp_channel_menu_new@Base 2.4.0
  gimp_drawable_combo_box_get_type@Base 2.4.0
  gimp_drawable_combo_box_new@Base 2.4.0
-#MISSING: 2.8.0-1# gimp_drawable_get_sub_thumbnail@Base 2.4.0
-#MISSING: 2.8.0-1# gimp_drawable_get_thumbnail@Base 2.4.0
  gimp_drawable_menu_new@Base 2.4.0
  gimp_drawable_preview_draw_region@Base 2.4.0
  gimp_drawable_preview_get_drawable@Base 2.4.0
@@ -1305,12 +1303,10 @@ libgimpui-2.0.so.0 libgimp2.0 #MINVER#
  gimp_gradient_select_widget_set@Base 2.4.0
  gimp_image_combo_box_get_type@Base 2.4.0
  gimp_image_combo_box_new@Base 2.4.0
-#MISSING: 2.8.0-1# gimp_image_get_thumbnail@Base 2.4.0
  gimp_image_menu_new@Base 2.4.0
  gimp_layer_combo_box_get_type@Base 2.4.0
  gimp_layer_combo_box_new@Base 2.4.0
  gimp_layer_menu_new@Base 2.4.0
-#MISSING: 2.8.0-1# gimp_layer_new_from_pixbuf@Base 2.4.0
  gimp_palette_select_button_get_palette@Base 2.4.0
  gimp_palette_select_button_get_type@Base 2.4.0
  gimp_palette_select_button_new@Base 2.4.0
@@ -1371,10 +1367,7 @@ libgimpwidgets-2.0.so.0 libgimp2.0 #MINVER#
  gimp_button_extended_clicked@Base 2.4.0
  gimp_button_get_type@Base 2.4.0
  gimp_button_new@Base 2.4.0
-#MISSING: 2.8.0-1# gimp_cairo_checkerboard_create@Base 2.6.0
  gimp_cairo_set_focus_line_pattern@Base 2.6.0
-#MISSING: 2.8.0-1# gimp_cairo_set_source_rgb@Base 2.6.0
-#MISSING: 2.8.0-1# gimp_cairo_set_source_rgba@Base 2.6.0
  gimp_cairo_surface_create_from_pixbuf@Base 2.6.0
  gimp_cell_renderer_color_get_type@Base 2.4.0
  gimp_cell_renderer_color_new@Base 2.4.0

@@ -88,6 +88,8 @@ Suggests: gimp-help-en | gimp-help,
           gimp-data-extras,
           gvfs-backends,
           libasound2
+Breaks: gimp-plugin-registry (<< 4.20120506)
+Replaces: gimp-plugin-registry (<< 4.20120506)
 Description: The GNU Image Manipulation Program
  GIMP is an advanced picture editor. You can use it to edit, enhance, and
  retouch photos and scans, create drawings, and make your own images.

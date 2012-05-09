@@ -1,3 +1,12 @@
+gimp (2.8.0-2) UNRELEASED; urgency=low
+
+  * Use a shlibs.local file to force a dependency on libbabl >= 0.1.10.
+    GIMP has an internal check for this version and will refuse to start
+    otherwise, as it relies on some optimisations made to babl in
+    0.1.8 → 0.1.10 (closes: #672247).
+
+ -- Jordi Mallach <jordi@debian.org>  Wed, 09 May 2012 18:06:19 +0200
+
 gimp (2.8.0-1) experimental; urgency=low
 
   * New upstream stable release (closes: #644182, #671399).

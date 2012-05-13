@@ -1,12 +1,3 @@
-gimp (2.6.12-2) unstable; urgency=low
-
-  * Add myself to Uploaders.
-  * 02_configure_gegl_0.2.patch: change pkg-config module name to match
-    change in GEGL 0.2, and bump gegl build dep accordingly.
-  * Build-Depend and include dh-autoreconf for the above change.
-
- -- Jordi Mallach <jordi@debian.org>  Sun, 06 May 2012 16:14:22 +0200
-
 gimp (2.6.12-1) unstable; urgency=low
 
   * Imported Upstream version 2.6.12

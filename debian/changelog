@@ -1,4 +1,4 @@
-gimp (2.8.0-2) UNRELEASED; urgency=low
+gimp (2.8.0-2) unstable; urgency=low
 
   [ Jordi Mallach ]
   * Use a shlibs.local file to force a dependency on libbabl >= 0.1.10.
@@ -10,7 +10,7 @@ gimp (2.8.0-2) UNRELEASED; urgency=low
   * Add Breaks/Replaces on old gimp-plugin-registry because of conflicting
     file-xmc plugin.
 
- -- Jordi Mallach <jordi@debian.org>  Wed, 09 May 2012 18:06:19 +0200
+ -- Jordi Mallach <jordi@debian.org>  Sun, 13 May 2012 10:28:42 +0200
 
 gimp (2.8.0-1) experimental; urgency=low
 

@@ -2,11 +2,10 @@
 gimplayer
 
 <!-- ##### SECTION Short_Description ##### -->
-Operations on a single layer.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Operations on a single layer.
 
 </para>
 
@@ -54,6 +53,43 @@ Operations on a single layer.
 @image_ID: 
 @dest_image_ID: 
 @name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_layer_new_from_pixbuf ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@pixbuf: 
+@opacity: 
+@mode: 
+@progress_start: 
+@progress_end: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_layer_new_from_surface ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@surface: 
+@progress_start: 
+@progress_end: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_layer_group_new ##### -->
+<para>
+
+</para>
+
+@image_ID: 
 @Returns: 
 
 

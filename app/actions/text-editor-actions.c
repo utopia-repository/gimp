@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -41,14 +40,14 @@ static const GimpActionEntry text_editor_actions[] =
     GIMP_HELP_TEXT_EDITOR_DIALOG },
 
   { "text-editor-load", GTK_STOCK_OPEN,
-    N_("Open"), "",
-    N_("Load text from file"),
+    NC_("text-editor-action", "Open"), "",
+    NC_("text-editor-action", "Load text from file"),
     G_CALLBACK (text_editor_load_cmd_callback),
     NULL },
 
   { "text-editor-clear", GTK_STOCK_CLEAR,
-    N_("Clear"), "",
-    N_("Clear all text"),
+    NC_("text-editor-action", "Clear"), "",
+    NC_("text-editor-action", "Clear all text"),
     G_CALLBACK (text_editor_clear_cmd_callback),
     NULL }
 };
@@ -56,14 +55,14 @@ static const GimpActionEntry text_editor_actions[] =
 static const GimpRadioActionEntry text_editor_direction_actions[] =
 {
   { "text-editor-direction-ltr", GIMP_STOCK_TEXT_DIR_LTR,
-    N_("LTR"), "",
-    N_("From left to right"),
+    NC_("text-editor-action", "LTR"), "",
+    NC_("text-editor-action", "From left to right"),
     GIMP_TEXT_DIRECTION_LTR,
     NULL },
 
   { "text-editor-direction-rtl", GIMP_STOCK_TEXT_DIR_RTL,
-    N_("RTL"), "",
-    N_("From right to left"),
+    NC_("text-editor-action", "RTL"), "",
+    NC_("text-editor-action", "From right to left"),
     GIMP_TEXT_DIRECTION_RTL,
     NULL }
 };
@@ -72,11 +71,11 @@ static const GimpRadioActionEntry text_editor_direction_actions[] =
 void
 text_editor_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "text-editor-action",
                                  text_editor_actions,
                                  G_N_ELEMENTS (text_editor_actions));
 
-  gimp_action_group_add_radio_actions (group,
+  gimp_action_group_add_radio_actions (group, "text-editor-action",
                                        text_editor_direction_actions,
                                        G_N_ELEMENTS (text_editor_direction_actions),
                                        NULL,

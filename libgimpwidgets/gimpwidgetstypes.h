@@ -3,10 +3,10 @@
  *
  * gimpwidgetstypes.h
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_WIDGETS_TYPES_H__
@@ -71,10 +70,32 @@ typedef struct _GimpRuler                 GimpRuler;
 typedef struct _GimpScrolledPreview       GimpScrolledPreview;
 typedef struct _GimpSizeEntry             GimpSizeEntry;
 typedef struct _GimpStringComboBox        GimpStringComboBox;
+typedef struct _GimpUnitComboBox          GimpUnitComboBox;
 typedef struct _GimpUnitMenu              GimpUnitMenu;
+typedef struct _GimpUnitStore             GimpUnitStore;
 typedef struct _GimpZoomModel             GimpZoomModel;
 
 
+/**
+ * GimpHelpFunc:
+ * @help_id:   the help ID
+ * @help_data: the help user data
+ *
+ * This is the prototype for all functions you pass as @help_func to
+ * the various GIMP dialog constructors like gimp_dialog_new(),
+ * gimp_query_int_box() etc.
+ *
+ * Help IDs are textual identifiers the help system uses to figure
+ * which page to display.
+ *
+ * All these dialog constructors functions call gimp_help_connect().
+ *
+ * In most cases it will be ok to use gimp_standard_help_func() which
+ * does nothing but passing the @help_id string to gimp_help(). If
+ * your plug-in needs some more sophisticated help handling you can
+ * provide your own @help_func which has to call gimp_help() to
+ * actually display the help.
+ **/
 typedef void (* GimpHelpFunc) (const gchar *help_id,
                                gpointer     help_data);
 

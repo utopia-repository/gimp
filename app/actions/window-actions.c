@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -92,17 +92,19 @@ window_actions_update (GimpActionGroup *group,
 
   if (GTK_IS_WINDOW (window))
     {
-      GdkDisplay *display;
       GdkScreen  *screen;
       gchar      *screen_name;
 
-      display = gtk_widget_get_display (window);
+#ifndef GIMP_UNSTABLE
+      {
+        GdkDisplay *display;
 
-      show_menu = (gdk_display_get_n_screens (display) > 1);
-
-#ifdef GIMP_UNSTABLE
+        display = gtk_widget_get_display (window);
+        show_menu = (gdk_display_get_n_screens (display) > 1);
+      }
+#else
       show_menu = TRUE;
-#endif
+#endif /* !GIMP_UNSTABLE */
 
       if (! show_menu)
         {
@@ -177,7 +179,8 @@ window_actions_display_opened (GdkDisplayManager *manager,
 
   radio_group = g_object_get_data (G_OBJECT (group),
                                    "change-to-screen-radio-group");
-  radio_group = gimp_action_group_add_radio_actions (group, entries, n_screens,
+  radio_group = gimp_action_group_add_radio_actions (group, NULL,
+                                                     entries, n_screens,
                                                      radio_group, 0,
                                                      G_CALLBACK (window_move_to_screen_cmd_callback));
   g_object_set_data (G_OBJECT (group), "change-to-screen-radio-group",

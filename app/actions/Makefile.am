@@ -75,6 +75,10 @@ libappactions_a_SOURCES = \
 	drawable-actions.h		\
 	drawable-commands.c		\
 	drawable-commands.h		\
+	dynamics-actions.c		\
+	dynamics-actions.h		\
+	dynamics-editor-actions.c	\
+	dynamics-editor-actions.h	\
 	edit-actions.c			\
 	edit-actions.h			\
 	edit-commands.c			\
@@ -149,10 +153,18 @@ libappactions_a_SOURCES = \
 	text-editor-actions.h		\
 	text-editor-commands.c		\
 	text-editor-commands.h		\
+	text-tool-actions.c		\
+	text-tool-actions.h		\
+	text-tool-commands.c		\
+	text-tool-commands.h		\
 	tool-options-actions.c		\
 	tool-options-actions.h		\
 	tool-options-commands.c		\
 	tool-options-commands.h		\
+	tool-presets-actions.c		\
+	tool-presets-actions.h		\
+	tool-preset-editor-actions.c	\
+	tool-preset-editor-actions.h	\
 	tools-actions.c			\
 	tools-actions.h			\
 	tools-commands.c		\
@@ -173,5 +185,3 @@ libappactions_a_SOURCES = \
 	windows-actions.h		\
 	windows-commands.c		\
 	windows-commands.h
-
-EXTRA_DIST = makefile.msc

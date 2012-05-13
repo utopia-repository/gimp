@@ -3,10 +3,10 @@
  *
  * gimppixelfetcher.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,14 +14,26 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include "gimp.h"
+
+
+/**
+ * SECTION: gimppixelfetcher
+ * @title: gimppixelfetcher
+ * @short_description: Functions for operating on pixel regions.
+ *
+ * These functions provide neighbourhood-based algorithms which get
+ * dramatically slower on region boundaries, to the point where a
+ * special treatment for neighbourhoods which are completely inside a
+ * tile is called for. It hides the special treatment of tile borders,
+ * making plug-in code more readable and shorter.
+ **/
 
 
 struct _GimpPixelFetcher
@@ -54,7 +66,7 @@ static guchar * gimp_pixel_fetcher_provide_tile (GimpPixelFetcher *pf,
  * gimp_pixel_fetcher_new:
  * @drawable: the #GimpDrawable the new region will be attached to.
  * @shadow:   a #gboolean indicating whether the region is attached to
- *            the shadow tiles or the real %drawable tiles.
+ *            the shadow tiles or the real @drawable tiles.
  *
  * Initialize a pixel region from the drawable.
  *

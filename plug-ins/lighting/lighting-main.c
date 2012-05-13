@@ -5,9 +5,9 @@
  *
  * E-mail: tomb@gimp.org (Tom) or quartic@gimp.org (Federico)
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -122,7 +121,7 @@ check_drawables (void)
   if (mapvals.bump_mapped)
     {
       if (mapvals.bumpmap_id != -1 &&
-          gimp_drawable_get_image (mapvals.bumpmap_id) == -1)
+          gimp_item_get_image (mapvals.bumpmap_id) == -1)
         {
           mapvals.bump_mapped = FALSE;
           mapvals.bumpmap_id  = -1;
@@ -142,7 +141,7 @@ check_drawables (void)
   if (mapvals.env_mapped)
     {
       if (mapvals.envmap_id != -1 &&
-          gimp_drawable_get_image (mapvals.envmap_id) == -1)
+          gimp_item_get_image (mapvals.envmap_id) == -1)
         {
           mapvals.env_mapped = FALSE;
           mapvals.envmap_id  = -1;
@@ -162,7 +161,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",              "Interactive (0), non-interactive (1)" },
+    { GIMP_PDB_INT32,    "run-mode",              "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",                 "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",              "Input drawable" },
     { GIMP_PDB_DRAWABLE, "bumpdrawable",          "Bumpmap drawable (set to 0 if disabled)" },

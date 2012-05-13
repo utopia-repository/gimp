@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,60 +38,61 @@
 static const GimpActionEntry documents_actions[] =
 {
   { "documents-popup", "document-open-recent",
-    N_("Documents Menu"), NULL, NULL, NULL,
+    NC_("documents-action", "Documents Menu"), NULL, NULL, NULL,
     GIMP_HELP_DOCUMENT_DIALOG },
 
   { "documents-open", GTK_STOCK_OPEN,
-    N_("_Open Image"), "",
-    N_("Open the selected entry"),
+    NC_("documents-action", "_Open Image"), "",
+    NC_("documents-action", "Open the selected entry"),
     G_CALLBACK (documents_open_cmd_callback),
     GIMP_HELP_DOCUMENT_OPEN },
 
   { "documents-raise-or-open", NULL,
-    N_("_Raise or Open Image"), "",
-    N_("Raise window if already open"),
+    NC_("documents-action", "_Raise or Open Image"), "",
+    NC_("documents-action", "Raise window if already open"),
     G_CALLBACK (documents_raise_or_open_cmd_callback),
     GIMP_HELP_DOCUMENT_OPEN },
 
   { "documents-file-open-dialog", NULL,
-    N_("File Open _Dialog"), "",
-    N_("Open image dialog"),
+    NC_("documents-action", "File Open _Dialog"), "",
+    NC_("documents-action", "Open image dialog"),
     G_CALLBACK (documents_file_open_dialog_cmd_callback),
     GIMP_HELP_DOCUMENT_OPEN },
 
   { "documents-copy-location", GTK_STOCK_COPY,
-    N_("Copy Image _Location"), "",
-    N_("Copy image location to clipboard"),
+    NC_("documents-action", "Copy Image _Location"), "",
+    NC_("documents-action", "Copy image location to clipboard"),
     G_CALLBACK (documents_copy_location_cmd_callback),
     GIMP_HELP_DOCUMENT_COPY_LOCATION },
 
   { "documents-remove", GTK_STOCK_REMOVE,
-    N_("Remove _Entry"), "",
-    N_("Remove the selected entry"),
+    NC_("documents-action", "Remove _Entry"), "",
+    NC_("documents-action", "Remove the selected entry"),
     G_CALLBACK (documents_remove_cmd_callback),
     GIMP_HELP_DOCUMENT_REMOVE },
 
   { "documents-clear", GTK_STOCK_CLEAR,
-    N_("_Clear History"), "",
-    N_("Clear the entire document history"),
+    NC_("documents-action", "_Clear History"), "",
+    NC_("documents-action", "Clear the entire document history"),
     G_CALLBACK (documents_clear_cmd_callback),
     GIMP_HELP_DOCUMENT_CLEAR },
 
   { "documents-recreate-preview", GTK_STOCK_REFRESH,
-    N_("Recreate _Preview"), "",
-    N_("Recreate preview"),
+    NC_("documents-action", "Recreate _Preview"), "",
+    NC_("documents-action", "Recreate preview"),
     G_CALLBACK (documents_recreate_preview_cmd_callback),
     GIMP_HELP_DOCUMENT_REFRESH },
 
   { "documents-reload-previews", NULL,
-    N_("Reload _all Previews"), "",
-    N_("Reload all previews"),
+    NC_("documents-action", "Reload _all Previews"), "",
+    NC_("documents-action", "Reload all previews"),
     G_CALLBACK (documents_reload_previews_cmd_callback),
     GIMP_HELP_DOCUMENT_REFRESH },
 
   { "documents-remove-dangling", NULL,
-    N_("Remove Dangling E_ntries"), "",
-    N_("Remove dangling entries"),
+    NC_("documents-action", "Remove Dangling E_ntries"), "",
+    NC_("documents-action",
+        "Remove entries for which the corresponding file is not available"),
     G_CALLBACK (documents_remove_dangling_cmd_callback),
     GIMP_HELP_DOCUMENT_REFRESH }
 };
@@ -101,7 +101,7 @@ static const GimpActionEntry documents_actions[] =
 void
 documents_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "documents-action",
                                  documents_actions,
                                  G_N_ELEMENTS (documents_actions));
 }

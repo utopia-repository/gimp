@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,18 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#define _GNU_SOURCE  /* for the sigaction stuff */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -47,7 +43,7 @@
 
 #include "libgimpbase/gimpbase.h"
 
-#include "core/core-types.h"
+#include "pdb/pdb-types.h"
 
 #include "base/tile.h"
 
@@ -55,10 +51,14 @@
 
 #include "core/gimp.h"
 
+#include "pdb/gimppdb.h"
+#include "pdb/gimpprocedure.h"
+#include "pdb/internal-procs.h"
+
 #include "about.h"
 #include "app.h"
-#include "errors.h"
 #include "sanity.h"
+#include "signals.h"
 #include "unique.h"
 #include "units.h"
 #include "version.h"
@@ -92,17 +92,17 @@ static gboolean  gimp_option_dump_gimprc      (const gchar  *option_name,
                                                const gchar  *value,
                                                gpointer      data,
                                                GError      **error);
+static gboolean  gimp_option_dump_pdb_procedures_deprecated
+                                              (const gchar  *option_name,
+                                               const gchar  *value,
+                                               gpointer      data,
+                                               GError      **error);
 
 static void      gimp_show_version_and_exit   (void) G_GNUC_NORETURN;
 static void      gimp_show_license_and_exit   (void) G_GNUC_NORETURN;
 
 static void      gimp_init_i18n               (void);
 static void      gimp_init_malloc             (void);
-static void      gimp_init_signal_handlers    (void);
-
-#ifndef G_OS_WIN32
-static void      gimp_sigfatal_handler        (gint sig_num) G_GNUC_NORETURN;
-#endif
 
 #if defined (G_OS_WIN32) && !defined (GIMP_CONSOLE_COMPILATION)
 static void      gimp_open_console_window     (void);
@@ -185,7 +185,7 @@ static const GOptionEntry main_entries[] =
   {
     "no-splash", 's', 0,
     G_OPTION_ARG_NONE, &no_splash,
-    N_("Do not show a startup window"), NULL
+    N_("Do not show a splash screen"), NULL
   },
   {
     "no-shm", 0, G_OPTION_FLAG_REVERSE,
@@ -263,6 +263,12 @@ static const GOptionEntry main_entries[] =
     "dump-gimprc-manpage", 0, G_OPTION_FLAG_NO_ARG | G_OPTION_FLAG_HIDDEN,
     G_OPTION_ARG_CALLBACK, gimp_option_dump_gimprc,
     NULL, NULL
+  },
+  {
+    "dump-pdb-procedures-deprecated", 0,
+    G_OPTION_FLAG_NO_ARG | G_OPTION_FLAG_HIDDEN,
+    G_OPTION_ARG_CALLBACK, gimp_option_dump_pdb_procedures_deprecated,
+    N_("Output a sorted list of deprecated procedures in the PDB"), NULL
   },
   {
     G_OPTION_REMAINING, 0, 0,
@@ -429,7 +435,7 @@ main (int    argc,
   if (abort_message)
     app_abort (no_interface, abort_message);
 
-  gimp_init_signal_handlers ();
+  gimp_init_signal_handlers (stack_trace_mode);
 
   app_run (argv[0],
            filenames,
@@ -603,6 +609,45 @@ gimp_option_dump_gimprc (const gchar  *option_name,
   return FALSE;
 }
 
+static gboolean
+gimp_option_dump_pdb_procedures_deprecated (const gchar  *option_name,
+                                            const gchar  *value,
+                                            gpointer      data,
+                                            GError      **error)
+{
+  Gimp  *gimp;
+  GList *deprecated_procs;
+  GList *iter;
+
+  gimp = g_object_new (GIMP_TYPE_GIMP, NULL);
+
+  /* Make sure to turn on compatibility mode so deprecated procedures
+   * are included
+   */
+  gimp->pdb_compat_mode = GIMP_PDB_COMPAT_ON;
+
+  /* Initialize the list of procedures */
+  internal_procs_init (gimp->pdb);
+
+  /* Get deprecated procedures */
+  deprecated_procs = gimp_pdb_get_deprecated_procedures (gimp->pdb);
+
+  for (iter = deprecated_procs; iter; iter = g_list_next (iter))
+    {
+      GimpProcedure *procedure = GIMP_PROCEDURE (iter->data);
+
+      g_print ("%s\n", procedure->original_name);
+    }
+
+  g_list_free (deprecated_procs);
+
+  g_object_unref (gimp);
+
+  app_exit (EXIT_SUCCESS);
+
+  return FALSE;
+}
+
 static void
 gimp_show_version_and_exit (void)
 {
@@ -652,6 +697,12 @@ gimp_init_malloc (void)
 static void
 gimp_init_i18n (void)
 {
+  /*  We may change the locale later if the user specifies a language
+   *  in the gimprc file. Here we are just initializing the locale
+   *  according to the environment variables and set up the paths to
+   *  the message catalogs.
+   */
+
   setlocale (LC_ALL, "");
 
   bindtextdomain (GETTEXT_PACKAGE"-libgimp", gimp_locale_directory ());
@@ -666,69 +717,3 @@ gimp_init_i18n (void)
 
   textdomain (GETTEXT_PACKAGE);
 }
-
-static void
-gimp_init_signal_handlers (void)
-{
-#ifndef G_OS_WIN32
-  /* No use catching these on Win32, the user won't get any
-   * stack trace from glib anyhow. It's better to let Windows inform
-   * about the program error, and offer debugging (if the user
-   * has installed MSVC or some other compiler that knows how to
-   * install itself as a handler for program errors).
-   */
-
-  /* Handle fatal signals */
-
-  /* these are handled by gimp_terminate() */
-  gimp_signal_private (SIGHUP,  gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGINT,  gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGQUIT, gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGABRT, gimp_sigfatal_handler, 0);
-  gimp_signal_private (SIGTERM, gimp_sigfatal_handler, 0);
-
-  if (stack_trace_mode != GIMP_STACK_TRACE_NEVER)
-    {
-      /* these are handled by gimp_fatal_error() */
-      gimp_signal_private (SIGBUS,  gimp_sigfatal_handler, 0);
-      gimp_signal_private (SIGSEGV, gimp_sigfatal_handler, 0);
-      gimp_signal_private (SIGFPE,  gimp_sigfatal_handler, 0);
-    }
-
-  /* Ignore SIGPIPE because plug_in.c handles broken pipes */
-  gimp_signal_private (SIGPIPE, SIG_IGN, 0);
-
-  /* Restart syscalls on SIGCHLD */
-  gimp_signal_private (SIGCHLD, SIG_DFL, SA_RESTART);
-
-#endif /* G_OS_WIN32 */
-}
-
-
-#ifndef G_OS_WIN32
-
-/* gimp core signal handler for fatal signals */
-
-static void
-gimp_sigfatal_handler (gint sig_num)
-{
-  switch (sig_num)
-    {
-    case SIGHUP:
-    case SIGINT:
-    case SIGQUIT:
-    case SIGABRT:
-    case SIGTERM:
-      gimp_terminate ("%s", g_strsignal (sig_num));
-      break;
-
-    case SIGBUS:
-    case SIGSEGV:
-    case SIGFPE:
-    default:
-      gimp_fatal_error ("%s", g_strsignal (sig_num));
-      break;
-    }
-}
-
-#endif /* ! G_OS_WIN32 */

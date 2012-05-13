@@ -3,10 +3,10 @@
  *
  * gimpaspectpreview.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,6 +33,15 @@
 #include "gimpaspectpreview.h"
 
 
+/**
+ * SECTION: gimpaspectpreview
+ * @title: GimpAspectPreview
+ * @short_description: A widget providing a preview with fixed aspect ratio.
+ *
+ * A widget providing a preview with fixed aspect ratio.
+ **/
+
+
 enum
 {
   PROP_0,
@@ -46,11 +54,8 @@ typedef struct
 } PreviewSettings;
 
 
-static GObject * gimp_aspect_preview_constructor (GType                  type,
-                                                  guint                  n_params,
-                                                  GObjectConstructParam *params);
-
-
+static void  gimp_aspect_preview_constructed  (GObject         *object);
+static void  gimp_aspect_preview_dispose      (GObject         *object);
 static void  gimp_aspect_preview_get_property (GObject         *object,
                                                guint            property_id,
                                                GValue          *value,
@@ -59,7 +64,7 @@ static void  gimp_aspect_preview_set_property (GObject         *object,
                                                guint            property_id,
                                                const GValue    *value,
                                                GParamSpec      *pspec);
-static void  gimp_aspect_preview_destroy      (GtkObject       *object);
+
 static void  gimp_aspect_preview_style_set    (GtkWidget       *widget,
                                                GtkStyle        *prev_style);
 static void  gimp_aspect_preview_draw         (GimpPreview     *preview);
@@ -91,16 +96,14 @@ static gint gimp_aspect_preview_counter = 0;
 static void
 gimp_aspect_preview_class_init (GimpAspectPreviewClass *klass)
 {
-  GObjectClass     *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass   *gtk_object_class = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass   *widget_class     = GTK_WIDGET_CLASS (klass);
-  GimpPreviewClass *preview_class    = GIMP_PREVIEW_CLASS (klass);
+  GObjectClass     *object_class  = G_OBJECT_CLASS (klass);
+  GtkWidgetClass   *widget_class  = GTK_WIDGET_CLASS (klass);
+  GimpPreviewClass *preview_class = GIMP_PREVIEW_CLASS (klass);
 
-  object_class->constructor  = gimp_aspect_preview_constructor;
+  object_class->constructed  = gimp_aspect_preview_constructed;
+  object_class->dispose      = gimp_aspect_preview_dispose;
   object_class->get_property = gimp_aspect_preview_get_property;
   object_class->set_property = gimp_aspect_preview_set_property;
-
-  gtk_object_class->destroy  = gimp_aspect_preview_destroy;
 
   widget_class->style_set    = gimp_aspect_preview_style_set;
 
@@ -129,20 +132,18 @@ gimp_aspect_preview_init (GimpAspectPreview *preview)
                 NULL);
 }
 
-static GObject *
-gimp_aspect_preview_constructor (GType                  type,
-                                 guint                  n_params,
-                                 GObjectConstructParam *params)
+static void
+gimp_aspect_preview_constructed (GObject *object)
 {
-  GObject         *object;
   gchar           *data_name;
   PreviewSettings  settings;
+
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   data_name = g_strdup_printf ("%s-aspect-preview-%d",
                                g_get_prgname (),
                                gimp_aspect_preview_counter++);
-
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
 
   if (gimp_get_data (data_name, &settings))
     {
@@ -151,8 +152,25 @@ gimp_aspect_preview_constructor (GType                  type,
 
   g_object_set_data_full (object, "gimp-aspect-preview-data-name",
                           data_name, (GDestroyNotify) g_free);
+}
 
-  return object;
+static void
+gimp_aspect_preview_dispose (GObject *object)
+{
+  const gchar *data_name = g_object_get_data (G_OBJECT (object),
+                                              "gimp-aspect-preview-data-name");
+
+  if (data_name)
+    {
+      GimpPreview     *preview = GIMP_PREVIEW (object);
+      PreviewSettings  settings;
+
+      settings.update = gimp_preview_get_update (preview);
+
+      gimp_set_data (data_name, &settings, sizeof (PreviewSettings));
+    }
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -194,25 +212,6 @@ gimp_aspect_preview_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-static void
-gimp_aspect_preview_destroy (GtkObject *object)
-{
-  const gchar *data_name = g_object_get_data (G_OBJECT (object),
-                                              "gimp-aspect-preview-data-name");
-
-  if (data_name)
-    {
-      GimpPreview     *preview = GIMP_PREVIEW (object);
-      PreviewSettings  settings;
-
-      settings.update = gimp_preview_get_update (preview);
-
-      gimp_set_data (data_name, &settings, sizeof (PreviewSettings));
-    }
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 static void
@@ -266,7 +265,7 @@ gimp_aspect_preview_draw_buffer (GimpPreview  *preview,
   GimpDrawable *drawable = GIMP_ASPECT_PREVIEW (preview)->drawable;
   gint32        image_id;
 
-  image_id = gimp_drawable_get_image (drawable->drawable_id);
+  image_id = gimp_item_get_image (drawable->drawable_id);
 
   if (gimp_selection_is_empty (image_id))
     {
@@ -375,6 +374,8 @@ gimp_aspect_preview_set_drawable (GimpAspectPreview *preview,
  * the scroll offset.
  *
  * Since: GIMP 2.2
+ *
+ * Returns: a new #GimpAspectPreview.
  **/
 GtkWidget *
 gimp_aspect_preview_new (GimpDrawable *drawable,

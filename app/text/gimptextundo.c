@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpconfig/gimpconfig.h"
 
@@ -40,26 +39,24 @@ enum
 };
 
 
-static GObject * gimp_text_undo_constructor  (GType                  type,
-                                              guint                  n_params,
-                                              GObjectConstructParam *params);
-static void      gimp_text_undo_set_property (GObject               *object,
-                                              guint                  property_id,
-                                              const GValue          *value,
-                                              GParamSpec            *pspec);
-static void      gimp_text_undo_get_property (GObject               *object,
-                                              guint                  property_id,
-                                              GValue                *value,
-                                              GParamSpec            *pspec);
+static void     gimp_text_undo_constructed  (GObject             *object);
+static void     gimp_text_undo_set_property (GObject             *object,
+                                             guint                property_id,
+                                             const GValue        *value,
+                                             GParamSpec          *pspec);
+static void     gimp_text_undo_get_property (GObject             *object,
+                                             guint                property_id,
+                                             GValue              *value,
+                                             GParamSpec          *pspec);
 
-static gint64    gimp_text_undo_get_memsize  (GimpObject            *object,
-                                              gint64                *gui_size);
+static gint64   gimp_text_undo_get_memsize  (GimpObject          *object,
+                                             gint64              *gui_size);
 
-static void      gimp_text_undo_pop          (GimpUndo              *undo,
-                                              GimpUndoMode           undo_mode,
-                                              GimpUndoAccumulator   *accum);
-static void      gimp_text_undo_free         (GimpUndo              *undo,
-                                              GimpUndoMode           undo_mode);
+static void     gimp_text_undo_pop          (GimpUndo            *undo,
+                                             GimpUndoMode         undo_mode,
+                                             GimpUndoAccumulator *accum);
+static void     gimp_text_undo_free         (GimpUndo            *undo,
+                                             GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpTextUndo, gimp_text_undo, GIMP_TYPE_ITEM_UNDO)
@@ -74,7 +71,7 @@ gimp_text_undo_class_init (GimpTextUndoClass *klass)
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor      = gimp_text_undo_constructor;
+  object_class->constructed      = gimp_text_undo_constructed;
   object_class->set_property     = gimp_text_undo_set_property;
   object_class->get_property     = gimp_text_undo_get_property;
 
@@ -95,18 +92,14 @@ gimp_text_undo_init (GimpTextUndo *undo)
 {
 }
 
-static GObject *
-gimp_text_undo_constructor (GType                  type,
-                            guint                  n_params,
-                            GObjectConstructParam *params)
+static void
+gimp_text_undo_constructed (GObject *object)
 {
-  GObject       *object;
-  GimpTextUndo  *text_undo;
+  GimpTextUndo  *text_undo = GIMP_TEXT_UNDO (object);
   GimpTextLayer *layer;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  text_undo = GIMP_TEXT_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_TEXT_LAYER (GIMP_ITEM_UNDO (text_undo)->item));
 
@@ -138,8 +131,6 @@ gimp_text_undo_constructor (GType                  type,
     default:
       g_assert_not_reached ();
     }
-
-  return object;
 }
 
 static void

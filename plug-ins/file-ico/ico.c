@@ -4,9 +4,9 @@
  * GIMP Plug-in for Windows Icon files.
  * Copyright (C) 2002 Christian Kreibich <christian@whoop.org>.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -64,7 +63,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING,   "raw-filename", "The name entered"             }
   };
@@ -87,7 +86,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -152,8 +151,6 @@ run (const gchar      *name,
      GimpParam       **return_vals)
 {
   static GimpParam   values[4];
-  gint32             image_ID;
-  gint32             drawable_ID;
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GimpExportReturn   export = GIMP_EXPORT_CANCEL;
@@ -186,8 +183,9 @@ run (const gchar      *name,
 
       if (status == GIMP_PDB_SUCCESS)
         {
-          image_ID = ico_load_image (param[1].data.d_string, &error);
+          gint32 image_ID;
 
+          image_ID = ico_load_image (param[1].data.d_string, &error);
           if (image_ID != -1)
             {
               *nreturn_vals = 2;
@@ -236,9 +234,9 @@ run (const gchar      *name,
   else if (strcmp (name, SAVE_PROC) == 0)
     {
       gchar *file_name;
+      gint32 image_ID;
 
       image_ID    = param[1].data.d_int32;
-      drawable_ID = param[2].data.d_int32;
       file_name   = param[3].data.d_string;
 
       switch (run_mode)

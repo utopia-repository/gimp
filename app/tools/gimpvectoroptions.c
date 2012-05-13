@@ -4,9 +4,9 @@
  * gimpvectoroptions.c
  * Copyright (C) 1999 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -167,7 +166,8 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
       button_append_modifier (list->data, GDK_MOD1_MASK);
 
       if (list->next)   /* GIMP_VECTOR_MODE_EDIT  */
-        button_append_modifier (list->next->data, GDK_CONTROL_MASK);
+        button_append_modifier (list->next->data,
+                                gimp_get_toggle_behavior_mask ());
     }
 
   button = gimp_prop_check_button_new (config, "vectors-polygonal",
@@ -179,10 +179,10 @@ gimp_vector_options_gui (GimpToolOptions *tool_options)
                            "%s  Add\n"
                            "%s  Subtract\n"
                            "%s  Intersect"),
-                         gimp_get_mod_string (GDK_SHIFT_MASK),
-                         gimp_get_mod_string (GDK_CONTROL_MASK),
-                         gimp_get_mod_string (GDK_SHIFT_MASK |
-                                              GDK_CONTROL_MASK));
+                         gimp_get_mod_string (gimp_get_extend_selection_mask ()),
+                         gimp_get_mod_string (gimp_get_modify_selection_mask ()),
+                         gimp_get_mod_string (gimp_get_extend_selection_mask () |
+                                              gimp_get_modify_selection_mask ()));
 
   button = gimp_button_new ();
   /*  Create a selection from the current path  */

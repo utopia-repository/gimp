@@ -4,9 +4,9 @@
  * gimpactiongroup.h
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_ACTION_GROUP_H__
@@ -40,7 +39,6 @@ struct _GimpActionGroup
   Gimp                      *gimp;
   gchar                     *label;
   gchar                     *stock_id;
-  gboolean                   mnemonics;
 
   gpointer                   user_data;
 
@@ -135,7 +133,6 @@ GimpActionGroup *gimp_action_group_new        (Gimp                  *gimp,
                                                const gchar           *name,
                                                const gchar           *label,
                                                const gchar           *stock_id,
-                                               gboolean               mnemonics,
                                                gpointer               user_data,
                                                GimpActionGroupUpdateFunc update_func);
 
@@ -145,55 +142,68 @@ void   gimp_action_group_update               (GimpActionGroup       *group,
                                                gpointer               update_data);
 
 void   gimp_action_group_add_actions          (GimpActionGroup             *group,
+					       const gchar                 *msg_context,
                                                const GimpActionEntry       *entries,
                                                guint                        n_entries);
 void   gimp_action_group_add_toggle_actions   (GimpActionGroup             *group,
+					       const gchar                 *msg_context,
                                                const GimpToggleActionEntry *entries,
                                                guint                        n_entries);
 GSList *gimp_action_group_add_radio_actions   (GimpActionGroup             *group,
+					       const gchar                 *msg_context,
                                                const GimpRadioActionEntry  *entries,
                                                guint                        n_entries,
                                                GSList                      *radio_group,
                                                gint                         value,
                                                GCallback                    callback);
 void   gimp_action_group_add_enum_actions     (GimpActionGroup             *group,
+					       const gchar                 *msg_context,
                                                const GimpEnumActionEntry   *entries,
                                                guint                        n_entries,
                                                GCallback                    callback);
 void   gimp_action_group_add_string_actions   (GimpActionGroup             *group,
+					       const gchar                 *msg_context,
                                                const GimpStringActionEntry *entries,
-                                               guint                         n_entries,
-                                               GCallback                     callback);
+                                               guint                        n_entries,
+                                               GCallback                    callback);
 void   gimp_action_group_add_plug_in_actions  (GimpActionGroup             *group,
                                                const GimpPlugInActionEntry *entries,
                                                guint                        n_entries,
                                                GCallback                    callback);
 
-void   gimp_action_group_activate_action      (GimpActionGroup     *group,
-                                               const gchar         *action_name);
+void          gimp_action_group_activate_action       (GimpActionGroup *group,
+                                                       const gchar     *action_name);
+void          gimp_action_group_set_action_visible    (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       gboolean         visible);
+void          gimp_action_group_set_action_sensitive  (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       gboolean         sensitive);
+void          gimp_action_group_set_action_active     (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       gboolean         active);
+void          gimp_action_group_set_action_label      (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       const gchar     *label);
+void          gimp_action_group_set_action_tooltip    (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       const gchar     *tooltip);
+const gchar * gimp_action_group_get_action_tooltip    (GimpActionGroup *group,
+                                                       const gchar     *action_name);
+void          gimp_action_group_set_action_color      (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       const GimpRGB   *color,
+                                                       gboolean         set_label);
+void          gimp_action_group_set_action_viewable   (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       GimpViewable    *viewable);
+void          gimp_action_group_set_action_hide_empty (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       gboolean         hide_empty);
+void   gimp_action_group_set_action_always_show_image (GimpActionGroup *group,
+                                                       const gchar     *action_name,
+                                                       gboolean         always_show_image);
 
-void   gimp_action_group_set_action_visible   (GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               gboolean             visible);
-void   gimp_action_group_set_action_sensitive (GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               gboolean             sensitive);
-void   gimp_action_group_set_action_active    (GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               gboolean             active);
-void   gimp_action_group_set_action_label     (GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               const gchar         *label);
-void   gimp_action_group_set_action_color     (GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               const GimpRGB       *color,
-                                               gboolean             set_label);
-void   gimp_action_group_set_action_viewable  (GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               GimpViewable        *viewable);
-void   gimp_action_group_set_action_hide_empty(GimpActionGroup     *group,
-                                               const gchar         *action_name,
-                                               gboolean             hide_empty);
 
 
 #endif  /* __GIMP_ACTION_GROUP_H__ */

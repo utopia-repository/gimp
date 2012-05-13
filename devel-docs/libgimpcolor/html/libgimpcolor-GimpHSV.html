@@ -40,15 +40,19 @@
 <pre class="synopsis">struct              <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="struct GimpHSV">GimpHSV</a>;
 struct              <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="struct GimpHSL">GimpHSL</a>;
 <span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpHSV.html#gimp-hsv-set" title="gimp_hsv_set ()">gimp_hsv_set</a>                        (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="struct GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> hue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> saturation</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> value</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpHSV.html#gimp-hsv-clamp" title="gimp_hsv_clamp ()">gimp_hsv_clamp</a>                      (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="struct GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpHSV.html#gimp-hsva-set" title="gimp_hsva_set ()">gimp_hsva_set</a>                       (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="struct GimpHSV"><span class="type">GimpHSV</span></a> *hsva</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> alpha</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> hue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> saturation</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> value</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> alpha</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpHSV.html#gimp-hsl-set" title="gimp_hsl_set ()">gimp_hsl_set</a>                        (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="struct GimpHSL"><span class="type">GimpHSL</span></a> *hsl</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> h</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> s</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> l</code></em>);
 #define             <a class="link" href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSV:CAPS" title="GIMP_TYPE_HSV">GIMP_TYPE_HSV</a>
 #define             <a class="link" href="libgimpcolor-GimpHSV.html#GIMP-TYPE-HSL:CAPS" title="GIMP_TYPE_HSL">GIMP_TYPE_HSL</a>
 </pre>
@@ -68,7 +72,30 @@ Definitions and Functions relating to HSV colors.
 };
 </pre>
 <p>
+Used to keep HSV and HSVA colors. All components are in a range of
+[0.0..1.0].
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSV.h"></a>h</code></em>;</span></p></td>
+<td>the hue component</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSV.s"></a>s</code></em>;</span></p></td>
+<td>the saturation component</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSV.v"></a>v</code></em>;</span></p></td>
+<td>the value component</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSV.a"></a>a</code></em>;</span></p></td>
+<td>the alpha component</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -78,15 +105,38 @@ Definitions and Functions relating to HSV colors.
 };
 </pre>
 <p>
+Used to keep HSL and HSLA colors. All components are in a range of
+[0.0..1.0].
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSL.h"></a>h</code></em>;</span></p></td>
+<td>the hue component</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSL.s"></a>s</code></em>;</span></p></td>
+<td>the saturation component</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSL.l"></a>l</code></em>;</span></p></td>
+<td>the lightness component</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gdouble</span> <em class="structfield"><code><a name="GimpHSL.a"></a>a</code></em>;</span></p></td>
+<td>the alpha component</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-hsv-set"></a><h3>gimp_hsv_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsv_set                        (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="struct GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> hue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> saturation</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> value</code></em>);</pre>
 <p>
 </p>
 </div>
@@ -101,12 +151,21 @@ Definitions and Functions relating to HSV colors.
 <div class="refsect2">
 <a name="gimp-hsva-set"></a><h3>gimp_hsva_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsva_set                       (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="struct GimpHSV"><span class="type">GimpHSV</span></a> *hsva</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> alpha</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> hue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> saturation</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> value</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> alpha</code></em>);</pre>
 <p>
 </p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-hsl-set"></a><h3>gimp_hsl_set ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsl_set                        (<em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="struct GimpHSL"><span class="type">GimpHSL</span></a> *hsl</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> h</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> s</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> l</code></em>);</pre>
+<p class="since">Since GIMP 2.8</p>
 </div>
 <hr>
 <div class="refsect2">

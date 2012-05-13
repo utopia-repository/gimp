@@ -4,9 +4,9 @@
  * gimpeditor.h
  * Copyright (C) 2002 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_EDITOR_H__
@@ -31,26 +30,19 @@
 #define GIMP_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_EDITOR, GimpEditorClass))
 
 
-typedef struct _GimpEditorClass  GimpEditorClass;
+typedef struct _GimpEditorClass    GimpEditorClass;
+typedef struct _GimpEditorPrivate  GimpEditorPrivate;
 
 struct _GimpEditor
 {
-  GtkVBox          parent_instance;
+  GtkBox            parent_instance;
 
-  GimpMenuFactory *menu_factory;
-  gchar           *menu_identifier;
-  GimpUIManager   *ui_manager;
-  gchar           *ui_path;
-  gpointer         popup_data;
-
-  gboolean         show_button_bar;
-  GtkWidget       *name_label;
-  GtkWidget       *button_box;
+  GimpEditorPrivate *priv;
 };
 
 struct _GimpEditorClass
 {
-  GtkVBoxClass  parent_class;
+  GtkBoxClass  parent_class;
 };
 
 
@@ -92,6 +84,12 @@ void        gimp_editor_set_name            (GimpEditor         *editor,
 
 void        gimp_editor_set_box_style       (GimpEditor         *editor,
                                              GtkBox             *box);
-
+GimpUIManager *
+            gimp_editor_get_ui_manager      (GimpEditor         *editor);
+GtkBox    * gimp_editor_get_button_box      (GimpEditor         *editor);
+GimpMenuFactory *
+            gimp_editor_get_menu_factory    (GimpEditor         *editor);
+gpointer *  gimp_editor_get_popup_data      (GimpEditor         *editor);
+gchar *     gimp_editor_get_ui_path         (GimpEditor         *editor);
 
 #endif  /*  __GIMP_EDITOR_H__  */

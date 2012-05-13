@@ -2,9 +2,9 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * PNM reading and writing code Copyright (C) 1996 Erik Nygren
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -63,6 +62,7 @@
 #define PGM_SAVE_PROC  "file-pgm-save"
 #define PPM_SAVE_PROC  "file-ppm-save"
 #define PLUG_IN_BINARY "file-pnm"
+#define PLUG_IN_ROLE   "gimp-file-pnm"
 
 
 /* Declare local data types
@@ -220,7 +220,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
@@ -231,7 +231,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -240,8 +240,8 @@ query (void)
   };
 
   gimp_install_procedure (LOAD_PROC,
-                          "loads files of the pnm file format",
-                          "FIXME: write help for pnm_load",
+                          "Loads files in the PNM file format",
+                          "This plug-in loads files in the various Netpbm portable file formats.",
                           "Erik Nygren",
                           "Erik Nygren",
                           "1996",
@@ -260,7 +260,7 @@ query (void)
                                     "string,P4,0,string,P5,0,string,P6");
 
   gimp_install_procedure (PNM_SAVE_PROC,
-                          "saves files in the pnm file format",
+                          "Saves files in the PNM file format",
                           "PNM saving handles all image types without transparency.",
                           "Erik Nygren",
                           "Erik Nygren",
@@ -272,7 +272,7 @@ query (void)
                           save_args, NULL);
 
   gimp_install_procedure (PBM_SAVE_PROC,
-                          "saves files in the pnm file format",
+                          "Saves files in the PBM file format",
                           "PBM saving produces mono images without transparency.",
                           "Martin K Collins",
                           "Erik Nygren",
@@ -284,7 +284,7 @@ query (void)
                           save_args, NULL);
 
   gimp_install_procedure (PGM_SAVE_PROC,
-                          "saves files in the pnm file format",
+                          "Saves files in the PGM file format",
                           "PGM saving produces grayscale images without transparency.",
                           "Erik Nygren",
                           "Erik Nygren",
@@ -296,7 +296,7 @@ query (void)
                           save_args, NULL);
 
   gimp_install_procedure (PPM_SAVE_PROC,
-                          "saves files in the pnm file format",
+                          "Saves files in the PPM file format",
                           "PPM saving handles RGB images without transparency.",
                           "Erik Nygren",
                           "Erik Nygren",
@@ -374,25 +374,25 @@ run (const gchar      *name,
 
           if (strcmp (name, PNM_SAVE_PROC) == 0)
             {
-              export = gimp_export_image (&image_ID, &drawable_ID, "PNM",
+              export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                           GIMP_EXPORT_CAN_HANDLE_RGB  |
                                           GIMP_EXPORT_CAN_HANDLE_GRAY |
                                           GIMP_EXPORT_CAN_HANDLE_INDEXED);
             }
           else if (strcmp (name, PBM_SAVE_PROC) == 0)
             {
-              export = gimp_export_image (&image_ID, &drawable_ID, "PBM",
+              export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                           GIMP_EXPORT_CAN_HANDLE_BITMAP);
               pbm = TRUE;  /* gimp has no mono image type so hack it */
             }
           else if (strcmp (name, PGM_SAVE_PROC) == 0)
             {
-              export = gimp_export_image (&image_ID, &drawable_ID, "PGM",
+              export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                           GIMP_EXPORT_CAN_HANDLE_GRAY);
             }
           else
             {
-              export = gimp_export_image (&image_ID, &drawable_ID, "PPM",
+              export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                           GIMP_EXPORT_CAN_HANDLE_RGB |
                                           GIMP_EXPORT_CAN_HANDLE_INDEXED);
             }
@@ -570,10 +570,8 @@ load_image (const gchar  *filename,
                        _("Premature end of file."));
 
       pnminfo->maxval = g_ascii_isdigit (*buf) ? atoi (buf) : 0;
-      CHECK_FOR_ERROR (((pnminfo->maxval<=0)
-                        || (pnminfo->maxval>255 && !pnminfo->asciibody)),
-                       pnminfo->jmpbuf,
-                       _("Unsupported maximum value."));
+      CHECK_FOR_ERROR (((pnminfo->maxval<=0) || (pnminfo->maxval>65535)),
+                       pnminfo->jmpbuf, _("Unsupported maximum value."));
     }
 
   /* Create a new image of the proper size and associate the filename with it.
@@ -587,7 +585,7 @@ load_image (const gchar  *filename,
                              (pnminfo->np >= 3 ?
                               GIMP_RGB_IMAGE : GIMP_GRAY_IMAGE),
                              100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
   drawable = gimp_drawable_get (layer_ID);
   gimp_pixel_rgn_init (&pixel_rgn, drawable,
@@ -704,12 +702,23 @@ pnm_load_raw (PNMScanner   *scan,
               PNMInfo      *info,
               GimpPixelRgn *pixel_rgn)
 {
-  guchar *data, *d;
+  gint    bpc;
+  guchar *data, *bdata, *d, *b;
   gint    x, y, i;
   gint    start, end, scanlines;
   gint    fd;
 
-  data = g_new (guchar, gimp_tile_height () * info->xres * info->np);
+  if (info->maxval > 255)
+    bpc = 2;
+  else
+    bpc = 1;
+
+  data = g_new (guchar, gimp_tile_height () * info->xres * info->np * bpc);
+
+  bdata = NULL;
+  if (bpc > 1)
+    bdata = g_new (guchar, gimp_tile_height () * info->xres * info->np);
+
   fd = pnmscanner_fd (scan);
 
   for (y = 0; y < info->yres; )
@@ -719,34 +728,58 @@ pnm_load_raw (PNMScanner   *scan,
       end = MIN (end, info->yres);
       scanlines = end - start;
       d = data;
+      b = bdata;
 
       for (i = 0; i < scanlines; i++)
         {
-          CHECK_FOR_ERROR ((info->xres * info->np
-                            != read (fd, d, info->xres * info->np)),
+          CHECK_FOR_ERROR ((info->xres * info->np * bpc
+                            != read (fd, d, info->xres * info->np * bpc)),
                            info->jmpbuf,
                            _("Premature end of file."));
 
-          if (info->maxval != 255)      /* Normalize if needed */
+          if (bpc > 1)
             {
               for (x = 0; x < info->xres * info->np; x++)
                 {
-                  d[x] = MIN (d[x], info->maxval); /* guard against overflow */
-                  d[x] = 255.0 * (gdouble) d[x] / (gdouble) info->maxval;
-                }
-            }
+                  int v;
 
-          d += info->xres * info->np;
+                  v = *d++ << 8;
+                  v += *d++;
+
+                  b[x] = MIN (v, info->maxval); /* guard against overflow */
+                  b[x] = 255.0 * (gdouble) v / (gdouble) info->maxval;
+                }
+              b += info->xres * info->np;
+            }
+          else
+            {
+              if (info->maxval != 255)      /* Normalize if needed */
+                {
+                  for (x = 0; x < info->xres * info->np; x++)
+                    {
+                      d[x] = MIN (d[x], info->maxval); /* guard against overflow */
+                      d[x] = 255.0 * (gdouble) d[x] / (gdouble) info->maxval;
+                    }
+                }
+
+              d += info->xres * info->np;
+            }
         }
 
       gimp_progress_update ((double) y / (double) info->yres);
-      gimp_pixel_rgn_set_rect (pixel_rgn, data, 0, y, info->xres, scanlines);
+
+      if (bpc > 1)
+        gimp_pixel_rgn_set_rect (pixel_rgn, bdata, 0, y, info->xres, scanlines);
+      else
+        gimp_pixel_rgn_set_rect (pixel_rgn, data, 0, y, info->xres, scanlines);
+
       y += scanlines;
     }
 
   gimp_progress_update (1.0);
 
   g_free (data);
+  g_free (bdata);
 }
 
 static void
@@ -969,7 +1002,7 @@ save_image (const gchar  *filename,
     }
 
   /* open the file */
-  fd = g_open (filename, O_WRONLY | O_CREAT | O_TRUNC | _O_BINARY, 0644);
+  fd = g_open (filename, O_WRONLY | O_CREAT | O_TRUNC | _O_BINARY, 0666);
 
   if (fd == -1)
     {
@@ -986,7 +1019,7 @@ save_image (const gchar  *filename,
   yres = drawable->height;
 
   /* write out magic number */
-  if (psvals.raw == FALSE)
+  if (!psvals.raw)
     {
       if (pbm)
         {
@@ -1021,12 +1054,12 @@ save_image (const gchar  *filename,
               break;
 
             default:
-              g_warning ("pnm: unknown drawable_type\n");
+              g_warning ("PNM: Unknown drawable_type\n");
               return FALSE;
             }
         }
     }
-  else if (psvals.raw == TRUE)
+  else
     {
       if (pbm)
         {
@@ -1061,7 +1094,7 @@ save_image (const gchar  *filename,
               break;
 
             default:
-              g_warning ("pnm: unknown drawable_type\n");
+              g_warning ("PNM: Unknown drawable_type\n");
               return FALSE;
             }
         }
@@ -1097,7 +1130,7 @@ save_image (const gchar  *filename,
               break;
 
             default:
-              g_warning ("images saved as PBM should be black/white");
+              g_warning ("Images saved as PBM should be black/white");
               break;
             }
         }
@@ -1183,21 +1216,7 @@ save_dialog (void)
   GtkWidget *frame;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as PNM"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, PNM_SAVE_PROC,
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("PNM"), PLUG_IN_BINARY, PNM_SAVE_PROC);
 
   /*  file save type  */
   frame = gimp_int_radio_group_new (TRUE, _("Data formatting"),
@@ -1205,11 +1224,11 @@ save_dialog (void)
                                     &psvals.raw, psvals.raw,
 
                                     _("Raw"),   TRUE,  NULL,
-                                    _("Ascii"), FALSE, NULL,
+                                    _("ASCII"), FALSE, NULL,
 
                                     NULL);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       frame, FALSE, TRUE, 0);
   gtk_widget_show (frame);
 

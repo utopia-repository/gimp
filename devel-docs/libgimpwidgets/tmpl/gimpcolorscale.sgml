@@ -2,7 +2,7 @@
 GimpColorScale
 
 <!-- ##### SECTION Short_Description ##### -->
-Fancy colored sliders.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -25,6 +25,11 @@ Fancy colored sliders.
 
 </para>
 
+
+<!-- ##### ARG GimpColorScale:channel ##### -->
+<para>
+
+</para>
 
 <!-- ##### FUNCTION gimp_color_scale_new ##### -->
 <para>

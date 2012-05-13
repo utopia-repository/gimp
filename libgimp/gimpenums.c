@@ -27,10 +27,11 @@ gimp_brush_application_mode_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpBrushApplicationMode", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "brush-application-mode");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -58,10 +59,11 @@ gimp_brush_generated_shape_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpBrushGeneratedShape", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "brush-generated-shape");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -91,10 +93,11 @@ gimp_convert_dither_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpConvertDitherType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "convert-dither-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -126,10 +129,11 @@ gimp_convert_palette_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpConvertPaletteType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "convert-palette-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -157,10 +161,11 @@ gimp_convolution_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpConvolutionType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "convolution-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -186,10 +191,11 @@ gimp_convolve_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpConvolveType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "convolve-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -221,10 +227,11 @@ gimp_fill_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpFillType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "fill-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -252,10 +259,11 @@ gimp_gradient_segment_color_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpGradientSegmentColor", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "gradient-segment-color");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -287,10 +295,11 @@ gimp_gradient_segment_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpGradientSegmentType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "gradient-segment-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -322,10 +331,11 @@ gimp_histogram_channel_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpHistogramChannel", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "histogram-channel");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -361,10 +371,43 @@ gimp_hue_range_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpHueRange", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "hue-range");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_ink_blob_type_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_INK_BLOB_TYPE_CIRCLE, "GIMP_INK_BLOB_TYPE_CIRCLE", "circle" },
+    { GIMP_INK_BLOB_TYPE_SQUARE, "GIMP_INK_BLOB_TYPE_SQUARE", "square" },
+    { GIMP_INK_BLOB_TYPE_DIAMOND, "GIMP_INK_BLOB_TYPE_DIAMOND", "diamond" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_INK_BLOB_TYPE_CIRCLE, "GIMP_INK_BLOB_TYPE_CIRCLE", NULL },
+    { GIMP_INK_BLOB_TYPE_SQUARE, "GIMP_INK_BLOB_TYPE_SQUARE", NULL },
+    { GIMP_INK_BLOB_TYPE_DIAMOND, "GIMP_INK_BLOB_TYPE_DIAMOND", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (G_UNLIKELY (! type))
+    {
+      type = g_enum_register_static ("GimpInkBlobType", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "ink-blob-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -432,10 +475,11 @@ gimp_layer_mode_effects_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpLayerModeEffects", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "layer-mode-effects");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -461,10 +505,11 @@ gimp_mask_apply_mode_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpMaskApplyMode", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "mask-apply-mode");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -494,10 +539,11 @@ gimp_merge_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpMergeType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "merge-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -523,10 +569,11 @@ gimp_offset_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpOffsetType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "offset-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -554,10 +601,11 @@ gimp_orientation_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpOrientationType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "orientation-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -585,10 +633,11 @@ gimp_rotation_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpRotationType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "rotation-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -624,10 +673,11 @@ gimp_select_criterion_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpSelectCriterion", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "select-criterion");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -667,6 +717,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_icon_type_get_type,
   gimp_image_base_type_get_type,
   gimp_image_type_get_type,
+  gimp_ink_blob_type_get_type,
   gimp_interpolation_type_get_type,
   gimp_layer_mode_effects_get_type,
   gimp_mask_apply_mode_get_type,
@@ -687,6 +738,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_size_type_get_type,
   gimp_stack_trace_mode_get_type,
   gimp_text_direction_get_type,
+  gimp_text_hint_style_get_type,
   gimp_text_justification_get_type,
   gimp_transfer_mode_get_type,
   gimp_transform_direction_get_type,
@@ -722,6 +774,7 @@ static const gchar * const type_names[] =
   "GimpIconType",
   "GimpImageBaseType",
   "GimpImageType",
+  "GimpInkBlobType",
   "GimpInterpolationType",
   "GimpLayerModeEffects",
   "GimpMaskApplyMode",
@@ -742,6 +795,7 @@ static const gchar * const type_names[] =
   "GimpSizeType",
   "GimpStackTraceMode",
   "GimpTextDirection",
+  "GimpTextHintStyle",
   "GimpTextJustification",
   "GimpTransferMode",
   "GimpTransformDirection",
@@ -753,14 +807,13 @@ static const gchar * const type_names[] =
 static gboolean enums_initialized = FALSE;
 
 /**
- * gimp_enums_init
+ * gimp_enums_init:
  *
  * This function makes sure all the enum types are registered
- * with the GObject type system. This is intended for use by
- * language bindings that need the symbols early, before gimp_main
- * is run. It's not necessary for plug-ins to call this directly,
- * as the normal plug-in initialization code will handle it
- * implicitly.
+ * with the #GType system. This is intended for use by language
+ * bindings that need the symbols early, before gimp_main is run.
+ * It's not necessary for plug-ins to call this directly, because
+ * the normal plug-in initialization code will handle it implicitly.
  *
  * Since: GIMP 2.4
  **/

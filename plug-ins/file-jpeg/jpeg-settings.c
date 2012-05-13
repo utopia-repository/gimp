@@ -4,9 +4,9 @@
  * jpeg-settings.c
  * Copyright (C) 2007 Raphaël Quinet <raphael@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -51,9 +50,9 @@
 
 #include <jpeglib.h>
 
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 #include <libexif/exif-data.h>
-#endif /* HAVE_EXIF */
+#endif /* HAVE_LIBEXIF */
 
 #include <libgimp/gimp.h>
 
@@ -137,7 +136,7 @@ jpeg_detect_original_settings (struct jpeg_decompress_struct *cinfo,
                                 parasite_size,
                                 parasite_data);
   g_free (parasite_data);
-  gimp_image_parasite_attach (image_ID, parasite);
+  gimp_image_attach_parasite (image_ID, parasite);
   gimp_parasite_free (parasite);
   return TRUE;
 }
@@ -188,7 +187,7 @@ jpeg_restore_original_settings (gint32           image_ID,
   g_return_val_if_fail (subsmp != NULL, FALSE);
   g_return_val_if_fail (num_quant_tables != NULL, FALSE);
 
-  parasite = gimp_image_parasite_find (image_ID, "jpeg-settings");
+  parasite = gimp_image_get_parasite (image_ID, "jpeg-settings");
   if (parasite)
     {
       src = gimp_parasite_data (parasite);
@@ -225,13 +224,13 @@ jpeg_restore_original_settings (gint32           image_ID,
                   if (h[1] == 1 && v[1] == 1 && h[2] == 1 && v[2] == 1)
                     {
                       if (h[0] == 1 && v[0] == 1)
-                        *subsmp = JPEG_SUPSAMPLING_1x1_1x1_1x1;
+                        *subsmp = JPEG_SUBSAMPLING_1x1_1x1_1x1;
                       else if (h[0] == 2 && v[0] == 1)
-                        *subsmp = JPEG_SUPSAMPLING_2x1_1x1_1x1;
+                        *subsmp = JPEG_SUBSAMPLING_2x1_1x1_1x1;
                       else if (h[0] == 1 && v[0] == 2)
-                        *subsmp = JPEG_SUPSAMPLING_1x2_1x1_1x1;
+                        *subsmp = JPEG_SUBSAMPLING_1x2_1x1_1x1;
                       else if (h[0] == 2 && v[0] == 2)
-                        *subsmp = JPEG_SUPSAMPLING_2x2_1x1_1x1;
+                        *subsmp = JPEG_SUBSAMPLING_2x2_1x1_1x1;
                     }
                 }
 
@@ -284,7 +283,7 @@ jpeg_restore_original_tables (gint32    image_ID,
   gint          t;
   gint          i;
 
-  parasite = gimp_image_parasite_find (image_ID, "jpeg-settings");
+  parasite = gimp_image_get_parasite (image_ID, "jpeg-settings");
   if (parasite)
     {
       src_size = gimp_parasite_data_size (parasite);
@@ -345,7 +344,7 @@ jpeg_swap_original_settings (gint32 image_ID)
   gint          i;
   gint          j;
 
-  parasite = gimp_image_parasite_find (image_ID, "jpeg-settings");
+  parasite = gimp_image_get_parasite (image_ID, "jpeg-settings");
   if (parasite)
     {
       src_size = gimp_parasite_data_size (parasite);
@@ -394,7 +393,7 @@ jpeg_swap_original_settings (gint32 image_ID)
                                             src_size,
                                             new_data);
               g_free (new_data);
-              gimp_image_parasite_attach (image_ID, parasite);
+              gimp_image_attach_parasite (image_ID, parasite);
             }
         }
       gimp_parasite_free (parasite);

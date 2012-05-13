@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,7 +24,7 @@
 
 #include "tools-types.h"
 
-#include "config/gimpguiconfig.h"
+#include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimpdatafactory.h"
@@ -33,6 +32,7 @@
 
 #include "display/gimpdisplay.h"
 
+#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpviewablebox.h"
 #include "widgets/gimpwidgets-utils.h"
 
@@ -64,9 +64,6 @@ static void   gimp_bucket_fill_options_get_property (GObject         *object,
                                                      GParamSpec      *pspec);
 
 static void   gimp_bucket_fill_options_reset        (GimpToolOptions *tool_options);
-static void   gimp_bucket_fill_options_notify (GimpBucketFillOptions *options,
-                                               GParamSpec            *pspec,
-                                               GtkWidget             *widget);
 
 
 G_DEFINE_TYPE (GimpBucketFillOptions, gimp_bucket_fill_options,
@@ -92,7 +89,8 @@ gimp_bucket_fill_options_class_init (GimpBucketFillOptionsClass *klass)
                                  GIMP_FG_BUCKET_FILL,
                                  GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FILL_SELECTION,
-                                    "fill-selection", NULL,
+                                    "fill-selection",
+                                    N_("Which area will be filled"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_FILL_TRANSPARENT,
@@ -113,7 +111,8 @@ gimp_bucket_fill_options_class_init (GimpBucketFillOptionsClass *klass)
                                    0.0, 255.0, 15.0,
                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_FILL_CRITERION,
-                                 "fill-criterion", NULL,
+                                 "fill-criterion",
+                                 N_("Criterion used for determining color similarity"),
                                  GIMP_TYPE_SELECT_CRITERION,
                                  GIMP_SELECT_CRITERION_COMPOSITE,
                                  GIMP_PARAM_STATIC_STRINGS);
@@ -204,7 +203,7 @@ gimp_bucket_fill_options_reset (GimpToolOptions *tool_options)
 
   if (pspec)
     G_PARAM_SPEC_DOUBLE (pspec)->default_value =
-      GIMP_GUI_CONFIG (tool_options->tool_info->gimp->config)->default_threshold;
+      tool_options->tool_info->gimp->config->default_threshold;
 
   GIMP_TOOL_OPTIONS_CLASS (parent_class)->reset (tool_options);
 }
@@ -212,28 +211,34 @@ gimp_bucket_fill_options_reset (GimpToolOptions *tool_options)
 GtkWidget *
 gimp_bucket_fill_options_gui (GimpToolOptions *tool_options)
 {
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_paint_options_gui (tool_options);
-  GtkWidget *vbox2;
-  GtkWidget *table;
-  GtkWidget *frame;
-  GtkWidget *hbox;
-  GtkWidget *button;
-  GtkWidget *combo;
-  gchar     *str;
+  GObject         *config = G_OBJECT (tool_options);
+  GtkWidget       *vbox   = gimp_paint_options_gui (tool_options);
+  GtkWidget       *vbox2;
+  GtkWidget       *table;
+  GtkWidget       *frame;
+  GtkWidget       *hbox;
+  GtkWidget       *button;
+  GtkWidget       *scale;
+  GtkWidget       *combo;
+  gchar           *str;
+  GdkModifierType  toggle_mask;
+
+  toggle_mask = gimp_get_toggle_behavior_mask ();
 
   /*  fill type  */
   str = g_strdup_printf (_("Fill Type  (%s)"),
-                         gimp_get_mod_string (GDK_CONTROL_MASK)),
+                         gimp_get_mod_string (toggle_mask)),
   frame = gimp_prop_enum_radio_frame_new (config, "fill-mode", str, 0, 0);
   g_free (str);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  hbox = gimp_prop_pattern_box_new (NULL, GIMP_CONTEXT (tool_options), 2,
+  hbox = gimp_prop_pattern_box_new (NULL, GIMP_CONTEXT (tool_options),
+                                    NULL, 2,
                                     "pattern-view-type", "pattern-view-size");
-  gimp_enum_radio_frame_add (GTK_FRAME (frame), hbox, GIMP_PATTERN_BUCKET_FILL);
+  gimp_enum_radio_frame_add (GTK_FRAME (frame), hbox,
+                             GIMP_PATTERN_BUCKET_FILL, TRUE);
 
   /*  fill selection  */
   str = g_strdup_printf (_("Affected Area  (%s)"),
@@ -254,13 +259,12 @@ gimp_bucket_fill_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  gtk_widget_set_sensitive (frame,
-                            ! GIMP_BUCKET_FILL_OPTIONS (config)->fill_selection);
-  g_signal_connect_object (config, "notify::fill-selection",
-                           G_CALLBACK (gimp_bucket_fill_options_notify),
-                           G_OBJECT (frame), 0);
+  g_object_bind_property (config, "fill-selection",
+                          frame,  "sensitive",
+                          G_BINDING_SYNC_CREATE |
+                          G_BINDING_INVERT_BOOLEAN);
 
-  vbox2 = gtk_vbox_new (FALSE, 0);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox2);
   gtk_widget_show (vbox2);
 
@@ -277,30 +281,22 @@ gimp_bucket_fill_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
 
   /*  the threshold scale  */
+  scale = gimp_prop_spin_scale_new (config, "threshold",
+                                    _("Threshold"),
+                                    1.0, 16.0, 1);
+  gtk_box_pack_start (GTK_BOX (vbox2), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
+
+  /*  the fill criterion combo  */
   table = gtk_table_new (2, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 2);
   gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  gimp_prop_scale_entry_new (config, "threshold",
-                             GTK_TABLE (table), 0, 0,
-                             _("Threshold:"),
-                             1.0, 16.0, 1,
-                             FALSE, 0.0, 0.0);
-
-  /*  the fill criterion combo  */
   combo = gimp_prop_enum_combo_box_new (config, "fill-criterion", 0, 0);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
+  gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Fill by:"), 0.0, 0.5,
                              combo, 2, FALSE);
 
   return vbox;
-}
-
-static void
-gimp_bucket_fill_options_notify (GimpBucketFillOptions *options,
-                                 GParamSpec            *pspec,
-                                 GtkWidget             *widget)
-{
-  gtk_widget_set_sensitive (widget, ! options->fill_selection);
 }

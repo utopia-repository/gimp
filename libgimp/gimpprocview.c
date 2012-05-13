@@ -3,10 +3,10 @@
  *
  * gimpprocview.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -42,6 +41,16 @@
 #include "libgimp-intl.h"
 
 
+/**
+ * SECTION: gimpprocview
+ * @title: GimpProcView
+ * @short_description: A widget showing information about a PDB procedure.
+ *
+ * A widget showing information about a PDB procedure, mainly for the
+ * procedure and plug-in browsers.
+ **/
+
+
 /*  local function prototypes  */
 
 static GtkWidget * gimp_proc_view_create_params (const GimpParamDef *params,
@@ -53,6 +62,26 @@ static GtkWidget * gimp_proc_view_create_params (const GimpParamDef *params,
 
 /*  public functions  */
 
+
+/**
+ * gimp_proc_view_new:
+ * @name:
+ * @menu_path:
+ * @blurb:
+ * @help:
+ * @author:
+ * @copyright:
+ * @date:
+ * @type:
+ * @n_params:
+ * @n_return_vals:
+ * @params:
+ * @return_vals:
+ *
+ * Return value: a new widget providing a view on a GIMP procedure
+ *
+ * Since: GIMP 2.4
+ **/
 GtkWidget *
 gimp_proc_view_new (const gchar        *name,
                     const gchar        *menu_path,
@@ -87,7 +116,7 @@ gimp_proc_view_new (const gchar        *name,
   if (blurb && help && ! strcmp (blurb, help))
     help = NULL;
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
 
   /* show the name */
 
@@ -97,7 +126,7 @@ gimp_proc_view_new (const gchar        *name,
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 8);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -170,7 +199,7 @@ gimp_proc_view_new (const gchar        *name,
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 8);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -33,6 +33,7 @@
 #include "gimppalette.h"
 #include "gimppalette-load.h"
 #include "gimppalette-save.h"
+#include "gimptagged.h"
 
 #include "gimp-intl.h"
 
@@ -40,38 +41,43 @@
 
 /*  local function prototypes  */
 
-static void          gimp_palette_finalize          (GObject           *object);
+static void          gimp_palette_tagged_iface_init (GimpTaggedInterface  *iface);
 
-static gint64        gimp_palette_get_memsize       (GimpObject        *object,
-                                                     gint64            *gui_size);
+static void          gimp_palette_finalize          (GObject              *object);
 
-static void          gimp_palette_get_preview_size  (GimpViewable      *viewable,
-                                                     gint               size,
-                                                     gboolean           popup,
-                                                     gboolean           dot_for_dot,
-                                                     gint              *width,
-                                                     gint              *height);
-static gboolean      gimp_palette_get_popup_size    (GimpViewable      *viewable,
-                                                     gint               width,
-                                                     gint               height,
-                                                     gboolean           dot_for_dot,
-                                                     gint              *popup_width,
-                                                     gint              *popup_height);
-static TempBuf     * gimp_palette_get_new_preview   (GimpViewable      *viewable,
-                                                     GimpContext       *context,
-                                                     gint               width,
-                                                     gint               height);
-static gchar       * gimp_palette_get_description   (GimpViewable      *viewable,
-                                                     gchar            **tooltip);
-static const gchar * gimp_palette_get_extension     (GimpData          *data);
-static GimpData    * gimp_palette_duplicate         (GimpData          *data);
+static gint64        gimp_palette_get_memsize       (GimpObject           *object,
+                                                     gint64               *gui_size);
 
-static void          gimp_palette_entry_free        (GimpPaletteEntry  *entry);
-static gint64        gimp_palette_entry_get_memsize (GimpPaletteEntry  *entry,
-                                                     gint64            *gui_size);
+static void          gimp_palette_get_preview_size  (GimpViewable         *viewable,
+                                                     gint                  size,
+                                                     gboolean              popup,
+                                                     gboolean              dot_for_dot,
+                                                     gint                 *width,
+                                                     gint                 *height);
+static gboolean      gimp_palette_get_popup_size    (GimpViewable         *viewable,
+                                                     gint                  width,
+                                                     gint                  height,
+                                                     gboolean              dot_for_dot,
+                                                     gint                 *popup_width,
+                                                     gint                 *popup_height);
+static TempBuf     * gimp_palette_get_new_preview   (GimpViewable         *viewable,
+                                                     GimpContext          *context,
+                                                     gint                  width,
+                                                     gint                  height);
+static gchar       * gimp_palette_get_description   (GimpViewable         *viewable,
+                                                     gchar               **tooltip);
+static const gchar * gimp_palette_get_extension     (GimpData             *data);
+static GimpData    * gimp_palette_duplicate         (GimpData             *data);
+
+static void          gimp_palette_entry_free        (GimpPaletteEntry     *entry);
+static gint64        gimp_palette_entry_get_memsize (GimpPaletteEntry     *entry,
+                                                     gint64               *gui_size);
+static gchar       * gimp_palette_get_checksum      (GimpTagged           *tagged);
 
 
-G_DEFINE_TYPE (GimpPalette, gimp_palette, GIMP_TYPE_DATA)
+G_DEFINE_TYPE_WITH_CODE (GimpPalette, gimp_palette, GIMP_TYPE_DATA,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_TAGGED,
+                                                gimp_palette_tagged_iface_init))
 
 #define parent_class gimp_palette_parent_class
 
@@ -100,6 +106,12 @@ gimp_palette_class_init (GimpPaletteClass *klass)
 }
 
 static void
+gimp_palette_tagged_iface_init (GimpTaggedInterface *iface)
+{
+  iface->get_checksum = gimp_palette_get_checksum;
+}
+
+static void
 gimp_palette_init (GimpPalette *palette)
 {
   palette->colors    = NULL;
@@ -114,8 +126,8 @@ gimp_palette_finalize (GObject *object)
 
   if (palette->colors)
     {
-      g_list_foreach (palette->colors, (GFunc) gimp_palette_entry_free, NULL);
-      g_list_free (palette->colors);
+      g_list_free_full (palette->colors,
+                        (GDestroyNotify) gimp_palette_entry_free);
       palette->colors = NULL;
     }
 
@@ -210,7 +222,7 @@ gimp_palette_get_new_preview (GimpViewable *viewable,
   columns = width  / cell_size;
   rows    = height / cell_size;
 
-  buf = temp_buf_data (temp_buf);
+  buf = temp_buf_get_data (temp_buf);
   b   = g_new (guchar, width * 3);
 
   list = palette->colors;
@@ -256,12 +268,13 @@ gimp_palette_get_description (GimpViewable  *viewable,
   GimpPalette *palette = GIMP_PALETTE (viewable);
 
   return g_strdup_printf ("%s (%d)",
-                          GIMP_OBJECT (palette)->name,
+                          gimp_object_get_name (palette),
                           palette->n_colors);
 }
 
 GimpData *
-gimp_palette_new (const gchar *name)
+gimp_palette_new (GimpContext *context,
+                  const gchar *name)
 {
   g_return_val_if_fail (name != NULL, NULL);
   g_return_val_if_fail (*name != '\0', NULL);
@@ -272,18 +285,19 @@ gimp_palette_new (const gchar *name)
 }
 
 GimpData *
-gimp_palette_get_standard (void)
+gimp_palette_get_standard (GimpContext *context)
 {
   static GimpData *standard_palette = NULL;
 
   if (! standard_palette)
     {
-      standard_palette = gimp_palette_new ("Standard");
+      standard_palette = gimp_palette_new (context, "Standard");
 
-      standard_palette->dirty = FALSE;
-      gimp_data_make_internal (standard_palette);
+      gimp_data_clean (standard_palette);
+      gimp_data_make_internal (standard_palette, "gimp-palette-standard");
 
-      g_object_ref (standard_palette);
+      g_object_add_weak_pointer (G_OBJECT (standard_palette),
+                                 (gpointer *) &standard_palette);
     }
 
   return standard_palette;
@@ -314,6 +328,58 @@ gimp_palette_duplicate (GimpData *data)
     }
 
   return GIMP_DATA (new);
+}
+
+static gchar *
+gimp_palette_get_checksum (GimpTagged *tagged)
+{
+  GimpPalette *palette         = GIMP_PALETTE (tagged);
+  gchar       *checksum_string = NULL;
+
+  if (palette->n_colors > 0)
+    {
+      GChecksum *checksum       = g_checksum_new (G_CHECKSUM_MD5);
+      GList     *color_iterator = palette->colors;
+
+      g_checksum_update (checksum, (const guchar *) &palette->n_colors, sizeof (palette->n_colors));
+      g_checksum_update (checksum, (const guchar *) &palette->n_columns, sizeof (palette->n_columns));
+
+      while (color_iterator)
+        {
+          GimpPaletteEntry *entry = (GimpPaletteEntry *) color_iterator->data;
+
+          g_checksum_update (checksum, (const guchar *) &entry->color, sizeof (entry->color));
+          if (entry->name)
+            g_checksum_update (checksum, (const guchar *) entry->name, strlen (entry->name));
+
+          color_iterator = g_list_next (color_iterator);
+        }
+
+      checksum_string = g_strdup (g_checksum_get_string (checksum));
+
+      g_checksum_free (checksum);
+    }
+
+  return checksum_string;
+}
+
+
+/*  public functions  */
+
+GList *
+gimp_palette_get_colors (GimpPalette *palette)
+{
+  g_return_val_if_fail (GIMP_IS_PALETTE (palette), NULL);
+
+  return palette->colors;
+}
+
+gint
+gimp_palette_get_n_colors (GimpPalette *palette)
+{
+  g_return_val_if_fail (GIMP_IS_PALETTE (palette), 0);
+
+  return palette->n_colors;
 }
 
 GimpPaletteEntry *
@@ -394,6 +460,89 @@ gimp_palette_delete_entry (GimpPalette      *palette,
     }
 }
 
+gboolean
+gimp_palette_set_entry (GimpPalette   *palette,
+                        gint           position,
+                        const gchar   *name,
+                        const GimpRGB *color)
+{
+  GimpPaletteEntry *entry;
+
+  g_return_val_if_fail (GIMP_IS_PALETTE (palette), FALSE);
+  g_return_val_if_fail (color != NULL, FALSE);
+
+  entry = gimp_palette_get_entry (palette, position);
+
+  if (! entry)
+    return FALSE;
+
+  entry->color = *color;
+
+  if (entry->name)
+    g_free (entry->name);
+
+  entry->name = g_strdup (name);
+
+  gimp_data_dirty (GIMP_DATA (palette));
+
+  return TRUE;
+}
+
+gboolean
+gimp_palette_set_entry_color (GimpPalette   *palette,
+                              gint           position,
+                              const GimpRGB *color)
+{
+  GimpPaletteEntry *entry;
+
+  g_return_val_if_fail (GIMP_IS_PALETTE (palette), FALSE);
+  g_return_val_if_fail (color != NULL, FALSE);
+
+  entry = gimp_palette_get_entry (palette, position);
+
+  if (! entry)
+    return FALSE;
+
+  entry->color = *color;
+
+  gimp_data_dirty (GIMP_DATA (palette));
+
+  return TRUE;
+}
+
+gboolean
+gimp_palette_set_entry_name (GimpPalette *palette,
+                             gint         position,
+                             const gchar *name)
+{
+  GimpPaletteEntry *entry;
+
+  g_return_val_if_fail (GIMP_IS_PALETTE (palette), FALSE);
+
+  entry = gimp_palette_get_entry (palette, position);
+
+  if (! entry)
+    return FALSE;
+
+  if (entry->name)
+    g_free (entry->name);
+
+  entry->name = g_strdup (name);
+
+  gimp_data_dirty (GIMP_DATA (palette));
+
+  return TRUE;
+}
+
+GimpPaletteEntry *
+gimp_palette_get_entry (GimpPalette *palette,
+                        gint         position)
+{
+  g_return_val_if_fail (GIMP_IS_PALETTE (palette), NULL);
+
+  return g_list_nth_data (palette->colors, position);
+}
+
 void
 gimp_palette_set_columns (GimpPalette *palette,
                           gint         columns)
@@ -411,7 +560,7 @@ gimp_palette_set_columns (GimpPalette *palette,
 }
 
 gint
-gimp_palette_get_columns  (GimpPalette *palette)
+gimp_palette_get_columns (GimpPalette *palette)
 {
   g_return_val_if_fail (GIMP_IS_PALETTE (palette), 0);
 

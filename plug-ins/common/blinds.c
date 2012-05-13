@@ -8,9 +8,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * A fair proprotion of this code was taken from the Whirl plug-in
  * which was copyrighted by Federico Mena Quintero (as below).
@@ -43,20 +42,18 @@
 
 #define PLUG_IN_PROC   "plug-in-blinds"
 #define PLUG_IN_BINARY "blinds"
+#define PLUG_IN_ROLE   "gimp-blinds"
 
 #define SCALE_WIDTH    150
 
 #define MAX_FANS       100
 
-#define HORIZONTAL       0
-#define VERTICAL         1
-
 /* Variables set in dialog box */
 typedef struct data
 {
-  gint     angledsp;
-  gint     numsegs;
-  gint     orientation;
+  gint                 angledsp;
+  gint                 numsegs;
+  GimpOrientationType  orientation;
   gboolean bg_trans;
 } BlindVals;
 
@@ -92,7 +89,7 @@ static BlindVals bvals =
 {
   30,
   3,
-  HORIZONTAL, /* orientation */
+  GIMP_ORIENTATION_HORIZONTAL,
   FALSE
 };
 
@@ -103,13 +100,13 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",       "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",       "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",          "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",       "Input drawable" },
-    { GIMP_PDB_INT32,    "angle-dsp",      "Angle of Displacement " },
+    { GIMP_PDB_INT32,    "angle-dsp",      "Angle of Displacement" },
     { GIMP_PDB_INT32,    "num-segments",   "Number of segments in blinds" },
-    { GIMP_PDB_INT32,    "orientation",    "orientation; 0 = Horizontal, 1 = Vertical" },
-    { GIMP_PDB_INT32,    "bg-transparent", "background transparent; FALSE,TRUE" }
+    { GIMP_PDB_INT32,    "orientation",    "The orientation { ORIENTATION-HORIZONTAL (0), ORIENTATION-VERTICAL (1) }" },
+    { GIMP_PDB_INT32,    "bg-transparent", "Background transparent { FALSE, TRUE }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -155,7 +152,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       gimp_get_data (PLUG_IN_PROC, &bvals);
-      if (! blinds_dialog(drawable))
+      if (! blinds_dialog (drawable))
         {
           gimp_drawable_detach (drawable);
           return;
@@ -167,10 +164,10 @@ run (const gchar      *name,
         status = GIMP_PDB_CALLING_ERROR;
       if (status == GIMP_PDB_SUCCESS)
         {
-          bvals.angledsp = param[3].data.d_int32;
-          bvals.numsegs = param[4].data.d_int32;
+          bvals.angledsp    = param[3].data.d_int32;
+          bvals.numsegs     = param[4].data.d_int32;
           bvals.orientation = param[5].data.d_int32;
-          bvals.bg_trans = param[6].data.d_int32;
+          bvals.bg_trans    = param[6].data.d_int32;
         }
       break;
 
@@ -185,7 +182,7 @@ run (const gchar      *name,
   if (gimp_drawable_is_rgb (drawable->drawable_id) ||
       gimp_drawable_is_gray (drawable->drawable_id))
     {
-      gimp_progress_init ( _("Adding blinds"));
+      gimp_progress_init (_("Adding blinds"));
 
       apply_blinds (drawable);
 
@@ -223,7 +220,7 @@ blinds_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Blinds"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Blinds"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -239,9 +236,10 @@ blinds_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_aspect_preview_new (drawable, NULL);
@@ -252,7 +250,7 @@ blinds_dialog (GimpDrawable *drawable)
                             G_CALLBACK (dialog_update_preview),
                             drawable);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -261,8 +259,11 @@ blinds_dialog (GimpDrawable *drawable)
                               G_CALLBACK (gimp_radio_button_update),
                               &bvals.orientation, bvals.orientation,
 
-                              _("_Horizontal"), HORIZONTAL, &horizontal,
-                              _("_Vertical"),   VERTICAL,   &vertical,
+                              _("_Horizontal"), GIMP_ORIENTATION_HORIZONTAL,
+                              &horizontal,
+
+                              _("_Vertical"),   GIMP_ORIENTATION_VERTICAL,
+                              &vertical,
 
                               NULL);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
@@ -467,7 +468,7 @@ dialog_update_preview (GimpDrawable *drawable,
 
   buffer = g_new (guchar, width * height * bpp);
 
-  if (bvals.orientation)
+  if (bvals.orientation == GIMP_ORIENTATION_VERTICAL)
     {
       for (y = 0; y < height; y++)
         {
@@ -558,7 +559,7 @@ apply_blinds (GimpDrawable *drawable)
   gint          x, y;
   GimpRGB       background;
   guchar        bg[4];
-  gint          sel_x1, sel_y1, sel_x2, sel_y2;
+  gint          sel_x1, sel_y1;
   gint          sel_width, sel_height;
 
   gimp_context_get_background (&background);
@@ -568,11 +569,10 @@ apply_blinds (GimpDrawable *drawable)
 
   gimp_drawable_get_color_uchar (drawable->drawable_id, &background, bg);
 
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
-
-  sel_width  = sel_x2 - sel_x1;
-  sel_height = sel_y2 - sel_y1;
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &sel_x1, &sel_y1,
+                                      &sel_width, &sel_height))
+    return;
 
   gimp_pixel_rgn_init (&src_rgn, drawable,
                        sel_x1, sel_y1, sel_width, sel_height, FALSE, FALSE);
@@ -582,7 +582,7 @@ apply_blinds (GimpDrawable *drawable)
   src_rows = g_new (guchar, MAX (sel_width, sel_height) * 4 * STEP);
   des_rows = g_new (guchar, MAX (sel_width, sel_height) * 4 * STEP);
 
-  if (bvals.orientation)
+  if (bvals.orientation == GIMP_ORIENTATION_VERTICAL)
     {
       for (y = 0; y < sel_height; y += STEP)
         {
@@ -710,6 +710,7 @@ apply_blinds (GimpDrawable *drawable)
   g_free (src_rows);
   g_free (des_rows);
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
   gimp_drawable_update (drawable->drawable_id,

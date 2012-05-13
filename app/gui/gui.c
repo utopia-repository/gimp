@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <stdlib.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -34,7 +34,6 @@
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 
 #include "plug-in/gimpenvirontable.h"
@@ -43,7 +42,6 @@
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
 #include "display/gimpdisplayshell.h"
-#include "display/gimpdisplayshell-render.h"
 #include "display/gimpstatusbar.h"
 
 #include "tools/gimp-tools.h"
@@ -52,7 +50,6 @@
 #include "widgets/gimpcolorselectorpalette.h"
 #include "widgets/gimpcontrollers.h"
 #include "widgets/gimpdevices.h"
-#include "widgets/gimpdevicestatus.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdnd.h"
 #include "widgets/gimprender.h"
@@ -72,6 +69,7 @@
 #include "dialogs/dialogs.h"
 
 #include "color-history.h"
+#include "gimpuiconfigurer.h"
 #include "gui.h"
 #include "gui-unique.h"
 #include "gui-vtable.h"
@@ -115,10 +113,12 @@ static void       gui_show_help_button_notify   (GimpGuiConfig      *gui_config,
 static void       gui_user_manual_notify        (GimpGuiConfig      *gui_config,
                                                  GParamSpec         *pspec,
                                                  Gimp               *gimp);
+static void       gui_single_window_mode_notify (GimpGuiConfig      *gui_config,
+                                                 GParamSpec         *pspec,
+                                                 GimpUIConfigurer   *ui_configurer);
 static void       gui_tearoff_menus_notify      (GimpGuiConfig      *gui_config,
                                                  GParamSpec         *pspec,
                                                  GtkUIManager       *manager);
-static void       gui_device_change_notify      (Gimp               *gimp);
 
 static void       gui_global_buffer_changed     (Gimp               *gimp);
 
@@ -131,13 +131,13 @@ static void       gui_menu_hide_tooltip         (GimpUIManager      *manager,
 static void       gui_display_changed           (GimpContext        *context,
                                                  GimpDisplay        *display,
                                                  Gimp               *gimp);
-static void       gui_display_remove            (GimpContainer      *displays);
 
 
 /*  private variables  */
 
-static Gimp          *the_gui_gimp     = NULL;
-static GimpUIManager *image_ui_manager = NULL;
+static Gimp             *the_gui_gimp     = NULL;
+static GimpUIManager    *image_ui_manager = NULL;
+static GimpUIConfigurer *ui_configurer    = NULL;
 
 
 /*  public functions  */
@@ -172,7 +172,8 @@ gui_abort (const gchar *abort_message)
 
   gimp_message_box_set_text (GIMP_MESSAGE_BOX (box), "%s", abort_message);
 
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), box);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      box, TRUE, TRUE, 0);
   gtk_widget_show (box);
 
   gimp_dialog_run (GIMP_DIALOG (dialog));
@@ -213,9 +214,6 @@ gui_init (Gimp     *gimp,
 
   themes_init (gimp);
 
-  gdk_rgb_set_min_colors (CLAMP (gimp->config->min_colors, 27, 256));
-  gdk_rgb_set_install (gimp->config->install_cmap);
-
   screen = gdk_screen_get_default ();
   gtk_widget_set_default_colormap (gdk_screen_get_rgb_colormap (screen));
 
@@ -253,8 +251,8 @@ static gchar *
 gui_sanity_check (void)
 {
 #define GTK_REQUIRED_MAJOR 2
-#define GTK_REQUIRED_MINOR 12
-#define GTK_REQUIRED_MICRO 1
+#define GTK_REQUIRED_MINOR 24
+#define GTK_REQUIRED_MICRO 10
 
   const gchar *mismatch = gtk_check_version (GTK_REQUIRED_MAJOR,
                                              GTK_REQUIRED_MINOR,
@@ -274,6 +272,7 @@ gui_sanity_check (void)
          gtk_major_version, gtk_minor_version, gtk_micro_version,
          GTK_REQUIRED_MAJOR, GTK_REQUIRED_MINOR, GTK_REQUIRED_MICRO);
     }
+
 #undef GTK_REQUIRED_MAJOR
 #undef GTK_REQUIRED_MINOR
 #undef GTK_REQUIRED_MICRO
@@ -382,9 +381,6 @@ gui_restore_callback (Gimp               *gimp,
   g_signal_connect (gimp_get_user_context (gimp), "display-changed",
                     G_CALLBACK (gui_display_changed),
                     gimp);
-  g_signal_connect (gimp->displays, "remove",
-                    G_CALLBACK (gui_display_remove),
-                    NULL);
 
   /* make sure the monitor resolution is valid */
   if (display_config->monitor_res_from_gdk               ||
@@ -405,7 +401,6 @@ gui_restore_callback (Gimp               *gimp,
   actions_init (gimp);
   menus_init (gimp, global_action_factory);
   gimp_render_init (gimp);
-  gimp_display_shell_render_init (gimp);
 
   dialogs_init (gimp, global_menu_factory);
 
@@ -416,7 +411,7 @@ gui_restore_callback (Gimp               *gimp,
                     G_CALLBACK (gui_global_buffer_changed),
                     NULL);
 
-  gimp_devices_init (gimp, gui_device_change_notify);
+  gimp_devices_init (gimp);
   gimp_controllers_init (gimp);
   session_init (gimp);
 
@@ -429,6 +424,22 @@ gui_restore_callback (Gimp               *gimp,
   status_callback (NULL, _("Tool Options"), 1.0);
   gimp_tools_restore (gimp);
 }
+
+#ifdef GDK_WINDOWING_QUARTZ
+static void
+gui_add_to_app_menu (GimpUIManager   *ui_manager,
+                     IgeMacMenuGroup *group,
+                     const gchar     *action_path,
+                     const gchar     *label)
+{
+  GtkWidget *item;
+
+  item = gtk_ui_manager_get_widget (GTK_UI_MANAGER (ui_manager), action_path);
+
+  if (GTK_IS_MENU_ITEM (item))
+    ige_mac_menu_add_app_menu_item (group, GTK_MENU_ITEM (item), label);
+}
+#endif
 
 static void
 gui_restore_after_callback (Gimp               *gimp,
@@ -445,11 +456,15 @@ gui_restore_after_callback (Gimp               *gimp,
   if (gui_config->restore_accels)
     menus_restore (gimp);
 
+  ui_configurer = g_object_new (GIMP_TYPE_UI_CONFIGURER,
+                                "gimp", gimp,
+                                NULL);
+
   image_ui_manager = gimp_menu_factory_manager_new (global_menu_factory,
                                                     "<Image>",
                                                     gimp,
                                                     gui_config->tearoff_menus);
-  gimp_ui_manager_update (image_ui_manager, NULL);
+  gimp_ui_manager_update (image_ui_manager, gimp);
 
 #ifdef GDK_WINDOWING_QUARTZ
   {
@@ -473,31 +488,33 @@ gui_restore_after_callback (Gimp               *gimp,
     /*  the about group  */
     group = ige_mac_menu_add_app_menu_group ();
 
-    item = gtk_ui_manager_get_widget (GTK_UI_MANAGER (image_ui_manager),
-                                      "/dummy-menubar/image-popup/Help/dialogs-about");
-    if (GTK_IS_MENU_ITEM (item))
-      ige_mac_menu_add_app_menu_item (group, GTK_MENU_ITEM (item), _("About GIMP"));
+    gui_add_to_app_menu (image_ui_manager, group,
+                         "/dummy-menubar/image-popup/Help/dialogs-about",
+                         _("About GIMP"));
 
     /*  the preferences group  */
     group = ige_mac_menu_add_app_menu_group ();
 
-    item = gtk_ui_manager_get_widget (GTK_UI_MANAGER (image_ui_manager),
-                                      "/dummy-menubar/image-popup/Edit/Preferences/dialogs-preferences");
-    if (GTK_IS_MENU_ITEM (item))
-      ige_mac_menu_add_app_menu_item (group, GTK_MENU_ITEM (item), NULL);
+#define PREFERENCES "/dummy-menubar/image-popup/Edit/Preferences/"
 
-    item = gtk_ui_manager_get_widget (GTK_UI_MANAGER (image_ui_manager),
-                                      "/dummy-menubar/image-popup/Edit/Preferences/dialogs-keyboard-shortcuts");
-    if (GTK_IS_MENU_ITEM (item))
-      ige_mac_menu_add_app_menu_item (group, GTK_MENU_ITEM (item), NULL);
+    gui_add_to_app_menu (image_ui_manager, group,
+                         PREFERENCES "dialogs-preferences", NULL);
+    gui_add_to_app_menu (image_ui_manager, group,
+                         PREFERENCES "dialogs-input-devices", NULL);
+    gui_add_to_app_menu (image_ui_manager, group,
+                         PREFERENCES "dialogs-keyboard-shortcuts", NULL);
+    gui_add_to_app_menu (image_ui_manager, group,
+                         PREFERENCES "dialogs-module-dialog", NULL);
+    gui_add_to_app_menu (image_ui_manager, group,
+                         PREFERENCES "plug-in-unit-editor", NULL);
 
-    item = gtk_ui_manager_get_widget (GTK_UI_MANAGER (image_ui_manager),
-                                      "/dummy-menubar/image-popup/Edit/Preferences/plug-in-unit-editor");
-    if (GTK_IS_MENU_ITEM (item))
-      ige_mac_menu_add_app_menu_item (group, GTK_MENU_ITEM (item), NULL);
+#undef PREFERENCES
   }
 #endif /* GDK_WINDOWING_QUARTZ */
 
+  g_signal_connect_object (gui_config, "notify::single-window-mode",
+                           G_CALLBACK (gui_single_window_mode_notify),
+                           ui_configurer, 0);
   g_signal_connect_object (gui_config, "notify::tearoff-menus",
                            G_CALLBACK (gui_tearoff_menus_notify),
                            image_ui_manager, 0);
@@ -516,17 +533,24 @@ gui_restore_after_callback (Gimp               *gimp,
 
   color_history_restore (gimp);
 
-  /*  create the empty display  */
-  display = GIMP_DISPLAY (gimp_create_display (gimp,
-                                               NULL, GIMP_UNIT_PIXEL, 1.0));
+  if (gimp_get_show_gui (gimp))
+    {
+      GimpDisplayShell *shell;
 
-  if (gui_config->restore_session)
-    session_restore (gimp);
+      /*  create the empty display  */
+      display = GIMP_DISPLAY (gimp_create_display (gimp,
+                                                   NULL,
+                                                   GIMP_UNIT_PIXEL,
+                                                   1.0));
 
-  windows_show_toolbox ();
+      shell = gimp_display_get_shell (display);
 
-  /*  move keyboard focus to the display  */
-  gtk_window_present (GTK_WINDOW (display->shell));
+      if (gui_config->restore_session)
+        session_restore (gimp);
+
+      /*  move keyboard focus to the display  */
+      gtk_window_present (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (shell))));
+    }
 
   /*  indicate that the application has finished loading  */
   gdk_notify_startup_complete ();
@@ -543,7 +567,7 @@ gui_exit_callback (Gimp     *gimp,
 
   if (! force && gimp_displays_dirty (gimp))
     {
-      gimp_dialog_factory_dialog_raise (global_dialog_factory,
+      gimp_dialog_factory_dialog_raise (gimp_dialog_factory_get_singleton (),
                                         gdk_screen_get_default (),
                                         "gimp-quit-dialog", -1);
 
@@ -568,9 +592,6 @@ gui_exit_callback (Gimp     *gimp,
   if (TRUE /* gui_config->save_controllers */)
     gimp_controllers_save (gimp);
 
-  g_signal_handlers_disconnect_by_func (gimp->displays,
-                                        gui_display_remove,
-                                        NULL);
   g_signal_handlers_disconnect_by_func (gimp_get_user_context (gimp),
                                         gui_display_changed,
                                         gimp);
@@ -603,15 +624,17 @@ gui_exit_after_callback (Gimp     *gimp,
   g_object_unref (image_ui_manager);
   image_ui_manager = NULL;
 
+  g_object_unref (ui_configurer);
+  ui_configurer = NULL;
+
   session_exit (gimp);
   menus_exit (gimp);
   actions_exit (gimp);
-  gimp_display_shell_render_exit (gimp);
   gimp_render_exit (gimp);
 
-  dialogs_exit (gimp);
   gimp_controllers_exit (gimp);
   gimp_devices_exit (gimp);
+  dialogs_exit (gimp);
 
   g_signal_handlers_disconnect_by_func (gimp,
                                         G_CALLBACK (gui_global_buffer_changed),
@@ -654,29 +677,19 @@ gui_user_manual_notify (GimpGuiConfig *gui_config,
 }
 
 static void
+gui_single_window_mode_notify (GimpGuiConfig      *gui_config,
+                               GParamSpec         *pspec,
+                               GimpUIConfigurer   *ui_configurer)
+{
+  gimp_ui_configurer_configure (ui_configurer,
+                                gui_config->single_window_mode);
+}
+static void
 gui_tearoff_menus_notify (GimpGuiConfig *gui_config,
                           GParamSpec    *pspec,
                           GtkUIManager  *manager)
 {
   gtk_ui_manager_set_add_tearoffs (manager, gui_config->tearoff_menus);
-}
-
-static void
-gui_device_change_notify (Gimp *gimp)
-{
-  GimpSessionInfo *session_info;
-
-  session_info = gimp_dialog_factory_find_session_info (global_dock_factory,
-                                                        "gimp-device-status");
-
-  if (session_info && session_info->widget)
-    {
-      GtkWidget *device_status;
-
-      device_status = gtk_bin_get_child (GTK_BIN (session_info->widget));
-
-      gimp_device_status_update (GIMP_DEVICE_STATUS (device_status));
-    }
 }
 
 static void
@@ -695,9 +708,10 @@ gui_menu_show_tooltip (GimpUIManager *manager,
 
   if (display)
     {
-      GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+      GimpDisplayShell *shell     = gimp_display_get_shell (display);
+      GimpStatusbar    *statusbar = gimp_display_shell_get_statusbar (shell);
 
-      gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip",
+      gimp_statusbar_push (statusbar, "menu-tooltip",
                            NULL, "%s", tooltip);
     }
 }
@@ -711,9 +725,10 @@ gui_menu_hide_tooltip (GimpUIManager *manager,
 
   if (display)
     {
-      GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+      GimpDisplayShell *shell     = gimp_display_get_shell (display);
+      GimpStatusbar    *statusbar = gimp_display_shell_get_statusbar (shell);
 
-      gimp_statusbar_pop (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip");
+      gimp_statusbar_pop (statusbar, "menu-tooltip");
     }
 }
 
@@ -730,13 +745,13 @@ gui_display_changed (GimpContext *context,
         {
           GList *list;
 
-          for (list = GIMP_LIST (gimp->displays)->list;
+          for (list = gimp_get_display_iter (gimp);
                list;
                list = g_list_next (list))
             {
               GimpDisplay *display2 = list->data;
 
-              if (display2->image == image)
+              if (gimp_display_get_image (display2) == image)
                 {
                   gimp_context_set_display (context, display2);
 
@@ -753,13 +768,4 @@ gui_display_changed (GimpContext *context,
     }
 
   gimp_ui_manager_update (image_ui_manager, display);
-}
-
-static void
-gui_display_remove (GimpContainer *displays)
-{
-  /* show the toolbox when the last image window is closed */
-
-  if (gimp_container_is_empty (displays))
-    windows_show_toolbox ();
 }

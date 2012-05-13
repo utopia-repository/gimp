@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,7 +24,7 @@
 
 #include "tools-types.h"
 
-#include "config/gimpguiconfig.h"
+#include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimptoolinfo.h"
@@ -87,7 +86,7 @@ gimp_region_select_options_class_init (GimpRegionSelectOptionsClass *klass)
 
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,
                                     "sample-merged",
-                                    N_("Base region_select on all visible layers"),
+                                    N_("Base selection on all visible layers"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
 
@@ -98,7 +97,8 @@ gimp_region_select_options_class_init (GimpRegionSelectOptionsClass *klass)
                                    GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_SELECT_CRITERION,
-                                 "select-criterion", NULL,
+                                 "select-criterion",
+                                 N_("Selection criterion"),
                                  GIMP_TYPE_SELECT_CRITERION,
                                  GIMP_SELECT_CRITERION_COMPOSITE,
                                  GIMP_PARAM_STATIC_STRINGS);
@@ -183,7 +183,7 @@ gimp_region_select_options_reset (GimpToolOptions *tool_options)
 
   if (pspec)
     G_PARAM_SPEC_DOUBLE (pspec)->default_value =
-      GIMP_GUI_CONFIG (tool_options->tool_info->gimp->config)->default_threshold;
+      tool_options->tool_info->gimp->config->default_threshold;
 
   GIMP_TOOL_OPTIONS_CLASS (parent_class)->reset (tool_options);
 }
@@ -194,7 +194,9 @@ gimp_region_select_options_gui (GimpToolOptions *tool_options)
   GObject   *config  = G_OBJECT (tool_options);
   GtkWidget *vbox    = gimp_selection_options_gui (tool_options);
   GtkWidget *button;
-  GtkWidget *table;
+  GtkWidget *scale;
+  GtkWidget *hbox;
+  GtkWidget *label;
   GtkWidget *combo;
 
   /*  the select transparent areas toggle  */
@@ -210,22 +212,24 @@ gimp_region_select_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
 
   /*  the threshold scale  */
-  table = gtk_table_new (2, 3, FALSE);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-  gtk_widget_show (table);
-
-  gimp_prop_scale_entry_new (config, "threshold",
-                             GTK_TABLE (table), 0, 0,
-                             _("Threshold:"),
-                             1.0, 16.0, 1,
-                             FALSE, 0.0, 0.0);
+  scale = gimp_prop_spin_scale_new (config, "threshold",
+                                    _("Threshold"),
+                                    1.0, 16.0, 1);
+  gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
+  gtk_widget_show (scale);
 
   /*  the select criterion combo  */
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  label = gtk_label_new (_("Select by:"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
   combo = gimp_prop_enum_combo_box_new (config, "select-criterion", 0, 0);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-                             _("Select by:"), 0.0, 0.5,
-                             combo, 2, FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
+  gtk_widget_show (combo);
 
   return vbox;
 }

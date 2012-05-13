@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -41,12 +41,12 @@
 static const GimpActionEntry colormap_actions[] =
 {
   { "colormap-popup", GIMP_STOCK_COLORMAP,
-    N_("Colormap Menu"), NULL, NULL, NULL,
+    NC_("colormap-action", "Colormap Menu"), NULL, NULL, NULL,
     GIMP_HELP_INDEXED_PALETTE_DIALOG },
 
   { "colormap-edit-color", GTK_STOCK_EDIT,
-    N_("_Edit Color..."), NULL,
-    N_("Edit color"),
+    NC_("colormap-action", "_Edit Color..."), NULL,
+    NC_("colormap-action", "Edit this color"),
     G_CALLBACK (colormap_edit_color_cmd_callback),
     GIMP_HELP_INDEXED_PALETTE_EDIT }
 };
@@ -54,14 +54,14 @@ static const GimpActionEntry colormap_actions[] =
 static const GimpEnumActionEntry colormap_add_color_actions[] =
 {
   { "colormap-add-color-from-fg", GTK_STOCK_ADD,
-    N_("_Add Color from FG"), "",
-    N_("Add current foreground color"),
+    NC_("colormap-action", "_Add Color from FG"), "",
+    NC_("colormap-action", "Add current foreground color"),
     FALSE, FALSE,
     GIMP_HELP_INDEXED_PALETTE_ADD },
 
   { "colormap-add-color-from-bg", GTK_STOCK_ADD,
-    N_("_Add Color from BG"), "",
-    N_("Add current background color"),
+    NC_("colormap-action", "_Add Color from BG"), "",
+    NC_("colormap-action", "Add current background color"),
     TRUE, FALSE,
     GIMP_HELP_INDEXED_PALETTE_ADD }
 };
@@ -70,11 +70,11 @@ static const GimpEnumActionEntry colormap_add_color_actions[] =
 void
 colormap_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "colormap-action",
                                  colormap_actions,
                                  G_N_ELEMENTS (colormap_actions));
 
-  gimp_action_group_add_enum_actions (group,
+  gimp_action_group_add_enum_actions (group, "colormap-action",
                                       colormap_add_color_actions,
                                       G_N_ELEMENTS (colormap_add_color_actions),
                                       G_CALLBACK (colormap_add_color_cmd_callback));

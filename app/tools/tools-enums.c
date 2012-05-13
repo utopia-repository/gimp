@@ -10,6 +10,37 @@
 
 /* enumerations from "./tools-enums.h" */
 GType
+gimp_button_press_type_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_BUTTON_PRESS_NORMAL, "GIMP_BUTTON_PRESS_NORMAL", "normal" },
+    { GIMP_BUTTON_PRESS_DOUBLE, "GIMP_BUTTON_PRESS_DOUBLE", "double" },
+    { GIMP_BUTTON_PRESS_TRIPLE, "GIMP_BUTTON_PRESS_TRIPLE", "triple" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_BUTTON_PRESS_NORMAL, "GIMP_BUTTON_PRESS_NORMAL", NULL },
+    { GIMP_BUTTON_PRESS_DOUBLE, "GIMP_BUTTON_PRESS_DOUBLE", NULL },
+    { GIMP_BUTTON_PRESS_TRIPLE, "GIMP_BUTTON_PRESS_TRIPLE", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (G_UNLIKELY (! type))
+    {
+      type = g_enum_register_static ("GimpButtonPressType", values);
+      gimp_type_set_translation_context (type, "button-press-type");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
 gimp_button_release_type_get_type (void)
 {
   static const GEnumValue values[] =
@@ -32,41 +63,10 @@ gimp_button_release_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpButtonReleaseType", values);
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
-gimp_rectangle_guide_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_RECTANGLE_GUIDE_NONE, "GIMP_RECTANGLE_GUIDE_NONE", "none" },
-    { GIMP_RECTANGLE_GUIDE_CENTER_LINES, "GIMP_RECTANGLE_GUIDE_CENTER_LINES", "center-lines" },
-    { GIMP_RECTANGLE_GUIDE_THIRDS, "GIMP_RECTANGLE_GUIDE_THIRDS", "thirds" },
-    { GIMP_RECTANGLE_GUIDE_GOLDEN, "GIMP_RECTANGLE_GUIDE_GOLDEN", "golden" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_RECTANGLE_GUIDE_NONE, N_("No guides"), NULL },
-    { GIMP_RECTANGLE_GUIDE_CENTER_LINES, N_("Center lines"), NULL },
-    { GIMP_RECTANGLE_GUIDE_THIRDS, N_("Rule of thirds"), NULL },
-    { GIMP_RECTANGLE_GUIDE_GOLDEN, N_("Golden sections"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpRectangleGuide", values);
+      gimp_type_set_translation_context (type, "button-release-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -94,9 +94,10 @@ gimp_rectangle_constraint_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpRectangleConstraint", values);
+      gimp_type_set_translation_context (type, "rectangle-constraint");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -122,9 +123,10 @@ gimp_rectangle_precision_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpRectanglePrecision", values);
+      gimp_type_set_translation_context (type, "rectangle-precision");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -145,18 +147,19 @@ gimp_rectangle_tool_fixed_rule_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_RECTANGLE_TOOL_FIXED_ASPECT, N_("Aspect ratio"), NULL },
-    { GIMP_RECTANGLE_TOOL_FIXED_WIDTH, N_("Width"), NULL },
-    { GIMP_RECTANGLE_TOOL_FIXED_HEIGHT, N_("Height"), NULL },
-    { GIMP_RECTANGLE_TOOL_FIXED_SIZE, N_("Size"), NULL },
+    { GIMP_RECTANGLE_TOOL_FIXED_ASPECT, NC_("rectangle-tool-fixed-rule", "Aspect ratio"), NULL },
+    { GIMP_RECTANGLE_TOOL_FIXED_WIDTH, NC_("rectangle-tool-fixed-rule", "Width"), NULL },
+    { GIMP_RECTANGLE_TOOL_FIXED_HEIGHT, NC_("rectangle-tool-fixed-rule", "Height"), NULL },
+    { GIMP_RECTANGLE_TOOL_FIXED_SIZE, NC_("rectangle-tool-fixed-rule", "Size"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpRectangleToolFixedRule", values);
+      gimp_type_set_translation_context (type, "rectangle-tool-fixed-rule");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -176,17 +179,18 @@ gimp_rect_select_mode_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_RECT_SELECT_MODE_FREE, N_("Free select"), NULL },
-    { GIMP_RECT_SELECT_MODE_FIXED_SIZE, N_("Fixed size"), NULL },
-    { GIMP_RECT_SELECT_MODE_FIXED_RATIO, N_("Fixed aspect ratio"), NULL },
+    { GIMP_RECT_SELECT_MODE_FREE, NC_("rect-select-mode", "Free select"), NULL },
+    { GIMP_RECT_SELECT_MODE_FIXED_SIZE, NC_("rect-select-mode", "Fixed size"), NULL },
+    { GIMP_RECT_SELECT_MODE_FIXED_RATIO, NC_("rect-select-mode", "Fixed aspect ratio"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpRectSelectMode", values);
+      gimp_type_set_translation_context (type, "rect-select-mode");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -206,77 +210,18 @@ gimp_transform_type_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_TRANSFORM_TYPE_LAYER, N_("Layer"), NULL },
-    { GIMP_TRANSFORM_TYPE_SELECTION, N_("Selection"), NULL },
-    { GIMP_TRANSFORM_TYPE_PATH, N_("Path"), NULL },
+    { GIMP_TRANSFORM_TYPE_LAYER, NC_("transform-type", "Layer"), NULL },
+    { GIMP_TRANSFORM_TYPE_SELECTION, NC_("transform-type", "Selection"), NULL },
+    { GIMP_TRANSFORM_TYPE_PATH, NC_("transform-type", "Path"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpTransformType", values);
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
-gimp_transform_preview_type_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_TRANSFORM_PREVIEW_TYPE_OUTLINE, "GIMP_TRANSFORM_PREVIEW_TYPE_OUTLINE", "outline" },
-    { GIMP_TRANSFORM_PREVIEW_TYPE_GRID, "GIMP_TRANSFORM_PREVIEW_TYPE_GRID", "grid" },
-    { GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE, "GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE", "image" },
-    { GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE_GRID, "GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE_GRID", "image-grid" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_TRANSFORM_PREVIEW_TYPE_OUTLINE, N_("Outline"), NULL },
-    { GIMP_TRANSFORM_PREVIEW_TYPE_GRID, N_("Grid"), NULL },
-    { GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE, N_("Image"), NULL },
-    { GIMP_TRANSFORM_PREVIEW_TYPE_IMAGE_GRID, N_("Image + Grid"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpTransformPreviewType", values);
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
-gimp_transform_grid_type_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_TRANSFORM_GRID_TYPE_N_LINES, "GIMP_TRANSFORM_GRID_TYPE_N_LINES", "n-lines" },
-    { GIMP_TRANSFORM_GRID_TYPE_SPACING, "GIMP_TRANSFORM_GRID_TYPE_SPACING", "spacing" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_TRANSFORM_GRID_TYPE_N_LINES, N_("Number of grid lines"), NULL },
-    { GIMP_TRANSFORM_GRID_TYPE_SPACING, N_("Grid line spacing"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpTransformGridType", values);
+      gimp_type_set_translation_context (type, "transform-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -296,17 +241,49 @@ gimp_vector_mode_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_VECTOR_MODE_DESIGN, N_("Design"), NULL },
-    { GIMP_VECTOR_MODE_EDIT, N_("Edit"), NULL },
-    { GIMP_VECTOR_MODE_MOVE, N_("Move"), NULL },
+    { GIMP_VECTOR_MODE_DESIGN, NC_("vector-mode", "Design"), NULL },
+    { GIMP_VECTOR_MODE_EDIT, NC_("vector-mode", "Edit"), NULL },
+    { GIMP_VECTOR_MODE_MOVE, NC_("vector-mode", "Move"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpVectorMode", values);
+      gimp_type_set_translation_context (type, "vector-mode");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_tool_action_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_TOOL_ACTION_PAUSE, "GIMP_TOOL_ACTION_PAUSE", "pause" },
+    { GIMP_TOOL_ACTION_RESUME, "GIMP_TOOL_ACTION_RESUME", "resume" },
+    { GIMP_TOOL_ACTION_HALT, "GIMP_TOOL_ACTION_HALT", "halt" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_TOOL_ACTION_PAUSE, "GIMP_TOOL_ACTION_PAUSE", NULL },
+    { GIMP_TOOL_ACTION_RESUME, "GIMP_TOOL_ACTION_RESUME", NULL },
+    { GIMP_TOOL_ACTION_HALT, "GIMP_TOOL_ACTION_HALT", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (G_UNLIKELY (! type))
+    {
+      type = g_enum_register_static ("GimpToolAction", values);
+      gimp_type_set_translation_context (type, "tool-action");
       gimp_enum_set_value_descriptions (type, descs);
     }
 

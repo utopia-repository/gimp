@@ -21,18 +21,19 @@ gimp_aspect_type_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_ASPECT_SQUARE, N_("Square"), NULL },
-    { GIMP_ASPECT_PORTRAIT, N_("Portrait"), NULL },
-    { GIMP_ASPECT_LANDSCAPE, N_("Landscape"), NULL },
+    { GIMP_ASPECT_SQUARE, NC_("aspect-type", "Square"), NULL },
+    { GIMP_ASPECT_PORTRAIT, NC_("aspect-type", "Portrait"), NULL },
+    { GIMP_ASPECT_LANDSCAPE, NC_("aspect-type", "Landscape"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpAspectType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "aspect-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -62,10 +63,11 @@ gimp_chain_position_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpChainPosition", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "chain-position");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -93,10 +95,11 @@ gimp_color_area_type_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpColorAreaType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "color-area-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -120,22 +123,23 @@ gimp_color_selector_channel_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_COLOR_SELECTOR_HUE, N_("_H"), N_("Hue") },
-    { GIMP_COLOR_SELECTOR_SATURATION, N_("_S"), N_("Saturation") },
-    { GIMP_COLOR_SELECTOR_VALUE, N_("_V"), N_("Value") },
-    { GIMP_COLOR_SELECTOR_RED, N_("_R"), N_("Red") },
-    { GIMP_COLOR_SELECTOR_GREEN, N_("_G"), N_("Green") },
-    { GIMP_COLOR_SELECTOR_BLUE, N_("_B"), N_("Blue") },
-    { GIMP_COLOR_SELECTOR_ALPHA, N_("_A"), N_("Alpha") },
+    { GIMP_COLOR_SELECTOR_HUE, NC_("color-selector-channel", "_H"), N_("Hue") },
+    { GIMP_COLOR_SELECTOR_SATURATION, NC_("color-selector-channel", "_S"), N_("Saturation") },
+    { GIMP_COLOR_SELECTOR_VALUE, NC_("color-selector-channel", "_V"), N_("Value") },
+    { GIMP_COLOR_SELECTOR_RED, NC_("color-selector-channel", "_R"), N_("Red") },
+    { GIMP_COLOR_SELECTOR_GREEN, NC_("color-selector-channel", "_G"), N_("Green") },
+    { GIMP_COLOR_SELECTOR_BLUE, NC_("color-selector-channel", "_B"), N_("Blue") },
+    { GIMP_COLOR_SELECTOR_ALPHA, NC_("color-selector-channel", "_A"), N_("Alpha") },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpColorSelectorChannel", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "color-selector-channel");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -154,17 +158,18 @@ gimp_page_selector_target_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_PAGE_SELECTOR_TARGET_LAYERS, N_("Layers"), NULL },
-    { GIMP_PAGE_SELECTOR_TARGET_IMAGES, N_("Images"), NULL },
+    { GIMP_PAGE_SELECTOR_TARGET_LAYERS, NC_("page-selector-target", "Layers"), NULL },
+    { GIMP_PAGE_SELECTOR_TARGET_IMAGES, NC_("page-selector-target", "Images"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpPageSelectorTarget", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "page-selector-target");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -192,10 +197,11 @@ gimp_size_entry_update_policy_get_type (void)
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpSizeEntryUpdatePolicy", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "size-entry-update-policy");
       gimp_enum_set_value_descriptions (type, descs);
     }
 
@@ -214,17 +220,18 @@ gimp_zoom_type_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_ZOOM_IN, N_("Zoom in"), NULL },
-    { GIMP_ZOOM_OUT, N_("Zoom out"), NULL },
+    { GIMP_ZOOM_IN, NC_("zoom-type", "Zoom in"), NULL },
+    { GIMP_ZOOM_OUT, NC_("zoom-type", "Zoom out"), NULL },
     { 0, NULL, NULL }
   };
 
   static GType type = 0;
 
-  if (! type)
+  if (G_UNLIKELY (! type))
     {
       type = g_enum_register_static ("GimpZoomType", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "zoom-type");
       gimp_enum_set_value_descriptions (type, descs);
     }
 

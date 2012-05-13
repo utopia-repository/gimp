@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2002 Spencer Kimball, Peter Mattis and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TOOL_CONTROL_H__
@@ -46,7 +45,6 @@ struct _GimpToolControl
   gboolean             scroll_lock;        /*  allow scrolling or not          */
   gboolean             handle_empty_image; /*  invoke the tool on images       *
                                             *  without active drawable         */
-  gboolean             wants_click;        /*  wants click detection           */
   GimpDirtyMask        dirty_mask;         /*  if preserve is FALSE, cancel    *
                                             *  the tool on these events        */
   GimpMotionMode       motion_mode;        /*  how to process motion events    *
@@ -58,6 +56,11 @@ struct _GimpToolControl
   gint                 snap_height;
 
   GimpCursorPrecision  precision;
+
+  gboolean             wants_click;        /*  wants click detection           */
+  gboolean             wants_double_click;
+  gboolean             wants_triple_click;
+  gboolean             wants_all_key_events;
 
   gboolean             toggled;
 
@@ -105,10 +108,6 @@ void     gimp_tool_control_set_handle_empty_image (GimpToolControl *control,
                                                    gboolean         handle_empty);
 gboolean gimp_tool_control_get_handle_empty_image (GimpToolControl *control);
 
-void           gimp_tool_control_set_wants_click  (GimpToolControl *control,
-                                                   gboolean         wants_click);
-gboolean       gimp_tool_control_get_wants_click  (GimpToolControl *control);
-
 void           gimp_tool_control_set_dirty_mask   (GimpToolControl *control,
                                                    GimpDirtyMask    dirty_mask);
 GimpDirtyMask  gimp_tool_control_get_dirty_mask   (GimpToolControl *control);
@@ -120,6 +119,22 @@ GimpMotionMode gimp_tool_control_get_motion_mode  (GimpToolControl *control);
 void           gimp_tool_control_set_snap_to      (GimpToolControl *control,
                                                    gboolean         snap_to);
 gboolean       gimp_tool_control_get_snap_to      (GimpToolControl *control);
+
+void           gimp_tool_control_set_wants_click  (GimpToolControl *control,
+                                                   gboolean         wants_click);
+gboolean       gimp_tool_control_get_wants_click  (GimpToolControl *control);
+
+void           gimp_tool_control_set_wants_double_click   (GimpToolControl *control,
+                                                           gboolean         wants_double_click);
+gboolean       gimp_tool_control_get_wants_double_click   (GimpToolControl *control);
+
+void           gimp_tool_control_set_wants_triple_click   (GimpToolControl *control,
+                                                           gboolean         wants_double_click);
+gboolean       gimp_tool_control_get_wants_triple_click   (GimpToolControl *control);
+
+void           gimp_tool_control_set_wants_all_key_events (GimpToolControl *control,
+                                                           gboolean         wants_key_events);
+gboolean       gimp_tool_control_get_wants_all_key_events (GimpToolControl *control);
 
 void           gimp_tool_control_set_snap_offsets (GimpToolControl *control,
                                                    gint             offset_x,

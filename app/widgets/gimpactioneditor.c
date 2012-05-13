@@ -4,9 +4,9 @@
  * gimpactioneditor.c
  * Copyright (C) 2008  Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,13 +35,12 @@
 
 /*  local function prototypes  */
 
-static void   gimp_action_editor_filter_clear   (GtkButton        *button,
-                                                 GtkEntry         *entry);
+static void   gimp_action_editor_filter_clear   (GtkEntry         *entry);
 static void   gimp_action_editor_filter_changed (GtkEntry         *entry,
                                                  GimpActionEditor *editor);
 
 
-G_DEFINE_TYPE (GimpActionEditor, gimp_action_editor, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpActionEditor, gimp_action_editor, GTK_TYPE_BOX)
 
 #define parent_class gimp_action_editor_parent_class
 
@@ -56,15 +54,15 @@ static void
 gimp_action_editor_init (GimpActionEditor *editor)
 {
   GtkWidget *hbox;
-  GtkWidget *entrybox;
   GtkWidget *label;
   GtkWidget *entry;
-  GtkWidget *button;
-  GtkWidget *image;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+                                  GTK_ORIENTATION_VERTICAL);
 
   gtk_box_set_spacing (GTK_BOX (editor), 12);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -72,30 +70,22 @@ gimp_action_editor_init (GimpActionEditor *editor)
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  entrybox = gtk_hbox_new (FALSE, 2);
-  gtk_box_pack_start (GTK_BOX (hbox), entrybox, TRUE, TRUE, 0);
-  gtk_widget_show (entrybox);
-
   entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (entrybox), entry, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
   gtk_widget_show (entry);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
-  button = gtk_button_new ();
-  GTK_WIDGET_UNSET_FLAGS (button, GTK_CAN_FOCUS);
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_box_pack_start (GTK_BOX (entrybox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (entry),
+                                 GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_CLEAR);
+  gtk_entry_set_icon_activatable (GTK_ENTRY (entry),
+                                  GTK_ENTRY_ICON_SECONDARY, TRUE);
+  gtk_entry_set_icon_sensitive (GTK_ENTRY (entry),
+                                GTK_ENTRY_ICON_SECONDARY, FALSE);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_show (image);
-
-  g_signal_connect (button, "clicked",
+  g_signal_connect (entry, "icon-press",
                     G_CALLBACK (gimp_action_editor_filter_clear),
-                    entry);
-
+                    NULL);
   g_signal_connect (entry, "changed",
                     G_CALLBACK (gimp_action_editor_filter_changed),
                     editor);
@@ -133,8 +123,7 @@ gimp_action_editor_new (GimpUIManager *manager,
 /*  private functions  */
 
 static void
-gimp_action_editor_filter_clear (GtkButton *button,
-                                 GtkEntry  *entry)
+gimp_action_editor_filter_clear (GtkEntry *entry)
 {
   gtk_entry_set_text (entry, "");
 }
@@ -145,5 +134,8 @@ gimp_action_editor_filter_changed (GtkEntry         *entry,
 {
   gimp_action_view_set_filter (GIMP_ACTION_VIEW (editor->view),
                                gtk_entry_get_text (entry));
+  gtk_entry_set_icon_sensitive (entry,
+                                GTK_ENTRY_ICON_SECONDARY,
+                                gtk_entry_get_text_length (entry) > 0);
 }
 

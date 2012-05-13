@@ -4,10 +4,10 @@
  * gimpmodule.c
  * (C) 1999 Austin Donnelly <austin@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,6 +31,17 @@
 #include "gimpmodule.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpmodule
+ * @title: GimpModule
+ * @short_description: A #GTypeModule subclass which implements module
+ *                     loading using #GModule.
+ * @see_also: #GModule, #GTypeModule
+ *
+ * A #GTypeModule subclass which implements module loading using #GModule.
+ **/
 
 
 enum
@@ -386,9 +396,9 @@ gimp_module_state_name (GimpModuleState state)
 
 /**
  * gimp_module_register_enum:
- * @module:
- * @name:
- * @const_static_values:
+ * @module:              a module
+ * @name:                the name of the new enum type
+ * @const_static_values: the enum values
  *
  * This function is deprecated! Use g_type_module_register_enum() instead.
  *
@@ -400,6 +410,21 @@ gimp_module_register_enum (GTypeModule      *module,
                            const GEnumValue *const_static_values)
 {
   return g_type_module_register_enum (module, name, const_static_values);
+}
+
+/**
+ * gimp_module_error_quark:
+ *
+ * This function is never called directly. Use GIMP_MODULE_ERROR() instead.
+ *
+ * Return value: the #GQuark that defines the GIMP module error domain.
+ *
+ * Since: GIMP 2.8
+ **/
+GQuark
+gimp_module_error_quark (void)
+{
+  return g_quark_from_static_string ("gimp-module-error-quark");
 }
 
 

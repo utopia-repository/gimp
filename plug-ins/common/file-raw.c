@@ -7,9 +7,9 @@
  *
  * This plugin is not based on any other plugin.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -50,6 +49,7 @@
 #define LOAD_PROC      "file-raw-load"
 #define SAVE_PROC      "file-raw-save"
 #define PLUG_IN_BINARY "file-raw"
+#define PLUG_IN_ROLE   "gimp-file-raw"
 #define PREVIEW_SIZE   350
 
 
@@ -57,6 +57,7 @@ typedef enum
 {
   RAW_RGB,                      /* RGB Image */
   RAW_RGBA,                     /* RGB Image with an Alpha channel */
+  RAW_RGB565,                   /* RGB Image 16bit, 5,6,5 bits per channel */
   RAW_PLANAR,                   /* Planar RGB */
   RAW_INDEXED,                  /* Indexed image */
   RAW_INDEXEDA                  /* Indexed image with an Alpha channel */
@@ -98,6 +99,7 @@ static void              run               (const gchar      *name,
 /* prototypes for the new load functions */
 static gboolean          raw_load_standard (RawGimpData      *data,
                                             gint              bpp);
+static gboolean          raw_load_rgb565   (RawGimpData      *data);
 static gboolean          raw_load_planar   (RawGimpData      *data);
 static gboolean          raw_load_palette  (RawGimpData      *data,
                                             const gchar      *palette_filename);
@@ -113,6 +115,9 @@ static int               mmap_read         (gint              fd,
                                             gint32            len,
                                             gint32            pos,
                                             gint              rowstride);
+static void              rgb_565_to_888    (guint16          *in,
+                                            guchar           *out,
+                                            gint32            num_pixels);
 
 static gint32            load_image        (const gchar      *filename,
                                             GError          **error);
@@ -154,7 +159,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive"                  },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0) }"                  },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
@@ -166,7 +171,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -186,7 +191,7 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_load_handler (LOAD_PROC, "", "");
+  gimp_register_load_handler (LOAD_PROC, "data", "");
 
   gimp_install_procedure (SAVE_PROC,
                           "Dump images to disk in raw format",
@@ -399,6 +404,43 @@ raw_load_standard (RawGimpData *data,
   return TRUE;
 }
 
+/* this handles RGB565 images */
+static gboolean
+raw_load_rgb565 (RawGimpData *data)
+{
+  gint32   num_pixels = runtime->image_width * runtime->image_height;
+  guint16 *in         = g_malloc (num_pixels * 2);
+  guchar  *row        = g_malloc (num_pixels * 3);
+
+  raw_read_row (data->fp, (guchar *)in, runtime->file_offset, num_pixels * 2);
+  rgb_565_to_888 (in, row, num_pixels);
+
+  gimp_pixel_rgn_set_rect (&data->region, row,
+                           0, 0, runtime->image_width, runtime->image_height);
+  g_free (in);
+  g_free (row);
+
+  return TRUE;
+}
+
+/* this converts a 2bpp buffer to a 3bpp buffer in is a buffer of
+ * 16bit pixels, out is a buffer of 24bit pixels
+ */
+static void
+rgb_565_to_888 (guint16 *in,
+                guchar  *out,
+                gint32   num_pixels)
+{
+  guint32 i, j;
+
+  for (i = 0, j = 0; i < num_pixels; i++)
+    {
+      out[j++] = ((((in[i] >> 11) & 0x1f) * 0x21) >> 2);
+      out[j++] = ((((in[i] >>  5) & 0x3f) * 0x41) >> 4);
+      out[j++] = ((((in[i] >>  0) & 0x1f) * 0x21) >> 2);
+    }
+}
+
 /* this handles 3 bpp "planar" images */
 static gboolean
 raw_load_planar (RawGimpData *data)
@@ -440,6 +482,7 @@ raw_load_planar (RawGimpData *data)
       gimp_pixel_rgn_set_row (&data->region, row, 0, i, runtime->image_width);
       gimp_progress_update ((gfloat) i / (gfloat) runtime->image_height);
     }
+  gimp_progress_update (1.0);
 
   g_free (row);
   g_free (r_row);
@@ -684,6 +727,12 @@ load_image (const gchar  *filename,
       itype = GIMP_RGB;
       break;
 
+    case RAW_RGB565:          /* RGB565 */
+      bpp   = 2;
+      ltype = GIMP_RGB_IMAGE;
+      itype = GIMP_RGB;
+      break;
+
     case RAW_RGBA:            /* RGB + alpha */
       bpp   = 4;
       ltype = GIMP_RGBA_IMAGE;
@@ -714,7 +763,7 @@ load_image (const gchar  *filename,
   layer_id = gimp_layer_new (data->image_id, _("Background"),
                              runtime->image_width, runtime->image_height, ltype,
                              100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (data->image_id, layer_id, 0);
+  gimp_image_insert_layer (data->image_id, layer_id, -1, 0);
 
   data->drawable = gimp_drawable_get (layer_id);
 
@@ -727,6 +776,10 @@ load_image (const gchar  *filename,
     case RAW_RGB:
     case RAW_RGBA:
       raw_load_standard (data, bpp);
+      break;
+
+    case RAW_RGB565:
+      raw_load_rgb565 (data);
       break;
 
     case RAW_PLANAR:
@@ -842,6 +895,27 @@ preview_update (GimpPreviewArea *preview)
           }
 
         g_free (row);
+      }
+      break;
+
+    case RAW_RGB565:
+      /* RGB565 image */
+      {
+        guint16 *in  = g_malloc0 (width * 2);
+        guchar  *row = g_malloc0 (width * 3);
+
+        for (y = 0; y < height; y++)
+          {
+            pos = runtime->file_offset + runtime->image_width * y * 2;
+            mmap_read (preview_fd, in, width * 2, pos, width * 2);
+            rgb_565_to_888 (in, row, width);
+
+            gimp_preview_area_draw (preview, 0, y, width, 1,
+                                    GIMP_RGB_IMAGE, row, width * 3);
+          }
+
+        g_free (row);
+        g_free (in);
       }
       break;
 
@@ -979,7 +1053,7 @@ load_dialog (const gchar *filename)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Load Image from Raw Data"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Load Image from Raw Data"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
@@ -993,9 +1067,10 @@ load_dialog (const gchar *filename)
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   frame = gtk_frame_new (NULL);
@@ -1024,6 +1099,7 @@ load_dialog (const gchar *filename)
 
   combo = gimp_int_combo_box_new (_("RGB"),           RAW_RGB,
                                   _("RGB Alpha"),     RAW_RGBA,
+                                  _("RGB565"),        RAW_RGB565,
                                   _("Planar RGB"),    RAW_PLANAR,
                                   _("Indexed"),       RAW_INDEXED,
                                   _("Indexed Alpha"), RAW_INDEXEDA,
@@ -1154,26 +1230,12 @@ save_dialog (const gchar *filename,
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Raw Image Save"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("Raw Image"), PLUG_IN_BINARY, SAVE_PROC);
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      main_vbox, FALSE, FALSE, 0);
   gtk_widget_show (main_vbox);
 
   frame = gimp_int_radio_group_new (TRUE, _("RGB Save Type"),

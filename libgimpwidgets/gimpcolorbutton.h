@@ -4,10 +4,10 @@
  * gimpcolorbutton.h
  * Copyright (C) 1999-2001 Sven Neumann
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 /* This provides a button with a color preview. The preview
@@ -25,6 +24,10 @@
  * On click, a color selector is opened, which is already
  * fully functional wired to the preview button.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_COLOR_BUTTON_H__
 #define __GIMP_COLOR_BUTTON_H__

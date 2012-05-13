@@ -4,9 +4,9 @@
  * gimptagged.h
  * Copyright (C) 2008  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TAGGED_H__
@@ -36,27 +35,38 @@ struct _GimpTaggedInterface
   GTypeInterface base_iface;
 
   /*  signals            */
-  void       (* tag_added)   (GimpTagged *tagged,
-                              GimpTag     tag);
-  void       (* tag_removed) (GimpTagged *tagged,
-                              GimpTag     tag);
+  void       (* tag_added)      (GimpTagged *tagged,
+                                 GimpTag    *tag);
+  void       (* tag_removed)    (GimpTagged *tagged,
+                                 GimpTag    *tag);
 
   /*  virtual functions  */
-  gboolean   (* add_tag)     (GimpTagged *tagged,
-                              GimpTag     tag);
-  gboolean   (* remove_tag)  (GimpTagged *tagged,
-                              GimpTag     tag);
-  GList    * (* get_tags)    (GimpTagged *tagged);
+  gboolean   (* add_tag)        (GimpTagged *tagged,
+                                 GimpTag    *tag);
+  gboolean   (* remove_tag)     (GimpTagged *tagged,
+                                 GimpTag    *tag);
+  GList    * (* get_tags)       (GimpTagged *tagged);
+  gchar    * (* get_identifier) (GimpTagged *tagged);
+  gchar    * (* get_checksum)   (GimpTagged *tagged);
 };
 
 
 GType      gimp_tagged_interface_get_type (void) G_GNUC_CONST;
 
 void       gimp_tagged_add_tag            (GimpTagged *tagged,
-                                           GimpTag     tag);
+                                           GimpTag    *tag);
 void       gimp_tagged_remove_tag         (GimpTagged *tagged,
-                                           GimpTag     tag);
-GList    * gimp_tagged_get_get_tags       (GimpTagged *tagged);
+                                           GimpTag    *tag);
+
+void       gimp_tagged_set_tags           (GimpTagged *tagged,
+                                           GList      *tags);
+GList    * gimp_tagged_get_tags           (GimpTagged *tagged);
+
+gchar    * gimp_tagged_get_identifier     (GimpTagged *tagged);
+gchar    * gimp_tagged_get_checksum       (GimpTagged *tagged);
+
+gboolean   gimp_tagged_has_tag            (GimpTagged *tagged,
+                                           GimpTag    *tag);
 
 
 #endif  /* __GIMP_TAGGED_H__ */

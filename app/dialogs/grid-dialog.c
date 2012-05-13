@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2003  Henrik Brix Andersen <brix@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,12 +14,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -108,8 +108,8 @@ grid_dialog_new (GimpImage   *image,
 
   editor = gimp_grid_editor_new (grid, context, xres, yres);
   gtk_container_set_border_width (GTK_CONTAINER (editor), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-                     editor);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      editor, TRUE, TRUE, 0);
 
   gtk_widget_show (editor);
 

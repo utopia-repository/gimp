@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_COLOR_TYPES_H__
@@ -36,21 +35,64 @@ typedef struct _GimpHSV  GimpHSV;
 typedef struct _GimpHSL  GimpHSL;
 typedef struct _GimpCMYK GimpCMYK;
 
+/**
+ * GimpRGB:
+ * @r: the red component
+ * @g: the green component
+ * @b: the blue component
+ * @a: the alpha component
+ *
+ * Used to keep RGB and RGBA colors. All components are in a range of
+ * [0.0..1.0].
+ **/
 struct _GimpRGB
 {
   gdouble r, g, b, a;
 };
 
+/**
+ * GimpHSV:
+ * @h: the hue component
+ * @s: the saturation component
+ * @v: the value component
+ * @a: the alpha component
+ *
+ * Used to keep HSV and HSVA colors. All components are in a range of
+ * [0.0..1.0].
+ **/
 struct _GimpHSV
 {
   gdouble h, s, v, a;
 };
 
+/**
+ * GimpHSL:
+ * @h: the hue component
+ * @s: the saturation component
+ * @l: the lightness component
+ * @a: the alpha component
+ *
+ * Used to keep HSL and HSLA colors. All components are in a range of
+ * [0.0..1.0].
+ **/
 struct _GimpHSL
 {
   gdouble h, s, l, a;
 };
 
+/**
+ * GimpCMYK:
+ * @c: the cyan component
+ * @m: the magenta component
+ * @y: the yellow component
+ * @k: the black component
+ * @a: the alpha component
+ *
+ * Used to keep CMYK and CMYKA colors. All components are in a range
+ * of [0.0..1.0]. An alpha value is somewhat useless in the CMYK
+ * colorspace, but we keep one around anyway so color conversions
+ * going to CMYK and back can preserve alpha.
+ **/
 struct _GimpCMYK
 {
   gdouble c, m, y, k, a;

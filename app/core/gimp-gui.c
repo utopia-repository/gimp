@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2002 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -41,29 +40,29 @@ gimp_gui_init (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  gimp->gui.ungrab              = NULL;
-  gimp->gui.threads_enter       = NULL;
-  gimp->gui.threads_leave       = NULL;
-  gimp->gui.set_busy            = NULL;
-  gimp->gui.unset_busy          = NULL;
-  gimp->gui.show_message        = NULL;
-  gimp->gui.help                = NULL;
-  gimp->gui.get_program_class   = NULL;
-  gimp->gui.get_display_name    = NULL;
-  gimp->gui.get_user_time       = NULL;
-  gimp->gui.get_theme_dir       = NULL;
-  gimp->gui.display_get_by_id   = NULL;
-  gimp->gui.display_get_id      = NULL;
-  gimp->gui.display_get_window  = NULL;
-  gimp->gui.display_create      = NULL;
-  gimp->gui.display_delete      = NULL;
-  gimp->gui.displays_reconnect  = NULL;
-  gimp->gui.progress_new        = NULL;
-  gimp->gui.progress_free       = NULL;
-  gimp->gui.pdb_dialog_set      = NULL;
-  gimp->gui.pdb_dialog_close    = NULL;
-  gimp->gui.recent_list_add_uri = NULL;
-  gimp->gui.recent_list_load    = NULL;
+  gimp->gui.ungrab                = NULL;
+  gimp->gui.threads_enter         = NULL;
+  gimp->gui.threads_leave         = NULL;
+  gimp->gui.set_busy              = NULL;
+  gimp->gui.unset_busy            = NULL;
+  gimp->gui.show_message          = NULL;
+  gimp->gui.help                  = NULL;
+  gimp->gui.get_program_class     = NULL;
+  gimp->gui.get_display_name      = NULL;
+  gimp->gui.get_user_time         = NULL;
+  gimp->gui.get_theme_dir         = NULL;
+  gimp->gui.display_get_by_id     = NULL;
+  gimp->gui.display_get_id        = NULL;
+  gimp->gui.display_get_window_id = NULL;
+  gimp->gui.display_create        = NULL;
+  gimp->gui.display_delete        = NULL;
+  gimp->gui.displays_reconnect    = NULL;
+  gimp->gui.progress_new          = NULL;
+  gimp->gui.progress_free         = NULL;
+  gimp->gui.pdb_dialog_set        = NULL;
+  gimp->gui.pdb_dialog_close      = NULL;
+  gimp->gui.recent_list_add_uri   = NULL;
+  gimp->gui.recent_list_load      = NULL;
 }
 
 void
@@ -262,6 +261,17 @@ gimp_get_theme_dir (Gimp *gimp)
 }
 
 GimpObject *
+gimp_get_window_strategy (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  if (gimp->gui.get_window_strategy)
+    return gimp->gui.get_window_strategy (gimp);
+
+  return NULL;
+}
+
+GimpObject *
 gimp_get_empty_display (Gimp *gimp)
 {
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
@@ -298,14 +308,14 @@ gimp_get_display_ID (Gimp       *gimp,
 }
 
 guint32
-gimp_get_display_window (Gimp       *gimp,
-                         GimpObject *display)
+gimp_get_display_window_id (Gimp       *gimp,
+                            GimpObject *display)
 {
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), -1);
   g_return_val_if_fail (GIMP_IS_OBJECT (display), -1);
 
-  if (gimp->gui.display_get_window)
-    return gimp->gui.display_get_window (display);
+  if (gimp->gui.display_get_window_id)
+    return gimp->gui.display_get_window_id (display);
 
   return -1;
 }

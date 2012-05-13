@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -61,7 +60,7 @@ static void   gimp_histogram_box_border_notify   (GimpHistogramView *view,
                                                   GimpHistogramBox  *box);
 
 
-G_DEFINE_TYPE (GimpHistogramBox, gimp_histogram_box, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpHistogramBox, gimp_histogram_box, GTK_TYPE_BOX)
 
 
 static void
@@ -81,6 +80,9 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   GtkWidget *view;
   GtkWidget *bar;
 
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
+                                  GTK_ORIENTATION_VERTICAL);
+
   gtk_box_set_spacing (GTK_BOX (box), 2);
 
   frame = gtk_frame_new (NULL);
@@ -88,7 +90,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   gtk_box_pack_start (GTK_BOX (box), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -104,7 +106,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
   box->view = GIMP_HISTOGRAM_VIEW (view);
 
   /*  The gradient below the histogram */
-  vbox2 = gtk_vbox_new (FALSE, 0);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2),
                                   GIMP_HISTOGRAM_VIEW (view)->border_width);
   gtk_box_pack_start (GTK_BOX (vbox), vbox2, FALSE, FALSE, 0);
@@ -142,7 +144,7 @@ gimp_histogram_box_init (GimpHistogramBox *box)
                             box->slider_bar);
 
   /*  The range selection */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (box), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -197,8 +199,7 @@ gimp_histogram_box_low_adj_update (GtkAdjustment    *adjustment,
 
   if (box->view->start != value)
     {
-      box->high_adj->lower = value;
-      gtk_adjustment_changed (box->high_adj);
+      gtk_adjustment_set_lower (box->high_adj, value);
 
       gimp_histogram_view_set_range (box->view, value, box->view->end);
     }
@@ -212,8 +213,7 @@ gimp_histogram_box_high_adj_update (GtkAdjustment    *adjustment,
 
   if (box->view->end != value)
     {
-      box->low_adj->upper = value;
-      gtk_adjustment_changed (box->low_adj);
+      gtk_adjustment_set_upper (box->low_adj, value);
 
       gimp_histogram_view_set_range (box->view, box->view->start, value);
     }
@@ -225,10 +225,8 @@ gimp_histogram_box_histogram_range (GimpHistogramView *view,
                                     gint               end,
                                     GimpHistogramBox  *box)
 {
-  box->high_adj->lower = start;
-  box->low_adj->upper  = end;
-  gtk_adjustment_changed (box->high_adj);
-  gtk_adjustment_changed (box->low_adj);
+  gtk_adjustment_set_lower (box->high_adj, start);
+  gtk_adjustment_set_upper (box->low_adj,  end);
 
   gtk_adjustment_set_value (box->low_adj,  start);
   gtk_adjustment_set_value (box->high_adj, end);

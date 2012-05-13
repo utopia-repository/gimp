@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,6 +35,7 @@
 
 static gint                  get_portion_width       (PixelRegionIterator *PRI);
 static gint                  get_portion_height      (PixelRegionIterator *PRI);
+static void                  pixel_regions_free      (PixelRegionIterator *PRI);
 static PixelRegionIterator * pixel_regions_configure (PixelRegionIterator *PRI);
 static void                  pixel_region_configure  (PixelRegionHolder   *PRH,
                                                       PixelRegionIterator *PRI);
@@ -44,6 +44,20 @@ static void                  pixel_region_configure  (PixelRegionHolder   *PRH,
 /**************************/
 /*  Function definitions  */
 
+/**
+ * pixel_region_init:
+ * @PR:    Pointer to PixelRegion struct, typically allocated on the
+ *         stack
+ * @tiles: Tiles
+ * @x:     X of region
+ * @y:     Y of region
+ * @w:     Width of region
+ * @h:     Height of region
+ * @dirty: %TRUE if there will be changes to the pixel region that
+ *         shall be written back to the tiles, %FALSE otherwise
+ *
+ * Initializes a pixel region over a set of tiles.
+ **/
 void
 pixel_region_init (PixelRegion *PR,
                    TileManager *tiles,
@@ -76,7 +90,7 @@ pixel_region_init_temp_buf (PixelRegion *PR,
                             gint         w,
                             gint         h)
 {
-  PR->data          = temp_buf_data (temp_buf);
+  PR->data          = temp_buf_get_data (temp_buf);
   PR->tiles         = NULL;
   PR->curtile       = NULL;
   PR->offx          = 0;
@@ -154,7 +168,8 @@ pixel_region_get_row (PixelRegion *PR,
   if (subsample == 1)
     {
       if (PR->tiles)
-        read_pixel_data (PR->tiles, x, y, end - 1, y, data, PR->bytes);
+        tile_manager_read_pixel_data (PR->tiles, x, y, end - 1, y, data,
+                                      PR->bytes);
       else
         memcpy (data, PR->data + x * bpp + y * PR->rowstride, w * bpp);
     }
@@ -193,7 +208,8 @@ pixel_region_set_row (PixelRegion  *PR,
     {
       gint end = x + w;
 
-      write_pixel_data (PR->tiles, x, y, end - 1, y, data, PR->bytes);
+      tile_manager_write_pixel_data (PR->tiles, x, y, end - 1, y, data,
+                                     PR->bytes);
     }
   else
     {
@@ -255,7 +271,7 @@ pixel_region_set_col (PixelRegion  *PR,
   gint end = y + h;
   gint bpp = PR->bytes;
 
-  write_pixel_data (PR->tiles, x, y, x, end-1, data, bpp);
+  tile_manager_write_pixel_data (PR->tiles, x, y, x, end-1, data, bpp);
 }
 
 gboolean
@@ -279,7 +295,6 @@ pixel_regions_register (gint num_regions,
     return NULL;
 
   PRI = g_slice_new0 (PixelRegionIterator);
-  PRI->dirty_tiles = 1;
 
   va_start (ap, num_regions);
 
@@ -349,9 +364,7 @@ pixel_regions_process (PixelRegionIterator *PRI)
               is a tile manager  */
           if (PRH->PR->tiles)
             {
-              /* only set the dirty flag if PRH->dirty_tiles == TRUE */
-              tile_release (PRH->PR->curtile,
-                            PRH->PR->dirty && PRI->dirty_tiles);
+              tile_release (PRH->PR->curtile, PRH->PR->dirty);
               PRH->PR->curtile = NULL;
             }
 
@@ -398,15 +411,7 @@ pixel_regions_process_stop (PixelRegionIterator *PRI)
         }
     }
 
-  if (PRI->pixel_regions)
-    {
-      for (list = PRI->pixel_regions; list; list = g_slist_next (list))
-        g_slice_free (PixelRegionHolder, list->data);
-
-      g_slist_free (PRI->pixel_regions);
-
-      g_slice_free (PixelRegionIterator, PRI);
-    }
+  pixel_regions_free (PRI);
 }
 
 
@@ -498,6 +503,21 @@ get_portion_width (PixelRegionIterator *PRI)
   return min_width;
 }
 
+static void
+pixel_regions_free (PixelRegionIterator *PRI)
+{
+  if (PRI->pixel_regions)
+    {
+      GSList *list;
+
+      for (list = PRI->pixel_regions; list; list = g_slist_next (list))
+        g_slice_free (PixelRegionHolder, list->data);
+
+      g_slist_free (PRI->pixel_regions);
+
+      g_slice_free (PixelRegionIterator, PRI);
+    }
+}
 
 static PixelRegionIterator *
 pixel_regions_configure (PixelRegionIterator *PRI)
@@ -510,15 +530,7 @@ pixel_regions_configure (PixelRegionIterator *PRI)
 
   if (PRI->portion_width  == 0 || PRI->portion_height == 0)
     {
-      /*  free the pixel regions list  */
-      if (PRI->pixel_regions)
-        {
-          for (list = PRI->pixel_regions; list; list = g_slist_next (list))
-            g_slice_free (PixelRegionHolder, list->data);
-
-          g_slist_free (PRI->pixel_regions);
-          g_slice_free (PixelRegionIterator, PRI);
-        }
+      pixel_regions_free (PRI);
 
       return NULL;
     }

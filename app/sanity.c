@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,16 +12,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib.h>
+#include <cairo.h>
 #include <fontconfig/fontconfig.h>
 #include <pango/pango.h>
 #include <pango/pangoft2.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -33,9 +33,11 @@
 
 static gchar * sanity_check_gimp              (void);
 static gchar * sanity_check_glib              (void);
+static gchar * sanity_check_cairo             (void);
 static gchar * sanity_check_pango             (void);
 static gchar * sanity_check_fontconfig        (void);
 static gchar * sanity_check_freetype          (void);
+static gchar * sanity_check_gdk_pixbuf        (void);
 static gchar * sanity_check_babl              (void);
 static gchar * sanity_check_gegl              (void);
 static gchar * sanity_check_filename_encoding (void);
@@ -52,6 +54,9 @@ sanity_check (void)
     abort_message = sanity_check_glib ();
 
   if (! abort_message)
+    abort_message = sanity_check_cairo ();
+
+  if (! abort_message)
     abort_message = sanity_check_pango ();
 
   if (! abort_message)
@@ -59,6 +64,9 @@ sanity_check (void)
 
   if (! abort_message)
     abort_message = sanity_check_freetype ();
+
+  if (! abort_message)
+    abort_message = sanity_check_gdk_pixbuf ();
 
   if (! abort_message)
     abort_message = sanity_check_babl ();
@@ -122,8 +130,8 @@ static gchar *
 sanity_check_glib (void)
 {
 #define GLIB_REQUIRED_MAJOR 2
-#define GLIB_REQUIRED_MINOR 16
-#define GLIB_REQUIRED_MICRO 1
+#define GLIB_REQUIRED_MINOR 30
+#define GLIB_REQUIRED_MICRO 2
 
   const gchar *mismatch = glib_check_version (GLIB_REQUIRED_MAJOR,
                                               GLIB_REQUIRED_MINOR,
@@ -152,11 +160,41 @@ sanity_check_glib (void)
 }
 
 static gchar *
+sanity_check_cairo (void)
+{
+#define CAIRO_REQUIRED_MAJOR 1
+#define CAIRO_REQUIRED_MINOR 10
+#define CAIRO_REQUIRED_MICRO 2
+
+  if (cairo_version () < CAIRO_VERSION_ENCODE (CAIRO_REQUIRED_MAJOR,
+                                               CAIRO_REQUIRED_MINOR,
+                                               CAIRO_REQUIRED_MICRO))
+    {
+      return g_strdup_printf
+        ("The Cairo version being used is too old!\n\n"
+         "GIMP requires Cairo version %d.%d.%d or later.\n"
+         "Installed Cairo version is %s.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older Cairo version.\n\n"
+         "Please upgrade to Cairo version %d.%d.%d or later.",
+         CAIRO_REQUIRED_MAJOR, CAIRO_REQUIRED_MINOR, CAIRO_REQUIRED_MICRO,
+         cairo_version_string (),
+         CAIRO_REQUIRED_MAJOR, CAIRO_REQUIRED_MINOR, CAIRO_REQUIRED_MICRO);
+    }
+
+#undef CAIRO_REQUIRED_MAJOR
+#undef CAIRO_REQUIRED_MINOR
+#undef CAIRO_REQUIRED_MICRO
+
+  return NULL;
+}
+
+static gchar *
 sanity_check_pango (void)
 {
 #define PANGO_REQUIRED_MAJOR 1
-#define PANGO_REQUIRED_MINOR 18
-#define PANGO_REQUIRED_MICRO 0
+#define PANGO_REQUIRED_MINOR 29
+#define PANGO_REQUIRED_MICRO 4
 
   const gchar *mismatch = pango_version_check (PANGO_REQUIRED_MAJOR,
                                                PANGO_REQUIRED_MINOR,
@@ -275,6 +313,36 @@ sanity_check_freetype (void)
 }
 
 static gchar *
+sanity_check_gdk_pixbuf (void)
+{
+#define GDK_PIXBUF_REQUIRED_MAJOR 2
+#define GDK_PIXBUF_REQUIRED_MINOR 24
+#define GDK_PIXBUF_REQUIRED_MICRO 1
+
+  if (! sanity_check_version (gdk_pixbuf_major_version, GDK_PIXBUF_REQUIRED_MAJOR,
+                              gdk_pixbuf_minor_version, GDK_PIXBUF_REQUIRED_MINOR,
+                              gdk_pixbuf_micro_version, GDK_PIXBUF_REQUIRED_MICRO))
+    {
+      return g_strdup_printf
+        ("GdkPixbuf version too old!\n\n"
+         "GIMP requires GdkPixbuf version %d.%d.%d or later.\n"
+         "Installed GdkPixbuf version is %d.%d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older GdkPixbuf version.\n\n"
+         "Please upgrade to GdkPixbuf version %d.%d.%d or later.",
+         GDK_PIXBUF_REQUIRED_MAJOR, GDK_PIXBUF_REQUIRED_MINOR, GDK_PIXBUF_REQUIRED_MICRO,
+         gdk_pixbuf_major_version, gdk_pixbuf_minor_version, gdk_pixbuf_micro_version,
+         GDK_PIXBUF_REQUIRED_MAJOR, GDK_PIXBUF_REQUIRED_MINOR, GDK_PIXBUF_REQUIRED_MICRO);
+    }
+
+#undef GDK_PIXBUF_REQUIRED_MAJOR
+#undef GDK_PIXBUF_REQUIRED_MINOR
+#undef GDK_PIXBUF_REQUIRED_MICRO
+
+  return NULL;
+}
+
+static gchar *
 sanity_check_babl (void)
 {
   gint babl_major_version;
@@ -282,8 +350,8 @@ sanity_check_babl (void)
   gint babl_micro_version;
 
 #define BABL_REQUIRED_MAJOR 0
-#define BABL_REQUIRED_MINOR 0
-#define BABL_REQUIRED_MICRO 22
+#define BABL_REQUIRED_MINOR 1
+#define BABL_REQUIRED_MICRO 10
 
   babl_get_version (&babl_major_version,
                     &babl_minor_version,
@@ -320,8 +388,8 @@ sanity_check_gegl (void)
   gint gegl_micro_version;
 
 #define GEGL_REQUIRED_MAJOR 0
-#define GEGL_REQUIRED_MINOR 0
-#define GEGL_REQUIRED_MICRO 18
+#define GEGL_REQUIRED_MINOR 2
+#define GEGL_REQUIRED_MICRO 0
 
   gegl_get_version (&gegl_major_version,
                     &gegl_minor_version,

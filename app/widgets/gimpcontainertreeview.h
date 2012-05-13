@@ -4,9 +4,9 @@
  * gimpcontainertreeview.h
  * Copyright (C) 2003-2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_CONTAINER_TREE_VIEW_H__
@@ -35,49 +34,41 @@
 
 
 typedef struct _GimpContainerTreeViewClass GimpContainerTreeViewClass;
+typedef struct _GimpContainerTreeViewPriv  GimpContainerTreeViewPriv;
 
 struct _GimpContainerTreeView
 {
-  GimpContainerBox   parent_instance;
+  GimpContainerBox           parent_instance;
 
-  GtkTreeModel      *model;
-  gint               n_model_columns;
-  GType              model_columns[16];
+  GtkTreeModel              *model;
+  gint                       n_model_columns;
+  GType                      model_columns[16];
 
-  gint               model_column_renderer;
-  gint               model_column_name;
-  gint               model_column_name_attributes;
+  GtkTreeView               *view;
 
-  GtkTreeView       *view;
-  GtkTreeSelection  *selection;
+  GtkTreeViewColumn         *main_column;
+  GtkCellRenderer           *renderer_cell;
 
-  GtkTreeViewColumn *main_column;
-  GtkCellRenderer   *renderer_cell;
-  GtkCellRenderer   *name_cell;
+  Gimp                      *dnd_gimp; /* eek */
 
-  GList             *toggle_cells;
-  GList             *renderer_cells;
-  GList             *editable_cells;
-
-  GQuark             invalidate_preview_handler_id;
-
-  gboolean           dnd_drop_to_empty;
-  Gimp              *dnd_gimp; /* eek */
-  GimpViewRenderer  *dnd_renderer;
-
-  guint              scroll_timeout_id;
-  guint              scroll_timeout_interval;
-  GdkScrollDirection scroll_dir;
+  GimpContainerTreeViewPriv *priv;
 };
 
 struct _GimpContainerTreeViewClass
 {
   GimpContainerBoxClass  parent_class;
 
+  /* signals */
+
+  void     (* edit_name)      (GimpContainerTreeView   *tree_view);
+
+  /* virtual functions */
+
   gboolean (* drop_possible)  (GimpContainerTreeView   *tree_view,
                                GimpDndType              src_type,
                                GimpViewable            *src_viewable,
                                GimpViewable            *dest_viewable,
+                               GtkTreePath             *drop_path,
                                GtkTreeViewDropPosition  drop_pos,
                                GtkTreeViewDropPosition *return_drop_pos,
                                GdkDragAction           *return_drag_action);
@@ -117,8 +108,23 @@ GtkWidget * gimp_container_tree_view_new      (GimpContainer *container,
                                                gint           view_size,
                                                gint           view_border_width);
 
-void
- gimp_container_tree_view_connect_name_edited (GimpContainerTreeView *tree_view,
+void        gimp_container_tree_view_set_main_column_title
+                                              (GimpContainerTreeView *tree_view,
+                                               const gchar           *title);
+
+void        gimp_container_tree_view_add_toggle_cell
+                                              (GimpContainerTreeView *tree_view,
+                                               GtkCellRenderer       *cell);
+
+void        gimp_container_tree_view_add_renderer_cell
+                                              (GimpContainerTreeView *tree_view,
+                                               GtkCellRenderer       *cell);
+
+void        gimp_container_tree_view_set_dnd_drop_to_empty
+                                              (GimpContainerTreeView *tree_view,
+                                               gboolean               dnd_drop_to_emtpy);
+void        gimp_container_tree_view_connect_name_edited
+                                              (GimpContainerTreeView *tree_view,
                                                GCallback              callback,
                                                gpointer               data);
 

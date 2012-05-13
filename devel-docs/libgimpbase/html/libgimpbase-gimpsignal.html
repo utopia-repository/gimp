@@ -37,10 +37,10 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimpsignal.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><span class="returnvalue">void</span>                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>);
-<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="returnvalue">GimpSignalHandlerFunc</span></a> <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>,
+<pre class="synopsis"><span class="returnvalue">void</span>                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (<em class="parameter"><code><span class="type">gint</span> signum</code></em>);
+<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="returnvalue">GimpSignalHandlerFunc</span></a> <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>               (<em class="parameter"><code><span class="type">gint</span> signum</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="type">GimpSignalHandlerFunc</span></a> handler</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> flags</code></em>);
+                                                         <em class="parameter"><code><span class="type">gint</span> flags</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -53,28 +53,28 @@ Portable signal handling.
 <a name="libgimpbase-gimpsignal.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="GimpSignalHandlerFunc"></a><h3>GimpSignalHandlerFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpSignalHandlerFunc)            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpSignalHandlerFunc)            (<em class="parameter"><code><span class="type">gint</span> signum</code></em>);</pre>
 <p>
-A prototype for signal handler functions. Note that each function which
-takes or returns a variable of this type also accepts or may return
-special values defined by your system's signal.h header file (like
-<em class="parameter"><code>SIG_DFL</code></em> or <em class="parameter"><code>SIG_IGN</code></em>).
+A prototype for a reference to a signal handler functions. Note
+that each function which takes or returns a variable of this type
+also accepts or may return special values defined by your system's
+signal.h header file (like <em class="parameter"><code>SIG_DFL</code></em> or <em class="parameter"><code>SIG_IGN</code></em>).
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>signum</code></em> :</span></p></td>
-<td>The number of the signal. Useful if different signals are handled
-by a single handler.</td>
+<td>The number of the signal. Useful if different signals are
+handled by a single handler.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-signal-private"></a><h3>gimp_signal_private ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="returnvalue">GimpSignalHandlerFunc</span></a> gimp_signal_private               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>,
+<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="returnvalue">GimpSignalHandlerFunc</span></a> gimp_signal_private               (<em class="parameter"><code><span class="type">gint</span> signum</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="type">GimpSignalHandlerFunc</span></a> handler</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> flags</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gint</span> flags</code></em>);</pre>
 <p>
 This function furnishes a workalike for signal(2) but
 which internally invokes sigaction(2) after certain
@@ -119,9 +119,7 @@ active before the call to <a class="link" href="libgimpbase-gimpsignal.html#gimp
 </div>
 <div class="refsect1">
 <a name="libgimpbase-gimpsignal.see-also"></a><h2>See Also</h2>
-<p>
 signal(2), signal(5 or 7), sigaction(2).
-</p>
 </div>
 </div>
 <div class="footer">

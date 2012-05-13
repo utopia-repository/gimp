@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,30 +29,36 @@
 
 #include "gimppattern.h"
 #include "gimppattern-load.h"
+#include "gimptagged.h"
 
 #include "gimp-intl.h"
 
 
-static void          gimp_pattern_finalize        (GObject       *object);
+static void          gimp_pattern_tagged_iface_init (GimpTaggedInterface  *iface);
+static void          gimp_pattern_finalize          (GObject              *object);
 
-static gint64        gimp_pattern_get_memsize     (GimpObject    *object,
-                                                   gint64        *gui_size);
+static gint64        gimp_pattern_get_memsize       (GimpObject           *object,
+                                                     gint64               *gui_size);
 
-static gboolean      gimp_pattern_get_size        (GimpViewable  *viewable,
-                                                   gint          *width,
-                                                   gint          *height);
-static TempBuf     * gimp_pattern_get_new_preview (GimpViewable  *viewable,
-                                                   GimpContext   *context,
-                                                   gint           width,
-                                                   gint           height);
-static gchar       * gimp_pattern_get_description (GimpViewable  *viewable,
-                                                   gchar        **tooltip);
+static gboolean      gimp_pattern_get_size          (GimpViewable         *viewable,
+                                                     gint                 *width,
+                                                     gint                 *height);
+static TempBuf     * gimp_pattern_get_new_preview   (GimpViewable         *viewable,
+                                                     GimpContext          *context,
+                                                     gint                  width,
+                                                     gint                  height);
+static gchar       * gimp_pattern_get_description   (GimpViewable         *viewable,
+                                                     gchar               **tooltip);
 
-static const gchar * gimp_pattern_get_extension   (GimpData      *data);
-static GimpData    * gimp_pattern_duplicate       (GimpData      *data);
+static const gchar * gimp_pattern_get_extension     (GimpData             *data);
+static GimpData    * gimp_pattern_duplicate         (GimpData             *data);
+
+static gchar       * gimp_pattern_get_checksum      (GimpTagged           *tagged);
 
 
-G_DEFINE_TYPE (GimpPattern, gimp_pattern, GIMP_TYPE_DATA)
+G_DEFINE_TYPE_WITH_CODE (GimpPattern, gimp_pattern, GIMP_TYPE_DATA,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_TAGGED,
+                                                gimp_pattern_tagged_iface_init))
 
 #define parent_class gimp_pattern_parent_class
 
@@ -77,6 +82,12 @@ gimp_pattern_class_init (GimpPatternClass *klass)
 
   data_class->get_extension        = gimp_pattern_get_extension;
   data_class->duplicate            = gimp_pattern_duplicate;
+}
+
+static void
+gimp_pattern_tagged_iface_init (GimpTaggedInterface *iface)
+{
+  iface->get_checksum = gimp_pattern_get_checksum;
 }
 
 static void
@@ -156,7 +167,7 @@ gimp_pattern_get_description (GimpViewable  *viewable,
   GimpPattern *pattern = GIMP_PATTERN (viewable);
 
   return g_strdup_printf ("%s (%d × %d)",
-                          GIMP_OBJECT (pattern)->name,
+                          gimp_object_get_name (pattern),
                           pattern->mask->width,
                           pattern->mask->height);
 }
@@ -177,14 +188,36 @@ gimp_pattern_duplicate (GimpData *data)
   return GIMP_DATA (pattern);
 }
 
+static gchar *
+gimp_pattern_get_checksum (GimpTagged *tagged)
+{
+  GimpPattern *pattern         = GIMP_PATTERN (tagged);
+  gchar       *checksum_string = NULL;
+
+  if (pattern->mask)
+    {
+      GChecksum *checksum = g_checksum_new (G_CHECKSUM_MD5);
+
+      g_checksum_update (checksum, temp_buf_get_data (pattern->mask), temp_buf_get_data_size (pattern->mask));
+
+      checksum_string = g_strdup (g_checksum_get_string (checksum));
+
+      g_checksum_free (checksum);
+    }
+
+  return checksum_string;
+}
+
 GimpData *
-gimp_pattern_new (const gchar *name)
+gimp_pattern_new (GimpContext *context,
+                  const gchar *name)
 {
   GimpPattern *pattern;
   guchar      *data;
   gint         row, col;
 
   g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (name[0] != '\n', NULL);
 
   pattern = g_object_new (GIMP_TYPE_PATTERN,
                           "name", name,
@@ -192,7 +225,7 @@ gimp_pattern_new (const gchar *name)
 
   pattern->mask = temp_buf_new (32, 32, 3, 0, 0, NULL);
 
-  data = temp_buf_data (pattern->mask);
+  data = temp_buf_get_data (pattern->mask);
 
   for (row = 0; row < pattern->mask->height; row++)
     for (col = 0; col < pattern->mask->width; col++)
@@ -205,19 +238,19 @@ gimp_pattern_new (const gchar *name)
 }
 
 GimpData *
-gimp_pattern_get_standard (void)
+gimp_pattern_get_standard (GimpContext *context)
 {
   static GimpData *standard_pattern = NULL;
 
   if (! standard_pattern)
     {
-      standard_pattern = gimp_pattern_new ("Standard");
+      standard_pattern = gimp_pattern_new (context, "Standard");
 
-      standard_pattern->dirty = FALSE;
-      gimp_data_make_internal (standard_pattern);
+      gimp_data_clean (standard_pattern);
+      gimp_data_make_internal (standard_pattern, "gimp-pattern-standard");
 
-      /*  set ref_count to 2 --> never swap the standard pattern  */
-      g_object_ref (standard_pattern);
+      g_object_add_weak_pointer (G_OBJECT (standard_pattern),
+                                 (gpointer *) &standard_pattern);
     }
 
   return standard_pattern;

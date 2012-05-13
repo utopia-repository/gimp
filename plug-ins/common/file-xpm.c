@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* XPM plugin version 1.2.6 */
@@ -47,7 +46,7 @@ Previous...Inherited code from Ray Lehtiniemi, who inherited it from S & P.
 
 #include <glib/gstdio.h>
 
-#include <gdkconfig.h>		/* For GDK_WINDOWING_WIN32 */
+#include <gdkconfig.h>          /* For GDK_WINDOWING_WIN32 */
 
 #ifndef GDK_WINDOWING_X11
 #ifndef XPM_NO_X
@@ -72,6 +71,7 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ`";
 #define LOAD_PROC      "file-xpm-load"
 #define SAVE_PROC      "file-xpm-save"
 #define PLUG_IN_BINARY "file-xpm"
+#define PLUG_IN_ROLE   "gimp-file-xpm"
 #define SCALE_WIDTH    125
 
 /* Structs for the save dialog */
@@ -139,7 +139,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,     "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,     "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING,    "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING,    "raw-filename", "The name entered"             }
   };
@@ -151,7 +151,7 @@ query (void)
 
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",      "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",      "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",         "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",      "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",      "The name of the file to save the image in" },
@@ -258,7 +258,7 @@ run (const gchar      *name,
         {
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
-          export = gimp_export_image (&image_ID, &drawable_ID, "XPM",
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_INDEXED |
@@ -483,7 +483,7 @@ parse_image (gint32    image_ID,
                              100,
                              GIMP_NORMAL_MODE);
 
-  gimp_image_add_layer (image_ID, layer_ID, 0);
+  gimp_image_insert_layer (image_ID, layer_ID, -1, 0);
 
   drawable = gimp_drawable_get (layer_ID);
 
@@ -521,6 +521,7 @@ parse_image (gint32    image_ID,
                                drawable->width, scanlines);
 
     }
+  gimp_progress_update (1.0);
 
   g_free(buf);
 
@@ -704,6 +705,7 @@ save_image (const gchar  *filename,
           gimp_progress_update ((gdouble) (i+j) / (gdouble) height);
         }
     }
+  gimp_progress_update (1.0);
 
   g_free (buffer);
 
@@ -802,26 +804,12 @@ save_dialog (void)
   GtkObject *scale_data;
   gboolean   run;
 
-  dialog = gimp_dialog_new (_("Save as XPM"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("XPM"), PLUG_IN_BINARY, SAVE_PROC);
 
   table = gtk_table_new (1, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 

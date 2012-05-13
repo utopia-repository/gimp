@@ -13,7 +13,11 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <libgimpthumb/gimpthumb.h>
-#line 17 "gimpthumb.c"
+
+/* TODO: Add a header for these */
+void gimpthumb_register_classes(PyObject *d);
+void gimpthumb_add_constants(PyObject *module, const gchar *strip_prefix);
+#line 21 "gimpthumb.c"
 
 
 /* ---------- types from other modules ---------- */
@@ -26,7 +30,7 @@ static PyTypeObject *_PyGdkPixbuf_Type;
 /* ---------- forward type declarations ---------- */
 PyTypeObject G_GNUC_INTERNAL PyGimpThumbnail_Type;
 
-#line 30 "gimpthumb.c"
+#line 34 "gimpthumb.c"
 
 
 
@@ -352,7 +356,7 @@ PyTypeObject G_GNUC_INTERNAL PyGimpThumbnail_Type = {
 
 /* ----------- functions ----------- */
 
-#line 21 "gimpthumb.override"
+#line 25 "gimpthumb.override"
 static PyObject *
 _wrap_gimp_thumb_init(PyObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -367,10 +371,10 @@ _wrap_gimp_thumb_init(PyObject *self, PyObject *args, PyObject *kwargs)
 
     return PyBool_FromLong(gimp_thumb_init(creator, thumb_basedir));
 }
-#line 371 "gimpthumb.c"
+#line 375 "gimpthumb.c"
 
 
-#line 37 "gimpthumb.override"
+#line 41 "gimpthumb.override"
 static PyObject *
 _wrap_gimp_thumb_find_thumb(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -399,10 +403,10 @@ _wrap_gimp_thumb_find_thumb(PyGObject *self, PyObject *args, PyObject *kwargs)
     g_free(ret);
     return py_ret;
 }
-#line 403 "gimpthumb.c"
+#line 407 "gimpthumb.c"
 
 
-#line 67 "gimpthumb.override"
+#line 71 "gimpthumb.override"
 static PyObject *
 _wrap_gimp_thumb_file_test(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -435,7 +439,7 @@ _wrap_gimp_thumb_file_test(PyGObject *self, PyObject *args, PyObject *kwargs)
                          PyLong_FromLongLong(mtime),
                          PyLong_FromLongLong(size));
 }
-#line 439 "gimpthumb.c"
+#line 443 "gimpthumb.c"
 
 
 static PyObject *
@@ -684,7 +688,7 @@ gimpthumb_register_classes(PyObject *d)
     }
 
 
-#line 688 "gimpthumb.c"
+#line 692 "gimpthumb.c"
     pygobject_register_class(d, "GimpThumbnail", GIMP_TYPE_THUMBNAIL, &PyGimpThumbnail_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_THUMBNAIL);
 }

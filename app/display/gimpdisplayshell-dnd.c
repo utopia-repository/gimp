@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,14 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -33,8 +33,8 @@
 #include "core/gimpcontext.h"
 #include "core/gimpdrawable-bucket-fill.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-colormap.h"
 #include "core/gimpimage-merge.h"
+#include "core/gimpimage-new.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
@@ -119,9 +119,6 @@ gimp_display_shell_dnd_init (GimpDisplayShell *shell)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  gimp_dnd_uri_list_dest_add  (shell->canvas,
-                               gimp_display_shell_drop_uri_list,
-                               shell);
   gimp_dnd_viewable_dest_add  (shell->canvas, GIMP_TYPE_LAYER,
                                gimp_display_shell_drop_drawable,
                                shell);
@@ -152,6 +149,9 @@ gimp_display_shell_dnd_init (GimpDisplayShell *shell)
   gimp_dnd_pixbuf_dest_add    (shell->canvas,
                                gimp_display_shell_drop_pixbuf,
                                shell);
+  gimp_dnd_uri_list_dest_add  (shell->canvas,
+                               gimp_display_shell_drop_uri_list,
+                               shell);
 }
 
 
@@ -170,10 +170,10 @@ gimp_display_shell_dnd_position_item (GimpDisplayShell *shell,
 
   gimp_display_shell_untransform_viewport (shell, &x, &y, &width, &height);
 
-  gimp_item_offsets (item, &off_x, &off_y);
+  gimp_item_get_offset (item, &off_x, &off_y);
 
-  off_x = x + (width  - gimp_item_width  (item)) / 2 - off_x;
-  off_y = y + (height - gimp_item_height (item)) / 2 - off_y;
+  off_x = x + (width  - gimp_item_get_width  (item)) / 2 - off_x;
+  off_y = y + (height - gimp_item_get_height (item)) / 2 - off_y;
 
   gimp_item_translate (item, off_x, off_y, FALSE);
 }
@@ -182,7 +182,7 @@ static void
 gimp_display_shell_dnd_flush (GimpDisplayShell *shell,
                               GimpImage        *image)
 {
-  gtk_window_present (GTK_WINDOW (shell));
+  gimp_display_shell_present (shell);
 
   gimp_image_flush (image);
 
@@ -198,10 +198,9 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
                                   gpointer      data)
 {
   GimpDisplayShell *shell     = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *image     = shell->display->image;
+  GimpImage        *image     = gimp_display_get_image (shell->display);
   GType             new_type;
   GimpItem         *new_item;
-  gboolean          new_image = FALSE;
 
   GIMP_LOG (DND, NULL);
 
@@ -210,34 +209,12 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
 
   if (! image)
     {
-      GimpImage         *src_image = gimp_item_get_image (GIMP_ITEM (viewable));
-      GimpDrawable      *drawable  = GIMP_DRAWABLE (viewable);
-      GimpImageBaseType  type;
-      gdouble            xres;
-      gdouble            yres;
-
-      type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable));
-
-      image = gimp_create_image (shell->display->gimp,
-                                 gimp_item_width (GIMP_ITEM (viewable)),
-                                 gimp_item_height (GIMP_ITEM (viewable)),
-                                 type, TRUE);
-      gimp_image_undo_disable (image);
-
-      if (type == GIMP_INDEXED)
-        gimp_image_set_colormap (image,
-                                 gimp_image_get_colormap (src_image),
-                                 gimp_image_get_colormap_size (src_image),
-                                 FALSE);
-
-      gimp_image_get_resolution (src_image, &xres, &yres);
-      gimp_image_set_resolution (image, xres, yres);
-      gimp_image_set_unit (image, gimp_image_get_unit (src_image));
-
-      gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
+      image = gimp_image_new_from_drawable (shell->display->gimp,
+                                            GIMP_DRAWABLE (viewable));
+      gimp_create_display (shell->display->gimp, image, GIMP_UNIT_PIXEL, 1.0);
       g_object_unref (image);
 
-      new_image = TRUE;
+      return;
     }
 
   if (GIMP_IS_LAYER (viewable))
@@ -254,21 +231,18 @@ gimp_display_shell_drop_drawable (GtkWidget    *widget,
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Layer"));
 
-      if (! new_image)
-        gimp_display_shell_dnd_position_item (shell, new_item);
+      gimp_display_shell_dnd_position_item (shell, new_item);
 
       gimp_item_set_visible (new_item, TRUE, FALSE);
       gimp_item_set_linked (new_item, FALSE, FALSE);
 
-      gimp_image_add_layer (image, new_layer, -1);
+      gimp_image_add_layer (image, new_layer,
+                            GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
 
       gimp_image_undo_group_end (image);
 
       gimp_display_shell_dnd_flush (shell, image);
     }
-
-  if (new_image)
-    gimp_image_undo_enable (image);
 }
 
 static void
@@ -279,7 +253,7 @@ gimp_display_shell_drop_vectors (GtkWidget    *widget,
                                  gpointer      data)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *image = shell->display->image;
+  GimpImage        *image = gimp_display_get_image (shell->display);
   GimpItem         *new_item;
 
   GIMP_LOG (DND, NULL);
@@ -300,7 +274,8 @@ gimp_display_shell_drop_vectors (GtkWidget    *widget,
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Path"));
 
-      gimp_image_add_vectors (image, new_vectors, -1);
+      gimp_image_add_vectors (image, new_vectors,
+                              GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
 
       gimp_image_undo_group_end (image);
 
@@ -317,7 +292,7 @@ gimp_display_shell_drop_svg (GtkWidget     *widget,
                              gpointer       data)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *image = shell->display->image;
+  GimpImage        *image = gimp_display_get_image (shell->display);
   GError           *error  = NULL;
 
   GIMP_LOG (DND, NULL);
@@ -330,11 +305,13 @@ gimp_display_shell_drop_svg (GtkWidget     *widget,
 
   if (! gimp_vectors_import_buffer (image,
                                     (const gchar *) svg_data, svg_data_len,
-                                    TRUE, TRUE, -1, NULL, &error))
+                                    TRUE, FALSE,
+                                    GIMP_IMAGE_ACTIVE_PARENT, -1,
+                                    NULL, &error))
     {
-      gimp_message (shell->display->gimp, G_OBJECT (shell->display),
-                    GIMP_MESSAGE_ERROR,
-                    "%s", error->message);
+      gimp_message_literal (shell->display->gimp, G_OBJECT (shell->display),
+			    GIMP_MESSAGE_ERROR,
+			    error->message);
       g_clear_error (&error);
     }
   else
@@ -349,7 +326,7 @@ gimp_display_shell_dnd_bucket_fill (GimpDisplayShell   *shell,
                                     const GimpRGB      *color,
                                     GimpPattern        *pattern)
 {
-  GimpImage    *image = shell->display->image;
+  GimpImage    *image = gimp_display_get_image (shell->display);
   GimpDrawable *drawable;
 
   if (shell->display->gimp->busy)
@@ -363,10 +340,26 @@ gimp_display_shell_dnd_bucket_fill (GimpDisplayShell   *shell,
   if (! drawable)
     return;
 
+  if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
+    {
+      gimp_message_literal (shell->display->gimp, G_OBJECT (shell->display),
+                            GIMP_MESSAGE_ERROR,
+                            _("Cannot modify the pixels of layer groups."));
+      return;
+    }
+
+  if (gimp_item_is_content_locked (GIMP_ITEM (drawable)))
+    {
+      gimp_message_literal (shell->display->gimp, G_OBJECT (shell->display),
+                            GIMP_MESSAGE_ERROR,
+                            _("The active layer's pixels are locked."));
+      return;
+    }
+
   /* FIXME: there should be a virtual method for this that the
    *        GimpTextLayer can override.
    */
-  if (color && gimp_drawable_is_text_layer (drawable))
+  if (color && gimp_item_is_text_layer (GIMP_ITEM (drawable)))
     {
       gimp_text_layer_set (GIMP_TEXT_LAYER (drawable), NULL,
                            "color", color,
@@ -425,7 +418,8 @@ gimp_display_shell_drop_buffer (GtkWidget    *widget,
                                 gpointer      data)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *image = shell->display->image;
+  GimpImage        *image = gimp_display_get_image (shell->display);
+  GimpDrawable     *drawable;
   GimpBuffer       *buffer;
   gint              x, y, width, height;
 
@@ -435,7 +429,35 @@ gimp_display_shell_drop_buffer (GtkWidget    *widget,
     return;
 
   if (! image)
-    return;
+    {
+      image = gimp_image_new_from_buffer (shell->display->gimp, NULL,
+                                          GIMP_BUFFER (viewable));
+      gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
+      g_object_unref (image);
+
+      return;
+    }
+
+  drawable = gimp_image_get_active_drawable (image);
+
+  if (drawable)
+    {
+      if (gimp_viewable_get_children (GIMP_VIEWABLE (drawable)))
+        {
+          gimp_message_literal (shell->display->gimp, G_OBJECT (shell->display),
+                                GIMP_MESSAGE_ERROR,
+                                _("Cannot modify the pixels of layer groups."));
+          return;
+        }
+
+      if (gimp_item_is_content_locked (GIMP_ITEM (drawable)))
+        {
+          gimp_message_literal (shell->display->gimp, G_OBJECT (shell->display),
+                                GIMP_MESSAGE_ERROR,
+                                _("The active layer's pixels are locked."));
+          return;
+        }
+    }
 
   buffer = GIMP_BUFFER (viewable);
 
@@ -443,8 +465,7 @@ gimp_display_shell_drop_buffer (GtkWidget    *widget,
 
   /* FIXME: popup a menu for selecting "Paste Into" */
 
-  gimp_edit_paste (image, gimp_image_get_active_drawable (image),
-                   buffer, FALSE,
+  gimp_edit_paste (image, drawable, buffer, FALSE,
                    x, y, width, height);
 
   gimp_display_shell_dnd_flush (shell, image);
@@ -470,12 +491,12 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
       return;
     }
 
-  image = shell->display->image;
+  image = gimp_display_get_image (shell->display);
   context = gimp_get_user_context (shell->display->gimp);
 
   GIMP_LOG (DND, NULL);
 
-  open_as_layers = (shell->display->image != NULL);
+  open_as_layers = (image != NULL);
 
   for (list = uri_list; list; list = g_list_next (list))
     {
@@ -508,7 +529,8 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
               gimp_display_shell_untransform_viewport (shell, &x, &y,
                                                        &width, &height);
 
-              gimp_image_add_layers (image, new_layers, -1,
+              gimp_image_add_layers (image, new_layers,
+                                     GIMP_IMAGE_ACTIVE_PARENT, -1,
                                      x, y, width, height,
                                      _("Drop layers"));
 
@@ -519,7 +541,7 @@ gimp_display_shell_drop_uri_list (GtkWidget *widget,
               warn = TRUE;
             }
         }
-      else if (shell->display->image)
+      else if (gimp_display_get_image (shell->display))
         {
           /*  open any subsequent images in a new display  */
           GimpImage *new_image;
@@ -574,7 +596,7 @@ gimp_display_shell_drop_component (GtkWidget       *widget,
                                    gpointer         data)
 {
   GimpDisplayShell *shell      = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *dest_image = shell->display->image;
+  GimpImage        *dest_image = gimp_display_get_image (shell->display);
   GimpChannel      *channel;
   GimpItem         *new_item;
   const gchar      *desc;
@@ -585,7 +607,14 @@ gimp_display_shell_drop_component (GtkWidget       *widget,
     return;
 
   if (! dest_image)
-    return;
+    {
+      dest_image = gimp_image_new_from_component (image->gimp,
+                                                  image, component);
+      gimp_create_display (dest_image->gimp, dest_image, GIMP_UNIT_PIXEL, 1.0);
+      g_object_unref (dest_image);
+
+      return;
+    }
 
   channel = gimp_channel_new_from_component (image, component, NULL, NULL);
 
@@ -607,7 +636,8 @@ gimp_display_shell_drop_component (GtkWidget       *widget,
 
       gimp_display_shell_dnd_position_item (shell, new_item);
 
-      gimp_image_add_layer (dest_image, new_layer, -1);
+      gimp_image_add_layer (dest_image, new_layer,
+                            GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
 
       gimp_image_undo_group_end (dest_image);
 
@@ -622,44 +652,32 @@ gimp_display_shell_drop_pixbuf (GtkWidget *widget,
                                 GdkPixbuf *pixbuf,
                                 gpointer   data)
 {
-  GimpDisplayShell *shell     = GIMP_DISPLAY_SHELL (data);
-  GimpImage        *image     = shell->display->image;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
+  GimpImage        *image = gimp_display_get_image (shell->display);
   GimpLayer        *new_layer;
   GimpImageType     image_type;
-  gboolean          new_image = FALSE;
 
   GIMP_LOG (DND, NULL);
 
   if (shell->display->gimp->busy)
     return;
 
-  switch (gdk_pixbuf_get_n_channels (pixbuf))
-    {
-    case 1: image_type = GIMP_GRAY_IMAGE;  break;
-    case 2: image_type = GIMP_GRAYA_IMAGE; break;
-    case 3: image_type = GIMP_RGB_IMAGE;   break;
-    case 4: image_type = GIMP_RGBA_IMAGE;  break;
-      break;
-
-    default:
-      g_return_if_reached ();
-      break;
-    }
-
   if (! image)
     {
-      image = gimp_create_image (shell->display->gimp,
-                                 gdk_pixbuf_get_width (pixbuf),
-                                 gdk_pixbuf_get_height (pixbuf),
-                                 GIMP_IMAGE_TYPE_BASE_TYPE (image_type),
-                                 FALSE);
-
+      image = gimp_image_new_from_pixbuf (shell->display->gimp, pixbuf,
+                                          _("Dropped Buffer"));
       gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
       g_object_unref (image);
 
-      gimp_image_undo_disable (image);
+      return;
+    }
 
-      new_image = TRUE;
+  image_type = GIMP_IMAGE_TYPE_FROM_BASE_TYPE (gimp_image_base_type (image));
+
+  if (gdk_pixbuf_get_n_channels (pixbuf) == 2 ||
+      gdk_pixbuf_get_n_channels (pixbuf) == 4)
+    {
+      image_type = GIMP_IMAGE_TYPE_WITH_ALPHA (image_type);
     }
 
   new_layer =
@@ -671,21 +689,16 @@ gimp_display_shell_drop_pixbuf (GtkWidget *widget,
     {
       GimpItem *new_item = GIMP_ITEM (new_layer);
 
-      new_item = GIMP_ITEM (new_layer);
-
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_EDIT_PASTE,
                                    _("Drop New Layer"));
 
-      if (! new_image)
-        gimp_display_shell_dnd_position_item (shell, new_item);
+      gimp_display_shell_dnd_position_item (shell, new_item);
 
-      gimp_image_add_layer (image, new_layer, -1);
+      gimp_image_add_layer (image, new_layer,
+                            GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
 
       gimp_image_undo_group_end (image);
 
       gimp_display_shell_dnd_flush (shell, image);
     }
-
-  if (new_image)
-    gimp_image_undo_enable (image);
 }

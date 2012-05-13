@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -34,6 +33,7 @@
 
 #define LOAD_PROC      "file-desktop-link-load"
 #define PLUG_IN_BINARY "file-desktop-link"
+#define PLUG_IN_ROLE   "gimp-file-desktop-link"
 
 
 static void    query      (void);
@@ -63,7 +63,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
@@ -153,16 +153,18 @@ load_image (const gchar  *filename,
     goto out;
 
   group = g_key_file_get_start_group (file);
-  if (! group || strcmp (group, "Desktop Entry") != 0)
+  if (! group || strcmp (group, G_KEY_FILE_DESKTOP_GROUP) != 0)
     goto out;
 
-  value = g_key_file_get_value (file, group, "Type", &error);
-  if (! value || strcmp (value, "Link") != 0)
+  value = g_key_file_get_value (file,
+                                group, G_KEY_FILE_DESKTOP_KEY_TYPE, &error);
+  if (! value || strcmp (value, G_KEY_FILE_DESKTOP_TYPE_LINK) != 0)
     goto out;
 
   g_free (value);
 
-  value = g_key_file_get_value (file, group, "URL", &error);
+  value = g_key_file_get_value (file,
+                                group, G_KEY_FILE_DESKTOP_KEY_URL, &error);
   if (value)
     image_ID = gimp_file_load (run_mode, value, value);
 

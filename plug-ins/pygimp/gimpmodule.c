@@ -1,20 +1,19 @@
 /* -*- Mode: C; c-basic-offset: 4 -*-
-    Gimp-Python - allows the writing of Gimp plugins in Python.
-    Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Gimp-Python - allows the writing of Gimp plugins in Python.
+ * Copyright (C) 1997-2002  James Henstridge <james@daa.com.au>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -189,7 +188,10 @@ pygimp_main(PyObject *self, PyObject *args)
     PyObject *av;
     int argc, i;
     char **argv;
-    PyObject *ip, *qp, *query, *rp;
+    PyObject *ip;  // init proc
+    PyObject *qp;  // quit proc
+    PyObject *query;  // query proc
+    PyObject *rp;  // run proc
 
     if (!PyArg_ParseTuple(args, "OOOO:main", &ip, &qp, &query, &rp))
         return NULL;
@@ -787,18 +789,6 @@ pygimp_gamma(PyObject *self)
 }
 
 static PyObject *
-pygimp_install_cmap(PyObject *self)
-{
-    return PyBool_FromLong(gimp_install_cmap());
-}
-
-static PyObject *
-pygimp_min_colors(PyObject *self)
-{
-    return PyInt_FromLong(gimp_min_colors());
-}
-
-static PyObject *
 pygimp_gtkrc(PyObject *self)
 {
     return PyString_FromString(gimp_gtkrc());
@@ -1126,7 +1116,7 @@ pygimp_delete(PyObject *self, PyObject *args)
     if (pygimp_image_check(img))
         gimp_image_delete(img->ID);
     else if (pygimp_drawable_check(img))
-        gimp_drawable_delete(img->ID);
+        gimp_item_delete(img->ID);
     else if (pygimp_display_check(img))
         gimp_display_delete(img->ID);
 
@@ -1249,7 +1239,7 @@ pygimp_parasite_find(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s:parasite_find", &name))
         return NULL;
 
-    return pygimp_parasite_new(gimp_parasite_find(name));
+    return pygimp_parasite_new(gimp_get_parasite(name));
 }
 
 static PyObject *
@@ -1261,7 +1251,7 @@ pygimp_parasite_attach(PyObject *self, PyObject *args)
                           &PyGimpParasite_Type, &parasite))
         return NULL;
 
-    if (!gimp_parasite_attach(parasite->para)) {
+    if (!gimp_attach_parasite(parasite->para)) {
         PyErr_Format(pygimp_error, "could not attach parasite '%s'",
                      gimp_parasite_name(parasite->para));
         return NULL;
@@ -1274,6 +1264,7 @@ pygimp_parasite_attach(PyObject *self, PyObject *args)
 static PyObject *
 pygimp_attach_new_parasite(PyObject *self, PyObject *args)
 {
+    GimpParasite *parasite;
     char *name, *data;
     int flags, size;
 
@@ -1281,10 +1272,15 @@ pygimp_attach_new_parasite(PyObject *self, PyObject *args)
                           &data, &size))
         return NULL;
 
-    if (!gimp_attach_new_parasite(name, flags, size, data)) {
+    parasite = gimp_parasite_new (name, flags, size, data);
+
+    if (!gimp_attach_parasite (parasite)) {
         PyErr_Format(pygimp_error, "could not attach new parasite '%s'", name);
+        gimp_parasite_free (parasite);
         return NULL;
     }
+
+    gimp_parasite_free (parasite);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -1298,7 +1294,7 @@ pygimp_parasite_detach(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s:parasite_detach", &name))
         return NULL;
 
-    if (!gimp_parasite_detach(name)) {
+    if (!gimp_detach_parasite(name)) {
         PyErr_Format(pygimp_error, "could not detach parasite '%s'", name);
         return NULL;
     }
@@ -1313,7 +1309,9 @@ pygimp_parasite_list(PyObject *self)
     gint num_parasites;
     gchar **parasites;
 
-    if (gimp_parasite_list(&num_parasites, &parasites)) {
+    parasites = gimp_get_parasite_list (&num_parasites);
+
+    if (parasites) {
         PyObject *ret;
         gint i;
 
@@ -1706,8 +1704,6 @@ static struct PyMethodDef gimp_methods[] = {
     {"domain_register",         (PyCFunction)pygimp_domain_register,    METH_VARARGS},
     {"menu_register",           (PyCFunction)pygimp_menu_register,      METH_VARARGS},
     {"gamma",   (PyCFunction)pygimp_gamma,      METH_NOARGS},
-    {"install_cmap",    (PyCFunction)pygimp_install_cmap,       METH_NOARGS},
-    {"min_colors",      (PyCFunction)pygimp_min_colors, METH_NOARGS},
     {"gtkrc",   (PyCFunction)pygimp_gtkrc,      METH_NOARGS},
     {"personal_rc_file",        (PyCFunction)pygimp_personal_rc_file, METH_VARARGS | METH_KEYWORDS},
     {"context_push", (PyCFunction)pygimp_context_push, METH_NOARGS},
@@ -1768,10 +1764,14 @@ static struct _PyGimp_Functions pygimp_api_functions = {
     pygimp_image_new,
     &PyGimpDisplay_Type,
     pygimp_display_new,
+    &PyGimpItem_Type,
+    pygimp_item_new,
     &PyGimpDrawable_Type,
     pygimp_drawable_new,
     &PyGimpLayer_Type,
     pygimp_layer_new,
+    &PyGimpGroupLayer_Type,
+    pygimp_group_layer_new,
     &PyGimpChannel_Type,
     pygimp_channel_new,
     &PyGimpVectors_Type,
@@ -1820,6 +1820,12 @@ initgimp(void)
     PyGimpLayer_Type.tp_alloc = PyType_GenericAlloc;
     PyGimpLayer_Type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyGimpLayer_Type) < 0)
+        return;
+
+    PyGimpGroupLayer_Type.ob_type = &PyType_Type;
+    PyGimpGroupLayer_Type.tp_alloc = PyType_GenericAlloc;
+    PyGimpGroupLayer_Type.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&PyGimpGroupLayer_Type) < 0)
         return;
 
     PyGimpChannel_Type.ob_type = &PyType_Type;
@@ -1895,11 +1901,17 @@ initgimp(void)
     Py_INCREF(&PyGimpImage_Type);
     PyModule_AddObject(m, "Image", (PyObject *)&PyGimpImage_Type);
 
+    Py_INCREF(&PyGimpItem_Type);
+    PyModule_AddObject(m, "Item", (PyObject *)&PyGimpItem_Type);
+
     Py_INCREF(&PyGimpDrawable_Type);
     PyModule_AddObject(m, "Drawable", (PyObject *)&PyGimpDrawable_Type);
 
     Py_INCREF(&PyGimpLayer_Type);
     PyModule_AddObject(m, "Layer", (PyObject *)&PyGimpLayer_Type);
+    
+    Py_INCREF(&PyGimpGroupLayer_Type);
+    PyModule_AddObject(m, "GroupLayer", (PyObject *)&PyGimpGroupLayer_Type);
 
     Py_INCREF(&PyGimpChannel_Type);
     PyModule_AddObject(m, "Channel", (PyObject *)&PyGimpChannel_Type);

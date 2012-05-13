@@ -4,9 +4,9 @@
  * gimpsamplepointeditor.c
  * Copyright (C) 2005 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,12 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -48,9 +48,8 @@ enum
 };
 
 
-static GObject * gimp_sample_point_editor_constructor (GType                  type,
-                                                       guint                  n_params,
-                                                       GObjectConstructParam *params);
+static void   gimp_sample_point_editor_constructed    (GObject               *object);
+static void   gimp_sample_point_editor_dispose        (GObject               *object);
 static void   gimp_sample_point_editor_set_property   (GObject               *object,
                                                        guint                  property_id,
                                                        const GValue          *value,
@@ -59,7 +58,6 @@ static void   gimp_sample_point_editor_get_property   (GObject               *ob
                                                        guint                  property_id,
                                                        GValue                *value,
                                                        GParamSpec            *pspec);
-static void   gimp_sample_point_editor_dispose        (GObject               *object);
 
 static void   gimp_sample_point_editor_style_set      (GtkWidget             *widget,
                                                        GtkStyle              *prev_style);
@@ -72,7 +70,7 @@ static void   gimp_sample_point_editor_point_added    (GimpImage             *im
 static void   gimp_sample_point_editor_point_removed  (GimpImage             *image,
                                                        GimpSamplePoint       *sample_point,
                                                        GimpSamplePointEditor *editor);
-static void   gimp_sample_point_editor_point_update   (GimpImage             *image,
+static void   gimp_sample_point_editor_point_moved    (GimpImage             *image,
                                                        GimpSamplePoint       *sample_point,
                                                        GimpSamplePointEditor *editor);
 static void   gimp_sample_point_editor_proj_update    (GimpImage             *image,
@@ -101,10 +99,10 @@ gimp_sample_point_editor_class_init (GimpSamplePointEditorClass *klass)
   GtkWidgetClass       *widget_class       = GTK_WIDGET_CLASS (klass);
   GimpImageEditorClass *image_editor_class = GIMP_IMAGE_EDITOR_CLASS (klass);
 
-  object_class->constructor     = gimp_sample_point_editor_constructor;
+  object_class->constructed     = gimp_sample_point_editor_constructed;
+  object_class->dispose         = gimp_sample_point_editor_dispose;
   object_class->get_property    = gimp_sample_point_editor_get_property;
   object_class->set_property    = gimp_sample_point_editor_set_property;
-  object_class->dispose         = gimp_sample_point_editor_dispose;
 
   widget_class->style_set       = gimp_sample_point_editor_style_set;
 
@@ -167,19 +165,25 @@ gimp_sample_point_editor_init (GimpSamplePointEditor *editor)
     }
 }
 
-static GObject *
-gimp_sample_point_editor_constructor (GType                  type,
-                                      guint                  n_params,
-                                      GObjectConstructParam *params)
+static void
+gimp_sample_point_editor_constructed (GObject *object)
 {
-  GObject               *object;
-  GimpSamplePointEditor *editor;
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
+}
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+static void
+gimp_sample_point_editor_dispose (GObject *object)
+{
+  GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (object);
 
-  editor = GIMP_SAMPLE_POINT_EDITOR (object);
+  if (editor->dirty_idle_id)
+    {
+      g_source_remove (editor->dirty_idle_id);
+      editor->dirty_idle_id = 0;
+    }
 
-  return object;
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -222,20 +226,6 @@ gimp_sample_point_editor_get_property (GObject    *object,
 }
 
 static void
-gimp_sample_point_editor_dispose (GObject *object)
-{
-  GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (object);
-
-  if (editor->dirty_idle_id)
-    {
-      g_source_remove (editor->dirty_idle_id);
-      editor->dirty_idle_id = 0;
-    }
-
-  G_OBJECT_CLASS (parent_class)->dispose (object);
-}
-
-static void
 gimp_sample_point_editor_style_set (GtkWidget *widget,
                                     GtkStyle  *prev_style)
 {
@@ -267,7 +257,7 @@ gimp_sample_point_editor_set_image (GimpImageEditor *image_editor,
                                             gimp_sample_point_editor_point_removed,
                                             editor);
       g_signal_handlers_disconnect_by_func (image_editor->image,
-                                            gimp_sample_point_editor_point_update,
+                                            gimp_sample_point_editor_point_moved,
                                             editor);
 
       g_signal_handlers_disconnect_by_func (gimp_image_get_projection (image_editor->image),
@@ -285,8 +275,8 @@ gimp_sample_point_editor_set_image (GimpImageEditor *image_editor,
       g_signal_connect (image, "sample-point-removed",
                         G_CALLBACK (gimp_sample_point_editor_point_removed),
                         editor);
-      g_signal_connect (image, "update-sample-point",
-                        G_CALLBACK (gimp_sample_point_editor_point_update),
+      g_signal_connect (image, "sample-point-moved",
+                        G_CALLBACK (gimp_sample_point_editor_point_moved),
                         editor);
 
       g_signal_connect (gimp_image_get_projection (image), "update",
@@ -362,9 +352,9 @@ gimp_sample_point_editor_point_removed (GimpImage             *image,
 }
 
 static void
-gimp_sample_point_editor_point_update (GimpImage             *image,
-                                       GimpSamplePoint       *sample_point,
-                                       GimpSamplePointEditor *editor)
+gimp_sample_point_editor_point_moved (GimpImage             *image,
+                                      GimpSamplePoint       *sample_point,
+                                      GimpSamplePointEditor *editor)
 {
   gint i = g_list_index (gimp_image_get_sample_points (image), sample_point);
 

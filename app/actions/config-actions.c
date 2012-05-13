@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,8 +35,8 @@
 static const GimpToggleActionEntry config_toggle_actions[] =
 {
   { "config-use-gegl", NULL,
-    N_("Use _GEGL"), NULL,
-    N_("If possible, use GEGL for image processing"),
+    NC_("config-action", "Use _GEGL"), NULL,
+    NC_("config-action", "If possible, use GEGL for image processing"),
     G_CALLBACK (config_use_gegl_cmd_callback),
     FALSE,
     GIMP_HELP_CONFIG_USE_GEGL }
@@ -61,7 +60,7 @@ config_actions_use_gegl_notify (GObject         *config,
 void
 config_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_toggle_actions (group,
+  gimp_action_group_add_toggle_actions (group, "config-action",
                                         config_toggle_actions,
                                         G_N_ELEMENTS (config_toggle_actions));
 

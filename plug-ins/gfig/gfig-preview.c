@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -52,6 +51,8 @@ static GtkWidget *pos_label;       /* XY pos marker */
 
 static void       gfig_preview_realize  (GtkWidget *widget);
 static gboolean   gfig_preview_events   (GtkWidget *widget,
+                                         GdkEvent  *event);
+static gboolean   gfig_preview_expose   (GtkWidget *widget,
                                          GdkEvent  *event);
 
 static gint       gfig_invscale_x        (gint      x);
@@ -120,8 +121,8 @@ make_preview (void)
   gtk_widget_show (frame);
   gtk_widget_show (table);
 
-  vbox = gtk_vbox_new (FALSE, 12);
-  hbox = gtk_hbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
@@ -139,13 +140,13 @@ gfig_preview_realize (GtkWidget *widget)
 {
   GdkDisplay *display = gtk_widget_get_display (widget);
 
-  gdk_window_set_cursor (gfig_context->preview->window,
+  gdk_window_set_cursor (gtk_widget_get_window (gfig_context->preview),
                          gdk_cursor_new_for_display (display, GDK_CROSSHAIR));
   gfig_grid_colours (widget);
 }
 
 static void
-draw_background (void)
+draw_background (cairo_t  *cr)
 {
   if (! back_pixbuf)
     back_pixbuf = gimp_image_get_thumbnail (gfig_context->image_id,
@@ -153,27 +154,32 @@ draw_background (void)
                                             GIMP_PIXBUF_LARGE_CHECKS);
 
   if (back_pixbuf)
-    gdk_draw_pixbuf (gfig_context->preview->window,
-                     gfig_context->preview->style->fg_gc[GTK_STATE_NORMAL],
-                     back_pixbuf, 0, 0,
-                     0, 0,
-                     gdk_pixbuf_get_width (back_pixbuf),
-                     gdk_pixbuf_get_height (back_pixbuf),
-                     GDK_RGB_DITHER_NONE, 0, 0);
+    {
+      gdk_cairo_set_source_pixbuf (cr, back_pixbuf, 0, 0);
+      cairo_paint (cr);
+    }
 }
 
-gboolean
+static gboolean
 gfig_preview_expose (GtkWidget *widget,
                      GdkEvent  *event)
 {
-  gdk_window_clear (gfig_context->preview->window);
+  cairo_t *cr = gdk_cairo_create (event->expose.window);
 
   if (gfig_context->show_background)
-    draw_background ();
+    draw_background (cr);
 
-  draw_grid ();
-  draw_objects (gfig_context->current_obj->obj_list, TRUE);
+  draw_grid (cr);
+  draw_objects (gfig_context->current_obj->obj_list, TRUE, cr);
 
+  if (obj_creating)
+    {
+      GList *single = g_list_prepend (NULL, obj_creating);
+      draw_objects (single, TRUE, cr);
+      g_list_free (single);
+    }
+
+  cairo_destroy (cr);
   return FALSE;
 }
 
@@ -232,6 +238,8 @@ gfig_preview_events (GtkWidget *widget,
                 }
             }
           object_start (&point, bevent->state & GDK_SHIFT_MASK);
+
+          gtk_widget_queue_draw (widget);
         }
 
       break;
@@ -291,6 +299,7 @@ gfig_preview_events (GtkWidget *widget,
       if (obj_creating)
         {
           obj_creating->class->update (&point);
+          gtk_widget_queue_draw (widget);
         }
       gfig_pos_update (point.x, point.y);
       break;
@@ -327,7 +336,8 @@ make_pos_info (void)
 
   frame = gimp_frame_new (_("Object Details"));
 
-  hbox = gtk_hbox_new (TRUE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
 
   /* Add labels */
@@ -371,7 +381,7 @@ gfig_pos_labels (void)
   GtkWidget *hbox;
   gchar      buf[256];
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_widget_show (hbox);
 
   /* Position labels */

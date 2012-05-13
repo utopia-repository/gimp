@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,6 +25,55 @@
 
 #include "gimp-transform-utils.h"
 
+
+void
+gimp_transform_get_rotate_center (gint      x,
+                                  gint      y,
+                                  gint      width,
+                                  gint      height,
+                                  gboolean  auto_center,
+                                  gdouble  *center_x,
+                                  gdouble  *center_y)
+{
+  g_return_if_fail (center_x != NULL);
+  g_return_if_fail (center_y != NULL);
+
+  if (auto_center)
+    {
+      *center_x = (gdouble) x + (gdouble) width  / 2.0;
+      *center_y = (gdouble) y + (gdouble) height / 2.0;
+    }
+}
+
+void
+gimp_transform_get_flip_axis (gint                 x,
+                              gint                 y,
+                              gint                 width,
+                              gint                 height,
+                              GimpOrientationType  flip_type,
+                              gboolean             auto_center,
+                              gdouble             *axis)
+{
+  g_return_if_fail (axis != NULL);
+
+  if (auto_center)
+    {
+      switch (flip_type)
+        {
+        case GIMP_ORIENTATION_HORIZONTAL:
+          *axis = ((gdouble) x + (gdouble) width / 2.0);
+          break;
+
+        case GIMP_ORIENTATION_VERTICAL:
+          *axis = ((gdouble) y + (gdouble) height / 2.0);
+          break;
+
+        default:
+          g_return_if_reached ();
+          break;
+        }
+    }
+}
 
 void
 gimp_transform_matrix_flip (GimpMatrix3         *matrix,
@@ -278,4 +326,31 @@ gimp_transform_matrix_perspective (GimpMatrix3 *matrix,
   }
 
   gimp_matrix3_mult (&trafo, matrix);
+}
+
+gboolean
+gimp_transform_polygon_is_convex (gdouble x1,
+                                  gdouble y1,
+                                  gdouble x2,
+                                  gdouble y2,
+                                  gdouble x3,
+                                  gdouble y3,
+                                  gdouble x4,
+                                  gdouble y4)
+{
+  gdouble z1, z2, z3, z4;
+
+  /* We test if the transformed polygon is convex.  if z1 and z2 have
+   * the same sign as well as z3 and z4 the polygon is convex.
+   */
+  z1 = ((x2 - x1) * (y4 - y1) -
+        (x4 - x1) * (y2 - y1));
+  z2 = ((x4 - x1) * (y3 - y1) -
+        (x3 - x1) * (y4 - y1));
+  z3 = ((x4 - x2) * (y3 - y2) -
+        (x3 - x2) * (y4 - y2));
+  z4 = ((x3 - x2) * (y1 - y2) -
+        (x1 - x2) * (y3 - y2));
+
+  return (z1 * z2 > 0) && (z3 * z4 > 0);
 }

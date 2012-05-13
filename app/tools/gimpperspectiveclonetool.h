@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PERSPECTIVE_CLONE_TOOL_H__
@@ -46,20 +45,14 @@ struct _GimpPerspectiveCloneTool
   gint            src_x;
   gint            src_y;
 
-  gdouble         startx;         /*  starting x coord                 */
-  gdouble         starty;         /*  starting y coord                 */
-
   gdouble         curx;           /*  current x coord                  */
   gdouble         cury;           /*  current y coord                  */
 
   gdouble         lastx;          /*  last x coord                     */
   gdouble         lasty;          /*  last y coord                     */
 
-  GdkModifierType state;          /*  state of buttons and keys        */
-
   GimpMatrix3     transform;      /*  transformation matrix            */
   TransInfo       trans_info;     /*  transformation info              */
-
   TransInfo       old_trans_info; /*  for cancelling a drag operation  */
 
   gint            x1, y1;         /*  upper left hand coordinate       */
@@ -71,27 +64,12 @@ struct _GimpPerspectiveCloneTool
   gdouble         tx4, ty4;
   gdouble         tcx, tcy;
 
-  gboolean        use_grid;       /*  does the tool use the grid       */
-  gboolean        use_handles;    /*  uses the corner handles          */
-
   TransformAction function;       /*  current tool activity            */
-
-  /*gint            ngx, ngy;*/       /*  number of grid lines in original
-                                   *  x and y directions
-                                   */
-
-  /*gdouble        *grid_coords;*/    /*  x and y coordinates of the grid
-                                   *  endpoints (a total of (ngx+ngy)*2
-                                   *  coordinate pairs)
-                                  */
-  /*gdouble        *tgrid_coords;*/   /*  transformed grid_coords          */
-
 };
 
 struct _GimpPerspectiveCloneToolClass
 {
-  GimpBrushToolClass parent_class;
-
+  GimpBrushToolClass  parent_class;
 };
 
 

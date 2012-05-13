@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "widgets-types.h"
 
@@ -31,6 +32,7 @@
 #include "core/gimp.h"
 #include "core/gimpbrush.h"
 #include "core/gimpcontainer.h"
+#include "core/gimpcurve.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpgradient.h"
 #include "core/gimpimage.h"
@@ -92,7 +94,8 @@ gimp_selection_data_set_uri_list (GtkSelectionData *selection,
         }
     }
 
-  gtk_selection_data_set (selection, selection->target,
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
                           8, (guchar *) vals, strlen (vals));
 
   g_free (vals);
@@ -104,24 +107,28 @@ gimp_selection_data_get_uri_list (GtkSelectionData *selection)
   GList       *crap_list = NULL;
   GList       *uri_list  = NULL;
   GList       *list;
+  gint         length;
+  const gchar *data;
   const gchar *buffer;
 
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
+  length = gtk_selection_data_get_length (selection);
+
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
     {
       g_warning ("Received invalid file data!");
       return NULL;
     }
 
-  buffer = (const gchar *) selection->data;
+  data = buffer = (const gchar *) gtk_selection_data_get_data (selection);
 
   GIMP_LOG (DND, "raw buffer >>%s<<", buffer);
 
   {
     gchar name_buffer[1024];
 
-    while (*buffer && (buffer - (gchar *) selection->data < selection->length))
+    while (*buffer && (buffer - data < length))
       {
         gchar *name = name_buffer;
         gint   len  = 0;
@@ -265,8 +272,7 @@ gimp_selection_data_get_uri_list (GtkSelectionData *selection)
       uri_list = g_list_prepend (uri_list, uri);
     }
 
-  g_list_foreach (crap_list, (GFunc) g_free, NULL);
-  g_list_free (crap_list);
+  g_list_free_full (crap_list, (GDestroyNotify) g_free);
 
   return uri_list;
 }
@@ -288,7 +294,8 @@ gimp_selection_data_set_color (GtkSelectionData *selection,
   vals[2] = b + (b << 8);
   vals[3] = a + (a << 8);
 
-  gtk_selection_data_set (selection, selection->target,
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
                           16, (const guchar *) vals, 8);
 }
 
@@ -296,18 +303,19 @@ gboolean
 gimp_selection_data_get_color (GtkSelectionData *selection,
                                GimpRGB          *color)
 {
-  guint16 *color_vals;
+  const guint16 *color_vals;
 
   g_return_val_if_fail (selection != NULL, FALSE);
   g_return_val_if_fail (color != NULL, FALSE);
 
-  if ((selection->format != 16) || (selection->length != 8))
+  if (gtk_selection_data_get_format (selection) != 16 ||
+      gtk_selection_data_get_length (selection) != 8)
     {
       g_warning ("Received invalid color data!");
       return FALSE;
     }
 
-  color_vals = (guint16 *) selection->data;
+  color_vals = (const guint16 *) gtk_selection_data_get_data (selection);
 
   gimp_rgba_set_uchar (color,
                        (guchar) (color_vals[0] >> 8),
@@ -327,7 +335,8 @@ gimp_selection_data_set_stream (GtkSelectionData *selection,
   g_return_if_fail (stream != NULL);
   g_return_if_fail (stream_length > 0);
 
-  gtk_selection_data_set (selection, selection->target,
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
                           8, (guchar *) stream, stream_length);
 }
 
@@ -335,18 +344,75 @@ const guchar *
 gimp_selection_data_get_stream (GtkSelectionData *selection,
                                 gsize            *stream_length)
 {
+  gint length;
+
   g_return_val_if_fail (selection != NULL, NULL);
   g_return_val_if_fail (stream_length != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
+  length = gtk_selection_data_get_length (selection);
+
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
     {
       g_warning ("Received invalid data stream!");
       return NULL;
     }
 
-  *stream_length = selection->length;
+  *stream_length = length;
 
-  return (const guchar *) selection->data;
+  return (const guchar *) gtk_selection_data_get_data (selection);
+}
+
+void
+gimp_selection_data_set_curve (GtkSelectionData *selection,
+                               GimpCurve        *curve)
+{
+  gchar *str;
+
+  g_return_if_fail (selection != NULL);
+  g_return_if_fail (GIMP_IS_CURVE (curve));
+
+  str = gimp_config_serialize_to_string (GIMP_CONFIG (curve), NULL);
+
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
+                          8, (guchar *) str, strlen (str));
+
+  g_free (str);
+}
+
+GimpCurve *
+gimp_selection_data_get_curve (GtkSelectionData *selection)
+{
+  GimpCurve *curve;
+  gint       length;
+  GError    *error = NULL;
+
+  g_return_val_if_fail (selection != NULL, NULL);
+
+  length = gtk_selection_data_get_length (selection);
+
+  if (gtk_selection_data_get_format (selection) != 8 || length < 1)
+    {
+      g_warning ("Received invalid curve data!");
+      return NULL;
+    }
+
+  curve = GIMP_CURVE (gimp_curve_new ("pasted curve"));
+
+  if (! gimp_config_deserialize_string (GIMP_CONFIG (curve),
+                                        (const gchar *)
+                                        gtk_selection_data_get_data (selection),
+                                        length,
+                                        NULL,
+                                        &error))
+    {
+      g_warning ("Received invalid curve data: %s", error->message);
+      g_clear_error (&error);
+      g_object_unref (curve);
+      return NULL;
+    }
+
+  return curve;
 }
 
 void
@@ -360,7 +426,8 @@ gimp_selection_data_set_image (GtkSelectionData *selection,
 
   str = g_strdup_printf ("%d:%d", get_pid (), gimp_image_get_ID (image));
 
-  gtk_selection_data_set (selection, selection->target,
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
                           8, (guchar *) str, strlen (str));
 
   g_free (str);
@@ -405,7 +472,8 @@ gimp_selection_data_set_component (GtkSelectionData *selection,
   str = g_strdup_printf ("%d:%d:%d", get_pid (), gimp_image_get_ID (image),
                          (gint) channel);
 
-  gtk_selection_data_set (selection, selection->target,
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
                           8, (guchar *) str, strlen (str));
 
   g_free (str);
@@ -458,7 +526,8 @@ gimp_selection_data_set_item (GtkSelectionData *selection,
 
   str = g_strdup_printf ("%d:%d", get_pid (), gimp_item_get_ID (item));
 
-  gtk_selection_data_set (selection, selection->target,
+  gtk_selection_data_set (selection,
+                          gtk_selection_data_get_target (selection),
                           8, (guchar *) str, strlen (str));
 
   g_free (str);
@@ -507,7 +576,8 @@ gimp_selection_data_set_object (GtkSelectionData *selection,
 
       str = g_strdup_printf ("%d:%p:%s", get_pid (), object, name);
 
-      gtk_selection_data_set (selection, selection->target,
+      gtk_selection_data_set (selection,
+                              gtk_selection_data_get_target (selection),
                               8, (guchar *) str, strlen (str));
 
       g_free (str);
@@ -523,8 +593,8 @@ gimp_selection_data_get_brush (GtkSelectionData *selection,
 
   return (GimpBrush *)
     gimp_selection_data_get_object (selection,
-                                    gimp->brush_factory->container,
-                                    GIMP_OBJECT (gimp_brush_get_standard ()));
+                                    gimp_data_factory_get_container (gimp->brush_factory),
+                                    GIMP_OBJECT (gimp_brush_get_standard (gimp_get_user_context (gimp))));
 }
 
 GimpPattern *
@@ -536,8 +606,8 @@ gimp_selection_data_get_pattern (GtkSelectionData *selection,
 
   return (GimpPattern *)
     gimp_selection_data_get_object (selection,
-                                    gimp->pattern_factory->container,
-                                    GIMP_OBJECT (gimp_pattern_get_standard ()));
+                                    gimp_data_factory_get_container (gimp->pattern_factory),
+                                    GIMP_OBJECT (gimp_pattern_get_standard (gimp_get_user_context (gimp))));
 }
 
 GimpGradient *
@@ -549,8 +619,8 @@ gimp_selection_data_get_gradient (GtkSelectionData *selection,
 
   return (GimpGradient *)
     gimp_selection_data_get_object (selection,
-                                    gimp->gradient_factory->container,
-                                    GIMP_OBJECT (gimp_gradient_get_standard ()));
+                                    gimp_data_factory_get_container (gimp->gradient_factory),
+                                    GIMP_OBJECT (gimp_gradient_get_standard (gimp_get_user_context (gimp))));
 }
 
 GimpPalette *
@@ -562,8 +632,8 @@ gimp_selection_data_get_palette (GtkSelectionData *selection,
 
   return (GimpPalette *)
     gimp_selection_data_get_object (selection,
-                                    gimp->palette_factory->container,
-                                    GIMP_OBJECT (gimp_palette_get_standard ()));
+                                    gimp_data_factory_get_container (gimp->palette_factory),
+                                    GIMP_OBJECT (gimp_palette_get_standard (gimp_get_user_context (gimp))));
 }
 
 GimpFont *
@@ -638,13 +708,14 @@ gimp_selection_data_get_name (GtkSelectionData *selection,
 {
   const gchar *name;
 
-  if ((selection->format != 8) || (selection->length < 1))
+  if (gtk_selection_data_get_format (selection) != 8 ||
+      gtk_selection_data_get_length (selection) < 1)
     {
       g_warning ("%s: received invalid selection data", strfunc);
       return NULL;
     }
 
-  name = (const gchar *) selection->data;
+  name = (const gchar *) gtk_selection_data_get_data (selection);
 
   if (! g_utf8_validate (name, -1, NULL))
     {

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -32,7 +31,6 @@
 #include "gimpdrawable.h"
 #include "gimpdrawable-foreground-extract.h"
 #include "gimpimage.h"
-#include "gimpimage-colormap.h"
 #include "gimpprogress.h"
 
 #include "gimp-intl.h"
@@ -57,8 +55,8 @@ gimp_drawable_foreground_extract (GimpDrawable              *drawable,
   state =
     gimp_drawable_foreground_extract_siox_init (drawable,
                                                 0, 0,
-                                                gimp_item_width (GIMP_ITEM (mask)),
-                                                gimp_item_height (GIMP_ITEM (mask)));
+                                                gimp_item_get_width  (GIMP_ITEM (mask)),
+                                                gimp_item_get_height (GIMP_ITEM (mask)));
 
   if (state)
     {
@@ -80,7 +78,6 @@ gimp_drawable_foreground_extract_siox_init (GimpDrawable *drawable,
                                             gint          width,
                                             gint          height)
 {
-  GimpImage    *image;
   const guchar *colormap = NULL;
   gboolean      intersect;
   gint          offset_x;
@@ -89,16 +86,14 @@ gimp_drawable_foreground_extract_siox_init (GimpDrawable *drawable,
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
 
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
+  if (gimp_drawable_is_indexed (drawable))
+    colormap = gimp_drawable_get_colormap (drawable);
 
-  if (gimp_image_base_type (image) == GIMP_INDEXED)
-    colormap = gimp_image_get_colormap (image);
-
-  gimp_item_offsets (GIMP_ITEM (drawable), &offset_x, &offset_y);
+  gimp_item_get_offset (GIMP_ITEM (drawable), &offset_x, &offset_y);
 
   intersect = gimp_rectangle_intersect (offset_x, offset_y,
-                                        gimp_item_width (GIMP_ITEM (drawable)),
-                                        gimp_item_height (GIMP_ITEM (drawable)),
+                                        gimp_item_get_width  (GIMP_ITEM (drawable)),
+                                        gimp_item_get_height (GIMP_ITEM (drawable)),
                                         x, y, width, height,
                                         &x, &y, &width, &height);
 
@@ -145,8 +140,8 @@ gimp_drawable_foreground_extract_siox (GimpDrawable       *mask,
     {
       x1 = 0;
       y1 = 0;
-      x2 = gimp_item_width (GIMP_ITEM (mask));
-      y2 = gimp_item_height (GIMP_ITEM (mask));
+      x2 = gimp_item_get_width  (GIMP_ITEM (mask));
+      y2 = gimp_item_get_height (GIMP_ITEM (mask));
     }
 
   siox_foreground_extract (state, refinement,

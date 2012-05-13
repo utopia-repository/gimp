@@ -3,9 +3,9 @@
  *
  * gimpplugin-progress.h
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,35 +14,34 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PLUG_IN_PROGRESS_H__
 #define __GIMP_PLUG_IN_PROGRESS_H__
 
 
-gint       gimp_plug_in_progress_attach     (GimpProgress        *progress);
-gint       gimp_plug_in_progress_detach     (GimpProgress        *progress);
+gint       gimp_plug_in_progress_attach        (GimpProgress        *progress);
+gint       gimp_plug_in_progress_detach        (GimpProgress        *progress);
 
-void       gimp_plug_in_progress_start      (GimpPlugIn          *plug_in,
-                                             const gchar         *message,
-                                             GimpObject          *display);
-void       gimp_plug_in_progress_end        (GimpPlugIn          *plug_in,
-                                             GimpPlugInProcFrame *proc_frame);
-void       gimp_plug_in_progress_set_text   (GimpPlugIn          *plug_in,
-                                             const gchar         *message);
-void       gimp_plug_in_progress_set_value  (GimpPlugIn          *plug_in,
-                                             gdouble              percentage);
-void       gimp_plug_in_progress_pulse      (GimpPlugIn          *plug_in);
-guint32    gimp_plug_in_progress_get_window (GimpPlugIn          *plug_in);
+void       gimp_plug_in_progress_start         (GimpPlugIn          *plug_in,
+                                                const gchar         *message,
+                                                GimpObject          *display);
+void       gimp_plug_in_progress_end           (GimpPlugIn          *plug_in,
+                                                GimpPlugInProcFrame *proc_frame);
+void       gimp_plug_in_progress_set_text      (GimpPlugIn          *plug_in,
+                                                const gchar         *message);
+void       gimp_plug_in_progress_set_value     (GimpPlugIn          *plug_in,
+                                                gdouble              percentage);
+void       gimp_plug_in_progress_pulse         (GimpPlugIn          *plug_in);
+guint32    gimp_plug_in_progress_get_window_id (GimpPlugIn          *plug_in);
 
-gboolean   gimp_plug_in_progress_install    (GimpPlugIn   *plug_in,
-                                             const gchar  *progress_callback);
-gboolean   gimp_plug_in_progress_uninstall  (GimpPlugIn   *plug_in,
-                                             const gchar  *progress_callback);
-gboolean   gimp_plug_in_progress_cancel     (GimpPlugIn   *plug_in,
-                                             const gchar  *progress_callback);
+gboolean   gimp_plug_in_progress_install       (GimpPlugIn          *plug_in,
+                                                const gchar         *progress_callback);
+gboolean   gimp_plug_in_progress_uninstall     (GimpPlugIn          *plug_in,
+                                                const gchar         *progress_callback);
+gboolean   gimp_plug_in_progress_cancel        (GimpPlugIn          *plug_in,
+                                                const gchar         *progress_callback);
 
 
 #endif /* __GIMP_PLUG_IN_PROGRESS_H__ */

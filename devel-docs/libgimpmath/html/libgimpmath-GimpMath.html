@@ -49,8 +49,9 @@
 <div class="refsect1">
 <a name="libgimpmath-GimpMath.description"></a><h2>Description</h2>
 <p>
-Mathematical definitions and macros. These macros should be used
-rather than the ones from math.h for enhanced portability.
+Mathematical definitions and macros for use both by the GIMP
+application and plug-ins. These macros should be used rather than
+the ones from &lt;math.h&gt; for enhanced portability.
 </p>
 </div>
 <div class="refsect1">
@@ -60,14 +61,14 @@ rather than the ones from math.h for enhanced portability.
 <pre class="programlisting">#define RINT(x) rint(x)
 </pre>
 <p>
-This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating point
-format.
+This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating
+point format. Use <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" title="RINT()"><code class="function">RINT()</code></a> instead of <code class="function">rint()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
-<td>the value to be rounded.</td>
+<td>the value to be rounded</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -125,8 +126,8 @@ This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-5
 <pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
 </pre>
 <p>
-This macro clamps its argument <em class="parameter"><code>a</code></em>, an int32-range int, between 0 and
-255 inclusive.
+This macro clamps its argument <em class="parameter"><code>a</code></em>, an int32-range int, between 0
+and 255 inclusive.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

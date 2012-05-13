@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,6 +34,7 @@
 #include "gimpcontrollerinfo.h"
 #include "gimpcontrollers.h"
 #include "gimpcontrollerkeyboard.h"
+#include "gimpcontrollermouse.h"
 #include "gimpcontrollerwheel.h"
 #include "gimpenumaction.h"
 #include "gimpuimanager.h"
@@ -51,6 +51,7 @@ struct _GimpControllerManager
 {
   GimpContainer  *controllers;
   GQuark          event_mapped_id;
+  GimpController *mouse;
   GimpController *wheel;
   GimpController *keyboard;
   GimpUIManager  *ui_manager;
@@ -106,6 +107,7 @@ gimp_controllers_init (Gimp *gimp)
                                 G_CALLBACK (gimp_controllers_event_mapped),
                                 manager);
 
+  g_type_class_ref (GIMP_TYPE_CONTROLLER_MOUSE);
   g_type_class_ref (GIMP_TYPE_CONTROLLER_WHEEL);
   g_type_class_ref (GIMP_TYPE_CONTROLLER_KEYBOARD);
 }
@@ -159,13 +161,13 @@ gimp_controllers_restore (Gimp          *gimp,
           if (! gimp_config_deserialize_file (GIMP_CONFIG (manager->controllers),
                                               filename, NULL, &error))
             {
-              gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
-                            "%s", error->message);
+              gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR,
+				    error->message);
             }
         }
       else
         {
-          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+          gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
         }
 
       g_clear_error (&error);
@@ -206,7 +208,7 @@ gimp_controllers_save (Gimp *gimp)
                                        header, footer, NULL,
                                        &error))
     {
-      gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR, "%s", error->message);
+      gimp_message_literal (gimp, NULL, GIMP_MESSAGE_ERROR, error->message);
       g_error_free (error);
     }
 
@@ -239,6 +241,20 @@ gimp_controllers_get_ui_manager (Gimp *gimp)
   g_return_val_if_fail (manager != NULL, NULL);
 
   return manager->ui_manager;
+}
+
+GimpController *
+gimp_controllers_get_mouse (Gimp *gimp)
+{
+  GimpControllerManager *manager;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  manager = gimp_controller_manager_get (gimp);
+
+  g_return_val_if_fail (manager != NULL, NULL);
+
+  return manager->mouse;
 }
 
 GimpController *
@@ -299,6 +315,8 @@ gimp_controllers_add (GimpContainer         *container,
     manager->wheel = info->controller;
   else if (GIMP_IS_CONTROLLER_KEYBOARD (info->controller))
     manager->keyboard = info->controller;
+  else if (GIMP_IS_CONTROLLER_MOUSE (info->controller))
+    manager->mouse = info->controller;
 }
 
 static void

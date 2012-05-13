@@ -31,7 +31,8 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="libgimpbase-gimplimits.top_of_page"></a>gimplimits</span></h2>
-<p>gimplimits — Boundaries of some GIMP data types and some global constants.</p>
+<p>gimplimits — Boundaries of some GIMP data types and some
+                    global constants.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -67,8 +68,9 @@ The minimum width and height of a GIMP image in pixels.
 </pre>
 <p>
 The maximum width and height of a GIMP image in pixels. This is a
-somewhat arbitray value that can be used when an upper value for pixel
-sizes is needed; for example to give a spin button an upper limit.
+somewhat arbitray value that can be used when an upper value for
+pixel sizes is needed; for example to give a spin button an upper
+limit.
 </p>
 </div>
 <hr>
@@ -77,8 +79,8 @@ sizes is needed; for example to give a spin button an upper limit.
 <pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
 </pre>
 <p>
-The minimum resolution of a GIMP image in pixels per inch. This is a
-somewhat arbitray value that can be used to when a lower value for a
+The minimum resolution of a GIMP image in pixels per inch. This is
+a somewhat arbitray value that can be used when a lower value for a
 resolution is needed. GIMP will not accept resolutions smaller than
 this value.
 </p>
@@ -89,10 +91,10 @@ this value.
 <pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
 </pre>
 <p>
-The maximum resolution of a GIMP image in pixels per inch. This is a
-somewhat arbitray value that can be used to when an upper value for a
-resolution is needed. GIMP will not accept resolutions larger than
-this value.
+The maximum resolution of a GIMP image in pixels per inch. This is
+a somewhat arbitray value that can be used to when an upper value
+for a resolution is needed. GIMP will not accept resolutions larger
+than this value.
 </p>
 </div>
 <hr>
@@ -101,9 +103,10 @@ this value.
 <pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
 </pre>
 <p>
-A large but arbitrary value that can be used when an upper limit for a
-memory size (in bytes) is needed. It is smaller than <a href="http://library.gnome.org/devel/glib/unstable/glib-Limits-of-Basic-Types.html#G-MAXDOUBLE:CAPS"><code class="literal">G_MAXDOUBLE</code></a> since
-the <a href="/usr/share/gtk-doc/html/libgimpwidgets/GimpMemsizeEntry.html"><span class="type">GimpMemsizeEntry</span></a> doesn't handle larger values.
+A large but arbitrary value that can be used when an upper limit
+for a memory size (in bytes) is needed. It is smaller than
+<code class="literal">G_MAXDOUBLE</code> since the <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpMemsizeEntry.html"><span class="type">GimpMemsizeEntry</span></a> doesn't handle larger
+values.
 </p>
 </div>
 </div>

@@ -6,10 +6,10 @@
  * Copyright (C) 2007  Sven Neumann      <sven@gimp.org>
  * Copyright (C) 2007  Martin Nordholts  <martin@svn.gnome.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,9 +17,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,6 +34,15 @@
 #include "gimpwidgetstypes.h"
 
 #include "gimpnumberpairentry.h"
+
+
+/**
+ * SECTION: gimpnumberpairentry
+ * @title: GimpNumberPairEntry
+ * @short_description: A #GtkEntry subclass to enter ratios.
+ *
+ * A #GtkEntry subclass to enter ratios.
+ **/
 
 
 #define EPSILON 0.000001
@@ -325,11 +333,21 @@ gimp_number_pair_entry_finalize (GObject *object)
       priv->num_separators = 0;
     }
 
+  if (priv->default_text)
+    {
+      g_free (priv->default_text);
+      priv->default_text = NULL;
+    }
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /**
  * gimp_number_pair_entry_new:
+ * @separators:           The allowed separators.
+ * @allow_simplification: Whether to do simplification on the entered term.
+ * @min_valid_value:      The minimum allowed result value.
+ * @max_valid_value:      The maximum allowed result value.
  *
  * Creates a new #GimpNumberPairEntry widget, which is a GtkEntry that
  * accepts two numbers separated by a separator. Typical input example
@@ -822,9 +840,9 @@ gimp_number_pair_entry_events (GtkWidget *widget,
       {
         GdkEventKey *kevent = (GdkEventKey *) event;
 
-        if (kevent->keyval != GDK_Return   &&
-            kevent->keyval != GDK_KP_Enter &&
-            kevent->keyval != GDK_ISO_Enter)
+        if (kevent->keyval != GDK_KEY_Return   &&
+            kevent->keyval != GDK_KEY_KP_Enter &&
+            kevent->keyval != GDK_KEY_ISO_Enter)
           break;
 
         /* If parsing was done due to widgets focus being lost, we only change

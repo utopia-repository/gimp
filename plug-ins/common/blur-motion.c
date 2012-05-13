@@ -17,9 +17,9 @@
  *
  * Copyright (C) 2007 Joerg Gittinger (sw@gittingerbox.de)
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,8 +28,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -45,6 +44,7 @@
 #define PLUG_IN_PROC         "plug-in-mblur"
 #define PLUG_IN_PROC_INWARD  "plug-in-mblur-inward"
 #define PLUG_IN_BINARY       "blur-motion"
+#define PLUG_IN_ROLE         "gimp-blur-motion"
 #define PLUG_IN_VERSION      "May 2007, 1.3"
 
 
@@ -143,10 +143,10 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",     "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable" },
-    { GIMP_PDB_INT32,    "type",      "Type of motion blur (0 - linear, 1 - radial, 2 - zoom)" },
+    { GIMP_PDB_INT32,    "type",      "Type of motion blur { LINEAR (0), RADIAL (1), ZOOM (2) }" },
     { GIMP_PDB_INT32,    "length",    "Length" },
     { GIMP_PDB_INT32,    "angle",     "Angle" },
     { GIMP_PDB_FLOAT,    "center-x",  "Center X (optional)" },
@@ -314,7 +314,7 @@ mblur_linear (GimpDrawable *drawable,
   gint32  sum[4];
   gint    progress, max_progress;
   gint    c, p;
-  gint    x, y, i, xx, yy, n;
+  gint    x, y, i, n;
   gint    dx, dy, px, py, swapdir, err, e, s1, s2;
 
   gimp_pixel_rgn_init (&dest_rgn, drawable,
@@ -389,7 +389,12 @@ mblur_linear (GimpDrawable *drawable,
 
           for (x = dest_rgn.x; x < dest_rgn.x + dest_rgn.w; x++)
             {
-              xx = x; yy = y; e = err;
+              gint xx, yy;
+
+              xx = x;
+              yy = y;
+              e = err;
+
               for (c = 0; c < img_bpp; c++)
                 sum[c]= 0;
 
@@ -504,14 +509,11 @@ mblur_radial (GimpDrawable *drawable,
   gint      progress, max_progress, c;
 
   gint      x, y, i, p, n, count;
-  gdouble   angle, theta, r, xx, yy, xr, yr;
+  gdouble   angle, theta, r, xr, yr;
   gdouble   phi, phi_start, s_val, c_val;
   gdouble   dx, dy;
 
   /* initialize */
-
-  xx = 0.0;
-  yy = 0.0;
 
   center_x = mbvals.center_x;
   center_y = mbvals.center_y;
@@ -541,6 +543,9 @@ mblur_radial (GimpDrawable *drawable,
 
           for (x = dest_rgn.x; x < dest_rgn.x + dest_rgn.w; x++)
             {
+              gdouble xx = 0.0;
+              gdouble yy = 0.0;
+
               xr = (gdouble) x - center_x;
               yr = (gdouble) y - center_y;
 
@@ -711,7 +716,6 @@ mblur_zoom (GimpDrawable *drawable,
   gint      progress, max_progress;
   gint      x, y, i, n, p, c;
   gdouble   xx_start, xx_end, yy_start, yy_end;
-  gdouble   xx, yy;
   gdouble   dxx, dyy;
   gdouble   dx, dy;
   gint      xy_len;
@@ -721,8 +725,6 @@ mblur_zoom (GimpDrawable *drawable,
 
   /* initialize */
 
-  xx = 0.0;
-  yy = 0.0;
   center_x = mbvals.center_x;
   center_y = mbvals.center_y;
 
@@ -761,6 +763,8 @@ mblur_zoom (GimpDrawable *drawable,
 
           for (x = dest_rgn.x; x < dest_rgn.x + dest_rgn.w; x++)
             {
+              gdouble xx, yy;
+
               for (c = 0; c < img_bpp; c++)
                 sum[c] = 0;
 
@@ -895,16 +899,11 @@ mblur (GimpDrawable *drawable,
       gimp_preview_get_position (preview, &x, &y);
       gimp_preview_get_size (preview, &width, &height);
     }
-  else
+  else if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                           &x, &y, &width, &height))
     {
-      gimp_drawable_mask_bounds (drawable->drawable_id,
-                                 &x, &y, &width, &height);
-      width  -= x;
-      height -= y;
+      return;
     }
-
-  if (width < 1 || height < 1)
-    return;
 
   if (! preview)
     gimp_progress_init (_("Motion blurring"));
@@ -929,6 +928,8 @@ mblur (GimpDrawable *drawable,
 
   if (! preview)
     {
+      gimp_progress_update (1.0);
+
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
       gimp_drawable_update (drawable->drawable_id, x, y, width, height);
@@ -1001,7 +1002,6 @@ mblur_dialog (gint32        image_ID,
   GtkWidget *table;
   GtkWidget *entry;
   GtkWidget *spinbutton;
-  GtkWidget *label;
   GtkWidget *button;
   GtkObject *adj;
   gdouble    xres, yres;
@@ -1009,7 +1009,7 @@ mblur_dialog (gint32        image_ID,
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Motion Blur"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Motion Blur"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1025,9 +1025,10 @@ mblur_dialog (gint32        image_ID,
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -1038,7 +1039,7 @@ mblur_dialog (gint32        image_ID,
                             G_CALLBACK (mblur),
                             drawable);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1059,7 +1060,7 @@ mblur_dialog (gint32        image_ID,
   gtk_box_pack_start (GTK_BOX (hbox), center, FALSE, FALSE, 0);
   gtk_widget_show (center);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (center), vbox);
   gtk_widget_show (vbox);
 
@@ -1090,13 +1091,13 @@ mblur_dialog (gint32        image_ID,
 
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (entry), 0, xres, TRUE);
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (entry), 0, mbvals.center_x);
-  label = gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
-                                        _("_X:"), 0, 0, 0.0);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
+                                _("_X:"), 0, 0, 0.0);
 
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (entry), 1, yres, TRUE);
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (entry), 1, mbvals.center_y);
-  label = gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
-                                        _("_Y:"), 1, 0, 0.0);
+  gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
+                                _("_Y:"), 1, 0, 0.0);
 
   button = gtk_check_button_new_with_mnemonic (_("Blur _outward"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),

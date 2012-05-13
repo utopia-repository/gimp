@@ -2,9 +2,9 @@
  *
  * Ported to loadable color-selector, Sven Neumann <sven@gimp.org>, May 1999
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -61,7 +60,7 @@ struct _ColorselWaterClass
 
 GType             colorsel_water_get_type (void);
 
-static void       select_area_expose      (GtkWidget          *widget,
+static gboolean   select_area_expose      (GtkWidget          *widget,
                                            GdkEventExpose     *event);
 static gboolean   button_press_event      (GtkWidget          *widget,
                                            GdkEventButton     *event,
@@ -128,15 +127,15 @@ colorsel_water_class_finalize (ColorselWaterClass *klass)
 static void
 colorsel_water_init (ColorselWater *water)
 {
-  GtkWidget *hbox;
-  GtkWidget *area;
-  GtkWidget *frame;
-  GtkObject *adj;
-  GtkWidget *scale;
+  GtkWidget     *hbox;
+  GtkWidget     *area;
+  GtkWidget     *frame;
+  GtkAdjustment *adj;
+  GtkWidget     *scale;
 
   water->pressure_adjust = 1.0;
 
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_pack_start (GTK_BOX (water), hbox, TRUE, TRUE, 0);
 
   frame = gtk_frame_new (NULL);
@@ -174,13 +173,13 @@ colorsel_water_init (ColorselWater *water)
   gtk_widget_set_extension_events (area, GDK_EXTENSION_EVENTS_ALL);
   gtk_widget_grab_focus (area);
 
-  adj = gtk_adjustment_new (200.0 - water->pressure_adjust * 100.0,
-                            0.0, 200.0, 1.0, 1.0, 0.0);
+  adj = GTK_ADJUSTMENT (gtk_adjustment_new (200.0 - water->pressure_adjust * 100.0,
+                                            0.0, 200.0, 1.0, 1.0, 0.0));
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (pressure_adjust_update),
                     water);
 
-  scale = gtk_vscale_new (GTK_ADJUSTMENT (adj));
+  scale = gtk_scale_new (GTK_ORIENTATION_VERTICAL, adj);
   gtk_scale_set_digits (GTK_SCALE (scale), 0);
   gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
   gimp_help_set_help_data (scale, _("Pressure"), NULL);
@@ -200,21 +199,38 @@ calc (gdouble x,
   return 128 + (x - 0.5) * c - (y - 0.5) * s;
 }
 
-static void
+static gboolean
 select_area_expose (GtkWidget      *widget,
                     GdkEventExpose *event)
 {
-  GtkStyle *style  = gtk_widget_get_style (widget);
-  gdouble   width  = widget->allocation.width;
-  gdouble   height = widget->allocation.height;
-  gdouble   dx     = 1.0 / width;
-  gdouble   dy     = 1.0 / height;
-  guchar   *buf    = g_alloca (3 * event->area.width * event->area.height);
-  guchar   *dest   = buf;
-  gdouble   y;
-  gint      i, j;
+  cairo_t         *cr;
+  GtkAllocation    allocation;
+  gdouble          dx;
+  gdouble          dy;
+  cairo_surface_t *surface;
+  guchar          *dest;
+  gdouble          y;
+  gint             j;
 
-  for (j = 0, y = event->area.y / height; j < event->area.height; j++, y += dy)
+  cr = gdk_cairo_create (event->window);
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  gtk_widget_get_allocation (widget, &allocation);
+
+  dx = 1.0 / allocation.width;
+  dy = 1.0 / allocation.height;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24,
+                                        event->area.width,
+                                        event->area.height);
+
+  dest = cairo_image_surface_get_data (surface);
+
+  for (j = 0, y = event->area.y / allocation.height;
+       j < event->area.height;
+       j++, y += dy)
     {
       guchar  *d  = dest;
 
@@ -226,33 +242,39 @@ select_area_expose (GtkWidget      *widget,
       gdouble  dg = calc (dx, y, 120) - g;
       gdouble  db = calc (dx, y, 240) - b;
 
+      gint     i;
+
       r += event->area.x * dr;
       g += event->area.x * dg;
       b += event->area.x * db;
 
       for (i = 0; i < event->area.width; i++)
         {
-          d[0] = CLAMP ((gint) r, 0, 255);
-          d[1] = CLAMP ((gint) g, 0, 255);
-          d[2] = CLAMP ((gint) b, 0, 255);
+          GIMP_CAIRO_RGB24_SET_PIXEL (d,
+                                      CLAMP ((gint) r, 0, 255),
+                                      CLAMP ((gint) g, 0, 255),
+                                      CLAMP ((gint) b, 0, 255));
 
           r += dr;
           g += dg;
           b += db;
 
-          d += 3;
+          d += 4;
         }
 
-      dest += event->area.width * 3;
+      dest += cairo_image_surface_get_stride (surface);
     }
 
-  gdk_draw_rgb_image_dithalign (widget->window,
-                                style->fg_gc[widget->state],
-                                event->area.x, event->area.y,
-                                event->area.width, event->area.height,
-                                GDK_RGB_DITHER_MAX,
-                                buf, 3 * event->area.width,
-                                -event->area.x, -event->area.y);
+  cairo_surface_mark_dirty (surface);
+  cairo_set_source_surface (cr, surface,
+                            event->area.x, event->area.y);
+  cairo_surface_destroy (surface);
+
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
+
+  return FALSE;
 }
 
 static void
@@ -311,10 +333,13 @@ button_press_event (GtkWidget      *widget,
                     GdkEventButton *event,
                     ColorselWater  *water)
 {
-  gboolean erase;
+  GtkAllocation allocation;
+  gboolean      erase;
 
-  water->last_x = event->x / widget->allocation.width;
-  water->last_y = event->y / widget->allocation.height;
+  gtk_widget_get_allocation (widget, &allocation);
+
+  water->last_x = event->x / allocation.width;
+  water->last_y = event->y / allocation.height;
 
   erase = (event->button != 1);
   /* FIXME: (event->source == GDK_SOURCE_ERASER) */
@@ -334,10 +359,13 @@ motion_notify_event (GtkWidget      *widget,
                      GdkEventMotion *event,
                      ColorselWater  *water)
 {
+  GtkAllocation  allocation;
   GdkTimeCoord **coords;
   gint           nevents;
   gint           i;
   gboolean       erase;
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   if (event->state & (GDK_BUTTON1_MASK |
                       GDK_BUTTON2_MASK |
@@ -377,8 +405,8 @@ motion_notify_event (GtkWidget      *widget,
                                    GDK_AXIS_PRESSURE, &pressure);
 
               draw_brush (water, widget, erase,
-                          x / widget->allocation.width,
-                          y / widget->allocation.height, pressure);
+                          x / allocation.width,
+                          y / allocation.height, pressure);
             }
 
           g_free (coords);
@@ -390,8 +418,8 @@ motion_notify_event (GtkWidget      *widget,
           gdk_event_get_axis ((GdkEvent *) event, GDK_AXIS_PRESSURE, &pressure);
 
           draw_brush (water, widget, erase,
-                      event->x / widget->allocation.width,
-                      event->y / widget->allocation.height, pressure);
+                      event->x / allocation.width,
+                      event->y / allocation.height, pressure);
         }
     }
 
@@ -413,5 +441,6 @@ static void
 pressure_adjust_update (GtkAdjustment *adj,
                         ColorselWater *water)
 {
-  water->pressure_adjust = (adj->upper - adj->value) / 100.0;
+  water->pressure_adjust = (gtk_adjustment_get_upper (adj) -
+                            gtk_adjustment_get_value (adj)) / 100.0;
 }

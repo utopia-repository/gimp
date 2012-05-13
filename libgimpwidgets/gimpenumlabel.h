@@ -4,10 +4,10 @@
  * gimpenumlabel.h
  * Copyright (C) 2005  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,19 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_ENUM__LABEL_H__
 #define __GIMP_ENUM__LABEL_H__
 
 G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_ENUM_LABEL            (gimp_enum_label_get_type ())
 #define GIMP_ENUM_LABEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ENUM_LABEL, GimpEnumLabel))
@@ -55,6 +59,7 @@ GtkWidget * gimp_enum_label_new              (GType          enum_type,
                                               gint           value);
 void        gimp_enum_label_set_value        (GimpEnumLabel *label,
                                               gint           value);
+
 
 G_END_DECLS
 

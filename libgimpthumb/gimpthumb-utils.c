@@ -7,10 +7,10 @@
  * Copyright (C) 2001-2003  Sven Neumann <sven@gimp.org>
  *                          Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,9 +18,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -45,6 +44,15 @@
 #include "gimpthumb-utils.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpthumb-utils
+ * @title: GimpThumb-utils
+ * @short_description: Utility functions provided and used by libgimpthumb
+ *
+ * Utility functions provided and used by libgimpthumb
+ **/
 
 
 static gint           gimp_thumb_size       (GimpThumbSize  size);
@@ -178,8 +186,8 @@ gimp_thumb_get_thumb_dir (GimpThumbSize  size)
 
 /**
  * gimp_thumb_get_thumb_dir_local:
- * @dirname:
- * @size: a GimpThumbSize
+ * @dirname: the basename of the dir, without the actual dirname itself
+ * @size:    a GimpThumbSize
  *
  * Retrieve the name of the local thumbnail folder for a specific
  * size.  Unlike gimp_thumb_get_thumb_dir() the returned string is not
@@ -252,9 +260,9 @@ gimp_thumb_ensure_thumb_dir (GimpThumbSize   size,
 
 /**
  * gimp_thumb_ensure_thumb_dir_local:
- * @dirname:
- * @size: a GimpThumbSize
- * @error: return location for possible errors
+ * @dirname: the basename of the dir, without the actual dirname itself
+ * @size:    a GimpThumbSize
+ * @error:   return location for possible errors
  *
  * This function checks if the directory that is required to store
  * local thumbnails for a particular @size exist and attempts to

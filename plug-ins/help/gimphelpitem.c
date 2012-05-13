@@ -6,9 +6,9 @@
  *                         Michael Natterer <mitch@gimp.org>
  *                         Henrik Brix Andersen <brix@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*  This code is written so that it can also be compiled standalone.
@@ -47,12 +46,14 @@
 GimpHelpItem *
 gimp_help_item_new (const gchar *ref,
                     const gchar *title,
+                    const gchar *sort,
                     const gchar *parent)
 {
   GimpHelpItem *item = g_slice_new0 (GimpHelpItem);
 
   item->ref    = g_strdup (ref);
   item->title  = g_strdup (title);
+  item->sort   = g_strdup (sort);
   item->parent = g_strdup (parent);
 
   return item;
@@ -63,6 +64,7 @@ gimp_help_item_free (GimpHelpItem *item)
 {
   g_free (item->ref);
   g_free (item->title);
+  g_free (item->sort);
   g_free (item->parent);
 
   g_list_free (item->children);

@@ -31,6 +31,7 @@
 <ANCHOR id="GimpSizeType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType">
 <ANCHOR id="GimpStackTraceMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpStackTraceMode">
 <ANCHOR id="GimpTextDirection" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTextDirection">
+<ANCHOR id="GimpTextHintStyle" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTextHintStyle">
 <ANCHOR id="GimpTextJustification" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTextJustification">
 <ANCHOR id="GimpTransferMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode">
 <ANCHOR id="GimpTransformDirection" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection">
@@ -45,6 +46,8 @@
 <ANCHOR id="GimpFlagsDesc" href="libgimpbase/libgimpbase-gimpbasetypes.html#GimpFlagsDesc">
 <ANCHOR id="gimp-type-set-translation-domain" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-type-set-translation-domain">
 <ANCHOR id="gimp-type-get-translation-domain" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-type-get-translation-domain">
+<ANCHOR id="gimp-type-set-translation-context" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-type-set-translation-context">
+<ANCHOR id="gimp-type-get-translation-context" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-type-get-translation-context">
 <ANCHOR id="gimp-enum-set-value-descriptions" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-enum-set-value-descriptions">
 <ANCHOR id="gimp-enum-get-value-descriptions" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-enum-get-value-descriptions">
 <ANCHOR id="gimp-flags-get-value-descriptions" href="libgimpbase/libgimpbase-gimpbasetypes.html#gimp-flags-get-value-descriptions">
@@ -138,6 +141,7 @@
 <ANCHOR id="libgimpbase-gimprectangle.description" href="libgimpbase/libgimpbase-gimprectangle.html#libgimpbase-gimprectangle.description">
 <ANCHOR id="libgimpbase-gimprectangle.details" href="libgimpbase/libgimpbase-gimprectangle.html#libgimpbase-gimprectangle.details">
 <ANCHOR id="gimp-rectangle-intersect" href="libgimpbase/libgimpbase-gimprectangle.html#gimp-rectangle-intersect">
+<ANCHOR id="gimp-rectangle-union" href="libgimpbase/libgimpbase-gimprectangle.html#gimp-rectangle-union">
 <ANCHOR id="libgimpbase-gimpparasite" href="libgimpbase/libgimpbase-gimpparasite.html">
 <ANCHOR id="libgimpbase-gimpparasite.synopsis" href="libgimpbase/libgimpbase-gimpparasite.html#libgimpbase-gimpparasite.synopsis">
 <ANCHOR id="libgimpbase-gimpparasite.description" href="libgimpbase/libgimpbase-gimpparasite.html#libgimpbase-gimpparasite.description">
@@ -174,6 +178,7 @@
 <ANCHOR id="libgimpbase-gimpparasiteio.description" href="libgimpbase/libgimpbase-gimpparasiteio.html#libgimpbase-gimpparasiteio.description">
 <ANCHOR id="libgimpbase-gimpparasiteio.details" href="libgimpbase/libgimpbase-gimpparasiteio.html#libgimpbase-gimpparasiteio.details">
 <ANCHOR id="GIMP-PIXPIPE-MAXDIM:CAPS" href="libgimpbase/libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS">
+<ANCHOR id="GimpPixPipeParams" href="libgimpbase/libgimpbase-gimpparasiteio.html#GimpPixPipeParams">
 <ANCHOR id="gimp-pixpipe-params-init" href="libgimpbase/libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init">
 <ANCHOR id="gimp-pixpipe-params-parse" href="libgimpbase/libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse">
 <ANCHOR id="gimp-pixpipe-params-build" href="libgimpbase/libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build">
@@ -202,6 +207,10 @@
 <ANCHOR id="gimp-unit-get-abbreviation" href="libgimpbase/libgimpbase-gimpunit.html#gimp-unit-get-abbreviation">
 <ANCHOR id="gimp-unit-get-singular" href="libgimpbase/libgimpbase-gimpunit.html#gimp-unit-get-singular">
 <ANCHOR id="gimp-unit-get-plural" href="libgimpbase/libgimpbase-gimpunit.html#gimp-unit-get-plural">
+<ANCHOR id="gimp-unit-format-string" href="libgimpbase/libgimpbase-gimpunit.html#gimp-unit-format-string">
+<ANCHOR id="gimp-pixels-to-units" href="libgimpbase/libgimpbase-gimpunit.html#gimp-pixels-to-units">
+<ANCHOR id="gimp-units-to-pixels" href="libgimpbase/libgimpbase-gimpunit.html#gimp-units-to-pixels">
+<ANCHOR id="gimp-units-to-points" href="libgimpbase/libgimpbase-gimpunit.html#gimp-units-to-points">
 <ANCHOR id="GIMP-TYPE-UNIT:CAPS" href="libgimpbase/libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS">
 <ANCHOR id="GIMP-TYPE-PARAM-UNIT:CAPS" href="libgimpbase/libgimpbase-gimpunit.html#GIMP-TYPE-PARAM-UNIT:CAPS">
 <ANCHOR id="GIMP-IS-PARAM-SPEC-UNIT:CAPS" href="libgimpbase/libgimpbase-gimpunit.html#GIMP-IS-PARAM-SPEC-UNIT:CAPS">

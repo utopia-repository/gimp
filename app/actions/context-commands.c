@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -22,6 +21,7 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -32,6 +32,9 @@
 #include "core/gimpcontext.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimplist.h"
+#include "core/gimptoolinfo.h"
+
+#include "paint/gimppaintoptions.h"
 
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpsessioninfo.h"
@@ -40,6 +43,8 @@
 
 #include "actions.h"
 #include "context-commands.h"
+
+#include "gimp-intl.h"
 
 
 static const GimpLayerModeEffects paint_modes[] =
@@ -368,17 +373,20 @@ context_opacity_cmd_callback (GtkAction *action,
                               gint       value,
                               gpointer   data)
 {
-  GimpContext *context;
-  gdouble      opacity;
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
   return_if_no_context (context, data);
 
-  opacity = action_select_value ((GimpActionSelectType) value,
-                                 gimp_context_get_opacity (context),
-                                 GIMP_OPACITY_TRANSPARENT,
-                                 GIMP_OPACITY_OPAQUE,
-                                 GIMP_OPACITY_OPAQUE,
-                                 1.0 / 255.0, 0.01, 0.1, 0.0, FALSE);
-  gimp_context_set_opacity (context, opacity);
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_TOOL_OPTIONS (tool_info->tool_options))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (tool_info->tool_options),
+                              "opacity",
+                              1.0 / 255.0, 0.01, 0.1, 0.1, FALSE);
+    }
 }
 
 void
@@ -387,6 +395,7 @@ context_paint_mode_cmd_callback (GtkAction *action,
                                  gpointer   data)
 {
   GimpContext          *context;
+  GimpToolInfo         *tool_info;
   GimpLayerModeEffects  paint_mode;
   gint                  index;
   return_if_no_context (context, data);
@@ -398,6 +407,25 @@ context_paint_mode_cmd_callback (GtkAction *action,
                                0, G_N_ELEMENTS (paint_modes) - 1, 0,
                                0.0, 1.0, 1.0, 0.0, FALSE);
   gimp_context_set_paint_mode (context, paint_modes[index]);
+
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_TOOL_OPTIONS (tool_info->tool_options))
+    {
+      GimpDisplay *display;
+      const char  *value_desc;
+
+      gimp_enum_get_value (GIMP_TYPE_LAYER_MODE_EFFECTS, index,
+                           NULL, NULL, &value_desc, NULL);
+
+      display = action_data_get_display (data);
+
+      if (value_desc && display)
+        {
+          action_message (display, G_OBJECT (tool_info->tool_options),
+                          _("Paint Mode: %s"), value_desc);
+        }
+    }
 }
 
 void
@@ -421,7 +449,7 @@ context_brush_select_cmd_callback (GtkAction *action,
   return_if_no_context (context, data);
 
   context_select_object ((GimpActionSelectType) value,
-                         context, context->gimp->brush_factory->container);
+                         context, gimp_data_factory_get_container (context->gimp->brush_factory));
 }
 
 void
@@ -433,7 +461,7 @@ context_pattern_select_cmd_callback (GtkAction *action,
   return_if_no_context (context, data);
 
   context_select_object ((GimpActionSelectType) value,
-                         context, context->gimp->pattern_factory->container);
+                         context, gimp_data_factory_get_container (context->gimp->pattern_factory));
 }
 
 void
@@ -445,7 +473,7 @@ context_palette_select_cmd_callback (GtkAction *action,
   return_if_no_context (context, data);
 
   context_select_object ((GimpActionSelectType) value,
-                         context, context->gimp->palette_factory->container);
+                         context, gimp_data_factory_get_container (context->gimp->palette_factory));
 }
 
 void
@@ -457,7 +485,7 @@ context_gradient_select_cmd_callback (GtkAction *action,
   return_if_no_context (context, data);
 
   context_select_object ((GimpActionSelectType) value,
-                         context, context->gimp->gradient_factory->container);
+                         context, gimp_data_factory_get_container (context->gimp->gradient_factory));
 }
 
 void
@@ -479,17 +507,18 @@ context_brush_spacing_cmd_callback (GtkAction *action,
 {
   GimpContext *context;
   GimpBrush   *brush;
-  gint         spacing;
   return_if_no_context (context, data);
 
   brush = gimp_context_get_brush (context);
-  spacing = gimp_brush_get_spacing (brush);
-  spacing = action_select_value ((GimpActionSelectType) value,
-                                 spacing,
-                                 1.0, 5000.0, 20.0,
-                                 1.0, 5.0, 20.0, 0.0, FALSE);
-  gimp_brush_set_spacing (brush, spacing);
 
+  if (GIMP_IS_BRUSH (brush) && gimp_data_is_writable (GIMP_DATA (brush)))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (brush),
+                              "spacing",
+                              1.0, 5.0, 20.0, 0.1, FALSE);
+    }
 }
 
 void
@@ -503,12 +532,25 @@ context_brush_shape_cmd_callback (GtkAction *action,
 
   brush = gimp_context_get_brush (context);
 
-  if (GIMP_IS_BRUSH_GENERATED (brush) && GIMP_DATA (brush)->writable)
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      gimp_data_is_writable (GIMP_DATA (brush)))
     {
       GimpBrushGenerated *generated = GIMP_BRUSH_GENERATED (brush);
+      GimpDisplay        *display;
+      const char         *value_desc;
 
       gimp_brush_generated_set_shape (generated,
                                       (GimpBrushGeneratedShape) value);
+
+      gimp_enum_get_value (GIMP_TYPE_BRUSH_GENERATED_SHAPE, value,
+                           NULL, NULL, &value_desc, NULL);
+      display = action_data_get_display (data);
+
+      if (value_desc && display)
+        {
+          action_message (display, G_OBJECT (brush),
+                          _("Brush Shape: %s"), value_desc);
+        }
     }
 }
 
@@ -523,9 +565,11 @@ context_brush_radius_cmd_callback (GtkAction *action,
 
   brush = gimp_context_get_brush (context);
 
-  if (GIMP_IS_BRUSH_GENERATED (brush) && GIMP_DATA (brush)->writable)
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      gimp_data_is_writable (GIMP_DATA (brush)))
     {
       GimpBrushGenerated *generated = GIMP_BRUSH_GENERATED (brush);
+      GimpDisplay        *display;
       gdouble             radius;
       gdouble             min_radius;
 
@@ -559,6 +603,14 @@ context_brush_radius_cmd_callback (GtkAction *action,
                                     min_radius, 4000.0, min_radius,
                                     0.1, 1.0, 10.0, 0.05, FALSE);
       gimp_brush_generated_set_radius (generated, radius);
+
+      display = action_data_get_display (data);
+
+      if (display)
+        {
+          action_message (action_data_get_display (data), G_OBJECT (brush),
+                          _("Brush Radius: %2.2f"), radius);
+        }
     }
 }
 
@@ -573,17 +625,14 @@ context_brush_spikes_cmd_callback (GtkAction *action,
 
   brush = gimp_context_get_brush (context);
 
-  if (GIMP_IS_BRUSH_GENERATED (brush) && GIMP_DATA (brush)->writable)
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      gimp_data_is_writable (GIMP_DATA (brush)))
     {
-      GimpBrushGenerated *generated = GIMP_BRUSH_GENERATED (brush);
-      gint                spikes;
-
-      spikes = gimp_brush_generated_get_spikes (generated);
-      spikes = action_select_value ((GimpActionSelectType) value,
-                                    spikes,
-                                    2.0, 20.0, 2.0,
-                                    0.0, 1.0, 4.0, 0.0, FALSE);
-      gimp_brush_generated_set_spikes (generated, spikes);
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (brush),
+                              "spikes",
+                              0.0, 1.0, 4.0, 0.1, FALSE);
     }
 }
 
@@ -598,17 +647,14 @@ context_brush_hardness_cmd_callback (GtkAction *action,
 
   brush = gimp_context_get_brush (context);
 
-  if (GIMP_IS_BRUSH_GENERATED (brush) && GIMP_DATA (brush)->writable)
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      gimp_data_is_writable (GIMP_DATA (brush)))
     {
-      GimpBrushGenerated *generated = GIMP_BRUSH_GENERATED (brush);
-      gdouble             hardness;
-
-      hardness = gimp_brush_generated_get_hardness (generated);
-      hardness = action_select_value ((GimpActionSelectType) value,
-                                      hardness,
-                                      0.0, 1.0, 1.0,
-                                      0.001, 0.01, 0.1, 0.0, FALSE);
-      gimp_brush_generated_set_hardness (generated, hardness);
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (brush),
+                              "hardness",
+                              0.001, 0.01, 0.1, 0.1, FALSE);
     }
 }
 
@@ -623,17 +669,14 @@ context_brush_aspect_cmd_callback (GtkAction *action,
 
   brush = gimp_context_get_brush (context);
 
-  if (GIMP_IS_BRUSH_GENERATED (brush) && GIMP_DATA (brush)->writable)
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      gimp_data_is_writable (GIMP_DATA (brush)))
     {
-      GimpBrushGenerated *generated = GIMP_BRUSH_GENERATED (brush);
-      gdouble             aspect;
-
-      aspect = gimp_brush_generated_get_aspect_ratio (generated);
-      aspect = action_select_value ((GimpActionSelectType) value,
-                                    aspect,
-                                    1.0, 20.0, 1.0,
-                                    0.1, 1.0, 4.0, 0.0, FALSE);
-      gimp_brush_generated_set_aspect_ratio (generated, aspect);
+      action_select_property ((GimpActionSelectType) value,
+                              action_data_get_display (data),
+                              G_OBJECT (brush),
+                              "aspect-ratio",
+                              0.1, 1.0, 4.0, 0.1, FALSE);
     }
 }
 
@@ -648,9 +691,11 @@ context_brush_angle_cmd_callback (GtkAction *action,
 
   brush = gimp_context_get_brush (context);
 
-  if (GIMP_IS_BRUSH_GENERATED (brush) && GIMP_DATA (brush)->writable)
+  if (GIMP_IS_BRUSH_GENERATED (brush) &&
+      gimp_data_is_writable (GIMP_DATA (brush)))
     {
       GimpBrushGenerated *generated = GIMP_BRUSH_GENERATED (brush);
+      GimpDisplay        *display;
       gdouble             angle;
 
       angle = gimp_brush_generated_get_angle (generated);
@@ -663,9 +708,17 @@ context_brush_angle_cmd_callback (GtkAction *action,
         angle = action_select_value ((GimpActionSelectType) value,
                                      angle,
                                      0.0, 180.0, 0.0,
-                                     0.1, 1.0, 15.0, 0.0, TRUE);
+                                     0.1, 1.0, 15.0, 0.1, TRUE);
 
       gimp_brush_generated_set_angle (generated, angle);
+
+      display = action_data_get_display (data);
+
+      if (display)
+        {
+          action_message (action_data_get_display (data), G_OBJECT (brush),
+                          _("Brush Angle: %2.2f"), angle);
+        }
     }
 }
 
@@ -679,12 +732,14 @@ context_select_object (GimpActionSelectType  select_type,
 {
   GimpObject *current;
 
-  current = gimp_context_get_by_type (context, container->children_type);
+  current = gimp_context_get_by_type (context,
+                                      gimp_container_get_children_type (container));
 
   current = action_select_object (select_type, container, current);
 
   if (current)
-    gimp_context_set_by_type (context, container->children_type, current);
+    gimp_context_set_by_type (context,
+                              gimp_container_get_children_type (container), current);
 }
 
 static gint
@@ -813,17 +868,14 @@ context_set_color_index (gint      index,
 static GimpPaletteEditor *
 context_get_palette_editor (void)
 {
-  GimpDialogFactory *dialog_factory;
-  GimpSessionInfo   *info;
+  GtkWidget *widget;
 
-  dialog_factory = gimp_dialog_factory_from_name ("dock");
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (gimp_dialog_factory_get_singleton ()), NULL);
 
-  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (dialog_factory), NULL);
-
-  info = gimp_dialog_factory_find_session_info (dialog_factory,
-                                                "gimp-palette-editor");
-  if (info && info->widget)
-    return GIMP_PALETTE_EDITOR (gtk_bin_get_child (GTK_BIN (info->widget)));
+  widget = gimp_dialog_factory_find_widget (gimp_dialog_factory_get_singleton (),
+                                            "gimp-palette-editor");
+  if (widget)
+    return GIMP_PALETTE_EDITOR (gtk_bin_get_child (GTK_BIN (widget)));
 
   return NULL;
 }
@@ -831,17 +883,14 @@ context_get_palette_editor (void)
 static GimpColormapEditor *
 context_get_colormap_editor (void)
 {
-  GimpDialogFactory *dialog_factory;
-  GimpSessionInfo   *info;
+  GtkWidget *widget;
 
-  dialog_factory = gimp_dialog_factory_from_name ("dock");
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (gimp_dialog_factory_get_singleton ()), NULL);
 
-  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (dialog_factory), NULL);
-
-  info = gimp_dialog_factory_find_session_info (dialog_factory,
-                                                "gimp-indexed-palette");
-  if (info && info->widget)
-    return GIMP_COLORMAP_EDITOR (gtk_bin_get_child (GTK_BIN (info->widget)));
+  widget = gimp_dialog_factory_find_widget (gimp_dialog_factory_get_singleton (),
+                                            "gimp-indexed-palette");
+  if (widget)
+    return GIMP_COLORMAP_EDITOR (gtk_bin_get_child (GTK_BIN (widget)));
 
   return NULL;
 }

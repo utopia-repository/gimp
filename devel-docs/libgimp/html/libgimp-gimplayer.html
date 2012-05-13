@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
-<link rel="prev" href="libgimp-gimpimage.html" title="gimpimage">
+<link rel="prev" href="libgimp-gimpitemtransform.html" title="gimpitemtransform">
 <link rel="next" href="libgimp-gimppaths.html" title="gimppaths">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libgimp-gimpimage.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libgimp-gimpitemtransform.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
@@ -37,72 +37,85 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libgimp-gimplayer.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new" title="gimp_layer_new ()">gimp_layer_new</a>                      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
+<pre class="synopsis"><span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new" title="gimp_layer_new ()">gimp_layer_new</a>                      (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> mode</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-drawable" title="gimp_layer_new_from_drawable ()">gimp_layer_new_from_drawable</a>        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> dest_image_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-visible" title="gimp_layer_new_from_visible ()">gimp_layer_new_from_visible</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> dest_image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-copy" title="gimp_layer_copy ()">gimp_layer_copy</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale" title="gimp_layer_scale ()">gimp_layer_scale</a>                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> local_origin</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale-full" title="gimp_layer_scale_full ()">gimp_layer_scale_full</a>               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> local_origin</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-resize" title="gimp_layer_resize ()">gimp_layer_resize</a>                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offx</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offy</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-resize-to-image-size" title="gimp_layer_resize_to_image_size ()">gimp_layer_resize_to_image_size</a>     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-translate" title="gimp_layer_translate ()">gimp_layer_translate</a>                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offx</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offy</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-alpha" title="gimp_layer_add_alpha ()">gimp_layer_add_alpha</a>                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-flatten" title="gimp_layer_flatten ()">gimp_layer_flatten</a>                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-offsets" title="gimp_layer_set_offsets ()">gimp_layer_set_offsets</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offx</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offy</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-create-mask" title="gimp_layer_create_mask ()">gimp_layer_create_mask</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpAddMaskType"><span class="type">GimpAddMaskType</span></a> mask_type</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-from-mask" title="gimp_layer_from_mask ()">gimp_layer_from_mask</a>                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> mask_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-mask" title="gimp_layer_get_mask ()">gimp_layer_get_mask</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-mask" title="gimp_layer_add_mask ()">gimp_layer_add_mask</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> mask_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-remove-mask" title="gimp_layer_remove_mask ()">gimp_layer_remove_mask</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-drawable" title="gimp_layer_new_from_drawable ()">gimp_layer_new_from_drawable</a>        (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> dest_image_ID</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-visible" title="gimp_layer_new_from_visible ()">gimp_layer_new_from_visible</a>         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> dest_image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-pixbuf" title="gimp_layer_new_from_pixbuf ()">gimp_layer_new_from_pixbuf</a>          (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">GdkPixbuf</span> *pixbuf</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_start</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_end</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-surface" title="gimp_layer_new_from_surface ()">gimp_layer_new_from_surface</a>         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">cairo_surface_t</span> *surface</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_start</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_end</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-group-new" title="gimp_layer_group_new ()">gimp_layer_group_new</a>                (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-copy" title="gimp_layer_copy ()">gimp_layer_copy</a>                     (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale" title="gimp_layer_scale ()">gimp_layer_scale</a>                    (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> local_origin</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale-full" title="gimp_layer_scale_full ()">gimp_layer_scale_full</a>               (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> local_origin</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-resize" title="gimp_layer_resize ()">gimp_layer_resize</a>                   (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offy</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-resize-to-image-size" title="gimp_layer_resize_to_image_size ()">gimp_layer_resize_to_image_size</a>     (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-translate" title="gimp_layer_translate ()">gimp_layer_translate</a>                (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offy</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-alpha" title="gimp_layer_add_alpha ()">gimp_layer_add_alpha</a>                (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-flatten" title="gimp_layer_flatten ()">gimp_layer_flatten</a>                  (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-offsets" title="gimp_layer_set_offsets ()">gimp_layer_set_offsets</a>              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offy</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-create-mask" title="gimp_layer_create_mask ()">gimp_layer_create_mask</a>              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpAddMaskType"><span class="type">GimpAddMaskType</span></a> mask_type</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-from-mask" title="gimp_layer_from_mask ()">gimp_layer_from_mask</a>                (<em class="parameter"><code><span class="type">gint32</span> mask_ID</code></em>);
+<span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-mask" title="gimp_layer_get_mask ()">gimp_layer_get_mask</a>                 (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-mask" title="gimp_layer_add_mask ()">gimp_layer_add_mask</a>                 (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> mask_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-remove-mask" title="gimp_layer_remove_mask ()">gimp_layer_remove_mask</a>              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpMaskApplyMode" title="enum GimpMaskApplyMode"><span class="type">GimpMaskApplyMode</span></a> mode</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-lock-alpha" title="gimp_layer_get_lock_alpha ()">gimp_layer_get_lock_alpha</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-lock-alpha" title="gimp_layer_set_lock_alpha ()">gimp_layer_set_lock_alpha</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> lock_alpha</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-preserve-trans" title="gimp_layer_get_preserve_trans ()">gimp_layer_get_preserve_trans</a>       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-preserve-trans" title="gimp_layer_set_preserve_trans ()">gimp_layer_set_preserve_trans</a>       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> preserve_trans</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-apply-mask" title="gimp_layer_get_apply_mask ()">gimp_layer_get_apply_mask</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-apply-mask" title="gimp_layer_set_apply_mask ()">gimp_layer_set_apply_mask</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> apply_mask</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-show-mask" title="gimp_layer_get_show_mask ()">gimp_layer_get_show_mask</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-show-mask" title="gimp_layer_set_show_mask ()">gimp_layer_set_show_mask</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_mask</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-edit-mask" title="gimp_layer_get_edit_mask ()">gimp_layer_get_edit_mask</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-edit-mask" title="gimp_layer_set_edit_mask ()">gimp_layer_set_edit_mask</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> edit_mask</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-opacity" title="gimp_layer_get_opacity ()">gimp_layer_get_opacity</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-opacity" title="gimp_layer_set_opacity ()">gimp_layer_set_opacity</a>              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>);
-<a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="returnvalue">GimpLayerModeEffects</span></a> <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-mode" title="gimp_layer_get_mode ()">gimp_layer_get_mode</a>                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-mode" title="gimp_layer_set_mode ()">gimp_layer_set_mode</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-lock-alpha" title="gimp_layer_get_lock_alpha ()">gimp_layer_get_lock_alpha</a>           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-lock-alpha" title="gimp_layer_set_lock_alpha ()">gimp_layer_set_lock_alpha</a>           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> lock_alpha</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-preserve-trans" title="gimp_layer_get_preserve_trans ()">gimp_layer_get_preserve_trans</a>       (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-preserve-trans" title="gimp_layer_set_preserve_trans ()">gimp_layer_set_preserve_trans</a>       (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> preserve_trans</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-apply-mask" title="gimp_layer_get_apply_mask ()">gimp_layer_get_apply_mask</a>           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-apply-mask" title="gimp_layer_set_apply_mask ()">gimp_layer_set_apply_mask</a>           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> apply_mask</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-show-mask" title="gimp_layer_get_show_mask ()">gimp_layer_get_show_mask</a>            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-show-mask" title="gimp_layer_set_show_mask ()">gimp_layer_set_show_mask</a>            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> show_mask</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-edit-mask" title="gimp_layer_get_edit_mask ()">gimp_layer_get_edit_mask</a>            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-edit-mask" title="gimp_layer_set_edit_mask ()">gimp_layer_set_edit_mask</a>            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> edit_mask</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-opacity" title="gimp_layer_get_opacity ()">gimp_layer_get_opacity</a>              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-opacity" title="gimp_layer_set_opacity ()">gimp_layer_set_opacity</a>              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>);
+<a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="returnvalue">GimpLayerModeEffects</span></a> <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-mode" title="gimp_layer_get_mode ()">gimp_layer_get_mode</a>                (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-mode" title="gimp_layer_set_mode ()">gimp_layer_set_mode</a>                 (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> mode</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-is-floating-sel" title="gimp_layer_is_floating_sel ()">gimp_layer_is_floating_sel</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimplayer.html#gimp-layer-is-floating-sel" title="gimp_layer_is_floating_sel ()">gimp_layer_is_floating_sel</a>          (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -115,12 +128,12 @@ Operations on a single layer.
 <a name="libgimp-gimplayer.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gimp-layer-new"></a><h3>gimp_layer_new ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_new                      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>,
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_new                      (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"><span class="type">GimpImageType</span></a> type</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> mode</code></em>);</pre>
 <p>
 Create a new layer.
@@ -129,7 +142,7 @@ Create a new layer.
 This procedure creates a new layer with the specified width, height,
 and type. Name, opacity, and mode are also supplied parameters. The
 new layer still needs to be added to the image, as this is not
-automatic. Add the new layer with the 'gimp_image_add_layer'
+automatic. Add the new layer with the <a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a>
 command. Other attributes such as layer mask modes, and offsets
 should be set with explicit procedure calls.
 </p>
@@ -174,8 +187,8 @@ should be set with explicit procedure calls.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-new-from-drawable"></a><h3>gimp_layer_new_from_drawable ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_new_from_drawable        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> dest_image_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_new_from_drawable        (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> dest_image_ID</code></em>);</pre>
 <p>
 Create a new layer by copying an existing drawable.
 </p>
@@ -183,8 +196,8 @@ Create a new layer by copying an existing drawable.
 This procedure creates a new layer as a copy of the specified
 drawable. The new layer still needs to be added to the image, as
 this is not automatic. Add the new layer with the
-<a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a> command. Other attributes such as layer mask
-modes, and offsets should be set with explicit procedure calls.
+<a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a> command. Other attributes such as layer
+mask modes, and offsets should be set with explicit procedure calls.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -207,9 +220,9 @@ modes, and offsets should be set with explicit procedure calls.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-new-from-visible"></a><h3>gimp_layer_new_from_visible ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_new_from_visible         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> dest_image_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_new_from_visible         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> dest_image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
 <p>
 Create a new layer from what is visible in an image.
 </p>
@@ -217,8 +230,8 @@ Create a new layer from what is visible in an image.
 This procedure creates a new layer from what is visible in the given
 image. The new layer still needs to be added to the destination
 image, as this is not automatic. Add the new layer with the
-<a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a> command. Other attributes such as layer mask
-modes, and offsets should be set with explicit procedure calls.
+<a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a> command. Other attributes such as layer
+mask modes, and offsets should be set with explicit procedure calls.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -245,8 +258,150 @@ modes, and offsets should be set with explicit procedure calls.
 </div>
 <hr>
 <div class="refsect2">
+<a name="gimp-layer-new-from-pixbuf"></a><h3>gimp_layer_new_from_pixbuf ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_new_from_pixbuf          (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">GdkPixbuf</span> *pixbuf</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_start</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_end</code></em>);</pre>
+<p>
+Create a new layer from a <code class="literal">GdkPixbuf</code>.
+</p>
+<p>
+This procedure creates a new layer from the given <code class="literal">GdkPixbuf</code>.  The
+image has to be an RGB image and just like with <a class="link" href="libgimp-gimplayer.html#gimp-layer-new" title="gimp_layer_new ()"><code class="function">gimp_layer_new()</code></a>
+you will still need to add the layer to it.
+</p>
+<p>
+If you pass <em class="parameter"><code>progress_end</code></em> &gt; <em class="parameter"><code>progress_start</code></em> to this function,
+<a class="link" href="libgimp-gimpprogress.html#gimp-progress-update" title="gimp_progress_update ()"><code class="function">gimp_progress_update()</code></a> will be called for. You have to call
+<a class="link" href="libgimp-gimpprogress.html#gimp-progress-init" title="gimp_progress_init ()"><code class="function">gimp_progress_init()</code></a> beforehand then.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td>The RGB image to which to add the layer.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>The layer name.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pixbuf</code></em> :</span></p></td>
+<td>A GdkPixbuf.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
+<td>The layer opacity.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>The layer combination mode.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>progress_start</code></em> :</span></p></td>
+<td>start of progress</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>progress_end</code></em> :</span></p></td>
+<td>end of progress</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The newly created layer.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since GIMP 2.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-layer-new-from-surface"></a><h3>gimp_layer_new_from_surface ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_new_from_surface         (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                                         <em class="parameter"><code><span class="type">cairo_surface_t</span> *surface</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_start</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> progress_end</code></em>);</pre>
+<p>
+Create a new layer from a <span class="type">cairo_surface_t</span>.
+</p>
+<p>
+This procedure creates a new layer from the given
+<span class="type">cairo_surface_t</span>. The image has to be an RGB image and just like
+with <a class="link" href="libgimp-gimplayer.html#gimp-layer-new" title="gimp_layer_new ()"><code class="function">gimp_layer_new()</code></a> you will still need to add the layer to it.
+</p>
+<p>
+If you pass <em class="parameter"><code>progress_end</code></em> &gt; <em class="parameter"><code>progress_start</code></em> to this function,
+<a class="link" href="libgimp-gimpprogress.html#gimp-progress-update" title="gimp_progress_update ()"><code class="function">gimp_progress_update()</code></a> will be called for. You have to call
+<a class="link" href="libgimp-gimpprogress.html#gimp-progress-init" title="gimp_progress_init ()"><code class="function">gimp_progress_init()</code></a> beforehand then.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td>The RGB image to which to add the layer.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>The layer name.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>surface</code></em> :</span></p></td>
+<td>A Cairo image surface.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>progress_start</code></em> :</span></p></td>
+<td>start of progress</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>progress_end</code></em> :</span></p></td>
+<td>end of progress</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The newly created layer.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since GIMP 2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gimp-layer-group-new"></a><h3>gimp_layer_group_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_group_new                (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>);</pre>
+<p>
+Create a new layer group.
+</p>
+<p>
+This procedure creates a new layer group. Attributes such as layer
+mode and opacity should be set with explicit procedure calls. Add
+the new layer group (which is a kind of layer) with the
+<a class="link" href="libgimp-gimpimage.html#gimp-image-insert-layer" title="gimp_image_insert_layer ()"><code class="function">gimp_image_insert_layer()</code></a> command.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td>The image to which to add the layer group.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The newly created layer group.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since GIMP 2.8</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gimp-layer-copy"></a><h3>gimp_layer_copy ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_copy                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_copy                     (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Copy a layer.
 </p>
@@ -272,10 +427,10 @@ should not be subsequently added to any other image.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-scale"></a><h3>gimp_layer_scale ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_scale                    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> local_origin</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_scale                    (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> local_origin</code></em>);</pre>
 <p>
 Scale the layer using the default interpolation method.
 </p>
@@ -284,7 +439,8 @@ This procedure scales the layer so that its new width and height are
 equal to the supplied parameters. The 'local-origin' parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added
-to an image. The default interpolation method is used for scaling.
+to an image. The interpolation method used can be set with
+<a class="link" href="libgimp-gimpcontext.html#gimp-context-set-interpolation" title="gimp_context_set_interpolation ()"><code class="function">gimp_context_set_interpolation()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -315,22 +471,15 @@ to an image. The default interpolation method is used for scaling.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-scale-full"></a><h3>gimp_layer_scale_full ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_scale_full               (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> local_origin</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);</pre>
-<p>
-Scale the layer using a specific interpolation method.
-</p>
-<p>
-This procedure scales the layer so that its new width and height are
-equal to the supplied parameters. The 'local-origin' parameter
-specifies whether to scale from the center of the layer, or from the
-image origin. This operation only works if the layer has been added
-to an image. This procedure allows you to specify the interpolation
-method explicitly.
-</p>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_scale_full               (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> local_origin</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_layer_scale_full</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale" title="gimp_layer_scale ()"><code class="function">gimp_layer_scale()</code></a> instead.</p>
+</div>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -365,11 +514,11 @@ method explicitly.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-resize"></a><h3>gimp_layer_resize ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_resize                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offx</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offy</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_resize                   (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_width</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> new_height</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offy</code></em>);</pre>
 <p>
 Resize the layer to the specified extents.
 </p>
@@ -412,7 +561,7 @@ operation only works if the layer has been added to an image.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-resize-to-image-size"></a><h3>gimp_layer_resize_to_image_size ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_resize_to_image_size     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_resize_to_image_size     (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Resize a layer to the image size.
 </p>
@@ -437,9 +586,9 @@ are equal to the width and height of its image container.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-translate"></a><h3>gimp_layer_translate ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_translate                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offx</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offy</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_translate                (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offy</code></em>);</pre>
 <p>
 Translate the layer by the specified offsets.
 </p>
@@ -476,7 +625,7 @@ the specified offsets.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-add-alpha"></a><h3>gimp_layer_add_alpha ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_add_alpha                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_add_alpha                (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Add an alpha channel to the layer if it doesn't already have one.
 </p>
@@ -504,7 +653,7 @@ to GRAYA, and INDEXED to INDEXEDA.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-flatten"></a><h3>gimp_layer_flatten ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_flatten                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_flatten                  (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Remove the alpha channel from the layer if it has one.
 </p>
@@ -532,9 +681,9 @@ and INDEXEDA to INDEXED.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-offsets"></a><h3>gimp_layer_set_offsets ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_offsets              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offx</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offy</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_offsets              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offy</code></em>);</pre>
 <p>
 Set the layer offsets.
 </p>
@@ -568,8 +717,8 @@ operation is valid only on layers which have been added to an image.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-create-mask"></a><h3>gimp_layer_create_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_create_mask              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpAddMaskType"><span class="type">GimpAddMaskType</span></a> mask_type</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_create_mask              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpAddMaskType"><span class="type">GimpAddMaskType</span></a> mask_type</code></em>);</pre>
 <p>
 Create a layer mask for the specified specified layer.
 </p>
@@ -606,7 +755,7 @@ to <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-mask" title="gimp
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-from-mask"></a><h3>gimp_layer_from_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_from_mask                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> mask_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_from_mask                (<em class="parameter"><code><span class="type">gint32</span> mask_ID</code></em>);</pre>
 <p>
 Get the specified mask's layer.
 </p>
@@ -632,7 +781,7 @@ exists.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-mask"></a><h3>gimp_layer_get_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              gimp_layer_get_mask                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_layer_get_mask                 (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the specified layer's mask if it exists.
 </p>
@@ -657,8 +806,8 @@ exists.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-add-mask"></a><h3>gimp_layer_add_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_add_mask                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> mask_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_add_mask                 (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint32</span> mask_ID</code></em>);</pre>
 <p>
 Add a layer mask to the specified layer.
 </p>
@@ -692,7 +841,7 @@ with the procedure 'gimp-layer-create-mask'.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-remove-mask"></a><h3>gimp_layer_remove_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_remove_mask              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_remove_mask              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpMaskApplyMode" title="enum GimpMaskApplyMode"><span class="type">GimpMaskApplyMode</span></a> mode</code></em>);</pre>
 <p>
 Remove the specified layer mask from the layer.
@@ -722,7 +871,7 @@ the mask doesn't exist, an error is returned.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-lock-alpha"></a><h3>gimp_layer_get_lock_alpha ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_get_lock_alpha           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_get_lock_alpha           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the lock alpha channel setting of the specified layer.
 </p>
@@ -747,8 +896,8 @@ setting.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-lock-alpha"></a><h3>gimp_layer_set_lock_alpha ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_lock_alpha           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> lock_alpha</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_lock_alpha           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> lock_alpha</code></em>);</pre>
 <p>
 Set the lock alpha channel setting of the specified layer.
 </p>
@@ -777,7 +926,7 @@ setting.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-preserve-trans"></a><h3>gimp_layer_get_preserve_trans ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_get_preserve_trans       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_get_preserve_trans       (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_layer_get_preserve_trans</code> is deprecated and should not be used in newly-written code.</p>
@@ -802,8 +951,8 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimplayer.html#g
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-preserve-trans"></a><h3>gimp_layer_set_preserve_trans ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_preserve_trans       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> preserve_trans</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_preserve_trans       (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> preserve_trans</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_layer_set_preserve_trans</code> is deprecated and should not be used in newly-written code.</p>
@@ -832,7 +981,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimplayer.html#g
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-apply-mask"></a><h3>gimp_layer_get_apply_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_get_apply_mask           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_get_apply_mask           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the apply mask setting of the specified layer.
 </p>
@@ -858,8 +1007,8 @@ being composited with the layer's alpha channel.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-apply-mask"></a><h3>gimp_layer_set_apply_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_apply_mask           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> apply_mask</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_apply_mask           (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> apply_mask</code></em>);</pre>
 <p>
 Set the apply mask setting of the specified layer.
 </p>
@@ -890,7 +1039,7 @@ error.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-show-mask"></a><h3>gimp_layer_get_show_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_get_show_mask            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_get_show_mask            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the show mask setting of the specified layer.
 </p>
@@ -917,8 +1066,8 @@ function returns an error.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-show-mask"></a><h3>gimp_layer_set_show_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_show_mask            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> show_mask</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_show_mask            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> show_mask</code></em>);</pre>
 <p>
 Set the show mask setting of the specified layer.
 </p>
@@ -949,7 +1098,7 @@ function will return an error.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-edit-mask"></a><h3>gimp_layer_get_edit_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_get_edit_mask            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_get_edit_mask            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the edit mask setting of the specified layer.
 </p>
@@ -975,8 +1124,8 @@ active, and not the layer.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-edit-mask"></a><h3>gimp_layer_set_edit_mask ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_edit_mask            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> edit_mask</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_edit_mask            (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> edit_mask</code></em>);</pre>
 <p>
 Set the edit mask setting of the specified layer.
 </p>
@@ -1007,7 +1156,7 @@ procedure will return an error.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-opacity"></a><h3>gimp_layer_get_opacity ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gimp_layer_get_opacity              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_layer_get_opacity              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the opacity of the specified layer.
 </p>
@@ -1031,8 +1180,8 @@ This procedure returns the specified layer's opacity.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-opacity"></a><h3>gimp_layer_set_opacity ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_opacity              (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> opacity</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_opacity              (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>);</pre>
 <p>
 Set the opacity of the specified layer.
 </p>
@@ -1060,7 +1209,7 @@ This procedure sets the specified layer's opacity.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-get-mode"></a><h3>gimp_layer_get_mode ()</h3>
-<pre class="programlisting"><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="returnvalue">GimpLayerModeEffects</span></a> gimp_layer_get_mode                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="returnvalue">GimpLayerModeEffects</span></a> gimp_layer_get_mode                (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Get the combination mode of the specified layer.
 </p>
@@ -1084,7 +1233,7 @@ This procedure returns the specified layer's combination mode.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-set-mode"></a><h3>gimp_layer_set_mode ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_set_mode                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>,
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_set_mode                 (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> mode</code></em>);</pre>
 <p>
 Set the combination mode of the specified layer.
@@ -1113,7 +1262,7 @@ This procedure sets the specified layer's combination mode.
 <hr>
 <div class="refsect2">
 <a name="gimp-layer-is-floating-sel"></a><h3>gimp_layer_is_floating_sel ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_layer_is_floating_sel          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> layer_ID</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_layer_is_floating_sel          (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);</pre>
 <p>
 Is the specified layer a floating selection?
 </p>

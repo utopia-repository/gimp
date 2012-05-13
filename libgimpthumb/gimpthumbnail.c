@@ -7,10 +7,10 @@
  * Copyright (C) 2001-2004  Sven Neumann <sven@gimp.org>
  *                          Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,9 +18,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -50,6 +49,15 @@
 #include "gimpthumbnail.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpthumbnail
+ * @title: GimpThumbnail
+ * @short_description: The GimpThumbnail object
+ *
+ * The GimpThumbnail object
+ **/
 
 
 /*  #define GIMP_THUMB_DEBUG  */
@@ -160,6 +168,8 @@ gimp_thumbnail_class_init (GimpThumbnailClass *klass)
                                                        GIMP_PARAM_READWRITE));
   /**
    * GimpThumbnail::image-mimetype:
+   *
+   * Image mimetype
    *
    * Since: GIMP 2.2
    **/
@@ -830,7 +840,7 @@ gimp_thumbnail_save (GimpThumbnail  *thumbnail,
   if (thumbnail->image_mimetype)
     {
       keys[i]   = TAG_THUMB_MIMETYPE;
-      values[i] = g_strdup_printf ("%s", thumbnail->image_mimetype);
+      values[i] = g_strdup (thumbnail->image_mimetype);
       i++;
     }
 
@@ -887,19 +897,12 @@ gimp_thumbnail_save (GimpThumbnail  *thumbnail,
       g_printerr ("thumbnail saved to temporary file %s\n", tmpname);
 #endif
 
-#ifdef G_OS_WIN32
-      /* win32 rename can't overwrite */
-      g_unlink (filename);
-#endif
+      success = (g_rename (tmpname, filename) == 0);
 
-      if (g_rename (tmpname, filename) == -1)
-        {
-          g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
-                       _("Could not create thumbnail for %s: %s"),
-                       thumbnail->image_uri, g_strerror (errno));
-
-          success = FALSE;
-        }
+      if (! success)
+        g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
+                     _("Could not create thumbnail for %s: %s"),
+                     thumbnail->image_uri, g_strerror (errno));
     }
 
   if (success)

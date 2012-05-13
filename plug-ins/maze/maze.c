@@ -21,9 +21,9 @@
  */
 
 /*
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -32,8 +32,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -93,8 +92,8 @@ MazeValues mvals =
 
 GRand *gr;
 
-guint sel_w;
-guint sel_h;
+gint sel_w;
+gint sel_h;
 
 
 MAIN ()
@@ -105,7 +104,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",     "(unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",  "ID of drawable" },
     /* If we did have parameters, these be them: */
@@ -148,7 +147,7 @@ run (const gchar      *name,
   GimpDrawable      *drawable;
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
-  gint               x1, y1, x2, y2;
+  gint               x, y;
 
 #ifdef MAZE_DEBUG
   g_print("maze PID: %d\n",getpid());
@@ -167,16 +166,18 @@ run (const gchar      *name,
 
   drawable = gimp_drawable_get (param[2].data.d_drawable);
 
+  /* get the selection width and height for the GUI. Return if the
+   * selection and drawable do not intersect.
+   */
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x, &y, &sel_w, &sel_h))
+    return;
+
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
       /* Possibly retrieve data */
       gimp_get_data (PLUG_IN_PROC, &mvals);
-
-      /* The interface needs to know the dimensions of the image... */
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      sel_w = x2 - x1;
-      sel_h = y2 - y1;
 
       /* Acquire info with a dialog */
       if (! maze_dialog ())
@@ -485,6 +486,7 @@ maze (GimpDrawable * drawable)
         }
     }
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
   gimp_drawable_update (drawable->drawable_id, x1, y1, (x2 - x1), (y2 - y1));
@@ -565,7 +567,7 @@ mask_maze (gint32  drawable_ID,
   guchar      *linebuf;
 
   selection_ID =
-    gimp_image_get_selection (gimp_drawable_get_image (drawable_ID));
+    gimp_image_get_selection (gimp_item_get_image (drawable_ID));
 
   if (selection_ID == -1)
     return;

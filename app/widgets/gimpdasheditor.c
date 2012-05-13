@@ -4,9 +4,9 @@
  * gimpdasheditor.c
  * Copyright (C) 2003 Simon Budig  <simon@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -239,9 +238,12 @@ gimp_dash_editor_expose (GtkWidget      *widget,
 {
   GimpDashEditor *editor = GIMP_DASH_EDITOR (widget);
   GtkStyle       *style  = gtk_widget_get_style (widget);
-  cairo_t        *cr     = gdk_cairo_create (widget->window);
+  cairo_t        *cr     = gdk_cairo_create (gtk_widget_get_window (widget));
+  GtkAllocation   allocation;
   gint            x;
   gint            w, h;
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   update_blocksize (editor);
 
@@ -256,8 +258,8 @@ gimp_dash_editor_expose (GtkWidget      *widget,
   w = editor->block_width;
   h = editor->block_height;
 
-  editor->x0 = (widget->allocation.width - w * editor->n_segments) / 2;
-  editor->y0 = (widget->allocation.height - h) / 2;
+  editor->x0 = (allocation.width - w * editor->n_segments) / 2;
+  editor->y0 = (allocation.height - h) / 2;
 
   /*  draw the dash segments  */
 
@@ -288,7 +290,7 @@ gimp_dash_editor_expose (GtkWidget      *widget,
   gdk_cairo_set_source_color (cr, &style->text[GTK_STATE_NORMAL]);
   cairo_fill (cr);
 
-  for (; x < widget->allocation.width + w; x += w)
+  for (; x < allocation.width + w; x += w)
     {
       gint index = dash_x_to_index (editor, x);
 
@@ -306,7 +308,7 @@ gimp_dash_editor_expose (GtkWidget      *widget,
   if (x > 0)
     x -= w;
 
-  for (; x < widget->allocation.width + w; x += w)
+  for (; x < allocation.width + w; x += w)
     {
       gint index = dash_x_to_index (editor, x);
 
@@ -349,9 +351,8 @@ gimp_dash_editor_button_press (GtkWidget      *widget,
 
   if (bevent->button == 1 && bevent->type == GDK_BUTTON_PRESS)
     {
-      gdk_pointer_grab (widget->window, FALSE,
-                        GDK_BUTTON_RELEASE_MASK | GDK_BUTTON1_MOTION_MASK,
-                        NULL, NULL, bevent->time);
+      gtk_grab_add (widget);
+
       index = dash_x_to_index (editor, bevent->x);
 
       editor->edit_mode = ! editor->segments [index];
@@ -373,8 +374,7 @@ gimp_dash_editor_button_release (GtkWidget      *widget,
 
   if (bevent->button == 1)
     {
-      gdk_display_pointer_ungrab (gtk_widget_get_display (GTK_WIDGET (editor)),
-                                  bevent->time);
+      gtk_grab_remove (widget);
 
       update_options_from_segments (editor);
     }
@@ -462,6 +462,8 @@ gimp_dash_editor_shift_left (GimpDashEditor *editor)
 static void
 update_segments_from_options (GimpDashEditor *editor)
 {
+  GArray *dash_info;
+
   if (editor->stroke_options == NULL || editor->segments == NULL)
     return;
 
@@ -469,7 +471,9 @@ update_segments_from_options (GimpDashEditor *editor)
 
   gtk_widget_queue_draw (GTK_WIDGET (editor));
 
-  gimp_dash_pattern_fill_segments (editor->stroke_options->dash_info,
+  dash_info = gimp_stroke_options_get_dash_info (editor->stroke_options);
+
+  gimp_dash_pattern_fill_segments (dash_info,
                                    editor->segments, editor->n_segments);
 }
 
@@ -487,7 +491,10 @@ update_options_from_segments (GimpDashEditor *editor)
 static void
 update_blocksize (GimpDashEditor *editor)
 {
-  GtkWidget *widget = GTK_WIDGET (editor);
+  GtkWidget     *widget = GTK_WIDGET (editor);
+  GtkAllocation  allocation;
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   editor->block_height = 6;
 
@@ -496,7 +503,7 @@ update_blocksize (GimpDashEditor *editor)
                              4);
   editor->block_height = MIN (ROUND (((float) editor->block_width) *
                                      editor->n_segments / editor->dash_length),
-                              widget->allocation.height - 4);
+                              allocation.height - 4);
 }
 
 static gint

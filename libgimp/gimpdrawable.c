@@ -3,10 +3,10 @@
  *
  * gimpdrawable.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,13 +14,13 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#undef GIMP_DISABLE_DEPRECATED
 #include "gimp.h"
 
 
@@ -322,6 +322,296 @@ gimp_drawable_get_sub_thumbnail_data (gint32  drawable_ID,
 }
 
 /**
+ * gimp_drawable_is_valid:
+ * @drawable_ID: The drawable to check.
+ *
+ * Deprecated: Use gimp_item_is_valid() instead.
+ *
+ * Returns: Whether the drawable ID is valid.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_drawable_is_valid (gint32 drawable_ID)
+{
+  return gimp_item_is_valid (drawable_ID);
+}
+
+/**
+ * gimp_drawable_is_layer:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_is_layer() instead.
+ *
+ * Returns: TRUE if the drawable is a layer, FALSE otherwise.
+ */
+gboolean
+gimp_drawable_is_layer (gint32 drawable_ID)
+{
+  return gimp_item_is_layer (drawable_ID);
+}
+
+/**
+ * gimp_drawable_is_text_layer:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_is_text_layer() instead.
+ *
+ * Returns: TRUE if the drawable is a text layer, FALSE otherwise.
+ *
+ * Since: GIMP 2.6
+ */
+gboolean
+gimp_drawable_is_text_layer (gint32 drawable_ID)
+{
+  return gimp_item_is_text_layer (drawable_ID);
+}
+
+/**
+ * gimp_drawable_is_layer_mask:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_is_layer_mask() instead.
+ *
+ * Returns: TRUE if the drawable is a layer mask, FALSE otherwise.
+ */
+gboolean
+gimp_drawable_is_layer_mask (gint32 drawable_ID)
+{
+  return gimp_item_is_layer_mask (drawable_ID);
+}
+
+/**
+ * gimp_drawable_is_channel:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_is_channel() instead.
+ *
+ * Returns: TRUE if the drawable is a channel, FALSE otherwise.
+ */
+gboolean
+gimp_drawable_is_channel (gint32 drawable_ID)
+{
+  return gimp_item_is_channel (drawable_ID);
+}
+
+/**
+ * gimp_drawable_delete:
+ * @drawable_ID: The drawable to delete.
+ *
+ * Deprecated: Use gimp_item_delete() instead.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_drawable_delete (gint32 drawable_ID)
+{
+  return gimp_item_delete (drawable_ID);
+}
+
+/**
+ * gimp_drawable_get_image:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_get_image() instead.
+ *
+ * Returns: The drawable's image.
+ */
+gint32
+gimp_drawable_get_image (gint32 drawable_ID)
+{
+  return gimp_item_get_image (drawable_ID);
+}
+
+/**
+ * gimp_drawable_get_name:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_get_name() instead.
+ *
+ * Returns: The drawable name.
+ */
+gchar *
+gimp_drawable_get_name (gint32 drawable_ID)
+{
+  return gimp_item_get_name (drawable_ID);
+}
+
+/**
+ * gimp_drawable_set_name:
+ * @drawable_ID: The drawable.
+ * @name: The new drawable name.
+ *
+ * Deprecated: Use gimp_item_set_name() instead.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_drawable_set_name (gint32       drawable_ID,
+                        const gchar *name)
+{
+  return gimp_item_set_name (drawable_ID, name);
+}
+
+/**
+ * gimp_drawable_get_visible:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_get_visible() instead.
+ *
+ * Returns: The drawable visibility.
+ */
+gboolean
+gimp_drawable_get_visible (gint32 drawable_ID)
+{
+  return gimp_item_get_visible (drawable_ID);
+}
+
+/**
+ * gimp_drawable_set_visible:
+ * @drawable_ID: The drawable.
+ * @visible: The new drawable visibility.
+ *
+ * Deprecated: Use gimp_item_set_visible() instead.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_drawable_set_visible (gint32   drawable_ID,
+                           gboolean visible)
+{
+  return gimp_item_set_visible (drawable_ID, visible);
+}
+
+/**
+ * gimp_drawable_get_linked:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_get_linked() instead.
+ *
+ * Returns: The drawable linked state (for moves).
+ */
+gboolean
+gimp_drawable_get_linked (gint32 drawable_ID)
+{
+  return gimp_item_get_linked (drawable_ID);
+}
+
+/**
+ * gimp_drawable_set_linked:
+ * @drawable_ID: The drawable.
+ * @linked: The new drawable linked state.
+ *
+ * Deprecated: Use gimp_item_set_linked() instead.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_drawable_set_linked (gint32   drawable_ID,
+                          gboolean linked)
+{
+  return gimp_item_set_linked (drawable_ID, linked);
+}
+
+/**
+ * gimp_drawable_get_tattoo:
+ * @drawable_ID: The drawable.
+ *
+ * Deprecated: Use gimp_item_get_tattoo() instead.
+ *
+ * Returns: The drawable tattoo.
+ */
+gint
+gimp_drawable_get_tattoo (gint32 drawable_ID)
+{
+  return gimp_item_get_tattoo (drawable_ID);
+}
+
+/**
+ * gimp_drawable_set_tattoo:
+ * @drawable_ID: The drawable.
+ * @tattoo: The new drawable tattoo.
+ *
+ * Deprecated: Use gimp_item_set_tattoo() instead.
+ *
+ * Returns: TRUE on success.
+ */
+gboolean
+gimp_drawable_set_tattoo (gint32 drawable_ID,
+                          gint   tattoo)
+{
+  return gimp_item_set_tattoo (drawable_ID, tattoo);
+}
+
+/**
+ * gimp_drawable_parasite_find:
+ * @drawable_ID: The drawable.
+ * @name: The name of the parasite to find.
+ *
+ * Deprecated: Use gimp_item_get_parasite() instead.
+ *
+ * Returns: The found parasite.
+ **/
+GimpParasite *
+gimp_drawable_parasite_find (gint32       drawable_ID,
+                             const gchar *name)
+{
+  return gimp_item_get_parasite (drawable_ID, name);
+}
+
+/**
+ * gimp_drawable_parasite_attach:
+ * @drawable_ID: The drawable.
+ * @parasite: The parasite to attach to a drawable.
+ *
+ * Deprecated: Use gimp_item_attach_parasite() instead.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+gimp_drawable_parasite_attach (gint32              drawable_ID,
+                               const GimpParasite *parasite)
+{
+  return gimp_item_attach_parasite (drawable_ID, parasite);
+}
+
+/**
+ * gimp_drawable_parasite_detach:
+ * @drawable_ID: The drawable.
+ * @name: The name of the parasite to detach from a drawable.
+ *
+ * Deprecated: Use gimp_item_detach_parasite() instead.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+gimp_drawable_parasite_detach (gint32       drawable_ID,
+                               const gchar *name)
+{
+  return gimp_item_detach_parasite (drawable_ID, name);
+}
+
+/**
+ * gimp_drawable_parasite_list:
+ * @drawable_ID: The drawable.
+ * @num_parasites: The number of attached parasites.
+ * @parasites: The names of currently attached parasites.
+ *
+ * Deprecated: Use gimp_item_get_parasite_list() instead.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+gimp_drawable_parasite_list (gint32    drawable_ID,
+                             gint     *num_parasites,
+                             gchar  ***parasites)
+{
+  *parasites = gimp_item_get_parasite_list (drawable_ID, num_parasites);
+
+  return *parasites != NULL;
+}
+
+/**
  * gimp_drawable_attach_new_parasite:
  * @drawable_ID: the ID of the #GimpDrawable to attach the #GimpParasite to.
  * @name: the name of the #GimpParasite to create and attach.
@@ -331,6 +621,8 @@ gimp_drawable_get_sub_thumbnail_data (gint32  drawable_ID,
  *
  * Convenience function that creates a parasite and attaches it
  * to GIMP.
+ *
+ * Deprecated: use gimp_image_parasite_attach() instead.
  *
  * Return value: TRUE on successful creation and attachment of
  * the new parasite.
@@ -347,7 +639,7 @@ gimp_drawable_attach_new_parasite (gint32          drawable_ID,
   GimpParasite *parasite = gimp_parasite_new (name, flags, size, data);
   gboolean      success;
 
-  success = gimp_drawable_parasite_attach (drawable_ID, parasite);
+  success = gimp_item_attach_parasite (drawable_ID, parasite);
 
   gimp_parasite_free (parasite);
 

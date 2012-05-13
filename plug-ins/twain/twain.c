@@ -8,9 +8,9 @@
  * Brion Vibber <brion@pobox.com>
  * 07/22/2004
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  * Based on (at least) the following plug-ins:
@@ -281,7 +280,7 @@ initializeTwain(void)
  * Plug-in Parameter definitions
  */
 #define NUMBER_IN_ARGS 1
-#define IN_ARGS { GIMP_PDB_INT32, "run-mode", "Interactive, non-interactive" }
+#define IN_ARGS { GIMP_PDB_INT32, "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" }
 #define NUMBER_OUT_ARGS 2
 #define OUT_ARGS \
 	{ GIMP_PDB_INT32, "image-count", "Number of acquired images" }, \
@@ -571,8 +570,8 @@ beginTransferCallback(pTW_IMAGEINFO imageInfo, void *clientData)
 					   layerType, 100, GIMP_NORMAL_MODE);
 
   /* Add the layer to the image */
-  gimp_image_add_layer(theClientData->image_id,
-		       theClientData->layer_id, 0);
+  gimp_image_insert_layer(theClientData->image_id,
+                          theClientData->layer_id, -1, 0);
 
   /* Update the progress dialog */
   theClientData->totalPixels = imageInfo->ImageWidth * imageInfo->ImageLength;

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,20 +12,32 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TRANSFORM_TOOL_H__
 #define __GIMP_TRANSFORM_TOOL_H__
 
 
-#include "libgimpmath/gimpmatrix.h"
 #include "gimpdrawtool.h"
 
 
 #define TRANS_INFO_SIZE  8
 
+typedef enum
+{
+  TRANSFORM_CREATING,
+  TRANSFORM_HANDLE_NONE,
+  TRANSFORM_HANDLE_NW, /* north west */
+  TRANSFORM_HANDLE_NE, /* north east */
+  TRANSFORM_HANDLE_SW, /* south west */
+  TRANSFORM_HANDLE_SE, /* south east */
+  TRANSFORM_HANDLE_N,  /* north      */
+  TRANSFORM_HANDLE_S,  /* south      */
+  TRANSFORM_HANDLE_E,  /* east       */
+  TRANSFORM_HANDLE_W,  /* west       */
+  TRANSFORM_HANDLE_CENTER
+} TransformAction;
 
 typedef gdouble TransInfo[TRANS_INFO_SIZE];
 
@@ -46,16 +58,11 @@ struct _GimpTransformTool
 {
   GimpDrawTool    parent_instance;
 
-  gdouble         startx;          /*  starting x coord                  */
-  gdouble         starty;          /*  starting y coord                  */
-
   gdouble         curx;            /*  current x coord                   */
   gdouble         cury;            /*  current y coord                   */
 
   gdouble         lastx;           /*  last x coord                      */
   gdouble         lasty;           /*  last y coord                      */
-
-  GdkModifierType state;           /*  state of buttons and keys         */
 
   gint            x1, y1;          /*  upper left hand coordinate        */
   gint            x2, y2;          /*  lower right hand coords           */
@@ -70,10 +77,8 @@ struct _GimpTransformTool
 
   GimpMatrix3     transform;       /*  transformation matrix             */
   TransInfo       trans_info;      /*  transformation info               */
-
-  TransInfo       old_trans_info;  /*  for cancelling a drag operation   */
-
-  TileManager    *original;        /*  pointer to original tiles         */
+  TransInfo       old_trans_info;  /*  for resetting everything          */
+  TransInfo       prev_trans_info; /*  for cancelling a drag operation   */
 
   TransformAction function;        /*  current tool activity             */
 
@@ -82,22 +87,8 @@ struct _GimpTransformTool
   gboolean        use_center;      /*  uses the center handle            */
   gboolean        use_mid_handles; /*  use handles at midpoints of edges */
 
-  gint            handle_w;        /*  handle width                      */
-  gint            handle_h;        /*  handle height                     */
+  GimpCanvasItem *handles[TRANSFORM_HANDLE_CENTER + 1];
 
-  gint            ngx, ngy;        /*  number of grid lines in original
-                                    *  x and y directions
-                                    */
-  gdouble        *grid_coords;     /*  x and y coordinates of the grid
-                                    *  endpoints (a total of (ngx+ngy)*2
-                                    *  coordinate pairs)
-                                    */
-  gdouble        *tgrid_coords;    /*  transformed grid_coords           */
-
-  GimpTransformType       type;
-  GimpTransformDirection  direction;
-
-  const gchar    *undo_desc;
   const gchar    *progress_text;
 
   GtkWidget      *dialog;
@@ -105,29 +96,28 @@ struct _GimpTransformTool
 
 struct _GimpTransformToolClass
 {
-  GimpDrawToolClass parent_class;
+  GimpDrawToolClass  parent_class;
 
   /*  virtual functions  */
   void          (* dialog)        (GimpTransformTool *tool);
   void          (* dialog_update) (GimpTransformTool *tool);
-  void          (* prepare)       (GimpTransformTool *tool,
-                                   GimpDisplay       *display);
-  void          (* motion)        (GimpTransformTool *tool,
-                                   GimpDisplay       *display);
-  void          (* recalc)        (GimpTransformTool *tool,
-                                   GimpDisplay       *display);
+  void          (* prepare)       (GimpTransformTool *tool);
+  void          (* motion)        (GimpTransformTool *tool);
+  void          (* recalc_matrix) (GimpTransformTool *tool);
+  gchar       * (* get_undo_desc) (GimpTransformTool *tool);
   TileManager * (* transform)     (GimpTransformTool *tool,
                                    GimpItem          *item,
-                                   gboolean           mask_empty,
-                                   GimpDisplay       *display);
+                                   TileManager       *orig_tiles,
+                                   gint               orig_offset_x,
+                                   gint               orig_offset_y,
+                                   gint              *new_offset_x,
+                                   gint              *new_offset_y);
 };
 
 
-GType   gimp_transform_tool_get_type       (void) G_GNUC_CONST;
+GType   gimp_transform_tool_get_type      (void) G_GNUC_CONST;
 
-void    gimp_transform_tool_recalc         (GimpTransformTool *tr_tool,
-                                            GimpDisplay       *display);
-void    gimp_transform_tool_expose_preview (GimpTransformTool *tr_tool);
+void    gimp_transform_tool_recalc_matrix (GimpTransformTool *tr_tool);
 
 
 #endif  /*  __GIMP_TRANSFORM_TOOL_H__  */

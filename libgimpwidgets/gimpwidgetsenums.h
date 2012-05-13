@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_WIDGETS_ENUMS_H__
@@ -26,6 +25,14 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
+/**
+ * GimpAspectType:
+ * @GIMP_ASPECT_SQUARE:    it's a 1:1 square
+ * @GIMP_ASPECT_PORTRAIT:  it's higher than it's wide
+ * @GIMP_ASPECT_LANDSCAPE: it's wider than it's high
+ *
+ * Aspect ratios.
+ **/
 #define GIMP_TYPE_ASPECT_TYPE (gimp_aspect_type_get_type ())
 
 GType gimp_aspect_type_get_type (void) G_GNUC_CONST;
@@ -38,6 +45,15 @@ typedef enum
 } GimpAspectType;
 
 
+/**
+ * GimpChainPosition:
+ * @GIMP_CHAIN_TOP:    the chain is on top
+ * @GIMP_CHAIN_LEFT:   the chain is to the left
+ * @GIMP_CHAIN_BOTTOM: the chain is on bottom
+ * @GIMP_CHAIN_RIGHT:  the chain is to the right
+ *
+ * Possible chain positions for #GimpChainButton.
+ **/
 #define GIMP_TYPE_CHAIN_POSITION (gimp_chain_position_get_type ())
 
 GType gimp_chain_position_get_type (void) G_GNUC_CONST;
@@ -51,6 +67,14 @@ typedef enum
 } GimpChainPosition;
 
 
+/**
+ * GimpColorAreaType:
+ * @GIMP_COLOR_AREA_FLAT:         don't display transparency
+ * @GIMP_COLOR_AREA_SMALL_CHECKS: display transparency using small checks
+ * @GIMP_COLOR_AREA_LARGE_CHECKS: display transparency using large checks
+ *
+ * The types of transparency display for #GimpColorArea.
+ **/
 #define GIMP_TYPE_COLOR_AREA_TYPE (gimp_color_area_type_get_type ())
 
 GType gimp_color_area_type_get_type (void) G_GNUC_CONST;
@@ -63,6 +87,19 @@ typedef enum
 } GimpColorAreaType;
 
 
+/**
+ * GimpColorSelectorChannel:
+ * @GIMP_COLOR_SELECTOR_HUE:        the hue channel
+ * @GIMP_COLOR_SELECTOR_SATURATION: the saturation channel
+ * @GIMP_COLOR_SELECTOR_VALUE:      the value channel
+ * @GIMP_COLOR_SELECTOR_RED:        the red channel
+ * @GIMP_COLOR_SELECTOR_GREEN:      the green channel
+ * @GIMP_COLOR_SELECTOR_BLUE:       the blue channel
+ * @GIMP_COLOR_SELECTOR_ALPHA:      the alpha channel
+ *
+ * An enum to specify the types of color channels edited in
+ * #GimpColorSelector widgets.
+ **/
 #define GIMP_TYPE_COLOR_SELECTOR_CHANNEL (gimp_color_selector_channel_get_type ())
 
 GType gimp_color_selector_channel_get_type (void) G_GNUC_CONST;
@@ -79,6 +116,13 @@ typedef enum
 } GimpColorSelectorChannel;
 
 
+/**
+ * GimpPageSelectorTarget:
+ * @GIMP_PAGE_SELECTOR_TARGET_LAYERS: import as layers of one image
+ * @GIMP_PAGE_SELECTOR_TARGET_IMAGES: import as separate images
+ *
+ * Import targets for #GimpPageSelector.
+ **/
 #define GIMP_TYPE_PAGE_SELECTOR_TARGET (gimp_page_selector_target_get_type ())
 
 GType gimp_page_selector_target_get_type (void) G_GNUC_CONST;
@@ -90,6 +134,14 @@ typedef enum
 } GimpPageSelectorTarget;
 
 
+/**
+ * GimpSizeEntryUpdatePolicy:
+ * @GIMP_SIZE_ENTRY_UPDATE_NONE:       the size entry's meaning is up to the user
+ * @GIMP_SIZE_ENTRY_UPDATE_SIZE:       the size entry displays values
+ * @GIMP_SIZE_ENTRY_UPDATE_RESOLUTION: the size entry displays resolutions
+ *
+ * Update policies for #GimpSizeEntry.
+ **/
 #define GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY (gimp_size_entry_update_policy_get_type ())
 
 GType gimp_size_entry_update_policy_get_type (void) G_GNUC_CONST;
@@ -102,6 +154,18 @@ typedef enum
 } GimpSizeEntryUpdatePolicy;
 
 
+/**
+ * GimpZoomType:
+ * @GIMP_ZOOM_IN:       zoom in
+ * @GIMP_ZOOM_OUT:      zoom out
+ * @GIMP_ZOOM_IN_MORE:  zoom in a lot
+ * @GIMP_ZOOM_OUT_MORE: zoom out a lot
+ * @GIMP_ZOOM_IN_MAX:   zoom in as far as possible
+ * @GIMP_ZOOM_OUT_MAX:  zoom out as far as possible
+ * @GIMP_ZOOM_TO:       zoom to a specific zoom factor
+ *
+ * the zoom types for #GimpZoomModel.
+ **/
 #define GIMP_TYPE_ZOOM_TYPE (gimp_zoom_type_get_type ())
 
 GType gimp_zoom_type_get_type (void) G_GNUC_CONST;

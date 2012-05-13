@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -360,6 +359,30 @@ boundary_simplify (BoundSeg *sorted_segs,
   *num_segs = new_bounds->len;
 
   return (BoundSeg *) g_array_free (new_bounds, FALSE);
+}
+
+void
+boundary_offset (BoundSeg *segs,
+                 gint      num_segs,
+                 gint      off_x,
+                 gint      off_y)
+{
+  gint i;
+
+  for (i = 0; i < num_segs; i++)
+    {
+      /* dont offset sorting sentinels */
+      if (!(segs[i].x1 == -1 &&
+            segs[i].y1 == -1 &&
+            segs[i].x2 == -1 &&
+            segs[i].y2 == -1))
+        {
+          segs[i].x1 += off_x;
+          segs[i].y1 += off_y;
+          segs[i].x2 += off_x;
+          segs[i].y2 += off_y;
+        }
+    }
 }
 
 
@@ -915,7 +938,6 @@ simplify_subdivide (const BoundSeg *segs,
     }
 
   maxdist = 0;
-  maxdist_idx = -1;
 
   if (segs[start_idx].x1 == segs[end_idx].x1 &&
       segs[start_idx].y1 == segs[end_idx].y1)
@@ -930,7 +952,6 @@ simplify_subdivide (const BoundSeg *segs,
           if (dist > maxdist)
             {
               maxdist = dist;
-              maxdist_idx = i;
             }
         }
 
@@ -954,7 +975,6 @@ simplify_subdivide (const BoundSeg *segs,
           if (dist > maxdist)
             {
               maxdist = dist;
-              maxdist_idx = i;
             }
         }
 

@@ -4,9 +4,9 @@
  * newsprint plug-in
  * Copyright (C) 1997-1998 Austin Donnelly <austin@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -33,15 +32,6 @@
  *
  * Tim Harris <tim.harris@acm.org> provided valuable feedback on
  * pre-press issues.
- *
- *
- * 0.52: 10 Jan 1999  <austin@greenend.org.uk>
- *    gtk_label_set() -> gtk_label_set_text()
- * 0.60: 18 Jun 2001  <austin@gimp.org>
- *    fixed long-standing bug where newsprint() function in GREYA images
- *    treated them as RGB (bpp rather than colour_bpp) to select
- *    colourspace to use.  Thanks to warner-gnome.bugzilla@lothar.com for
- *    spotting this and providing the patch.  Bug #52981.
  */
 
 #include "config.h"
@@ -67,6 +57,7 @@
 
 #define PLUG_IN_PROC       "plug-in-newsprint"
 #define PLUG_IN_BINARY     "newsprint"
+#define PLUG_IN_ROLE       "gimp-newsprint"
 
 #define TILE_CACHE_SIZE     16
 #define SCALE_WIDTH        125
@@ -492,23 +483,23 @@ query (void)
 {
   static const GimpParamDef args[]=
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
 
-    { GIMP_PDB_INT32,    "cell-width", "screen cell width, in pixels" },
+    { GIMP_PDB_INT32,    "cell-width", "Screen cell width in pixels" },
 
-    { GIMP_PDB_INT32,    "colorspace", "separate to 0:Grayscale, 1:RGB, 2:CMYK, 3:Luminance" },
+    { GIMP_PDB_INT32,    "colorspace", "Separate to { GRAYSCALE (0), RGB (1), CMYK (2), LUMINANCE (3) }" },
     { GIMP_PDB_INT32,    "k-pullout",  "Percentage of black to pullout (CMYK only)" },
 
     { GIMP_PDB_FLOAT,    "gry-ang",    "Grey/black screen angle (degrees)" },
-    { GIMP_PDB_INT32,    "gry-spotfn", "Grey/black spot function (0=dots, 1=lines, 2=diamonds, 3=euclidean dot, 4=PS diamond)" },
+    { GIMP_PDB_INT32,    "gry-spotfn", "Grey/black spot function { DOTS (0), LINES (1), DIAMONDS (2), EUCLIDIAN-DOT (3), PS-DIAMONDS (4) }" },
     { GIMP_PDB_FLOAT,    "red-ang",    "Red/cyan screen angle (degrees)" },
-    { GIMP_PDB_INT32,    "red-spotfn", "Red/cyan spot function (values as gry_spotfn)" },
+    { GIMP_PDB_INT32,    "red-spotfn", "Red/cyan spot function (values as gry-spotfn)" },
     { GIMP_PDB_FLOAT,    "grn-ang",    "Green/magenta screen angle (degrees)" },
-    { GIMP_PDB_INT32,    "grn-spotfn", "Green/magenta spot function (values as gry_spotfn)" },
+    { GIMP_PDB_INT32,    "grn-spotfn", "Green/magenta spot function (values as gry-spotfn)" },
     { GIMP_PDB_FLOAT,    "blu-ang",    "Blue/yellow screen angle (degrees)" },
-    { GIMP_PDB_INT32,    "blu-spotfn", "Blue/yellow spot function (values as gry_spotfn)" },
+    { GIMP_PDB_INT32,    "blu-spotfn", "Blue/yellow spot function (values as gry-spotfn)" },
 
     { GIMP_PDB_INT32,    "oversample", "how many times to oversample spot fn" }
   };
@@ -986,7 +977,7 @@ new_channel (const chan_tmpl *ct, GtkWidget *preview)
   /* create the channel state record */
   chst = new_preview (ct->spotfn);
 
-  chst->vbox = gtk_vbox_new (FALSE, 6);
+  chst->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (chst->vbox), 12);
 
   table = gtk_table_new (1, 3, FALSE);
@@ -1016,7 +1007,7 @@ new_channel (const chan_tmpl *ct, GtkWidget *preview)
                             preview);
 
   /* spot function popup */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (chst->vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1024,7 +1015,7 @@ new_channel (const chan_tmpl *ct, GtkWidget *preview)
   gtk_box_pack_start (GTK_BOX (hbox), abox, FALSE, FALSE, 0);
   gtk_widget_show (abox);
 
-  hbox2 = gtk_hbox_new (FALSE, 6);
+  hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_add (GTK_CONTAINER (abox), hbox2);
   gtk_widget_show (hbox2);
 
@@ -1185,7 +1176,7 @@ newsprint_dialog (GimpDrawable *drawable)
         pvals.colourspace = CS_RGB;
     }
 
-  dialog = gimp_dialog_new (_("Newsprint"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Newsprint"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1201,16 +1192,17 @@ newsprint_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  paned = gtk_hpaned_new ();
+  paned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_container_set_border_width (GTK_CONTAINER (paned), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), paned);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      paned, TRUE, TRUE, 0);
   gtk_widget_show (paned);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, FALSE);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   gtk_box_pack_end (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
@@ -1223,17 +1215,17 @@ newsprint_dialog (GimpDrawable *drawable)
                             G_CALLBACK (newsprint),
                             drawable);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_paned_pack2 (GTK_PANED (paned), hbox, FALSE, FALSE);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
-  vbox = gtk_vbox_new (FALSE, 12);
-  gtk_container_add (GTK_CONTAINER (hbox), vbox);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   /* resolution settings  */
@@ -1247,7 +1239,7 @@ newsprint_dialog (GimpDrawable *drawable)
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_widget_show (table);
 
-  gimp_image_get_resolution (gimp_drawable_get_image (drawable->drawable_id),
+  gimp_image_get_resolution (gimp_item_get_image (drawable->drawable_id),
                              &xres, &yres);
   /* XXX hack: should really note both resolutions, and use
    * rectangular cells, not square cells.  But I'm being lazy,
@@ -1299,7 +1291,7 @@ newsprint_dialog (GimpDrawable *drawable)
   frame = gimp_frame_new (_("Screen"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  st.vbox = gtk_vbox_new (FALSE, 12);
+  st.vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), st.vbox);
 
   /* optional portion begins */
@@ -1331,7 +1323,7 @@ newsprint_dialog (GimpDrawable *drawable)
                                 preview);
 
       /* RGB / CMYK / Luminance select */
-      hbox = gtk_hbox_new (FALSE, 6);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
       gtk_box_pack_start (GTK_BOX (st.vbox), hbox, FALSE, FALSE, 0);
 
       /*  pack the scaleentry table  */
@@ -1395,7 +1387,7 @@ newsprint_dialog (GimpDrawable *drawable)
       gtk_widget_show (hbox);
 
       /* channel lock & factory defaults button */
-      hbox = gtk_hbutton_box_new ();
+      hbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
       gtk_box_set_spacing (GTK_BOX (hbox), 6);
       gtk_box_pack_start (GTK_BOX (st.vbox), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
@@ -1877,7 +1869,7 @@ do {                                                            \
           rot[3] = DEG2RAD (pvals.gry_ang);
           gf = pvals.gry_spotfn;
           ASRT (gf);
-	  spotfn_list[gf].thresh = spot2thresh (gf, width);
+          spotfn_list[gf].thresh = spot2thresh (gf, width);
           thresh[3] = spotfn_list[gf].thresh;
         }
     }
@@ -2072,6 +2064,7 @@ do {                                                            \
     }
   else
     {
+      gimp_progress_update (1.0);
       /* update the affected region */
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);

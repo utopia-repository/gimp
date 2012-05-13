@@ -4,10 +4,10 @@
  * Object properties serialization routines
  * Copyright (C) 2001-2002  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,13 +15,13 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -35,6 +35,15 @@
 #include "gimpconfig-params.h"
 #include "gimpconfig-serialize.h"
 #include "gimpconfig-utils.h"
+
+
+/**
+ * SECTION: gimpconfig-serialize
+ * @title: GimpConfig-serialize
+ * @short_description: Serializing for libgimpconfig.
+ *
+ * Serializing interface for libgimpconfig.
+ **/
 
 
 static gboolean  gimp_config_serialize_rgb (const GValue *value,
@@ -339,7 +348,7 @@ gimp_config_serialize_property_by_name (GimpConfig       *config,
 /**
  * gimp_config_serialize_value:
  * @value: a #GValue.
- * @str: a #Gstring.
+ * @str: a #GString.
  * @escaped: whether to escape string values.
  *
  * This utility function appends a string representation of #GValue to @str.
@@ -419,18 +428,27 @@ gimp_config_serialize_value (const GValue *value,
   if (GIMP_VALUE_HOLDS_MATRIX2 (value))
     {
       GimpMatrix2 *trafo;
-      gchar        buf[4][G_ASCII_DTOSTR_BUF_SIZE];
-      gint         i, j, k;
 
       trafo = g_value_get_boxed (value);
 
-      for (i = 0, k = 0; i < 2; i++)
-        for (j = 0; j < 2; j++, k++)
-          g_ascii_formatd (buf[k],
-                           G_ASCII_DTOSTR_BUF_SIZE, "%f", trafo->coeff[i][j]);
+      if (trafo)
+        {
+          gchar buf[4][G_ASCII_DTOSTR_BUF_SIZE];
+          gint  i, j, k;
 
-      g_string_append_printf (str, "(matrix %s %s %s %s)",
-                              buf[0], buf[1], buf[2], buf[3]);
+          for (i = 0, k = 0; i < 2; i++)
+            for (j = 0; j < 2; j++, k++)
+              g_ascii_formatd (buf[k],
+                               G_ASCII_DTOSTR_BUF_SIZE, "%f", trafo->coeff[i][j]);
+
+          g_string_append_printf (str, "(matrix %s %s %s %s)",
+                                  buf[0], buf[1], buf[2], buf[3]);
+        }
+      else
+        {
+          g_string_append (str, "(matrix 1.0 1.0 1.0 1.0)");
+        }
+
       return TRUE;
     }
 
@@ -486,26 +504,32 @@ gimp_config_serialize_rgb (const GValue *value,
                            gboolean      has_alpha)
 {
   GimpRGB *rgb;
-  gchar    buf[4][G_ASCII_DTOSTR_BUF_SIZE];
 
   rgb = g_value_get_boxed (value);
 
-  g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->r);
-  g_ascii_formatd (buf[1], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->g);
-  g_ascii_formatd (buf[2], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->b);
-
-  if (has_alpha)
+  if (rgb)
     {
-      g_ascii_formatd (buf[3], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->a);
+      gchar buf[4][G_ASCII_DTOSTR_BUF_SIZE];
 
-      g_string_append_printf (str, "(color-rgba %s %s %s %s)",
-                              buf[0], buf[1], buf[2], buf[3]);
-    }
-  else
-    {
-      g_string_append_printf (str, "(color-rgb %s %s %s)",
-                              buf[0], buf[1], buf[2]);
+      g_ascii_formatd (buf[0], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->r);
+      g_ascii_formatd (buf[1], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->g);
+      g_ascii_formatd (buf[2], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->b);
+
+      if (has_alpha)
+        {
+          g_ascii_formatd (buf[3], G_ASCII_DTOSTR_BUF_SIZE, "%f", rgb->a);
+
+          g_string_append_printf (str, "(color-rgba %s %s %s %s)",
+                                  buf[0], buf[1], buf[2], buf[3]);
+        }
+      else
+        {
+          g_string_append_printf (str, "(color-rgb %s %s %s)",
+                                  buf[0], buf[1], buf[2]);
+        }
+
+      return TRUE;
     }
 
-  return TRUE;
+  return FALSE;
 }

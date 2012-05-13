@@ -4,9 +4,9 @@
  *
  * file-utils.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,16 +15,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
-
+#include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -45,10 +43,12 @@
 #include "gimp-intl.h"
 
 
-static gchar * file_utils_unescape_uri (const gchar  *escaped,
-                                        gint          len,
-                                        const gchar  *illegal_escaped_characters,
-                                        gboolean      ascii_must_not_be_escaped);
+static gchar *      file_utils_unescape_uri  (const gchar *escaped,
+                                              gint         len,
+                                              const gchar *illegal_escaped_characters,
+                                              gboolean     ascii_must_not_be_escaped);
+static const gchar *file_utils_get_ext_start (const gchar *uri);
+
 
 
 gboolean
@@ -84,8 +84,10 @@ file_utils_filename_is_uri (const gchar  *filename,
 
       if (! g_utf8_validate (filename, -1, NULL))
         {
-          g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                       _("Invalid character sequence in URI"));
+          g_set_error_literal (error,
+			       G_CONVERT_ERROR,
+			       G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+			       _("Invalid character sequence in URI"));
           return FALSE;
         }
 
@@ -118,8 +120,10 @@ file_utils_filename_to_uri (Gimp         *gimp,
         }
       else
         {
-          g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                       _("Invalid character sequence in URI"));
+          g_set_error_literal (error,
+			       G_CONVERT_ERROR,
+			       G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+			       _("Invalid character sequence in URI"));
           return NULL;
         }
     }
@@ -227,6 +231,51 @@ file_utils_filename_from_uri (const gchar *uri)
     }
 
   return filename;
+}
+
+gchar *
+file_utils_uri_with_new_ext (const gchar *uri,
+                             const gchar *ext_uri)
+{
+  const gchar *uri_ext      = file_utils_get_ext_start (uri);
+  const gchar *ext_uri_ext  = ext_uri ? file_utils_get_ext_start (ext_uri) : NULL;
+  gchar *uri_without_ext    = g_strndup (uri, uri_ext - uri);
+  gchar *ret                = g_strconcat (uri_without_ext, ext_uri_ext, NULL);
+  g_free (uri_without_ext);
+  return ret;
+}
+
+
+/**
+ * file_utils_get_ext_start:
+ * @uri:
+ *
+ * Returns the position of the extension (after the .) for an URI. If
+ * there is no extension the returned position is right after the
+ * string, at the terminating NULL character.
+ *
+ * Returns:
+ **/
+static const gchar *
+file_utils_get_ext_start (const gchar *uri)
+{
+  const gchar *ext        = NULL;
+  int          uri_len    = strlen (uri);
+  int          search_len = 0;
+
+  if (g_strrstr (uri, ".gz"))
+    search_len = uri_len - 3;
+  else if (g_strrstr (uri, ".bz2"))
+    search_len = uri_len - 4;
+  else
+    search_len = uri_len;
+
+  ext = g_strrstr_len (uri, search_len, ".");
+
+  if (! ext)
+    ext = uri + uri_len;
+
+  return ext;
 }
 
 gchar *
@@ -402,7 +451,7 @@ file_utils_save_thumbnail (GimpImage   *image,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (filename != NULL, FALSE);
 
-  image_uri = gimp_object_get_name (GIMP_OBJECT (image));
+  image_uri = gimp_image_get_uri (image);
 
   if (image_uri)
     {

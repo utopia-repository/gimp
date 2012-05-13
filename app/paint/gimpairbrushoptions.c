@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,17 +26,17 @@
 #include "gimpairbrushoptions.h"
 
 
-#define AIRBRUSH_DEFAULT_RATE     80.0
-#define AIRBRUSH_DEFAULT_PRESSURE 10.0
-
+#define AIRBRUSH_DEFAULT_RATE        80.0
+#define AIRBRUSH_DEFAULT_FLOW        10.0
+#define AIRBRUSH_DEFAULT_MOTION_ONLY FALSE
 
 enum
 {
   PROP_0,
   PROP_RATE,
-  PROP_PRESSURE,
-  PROP_VELOCITY_SIZE,
-  PROP_VELOCITY_HARDNESS
+  PROP_MOTION_ONLY,
+  PROP_FLOW,
+  PROP_PRESSURE /*for backwards copatibility of tool options*/
 };
 
 
@@ -67,24 +66,23 @@ gimp_airbrush_options_class_init (GimpAirbrushOptionsClass *klass)
                                    "rate", NULL,
                                    0.0, 150.0, AIRBRUSH_DEFAULT_RATE,
                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_PRESSURE,
-                                   "pressure", NULL,
-                                   0.0, 100.0, AIRBRUSH_DEFAULT_PRESSURE,
+
+
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MOTION_ONLY,
+                                    "motion-only", NULL,
+                                    AIRBRUSH_DEFAULT_MOTION_ONLY,
+                                    GIMP_PARAM_STATIC_STRINGS);
+
+  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_FLOW,
+                                   "flow", NULL,
+                                   0.0, 100.0, AIRBRUSH_DEFAULT_FLOW,
                                    GIMP_PARAM_STATIC_STRINGS);
 
-  /* override velocity-size because its unnatural as a default for airbrush */
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_VELOCITY_SIZE,
-                                    "velocity-size", NULL,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
-
-  /* override velocity-hardness to default to a true,
-   * because that is natural for airbrush
-   */
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_VELOCITY_HARDNESS,
-                                    "velocity-hardness", NULL,
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+  /*backwads-compadibility prop for flow fomerly known as pressure*/
+  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_PRESSURE,
+                                   "pressure", NULL,
+                                   0.0, 100.0, AIRBRUSH_DEFAULT_FLOW,
+                                   GIMP_CONFIG_PARAM_IGNORE);
 }
 
 static void
@@ -105,14 +103,12 @@ gimp_airbrush_options_set_property (GObject      *object,
     case PROP_RATE:
       options->rate = g_value_get_double (value);
       break;
+    case PROP_MOTION_ONLY:
+      options->motion_only = g_value_get_boolean (value);
+      break;
     case PROP_PRESSURE:
-      options->pressure = g_value_get_double (value);
-      break;
-    case PROP_VELOCITY_SIZE:
-      GIMP_PAINT_OPTIONS (options)->velocity_options->size = g_value_get_boolean (value);
-      break;
-    case PROP_VELOCITY_HARDNESS:
-      GIMP_PAINT_OPTIONS (options)->velocity_options->hardness = g_value_get_boolean (value);
+    case PROP_FLOW:
+      options->flow = g_value_get_double (value);
       break;
 
     default:
@@ -134,14 +130,12 @@ gimp_airbrush_options_get_property (GObject    *object,
     case PROP_RATE:
       g_value_set_double (value, options->rate);
       break;
+    case PROP_MOTION_ONLY:
+      g_value_set_boolean (value, options->motion_only);
+      break;
     case PROP_PRESSURE:
-      g_value_set_double (value, options->pressure);
-      break;
-    case PROP_VELOCITY_SIZE:
-      g_value_set_boolean (value, GIMP_PAINT_OPTIONS (options)->velocity_options->size);
-      break;
-    case PROP_VELOCITY_HARDNESS:
-      g_value_set_boolean (value, GIMP_PAINT_OPTIONS (options)->velocity_options->hardness);
+    case PROP_FLOW:
+      g_value_set_double (value, options->flow);
       break;
 
     default:

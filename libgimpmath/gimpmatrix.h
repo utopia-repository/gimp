@@ -4,10 +4,10 @@
  * gimpmatrix.h
  * Copyright (C) 1998 Jay Cox <jaycox@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_MATH_H_INSIDE__) && !defined (GIMP_MATH_COMPILATION)
+#error "Only <libgimpmath/gimpmath.h> can be included directly."
+#endif
 
 #ifndef __GIMP_MATRIX_H__
 #define __GIMP_MATRIX_H__
@@ -27,20 +30,10 @@ G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
-struct _GimpMatrix2
-{
-  gdouble coeff[2][2];
-};
 
-struct _GimpMatrix3
-{
-  gdouble coeff[3][3];
-};
-
-struct _GimpMatrix4
-{
-  gdouble coeff[4][4];
-};
+/*****************/
+/*  GimpMatrix2  */
+/*****************/
 
 #define GIMP_TYPE_MATRIX2               (gimp_matrix2_get_type ())
 #define GIMP_VALUE_HOLDS_MATRIX2(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MATRIX2))
@@ -63,6 +56,29 @@ GParamSpec *  gimp_param_spec_matrix2      (const gchar        *name,
 void          gimp_matrix2_identity        (GimpMatrix2       *matrix);
 void          gimp_matrix2_mult            (const GimpMatrix2 *matrix1,
                                             GimpMatrix2       *matrix2);
+
+
+/*****************/
+/*  GimpMatrix3  */
+/*****************/
+
+#define GIMP_TYPE_MATRIX3               (gimp_matrix3_get_type ())
+#define GIMP_VALUE_HOLDS_MATRIX3(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MATRIX3))
+
+GType         gimp_matrix3_get_type        (void) G_GNUC_CONST;
+
+
+#define GIMP_TYPE_PARAM_MATRIX3            (gimp_param_matrix3_get_type ())
+#define GIMP_IS_PARAM_SPEC_MATRIX3(pspec)  (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MATRIX3))
+
+GType         gimp_param_matrix3_get_type  (void) G_GNUC_CONST;
+
+GParamSpec *  gimp_param_spec_matrix3      (const gchar        *name,
+                                            const gchar        *nick,
+                                            const gchar        *blurb,
+                                            const GimpMatrix3  *default_value,
+                                            GParamFlags         flags);
+
 
 void          gimp_matrix3_identity        (GimpMatrix3       *matrix);
 void          gimp_matrix3_mult            (const GimpMatrix3 *matrix1,
@@ -101,6 +117,11 @@ void          gimp_matrix3_transform_point (const GimpMatrix3 *matrix,
                                             gdouble           *newx,
                                             gdouble           *newy);
 
+
+/*****************/
+/*  GimpMatrix4  */
+
+/*****************/
 void          gimp_matrix4_to_deg          (const GimpMatrix4 *matrix,
                                             gdouble           *a,
                                             gdouble           *b,

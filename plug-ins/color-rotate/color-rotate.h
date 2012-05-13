@@ -9,9 +9,9 @@
  *                    Based on code from Pavel Grinfeld (pavel@ml.com)
  *
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,8 +20,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*----------------------------------------------------------------------------
@@ -41,6 +40,7 @@
 
 #define PLUG_IN_PROC   "plug-in-rotate-colormap"
 #define PLUG_IN_BINARY "rcm"
+#define PLUG_IN_ROLE   "gimp-rcm"
 #define TP             (2*G_PI)
 
 
@@ -91,7 +91,6 @@ typedef struct
   gfloat     *target;
   gint        mode;
   RcmAngle   *angle;
-  RcmOp       action_flag;
   gfloat      prev_clicked;
 } RcmCircle;
 

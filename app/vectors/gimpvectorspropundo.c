@@ -1,9 +1,9 @@
 /* Gimp - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "vectors-types.h"
 
@@ -28,13 +27,11 @@
 #include "gimpvectorspropundo.h"
 
 
-static GObject * gimp_vectors_prop_undo_constructor (GType                  type,
-                                                     guint                  n_params,
-                                                     GObjectConstructParam *params);
+static void   gimp_vectors_prop_undo_constructed (GObject             *object);
 
-static void      gimp_vectors_prop_undo_pop         (GimpUndo              *undo,
-                                                     GimpUndoMode           undo_mode,
-                                                     GimpUndoAccumulator   *accum);
+static void   gimp_vectors_prop_undo_pop         (GimpUndo            *undo,
+                                                  GimpUndoMode         undo_mode,
+                                                  GimpUndoAccumulator *accum);
 
 
 G_DEFINE_TYPE (GimpVectorsPropUndo, gimp_vectors_prop_undo, GIMP_TYPE_ITEM_UNDO)
@@ -48,7 +45,7 @@ gimp_vectors_prop_undo_class_init (GimpVectorsPropUndoClass *klass)
   GObjectClass  *object_class = G_OBJECT_CLASS (klass);
   GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor = gimp_vectors_prop_undo_constructor;
+  object_class->constructed = gimp_vectors_prop_undo_constructed;
 
   undo_class->pop           = gimp_vectors_prop_undo_pop;
 }
@@ -58,36 +55,23 @@ gimp_vectors_prop_undo_init (GimpVectorsPropUndo *undo)
 {
 }
 
-static GObject *
-gimp_vectors_prop_undo_constructor (GType                  type,
-                                    guint                  n_params,
-                                    GObjectConstructParam *params)
+static void
+gimp_vectors_prop_undo_constructed (GObject *object)
 {
-  GObject             *object;
-  GimpVectorsPropUndo *vectors_prop_undo;
-  GimpImage           *image;
-  GimpVectors         *vectors;
+  /* GimpVectors *vectors; */
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  vectors_prop_undo = GIMP_VECTORS_PROP_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   g_assert (GIMP_IS_VECTORS (GIMP_ITEM_UNDO (object)->item));
 
-  image   = GIMP_UNDO (object)->image;
-  vectors = GIMP_VECTORS (GIMP_ITEM_UNDO (object)->item);
+  /* vectors = GIMP_VECTORS (GIMP_ITEM_UNDO (object)->item); */
 
   switch (GIMP_UNDO (object)->undo_type)
     {
-    case GIMP_UNDO_VECTORS_REPOSITION:
-      vectors_prop_undo->position = gimp_image_get_vectors_index (image, vectors);
-      break;
-
     default:
       g_assert_not_reached ();
     }
-
-  return object;
 }
 
 static void
@@ -95,25 +79,15 @@ gimp_vectors_prop_undo_pop (GimpUndo            *undo,
                             GimpUndoMode         undo_mode,
                             GimpUndoAccumulator *accum)
 {
+#if 0
   GimpVectorsPropUndo *vectors_prop_undo = GIMP_VECTORS_PROP_UNDO (undo);
   GimpVectors         *vectors           = GIMP_VECTORS (GIMP_ITEM_UNDO (undo)->item);
+#endif
 
   GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
   switch (undo->undo_type)
     {
-    case GIMP_UNDO_VECTORS_REPOSITION:
-      {
-        gint position;
-
-        position = gimp_image_get_vectors_index (undo->image, vectors);
-        gimp_image_position_vectors (undo->image, vectors,
-                                     vectors_prop_undo->position,
-                                     FALSE, NULL);
-        vectors_prop_undo->position = position;
-      }
-      break;
-
     default:
       g_assert_not_reached ();
     }

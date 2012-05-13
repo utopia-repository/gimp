@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-gimpscanner
+GimpScanner
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -111,6 +111,16 @@ gimpscanner
 
 
 <!-- ##### FUNCTION gimp_scanner_parse_float ##### -->
+<para>
+
+</para>
+
+@scanner: 
+@dest: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_scanner_parse_boolean ##### -->
 <para>
 
 </para>

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -46,21 +45,24 @@
 static const GimpActionEntry dockable_actions[] =
 {
   { "dockable-popup", NULL,
-    N_("Dialogs Menu"), NULL, NULL, NULL,
+    NC_("dockable-action", "Dialogs Menu"), NULL, NULL, NULL,
     GIMP_HELP_DOCK },
 
-  { "dockable-menu",               GTK_STOCK_MISSING_IMAGE, "" },
-  { "dockable-add-tab-menu",       NULL, N_("_Add Tab")        },
-  { "dockable-preview-size-menu",  NULL, N_("_Preview Size")   },
-  { "dockable-tab-style-menu",     NULL, N_("_Tab Style")      },
+  { "dockable-menu",              GTK_STOCK_MISSING_IMAGE, "" },
+  { "dockable-add-tab-menu",      NULL, NC_("dockable-action",
+                                            "_Add Tab")        },
+  { "dockable-preview-size-menu", NULL, NC_("dockable-action",
+                                            "_Preview Size")   },
+  { "dockable-tab-style-menu",    NULL, NC_("dockable-action",
+                                            "_Tab Style")      },
 
   { "dockable-close-tab", GTK_STOCK_CLOSE,
-    N_("_Close Tab"), "", NULL,
+    NC_("dockable-action", "_Close Tab"), "", NULL,
     G_CALLBACK (dockable_close_tab_cmd_callback),
     GIMP_HELP_DOCK_TAB_CLOSE },
 
   { "dockable-detach-tab", GIMP_STOCK_DETACH,
-    N_("_Detach Tab"), "", NULL,
+    NC_("dockable-action", "_Detach Tab"), "", NULL,
     G_CALLBACK (dockable_detach_tab_cmd_callback),
     GIMP_HELP_DOCK_TAB_DETACH }
 };
@@ -78,24 +80,40 @@ static const GimpActionEntry dockable_actions[] =
 
 static const GimpRadioActionEntry dockable_view_size_actions[] =
 {
-  VIEW_SIZE ("tiny",        N_("_Tiny"),        GIMP_VIEW_SIZE_TINY),
-  VIEW_SIZE ("extra-small", N_("E_xtra Small"), GIMP_VIEW_SIZE_EXTRA_SMALL),
-  VIEW_SIZE ("small",       N_("_Small"),       GIMP_VIEW_SIZE_SMALL),
-  VIEW_SIZE ("medium",      N_("_Medium"),      GIMP_VIEW_SIZE_MEDIUM),
-  VIEW_SIZE ("large",       N_("_Large"),       GIMP_VIEW_SIZE_LARGE),
-  VIEW_SIZE ("extra-large", N_("Ex_tra Large"), GIMP_VIEW_SIZE_EXTRA_LARGE),
-  VIEW_SIZE ("huge",        N_("_Huge"),        GIMP_VIEW_SIZE_HUGE),
-  VIEW_SIZE ("enormous",    N_("_Enormous"),    GIMP_VIEW_SIZE_ENORMOUS),
-  VIEW_SIZE ("gigantic",    N_("_Gigantic"),    GIMP_VIEW_SIZE_GIGANTIC)
+  VIEW_SIZE ("tiny",
+             NC_("preview-size", "_Tiny"),        GIMP_VIEW_SIZE_TINY),
+  VIEW_SIZE ("extra-small",
+             NC_("preview-size", "E_xtra Small"), GIMP_VIEW_SIZE_EXTRA_SMALL),
+  VIEW_SIZE ("small",
+             NC_("preview-size", "_Small"),       GIMP_VIEW_SIZE_SMALL),
+  VIEW_SIZE ("medium",
+             NC_("preview-size", "_Medium"),      GIMP_VIEW_SIZE_MEDIUM),
+  VIEW_SIZE ("large",
+             NC_("preview-size", "_Large"),       GIMP_VIEW_SIZE_LARGE),
+  VIEW_SIZE ("extra-large",
+             NC_("preview-size", "Ex_tra Large"), GIMP_VIEW_SIZE_EXTRA_LARGE),
+  VIEW_SIZE ("huge",
+             NC_("preview-size", "_Huge"),        GIMP_VIEW_SIZE_HUGE),
+  VIEW_SIZE ("enormous",
+             NC_("preview-size", "_Enormous"),    GIMP_VIEW_SIZE_ENORMOUS),
+  VIEW_SIZE ("gigantic",
+             NC_("preview-size", "_Gigantic"),    GIMP_VIEW_SIZE_GIGANTIC)
 };
 
 static const GimpRadioActionEntry dockable_tab_style_actions[] =
 {
-  TAB_STYLE ("icon",         N_("_Icon"),           GIMP_TAB_STYLE_ICON),
-  TAB_STYLE ("preview",      N_("Current _Status"), GIMP_TAB_STYLE_PREVIEW),
-  TAB_STYLE ("name",         N_("_Text"),           GIMP_TAB_STYLE_NAME),
-  TAB_STYLE ("icon-name",    N_("I_con & Text"),    GIMP_TAB_STYLE_ICON_NAME),
-  TAB_STYLE ("preview-name", N_("St_atus & Text"),  GIMP_TAB_STYLE_PREVIEW_NAME)
+  TAB_STYLE ("icon",
+             NC_("tab-style", "_Icon"),           GIMP_TAB_STYLE_ICON),
+  TAB_STYLE ("preview",
+             NC_("tab-style", "Current _Status"), GIMP_TAB_STYLE_PREVIEW),
+  TAB_STYLE ("name",
+             NC_("tab-style", "_Text"),           GIMP_TAB_STYLE_NAME),
+  TAB_STYLE ("icon-name",
+             NC_("tab-style", "I_con & Text"),    GIMP_TAB_STYLE_ICON_NAME),
+  TAB_STYLE ("preview-name",
+             NC_("tab-style", "St_atus & Text"),  GIMP_TAB_STYLE_PREVIEW_NAME),
+  TAB_STYLE ("automatic",
+             NC_("tab-style", "Automatic"),       GIMP_TAB_STYLE_AUTOMATIC)
 };
 
 #undef VIEW_SIZE
@@ -105,14 +123,15 @@ static const GimpRadioActionEntry dockable_tab_style_actions[] =
 static const GimpToggleActionEntry dockable_toggle_actions[] =
 {
   { "dockable-lock-tab", NULL,
-    N_("Loc_k Tab to Dock"), NULL,
-    N_("Protect this tab from being dragged with the mouse pointer"),
+    NC_("dockable-action", "Loc_k Tab to Dock"), NULL,
+    NC_("dockable-action",
+        "Protect this tab from being dragged with the mouse pointer"),
     G_CALLBACK (dockable_lock_tab_cmd_callback),
     FALSE,
     GIMP_HELP_DOCK_TAB_LOCK },
 
   { "dockable-show-button-bar", NULL,
-    N_("Show _Button Bar"), NULL, NULL,
+    NC_("dockable-action", "Show _Button Bar"), NULL, NULL,
     G_CALLBACK (dockable_show_button_bar_cmd_callback),
     TRUE,
     GIMP_HELP_DOCK_SHOW_BUTTON_BAR }
@@ -121,12 +140,12 @@ static const GimpToggleActionEntry dockable_toggle_actions[] =
 static const GimpRadioActionEntry dockable_view_type_actions[] =
 {
   { "dockable-view-type-list", NULL,
-    N_("View as _List"), NULL, NULL,
+    NC_("dockable-action", "View as _List"), NULL, NULL,
     GIMP_VIEW_TYPE_LIST,
     GIMP_HELP_DOCK_VIEW_AS_LIST },
 
   { "dockable-view-type-grid", NULL,
-    N_("View as _Grid"), NULL, NULL,
+    NC_("dockable-action", "View as _Grid"), NULL, NULL,
     GIMP_VIEW_TYPE_GRID,
     GIMP_HELP_DOCK_VIEW_AS_GRID }
 };
@@ -135,34 +154,34 @@ static const GimpRadioActionEntry dockable_view_type_actions[] =
 void
 dockable_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "dockable-action",
                                  dockable_actions,
                                  G_N_ELEMENTS (dockable_actions));
 
-  gimp_action_group_add_toggle_actions (group,
+  gimp_action_group_add_toggle_actions (group, "dockable-action",
                                         dockable_toggle_actions,
                                         G_N_ELEMENTS (dockable_toggle_actions));
 
-  gimp_action_group_add_string_actions (group,
+  gimp_action_group_add_string_actions (group, "dialogs-action",
                                         dialogs_dockable_actions,
                                         n_dialogs_dockable_actions,
                                         G_CALLBACK (dockable_add_tab_cmd_callback));
 
-  gimp_action_group_add_radio_actions (group,
+  gimp_action_group_add_radio_actions (group, "preview-size",
                                        dockable_view_size_actions,
                                        G_N_ELEMENTS (dockable_view_size_actions),
                                        NULL,
                                        GIMP_VIEW_SIZE_MEDIUM,
                                        G_CALLBACK (dockable_view_size_cmd_callback));
 
-  gimp_action_group_add_radio_actions (group,
+  gimp_action_group_add_radio_actions (group, "tab-style",
                                        dockable_tab_style_actions,
                                        G_N_ELEMENTS (dockable_tab_style_actions),
                                        NULL,
-                                       GIMP_TAB_STYLE_PREVIEW,
+                                       GIMP_TAB_STYLE_AUTOMATIC,
                                        G_CALLBACK (dockable_tab_style_cmd_callback));
 
-  gimp_action_group_add_radio_actions (group,
+  gimp_action_group_add_radio_actions (group, "dockable-action",
                                        dockable_view_type_actions,
                                        G_N_ELEMENTS (dockable_view_type_actions),
                                        NULL,
@@ -177,6 +196,7 @@ dockable_actions_update (GimpActionGroup *group,
   GimpDockable           *dockable;
   GimpDockbook           *dockbook;
   GimpDocked             *docked;
+  GimpDock               *dock;
   GimpDialogFactoryEntry *entry;
   GimpContainerView      *view;
   GimpViewType            view_type           = -1;
@@ -187,6 +207,7 @@ dockable_actions_update (GimpActionGroup *group,
   GimpTabStyle            tab_style           = -1;
   gint                    n_pages             = 0;
   gint                    n_books             = 0;
+  GimpDockedInterface     *docked_iface       = NULL;
 
   if (GIMP_IS_DOCKBOOK (data))
     {
@@ -202,7 +223,7 @@ dockable_actions_update (GimpActionGroup *group,
   else if (GIMP_IS_DOCKABLE (data))
     {
       dockable = GIMP_DOCKABLE (data);
-      dockbook = dockable->dockbook;
+      dockbook = gimp_dockable_get_dockbook (dockable);
     }
   else
     {
@@ -210,6 +231,8 @@ dockable_actions_update (GimpActionGroup *group,
     }
 
   docked = GIMP_DOCKED (gtk_bin_get_child (GTK_BIN (dockable)));
+  dock   = gimp_dockbook_get_dock (dockbook);
+
 
   gimp_dialog_factory_from_widget (GTK_WIDGET (dockable), &entry);
 
@@ -228,12 +251,12 @@ dockable_actions_update (GimpActionGroup *group,
       if (substring)
         {
           memcpy (substring, "list", 4);
-          if (gimp_dialog_factory_find_entry (dockbook->dock->dialog_factory,
+          if (gimp_dialog_factory_find_entry (gimp_dock_get_dialog_factory (dock),
                                               identifier))
             list_view_available = TRUE;
 
           memcpy (substring, "grid", 4);
-          if (gimp_dialog_factory_find_entry (dockbook->dock->dialog_factory,
+          if (gimp_dialog_factory_find_entry (gimp_dock_get_dialog_factory (dock),
                                               identifier))
             grid_view_available = TRUE;
         }
@@ -246,10 +269,10 @@ dockable_actions_update (GimpActionGroup *group,
   if (view)
     view_size = gimp_container_view_get_view_size (view, NULL);
 
-  tab_style = dockable->tab_style;
+  tab_style = gimp_dockable_get_tab_style (dockable);
 
   n_pages = gtk_notebook_get_n_pages (GTK_NOTEBOOK (dockbook));
-  n_books = g_list_length (dockbook->dock->dockbooks);
+  n_books = g_list_length (gimp_dock_get_dockbooks (dock));
 
 #define SET_ACTIVE(action,active) \
         gimp_action_group_set_action_active (group, action, (active) != 0)
@@ -308,28 +331,24 @@ dockable_actions_update (GimpActionGroup *group,
         }
     }
 
-  SET_VISIBLE ("dockable-tab-style-menu", n_pages > 1);
+  if (tab_style == GIMP_TAB_STYLE_ICON)
+    SET_ACTIVE ("dockable-tab-style-icon", TRUE);
+  else if (tab_style == GIMP_TAB_STYLE_PREVIEW)
+    SET_ACTIVE ("dockable-tab-style-preview", TRUE);
+  else if (tab_style == GIMP_TAB_STYLE_NAME)
+    SET_ACTIVE ("dockable-tab-style-name", TRUE);
+  else if (tab_style == GIMP_TAB_STYLE_ICON_NAME)
+    SET_ACTIVE ("dockable-tab-style-icon-name", TRUE);
+  else if (tab_style == GIMP_TAB_STYLE_PREVIEW_NAME)
+    SET_ACTIVE ("dockable-tab-style-preview-name", TRUE);
+  else if (tab_style == GIMP_TAB_STYLE_AUTOMATIC)
+    SET_ACTIVE ("dockable-tab-style-automatic", TRUE);
 
-  if (n_pages > 1)
-    {
-      GimpDockedInterface *docked_iface = GIMP_DOCKED_GET_INTERFACE (docked);
-
-      if (tab_style == GIMP_TAB_STYLE_ICON)
-        SET_ACTIVE ("dockable-tab-style-icon", TRUE);
-      else if (tab_style == GIMP_TAB_STYLE_PREVIEW)
-        SET_ACTIVE ("dockable-tab-style-preview", TRUE);
-      else if (tab_style == GIMP_TAB_STYLE_NAME)
-        SET_ACTIVE ("dockable-tab-style-name", TRUE);
-      else if (tab_style == GIMP_TAB_STYLE_ICON_NAME)
-        SET_ACTIVE ("dockable-tab-style-icon-name", TRUE);
-      else if (tab_style == GIMP_TAB_STYLE_PREVIEW_NAME)
-        SET_ACTIVE ("dockable-tab-style-preview-name", TRUE);
-
-      SET_SENSITIVE ("dockable-tab-style-preview",
-                     docked_iface->get_preview);
-      SET_SENSITIVE ("dockable-tab-style-preview-name",
-                     docked_iface->get_preview);
-    }
+  docked_iface = GIMP_DOCKED_GET_INTERFACE (docked);
+  SET_SENSITIVE ("dockable-tab-style-preview",
+                 docked_iface->get_preview);
+  SET_SENSITIVE ("dockable-tab-style-preview-name",
+                 docked_iface->get_preview);
 
   SET_VISIBLE ("dockable-view-type-grid", view_type != -1);
   SET_VISIBLE ("dockable-view-type-list", view_type != -1);

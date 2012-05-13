@@ -2,32 +2,16 @@
 GimpPathEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-Widget for editing a file search path.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-This widget is used to edit file search paths.
-</para>
-<para>
-It shows a list of all directories which are in the search path. You
-can click a directory to select it. The widget provides a
-#GimpFileEntry to change the currently selected directory.
-</para>
-<para>
-There are buttons to add or delete directories as well as "up" and "down"
-buttons to change the order in which the directories will be searched.
-</para>
-<para>
-Whenever the user adds, deletes, changes or reorders a directory of
-the search path, the "path_changed" signal will be emitted.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#GimpFileEntry
-</para>
-<para>
-#G_SEARCHPATH_SEPARATOR
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->

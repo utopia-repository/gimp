@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -36,7 +35,6 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimplayer.h"
-#include "gimplist.h"
 #include "gimppickable.h"
 #include "gimpsamplepoint.h"
 
@@ -91,6 +89,8 @@ gimp_image_crop (GimpImage   *image,
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_if_fail (active_layer_only == FALSE ||
+                    gimp_image_get_active_layer (image));
 
   previous_width  = gimp_image_get_width (image);
   previous_height = gimp_image_get_height (image);
@@ -111,7 +111,7 @@ gimp_image_crop (GimpImage   *image,
 
       layer = gimp_image_get_active_layer (image);
 
-      gimp_item_offsets (GIMP_ITEM (layer), &off_x, &off_y);
+      gimp_item_get_offset (GIMP_ITEM (layer), &off_x, &off_y);
 
       off_x -= x1;
       off_y -= y1;
@@ -120,17 +120,16 @@ gimp_image_crop (GimpImage   *image,
     }
   else
     {
-      GimpItem *item;
-      GList    *list;
+      GList *list;
 
       g_object_freeze_notify (G_OBJECT (image));
 
       if (crop_layers)
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_CROP,
-                                     C_("command", "Crop Image"));
+                                     C_("undo-type", "Crop Image"));
       else
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_RESIZE,
-                                     _("Resize Image"));
+                                     C_("undo-type", "Resize Image"));
 
       /*  Push the image size to the stack  */
       gimp_image_undo_push_image_size (image,
@@ -147,21 +146,21 @@ gimp_image_crop (GimpImage   *image,
                     NULL);
 
       /*  Resize all channels  */
-      for (list = GIMP_LIST (image->channels)->list;
+      for (list = gimp_image_get_channel_iter (image);
            list;
            list = g_list_next (list))
         {
-          item = (GimpItem *) list->data;
+          GimpItem *item = list->data;
 
           gimp_item_resize (item, context, width, height, -x1, -y1);
         }
 
       /*  Resize all vectors  */
-      for (list = GIMP_LIST (image->vectors)->list;
+      for (list = gimp_image_get_vectors_iter (image);
            list;
            list = g_list_next (list))
         {
-          item = (GimpItem *) list->data;
+          GimpItem *item = list->data;
 
           gimp_item_resize (item, context, width, height, -x1, -y1);
         }
@@ -171,11 +170,11 @@ gimp_image_crop (GimpImage   *image,
                         width, height, -x1, -y1);
 
       /*  crop all layers  */
-      list = GIMP_LIST (image->layers)->list;
+      list = gimp_image_get_layer_iter (image);
 
       while (list)
         {
-          item = (GimpItem *) list->data;
+          GimpItem *item = list->data;
 
           list = g_list_next (list);
 
@@ -186,29 +185,35 @@ gimp_image_crop (GimpImage   *image,
               gint off_x, off_y;
               gint lx1, ly1, lx2, ly2;
 
-              gimp_item_offsets (item, &off_x, &off_y);
+              gimp_item_get_offset (item, &off_x, &off_y);
 
               lx1 = CLAMP (off_x, 0, gimp_image_get_width  (image));
               ly1 = CLAMP (off_y, 0, gimp_image_get_height (image));
-              lx2 = CLAMP (gimp_item_width  (item) + off_x,
+              lx2 = CLAMP (gimp_item_get_width  (item) + off_x,
                            0, gimp_image_get_width (image));
-              ly2 = CLAMP (gimp_item_height (item) + off_y,
+              ly2 = CLAMP (gimp_item_get_height (item) + off_y,
                            0, gimp_image_get_height (image));
 
               width  = lx2 - lx1;
               height = ly2 - ly1;
 
               if (width > 0 && height > 0)
-                gimp_item_resize (item, context, width, height,
-                                  -(lx1 - off_x),
-                                  -(ly1 - off_y));
+                {
+                  gimp_item_resize (item, context, width, height,
+                                    -(lx1 - off_x),
+                                    -(ly1 - off_y));
+                }
               else
-                gimp_image_remove_layer (image, GIMP_LAYER (item));
+                {
+                  gimp_image_remove_layer (image, GIMP_LAYER (item),
+                                           TRUE, NULL);
+                }
             }
         }
 
       /*  Reposition or remove all guides  */
       list = gimp_image_get_guides (image);
+
       while (list)
         {
           GimpGuide *guide        = list->data;
@@ -245,6 +250,7 @@ gimp_image_crop (GimpImage   *image,
 
       /*  Reposition or remove sample points  */
       list = gimp_image_get_sample_points (image);
+
       while (list)
         {
           GimpSamplePoint *sample_point        = list->data;
@@ -271,10 +277,10 @@ gimp_image_crop (GimpImage   *image,
 
       gimp_image_undo_group_end (image);
 
-      gimp_image_update (image,
-                         0, 0,
-                         gimp_image_get_width  (image),
-                         gimp_image_get_height (image));
+      gimp_image_invalidate (image,
+                             0, 0,
+                             gimp_image_get_width  (image),
+                             gimp_image_get_height (image));
 
       gimp_image_size_changed_detailed (image,
                                         -x1,
@@ -339,7 +345,7 @@ gimp_image_crop_auto_shrink (GimpImage *image,
     }
   else
     {
-      pickable = GIMP_PICKABLE (image->projection);
+      pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
    }
 
   gimp_pickable_flush (pickable);

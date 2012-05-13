@@ -4,10 +4,10 @@
  * Object properties deserialization routines
  * Copyright (C) 2001-2002  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,13 +15,13 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -38,6 +38,15 @@
 #include "gimpscanner.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpconfig-deserialize
+ * @title: GimpConfig-deserialize
+ * @short_description: Deserializing code for libgimpconfig.
+ *
+ * Deserializing code for libgimpconfig.
+ **/
 
 
 /*
@@ -104,7 +113,7 @@ scanner_string_utf8_valid (GScanner    *scanner,
  * gimp_config_deserialize_properties:
  * @config: a #GimpConfig.
  * @scanner: a #GScanner.
- * @nest_level:
+ * @nest_level: the nest level
  *
  * This function uses the @scanner to configure the properties of @config.
  *
@@ -205,7 +214,7 @@ gimp_config_deserialize_properties (GimpConfig *config,
  * gimp_config_deserialize_property:
  * @config: a #GimpConfig.
  * @scanner: a #GScanner.
- * @nest_level:
+ * @nest_level: the nest level
  *
  * This function deserializes a single property of @config. You
  * shouldn't need to call this function directly. If possible, use
@@ -400,7 +409,6 @@ gimp_config_deserialize_fundamental (GValue     *value,
       break;
 
     default:
-      token = G_TOKEN_NONE;
       g_assert_not_reached ();
       break;
     }

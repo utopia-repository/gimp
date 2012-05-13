@@ -4,9 +4,9 @@
  * gimpdockbook.h
  * Copyright (C) 2001-2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DOCKBOOK_H__
@@ -31,17 +30,20 @@
 #define GIMP_DOCKBOOK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_DOCKBOOK, GimpDockbookClass))
 
 
-typedef struct _GimpDockbookClass  GimpDockbookClass;
+typedef struct _GimpDockbookClass    GimpDockbookClass;
+typedef struct _GimpDockbookPrivate  GimpDockbookPrivate;
 
+/**
+ * GimpDockbook:
+ *
+ * Holds GimpDockables which are presented on different tabs using
+ * GtkNotebook.
+ */
 struct _GimpDockbook
 {
-  GtkNotebook    parent_instance;
+  GtkNotebook parent_instance;
 
-  GimpDock      *dock;
-  GimpUIManager *ui_manager;
-
-  guint          tab_hover_timeout;
-  GimpDockable  *tab_hover_dockable;
+  GimpDockbookPrivate *p;
 };
 
 struct _GimpDockbookClass
@@ -57,20 +59,30 @@ struct _GimpDockbookClass
 };
 
 
-GType       gimp_dockbook_get_type          (void) G_GNUC_CONST;
-
-GtkWidget * gimp_dockbook_new               (GimpMenuFactory  *menu_factory);
-
-void        gimp_dockbook_add               (GimpDockbook     *dockbook,
-                                             GimpDockable     *dockable,
-                                             gint              position);
-void        gimp_dockbook_remove            (GimpDockbook     *dockbook,
-                                             GimpDockable     *dockable);
-
-GtkWidget * gimp_dockbook_create_tab_widget (GimpDockbook     *dockbook,
-                                             GimpDockable     *dockable);
-gboolean    gimp_dockbook_drop_dockable     (GimpDockbook     *dockbook,
-                                             GtkWidget        *drag_source);
+GType           gimp_dockbook_get_type                  (void) G_GNUC_CONST;
+GtkWidget     * gimp_dockbook_new                       (GimpMenuFactory *menu_factory);
+GimpDock      * gimp_dockbook_get_dock                  (GimpDockbook    *dockbook);
+void            gimp_dockbook_set_dock                  (GimpDockbook    *dockbook,
+                                                         GimpDock        *dock);
+GimpUIManager * gimp_dockbook_get_ui_manager            (GimpDockbook    *dockbook);
+void            gimp_dockbook_add                       (GimpDockbook    *dockbook,
+                                                         GimpDockable    *dockable,
+                                                         gint             position);
+GtkWidget     * gimp_dockbook_add_from_dialog_factory   (GimpDockbook    *dockbook,
+                                                         const gchar     *identifiers,
+                                                         gint             position);
+void            gimp_dockbook_remove                    (GimpDockbook    *dockbook,
+                                                         GimpDockable    *dockable);
+void            gimp_dockbook_update_with_context       (GimpDockbook    *dockbook,
+                                                         GimpContext     *context);
+GtkWidget    *  gimp_dockbook_create_tab_widget         (GimpDockbook    *dockbook,
+                                                         GimpDockable    *dockable);
+void            gimp_dockbook_update_auto_tab_style     (GimpDockbook    *dockbook);
+gboolean        gimp_dockbook_drop_dockable             (GimpDockbook    *dockbook,
+                                                         GtkWidget       *drag_source);
+void            gimp_dockbook_set_drag_handler          (GimpDockbook    *dockbook,
+                                                         GimpPanedBox    *drag_handler);
+GimpDockable *  gimp_dockbook_drag_source_to_dockable   (GtkWidget       *drag_source);
 
 
 #endif /* __GIMP_DOCKBOOK_H__ */

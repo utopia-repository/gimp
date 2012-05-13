@@ -26,6 +26,16 @@ GimpEnumLabel
 </para>
 
 
+<!-- ##### ARG GimpEnumLabel:enum-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GimpEnumLabel:enum-value ##### -->
+<para>
+
+</para>
+
 <!-- ##### FUNCTION gimp_enum_label_new ##### -->
 <para>
 

@@ -52,8 +52,7 @@ scripts = \
 	font-map.scm			\
 	frosty-logo.scm			\
 	fuzzyborder.scm			\
-	gimp-headers.scm		\
-	gimp-labels.scm			\
+	gimp-online.scm			\
 	glossy.scm			\
 	glowing-logo.scm		\
 	gradient-bevel-logo.scm		\
@@ -71,6 +70,7 @@ scripts = \
 	neon-logo.scm			\
 	news-text.scm			\
 	old-photo.scm			\
+	palette-export.scm		\
 	paste-as-brush.scm		\
 	paste-as-pattern.scm		\
 	perspective-shadow.scm		\
@@ -103,7 +103,6 @@ scripts = \
 	unsharp-mask.scm		\
 	waves-anim.scm			\
 	weave.scm			\
-	web-browser.scm			\
 	xach-effect.scm
 
 test_scripts = \

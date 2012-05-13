@@ -4,9 +4,9 @@
  *
  * Copyright (C) 1997-1998 Shuji Narazaki <narazaki@InetQ.or.jp>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,7 @@
 
 #define PLUG_IN_PROC   "plug-in-align-layers"
 #define PLUG_IN_BINARY "align-layers"
+#define PLUG_IN_ROLE   "gimp-align-layers"
 #define SCALE_WIDTH    150
 
 enum
@@ -117,11 +117,11 @@ query (void)
 {
   static const GimpParamDef args [] =
   {
-    { GIMP_PDB_INT32,    "run-mode",             "Interactive, non-interactive"},
+    { GIMP_PDB_INT32,    "run-mode",             "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"},
     { GIMP_PDB_IMAGE,    "image",                "Input image"},
     { GIMP_PDB_DRAWABLE, "drawable",             "Input drawable (not used)"},
-    { GIMP_PDB_INT32,    "link-after-alignment", "Link the visible layers after alignment"},
-    { GIMP_PDB_INT32,    "use-bottom",           "use the bottom layer as the base of alignment"}
+    { GIMP_PDB_INT32,    "link-after-alignment", "Link the visible layers after alignment { TRUE, FALSE }"},
+    { GIMP_PDB_INT32,    "use-bottom",           "use the bottom layer as the base of alignment { TRUE, FALSE }"}
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -223,14 +223,14 @@ align_layers (gint32 image_id)
 
   for (index = 0; index < layer_num; index++)
     {
-      if (gimp_drawable_get_visible (layers[index]))
+      if (gimp_item_get_visible (layers[index]))
         visible_layer_num++;
     }
 
   if (VALS.ignore_bottom)
     {
       layer_num--;
-      if (gimp_drawable_get_visible (layers[bg_index]))
+      if (gimp_item_get_visible (layers[bg_index]))
         visible_layer_num--;
     }
 
@@ -244,7 +244,7 @@ align_layers (gint32 image_id)
       /* 0 is the top layer */
       for (index = 0; index < layer_num; index++)
         {
-          if (gimp_drawable_get_visible (layers[index]))
+          if (gimp_item_get_visible (layers[index]))
             {
               gimp_drawable_offsets (layers[index], &orig_x, &orig_y);
               align_layers_get_align_offsets (layers[index], &offset_x,
@@ -287,7 +287,7 @@ align_layers (gint32 image_id)
 
   for (vindex = -1, index = 0; index < layer_num; index++)
     {
-      if (gimp_drawable_get_visible (layers[index]))
+      if (gimp_item_get_visible (layers[index]))
         vindex++;
       else
         continue;
@@ -397,7 +397,7 @@ align_layers_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Align Visible Layers"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Align Visible Layers"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -417,11 +417,11 @@ align_layers_dialog (void)
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      table, FALSE, FALSE, 0);
   gtk_widget_show (table);
 
-  combo = gimp_int_combo_box_new (_("None"),                 H_NONE,
+  combo = gimp_int_combo_box_new (C_("align-style", "None"), H_NONE,
                                   _("Collect"),              H_COLLECT,
                                   _("Fill (left to right)"), LEFT2RIGHT,
                                   _("Fill (right to left)"), RIGHT2LEFT,
@@ -452,7 +452,7 @@ align_layers_dialog (void)
                              _("Ho_rizontal base:"), 0.0, 0.5,
                              combo, 2, FALSE);
 
-  combo = gimp_int_combo_box_new (_("None"),                 V_NONE,
+  combo = gimp_int_combo_box_new (C_("align-style", "None"), V_NONE,
                                   _("Collect"),              V_COLLECT,
                                   _("Fill (top to bottom)"), TOP2BOTTOM,
                                   _("Fill (bottom to top)"), BOTTOM2TOP,

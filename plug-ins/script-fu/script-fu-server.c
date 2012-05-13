@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -36,7 +35,18 @@
 #include <glib.h>
 
 #ifdef G_OS_WIN32
+#define _WIN32_WINNT 0x0502
 #include <winsock2.h>
+#include <ws2tcpip.h>
+
+typedef short sa_family_t;	/* Not defined by winsock */
+
+#ifndef AI_ADDRCONFIG
+/* Missing from mingw headers, but value is publicly documented 
+ * on http://msdn.microsoft.com/en-us/library/ms737530%28v=VS.85%29.aspx
+ */
+#define AI_ADDRCONFIG 0x0400
+#endif
 #include <libgimpbase/gimpwin32-io.h>
 #else
 #include <sys/socket.h>
@@ -794,7 +804,7 @@ server_interface (void)
 
   gimp_ui_init ("script-fu", FALSE);
 
-  dlg = gimp_dialog_new (_("Script-Fu Server Options"), "script-fu",
+  dlg = gimp_dialog_new (_("Script-Fu Server Options"), "gimp-script-fu",
                          NULL, 0,
                          gimp_standard_help_func, "plug-in-script-fu-server",
 
@@ -820,7 +830,7 @@ server_interface (void)
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
                       table, FALSE, FALSE, 0);
 
   /*  The server port  */

@@ -9,6 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)		\
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
+	$(GEGL_CFLAGS)		\
 	$(GTK_CFLAGS)		\
 	$(DBUS_GLIB_CFLAGS)	\
 	-I$(includedir)
@@ -20,6 +21,8 @@ libappgui_a_sources = \
 	color-history.h		\
 	gimpdbusservice.c	\
 	gimpdbusservice.h	\
+	gimpuiconfigurer.c	\
+	gimpuiconfigurer.h	\
 	gui.c			\
 	gui.h			\
 	gui-message.c		\
@@ -43,9 +46,7 @@ libappgui_a_built_sources = gimpdbusservice-glue.h
 libappgui_a_SOURCES = $(libappgui_a_built_sources) $(libappgui_a_sources)
 
 EXTRA_DIST = \
-	dbus-service.xml	\
-	makefile.msc
-
+	dbus-service.xml
 
 #
 # rules to generate built sources

@@ -2,12 +2,10 @@
 gimpimage
 
 <!-- ##### SECTION Short_Description ##### -->
-Operations on complete images.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Operations on complete images: creation, resizing/rescaling,
-and operations involving multiple layers.
 
 </para>
 
@@ -39,6 +37,42 @@ and operations involving multiple layers.
 @width: 
 @height: 
 @type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_uri ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_xcf_uri ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_exported_uri ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_imported_uri ##### -->
+<para>
+
+</para>
+
+@image_ID: 
 @Returns: 
 
 
@@ -257,6 +291,68 @@ and operations involving multiple layers.
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_image_get_item_position ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@item_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_reorder_item ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@item_ID: 
+@parent_ID: 
+@position: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_raise_item ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@item_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_lower_item ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@item_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_raise_item_to_top ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@item_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_lower_item_to_bottom ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@item_ID: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_image_add_layer ##### -->
 <para>
 
@@ -264,6 +360,18 @@ and operations involving multiple layers.
 
 @image_ID: 
 @layer_ID: 
+@position: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_insert_layer ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@layer_ID: 
+@parent_ID: 
 @position: 
 @Returns: 
 
@@ -335,6 +443,18 @@ and operations involving multiple layers.
 
 @image_ID: 
 @channel_ID: 
+@position: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_insert_channel ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@channel_ID: 
+@parent_ID: 
 @position: 
 @Returns: 
 
@@ -633,6 +753,46 @@ and operations involving multiple layers.
 @Returns: 
 
 
+<!-- ##### FUNCTION gimp_image_get_vectors_by_tattoo ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@tattoo: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_layer_by_name ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_channel_by_name ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_vectors_by_name ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_image_get_cmap ##### -->
 <para>
 
@@ -685,16 +845,6 @@ and operations involving multiple layers.
 @Returns: 
 
 
-<!-- ##### FUNCTION gimp_image_get_vectors_by_tattoo ##### -->
-<para>
-
-</para>
-
-@image_ID: 
-@tattoo: 
-@Returns: 
-
-
 <!-- ##### FUNCTION gimp_image_get_thumbnail_data ##### -->
 <para>
 
@@ -704,6 +854,46 @@ and operations involving multiple layers.
 @width: 
 @height: 
 @bpp: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_attach_parasite ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@parasite: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_detach_parasite ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_parasite ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_get_parasite_list ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@num_parasites: 
 @Returns: 
 
 
@@ -768,6 +958,18 @@ and operations involving multiple layers.
 
 @image_ID: 
 @vectors_ID: 
+@position: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_image_insert_vectors ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@vectors_ID: 
+@parent_ID: 
 @position: 
 @Returns: 
 

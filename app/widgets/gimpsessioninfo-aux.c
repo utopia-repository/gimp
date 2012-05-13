@@ -4,9 +4,9 @@
  * gimpsessioninfo-aux.c
  * Copyright (C) 2001-2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,7 +30,9 @@
 
 #include "gimpdock.h"
 #include "gimpdockable.h"
+#include "gimpdockwindow.h"
 #include "gimpsessioninfo-aux.h"
+#include "gimpsessionmanaged.h"
 
 
 /*  public functions  */
@@ -280,29 +281,4 @@ gimp_session_info_aux_deserialize (GScanner  *scanner,
     gimp_session_info_aux_free (aux_info);
 
   return token;
-}
-
-void
-gimp_session_info_aux_set_list (GtkWidget *dialog,
-                                GList     *aux_list)
-{
-  /* FIXME: make the aux-info stuff generic */
-
-  if (GIMP_IS_DOCK (dialog))
-    gimp_dock_set_aux_info (GIMP_DOCK (dialog), aux_list);
-  else if (GIMP_IS_DOCKABLE (dialog))
-    gimp_dockable_set_aux_info (GIMP_DOCKABLE (dialog), aux_list);
-}
-
-GList *
-gimp_session_info_aux_get_list (GtkWidget *dialog)
-{
-  /* FIXME: make the aux-info stuff generic */
-
-  if (GIMP_IS_DOCK (dialog))
-    return gimp_dock_get_aux_info (GIMP_DOCK (dialog));
-  else if (GIMP_IS_DOCKABLE (dialog))
-    return gimp_dockable_get_aux_info (GIMP_DOCKABLE (dialog));
-
-  return NULL;
 }

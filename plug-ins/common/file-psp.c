@@ -2,9 +2,9 @@
  *
  * Copyright (C) 1999 Tor Lillqvist
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -29,6 +28,7 @@
 #define LOAD_PROC      "file-psp-load"
 #define SAVE_PROC      "file-psp-save"
 #define PLUG_IN_BINARY "file-psp"
+#define PLUG_IN_ROLE   "gimp-file-psp"
 
 /* set to the level of debugging output you want, 0 for none */
 #define PSP_DEBUG 0
@@ -566,7 +566,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
@@ -578,7 +578,7 @@ query (void)
 #if 0
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
@@ -637,35 +637,21 @@ save_dialog (void)
   GtkWidget *frame;
   gint       run;
 
-  dialog = gimp_dialog_new (_("Save as PSP"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("PSP"), PLUG_IN_BINARY, SAVE_PROC);
 
   /*  file save type  */
   frame = gimp_int_radio_group_new (TRUE, _("Data Compression"),
                                     G_CALLBACK (gimp_radio_button_update),
                                     &psvals.compression, psvals.compression,
 
-                                    _("None"), PSP_COMP_NONE, NULL,
-                                    _("RLE"),  PSP_COMP_RLE,  NULL,
-                                    _("LZ77"), PSP_COMP_LZ77, NULL,
+                                    C_("compression", "None"), PSP_COMP_NONE, NULL,
+                                    _("RLE"),                  PSP_COMP_RLE,  NULL,
+                                    _("LZ77"),                 PSP_COMP_LZ77, NULL,
 
                                     NULL);
 
   gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
                       frame, FALSE, TRUE, 0);
   gtk_widget_show (frame);
 
@@ -853,39 +839,6 @@ try_fseek (FILE  *f,
   return 0;
 }
 
-static gint
-read_extended_data_block (FILE     *f,
-                          gint      image_ID,
-                          guint     total_len,
-                          PSPimage *ia)
-{
-  long    data_start;
-  guchar  buf[4];
-  guint16 keyword;
-  guint32 length;
-
-  data_start = ftell (f);
-
-  while (ftell (f) < data_start + total_len)
-    {
-      if (fread (buf, 4, 1, f) < 1
-          || fread (&keyword, 2, 1, f) < 1
-          || fread (&length, 4, 1, f) < 1)
-        {
-          g_message ("Error reading extended data chunk");
-          return -1;
-        }
-      if (memcmp (buf, "~FL\0", 4) != 0)
-        {
-          g_message ("Invalid extended data chunk header");
-          return -1;
-        }
-      /* TODO Read keyword and assign it to PSPExtendedDataID */
-    }
-
-  return 0;
-}
-
 
 
 static gint
@@ -934,6 +887,7 @@ read_creator_block (FILE     *f,
           if (fread (string, length, 1, f) < 1)
             {
               g_message ("Error reading creator keyword data");
+              g_free (string);
               return -1;
             }
           switch (keyword)
@@ -1011,7 +965,7 @@ read_creator_block (FILE     *f,
                                             GIMP_PARASITE_PERSISTENT,
                                             strlen (comment->str) + 1,
                                             comment->str);
-      gimp_image_parasite_attach(image_ID, comment_parasite);
+      gimp_image_attach_parasite (image_ID, comment_parasite);
       gimp_parasite_free (comment_parasite);
     }
 
@@ -1152,7 +1106,7 @@ channel_type_name (gint type)
   };
   static gchar *err_name = NULL;
 
-  if (type >= 0 && type <= PSP_DIB_THUMBNAIL)
+  if (type >= 0 && type <= PSP_CHANNEL_BLUE)
     return channel_type_names[type];
 
   g_free (err_name);
@@ -1187,7 +1141,7 @@ read_channel_data (FILE       *f,
 {
   gint i, y, width = drawable->width, height = drawable->height;
   gint npixels = width * height;
-  guchar *buf, *p, *q, *endq;
+  guchar *buf;
   guchar *buf2 = NULL;  /* please the compiler */
   guchar runcount, byte;
   z_stream zstream;
@@ -1213,6 +1167,8 @@ read_channel_data (FILE       *f,
           buf = g_malloc (width);
           for (y = 0; y < height; y++)
             {
+              guchar *p, *q;
+
               fread (buf, width, 1, f);
               if (width % 4)
                 fseek (f, 4 - (width % 4), SEEK_CUR);
@@ -1229,41 +1185,45 @@ read_channel_data (FILE       *f,
       break;
 
     case PSP_COMP_RLE:
-      q = pixels[0] + offset;
-      endq = q + npixels * bytespp;
-      buf = g_malloc (127);
-      while (q < endq)
-        {
-          p = buf;
-          fread (&runcount, 1, 1, f);
-          if (runcount > 128)
-            {
-              runcount -= 128;
-              fread (&byte, 1, 1, f);
-              memset (buf, byte, runcount);
-            }
-          else
-            fread (buf, runcount, 1, f);
+      {
+        guchar *q, *endq;
 
-          /* prevent buffer overflow for bogus data */
-          runcount = MIN (runcount, (endq - q) / bytespp);
+        q = pixels[0] + offset;
+        endq = q + npixels * bytespp;
+        buf = g_malloc (127);
+        while (q < endq)
+          {
+            fread (&runcount, 1, 1, f);
+            if (runcount > 128)
+              {
+                runcount -= 128;
+                fread (&byte, 1, 1, f);
+                memset (buf, byte, runcount);
+              }
+            else
+              fread (buf, runcount, 1, f);
 
-          if (bytespp == 1)
-            {
-              memmove (q, buf, runcount);
-              q += runcount;
-            }
-          else
-            {
-              p = buf;
-              for (i = 0; i < runcount; i++)
-                {
-                  *q = *p++;
-                  q += bytespp;
-                }
-            }
-        }
-      g_free (buf);
+            /* prevent buffer overflow for bogus data */
+            runcount = MIN (runcount, (endq - q) / bytespp);
+
+            if (bytespp == 1)
+              {
+                memmove (q, buf, runcount);
+                q += runcount;
+              }
+            else
+              {
+                guchar *p = buf;
+
+                for (i = 0; i < runcount; i++)
+                  {
+                    *q = *p++;
+                    q += bytespp;
+                  }
+              }
+          }
+        g_free (buf);
+      }
       break;
 
     case PSP_COMP_LZ77:
@@ -1298,6 +1258,8 @@ read_channel_data (FILE       *f,
 
       if (bytespp > 1)
         {
+          guchar *p, *q;
+
           p = buf2;
           q = pixels[0] + offset;
           for (i = 0; i < npixels; i++)
@@ -1503,14 +1465,14 @@ read_layer_block (FILE     *f,
 
       g_free (name);
 
-      gimp_image_add_layer (image_ID, layer_ID, -1);
+      gimp_image_insert_layer (image_ID, layer_ID, -1, -1);
 
       if (saved_image_rect[0] != 0 || saved_image_rect[1] != 0)
         gimp_layer_set_offsets (layer_ID,
                                 saved_image_rect[0], saved_image_rect[1]);
 
       if (!visibility)
-        gimp_drawable_set_visible (layer_ID, FALSE);
+        gimp_item_set_visible (layer_ID, FALSE);
 
       gimp_layer_set_lock_alpha (layer_ID, transparency_protected);
 
@@ -1704,7 +1666,7 @@ read_tube_block (FILE     *f,
   pipe_parasite = gimp_parasite_new ("gimp-brush-pipe-parameters",
                                      GIMP_PARASITE_PERSISTENT,
                                      strlen (parasite_text) + 1, parasite_text);
-  gimp_image_parasite_attach (image_ID, pipe_parasite);
+  gimp_image_attach_parasite (image_ID, pipe_parasite);
   gimp_parasite_free (pipe_parasite);
   g_free (parasite_text);
 
@@ -1986,7 +1948,7 @@ run (const gchar      *name,
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image_ID, &drawable_ID, "PSP",
+          export = gimp_export_image (&image_ID, &drawable_ID, NULL,
                                       GIMP_EXPORT_CAN_HANDLE_RGB     |
                                       GIMP_EXPORT_CAN_HANDLE_GRAY    |
                                       GIMP_EXPORT_CAN_HANDLE_INDEXED |

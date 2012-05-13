@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __TOOL_MANAGER_H__
@@ -39,21 +38,25 @@ void       tool_manager_control_active             (Gimp             *gimp,
                                                     GimpToolAction    action,
                                                     GimpDisplay      *display);
 void       tool_manager_button_press_active        (Gimp             *gimp,
-                                                    GimpCoords       *coords,
+                                                    const GimpCoords *coords,
                                                     guint32           time,
                                                     GdkModifierType   state,
+                                                    GimpButtonPressType press_type,
                                                     GimpDisplay      *display);
 void       tool_manager_button_release_active      (Gimp             *gimp,
-                                                    GimpCoords       *coords,
+                                                    const GimpCoords *coords,
                                                     guint32           time,
                                                     GdkModifierType   state,
                                                     GimpDisplay      *display);
 void       tool_manager_motion_active              (Gimp             *gimp,
-                                                    GimpCoords       *coords,
+                                                    const GimpCoords *coords,
                                                     guint32           time,
                                                     GdkModifierType   state,
                                                     GimpDisplay      *display);
 gboolean   tool_manager_key_press_active           (Gimp             *gimp,
+                                                    GdkEventKey      *kevent,
+                                                    GimpDisplay      *display);
+gboolean   tool_manager_key_release_active         (Gimp             *gimp,
                                                     GdkEventKey      *kevent,
                                                     GimpDisplay      *display);
 
@@ -68,14 +71,20 @@ void     tool_manager_active_modifier_state_active (Gimp             *gimp,
                                                     GimpDisplay      *display);
 
 void       tool_manager_oper_update_active         (Gimp             *gimp,
-                                                    GimpCoords       *coords,
+                                                    const GimpCoords *coords,
                                                     GdkModifierType   state,
                                                     gboolean          proximity,
                                                     GimpDisplay      *display);
 void       tool_manager_cursor_update_active       (Gimp             *gimp,
-                                                    GimpCoords       *coords,
+                                                    const GimpCoords *coords,
                                                     GdkModifierType   state,
                                                     GimpDisplay      *display);
+
+GimpUIManager * tool_manager_get_popup_active      (Gimp             *gimp,
+                                                    const GimpCoords *coords,
+                                                    GdkModifierType   state,
+                                                    GimpDisplay      *display,
+                                                    const gchar     **ui_path);
 
 
 #endif  /*  __TOOL_MANAGER_H__  */

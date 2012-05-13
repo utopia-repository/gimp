@@ -37,51 +37,52 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpIntComboBox.top_of_page"></a>GimpIntComboBox</span></h2>
-<p>GimpIntComboBox — A widget providing a popup menu of integer values (e.g. enums).</p>
+<p>GimpIntComboBox — A widget providing a popup menu of integer
+                    values (e.g. enums).</p>
 </td>
 <td valign="top" align="right"><img src="gimp-int-combo-box.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="GimpIntComboBox.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpIntComboBox.html#GimpIntComboBox-struct" title="GimpIntComboBox">GimpIntComboBox</a>;
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (<a class="link" href="GimpIntComboBox.html#GimpIntSensitivityFunc" title="GimpIntSensitivityFunc ()">*GimpIntSensitivityFunc</a>)           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new" title="gimp_int_combo_box_new ()">gimp_int_combo_box_new</a>              (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *first_label</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> first_value</code></em>,
+<span class="returnvalue">gboolean</span>            (<a class="link" href="GimpIntComboBox.html#GimpIntSensitivityFunc" title="GimpIntSensitivityFunc ()">*GimpIntSensitivityFunc</a>)           (<em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new" title="gimp_int_combo_box_new ()">gimp_int_combo_box_new</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *first_label</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> first_value</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new-valist" title="gimp_int_combo_box_new_valist ()">gimp_int_combo_box_new_valist</a>       (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *first_label</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> first_value</code></em>,
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new-valist" title="gimp_int_combo_box_new_valist ()">gimp_int_combo_box_new_valist</a>       (<em class="parameter"><code>const <span class="type">gchar</span> *first_label</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> first_value</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> values</code></em>);
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new-array" title="gimp_int_combo_box_new_array ()">gimp_int_combo_box_new_array</a>        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *labels[]</code></em>);
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new-array" title="gimp_int_combo_box_new_array ()">gimp_int_combo_box_new_array</a>        (<em class="parameter"><code><span class="type">gint</span> n_values</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *labels[]</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-prepend" title="gimp_int_combo_box_prepend ()">gimp_int_combo_box_prepend</a>          (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-append" title="gimp_int_combo_box_append ()">gimp_int_combo_box_append</a>           (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-set-active" title="gimp_int_combo_box_set_active ()">gimp_int_combo_box_set_active</a>       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-get-active" title="gimp_int_combo_box_get_active ()">gimp_int_combo_box_get_active</a>       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *value</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-connect" title="gimp_int_combo_box_connect ()">gimp_int_combo_box_connect</a>          (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Closures.html#GCallback"><span class="type">GCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-set-active" title="gimp_int_combo_box_set_active ()">gimp_int_combo_box_set_active</a>       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-get-active" title="gimp_int_combo_box_get_active ()">gimp_int_combo_box_get_active</a>       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *value</code></em>);
+<span class="returnvalue">gulong</span>              <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-connect" title="gimp_int_combo_box_connect ()">gimp_int_combo_box_connect</a>          (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCallback</span> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-set-sensitivity" title="gimp_int_combo_box_set_sensitivity ()">gimp_int_combo_box_set_sensitivity</a>  (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpIntComboBox.html#GimpIntSensitivityFunc" title="GimpIntSensitivityFunc ()"><span class="type">GimpIntSensitivityFunc</span></a> func</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> destroy</code></em>);
+                                                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                                         <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpIntComboBox.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
-               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
-                     +----<a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
-                           +----<a href="http://library.gnome.org/devel/gtk3/GtkBin.html">GtkBin</a>
-                                 +----<a href="http://library.gnome.org/devel/gtk3/GtkComboBox.html">GtkComboBox</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBin
+                                 +----GtkComboBox
                                        +----GimpIntComboBox
                                              +----<a class="link" href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a>
 </pre>
@@ -90,12 +91,12 @@
 <a name="GimpIntComboBox.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpIntComboBox implements
- AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>,  <a href="http://library.gnome.org/devel/gtk3/GtkCellLayout.html">GtkCellLayout</a> and  <a href="http://library.gnome.org/devel/gtk3/GtkCellEditable.html">GtkCellEditable</a>.</p>
+ AtkImplementorIface,  GtkBuildable,  GtkCellLayout and  GtkCellEditable.</p>
 </div>
 <div class="refsect1">
 <a name="GimpIntComboBox.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpIntComboBox.html#GimpIntComboBox--ellipsize" title='The "ellipsize" property'>ellipsize</a>"                <a href="/usr/share/gtk-doc/html/pango/pango-Layout-Objects.html#PangoEllipsizeMode"><span class="type">PangoEllipsizeMode</span></a>    : Read / Write
+  "<a class="link" href="GimpIntComboBox.html#GimpIntComboBox--ellipsize" title='The "ellipsize" property'>ellipsize</a>"                <span class="type">PangoEllipsizeMode</span>    : Read / Write
 </pre>
 </div>
 <div class="refsect1">
@@ -115,20 +116,20 @@ A widget providing a popup menu of integer values (e.g. enums).
 <hr>
 <div class="refsect2">
 <a name="GimpIntSensitivityFunc"></a><h3>GimpIntSensitivityFunc ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (*GimpIntSensitivityFunc)           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            (*GimpIntSensitivityFunc)           (<em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gimp-int-combo-box-new"></a><h3>gimp_int_combo_box_new ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_int_combo_box_new              (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *first_label</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> first_value</code></em>,
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_int_combo_box_new              (<em class="parameter"><code>const <span class="type">gchar</span> *first_label</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> first_value</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Creates a GtkComboBox that has integer values associated with each
-item. The items to fill the combo box with are specified as a <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+item. The items to fill the combo box with are specified as a <code class="literal">NULL</code>
 terminated list of label/value pairs.
 </p>
 <p>
@@ -148,7 +149,7 @@ g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL).
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> terminated list of more label, value pairs</td>
+<td>a <code class="literal">NULL</code> terminated list of more label, value pairs</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -161,8 +162,8 @@ g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL).
 <hr>
 <div class="refsect2">
 <a name="gimp-int-combo-box-new-valist"></a><h3>gimp_int_combo_box_new_valist ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_int_combo_box_new_valist       (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *first_label</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> first_value</code></em>,
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_int_combo_box_new_valist       (<em class="parameter"><code>const <span class="type">gchar</span> *first_label</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> first_value</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> values</code></em>);</pre>
 <p>
 A variant of <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new" title="gimp_int_combo_box_new ()"><code class="function">gimp_int_combo_box_new()</code></a> that takes a va_list of
@@ -194,8 +195,8 @@ label/value pairs. Probably only useful for language bindings.
 <hr>
 <div class="refsect2">
 <a name="gimp-int-combo-box-new-array"></a><h3>gimp_int_combo_box_new_array ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_int_combo_box_new_array        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *labels[]</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_int_combo_box_new_array        (<em class="parameter"><code><span class="type">gint</span> n_values</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *labels[]</code></em>);</pre>
 <p>
 A variant of <a class="link" href="GimpIntComboBox.html#gimp-int-combo-box-new" title="gimp_int_combo_box_new ()"><code class="function">gimp_int_combo_box_new()</code></a> that takes an array of labels.
 The array indices are used as values.
@@ -227,7 +228,7 @@ The array indices are used as values.
 <p>
 This function provides a convenient way to prepend items to a
 <a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>. It prepends a row to the <em class="parameter"><code>combo_box</code></em>'s list store
-and calls <a href="http://library.gnome.org/devel/gtk3/GtkListStore.html#gtk-list-store-set"><code class="function">gtk_list_store_set()</code></a> for you.
+and calls <code class="function">gtk_list_store_set()</code> for you.
 </p>
 <p>
 The column number must be taken from the enum <a class="link" href="GimpIntStore.html#GimpIntStoreColumns" title="enum GimpIntStoreColumns"><span class="type">GimpIntStoreColumns</span></a>.
@@ -256,7 +257,7 @@ The column number must be taken from the enum <a class="link" href="GimpIntStore
 <p>
 This function provides a convenient way to append items to a
 <a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a>. It appends a row to the <em class="parameter"><code>combo_box</code></em>'s list store
-and calls <a href="http://library.gnome.org/devel/gtk3/GtkListStore.html#gtk-list-store-set"><code class="function">gtk_list_store_set()</code></a> for you.
+and calls <code class="function">gtk_list_store_set()</code> for you.
 </p>
 <p>
 The column number must be taken from the enum <a class="link" href="GimpIntStore.html#GimpIntStoreColumns" title="enum GimpIntStoreColumns"><span class="type">GimpIntStoreColumns</span></a>.
@@ -280,8 +281,8 @@ The column number must be taken from the enum <a class="link" href="GimpIntStore
 <hr>
 <div class="refsect2">
 <a name="gimp-int-combo-box-set-active"></a><h3>gimp_int_combo_box_set_active ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_int_combo_box_set_active       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_int_combo_box_set_active       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>);</pre>
 <p>
 Looks up the item that belongs to the given <em class="parameter"><code>value</code></em> and makes it the
 selected item in the <em class="parameter"><code>combo_box</code></em>.
@@ -301,7 +302,7 @@ selected item in the <em class="parameter"><code>combo_box</code></em>.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if there was no item for
+<code class="literal">TRUE</code> on success or <code class="literal">FALSE</code> if there was no item for
 this value.</td>
 </tr>
 </tbody>
@@ -311,8 +312,8 @@ this value.</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-int-combo-box-get-active"></a><h3>gimp_int_combo_box_get_active ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_int_combo_box_get_active       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *value</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_int_combo_box_get_active       (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *value</code></em>);</pre>
 <p>
 Retrieves the value of the selected (active) item in the <em class="parameter"><code>combo_box</code></em>.
 </p>
@@ -331,7 +332,7 @@ Retrieves the value of the selected (active) item in the <em class="parameter"><
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>value</code></em> has been set or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if no item was
+<code class="literal">TRUE</code> if <em class="parameter"><code>value</code></em> has been set or <code class="literal">FALSE</code> if no item was
 active.</td>
 </tr>
 </tbody>
@@ -341,10 +342,10 @@ active.</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-int-combo-box-connect"></a><h3>gimp_int_combo_box_connect ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              gimp_int_combo_box_connect          (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Closures.html#GCallback"><span class="type">GCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gulong</span>              gimp_int_combo_box_connect          (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCallback</span> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>
 A convenience function that sets the inital <em class="parameter"><code>value</code></em> of a
 <a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> and connects <em class="parameter"><code>callback</code></em> to the "changed"
@@ -354,7 +355,7 @@ signal.
 This function also calls the <em class="parameter"><code>callback</code></em> once after setting the
 initial <em class="parameter"><code>value</code></em>. This is often convenient when working with combo
 boxes that select a default active item, like for example
-<a href="/usr/share/gtk-doc/html/libgimp/libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new"><code class="function">gimp_drawable_combo_box_new()</code></a>. If you pass an invalid initial
+<a href="/local/head/share/gtk-doc/html/libgimp/libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new"><code class="function">gimp_drawable_combo_box_new()</code></a>. If you pass an invalid initial
 <em class="parameter"><code>value</code></em>, the <em class="parameter"><code>callback</code></em> will be called with the default item active.
 </p>
 <div class="variablelist"><table border="0">
@@ -375,12 +376,12 @@ boxes that select a default active item, like for example
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>a pointer passed as data to <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-connect"><code class="function">g_signal_connect()</code></a>
+<td>a pointer passed as data to <code class="function">g_signal_connect()</code>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the signal handler ID as returned by <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-connect"><code class="function">g_signal_connect()</code></a>
+<td>the signal handler ID as returned by <code class="function">g_signal_connect()</code>
 </td>
 </tr>
 </tbody>
@@ -392,15 +393,15 @@ boxes that select a default active item, like for example
 <a name="gimp-int-combo-box-set-sensitivity"></a><h3>gimp_int_combo_box_set_sensitivity ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_int_combo_box_set_sensitivity  (<em class="parameter"><code><a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> *combo_box</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpIntComboBox.html#GimpIntSensitivityFunc" title="GimpIntSensitivityFunc ()"><span class="type">GimpIntSensitivityFunc</span></a> func</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> destroy</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                                         <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>
 Sets a function that is used to decide about the sensitivity of
 rows in the <em class="parameter"><code>combo_box</code></em>. Use this if you want to set certain rows
 insensitive.
 </p>
 <p>
-Calling <a href="http://library.gnome.org/devel/gtk3/GtkWidget.html#gtk-widget-queue-draw"><code class="function">gtk_widget_queue_draw()</code></a> on the <em class="parameter"><code>combo_box</code></em> will cause the
+Calling <code class="function">gtk_widget_queue_draw()</code> on the <em class="parameter"><code>combo_box</code></em> will cause the
 sensitivity to be updated.
 </p>
 <div class="variablelist"><table border="0">
@@ -413,7 +414,7 @@ sensitivity to be updated.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>func</code></em> :</span></p></td>
-<td>a function that returns a boolean value, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> to unset</td>
+<td>a function that returns a boolean value, or <code class="literal">NULL</code> to unset</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -434,7 +435,7 @@ sensitivity to be updated.
 <a name="GimpIntComboBox.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpIntComboBox--ellipsize"></a><h3>The <code class="literal">"ellipsize"</code> property</h3>
-<pre class="programlisting">  "ellipsize"                <a href="/usr/share/gtk-doc/html/pango/pango-Layout-Objects.html#PangoEllipsizeMode"><span class="type">PangoEllipsizeMode</span></a>    : Read / Write</pre>
+<pre class="programlisting">  "ellipsize"                <span class="type">PangoEllipsizeMode</span>    : Read / Write</pre>
 <p>
 Specifies the preferred place to ellipsize text in the combo-box,
 if the cell renderer does not have enough room to display the

@@ -4,9 +4,9 @@
  * E-mail: tomb@gimp.org
  * You can contact the original GIMP authors at gimp@xcf.berkeley.edu
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * In other words, you can't sue me for whatever happens while using this ;)
  *
@@ -30,6 +29,8 @@
  * This plug-in implements the Line Integral Convolution (LIC) as described in
  * Cabral et al. "Imaging vector fields using line integral convolution" in the
  * Proceedings of ACM SIGGRAPH 93. Publ. by ACM, New York, NY, USA. p. 263-270.
+ * (See http://www8.cs.umu.se/kurser/TDBD13/VT00/extra/p263-cabral.pdf)
+ *
  * Some of the code is based on code by Steinar Haugen (thanks!), the Perlin
  * noise function is practically ripped as is :)
  */
@@ -51,6 +52,7 @@
 
 #define PLUG_IN_PROC   "plug-in-lic"
 #define PLUG_IN_BINARY "van-gogh-lic"
+#define PLUG_IN_ROLE   "gimp-van-gogh-lic"
 
 typedef enum
 {
@@ -550,6 +552,7 @@ compute_lic (GimpDrawable *drawable,
 
       gimp_progress_update ((gfloat) ycount / (gfloat) src_rgn.h);
     }
+  gimp_progress_update (1.0);
 }
 
 static void
@@ -638,7 +641,7 @@ create_main_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Van Gogh (LIC)"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Van Gogh (LIC)"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -654,12 +657,13 @@ create_main_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -673,7 +677,7 @@ create_main_dialog (void)
                                     _("_Brightness"), 2, NULL,
 
                                     NULL);
-  gtk_container_add (GTK_CONTAINER (hbox), frame);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   frame = gimp_int_radio_group_new (TRUE, _("Effect Operator"),
@@ -685,7 +689,7 @@ create_main_dialog (void)
                                     _("_Gradient"),   1, NULL,
 
                                     NULL);
-  gtk_container_add (GTK_CONTAINER (hbox), frame);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   frame = gimp_int_radio_group_new (TRUE, _("Convolve"),
@@ -697,7 +701,7 @@ create_main_dialog (void)
                                     _("W_ith source image"), 1, NULL,
 
                                     NULL);
-  gtk_container_add (GTK_CONTAINER (hbox), frame);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   /* Effect image menu */
@@ -800,7 +804,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive"    },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0) }"    },
     { GIMP_PDB_IMAGE,    "image",    "Input image"    },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
   };

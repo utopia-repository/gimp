@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
-<link rel="prev" href="GimpUnitMenu.html" title="GimpUnitMenu">
+<link rel="prev" href="GimpUnitComboBox.html" title="GimpUnitComboBox">
 <link rel="next" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="GimpUnitMenu.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="GimpUnitComboBox.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
@@ -37,7 +37,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpZoomModel.top_of_page"></a>GimpZoomModel</span></h2>
-<p>GimpZoomModel</p>
+<p>GimpZoomModel — A model for zoom values.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -47,48 +47,49 @@
 enum                <a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType">GimpZoomType</a>;
 <a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="returnvalue">GimpZoomModel</span></a> *     <a class="link" href="GimpZoomModel.html#gimp-zoom-model-new" title="gimp_zoom_model_new ()">gimp_zoom_model_new</a>                 (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpZoomModel.html#gimp-zoom-model-set-range" title="gimp_zoom_model_set_range ()">gimp_zoom_model_set_range</a>           (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> min</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> max</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> min</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> max</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpZoomModel.html#gimp-zoom-model-zoom" title="gimp_zoom_model_zoom ()">gimp_zoom_model_zoom</a>                (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> scale</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="GimpZoomModel.html#gimp-zoom-model-get-factor" title="gimp_zoom_model_get_factor ()">gimp_zoom_model_get_factor</a>          (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> scale</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="GimpZoomModel.html#gimp-zoom-model-get-factor" title="gimp_zoom_model_get_factor ()">gimp_zoom_model_get_factor</a>          (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpZoomModel.html#gimp-zoom-model-get-fraction" title="gimp_zoom_model_get_fraction ()">gimp_zoom_model_get_fraction</a>        (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *numerator</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *denominator</code></em>);
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpZoomModel.html#gimp-zoom-button-new" title="gimp_zoom_button_new ()">gimp_zoom_button_new</a>                (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *numerator</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *denominator</code></em>);
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpZoomModel.html#gimp-zoom-button-new" title="gimp_zoom_button_new ()">gimp_zoom_button_new</a>                (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/gtk-Themeable-Stock-Images.html#GtkIconSize"><span class="type">GtkIconSize</span></a> icon_size</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="GimpZoomModel.html#gimp-zoom-model-zoom-step" title="gimp_zoom_model_zoom_step ()">gimp_zoom_model_zoom_step</a>           (<em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> scale</code></em>);
+                                                         <em class="parameter"><code><span class="type">GtkIconSize</span> icon_size</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="GimpZoomModel.html#gimp-zoom-model-zoom-step" title="gimp_zoom_model_zoom_step ()">gimp_zoom_model_zoom_step</a>           (<em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> scale</code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpZoomModel.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+  GObject
    +----GimpZoomModel
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpZoomModel.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--fraction" title='The "fraction" property'>fraction</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read
-  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--maximum" title='The "maximum" property'>maximum</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write
-  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--minimum" title='The "minimum" property'>minimum</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write
-  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--percentage" title='The "percentage" property'>percentage</a>"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read
-  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--value" title='The "value" property'>value</a>"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write
+  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--fraction" title='The "fraction" property'>fraction</a>"                 <span class="type">gchar</span>*                : Read
+  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--maximum" title='The "maximum" property'>maximum</a>"                  <span class="type">gdouble</span>               : Read / Write
+  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--minimum" title='The "minimum" property'>minimum</a>"                  <span class="type">gdouble</span>               : Read / Write
+  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--percentage" title='The "percentage" property'>percentage</a>"               <span class="type">gchar</span>*                : Read
+  "<a class="link" href="GimpZoomModel.html#GimpZoomModel--value" title='The "value" property'>value</a>"                    <span class="type">gdouble</span>               : Read / Write
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpZoomModel.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpZoomModel.html#GimpZoomModel-zoomed" title='The "zoomed" signal'>zoomed</a>"                                         : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="GimpZoomModel.html#GimpZoomModel-zoomed" title='The "zoomed" signal'>zoomed</a>"                                         : <code class="literal">Run Last</code>
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpZoomModel.description"></a><h2>Description</h2>
 <p>
+A model for zoom values.
 </p>
 </div>
 <div class="refsect1">
@@ -113,7 +114,48 @@ enum                <a class="link" href="GimpZoomModel.html#GimpZoomType" title
 } GimpZoomType;
 </pre>
 <p>
+the zoom types for <a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a>.
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GIMP-ZOOM-IN:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_IN</code></span></p></td>
+<td>zoom in
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ZOOM-OUT:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_OUT</code></span></p></td>
+<td>zoom out
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ZOOM-IN-MORE:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_IN_MORE</code></span></p></td>
+<td>zoom in a lot
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ZOOM-OUT-MORE:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_OUT_MORE</code></span></p></td>
+<td>zoom out a lot
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ZOOM-IN-MAX:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_IN_MAX</code></span></p></td>
+<td>zoom in as far as possible
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ZOOM-OUT-MAX:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_OUT_MAX</code></span></p></td>
+<td>zoom out as far as possible
+</td>
+</tr>
+<tr>
+<td><p><a name="GIMP-ZOOM-TO:CAPS"></a><span class="term"><code class="literal">GIMP_ZOOM_TO</code></span></p></td>
+<td>zoom to a specific zoom factor
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -135,8 +177,8 @@ Since GIMP 2.4</td>
 <div class="refsect2">
 <a name="gimp-zoom-model-set-range"></a><h3>gimp_zoom_model_set_range ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_zoom_model_set_range           (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> min</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> max</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> min</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> max</code></em>);</pre>
 <p>
 Sets the allowed range of the <em class="parameter"><code>model</code></em>.
 </p>
@@ -167,7 +209,7 @@ Since GIMP 2.4
 <a name="gimp-zoom-model-zoom"></a><h3>gimp_zoom_model_zoom ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_zoom_model_zoom                (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> scale</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> scale</code></em>);</pre>
 <p>
 Since GIMP 2.4
 </p>
@@ -186,7 +228,7 @@ Since GIMP 2.4
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
-<td>ignored unless <em class="parameter"><code>zoom_type</code></em> == <code class="literal">GIMP_ZOOM_TO</code>
+<td>ignored unless <em class="parameter"><code>zoom_type</code></em> == <a class="link" href="GimpZoomModel.html#GIMP-ZOOM-TO:CAPS"><code class="literal">GIMP_ZOOM_TO</code></a>
 </td>
 </tr>
 </tbody>
@@ -195,7 +237,7 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2">
 <a name="gimp-zoom-model-get-factor"></a><h3>gimp_zoom_model_get_factor ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gimp_zoom_model_get_factor          (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_zoom_model_get_factor          (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>);</pre>
 <p>
 Retrieves the current zoom factor of <em class="parameter"><code>model</code></em>.
 </p>
@@ -219,8 +261,8 @@ Since GIMP 2.4</td>
 <div class="refsect2">
 <a name="gimp-zoom-model-get-fraction"></a><h3>gimp_zoom_model_get_fraction ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_zoom_model_get_fraction        (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *numerator</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *denominator</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gint</span> *numerator</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *denominator</code></em>);</pre>
 <p>
 Retrieves the current zoom factor of <em class="parameter"><code>model</code></em> as a fraction.
 </p>
@@ -249,9 +291,9 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2">
 <a name="gimp-zoom-button-new"></a><h3>gimp_zoom_button_new ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_zoom_button_new                (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_zoom_button_new                (<em class="parameter"><code><a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gtk3/gtk-Themeable-Stock-Images.html#GtkIconSize"><span class="type">GtkIconSize</span></a> icon_size</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GtkIconSize</span> icon_size</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -275,8 +317,8 @@ Since GIMP 2.4</td>
 <hr>
 <div class="refsect2">
 <a name="gimp-zoom-model-zoom-step"></a><h3>gimp_zoom_model_zoom_step ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gimp_zoom_model_zoom_step           (<em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> scale</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_zoom_model_zoom_step           (<em class="parameter"><code><a class="link" href="GimpZoomModel.html#GimpZoomType" title="enum GimpZoomType"><span class="type">GimpZoomType</span></a> zoom_type</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> scale</code></em>);</pre>
 <p>
 Utility function to calculate a new scale factor.
 </p>
@@ -284,8 +326,12 @@ Utility function to calculate a new scale factor.
 <col align="left" valign="top">
 <tbody>
 <tr>
+<td><p><span class="term"><em class="parameter"><code>zoom_type</code></em> :</span></p></td>
+<td>the zoom type</td>
+</tr>
+<tr>
 <td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
-<td>ignored unless <em class="parameter"><code>zoom_type</code></em> == <code class="literal">GIMP_ZOOM_TO</code>
+<td>ignored unless <em class="parameter"><code>zoom_type</code></em> == <a class="link" href="GimpZoomModel.html#GIMP-ZOOM-TO:CAPS"><code class="literal">GIMP_ZOOM_TO</code></a>
 </td>
 </tr>
 <tr>
@@ -301,14 +347,14 @@ Since GIMP 2.4</td>
 <a name="GimpZoomModel.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GimpZoomModel--fraction"></a><h3>The <code class="literal">"fraction"</code> property</h3>
-<pre class="programlisting">  "fraction"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read</pre>
+<pre class="programlisting">  "fraction"                 <span class="type">gchar</span>*                : Read</pre>
 <p></p>
 <p>Default value: "1:1"</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpZoomModel--maximum"></a><h3>The <code class="literal">"maximum"</code> property</h3>
-<pre class="programlisting">  "maximum"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write</pre>
+<pre class="programlisting">  "maximum"                  <span class="type">gdouble</span>               : Read / Write</pre>
 <p></p>
 <p>Allowed values: [0.00390625,256]</p>
 <p>Default value: 256</p>
@@ -316,7 +362,7 @@ Since GIMP 2.4</td>
 <hr>
 <div class="refsect2">
 <a name="GimpZoomModel--minimum"></a><h3>The <code class="literal">"minimum"</code> property</h3>
-<pre class="programlisting">  "minimum"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write</pre>
+<pre class="programlisting">  "minimum"                  <span class="type">gdouble</span>               : Read / Write</pre>
 <p></p>
 <p>Allowed values: [0.00390625,256]</p>
 <p>Default value: 0.00390625</p>
@@ -324,14 +370,14 @@ Since GIMP 2.4</td>
 <hr>
 <div class="refsect2">
 <a name="GimpZoomModel--percentage"></a><h3>The <code class="literal">"percentage"</code> property</h3>
-<pre class="programlisting">  "percentage"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read</pre>
+<pre class="programlisting">  "percentage"               <span class="type">gchar</span>*                : Read</pre>
 <p></p>
 <p>Default value: "100%"</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GimpZoomModel--value"></a><h3>The <code class="literal">"value"</code> property</h3>
-<pre class="programlisting">  "value"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write</pre>
+<pre class="programlisting">  "value"                    <span class="type">gdouble</span>               : Read / Write</pre>
 <p></p>
 <p>Allowed values: [0.00390625,256]</p>
 <p>Default value: 1</p>
@@ -342,9 +388,9 @@ Since GIMP 2.4</td>
 <div class="refsect2">
 <a name="GimpZoomModel-zoomed"></a><h3>The <code class="literal">"zoomed"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpZoomModel.html" title="GimpZoomModel"><span class="type">GimpZoomModel</span></a> *model,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>        old_factor,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>        new_factor,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+                                                        <span class="type">gdouble</span>        old_factor,
+                                                        <span class="type">gdouble</span>        new_factor,
+                                                        <span class="type">gpointer</span>       user_data)       : <code class="literal">Run Last</code></pre>
 <p>
 Emitted when the zoom factor of the zoom model changes.
 </p>

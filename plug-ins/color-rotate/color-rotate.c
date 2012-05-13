@@ -9,9 +9,9 @@
  *                    Based on code from Pavel Grinfeld (pavel@ml.com)
  *
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,8 +20,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*----------------------------------------------------------------------------
@@ -90,7 +89,7 @@ query (void)
 {
   GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive"          },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"          },
     { GIMP_PDB_IMAGE,    "image",    "Input image (used for indexed images)" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"                        },
   };
@@ -119,7 +118,7 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  GimpParam         values[1];
+  static GimpParam  values[1];
   GimpPDBStatusType status = GIMP_PDB_SUCCESS;
 
   *nreturn_vals = 1;
@@ -242,37 +241,44 @@ color_rotate (GimpDrawable *drawable)
   gint         bytes;
   guchar      *src_row, *dest_row;
   gint         row;
-  gint         x1, y1, x2, y2;
+  gint         x, y;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-
-  width  = drawable->width;
-  height = drawable->height;
-  bytes  = drawable->bpp;
-
-  src_row  = g_new (guchar, (x2 - x1) * bytes);
-  dest_row = g_new (guchar, (x2 - x1) * bytes);
-
-  gimp_pixel_rgn_init (&srcPR, drawable, 0, 0, width, height, FALSE, FALSE);
-  gimp_pixel_rgn_init (&destPR, drawable, 0, 0, width, height, TRUE, TRUE);
-
-  for (row = y1; row < y2; row++)
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x, &y, &width, &height))
     {
-      gimp_pixel_rgn_get_row (&srcPR, src_row, x1, row, (x2 - x1));
+      return;
+    }
 
-      color_rotate_row (src_row, dest_row, row, (x2 - x1), bytes);
+  bytes = drawable->bpp;
 
-      gimp_pixel_rgn_set_row (&destPR, dest_row, x1, row, (x2 - x1));
+  src_row  = g_new (guchar, width * bytes);
+  dest_row = g_new (guchar, width * bytes);
+
+  gimp_pixel_rgn_init (&srcPR, drawable, 0, 0,
+                       drawable->width,
+                       drawable->height, FALSE, FALSE);
+  gimp_pixel_rgn_init (&destPR, drawable, 0, 0,
+                       drawable->width,
+                       drawable->height, TRUE, TRUE);
+
+  for (row = y; row < (y + height); row++)
+    {
+      gimp_pixel_rgn_get_row (&srcPR, src_row, x, row, width);
+
+      color_rotate_row (src_row, dest_row, row, width, bytes);
+
+      gimp_pixel_rgn_set_row (&destPR, dest_row, x, row, width);
 
       if ((row % 10) == 0)
-        gimp_progress_update ((double) row / (double) (y2 - y1));
+        gimp_progress_update ((double) row / (double) height);
     }
 
   /*  update the processed region  */
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
-  gimp_drawable_update (drawable->drawable_id, x1, y1, (x2 - x1), (y2 - y1));
+  gimp_drawable_update (drawable->drawable_id, x, y, width, height);
 
   g_free (src_row);
   g_free (dest_row);

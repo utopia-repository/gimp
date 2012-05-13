@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,10 +12,13 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#error "Only <libgimpbase/gimpbase.h> can be included directly."
+#endif
 
 #ifndef __GIMP_CHECKS_H__
 #define __GIMP_CHECKS_H__
@@ -23,15 +26,36 @@
 G_BEGIN_DECLS
 
 
-/*  the default size of the checks which indicate transparency ...
- */
-#define GIMP_CHECK_SIZE      8
-#define GIMP_CHECK_SIZE_SM   4
+/**
+ * GIMP_CHECK_SIZE:
+ *
+ * The default checkerboard size in pixels. This is configurable in
+ * the core but GIMP plug-ins can't access the user preference and
+ * should use this constant instead.
+ **/
+#define GIMP_CHECK_SIZE     8
 
-/*  ... and their default shades
- */
-#define GIMP_CHECK_DARK      0.4
-#define GIMP_CHECK_LIGHT     0.6
+/**
+ * GIMP_CHECK_SIZE_SM:
+ *
+ * The default small checkerboard size in pixels.
+ **/
+#define GIMP_CHECK_SIZE_SM  4
+
+
+/**
+ * GIMP_CHECK_DARK:
+ *
+ * The dark gray value for the default checkerboard pattern.
+ **/
+#define GIMP_CHECK_DARK   0.4
+
+/**
+ * GIMP_CHECK_LIGHT:
+ *
+ * The dark light value for the default checkerboard pattern.
+ **/
+#define GIMP_CHECK_LIGHT  0.6
 
 
 void  gimp_checks_get_shades (GimpCheckType  type,

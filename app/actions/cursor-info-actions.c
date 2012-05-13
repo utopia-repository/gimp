@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,8 +24,9 @@
 #include "actions-types.h"
 
 #include "widgets/gimpactiongroup.h"
-#include "widgets/gimpcursorview.h"
 #include "widgets/gimphelp-ids.h"
+
+#include "display/gimpcursorview.h"
 
 #include "cursor-info-actions.h"
 #include "cursor-info-commands.h"
@@ -37,15 +37,15 @@
 static const GimpActionEntry cursor_info_actions[] =
 {
   { "cursor-info-popup", GIMP_STOCK_CURSOR,
-    N_("Pointer Information Menu"), NULL, NULL, NULL,
+    NC_("cursor-info-action", "Pointer Information Menu"), NULL, NULL, NULL,
     GIMP_HELP_POINTER_INFO_DIALOG }
 };
 
 static const GimpToggleActionEntry cursor_info_toggle_actions[] =
 {
   { "cursor-info-sample-merged", NULL,
-    N_("_Sample Merged"), "",
-    N_("Sample Merged"),
+    NC_("cursor-info-action", "_Sample Merged"), "",
+    NC_("cursor-info-action", "Use the composite color of all visible layers"),
     G_CALLBACK (cursor_info_sample_merged_cmd_callback),
     TRUE,
     GIMP_HELP_POINTER_INFO_SAMPLE_MERGED }
@@ -55,11 +55,11 @@ static const GimpToggleActionEntry cursor_info_toggle_actions[] =
 void
 cursor_info_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "cursor-info-action",
                                  cursor_info_actions,
                                  G_N_ELEMENTS (cursor_info_actions));
 
-  gimp_action_group_add_toggle_actions (group,
+  gimp_action_group_add_toggle_actions (group, "cursor-info-action",
                                         cursor_info_toggle_actions,
                                         G_N_ELEMENTS (cursor_info_toggle_actions));
 }

@@ -3,9 +3,9 @@
  *
  * gimpplugin-progress.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -156,7 +155,9 @@ gimp_plug_in_progress_end (GimpPlugIn          *plug_in,
 
       if (gimp_plug_in_progress_detach (proc_frame->progress) < 1 &&
           gimp_progress_is_active (proc_frame->progress))
-        gimp_progress_end (proc_frame->progress);
+        {
+          gimp_progress_end (proc_frame->progress);
+        }
 
       if (proc_frame->progress_created)
         {
@@ -223,7 +224,7 @@ gimp_plug_in_progress_pulse (GimpPlugIn *plug_in)
 }
 
 guint32
-gimp_plug_in_progress_get_window (GimpPlugIn *plug_in)
+gimp_plug_in_progress_get_window_id (GimpPlugIn *plug_in)
 {
   GimpPlugInProcFrame *proc_frame;
 
@@ -232,7 +233,7 @@ gimp_plug_in_progress_get_window (GimpPlugIn *plug_in)
   proc_frame = gimp_plug_in_get_proc_frame (plug_in);
 
   if (proc_frame->progress)
-    return gimp_progress_get_window (proc_frame->progress);
+    return gimp_progress_get_window_id (proc_frame->progress);
 
   return 0;
 }
@@ -326,7 +327,7 @@ get_cancel_return_values (GimpProcedure *procedure)
   GValueArray *return_vals;
   GError      *error;
 
-  error = g_error_new_literal (GIMP_PDB_ERROR, GIMP_PDB_CANCELLED,
+  error = g_error_new_literal (GIMP_PDB_ERROR, GIMP_PDB_ERROR_CANCELLED,
                                _("Cancelled"));
   return_vals = gimp_procedure_get_return_values (procedure, FALSE, error);
   g_error_free (error);

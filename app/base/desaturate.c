@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <cairo.h>
 #include <glib-object.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -51,15 +51,18 @@ desaturate_region (GimpDesaturateMode *mode,
   switch (*mode)
     {
     case GIMP_DESATURATE_LIGHTNESS:
-      desaturate_region_lightness (srcPR, destPR, srcPR->bytes == 4);
+      desaturate_region_lightness (srcPR, destPR,
+                                   pixel_region_has_alpha (srcPR));
       break;
 
     case GIMP_DESATURATE_LUMINOSITY:
-      desaturate_region_luminosity (srcPR, destPR, srcPR->bytes == 4);
+      desaturate_region_luminosity (srcPR, destPR,
+                                    pixel_region_has_alpha (srcPR));
       break;
 
     case GIMP_DESATURATE_AVERAGE:
-      desaturate_region_average (srcPR, destPR, srcPR->bytes == 4);
+      desaturate_region_average (srcPR, destPR,
+                                 pixel_region_has_alpha (srcPR));
       break;
     }
 }
@@ -84,19 +87,19 @@ desaturate_region_lightness (PixelRegion    *srcPR,
           gint min, max;
           gint lightness;
 
-          max = MAX (s[RED_PIX], s[GREEN_PIX]);
-          max = MAX (max, s[BLUE_PIX]);
-          min = MIN (s[RED_PIX], s[GREEN_PIX]);
-          min = MIN (min, s[BLUE_PIX]);
+          max = MAX (s[RED], s[GREEN]);
+          max = MAX (max, s[BLUE]);
+          min = MIN (s[RED], s[GREEN]);
+          min = MIN (min, s[BLUE]);
 
           lightness = (max + min) / 2;
 
-          d[RED_PIX]   = lightness;
-          d[GREEN_PIX] = lightness;
-          d[BLUE_PIX]  = lightness;
+          d[RED]   = lightness;
+          d[GREEN] = lightness;
+          d[BLUE]  = lightness;
 
           if (has_alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
+            d[ALPHA] = s[ALPHA];
 
           d += destPR->bytes;
           s += srcPR->bytes;
@@ -124,16 +127,16 @@ desaturate_region_luminosity (PixelRegion    *srcPR,
 
       for (j = 0; j < srcPR->w; j++)
         {
-          gint luminosity = GIMP_RGB_LUMINANCE (s[RED_PIX],
-                                                s[GREEN_PIX],
-                                                s[BLUE_PIX]) + 0.5;
+          gint luminosity = GIMP_RGB_LUMINANCE (s[RED],
+                                                s[GREEN],
+                                                s[BLUE]) + 0.5;
 
-          d[RED_PIX]   = luminosity;
-          d[GREEN_PIX] = luminosity;
-          d[BLUE_PIX]  = luminosity;
+          d[RED]   = luminosity;
+          d[GREEN] = luminosity;
+          d[BLUE]  = luminosity;
 
           if (has_alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
+            d[ALPHA] = s[ALPHA];
 
           d += destPR->bytes;
           s += srcPR->bytes;
@@ -161,14 +164,14 @@ desaturate_region_average (PixelRegion    *srcPR,
 
       for (j = 0; j < srcPR->w; j++)
         {
-          gint average = (s[RED_PIX] + s[GREEN_PIX] + s[BLUE_PIX] + 1) / 3;
+          gint average = (s[RED] + s[GREEN] + s[BLUE] + 1) / 3;
 
-          d[RED_PIX]   = average;
-          d[GREEN_PIX] = average;
-          d[BLUE_PIX]  = average;
+          d[RED]   = average;
+          d[GREEN] = average;
+          d[BLUE]  = average;
 
           if (has_alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
+            d[ALPHA] = s[ALPHA];
 
           d += destPR->bytes;
           s += srcPR->bytes;

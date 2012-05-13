@@ -1,9 +1,9 @@
 # GIMP - The GNU Image Manipulation Program
 # Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-# This program is free software; you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
@@ -131,7 +130,8 @@ HELP
 {
   GimpPalette *pal = NULL;
 
-  if (gimp_pdb_image_is_not_base_type (image, GIMP_INDEXED, error))
+  if (gimp_pdb_image_is_not_base_type (image, GIMP_INDEXED, error) &&
+      gimp_item_stack_is_flat (GIMP_ITEM_STACK (gimp_image_get_layers (image))))
     {
       switch (palette_type)
 	{
@@ -148,9 +148,11 @@ HELP
             }
           else if (pal->n_colors > MAXNUMCOLORS)
             {
-              g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
-                           _("Cannot convert to a palette "
-                             "with more than 256 colors."));
+              g_set_error_literal (error,
+	                           GIMP_PDB_ERROR,
+                                   GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                                   _("Cannot convert to a palette "
+                                     "with more than 256 colors."));
               success = FALSE;
             }
           break;
@@ -200,7 +202,17 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  gimp_image_convert_set_dither_matrix (matrix, width, height);
+  if (width == 0 || height == 0 || matrix_length == width * height)
+    {
+      gimp_image_convert_set_dither_matrix (matrix, width, height);
+    }
+  else
+    {
+      g_set_error_literal (error, GIMP_PDB_ERROR,
+                           GIMP_PDB_ERROR_INVALID_ARGUMENT,
+                           "Dither matrix length must be width * height");
+      success = FALSE;
+    }
 }
 CODE
     );
@@ -208,6 +220,7 @@ CODE
 
 @headers = qw("core/gimpimage.h"
               "core/gimpimage-convert.h"
+              "core/gimpitemstack.h"
               "core/gimppalette.h"
               "gimppdberror.h"
               "gimppdb-utils.h"
@@ -221,5 +234,8 @@ CODE
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Convert';
+$doc_title = 'gimpconvert';
+$doc_short_desc = 'Conversions between RGB, indexed, and grayscale modes.';
+$doc_long_desc = 'Conversions between RGB, indexed, and grayscale modes.';
 
 1;

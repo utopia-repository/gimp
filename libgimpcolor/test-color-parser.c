@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include <glib-object.h>
+#include <cairo.h>
 
 #include "gimpcolor.h"
 
@@ -102,12 +103,12 @@ main (void)
   if (failures)
     {
       g_print ("%d out of %d samples failed!\n\n",
-               failures, G_N_ELEMENTS (samples));
+               failures, (int)G_N_ELEMENTS (samples));
       return EXIT_FAILURE;
     }
   else
     {
-      g_print ("All %d samples passed.\n\n", G_N_ELEMENTS (samples));
+      g_print ("All %d samples passed.\n\n", (int)G_N_ELEMENTS (samples));
       return EXIT_SUCCESS;
     }
 }

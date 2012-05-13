@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __DISPLAY_TYPES_H__
@@ -25,17 +24,26 @@
 #include "display/display-enums.h"
 
 
-typedef struct _GimpCanvas            GimpCanvas;
+typedef struct _GimpCanvas               GimpCanvas;
+typedef struct _GimpCanvasGroup          GimpCanvasGroup;
+typedef struct _GimpCanvasItem           GimpCanvasItem;
 
-typedef struct _GimpDisplay           GimpDisplay;
-typedef struct _GimpDisplayShell      GimpDisplayShell;
-/* typedef struct _GimpDisplayOptions GimpDisplayOptions; in config-types.h */
+typedef struct _GimpDisplay              GimpDisplay;
+typedef struct _GimpDisplayShell         GimpDisplayShell;
+typedef struct _GimpMotionBuffer         GimpMotionBuffer;
 
-typedef struct _GimpNavigationEditor  GimpNavigationEditor;
-typedef struct _GimpScaleComboBox     GimpScaleComboBox;
-typedef struct _GimpStatusbar         GimpStatusbar;
+typedef struct _GimpImageWindow          GimpImageWindow;
+typedef struct _GimpMultiWindowStrategy  GimpMultiWindowStrategy;
+typedef struct _GimpSingleWindowStrategy GimpSingleWindowStrategy;
 
-typedef struct _Selection             Selection;
+typedef struct _GimpCursorView           GimpCursorView;
+typedef struct _GimpNavigationEditor     GimpNavigationEditor;
+typedef struct _GimpScaleComboBox        GimpScaleComboBox;
+typedef struct _GimpStatusbar            GimpStatusbar;
+
+typedef struct _GimpToolDialog           GimpToolDialog;
+
+typedef struct _Selection                Selection;
 
 
 #endif /* __DISPLAY_TYPES_H__ */

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* This plugin by thorsten@arch.usyd.edu.au.
@@ -31,6 +30,7 @@
 
 #define PLUG_IN_PROC   "plug-in-laplace"
 #define PLUG_IN_BINARY "edge-laplace"
+#define PLUG_IN_ROLE   "gimp-edge-laplace"
 
 
 /* Declare local functions.
@@ -66,27 +66,27 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image (unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"       }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-			  N_("High-resolution edge detection"),
-			  "This plugin creates one-pixel wide edges from the "
-			  "image, with the value proportional to the gradient. "
-			  "It uses the Laplace operator (a 3x3 kernel with -8 "
-			  "in the middle). The image has to be laplacered to "
-			  "get useful results, a gauss_iir with 1.5 - 5.0 "
-			  "depending on the noise in the image is best.",
-			  "Thorsten Schnier",
-			  "Thorsten Schnier",
-			  "1997",
-			  N_("_Laplace"),
-			  "RGB*, GRAY*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          N_("High-resolution edge detection"),
+                          "This plugin creates one-pixel wide edges from the "
+                          "image, with the value proportional to the gradient. "
+                          "It uses the Laplace operator (a 3x3 kernel with -8 "
+                          "in the middle). The image has to be laplacered to "
+                          "get useful results, a gauss_iir with 1.5 - 5.0 "
+                          "depending on the noise in the image is best.",
+                          "Thorsten Schnier",
+                          "Thorsten Schnier",
+                          "1997",
+                          N_("_Laplace"),
+                          "RGB*, GRAY*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Edge-Detect");
 }
@@ -118,7 +118,7 @@ run (const gchar      *name,
       laplace (drawable);
 
       if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	gimp_displays_flush ();
+        gimp_displays_flush ();
     }
   else
     {
@@ -137,10 +137,10 @@ run (const gchar      *name,
 
 static void
 laplace_prepare_row (GimpPixelRgn *pixel_rgn,
-		     guchar       *data,
-		     gint          x,
-		     gint          y,
-		     gint          w)
+                     guchar       *data,
+                     gint          x,
+                     gint          y,
+                     gint          w)
 {
   gint bpp = pixel_rgn->bpp;
   gint b;
@@ -171,12 +171,12 @@ laplace_prepare_row (GimpPixelRgn *pixel_rgn,
 
 static void
 minmax  (gint  x1,
-	 gint  x2,
-	 gint  x3,
-	 gint  x4,
-	 gint  x5,
-	 gint *min_result,
-	 gint *max_result)
+         gint  x2,
+         gint  x3,
+         gint  x4,
+         gint  x5,
+         gint *min_result,
+         gint *max_result)
 {
   gint min1, min2, max1, max2;
 
@@ -275,22 +275,22 @@ laplace (GimpDrawable *drawable)
 
       d = dest;
       for (col = 0; col < (x2 - x1) * bytes; col++)
-	if (alpha && (((col + 1) % bytes) == 0)) /* the alpha channel */
+        if (alpha && (((col + 1) % bytes) == 0)) /* the alpha channel */
           {
             *d++ = cr[col];
           }
-	else
-	  {
-	    minmax (pr[col], cr[col - bytes], cr[col], cr[col + bytes],
-		    nr[col], &minval, &maxval); /* four-neighbourhood */
+        else
+          {
+            minmax (pr[col], cr[col - bytes], cr[col], cr[col + bytes],
+                    nr[col], &minval, &maxval); /* four-neighbourhood */
 
-	    gradient = (0.5 * MAX ((maxval - cr [col]), (cr[col]- minval)));
+            gradient = (0.5 * MAX ((maxval - cr [col]), (cr[col]- minval)));
 
-	    *d++ = (((pr[col - bytes] + pr[col]       + pr[col + bytes] +
+            *d++ = (((pr[col - bytes] + pr[col]       + pr[col + bytes] +
                       cr[col - bytes] - (8 * cr[col]) + cr[col + bytes] +
                       nr[col - bytes] + nr[col]       + nr[col + bytes]) > 0) ?
                     gradient : (128 + gradient));
-	  }
+          }
 
       /*  store the dest  */
       gimp_pixel_rgn_set_row (&destPR, dest, x1, row, (x2 - x1));
@@ -302,7 +302,7 @@ laplace (GimpDrawable *drawable)
       nr = tmp;
 
       if ((row % 20) == 0)
-	gimp_progress_update ((gdouble) row / (gdouble) (y2 - y1));
+        gimp_progress_update ((gdouble) row / (gdouble) (y2 - y1));
     }
 
 
@@ -366,9 +366,10 @@ laplace (GimpDrawable *drawable)
       nr = tmp;
 
       if ((row % 20) == 0)
-	gimp_progress_update ((gdouble) row / (gdouble) (y2 - y1));
+        gimp_progress_update ((gdouble) row / (gdouble) (y2 - y1));
     }
 
+  gimp_progress_update (1.0);
   /*  update the laplaced region  */
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);

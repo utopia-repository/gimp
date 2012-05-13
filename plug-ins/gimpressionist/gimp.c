@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -80,7 +79,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive"    },
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0) }"    },
     { GIMP_PDB_IMAGE,    "image",     "Input image"    },
     { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable" },
     { GIMP_PDB_STRING,   "preset",    "Preset Name"    },
@@ -115,7 +114,7 @@ run (const gchar      *name,
      gint             *nreturn_vals,
      GimpParam       **return_vals)
 {
-  static GimpParam   values[1];
+  static GimpParam   values[2];
   GimpRunMode        run_mode;
   GimpPDBStatusType  status;
   gboolean           with_specified_preset;
@@ -148,6 +147,29 @@ run (const gchar      *name,
   img_has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
   random_generator = g_rand_new ();
+
+  /*
+   * Check precondition before we open a dialog: Is there a selection
+   * that intersects, OR is there no selection (use entire drawable.)
+   */
+  {
+    gint x1, y1, width, height; /* Not used. */
+
+    if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                        &x1, &y1, &width, &height))
+      {
+        values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+        *nreturn_vals           = 2;
+        values[1].type          = GIMP_PDB_STRING;
+        values[1].data.d_string = _("The selection does not intersect "
+                                    "the active layer or mask.");
+
+        gimp_drawable_detach (drawable);
+
+        return;
+      }
+  }
+
 
   switch (run_mode)
     {
@@ -234,17 +256,16 @@ grabarea (void)
 {
   GimpPixelRgn  src_rgn;
   ppm_t        *p;
-  gint          x1, y1, x2, y2;
+  gint          x1, y1;
   gint          x, y;
   gint          width, height;
   gint          row, col;
   gint          rowstride;
   gpointer      pr;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-
-  width  = x2 - x1;
-  height = y2 - y1;
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return;
 
   ppm_new (&infile, width, height);
   p = &infile;
@@ -351,7 +372,7 @@ gimpressionist_main (void)
 {
   GimpPixelRgn  dest_rgn;
   ppm_t        *p;
-  gint          x1, y1, x2, y2;
+  gint          x1, y1;
   gint          x, y;
   gint          width, height;
   gint          row, col;
@@ -361,10 +382,9 @@ gimpressionist_main (void)
   glong         total;
   gpointer      pr;
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-
-  width  = x2 - x1;
-  height = y2 - y1;
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &x1, &y1, &width, &height))
+    return;
 
   total = width * height;
 
@@ -474,6 +494,7 @@ gimpressionist_main (void)
         gimp_progress_update (0.8 + 0.2 * done / total);
     }
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
   gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);

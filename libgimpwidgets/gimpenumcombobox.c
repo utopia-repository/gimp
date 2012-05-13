@@ -4,10 +4,10 @@
  * gimpenumcombobox.c
  * Copyright (C) 2004  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,15 @@
 #include "gimpenumstore.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpenumcombobox
+ * @title: GimpEnumComboBox
+ * @short_description: A #GimpIntComboBox subclass for selecting an enum value.
+ *
+ * A #GtkComboBox subclass for selecting an enum value.
+ **/
 
 
 enum
@@ -180,7 +188,8 @@ gimp_enum_combo_box_new_with_model (GimpEnumStore *enum_store)
  * @stock_prefix: a prefix to create icon stock ID from enum values
  *
  * Attempts to create stock icons for all items in the @combo_box. See
- * gimp_enum_store_set_icons() to find out what to use as @stock_prefix.
+ * gimp_enum_store_set_stock_prefix() to find out what to use as
+ * @stock_prefix.
  *
  * Since: GIMP 2.4
  **/

@@ -4,9 +4,9 @@
  * gimpmessagebox.c
  * Copyright (C) 2004 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,16 +15,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
-#include "libgimpbase/gimputils.h"
 
 #include "widgets-types.h"
 
@@ -42,34 +41,30 @@ enum
 };
 
 
-static GObject * gimp_message_box_constructor   (GType                  type,
-                                                 guint                  n_params,
-                                                 GObjectConstructParam *params);
+static void   gimp_message_box_constructed   (GObject        *object);
+static void   gimp_message_box_dispose       (GObject        *object);
+static void   gimp_message_box_finalize      (GObject        *object);
+static void   gimp_message_box_set_property  (GObject        *object,
+                                              guint           property_id,
+                                              const GValue   *value,
+                                              GParamSpec     *pspec);
+static void   gimp_message_box_get_property  (GObject        *object,
+                                              guint           property_id,
+                                              GValue         *value,
+                                              GParamSpec     *pspec);
 
-static void      gimp_message_box_init          (GimpMessageBox *box);
-static void      gimp_message_box_finalize      (GObject        *object);
-static void      gimp_message_box_set_property  (GObject        *object,
-                                                 guint           property_id,
-                                                 const GValue   *value,
-                                                 GParamSpec     *pspec);
-static void      gimp_message_box_get_property  (GObject        *object,
-                                                 guint           property_id,
-                                                 GValue         *value,
-                                                 GParamSpec     *pspec);
-static void      gimp_message_box_destroy       (GtkObject      *object);
+static void   gimp_message_box_forall        (GtkContainer   *container,
+                                              gboolean        include_internals,
+                                              GtkCallback     callback,
+                                              gpointer        callback_data);
 
-static void      gimp_message_box_forall        (GtkContainer   *container,
-                                                 gboolean        include_internals,
-                                                 GtkCallback     callback,
-                                                 gpointer        callback_data);
-
-static void      gimp_message_box_size_request  (GtkWidget      *widget,
-                                                 GtkRequisition *requisition);
-static void      gimp_message_box_size_allocate (GtkWidget      *widget,
-                                                 GtkAllocation  *allocation);
+static void   gimp_message_box_size_request  (GtkWidget      *widget,
+                                              GtkRequisition *requisition);
+static void   gimp_message_box_size_allocate (GtkWidget      *widget,
+                                              GtkAllocation  *allocation);
 
 
-G_DEFINE_TYPE (GimpMessageBox, gimp_message_box, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GimpMessageBox, gimp_message_box, GTK_TYPE_BOX)
 
 #define parent_class gimp_message_box_parent_class
 
@@ -77,17 +72,16 @@ G_DEFINE_TYPE (GimpMessageBox, gimp_message_box, GTK_TYPE_VBOX)
 static void
 gimp_message_box_class_init (GimpMessageBoxClass *klass)
 {
-  GObjectClass      *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass    *gtk_object_class = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass    *widget_class     = GTK_WIDGET_CLASS (klass);
-  GtkContainerClass *container_class  = GTK_CONTAINER_CLASS (klass);
+  GObjectClass      *object_class    = G_OBJECT_CLASS (klass);
+  GtkWidgetClass    *widget_class    = GTK_WIDGET_CLASS (klass);
+  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
 
-  object_class->constructor   = gimp_message_box_constructor;
+  object_class->constructed   = gimp_message_box_constructed;
+  object_class->dispose       = gimp_message_box_dispose;
+  object_class->finalize      = gimp_message_box_finalize;
   object_class->set_property  = gimp_message_box_set_property;
   object_class->get_property  = gimp_message_box_get_property;
-  object_class->finalize      = gimp_message_box_finalize;
 
-  gtk_object_class->destroy   = gimp_message_box_destroy;
 
   widget_class->size_request  = gimp_message_box_size_request;
   widget_class->size_allocate = gimp_message_box_size_allocate;
@@ -105,6 +99,9 @@ static void
 gimp_message_box_init (GimpMessageBox *box)
 {
   gint i;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (box),
+                                  GTK_ORIENTATION_VERTICAL);
 
   gtk_box_set_spacing (GTK_BOX (box), 12);
   gtk_container_set_border_width (GTK_CONTAINER (box), 12);
@@ -140,30 +137,12 @@ gimp_message_box_init (GimpMessageBox *box)
 }
 
 static void
-gimp_message_box_finalize (GObject *object)
+gimp_message_box_constructed (GObject *object)
 {
   GimpMessageBox *box = GIMP_MESSAGE_BOX (object);
 
-  if (box->stock_id)
-    {
-      g_free (box->stock_id);
-      box->stock_id = NULL;
-    }
-
-  G_OBJECT_CLASS (parent_class)->finalize (object);
-}
-
-static GObject *
-gimp_message_box_constructor (GType                  type,
-                              guint                  n_params,
-                              GObjectConstructParam *params)
-{
-  GObject        *object;
-  GimpMessageBox *box;
-
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  box = GIMP_MESSAGE_BOX (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   if (box->stock_id)
     {
@@ -176,8 +155,34 @@ gimp_message_box_constructor (GType                  type,
       gtk_widget_set_parent (box->image, GTK_WIDGET (box));
       gtk_widget_show (box->image);
     }
+}
 
-  return object;
+static void
+gimp_message_box_dispose (GObject *object)
+{
+  GimpMessageBox *box = GIMP_MESSAGE_BOX (object);
+
+  if (box->image)
+    {
+      gtk_widget_unparent (box->image);
+      box->image = NULL;
+    }
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
+}
+
+static void
+gimp_message_box_finalize (GObject *object)
+{
+  GimpMessageBox *box = GIMP_MESSAGE_BOX (object);
+
+  if (box->stock_id)
+    {
+      g_free (box->stock_id);
+      box->stock_id = NULL;
+    }
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -219,20 +224,6 @@ gimp_message_box_get_property (GObject    *object,
 }
 
 static void
-gimp_message_box_destroy (GtkObject *object)
-{
-  GimpMessageBox *box = GIMP_MESSAGE_BOX (object);
-
-  if (box->image)
-    {
-      gtk_widget_unparent (box->image);
-      box->image = NULL;
-    }
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
-}
-
-static void
 gimp_message_box_size_request (GtkWidget      *widget,
                                GtkRequisition *requisition)
 {
@@ -240,7 +231,7 @@ gimp_message_box_size_request (GtkWidget      *widget,
 
   GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 
-  if (box->image && GTK_WIDGET_VISIBLE (box->image))
+  if (box->image && gtk_widget_get_visible (box->image))
     {
       GtkRequisition  child_requisition;
       gint            border_width;
@@ -267,7 +258,7 @@ gimp_message_box_size_allocate (GtkWidget     *widget,
 
   rtl = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
 
-  if (box->image)
+  if (box->image && gtk_widget_get_visible (box->image))
     {
       GtkRequisition  child_requisition;
       GtkAllocation   child_allocation;
@@ -307,7 +298,7 @@ gimp_message_box_size_allocate (GtkWidget     *widget,
   allocation->x      -= rtl ? 0 : width;
   allocation->width  += width;
 
-  widget->allocation = *allocation;
+  gtk_widget_set_allocation (widget, allocation);
 }
 
 static void
@@ -439,10 +430,10 @@ gimp_message_box_repeat (GimpMessageBox *box)
 
   box->repeat++;
 
-  if (box->repeat > 1)
-    message = g_strdup_printf (_("Message repeated %d times."), box->repeat);
-  else
-    message = g_strdup (_("Message repeated once."));
+  message = g_strdup_printf (ngettext ("Message repeated once.",
+                                       "Message repeated %d times.",
+                                       box->repeat),
+                             box->repeat);
 
   if (box->label[2])
     {

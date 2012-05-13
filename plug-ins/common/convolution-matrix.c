@@ -2,9 +2,9 @@
  * Copyright (C) 1997 Lauri Alanko <la@iki.fi>
  *
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,7 @@
 
 #define PLUG_IN_PROC   "plug-in-convmatrix"
 #define PLUG_IN_BINARY "convolution-matrix"
+#define PLUG_IN_ROLE   "gimp-convolution-matrix"
 
 #define RESPONSE_RESET 1
 
@@ -183,7 +183,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,      "run-mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,      "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,      "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE,   "drawable",    "Input drawable" },
     { GIMP_PDB_INT32,      "argc-matrix", "The number of elements in the following array. Should be always 25." },
@@ -194,7 +194,7 @@ query (void)
 
     { GIMP_PDB_INT32,      "argc-channels", "The number of elements in following array. Should be always 5." },
     { GIMP_PDB_INT32ARRAY, "channels",      "Mask of the channels to be filtered" },
-    { GIMP_PDB_INT32,      "bmode",         "Mode for treating image borders" },
+    { GIMP_PDB_INT32,      "bmode",         "Mode for treating image borders { EXTEND (0), WRAP (1), CLEAR (2) }" },
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -268,8 +268,8 @@ run (const gchar      *name,
             }
 
           config.alpha_weighting = param[5].data.d_int32;
-          config.divisor   = param[6].data.d_float;
-          config.offset    = param[7].data.d_float;
+          config.divisor         = param[6].data.d_float;
+          config.offset          = param[7].data.d_float;
 
           if (param[8].data.d_int32 != CHANNELS)
             {
@@ -281,7 +281,7 @@ run (const gchar      *name,
                 config.channels[y] = param[9].data.d_int32array[y];
             }
 
-          config.bmode     = param[10].data.d_int32;
+          config.bmode = param[10].data.d_int32;
 
           check_config (drawable);
         }
@@ -472,7 +472,6 @@ convolve_pixel (guchar       **src_row,
 
   gfloat sum              = 0;
   gfloat alphasum         = 0;
-  gfloat temp;
   gint   x, y;
   gint   alpha_channel;
 
@@ -482,10 +481,7 @@ convolve_pixel (guchar       **src_row,
 
       for (y = 0; y < MATRIX_SIZE; y++)
         for (x = 0; x < MATRIX_SIZE; x++)
-          {
-            temp = config.matrix[x][y];
-            matrixsum += ABS (config.matrix[x][y]);
-          }
+          matrixsum += ABS (config.matrix[x][y]);
     }
 
   alpha_channel = bpp - 1;
@@ -493,7 +489,7 @@ convolve_pixel (guchar       **src_row,
   for (y = 0; y < MATRIX_SIZE; y++)
     for (x = 0; x < MATRIX_SIZE; x++)
       {
-        temp = config.matrix[x][y];
+        gfloat temp = config.matrix[x][y];
 
         if (channel != alpha_channel && config.alpha_weighting == 1)
           {
@@ -674,6 +670,7 @@ convolve_image (GimpDrawable *drawable,
     }
   else
     {
+      gimp_progress_update (1.0);
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
       gimp_drawable_update (drawable->drawable_id,
@@ -764,16 +761,11 @@ static void
 check_matrix (void)
 {
   gint      x, y;
-  gboolean  valid = FALSE;
   gfloat    sum   = 0.0;
 
   for (y = 0; y < MATRIX_SIZE; y++)
     for (x = 0; x < MATRIX_SIZE; x++)
-      {
-        sum += config.matrix[x][y];
-        if (config.matrix[x][y] != 0.0)
-          valid = TRUE;
-      }
+      sum += config.matrix[x][y];
 
   if (config.autoset)
     {
@@ -903,7 +895,7 @@ convolve_image_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Convolution Matrix"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Convolution Matrix"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -921,9 +913,10 @@ convolve_image_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -934,17 +927,17 @@ convolve_image_dialog (GimpDrawable *drawable)
                             G_CALLBACK (convolve_image),
                             drawable);
 
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), main_hbox, FALSE, FALSE, 0);
   gtk_widget_show (main_hbox),
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, TRUE, TRUE, 0);
 
   frame = gimp_frame_new (_("Matrix"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  inbox = gtk_vbox_new (FALSE, 12);
+  inbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), inbox);
 
   table = gtk_table_new (MATRIX_SIZE, MATRIX_SIZE, FALSE);
@@ -971,7 +964,7 @@ convolve_image_dialog (GimpDrawable *drawable)
 
   gtk_widget_show (table);
 
-  box = gtk_hbox_new (FALSE, 6);
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (inbox), box, FALSE, FALSE, 0);
 
 
@@ -1030,7 +1023,7 @@ convolve_image_dialog (GimpDrawable *drawable)
   gtk_widget_show (inbox);
   gtk_widget_show (frame);
 
-  box = gtk_vbox_new (FALSE, 6);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 0);
 
   widget_set.autoset = button =
@@ -1062,13 +1055,13 @@ convolve_image_dialog (GimpDrawable *drawable)
   gtk_widget_show (box);
   gtk_widget_show (vbox);
 
-  inbox = gtk_vbox_new (FALSE, 12);
+  inbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), inbox, FALSE, FALSE, 0);
 
   frame = gimp_frame_new (_("Border"));
   gtk_box_pack_start (GTK_BOX (inbox), frame, FALSE, FALSE, 0);
 
-  box = gtk_vbox_new (FALSE, 2);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), box);
 
   group = NULL;
@@ -1095,7 +1088,7 @@ convolve_image_dialog (GimpDrawable *drawable)
   frame = gimp_frame_new (_("Channels"));
   gtk_box_pack_start (GTK_BOX (inbox), frame, FALSE, FALSE, 0);
 
-  box = gtk_vbox_new (FALSE, 2);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), box);
 
   for (i = 0; i < CHANNELS; i++)

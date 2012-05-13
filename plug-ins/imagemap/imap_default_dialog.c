@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2002 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -60,7 +59,7 @@ dialog_response (GtkWidget       *widget,
 
 void
 default_dialog_set_ok_cb(DefaultDialog_t *dialog, void (*ok_cb)(gpointer),
-			 gpointer ok_cb_data)
+                         gpointer ok_cb_data)
 {
    dialog->ok_cb = ok_cb;
    dialog->ok_cb_data = ok_cb_data;
@@ -68,8 +67,8 @@ default_dialog_set_ok_cb(DefaultDialog_t *dialog, void (*ok_cb)(gpointer),
 
 void
 default_dialog_set_apply_cb(DefaultDialog_t *dialog,
-			    void (*apply_cb)(gpointer),
-			    gpointer apply_cb_data)
+                            void (*apply_cb)(gpointer),
+                            gpointer apply_cb_data)
 {
    dialog->apply_cb = apply_cb;
    dialog->apply_cb_data = apply_cb_data;
@@ -77,8 +76,8 @@ default_dialog_set_apply_cb(DefaultDialog_t *dialog,
 
 void
 default_dialog_set_cancel_cb(DefaultDialog_t *dialog,
-			     void (*cancel_cb)(gpointer),
-			     gpointer cancel_cb_data)
+                             void (*cancel_cb)(gpointer),
+                             gpointer cancel_cb_data)
 {
    dialog->cancel_cb = cancel_cb;
    dialog->cancel_cb_data = cancel_cb_data;
@@ -93,7 +92,7 @@ make_default_dialog (const gchar *title)
    data->apply_cb = NULL;
    data->cancel_cb = NULL;
 
-   data->dialog = gimp_dialog_new (title, PLUG_IN_BINARY,
+   data->dialog = gimp_dialog_new (title, PLUG_IN_ROLE,
                                    get_dialog(), 0,
                                    gimp_standard_help_func, PLUG_IN_PROC,
                                    NULL);
@@ -117,13 +116,13 @@ make_default_dialog (const gchar *title)
                      G_CALLBACK (dialog_response),
                      data);
    g_signal_connect (data->dialog, "destroy",
-		     G_CALLBACK (gtk_widget_destroyed),
+                     G_CALLBACK (gtk_widget_destroyed),
                      &data->dialog);
 
-   data->vbox = gtk_vbox_new (FALSE, 12);
+   data->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
    gtk_container_set_border_width (GTK_CONTAINER (data->vbox), 12);
-   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (data->dialog)->vbox), data->vbox,
-                       TRUE, TRUE, 0);
+   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (data->dialog))),
+                       data->vbox, TRUE, TRUE, 0);
    gtk_widget_show (data->vbox);
 
    return data;
@@ -171,13 +170,13 @@ default_dialog_set_label(DefaultDialog_t *dialog, const gchar *text)
 GtkWidget*
 default_dialog_add_table(DefaultDialog_t *dialog, gint rows, gint cols)
 {
-   GtkWidget *table = gtk_table_new(rows, cols, FALSE);
+  GtkWidget *table = gtk_table_new (rows, cols, FALSE);
 
-   gtk_table_set_row_spacings(GTK_TABLE(table), 6);
-   gtk_table_set_col_spacings(GTK_TABLE(table), 6);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
 
-   gtk_container_add (GTK_CONTAINER(dialog->vbox), table);
-   gtk_widget_show(table);
+  gtk_box_pack_start (GTK_BOX (dialog->vbox), table, TRUE, TRUE, 0);
+  gtk_widget_show (table);
 
-   return table;
+  return table;
 }

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
 #include "gimp.h"
+#include "gimpcontainer.h"
 #include "gimpcontext.h"
 #include "gimpguide.h"
 #include "gimpimage.h"
@@ -32,7 +32,6 @@
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimpitem.h"
-#include "gimplist.h"
 #include "gimpprogress.h"
 #include "gimpsamplepoint.h"
 
@@ -69,15 +68,15 @@ gimp_image_flip (GimpImage           *image,
       return;
     }
 
-  progress_max = (image->channels->num_children +
-                  image->layers->num_children   +
-                  image->vectors->num_children  +
+  progress_max = (gimp_container_get_n_children (gimp_image_get_channels (image)) +
+                  gimp_container_get_n_children (gimp_image_get_layers (image))   +
+                  gimp_container_get_n_children (gimp_image_get_vectors (image))  +
                   1 /* selection */);
 
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_FLIP, NULL);
 
   /*  Flip all channels  */
-  for (list = GIMP_LIST (image->channels)->list;
+  for (list = gimp_image_get_channel_iter (image);
        list;
        list = g_list_next (list))
     {
@@ -90,7 +89,7 @@ gimp_image_flip (GimpImage           *image,
     }
 
   /*  Flip all vectors  */
-  for (list = GIMP_LIST (image->vectors)->list;
+  for (list = gimp_image_get_vectors_iter (image);
        list;
        list = g_list_next (list))
     {
@@ -110,7 +109,7 @@ gimp_image_flip (GimpImage           *image,
     gimp_progress_set_value (progress, progress_current++ / progress_max);
 
   /*  Flip all layers  */
-  for (list = GIMP_LIST (image->layers)->list;
+  for (list = gimp_image_get_layer_iter (image);
        list;
        list = g_list_next (list))
     {
@@ -123,7 +122,9 @@ gimp_image_flip (GimpImage           *image,
     }
 
   /*  Flip all Guides  */
-  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image);
+       list;
+       list = g_list_next (list))
     {
       GimpGuide *guide    = list->data;
       gint       position = gimp_guide_get_position (guide);
@@ -150,7 +151,9 @@ gimp_image_flip (GimpImage           *image,
     }
 
   /*  Flip all sample points  */
-  for (list = gimp_image_get_sample_points (image); list; list = g_list_next (list))
+  for (list = gimp_image_get_sample_points (image);
+       list;
+       list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
 

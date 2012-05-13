@@ -4,9 +4,9 @@
  * GimpText
  * Copyright (C) 2002-2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
-#include <pango/pangoft2.h>
+#include <gegl.h>
+#include <pango/pangocairo.h>
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -36,8 +35,6 @@
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimplayer-floating-sel.h"
-
-#include "gimpfont-utils.h"
 
 #include "gimptext.h"
 #include "gimptext-compat.h"
@@ -79,7 +76,7 @@ text_render (GimpImage    *image,
   size = PANGO_PIXELS (pango_font_description_get_size (desc));
 
   pango_font_description_unset_fields (desc, PANGO_FONT_MASK_SIZE);
-  font = gimp_font_util_pango_font_description_to_string (desc);
+  font = pango_font_description_to_string (desc);
 
   pango_font_description_free (desc);
 
@@ -108,8 +105,7 @@ text_render (GimpImage    *image,
                                _("Add Text Layer"));
 
   /*  Set the layer offsets  */
-  GIMP_ITEM (layer)->offset_x = text_x;
-  GIMP_ITEM (layer)->offset_y = text_y;
+  gimp_item_set_offset (GIMP_ITEM (layer), text_x, text_y);
 
   /*  If there is a selection mask clear it--
    *  this might not always be desired, but in general,
@@ -118,12 +114,16 @@ text_render (GimpImage    *image,
   if (! gimp_channel_is_empty (gimp_image_get_mask (image)))
     gimp_channel_clear (gimp_image_get_mask (image), NULL, TRUE);
 
-  /*  If the drawable is NULL, create a new layer  */
   if (drawable == NULL)
-    gimp_image_add_layer (image, layer, -1);
-  /*  Otherwise, instantiate the text as the new floating selection */
+    {
+      /*  If the drawable is NULL, create a new layer  */
+      gimp_image_add_layer (image, layer, NULL, -1, TRUE);
+    }
   else
-    floating_sel_attach (layer, drawable);
+    {
+      /*  Otherwise, instantiate the text as the new floating selection */
+      floating_sel_attach (layer, drawable);
+    }
 
   /*  end the group undo  */
   gimp_image_undo_group_end (image);
@@ -148,22 +148,15 @@ text_get_extents (const gchar *fontname,
   g_return_val_if_fail (fontname != NULL, FALSE);
   g_return_val_if_fail (text != NULL, FALSE);
 
-  /* FIXME: resolution */
-  fontmap = pango_ft2_font_map_new ();
-  pango_ft2_font_map_set_resolution (PANGO_FT2_FONT_MAP (fontmap), 72.0, 72.0);
-  context = pango_ft2_font_map_create_context (PANGO_FT2_FONT_MAP (fontmap));
-  g_object_unref (fontmap);
+  fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+  if (! fontmap)
+    g_error ("You are using a Pango that has been built against a cairo "
+             "that lacks the Freetype font backend");
 
-  /*  Workaround for bug #143542 (PangoFT2Fontmap leak),
-   *  see also bug #148997 (Text layer rendering leaks font file descriptor):
-   *
-   *  Calling pango_ft2_font_map_substitute_changed() causes the
-   *  font_map cache to be flushed, thereby removing the circular
-   *  reference that causes the leak.
-   */
-  g_object_weak_ref (G_OBJECT (context),
-                     (GWeakNotify) pango_ft2_font_map_substitute_changed,
-                     fontmap);
+  pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (fontmap),
+                                       72.0); /* FIXME: resolution */
+  context = pango_font_map_create_context (fontmap);
+  g_object_unref (fontmap);
 
   layout = pango_layout_new (context);
   g_object_unref (context);

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpmath/gimpmath.h"
 
@@ -140,7 +139,7 @@ gimp_image_arrange_objects (GimpImage         *image,
 
       /* FIXME: undo group type is wrong */
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_ITEM_DISPLACE,
-                                   _("Arrange Objects"));
+                                   C_("undo-type", "Arrange Objects"));
 
       for (l = object_list, n = 1; l; l = g_list_next (l), n++)
         {
@@ -172,12 +171,10 @@ gimp_image_arrange_objects (GimpImage         *image,
                 {
                 case GIMP_ORIENTATION_VERTICAL:
                   gimp_image_move_guide (image, guide, z1 + xtranslate, TRUE);
-                  gimp_image_update_guide (image, guide);
                   break;
 
                 case GIMP_ORIENTATION_HORIZONTAL:
                   gimp_image_move_guide (image, guide, z1 + ytranslate, TRUE);
-                  gimp_image_update_guide (image, guide);
                   break;
 
                 default:
@@ -259,9 +256,9 @@ compute_offset (GObject *object,
           /* fall back on using the offsets instead */
           GimpItem *item = GIMP_ITEM (object);
 
-          gimp_item_offsets (item, &object_offset_x, &object_offset_y);
-          object_height   = gimp_item_height (item);
-          object_width    = gimp_item_width (item);
+          gimp_item_get_offset (item, &object_offset_x, &object_offset_y);
+          object_width  = gimp_item_get_width  (item);
+          object_height = gimp_item_get_height (item);
         }
       else
         {
@@ -270,8 +267,8 @@ compute_offset (GObject *object,
           gimp_channel_bounds (channel, &x1, &y1, &x2, &y2);
           object_offset_x = x1;
           object_offset_y = y1;
-          object_height   = y2 - y1;
           object_width    = x2 - x1;
+          object_height   = y2 - y1;
         }
     }
   else if (GIMP_IS_ITEM (object))
@@ -288,14 +285,14 @@ compute_offset (GObject *object,
 
           object_offset_x = ROUND (x1_f);
           object_offset_y = ROUND (y1_f);
-          object_width    = ROUND (x2_f - x1_f);
           object_height   = ROUND (y2_f - y1_f);
+          object_width    = ROUND (x2_f - x1_f);
         }
       else
         {
-          gimp_item_offsets (item, &object_offset_x, &object_offset_y);
-          object_height = gimp_item_height (item);
-          object_width  = gimp_item_width (item);
+          gimp_item_get_offset (item, &object_offset_x, &object_offset_y);
+          object_width  = gimp_item_get_width  (item);
+          object_height = gimp_item_get_height (item);
         }
     }
   else if (GIMP_IS_GUIDE (object))

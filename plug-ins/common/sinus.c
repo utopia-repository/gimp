@@ -3,9 +3,9 @@
  *
  * Copyright (C) 1997 Xavier Bouchoux
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -37,6 +36,7 @@
 
 #define PLUG_IN_PROC   "plug-in-sinus"
 #define PLUG_IN_BINARY "sinus"
+#define PLUG_IN_ROLE   "gimp-sinus"
 
 
 /*
@@ -163,7 +163,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
 
@@ -459,6 +459,7 @@ sinus (void)
       gimp_progress_update ((double) progress / (double) max_progress);
     }
 
+  gimp_progress_update (1.0);
   gimp_drawable_flush (drawable);
   gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
   gimp_drawable_update (drawable->drawable_id, x1, y1, x2 - x1, y2 - y1);
@@ -567,7 +568,7 @@ alpha_scale_cb (GtkAdjustment *adj,
   color_button = GIMP_COLOR_BUTTON (data);
 
   gimp_color_button_get_color (GIMP_COLOR_BUTTON (color_button), &color);
-  gimp_rgb_set_alpha (&color, adj->value);
+  gimp_rgb_set_alpha (&color, gtk_adjustment_get_value (adj));
   gimp_color_button_set_color (GIMP_COLOR_BUTTON (color_button), &color);
 }
 
@@ -645,7 +646,7 @@ sinus_dialog (void)
 
   /* Create Main window with a vbox */
   /* ============================== */
-  dlg = gimp_dialog_new (_("Sinus"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Sinus"), PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -661,15 +662,15 @@ sinus_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), main_hbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      main_hbox, TRUE, TRUE, 0);
   gtk_widget_show (main_hbox);
 
   /* Create preview */
   /* ============== */
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -684,7 +685,7 @@ sinus_dialog (void)
 
   /* Create the drawing settings frame */
   /* ================================= */
-  page = gtk_vbox_new (FALSE, 12);
+  page = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (page), 12);
 
   frame = gimp_frame_new (_("Drawing Settings"));
@@ -729,7 +730,7 @@ sinus_dialog (void)
   gtk_box_pack_start (GTK_BOX (page), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -774,7 +775,7 @@ sinus_dialog (void)
 
   /* Color settings dialog: */
   /* ====================== */
-  page = gtk_vbox_new (FALSE, 12);
+  page = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (page), 12);
 
   if (drawable_is_grayscale)
@@ -783,14 +784,14 @@ sinus_dialog (void)
       gtk_box_pack_start(GTK_BOX(page), frame, FALSE, FALSE, 0);
       gtk_widget_show (frame);
 
-      vbox = gtk_vbox_new (FALSE, 6);
+      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
       gtk_container_add (GTK_CONTAINER (frame), vbox);
       gtk_widget_show (vbox);
 
       /*if in grey scale, the colors are necessarily black and white */
       label = gtk_label_new (_("The colors are white and black."));
       gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
-      gtk_container_add (GTK_CONTAINER (vbox), label);
+      gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
       gtk_widget_show (label);
     }
   else
@@ -813,7 +814,7 @@ sinus_dialog (void)
 
       vbox = gtk_bin_get_child (GTK_BIN (frame));
 
-      hbox = gtk_hbox_new (FALSE, 12);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
       gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
       push_col1 = gimp_color_button_new (_("First color"), 32, 32,
@@ -889,14 +890,14 @@ sinus_dialog (void)
 
   /* blend settings dialog: */
   /* ====================== */
-  page = gtk_vbox_new (FALSE, 12);
+  page = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (page), 12);
 
   frame = gimp_frame_new (_("Blend Settings"));
   gtk_box_pack_start (GTK_BOX (page), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -916,7 +917,7 @@ sinus_dialog (void)
 
   table = gtk_table_new (1, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_container_add (GTK_CONTAINER (vbox), table);
+  gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
                               _("_Exponent:"), 0, 0,
@@ -1032,7 +1033,7 @@ mw_preview_new (GtkWidget *parent,
   GtkWidget *vbox;
   GtkWidget *button;
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (parent), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 

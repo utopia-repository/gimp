@@ -4,9 +4,9 @@
  * Craig Setera <setera@home.com>
  * 07/14/1999
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Based on (at least) the following plug-ins:
  * Screenshot
@@ -62,6 +61,7 @@
 #define PLUG_IN_COPYRIGHT   "Craig Setera"
 #define PLUG_IN_VERSION     "v0.70 (07/16/1999)"
 #define PLUG_IN_BINARY      "win-snap"
+#define PLUG_IN_ROLE        "gimp-win-snap"
 
 /*
  * Application definitions
@@ -73,6 +73,12 @@
 #define SHOW_WINDOW		FALSE
 #define APP_NAME		PLUG_IN_NAME
 #define WM_DOCAPTURE		(WM_USER + 100)
+
+/* Prototypes */
+void setCaptureType(int capType);
+BOOL InitApplication(HINSTANCE hInstance);
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
+int winsnapWinMain(void);
 
 /* File variables */
 static int			captureType;
@@ -857,7 +863,7 @@ snap_dialog (void)
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
   /* Main Dialog */
-  dialog = gimp_dialog_new (PLUG_IN_PRINT_NAME, PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (PLUG_IN_PRINT_NAME, PLUG_IN_ROLE,
                             NULL, 0,
 			    gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -871,9 +877,10 @@ snap_dialog (void)
                                            GTK_RESPONSE_CANCEL,
                                            -1);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   winsnapintf.single_button =
@@ -904,7 +911,7 @@ snap_dialog (void)
   radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (winsnapintf.root_button));
 
   /* with delay */
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -963,7 +970,7 @@ snap_dialog (void)
  * Plug-in Parameter definitions
  */
 #define NUMBER_IN_ARGS 3
-#define IN_ARGS { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },\
+#define IN_ARGS { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },\
                 { GIMP_PDB_INT32,    "root",      "Root window { TRUE, FALSE }" },\
                 { GIMP_PDB_INT32,    "decorations", \
 									"Include Window Decorations { TRUE, FALSE }" }
@@ -1155,7 +1162,7 @@ sendBMPToGimp(HBITMAP hBMP, HDC hDC, RECT rect)
   layer_id = gimp_layer_new(image_id, _("Background"),
 			    ROUND4(width), height,
 			    layerType, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer(image_id, layer_id, 0);
+  gimp_image_insert_layer(image_id, layer_id, -1, 0);
 
   /* Get our drawable */
   drawable = gimp_drawable_get(layer_id);

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core-types.h"
 
@@ -27,6 +26,7 @@
 
 #include "gimpimage.h"
 #include "gimpimage-preview.h"
+#include "gimpimage-private.h"
 #include "gimpprojection.h"
 
 
@@ -98,25 +98,25 @@ gimp_image_get_preview (GimpViewable *viewable,
                         gint          width,
                         gint          height)
 {
-  GimpImage *image = GIMP_IMAGE (viewable);
+  GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (viewable);
 
-  if (image->preview                  &&
-      image->preview->width  == width &&
-      image->preview->height == height)
+  if (private->preview                  &&
+      private->preview->width  == width &&
+      private->preview->height == height)
     {
       /*  The easy way  */
-      return image->preview;
+      return private->preview;
     }
   else
     {
       /*  The hard way  */
-      if (image->preview)
-        temp_buf_free (image->preview);
+      if (private->preview)
+        temp_buf_free (private->preview);
 
-      image->preview = gimp_image_get_new_preview (viewable, context,
-                                                   width, height);
+      private->preview = gimp_image_get_new_preview (viewable, context,
+                                                     width, height);
 
-      return image->preview;
+      return private->preview;
     }
 }
 
@@ -126,21 +126,20 @@ gimp_image_get_new_preview (GimpViewable *viewable,
                             gint          width,
                             gint          height)
 {
-  GimpImage   *image = GIMP_IMAGE (viewable);
-  TempBuf     *buf;
-  TileManager *tiles;
-  gdouble      scale_x;
-  gdouble      scale_y;
-  gint         level;
-  gboolean     is_premult;
+  GimpImage      *image      = GIMP_IMAGE (viewable);
+  GimpProjection *projection = gimp_image_get_projection (image);
+  TempBuf        *buf;
+  TileManager    *tiles;
+  gdouble         scale_x;
+  gdouble         scale_y;
+  gint            level;
+  gboolean        is_premult;
 
   scale_x = (gdouble) width  / (gdouble) gimp_image_get_width  (image);
   scale_y = (gdouble) height / (gdouble) gimp_image_get_height (image);
 
-  level = gimp_projection_get_level (image->projection, scale_x, scale_y);
-
-  tiles = gimp_projection_get_tiles_at_level (image->projection, level,
-                                              &is_premult);
+  level = gimp_projection_get_level (projection, scale_x, scale_y);
+  tiles = gimp_projection_get_tiles_at_level (projection, level, &is_premult);
 
   buf = tile_manager_get_preview (tiles, width, height);
 

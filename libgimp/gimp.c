@@ -3,10 +3,10 @@
  *
  * gimp.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -93,18 +92,27 @@
 
 #include <locale.h>
 
-#include "libgimpbase/gimpbasetypes.h"
-
+#include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpbase-private.h"
-#include "libgimpbase/gimpenv.h"
-#include "libgimpbase/gimpparasite.h"
 #include "libgimpbase/gimpprotocol.h"
 #include "libgimpbase/gimpwire.h"
 
+#undef GIMP_DISABLE_DEPRECATED
 #include "gimp.h"
 #include "gimpunitcache.h"
 
 #include "libgimp-intl.h"
+
+
+/**
+ * SECTION: gimp
+ * @title: Gimp
+ * @short_description: Main functions needed for building a GIMP plug-in.
+ *                     This header includes all other GIMP Library headers.
+ *
+ * Main functions needed for building a GIMP plug-in. This header
+ * includes all other GIMP Library headers.
+ **/
 
 
 #define TILE_MAP_SIZE (_tile_width * _tile_height * 4)
@@ -224,7 +232,8 @@ static gchar             *pdb_error_message  = NULL;
  * The main procedure that must be called with the PLUG_IN_INFO structure
  * and the 'argc' and 'argv' that are passed to "main".
  *
- * Return value:
+ * Returns: an exit status as defined by the C library,
+ *          on success %EXIT_SUCCESS.
  **/
 gint
 gimp_main (const GimpPlugInInfo *info,
@@ -554,22 +563,22 @@ gimp_quit (void)
  * "*" for all image types. If the procedure doesn't need an image to
  * run, use the empty string.
  *
- * @type must be one of #GIMP_PLUGIN or #GIMP_EXTENSION. Note that
+ * @type must be one of %GIMP_PLUGIN or %GIMP_EXTENSION. Note that
  * temporary procedures must be installed using
  * gimp_install_temp_proc().
  *
- * NOTE: Unlike the GIMP 1.2 API, #GIMP_EXTENSION no longer means
+ * NOTE: Unlike the GIMP 1.2 API, %GIMP_EXTENSION no longer means
  * that the procedure's menu prefix is &lt;Toolbox&gt;, but that
  * it will install temporary procedures. Therefore, the GIMP core
- * will wait until the #GIMP_EXTENSION procedure has called
+ * will wait until the %GIMP_EXTENSION procedure has called
  * gimp_extension_ack(), which means that the procedure has done
  * its initialization, installed its temporary procedures and is
  * ready to run.
  *
- * <emphasis>Not calling gimp_extension_ack() from a #GIMP_EXTENSION
+ * <emphasis>Not calling gimp_extension_ack() from a %GIMP_EXTENSION
  * procedure will cause the GIMP core to lock up.</emphasis>
  *
- * Additionally, a #GIMP_EXTENSION procedure with no parameters
+ * Additionally, a %GIMP_EXTENSION procedure with no parameters
  * (@n_params == 0 and @params == #NULL) is an "automatic" extension
  * that will be automatically started on each GIMP startup.
  **/
@@ -641,7 +650,7 @@ gimp_install_procedure (const gchar        *name,
  *
  * See gimp_install_procedure() for most details.
  *
- * @type <emphasis>must</emphasis> be #GIMP_TEMPORARY or the function
+ * @type <emphasis>must</emphasis> be %GIMP_TEMPORARY or the function
  * will fail.
  *
  * @run_proc is the function which will be called to execute the
@@ -724,12 +733,12 @@ gimp_uninstall_temp_proc (const gchar *name)
  * gimp_run_procedure:
  * @name:          the name of the procedure to run
  * @n_return_vals: return location for the number of return values
- * @Varargs:       list of procedure parameters
+ * @...:           list of procedure parameters
  *
  * This function calls a GIMP procedure and returns its return values.
  *
  * The procedure's parameters are given by a va_list in the format
- * (type, value, type, value) and must be terminated by #GIMP_PDB_END.
+ * (type, value, type, value) and must be terminated by %GIMP_PDB_END.
  *
  * This function converts the va_list of parameters into an array and
  * passes them to gimp_run_procedure2(). Please look there for further
@@ -762,6 +771,7 @@ gimp_run_procedure (const gchar *name,
         case GIMP_PDB_INT32:
         case GIMP_PDB_DISPLAY:
         case GIMP_PDB_IMAGE:
+        case GIMP_PDB_ITEM:
         case GIMP_PDB_LAYER:
         case GIMP_PDB_CHANNEL:
         case GIMP_PDB_DRAWABLE:
@@ -803,8 +813,6 @@ gimp_run_procedure (const gchar *name,
           break;
         case GIMP_PDB_PARASITE:
           (void) va_arg (args, GimpParasite *);
-          break;
-        case GIMP_PDB_REGION:
           break;
         case GIMP_PDB_END:
           break;
@@ -860,7 +868,8 @@ gimp_run_procedure (const gchar *name,
         case GIMP_PDB_COLOR:
           params[i].data.d_color = *va_arg (args, GimpRGB *);
           break;
-        case GIMP_PDB_REGION:
+        case GIMP_PDB_ITEM:
+          params[i].data.d_item = va_arg (args, gint32);
           break;
         case GIMP_PDB_DISPLAY:
           params[i].data.d_display = va_arg (args, gint32);
@@ -1174,6 +1183,8 @@ gimp_gamma (void)
  *
  * This is a constant value given at plug-in configuration time.
  *
+ * @Deprecated: 2.8
+ *
  * Return value: the install_cmap boolean
  **/
 gboolean
@@ -1191,6 +1202,8 @@ gimp_install_cmap (void)
  * This is a constant value given at plug-in configuration time.
  *
  * See also: gimp_install_cmap()
+ *
+ * @Deprecated: 2.8
  *
  * Return value: the minimum number of colors to allocate
  **/
@@ -1489,6 +1502,66 @@ gimp_extension_process (guint timeout)
 }
 
 /**
+ * gimp_parasite_find:
+ * @name: The name of the parasite to find.
+ *
+ * Deprecated: Use gimp_get_parasite() instead.
+ *
+ * Returns: The found parasite.
+ **/
+GimpParasite *
+gimp_parasite_find (const gchar *name)
+{
+  return gimp_get_parasite (name);
+}
+
+/**
+ * gimp_parasite_attach:
+ * @parasite: The parasite to attach.
+ *
+ * Deprecated: Use gimp_attach_parasite() instead.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+gimp_parasite_attach (const GimpParasite *parasite)
+{
+  return gimp_attach_parasite (parasite);
+}
+
+/**
+ * gimp_parasite_detach:
+ * @name: The name of the parasite to detach.
+ *
+ * Deprecated: Use gimp_detach_parasite() instead.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+gimp_parasite_detach (const gchar *name)
+{
+  return gimp_parasite_detach (name);
+}
+
+/**
+ * gimp_parasite_list:
+ * @num_parasites: The number of attached parasites.
+ * @parasites: The names of currently attached parasites.
+ *
+ * Deprecated: Use gimp_get_parasite_list() instead.
+ *
+ * Returns: TRUE on success.
+ **/
+gboolean
+gimp_parasite_list (gint    *num_parasites,
+                    gchar ***parasites)
+{
+  *parasites = gimp_get_parasite_list (num_parasites);
+
+  return *parasites != NULL;
+}
+
+/**
  * gimp_attach_new_parasite:
  * @name: the name of the #GimpParasite to create and attach.
  * @flags: the flags set on the #GimpParasite.
@@ -1498,10 +1571,12 @@ gimp_extension_process (guint timeout)
  * Convenience function that creates a parasite and attaches it
  * to GIMP.
  *
+ * Deprecated: Use gimp_attach_parasite() instead.
+ *
  * Return value: TRUE on successful creation and attachment of
  * the new parasite.
  *
- * See Also: gimp_parasite_attach()
+ * See Also: gimp_attach_parasite()
  */
 gboolean
 gimp_attach_new_parasite (const gchar   *name,

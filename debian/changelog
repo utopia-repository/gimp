@@ -1,3 +1,49 @@
+gimp (2.8.0-2) UNRELEASED; urgency=low
+
+  * Use a shlibs.local file to force a dependency on libbabl >= 0.1.10.
+    GIMP has an internal check for this version and will refuse to start
+    otherwise, as it relies on some optimisations made to babl in
+    0.1.8 → 0.1.10 (closes: #672247).
+
+ -- Jordi Mallach <jordi@debian.org>  Wed, 09 May 2012 18:06:19 +0200
+
+gimp (2.8.0-1) experimental; urgency=low
+
+  * New upstream stable release (closes: #644182, #671399).
+    - “Create” menu item is now accessible via a mnemonic (closes: #610579).
+    - fixes build error with GEGL 0.2 (closes: #671982).
+  * Massive update of Build-Depends, to ensure all new features are
+    enabled (bzip2 compression, JPEG 2000, Ghostscript, PDF export, GUdev,
+    X Mourse Cursor and others), as per configure.ac.
+  * Build depend on unversioned libpng-dev (closes: #662347).
+  * Don't pass --without-hal to configure, it's obsolete.
+  * Build-Depend on gnome-pkg-tools and include check-dist.mk.
+  * Update Vcs-* URLs.
+  * Remove duplicate Section fields.
+  * Remove gimp.preinst, it only handled upgrades from pre-lenny.
+  * Use an explicit "set -e" in other maint scripts, instead of using the
+    shebang.
+  * Drop 01_debian_gimprc.patch, obsolete. The web-browser config option
+    is now gone and by default gimp will open help internally.
+  * Rename fix_gimp4hurd.patch to 01_hurd_ftbfs.patch.
+  * Drop part of 01_hurd_ftbfs.patch which has been applied upstream, and
+    add a patch header.
+  * Update watch file so it works for any new stable release directories.
+  * Rewrite copyright file in machine-readable format 1.0. The GIMP is now
+    licensed under the (L)GPLv3+.
+  * Pass -- -V -c4 to dh_makeshlibs.
+  * Rename all .files files to .install, and stop calling dh_movefiles.
+  * Rename BUILDDIR to “builddir”, as “build” is now a real directory in
+    the distribution.
+  * Add myself to Uploaders.
+  * Configure with --disable-static and stop distributing .a files.
+  * Update libgimp2.0.symbols.
+  * Build-Depend on GTK-2.0, GDK-Pixbuf and GLib -doc packages to ensure
+    proper cross-reference links in generated gtk-doc API documentation.
+  * Bump Standards-Version to 3.9.3, with no further changes.
+
+ -- Jordi Mallach <jordi@debian.org>  Tue, 08 May 2012 18:50:03 +0200
+
 gimp (2.6.12-1) unstable; urgency=low
 
   * Imported Upstream version 2.6.12
@@ -41,7 +87,7 @@ gimp (2.6.11-4) unstable; urgency=low
     -Werror=format-security, which is now the default with dpkg 1.16.1 and
     cdbs
     (Closes: #643388)
-  * Improve gimp package description (Closes: #588898)
+  * Improve gimp package description (Closes: #178293, #588898)
   * Move ghostscript to Recommends since it doesn't have many dependencies
   * Update README.MIDI for gimp 2.6 (it's about time).
   * Switch to using dh_python2 (Closes: #641579)

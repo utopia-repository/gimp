@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -26,26 +25,27 @@
 #include "core/gimpprogress.h"
 
 
-static void        gimp_sub_progress_iface_init (GimpProgressInterface *iface);
-static void        gimp_sub_progress_finalize   (GObject               *object);
+static void           gimp_sub_progress_iface_init    (GimpProgressInterface *iface);
 
-static GimpProgress * gimp_sub_progress_start      (GimpProgress        *progress,
-                                                    const gchar         *message,
-                                                    gboolean             cancelable);
-static void           gimp_sub_progress_end        (GimpProgress        *progress);
-static gboolean       gimp_sub_progress_is_active  (GimpProgress        *progress);
-static void           gimp_sub_progress_set_text   (GimpProgress        *progress,
-                                                    const gchar         *message);
-static void           gimp_sub_progress_set_value  (GimpProgress        *progress,
-                                                    gdouble              percentage);
-static gdouble        gimp_sub_progress_get_value  (GimpProgress        *progress);
-static void           gimp_sub_progress_pulse      (GimpProgress        *progress);
-static guint32        gimp_sub_progress_get_window (GimpProgress        *progress);
-static gboolean       gimp_sub_progress_message    (GimpProgress        *progress,
-                                                    Gimp                *gimp,
-                                                    GimpMessageSeverity  severity,
-                                                    const gchar         *domain,
-                                                    const gchar         *message);
+static void           gimp_sub_progress_finalize      (GObject             *object);
+
+static GimpProgress * gimp_sub_progress_start         (GimpProgress        *progress,
+                                                       const gchar         *message,
+                                                       gboolean             cancelable);
+static void           gimp_sub_progress_end           (GimpProgress        *progress);
+static gboolean       gimp_sub_progress_is_active     (GimpProgress        *progress);
+static void           gimp_sub_progress_set_text      (GimpProgress        *progress,
+                                                       const gchar         *message);
+static void           gimp_sub_progress_set_value     (GimpProgress        *progress,
+                                                       gdouble              percentage);
+static gdouble        gimp_sub_progress_get_value     (GimpProgress        *progress);
+static void           gimp_sub_progress_pulse         (GimpProgress        *progress);
+static guint32        gimp_sub_progress_get_window_id (GimpProgress        *progress);
+static gboolean       gimp_sub_progress_message       (GimpProgress        *progress,
+                                                       Gimp                *gimp,
+                                                       GimpMessageSeverity  severity,
+                                                       const gchar         *domain,
+                                                       const gchar         *message);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpSubProgress, gimp_sub_progress, G_TYPE_OBJECT,
@@ -88,15 +88,15 @@ gimp_sub_progress_finalize (GObject *object)
 static void
 gimp_sub_progress_iface_init (GimpProgressInterface *iface)
 {
-  iface->start      = gimp_sub_progress_start;
-  iface->end        = gimp_sub_progress_end;
-  iface->is_active  = gimp_sub_progress_is_active;
-  iface->set_text   = gimp_sub_progress_set_text;
-  iface->set_value  = gimp_sub_progress_set_value;
-  iface->get_value  = gimp_sub_progress_get_value;
-  iface->pulse      = gimp_sub_progress_pulse;
-  iface->get_window = gimp_sub_progress_get_window;
-  iface->message    = gimp_sub_progress_message;
+  iface->start         = gimp_sub_progress_start;
+  iface->end           = gimp_sub_progress_end;
+  iface->is_active     = gimp_sub_progress_is_active;
+  iface->set_text      = gimp_sub_progress_set_text;
+  iface->set_value     = gimp_sub_progress_set_value;
+  iface->get_value     = gimp_sub_progress_get_value;
+  iface->pulse         = gimp_sub_progress_pulse;
+  iface->get_window_id = gimp_sub_progress_get_window_id;
+  iface->message       = gimp_sub_progress_message;
 }
 
 static GimpProgress *
@@ -164,12 +164,12 @@ gimp_sub_progress_pulse (GimpProgress *progress)
 }
 
 static guint32
-gimp_sub_progress_get_window (GimpProgress *progress)
+gimp_sub_progress_get_window_id (GimpProgress *progress)
 {
   GimpSubProgress *sub = GIMP_SUB_PROGRESS (progress);
 
   if (sub->progress)
-    return gimp_progress_get_window (sub->progress);
+    return gimp_progress_get_window_id (sub->progress);
 
   return 0;
 }

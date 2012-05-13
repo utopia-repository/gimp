@@ -4,9 +4,9 @@
  * GimpText
  * Copyright (C) 2003  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,17 +15,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "text-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpdrawable-private.h" /* eek */
 #include "core/gimpimage.h"
 #include "core/gimpparasitelist.h"
 
@@ -77,7 +78,7 @@ gimp_text_layer_xcf_load_hack (GimpLayer **layer)
                           "Some text properties may be wrong. "
                           "Unless you want to edit the text layer, "
                           "you don't need to worry about this."),
-                        gimp_object_get_name (GIMP_OBJECT (*layer)),
+                        gimp_object_get_name (*layer),
                         error->message);
           g_clear_error (&error);
         }
@@ -96,7 +97,7 @@ gimp_text_layer_xcf_load_hack (GimpLayer **layer)
     {
       *layer = gimp_text_layer_from_layer (*layer, text);
 
-      /*  let the text layer know what parasite was used to create it  */
+      /*  let the text layer knows what parasite was used to create it  */
       GIMP_TEXT_LAYER (*layer)->text_parasite = name;
     }
 
@@ -121,7 +122,12 @@ gimp_text_layer_xcf_save_prepare (GimpTextLayer *layer)
     {
       GimpParasite *parasite = gimp_text_to_parasite (text);
 
-      gimp_parasite_list_add (GIMP_ITEM (layer)->parasites, parasite);
+      /*  Don't push an undo because the parasite only exists temporarily
+       *  while the text layer is saved to XCF.
+       */
+      gimp_item_parasite_attach (GIMP_ITEM (layer), parasite, FALSE);
+
+      gimp_parasite_free (parasite);
     }
 }
 
@@ -175,47 +181,22 @@ gimp_text_layer_from_layer (GimpLayer *layer,
                             GimpText  *text)
 {
   GimpTextLayer *text_layer;
-  GimpItem      *item;
   GimpDrawable  *drawable;
 
   g_return_val_if_fail (GIMP_IS_LAYER (layer), NULL);
   g_return_val_if_fail (GIMP_IS_TEXT (text), NULL);
 
-  text_layer = g_object_new (GIMP_TYPE_TEXT_LAYER, NULL);
+  text_layer = g_object_new (GIMP_TYPE_TEXT_LAYER,
+                             "image", gimp_item_get_image (GIMP_ITEM (layer)),
+                             NULL);
 
-  item     = GIMP_ITEM (text_layer);
+  gimp_item_replace_item (GIMP_ITEM (text_layer), GIMP_ITEM (layer));
+
   drawable = GIMP_DRAWABLE (text_layer);
 
-  gimp_object_set_name (GIMP_OBJECT (text_layer),
-                        gimp_object_get_name (GIMP_OBJECT (layer)));
-
-  item->ID    = gimp_item_get_ID (GIMP_ITEM (layer));
-  item->image = gimp_item_get_image (GIMP_ITEM (layer));
-
-  gimp_item_set_tattoo (item, gimp_item_get_tattoo (GIMP_ITEM (layer)));
-
-  gimp_item_set_image (GIMP_ITEM (layer), NULL);
-  g_hash_table_replace (item->image->gimp->item_table,
-                        GINT_TO_POINTER (gimp_item_get_ID (item)),
-                        item);
-
-  item->parasites = GIMP_ITEM (layer)->parasites;
-  GIMP_ITEM (layer)->parasites = NULL;
-
-  item->width  = gimp_item_width (GIMP_ITEM (layer));
-  item->height = gimp_item_height (GIMP_ITEM (layer));
-
-  gimp_item_offsets (GIMP_ITEM (layer), &item->offset_x, &item->offset_y);
-
-  gimp_item_set_visible (item, gimp_item_get_visible (GIMP_ITEM (layer)), FALSE);
-  gimp_item_set_linked  (item, gimp_item_get_linked  (GIMP_ITEM (layer)), FALSE);
-
-  drawable->tiles = gimp_drawable_get_tiles (GIMP_DRAWABLE (layer));
-  GIMP_DRAWABLE (layer)->tiles = NULL;
-
-  drawable->bytes     = gimp_drawable_bytes (GIMP_DRAWABLE (layer));
-  drawable->type      = gimp_drawable_type (GIMP_DRAWABLE (layer));
-  drawable->has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
+  drawable->private->type  = gimp_drawable_type (GIMP_DRAWABLE (layer));
+  drawable->private->tiles = gimp_drawable_get_tiles (GIMP_DRAWABLE (layer));
+  GIMP_DRAWABLE (layer)->private->tiles = NULL;
 
   gimp_layer_set_opacity    (GIMP_LAYER (text_layer),
                              gimp_layer_get_opacity (layer), FALSE);

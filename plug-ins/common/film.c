@@ -3,9 +3,9 @@
  * Film plug-in (C) 1997 Peter Kirchgessner
  * e-mail: pkirchg@aol.com, WWW: http://members.aol.com/pkirchg
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -34,6 +33,7 @@
 
 #define PLUG_IN_PROC        "plug-in-film"
 #define PLUG_IN_BINARY      "film"
+#define PLUG_IN_ROLE        "gimp-film"
 
 /* Maximum number of pictures per film */
 #define MAX_FILM_PICTURES   64
@@ -194,7 +194,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,      "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,      "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,      "image",        "Input image (only used as default image in interactive mode)" },
     { GIMP_PDB_DRAWABLE,   "drawable",     "Input drawable (not used)" },
     { GIMP_PDB_INT32,      "film-height",  "Height of film (0: fit to images)" },
@@ -205,7 +205,7 @@ query (void)
     { GIMP_PDB_INT32,      "at-top",       "Flag for drawing numbers at top of film" },
     { GIMP_PDB_INT32,      "at-bottom",    "Flag for drawing numbers at bottom of film" },
     { GIMP_PDB_INT32,      "num-images",   "Number of images to be used for film" },
-    { GIMP_PDB_INT32ARRAY, "image-ids",    "num_images image IDs to be used for film"}
+    { GIMP_PDB_INT32ARRAY, "image-ids",    "num-images image IDs to be used for film" }
   };
 
   static const GimpParamDef return_vals[] =
@@ -333,7 +333,7 @@ run (const gchar      *name,
 static gint32
 film (void)
 {
-  gint          width, height, tile_height;
+  gint          width, height;
   guchar       *hole;
   gint          film_height, film_width;
   gint          picture_width, picture_height;
@@ -364,8 +364,6 @@ film (void)
   gimp_context_push ();
   gimp_context_set_foreground (&filmvals.number_color);
   gimp_context_set_background (&filmvals.film_color);
-
-  tile_height = gimp_tile_height ();
 
   if (filmvals.keep_height) /* Search maximum picture height */
     {
@@ -471,8 +469,8 @@ film (void)
       height = gimp_image_height (image_ID_tmp);
       f = ((gdouble) picture_height) / (gdouble) height;
       picture_width = width * f;
-      if (gimp_image_base_type (image_ID_tmp) != GIMP_RGB_IMAGE)
-	gimp_image_convert_rgb (image_ID_tmp);
+      if (gimp_image_base_type (image_ID_tmp) != GIMP_RGB)
+        gimp_image_convert_rgb (image_ID_tmp);
       gimp_image_scale (image_ID_tmp, picture_width, picture_height);
 
       layers = gimp_image_get_layers (image_ID_tmp, &num_layers);
@@ -484,11 +482,11 @@ film (void)
           picture_x0 += picture_space / 2;
 
           layer_ID_src = layers[k];
-	  gimp_layer_resize_to_image_size (layer_ID_src);
-	  new_layer = gimp_layer_new_from_drawable (layer_ID_src,
-						    image_ID_dst);
-	  gimp_image_add_layer (image_ID_dst, new_layer, -1);
-	  gimp_layer_set_offsets (new_layer, picture_x0, picture_y0);
+          gimp_layer_resize_to_image_size (layer_ID_src);
+          new_layer = gimp_layer_new_from_drawable (layer_ID_src,
+                                                    image_ID_dst);
+          gimp_image_insert_layer (image_ID_dst, new_layer, -1, -1);
+          gimp_layer_set_offsets (new_layer, picture_x0, picture_y0);
 
           /* Draw picture numbers */
           if ((number_height > 0) &&
@@ -496,12 +494,12 @@ film (void)
             {
               if (filmvals.number_pos[0])
                 draw_number (layer_ID_dst,
-			     filmvals.number_start + picture_count,
+                             filmvals.number_start + picture_count,
                              picture_x0 + picture_width/2,
                              (hole_offset-number_height)/2, number_height);
               if (filmvals.number_pos[1])
                 draw_number (layer_ID_dst,
-			     filmvals.number_start + picture_count,
+                             filmvals.number_start + picture_count,
                              picture_x0 + picture_width/2,
                              film_height - (hole_offset + number_height)/2,
                              number_height);
@@ -518,6 +516,7 @@ film (void)
       g_free (layers);
       gimp_image_delete (image_ID_tmp);
     }
+  gimp_progress_update (1.0);
 
   gimp_image_flatten (image_ID_dst);
 
@@ -594,7 +593,7 @@ create_hole_rgb (gint width,
   for (k = radius-1; k > 0; k--)  /* Rounding corners */
     {
       length = (int)(radius - sqrt ((gdouble) (radius * radius - k * k))
-		     - 0.5);
+                     - 0.5);
       if (length > 0)
         {
           set_pixels (length, top, &filmvals.film_color);
@@ -677,7 +676,7 @@ draw_number (gint32 layer_ID,
   g_snprintf (buf, sizeof (buf), "%d", num);
 
   drw = gimp_drawable_get (layer_ID);
-  image_ID = gimp_drawable_get_image (layer_ID);
+  image_ID = gimp_item_get_image (layer_ID);
 
   max_delta = height / 10;
   if (max_delta < 1)
@@ -745,7 +744,7 @@ create_new_image (const gchar    *filename,
   gimp_image_undo_disable (image_ID);
   *layer_ID = gimp_layer_new (image_ID, _("Background"), width, height,
                               gdtype, 100, GIMP_NORMAL_MODE);
-  gimp_image_add_layer (image_ID, *layer_ID, 0);
+  gimp_image_insert_layer (image_ID, *layer_ID, -1, 0);
 
   if (drawable)
     {
@@ -871,7 +870,7 @@ add_image_list (gboolean   add_box_flag,
   GtkTreeSelection *sel;
   gint              i;
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -960,13 +959,13 @@ create_selection_tab (GtkWidget *notebook,
   gint32       *image_id_list;
   gint          nimages, j;
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), hbox,
                             gtk_label_new_with_mnemonic (_("Selection")));
   gtk_widget_show (hbox);
 
-  vbox2 = gtk_vbox_new (FALSE, 12);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (hbox), vbox2, FALSE, FALSE, 0);
   gtk_widget_show (vbox2);
 
@@ -977,7 +976,7 @@ create_selection_tab (GtkWidget *notebook,
   gtk_box_pack_start (GTK_BOX (vbox2), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -1009,11 +1008,14 @@ create_selection_tab (GtkWidget *notebook,
                     G_CALLBACK (gimp_int_adjustment_update),
                     &filmvals.film_height);
 
-  g_object_set_data (G_OBJECT (toggle), "inverse_sensitive", spinbutton);
-  g_object_set_data
-    (G_OBJECT (spinbutton), "inverse_sensitive",
-     /* FIXME: eeeeeek */
-     g_list_nth_data (gtk_container_get_children (GTK_CONTAINER (table)), 1));
+  g_object_bind_property (toggle,     "active",
+                          spinbutton, "sensitive",
+                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+  g_object_bind_property (toggle,     "active",
+                          /* FIXME: eeeeeek */
+                          g_list_nth_data (gtk_container_get_children (GTK_CONTAINER (table)), 1), "sensitive",
+                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 filmvals.keep_height);
 
@@ -1036,7 +1038,7 @@ create_selection_tab (GtkWidget *notebook,
   gtk_box_pack_start (GTK_BOX (vbox2), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -1101,7 +1103,8 @@ create_selection_tab (GtkWidget *notebook,
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  hbox = gtk_hbox_new (TRUE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
 
   /* Get a list of all image names */
@@ -1131,7 +1134,7 @@ create_advanced_tab (GtkWidget *notebook)
                             gtk_label_new_with_mnemonic (_("Ad_vanced")));
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -1222,7 +1225,7 @@ create_advanced_tab (GtkWidget *notebook)
                     G_CALLBACK (gimp_double_adjustment_update),
                     &filmvals.number_height);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1245,7 +1248,7 @@ film_dialog (gint32 image_ID)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("Filmstrip"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Filmstrip"), PLUG_IN_ROLE,
                          NULL, 0,
                          gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1261,9 +1264,10 @@ film_dialog (gint32 image_ID)
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dlg)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   notebook = gtk_notebook_new ();

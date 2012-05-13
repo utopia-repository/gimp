@@ -4,9 +4,9 @@
  * gimptooloptionseditor.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,7 +31,6 @@
 #include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
-#include "core/gimptoolpresets.h"
 
 #include "gimpdnd.h"
 #include "gimpdocked.h"
@@ -47,41 +45,61 @@
 
 #include "gimp-intl.h"
 
+enum
+{
+  PROP_0,
+  PROP_GIMP,
+};
 
-static void   gimp_tool_options_editor_docked_iface_init (GimpDockedInterface *iface);
+struct _GimpToolOptionsEditorPrivate
+{
+  Gimp            *gimp;
 
-static GObject * gimp_tool_options_editor_constructor  (GType                  type,
-                                                        guint                  n_params,
-                                                        GObjectConstructParam *params);
+  GtkWidget       *scrolled_window;
+  GtkWidget       *options_vbox;
+  GtkWidget       *title_label;
 
-static void   gimp_tool_options_editor_destroy         (GtkObject             *object);
+  GtkWidget       *save_button;
+  GtkWidget       *restore_button;
+  GtkWidget       *delete_button;
+  GtkWidget       *reset_button;
 
-static GtkWidget *gimp_tool_options_editor_get_preview (GimpDocked            *docked,
-                                                        GimpContext           *context,
-                                                        GtkIconSize            size);
-static gchar *gimp_tool_options_editor_get_title       (GimpDocked            *docked);
+  GimpToolOptions *visible_tool_options;
+};
 
-static void   gimp_tool_options_editor_save_clicked    (GtkWidget             *widget,
-                                                        GimpToolOptionsEditor *editor);
-static void   gimp_tool_options_editor_restore_clicked (GtkWidget             *widget,
-                                                        GimpToolOptionsEditor *editor);
-static void   gimp_tool_options_editor_delete_clicked  (GtkWidget             *widget,
-                                                        GimpToolOptionsEditor *editor);
-static void   gimp_tool_options_editor_drop_tool       (GtkWidget             *widget,
-                                                        gint                   x,
-                                                        gint                   y,
-                                                        GimpViewable          *viewable,
-                                                        gpointer               data);
 
-static void   gimp_tool_options_editor_tool_changed    (GimpContext           *context,
-                                                        GimpToolInfo          *tool_info,
-                                                        GimpToolOptionsEditor *editor);
+static void        gimp_tool_options_editor_docked_iface_init (GimpDockedInterface   *iface);
+static void        gimp_tool_options_editor_constructed       (GObject               *object);
+static void        gimp_tool_options_editor_dispose           (GObject               *object);
+static void        gimp_tool_options_editor_set_property      (GObject               *object,
+                                                               guint                  property_id,
+                                                               const GValue          *value,
+                                                               GParamSpec            *pspec);
+static void        gimp_tool_options_editor_get_property      (GObject               *object,
+                                                               guint                  property_id,
+                                                               GValue                *value,
+                                                               GParamSpec            *pspec);
 
-static void   gimp_tool_options_editor_presets_changed (GimpToolPresets       *presets,
-                                                        GimpToolOptionsEditor *editor);
-static void   gimp_tool_options_editor_presets_update  (GimpToolOptionsEditor *editor,
-                                                        GimpToolPresets       *presets);
-static void   gimp_tool_options_editor_save_presets    (GimpToolOptionsEditor *editor);
+static GtkWidget * gimp_tool_options_editor_get_preview       (GimpDocked            *docked,
+                                                               GimpContext           *context,
+                                                               GtkIconSize            size);
+static gchar     * gimp_tool_options_editor_get_title         (GimpDocked            *docked);
+static gboolean    gimp_tool_options_editor_get_prefer_icon   (GimpDocked            *docked);
+static void        gimp_tool_options_editor_save_clicked      (GtkWidget             *widget,
+                                                               GimpToolOptionsEditor *editor);
+static void        gimp_tool_options_editor_restore_clicked   (GtkWidget             *widget,
+                                                               GimpToolOptionsEditor *editor);
+static void        gimp_tool_options_editor_delete_clicked    (GtkWidget             *widget,
+                                                               GimpToolOptionsEditor *editor);
+static void        gimp_tool_options_editor_drop_tool         (GtkWidget             *widget,
+                                                               gint                   x,
+                                                               gint                   y,
+                                                               GimpViewable          *viewable,
+                                                               gpointer               data);
+static void        gimp_tool_options_editor_tool_changed      (GimpContext           *context,
+                                                               GimpToolInfo          *tool_info,
+                                                               GimpToolOptionsEditor *editor);
+static void        gimp_tool_options_editor_presets_update    (GimpToolOptionsEditor *editor);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpToolOptionsEditor, gimp_tool_options_editor,
@@ -95,12 +113,29 @@ G_DEFINE_TYPE_WITH_CODE (GimpToolOptionsEditor, gimp_tool_options_editor,
 static void
 gimp_tool_options_editor_class_init (GimpToolOptionsEditorClass *klass)
 {
-  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor = gimp_tool_options_editor_constructor;
+  object_class->constructed  = gimp_tool_options_editor_constructed;
+  object_class->dispose      = gimp_tool_options_editor_dispose;
+  object_class->set_property = gimp_tool_options_editor_set_property;
+  object_class->get_property = gimp_tool_options_editor_get_property;
 
-  gtk_object_class->destroy = gimp_tool_options_editor_destroy;
+  g_object_class_install_property (object_class, PROP_GIMP,
+                                   g_param_spec_object ("gimp",
+                                                        NULL, NULL,
+                                                        GIMP_TYPE_GIMP,
+                                                        GIMP_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
+
+  g_type_class_add_private (klass, sizeof (GimpToolOptionsEditorPrivate));
+}
+
+static void
+gimp_tool_options_editor_docked_iface_init (GimpDockedInterface *docked_iface)
+{
+  docked_iface->get_preview     = gimp_tool_options_editor_get_preview;
+  docked_iface->get_title       = gimp_tool_options_editor_get_title;
+  docked_iface->get_prefer_icon = gimp_tool_options_editor_get_prefer_icon;
 }
 
 static void
@@ -109,6 +144,10 @@ gimp_tool_options_editor_init (GimpToolOptionsEditor *editor)
   GtkScrolledWindow *scrolled_window;
   GtkWidget         *viewport;
 
+  editor->p = G_TYPE_INSTANCE_GET_PRIVATE (editor,
+                                           GIMP_TYPE_TOOL_OPTIONS_EDITOR,
+                                           GimpToolOptionsEditorPrivate);
+
   gtk_widget_set_size_request (GTK_WIDGET (editor), -1, 200);
 
   gimp_dnd_viewable_dest_add (GTK_WIDGET (editor),
@@ -116,15 +155,26 @@ gimp_tool_options_editor_init (GimpToolOptionsEditor *editor)
                               gimp_tool_options_editor_drop_tool,
                               editor);
 
-  editor->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  scrolled_window = GTK_SCROLLED_WINDOW (editor->scrolled_window);
+  /*  The label containing the tool options title */
+  editor->p->title_label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (editor->p->title_label), 0.0, 0.0);
+  gimp_label_set_attributes (GTK_LABEL (editor->p->title_label),
+                             PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
+                             -1);
+  gtk_box_pack_start (GTK_BOX (editor),
+                      editor->p->title_label, FALSE, FALSE, 0);
+  gtk_widget_show (editor->p->title_label);
+
+  editor->p->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  scrolled_window = GTK_SCROLLED_WINDOW (editor->p->scrolled_window);
 
   gtk_scrolled_window_set_policy (scrolled_window,
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
 
-  gtk_container_add (GTK_CONTAINER (editor), editor->scrolled_window);
-  gtk_widget_show (editor->scrolled_window);
+  gtk_box_pack_start (GTK_BOX (editor), editor->p->scrolled_window,
+                      TRUE, TRUE, 0);
+  gtk_widget_show (editor->p->scrolled_window);
 
   viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment (scrolled_window),
                                gtk_scrolled_window_get_vadjustment (scrolled_window));
@@ -133,94 +183,128 @@ gimp_tool_options_editor_init (GimpToolOptionsEditor *editor)
   gtk_widget_show (viewport);
 
   /*  The vbox containing the tool options  */
-  editor->options_vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (viewport), editor->options_vbox);
-  gtk_widget_show (editor->options_vbox);
-
-  editor->save_queue   = NULL;
-  editor->save_idle_id = 0;
+  editor->p->options_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add (GTK_CONTAINER (viewport), editor->p->options_vbox);
+  gtk_widget_show (editor->p->options_vbox);
 }
 
 static void
-gimp_tool_options_editor_docked_iface_init (GimpDockedInterface *docked_iface)
+gimp_tool_options_editor_constructed (GObject *object)
 {
-  docked_iface->get_preview = gimp_tool_options_editor_get_preview;
-  docked_iface->get_title   = gimp_tool_options_editor_get_title;
-}
+  GimpToolOptionsEditor *editor = GIMP_TOOL_OPTIONS_EDITOR (object);
+  GimpContext           *user_context;
 
-static GObject *
-gimp_tool_options_editor_constructor (GType                  type,
-                                      guint                  n_params,
-                                      GObjectConstructParam *params)
-{
-  GObject               *object;
-  GimpToolOptionsEditor *editor;
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  editor = GIMP_TOOL_OPTIONS_EDITOR (object);
-
-  editor->save_button =
+  editor->p->save_button =
     gimp_editor_add_button (GIMP_EDITOR (editor), GTK_STOCK_SAVE,
-                            _("Save options to..."),
+                            _("Save Tool Preset..."),
                             GIMP_HELP_TOOL_OPTIONS_SAVE,
                             G_CALLBACK (gimp_tool_options_editor_save_clicked),
                             NULL,
                             editor);
 
-  editor->restore_button =
+  editor->p->restore_button =
     gimp_editor_add_button (GIMP_EDITOR (editor), GTK_STOCK_REVERT_TO_SAVED,
-                            _("Restore options from..."),
+                            _("Restore Tool Preset..."),
                             GIMP_HELP_TOOL_OPTIONS_RESTORE,
                             G_CALLBACK (gimp_tool_options_editor_restore_clicked),
                             NULL,
                             editor);
 
-  editor->delete_button =
+  editor->p->delete_button =
     gimp_editor_add_button (GIMP_EDITOR (editor), GTK_STOCK_DELETE,
-                            _("Delete saved options..."),
+                            _("Delete Tool Preset..."),
                             GIMP_HELP_TOOL_OPTIONS_DELETE,
                             G_CALLBACK (gimp_tool_options_editor_delete_clicked),
                             NULL,
                             editor);
 
-  editor->reset_button =
+  editor->p->reset_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor), "tool-options",
                                    "tool-options-reset",
                                    "tool-options-reset-all",
                                    GDK_SHIFT_MASK,
                                    NULL);
 
-  return object;
+  user_context = gimp_get_user_context (editor->p->gimp);
+
+  g_signal_connect_object (user_context, "tool-changed",
+                           G_CALLBACK (gimp_tool_options_editor_tool_changed),
+                           editor,
+                           0);
+
+  gimp_tool_options_editor_tool_changed (user_context,
+                                         gimp_context_get_tool (user_context),
+                                         editor);
 }
 
 static void
-gimp_tool_options_editor_destroy (GtkObject *object)
+gimp_tool_options_editor_dispose (GObject *object)
 {
   GimpToolOptionsEditor *editor = GIMP_TOOL_OPTIONS_EDITOR (object);
 
-  if (editor->options_vbox)
+  if (editor->p->options_vbox)
     {
       GList *options;
       GList *list;
 
       options =
-        gtk_container_get_children (GTK_CONTAINER (editor->options_vbox));
+        gtk_container_get_children (GTK_CONTAINER (editor->p->options_vbox));
 
       for (list = options; list; list = g_list_next (list))
         {
           g_object_ref (list->data);
-          gtk_container_remove (GTK_CONTAINER (editor->options_vbox),
+          gtk_container_remove (GTK_CONTAINER (editor->p->options_vbox),
                                 GTK_WIDGET (list->data));
         }
 
       g_list_free (options);
-      editor->options_vbox = NULL;
+      editor->p->options_vbox = NULL;
     }
 
-  gimp_tool_options_editor_save_presets (editor);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
+}
 
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
+static void
+gimp_tool_options_editor_set_property (GObject      *object,
+                                       guint         property_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
+{
+  GimpToolOptionsEditor *editor = GIMP_TOOL_OPTIONS_EDITOR (object);
+
+  switch (property_id)
+    {
+    case PROP_GIMP:
+      editor->p->gimp = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_tool_options_editor_get_property (GObject    *object,
+                                       guint       property_id,
+                                       GValue     *value,
+                                       GParamSpec *pspec)
+{
+  GimpToolOptionsEditor *editor = GIMP_TOOL_OPTIONS_EDITOR (object);
+
+  switch (property_id)
+    {
+    case PROP_GIMP:
+      g_value_set_object (value, editor->p->gimp);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static GtkWidget *
@@ -250,11 +334,20 @@ gimp_tool_options_editor_get_title (GimpDocked *docked)
   GimpContext           *context;
   GimpToolInfo          *tool_info;
 
-  context = gimp_get_user_context (editor->gimp);
+  context = gimp_get_user_context (editor->p->gimp);
 
   tool_info = gimp_context_get_tool (context);
 
   return tool_info ? g_strdup (tool_info->blurb) : NULL;
+}
+
+static gboolean
+gimp_tool_options_editor_get_prefer_icon (GimpDocked *docked)
+{
+  /* We support get_preview() for tab tyles, but we prefer to show our
+   * icon
+   */
+  return TRUE;
 }
 
 
@@ -264,34 +357,24 @@ GtkWidget *
 gimp_tool_options_editor_new (Gimp            *gimp,
                               GimpMenuFactory *menu_factory)
 {
-  GimpToolOptionsEditor *editor;
-  GimpContext           *user_context;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_MENU_FACTORY (menu_factory), NULL);
 
-  editor = g_object_new (GIMP_TYPE_TOOL_OPTIONS_EDITOR,
-                         "menu-factory",    menu_factory,
-                         "menu-identifier", "<ToolOptions>",
-                         "ui-path",         "/tool-options-popup",
-                         NULL);
-
-  editor->gimp = gimp;
-
-  user_context = gimp_get_user_context (gimp);
-
-  g_signal_connect_object (user_context, "tool-changed",
-                           G_CALLBACK (gimp_tool_options_editor_tool_changed),
-                           editor,
-                           0);
-
-  gimp_tool_options_editor_tool_changed (user_context,
-                                         gimp_context_get_tool (user_context),
-                                         editor);
-
-  return GTK_WIDGET (editor);
+  return g_object_new (GIMP_TYPE_TOOL_OPTIONS_EDITOR,
+                       "gimp",            gimp,
+                       "menu-factory",    menu_factory,
+                       "menu-identifier", "<ToolOptions>",
+                       "ui-path",         "/tool-options-popup",
+                       NULL);
 }
 
+GimpToolOptions *
+gimp_tool_options_editor_get_tool_options (GimpToolOptionsEditor *editor)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_OPTIONS_EDITOR (editor), NULL);
+
+  return editor->p->visible_tool_options;
+}
 
 /*  private functions  */
 
@@ -311,11 +394,12 @@ gimp_tool_options_editor_menu_popup (GimpToolOptionsEditor *editor,
 {
   GimpEditor *gimp_editor = GIMP_EDITOR (editor);
 
-  gtk_ui_manager_get_widget (GTK_UI_MANAGER (gimp_editor->ui_manager),
-                             gimp_editor->ui_path);
-  gimp_ui_manager_update (gimp_editor->ui_manager, gimp_editor->popup_data);
+  gtk_ui_manager_get_widget (GTK_UI_MANAGER (gimp_editor_get_ui_manager (gimp_editor)),
+                             gimp_editor_get_ui_path (gimp_editor));
+  gimp_ui_manager_update (gimp_editor_get_ui_manager (gimp_editor),
+                          gimp_editor_get_popup_data (gimp_editor));
 
-  gimp_ui_manager_ui_popup (gimp_editor->ui_manager, path,
+  gimp_ui_manager_ui_popup (gimp_editor_get_ui_manager (gimp_editor), path,
                             button,
                             gimp_tool_options_editor_menu_pos, button,
                             NULL, NULL);
@@ -325,16 +409,16 @@ static void
 gimp_tool_options_editor_save_clicked (GtkWidget             *widget,
                                        GimpToolOptionsEditor *editor)
 {
-  if (GTK_WIDGET_SENSITIVE (editor->restore_button) /* evil but correct */)
+  if (gtk_widget_get_sensitive (editor->p->restore_button) /* evil but correct */)
     {
       gimp_tool_options_editor_menu_popup (editor, widget,
                                            "/tool-options-popup/Save");
     }
   else
     {
-      gimp_ui_manager_activate_action (GIMP_EDITOR (editor)->ui_manager,
+      gimp_ui_manager_activate_action (gimp_editor_get_ui_manager (GIMP_EDITOR (editor)),
                                        "tool-options",
-                                       "tool-options-save-new");
+                                       "tool-options-save-new-preset");
     }
 }
 
@@ -364,7 +448,7 @@ gimp_tool_options_editor_drop_tool (GtkWidget    *widget,
   GimpToolOptionsEditor *editor = GIMP_TOOL_OPTIONS_EDITOR (data);
   GimpContext           *context;
 
-  context = gimp_get_user_context (editor->gimp);
+  context = gimp_get_user_context (editor->p->gimp);
 
   gimp_context_set_tool (context, GIMP_TOOL_INFO (viewable));
 }
@@ -374,28 +458,33 @@ gimp_tool_options_editor_tool_changed (GimpContext           *context,
                                        GimpToolInfo          *tool_info,
                                        GimpToolOptionsEditor *editor)
 {
-  GimpToolPresets *presets;
-  GtkWidget       *options_gui;
+  GimpContainer *presets;
+  GtkWidget     *options_gui;
+  
+  /* This will warn if tool info is changed to nothing.
+   * This seems to happen if starting in SWM with tool editor visible
+   * Maybe its normal, and the code should just be writen to
+   * handle this case, but someone smarter needs to take a look*/
+  g_return_if_fail(GIMP_IS_TOOL_INFO(tool_info));
 
-  if (tool_info && tool_info->tool_options == editor->visible_tool_options)
+  if (tool_info && tool_info->tool_options == editor->p->visible_tool_options)
     return;
 
-  if (editor->visible_tool_options)
+  if (editor->p->visible_tool_options)
     {
-      presets = editor->visible_tool_options->tool_info->presets;
+      presets = editor->p->visible_tool_options->tool_info->presets;
 
       if (presets)
         g_signal_handlers_disconnect_by_func (presets,
-                                              gimp_tool_options_editor_presets_changed,
+                                              gimp_tool_options_editor_presets_update,
                                               editor);
 
-      options_gui = g_object_get_data (G_OBJECT (editor->visible_tool_options),
-                                       "gimp-tool-options-gui");
+      options_gui = gimp_tools_get_tool_options_gui (editor->p->visible_tool_options);
 
       if (options_gui)
         gtk_widget_hide (options_gui);
 
-      editor->visible_tool_options = NULL;
+      editor->p->visible_tool_options = NULL;
     }
 
   if (tool_info && tool_info->tool_options)
@@ -403,123 +492,69 @@ gimp_tool_options_editor_tool_changed (GimpContext           *context,
       presets = tool_info->presets;
 
       if (presets)
-        g_signal_connect_object (presets, "changed",
-                                 G_CALLBACK (gimp_tool_options_editor_presets_changed),
-                                 G_OBJECT (editor), 0);
+        {
+          g_signal_connect_object (presets, "add",
+                                   G_CALLBACK (gimp_tool_options_editor_presets_update),
+                                   G_OBJECT (editor), G_CONNECT_SWAPPED);
+          g_signal_connect_object (presets, "remove",
+                                   G_CALLBACK (gimp_tool_options_editor_presets_update),
+                                   G_OBJECT (editor), G_CONNECT_SWAPPED);
+          g_signal_connect_object (presets, "thaw",
+                                   G_CALLBACK (gimp_tool_options_editor_presets_update),
+                                   G_OBJECT (editor), G_CONNECT_SWAPPED);
+        }
 
-      options_gui = g_object_get_data (G_OBJECT (tool_info->tool_options),
-                                       "gimp-tool-options-gui");
+      options_gui = gimp_tools_get_tool_options_gui (tool_info->tool_options);
 
       if (! gtk_widget_get_parent (options_gui))
-        gtk_box_pack_start (GTK_BOX (editor->options_vbox), options_gui,
+        gtk_box_pack_start (GTK_BOX (editor->p->options_vbox), options_gui,
                             FALSE, FALSE, 0);
 
       gtk_widget_show (options_gui);
 
-      editor->visible_tool_options = tool_info->tool_options;
+      editor->p->visible_tool_options = tool_info->tool_options;
 
-      gimp_help_set_help_data (editor->scrolled_window, NULL,
+      gimp_help_set_help_data (editor->p->scrolled_window, NULL,
                                tool_info->help_id);
-    }
-  else
-    {
-      presets = NULL;
+
+      gimp_tool_options_editor_presets_update (editor);
     }
 
-  gimp_tool_options_editor_presets_update (editor, presets);
+  if (editor->p->title_label != NULL)
+    {
+      gchar *title;
+
+      title = gimp_docked_get_title (GIMP_DOCKED (editor));
+      gtk_label_set_text (GTK_LABEL (editor->p->title_label), title);
+      g_free (title);
+    }
 
   gimp_docked_title_changed (GIMP_DOCKED (editor));
 }
 
-static gboolean
-gimp_tool_options_editor_save_presets_idle (GimpToolOptionsEditor *editor)
-{
-  editor->save_idle_id = 0;
-
-  gimp_tool_options_editor_save_presets (editor);
-
-  return FALSE;
-}
-
 static void
-gimp_tool_options_editor_queue_save_presets (GimpToolOptionsEditor *editor,
-                                             GimpToolPresets       *presets)
+gimp_tool_options_editor_presets_update (GimpToolOptionsEditor *editor)
 {
-  if (g_list_find (editor->save_queue, presets))
-    return;
+  GimpToolInfo *tool_info         = editor->p->visible_tool_options->tool_info;
+  gboolean      save_sensitive    = FALSE;
+  gboolean      restore_sensitive = FALSE;
+  gboolean      delete_sensitive  = FALSE;
+  gboolean      reset_sensitive   = FALSE;
 
-  editor->save_queue = g_list_append (editor->save_queue, presets);
-
-  if (! editor->save_idle_id)
-    {
-      editor->save_idle_id =
-        g_idle_add ((GSourceFunc) gimp_tool_options_editor_save_presets_idle,
-                    editor);
-    }
-}
-
-static void
-gimp_tool_options_editor_save_presets (GimpToolOptionsEditor *editor)
-{
-  GList *list;
-
-  if (editor->save_idle_id)
-    {
-      g_source_remove (editor->save_idle_id);
-      editor->save_idle_id = 0;
-    }
-
-  for (list = editor->save_queue; list; list = list->next)
-    {
-      GimpToolPresets *presets = list->data;
-      GError          *error   = NULL;
-
-      if (! gimp_tool_presets_save (presets, &error))
-        {
-          gimp_message (editor->gimp, G_OBJECT (editor), GIMP_MESSAGE_ERROR,
-                        _("Error saving tool options presets: %s"),
-                        error->message);
-          g_error_free (error);
-        }
-    }
-
-  g_list_free (editor->save_queue);
-
-  editor->save_queue = NULL;
-}
-
-static void
-gimp_tool_options_editor_presets_changed (GimpToolPresets       *presets,
-                                          GimpToolOptionsEditor *editor)
-{
-  gimp_tool_options_editor_queue_save_presets (editor, presets);
-
-  gimp_tool_options_editor_presets_update (editor, presets);
-}
-
-static void
-gimp_tool_options_editor_presets_update (GimpToolOptionsEditor *editor,
-                                         GimpToolPresets       *presets)
-{
-  gboolean save_sensitive    = FALSE;
-  gboolean restore_sensitive = FALSE;
-  gboolean delete_sensitive  = FALSE;
-  gboolean reset_sensitive   = FALSE;
-
-  if (presets)
+  if (tool_info->presets)
     {
       save_sensitive  = TRUE;
       reset_sensitive = TRUE;
 
-      if (! gimp_container_is_empty (GIMP_CONTAINER (presets)))
+      if (! gimp_container_is_empty (tool_info->presets))
         {
           restore_sensitive = TRUE;
           delete_sensitive  = TRUE;
         }
     }
 
-  gtk_widget_set_sensitive (editor->save_button,    save_sensitive);
-  gtk_widget_set_sensitive (editor->restore_button, restore_sensitive);
-  gtk_widget_set_sensitive (editor->delete_button,  delete_sensitive);
-  gtk_widget_set_sensitive (editor->reset_button,   reset_sensitive);
+  gtk_widget_set_sensitive (editor->p->save_button,    save_sensitive);
+  gtk_widget_set_sensitive (editor->p->restore_button, restore_sensitive);
+  gtk_widget_set_sensitive (editor->p->delete_button,  delete_sensitive);
+  gtk_widget_set_sensitive (editor->p->reset_button,   reset_sensitive);
 }

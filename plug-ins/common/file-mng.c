@@ -11,9 +11,9 @@
  * This work was sponsored by Xinit Systems Limited, UK.
  * http://www.xinitsystems.com/
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,8 +22,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * --
  *
  * For now, this MNG plug-in can only save images. It cannot load images.
@@ -95,6 +94,7 @@
 
 #define SAVE_PROC      "file-mng-save"
 #define PLUG_IN_BINARY "file-mng"
+#define PLUG_IN_ROLE   "gimp-file-mng"
 #define SCALE_WIDTH    125
 
 enum
@@ -683,7 +683,7 @@ mng_save_image (const gchar  *filename,
   if ((num_layers > 1) && (mng_data.loop))
     {
       gint32 ms =
-        parse_ms_tag_from_layer_name (gimp_drawable_get_name (layers[0]));
+        parse_ms_tag_from_layer_name (gimp_item_get_name (layers[0]));
 
       if (mng_putchunk_term (handle, MNG_TERMACTION_REPEAT,
                              MNG_ITERACTION_LASTFRAME,
@@ -696,7 +696,7 @@ mng_save_image (const gchar  *filename,
   else
     {
       gint32 ms =
-        parse_ms_tag_from_layer_name (gimp_drawable_get_name (layers[0]));
+        parse_ms_tag_from_layer_name (gimp_item_get_name (layers[0]));
 
       if (mng_putchunk_term (handle, MNG_TERMACTION_LASTFRAME,
                              MNG_ITERACTION_LASTFRAME,
@@ -845,7 +845,7 @@ mng_save_image (const gchar  *filename,
       int             color_type;
       int             bit_depth;
 
-      layer_name          = gimp_drawable_get_name (layers[i]);
+      layer_name          = gimp_item_get_name (layers[i]);
       layer_chunks_type   = parse_chunks_type_from_layer_name (layer_name);
       layer_drawable_type = gimp_drawable_type (layers[i]);
 
@@ -1316,46 +1316,33 @@ mng_save_image (const gchar  *filename,
 static gboolean
 mng_save_dialog (gint32 image_id)
 {
-  GtkWidget *dialog;
-  GtkWidget *main_vbox;
-  GtkWidget *frame;
-  GtkWidget *vbox;
-  GtkWidget *table;
-  GtkWidget *toggle;
-  GtkWidget *hbox;
-  GtkWidget *combo;
-  GtkWidget *label;
-  GtkWidget *scale;
-  GtkObject *scale_adj;
-  GtkWidget *spinbutton;
-  GtkObject *spinbutton_adj;
-  gint       num_layers;
-  gboolean   run;
+  GtkWidget     *dialog;
+  GtkWidget     *main_vbox;
+  GtkWidget     *frame;
+  GtkWidget     *vbox;
+  GtkWidget     *table;
+  GtkWidget     *toggle;
+  GtkWidget     *hbox;
+  GtkWidget     *combo;
+  GtkWidget     *label;
+  GtkWidget     *scale;
+  GtkAdjustment *scale_adj;
+  GtkWidget     *spinbutton;
+  GtkAdjustment *spinbutton_adj;
+  gint           num_layers;
+  gboolean       run;
 
-  dialog = gimp_dialog_new (_("Save as MNG"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, SAVE_PROC,
+  dialog = gimp_export_dialog_new (_("MNG"), PLUG_IN_BINARY, SAVE_PROC);
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      main_vbox, TRUE, TRUE, 0);
 
   frame = gimp_frame_new (_("MNG Options"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
 
   toggle = gtk_check_button_new_with_label (_("Interlace"));
@@ -1458,14 +1445,14 @@ mng_save_dialog (gint32 image_id)
                              _("Default frame disposal:"), 0.0, 0.5,
                              combo, 1, FALSE);
 
-  scale_adj = gtk_adjustment_new (mng_data.compression_level,
-                                  0.0, 9.0, 1.0, 1.0, 0.0);
+  scale_adj = (GtkAdjustment *)
+    gtk_adjustment_new (mng_data.compression_level,
+                        0.0, 9.0, 1.0, 1.0, 0.0);
 
-  scale = gtk_hscale_new (GTK_ADJUSTMENT (scale_adj));
+  scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, scale_adj);
   gtk_widget_set_size_request (scale, SCALE_WIDTH, -1);
   gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
   gtk_scale_set_digits (GTK_SCALE (scale), 0);
-  gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("PNG compression level:"), 0.0, 0.9,
                              scale, 1, FALSE);
@@ -1479,14 +1466,14 @@ mng_save_dialog (gint32 image_id)
                              "for small file size"),
                            NULL);
 
-  scale_adj = gtk_adjustment_new (mng_data.quality,
-                                  0.0, 1.0, 0.01, 0.01, 0.0);
+  scale_adj = (GtkAdjustment *)
+    gtk_adjustment_new (mng_data.quality,
+                        0.0, 1.0, 0.01, 0.01, 0.0);
 
-  scale = gtk_hscale_new (GTK_ADJUSTMENT (scale_adj));
+  scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, scale_adj);
   gtk_widget_set_size_request (scale, SCALE_WIDTH, -1);
   gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
   gtk_scale_set_digits (GTK_SCALE (scale), 2);
-  gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
   gtk_widget_set_sensitive (scale, FALSE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
                              _("JPEG compression quality:"), 0.0, 0.9,
@@ -1496,14 +1483,14 @@ mng_save_dialog (gint32 image_id)
                     G_CALLBACK (gimp_int_adjustment_update),
                     &mng_data.quality);
 
-  scale_adj = gtk_adjustment_new (mng_data.smoothing,
-                                  0.0, 1.0, 0.01, 0.01, 0.0);
+  scale_adj = (GtkAdjustment *)
+    gtk_adjustment_new (mng_data.smoothing,
+                        0.0, 1.0, 0.01, 0.01, 0.0);
 
-  scale = gtk_hscale_new (GTK_ADJUSTMENT (scale_adj));
+  scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, scale_adj);
   gtk_widget_set_size_request (scale, SCALE_WIDTH, -1);
   gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
   gtk_scale_set_digits (GTK_SCALE (scale), 2);
-  gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
   gtk_widget_set_sensitive (scale, FALSE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 4,
                              _("JPEG smoothing factor:"), 0.0, 0.9,
@@ -1519,7 +1506,7 @@ mng_save_dialog (gint32 image_id)
   frame = gimp_frame_new (_("Animated MNG Options"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
 
   toggle = gtk_check_button_new_with_label (_("Loop"));
@@ -1533,14 +1520,14 @@ mng_save_dialog (gint32 image_id)
 
   gtk_widget_show (toggle);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   label = gtk_label_new (_("Default frame delay:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  spinbutton = gimp_spin_button_new (&spinbutton_adj,
+  spinbutton = gimp_spin_button_new ((GtkObject **) &spinbutton_adj,
                                      mng_data.default_delay,
                                      0, 65000, 10, 100, 0, 1, 0);
 
@@ -1561,7 +1548,16 @@ mng_save_dialog (gint32 image_id)
   gtk_widget_show (vbox);
   gtk_widget_show (frame);
 
-  gtk_widget_set_sensitive (frame, num_layers > 1);
+  if (num_layers <= 1)
+    {
+      gtk_widget_set_sensitive (frame, FALSE);
+      gimp_help_set_help_data (frame,
+                               _("These options are only available when "
+                                 "the exported image has more than one "
+                                 "layer. The image you are exporting only has "
+                                 "one layer."),
+                               NULL);
+    }
 
   gtk_widget_show (main_vbox);
   gtk_widget_show (dialog);
@@ -1581,7 +1577,7 @@ query (void)
 {
   static const GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",        "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",           "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",        "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",        "The name of the file to save the image in" },
@@ -1649,12 +1645,12 @@ run (const gchar      *name,
           gimp_procedural_db_get_data (SAVE_PROC, &mng_data);
 
           gimp_ui_init (PLUG_IN_BINARY, FALSE);
-          export = gimp_export_image (&image_id, &drawable_id, "MNG",
+          export = gimp_export_image (&image_id, &drawable_id, NULL,
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
                                        GIMP_EXPORT_CAN_HANDLE_INDEXED |
                                        GIMP_EXPORT_CAN_HANDLE_ALPHA |
-                                       GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION));
+                                       GIMP_EXPORT_CAN_HANDLE_LAYERS));
         }
 
       if (export == GIMP_EXPORT_CANCEL)

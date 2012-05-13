@@ -4,9 +4,9 @@
  * GIMP Plug-in for Windows Icon files.
  * Copyright (C) 2002 Christian Kreibich <christian@whoop.org>.
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -51,21 +50,9 @@ ico_dialog_new (IcoSaveInfo *info)
   GtkWidget *scrolledwindow;
   GtkWidget *warning;
 
-  dialog = gimp_dialog_new (_("Save as Windows Icon"), PLUG_IN_BINARY,
-                            NULL, 0,
-                            gimp_standard_help_func, "plug-in-winicon",
-
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
-
-                            NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
+  dialog = gimp_export_dialog_new (_("Windows Icon"),
+                                   PLUG_IN_BINARY,
+                                   "plug-in-winicon");
 
   /* We store an array that holds each icon's requested bit depth
      with the dialog. It's queried when the dialog is closed so the
@@ -77,10 +64,10 @@ ico_dialog_new (IcoSaveInfo *info)
 
   g_object_set_data (G_OBJECT (dialog), "save_info", info);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gimp_export_dialog_get_content_area (dialog)),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   frame = gimp_frame_new (_("Icon Details"));
@@ -93,7 +80,7 @@ ico_dialog_new (IcoSaveInfo *info)
   gtk_container_add (GTK_CONTAINER (frame), scrolledwindow);
   gtk_widget_show (scrolledwindow);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   g_object_set_data (G_OBJECT (dialog), "icons_vbox", vbox);
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolledwindow),
@@ -148,7 +135,7 @@ ico_create_icon_hbox (GtkWidget   *icon_preview,
   GtkWidget *combo;
   GtkWidget *checkbox;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
   alignment = gtk_alignment_new (1.0, 0.5, 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox), alignment, FALSE, FALSE, 0);
@@ -171,7 +158,7 @@ ico_create_icon_hbox (GtkWidget   *icon_preview,
 
   gtk_size_group_add_widget (size, alignment);
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -257,7 +244,7 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
       guchar       *cmap;
       gint          num_colors;
 
-      image = gimp_drawable_get_image (layer);
+      image = gimp_item_get_image (layer);
 
       tmp_image = gimp_image_new (w, h, gimp_image_base_type (image));
       gimp_image_undo_disable (tmp_image);
@@ -272,7 +259,7 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
       tmp_layer = gimp_layer_new (tmp_image, "temporary", w, h,
                                   gimp_drawable_type (layer),
                                   100, GIMP_NORMAL_MODE);
-      gimp_image_add_layer (tmp_image, tmp_layer, 0);
+      gimp_image_insert_layer (tmp_image, tmp_layer, -1, 0);
 
       drawable = gimp_drawable_get (layer);
       tmp      = gimp_drawable_get (tmp_layer);
@@ -350,7 +337,7 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
       GimpParam    *return_vals;
       gint          n_return_vals;
 
-      image = gimp_drawable_get_image (layer);
+      image = gimp_item_get_image (layer);
 
       tmp_image = gimp_image_new (w, h, gimp_image_base_type (image));
       gimp_image_undo_disable (tmp_image);
@@ -368,7 +355,7 @@ ico_dialog_update_icon_preview (GtkWidget *dialog,
       tmp_layer = gimp_layer_new (tmp_image, "temporary", w, h,
                                   gimp_drawable_type (layer),
                                   100, GIMP_NORMAL_MODE);
-      gimp_image_add_layer (tmp_image, tmp_layer, 0);
+      gimp_image_insert_layer (tmp_image, tmp_layer, -1, 0);
 
       drawable = gimp_drawable_get (layer);
       tmp      = gimp_drawable_get (tmp_layer);
@@ -498,9 +485,9 @@ ico_dialog_check_compat (GtkWidget   *dialog,
 
   for (i = 0; i < info->num_icons; i++)
     {
-      if (gimp_drawable_width (info->layers[i]) > 255
-          || gimp_drawable_height (info->layers[i]) > 255
-          || info->compress[i])
+      if (gimp_drawable_width (info->layers[i]) > 255  ||
+          gimp_drawable_height (info->layers[i]) > 255 ||
+          info->compress[i])
         {
           warn = TRUE;
           break;
@@ -509,8 +496,5 @@ ico_dialog_check_compat (GtkWidget   *dialog,
 
   warning = g_object_get_data (G_OBJECT (dialog), "warning");
 
-  if (warn)
-    gtk_widget_show (warning);
-  else
-    gtk_widget_hide (warning);
+  gtk_widget_set_visible (warning, warn);
 }

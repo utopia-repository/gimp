@@ -2,9 +2,9 @@
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -51,6 +50,7 @@
 
 #define PLUG_IN_PROC   "plug-in-spheredesigner"
 #define PLUG_IN_BINARY "sphere-designer"
+#define PLUG_IN_ROLE   "gimp-sphere-designer"
 
 #define RESPONSE_RESET 1
 
@@ -273,7 +273,9 @@ struct camera_t
 
 static GtkWidget *drawarea = NULL;
 
-static guchar img[PREVIEWSIZE * PREVIEWSIZE * 3];
+static guchar          *img;
+static gint             img_stride;
+static cairo_surface_t *buffer;
 
 static guint  idle_id = 0;
 
@@ -522,6 +524,18 @@ vdist (GimpVector4 *a, GimpVector4 *b)
 }
 
 static inline gdouble
+vdist2 (GimpVector4 *a, GimpVector4 *b)
+{
+  gdouble x, y, z;
+
+  x = a->x - b->x;
+  y = a->y - b->y;
+  z = a->z - b->z;
+
+  return x * x + y * y + z * z;
+}
+
+static inline gdouble
 vlen (GimpVector4 *a)
 {
   return sqrt (a->x * a->x + a->y * a->y + a->z * a->z);
@@ -714,7 +728,7 @@ static gdouble
 checkdisc (ray * r, disc * disc)
 {
   GimpVector4 p, *v = &disc->a;
-  gdouble t, d;
+  gdouble t, d2;
   gdouble i, j, k;
 
   i = r->v2.x - r->v1.x;
@@ -728,9 +742,9 @@ checkdisc (ray * r, disc * disc)
   p.y = r->v1.y + j * t;
   p.z = r->v1.z + k * t;
 
-  d = vdist (&p, v);
+  d2 = vdist2 (&p, v);
 
-  if (d > disc->r)
+  if (d2 > disc->r * disc->r)
     t = 0.0;
 
   return t;
@@ -1300,7 +1314,7 @@ calclight (GimpVector4 * col, GimpVector4 * point, common * obj)
 {
   gint i, j;
   ray r;
-  gdouble d, b, a;
+  gdouble b, a;
   GimpVector4 lcol;
   GimpVector4 norm;
   GimpVector4 pcol;
@@ -1344,7 +1358,6 @@ calclight (GimpVector4 * col, GimpVector4 * point, common * obj)
       vcopy (&r.v1, point);
       vcopy (&r.v2, &world.light[i].a);
       vmix (&r.v1, &r.v1, &r.v2, 0.9999);
-      d = vdist (&r.v1, &r.v2);
 
       vsub (&r.v1, &r.v2);
       vnorm (&r.v1, 1.0);
@@ -1378,9 +1391,9 @@ calclight (GimpVector4 * col, GimpVector4 * point, common * obj)
 static void
 calcphong (common * obj, ray * r2, GimpVector4 * col)
 {
-  gint    i, j, o;
+  gint    i, j;
   ray     r;
-  gdouble d, b;
+  gdouble b;
   GimpVector4  lcol;
   GimpVector4  norm;
   GimpVector4  pcol;
@@ -1400,13 +1413,9 @@ calcphong (common * obj, ray * r2, GimpVector4 * col)
       vcopy (&r.v1, &r2->v1);
       vcopy (&r.v2, &world.light[i].a);
       vmix (&r.v1, &r.v1, &r.v2, 0.9999);
-      d = vdist (&r.v1, &r.v2);
 
-      o = traceray (&r, NULL, -1, 1.0);
-      if (o)
-        {
-          continue;
-        }
+      if (traceray (&r, NULL, -1, 1.0))
+        continue;
 
       /* OK, light is visible */
 
@@ -1438,7 +1447,6 @@ traceray (ray * r, GimpVector4 * col, gint level, gdouble imp)
 {
   gint     i, b = -1;
   gdouble  t = -1.0, min = 0.0;
-  gint     type = -1;
   common  *obj, *bobj = NULL;
   gint     hits = 0;
   GimpVector4   p;
@@ -1486,7 +1494,6 @@ traceray (ray * r, GimpVector4 * col, gint level, gdouble imp)
 
           min = t;
           b = i;
-          type = obj->type;
           bobj = obj;
         }
     }
@@ -2017,7 +2024,7 @@ loadit (const gchar * fn)
 
   s.com.numtexture = 0;
 
-  snprintf (fmt_str, sizeof (fmt_str), "%%d %%d %%%lds", sizeof (endbuf) - 1);
+  snprintf (fmt_str, sizeof (fmt_str), "%%d %%d %%%" G_GSIZE_FORMAT "s", sizeof (endbuf) - 1);
 
   while (!feof (f))
     {
@@ -2294,16 +2301,18 @@ static gboolean
 expose_event (GtkWidget      *widget,
               GdkEventExpose *event)
 {
-  GtkStyle *style = gtk_widget_get_style (widget);
-  guchar   *data  = img + event->area.y * 3 * PREVIEWSIZE + event->area.x * 3;
+  cairo_t *cr;
 
-  gdk_draw_rgb_image_dithalign (widget->window,
-                                style->white_gc,
-                                event->area.x, event->area.y,
-                                event->area.width, event->area.height,
-                                GDK_RGB_DITHER_MAX,
-                                data, PREVIEWSIZE * 3,
-                                - event->area.x, - event->area.y);
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  cairo_set_source_surface (cr, buffer, 0.0, 0.0);
+
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }
@@ -2369,25 +2378,25 @@ getscales (GtkWidget *widget,
   if (!t)
     return;
 
-  t->amount = GTK_ADJUSTMENT (amountscale)->value;
-  t->exp = GTK_ADJUSTMENT (expscale)->value;
+  t->amount = gtk_adjustment_get_value (GTK_ADJUSTMENT (amountscale));
+  t->exp = gtk_adjustment_get_value (GTK_ADJUSTMENT (expscale));
 
-  f = GTK_ADJUSTMENT (turbulencescale)->value;
+  f = gtk_adjustment_get_value (GTK_ADJUSTMENT (turbulencescale));
   vset (&t->turbulence, f, f, f);
 
-  t->oscale = GTK_ADJUSTMENT (scalescale)->value;
+  t->oscale = gtk_adjustment_get_value (GTK_ADJUSTMENT (scalescale));
 
-  t->scale.x = GTK_ADJUSTMENT (scalexscale)->value;
-  t->scale.y = GTK_ADJUSTMENT (scaleyscale)->value;
-  t->scale.z = GTK_ADJUSTMENT (scalezscale)->value;
+  t->scale.x = gtk_adjustment_get_value (GTK_ADJUSTMENT (scalexscale));
+  t->scale.y = gtk_adjustment_get_value (GTK_ADJUSTMENT (scaleyscale));
+  t->scale.z = gtk_adjustment_get_value (GTK_ADJUSTMENT (scalezscale));
 
-  t->rotate.x = GTK_ADJUSTMENT (rotxscale)->value;
-  t->rotate.y = GTK_ADJUSTMENT (rotyscale)->value;
-  t->rotate.z = GTK_ADJUSTMENT (rotzscale)->value;
+  t->rotate.x = gtk_adjustment_get_value (GTK_ADJUSTMENT (rotxscale));
+  t->rotate.y = gtk_adjustment_get_value (GTK_ADJUSTMENT (rotyscale));
+  t->rotate.z = gtk_adjustment_get_value (GTK_ADJUSTMENT (rotzscale));
 
-  t->translate.x = GTK_ADJUSTMENT (posxscale)->value;
-  t->translate.y = GTK_ADJUSTMENT (posyscale)->value;
-  t->translate.z = GTK_ADJUSTMENT (poszscale)->value;
+  t->translate.x = gtk_adjustment_get_value (GTK_ADJUSTMENT (posxscale));
+  t->translate.y = gtk_adjustment_get_value (GTK_ADJUSTMENT (posyscale));
+  t->translate.z = gtk_adjustment_get_value (GTK_ADJUSTMENT (poszscale));
 
   restartrender ();
 }
@@ -2544,7 +2553,7 @@ makewindow (void)
   GtkWidget  *list;
   GimpRGB     rgb = { 0, 0, 0, 0 };
 
-  window = gimp_dialog_new (_("Sphere Designer"), PLUG_IN_BINARY,
+  window = gimp_dialog_new (_("Sphere Designer"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -2566,16 +2575,17 @@ makewindow (void)
                     G_CALLBACK (sphere_response),
                     NULL);
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), main_hbox, TRUE, TRUE, 0);
   gtk_widget_show (main_hbox);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -2592,7 +2602,8 @@ makewindow (void)
   g_signal_connect (drawarea, "expose-event",
                     G_CALLBACK (expose_event), NULL);
 
-  hbox = gtk_hbox_new (TRUE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -2612,7 +2623,7 @@ makewindow (void)
                     G_CALLBACK (savepreset),
                     window);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_end (GTK_BOX (main_hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -2649,7 +2660,8 @@ makewindow (void)
                                                   NULL);
   gtk_tree_view_append_column (texturelist, col);
 
-  hbox = gtk_hbox_new (TRUE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -2671,7 +2683,7 @@ makewindow (void)
                             G_CALLBACK (deltexture), NULL);
   gtk_widget_show (button);
 
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_box_pack_start (GTK_BOX (main_vbox), main_hbox, FALSE, FALSE, 0);
   gtk_widget_show (main_hbox);
 
@@ -2679,7 +2691,7 @@ makewindow (void)
   gtk_box_pack_start (GTK_BOX (main_hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -2721,7 +2733,7 @@ makewindow (void)
                              _("Texture:"), 0.0, 0.5,
                              texturemenu, 2, FALSE);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("Colors:"), 0.0, 0.5,
                              hbox, 2, FALSE);
@@ -2781,7 +2793,7 @@ makewindow (void)
   gtk_box_pack_start (GTK_BOX (main_hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -2878,10 +2890,9 @@ render (void)
   guchar *dest_row;
   ray     r;
   gint    x, y, p;
-  gint    hit;
   gint    tx  = PREVIEWSIZE;
   gint    ty  = PREVIEWSIZE;
-  gint    bpp = 3;
+  gint    bpp = 4;
 
   idle_id = 0;
 
@@ -2892,9 +2903,11 @@ render (void)
 
   if (world.obj[0].com.numtexture > 0)
     {
+      cairo_surface_flush (buffer);
+
       for (y = 0; y < ty; y++)
         {
-          dest_row = img + y * PREVIEWSIZE * 3;
+          dest_row = img + y * img_stride;
 
           for (x = 0; x < tx; x++)
             {
@@ -2907,21 +2920,21 @@ render (void)
 
               p = x * bpp;
 
-              hit = traceray (&r, &col, 10, 1.0);
+              traceray (&r, &col, 10, 1.0);
 
               if (col.w < 0.0)
                 col.w = 0.0;
               else if (col.w > 1.0)
                 col.w = 1.0;
 
-              dest_row[p + 0] =
-                pixelval (255 * col.x) * col.w + g * (1.0 - col.w);
-              dest_row[p + 1] =
-                pixelval (255 * col.y) * col.w + g * (1.0 - col.w);
-              dest_row[p + 2] =
-                pixelval (255 * col.z) * col.w + g * (1.0 - col.w);
+              GIMP_CAIRO_RGB24_SET_PIXEL ((dest_row + p),
+                pixelval (255 * col.x) * col.w + g * (1.0 - col.w),
+                pixelval (255 * col.y) * col.w + g * (1.0 - col.w),
+                pixelval (255 * col.z) * col.w + g * (1.0 - col.w));
              }
         }
+
+      cairo_surface_mark_dirty (buffer);
     }
 
   gtk_widget_queue_draw (drawarea);
@@ -2995,6 +3008,7 @@ realrender (GimpDrawable *drawable)
       gimp_pixel_rgn_set_row (&dpr, ibuffer, x1, y1 + y, x2 - x1);
       gimp_progress_update ((gdouble) y / (gdouble) ty);
     }
+  gimp_progress_update (1.0);
   g_free (buffer);
   g_free (ibuffer);
   gimp_drawable_flush (drawable);
@@ -3007,7 +3021,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
@@ -3034,7 +3048,14 @@ sphere_main (GimpDrawable *drawable)
 {
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  memset (img, 0, PREVIEWSIZE * PREVIEWSIZE * 3);
+  img_stride = cairo_format_stride_for_width (CAIRO_FORMAT_RGB24, PREVIEWSIZE);
+  img = g_malloc0 (img_stride * PREVIEWSIZE);
+
+  buffer = cairo_image_surface_create_for_data (img, CAIRO_FORMAT_RGB24,
+                                                PREVIEWSIZE,
+                                                PREVIEWSIZE,
+                                                img_stride);
+
   makewindow ();
 
   if (s.com.numtexture == 0)
@@ -3049,6 +3070,9 @@ sphere_main (GimpDrawable *drawable)
     }
 
   gtk_main ();
+
+  cairo_surface_destroy (buffer);
+  g_free (img);
 
   return do_run;
 }

@@ -3,9 +3,9 @@
  *
  * gimpbrush-load.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -123,7 +122,8 @@ static gint32      abr_rle_decode                (FILE         *file,
 /*  public functions  */
 
 GList *
-gimp_brush_load (const gchar  *filename,
+gimp_brush_load (GimpContext  *context,
+                 const gchar  *filename,
                  GError      **error)
 {
   GimpBrush *brush;
@@ -142,7 +142,7 @@ gimp_brush_load (const gchar  *filename,
       return NULL;
     }
 
-  brush = gimp_brush_load_brush (fd, filename, error);
+  brush = gimp_brush_load_brush (context, fd, filename, error);
 
   close (fd);
 
@@ -153,7 +153,8 @@ gimp_brush_load (const gchar  *filename,
 }
 
 GimpBrush *
-gimp_brush_load_brush (gint          fd,
+gimp_brush_load_brush (GimpContext  *context,
+                       gint          fd,
                        const gchar  *filename,
                        GError      **error)
 {
@@ -174,7 +175,9 @@ gimp_brush_load_brush (gint          fd,
   if (read (fd, &header, sizeof (header)) != sizeof (header))
     {
       g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
-                   _("Could not read %d bytes from '%s': %s"),
+                   ngettext ("Could not read %d byte from '%s': %s",
+                             "Could not read %d bytes from '%s': %s",
+                             (gint) sizeof (header)),
                    (gint) sizeof (header),
                    gimp_filename_to_utf8 (filename), g_strerror (errno));
       return NULL;
@@ -290,7 +293,7 @@ gimp_brush_load_brush (gint          fd,
 
   brush->mask = temp_buf_new (header.width, header.height, 1, 0, 0, NULL);
 
-  mask = temp_buf_data (brush->mask);
+  mask = temp_buf_get_data (brush->mask);
   size = header.width * header.height * header.bytes;
 
   switch (header.bytes)
@@ -344,7 +347,7 @@ gimp_brush_load_brush (gint          fd,
 
         brush->pixmap = temp_buf_new (header.width, header.height,
                                       3, 0, 0, NULL);
-        pixmap = temp_buf_data (brush->pixmap);
+        pixmap = temp_buf_get_data (brush->pixmap);
 
         for (i = 0; success && i < size;)
           {
@@ -401,7 +404,8 @@ gimp_brush_load_brush (gint          fd,
 }
 
 GList *
-gimp_brush_load_abr (const gchar  *filename,
+gimp_brush_load_abr (GimpContext  *context,
+                     const gchar  *filename,
                      GError      **error)
 {
   FILE      *file;
@@ -647,7 +651,7 @@ gimp_brush_load_abr_brush_v12 (FILE         *file,
         brush->y_axis.y = height / 2.0;
         brush->mask     = temp_buf_new (width, height, 1, 0, 0, NULL);
 
-        mask = temp_buf_data (brush->mask);
+        mask = temp_buf_get_data (brush->mask);
         size = width * height * bytes;
 
         compress = abr_read_char (file);
@@ -686,7 +690,6 @@ gimp_brush_load_abr_brush_v6 (FILE         *file,
 
   gint32     brush_size;
   gint32     brush_end;
-  gint32     complement_to_4;
   gint32     next_brush;
 
   gint32     top, left, bottom, right;
@@ -702,9 +705,11 @@ gimp_brush_load_abr_brush_v6 (FILE         *file,
 
   brush_size = abr_read_long (file);
   brush_end = brush_size;
+
   /* complement to 4 */
-  while (brush_end % 4 != 0) brush_end++;
-  complement_to_4 = brush_end - brush_size;
+  while (brush_end % 4 != 0)
+    brush_end++;
+
   next_brush = ftell (file) + brush_end;
 
   if (abr_hdr->count == 1)
@@ -753,7 +758,7 @@ gimp_brush_load_abr_brush_v6 (FILE         *file,
   brush->y_axis.y = height / 2.0;
   brush->mask     = temp_buf_new (width, height, 1, 0, 0, NULL);
 
-  mask = temp_buf_data (brush->mask);
+  mask = temp_buf_get_data (brush->mask);
 
   /* data decoding */
   if (! compress)

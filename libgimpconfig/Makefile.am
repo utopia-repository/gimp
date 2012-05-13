@@ -44,15 +44,16 @@ endif
 libgimpconfigincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpconfig
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"LibGimpConfig\"
+	-DG_LOG_DOMAIN=\"LibGimpConfig\"	\
+	-DGIMP_CONFIG_COMPILATION
 
 INCLUDES = \
 	-I$(top_srcdir)	\
+	$(CAIRO_CFLAGS)	\
 	$(GLIB_CFLAGS)	\
 	-I$(includedir)
 
 EXTRA_DIST = \
-	makefile.msc	\
 	gimpconfig.def
 
 lib_LTLIBRARIES = libgimpconfig-2.0.la
@@ -115,6 +116,7 @@ libgimpconfig_2_0_la_LIBADD = \
 	$(libgimpbase)	\
 	$(libgimpcolor)	\
 	$(libgimpmath)	\
+	$(CAIRO_LIBS)	\
 	$(GLIB_LIBS)
 
 
@@ -132,14 +134,14 @@ CLEANFILES = $(gen_sources)
 
 $(srcdir)/gimpcolorconfig-enums.c: $(srcdir)/gimpcolorconfig-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
-		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbasetypes.h\"\n#include \"gimpcolorconfig-enums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
+		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpcolorconfig-enums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \
 		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
 		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 		--vtail "    { 0, NULL, NULL }\n  };\n" \
 		--dhead "  static const Gimp@Type@Desc descs[] =\n  {" \
 		--dprod "    { @VALUENAME@, @valuedesc@, @valuehelp@ }," \
-		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (! type)\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
+		--dtail "    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_@type@_register_static (\"@EnumName@\", values);\n      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE \"-libgimp\");\n      gimp_type_set_translation_context (type, \"@enumnick@\");\n      gimp_@type@_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}\n" \
 		$(srcdir)/gimpcolorconfig-enums.h > xgen-cec \
 	&& cp xgen-cec $(@F) \
 	&& rm -f xgen-cec

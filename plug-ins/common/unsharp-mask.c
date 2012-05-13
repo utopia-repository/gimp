@@ -3,9 +3,9 @@
  *                    <winstonc@cs.wisc.edu>
  *                    <winston@stdout.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,6 +29,7 @@
 
 #define PLUG_IN_PROC    "plug-in-unsharp-mask"
 #define PLUG_IN_BINARY  "unsharp-mask"
+#define PLUG_IN_ROLE    "gimp-unsharp-mask"
 
 #define SCALE_WIDTH   120
 #define ENTRY_WIDTH     5
@@ -61,20 +61,23 @@ static void      run   (const gchar      *name,
                         gint             *nreturn_vals,
                         GimpParam       **return_vals);
 
-static void      blur_line           (const gdouble  *ctable,
-                                      const gdouble  *cmatrix,
+static void      gaussian_blur_line  (const gdouble  *cmatrix,
                                       const gint      cmatrix_length,
                                       const guchar   *src,
                                       guchar         *dest,
                                       const gint      len,
-                                      const gint      bytes);
+                                      const gint      bpp);
+static void      box_blur_line       (const gint      box_width,
+                                      const gint      even_offset,
+                                      const guchar   *src,
+                                      guchar         *dest,
+                                      const gint      len,
+                                      const gint      bpp);
 static gint      gen_convolve_matrix (gdouble         std_dev,
                                       gdouble       **cmatrix);
-static gdouble * gen_lookup_table    (const gdouble  *cmatrix,
-                                      gint            cmatrix_length);
 static void      unsharp_region      (GimpPixelRgn   *srcPTR,
                                       GimpPixelRgn   *dstPTR,
-                                      gint            bytes,
+                                      gint            bpp,
                                       gdouble         radius,
                                       gdouble         amount,
                                       gint            x1,
@@ -116,7 +119,7 @@ query (void)
 {
   static const GimpParamDef args[] =
     {
-      { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+      { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
       { GIMP_PDB_IMAGE,    "image",     "(unused)" },
       { GIMP_PDB_DRAWABLE, "drawable",  "Drawable to draw on" },
       { GIMP_PDB_FLOAT,    "radius",    "Radius of gaussian blur (in pixels > 1.0)" },
@@ -134,7 +137,7 @@ query (void)
                           "filter.",
                           "Winston Chang <winstonc@cs.wisc.edu>",
                           "Winston Chang",
-                          "1999",
+                          "1999-2009",
                           N_("_Unsharp Mask..."),
                           "GRAY*, RGB*",
                           GIMP_PLUGIN,
@@ -174,7 +177,7 @@ run (const gchar      *name,
    */
   drawable = gimp_drawable_get (param[2].data.d_drawable);
   gimp_tile_cache_ntiles (2 * MAX (drawable->width  / gimp_tile_width () + 1 ,
-			           drawable->height / gimp_tile_height () + 1));
+                                   drawable->height / gimp_tile_height () + 1));
 
   switch (run_mode)
     {
@@ -238,21 +241,162 @@ run (const gchar      *name,
 #endif
 }
 
+/* This function is written as if it is blurring a row of pixels,
+ * even though it can operate on colums, too.  There is no difference
+ * in the processing of the lines, at least to the blur_line function.
+ */
+static void
+box_blur_line (const gint    box_width,   /* Width of the kernel           */
+               const gint    even_offset, /* If even width,
+                                             offset to left or right       */
+               const guchar *src,         /* Pointer to source buffer      */
+               guchar       *dest,        /* Pointer to destination buffer */
+               const gint    len,         /* Length of buffer, in pixels   */
+               const gint    bpp)         /* Bytes per pixel               */
+{
+  gint  i;
+  gint  lead;    /* This marks the leading edge of the kernel              */
+  gint  output;  /* This marks the center of ther kernel                   */
+  gint  trail;   /* This marks the pixel BEHIND the last 1 in the
+                    kernel; it's the pixel to remove from the accumulator. */
+  gint  ac[bpp]; /* Accumulator for each channel                           */
+
+
+  /* The algorithm differs for even and odd-sized kernels.
+   * With the output at the center,
+   * If odd, the kernel might look like this: 0011100
+   * If even, the kernel will either be centered on the boundary between
+   * the output and its left neighbor, or on the boundary between the
+   * output and its right neighbor, depending on even_lr.
+   * So it might be 0111100 or 0011110, where output is on the center
+   * of these arrays.
+   */
+  lead = 0;
+
+  if (box_width % 2)
+    /* Odd-width kernel */
+    {
+      output = lead - (box_width - 1) / 2;
+      trail  = lead - box_width;
+    }
+  else
+    /* Even-width kernel. */
+    {
+      /* Right offset */
+      if (even_offset == 1)
+        {
+          output = lead + 1 - box_width / 2;
+          trail  = lead - box_width;
+        }
+      /* Left offset */
+      else if (even_offset == -1)
+        {
+          output = lead - box_width / 2;
+          trail  = lead - box_width;
+        }
+      /* If even_offset isn't 1 or -1, there's some error. */
+      else
+        g_assert_not_reached ();
+    }
+
+  /* Initialize accumulator */
+  for (i = 0; i < bpp; i++)
+    ac[i] = 0;
+
+  /* As the kernel moves across the image, it has a leading edge and a
+   * trailing edge, and the output is in the middle. */
+  while (output < len)
+    {
+      /* The number of pixels that are both in the image and
+       * currently covered by the kernel. This is necessary to
+       * handle edge cases. */
+      guint coverage = (lead < len ? lead : len-1) - (trail >=0 ? trail : -1);
+
+#ifdef READABLE_BOXBLUR_CODE
+/* The code here does the same as the code below, but the code below
+ * has been optimized by moving the if statements out of the tight for
+ * loop, and is harder to understand.
+ * Don't use both this code and the code below. */
+      for (i = 0; i < bpp; i++)
+        {
+          /* If the leading edge of the kernel is still on the image,
+           * add the value there to the accumulator. */
+          if (lead < len)
+            ac[i] += src[bpp * lead + i];
+
+          /* If the trailing edge of the kernel is on the image,
+           * subtract the value there from the accumulator. */
+          if (trail >= 0)
+            ac[i] -= src[bpp * trail + i];
+
+          /* Take the averaged value in the accumulator and store
+           * that value in the output. The number of pixels currently
+           * stored in the accumulator can be less than the nominal
+           * width of the kernel because the kernel can go "over the edge"
+           * of the image. */
+          if (output >= 0)
+            dest[bpp * output + i] = (ac[i] + (coverage >> 1)) / coverage;
+        }
+#endif
+
+      /* If the leading edge of the kernel is still on the image... */
+      if (lead < len)
+        {
+          /* If the trailing edge of the kernel is on the image. (Since
+           * the output is in between the lead and trail, it must be on
+           * the image. */
+          if (trail >= 0)
+            for (i = 0; i < bpp; i++)
+              {
+                ac[i] += src[bpp * lead + i];
+                ac[i] -= src[bpp * trail + i];
+                dest[bpp * output + i] = (ac[i] + (coverage >> 1)) / coverage;
+              }
+          /* If the output is on the image, but the trailing edge isn't yet
+           * on the image. */
+          else if (output >= 0)
+            for (i = 0; i < bpp; i++)
+              {
+                ac[i] += src[bpp * lead + i];
+                dest[bpp * output + i] = (ac[i] + (coverage >> 1)) / coverage;
+              }
+          /* If leading edge is on the image, but the output and trailing
+           * edge aren't yet on the image. */
+          else
+            for (i = 0; i < bpp; i++)
+              ac[i] += src[bpp * lead + i];
+        }
+      /* If the leading edge has gone off the image, but the output and
+       * trailing edge are on the image. (The big loop exits when the
+       * output goes off the image. */
+      else
+        {
+          for (i = 0; i < bpp; i++)
+            {
+              ac[i] -= src[bpp * trail + i];
+              dest[bpp * output + i] = (ac[i] + (coverage >> 1)) / coverage;
+            }
+        }
+
+      lead++;
+      output++;
+      trail++;
+    }
+}
+
+
 /* This function is written as if it is blurring a column at a time,
  * even though it can operate on rows, too.  There is no difference
  * in the processing of the lines, at least to the blur_line function.
  */
 static void
-blur_line (const gdouble *ctable,
-           const gdouble *cmatrix,
-           const gint     cmatrix_length,
-           const guchar  *src,
-           guchar        *dest,
-           const gint     len,
-           const gint     bytes)
+gaussian_blur_line (const gdouble *cmatrix,
+                    const gint     cmatrix_length,
+                    const guchar  *src,
+                    guchar        *dest,
+                    const gint     len,
+                    const gint     bpp)
 {
-  const gdouble *cmatrix_p;
-  const gdouble *ctable_p;
   const guchar  *src_p;
   const guchar  *src_p1;
   const gint     cmatrix_middle = cmatrix_length / 2;
@@ -280,7 +424,7 @@ blur_line (const gdouble *ctable,
 
           src_p = src;
 
-          for (i = 0; i < bytes; i++)
+          for (i = 0; i < bpp; i++)
             {
               gdouble sum = 0;
 
@@ -292,7 +436,7 @@ blur_line (const gdouble *ctable,
                       j + cmatrix_middle - row < cmatrix_length)
                     sum += *src_p1 * cmatrix[j];
 
-                  src_p1 += bytes;
+                  src_p1 += bpp;
                 }
 
               *dest++ = (guchar) ROUND (sum / scale);
@@ -312,7 +456,7 @@ blur_line (const gdouble *ctable,
 
           src_p = src;
 
-          for (i = 0; i < bytes; i++)
+          for (i = 0; i < bpp; i++)
             {
               gdouble sum = 0;
 
@@ -321,7 +465,7 @@ blur_line (const gdouble *ctable,
               for (j = cmatrix_middle - row; j < cmatrix_length; j++)
                 {
                   sum += *src_p1 * cmatrix[j];
-                  src_p1 += bytes;
+                  src_p1 += bpp;
                 }
 
               *dest++ = (guchar) ROUND (sum / scale);
@@ -331,21 +475,18 @@ blur_line (const gdouble *ctable,
       /* go through each pixel in each col */
       for (; row < len - cmatrix_middle; row++)
         {
-          src_p = src + (row - cmatrix_middle) * bytes;
+          src_p = src + (row - cmatrix_middle) * bpp;
 
-          for (i = 0; i < bytes; i++)
+          for (i = 0; i < bpp; i++)
             {
               gdouble sum = 0;
 
-              cmatrix_p = cmatrix;
               src_p1 = src_p;
-              ctable_p = ctable;
 
               for (j = 0; j < cmatrix_length; j++)
                 {
                   sum += cmatrix[j] * *src_p1;
-                  src_p1 += bytes;
-                  ctable_p += 256;
+                  src_p1 += bpp;
                 }
 
               src_p++;
@@ -362,9 +503,9 @@ blur_line (const gdouble *ctable,
           for (j = 0; j < len - row + cmatrix_middle; j++)
             scale += cmatrix[j];
 
-          src_p = src + (row - cmatrix_middle) * bytes;
+          src_p = src + (row - cmatrix_middle) * bpp;
 
-          for (i = 0; i < bytes; i++)
+          for (i = 0; i < bpp; i++)
             {
               gdouble sum = 0;
 
@@ -373,7 +514,7 @@ blur_line (const gdouble *ctable,
               for (j = 0; j < len - row + cmatrix_middle; j++)
                 {
                   sum += *src_p1 * cmatrix[j];
-                  src_p1 += bytes;
+                  src_p1 += bpp;
                 }
 
               *dest++ = (guchar) ROUND (sum / scale);
@@ -416,8 +557,8 @@ unsharp_mask (GimpDrawable *drawable,
 static void
 unsharp_region (GimpPixelRgn *srcPR,
                 GimpPixelRgn *destPR,
-                gint          bytes,
-                gdouble       radius,
+                gint          bpp,
+                gdouble       radius, /* Radius, AKA standard deviation */
                 gdouble       amount,
                 gint          x1,
                 gint          x2,
@@ -425,49 +566,117 @@ unsharp_region (GimpPixelRgn *srcPR,
                 gint          y2,
                 gboolean      show_progress)
 {
-  guchar  *src;
-  guchar  *dest;
-  gint     width   = x2 - x1;
-  gint     height  = y2 - y1;
-  gdouble *cmatrix = NULL;
-  gint     cmatrix_length;
-  gdouble *ctable;
-  gint     row, col;
-  gint     threshold = unsharp_params.threshold;
+  guchar     *src;                /* Temporary copy of source row/col      */
+  guchar     *dest;               /* Temporary copy of destination row/col */
+  const gint  width   = x2 - x1;
+  const gint  height  = y2 - y1;
+  gdouble    *cmatrix = NULL;     /* Convolution matrix (for gaussian)     */
+  gint        cmatrix_length = 0;
+  gint        row, col;           /* Row, column counters                  */
+  const gint  threshold = unsharp_params.threshold;
+  gboolean    box_blur;           /* If we want to use a three pass box
+                                     blur instead of a gaussian blur       */
+  gint        box_width = 0;
 
   if (show_progress)
     gimp_progress_init (_("Blurring"));
 
-  /* generate convolution matrix
-     and make sure it's smaller than each dimension */
-  cmatrix_length = gen_convolve_matrix (radius, &cmatrix);
+  /* If the radius is less than 10, use a true gaussian kernel.  This
+   * is slower, but more accurate and allows for finer adjustments.
+   * Otherwise use a three-pass box blur; this is much faster but it
+   * isn't a perfect approximation, and it only allows radius
+   * increments of about 0.42.
+   */
+  if (radius < 10)
+    {
+      box_blur = FALSE;
+      /* If true gaussian, generate convolution matrix
+         and make sure it's smaller than each dimension */
+      cmatrix_length = gen_convolve_matrix (radius, &cmatrix);
+    }
+  else
+    {
+      box_blur = TRUE;
+      /* Three box blurs of this width approximate a gaussian */
+      box_width = ROUND (radius * 3 * sqrt (2 * G_PI) / 4);
+    }
 
-  /* generate lookup table */
-  ctable = gen_lookup_table (cmatrix, cmatrix_length);
+  /* Allocate buffers temporary copies of a row/column */
+  src  = g_new (guchar, MAX (width, height) * bpp);
+  dest = g_new (guchar, MAX (width, height) * bpp);
 
-  /* allocate buffers */
-  src  = g_new (guchar, MAX (width, height) * bytes);
-  dest = g_new (guchar, MAX (width, height) * bytes);
-
-  /* blur the rows */
+  /* Blur the rows */
   for (row = 0; row < height; row++)
     {
       gimp_pixel_rgn_get_row (srcPR, src, x1, y1 + row, width);
-      blur_line (ctable, cmatrix, cmatrix_length, src, dest, width, bytes);
+
+      if (box_blur)
+        {
+          /* Odd-width box blur: repeat 3 times, centered on output pixel.
+           * Swap back and forth between the buffers. */
+          if (box_width % 2)
+            {
+              box_blur_line (box_width, 0, src, dest, width, bpp);
+              box_blur_line (box_width, 0, dest, src, width, bpp);
+              box_blur_line (box_width, 0, src, dest, width, bpp);
+            }
+          /* Even-width box blur:
+           * This method is suggested by the specification for SVG.
+           * One pass with width n, centered between output and right pixel
+           * One pass with width n, centered between output and left pixel
+           * One pass with width n+1, centered on output pixel
+           * Swap back and forth between buffers.
+           */
+          else
+            {
+              box_blur_line (box_width,  -1, src, dest, width, bpp);
+              box_blur_line (box_width,   1, dest, src, width, bpp);
+              box_blur_line (box_width+1, 0, src, dest, width, bpp);
+            }
+        }
+      else
+        {
+          /* Gaussian blur */
+          gaussian_blur_line (cmatrix, cmatrix_length, src, dest, width, bpp);
+        }
+
       gimp_pixel_rgn_set_row (destPR, dest, x1, y1 + row, width);
 
-      if (show_progress && row % 8 == 0)
+      if (show_progress && row % 64 == 0)
         gimp_progress_update ((gdouble) row / (3 * height));
     }
 
-  /* blur the cols */
+  /* Blur the cols. Essentially same as above. */
   for (col = 0; col < width; col++)
     {
       gimp_pixel_rgn_get_col (destPR, src, x1 + col, y1, height);
-      blur_line (ctable, cmatrix, cmatrix_length, src, dest, height, bytes);
+
+      if (box_blur)
+        {
+          /* Odd-width box blur */
+          if (box_width % 2)
+            {
+              box_blur_line (box_width, 0, src, dest, height, bpp);
+              box_blur_line (box_width, 0, dest, src, height, bpp);
+              box_blur_line (box_width, 0, src, dest, height, bpp);
+            }
+          /* Even-width box blur */
+          else
+            {
+              box_blur_line (box_width,  -1, src, dest, height, bpp);
+              box_blur_line (box_width,   1, dest, src, height, bpp);
+              box_blur_line (box_width+1, 0, src, dest, height, bpp);
+            }
+        }
+      else
+        {
+          /* Gaussian blur */
+          gaussian_blur_line (cmatrix, cmatrix_length, src, dest,height, bpp);
+        }
+
       gimp_pixel_rgn_set_col (destPR, dest, x1 + col, y1, height);
 
-      if (show_progress && col % 8 == 0)
+      if (show_progress && col % 64 == 0)
         gimp_progress_update ((gdouble) col / (3 * width) + 0.33);
     }
 
@@ -491,7 +700,7 @@ unsharp_region (GimpPixelRgn *srcPR,
       /* combine the two */
       for (u = 0; u < width; u++)
         {
-          for (v = 0; v < bytes; v++)
+          for (v = 0; v < bpp; v++)
             {
               gint value;
               gint diff = *s - *d;
@@ -505,7 +714,7 @@ unsharp_region (GimpPixelRgn *srcPR,
             }
         }
 
-      if (show_progress && row % 8 == 0)
+      if (show_progress && row % 64 == 0)
         gimp_progress_update ((gdouble) row / (3 * height) + 0.67);
 
       gimp_pixel_rgn_set_row (destPR, dest, x1, y1 + row, width);
@@ -516,7 +725,6 @@ unsharp_region (GimpPixelRgn *srcPR,
 
   g_free (dest);
   g_free (src);
-  g_free (ctable);
   g_free (cmatrix);
 }
 
@@ -584,8 +792,10 @@ gen_convolve_matrix (gdouble   radius,
   for (i = 0; i <= matrix_length / 2; i++)
     cmatrix[i] = cmatrix[matrix_length - 1 - i];
 
-  /* find center val -- calculate an odd number of quanta to make it symmetric,
-   * even if the center point is weighted slightly higher than others. */
+  /* find center val -- calculate an odd number of quanta to make it
+   * symmetric, even if the center point is weighted slightly higher
+   * than others.
+   */
   sum = 0;
   for (j = 0; j <= 50; j++)
     sum += exp (- SQR (- 0.5 + 0.02 * j) / (2 * SQR (std_dev)));
@@ -603,32 +813,6 @@ gen_convolve_matrix (gdouble   radius,
   return matrix_length;
 }
 
-/* ----------------------- gen_lookup_table ----------------------- */
-/* generates a lookup table for every possible product of 0-255 and
-   each value in the convolution matrix.  The returned array is
-   indexed first by matrix position, then by input multiplicand (?)
-   value.
-*/
-static gdouble *
-gen_lookup_table (const gdouble *cmatrix,
-                  gint           cmatrix_length)
-{
-  gdouble       *lookup_table   = g_new (gdouble, cmatrix_length * 256);
-  gdouble       *lookup_table_p = lookup_table;
-  const gdouble *cmatrix_p      = cmatrix;
-  gint           i, j;
-
-  for (i = 0; i < cmatrix_length; i++)
-    {
-      for (j = 0; j < 256; j++)
-        *(lookup_table_p++) = *cmatrix_p * (gdouble) j;
-
-      cmatrix_p++;
-    }
-
-  return lookup_table;
-}
-
 static gboolean
 unsharp_mask_dialog (GimpDrawable *drawable)
 {
@@ -641,7 +825,7 @@ unsharp_mask_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Unsharp Mask"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Unsharp Mask"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -657,9 +841,10 @@ unsharp_mask_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -678,7 +863,7 @@ unsharp_mask_dialog (GimpDrawable *drawable)
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
                               _("_Radius:"), SCALE_WIDTH, ENTRY_WIDTH,
-                              unsharp_params.radius, 0.1, 120.0, 0.1, 1.0, 1,
+                              unsharp_params.radius, 0.1, 500.0, 0.1, 1.0, 1,
                               TRUE, 0, 0,
                               NULL, NULL);
 

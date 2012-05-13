@@ -19,10 +19,10 @@
  *
  * Adapted for GIMP by Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,9 +30,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -143,9 +141,9 @@ calc_lab (const guchar *src,
     {
     case 3:  /* RGB  */
     case 4:  /* RGBA */
-      cpercep_rgb_to_space (src[RED_PIX],
-                            src[GREEN_PIX],
-                            src[BLUE_PIX], &l, &a, &b);
+      cpercep_rgb_to_space (src[RED],
+                            src[GREEN],
+                            src[BLUE], &l, &a, &b);
       break;
 
     case 2:
@@ -154,9 +152,9 @@ calc_lab (const guchar *src,
         {
           gint i = *src * 3;
 
-          cpercep_rgb_to_space (colormap[i + RED_PIX],
-                                colormap[i + GREEN_PIX],
-                                colormap[i + BLUE_PIX], &l, &a, &b);
+          cpercep_rgb_to_space (colormap[i + RED],
+                                colormap[i + GREEN],
+                                colormap[i + BLUE], &l, &a, &b);
         }
       else /* GRAY(A) */
         {
@@ -184,15 +182,15 @@ static void
 stageone (lab          *points,
           gint          left,
           gint          right,
-          gint          depth,
+          const gint    depth,
           gint         *clusters,
           const gfloat *limits,
           const gint    dims)
 {
-  gint    curdim = depth % dims;
-  gfloat  min, max;
-  gfloat  curval;
-  gint    i;
+  const gint curdim = depth % dims;
+  gfloat     min, max;
+  gfloat     curval;
+  gint       i;
 
   min = CURRENT_VALUE (points, left, curdim);
   max = min;
@@ -210,20 +208,21 @@ stageone (lab          *points,
   /* Split according to Rubner-Rule */
   if (max - min > limits[curdim])
     {
-      gfloat pivot = (min + max) / 2.0;
-      gint   l     = left;
-      gint   r     = right - 1;
-      lab    tmp;
+      const gfloat pivot = (min + max) / 2.0;
+      gint         l     = left;
+      gint         r     = right - 1;
+      lab          tmp;
 
       while (TRUE)
         {
-          while ( CURRENT_VALUE (points, l, curdim) <= pivot )
+          while (CURRENT_VALUE (points, l, curdim) <= pivot)
             ++l;
-          while ( CURRENT_VALUE (points, r, curdim) > pivot )
+
+          while (CURRENT_VALUE (points, r, curdim) > pivot)
             --r;
 
           if (l > r)
-                break;
+            break;
 
           tmp = points[l];
           points[l] = points[r];
@@ -270,16 +269,16 @@ static void
 stagetwo (lab           *points,
           gint           left,
           gint           right,
-          gint           depth,
+          const gint     depth,
           gint          *clusters,
           const gfloat  *limits,
           const gfloat   threshold,
           const gint     dims)
 {
-  gint    curdim = depth % dims;
-  gfloat  min, max;
-  gfloat  curval;
-  gint    i;
+  const gint curdim = depth % dims;
+  gfloat     min, max;
+  gfloat     curval;
+  gint       i;
 
   min = CURRENT_VALUE (points, left, curdim);
   max = min;
@@ -297,20 +296,21 @@ stagetwo (lab           *points,
   /* Split according to Rubner-Rule */
   if (max - min > limits[curdim])
     {
-      gfloat pivot = (min + max) / 2.0;
-      gint   l     = left;
-      gint   r     = right - 1;
-      lab    tmp;
+      const gfloat pivot = (min + max) / 2.0;
+      gint         l     = left;
+      gint         r     = right - 1;
+      lab          tmp;
 
       while (TRUE)
         {
-          while ( CURRENT_VALUE (points, l, curdim) <= pivot )
+          while (CURRENT_VALUE (points, l, curdim) <= pivot)
             ++l;
-          while ( CURRENT_VALUE (points, r, curdim) > pivot )
+
+          while (CURRENT_VALUE (points, r, curdim) > pivot)
             --r;
 
           if (l > r)
-                break;
+            break;
 
           tmp = points[l];
           points[l] = points[r];
@@ -334,9 +334,9 @@ stagetwo (lab           *points,
       if (sum >= threshold)
         {
           const gint c = right - left;
-          gfloat l = 0;
-          gfloat a = 0;
-          gfloat b = 0;
+          gfloat     l = 0;
+          gfloat     a = 0;
+          gfloat     b = 0;
 
           for (; left < right; ++left)
             {
@@ -555,7 +555,7 @@ depth_first_search (TileManager *mask,
 
       oldx = xx;
 
-      read_pixel_data_1 (mask, xx, yy, &val);
+      tile_manager_read_pixel_data_1 (mask, xx, yy, &val);
 
       if (val && (val != mark))
         {
@@ -566,7 +566,7 @@ depth_first_search (TileManager *mask,
                 b->mustkeep = TRUE;
             }
 
-          write_pixel_data_1 (mask, xx, yy, &mark);
+          tile_manager_write_pixel_data_1 (mask, xx, yy, &mark);
 
           if (yy > y)
             stack = g_slist_prepend (g_slist_prepend
@@ -691,16 +691,16 @@ create_key (const guchar *src,
     {
     case 3:                     /* RGB  */
     case 4:                     /* RGBA */
-      return (src[RED_PIX] << 16 | src[GREEN_PIX] << 8 | src[BLUE_PIX]);
+      return (src[RED] << 16 | src[GREEN] << 8 | src[BLUE]);
     case 2:
     case 1:
       if (colormap)             /* INDEXED(A) */
         {
           gint i = *src * 3;
 
-          return (colormap[i + RED_PIX]   << 16 |
-                  colormap[i + GREEN_PIX] << 8  |
-                  colormap[i + BLUE_PIX]);
+          return (colormap[i + RED]   << 16 |
+                  colormap[i + GREEN] << 8  |
+                  colormap[i + BLUE]);
         }
       else                      /* GRAY(A) */
         {
@@ -746,6 +746,8 @@ siox_cache_remove_fg (gpointer key,
  * Initializes the SIOX segmentator.
  * Creates and returns a SioxState struct that has to be passed to all
  * function calls of this module as it maintaines the state.
+ *
+'* Returns: a new siox state structure.
  */
 SioxState *
 siox_init (TileManager  *pixels,
@@ -808,6 +810,8 @@ siox_init (TileManager  *pixels,
  *               a good value is: { 0.64, 1.28, 2.56 }
  * @smoothness:  boundary smoothness (a good value is 3)
  * @multiblob:   allow multiple blobs (true) or only one (false)
+ * @progress_callback: a progress callback
+ * @progress_data: data passed to @progress_callback
  *
  * Writes the resulting segmentation into @mask. The region of
  * interest as specified using @x1, @y1, @x2 and @y2 defines the
@@ -864,10 +868,20 @@ siox_foreground_extract (SioxState          *state,
   limits[1] = sensitivity[1];
   limits[2] = sensitivity[2];
 
+#ifdef SIOX_DEBUG
+  g_printerr ("siox.c: limits %f %f %f\n", limits[0], limits[1], limits[2]);
+#endif
+
   clustersize = get_clustersize (limits);
 
   siox_progress_update (progress_callback, progress_data, 0.0);
-  total = width * height;
+
+  if (refinement & SIOX_REFINEMENT_CHANGE_SENSITIVITY)
+    {
+      /* trigger complete recalculation */
+      refinement = (SIOX_REFINEMENT_ADD_BACKGROUND |
+                    SIOX_REFINEMENT_ADD_FOREGROUND);
+    }
 
   if (refinement & SIOX_REFINEMENT_ADD_FOREGROUND)
     g_hash_table_foreach_remove (state->cache, siox_cache_remove_bg, NULL);
@@ -875,19 +889,11 @@ siox_foreground_extract (SioxState          *state,
   if (refinement & SIOX_REFINEMENT_ADD_BACKGROUND)
     g_hash_table_foreach_remove (state->cache, siox_cache_remove_fg, NULL);
 
-  if (refinement & SIOX_REFINEMENT_CHANGE_SENSITIVITY)
-    {
-      refinement = SIOX_REFINEMENT_RECALCULATE;
-    }
-  else
-    {
-      if (! state->bgsig)
-        refinement |= SIOX_REFINEMENT_ADD_BACKGROUND;
+  if (! state->bgsig)
+    refinement |= SIOX_REFINEMENT_ADD_BACKGROUND;
 
-      if (! state->fgsig)
-        refinement |= SIOX_REFINEMENT_ADD_FOREGROUND;
-    }
-
+  if (! state->fgsig)
+    refinement |= SIOX_REFINEMENT_ADD_FOREGROUND;
 
   if (refinement & (SIOX_REFINEMENT_ADD_FOREGROUND |
                     SIOX_REFINEMENT_ADD_BACKGROUND))
@@ -938,7 +944,6 @@ siox_foreground_extract (SioxState          *state,
 
       if (refinement & SIOX_REFINEMENT_ADD_BACKGROUND)
         surebg = g_new (lab, surebgcount);
-
 
       /* create inputs for color signatures */
       pixel_region_init (&srcPR, state->pixels,
@@ -1069,6 +1074,7 @@ siox_foreground_extract (SioxState          *state,
 
       if (refinement & SIOX_REFINEMENT_ADD_BACKGROUND)
         {
+          g_free (state->bgsig);
           /* Create color signature for the background */
           state->bgsig = create_signature (surebg, surebgcount,
                                            &state->bgsiglen, limits,
@@ -1090,6 +1096,7 @@ siox_foreground_extract (SioxState          *state,
 
       if (refinement & SIOX_REFINEMENT_ADD_FOREGROUND)
         {
+          g_free (state->fgsig);
           /* Create color signature for the foreground */
           state->fgsig = create_signature (surefg, surefgcount,
                                            &state->fgsiglen, limits,

@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -32,15 +31,15 @@
 static CmdExecuteValue_t clear_command_execute(Command_t *parent);
 
 static CommandClass_t clear_command_class = {
-   NULL,			/* clear_command_destruct */
+   NULL,                        /* clear_command_destruct */
    clear_command_execute,
-   NULL,			/* clear_command_undo */
-   NULL				/* clear_command_redo */
+   NULL,                        /* clear_command_undo */
+   NULL                         /* clear_command_redo */
 };
 
 typedef struct {
-   Command_t 	 parent;
-   ObjectList_t	*list;
+   Command_t     parent;
+   ObjectList_t *list;
 } ClearCommand_t;
 
 Command_t*
@@ -56,7 +55,7 @@ remove_one_object(Object_t *obj, gpointer data)
 {
    ClearCommand_t *command = (ClearCommand_t*) data;
    command_add_subcommand(&command->parent,
-			  delete_command_new(command->list, obj));
+                          delete_command_new(command->list, obj));
 }
 
 static CmdExecuteValue_t

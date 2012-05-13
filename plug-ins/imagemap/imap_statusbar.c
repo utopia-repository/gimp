@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -28,16 +27,18 @@
 
 #include <gtk/gtk.h>
 
+#include <libgimpwidgets/gimpwidgets.h>
+
 #include "imap_statusbar.h"
 #include "imap_stock.h"
 
 StatusBar_t*
 make_statusbar(GtkWidget *main_vbox, GtkWidget *window)
 {
-   StatusBar_t 	*statusbar = g_new(StatusBar_t, 1);
-   GtkWidget 	*hbox, *iconw;
+   StatusBar_t  *statusbar = g_new(StatusBar_t, 1);
+   GtkWidget    *hbox, *iconw;
 
-   hbox = gtk_hbox_new(FALSE, 1);
+   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 1);
    gtk_box_pack_start(GTK_BOX(main_vbox), hbox, FALSE, FALSE, 0);
 
    /* Status info */
@@ -49,7 +50,7 @@ make_statusbar(GtkWidget *main_vbox, GtkWidget *window)
 
    /* (x, y) coordinate */
    iconw = gtk_image_new_from_stock(IMAP_STOCK_COORD,
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
 
    gtk_box_pack_start(GTK_BOX(hbox), iconw, FALSE, FALSE, 10);
    gtk_widget_show(iconw);
@@ -57,20 +58,20 @@ make_statusbar(GtkWidget *main_vbox, GtkWidget *window)
    statusbar->xy = gtk_entry_new();
    gtk_widget_set_size_request(statusbar->xy, 96, -1);
    gtk_editable_set_editable(GTK_EDITABLE(statusbar->xy), FALSE);
-   GTK_WIDGET_UNSET_FLAGS(statusbar->xy, GTK_CAN_FOCUS);
+   gtk_widget_set_can_focus (statusbar->xy, FALSE);
    gtk_box_pack_start(GTK_BOX(hbox), statusbar->xy, FALSE, FALSE, 0);
    gtk_widget_show(statusbar->xy);
 
    /* Dimension info */
    iconw = gtk_image_new_from_stock(IMAP_STOCK_DIMENSION,
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
    gtk_box_pack_start(GTK_BOX(hbox), iconw, FALSE, FALSE, 10);
    gtk_widget_show(iconw);
 
    statusbar->dimension = gtk_entry_new();
    gtk_widget_set_size_request(statusbar->dimension, 96, -1);
    gtk_editable_set_editable(GTK_EDITABLE(statusbar->dimension), FALSE);
-   GTK_WIDGET_UNSET_FLAGS(statusbar->dimension, GTK_CAN_FOCUS);
+   gtk_widget_set_can_focus (statusbar->dimension, FALSE);
    gtk_box_pack_start(GTK_BOX(hbox), statusbar->dimension, FALSE, FALSE, 0);
    gtk_widget_show(statusbar->dimension);
 
@@ -99,8 +100,8 @@ statusbar_set_status(StatusBar_t *statusbar, const gchar *format, ...)
 
    statusbar_clear_status(statusbar);
    statusbar->message_id =
-			gtk_statusbar_push(GTK_STATUSBAR(statusbar->status),
-					   statusbar->status_id, scratch);
+                        gtk_statusbar_push(GTK_STATUSBAR(statusbar->status),
+                                           statusbar->status_id, scratch);
 }
 
 void
@@ -108,8 +109,8 @@ statusbar_clear_status(StatusBar_t *statusbar)
 {
    if (statusbar->message_id)
       gtk_statusbar_remove(GTK_STATUSBAR(statusbar->status),
-			   statusbar->status_id,
-			   statusbar->message_id);
+                           statusbar->status_id,
+                           statusbar->message_id);
 }
 
 void
@@ -148,5 +149,5 @@ statusbar_set_zoom(StatusBar_t *statusbar, gint factor)
 
    sprintf(scratch, "1:%d", factor);
    gtk_statusbar_push(GTK_STATUSBAR(statusbar->zoom), statusbar->zoom_id,
-		      scratch);
+                      scratch);
 }

@@ -4,9 +4,9 @@
  * GIMP PSD Plug-in
  * Copyright 2007 by John Marshall
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __PSD_H__
@@ -42,6 +41,7 @@
 #define LOAD_THUMB_PROC                 "file-psd-load-thumb"
 #define SAVE_PROC                       "file-psd-save"
 #define PLUG_IN_BINARY                  "file-psd"
+#define PLUG_IN_ROLE                    "gimp-file-psd"
 
 #define DECODE_XMP_PROC                 "plug-in-metadata-decode-xmp"
 
@@ -115,10 +115,10 @@
 #define PSD_LPAR_ANNOTATE       "Anno"          /* Annotation (PS6) */
 
 /* Other */
-#define PSD_LOTH_SECTION        "lsct"          /* Section divider setting - Layer goups (PS6) */
+#define PSD_LOTH_SECTION        "lsct"          /* Section divider setting - Layer groups (PS6) */
 #define PSD_LOTH_PATTERN        "Patt"          /* Patterns (PS6) */
 #define PSD_LOTH_GRADIENT       "grdm"          /* Gradient settings (PS6) */
-#define PSD_LOTH_RESTRICT       "brst"          /* Channel blending restirction setting (PS6) */
+#define PSD_LOTH_RESTRICT       "brst"          /* Channel blending restriction setting (PS6) */
 #define PSD_LOTH_FOREIGN_FX     "ffxi"          /* Foreign effect ID (PS6) */
 #define PSD_LOTH_PATT_DATA      "shpa"          /* Pattern data (PS6) */
 #define PSD_LOTH_META_DATA      "shmd"          /* Meta data setting (PS6) */
@@ -490,6 +490,7 @@ typedef struct
   LayerMaskExtra        layer_mask_extra;       /* Layer mask extra data */
   LayerFlags            layer_flags;            /* Layer flags */
   guint32               id;                     /* Layer ID (Tattoo) */
+  guchar                group_type;             /* 0 -> not a group; 1 -> open folder; 2 -> closed folder; 3 -> end of group */
 } PSDlayer;
 
 /* PSD Channel data structure */

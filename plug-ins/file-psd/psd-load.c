@@ -4,9 +4,9 @@
  * GIMP PSD Plug-in
  * Copyright 2007 by John Marshall
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -267,7 +266,7 @@ read_header_block (PSDimage  *img_a,
   if (memcmp (sig, "8BPS", 4) != 0)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                  _("Not a valid photoshop document file"));
+                  _("Not a valid Photoshop document file"));
       return -1;
     }
 
@@ -532,6 +531,7 @@ read_layer_block (PSDimage  *img_a,
               /* Initialise record */
               lyr_a[lidx]->drop = FALSE;
               lyr_a[lidx]->id = 0;
+              lyr_a[lidx]->group_type = 0;
 
               if (fread (&lyr_a[lidx]->top, 4, 1, f) < 1
                   || fread (&lyr_a[lidx]->left, 4, 1, f) < 1
@@ -943,14 +943,17 @@ add_color_map (const gint32  image_id,
   if (img_a->color_map_len)
     {
       if (img_a->color_mode != PSD_DUOTONE)
-        gimp_image_set_colormap (image_id, img_a->color_map, img_a->color_map_entries);
+        {
+          gimp_image_set_colormap (image_id, img_a->color_map,
+                                   img_a->color_map_entries);
+        }
       else
         {
            /* Add parasite for Duotone color data */
           IFDBG(2) g_debug ("Add Duotone color data parasite");
           parasite = gimp_parasite_new (PSD_PARASITE_DUOTONE_DATA, 0,
                                         img_a->color_map_len, img_a->color_map);
-          gimp_image_parasite_attach (image_id, parasite);
+          gimp_image_attach_parasite (image_id, parasite);
           gimp_parasite_free (parasite);
         }
       g_free (img_a->color_map);
@@ -1010,6 +1013,8 @@ add_layers (const gint32  image_id,
             GError      **error)
 {
   PSDchannel          **lyr_chn;
+  GArray               *parent_group_stack;
+  gint32                parent_group_id = -1;
   guchar               *pixels;
   guint16               alpha_chn;
   guint16               user_mask_chn;
@@ -1057,6 +1062,10 @@ add_layers (const gint32  image_id,
       return -1;
     }
 
+  /* set the root of the group hierarchy */
+  parent_group_stack = g_array_new (FALSE, FALSE, sizeof(gint32));
+  g_array_append_val (parent_group_stack, parent_group_id);
+
   for (lidx = 0; lidx < img_a->num_layers; ++lidx)
     {
       IFDBG(2) g_debug ("Process Layer No %d.", lidx);
@@ -1077,9 +1086,28 @@ add_layers (const gint32  image_id,
           g_free (lyr_a[lidx]->chn_info);
           g_free (lyr_a[lidx]->name);
         }
-
       else
         {
+          if (lyr_a[lidx]->group_type != 0)
+            {
+              if (lyr_a[lidx]->group_type == 3)
+                {
+                  /* the </Layer group> marker layers are used to
+                     assemble the layer structure in a single pass */
+                  layer_id = gimp_layer_group_new (image_id);
+                }
+              else /* group-type == 1 || group_type == 2 */
+                {
+                  layer_id = g_array_index (parent_group_stack, gint32,
+                                            parent_group_stack->len-1);
+                  /* since the layers are stored in reverse, the group
+                     layer start marker actually means we're done with
+                     that layer group */
+                  g_array_remove_index (parent_group_stack,
+                                        parent_group_stack->len-1);
+                }
+            }
+
           /* Empty layer */
           if (lyr_a[lidx]->bottom - lyr_a[lidx]->top == 0
               || lyr_a[lidx]->right - lyr_a[lidx]->left == 0)
@@ -1182,6 +1210,7 @@ add_layers (const gint32  image_id,
                             if (fread (&rle_pack_len[rowi], 2, 1, f) < 1)
                               {
                                 psd_set_error (feof (f), errno, error);
+                                g_free (rle_pack_len);
                                 return -1;
                               }
                             rle_pack_len[rowi] = GUINT16_FROM_BE (rle_pack_len[rowi]);
@@ -1218,6 +1247,8 @@ add_layers (const gint32  image_id,
           l_y = 0;
           l_w = img_a->columns;
           l_h = img_a->rows;
+          parent_group_id = g_array_index (parent_group_stack, gint32,
+                                           parent_group_stack->len-1);
 
           IFDBG(3) g_debug ("Re-hash channel indices");
           for (cidx = 0; cidx < lyr_a[lidx]->num_channels; ++cidx)
@@ -1244,7 +1275,36 @@ add_layers (const gint32  image_id,
               layer_channels++;
             }
 
-          if (empty)
+          if (lyr_a[lidx]->group_type != 0)
+            {
+              if (lyr_a[lidx]->group_type == 3)
+                {
+                  IFDBG(2) g_debug ("Create placeholder group layer");
+                  g_free (lyr_a[lidx]->name);
+                  gimp_image_insert_layer (image_id, layer_id, parent_group_id, 0);
+                  /* add this group layer as the new parent */
+                  g_array_append_val (parent_group_stack, layer_id);
+                }
+              else
+                {
+                  IFDBG(2) g_debug ("End group layer id %d.", layer_id);
+                  drawable = gimp_drawable_get (layer_id);
+                  layer_mode = psd_to_gimp_blend_mode (lyr_a[lidx]->blend_mode);
+                  gimp_layer_set_mode (layer_id, layer_mode);
+                  gimp_layer_set_opacity (layer_id, 
+                                          lyr_a[lidx]->opacity * 100 / 255);
+                  gimp_item_set_name (drawable->drawable_id, lyr_a[lidx]->name);
+                  g_free (lyr_a[lidx]->name);
+                  gimp_item_set_visible (drawable->drawable_id,
+                                         lyr_a[lidx]->layer_flags.visible);
+                  if (lyr_a[lidx]->id)
+                    gimp_item_set_tattoo (drawable->drawable_id,
+                                          lyr_a[lidx]->id);
+                  gimp_drawable_flush (drawable);
+                  gimp_drawable_detach (drawable);
+                }
+            }
+          else if (empty)
             {
               IFDBG(2) g_debug ("Create blank layer");
               image_type = get_gimp_image_type (img_a->base_type, TRUE);
@@ -1252,14 +1312,14 @@ add_layers (const gint32  image_id,
                                          img_a->columns, img_a->rows,
                                          image_type, 0, GIMP_NORMAL_MODE);
               g_free (lyr_a[lidx]->name);
-              gimp_image_add_layer (image_id, layer_id, -1);
+              gimp_image_insert_layer (image_id, layer_id, parent_group_id, -1);
               drawable = gimp_drawable_get (layer_id);
               gimp_drawable_fill (drawable->drawable_id, GIMP_TRANSPARENT_FILL);
-              gimp_drawable_set_visible (drawable->drawable_id, lyr_a[lidx]->layer_flags.visible);
+              gimp_item_set_visible (drawable->drawable_id, lyr_a[lidx]->layer_flags.visible);
               if (lyr_a[lidx]->id)
-                gimp_drawable_set_tattoo (drawable->drawable_id, lyr_a[lidx]->id);
+                gimp_item_set_tattoo (drawable->drawable_id, lyr_a[lidx]->id);
               if (lyr_a[lidx]->layer_flags.irrelevant)
-                gimp_drawable_set_visible (drawable->drawable_id, FALSE);
+                gimp_item_set_visible (drawable->drawable_id, FALSE);
               gimp_drawable_flush (drawable);
               gimp_drawable_detach (drawable);
             }
@@ -1289,7 +1349,7 @@ add_layers (const gint32  image_id,
                                          layer_mode);
               IFDBG(3) g_debug ("Layer tattoo: %d", layer_id);
               g_free (lyr_a[lidx]->name);
-              gimp_image_add_layer (image_id, layer_id, -1);
+              gimp_image_insert_layer (image_id, layer_id, parent_group_id, -1);
               gimp_layer_set_offsets (layer_id, l_x, l_y);
               gimp_layer_set_lock_alpha  (layer_id, lyr_a[lidx]->layer_flags.trans_prot);
               drawable = gimp_drawable_get (layer_id);
@@ -1297,16 +1357,16 @@ add_layers (const gint32  image_id,
                                    drawable->width, drawable->height, TRUE, FALSE);
               gimp_pixel_rgn_set_rect (&pixel_rgn, pixels,
                                        0, 0, drawable->width, drawable->height);
-              gimp_drawable_set_visible (drawable->drawable_id, lyr_a[lidx]->layer_flags.visible);
+              gimp_item_set_visible (drawable->drawable_id, lyr_a[lidx]->layer_flags.visible);
               if (lyr_a[lidx]->id)
-                gimp_drawable_set_tattoo (drawable->drawable_id, lyr_a[lidx]->id);
+                gimp_item_set_tattoo (drawable->drawable_id, lyr_a[lidx]->id);
               gimp_drawable_flush (drawable);
               gimp_drawable_detach (drawable);
               g_free (pixels);
             }
 
           /* Layer mask */
-          if (user_mask)
+          if (user_mask && lyr_a[lidx]->group_type == 0)
             {
               if (empty_mask)
                 {
@@ -1418,6 +1478,7 @@ add_layers (const gint32  image_id,
       g_free (lyr_a[lidx]);
     }
   g_free (lyr_a);
+  g_array_free (parent_group_stack, FALSE);
 
   return 0;
 }
@@ -1436,9 +1497,6 @@ add_merged_image (const gint32  image_id,
   guint16               extra_channels;
   guint16               total_channels;
   guint16              *rle_pack_len[MAX_CHANNELS];
-  guint32               block_len;
-  guint32               block_start;
-  guint32               block_end;
   guint32               alpha_id;
   gint32                layer_size;
   gint32                layer_id = -1;
@@ -1487,9 +1545,12 @@ add_merged_image (const gint32  image_id,
   if (img_a->num_layers == 0
       || extra_channels > 0)
     {
+      guint32 block_len;
+      guint32 block_start;
+
       block_start = img_a->merged_image_start;
       block_len = img_a->merged_image_len;
-      block_end = block_start + block_len;
+
       fseek (f, block_start, SEEK_SET);
 
       if (fread (&comp_mode, COMP_MODE_SIZE, 1, f) < 1)
@@ -1547,6 +1608,7 @@ add_merged_image (const gint32  image_id,
 
           case PSD_COMP_ZIP:                 /* ? */
           case PSD_COMP_ZIP_PRED:
+          default:
             g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                         _("Unsupported compression mode: %d"), comp_mode);
             return -1;
@@ -1576,7 +1638,7 @@ add_merged_image (const gint32  image_id,
                                  img_a->columns, img_a->rows,
                                  image_type,
                                  100, GIMP_NORMAL_MODE);
-      gimp_image_add_layer (image_id, layer_id, 0);
+      gimp_image_insert_layer (image_id, layer_id, -1, 0);
       drawable = gimp_drawable_get (layer_id);
       gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
                            drawable->width, drawable->height, TRUE, FALSE);
@@ -1666,12 +1728,12 @@ add_merged_image (const gint32  image_id,
           channel_id = gimp_channel_new (image_id, alpha_name,
                                          chn_a[cidx].columns, chn_a[cidx].rows,
                                          alpha_opacity, &alpha_rgb);
-          gimp_image_add_channel (image_id, channel_id, 0);
+          gimp_image_insert_channel (image_id, channel_id, -1, 0);
           g_free (alpha_name);
           drawable = gimp_drawable_get (channel_id);
           if (alpha_id)
-            gimp_drawable_set_tattoo (drawable->drawable_id, alpha_id);
-          gimp_drawable_set_visible (drawable->drawable_id, alpha_visible);
+            gimp_item_set_tattoo (drawable->drawable_id, alpha_id);
+          gimp_item_set_visible (drawable->drawable_id, alpha_visible);
           gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0,
                                 drawable->width, drawable->height,
                                 TRUE, FALSE);
@@ -1846,6 +1908,8 @@ read_channel_data (PSDchannel     *channel,
             if (fread (src, rle_pack_len[i], 1, f) < 1)
               {
                 psd_set_error (feof (f), errno, error);
+                g_free (src);
+                g_free (dst);
                 return -1;
               }
             /* FIXME check for errors returned from decode packbits */

@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,15 @@
 #include "gimpmemsize.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpmemsize
+ * @title: gimpmemsize
+ * @short_description: Functions to (de)serialize a given memory size.
+ *
+ * Functions to (de)serialize a given memory size.
+ **/
 
 
 static void   memsize_to_string (const GValue *src_value,
@@ -63,7 +71,7 @@ gimp_memsize_get_type (void)
  * Creates a string representation of a given memory size. This string
  * can be parsed by gimp_memsize_deserialize() and can thus be used in
  * config files. It should not be displayed to the user. If you need a
- * nice human-readable string please use g_format_size_for_display().
+ * nice human-readable string please use g_format_size().
  *
  * Return value: A newly allocated string representation of @memsize.
  *
@@ -154,14 +162,14 @@ gimp_memsize_deserialize (const gchar *string,
  * gimp_memsize_to_string:
  * @memsize: A memory size in bytes.
  *
- * This function is deprecated! Use g_format_size_for_display() instead.
+ * This function is deprecated! Use g_format_size() instead.
  *
  * Return value: A newly allocated human-readable, translated string.
  **/
 gchar *
 gimp_memsize_to_string (guint64 memsize)
 {
-  return g_format_size_for_display (memsize);
+  return g_format_size (memsize);
 }
 
 

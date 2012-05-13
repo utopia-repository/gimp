@@ -3,9 +3,9 @@
  *
  * gimpfuzzyselecttool.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,14 +14,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -97,10 +97,9 @@ gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
   GimpTool                *tool        = GIMP_TOOL (region_select);
   GimpSelectionOptions    *sel_options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
   GimpRegionSelectOptions *options     = GIMP_REGION_SELECT_TOOL_GET_OPTIONS (tool);
-  GimpDrawable            *drawable;
+  GimpImage               *image       = gimp_display_get_image (display);
+  GimpDrawable            *drawable    = gimp_image_get_active_drawable (image);
   gint                     x, y;
-
-  drawable = gimp_image_get_active_drawable (display->image);
 
   x = region_select->x;
   y = region_select->y;
@@ -109,13 +108,13 @@ gimp_fuzzy_select_tool_get_mask (GimpRegionSelectTool *region_select,
     {
       gint off_x, off_y;
 
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+      gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
       x -= off_x;
       y -= off_y;
     }
 
-  return gimp_image_contiguous_region_by_seed (display->image, drawable,
+  return gimp_image_contiguous_region_by_seed (image, drawable,
                                                options->sample_merged,
                                                sel_options->antialias,
                                                options->threshold,

@@ -3,9 +3,9 @@
  *
  * Copyright (C) Nigel Wetten
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contact info: nigel@cs.nwu.edu
  * Version: 1.0.0
@@ -40,6 +39,7 @@
 
 #define PLUG_IN_PROC   "plug-in-wind"
 #define PLUG_IN_BINARY "wind"
+#define PLUG_IN_ROLE   "gimp-wind"
 
 #define COMPARE_WIDTH    3
 
@@ -161,14 +161,14 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",     "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable" },
     { GIMP_PDB_INT32,    "threshold", "Controls where blending will be done >= 0" },
     { GIMP_PDB_INT32,    "direction", "Left or Right: 0 or 1" },
     { GIMP_PDB_INT32,    "strength",  "Controls the extent of the blending > 1" },
-    { GIMP_PDB_INT32,    "algorithm", "WIND, BLAST" },
-    { GIMP_PDB_INT32,    "edge",      "LEADING, TRAILING, or BOTH" }
+    { GIMP_PDB_INT32,    "algorithm", "Algorithm { WIND (0), BLAST (1) }" },
+    { GIMP_PDB_INT32,    "edge",      "Edge behavior { BOTH (0), LEADING (1), TRAILING (2) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -215,9 +215,9 @@ run (const gchar      *name,
         {
           config.threshold = param[3].data.d_int32;
           config.direction = param[4].data.d_int32;
-          config.strength = param[5].data.d_int32;
-          config.alg = param[6].data.d_int32;
-          config.edge = param[7].data.d_int32;
+          config.strength  = param[5].data.d_int32;
+          config.alg       = param[6].data.d_int32;
+          config.edge      = param[7].data.d_int32;
 
           if (render_effect (drawable, NULL) == -1)
             status = GIMP_PDB_EXECUTION_ERROR;
@@ -286,7 +286,7 @@ render_blast (GimpDrawable *drawable,
               edge_t        edge,
               GimpPreview  *preview)
 {
-  gint          x1, x2, y1, y2;
+  gint          x1, y1, y2;
   gint          width;
   gint          height;
   gint          bytes = drawable->bpp;
@@ -302,7 +302,6 @@ render_blast (GimpDrawable *drawable,
       gimp_preview_get_position (preview, &x1, &y1);
       gimp_preview_get_size (preview, &width, &height);
 
-      x2 = x1 + width;
       y2 = y1 + height;
 
       preview_buffer = g_new (guchar, width * height * bytes);
@@ -314,7 +313,6 @@ render_blast (GimpDrawable *drawable,
         {
           gimp_progress_init (_("Rendering blast"));
 
-          x2 = x1 + width;
           y2 = y1 + height;
 
           gimp_pixel_rgn_init (&dest_region, drawable,
@@ -388,7 +386,6 @@ render_blast (GimpDrawable *drawable,
                     }
                 }
             }
-          marker = 0;
         }
     }
 
@@ -402,6 +399,7 @@ render_blast (GimpDrawable *drawable,
     }
   else
     {
+      gimp_progress_update (1.0);
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
       gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
@@ -425,7 +423,7 @@ render_wind (GimpDrawable *drawable,
   gint          row;
   guchar       *sb, *preview_buffer = NULL;
   gint          lpi;
-  gint          x1, y1, x2, y2;
+  gint          x1, y1, y2;
 
   bytes = drawable->bpp;
 
@@ -434,7 +432,6 @@ render_wind (GimpDrawable *drawable,
       gimp_preview_get_position (preview, &x1, &y1);
       gimp_preview_get_size (preview, &width, &height);
 
-      x2 = x1 + width;
       y2 = y1 + height;
 
       preview_buffer = g_new (guchar, width * height * bytes);
@@ -446,7 +443,6 @@ render_wind (GimpDrawable *drawable,
         {
           gimp_progress_init (_("Rendering wind"));
 
-          x2 = x1 + width;
           y2 = y1 + height;
 
           gimp_pixel_rgn_init (&dest_region, drawable,
@@ -501,6 +497,7 @@ render_wind (GimpDrawable *drawable,
     }
   else
     {
+      gimp_progress_update (1.0);
       gimp_drawable_flush (drawable);
       gimp_drawable_merge_shadow (drawable->drawable_id, TRUE);
       gimp_drawable_update (drawable->drawable_id, x1, y1, width, height);
@@ -605,7 +602,6 @@ render_wind_row (guchar *sb,
   gint blend_amt_R, blend_amt_G, blend_amt_B, blend_amt_A = 0 ;
   gint blend_colour_R, blend_colour_G, blend_colour_B, blend_colour_A = 0 ;
   gint target_colour_R, target_colour_G, target_colour_B, target_colour_A = 0;
-  gdouble bleed_length_max;
   gint bleed_variation;
   gint n;
   gint sbi;  /* starting bleed index */
@@ -629,6 +625,8 @@ render_wind_row (guchar *sb,
                               threshold,
                               (bytes > 3)))
         {
+          gdouble bleed_length_max;
+
           /* we have found an edge, do bleeding */
           sbi = Ri + comp_stride;
           blend_colour_R = sb[Ri];
@@ -637,7 +635,6 @@ render_wind_row (guchar *sb,
           target_colour_R = sb[sbi];
           target_colour_G = sb[sbi+1];
           target_colour_B = sb[sbi+2];
-          bleed_length_max = strength;
 
           if (bytes > 3)
             {
@@ -876,7 +873,7 @@ dialog_box (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Wind"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Wind"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -892,9 +889,10 @@ dialog_box (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);

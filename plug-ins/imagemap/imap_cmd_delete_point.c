@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-1999 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -34,18 +33,18 @@ static CmdExecuteValue_t delete_point_command_execute(Command_t *parent);
 static void delete_point_command_undo(Command_t *parent);
 
 static CommandClass_t delete_point_command_class = {
-   NULL,			/* delete_point_command_destruct */
+   NULL,                        /* delete_point_command_destruct */
    delete_point_command_execute,
    delete_point_command_undo,
-   NULL				/* delete_point_command_redo */
+   NULL                         /* delete_point_command_redo */
 };
 
 typedef struct {
-   Command_t 	parent;
+   Command_t    parent;
    Polygon_t   *polygon;
    GdkPoint    *point;
-   GdkPoint	copy;
-   gint		position;
+   GdkPoint     copy;
+   gint         position;
 } DeletePointCommand_t;
 
 Command_t*
@@ -57,9 +56,9 @@ delete_point_command_new(Object_t *obj, GdkPoint *point)
    command->point = point;
    command->copy = *point;
    command->position = g_list_index(command->polygon->points,
-				    (gpointer) point);
+                                    (gpointer) point);
    return command_init(&command->parent, _("Delete Point"),
-		       &delete_point_command_class);
+                       &delete_point_command_class);
 }
 
 static CmdExecuteValue_t
@@ -83,5 +82,5 @@ delete_point_command_undo(Command_t *parent)
 
    command->point = new_point(point->x, point->y);
    polygon->points = g_list_insert(polygon->points, (gpointer) command->point,
-				   command->position);
+                                   command->position);
 }

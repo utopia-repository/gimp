@@ -14,7 +14,7 @@ CORE_VARIABLES = \
 	stock_question_64 $(srcdir)/stock-question-64.png
 
 
-## Compiled in stock icons 
+## Compiled in stock icons
 
 STOCK_MENU_IMAGES = \
 	stock-cap-butt-16.png				\
@@ -48,6 +48,8 @@ STOCK_MENU_IMAGES = \
 	stock-display-filter-gamma-16.png		\
 	stock-display-filter-lcms-16.png		\
 	stock-display-filter-proof-16.png		\
+	stock-dynamics-16.png				\
+	stock-dynamics-22.png				\
 	stock-eye-12.png				\
 	stock-flip-horizontal-16.png			\
 	stock-flip-vertical-16.png			\
@@ -71,6 +73,7 @@ STOCK_MENU_IMAGES = \
 	stock-image-16.png				\
 	stock-images-16.png				\
 	stock-info-16.png				\
+	stock-input-device-16.png			\
 	stock-invert-16.png				\
 	stock-join-bevel-16.png				\
 	stock-join-miter-16.png				\
@@ -114,6 +117,8 @@ STOCK_MENU_IMAGES = \
 	stock-text-layer-16.png				\
 	stock-toilet-paper-16.png			\
 	stock-tool-options-16.png			\
+	stock-tool-preset-16.png			\
+	stock-tool-preset-22.png			\
 	stock-tools-16.png				\
 	stock-transparency-16.png			\
 	stock-undo-history-16.png			\
@@ -177,6 +182,7 @@ STOCK_BUTTON_IMAGES = \
 	stock-image-24.png			\
 	stock-images-24.png			\
 	stock-info-24.png			\
+	stock-input-device-22.png		\
 	stock-layer-24.png			\
 	stock-layer-mask-24.png			\
 	stock-layers-24.png			\
@@ -271,6 +277,8 @@ STOCK_TOOL_IMAGES = \
 	tools/stock-tool-bucket-fill-22.png		\
 	tools/stock-tool-by-color-select-16.png		\
 	tools/stock-tool-by-color-select-22.png		\
+	tools/stock-tool-cage-16.png 			\
+	tools/stock-tool-cage-22.png			\
 	tools/stock-tool-clone-16.png			\
 	tools/stock-tool-clone-22.png			\
 	tools/stock-tool-color-balance-16.png		\
@@ -283,6 +291,8 @@ STOCK_TOOL_IMAGES = \
 	tools/stock-tool-crop-22.png			\
 	tools/stock-tool-curves-16.png			\
 	tools/stock-tool-curves-22.png			\
+	tools/stock-tool-desaturate-16.png		\
+	tools/stock-tool-desaturate-22.png		\
 	tools/stock-tool-dodge-16.png			\
 	tools/stock-tool-dodge-22.png			\
 	tools/stock-tool-ellipse-select-16.png		\
@@ -360,9 +370,7 @@ EXTRA_DIST = \
 	$(CORE_IMAGES)		\
 	$(STOCK_IMAGES)		\
 	$(WILBER_IMAGES)	\
-	gimp-dialog-icons.xcf.gz\
-	makefile.msc
-
+	gimp-dialog-icons.xcf.gz
 
 noinst_DATA = \
 	gimp-core-pixbufs.h	\

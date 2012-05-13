@@ -4,13 +4,16 @@ pluginexecdir = $(gimpplugindir)/plug-ins
 
 scripts = \
 	colorxhtml.py		\
+	file-openraster.py	\
 	foggify.py		\
+        gradients-save-as-css.py\
 	palette-offset.py	\
 	palette-sort.py		\
 	palette-to-gradient.py	\
 	py-slice.py		\
 	python-console.py	\
-	python-eval.py
+	python-eval.py		\
+	text-brush.py
 
 test_scripts = \
 	benchmark-foreground-extract.py	\

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_PALETTE_H__
@@ -59,25 +58,42 @@ struct _GimpPaletteClass
 };
 
 
-GType              gimp_palette_get_type     (void) G_GNUC_CONST;
+GType              gimp_palette_get_type        (void) G_GNUC_CONST;
 
-GimpData         * gimp_palette_new          (const gchar      *name);
-GimpData         * gimp_palette_get_standard (void);
+GimpData         * gimp_palette_new             (GimpContext      *context,
+                                                 const gchar      *name);
+GimpData         * gimp_palette_get_standard    (GimpContext      *context);
 
-GimpPaletteEntry * gimp_palette_add_entry    (GimpPalette      *palette,
-                                              gint              position,
-                                              const gchar      *name,
-                                              const GimpRGB    *color);
-void               gimp_palette_delete_entry (GimpPalette      *palette,
-                                              GimpPaletteEntry *entry);
+GList            * gimp_palette_get_colors      (GimpPalette      *palette);
+gint               gimp_palette_get_n_colors    (GimpPalette      *palette);
 
-void               gimp_palette_set_columns  (GimpPalette      *palette,
-                                              gint              columns);
-gint               gimp_palette_get_columns  (GimpPalette      *palette);
+GimpPaletteEntry * gimp_palette_add_entry       (GimpPalette      *palette,
+                                                 gint              position,
+                                                 const gchar      *name,
+                                                 const GimpRGB    *color);
+void               gimp_palette_delete_entry    (GimpPalette      *palette,
+                                                 GimpPaletteEntry *entry);
 
-GimpPaletteEntry * gimp_palette_find_entry   (GimpPalette      *palette,
-                                              const GimpRGB    *color,
-                                              GimpPaletteEntry *start_from);
+gboolean           gimp_palette_set_entry       (GimpPalette      *palette,
+                                                 gint              position,
+                                                 const gchar      *name,
+                                                 const GimpRGB    *color);
+gboolean           gimp_palette_set_entry_color (GimpPalette      *palette,
+                                                 gint              position,
+                                                 const GimpRGB    *color);
+gboolean           gimp_palette_set_entry_name  (GimpPalette      *palette,
+                                                 gint              position,
+                                                 const gchar      *name);
+GimpPaletteEntry * gimp_palette_get_entry       (GimpPalette      *palette,
+                                                 gint              position);
+
+void               gimp_palette_set_columns     (GimpPalette      *palette,
+                                                 gint              columns);
+gint               gimp_palette_get_columns     (GimpPalette      *palette);
+
+GimpPaletteEntry * gimp_palette_find_entry      (GimpPalette      *palette,
+                                                 const GimpRGB    *color,
+                                                 GimpPaletteEntry *start_from);
 
 
 #endif /* __GIMP_PALETTE_H__ */

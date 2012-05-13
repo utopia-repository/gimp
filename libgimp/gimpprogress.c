@@ -3,10 +3,10 @@
  *
  * gimpprogress.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -66,14 +65,14 @@ static const gdouble   gimp_progress_step    = (1.0 / 256.0);
  * @value_callback: the function to call to change the value
  * @user_data:      a pointer that is returned when uninstalling the progress
  *
- * Return value: the name of the temporary procedure that's been installed
- *
- * Since: GIMP 2.2
- *
  * Note that since GIMP 2.4, @value_callback can be called with
  * negative values. This is triggered by calls to gimp_progress_pulse().
  * The callback should then implement a progress indicating business,
  * e.g. by calling gtk_progress_bar_pulse().
+ *
+ * Return value: the name of the temporary procedure that's been installed
+ *
+ * Since: GIMP 2.2
  **/
 const gchar *
 gimp_progress_install (GimpProgressStartCallback start_callback,
@@ -243,7 +242,7 @@ gimp_progress_init (const gchar  *message)
 /**
  * gimp_progress_init_printf:
  * @format: a standard printf() format string
- * @Varargs: arguments for @format
+ * @...: arguments for @format
  *
  * Initializes the progress bar for the current plug-in.
  *
@@ -278,7 +277,7 @@ gimp_progress_init_printf (const gchar *format,
 /**
  * gimp_progress_set_text_printf:
  * @format: a standard printf() format string
- * @Varargs: arguments for @format
+ * @...: arguments for @format
  *
  * Changes the text in the progress bar for the current plug-in.
  *

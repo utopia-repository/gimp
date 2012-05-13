@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -36,20 +35,20 @@
 #include "libgimp/stdplugins-intl.h"
 
 typedef struct {
-   DefaultDialog_t 	*dialog;
-   GtkWidget		*image_dimensions;
-   GtkWidget		*guide_bounds;
-   GtkWidget		*width;
-   GtkWidget		*height;
-   GtkWidget		*left;
-   GtkWidget		*top;
-   GtkWidget		*horz_spacing;
-   GtkWidget		*vert_spacing;
-   GtkWidget		*no_across;
-   GtkWidget		*no_down;
-   GtkWidget		*base_url;
+   DefaultDialog_t      *dialog;
+   GtkWidget            *image_dimensions;
+   GtkWidget            *guide_bounds;
+   GtkWidget            *width;
+   GtkWidget            *height;
+   GtkWidget            *left;
+   GtkWidget            *top;
+   GtkWidget            *horz_spacing;
+   GtkWidget            *vert_spacing;
+   GtkWidget            *no_across;
+   GtkWidget            *no_down;
+   GtkWidget            *base_url;
 
-   ObjectList_t		*list;
+   ObjectList_t         *list;
 } GuidesDialog_t;
 
 static void
@@ -76,12 +75,12 @@ guides_ok_cb(gpointer data)
    for (i = 0; i < rows; i++) {
       gint x = left;
       for (j = 0; j < cols; j++) {
-	 Object_t *obj = create_rectangle(x, y, width, height);
-	 Command_t *command = create_command_new(param->list, obj);
+         Object_t *obj = create_rectangle(x, y, width, height);
+         Command_t *command = create_command_new(param->list, obj);
 
-	 object_set_url(obj, gtk_entry_get_text(GTK_ENTRY(param->base_url)));
-	 command_execute(command);
-	 x += width + hspace;
+         object_set_url(obj, gtk_entry_get_text(GTK_ENTRY(param->base_url)));
+         command_execute(command);
+         x += width + hspace;
       }
       y += height + vspace;
    }
@@ -111,7 +110,7 @@ recalc_bounds(GtkWidget *widget, gpointer data)
    bound_h = (height + vspace) * rows - vspace;
 
    bounds = g_strdup_printf (_("Resulting Guide Bounds: %d,%d to %d,%d (%d areas)"),
-			     left, top, left + bound_w, top + bound_h, rows * cols);
+                             left, top, left + bound_w, top + bound_h, rows * cols);
    if (left + bound_w > get_image_width() ||
        top + bound_h > get_image_height())
      {
@@ -142,9 +141,9 @@ make_guides_dialog (void)
 
    hbox = gimp_hint_box_new (
       _("Guides are pre-defined rectangles covering the image. You define "
-	"them by their width, height, and spacing from each other. This "
-	"allows you to rapidly create the most common image map type - "
-	"image collection of \"thumbnails\", suitable for navigation bars."));
+        "them by their width, height, and spacing from each other. This "
+        "allows you to rapidly create the most common image map type - "
+        "image collection of \"thumbnails\", suitable for navigation bars."));
    gtk_box_pack_start (GTK_BOX (dialog->vbox), hbox, FALSE, FALSE, 0);
    gtk_widget_show (hbox);
 
@@ -190,13 +189,13 @@ make_guides_dialog (void)
 
    label = create_label_in_table(table, 2, 2, _("_No. across:"));
    data->no_across = create_spin_button_in_table(table, label, 2, 3, 0, 0,
-						 100);
+                                                 100);
    g_signal_connect (data->no_across, "changed",
                      G_CALLBACK(recalc_bounds), (gpointer) data);
 
    label = create_label_in_table(table, 3, 0, _("_Vert. spacing:"));
    data->vert_spacing = create_spin_button_in_table(table, label, 3, 1, 0, 0,
-						    100);
+                                                    100);
    g_signal_connect (data->vert_spacing, "changed",
                      G_CALLBACK(recalc_bounds), (gpointer) data);
 
@@ -205,8 +204,8 @@ make_guides_dialog (void)
    g_signal_connect (data->no_down, "changed",
                      G_CALLBACK(recalc_bounds), (gpointer) data);
 
-   hbox = gtk_hbox_new (FALSE, 6);
-   gtk_container_add (GTK_CONTAINER (dialog->vbox), hbox);
+   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+   gtk_box_pack_start (GTK_BOX (dialog->vbox), hbox, TRUE, TRUE, 0);
    gtk_widget_show(hbox);
 
    label = gtk_label_new_with_mnemonic(_("Base _URL:"));
@@ -214,7 +213,7 @@ make_guides_dialog (void)
    gtk_widget_show(label);
 
    data->base_url = gtk_entry_new ();
-   gtk_container_add (GTK_CONTAINER(hbox), data->base_url);
+   gtk_box_pack_start (GTK_BOX (hbox), data->base_url, TRUE, TRUE, 0);
    gtk_widget_show(data->base_url);
 
    gtk_label_set_mnemonic_widget (GTK_LABEL (label), data->base_url);
@@ -253,10 +252,10 @@ do_create_guides_dialog_local (ObjectList_t *list)
 static CmdExecuteValue_t guides_command_execute(Command_t *parent);
 
 static CommandClass_t guides_command_class = {
-   NULL,			/* guides_command_destruct */
+   NULL,                        /* guides_command_destruct */
    guides_command_execute,
-   NULL,			/* guides_command_undo */
-   NULL				/* guides_command_redo */
+   NULL,                        /* guides_command_undo */
+   NULL                         /* guides_command_redo */
 };
 
 typedef struct {

@@ -1,10 +1,10 @@
 /* LIBGIMP - The GIMP Library
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,9 +12,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -29,6 +28,19 @@
 #include "gimprgb.h"
 #include "gimphsv.h"
 
+
+
+/**
+ * SECTION: gimpcolorspace
+ * @title: GimpColorSpace
+ * @short_description: Utility functions which convert colors between
+ *                     different color models.
+ *
+ * When programming pixel data manipulation functions you will often
+ * use algorithms operating on a color model different from the one
+ * GIMP uses.  This file provides utility functions to convert colors
+ * between different color spaces.
+ **/
 
 
 #define GIMP_HSV_UNDEFINED -1.0
@@ -79,7 +91,7 @@ gimp_rgb_to_hsv (const GimpRGB *rgb,
         {
           hsv->h = 2.0 + (rgb->b - rgb->r) / delta;
         }
-      else if (rgb->b == max)
+      else
         {
           hsv->h = 4.0 + (rgb->r - rgb->g) / delta;
         }
@@ -221,7 +233,7 @@ gimp_rgb_to_hsl (const GimpRGB *rgb,
         {
           hsl->h = 2.0 + (rgb->b - rgb->r) / delta;
         }
-      else if (rgb->b == max)
+      else
         {
           hsl->h = 4.0 + (rgb->r - rgb->g) / delta;
         }
@@ -960,8 +972,6 @@ gimp_rgb_to_hsv4 (const guchar *rgb,
   green = rgb[1] / 255.0;
   blue  = rgb[2] / 255.0;
 
-  h = 0.0; /* Shut up -Wall */
-
   if (red > green)
     {
       max = MAX (red,   blue);
@@ -993,7 +1003,7 @@ gimp_rgb_to_hsv4 (const guchar *rgb,
         h = (green - blue) / delta;
       else if (green == max)
         h = 2 + (blue - red) / delta;
-      else if (blue == max)
+      else
         h = 4 + (red - green) / delta;
 
       h /= 6.0;

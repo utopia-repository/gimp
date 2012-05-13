@@ -4,10 +4,10 @@
  * gimpprofilestore.c
  * Copyright (C) 2004-2008  Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,6 +36,15 @@
 #include "libgimp/libgimp-intl.h"
 
 
+/**
+ * SECTION: gimpcolorprofilestore
+ * @title: GimpColorProfileStore
+ * @short_description: A #GtkListStore subclass that keep color profiles.
+ *
+ * A #GtkListStore subclass that keep color profiles.
+ **/
+
+
 #define HISTORY_SIZE  8
 
 enum
@@ -46,9 +54,7 @@ enum
 };
 
 
-static GObject * gimp_color_profile_store_constructor    (GType                  type,
-                                                          guint                  n_params,
-                                                          GObjectConstructParam *params);
+static void      gimp_color_profile_store_constructed    (GObject               *object);
 static void      gimp_color_profile_store_dispose        (GObject               *object);
 static void      gimp_color_profile_store_finalize       (GObject               *object);
 static void      gimp_color_profile_store_set_property   (GObject               *object,
@@ -87,7 +93,7 @@ gimp_color_profile_store_class_init (GimpColorProfileStoreClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_color_profile_store_constructor;
+  object_class->constructed  = gimp_color_profile_store_constructed;
   object_class->dispose      = gimp_color_profile_store_dispose;
   object_class->finalize     = gimp_color_profile_store_finalize;
   object_class->set_property = gimp_color_profile_store_set_property;
@@ -123,18 +129,14 @@ gimp_color_profile_store_init (GimpColorProfileStore *store)
                                    G_N_ELEMENTS (types), types);
 }
 
-static GObject *
-gimp_color_profile_store_constructor  (GType                  type,
-                                       guint                  n_params,
-                                       GObjectConstructParam *params)
+static void
+gimp_color_profile_store_constructed (GObject *object)
 {
-  GObject               *object;
-  GimpColorProfileStore *store;
+  GimpColorProfileStore *store = GIMP_COLOR_PROFILE_STORE (object);
   GtkTreeIter            iter;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  store = GIMP_COLOR_PROFILE_STORE (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   gtk_list_store_append (GTK_LIST_STORE (store), &iter);
   gtk_list_store_set (GTK_LIST_STORE (store), &iter,
@@ -148,8 +150,6 @@ gimp_color_profile_store_constructor  (GType                  type,
     {
       gimp_color_profile_store_load (store, store->history, NULL);
     }
-
-  return object;
 }
 
 static void

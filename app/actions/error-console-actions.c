@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,18 +36,18 @@
 static const GimpActionEntry error_console_actions[] =
 {
   { "error-console-popup", GIMP_STOCK_WARNING,
-    N_("Error Console Menu"), NULL, NULL, NULL,
+    NC_("error-console-action", "Error Console Menu"), NULL, NULL, NULL,
     GIMP_HELP_ERRORS_DIALOG },
 
   { "error-console-clear", GTK_STOCK_CLEAR,
-    N_("_Clear"), "",
-    N_("Clear error console"),
+    NC_("error-console-action", "_Clear"), "",
+    NC_("error-console-action", "Clear error console"),
     G_CALLBACK (error_console_clear_cmd_callback),
     GIMP_HELP_ERRORS_CLEAR },
 
   { "error-console-select-all", NULL,
-    N_("Select _All"), "",
-    N_("Select all errors"),
+    NC_("error-console-action", "Select _All"), "",
+    NC_("error-console-action", "Select all error messages"),
     G_CALLBACK (error_console_select_all_cmd_callback),
     GIMP_HELP_ERRORS_SELECT_ALL }
 };
@@ -56,14 +55,14 @@ static const GimpActionEntry error_console_actions[] =
 static const GimpEnumActionEntry error_console_save_actions[] =
 {
   { "error-console-save-all", GTK_STOCK_SAVE_AS,
-    N_("_Save Error Log to File..."), "",
-    N_("Save error log"),
+    NC_("error-console-action", "_Save Error Log to File..."), "",
+    NC_("error-console-action", "Write all error messages to a file"),
     FALSE, FALSE,
     GIMP_HELP_ERRORS_SAVE },
 
   { "error-console-save-selection", GTK_STOCK_SAVE_AS,
-    N_("Save S_election to File..."), "",
-    N_("Save selection"),
+    NC_("error-console-action", "Save S_election to File..."), "",
+    NC_("error-console-action", "Write the selected error messages to a file"),
     TRUE, FALSE,
     GIMP_HELP_ERRORS_SAVE }
 };
@@ -72,11 +71,11 @@ static const GimpEnumActionEntry error_console_save_actions[] =
 void
 error_console_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
+  gimp_action_group_add_actions (group, "error-console-action",
                                  error_console_actions,
                                  G_N_ELEMENTS (error_console_actions));
 
-  gimp_action_group_add_enum_actions (group,
+  gimp_action_group_add_enum_actions (group, "error-console-action",
                                       error_console_save_actions,
                                       G_N_ELEMENTS (error_console_save_actions),
                                       G_CALLBACK (error_console_save_cmd_callback));

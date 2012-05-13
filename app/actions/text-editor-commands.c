@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,10 +26,10 @@
 
 #include "core/gimp.h"
 
-#include "widgets/gimptexteditor.h"
 #include "widgets/gimphelp-ids.h"
+#include "widgets/gimptextbuffer.h"
+#include "widgets/gimptexteditor.h"
 #include "widgets/gimpuimanager.h"
-#include "widgets/gimpwidgets-utils.h"
 
 #include "text-editor-commands.h"
 
@@ -137,7 +136,7 @@ text_editor_load_response (GtkWidget      *dialog,
       buffer   = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->view));
       filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 
-      if (! gimp_text_buffer_load (buffer, filename, &error))
+      if (! gimp_text_buffer_load (GIMP_TEXT_BUFFER (buffer), filename, &error))
         {
           gimp_message (editor->ui_manager->gimp, G_OBJECT (dialog),
                         GIMP_MESSAGE_ERROR,
@@ -152,5 +151,5 @@ text_editor_load_response (GtkWidget      *dialog,
       g_free (filename);
     }
 
-  gtk_widget_destroy (dialog);
+  gtk_widget_hide (dialog);
 }

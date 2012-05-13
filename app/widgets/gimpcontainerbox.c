@@ -4,9 +4,9 @@
  * gimpcontainerbox.c
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -44,6 +43,8 @@
 static void   gimp_container_box_view_iface_init   (GimpContainerViewInterface *iface);
 static void   gimp_container_box_docked_iface_init (GimpDockedInterface *iface);
 
+static void   gimp_container_box_constructed       (GObject      *object);
+
 static GtkWidget * gimp_container_box_get_preview  (GimpDocked   *docked,
                                                     GimpContext  *context,
                                                     GtkIconSize   size);
@@ -66,6 +67,7 @@ gimp_container_box_class_init (GimpContainerBoxClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->constructed  = gimp_container_box_constructed;
   object_class->set_property = gimp_container_view_set_property;
   object_class->get_property = gimp_container_view_get_property;
 
@@ -75,16 +77,15 @@ gimp_container_box_class_init (GimpContainerBoxClass *klass)
 static void
 gimp_container_box_init (GimpContainerBox *box)
 {
-  GimpContainerView *view = GIMP_CONTAINER_VIEW (box);
+  GtkWidget *sb;
 
   box->scrolled_win = gtk_scrolled_window_new (NULL, NULL);
   gtk_box_pack_start (GTK_BOX (box), box->scrolled_win, TRUE, TRUE, 0);
   gtk_widget_show (box->scrolled_win);
 
-  GTK_WIDGET_UNSET_FLAGS (GTK_SCROLLED_WINDOW (box->scrolled_win)->vscrollbar,
-                          GTK_CAN_FOCUS);
+  sb = gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW (box->scrolled_win));
 
-  gimp_container_view_set_dnd_widget (view, box->scrolled_win);
+  gtk_widget_set_can_focus (sb, FALSE);
 }
 
 static void
@@ -99,6 +100,30 @@ gimp_container_box_docked_iface_init (GimpDockedInterface *iface)
   iface->set_context = gimp_container_box_set_context;
 }
 
+static void
+gimp_container_box_constructed (GObject *object)
+{
+  GimpContainerBox *box = GIMP_CONTAINER_BOX (object);
+
+  /* This is evil: the hash table of "insert_data" is created on
+   * demand when GimpContainerView API is used, using a
+   * value_free_func that is set in the interface_init functions of
+   * its implementors. Therefore, no GimpContainerView API must be
+   * called from any init() function, because the interface_init()
+   * function of a subclass that sets the right value_free_func might
+   * not have been called yet, leaving the insert_data hash table
+   * without memory management.
+   *
+   * Call GimpContainerView API from GObject::constructed() instead,
+   * which runs after everything is set up correctly.
+   */
+  gimp_container_view_set_dnd_widget (GIMP_CONTAINER_VIEW (box),
+                                      box->scrolled_win);
+
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
+}
+
 void
 gimp_container_box_set_size_request (GimpContainerBox *box,
                                      gint              width,
@@ -107,6 +132,7 @@ gimp_container_box_set_size_request (GimpContainerBox *box,
   GimpContainerView      *view;
   GtkScrolledWindowClass *sw_class;
   GtkStyle               *sw_style;
+  GtkWidget              *sb;
   GtkRequisition          req;
   gint                    view_size;
   gint                    scrollbar_width;
@@ -131,8 +157,9 @@ gimp_container_box_set_size_request (GimpContainerBox *box,
                           "scrollbar-spacing", &scrollbar_width,
                           NULL);
 
-  gtk_widget_size_request (GTK_SCROLLED_WINDOW (box->scrolled_win)->vscrollbar,
-                           &req);
+  sb = gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW (box->scrolled_win));
+
+  gtk_widget_size_request (sb, &req);
   scrollbar_width += req.width;
 
   border_x = border_y = gtk_container_get_border_width (GTK_CONTAINER (box));
@@ -175,7 +202,7 @@ gimp_container_box_get_preview (GimpDocked   *docked,
   gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (GTK_WIDGET (box)),
                                      size, &width, &height);
 
-  prop_name = gimp_context_type_to_prop_name (container->children_type);
+  prop_name = gimp_context_type_to_prop_name (gimp_container_get_children_type (container));
 
   preview = gimp_prop_view_new (G_OBJECT (context), prop_name,
                                 context, height);

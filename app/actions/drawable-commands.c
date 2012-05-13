@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -58,8 +58,9 @@ drawable_equalize_cmd_callback (GtkAction *action,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("Equalize does not operate on indexed layers."));
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    _("Equalize does not operate on indexed layers."));
       return;
     }
 
@@ -81,8 +82,9 @@ drawable_invert_cmd_callback (GtkAction *action,
 
   if (gimp_drawable_is_indexed (drawable))
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("Invert does not operate on indexed layers."));
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    _("Invert does not operate on indexed layers."));
       return;
     }
 
@@ -104,8 +106,9 @@ drawable_levels_stretch_cmd_callback (GtkAction *action,
 
   if (! gimp_drawable_is_rgb (drawable))
     {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("White Balance operates only on RGB color layers."));
+      gimp_message_literal (image->gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    _("White Balance operates only on RGB color layers."));
       return;
     }
 
@@ -192,6 +195,41 @@ drawable_visible_cmd_callback (GtkAction *action,
     }
 }
 
+void
+drawable_lock_content_cmd_callback (GtkAction *action,
+                                    gpointer   data)
+{
+  GimpImage    *image;
+  GimpDrawable *drawable;
+  gboolean      locked;
+  return_if_no_drawable (image, drawable, data);
+
+  locked = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
+
+  if (GIMP_IS_LAYER_MASK (drawable))
+    drawable =
+      GIMP_DRAWABLE (gimp_layer_mask_get_layer (GIMP_LAYER_MASK (drawable)));
+
+  if (locked != gimp_item_get_lock_content (GIMP_ITEM (drawable)))
+    {
+#if 0
+      GimpUndo *undo;
+#endif
+      gboolean  push_undo = TRUE;
+
+#if 0
+      undo = gimp_image_undo_can_compress (image, GIMP_TYPE_ITEM_UNDO,
+                                           GIMP_UNDO_ITEM_VISIBILITY);
+
+      if (undo && GIMP_ITEM_UNDO (undo)->item == GIMP_ITEM (drawable))
+        push_undo = FALSE;
+#endif
+
+      gimp_item_set_lock_content (GIMP_ITEM (drawable), locked, push_undo);
+      gimp_image_flush (image);
+    }
+}
+
 
 void
 drawable_flip_cmd_callback (GtkAction *action,
@@ -209,16 +247,16 @@ drawable_flip_cmd_callback (GtkAction *action,
 
   item = GIMP_ITEM (drawable);
 
-  gimp_item_offsets (item, &off_x, &off_y);
+  gimp_item_get_offset (item, &off_x, &off_y);
 
   switch ((GimpOrientationType) value)
     {
     case GIMP_ORIENTATION_HORIZONTAL:
-      axis = ((gdouble) off_x + (gdouble) gimp_item_width (item) / 2.0);
+      axis = ((gdouble) off_x + (gdouble) gimp_item_get_width (item) / 2.0);
       break;
 
     case GIMP_ORIENTATION_VERTICAL:
-      axis = ((gdouble) off_y + (gdouble) gimp_item_height (item) / 2.0);
+      axis = ((gdouble) off_y + (gdouble) gimp_item_get_height (item) / 2.0);
       break;
 
     default:
@@ -259,10 +297,10 @@ drawable_rotate_cmd_callback (GtkAction *action,
 
   item = GIMP_ITEM (drawable);
 
-  gimp_item_offsets (item, &off_x, &off_y);
+  gimp_item_get_offset (item, &off_x, &off_y);
 
-  center_x = ((gdouble) off_x + (gdouble) gimp_item_width  (item) / 2.0);
-  center_y = ((gdouble) off_y + (gdouble) gimp_item_height (item) / 2.0);
+  center_x = ((gdouble) off_x + (gdouble) gimp_item_get_width  (item) / 2.0);
+  center_y = ((gdouble) off_y + (gdouble) gimp_item_get_height (item) / 2.0);
 
   if (gimp_item_get_linked (item))
     gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_TRANSFORM,

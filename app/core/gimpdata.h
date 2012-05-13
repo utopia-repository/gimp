@@ -4,9 +4,9 @@
  * gimpdata.h
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_DATA_H__
@@ -49,17 +48,6 @@ typedef struct _GimpDataClass GimpDataClass;
 struct _GimpData
 {
   GimpViewable  parent_instance;
-
-  gchar        *filename;
-  GQuark        mime_type;
-  guint         writable  : 1;
-  guint         deletable : 1;
-  guint         dirty     : 1;
-  guint         internal  : 1;
-  gint          freeze_count;
-  time_t        mtime;
-
-  GList        *tags;
 };
 
 struct _GimpDataClass
@@ -83,8 +71,12 @@ gboolean      gimp_data_save             (GimpData     *data,
                                           GError      **error);
 
 void          gimp_data_dirty            (GimpData     *data);
+void          gimp_data_clean            (GimpData     *data);
+gboolean      gimp_data_is_dirty         (GimpData     *data);
+
 void          gimp_data_freeze           (GimpData     *data);
 void          gimp_data_thaw             (GimpData     *data);
+gboolean      gimp_data_is_frozen        (GimpData     *data);
 
 gboolean      gimp_data_delete_from_disk (GimpData     *data,
                                           GError      **error);
@@ -97,16 +89,27 @@ void          gimp_data_set_filename     (GimpData     *data,
                                           gboolean      deletable);
 void          gimp_data_create_filename  (GimpData     *data,
                                           const gchar  *dest_dir);
+const gchar * gimp_data_get_filename     (GimpData     *data);
+
+void          gimp_data_set_folder_tags  (GimpData     *data,
+                                          const gchar  *top_directory);
 
 const gchar * gimp_data_get_mime_type    (GimpData     *data);
 
+gboolean      gimp_data_is_writable      (GimpData     *data);
+gboolean      gimp_data_is_deletable     (GimpData     *data);
+
+void          gimp_data_set_mtime        (GimpData     *data,
+                                          time_t        mtime);
+time_t        gimp_data_get_mtime        (GimpData     *data);
+
 GimpData    * gimp_data_duplicate        (GimpData     *data);
 
-void          gimp_data_make_internal    (GimpData     *data);
+void          gimp_data_make_internal    (GimpData     *data,
+                                          const gchar  *identifier);
+gboolean      gimp_data_is_internal      (GimpData     *data);
 
 gint          gimp_data_compare          (GimpData     *data1,
-                                          GimpData     *data2);
-gint          gimp_data_name_compare     (GimpData     *data1,
                                           GimpData     *data2);
 
 #define GIMP_DATA_ERROR (gimp_data_error_quark ())

@@ -4,9 +4,9 @@
  * gimpactionfactory.h
  * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_ACTION_FACTORY_H__
@@ -54,8 +53,6 @@ struct _GimpActionFactory
 
   Gimp       *gimp;
   GList      *registered_groups;
-
-  gboolean    mnemonics;
 };
 
 struct _GimpActionFactoryClass
@@ -66,8 +63,7 @@ struct _GimpActionFactoryClass
 
 GType               gimp_action_factory_get_type (void) G_GNUC_CONST;
 
-GimpActionFactory * gimp_action_factory_new      (Gimp              *gimp,
-                                                  gboolean           mnemonics);
+GimpActionFactory * gimp_action_factory_new      (Gimp              *gimp);
 
 void          gimp_action_factory_group_register (GimpActionFactory *factory,
                                                   const gchar       *identifier,

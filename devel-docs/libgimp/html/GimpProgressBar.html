@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
-<link rel="prev" href="libgimp-gimppixbuf.html" title="gimppixbuf">
+<link rel="prev" href="GimpImageComboBox.html" title="GimpImageComboBox">
 <link rel="next" href="libgimp-gimpmenu.html" title="gimpmenu">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libgimp-gimppixbuf.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="GimpImageComboBox.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpui.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
@@ -42,18 +42,18 @@
 <div class="refsynopsisdiv">
 <a name="GimpProgressBar.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="GimpProgressBar.html#GimpProgressBar-struct" title="GimpProgressBar">GimpProgressBar</a>;
-<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpProgressBar.html#gimp-progress-bar-new" title="gimp_progress_bar_new ()">gimp_progress_bar_new</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpProgressBar.html#gimp-progress-bar-new" title="gimp_progress_bar_new ()">gimp_progress_bar_new</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpProgressBar.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
-               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
-                     +----<a href="http://library.gnome.org/devel/gtk3/GtkProgress.html">GtkProgress</a>
-                           +----<a href="http://library.gnome.org/devel/gtk3/GtkProgressBar.html">GtkProgressBar</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkProgress
+                           +----GtkProgressBar
                                  +----GimpProgressBar
 </pre>
 </div>
@@ -61,13 +61,13 @@
 <a name="GimpProgressBar.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpProgressBar implements
- AtkImplementorIface and  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a>.</p>
+ AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1">
 <a name="GimpProgressBar.description"></a><h2>Description</h2>
 <p>
-A widget providing a progress bar that automatically redirects any progress
-calls to itself.
+A widget providing a progress bar that automatically redirects any
+progress calls to itself.
 </p>
 </div>
 <div class="refsect1">
@@ -81,7 +81,7 @@ calls to itself.
 <hr>
 <div class="refsect2">
 <a name="gimp-progress-bar-new"></a><h3>gimp_progress_bar_new ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gtk3/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_progress_bar_new               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_progress_bar_new               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpProgressBar.html" title="GimpProgressBar"><span class="type">GimpProgressBar</span></a> widget.
 </p>

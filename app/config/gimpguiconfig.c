@@ -4,9 +4,9 @@
  * GimpGuiConfig class
  * Copyright (C) 2001  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -40,20 +39,12 @@
 #define DEFAULT_USER_MANUAL_ONLINE_URI \
   "http://docs.gimp.org/" GIMP_APP_VERSION_STRING
 
-#ifdef G_OS_WIN32
-#  define DEFAULT_WEB_BROWSER  "not used on Windows"
-#elif PLATFORM_OSX
-#  define DEFAULT_WEB_BROWSER  "open %s"
-#else
-#  define DEFAULT_WEB_BROWSER  "firefox %s"
-#endif
-
 
 enum
 {
   PROP_0,
-  PROP_DEFAULT_THRESHOLD,
   PROP_MOVE_TOOL_CHANGES_ACTIVE,
+  PROP_IMAGE_MAP_TOOL_MAX_RECENT,
   PROP_TRUST_DIRTY_FLAG,
   PROP_SAVE_DEVICE_STATUS,
   PROP_SAVE_SESSION_INFO,
@@ -64,7 +55,6 @@ enum
   PROP_CAN_CHANGE_ACCELS,
   PROP_SAVE_ACCELS,
   PROP_RESTORE_ACCELS,
-  PROP_MENU_MNEMONICS,
   PROP_LAST_OPENED_SIZE,
   PROP_MAX_NEW_IMAGE_SIZE,
   PROP_TOOLBOX_COLOR_AREA,
@@ -77,18 +67,24 @@ enum
   PROP_SHOW_HELP_BUTTON,
   PROP_HELP_LOCALES,
   PROP_HELP_BROWSER,
-  PROP_WEB_BROWSER,
   PROP_USER_MANUAL_ONLINE,
   PROP_USER_MANUAL_ONLINE_URI,
-  PROP_TOOLBOX_WINDOW_HINT,
   PROP_DOCK_WINDOW_HINT,
-  PROP_TRANSIENT_DOCKS,
   PROP_CURSOR_FORMAT,
+  PROP_CURSOR_HANDEDNESS,
+
+  PROP_HIDE_DOCKS,
+  PROP_SINGLE_WINDOW_MODE,
+  PROP_LAST_TIP_SHOWN,
 
   /* ignored, only for backward compatibility: */
   PROP_INFO_WINDOW_PER_DISPLAY,
+  PROP_MENU_MNEMONICS,
   PROP_SHOW_TOOL_TIPS,
-  PROP_SHOW_TIPS
+  PROP_SHOW_TIPS,
+  PROP_TOOLBOX_WINDOW_HINT,
+  PROP_TRANSIENT_DOCKS,
+  PROP_WEB_BROWSER
 };
 
 
@@ -118,15 +114,16 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
   object_class->set_property = gimp_gui_config_set_property;
   object_class->get_property = gimp_gui_config_get_property;
 
-  GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_DEFAULT_THRESHOLD,
-                                "default-threshold", DEFAULT_THRESHOLD_BLURB,
-                                0, 255, 15,
-                                GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MOVE_TOOL_CHANGES_ACTIVE,
                                     "move-tool-changes-active",
                                     MOVE_TOOL_CHANGES_ACTIVE_BLURB,
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_IMAGE_MAP_TOOL_MAX_RECENT,
+                                "image-map-tool-max-recent",
+                                IMAGE_MAP_TOOL_MAX_RECENT_BLURB,
+                                0, 255, 10,
+                                GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRUST_DIRTY_FLAG,
                                     "trust-dirty-flag",
                                     TRUST_DIRTY_FLAG_BLURB,
@@ -172,11 +169,6 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     "restore-accels", RESTORE_ACCELS_BLURB,
                                     TRUE,
                                     GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MENU_MNEMONICS,
-                                    "menu-mnemonics", MENU_MNEMONICS_BLURB,
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS |
-                                    GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_INT (object_class, PROP_LAST_OPENED_SIZE,
                                 "last-opened-size", LAST_OPENED_SIZE_BLURB,
                                 0, 1024, 10,
@@ -235,11 +227,6 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                  GIMP_TYPE_HELP_BROWSER_TYPE,
                                  DEFAULT_HELP_BROWSER,
                                  GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_WEB_BROWSER,
-                                 "web-browser", WEB_BROWSER_BLURB,
-                                 GIMP_CONFIG_PATH_FILE,
-                                 DEFAULT_WEB_BROWSER,
-                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USER_MANUAL_ONLINE,
                                     "user-manual-online",
                                     USER_MANUAL_ONLINE_BLURB,
@@ -250,13 +237,6 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                    USER_MANUAL_ONLINE_URI_BLURB,
                                    DEFAULT_USER_MANUAL_ONLINE_URI,
                                    GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TOOLBOX_WINDOW_HINT,
-                                 "toolbox-window-hint",
-                                 TOOLBOX_WINDOW_HINT_BLURB,
-                                 GIMP_TYPE_WINDOW_HINT,
-                                 GIMP_WINDOW_HINT_UTILITY,
-                                 GIMP_PARAM_STATIC_STRINGS |
-                                 GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DOCK_WINDOW_HINT,
                                  "dock-window-hint",
                                  DOCK_WINDOW_HINT_BLURB,
@@ -264,21 +244,51 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                  GIMP_WINDOW_HINT_UTILITY,
                                  GIMP_PARAM_STATIC_STRINGS |
                                  GIMP_CONFIG_PARAM_RESTART);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRANSIENT_DOCKS,
-                                    "transient-docks", TRANSIENT_DOCKS_BLURB,
-                                    FALSE,
-                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURSOR_FORMAT,
                                  "cursor-format", CURSOR_FORMAT_BLURB,
                                  GIMP_TYPE_CURSOR_FORMAT,
                                  GIMP_CURSOR_FORMAT_PIXBUF,
                                  GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_CURSOR_HANDEDNESS,
+                                 "cursor-handedness", CURSOR_HANDEDNESS_BLURB,
+                                 GIMP_TYPE_HANDEDNESS,
+                                 GIMP_HANDEDNESS_RIGHT,
+                                 GIMP_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_property (object_class, PROP_HIDE_DOCKS,
+                                   g_param_spec_boolean ("hide-docks",
+                                                         NULL,
+                                                         HIDE_DOCKS_BLURB,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         GIMP_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (object_class, PROP_SINGLE_WINDOW_MODE,
+                                   g_param_spec_boolean ("single-window-mode",
+                                                         NULL,
+                                                         SINGLE_WINDOW_MODE_BLURB,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         GIMP_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (object_class, PROP_LAST_TIP_SHOWN,
+                                   g_param_spec_int ("last-tip-shown",
+                                                     NULL, NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_CONSTRUCT |
+                                                     GIMP_PARAM_STATIC_STRINGS));
 
   /*  only for backward compatibility:  */
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_INFO_WINDOW_PER_DISPLAY,
                                     "info-window-per-display",
                                     NULL,
                                     FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS |
+                                    GIMP_CONFIG_PARAM_IGNORE);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_MENU_MNEMONICS,
+                                    "menu-mnemonics", NULL,
+                                    TRUE,
                                     GIMP_PARAM_STATIC_STRINGS |
                                     GIMP_CONFIG_PARAM_IGNORE);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TOOL_TIPS,
@@ -291,6 +301,23 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS |
                                     GIMP_CONFIG_PARAM_IGNORE);
+  GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TOOLBOX_WINDOW_HINT,
+                                 "toolbox-window-hint", NULL,
+                                 GIMP_TYPE_WINDOW_HINT,
+                                 GIMP_WINDOW_HINT_UTILITY,
+                                 GIMP_PARAM_STATIC_STRINGS |
+                                 GIMP_CONFIG_PARAM_IGNORE);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRANSIENT_DOCKS,
+                                    "transient-docks", NULL,
+                                    FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS |
+                                    GIMP_CONFIG_PARAM_IGNORE);
+  GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_WEB_BROWSER,
+                                 "web-browser", NULL,
+                                 GIMP_CONFIG_PATH_FILE,
+                                 "not used any longer",
+                                 GIMP_PARAM_STATIC_STRINGS |
+                                 GIMP_CONFIG_PARAM_IGNORE);
 }
 
 static void
@@ -322,11 +349,11 @@ gimp_gui_config_set_property (GObject      *object,
 
   switch (property_id)
     {
-    case PROP_DEFAULT_THRESHOLD:
-      gui_config->default_threshold = g_value_get_int (value);
-      break;
     case PROP_MOVE_TOOL_CHANGES_ACTIVE:
       gui_config->move_tool_changes_active = g_value_get_boolean (value);
+      break;
+    case PROP_IMAGE_MAP_TOOL_MAX_RECENT:
+      gui_config->image_map_tool_max_recent = g_value_get_int (value);
       break;
     case PROP_TRUST_DIRTY_FLAG:
       gui_config->trust_dirty_flag = g_value_get_boolean (value);
@@ -357,9 +384,6 @@ gimp_gui_config_set_property (GObject      *object,
       break;
     case PROP_RESTORE_ACCELS:
       gui_config->restore_accels = g_value_get_boolean (value);
-      break;
-    case PROP_MENU_MNEMONICS:
-      gui_config->menu_mnemonics = g_value_get_boolean (value);
       break;
     case PROP_LAST_OPENED_SIZE:
       gui_config->last_opened_size = g_value_get_int (value);
@@ -400,10 +424,6 @@ gimp_gui_config_set_property (GObject      *object,
     case PROP_HELP_BROWSER:
       gui_config->help_browser = g_value_get_enum (value);
       break;
-    case PROP_WEB_BROWSER:
-      g_free (gui_config->web_browser);
-      gui_config->web_browser = g_value_dup_string (value);
-      break;
     case PROP_USER_MANUAL_ONLINE:
       gui_config->user_manual_online = g_value_get_boolean (value);
       break;
@@ -411,22 +431,33 @@ gimp_gui_config_set_property (GObject      *object,
       g_free (gui_config->user_manual_online_uri);
       gui_config->user_manual_online_uri = g_value_dup_string (value);
       break;
-    case PROP_TOOLBOX_WINDOW_HINT:
-      gui_config->toolbox_window_hint = g_value_get_enum (value);
-      break;
     case PROP_DOCK_WINDOW_HINT:
       gui_config->dock_window_hint = g_value_get_enum (value);
-      break;
-    case PROP_TRANSIENT_DOCKS:
-      gui_config->transient_docks = g_value_get_boolean (value);
       break;
     case PROP_CURSOR_FORMAT:
       gui_config->cursor_format = g_value_get_enum (value);
       break;
+    case PROP_CURSOR_HANDEDNESS:
+      gui_config->cursor_handedness = g_value_get_enum (value);
+      break;
+
+    case PROP_HIDE_DOCKS:
+      gui_config->hide_docks = g_value_get_boolean (value);
+      break;
+    case PROP_SINGLE_WINDOW_MODE:
+      gui_config->single_window_mode = g_value_get_boolean (value);
+      break;
+    case PROP_LAST_TIP_SHOWN:
+      gui_config->last_tip_shown = g_value_get_int (value);
+      break;
 
     case PROP_INFO_WINDOW_PER_DISPLAY:
+    case PROP_MENU_MNEMONICS:
     case PROP_SHOW_TOOL_TIPS:
     case PROP_SHOW_TIPS:
+    case PROP_TOOLBOX_WINDOW_HINT:
+    case PROP_TRANSIENT_DOCKS:
+    case PROP_WEB_BROWSER:
       /* ignored */
       break;
 
@@ -446,11 +477,11 @@ gimp_gui_config_get_property (GObject    *object,
 
   switch (property_id)
     {
-    case PROP_DEFAULT_THRESHOLD:
-      g_value_set_int (value, gui_config->default_threshold);
-      break;
     case PROP_MOVE_TOOL_CHANGES_ACTIVE:
       g_value_set_boolean (value, gui_config->move_tool_changes_active);
+      break;
+    case PROP_IMAGE_MAP_TOOL_MAX_RECENT:
+      g_value_set_int (value, gui_config->image_map_tool_max_recent);
       break;
     case PROP_TRUST_DIRTY_FLAG:
       g_value_set_boolean (value, gui_config->trust_dirty_flag);
@@ -481,9 +512,6 @@ gimp_gui_config_get_property (GObject    *object,
       break;
     case PROP_RESTORE_ACCELS:
       g_value_set_boolean (value, gui_config->restore_accels);
-      break;
-    case PROP_MENU_MNEMONICS:
-      g_value_set_boolean (value, gui_config->menu_mnemonics);
       break;
     case PROP_LAST_OPENED_SIZE:
       g_value_set_int (value, gui_config->last_opened_size);
@@ -521,31 +549,39 @@ gimp_gui_config_get_property (GObject    *object,
     case PROP_HELP_BROWSER:
       g_value_set_enum (value, gui_config->help_browser);
       break;
-    case PROP_WEB_BROWSER:
-      g_value_set_string (value, gui_config->web_browser);
-      break;
     case PROP_USER_MANUAL_ONLINE:
       g_value_set_boolean (value, gui_config->user_manual_online);
       break;
     case PROP_USER_MANUAL_ONLINE_URI:
       g_value_set_string (value, gui_config->user_manual_online_uri);
       break;
-    case PROP_TOOLBOX_WINDOW_HINT:
-      g_value_set_enum (value, gui_config->toolbox_window_hint);
-      break;
     case PROP_DOCK_WINDOW_HINT:
       g_value_set_enum (value, gui_config->dock_window_hint);
-      break;
-    case PROP_TRANSIENT_DOCKS:
-      g_value_set_boolean (value, gui_config->transient_docks);
       break;
     case PROP_CURSOR_FORMAT:
       g_value_set_enum (value, gui_config->cursor_format);
       break;
+    case PROP_CURSOR_HANDEDNESS:
+      g_value_set_enum (value, gui_config->cursor_handedness);
+      break;
+
+    case PROP_HIDE_DOCKS:
+      g_value_set_boolean (value, gui_config->hide_docks);
+      break;
+    case PROP_SINGLE_WINDOW_MODE:
+      g_value_set_boolean (value, gui_config->single_window_mode);
+      break;
+    case PROP_LAST_TIP_SHOWN:
+      g_value_set_int (value, gui_config->last_tip_shown);
+      break;
 
     case PROP_INFO_WINDOW_PER_DISPLAY:
+    case PROP_MENU_MNEMONICS:
     case PROP_SHOW_TOOL_TIPS:
     case PROP_SHOW_TIPS:
+    case PROP_TOOLBOX_WINDOW_HINT:
+    case PROP_TRANSIENT_DOCKS:
+    case PROP_WEB_BROWSER:
       /* ignored */
       break;
 

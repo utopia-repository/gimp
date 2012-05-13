@@ -4,10 +4,10 @@
  * gimpchainbutton.c
  * Copyright (C) 1999-2000 Sven Neumann <sven@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -28,6 +27,28 @@
 
 #include "gimpchainbutton.h"
 #include "gimpstock.h"
+
+
+/**
+ * SECTION: gimpchainbutton
+ * @title: GimpChainButton
+ * @short_description: Widget to visually connect two entry widgets.
+ * @see_also: You may want to use the convenience function
+ *            gimp_coordinates_new() to set up two GimpSizeEntries
+ *            (see #GimpSizeEntry) linked with a #GimpChainButton.
+ *
+ * This widget provides a button showing either a linked or a broken
+ * chain that can be used to link two entries, spinbuttons, colors or
+ * other GUI elements and show that they may be locked. Use it for
+ * example to connect X and Y ratios to provide the possibility of a
+ * constrained aspect ratio.
+ *
+ * The #GimpChainButton only gives visual feedback, it does not really
+ * connect widgets. You have to take care of locking the values
+ * yourself by checking the state of the #GimpChainButton whenever a
+ * value changes in one of the connected widgets and adjusting the
+ * other value if necessary.
+ **/
 
 
 enum
@@ -42,9 +63,7 @@ enum
   LAST_SIGNAL
 };
 
-static GObject * gimp_chain_button_constructor      (GType            type,
-                                                     guint            n_params,
-                                                     GObjectConstructParam *params);
+static void      gimp_chain_button_constructed      (GObject         *object);
 static void      gimp_chain_button_set_property     (GObject         *object,
                                                      guint            property_id,
                                                      const GValue    *value,
@@ -82,7 +101,7 @@ gimp_chain_button_class_init (GimpChainButtonClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor  = gimp_chain_button_constructor;
+  object_class->constructed  = gimp_chain_button_constructed;
   object_class->set_property = gimp_chain_button_set_property;
   object_class->get_property = gimp_chain_button_get_property;
 
@@ -129,17 +148,13 @@ gimp_chain_button_init (GimpChainButton *button)
                     button);
 }
 
-static GObject *
-gimp_chain_button_constructor (GType                  type,
-                               guint                  n_params,
-                               GObjectConstructParam *params)
+static void
+gimp_chain_button_constructed (GObject *object)
 {
-  GObject         *object;
-  GimpChainButton *button;
+  GimpChainButton *button = GIMP_CHAIN_BUTTON (object);
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  button = GIMP_CHAIN_BUTTON (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   button->line1 = gimp_chain_line_new (button->position, 1);
   button->line2 = gimp_chain_line_new (button->position, -1);
@@ -170,8 +185,6 @@ gimp_chain_button_constructor (GType                  type,
   gtk_widget_show (button->button);
   gtk_widget_show (button->line1);
   gtk_widget_show (button->line2);
-
-  return object;
 }
 
 static void
@@ -336,7 +349,7 @@ gimp_chain_line_class_init (GimpChainLineClass *klass)
 static void
 gimp_chain_line_init (GimpChainLine *line)
 {
-  GTK_WIDGET_SET_FLAGS (line, GTK_NO_WINDOW);
+  gtk_widget_set_has_window (GTK_WIDGET (line), FALSE);
 }
 
 static GtkWidget *
@@ -352,18 +365,26 @@ gimp_chain_line_new (GimpChainPosition  position,
 }
 
 static gboolean
-gimp_chain_line_expose_event (GtkWidget       *widget,
-                              GdkEventExpose  *event)
+gimp_chain_line_expose_event (GtkWidget      *widget,
+                              GdkEventExpose *event)
 {
-  GimpChainLine     *line = ((GimpChainLine *) widget);
+  GtkStyle          *style = gtk_widget_get_style (widget);
+  GimpChainLine     *line  = ((GimpChainLine *) widget);
+  GtkAllocation      allocation;
   GdkPoint           points[3];
-  GdkPoint           buf;
-  GtkShadowType      shadow;
   GimpChainPosition  position;
+  cairo_t           *cr;
+
+  gtk_widget_get_allocation (widget, &allocation);
+
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
+  gdk_cairo_region (cr, event->region);
+  cairo_translate (cr, allocation.x, allocation.y);
+  cairo_clip (cr);
 
 #define SHORT_LINE 4
-  points[0].x = widget->allocation.x + widget->allocation.width  / 2;
-  points[0].y = widget->allocation.y + widget->allocation.height / 2;
+  points[0].x = allocation.width  / 2;
+  points[0].y = allocation.height / 2;
 
   position = line->position;
 
@@ -392,10 +413,7 @@ gimp_chain_line_expose_event (GtkWidget       *widget,
       points[1].x = points[0].x - SHORT_LINE;
       points[1].y = points[0].y;
       points[2].x = points[1].x;
-      points[2].y = (line->which == 1 ?
-                     widget->allocation.y + widget->allocation.height - 1 :
-                     widget->allocation.y);
-      shadow = GTK_SHADOW_ETCHED_IN;
+      points[2].y = (line->which == 1 ? allocation.height - 1 : 0);
       break;
 
     case GIMP_CHAIN_RIGHT:
@@ -403,54 +421,40 @@ gimp_chain_line_expose_event (GtkWidget       *widget,
       points[1].x = points[0].x + SHORT_LINE;
       points[1].y = points[0].y;
       points[2].x = points[1].x;
-      points[2].y = (line->which == 1 ?
-                     widget->allocation.y + widget->allocation.height - 1 :
-                     widget->allocation.y);
-      shadow = GTK_SHADOW_ETCHED_OUT;
+      points[2].y = (line->which == 1 ? allocation.height - 1 : 0);
       break;
 
     case GIMP_CHAIN_TOP:
       points[0].y += SHORT_LINE;
       points[1].x = points[0].x;
       points[1].y = points[0].y - SHORT_LINE;
-      points[2].x = (line->which == 1 ?
-                     widget->allocation.x + widget->allocation.width - 1 :
-                     widget->allocation.x);
+      points[2].x = (line->which == 1 ? allocation.width - 1 : 0);
       points[2].y = points[1].y;
-      shadow = GTK_SHADOW_ETCHED_OUT;
       break;
 
     case GIMP_CHAIN_BOTTOM:
       points[0].y -= SHORT_LINE;
       points[1].x = points[0].x;
       points[1].y = points[0].y + SHORT_LINE;
-      points[2].x = (line->which == 1 ?
-                     widget->allocation.x + widget->allocation.width - 1 :
-                     widget->allocation.x);
+      points[2].x = (line->which == 1 ? allocation.width - 1 : 0);
       points[2].y = points[1].y;
-      shadow = GTK_SHADOW_ETCHED_IN;
       break;
 
     default:
       return FALSE;
     }
 
-  if ( ((shadow == GTK_SHADOW_ETCHED_OUT) && (line->which == -1)) ||
-       ((shadow == GTK_SHADOW_ETCHED_IN)  && (line->which == 1)) )
-    {
-      buf = points[0];
-      points[0] = points[2];
-      points[2] = buf;
-    }
+  cairo_move_to (cr, points[0].x, points[0].y);
+  cairo_line_to (cr, points[1].x, points[1].y);
+  cairo_line_to (cr, points[2].x, points[2].y);
 
-  gtk_paint_polygon (gtk_widget_get_style (widget),
-                     widget->window, GTK_STATE_NORMAL,
-                     shadow,
-                     &event->area,
-                     widget,
-                     "chainbutton",
-                     points, 3,
-                     FALSE);
+  cairo_set_line_width (cr, 2.0);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+  gdk_cairo_set_source_color (cr, &style->fg[GTK_STATE_NORMAL]);
+
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 
   return TRUE;
 }

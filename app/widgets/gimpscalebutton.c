@@ -4,9 +4,9 @@
  * gimpscalebutton.c
  * Copyright (C) 2008 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
-
-#define __GTK_SCALE_BUTTON_H__
-#define __GTK_VOLUME_BUTTON_H__
 
 #include <gtk/gtk.h>
 
@@ -56,12 +52,15 @@ static void
 gimp_scale_button_init (GimpScaleButton *button)
 {
   GtkWidget *image = gtk_bin_get_child (GTK_BIN (button));
+  GtkWidget *plusminus;
 
-  gtk_widget_hide (GTK_SCALE_BUTTON (button)->plus_button);
-  gtk_widget_set_no_show_all (GTK_SCALE_BUTTON (button)->plus_button, TRUE);
+  plusminus = gtk_scale_button_get_plus_button (GTK_SCALE_BUTTON (button));
+  gtk_widget_hide (plusminus);
+  gtk_widget_set_no_show_all (plusminus, TRUE);
 
-  gtk_widget_hide (GTK_SCALE_BUTTON (button)->minus_button);
-  gtk_widget_set_no_show_all (GTK_SCALE_BUTTON (button)->minus_button, TRUE);
+  plusminus = gtk_scale_button_get_minus_button (GTK_SCALE_BUTTON (button));
+  gtk_widget_hide (plusminus);
+  gtk_widget_set_no_show_all (plusminus, TRUE);
 
   g_signal_connect (image, "expose-event",
                     G_CALLBACK (gimp_scale_button_image_expose),
@@ -94,11 +93,11 @@ gimp_scale_button_update_tooltip (GimpScaleButton *button)
   gdouble        lower;
   gdouble        upper;
 
-  adj = gimp_gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (button));
+  adj = gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (button));
 
   value = gtk_adjustment_get_value (adj);
-  lower = adj->lower;
-  upper = adj->upper;
+  lower = gtk_adjustment_get_lower (adj);
+  upper = gtk_adjustment_get_upper (adj);
 
   /*  use U+2009 THIN SPACE to seperate the percent sign from the number */
 
@@ -116,23 +115,28 @@ gimp_scale_button_image_expose (GtkWidget       *widget,
                                 GimpScaleButton *button)
 {
   GtkStyle      *style = gtk_widget_get_style (widget);
+  GtkAllocation  allocation;
   GtkAdjustment *adj;
   cairo_t       *cr;
   gint           value;
   gint           steps;
   gint           i;
 
-  steps = MIN (widget->allocation.width, widget->allocation.height) / 2;
+  gtk_widget_get_allocation (widget, &allocation);
 
-  adj = gimp_gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (button));
+  steps = MIN (allocation.width, allocation.height) / 2;
+
+  adj = gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (button));
 
   if (steps < 1)
     return TRUE;
 
-  value = 0.5 + ((adj->value - adj->lower) * (gdouble) steps /
-                 (adj->upper - adj->lower));
+  value = 0.5 + ((gtk_adjustment_get_value (adj) -
+                  gtk_adjustment_get_lower (adj)) * (gdouble) steps /
+                 (gtk_adjustment_get_upper (adj) -
+                  gtk_adjustment_get_lower (adj)));
 
-  cr = gdk_cairo_create (widget->window);
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
   gdk_cairo_rectangle (cr, &event->area);
   cairo_clip (cr);
@@ -142,15 +146,15 @@ gimp_scale_button_image_expose (GtkWidget       *widget,
   if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
     {
       cairo_translate (cr,
-                       widget->allocation.x + widget->allocation.width - 0.5,
-                       widget->allocation.y + widget->allocation.height);
+                       allocation.x + allocation.width - 0.5,
+                       allocation.y + allocation.height);
       cairo_scale (cr, -2.0, -2.0);
     }
   else
     {
       cairo_translate (cr,
-                       widget->allocation.x + 0.5,
-                       widget->allocation.y + widget->allocation.height);
+                       allocation.x + 0.5,
+                       allocation.y + allocation.height);
       cairo_scale (cr, 2.0, -2.0);
     }
 
@@ -160,7 +164,7 @@ gimp_scale_button_image_expose (GtkWidget       *widget,
       cairo_line_to (cr, i, i + 0.5);
     }
 
-  gdk_cairo_set_source_color (cr, &style->fg[widget->state]);
+  gdk_cairo_set_source_color (cr, &style->fg[gtk_widget_get_state (widget)]);
   cairo_stroke (cr);
 
   for ( ; i < steps; i++)

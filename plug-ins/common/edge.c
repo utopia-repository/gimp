@@ -8,9 +8,9 @@
  * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,8 +19,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* pgmedge.c - edge-detect a portable graymap
@@ -56,14 +55,11 @@
 #include "libgimp/stdplugins-intl.h"
 
 
-#ifdef RCSID
-static gchar rcsid[] = "$Id$";
-#endif
-
 /* Some useful macros */
 
 #define PLUG_IN_PROC    "plug-in-edge"
 #define PLUG_IN_BINARY  "edge"
+#define PLUG_IN_ROLE    "gimp-edge"
 #define TILE_CACHE_SIZE 48
 
 enum
@@ -133,7 +129,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
     { GIMP_PDB_FLOAT,    "amount",   "Edge detection amount" },
@@ -267,13 +263,11 @@ edge (GimpDrawable *drawable)
   guchar            pix00[4], pix01[4], pix02[4];
   guchar            pix10[4], pix11[4], pix12[4];
   guchar            pix20[4], pix21[4], pix22[4];
-  glong             width, height;
   gint              alpha;
   gboolean          has_alpha;
   gint              chan;
   gint              x, y;
   gint              x1, y1, x2, y2;
-  gint              maxval;
   gint              cur_progress;
   gint              max_progress;
   gdouble           per_progress;
@@ -286,14 +280,10 @@ edge (GimpDrawable *drawable)
 
   gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
 
-  width     = gimp_drawable_width (drawable->drawable_id);
-  height    = gimp_drawable_height (drawable->drawable_id);
   alpha     = gimp_drawable_bpp (drawable->drawable_id);
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
   if (has_alpha)
     alpha--;
-
-  maxval = 255;
 
   cur_progress = 0;
   per_progress = 0.0;
@@ -630,7 +620,7 @@ edge_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Edge Detection"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Edge Detection"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -646,9 +636,10 @@ edge_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
@@ -701,7 +692,7 @@ edge_dialog (GimpDrawable *drawable)
 
   /*  Radio buttons WRAP, SMEAR, BLACK  */
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_table_attach (GTK_TABLE (table), hbox, 0, 3, 2, 3,
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (hbox);

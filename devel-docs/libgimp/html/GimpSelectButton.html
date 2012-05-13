@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="next" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">
+<link rel="next" href="GimpBrushSelectButton.html" title="gimpbrushselectbutton">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -35,7 +35,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpSelectButton.top_of_page"></a>GimpSelectButton</span></h2>
-<p>GimpSelectButton</p>
+<p>GimpSelectButton — The base class of the data select buttons.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
@@ -48,30 +48,31 @@
 <div class="refsect1">
 <a name="GimpSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-         +----<a href="http://library.gnome.org/devel/gtk3/GtkObject.html">GtkObject</a>
-               +----<a href="http://library.gnome.org/devel/gtk3/GtkWidget.html">GtkWidget</a>
-                     +----<a href="http://library.gnome.org/devel/gtk3/GtkContainer.html">GtkContainer</a>
-                           +----<a href="http://library.gnome.org/devel/gtk3/GtkBox.html">GtkBox</a>
-                                 +----<a href="http://library.gnome.org/devel/gtk3/GtkHBox.html">GtkHBox</a>
-                                       +----GimpSelectButton
-                                             +----<a class="link" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a>
-                                             +----<a class="link" href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a>
-                                             +----<a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">GimpGradientSelectButton</a>
-                                             +----<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a>
-                                             +----<a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GimpSelectButton
+                                       +----<a class="link" href="GimpBrushSelectButton.html" title="gimpbrushselectbutton">GimpBrushSelectButton</a>
+                                       +----<a class="link" href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a>
+                                       +----<a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">GimpGradientSelectButton</a>
+                                       +----<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelect">GimpPaletteSelectButton</a>
+                                       +----<a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a>
 </pre>
 </div>
 <div class="refsect1">
 <a name="GimpSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpSelectButton implements
- AtkImplementorIface,  <a href="http://library.gnome.org/devel/gtk3/GtkBuildable.html">GtkBuildable</a> and  <a href="http://library.gnome.org/devel/gtk3/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
+ AtkImplementorIface,  GtkBuildable and  GtkOrientable.</p>
 </div>
 <div class="refsect1">
 <a name="GimpSelectButton.description"></a><h2>Description</h2>
 <p>
+The base class of the brush, pattern, gradient, palette and font
+select buttons.
 </p>
 </div>
 <div class="refsect1">

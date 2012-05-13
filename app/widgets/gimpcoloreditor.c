@@ -4,9 +4,9 @@
  * gimpcoloreditor.c
  * Copyright (C) 2002 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,15 +15,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -54,6 +52,7 @@ enum
 
 static void   gimp_color_editor_docked_iface_init (GimpDockedInterface  *iface);
 
+static void   gimp_color_editor_dispose         (GObject           *object);
 static void   gimp_color_editor_set_property    (GObject           *object,
                                                  guint              property_id,
                                                  const GValue      *value,
@@ -62,8 +61,6 @@ static void   gimp_color_editor_get_property    (GObject           *object,
                                                  guint              property_id,
                                                  GValue            *value,
                                                  GParamSpec        *pspec);
-
-static void   gimp_color_editor_destroy         (GtkObject         *object);
 
 static void   gimp_color_editor_style_set       (GtkWidget         *widget,
                                                  GtkStyle          *prev_style);
@@ -111,14 +108,12 @@ static GimpDockedInterface *parent_docked_iface = NULL;
 static void
 gimp_color_editor_class_init (GimpColorEditorClass* klass)
 {
-  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class     = GTK_WIDGET_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->dispose      = gimp_color_editor_dispose;
   object_class->set_property = gimp_color_editor_set_property;
   object_class->get_property = gimp_color_editor_get_property;
-
-  gtk_object_class->destroy  = gimp_color_editor_destroy;
 
   widget_class->style_set    = gimp_color_editor_style_set;
 
@@ -170,7 +165,8 @@ gimp_color_editor_init (GimpColorEditor *editor)
                         "button-icon-size", &button_icon_size,
                         NULL);
 
-  editor->hbox = gtk_hbox_new (TRUE, button_spacing);
+  editor->hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, button_spacing);
+  gtk_box_set_homogeneous (GTK_BOX (editor->hbox), TRUE);
   gtk_box_pack_start (GTK_BOX (editor), editor->hbox, FALSE, FALSE, 0);
   gtk_widget_show (editor->hbox);
 
@@ -231,7 +227,8 @@ gimp_color_editor_init (GimpColorEditor *editor)
                         editor);
     }
 
-  hbox = gtk_hbox_new (TRUE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -244,7 +241,7 @@ gimp_color_editor_init (GimpColorEditor *editor)
                     G_CALLBACK (gimp_color_editor_fg_bg_notify),
                     editor);
 
-  vbox = gtk_vbox_new (FALSE, 3);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
@@ -269,6 +266,17 @@ gimp_color_editor_init (GimpColorEditor *editor)
   g_signal_connect (editor->hex_entry, "color-changed",
                     G_CALLBACK (gimp_color_editor_entry_changed),
                     editor);
+}
+
+static void
+gimp_color_editor_dispose (GObject *object)
+{
+  GimpColorEditor *editor = GIMP_COLOR_EDITOR (object);
+
+  if (editor->context)
+    gimp_docked_set_context (GIMP_DOCKED (editor), NULL);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -306,17 +314,6 @@ gimp_color_editor_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-static void
-gimp_color_editor_destroy (GtkObject *object)
-{
-  GimpColorEditor *editor = GIMP_COLOR_EDITOR (object);
-
-  if (editor->context)
-    gimp_docked_set_context (GIMP_DOCKED (editor), NULL);
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 static GtkWidget *

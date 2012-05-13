@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -31,37 +30,37 @@ typedef struct AreaInfoDialog_t AreaInfoDialog_t;
 
 struct AreaInfoDialog_t {
    DefaultDialog_t *dialog;
-   Object_t 	   *obj;
-   Object_t	   *clone;
-   gboolean	    add;
-   gboolean	    geometry_lock;
-   gboolean	    preview;
+   Object_t        *obj;
+   Object_t        *clone;
+   gboolean         add;
+   gboolean         geometry_lock;
+   gboolean         preview;
 
-   GtkWidget	   *notebook;
-   GtkWidget	   *web_site;
-   GtkWidget	   *ftp_site;
-   GtkWidget	   *gopher;
-   GtkWidget	   *other;
-   GtkWidget	   *file;
-   GtkWidget	   *wais;
-   GtkWidget	   *telnet;
-   GtkWidget	   *email;
-   GtkWidget	   *url;
-   GtkWidget	   *relative_link;
-   GtkWidget	   *target;
-   GtkWidget	   *comment;
-   GtkWidget	   *mouse_over;
-   GtkWidget	   *mouse_out;
-   GtkWidget	   *focus;
-   GtkWidget	   *blur;
-   GtkWidget 	   *browse;
-   gpointer	    infotab;
-   gpointer	    geometry_cb_id;
+   GtkWidget       *notebook;
+   GtkWidget       *web_site;
+   GtkWidget       *ftp_site;
+   GtkWidget       *gopher;
+   GtkWidget       *other;
+   GtkWidget       *file;
+   GtkWidget       *wais;
+   GtkWidget       *telnet;
+   GtkWidget       *email;
+   GtkWidget       *url;
+   GtkWidget       *relative_link;
+   GtkWidget       *target;
+   GtkWidget       *comment;
+   GtkWidget       *mouse_over;
+   GtkWidget       *mouse_out;
+   GtkWidget       *focus;
+   GtkWidget       *blur;
+   GtkWidget       *browse;
+   gpointer         infotab;
+   gpointer         geometry_cb_id;
 };
 
 AreaInfoDialog_t *create_edit_area_info_dialog(Object_t *obj);
 void edit_area_info_dialog_show(AreaInfoDialog_t *dialog, Object_t *obj,
-				gboolean add);
+                                gboolean add);
 void edit_area_info_dialog_emit_geometry_signal(AreaInfoDialog_t *dialog);
 
 #endif /* _IMAP_EDIT_AREA_INFO_H */

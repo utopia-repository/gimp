@@ -2,13 +2,10 @@
 gimp
 
 <!-- ##### SECTION Short_Description ##### -->
-Main functions needed for building a GIMP plug-in. This header includes
-all other GIMP Library headers.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Main functions needed for building a GIMP plug-in. This header includes
-all other GIMP Library headers.
 
 </para>
 
@@ -53,7 +50,6 @@ all other GIMP Library headers.
 
 </para>
 
-@Returns: 
 
 
 <!-- ##### MACRO gimp_set_data ##### -->
@@ -144,7 +140,7 @@ all other GIMP Library headers.
 
 <!-- ##### MACRO MAIN ##### -->
 <para>
-    
+
 </para>
 
 
@@ -444,6 +440,24 @@ all other GIMP Library headers.
 @timeout: 
 
 
+<!-- ##### FUNCTION gimp_attach_parasite ##### -->
+<para>
+
+</para>
+
+@parasite: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_detach_parasite ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_parasite_find ##### -->
 <para>
 
@@ -460,6 +474,24 @@ all other GIMP Library headers.
 
 @num_parasites: 
 @parasites: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_get_parasite ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_get_parasite_list ##### -->
+<para>
+
+</para>
+
+@num_parasites: 
 @Returns: 
 
 

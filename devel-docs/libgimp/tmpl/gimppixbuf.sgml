@@ -2,11 +2,11 @@
 gimppixbuf
 
 <!-- ##### SECTION Short_Description ##### -->
-Get a thumbnail pixbuf for a drawable or image.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Get a thumbnail pixbuf for a drawable or image.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -66,21 +66,6 @@ Get a thumbnail pixbuf for a drawable or image.
 @dest_width: 
 @dest_height: 
 @alpha: 
-@Returns: 
-
-
-<!-- ##### FUNCTION gimp_layer_new_from_pixbuf ##### -->
-<para>
-
-</para>
-
-@image_ID: 
-@name: 
-@pixbuf: 
-@opacity: 
-@mode: 
-@progress_start: 
-@progress_end: 
 @Returns: 
 
 

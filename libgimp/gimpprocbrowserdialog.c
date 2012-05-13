@@ -3,10 +3,10 @@
  *
  * gimpprocbrowserdialog.c
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,6 +33,15 @@
 #include "gimpprocview.h"
 
 #include "libgimp-intl.h"
+
+
+/**
+ * SECTION: gimpprocbrowserdialog
+ * @title: GimpProcBrowserDialog
+ * @short_description: The dialog for the procedure and plugin browsers.
+ *
+ * The dialog for the procedure and plugin browsers.
+ **/
 
 
 #define DBL_LIST_WIDTH 250
@@ -134,6 +142,7 @@ gimp_proc_browser_dialog_init (GimpProcBrowserDialog *dialog)
   GtkWidget        *scrolled_window;
   GtkCellRenderer  *renderer;
   GtkTreeSelection *selection;
+  GtkWidget        *parent;
 
   dialog->browser = gimp_browser_new ();
   gimp_browser_add_search_types (GIMP_BROWSER (dialog->browser),
@@ -146,8 +155,8 @@ gimp_proc_browser_dialog_init (GimpProcBrowserDialog *dialog)
                                  _("by type"),        SEARCH_TYPE_PROC_TYPE,
                                  NULL);
   gtk_container_set_border_width (GTK_CONTAINER (dialog->browser), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-                     dialog->browser);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      dialog->browser, TRUE, TRUE, 0);
   gtk_widget_show (dialog->browser);
 
   g_signal_connect (dialog->browser, "search",
@@ -193,8 +202,10 @@ gimp_proc_browser_dialog_init (GimpProcBrowserDialog *dialog)
                     G_CALLBACK (browser_selection_changed),
                     dialog);
 
-  gtk_widget_set_size_request (GIMP_BROWSER (dialog->browser)->right_vbox->parent->parent,
-                               DBL_WIDTH - DBL_LIST_WIDTH, -1);
+  parent = gtk_widget_get_parent (GIMP_BROWSER (dialog->browser)->right_vbox);
+  parent = gtk_widget_get_parent (parent);
+
+    gtk_widget_set_size_request (parent, DBL_WIDTH - DBL_LIST_WIDTH, -1);
 }
 
 
@@ -367,9 +378,27 @@ browser_search (GimpBrowser           *browser,
                 gint                   search_type,
                 GimpProcBrowserDialog *dialog)
 {
-  gchar **proc_list;
-  gint    num_procs;
-  gchar  *str;
+  gchar  **proc_list;
+  gint     num_procs;
+  gchar   *str;
+  GRegex  *regex;
+
+  /*  first check if the query is a valid regex  */
+  regex = g_regex_new (query_text, 0, 0, NULL);
+
+  if (! regex)
+    {
+      gtk_tree_view_set_model (GTK_TREE_VIEW (dialog->tree_view), NULL);
+      dialog->store = NULL;
+
+      gimp_browser_show_message (browser, _("No matches"));
+
+      gtk_label_set_text (GTK_LABEL (browser->count_label),
+                          _("Search term invalid or incomplete"));
+      return;
+    }
+
+  g_regex_unref (regex);
 
   switch (search_type)
     {

@@ -4,10 +4,10 @@
  * gimpbutton.c
  * Copyright (C) 2000-2008 Michael Natterer <mitch@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,6 +26,18 @@
 #include "gimpwidgetstypes.h"
 
 #include "gimpbutton.h"
+#include "gimp3migration.h"
+
+
+/**
+ * SECTION: gimpbutton
+ * @title: GimpButton
+ * @short_description: A #GtkButton with a little extra functionality.
+ *
+ * #GimpButton adds an extra signal to the #GtkButton widget that
+ * allows to distinguish a normal click from a click that was
+ * performed with modifier keys pressed.
+ **/
 
 
 enum
@@ -54,6 +65,14 @@ gimp_button_class_init (GimpButtonClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkButtonClass *button_class = GTK_BUTTON_CLASS (klass);
 
+  /**
+   * GimpButton::extended-clicked:
+   * @gimpbutton: the object that received the signal.
+   * @arg1: the state of modifier keys when the button was clicked
+   *
+   * This signal is emitted when the button is clicked with a modifier
+   * key pressed.
+   **/
   button_signals[EXTENDED_CLICKED] =
     g_signal_new ("extended-clicked",
                   G_TYPE_FROM_CLASS (klass),
@@ -126,7 +145,13 @@ static void
 gimp_button_clicked (GtkButton *button)
 {
   if (GIMP_BUTTON (button)->press_state &
-      (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
+      (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK |
+       gtk_widget_get_modifier_mask (GTK_WIDGET (button),
+                                     GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR) |
+       gtk_widget_get_modifier_mask (GTK_WIDGET (button),
+                                     GDK_MODIFIER_INTENT_EXTEND_SELECTION) |
+       gtk_widget_get_modifier_mask (GTK_WIDGET (button),
+                                     GDK_MODIFIER_INTENT_MODIFY_SELECTION)))
     {
       g_signal_stop_emission_by_name (button, "clicked");
 

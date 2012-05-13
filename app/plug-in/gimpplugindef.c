@@ -3,9 +3,9 @@
  *
  * gimpplugindef.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -68,8 +67,7 @@ gimp_plug_in_def_finalize (GObject *object)
   g_free (plug_in_def->help_domain_name);
   g_free (plug_in_def->help_domain_uri);
 
-  g_slist_foreach (plug_in_def->procedures, (GFunc) g_object_unref, NULL);
-  g_slist_free (plug_in_def->procedures);
+  g_slist_free_full (plug_in_def->procedures, (GDestroyNotify) g_object_unref);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -120,7 +118,7 @@ gimp_plug_in_def_add_procedure (GimpPlugInDef       *plug_in_def,
   g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
   overridden = gimp_plug_in_procedure_find (plug_in_def->procedures,
-                                            GIMP_OBJECT (proc)->name);
+                                            gimp_object_get_name (proc));
 
   if (overridden)
     gimp_plug_in_def_remove_procedure (plug_in_def, overridden);

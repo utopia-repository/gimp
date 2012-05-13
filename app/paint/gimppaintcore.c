@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpmath/gimpmath.h"
 
 #include "paint-types.h"
 
@@ -34,6 +34,7 @@
 #include "paint-funcs/paint-funcs.h"
 
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
@@ -48,6 +49,7 @@
 
 #include "gimp-intl.h"
 
+#define STROKE_BUFFER_INIT_SIZE      2000
 
 enum
 {
@@ -71,7 +73,7 @@ static void      gimp_paint_core_get_property        (GObject          *object,
 static gboolean  gimp_paint_core_real_start          (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
                                                       GimpPaintOptions *paint_options,
-                                                      GimpCoords       *coords,
+                                                      const GimpCoords *coords,
                                                       GError          **error);
 static gboolean  gimp_paint_core_real_pre_paint      (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
@@ -81,6 +83,7 @@ static gboolean  gimp_paint_core_real_pre_paint      (GimpPaintCore    *core,
 static void      gimp_paint_core_real_paint          (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
                                                       GimpPaintOptions *options,
+                                                      const GimpCoords *coords,
                                                       GimpPaintState    paint_state,
                                                       guint32           time);
 static void      gimp_paint_core_real_post_paint     (GimpPaintCore    *core,
@@ -94,7 +97,8 @@ static void      gimp_paint_core_real_interpolate    (GimpPaintCore    *core,
                                                       guint32           time);
 static TempBuf * gimp_paint_core_real_get_paint_area (GimpPaintCore    *core,
                                                       GimpDrawable     *drawable,
-                                                      GimpPaintOptions *options);
+                                                      GimpPaintOptions *options,
+                                                      const GimpCoords *coords);
 static GimpUndo* gimp_paint_core_real_push_undo      (GimpPaintCore    *core,
                                                       GimpImage        *image,
                                                       const gchar      *undo_desc);
@@ -174,6 +178,12 @@ gimp_paint_core_finalize (GObject *object)
   g_free (core->undo_desc);
   core->undo_desc = NULL;
 
+  if (core->stroke_buffer)
+    {
+      g_array_free (core->stroke_buffer, TRUE);
+      core->stroke_buffer = NULL;
+    }
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -222,7 +232,7 @@ static gboolean
 gimp_paint_core_real_start (GimpPaintCore    *core,
                             GimpDrawable     *drawable,
                             GimpPaintOptions *paint_options,
-                            GimpCoords       *coords,
+                            const GimpCoords *coords,
                             GError          **error)
 {
   return TRUE;
@@ -242,6 +252,7 @@ static void
 gimp_paint_core_real_paint (GimpPaintCore    *core,
                             GimpDrawable     *drawable,
                             GimpPaintOptions *paint_options,
+                            const GimpCoords *coords,
                             GimpPaintState    paint_state,
                             guint32           time)
 {
@@ -271,7 +282,8 @@ gimp_paint_core_real_interpolate (GimpPaintCore    *core,
 static TempBuf *
 gimp_paint_core_real_get_paint_area (GimpPaintCore    *core,
                                      GimpDrawable     *drawable,
-                                     GimpPaintOptions *paint_options)
+                                     GimpPaintOptions *paint_options,
+                                     const GimpCoords *coords)
 {
   return NULL;
 }
@@ -311,6 +323,7 @@ gimp_paint_core_paint (GimpPaintCore    *core,
                              paint_options,
                              paint_state, time))
     {
+
       if (paint_state == GIMP_PAINT_STATE_MOTION)
         {
           /* Save coordinates for gimp_paint_core_interpolate() */
@@ -320,6 +333,7 @@ gimp_paint_core_paint (GimpPaintCore    *core,
 
       core_class->paint (core, drawable,
                          paint_options,
+                         &core->cur_coords,
                          paint_state, time);
 
       core_class->post_paint (core, drawable,
@@ -332,7 +346,7 @@ gboolean
 gimp_paint_core_start (GimpPaintCore     *core,
                        GimpDrawable      *drawable,
                        GimpPaintOptions  *paint_options,
-                       GimpCoords        *coords,
+                       const GimpCoords  *coords,
                        GError           **error)
 {
   GimpItem *item;
@@ -345,6 +359,16 @@ gimp_paint_core_start (GimpPaintCore     *core,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   item = GIMP_ITEM (drawable);
+
+  if (core->stroke_buffer)
+    {
+      g_array_free (core->stroke_buffer, TRUE);
+      core->stroke_buffer = NULL;
+    }
+
+  core->stroke_buffer = g_array_sized_new (TRUE, TRUE,
+                                           sizeof (GimpCoords),
+                                           STROKE_BUFFER_INIT_SIZE);
 
   core->cur_coords = *coords;
 
@@ -359,8 +383,8 @@ gimp_paint_core_start (GimpPaintCore     *core,
   if (core->undo_tiles)
     tile_manager_unref (core->undo_tiles);
 
-  core->undo_tiles = tile_manager_new (gimp_item_width (item),
-                                       gimp_item_height (item),
+  core->undo_tiles = tile_manager_new (gimp_item_get_width  (item),
+                                       gimp_item_get_height (item),
                                        gimp_drawable_bytes (drawable));
 
   /*  Allocate the saved proj structure  */
@@ -371,9 +395,9 @@ gimp_paint_core_start (GimpPaintCore     *core,
 
   if (core->use_saved_proj)
     {
-      GimpImage      *image      = gimp_item_get_image (item);
-      GimpProjection *projection = gimp_image_get_projection (image);
-      TileManager    *tiles      = gimp_projection_get_tiles (projection);
+      GimpImage    *image    = gimp_item_get_image (item);
+      GimpPickable *pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
+      TileManager  *tiles    = gimp_pickable_get_tiles (pickable);
 
       core->saved_proj_tiles = tile_manager_new (tile_manager_width (tiles),
                                                  tile_manager_height (tiles),
@@ -384,14 +408,14 @@ gimp_paint_core_start (GimpPaintCore     *core,
   if (core->canvas_tiles)
     tile_manager_unref (core->canvas_tiles);
 
-  core->canvas_tiles = tile_manager_new (gimp_item_width (item),
-                                         gimp_item_height (item),
+  core->canvas_tiles = tile_manager_new (gimp_item_get_width  (item),
+                                         gimp_item_get_height (item),
                                          1);
 
   /*  Get the initial undo extents  */
 
-  core->x1           = core->x2 = core->cur_coords.x;
-  core->y1           = core->y2 = core->cur_coords.y;
+  core->x1 = core->x2 = core->cur_coords.x;
+  core->y1 = core->y2 = core->cur_coords.y;
 
   core->last_paint.x = -1e6;
   core->last_paint.y = -1e6;
@@ -404,13 +428,20 @@ gimp_paint_core_start (GimpPaintCore     *core,
 
 void
 gimp_paint_core_finish (GimpPaintCore *core,
-                        GimpDrawable  *drawable)
+                        GimpDrawable  *drawable,
+                        gboolean       push_undo)
 {
   GimpImage *image;
 
   g_return_if_fail (GIMP_IS_PAINT_CORE (core));
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
+
+  if (core->stroke_buffer)
+    {
+      g_array_free (core->stroke_buffer, TRUE);
+      core->stroke_buffer = NULL;
+    }
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -423,20 +454,24 @@ gimp_paint_core_finish (GimpPaintCore *core,
       return;
     }
 
-  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_PAINT, core->undo_desc);
+  if (push_undo)
+    {
+      gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_PAINT,
+                                   core->undo_desc);
 
-  GIMP_PAINT_CORE_GET_CLASS (core)->push_undo (core, image, NULL);
+      GIMP_PAINT_CORE_GET_CLASS (core)->push_undo (core, image, NULL);
 
-  gimp_drawable_push_undo (drawable, NULL,
-                           core->x1, core->y1,
-                           core->x2, core->y2,
-                           core->undo_tiles,
-                           TRUE);
+      gimp_drawable_push_undo (drawable, NULL,
+                               core->x1, core->y1,
+                               core->x2 - core->x1, core->y2 - core->y1,
+                               core->undo_tiles,
+                               TRUE);
+
+      gimp_image_undo_group_end (image);
+    }
 
   tile_manager_unref (core->undo_tiles);
   core->undo_tiles = NULL;
-
-  gimp_image_undo_group_end (image);
 
   if (core->saved_proj_tiles)
     {
@@ -499,8 +534,8 @@ gimp_paint_core_cancel (GimpPaintCore *core,
                                 core->x2 - core->x1,
                                 core->y2 - core->y1,
                                 0, 0,
-                                gimp_item_width  (GIMP_ITEM (drawable)),
-                                gimp_item_height (GIMP_ITEM (drawable)),
+                                gimp_item_get_width  (GIMP_ITEM (drawable)),
+                                gimp_item_get_height (GIMP_ITEM (drawable)),
                                 &x, &y, &width, &height))
     {
       gimp_paint_core_copy_valid_tiles (core->undo_tiles,
@@ -568,15 +603,96 @@ void
 gimp_paint_core_interpolate (GimpPaintCore    *core,
                              GimpDrawable     *drawable,
                              GimpPaintOptions *paint_options,
+                             const GimpCoords *coords,
                              guint32           time)
 {
   g_return_if_fail (GIMP_IS_PAINT_CORE (core));
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
   g_return_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options));
+  g_return_if_fail (coords != NULL);
+
+  core->cur_coords = *coords;
 
   GIMP_PAINT_CORE_GET_CLASS (core)->interpolate (core, drawable,
                                                  paint_options, time);
+}
+
+void
+gimp_paint_core_set_current_coords (GimpPaintCore    *core,
+                                    const GimpCoords *coords)
+{
+  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
+  g_return_if_fail (coords != NULL);
+
+  core->cur_coords = *coords;
+}
+
+void
+gimp_paint_core_get_current_coords (GimpPaintCore    *core,
+                                    GimpCoords       *coords)
+{
+  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
+  g_return_if_fail (coords != NULL);
+
+  *coords = core->cur_coords;
+
+}
+
+void
+gimp_paint_core_set_last_coords (GimpPaintCore    *core,
+                                 const GimpCoords *coords)
+{
+  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
+  g_return_if_fail (coords != NULL);
+
+  core->last_coords = *coords;
+}
+
+void
+gimp_paint_core_get_last_coords (GimpPaintCore *core,
+                                 GimpCoords    *coords)
+{
+  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
+  g_return_if_fail (coords != NULL);
+
+  *coords = core->last_coords;
+}
+
+/**
+ * gimp_paint_core_round_line:
+ * @core:                 the #GimpPaintCore
+ * @options:              the #GimpPaintOptions to use
+ * @constrain_15_degrees: the modifier state
+ *
+ * Adjusts core->last_coords and core_cur_coords in preparation to
+ * drawing a straight line. If @center_pixels is TRUE the endpoints
+ * get pushed to the center of the pixels. This avoids artefacts
+ * for e.g. the hard mode. The rounding of the slope to 15 degree
+ * steps if ctrl is pressed happens, as does rounding the start and
+ * end coordinates (which may be fractional in high zoom modes) to
+ * the center of pixels.
+ **/
+void
+gimp_paint_core_round_line (GimpPaintCore    *core,
+                            GimpPaintOptions *paint_options,
+                            gboolean          constrain_15_degrees)
+{
+  g_return_if_fail (GIMP_IS_PAINT_CORE (core));
+  g_return_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options));
+
+  if (gimp_paint_options_get_brush_mode (paint_options) == GIMP_BRUSH_HARD)
+    {
+      core->last_coords.x = floor (core->last_coords.x) + 0.5;
+      core->last_coords.y = floor (core->last_coords.y) + 0.5;
+      core->cur_coords.x  = floor (core->cur_coords.x ) + 0.5;
+      core->cur_coords.y  = floor (core->cur_coords.y ) + 0.5;
+    }
+
+  if (constrain_15_degrees)
+    gimp_constrain_line (core->last_coords.x, core->last_coords.y,
+                         &core->cur_coords.x, &core->cur_coords.y,
+                         GIMP_CONSTRAIN_LINE_15_DEGREES);
 }
 
 
@@ -585,24 +701,27 @@ gimp_paint_core_interpolate (GimpPaintCore    *core,
 TempBuf *
 gimp_paint_core_get_paint_area (GimpPaintCore    *core,
                                 GimpDrawable     *drawable,
-                                GimpPaintOptions *paint_options)
+                                GimpPaintOptions *paint_options,
+                                const GimpCoords *coords)
 {
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
   g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), NULL);
+  g_return_val_if_fail (coords != NULL, NULL);
 
   return GIMP_PAINT_CORE_GET_CLASS (core)->get_paint_area (core, drawable,
-                                                           paint_options);
+                                                           paint_options,
+                                                           coords);
 }
 
 TempBuf *
 gimp_paint_core_get_orig_image (GimpPaintCore *core,
                                 GimpDrawable  *drawable,
-                                gint           x1,
-                                gint           y1,
-                                gint           x2,
-                                gint           y2)
+                                gint           x,
+                                gint           y,
+                                gint           width,
+                                gint           height)
 {
   PixelRegion   srcPR;
   PixelRegion   destPR;
@@ -622,28 +741,27 @@ gimp_paint_core_get_orig_image (GimpPaintCore *core,
 
   core->orig_buf = temp_buf_resize (core->orig_buf,
                                     gimp_drawable_bytes (drawable),
-                                    x1, y1,
-                                    (x2 - x1), (y2 - y1));
+                                    x, y, width, height);
 
-  drawable_width  = gimp_item_width  (GIMP_ITEM (drawable));
-  drawable_height = gimp_item_height (GIMP_ITEM (drawable));
+  drawable_width  = gimp_item_get_width  (GIMP_ITEM (drawable));
+  drawable_height = gimp_item_get_height (GIMP_ITEM (drawable));
 
-  x1 = CLAMP (x1, 0, drawable_width);
-  y1 = CLAMP (y1, 0, drawable_height);
-  x2 = CLAMP (x2, 0, drawable_width);
-  y2 = CLAMP (y2, 0, drawable_height);
+  gimp_rectangle_intersect (x, y,
+                            width, height,
+                            0, 0,
+                            drawable_width, drawable_height,
+                            &x, &y,
+                            &width, &height);
 
   /*  configure the pixel regions  */
   pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     x1, y1,
-                     (x2 - x1), (y2 - y1),
+                     x, y, width, height,
                      FALSE);
 
   pixel_region_init_temp_buf (&destPR, core->orig_buf,
-                              x1 - core->orig_buf->x,
-                              y1 - core->orig_buf->y,
-                              x2 - x1,
-                              y2 - y1);
+                              x - core->orig_buf->x,
+                              y - core->orig_buf->y,
+                              width, height);
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
        pr != NULL;
@@ -693,10 +811,10 @@ gimp_paint_core_get_orig_image (GimpPaintCore *core,
 TempBuf *
 gimp_paint_core_get_orig_proj (GimpPaintCore *core,
                                GimpPickable  *pickable,
-                               gint           x1,
-                               gint           y1,
-                               gint           x2,
-                               gint           y2)
+                               gint           x,
+                               gint           y,
+                               gint           width,
+                               gint           height)
 {
   TileManager  *src_tiles;
   PixelRegion   srcPR;
@@ -717,30 +835,29 @@ gimp_paint_core_get_orig_proj (GimpPaintCore *core,
 
   core->orig_proj_buf = temp_buf_resize (core->orig_proj_buf,
                                          gimp_pickable_get_bytes (pickable),
-                                         x1, y1,
-                                         (x2 - x1), (y2 - y1));
+                                         x, y, width, height);
 
   src_tiles = gimp_pickable_get_tiles (pickable);
 
   pickable_width  = tile_manager_width  (src_tiles);
   pickable_height = tile_manager_height (src_tiles);
 
-  x1 = CLAMP (x1, 0, pickable_width);
-  y1 = CLAMP (y1, 0, pickable_height);
-  x2 = CLAMP (x2, 0, pickable_width);
-  y2 = CLAMP (y2, 0, pickable_height);
+  gimp_rectangle_intersect (x, y,
+                            width, height,
+                            0, 0,
+                            pickable_width, pickable_height,
+                            &x, &y,
+                            &width, &height);
 
   /*  configure the pixel regions  */
   pixel_region_init (&srcPR, src_tiles,
-                     x1, y1,
-                     (x2 - x1), (y2 - y1),
+                     x, y, width, height,
                      FALSE);
 
   pixel_region_init_temp_buf (&destPR, core->orig_proj_buf,
-                              x1 - core->orig_proj_buf->x,
-                              y1 - core->orig_proj_buf->y,
-                              x2 - x1,
-                              y2 - y1);
+                              x - core->orig_proj_buf->x,
+                              y - core->orig_proj_buf->y,
+                              width, height);
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
        pr != NULL;
@@ -815,7 +932,7 @@ gimp_paint_core_paste (GimpPaintCore            *core,
       gint            x, y;
       gint            w, h;
 
-      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+      gimp_item_get_offset (GIMP_ITEM (drawable), &off_x, &off_y);
 
       if (gimp_rectangle_intersect (core->canvas_buf->x + off_x,
                                     core->canvas_buf->y + off_y,
@@ -874,6 +991,7 @@ gimp_paint_core_paste (GimpPaintCore            *core,
                               FALSE, NULL,
                               image_opacity, paint_mode,
                               alt,  /*  specify an alternative src1  */
+                              NULL,
                               core->canvas_buf->x,
                               core->canvas_buf->y);
 
@@ -983,6 +1101,75 @@ gimp_paint_core_replace (GimpPaintCore            *core,
                         core->canvas_buf->width,
                         core->canvas_buf->height);
 }
+
+/**
+ * Smooth and store coords in the stroke buffer
+ */
+
+void
+gimp_paint_core_smooth_coords (GimpPaintCore    *core,
+                               GimpPaintOptions *paint_options,
+                               GimpCoords       *coords)
+{
+  GimpSmoothingOptions *smoothing_options = paint_options->smoothing_options;
+  GArray               *history           = core->stroke_buffer;
+
+  if (core->stroke_buffer == NULL)
+    return; /* Paint core has not initalized yet */
+
+  if (smoothing_options->use_smoothing &&
+      smoothing_options->smoothing_quality > 0)
+    {
+      gint       i;
+      guint      length;
+      gint       min_index;
+      gdouble    gaussian_weight  = 0.0;
+      gdouble    gaussian_weight2 = SQR (smoothing_options->smoothing_factor);
+      gdouble    velocity_sum     = 0.0;
+      gdouble    scale_sum        = 0.0;
+
+      g_array_append_val (history, *coords);
+
+      if (history->len < 2)
+        return; /* Just dont bother, nothing to do */
+
+      coords->x = coords->y = 0.0;
+
+      length = MIN (smoothing_options->smoothing_quality, history->len);
+
+      min_index = history->len - length;
+
+      if (gaussian_weight2 != 0.0)
+        gaussian_weight = 1 / (sqrt (2 * G_PI) * smoothing_options->smoothing_factor);
+
+      for (i = history->len - 1; i >= min_index; i--)
+        {
+          gdouble     rate        = 0.0;
+          GimpCoords *next_coords = &g_array_index (history,
+                                                    GimpCoords, i);
+
+          if (gaussian_weight2 != 0.0)
+            {
+              /* We use gaussian function with velocity as a window function */
+              velocity_sum += next_coords->velocity * 100;
+              rate = gaussian_weight * exp (-velocity_sum*velocity_sum / (2 * gaussian_weight2));
+            }
+
+          scale_sum += rate;
+          coords->x += rate * next_coords->x;
+          coords->y += rate * next_coords->y;
+        }
+
+      if (scale_sum != 0.0)
+        {
+          coords->x /= scale_sum;
+          coords->y /= scale_sum;
+        }
+
+    }
+
+}
+
 
 static void
 canvas_tiles_to_canvas_buf (GimpPaintCore *core)
@@ -1104,17 +1291,7 @@ gimp_paint_core_validate_saved_proj_tiles (GimpPaintCore *core,
                 tile_manager_get_tile (gimp_pickable_get_tiles (pickable),
                                        j, i, TRUE, FALSE);
 
-              /* copy the pixels instead of mapping the tile because
-               * copy-on-write from the projection is broken
-               */
-              dest_tile = tile_manager_get_tile (core->saved_proj_tiles,
-                                                 j, i, TRUE, TRUE);
-
-              memcpy (tile_data_pointer (dest_tile, 0, 0),
-                      tile_data_pointer (src_tile, 0, 0),
-                      tile_size (src_tile));
-
-              tile_release (dest_tile, TRUE);
+              tile_manager_map_tile (core->saved_proj_tiles, j, i, src_tile);
               tile_release (src_tile, FALSE);
             }
         }
@@ -1150,3 +1327,4 @@ gimp_paint_core_validate_canvas_tiles (GimpPaintCore *core,
         }
     }
 }
+

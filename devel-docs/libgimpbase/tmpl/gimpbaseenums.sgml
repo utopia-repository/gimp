@@ -2,11 +2,11 @@
 gimpbaseenums
 
 <!-- ##### SECTION Short_Description ##### -->
-Basic GIMP enumeration data types.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Basic GIMP enumeration data types.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -228,7 +228,7 @@ Basic GIMP enumeration data types.
 @GIMP_PDB_FLOATARRAY: 
 @GIMP_PDB_STRINGARRAY: 
 @GIMP_PDB_COLOR: 
-@GIMP_PDB_REGION: 
+@GIMP_PDB_ITEM: 
 @GIMP_PDB_DISPLAY: 
 @GIMP_PDB_IMAGE: 
 @GIMP_PDB_LAYER: 
@@ -242,6 +242,7 @@ Basic GIMP enumeration data types.
 @GIMP_PDB_END: 
 @GIMP_PDB_PATH: 
 @GIMP_PDB_BOUNDARY: 
+@GIMP_PDB_REGION: 
 
 <!-- ##### ENUM GimpPDBErrorHandler ##### -->
 <para>
@@ -326,6 +327,16 @@ Basic GIMP enumeration data types.
 
 @GIMP_TEXT_DIRECTION_LTR: 
 @GIMP_TEXT_DIRECTION_RTL: 
+
+<!-- ##### ENUM GimpTextHintStyle ##### -->
+<para>
+
+</para>
+
+@GIMP_TEXT_HINT_STYLE_NONE: 
+@GIMP_TEXT_HINT_STYLE_SLIGHT: 
+@GIMP_TEXT_HINT_STYLE_MEDIUM: 
+@GIMP_TEXT_HINT_STYLE_FULL: 
 
 <!-- ##### ENUM GimpTextJustification ##### -->
 <para>

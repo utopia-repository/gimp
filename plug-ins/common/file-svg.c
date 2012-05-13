@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* SVG loader plug-in
@@ -39,6 +38,7 @@
 #define LOAD_PROC               "file-svg-load"
 #define LOAD_THUMB_PROC         "file-svg-load-thumb"
 #define PLUG_IN_BINARY          "file-svg"
+#define PLUG_IN_ROLE            "gimp-file-svg"
 #define SVG_VERSION             "2.5.0"
 #define SVG_DEFAULT_RESOLUTION  90.0
 #define SVG_DEFAULT_SIZE        500
@@ -99,7 +99,7 @@ query (void)
 {
   static const GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive"        },
+    { GIMP_PDB_INT32,  "run-mode",     "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"        },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load"        },
     { GIMP_PDB_STRING, "raw-filename", "The name of the file to load"        },
     { GIMP_PDB_FLOAT,  "resolution",
@@ -150,8 +150,8 @@ query (void)
                                     "0,string,<?xml,0,string,<svg");
 
   gimp_install_procedure (LOAD_THUMB_PROC,
-                          "Loads a small preview from an SVG image",
-                          "",
+                          "Generates a thumbnail of an SVG image",
+                          "Renders a thumbnail of an SVG file using librsvg.",
                           "Dom Lachowicz, Sven Neumann",
                           "Dom Lachowicz <cinamod@hotmail.com>",
                           SVG_VERSION,
@@ -352,7 +352,7 @@ load_image (const gchar  *filename,
 
   layer = gimp_layer_new_from_pixbuf (image, _("Rendered SVG"), pixbuf,
                                       100, GIMP_NORMAL_MODE, 0.0, 1.0);
-  gimp_image_add_layer (image, layer, 0);
+  gimp_image_insert_layer (image, layer, -1, 0);
 
   gimp_image_undo_enable (image);
 
@@ -407,26 +407,6 @@ load_set_size_callback (gint     *width,
     }
 }
 
-static RsvgHandle *
-load_rsvg_handle_new (gdouble xres,
-                      gdouble yres)
-{
-  RsvgHandle *handle = rsvg_handle_new ();
-
-#if (((LIBRSVG_MAJOR_VERSION == 2) && (LIBRSVG_MINOR_VERSION == 13) && \
-     ((LIBRSVG_MICRO_VERSION == 0) || \
-      (LIBRSVG_MICRO_VERSION == 1) || \
-      (LIBRSVG_MICRO_VERSION == 2))) || \
-     ((LIBRSVG_MAJOR_VERSION == 2) && (LIBRSVG_MINOR_VERSION == 11) && \
-      (LIBRSVG_MICRO_VERSION == 0)))
-  rsvg_handle_set_dpi (handle, xres, yres);
-#else
-  rsvg_handle_set_dpi_x_y (handle, xres, yres);
-#endif
-
-  return handle;
-}
-
 /*  This function renders a pixbuf from an SVG file according to vals.  */
 static GdkPixbuf *
 load_rsvg_pixbuf (const gchar  *filename,
@@ -446,7 +426,8 @@ load_rsvg_pixbuf (const gchar  *filename,
 
   g_io_channel_set_encoding (io, NULL, NULL);
 
-  handle = load_rsvg_handle_new (vals->resolution, vals->resolution);
+  handle = rsvg_handle_new ();
+  rsvg_handle_set_dpi (handle, vals->resolution);
 
   /*  set the base URI so that librsvg can resolve relative paths  */
   uri = g_filename_to_uri (filename, NULL, NULL);
@@ -492,7 +473,7 @@ load_rsvg_pixbuf (const gchar  *filename,
   if (success)
     pixbuf = rsvg_handle_get_pixbuf (handle);
 
-  rsvg_handle_free (handle);
+  g_object_unref (handle);
 
   return pixbuf;
 }
@@ -521,7 +502,8 @@ load_rsvg_size (const gchar  *filename,
 
   g_io_channel_set_encoding (io, NULL, NULL);
 
-  handle = load_rsvg_handle_new (vals->resolution, vals->resolution);
+  handle = rsvg_handle_new ();
+  rsvg_handle_set_dpi (handle, vals->resolution);
 
   vals->width  = SVG_DEFAULT_SIZE;
   vals->height = SVG_DEFAULT_SIZE;
@@ -577,7 +559,7 @@ load_rsvg_size (const gchar  *filename,
       }
 
   g_io_channel_unref (io);
-  rsvg_handle_free (handle);
+  g_object_unref (handle);
 
   if (vals->width  < 1)  vals->width  = 1;
   if (vals->height < 1)  vals->height = 1;
@@ -740,7 +722,7 @@ load_dialog (const gchar  *filename,
 
   /* Scalable Vector Graphics is SVG, should perhaps not be translated */
   dialog = gimp_dialog_new (_("Render Scalable Vector Graphics"),
-                            PLUG_IN_BINARY,
+                            PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, LOAD_PROC,
 
@@ -758,14 +740,14 @@ load_dialog (const gchar  *filename,
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox,
-                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
   /*  The SVG preview  */
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -817,7 +799,7 @@ load_dialog (const gchar  *filename,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (label);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 1, 2, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
@@ -827,7 +809,7 @@ load_dialog (const gchar  *filename,
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 1, 2, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
@@ -860,7 +842,7 @@ load_dialog (const gchar  *filename,
                     NULL);
 
   /*  Scale ratio  */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 1, 2, 2, 4,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (hbox);
@@ -953,6 +935,7 @@ load_dialog (const gchar  *filename,
 
   /*  Path Import  */
   toggle = gtk_check_button_new_with_mnemonic (_("Import _paths"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), load_vals.import);
   gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 5, 6,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (toggle);
@@ -962,28 +945,23 @@ load_dialog (const gchar  *filename,
                              "can be used with the GIMP path tool"),
                            NULL);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), load_vals.import);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &load_vals.import);
 
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gimp_toggle_button_sensitive_update),
-                    NULL);
-
   toggle2 = gtk_check_button_new_with_mnemonic (_("Merge imported paths"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle2), load_vals.merge);
   gtk_table_attach (GTK_TABLE (table), toggle2, 0, 2, 6, 7,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_widget_set_sensitive (toggle2, load_vals.import);
   gtk_widget_show (toggle2);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle2), load_vals.merge);
   g_signal_connect (toggle2, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &load_vals.merge);
 
-  g_object_set_data (G_OBJECT (toggle), "set_sensitive", toggle2);
-
+  g_object_bind_property (toggle,  "active",
+                          toggle2, "sensitive",
+                          G_BINDING_SYNC_CREATE);
 
   gtk_widget_show (dialog);
 

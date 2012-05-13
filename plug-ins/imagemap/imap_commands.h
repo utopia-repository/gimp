@@ -5,9 +5,9 @@
  *
  * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.i
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -38,13 +37,13 @@ Command_t *delete_command_new(ObjectList_t *list, Object_t *obj);
 Command_t *delete_point_command_new(Object_t *obj, GdkPoint *point);
 Command_t *edit_object_command_new(Object_t *obj);
 Command_t *gimp_guides_command_new(ObjectList_t *list,
-				   GimpDrawable *_drawable);
+                                   GimpDrawable *_drawable);
 Command_t *guides_command_new(ObjectList_t *list);
 Command_t *insert_point_command_new(Object_t *obj, gint x, gint y, gint edge);
 Command_t *move_down_command_new(ObjectList_t *list);
 Command_t *move_command_new(Preview_t *preview, Object_t *obj, gint x, gint y);
 Command_t *move_sash_command_new(GtkWidget *widget, Object_t *obj,
-				 gint x, gint y, MoveSashFunc_t sash_func);
+                                 gint x, gint y, MoveSashFunc_t sash_func);
 Command_t *move_selected_command_new(ObjectList_t *list, gint dx, gint dy);
 Command_t *move_to_front_command_new(ObjectList_t *list);
 Command_t *move_up_command_new(ObjectList_t *list);
@@ -57,7 +56,7 @@ Command_t *select_command_new(Object_t *obj);
 Command_t *select_next_command_new(ObjectList_t *list);
 Command_t *select_prev_command_new(ObjectList_t *list);
 Command_t *select_region_command_new(GtkWidget *widget, ObjectList_t *list,
-				     gint x, gint y);
+                                     gint x, gint y);
 Command_t *send_to_back_command_new(ObjectList_t *list);
 Command_t *unselect_all_command_new(ObjectList_t *list, Object_t *exception);
 Command_t *unselect_command_new(Object_t *obj);

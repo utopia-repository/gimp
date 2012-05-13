@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -56,8 +55,6 @@ static void     gimp_thumb_box_progress_iface_init (GimpProgressInterface *iface
 
 static void     gimp_thumb_box_dispose            (GObject           *object);
 static void     gimp_thumb_box_finalize           (GObject           *object);
-
-static void     gimp_thumb_box_destroy            (GtkObject         *object);
 
 static void     gimp_thumb_box_style_set          (GtkWidget         *widget,
                                                    GtkStyle          *prev_style);
@@ -110,14 +107,11 @@ G_DEFINE_TYPE_WITH_CODE (GimpThumbBox, gimp_thumb_box, GTK_TYPE_FRAME,
 static void
 gimp_thumb_box_class_init (GimpThumbBoxClass *klass)
 {
-  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class     = GTK_WIDGET_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose     = gimp_thumb_box_dispose;
   object_class->finalize    = gimp_thumb_box_finalize;
-
-  gtk_object_class->destroy = gimp_thumb_box_destroy;
 
   widget_class->style_set   = gimp_thumb_box_style_set;
 }
@@ -154,6 +148,8 @@ gimp_thumb_box_dispose (GObject *object)
     }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
+
+  box->progress = NULL;
 }
 
 static void
@@ -170,16 +166,6 @@ gimp_thumb_box_finalize (GObject *object)
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
-}
-
-static void
-gimp_thumb_box_destroy (GtkObject *object)
-{
-  GimpThumbBox *box = GIMP_THUMB_BOX (object);
-
-  GTK_OBJECT_CLASS (parent_class)->destroy (object);
-
-  box->progress = NULL;
 }
 
 static void
@@ -342,16 +328,15 @@ gimp_thumb_box_new (GimpContext *context)
                     box);
 
   str = g_strdup_printf (_("Click to update preview\n"
-                           "%s%sClick to force update even "
+                           "%s-Click to force update even "
                            "if preview is up-to-date"),
-                         gimp_get_mod_string (GDK_CONTROL_MASK),
-                         gimp_get_mod_separator ());
+                         gimp_get_mod_string (gimp_get_toggle_behavior_mask ()));
 
   gimp_help_set_help_data (ebox, str, NULL);
 
   g_free (str);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (ebox), vbox);
   gtk_widget_show (vbox);
 
@@ -377,12 +362,13 @@ gimp_thumb_box_new (GimpContext *context)
                     G_CALLBACK (gtk_true),
                     NULL);
 
-  vbox2 = gtk_vbox_new (FALSE, 6);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2), 2);
-  gtk_container_add (GTK_CONTAINER (vbox), vbox2);
+  gtk_box_pack_start (GTK_BOX (vbox), vbox2, TRUE, TRUE, 0);
   gtk_widget_show (vbox2);
 
-  hbox = gtk_hbox_new (TRUE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -392,7 +378,8 @@ gimp_thumb_box_new (GimpContext *context)
                     G_CALLBACK (gimp_thumb_box_imagefile_info_changed),
                     box);
 
-  g_signal_connect (box->imagefile->thumbnail, "notify::thumb-state",
+  g_signal_connect (gimp_imagefile_get_thumbnail (box->imagefile),
+                    "notify::thumb-state",
                     G_CALLBACK (gimp_thumb_box_thumb_state_notify),
                     box);
 
@@ -493,8 +480,7 @@ gimp_thumb_box_take_uris (GimpThumbBox *box,
 
   if (box->uris)
     {
-      g_slist_foreach (box->uris, (GFunc) g_free, NULL);
-      g_slist_free (box->uris);
+      g_slist_free_full (box->uris, (GDestroyNotify) g_free);
       box->uris = NULL;
     }
 
@@ -520,7 +506,8 @@ gimp_thumb_box_thumbnail_clicked (GtkWidget       *widget,
                                   GimpThumbBox    *box)
 {
   gimp_thumb_box_create_thumbnails (box,
-                                    (state & GDK_CONTROL_MASK) ? TRUE : FALSE);
+                                    (state & gimp_get_toggle_behavior_mask ()) ?
+                                    TRUE : FALSE);
 }
 
 static void
@@ -561,7 +548,7 @@ static void
 gimp_thumb_box_create_thumbnails (GimpThumbBox *box,
                                   gboolean      force)
 {
-  Gimp           *gimp     = box->imagefile->gimp;
+  Gimp           *gimp     = box->context->gimp;
   GimpProgress   *progress = GIMP_PROGRESS (box);
   GimpFileDialog *dialog   = NULL;
   GtkWidget      *toplevel;
@@ -693,7 +680,7 @@ gimp_thumb_box_create_thumbnail (GimpThumbBox      *box,
         return;
     }
 
-  thumb = box->imagefile->thumbnail;
+  thumb = gimp_imagefile_get_thumbnail (box->imagefile);
 
   basename = file_utils_uri_display_basename (uri);
   gtk_label_set_text (GTK_LABEL (box->filename), basename);
@@ -715,9 +702,9 @@ gimp_thumb_box_create_thumbnail (GimpThumbBox      *box,
 static gboolean
 gimp_thumb_box_auto_thumbnail (GimpThumbBox *box)
 {
-  Gimp          *gimp  = box->imagefile->gimp;
-  GimpThumbnail *thumb = box->imagefile->thumbnail;
-  const gchar   *uri   = gimp_object_get_name (GIMP_OBJECT (box->imagefile));
+  Gimp          *gimp  = box->context->gimp;
+  GimpThumbnail *thumb = gimp_imagefile_get_thumbnail (box->imagefile);
+  const gchar   *uri   = gimp_object_get_name (box->imagefile);
 
   box->idle_id = 0;
 
@@ -738,7 +725,7 @@ gimp_thumb_box_auto_thumbnail (GimpThumbBox *box)
               gchar *size;
               gchar *text;
 
-              size = g_format_size_for_display (thumb->image_filesize);
+              size = g_format_size (thumb->image_filesize);
               text = g_strdup_printf ("%s\n%s",
                                       size, _("Creating preview..."));
 

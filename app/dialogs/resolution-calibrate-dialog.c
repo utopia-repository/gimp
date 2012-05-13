@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -60,7 +59,7 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
   gint          monitor;
 
   g_return_if_fail (GIMP_IS_SIZE_ENTRY (resolution_entry));
-  g_return_if_fail (GTK_WIDGET_REALIZED (resolution_entry));
+  g_return_if_fail (gtk_widget_get_realized (resolution_entry));
   g_return_if_fail (pixbuf == NULL || GDK_IS_PIXBUF (pixbuf));
 
   /*  this dialog can only exist once  */
@@ -85,7 +84,7 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
 
   screen = gtk_widget_get_screen (dialog);
   monitor = gdk_screen_get_monitor_at_window (screen,
-                                              resolution_entry->window);
+                                              gtk_widget_get_window (resolution_entry));
   gdk_screen_get_monitor_geometry (screen, monitor, &rect);
 
   ruler_width  = rect.width  - 300 - (rect.width  % 100);
@@ -93,7 +92,8 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
 
   table = gtk_table_new (4, 4, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   if (pixbuf)
@@ -119,7 +119,7 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
                     GTK_SHRINK, GTK_SHRINK, 0, 0);
   gtk_widget_show (ruler);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_table_attach (GTK_TABLE (table), vbox, 1, 2, 1, 2,
                     GTK_SHRINK, GTK_SHRINK, 0, 0);
   gtk_widget_show (vbox);
@@ -135,7 +135,7 @@ resolution_calibrate_dialog (GtkWidget *resolution_entry,
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 

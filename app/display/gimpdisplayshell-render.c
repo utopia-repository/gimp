@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,18 +12,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <string.h>
-
+#include <gegl.h>
 #include <gtk/gtk.h>
 
-#include "libgimpbase/gimpbase.h"
-#include "libgimpmath/gimpmath.h"
+#include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "display-types.h"
@@ -33,18 +30,17 @@
 
 #include "config/gimpdisplayconfig.h"
 
-#include "core/gimp.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-colormap.h"
+#include "core/gimppickable.h"
 #include "core/gimpprojection.h"
 
-#include "gimpcanvas.h"
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-filter.h"
 #include "gimpdisplayshell-render.h"
 #include "gimpdisplayshell-scroll.h"
+
 
 #define GIMP_DISPLAY_ZOOM_FAST     (1 << 0) /* use the fastest possible code
                                                path trading quality for speed
@@ -55,8 +51,6 @@
                                                100% and 200% zoom)
                                              */
 
-#define GIMP_DISPLAY_RENDER_BUF_WIDTH  256
-
 
 typedef struct _RenderInfo  RenderInfo;
 
@@ -64,351 +58,180 @@ typedef void (* RenderFunc) (RenderInfo *info);
 
 struct _RenderInfo
 {
-  const GimpDisplayShell *shell;
-  TileManager            *src_tiles;
-  const guchar           *src;
-  guchar                 *dest;
-  gboolean                src_is_premult;
-  gint                    x, y;
-  gint                    w, h;
-  gdouble                 scalex;
-  gdouble                 scaley;
-  gint                    src_x;
-  gint                    src_y;
-  gint                    dest_bpp;
-  gint                    dest_bpl;
-  gint                    dest_width;
+  TileManager  *src_tiles;
+  const guchar *src;
+  gboolean      src_is_premult;
+  guchar       *dest;
+  gint          x, y;
+  gint          w, h;
+  gdouble       scalex;       /* scale from (pre-scaled) src to dest       */
+  gdouble       scaley;
+  gdouble       full_scalex;  /* actual display scale factor               */
+  gdouble       full_scaley;
+  gint          src_x;
+  gint          src_y;
+  gint          dest_bpl;
 
-  gint                    zoom_quality;
+  gint          zoom_quality;
 
   /* Bresenham helpers */
-  gint                    x_dest_inc; /* amount to increment for each dest. pixel  */
-  gint                    x_src_dec;  /* amount to decrement for each source pixel */
-  gint64                  dx_start;   /* pixel fraction for first pixel            */
+  gint          x_dest_inc;   /* amount to increment for each dest. pixel  */
+  gint          x_src_dec;    /* amount to decrement for each source pixel */
+  gint64        dx_start;     /* pixel fraction for first pixel            */
 
-  gint                    y_dest_inc;
-  gint                    y_src_dec;
-  gint64                  dy_start;
+  gint          y_dest_inc;
+  gint          y_src_dec;
+  gint64        dy_start;
 
-  gint                    footprint_x;
-  gint                    footprint_y;
-  gint                    footshift_x;
-  gint                    footshift_y;
+  gint          footprint_x;
+  gint          footprint_y;
+  gint          footshift_x;
+  gint          footshift_y;
 
-  gint64                  dy;
+  gint64        dy;
 };
 
-static void  gimp_display_shell_render_info_scale   (RenderInfo             *info,
-                                                     const GimpDisplayShell *shell,
-                                                     TileManager            *tiles,
-                                                     gint                    level,
-                                                     gboolean                is_premult);
 
-static void  gimp_display_shell_render_setup_notify (GObject                *config,
-                                                     GParamSpec             *param_spec,
-                                                     Gimp                   *gimp);
+static guchar tile_buf[GIMP_DISPLAY_RENDER_BUF_WIDTH * MAX_CHANNELS];
 
 
-static guchar *tile_buf    = NULL;
-
-static guint   check_mod   = 0;
-static guint   check_shift = 0;
-static guchar  check_dark  = 0;
-static guchar  check_light = 0;
-
-
-void
-gimp_display_shell_render_init (Gimp *gimp)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-  g_return_if_fail (tile_buf == NULL);
-
-  g_signal_connect (gimp->config, "notify::transparency-size",
-                    G_CALLBACK (gimp_display_shell_render_setup_notify),
-                    gimp);
-  g_signal_connect (gimp->config, "notify::transparency-type",
-                    G_CALLBACK (gimp_display_shell_render_setup_notify),
-                    gimp);
-
-  /*  allocate a buffer for arranging information from a row of tiles  */
-  tile_buf = g_new (guchar, GIMP_DISPLAY_RENDER_BUF_WIDTH * MAX_CHANNELS);
-
-  gimp_display_shell_render_setup_notify (G_OBJECT (gimp->config), NULL, gimp);
-}
-
-void
-gimp_display_shell_render_exit (Gimp *gimp)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-
-  g_signal_handlers_disconnect_by_func (gimp->config,
-                                        gimp_display_shell_render_setup_notify,
-                                        gimp);
-
-  if (tile_buf)
-    {
-      g_free (tile_buf);
-      tile_buf = NULL;
-    }
-}
-
-static void
-gimp_display_shell_render_setup_notify (GObject    *config,
-                                        GParamSpec *param_spec,
-                                        Gimp       *gimp)
-{
-  GimpCheckSize check_size;
-  GimpCheckType check_type;
-
-  g_object_get (config,
-                "transparency-size", &check_size,
-                "transparency-type", &check_type,
-                NULL);
-
-  gimp_checks_get_shades (check_type, &check_light, &check_dark);
-
-  switch (check_size)
-    {
-    case GIMP_CHECK_SIZE_SMALL_CHECKS:
-      check_mod   = 0x3;
-      check_shift = 2;
-      break;
-
-    case GIMP_CHECK_SIZE_MEDIUM_CHECKS:
-      check_mod   = 0x7;
-      check_shift = 3;
-      break;
-
-    case GIMP_CHECK_SIZE_LARGE_CHECKS:
-      check_mod   = 0xf;
-      check_shift = 4;
-      break;
-    }
-}
-
+static void  gimp_display_shell_render_info_init (RenderInfo       *info,
+                                                  GimpDisplayShell *shell,
+                                                  gint              x,
+                                                  gint              y,
+                                                  gint              w,
+                                                  gint              h,
+                                                  cairo_surface_t  *dest,
+                                                  TileManager      *tiles,
+                                                  gint              level,
+                                                  gboolean          is_premult);
 
 /*  Render Image functions  */
 
-static void           render_image_rgb_a         (RenderInfo             *info);
-static void           render_image_gray_a        (RenderInfo             *info);
+static void           render_image_alpha         (RenderInfo       *info);
+static void           render_image_gray_a        (RenderInfo       *info);
+static void           render_image_rgb_a         (RenderInfo       *info);
 
-static const guchar * render_image_tile_fault    (RenderInfo             *info);
-
-
-static void  gimp_display_shell_render_highlight (const GimpDisplayShell *shell,
-                                                  gint                    x,
-                                                  gint                    y,
-                                                  gint                    w,
-                                                  gint                    h,
-                                                  GdkRectangle           *highlight);
-static void  gimp_display_shell_render_mask      (const GimpDisplayShell *shell,
-                                                  RenderInfo             *info);
+static const guchar * render_image_tile_fault    (RenderInfo       *info);
 
 
 /*****************************************************************/
-/*  This function is the core of the display--it offsets and     */
+/*  This function is the core of the display -- it offsets and   */
 /*  scales the image according to the current parameters in the  */
-/*  display object.  It handles color, grayscale, 8, 15, 16, 24  */
-/*  & 32 bit output depths.                                      */
+/*  display object.  It handles RGBA and GRAYA projection tiles  */
+/*  and renders them to an ARGB32 cairo surface.                 */
 /*****************************************************************/
 
 void
-gimp_display_shell_render (const GimpDisplayShell *shell,
-                           gint                    x,
-                           gint                    y,
-                           gint                    w,
-                           gint                    h,
-                           GdkRectangle           *highlight)
+gimp_display_shell_render (GimpDisplayShell *shell,
+                           cairo_t          *cr,
+                           gint              x,
+                           gint              y,
+                           gint              w,
+                           gint              h)
 {
   GimpProjection *projection;
   GimpImage      *image;
+  TileManager    *tiles;
   RenderInfo      info;
   GimpImageType   type;
-  gint            offset_x;
-  gint            offset_y;
+  gint            level;
+  gboolean        premult;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (cr != NULL);
   g_return_if_fail (w > 0 && h > 0);
 
-  image = shell->display->image;
-
+  image = gimp_display_get_image (shell->display);
   projection = gimp_image_get_projection (image);
 
-  gimp_display_shell_scroll_get_render_start_offset (shell, &offset_x, &offset_y);
+  /* setup RenderInfo for rendering a GimpProjection level. */
+  level = gimp_projection_get_level (projection,
+                                     shell->scale_x, shell->scale_y);
 
-  /* Initialize RenderInfo with values that don't change during the
-   * call of this function.
-   */
-  info.shell      = shell;
+  tiles = gimp_projection_get_tiles_at_level (projection, level, &premult);
 
-  info.x          = x + offset_x;
-  info.y          = y + offset_y;
-  info.w          = w;
-  info.h          = h;
-
-  info.dest_bpp   = 3;
-  info.dest_bpl   = info.dest_bpp * GIMP_DISPLAY_RENDER_BUF_WIDTH;
-  info.dest_width = info.dest_bpp * info.w;
-
-  switch (shell->display->config->zoom_quality)
-    {
-    case GIMP_ZOOM_QUALITY_LOW:
-      info.zoom_quality = GIMP_DISPLAY_ZOOM_FAST;
-      break;
-
-    case GIMP_ZOOM_QUALITY_HIGH:
-      info.zoom_quality = GIMP_DISPLAY_ZOOM_PIXEL_AA;
-      break;
-    }
-
-  /* Setup RenderInfo for rendering a GimpProjection level. */
-  {
-    TileManager *tiles;
-    gint         level;
-    gboolean     premult;
-
-    level = gimp_projection_get_level (projection,
-                                       shell->scale_x,
-                                       shell->scale_y);
-
-    tiles = gimp_projection_get_tiles_at_level (projection, level, &premult);
-
-    gimp_display_shell_render_info_scale (&info, shell, tiles, level, premult);
-  }
+  gimp_display_shell_render_info_init (&info,
+                                       shell, x, y, w, h,
+                                       shell->render_surface,
+                                       tiles, level, premult);
 
   /* Currently, only RGBA and GRAYA projection types are used. */
-  type = gimp_projection_get_image_type (projection);
+  type = gimp_pickable_get_image_type (GIMP_PICKABLE (projection));
 
   switch (type)
     {
-      case GIMP_RGBA_IMAGE:
-        render_image_rgb_a (&info);
-        break;
-      case GIMP_GRAYA_IMAGE:
-        render_image_gray_a (&info);
-        break;
-      default:
-        g_warning ("%s: unsupported projection type (%d)", G_STRFUNC, type);
-        g_assert_not_reached ();
+    case GIMP_RGBA_IMAGE:
+      render_image_rgb_a (&info);
+      break;
+    case GIMP_GRAYA_IMAGE:
+      render_image_gray_a (&info);
+      break;
+    default:
+      g_warning ("%s: unsupported projection type (%d)", G_STRFUNC, type);
+      g_assert_not_reached ();
     }
+
+  cairo_surface_mark_dirty (shell->render_surface);
 
   /*  apply filters to the rendered projection  */
   if (shell->filter_stack)
-    gimp_color_display_stack_convert (shell->filter_stack,
-                                      shell->render_buf,
-                                      w, h,
-                                      3,
-                                      3 * GIMP_DISPLAY_RENDER_BUF_WIDTH);
+    gimp_color_display_stack_convert_surface (shell->filter_stack,
+                                              shell->render_surface);
 
-  /*  dim pixels outside the highlighted rectangle  */
-  if (highlight)
+  if (shell->mask)
     {
-      gimp_display_shell_render_highlight (shell, x, y, w, h, highlight);
-    }
-  else if (shell->mask)
-    {
-      TileManager *tiles = gimp_drawable_get_tiles (shell->mask);
+      if (! shell->mask_surface)
+        {
+          shell->mask_surface =
+            cairo_image_surface_create (CAIRO_FORMAT_A8,
+                                        GIMP_DISPLAY_RENDER_BUF_WIDTH,
+                                        GIMP_DISPLAY_RENDER_BUF_HEIGHT);
+        }
+
+      tiles = gimp_drawable_get_tiles (shell->mask);
 
       /* The mask does not (yet) have an image pyramid, use 0 as level, */
-      gimp_display_shell_render_info_scale (&info, shell, tiles, 0, FALSE);
+      gimp_display_shell_render_info_init (&info,
+                                           shell, x, y, w, h,
+                                           shell->mask_surface,
+                                           tiles, 0, FALSE);
 
-      gimp_display_shell_render_mask (shell, &info);
+      render_image_alpha (&info);
+
+      cairo_surface_mark_dirty (shell->mask_surface);
     }
 
   /*  put it to the screen  */
   {
     gint disp_xoffset, disp_yoffset;
-    gint offset_x, offset_y;
 
-    gimp_display_shell_scroll_get_disp_offset (shell, &disp_xoffset, &disp_yoffset);
-    gimp_display_shell_scroll_get_render_start_offset (shell, &offset_x, &offset_y);
+    cairo_save (cr);
 
-    gimp_canvas_draw_rgb (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_RENDER,
-                        x + disp_xoffset, y + disp_yoffset,
-                        w, h,
-                        shell->render_buf,
-                        3 * GIMP_DISPLAY_RENDER_BUF_WIDTH,
-                        offset_x, offset_y);
+    gimp_display_shell_scroll_get_disp_offset (shell,
+                                               &disp_xoffset, &disp_yoffset);
+
+    cairo_rectangle (cr, x + disp_xoffset, y + disp_yoffset, w, h);
+    cairo_clip (cr);
+
+    cairo_set_source_surface (cr, shell->render_surface,
+                              x + disp_xoffset, y + disp_yoffset);
+    cairo_paint (cr);
+
+    if (shell->mask)
+      {
+        gimp_cairo_set_source_rgba (cr, &shell->mask_color);
+        cairo_mask_surface (cr, shell->mask_surface,
+                            x + disp_xoffset, y + disp_yoffset);
+      }
+
+    cairo_restore (cr);
   }
 }
 
-
-#define GIMP_DISPLAY_SHELL_DIM_PIXEL(buf,x) \
-{ \
-  buf[3 * (x) + 0] >>= 1; \
-  buf[3 * (x) + 1] >>= 1; \
-  buf[3 * (x) + 2] >>= 1; \
-}
-
-/*  This function highlights the given area by dimming all pixels outside. */
-
+/*  render a GRAY tile to an A8 cairo surface  */
 static void
-gimp_display_shell_render_highlight (const GimpDisplayShell *shell,
-                                     gint                    x,
-                                     gint                    y,
-                                     gint                    w,
-                                     gint                    h,
-                                     GdkRectangle           *highlight)
-{
-  guchar       *buf  = shell->render_buf;
-  GdkRectangle  rect;
-  gint          offset_x;
-  gint          offset_y;
-
-  gimp_display_shell_scroll_get_render_start_offset (shell, &offset_x, &offset_y);
-
-  rect.x      = x + offset_x;
-  rect.y      = y + offset_y;
-  rect.width  = w;
-  rect.height = h;
-
-  if (gdk_rectangle_intersect (highlight, &rect, &rect))
-    {
-      rect.x -= x + offset_x;
-      rect.y -= y + offset_y;
-
-      for (y = 0; y < rect.y; y++)
-        {
-          for (x = 0; x < w; x++)
-            GIMP_DISPLAY_SHELL_DIM_PIXEL (buf, x)
-
-          buf += 3 * GIMP_DISPLAY_RENDER_BUF_WIDTH;
-        }
-
-      for ( ; y < rect.y + rect.height; y++)
-        {
-          for (x = 0; x < rect.x; x++)
-            GIMP_DISPLAY_SHELL_DIM_PIXEL (buf, x)
-
-          for (x += rect.width; x < w; x++)
-            GIMP_DISPLAY_SHELL_DIM_PIXEL (buf, x)
-
-          buf += 3 * GIMP_DISPLAY_RENDER_BUF_WIDTH;
-        }
-
-      for ( ; y < h; y++)
-        {
-          for (x = 0; x < w; x++)
-            GIMP_DISPLAY_SHELL_DIM_PIXEL (buf, x)
-
-          buf += 3 * GIMP_DISPLAY_RENDER_BUF_WIDTH;
-        }
-    }
-  else
-    {
-      for (y = 0; y < h; y++)
-        {
-          for (x = 0; x < w; x++)
-            GIMP_DISPLAY_SHELL_DIM_PIXEL (buf, x)
-
-          buf += 3 * GIMP_DISPLAY_RENDER_BUF_WIDTH;
-        }
-    }
-}
-
-static void
-gimp_display_shell_render_mask (const GimpDisplayShell *shell,
-                                RenderInfo             *info)
+render_image_alpha (RenderInfo *info)
 {
   gint y, ye;
   gint x, xe;
@@ -417,7 +240,7 @@ gimp_display_shell_render_mask (const GimpDisplayShell *shell,
   ye = info->y + info->h;
   xe = info->x + info->w;
 
-  info->dy  = info->dy_start;
+  info->dy = info->dy_start;
   info->src = render_image_tile_fault (info);
 
   while (TRUE)
@@ -425,43 +248,9 @@ gimp_display_shell_render_mask (const GimpDisplayShell *shell,
       const guchar *src  = info->src;
       guchar       *dest = info->dest;
 
-      switch (shell->mask_color)
+      for (x = info->x; x < xe; x++, src++, dest++)
         {
-        case GIMP_RED_CHANNEL:
-          for (x = info->x; x < xe; x++, src++, dest += 3)
-            {
-              if (*src & 0x80)
-                continue;
-
-              dest[1] = dest[1] >> 2;
-              dest[2] = dest[2] >> 2;
-            }
-          break;
-
-        case GIMP_GREEN_CHANNEL:
-          for (x = info->x; x < xe; x++, src++, dest += 3)
-            {
-              if (*src & 0x80)
-                continue;
-
-              dest[0] = dest[0] >> 2;
-              dest[2] = dest[2] >> 2;
-            }
-          break;
-
-        case GIMP_BLUE_CHANNEL:
-          for (x = info->x; x < xe; x++, src++, dest += 3)
-            {
-              if (*src & 0x80)
-                continue;
-
-              dest[0] = dest[0] >> 2;
-              dest[1] = dest[1] >> 2;
-            }
-          break;
-
-        default:
-          break;
+          *dest = *src;
         }
 
       if (++y == ye)
@@ -477,16 +266,12 @@ gimp_display_shell_render_mask (const GimpDisplayShell *shell,
     }
 }
 
-
-/*************************/
-/*  8 Bit functions      */
-/*************************/
-
+/*  render a GRAYA tile to an ARGB32 cairo surface  */
 static void
 render_image_gray_a (RenderInfo *info)
 {
-  gint  y, ye;
-  gint  x, xe;
+  gint y, ye;
+  gint x, xe;
 
   y  = info->y;
   ye = info->y + info->h;
@@ -498,24 +283,12 @@ render_image_gray_a (RenderInfo *info)
   while (TRUE)
     {
       const guchar *src  = info->src;
-      guchar       *dest = info->dest;
-      guint         dark_light;
+      guint32      *dest = (guint32 *) info->dest;
 
-      dark_light = (y >> check_shift) + (info->x >> check_shift);
-
-      for (x = info->x; x < xe; x++, src += 2, dest += 3)
+      for (x = info->x; x < xe; x++, src += 2, dest++)
         {
-          guint v;
-
-          if (dark_light & 0x1)
-            v = ((src[0] << 8) + check_dark  * (256 - src[1])) >> 8;
-          else
-            v = ((src[0] << 8) + check_light * (256 - src[1])) >> 8;
-
-          dest[0] = dest[1] = dest[2] = v;
-
-          if (((x + 1) & check_mod) == 0)
-            dark_light += 1;
+          /*  data in src is premultiplied already  */
+          *dest = (src[1] << 24) | (src[0] << 16) | (src[0] << 8) | src[0];
         }
 
       if (++y == ye)
@@ -531,11 +304,12 @@ render_image_gray_a (RenderInfo *info)
     }
 }
 
+/*  render an RGBA tile to an ARGB32 cairo surface  */
 static void
 render_image_rgb_a (RenderInfo *info)
 {
-  gint  y, ye;
-  gint  x, xe;
+  gint y, ye;
+  gint x, xe;
 
   y  = info->y;
   ye = info->y + info->h;
@@ -547,34 +321,12 @@ render_image_rgb_a (RenderInfo *info)
   while (TRUE)
     {
       const guchar *src  = info->src;
-      guchar       *dest = info->dest;
-      guint         dark_light;
+      guint32      *dest = (guint32 *) info->dest;
 
-      dark_light = (y >> check_shift) + (info->x >> check_shift);
-
-      for (x = info->x; x < xe; x++, src += 4, dest += 3)
+      for (x = info->x; x < xe; x++, src += 4, dest++)
         {
-          guint r, g, b;
-
-          if (dark_light & 0x1)
-            {
-              r = ((src[0] << 8) + check_dark  * (256 - src[3])) >> 8;
-              g = ((src[1] << 8) + check_dark  * (256 - src[3])) >> 8;
-              b = ((src[2] << 8) + check_dark  * (256 - src[3])) >> 8;
-            }
-          else
-            {
-              r = ((src[0] << 8) + check_light * (256 - src[3])) >> 8;
-              g = ((src[1] << 8) + check_light * (256 - src[3])) >> 8;
-              b = ((src[2] << 8) + check_light * (256 - src[3])) >> 8;
-            }
-
-          dest[0] = r;
-          dest[1] = g;
-          dest[2] = b;
-
-          if (((x + 1) & check_mod) == 0)
-            dark_light += 1;
+          /*  data in src is premultiplied already  */
+          *dest = (src[3] << 24) | (src[0] << 16) | (src[1] << 8) | src[2];
         }
 
       if (++y == ye)
@@ -592,38 +344,64 @@ render_image_rgb_a (RenderInfo *info)
 }
 
 static void
-gimp_display_shell_render_info_scale (RenderInfo             *info,
-                                      const GimpDisplayShell *shell,
-                                      TileManager            *tiles,
-                                      gint                    level,
-                                      gboolean                is_premult)
+gimp_display_shell_render_info_init (RenderInfo       *info,
+                                     GimpDisplayShell *shell,
+                                     gint              x,
+                                     gint              y,
+                                     gint              w,
+                                     gint              h,
+                                     cairo_surface_t  *dest,
+                                     TileManager      *tiles,
+                                     gint              level,
+                                     gboolean          is_premult)
 {
+  gint offset_x;
+  gint offset_y;
+
+  gimp_display_shell_scroll_get_render_start_offset (shell,
+						     &offset_x, &offset_y);
+
+  info->x = x + offset_x;
+  info->y = y + offset_y;
+  info->w = w;
+  info->h = h;
+
+  /* This function must be called before switching from drawing
+   * on the surface with cairo to drawing on it directly
+   */
+  cairo_surface_flush (dest);
+
+  info->dest        = cairo_image_surface_get_data (dest);
+  info->dest_bpl    = cairo_image_surface_get_stride (dest);
+
   info->src_tiles      = tiles;
   info->src_is_premult = is_premult;
 
-  /* We must reset info->dest because this member is modified in render
-   * functions.
-   */
-  info->dest     = shell->render_buf;
+  info->scalex      = shell->scale_x * (1 << level);
+  info->scaley      = shell->scale_y * (1 << level);
 
-  info->scalex   = shell->scale_x * (1 << level);
-  info->scaley   = shell->scale_y * (1 << level);
+  info->full_scalex = shell->scale_x;
+  info->full_scaley = shell->scale_y;
 
   /* use Bresenham like stepping */
-  info->x_dest_inc = shell->x_dest_inc;
-  info->x_src_dec  = shell->x_src_dec << level;
+  info->x_dest_inc  = shell->x_dest_inc >> level;
+  info->x_src_dec   = shell->x_src_dec;
 
-  info->dx_start   = ((gint64) info->x_dest_inc) * info->x + info->x_dest_inc / 2;
-  info->src_x      = info->dx_start / info->x_src_dec;
-  info->dx_start   = info->dx_start % info->x_src_dec;
+  info->dx_start    = ((gint64) info->x_dest_inc * info->x
+                       + info->x_dest_inc / 2);
+
+  info->src_x       = info->dx_start / info->x_src_dec;
+  info->dx_start    = info->dx_start % info->x_src_dec;
 
   /* same for y */
-  info->y_dest_inc = shell->y_dest_inc;
-  info->y_src_dec  = shell->y_src_dec << level;
+  info->y_dest_inc  = shell->y_dest_inc >> level;
+  info->y_src_dec   = shell->y_src_dec;
 
-  info->dy_start   = ((gint64) info->y_dest_inc) * info->y + info->y_dest_inc / 2;
-  info->src_y      = info->dy_start / info->y_src_dec;
-  info->dy_start   = info->dy_start % info->y_src_dec;
+  info->dy_start    = ((gint64) info->y_dest_inc * info->y
+                       + info->y_dest_inc / 2);
+
+  info->src_y       = info->dy_start / info->y_src_dec;
+  info->dy_start    = info->dy_start % info->y_src_dec;
 
   /* make sure that the footprint is in the range 256..512 */
   info->footprint_x = info->x_src_dec;
@@ -650,6 +428,17 @@ gimp_display_shell_render_info_scale (RenderInfo             *info,
     {
       info->footprint_y <<= 1;
       info->footshift_y ++;
+    }
+
+  switch (shell->display->config->zoom_quality)
+    {
+    case GIMP_ZOOM_QUALITY_LOW:
+      info->zoom_quality = GIMP_DISPLAY_ZOOM_FAST;
+      break;
+
+    case GIMP_ZOOM_QUALITY_HIGH:
+      info->zoom_quality = GIMP_DISPLAY_ZOOM_PIXEL_AA;
+      break;
     }
 }
 
@@ -705,7 +494,7 @@ box_filter_premult (const guint    left_weight,
       case 4:
 #define ALPHA 3
         {
-          guint factors[9] =
+          const guint factors[9] =
             {
               (src[1][ALPHA] * top_weight)    >> 4,
               (src[4][ALPHA] * middle_weight) >> 4,
@@ -718,9 +507,11 @@ box_filter_premult (const guint    left_weight,
               (src[6][ALPHA] * bottom_weight) >> 4
             };
 
-          guint a = (center_weight * (factors[0] + factors[1] + factors[2]) +
-                     right_weight  * (factors[3] + factors[4] + factors[5]) +
-                     left_weight   * (factors[6] + factors[7] + factors[8]));
+          const guint a =
+            (center_weight * (factors[0] + factors[1] + factors[2]) +
+             right_weight  * (factors[3] + factors[4] + factors[5]) +
+             left_weight   * (factors[6] + factors[7] + factors[8]));
+
           guint i;
 
           for (i = 0; i < ALPHA; i++)
@@ -750,7 +541,7 @@ box_filter_premult (const guint    left_weight,
          *       the behavior in all needed ways.
          */
         {
-          guint factors[9] =
+          const guint factors[9] =
             {
               (src[1][ALPHA] * top_weight)    >> 4,
               (src[4][ALPHA] * middle_weight) >> 4,
@@ -763,9 +554,11 @@ box_filter_premult (const guint    left_weight,
               (src[6][ALPHA] * bottom_weight) >> 4
             };
 
-          guint a = (center_weight * (factors[0] + factors[1] + factors[2]) +
-                     right_weight  * (factors[3] + factors[4] + factors[5]) +
-                     left_weight   * (factors[6] + factors[7] + factors[8]));
+          const guint a =
+            (center_weight * (factors[0] + factors[1] + factors[2]) +
+             right_weight  * (factors[3] + factors[4] + factors[5]) +
+             left_weight   * (factors[6] + factors[7] + factors[8]));
+
           guint i;
 
           for (i = 0; i < ALPHA; i++)
@@ -848,13 +641,13 @@ render_image_tile_fault (RenderInfo *info)
           info->scaley == 1.0)
 
       /* or when we're larger than 1.0 and not using any AA */
-      || (info->shell->scale_x > 1.0 &&
-          info->shell->scale_y > 1.0 &&
+      || (info->full_scalex > 1.0 &&
+          info->full_scaley > 1.0 &&
           (! (info->zoom_quality & GIMP_DISPLAY_ZOOM_PIXEL_AA)))
 
       /* or at any point when both scale factors are greater or equal to 200% */
-      || (info->shell->scale_x >= 2.0 &&
-          info->shell->scale_y >= 2.0 )
+      || (info->full_scalex >= 2.0 &&
+          info->full_scaley >= 2.0 )
 
       /* or when we're scaling a 1bpp texture, this code-path seems to be
        * invoked when interacting with SIOX which uses a palletized drawable
@@ -1066,7 +859,7 @@ render_image_tile_fault (RenderInfo *info)
             }
           else
             {
-              tilexL =- 1;  /* this forces a refetch of the left most source
+              tilexL = -1;  /* this forces a refetch of the left most source
                                samples */
             }
 

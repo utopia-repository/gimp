@@ -4,9 +4,9 @@
  * gimpsessioninfo-dockable.c
  * Copyright (C) 2001-2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,13 +26,15 @@
 
 #include "widgets-types.h"
 
-#include "gimpcontainerview.h"
 #include "gimpcontainerview-utils.h"
+#include "gimpcontainerview.h"
 #include "gimpdialogfactory.h"
 #include "gimpdock.h"
 #include "gimpdockable.h"
 #include "gimpsessioninfo-aux.h"
 #include "gimpsessioninfo-dockable.h"
+#include "gimpsessionmanaged.h"
+#include "gimptoolbox.h"
 
 
 enum
@@ -66,8 +67,8 @@ gimp_session_info_dockable_free (GimpSessionInfoDockable *info)
 
   if (info->aux_info)
     {
-      g_list_foreach (info->aux_info, (GFunc) gimp_session_info_aux_free, NULL);
-      g_list_free (info->aux_info);
+      g_list_free_full (info->aux_info,
+                        (GDestroyNotify) gimp_session_info_aux_free);
       info->aux_info = NULL;
     }
 
@@ -251,9 +252,9 @@ gimp_session_info_dockable_from_widget (GimpDockable *dockable)
 
   info = gimp_session_info_dockable_new ();
 
-  info->locked     = dockable->locked;
+  info->locked     = gimp_dockable_get_locked (dockable);
   info->identifier = g_strdup (entry->identifier);
-  info->tab_style  = dockable->tab_style;
+  info->tab_style  = gimp_dockable_get_tab_style (dockable);
   info->view_size  = -1;
 
   view = gimp_container_view_get_by_dockable (dockable);
@@ -264,7 +265,9 @@ gimp_session_info_dockable_from_widget (GimpDockable *dockable)
   if (view_size > 0 && view_size != entry->view_size)
     info->view_size = view_size;
 
-  info->aux_info = gimp_session_info_aux_get_list (GTK_WIDGET (dockable));
+  if (GIMP_IS_SESSION_MANAGED (dockable))
+    info->aux_info =
+      gimp_session_managed_get_aux_info (GIMP_SESSION_MANAGED (dockable));
 
   return info;
 }
@@ -282,22 +285,27 @@ gimp_session_info_dockable_restore (GimpSessionInfoDockable *info,
       info->view_size > GIMP_VIEW_SIZE_GIGANTIC)
     info->view_size = -1;
 
-  /*  use the new dock's dialog factory to create dockables
-   *  because it may be different from the dialog factory
-   *  the dock was created from.
-   */
-  dockable = gimp_dialog_factory_dockable_new (dock->dialog_factory,
-                                               dock,
-                                               info->identifier,
-                                               info->view_size);
+  dockable =
+    gimp_dialog_factory_dockable_new (gimp_dock_get_dialog_factory (dock),
+                                      dock,
+                                      info->identifier,
+                                      info->view_size);
 
   if (dockable)
     {
+      /*  gimp_dialog_factory_dockable_new() might return an already
+       *  existing singleton dockable, return NULL so our caller won't
+       *  try to add it to another dockbook
+       */
+      if (gimp_dockable_get_dockbook (GIMP_DOCKABLE (dockable)))
+        return NULL;
+
       gimp_dockable_set_locked    (GIMP_DOCKABLE (dockable), info->locked);
       gimp_dockable_set_tab_style (GIMP_DOCKABLE (dockable), info->tab_style);
 
       if (info->aux_info)
-        gimp_session_info_aux_set_list (dockable, info->aux_info);
+        gimp_session_managed_set_aux_info (GIMP_SESSION_MANAGED (dockable),
+                                           info->aux_info);
     }
 
   return GIMP_DOCKABLE (dockable);

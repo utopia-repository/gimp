@@ -2,19 +2,16 @@
 GimpModule
 
 <!-- ##### SECTION Short_Description ##### -->
-A #GTypeModule subclass which implements module loading using #GModule.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A #GTypeModule subclass which implements module loading using #GModule.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#GModule
-</para>
-<para>
-#GTypeModule
+
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -25,11 +22,7 @@ A #GTypeModule subclass which implements module loading using #GModule.
 
 <!-- ##### STRUCT GimpModule ##### -->
 <para>
-#GimpModule is a generic mechanism to dynamically load modules into
-GIMP.  It is a #GTypeModule subclass, implementing module loading
-using #GModule.  #GimpModule does not know which functionality is
-implemented by the modules, it just provides a framework to get
-arbitrary #GType implementations loaded from disk.
+
 </para>
 
 @filename: 
@@ -49,68 +42,61 @@ arbitrary #GType implementations loaded from disk.
 
 <!-- ##### STRUCT GimpModuleInfo ##### -->
 <para>
-This structure contains information about a loadable module.
+
 </para>
 
-@abi_version: The #GIMP_MODULE_ABI_VERSION the module was compiled against.
-@purpose:     The module's general purpose.
-@author:      The module's author.
-@version:     The module's version.
-@copyright:   The module's copyright.
-@date:        The module's release date.
+@abi_version: 
+@purpose: 
+@author: 
+@version: 
+@copyright: 
+@date: 
 
 <!-- ##### ENUM GimpModuleState ##### -->
 <para>
-The possible states a #GimpModule can be in.
+
 </para>
 
-@GIMP_MODULE_STATE_ERROR:       Missing gimp_module_register() function
-                                or other error.
-@GIMP_MODULE_STATE_LOADED:      An instance of a type implemented by
-                                this module is allocated.
-@GIMP_MODULE_STATE_LOAD_FAILED: gimp_module_register() returned #FALSE.
-@GIMP_MODULE_STATE_NOT_LOADED:  There are no instances allocated of
-                                types implemented by this module.
+@GIMP_MODULE_STATE_ERROR: 
+@GIMP_MODULE_STATE_LOADED: 
+@GIMP_MODULE_STATE_LOAD_FAILED: 
+@GIMP_MODULE_STATE_NOT_LOADED: 
 
 <!-- ##### USER_FUNCTION GimpModuleQueryFunc ##### -->
 <para>
-The signature of the query function a loadable GIMP module must
-implement.  In the module, the function must be called
-gimp_module_query().
+
 </para>
 
-<para>
-#GimpModule will copy the returned #GimpModuleInfo struct, so the
-module doesn't need to keep these values around (however in most cases
-the module will just return a pointer to a constant structure).
-</para>
-
-@module:  The #GimpModule responsible for this loadable module.
-@Returns: The #GimpModuleInfo struct describing the module.
+@module: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GimpModuleRegisterFunc ##### -->
 <para>
-The signature of the register function a loadable GIMP module must
-implement.  In the module, the function must be called
-gimp_module_register().
+
 </para>
 
+@module: 
+@Returns: 
+
+
+<!-- ##### MACRO GIMP_MODULE_ERROR ##### -->
 <para>
-When this function is called, the module should register all the types
-it implements with the passed @module.
+
 </para>
 
-@module:  The #GimpModule responsible for this loadable module.
-@Returns: #TRUE on success, #FALSE otherwise.
 
+
+<!-- ##### ENUM GimpModuleError ##### -->
+<para>
+
+</para>
+
+@GIMP_MODULE_FAILED: 
 
 <!-- ##### MACRO GIMP_MODULE_ABI_VERSION ##### -->
 <para>
-The version of the module system's ABI. Modules put this value into
-#GimpModuleInfo's @abi_version field so the code loading the modules
-can check if it was compiled against the same module ABI the modules
-are compiled against.
+
 </para>
 
 
@@ -208,5 +194,14 @@ are compiled against.
 </para>
 
 @info: 
+
+
+<!-- ##### FUNCTION gimp_module_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
 
 

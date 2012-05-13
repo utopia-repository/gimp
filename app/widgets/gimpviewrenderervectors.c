@@ -5,9 +5,9 @@
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *                    Simon Budig <simon@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,12 +16,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
@@ -38,10 +38,11 @@
 #include "gimpviewrenderervectors.h"
 
 
-static void   gimp_view_renderer_vectors_draw (GimpViewRenderer   *renderer,
-                                               GtkWidget          *widget,
-                                               cairo_t            *cr,
-                                               const GdkRectangle *area);
+static void   gimp_view_renderer_vectors_draw (GimpViewRenderer *renderer,
+                                               GtkWidget        *widget,
+                                               cairo_t          *cr,
+                                               gint              available_width,
+                                               gint              available_height);
 
 
 G_DEFINE_TYPE (GimpViewRendererVectors, gimp_view_renderer_vectors,
@@ -64,46 +65,47 @@ gimp_view_renderer_vectors_init (GimpViewRendererVectors *renderer)
 }
 
 static void
-gimp_view_renderer_vectors_draw (GimpViewRenderer   *renderer,
-                                 GtkWidget          *widget,
-                                 cairo_t            *cr,
-                                 const GdkRectangle *area)
+gimp_view_renderer_vectors_draw (GimpViewRenderer *renderer,
+                                 GtkWidget        *widget,
+                                 cairo_t          *cr,
+                                 gint              available_width,
+                                 gint              available_height)
 {
-  GtkStyle       *style   = gtk_widget_get_style (widget);
-  GimpVectors    *vectors = GIMP_VECTORS (renderer->viewable);
-  GimpBezierDesc *bezdesc;
-  gdouble         xscale;
-  gdouble         yscale;
-  gint            x, y;
+  GtkStyle             *style   = gtk_widget_get_style (widget);
+  GimpVectors          *vectors = GIMP_VECTORS (renderer->viewable);
+  const GimpBezierDesc *desc;
 
   gdk_cairo_set_source_color (cr, &style->white);
 
-  x = area->x + (area->width  - renderer->width)  / 2;
-  y = area->y + (area->height - renderer->height) / 2;
-
-  cairo_translate (cr, x, y);
+  cairo_translate (cr,
+                   (available_width  - renderer->width)  / 2,
+                   (available_height - renderer->height) / 2);
   cairo_rectangle (cr, 0, 0, renderer->width, renderer->height);
   cairo_clip_preserve (cr);
   cairo_fill (cr);
 
-  xscale = (gdouble) renderer->width / (gdouble) gimp_item_width  (GIMP_ITEM (vectors));
-  yscale = (gdouble) renderer->height / (gdouble) gimp_item_height (GIMP_ITEM (vectors));
-  cairo_scale (cr, xscale, yscale);
+  desc = gimp_vectors_get_bezier (vectors);
 
-  /* determine line width */
-  xscale = yscale = 0.5;
-  cairo_device_to_user_distance (cr, &xscale, &yscale);
-
-  cairo_set_line_width (cr, MAX (xscale, yscale));
-  gdk_cairo_set_source_color (cr, &style->black);
-
-  bezdesc = gimp_vectors_make_bezier (vectors);
-
-  if (bezdesc)
+  if (desc)
     {
-      cairo_append_path (cr, (cairo_path_t *) bezdesc);
+      gdouble xscale;
+      gdouble yscale;
+
+      xscale = ((gdouble) renderer->width /
+                (gdouble) gimp_item_get_width  (GIMP_ITEM (vectors)));
+      yscale = ((gdouble) renderer->height /
+                (gdouble) gimp_item_get_height (GIMP_ITEM (vectors)));
+
+      cairo_scale (cr, xscale, yscale);
+
+      /* determine line width */
+      xscale = yscale = 0.5;
+      cairo_device_to_user_distance (cr, &xscale, &yscale);
+
+      cairo_set_line_width (cr, MAX (xscale, yscale));
+      gdk_cairo_set_source_color (cr, &style->black);
+
+      cairo_append_path (cr, (cairo_path_t *) desc);
       cairo_stroke (cr);
-      g_free (bezdesc->data);
-      g_free (bezdesc);
     }
 }

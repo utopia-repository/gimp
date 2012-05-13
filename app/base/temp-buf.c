@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,17 +12,21 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <fcntl.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
+#include <cairo.h>
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
-#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "base-types.h"
@@ -106,68 +110,6 @@ temp_buf_new (gint          width,
   return temp;
 }
 
-/* This function simply renders a checkerboard with the given
-   parameters into a newly allocated RGB tempbuf */
-
-TempBuf *
-temp_buf_new_check (gint           width,
-                    gint           height,
-                    GimpCheckType  check_type,
-                    GimpCheckSize  check_size)
-{
-  TempBuf *new;
-  guchar  *data;
-  guchar   check_shift = 0;
-  guchar   check_mod   = 0;
-  guchar   check_light = 0;
-  guchar   check_dark  = 0;
-  gint     x, y;
-
-  g_return_val_if_fail (width > 0 && height > 0, NULL);
-
-  switch (check_size)
-    {
-    case GIMP_CHECK_SIZE_SMALL_CHECKS:
-      check_mod   = 0x3;
-      check_shift = 2;
-      break;
-    case GIMP_CHECK_SIZE_MEDIUM_CHECKS:
-      check_mod   = 0x7;
-      check_shift = 3;
-      break;
-    case GIMP_CHECK_SIZE_LARGE_CHECKS:
-      check_mod   = 0xf;
-      check_shift = 4;
-      break;
-    }
-
-  gimp_checks_get_shades (check_type, &check_light, &check_dark);
-
-  new = temp_buf_new (width, height, 3, 0, 0, NULL);
-  data = temp_buf_data (new);
-
-  for (y = 0; y < height; y++)
-    {
-      guchar check_dark = y >> check_shift;
-      guchar color      = (check_dark & 0x1) ? check_light : check_dark;
-
-      for (x = 0; x < width; x++)
-        {
-          *data++ = color;
-          *data++ = color;
-          *data++ = color;
-
-          if (((x + 1) & check_mod) == 0)
-            {
-              check_dark += 1;
-              color = (check_dark & 0x1) ? check_light : check_dark;
-            }
-        }
-    }
-
-  return new;
-}
-
 TempBuf *
 temp_buf_copy (TempBuf *src,
                TempBuf *dest)
@@ -178,6 +120,9 @@ temp_buf_copy (TempBuf *src,
 
   if (! dest)
     dest = temp_buf_new (src->width, src->height, src->bytes, 0, 0, NULL);
+
+  if (! dest)
+    return NULL;
 
   if (src->bytes != dest->bytes)
     {
@@ -194,9 +139,9 @@ temp_buf_copy (TempBuf *src,
     }
   else
     {
-      memcpy (temp_buf_data (dest),
-              temp_buf_data (src),
-              src->width * src->height * src->bytes);
+      memcpy (temp_buf_get_data (dest),
+              temp_buf_get_data (src),
+              temp_buf_get_data_size (src));
     }
 
   return dest;
@@ -256,8 +201,8 @@ temp_buf_scale (TempBuf *src,
                        src->bytes,
                        0, 0, NULL);
 
-  src_data  = temp_buf_data (src);
-  dest_data = temp_buf_data (dest);
+  src_data  = temp_buf_get_data (src);
+  dest_data = temp_buf_get_data (dest);
 
   x_ratio = (gdouble) src->width  / (gdouble) new_width;
   y_ratio = (gdouble) src->height / (gdouble) new_height;
@@ -364,7 +309,7 @@ temp_buf_demultiply (TempBuf *buf)
       break;
 
     case 2:
-      data = temp_buf_data (buf);
+      data = temp_buf_get_data (buf);
       pixels = buf->width * buf->height;
       while (pixels--)
         {
@@ -378,7 +323,7 @@ temp_buf_demultiply (TempBuf *buf)
       break;
 
     case 4:
-      data = temp_buf_data (buf);
+      data = temp_buf_get_data (buf);
       pixels = buf->width * buf->height;
       while (pixels--)
         {
@@ -408,9 +353,15 @@ temp_buf_free (TempBuf *buf)
 }
 
 guchar *
-temp_buf_data (TempBuf *buf)
+temp_buf_get_data (const TempBuf *buf)
 {
   return buf->data;
+}
+
+gsize
+temp_buf_get_data_size (TempBuf *buf)
+{
+  return buf->bytes * buf->width * buf->height;
 }
 
 guchar *
@@ -425,9 +376,33 @@ gsize
 temp_buf_get_memsize (TempBuf *buf)
 {
   if (buf)
-    return (sizeof (TempBuf) + buf->bytes * buf->width * buf->height);
+    return (sizeof (TempBuf) + temp_buf_get_data_size (buf));
 
   return 0;
+}
+
+
+/**
+ * temp_buf_dump:
+ * @buf:
+ * @file:
+ *
+ * Dumps a TempBuf to a raw RGB image that is easy to analyze, for
+ * example with GIMP.
+ **/
+void
+temp_buf_dump (TempBuf     *buf,
+               const gchar *filename)
+{
+  gint fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+
+  g_return_if_fail (fd != -1);
+  g_return_if_fail (buf != NULL);
+  g_return_if_fail (temp_buf_get_data (buf) != NULL);
+
+  write (fd, temp_buf_get_data (buf), temp_buf_get_data_size (buf));
+
+  close (fd);
 }
 
 
@@ -441,8 +416,8 @@ temp_buf_to_color (TempBuf *src_buf,
   guchar *dest;
   glong   num_pixels;
 
-  src  = temp_buf_data (src_buf);
-  dest = temp_buf_data (dest_buf);
+  src  = temp_buf_get_data (src_buf);
+  dest = temp_buf_get_data (dest_buf);
 
   num_pixels = src_buf->width * src_buf->height;
 
@@ -488,8 +463,8 @@ temp_buf_to_gray (TempBuf *src_buf,
   guchar       *dest;
   glong         num_pixels;
 
-  src  = temp_buf_data (src_buf);
-  dest = temp_buf_data (dest_buf);
+  src  = temp_buf_get_data (src_buf);
+  dest = temp_buf_get_data (dest_buf);
 
   num_pixels = src_buf->width * src_buf->height;
 

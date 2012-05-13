@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -72,6 +71,8 @@
 #define OBJ_SELECT_GT       1
 #define OBJ_SELECT_LT       2
 #define OBJ_SELECT_EQ       4
+
+#define UPDATE_DELAY 300 /* From GtkRange in GTK+ 2.22 */
 
 /* Globals */
 gint   undo_level;  /* Last slot filled in -1 = no undo */
@@ -138,6 +139,7 @@ static gchar          *gfig_path       = NULL;
 static GtkWidget      *page_menu_bg;
 static GtkWidget      *tool_options_notebook;
 static GtkWidget      *fill_type_notebook;
+static guint           paint_timeout   = 0;
 
 static GtkActionGroup *gfig_actions    = NULL;
 
@@ -157,8 +159,6 @@ static void       gfig_grid_action_callback  (GtkAction *action,
                                               gpointer   data);
 static void       gfig_prefs_action_callback (GtkAction *action,
                                               gpointer   data);
-static gint       gfig_scale_x               (gint       x);
-static gint       gfig_scale_y               (gint       y);
 static void       toggle_show_image          (void);
 static void       gridtype_combo_callback    (GtkWidget *widget,
                                               gpointer data);
@@ -188,7 +188,6 @@ static void     lower_selected_obj           (GtkWidget *widget,
 static void     toggle_obj_type              (GtkRadioAction *action,
                                               GtkRadioAction *current,
                                               gpointer        data);
-static void     gfig_new_gc                  (void);
 
 static GtkUIManager *create_ui_manager       (GtkWidget *window);
 
@@ -207,6 +206,7 @@ gfig_dialog (void)
   GtkWidget    *frame;
   gint          img_width;
   gint          img_height;
+  GimpImageType img_type;
   GtkWidget    *toggle;
   GtkWidget    *right_vbox;
   GtkWidget    *hbox;
@@ -218,6 +218,7 @@ gfig_dialog (void)
 
   img_width  = gimp_drawable_width (gfig_context->drawable_id);
   img_height = gimp_drawable_height (gfig_context->drawable_id);
+  img_type   = gimp_drawable_type_with_alpha (gfig_context->drawable_id);
 
   /*
    * See if there is a "gfig" parasite.  If so, this is a gfig layer,
@@ -226,7 +227,7 @@ gfig_dialog (void)
    */
   gfig_list = NULL;
   undo_level = -1;
-  parasite = gimp_drawable_parasite_find (gfig_context->drawable_id, "gfig");
+  parasite = gimp_item_get_parasite (gfig_context->drawable_id, "gfig");
   gfig_context->enable_repaint = FALSE;
 
   /* debug */
@@ -246,9 +247,9 @@ gfig_dialog (void)
     {
       newlayer = gimp_layer_new (gfig_context->image_id, "GFig",
                                  img_width, img_height,
-                                 GIMP_RGBA_IMAGE, 100.0, GIMP_NORMAL_MODE);
+                                 img_type, 100.0, GIMP_NORMAL_MODE);
       gimp_drawable_fill (newlayer, GIMP_TRANSPARENT_FILL);
-      gimp_image_add_layer (gfig_context->image_id, newlayer, -1);
+      gimp_image_insert_layer (gfig_context->image_id, newlayer, -1, -1);
       gfig_context->drawable_id = newlayer;
       gfig_context->using_new_layer = TRUE;
     }
@@ -283,7 +284,7 @@ gfig_dialog (void)
     }
 
   /* Start building the dialog up */
-  top_level_dlg = gimp_dialog_new (_("Gfig"), PLUG_IN_BINARY,
+  top_level_dlg = gimp_dialog_new (_("Gfig"), PLUG_IN_ROLE,
                                    NULL, 0,
                                    gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -300,36 +301,33 @@ gfig_dialog (void)
   g_signal_connect (top_level_dlg, "response",
                     G_CALLBACK (gfig_response),
                     top_level_dlg);
-  g_signal_connect (top_level_dlg, "destroy",
-                    G_CALLBACK (gtk_main_quit),
-                    NULL);
 
   /* build the menu */
   ui_manager = create_ui_manager (top_level_dlg);
   menubar = gtk_ui_manager_get_widget (ui_manager, "/ui/gfig-menubar");
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (top_level_dlg)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (top_level_dlg))),
                       menubar, FALSE, FALSE, 0);
   gtk_widget_show (menubar);
   toolbar = gtk_ui_manager_get_widget (ui_manager, "/ui/gfig-toolbar");
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (top_level_dlg)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (top_level_dlg))),
                       toolbar, FALSE, FALSE, 0);
   gtk_widget_show (toolbar);
 
   gfig_dialog_action_set_sensitive ("undo", undo_level >= 0);
 
   /* Main box */
-  main_hbox = gtk_hbox_new (FALSE, 12);
+  main_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
-  gtk_box_pack_end (GTK_BOX (GTK_DIALOG (top_level_dlg)->vbox), main_hbox,
-                    TRUE, TRUE, 0);
+  gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (top_level_dlg))),
+                    main_hbox, TRUE, TRUE, 0);
 
   /* Preview itself */
   gtk_box_pack_start (GTK_BOX (main_hbox), make_preview (), FALSE, FALSE, 0);
 
   gtk_widget_show (gfig_context->preview);
 
-  right_vbox = gtk_vbox_new (FALSE, 12);
+  right_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), right_vbox, FALSE, FALSE, 0);
   gtk_widget_show (right_vbox);
 
@@ -357,11 +355,11 @@ gfig_dialog (void)
   gtk_frame_set_label_widget (GTK_FRAME (frame), toggle);
   gtk_widget_show (toggle);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -402,11 +400,11 @@ gfig_dialog (void)
   gtk_box_pack_start (GTK_BOX (right_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -472,7 +470,7 @@ gfig_dialog (void)
                             gfig_context->gradient_select, NULL);
 
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (right_vbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -484,9 +482,9 @@ gfig_dialog (void)
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
                     &gfig_context->show_background);
-  g_signal_connect (toggle, "toggled",
-                    G_CALLBACK (gfig_preview_expose),
-                    NULL);
+  g_signal_connect_swapped (toggle, "toggled",
+                    G_CALLBACK (gtk_widget_queue_draw),
+                    gfig_context->preview);
   gtk_widget_show (toggle);
 
   /* "snap to grid" checkbutton at bottom of style frame */
@@ -521,8 +519,6 @@ gfig_dialog (void)
 
   gtk_widget_show (top_level_dlg);
 
-  gfig_new_gc (); /* Need this for drawing */
-
   gfig = gfig_load_from_parasite ();
   if (gfig)
     {
@@ -550,6 +546,7 @@ gfig_response (GtkWidget *widget,
 
   switch (response_id)
     {
+    case GTK_RESPONSE_DELETE_EVENT:
     case GTK_RESPONSE_CANCEL:
       /* if we created a new layer, delete it */
       if (gfig_context->using_new_layer)
@@ -581,6 +578,7 @@ gfig_response (GtkWidget *widget,
     }
 
   gtk_widget_destroy (widget);
+  gtk_main_quit ();
 }
 
 void
@@ -778,41 +776,60 @@ gfig_clear_action_callback (GtkWidget *widget,
   gfig_paint_callback ();
 }
 
+void
+draw_item (cairo_t *cr, gboolean fill)
+{
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
+
+  if (fill)
+    {
+      cairo_fill_preserve (cr);
+    }
+  else
+    {
+      cairo_set_line_width (cr, 3.0);
+      cairo_stroke_preserve (cr);
+    }
+
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 1.0);
+  cairo_set_line_width (cr, 1.0);
+  cairo_stroke (cr);
+}
 
 /* Given a point x, y draw a circle */
 void
 draw_circle (GdkPoint *p,
-             gboolean  selected)
+             gboolean  selected,
+             cairo_t  *cr)
 {
   if (!selvals.opts.showcontrol)
     return;
 
-  gdk_draw_arc (gfig_context->preview->window,
-                gfig_gc,
-                selected,
-                p->x - SQ_SIZE/2,
-                p->y - SQ_SIZE/2,
-                SQ_SIZE,
-                SQ_SIZE,
-                0,
-                360*64);
+  cairo_arc (cr,
+             gfig_scale_x (p->x) + .5,
+             gfig_scale_y (p->y) + .5,
+             SQ_SIZE / 2,
+             0, 2 * G_PI);
+
+  draw_item (cr, selected);
 }
 
 /* Given a point x, y draw a square around it */
 void
 draw_sqr (GdkPoint *p,
-          gboolean  selected)
+          gboolean  selected,
+          cairo_t  *cr)
 {
   if (!selvals.opts.showcontrol)
     return;
 
-  gdk_draw_rectangle (gfig_context->preview->window,
-                      gfig_gc,
-                      selected,
-                      gfig_scale_x (p->x) - SQ_SIZE / 2,
-                      gfig_scale_y (p->y) - SQ_SIZE / 2,
-                      SQ_SIZE,
-                      SQ_SIZE);
+  cairo_rectangle (cr,
+                   gfig_scale_x (p->x) + .5 - SQ_SIZE / 2,
+                   gfig_scale_y (p->y) + .5 - SQ_SIZE / 2,
+                   SQ_SIZE,
+                   SQ_SIZE);
+
+  draw_item (cr, selected);
 }
 
 static void
@@ -838,8 +855,7 @@ gfig_list_load_all (const gchar *path)
 static void
 gfig_list_free_all (void)
 {
-  g_list_foreach (gfig_list, (GFunc) gfig_free, NULL);
-  g_list_free (gfig_list);
+  g_list_free_full (gfig_list, (GDestroyNotify) gfig_free);
   gfig_list = NULL;
 }
 
@@ -1189,6 +1205,26 @@ select_filltype_callback (GtkWidget *widget)
   gfig_paint_callback ();
 }
 
+static gboolean
+gfig_paint_timeout (gpointer data)
+{
+  gfig_paint_callback ();
+
+  paint_timeout = 0;
+  
+  return FALSE;
+}
+
+static void
+gfig_paint_delayed (void)
+{
+  if (paint_timeout)
+    g_source_remove (paint_timeout);
+
+  paint_timeout =
+    g_timeout_add (UPDATE_DELAY, gfig_paint_timeout, NULL);
+}
+
 static void
 gfig_prefs_action_callback (GtkAction *widget,
                             gpointer   data)
@@ -1197,14 +1233,14 @@ gfig_prefs_action_callback (GtkAction *widget,
 
   if (!dialog)
     {
-      GtkWidget *main_vbox;
-      GtkWidget *table;
-      GtkWidget *toggle;
-      GtkObject *size_data;
-      GtkWidget *scale;
-      GtkObject *scale_data;
+      GtkWidget     *main_vbox;
+      GtkWidget     *table;
+      GtkWidget     *toggle;
+      GtkObject     *size_data;
+      GtkWidget     *scale;
+      GtkAdjustment *scale_data;
 
-      dialog = gimp_dialog_new (_("Options"), "gfig-options",
+      dialog = gimp_dialog_new (_("Options"), "gimp-gfig-options",
                                 GTK_WIDGET (data), 0, NULL, NULL,
 
                                 GTK_STOCK_CLOSE,  GTK_RESPONSE_CLOSE,
@@ -1219,9 +1255,10 @@ gfig_prefs_action_callback (GtkAction *widget,
                         G_CALLBACK (gtk_widget_destroy),
                         NULL);
 
-      main_vbox = gtk_vbox_new (FALSE, 0);
+      main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
       gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+      gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                          main_vbox, TRUE, TRUE, 0);
       gtk_widget_show (main_vbox);
 
       /* Put buttons in */
@@ -1286,7 +1323,7 @@ gfig_prefs_action_callback (GtkAction *widget,
                                              _("White"),       LAYER_WHITE_BG,
                                              _("Copy"),        LAYER_COPY_BG,
                                              NULL);
-      gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (page_menu_bg), 0);
+      gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (page_menu_bg), selvals.onlayerbg);
 
       g_signal_connect (page_menu_bg, "changed",
                         G_CALLBACK (paint_combo_callback),
@@ -1313,17 +1350,16 @@ gfig_prefs_action_callback (GtkAction *widget,
                         NULL);
       gtk_widget_show (toggle);
 
-      scale_data =
+      scale_data = (GtkAdjustment *)
         gtk_adjustment_new (selopt.feather_radius, 0.0, 100.0, 1.0, 1.0, 0.0);
-      scale = gtk_hscale_new (GTK_ADJUSTMENT (scale_data));
+      scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, scale_data);
       gtk_scale_set_value_pos (GTK_SCALE (scale), GTK_POS_TOP);
-      gtk_range_set_update_policy (GTK_RANGE (scale), GTK_UPDATE_DELAYED);
 
       g_signal_connect (scale_data, "value-changed",
                         G_CALLBACK (gimp_double_adjustment_update),
                         &selopt.feather_radius);
       g_signal_connect (scale_data, "value-changed",
-                        G_CALLBACK (gfig_paint_callback),
+                        G_CALLBACK (gfig_paint_delayed),
                         NULL);
       gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                                  _("Radius:"), 0.0, 1.0, scale, 1, FALSE);
@@ -1352,7 +1388,7 @@ gfig_grid_action_callback (GtkAction *action,
       GtkObject *sectors_data;
       GtkObject *radius_data;
 
-      dialog = gimp_dialog_new (_("Grid"), "gfig-grid",
+      dialog = gimp_dialog_new (_("Grid"), "gimp-gfig-grid",
                                 GTK_WIDGET (data), 0, NULL, NULL,
 
                                 GTK_STOCK_CLOSE,  GTK_RESPONSE_CLOSE,
@@ -1367,12 +1403,13 @@ gfig_grid_action_callback (GtkAction *action,
                         G_CALLBACK (gtk_widget_destroy),
                         NULL);
 
-      main_vbox = gtk_vbox_new (FALSE, 0);
+      main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
       gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+      gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                          main_vbox, TRUE, TRUE, 0);
       gtk_widget_show (main_vbox);
 
-      hbox = gtk_hbox_new (FALSE, 6);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
       gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
       gtk_widget_show (hbox);
 
@@ -1442,7 +1479,7 @@ gfig_grid_action_callback (GtkAction *action,
                                       _("Polar"),     POLAR_GRID,
                                       _("Isometric"), ISO_GRID,
                                       NULL);
-      gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), 0);
+      gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), selvals.opts.gridtype);
 
       g_signal_connect (combo, "changed",
                         G_CALLBACK (gridtype_combo_callback),
@@ -1456,15 +1493,15 @@ gfig_grid_action_callback (GtkAction *action,
       g_object_add_weak_pointer (G_OBJECT (gfig_opt_widget.gridtypemenu),
                                  (gpointer) &gfig_opt_widget.gridtypemenu);
 
-      combo = gimp_int_combo_box_new (_("Normal"),    GTK_STATE_NORMAL,
+      combo = gimp_int_combo_box_new (_("Normal"),    GFIG_NORMAL_GC,
                                       _("Black"),     GFIG_BLACK_GC,
                                       _("White"),     GFIG_WHITE_GC,
                                       _("Grey"),      GFIG_GREY_GC,
-                                      _("Darker"),    GTK_STATE_ACTIVE,
-                                      _("Lighter"),   GTK_STATE_PRELIGHT,
-                                      _("Very dark"), GTK_STATE_SELECTED,
+                                      _("Darker"),    GFIG_DARKER_GC,
+                                      _("Lighter"),   GFIG_LIGHTER_GC,
+                                      _("Very dark"), GFIG_VERY_DARK_GC,
                                       NULL);
-      gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), 0);
+      gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo), grid_gc_type);
 
       g_signal_connect (combo, "changed",
                         G_CALLBACK (gridtype_combo_callback),
@@ -1578,13 +1615,11 @@ save_file_chooser_response (GtkFileChooser *chooser,
   if (response_id == GTK_RESPONSE_OK)
     {
       gchar   *filename;
-      GFigObj *real_current;
 
       filename = gtk_file_chooser_get_filename (chooser);
 
       obj->filename = filename;
 
-      real_current = gfig_context->current_obj;
       gfig_context->current_obj = obj;
       gfig_save_callbk ();
       gfig_context->current_obj = gfig_context->current_obj;
@@ -1770,8 +1805,9 @@ paint_combo_callback (GtkWidget *widget,
 
   switch (mtype)
     {
-    case PAINT_TYPE_MENU:
-      selvals.painttype = (PaintType) value;
+    case PAINT_BGS_MENU:
+      selvals.onlayerbg = (LayersBGType) value;
+      break;
 
     default:
       g_return_if_reached ();
@@ -1973,8 +2009,6 @@ gfig_paint_callback (void)
           gfig_context_get_current_style ()->fill_type = object->style.fill_type;
           object->class->paintfunc (object);
           gfig_context_get_current_style ()->fill_type = saved_filltype;
-
-          gimp_selection_none (gfig_context->image_id);
         }
 
       objs = g_list_next (objs);
@@ -1990,7 +2024,7 @@ gfig_paint_callback (void)
       back_pixbuf = NULL;
     }
 
-  gfig_preview_expose (gfig_context->preview, NULL);
+  gtk_widget_queue_draw (gfig_context->preview);
 }
 
 /* Draw the grid on the screen
@@ -2071,7 +2105,8 @@ toggle_obj_type (GtkRadioAction *action,
       p_cursors[selvals.otype] = gdk_cursor_new_for_display (display, ctype);
     }
 
-  gdk_window_set_cursor (gfig_context->preview->window, p_cursors[selvals.otype]);
+  gdk_window_set_cursor (gtk_widget_get_window (gfig_context->preview),
+                         p_cursors[selvals.otype]);
 }
 
 /* This could belong in a separate file ... but makes it easier to lump into
@@ -2088,7 +2123,7 @@ scale_to_orginal_x (gdouble *list)
   *list *= scale_x_factor;
 }
 
-static gint
+gint
 gfig_scale_x (gint x)
 {
   if (!selvals.scaletoimage)
@@ -2103,7 +2138,7 @@ scale_to_orginal_y (gdouble *list)
   *list *= scale_y_factor;
 }
 
-static gint
+gint
 gfig_scale_y (gint y)
 {
   if (!selvals.scaletoimage)
@@ -2142,45 +2177,28 @@ scale_to_xy (gdouble *list,
 
 void
 gfig_draw_arc (gint x, gint y, gint width, gint height, gint angle1,
-               gint angle2)
+               gint angle2, cairo_t *cr)
 {
-  gdk_draw_arc (gfig_context->preview->window,
-                gfig_gc,
-                FALSE,
-                gfig_scale_x (x - width),
-                gfig_scale_y (y - height),
-                gfig_scale_x (2 * width),
-                gfig_scale_y (2 * height),
-                angle1 * 64,
-                angle2 * 64);
+  cairo_save (cr);
+
+  cairo_translate (cr, gfig_scale_x (x), gfig_scale_y (y));
+  cairo_scale (cr, gfig_scale_x (width), gfig_scale_y (height));
+
+  if (angle1 < angle2)
+    cairo_arc (cr, 0., 0., 1., angle1 * G_PI / 180, angle2 * G_PI / 180);
+  else
+    cairo_arc_negative (cr, 0., 0., 1., angle1 * G_PI / 180, angle2 * G_PI / 180);
+
+  cairo_restore (cr);
+
+  draw_item (cr, FALSE);
 }
 
 void
-gfig_draw_line (gint x0, gint y0, gint x1, gint y1)
+gfig_draw_line (gint x0, gint y0, gint x1, gint y1, cairo_t *cr)
 {
-  gdk_draw_line (gfig_context->preview->window,
-                 gfig_gc,
-                 gfig_scale_x (x0),
-                 gfig_scale_y (y0),
-                 gfig_scale_x (x1),
-                 gfig_scale_y (y1));
-}
+  cairo_move_to (cr, gfig_scale_x (x0) + .5, gfig_scale_y (y0) + .5);
+  cairo_line_to (cr, gfig_scale_x (x1) + .5, gfig_scale_y (y1) + .5);
 
-static void
-gfig_new_gc (void)
-{
-  GdkColor fg, bg;
-
-  /*  create a new graphics context  */
-  gfig_gc = gdk_gc_new (gfig_context->preview->window);
-
-  gdk_gc_set_function (gfig_gc, GDK_INVERT);
-
-  fg.pixel = 0xFFFFFFFF;
-  bg.pixel = 0x00000000;
-  gdk_gc_set_foreground (gfig_gc, &fg);
-  gdk_gc_set_background (gfig_gc, &bg);
-
-  gdk_gc_set_line_attributes (gfig_gc, 1,
-                              GDK_LINE_SOLID, GDK_CAP_BUTT, GDK_JOIN_MITER);
+  draw_item (cr, FALSE);
 }

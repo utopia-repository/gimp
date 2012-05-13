@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -34,6 +34,7 @@
 #include "gimpimage.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-grid.h"
+#include "gimpimage-private.h"
 #include "gimpimageundo.h"
 #include "gimpparasitelist.h"
 
@@ -50,26 +51,24 @@ enum
 };
 
 
-static GObject * gimp_image_undo_constructor  (GType                  type,
-                                               guint                  n_params,
-                                               GObjectConstructParam *params);
-static void      gimp_image_undo_set_property (GObject               *object,
-                                               guint                  property_id,
-                                               const GValue          *value,
-                                               GParamSpec            *pspec);
-static void      gimp_image_undo_get_property (GObject               *object,
-                                               guint                  property_id,
-                                               GValue                *value,
-                                               GParamSpec            *pspec);
+static void     gimp_image_undo_constructed  (GObject             *object);
+static void     gimp_image_undo_set_property (GObject             *object,
+                                              guint                property_id,
+                                              const GValue        *value,
+                                              GParamSpec          *pspec);
+static void     gimp_image_undo_get_property (GObject             *object,
+                                              guint                property_id,
+                                              GValue              *value,
+                                              GParamSpec          *pspec);
 
-static gint64    gimp_image_undo_get_memsize  (GimpObject            *object,
-                                               gint64                *gui_size);
+static gint64   gimp_image_undo_get_memsize  (GimpObject          *object,
+                                              gint64              *gui_size);
 
-static void      gimp_image_undo_pop          (GimpUndo              *undo,
-                                               GimpUndoMode           undo_mode,
-                                               GimpUndoAccumulator   *accum);
-static void      gimp_image_undo_free         (GimpUndo              *undo,
-                                               GimpUndoMode           undo_mode);
+static void     gimp_image_undo_pop          (GimpUndo            *undo,
+                                              GimpUndoMode         undo_mode,
+                                              GimpUndoAccumulator *accum);
+static void     gimp_image_undo_free         (GimpUndo            *undo,
+                                              GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpImageUndo, gimp_image_undo, GIMP_TYPE_UNDO)
@@ -84,7 +83,7 @@ gimp_image_undo_class_init (GimpImageUndoClass *klass)
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor      = gimp_image_undo_constructor;
+  object_class->constructed      = gimp_image_undo_constructed;
   object_class->set_property     = gimp_image_undo_set_property;
   object_class->get_property     = gimp_image_undo_get_property;
 
@@ -144,18 +143,14 @@ gimp_image_undo_init (GimpImageUndo *undo)
 {
 }
 
-static GObject *
-gimp_image_undo_constructor (GType                  type,
-                             guint                  n_params,
-                             GObjectConstructParam *params)
+static void
+gimp_image_undo_constructed (GObject *object)
 {
-  GObject       *object;
-  GimpImageUndo *image_undo;
+  GimpImageUndo *image_undo = GIMP_IMAGE_UNDO (object);
   GimpImage     *image;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  image_undo = GIMP_IMAGE_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   image = GIMP_UNDO (object)->image;
 
@@ -198,8 +193,6 @@ gimp_image_undo_constructor (GType                  type,
     default:
       g_assert_not_reached ();
     }
-
-  return object;
 }
 
 static void
@@ -301,8 +294,9 @@ gimp_image_undo_pop (GimpUndo            *undo,
                      GimpUndoMode         undo_mode,
                      GimpUndoAccumulator *accum)
 {
-  GimpImageUndo *image_undo = GIMP_IMAGE_UNDO (undo);
-  GimpImage     *image      = undo->image;
+  GimpImageUndo    *image_undo = GIMP_IMAGE_UNDO (undo);
+  GimpImage        *image      = undo->image;
+  GimpImagePrivate *private    = GIMP_IMAGE_GET_PRIVATE (image);
 
   GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
@@ -377,8 +371,8 @@ gimp_image_undo_pop (GimpUndo            *undo,
         if (ABS (image_undo->xresolution - xres) >= 1e-5 ||
             ABS (image_undo->yresolution - yres) >= 1e-5)
           {
-            image->xresolution = image_undo->xresolution;
-            image->yresolution = image_undo->yresolution;
+            private->xresolution = image_undo->xresolution;
+            private->yresolution = image_undo->yresolution;
 
             image_undo->xresolution = xres;
             image_undo->yresolution = yres;
@@ -392,7 +386,7 @@ gimp_image_undo_pop (GimpUndo            *undo,
           GimpUnit unit;
 
           unit = gimp_image_get_unit (image);
-          image->resolution_unit = image_undo->resolution_unit;
+          private->resolution_unit = image_undo->resolution_unit;
           image_undo->resolution_unit = unit;
 
           accum->unit_changed = TRUE;
@@ -403,7 +397,7 @@ gimp_image_undo_pop (GimpUndo            *undo,
       {
         GimpGrid *grid;
 
-        grid = gimp_config_duplicate (GIMP_CONFIG (image->grid));
+        grid = gimp_config_duplicate (GIMP_CONFIG (gimp_image_get_grid (image)));
 
         gimp_image_set_grid (image, image_undo->grid, FALSE);
 
@@ -443,9 +437,9 @@ gimp_image_undo_pop (GimpUndo            *undo,
           (gimp_image_parasite_find (image, image_undo->parasite_name));
 
         if (parasite)
-          gimp_parasite_list_add (image->parasites, parasite);
+          gimp_parasite_list_add (private->parasites, parasite);
         else
-          gimp_parasite_list_remove (image->parasites,
+          gimp_parasite_list_remove (private->parasites,
                                      image_undo->parasite_name);
 
         name = parasite ? parasite->name : image_undo->parasite_name;

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -65,16 +64,21 @@ gimp_color_picker_options_class_init (GimpColorPickerOptionsClass *klass)
 
   /* override a GimpColorOptions property to get a different default value */
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_AVERAGE,
-                                    "sample-average", NULL,
+                                    "sample-average",
+                                    N_("Use accumulated color value from "
+                                       "all composited visible layers"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_PICK_MODE,
-                                 "pick-mode", NULL,
+                                 "pick-mode",
+                                 N_("Choose what color picker will do"),
                                  GIMP_TYPE_COLOR_PICK_MODE,
                                  GIMP_COLOR_PICK_MODE_FOREGROUND,
                                  GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_INFO_WINDOW,
-                                    "use-info-window", NULL,
+                                    "use-info-window",
+                                    N_("Open a floating dialog to view picked "
+                                       "color values in various color models"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
 }
@@ -140,11 +144,14 @@ gimp_color_picker_options_get_property (GObject    *object,
 GtkWidget *
 gimp_color_picker_options_gui (GimpToolOptions *tool_options)
 {
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_color_options_gui (tool_options);
-  GtkWidget *button;
-  GtkWidget *frame;
-  gchar     *str;
+  GObject         *config = G_OBJECT (tool_options);
+  GtkWidget       *vbox   = gimp_color_options_gui (tool_options);
+  GtkWidget       *button;
+  GtkWidget       *frame;
+  gchar           *str;
+  GdkModifierType  toggle_mask;
+
+  toggle_mask = gimp_get_toggle_behavior_mask ();
 
   /*  the sample merged toggle button  */
   button = gimp_prop_check_button_new (config, "sample-merged",
@@ -154,7 +161,7 @@ gimp_color_picker_options_gui (GimpToolOptions *tool_options)
 
   /*  the pick FG/BG frame  */
   str = g_strdup_printf (_("Pick Mode  (%s)"),
-                         gimp_get_mod_string (GDK_CONTROL_MASK));
+                         gimp_get_mod_string (toggle_mask));
   frame = gimp_prop_enum_radio_frame_new (config, "pick-mode", str, -1, -1);
   g_free (str);
 

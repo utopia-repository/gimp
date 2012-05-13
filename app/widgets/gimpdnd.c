@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-1997 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -797,7 +797,7 @@ gimp_dnd_data_drop_handle (GtkWidget        *widget,
 
   GIMP_LOG (DND, "data type %d", info);
 
-  if (selection_data->length <= 0)
+  if (gtk_selection_data_get_length (selection_data) <= 0)
     {
       gtk_drag_finish (context, FALSE, FALSE, time);
       return;
@@ -1053,8 +1053,7 @@ gimp_dnd_get_uri_list_data (GtkWidget        *widget,
     {
       gimp_selection_data_set_uri_list (selection, uri_list);
 
-      g_list_foreach (uri_list, (GFunc) g_free, NULL);
-      g_list_free (uri_list);
+      g_list_free_full (uri_list, (GDestroyNotify) g_free);
     }
 }
 
@@ -1074,8 +1073,7 @@ gimp_dnd_set_uri_list_data (GtkWidget        *widget,
   (* (GimpDndDropUriListFunc) set_uri_list_func) (widget, x, y, uri_list,
                                                   set_uri_list_data);
 
-  g_list_foreach (uri_list, (GFunc) g_free, NULL);
-  g_list_free (uri_list);
+  g_list_free_full (uri_list, (GDestroyNotify) g_free);
 
   return TRUE;
 }
@@ -1730,7 +1728,7 @@ gimp_dnd_get_viewable_icon (GtkWidget *widget,
       GtkWidget *hbox;
       GtkWidget *label;
 
-      hbox = gtk_hbox_new (FALSE, 3);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
       gtk_container_set_border_width (GTK_CONTAINER (hbox), 3);
       gtk_box_pack_start (GTK_BOX (hbox), view, FALSE, FALSE, 0);
       gtk_widget_show (view);

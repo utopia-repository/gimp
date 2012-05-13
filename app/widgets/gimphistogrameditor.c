@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -115,7 +115,7 @@ gimp_histogram_editor_init (GimpHistogramEditor *editor)
 
   view = GIMP_HISTOGRAM_BOX (editor->box)->view;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -397,7 +397,8 @@ gimp_histogram_editor_frozen_update (GimpHistogramEditor *editor,
        * is shown. So don't slow down painting by doing something that
        * is not even seen by the user.
        */
-      if (! editor->bg_histogram && GTK_WIDGET_DRAWABLE (editor))
+      if (! editor->bg_histogram &&
+          gtk_widget_is_drawable (GTK_WIDGET (editor)))
         {
           if (gimp_histogram_editor_validate (editor))
             editor->bg_histogram = gimp_histogram_duplicate (editor->histogram);
@@ -500,7 +501,7 @@ gimp_histogram_editor_name_update (GimpHistogramEditor *editor)
   const gchar *name = NULL;
 
   if (editor->drawable)
-    name = gimp_object_get_name (GIMP_OBJECT (editor->drawable));
+    name = gimp_object_get_name (editor->drawable);
 
   gimp_editor_set_name (GIMP_EDITOR (editor), name);
 }

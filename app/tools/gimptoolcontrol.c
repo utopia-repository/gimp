@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2002 Spencer Kimball, Peter Mattis and others
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -52,7 +51,7 @@ gimp_tool_control_init (GimpToolControl *control)
   control->handle_empty_image     = FALSE;
 
   control->dirty_mask             = GIMP_DIRTY_NONE;
-  control->motion_mode            = GIMP_MOTION_MODE_HINT;
+  control->motion_mode            = GIMP_MOTION_MODE_EXACT;
 
   control->auto_snap_to           = TRUE;
   control->snap_offset_x          = 0;
@@ -63,6 +62,11 @@ gimp_tool_control_init (GimpToolControl *control)
   control->precision              = GIMP_CURSOR_PRECISION_PIXEL_CENTER;
 
   control->toggled                = FALSE;
+
+  control->wants_click            = FALSE;
+  control->wants_double_click     = FALSE;
+  control->wants_triple_click     = FALSE;
+  control->wants_all_key_events   = FALSE;
 
   control->cursor                 = GIMP_CURSOR_MOUSE;
   control->tool_cursor            = GIMP_TOOL_CURSOR_NONE;
@@ -103,9 +107,7 @@ void
 gimp_tool_control_activate (GimpToolControl *control)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
-#ifdef GIMP_UNSTABLE
   g_return_if_fail (control->active == FALSE);
-#endif
 
   control->active = TRUE;
 }
@@ -114,9 +116,7 @@ void
 gimp_tool_control_halt (GimpToolControl *control)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
-#ifdef GIMP_UNSTABLE
   g_return_if_fail (control->active == TRUE);
-#endif
 
   control->active = FALSE;
 }
@@ -141,6 +141,7 @@ void
 gimp_tool_control_resume (GimpToolControl *control)
 {
   g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+  g_return_if_fail (control->paused_count > 0);
 
   control->paused_count--;
 }
@@ -205,23 +206,6 @@ gimp_tool_control_get_handle_empty_image (GimpToolControl *control)
 }
 
 void
-gimp_tool_control_set_wants_click (GimpToolControl *control,
-                                   gboolean         wants_click)
-{
-  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
-
-  control->wants_click = wants_click ? TRUE : FALSE;
-}
-
-gboolean
-gimp_tool_control_get_wants_click (GimpToolControl *control)
-{
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
-
-  return control->wants_click;
-}
-
-void
 gimp_tool_control_set_dirty_mask (GimpToolControl *control,
                                   GimpDirtyMask    dirty_mask)
 {
@@ -250,7 +234,7 @@ gimp_tool_control_set_motion_mode (GimpToolControl *control,
 GimpMotionMode
 gimp_tool_control_get_motion_mode (GimpToolControl *control)
 {
-  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), GIMP_MOTION_MODE_HINT);
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), GIMP_MOTION_MODE_EXACT);
 
   return control->motion_mode;
 }
@@ -270,6 +254,74 @@ gimp_tool_control_get_snap_to (GimpToolControl *control)
   g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
 
   return control->auto_snap_to;
+}
+
+void
+gimp_tool_control_set_wants_click (GimpToolControl *control,
+                                   gboolean         wants_click)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->wants_click = wants_click ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_wants_click (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->wants_click;
+}
+
+void
+gimp_tool_control_set_wants_double_click (GimpToolControl *control,
+                                          gboolean         wants_double_click)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->wants_double_click = wants_double_click ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_wants_double_click (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->wants_double_click;
+}
+
+void
+gimp_tool_control_set_wants_triple_click (GimpToolControl *control,
+                                          gboolean         wants_triple_click)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->wants_triple_click = wants_triple_click ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_wants_triple_click (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->wants_triple_click;
+}
+
+void
+gimp_tool_control_set_wants_all_key_events (GimpToolControl *control,
+                                            gboolean         wants_key_events)
+{
+  g_return_if_fail (GIMP_IS_TOOL_CONTROL (control));
+
+  control->wants_all_key_events = wants_key_events ? TRUE : FALSE;
+}
+
+gboolean
+gimp_tool_control_get_wants_all_key_events (GimpToolControl *control)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_CONTROL (control), FALSE);
+
+  return control->wants_all_key_events;
 }
 
 void

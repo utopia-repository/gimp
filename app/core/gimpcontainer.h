@@ -4,9 +4,9 @@
  * gimpcontainer.h
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_CONTAINER_H__
@@ -35,19 +34,13 @@
 
 
 typedef struct _GimpContainerClass GimpContainerClass;
+typedef struct _GimpContainerPriv  GimpContainerPriv;
 
 struct _GimpContainer
 {
-  GimpObject           parent_instance;
+  GimpObject         parent_instance;
 
-  /*  public, read-only  */
-  GType                children_type;
-  GimpContainerPolicy  policy;
-  gint                 num_children;
-
-  /*  private  */
-  GList               *handlers;
-  gint                 freeze_count;
+  GimpContainerPriv *priv;
 };
 
 struct _GimpContainerClass
@@ -83,9 +76,9 @@ struct _GimpContainerClass
 
 GType        gimp_container_get_type           (void) G_GNUC_CONST;
 
-GType        gimp_container_children_type      (const GimpContainer *container);
-GimpContainerPolicy gimp_container_policy      (const GimpContainer *container);
-gint         gimp_container_num_children       (const GimpContainer *container);
+GType        gimp_container_get_children_type  (const GimpContainer *container);
+GimpContainerPolicy gimp_container_get_policy  (const GimpContainer *container);
+gint         gimp_container_get_n_children     (const GimpContainer *container);
 
 gboolean     gimp_container_add                (GimpContainer       *container,
                                                 GimpObject          *object);
@@ -117,6 +110,9 @@ GimpObject * gimp_container_get_child_by_index (const GimpContainer *container,
 GimpObject * gimp_container_get_first_child    (const GimpContainer *container);
 GimpObject * gimp_container_get_last_child     (const GimpContainer *container);
 gint         gimp_container_get_child_index    (const GimpContainer *container,
+                                                const GimpObject    *object);
+
+GimpObject * gimp_container_get_neighbor_of    (const GimpContainer *container,
                                                 const GimpObject    *object);
 
 gchar     ** gimp_container_get_name_array     (const GimpContainer *container,

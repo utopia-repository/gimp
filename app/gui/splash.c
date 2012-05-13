@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -25,6 +24,7 @@
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "gui-types.h"
 
@@ -45,7 +45,7 @@ typedef struct
   gint            width;
   gint            height;
   GtkWidget      *progress;
-  GdkGC          *gc;
+  GdkColor        color;
   PangoLayout    *upper;
   gint            upper_x;
   gint            upper_y;
@@ -98,7 +98,6 @@ splash_create (gboolean be_verbose)
   GtkWidget          *vbox;
   GdkPixbufAnimation *pixbuf;
   GdkScreen          *screen;
-  GdkGCValues         values;
 
   g_return_if_fail (splash == NULL);
 
@@ -135,7 +134,7 @@ splash_create (gboolean be_verbose)
   gtk_container_add (GTK_CONTAINER (splash->window), frame);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
@@ -166,22 +165,26 @@ splash_create (gboolean be_verbose)
 
   splash_average_text_area (splash,
                             gdk_pixbuf_animation_get_static_image (pixbuf),
-                            &values.foreground);
+                            &splash->color);
 
   gtk_widget_realize (splash->area);
-  splash->gc = gdk_gc_new_with_values (splash->area->window, &values,
-                                       GDK_GC_FOREGROUND);
 
   if (gdk_pixbuf_animation_is_static_image (pixbuf))
     {
-      GdkPixmap *pixmap = gdk_pixmap_new (splash->area->window,
-					  splash->width, splash->height, -1);
+      GdkPixbuf *static_pixbuf = gdk_pixbuf_animation_get_static_image (pixbuf);
+      GdkPixmap *pixmap;
+      cairo_t   *cr;
 
-      gdk_draw_pixbuf (pixmap, splash->gc,
-		       gdk_pixbuf_animation_get_static_image (pixbuf),
-		       0, 0, 0, 0, splash->width, splash->height,
-		       GDK_RGB_DITHER_NORMAL, 0, 0);
-      gdk_window_set_back_pixmap (splash->area->window, pixmap, FALSE);
+      pixmap = gdk_pixmap_new (gtk_widget_get_window (splash->area),
+                               splash->width, splash->height, -1);
+
+      cr = gdk_cairo_create (pixmap);
+      gdk_cairo_set_source_pixbuf (cr, static_pixbuf, 0.0, 0.0);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+
+      gdk_window_set_back_pixmap (gtk_widget_get_window (splash->area),
+                                  pixmap, FALSE);
       g_object_unref (pixmap);
     }
 
@@ -196,7 +199,7 @@ splash_create (gboolean be_verbose)
   gtk_box_pack_end (GTK_BOX (vbox), splash->progress, FALSE, FALSE, 0);
   gtk_widget_show (splash->progress);
 
-  gtk_widget_show_now (splash->window);
+  gtk_widget_show (splash->window);
 
 #ifdef STARTUP_TIMER
   splash->timer = g_timer_new ();
@@ -211,7 +214,6 @@ splash_destroy (void)
 
   gtk_widget_destroy (splash->window);
 
-  g_object_unref (splash->gc);
   g_object_unref (splash->upper);
   g_object_unref (splash->lower);
 
@@ -263,13 +265,20 @@ splash_area_expose (GtkWidget      *widget,
                     GdkEventExpose *event,
                     GimpSplash     *splash)
 {
-  gdk_gc_set_clip_region (splash->gc, event->region);
+  cairo_t *cr = gdk_cairo_create (event->window);
 
-  gdk_draw_layout (widget->window, splash->gc,
-                   splash->upper_x, splash->upper_y, splash->upper);
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
 
-  gdk_draw_layout (widget->window, splash->gc,
-                   splash->lower_x, splash->lower_y, splash->lower);
+  gdk_cairo_set_source_color (cr, &splash->color);
+
+  cairo_move_to (cr, splash->upper_x, splash->upper_y);
+  pango_cairo_show_layout (cr, splash->upper);
+
+  cairo_move_to (cr, splash->lower_x, splash->lower_y);
+  pango_cairo_show_layout (cr, splash->lower);
+
+  cairo_destroy (cr);
 
   return FALSE;
 }
@@ -487,8 +496,7 @@ splash_image_pick_from_dir (const gchar *dirname,
           if (be_verbose)
             g_printerr (pixbuf ? "OK\n" : "failed\n");
 
-          g_list_foreach (splashes, (GFunc) g_free, NULL);
-          g_list_free (splashes);
+          g_list_free_full (splashes, (GDestroyNotify) g_free);
         }
     }
 

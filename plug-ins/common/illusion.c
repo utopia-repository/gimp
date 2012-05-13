@@ -8,19 +8,18 @@
  *                     timecop@japan.co.jp
  *                     http://www.ne.jp/asahi/linux/timecop
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -36,6 +35,7 @@
 
 #define PLUG_IN_PROC    "plug-in-illusion"
 #define PLUG_IN_BINARY  "illusion"
+#define PLUG_IN_ROLE    "gimp-illusion"
 #define PLUG_IN_VERSION "v0.8 (May 14 2000)"
 
 
@@ -80,11 +80,11 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",  "interactive / non-interactive"    },
-    { GIMP_PDB_IMAGE,    "image",     "input image"                      },
-    { GIMP_PDB_DRAWABLE, "drawable",  "input drawable"                   },
-    { GIMP_PDB_INT32,    "division",  "the number of divisions"          },
-    { GIMP_PDB_INT32,    "type",      "illusion type (0=type1, 1=type2)" }
+    { GIMP_PDB_INT32,    "run-mode",  "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
+    { GIMP_PDB_IMAGE,    "image",     "Input image"                            },
+    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"                         },
+    { GIMP_PDB_INT32,    "division",  "The number of divisions"                },
+    { GIMP_PDB_INT32,    "type",      "Illusion type { TYPE1 (0), TYPE2 (1) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -347,7 +347,7 @@ illusion_dialog (GimpDrawable *drawable)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Illusion"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Illusion"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -363,9 +363,10 @@ illusion_dialog (GimpDrawable *drawable)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_zoom_preview_new (drawable);

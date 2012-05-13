@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -88,7 +87,7 @@ gimp_blob_editor_class_init (GimpBlobEditorClass *klass)
                                    g_param_spec_enum ("blob-type",
                                                       NULL, NULL,
                                                       GIMP_TYPE_INK_BLOB_TYPE,
-                                                      GIMP_INK_BLOB_TYPE_ELLIPSE,
+                                                      GIMP_INK_BLOB_TYPE_CIRCLE,
                                                       GIMP_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
   g_object_class_install_property (object_class, PROP_ASPECT,
@@ -189,30 +188,34 @@ gimp_blob_editor_expose (GtkWidget      *widget,
 {
   GimpBlobEditor *editor = GIMP_BLOB_EDITOR (widget);
   GtkStyle       *style  = gtk_widget_get_style (widget);
+  GtkStateType    state  = gtk_widget_get_state (widget);
+  GtkAllocation   allocation;
   cairo_t        *cr;
   GdkRectangle    rect;
   gint            r0;
 
-  r0 = MIN (widget->allocation.width, widget->allocation.height) / 2;
+  gtk_widget_get_allocation (widget, &allocation);
+
+  r0 = MIN (allocation.width, allocation.height) / 2;
 
   if (r0 < 2)
     return TRUE;
 
-  cr = gdk_cairo_create (widget->window);
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
   gimp_blob_editor_draw_blob (editor, cr,
-                              widget->allocation.width  / 2.0,
-                              widget->allocation.height / 2.0,
+                              allocation.width  / 2.0,
+                              allocation.height / 2.0,
                               0.9 * r0);
 
   gimp_blob_editor_get_handle (editor, &rect);
 
   cairo_rectangle (cr,
                    rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.width - 1);
-  gdk_cairo_set_source_color (cr, &style->light[widget->state]);
+  gdk_cairo_set_source_color (cr, &style->light[state]);
   cairo_fill_preserve (cr);
 
-  gdk_cairo_set_source_color (cr, &style->dark[widget->state]);
+  gdk_cairo_set_source_color (cr, &style->dark[state]);
   cairo_set_line_width (cr, 1);
   cairo_stroke (cr);
 
@@ -258,12 +261,15 @@ gimp_blob_editor_motion_notify (GtkWidget      *widget,
 
   if (editor->active)
     {
-      gint x;
-      gint y;
-      gint rsquare;
+      GtkAllocation allocation;
+      gint          x;
+      gint          y;
+      gint          rsquare;
 
-      x = event->x - widget->allocation.width  / 2;
-      y = event->y - widget->allocation.height / 2;
+      gtk_widget_get_allocation (widget, &allocation);
+
+      x = event->x - allocation.width  / 2;
+      y = event->y - allocation.height / 2;
 
       rsquare = SQR (x) + SQR (y);
 
@@ -273,7 +279,7 @@ gimp_blob_editor_motion_notify (GtkWidget      *widget,
           gdouble  angle;
           gdouble  aspect;
 
-          r0 = MIN (widget->allocation.width, widget->allocation.height) / 2;
+          r0 = MIN (allocation.width, allocation.height) / 2;
 
           angle  = atan2 (y, x);
           aspect = 10.0 * sqrt ((gdouble) rsquare / (r0 * r0)) / 0.85;
@@ -294,16 +300,19 @@ static void
 gimp_blob_editor_get_handle (GimpBlobEditor *editor,
                              GdkRectangle   *rect)
 {
-  GtkWidget *widget = GTK_WIDGET (editor);
-  gint       x, y;
-  gint       r;
+  GtkWidget     *widget = GTK_WIDGET (editor);
+  GtkAllocation  allocation;
+  gint           x, y;
+  gint           r;
 
-  r = MIN (widget->allocation.width, widget->allocation.height) / 2;
+  gtk_widget_get_allocation (widget, &allocation);
 
-  x = (widget->allocation.width / 2 +
+  r = MIN (allocation.width, allocation.height) / 2;
+
+  x = (allocation.width / 2 +
        0.85 * r *editor->aspect / 10.0 * cos (editor->angle));
 
-  y = (widget->allocation.height / 2 +
+  y = (allocation.height / 2 +
        0.85 * r * editor->aspect / 10.0 * sin (editor->angle));
 
   rect->x      = x - 5;
@@ -319,24 +328,24 @@ gimp_blob_editor_draw_blob (GimpBlobEditor *editor,
                             gdouble         yc,
                             gdouble         radius)
 {
-  GtkWidget *widget   = GTK_WIDGET (editor);
-  GtkStyle  *style    = gtk_widget_get_style (widget);
-  Blob      *blob;
-  BlobFunc   function = blob_ellipse;
-  gint       i;
+  GtkWidget    *widget   = GTK_WIDGET (editor);
+  GtkStyle     *style    = gtk_widget_get_style (widget);
+  GimpBlob     *blob;
+  GimpBlobFunc  function = gimp_blob_ellipse;
+  gint          i;
 
   switch (editor->type)
     {
-    case GIMP_INK_BLOB_TYPE_ELLIPSE:
-      function = blob_ellipse;
+    case GIMP_INK_BLOB_TYPE_CIRCLE:
+      function = gimp_blob_ellipse;
       break;
 
     case GIMP_INK_BLOB_TYPE_SQUARE:
-      function = blob_square;
+      function = gimp_blob_square;
       break;
 
     case GIMP_INK_BLOB_TYPE_DIAMOND:
-      function = blob_diamond;
+      function = gimp_blob_diamond;
       break;
     }
 
@@ -375,6 +384,6 @@ gimp_blob_editor_draw_blob (GimpBlobEditor *editor,
 
   g_free (blob);
 
-  gdk_cairo_set_source_color (cr, &style->fg[widget->state]);
+  gdk_cairo_set_source_color (cr, &style->fg[gtk_widget_get_state (widget)]);
   cairo_fill (cr);
 }

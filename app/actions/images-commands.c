@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,25 +12,26 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "actions-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimplist.h"
 
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpimageview.h"
 
 #include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell.h"
 
 #include "images-commands.h"
 
@@ -55,14 +56,14 @@ images_raise_views_cmd_callback (GtkAction *action,
     {
       GList *list;
 
-      for (list = GIMP_LIST (image->gimp->displays)->list;
+      for (list = gimp_get_display_iter (image->gimp);
            list;
            list = g_list_next (list))
         {
           GimpDisplay *display = list->data;
 
-          if (display->image == image)
-            gtk_window_present (GTK_WINDOW (display->shell));
+          if (gimp_display_get_image (display) == image)
+            gimp_display_shell_present (gimp_display_get_shell (display));
         }
     }
 }
@@ -103,7 +104,7 @@ images_delete_image_cmd_callback (GtkAction *action,
 
   if (image && gimp_container_have (container, GIMP_OBJECT (image)))
     {
-      if (image->disp_count == 0)
+      if (gimp_image_get_display_count (image) == 0)
         g_object_unref (image);
     }
 }

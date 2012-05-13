@@ -4,9 +4,9 @@
  * gimpsessioninfo-book.c
  * Copyright (C) 2001-2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -27,11 +26,15 @@
 
 #include "widgets-types.h"
 
+#include "menus/menus.h"
+
 #include "gimpdialogfactory.h"
 #include "gimpdock.h"
 #include "gimpdockbook.h"
+#include "gimpsessioninfo.h" /* for gimp_session_info_class_apply_position_accuracy() */
 #include "gimpsessioninfo-book.h"
 #include "gimpsessioninfo-dockable.h"
+#include "gimpwidgets-utils.h"
 
 
 enum
@@ -57,9 +60,8 @@ gimp_session_info_book_free (GimpSessionInfoBook *info)
 
   if (info->dockables)
     {
-      g_list_foreach (info->dockables, (GFunc) gimp_session_info_dockable_free,
-                      NULL);
-      g_list_free (info->dockables);
+      g_list_free_full (info->dockables,
+                        (GDestroyNotify) gimp_session_info_dockable_free);
       info->dockables = NULL;
     }
 
@@ -78,11 +80,7 @@ gimp_session_info_book_serialize (GimpConfigWriter    *writer,
   gimp_config_writer_open (writer, "book");
 
   if (info->position != 0)
-    {
-      gimp_config_writer_open (writer, "position");
-      gimp_config_writer_printf (writer, "%d", info->position);
-      gimp_config_writer_close (writer);
-    }
+    gimp_session_write_position (writer, info->position);
 
   gimp_config_writer_open (writer, "current-page");
   gimp_config_writer_printf (writer, "%d", info->current_page);
@@ -204,7 +202,7 @@ gimp_session_info_book_from_widget (GimpDockbook *dockbook)
 
   parent = gtk_widget_get_parent (GTK_WIDGET (dockbook));
 
-  if (GTK_IS_VPANED (parent))
+  if (GTK_IS_PANED (parent))
     {
       GtkPaned *paned = GTK_PANED (parent);
 
@@ -239,11 +237,12 @@ gimp_session_info_book_restore (GimpSessionInfoBook *info,
 {
   GtkWidget *dockbook;
   GList     *pages;
+  gint       n_dockables = 0;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GIMP_IS_DOCK (dock), NULL);
 
-  dockbook = gimp_dockbook_new (dock->dialog_factory->menu_factory);
+  dockbook = gimp_dockbook_new (global_menu_factory);
 
   gimp_dock_add_book (dock, GIMP_DOCKBOOK (dockbook), -1);
 
@@ -255,7 +254,10 @@ gimp_session_info_book_restore (GimpSessionInfoBook *info,
       dockable = gimp_session_info_dockable_restore (dockable_info, dock);
 
       if (dockable)
-        gimp_dockbook_add (GIMP_DOCKBOOK (dockbook), dockable, -1);
+        {
+          gimp_dockbook_add (GIMP_DOCKBOOK (dockbook), dockable, -1);
+          n_dockables++;
+        }
     }
 
   if (info->current_page <
@@ -264,10 +266,17 @@ gimp_session_info_book_restore (GimpSessionInfoBook *info,
       gtk_notebook_set_current_page (GTK_NOTEBOOK (dockbook),
                                      info->current_page);
     }
-  else
+  else if (n_dockables > 1)
     {
       gtk_notebook_set_current_page (GTK_NOTEBOOK (dockbook), 0);
     }
 
+  /*  Return the dockbook even if no dockable could be restored
+   *  (n_dockables == 0) because otherwise we would have to remove it
+   *  from the dock right here, which could implicitly destroy the
+   *  dock and make catching restore errors much harder on higher
+   *  levels. Instead, we check for restored empty dockbooks in our
+   *  caller.
+   */
   return GIMP_DOCKBOOK (dockbook);
 }

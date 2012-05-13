@@ -4,9 +4,9 @@
  * gimpcolorselectorpalette.c
  * Copyright (C) 2006 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -79,7 +78,7 @@ gimp_color_selector_palette_set_color (GimpColorSelector *selector,
     {
       GimpPalette *palette = gimp_context_get_palette (select->context);
 
-      if (palette && palette->n_colors > 0)
+      if (palette && gimp_palette_get_n_colors (palette) > 0)
         {
           GimpPaletteEntry *entry;
 
@@ -124,6 +123,10 @@ gimp_color_selector_palette_set_config (GimpColorSelector *selector,
       g_signal_handlers_disconnect_by_func (select->context,
                                             gimp_color_selector_palette_palette_changed,
                                             select);
+      gimp_view_renderer_set_context (GIMP_VIEW (select->view)->renderer,
+                                      NULL);
+
+      g_object_unref (select->context);
       select->context = NULL;
     }
 
@@ -132,13 +135,15 @@ gimp_color_selector_palette_set_config (GimpColorSelector *selector,
 
   if (select->context)
     {
+      g_object_ref (select->context);
+
       if (! select->view)
         {
           GtkWidget *frame;
 
           frame = gtk_frame_new (NULL);
           gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-          gtk_container_add (GTK_CONTAINER (select), frame);
+          gtk_box_pack_start (GTK_BOX (select), frame, TRUE, TRUE, 0);
           gtk_widget_show (frame);
 
           select->view = gimp_view_new_full_by_types (select->context,
@@ -159,6 +164,11 @@ gimp_color_selector_palette_set_config (GimpColorSelector *selector,
           g_signal_connect (select->view, "entry-clicked",
                             G_CALLBACK (gimp_color_selector_palette_entry_clicked),
                             select);
+        }
+      else
+        {
+          gimp_view_renderer_set_context (GIMP_VIEW (select->view)->renderer,
+                                          select->context);
         }
 
       g_signal_connect_object (select->context, "palette-changed",

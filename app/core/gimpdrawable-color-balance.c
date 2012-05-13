@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -66,18 +65,18 @@ gimp_drawable_color_balance (GimpDrawable     *drawable,
                 "yellow-blue",   yellow_blue   / 100.0,
                 NULL);
 
-  if (gimp_use_gegl (GIMP_ITEM (drawable)->image->gimp))
+  if (gimp_use_gegl (gimp_item_get_image (GIMP_ITEM (drawable))->gimp))
     {
       GeglNode *node;
 
       node = g_object_new (GEGL_TYPE_NODE,
-                           "operation", "gimp-color-balance",
+                           "operation", "gimp:color-balance",
                            NULL);
       gegl_node_set (node,
                      "config", config,
                      NULL);
 
-      gimp_drawable_apply_operation (drawable, progress, _("Color Balance"),
+      gimp_drawable_apply_operation (drawable, progress, C_("undo-type", "Color Balance"),
                                      node, TRUE);
       g_object_unref (node);
     }
@@ -87,7 +86,7 @@ gimp_drawable_color_balance (GimpDrawable     *drawable,
 
       gimp_color_balance_config_to_cruft (config, &cruft);
 
-      gimp_drawable_process (drawable, progress, _("Color Balance"),
+      gimp_drawable_process (drawable, progress, C_("undo-type", "Color Balance"),
                              (PixelProcessorFunc) color_balance, &cruft);
     }
 

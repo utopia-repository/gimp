@@ -5,9 +5,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,6 +38,7 @@
 
 #define PLUG_IN_PROC        "plug-in-sample-colorize"
 #define PLUG_IN_BINARY      "sample-colorize"
+#define PLUG_IN_ROLE        "gimp-sample-colorize"
 #define NUMBER_IN_ARGS      13
 
 #define TILE_CACHE_SIZE      32
@@ -245,7 +245,7 @@ query (void)
 {
   static const GimpParamDef args[]=
   {
-    { GIMP_PDB_INT32, "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32, "run-mode", "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "dst-drawable", "The drawable to be colorized (Type GRAY* or RGB*)" },
     { GIMP_PDB_DRAWABLE, "sample-drawable", "Sample drawable (should be of Type RGB or RGBA)" },
@@ -569,7 +569,7 @@ smp_adj_lvl_in_max_upd_callback (GtkAdjustment *adjustment)
   gint32 value;
   gint   upd_flags;
 
-  value = CLAMP ((adjustment->value), 1, 255);
+  value = CLAMP ((gtk_adjustment_get_value (adjustment)), 1, 255);
 
   if (value != g_values.lvl_in_max)
     {
@@ -590,7 +590,7 @@ smp_adj_lvl_in_min_upd_callback (GtkAdjustment *adjustment)
   double value;
   gint   upd_flags;
 
-  value = CLAMP ((adjustment->value), 0, 254);
+  value = CLAMP ((gtk_adjustment_get_value (adjustment)), 0, 254);
 
   if (value != g_values.lvl_in_min)
     {
@@ -610,7 +610,7 @@ smp_text_gamma_upd_callback (GtkAdjustment *adjustment)
 {
   double value;
 
-  value = CLAMP ((adjustment->value), 0.1, 10.0);
+  value = CLAMP ((gtk_adjustment_get_value (adjustment)), 0.1, 10.0);
 
   if (value != g_values.lvl_in_gamma)
     {
@@ -625,7 +625,7 @@ smp_adj_lvl_out_max_upd_callback (GtkAdjustment *adjustment)
   gint32 value;
   gint   upd_flags;
 
-  value = CLAMP ((adjustment->value), 1, 255);
+  value = CLAMP ((gtk_adjustment_get_value (adjustment)), 1, 255);
 
   if (value != g_values.lvl_out_max)
     {
@@ -646,7 +646,7 @@ smp_adj_lvl_out_min_upd_callback (GtkAdjustment *adjustment)
   double value;
   gint   upd_flags;
 
-  value = CLAMP ((adjustment->value), 0, 254);
+  value = CLAMP ((gtk_adjustment_get_value (adjustment)), 0, 254);
 
   if (value != g_values.lvl_out_min)
     {
@@ -930,34 +930,21 @@ update_preview (gint32 *id_ptr)
 }
 
 static void
-levels_draw_slider (GdkWindow *window,
-                    GdkGC     *border_gc,
-                    GdkGC     *fill_gc,
-                    gint       xpos)
+levels_draw_slider (cairo_t  *cr,
+                    GdkColor *border_color,
+                    GdkColor *fill_color,
+                    gint      xpos)
 {
-  gint y;
+  cairo_move_to (cr, xpos, 0);
+  cairo_line_to (cr, xpos - (CONTROL_HEIGHT - 1) / 2, CONTROL_HEIGHT - 1);
+  cairo_line_to (cr, xpos + (CONTROL_HEIGHT - 1) / 2, CONTROL_HEIGHT - 1);
+  cairo_line_to (cr, xpos, 0);
 
-  for (y = 0; y < CONTROL_HEIGHT; y++)
-    gdk_draw_line (window, fill_gc, xpos - y / 2, y,
-                   xpos + y / 2, y);
+  gdk_cairo_set_source_color (cr, fill_color);
+  cairo_fill_preserve (cr);
 
-  gdk_draw_line (window, border_gc, xpos, 0,
-                 xpos - (CONTROL_HEIGHT - 1) / 2, CONTROL_HEIGHT - 1);
-
-  gdk_draw_line (window, border_gc, xpos, 0,
-                 xpos + (CONTROL_HEIGHT - 1) / 2, CONTROL_HEIGHT - 1);
-
-  gdk_draw_line (window, border_gc,
-                 xpos - (CONTROL_HEIGHT - 1) / 2, CONTROL_HEIGHT - 1,
-                 xpos + (CONTROL_HEIGHT - 1) / 2, CONTROL_HEIGHT - 1);
-}
-
-static void
-levels_erase_slider (GdkWindow *window,
-                     gint       xpos)
-{
-  gdk_window_clear_area (window, xpos - (CONTROL_HEIGHT - 1) / 2, 0,
-                         CONTROL_HEIGHT - 1, CONTROL_HEIGHT);
+  gdk_cairo_set_source_color (cr, border_color);
+  cairo_stroke (cr);
 }
 
 static void
@@ -1028,11 +1015,14 @@ levels_update (gint update)
   if (update & INPUT_SLIDERS)
     {
       GtkStyle *style = gtk_widget_get_style (g_di.in_lvl_drawarea);
+      cairo_t  *cr    = gdk_cairo_create (gtk_widget_get_window (g_di.in_lvl_drawarea));
       gdouble   width, mid, tmp;
 
-      levels_erase_slider (g_di.in_lvl_drawarea->window, g_di.slider_pos[0]);
-      levels_erase_slider (g_di.in_lvl_drawarea->window, g_di.slider_pos[1]);
-      levels_erase_slider (g_di.in_lvl_drawarea->window, g_di.slider_pos[2]);
+      gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_NORMAL]);
+      cairo_paint (cr);
+
+      cairo_translate (cr, 0.5, 0.5);
+      cairo_set_line_width (cr, 1.0);
 
       g_di.slider_pos[0] = DA_WIDTH * ((double) g_values.lvl_in_min / 255.0);
       g_di.slider_pos[2] = DA_WIDTH * ((double) g_values.lvl_in_max / 255.0);
@@ -1042,38 +1032,46 @@ levels_update (gint update)
       tmp = log10 (1.0 / g_values.lvl_in_gamma);
       g_di.slider_pos[1] = (int) (mid + width * tmp + 0.5);
 
-      levels_draw_slider (g_di.in_lvl_drawarea->window,
-                          style->black_gc,
-                          style->dark_gc[GTK_STATE_NORMAL],
+      levels_draw_slider (cr,
+                          &style->black,
+                          &style->dark[GTK_STATE_NORMAL],
                           g_di.slider_pos[1]);
-      levels_draw_slider (g_di.in_lvl_drawarea->window,
-                          style->black_gc,
-                          style->black_gc,
+      levels_draw_slider (cr,
+                          &style->black,
+                          &style->black,
                           g_di.slider_pos[0]);
-      levels_draw_slider (g_di.in_lvl_drawarea->window,
-                          style->black_gc,
-                          style->white_gc,
+      levels_draw_slider (cr,
+                          &style->black,
+                          &style->white,
                           g_di.slider_pos[2]);
+
+      cairo_destroy (cr);
     }
 
   if (update & OUTPUT_SLIDERS)
     {
       GtkStyle *style = gtk_widget_get_style (g_di.sample_drawarea);
+      cairo_t  *cr    = gdk_cairo_create (gtk_widget_get_window (g_di.sample_drawarea));
 
-      levels_erase_slider (g_di.sample_drawarea->window, g_di.slider_pos[3]);
-      levels_erase_slider (g_di.sample_drawarea->window, g_di.slider_pos[4]);
+      gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_NORMAL]);
+      cairo_paint (cr);
+
+      cairo_translate (cr, 0.5, 0.5);
+      cairo_set_line_width (cr, 1.0);
 
       g_di.slider_pos[3] = DA_WIDTH * ((double) g_values.lvl_out_min / 255.0);
       g_di.slider_pos[4] = DA_WIDTH * ((double) g_values.lvl_out_max / 255.0);
 
-      levels_draw_slider (g_di.sample_drawarea->window,
-                          style->black_gc,
-                          style->black_gc,
+      levels_draw_slider (cr,
+                          &style->black,
+                          &style->black,
                           g_di.slider_pos[3]);
-      levels_draw_slider (g_di.sample_drawarea->window,
-                          style->black_gc,
-                          style->black_gc,
+      levels_draw_slider (cr,
+                          &style->black,
+                          &style->black,
                           g_di.slider_pos[4]);
+
+      cairo_destroy (cr);
     }
 }
 
@@ -1324,7 +1322,7 @@ smp_dialog (void)
 
   /* Main Dialog */
   g_di.dialog = dialog =
-    gimp_dialog_new (_("Sample Colorize"), PLUG_IN_BINARY,
+    gimp_dialog_new (_("Sample Colorize"), PLUG_IN_ROLE,
                      NULL, 0,
                      gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -1353,7 +1351,7 @@ smp_dialog (void)
   gtk_table_set_row_spacings (GTK_TABLE (table), 12);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                       table, TRUE, TRUE, 0);
 
   ty = 0;
@@ -1404,7 +1402,7 @@ smp_dialog (void)
   ty++;
 
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_table_attach (GTK_TABLE (table), hbox, 0, 2, ty, ty + 1,
                     GTK_FILL, 0, 0, 0);
   gtk_widget_show (hbox);
@@ -1431,7 +1429,7 @@ smp_dialog (void)
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check_button),
                                 g_di.dst_show_color);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_table_attach (GTK_TABLE (table), hbox, 3, 5, ty, ty + 1,
                     GTK_FILL, 0, 0, 0);
   gtk_widget_show (hbox);
@@ -1493,7 +1491,7 @@ smp_dialog (void)
   /*  The levels graylevel prevev  */
   frame = gtk_frame_new (NULL);
 
-  vbox2 = gtk_vbox_new (FALSE, 2);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), vbox2);
   gtk_table_attach (GTK_TABLE (table),
                     frame, 0, 2, ty, ty + 1, 0, 0, 0, 0);
@@ -1527,7 +1525,7 @@ smp_dialog (void)
   /*  The sample_colortable prevev  */
   frame = gtk_frame_new (NULL);
 
-  vbox2 = gtk_vbox_new (FALSE, 2);
+  vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), vbox2);
   gtk_table_attach (GTK_TABLE (table),
                     frame, 3, 5, ty, ty + 1, 0, 0, 0, 0);
@@ -1557,7 +1555,8 @@ smp_dialog (void)
   ty++;
 
   /*  Horizontal box for INPUT levels text widget  */
-  hbox = gtk_hbox_new (TRUE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_table_attach (GTK_TABLE (table), hbox, 0, 2, ty, ty+1,
                     GTK_FILL, 0, 0, 0);
 
@@ -1566,7 +1565,7 @@ smp_dialog (void)
   gtk_widget_show (label);
 
   /* min input spinbutton */
-  data = gtk_adjustment_new ((gfloat)g_values.lvl_in_min, 0.0, 254.0, 1, 10, 10);
+  data = gtk_adjustment_new ((gfloat)g_values.lvl_in_min, 0.0, 254.0, 1, 10, 0);
   g_di.adj_lvl_in_min = GTK_ADJUSTMENT (data);
 
   spinbutton = gtk_spin_button_new (g_di.adj_lvl_in_min, 0.5, 0);
@@ -1579,7 +1578,7 @@ smp_dialog (void)
                     &g_di);
 
   /* input gamma spinbutton */
-  data = gtk_adjustment_new ((gfloat)g_values.lvl_in_gamma, 0.1, 10.0, 0.02, 0.2, 0.2);
+  data = gtk_adjustment_new ((gfloat)g_values.lvl_in_gamma, 0.1, 10.0, 0.02, 0.2, 0);
   g_di.adj_lvl_in_gamma = GTK_ADJUSTMENT (data);
 
   spinbutton = gtk_spin_button_new (g_di.adj_lvl_in_gamma, 0.5, 2);
@@ -1592,7 +1591,7 @@ smp_dialog (void)
                     &g_di);
 
   /* high input spinbutton */
-  data = gtk_adjustment_new ((gfloat)g_values.lvl_in_max, 1.0, 255.0, 1, 10, 10);
+  data = gtk_adjustment_new ((gfloat)g_values.lvl_in_max, 1.0, 255.0, 1, 10, 0);
   g_di.adj_lvl_in_max = GTK_ADJUSTMENT (data);
 
   spinbutton = gtk_spin_button_new (g_di.adj_lvl_in_max, 0.5, 0);
@@ -1607,7 +1606,8 @@ smp_dialog (void)
   gtk_widget_show (hbox);
 
   /*  Horizontal box for OUTPUT levels text widget  */
-  hbox = gtk_hbox_new (TRUE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+  gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
   gtk_table_attach (GTK_TABLE (table), hbox, 3, 5, ty, ty+1,
                     GTK_FILL, 0, 0, 0);
 
@@ -1616,7 +1616,7 @@ smp_dialog (void)
   gtk_widget_show (label);
 
   /*  min output spinbutton */
-  data = gtk_adjustment_new ((gfloat)g_values.lvl_out_min, 0.0, 254.0, 1, 10, 10);
+  data = gtk_adjustment_new ((gfloat)g_values.lvl_out_min, 0.0, 254.0, 1, 10, 0);
   g_di.adj_lvl_out_min = GTK_ADJUSTMENT (data);
 
   spinbutton = gtk_spin_button_new (g_di.adj_lvl_out_min, 0.5, 0);
@@ -1629,7 +1629,7 @@ smp_dialog (void)
                     &g_di);
 
   /* high output spinbutton */
-  data = gtk_adjustment_new ((gfloat)g_values.lvl_out_max, 0.0, 255.0, 1, 10, 10);
+  data = gtk_adjustment_new ((gfloat)g_values.lvl_out_max, 0.0, 255.0, 1, 10, 0);
   g_di.adj_lvl_out_max = GTK_ADJUSTMENT (data);
 
   spinbutton = gtk_spin_button_new (g_di.adj_lvl_out_max, 0.5, 0);
@@ -1645,7 +1645,7 @@ smp_dialog (void)
 
   ty++;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_table_attach (GTK_TABLE (table), hbox, 0, 2, ty, ty+1,
                     GTK_FILL, 0, 0, 0);
   gtk_widget_show (hbox);
@@ -1674,7 +1674,7 @@ smp_dialog (void)
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check_button),
                                 g_values.orig_inten);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_table_attach (GTK_TABLE (table), hbox, 3, 5, ty, ty+1,
                     GTK_FILL, 0, 0, 0);
   gtk_widget_show (hbox);
@@ -2501,7 +2501,7 @@ is_layer_alive (gint32 drawable_id)
   if (drawable_id < 0)
     return -1;
 
-  if (gimp_drawable_get_image (drawable_id) < 0)
+  if (gimp_item_get_image (drawable_id) < 0)
     {
       printf ("sample colorize: unknown layer_id %d (Image closed?)\n",
               (int)drawable_id);
@@ -2578,7 +2578,7 @@ init_gdrw (t_GDRW         *gdrw,
       gdrw->index_alpha = 0;      /* there is no alpha channel */
     }
 
-  image_id = gimp_drawable_get_image (drawable->drawable_id);
+  image_id = gimp_item_get_image (drawable->drawable_id);
 
   /* check and see if we have a selection mask */
   sel_channel_id  = gimp_image_get_selection (image_id);
@@ -2738,6 +2738,8 @@ sample_analyze (t_GDRW *sample_gdrw)
             }
         }
     }
+  if (g_show_progress)
+    gimp_progress_update (1.0);
 
   if (g_Sdebug)
     printf ("ROWS: %d - %d  COLS: %d - %d\n",
@@ -3097,7 +3099,7 @@ main_colorize (gint mc_flags)
       dst_drawable = gimp_drawable_get (g_values.dst_id);
       if (gimp_drawable_is_gray (g_values.dst_id) &&
           (mc_flags & MC_DST_REMAP))
-        gimp_image_convert_rgb (gimp_drawable_get_image (g_values.dst_id));
+        gimp_image_convert_rgb (gimp_item_get_image (g_values.dst_id));
       colorize_drawable (dst_drawable->drawable_id);
     }
 

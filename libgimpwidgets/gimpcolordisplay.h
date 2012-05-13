@@ -4,10 +4,10 @@
  * gimpcolordisplay.c
  * Copyright (C) 1999 Manish Singh <yosh@gimp.org>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+
+#if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
+#error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
+#endif
 
 #ifndef __GIMP_COLOR_DISPLAY_H__
 #define __GIMP_COLOR_DISPLAY_H__
@@ -57,6 +60,7 @@ struct _GimpColorDisplayClass
   /*  implementing the GimpColorDisplay::clone method is deprecated       */
   GimpColorDisplay * (* clone)           (GimpColorDisplay *display);
 
+  /*  implementing the GimpColorDisplay::convert method is deprecated     */
   void               (* convert)         (GimpColorDisplay *display,
                                           guchar           *buf,
                                           gint              width,
@@ -81,8 +85,10 @@ struct _GimpColorDisplayClass
 
   const gchar  *stock_id;
 
+  void               (* convert_surface) (GimpColorDisplay *display,
+                                          cairo_surface_t  *surface);
+
   /* Padding for future expansion */
-  void (* _gimp_reserved2) (void);
   void (* _gimp_reserved3) (void);
   void (* _gimp_reserved4) (void);
 };
@@ -96,12 +102,16 @@ GimpColorDisplay * gimp_color_display_new         (GType             display_typ
 
 GimpColorDisplay * gimp_color_display_clone       (GimpColorDisplay *display);
 
+void           gimp_color_display_convert_surface (GimpColorDisplay *display,
+                                                   cairo_surface_t  *surface);
+#ifndef GIMP_DISABLE_DEPRECATED
 void           gimp_color_display_convert         (GimpColorDisplay *display,
                                                    guchar           *buf,
                                                    gint              width,
                                                    gint              height,
                                                    gint              bpp,
                                                    gint              bpl);
+#endif
 void           gimp_color_display_load_state      (GimpColorDisplay *display,
                                                    GimpParasite     *state);
 GimpParasite * gimp_color_display_save_state      (GimpColorDisplay *display);

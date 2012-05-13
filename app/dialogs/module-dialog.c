@@ -5,9 +5,9 @@
  * (C) 1999 Austin Donnelly <austin@gimp.org>
  * (C) 2008 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,8 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -47,7 +46,7 @@ enum
   COLUMN_NAME,
   COLUMN_ENABLED,
   COLUMN_MODULE,
-  NUM_COLUMNS
+  N_COLUMNS
 };
 
 enum
@@ -57,7 +56,7 @@ enum
   INFO_DATE,
   INFO_COPYRIGHT,
   INFO_LOCATION,
-  NUM_INFOS
+  N_INFOS
 };
 
 typedef struct
@@ -69,7 +68,7 @@ typedef struct
 
   GtkWidget    *hint;
   GtkWidget    *table;
-  GtkWidget    *label[NUM_INFOS];
+  GtkWidget    *label[N_INFOS];
   GtkWidget    *error_box;
   GtkWidget    *error_label;
 } ModuleDialog;
@@ -109,7 +108,7 @@ module_dialog_new (Gimp *gimp)
 {
   GtkWidget         *shell;
   GtkWidget         *vbox;
-  GtkWidget         *listbox;
+  GtkWidget         *sw;
   GtkWidget         *view;
   GtkWidget         *image;
   ModuleDialog      *dialog;
@@ -142,9 +141,10 @@ module_dialog_new (Gimp *gimp)
                     G_CALLBACK (dialog_response),
                     dialog);
 
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (shell)->vbox), vbox);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (shell))),
+                      vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   dialog->hint = gimp_hint_box_new (_("You will have to restart GIMP "
@@ -154,17 +154,17 @@ module_dialog_new (Gimp *gimp)
   if (gimp->write_modulerc)
     gtk_widget_show (dialog->hint);
 
-  listbox = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (listbox),
+  sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
                                        GTK_SHADOW_IN);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (listbox),
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
-  gtk_box_pack_start (GTK_BOX (vbox), listbox, TRUE, TRUE, 0);
-  gtk_widget_set_size_request (listbox, 124, 100);
-  gtk_widget_show (listbox);
+  gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+  gtk_widget_set_size_request (sw, 124, 100);
+  gtk_widget_show (sw);
 
-  dialog->list = gtk_list_store_new (NUM_COLUMNS,
+  dialog->list = gtk_list_store_new (N_COLUMNS,
                                      G_TYPE_STRING,
                                      G_TYPE_BOOLEAN,
                                      GIMP_TYPE_MODULE);
@@ -193,15 +193,15 @@ module_dialog_new (Gimp *gimp)
                                                "text", COLUMN_NAME,
                                                NULL);
 
-  gtk_container_add (GTK_CONTAINER (listbox), view);
+  gtk_container_add (GTK_CONTAINER (sw), view);
   gtk_widget_show (view);
 
-  dialog->table = gtk_table_new (2, NUM_INFOS, FALSE);
+  dialog->table = gtk_table_new (2, N_INFOS, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (dialog->table), 6);
   gtk_box_pack_start (GTK_BOX (vbox), dialog->table, FALSE, FALSE, 0);
   gtk_widget_show (dialog->table);
 
-  dialog->error_box = gtk_hbox_new (FALSE, 6);
+  dialog->error_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), dialog->error_box, FALSE, FALSE, 0);
 
   image = gtk_image_new_from_stock (GIMP_STOCK_WARNING, GTK_ICON_SIZE_BUTTON);
@@ -413,10 +413,11 @@ dialog_info_update (GimpModuleDB *db,
 {
   GtkTreeModel *model           = GTK_TREE_MODEL (dialog->list);
   GtkTreeIter   iter;
-  const gchar  *text[NUM_INFOS] = { NULL, };
+  const gchar  *text[N_INFOS] = { NULL, };
   gchar        *location        = NULL;
   gboolean      iter_valid;
   gint          i;
+  gboolean      show_error;
 
   for (iter_valid = gtk_tree_model_get_iter_first (model, &iter);
        iter_valid;
@@ -443,7 +444,7 @@ dialog_info_update (GimpModuleDB *db,
 
   if (! module)
     {
-      for (i = 0; i < NUM_INFOS; i++)
+      for (i = 0; i < N_INFOS; i++)
         gtk_label_set_text (GTK_LABEL (dialog->label[i]), NULL);
 
       gtk_label_set_text (GTK_LABEL (dialog->error_label), NULL);
@@ -469,21 +470,17 @@ dialog_info_update (GimpModuleDB *db,
                               location : _("No longer available"));
     }
 
-  for (i = 0; i < NUM_INFOS; i++)
+  for (i = 0; i < N_INFOS; i++)
     gtk_label_set_text (GTK_LABEL (dialog->label[i]),
                         text[i] ? text[i] : "--");
+  g_free (location);
 
-  if (module->state == GIMP_MODULE_STATE_ERROR && module->last_module_error)
-    {
-      gtk_label_set_text (GTK_LABEL (dialog->error_label),
-                          module->last_module_error);
-      gtk_widget_show (dialog->error_box);
-    }
-  else
-    {
-      gtk_label_set_text (GTK_LABEL (dialog->error_label), NULL);
-      gtk_widget_hide (dialog->error_box);
-    }
+  /* Show errors */
+  show_error = (module->state == GIMP_MODULE_STATE_ERROR &&
+                module->last_module_error);
+  gtk_label_set_text (GTK_LABEL (dialog->error_label),
+                      show_error ? module->last_module_error : NULL);
+  gtk_widget_set_visible (dialog->error_box, show_error);
 }
 
 static void

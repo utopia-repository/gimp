@@ -4,9 +4,9 @@
  * gimpviewrendererlayer.c
  * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,17 +15,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
+
+#include "core/gimpcontainer.h"
 
 #include "text/gimptextlayer.h"
 
@@ -65,13 +67,20 @@ gimp_view_renderer_layer_render (GimpViewRenderer *renderer,
     {
       stock_id = GIMP_STOCK_FLOATING_SELECTION;
     }
-  else if (gimp_drawable_is_text_layer (GIMP_DRAWABLE (renderer->viewable)))
+  else if (gimp_item_is_text_layer (GIMP_ITEM (renderer->viewable)))
     {
       stock_id = gimp_viewable_get_stock_id (renderer->viewable);
     }
+  else
+    {
+      GimpContainer *children = gimp_viewable_get_children (renderer->viewable);
+
+      if (children && gimp_container_get_n_children (children) == 0)
+        stock_id = GTK_STOCK_DIRECTORY;
+    }
 
   if (stock_id)
-    gimp_view_renderer_default_render_stock (renderer, widget, stock_id);
+    gimp_view_renderer_render_stock (renderer, widget, stock_id);
   else
     GIMP_VIEW_RENDERER_CLASS (parent_class)->render (renderer, widget);
 }

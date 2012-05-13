@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,27 +12,26 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
-#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
 #include "core/gimp.h"
-#include "core/gimp-edit.h"
 #include "core/gimpbuffer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-colormap.h"
+#include "core/gimpimage-new.h"
+#include "core/gimpimage-undo.h"
 #include "core/gimplayer.h"
 #include "core/gimplayermask.h"
 #include "core/gimptoolinfo.h"
@@ -85,43 +84,56 @@ static void   gimp_toolbox_drop_pixbuf    (GtkWidget       *widget,
 /*  public functions  */
 
 void
-gimp_toolbox_dnd_init (GimpToolbox *toolbox)
+gimp_toolbox_dnd_init (GimpToolbox *toolbox,
+                       GtkWidget   *vbox)
 {
-  GimpDock *dock;
+  GimpContext *context = NULL;
 
   g_return_if_fail (GIMP_IS_TOOLBOX (toolbox));
+  g_return_if_fail (GTK_IS_BOX (vbox));
 
-  dock = GIMP_DOCK (toolbox);
+  context = gimp_toolbox_get_context (toolbox);
 
-  gimp_dnd_uri_list_dest_add (GTK_WIDGET (toolbox),
-                              gimp_toolbox_drop_uri_list,
-                              dock->context);
-  gimp_dnd_uri_list_dest_add (toolbox->vbox,
-                              gimp_toolbox_drop_uri_list,
-                              dock->context);
+  /* Before caling any dnd helper functions, setup the drag
+   * destination manually since we want to handle all drag events
+   * manually, otherwise we would not be able to give the drag handler
+   * a chance to handle drag events
+   */
+  gtk_drag_dest_set (vbox,
+                     0, NULL, 0,
+                     GDK_ACTION_COPY | GDK_ACTION_MOVE);
 
-  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_LAYER,
+  gimp_dnd_viewable_dest_add (vbox,
+                              GIMP_TYPE_LAYER,
                               gimp_toolbox_drop_drawable,
-                              dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_LAYER_MASK,
+                              context);
+  gimp_dnd_viewable_dest_add (vbox,
+                              GIMP_TYPE_LAYER_MASK,
                               gimp_toolbox_drop_drawable,
-                              dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_CHANNEL,
+                              context);
+  gimp_dnd_viewable_dest_add (vbox,
+                              GIMP_TYPE_CHANNEL,
                               gimp_toolbox_drop_drawable,
-                              dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_TOOL_INFO,
+                              context);
+  gimp_dnd_viewable_dest_add (vbox,
+                              GIMP_TYPE_TOOL_INFO,
                               gimp_toolbox_drop_tool,
-                              dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_BUFFER,
+                              context);
+  gimp_dnd_viewable_dest_add (vbox,
+                              GIMP_TYPE_BUFFER,
                               gimp_toolbox_drop_buffer,
-                              dock->context);
+                              context);
 
-  gimp_dnd_component_dest_add (toolbox->vbox,
+  gimp_dnd_component_dest_add (vbox,
                                gimp_toolbox_drop_component,
-                               dock->context);
-  gimp_dnd_pixbuf_dest_add    (toolbox->vbox,
+                               context);
+  gimp_dnd_pixbuf_dest_add    (vbox,
                                gimp_toolbox_drop_pixbuf,
-                               dock->context);
+                               context);
+
+  gimp_dnd_uri_list_dest_add (vbox,
+                              gimp_toolbox_drop_uri_list,
+                              context);
 }
 
 
@@ -171,66 +183,15 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
                             GimpViewable *viewable,
                             gpointer      data)
 {
-  GimpContext       *context  = GIMP_CONTEXT (data);
-  GimpDrawable      *drawable = GIMP_DRAWABLE (viewable);
-  GimpItem          *item     = GIMP_ITEM (viewable);
-  GimpImage         *image    = gimp_item_get_image (item);
-  GimpImage         *new_image;
-  GimpLayer         *new_layer;
-  GType              new_type;
-  gint               width, height;
-  gint               off_x, off_y;
-  gint               bytes;
-  GimpImageBaseType  type;
-  gdouble            xres;
-  gdouble            yres;
+  GimpContext *context = GIMP_CONTEXT (data);
+  GimpImage   *new_image;
 
   if (context->gimp->busy)
     return;
 
-  width  = gimp_item_width  (item);
-  height = gimp_item_height (item);
-  bytes  = gimp_drawable_bytes (drawable);
-
-  type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable));
-
-  new_image = gimp_create_image (image->gimp, width, height, type, TRUE);
-  gimp_image_undo_disable (new_image);
-
-  if (type == GIMP_INDEXED)
-    gimp_image_set_colormap (new_image,
-                             gimp_image_get_colormap (image),
-                             gimp_image_get_colormap_size (image),
-                             FALSE);
-
-  gimp_image_get_resolution (image, &xres, &yres);
-  gimp_image_set_resolution (new_image, xres, yres);
-  gimp_image_set_unit (new_image, gimp_image_get_unit (image));
-
-  if (GIMP_IS_LAYER (drawable))
-    new_type = G_TYPE_FROM_INSTANCE (drawable);
-  else
-    new_type = GIMP_TYPE_LAYER;
-
-  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (drawable),
-                                             new_image, new_type));
-
-  gimp_object_set_name (GIMP_OBJECT (new_layer),
-                        gimp_object_get_name (GIMP_OBJECT (drawable)));
-
-  gimp_item_offsets (GIMP_ITEM (new_layer), &off_x, &off_y);
-  gimp_item_translate (GIMP_ITEM (new_layer), -off_x, -off_y, FALSE);
-  gimp_item_set_visible (GIMP_ITEM (new_layer), TRUE, FALSE);
-  gimp_item_set_linked (GIMP_ITEM (new_layer), FALSE, FALSE);
-  gimp_layer_set_mode (new_layer, GIMP_NORMAL_MODE, FALSE);
-  gimp_layer_set_opacity (new_layer, GIMP_OPACITY_OPAQUE, FALSE);
-  gimp_layer_set_lock_alpha (new_layer, FALSE, FALSE);
-
-  gimp_image_add_layer (new_image, new_layer, 0);
-
-  gimp_image_undo_enable (new_image);
-
-  gimp_create_display (image->gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
+  new_image = gimp_image_new_from_drawable (context->gimp,
+                                            GIMP_DRAWABLE (viewable));
+  gimp_create_display (context->gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
   g_object_unref (new_image);
 }
 
@@ -262,13 +223,10 @@ gimp_toolbox_drop_buffer (GtkWidget    *widget,
   if (context->gimp->busy)
     return;
 
-  image = gimp_edit_paste_as_new (context->gimp, NULL, GIMP_BUFFER (viewable));
-
-  if (image)
-    {
-      gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
-      g_object_unref (image);
-    }
+  image = gimp_image_new_from_buffer (context->gimp, NULL,
+                                      GIMP_BUFFER (viewable));
+  gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
+  g_object_unref (image);
 }
 
 static void
@@ -280,42 +238,13 @@ gimp_toolbox_drop_component (GtkWidget       *widget,
                              gpointer         data)
 {
   GimpContext *context = GIMP_CONTEXT (data);
-  GimpChannel *channel;
   GimpImage   *new_image;
-  GimpLayer   *new_layer;
-  const gchar *desc;
-  gdouble      xres;
-  gdouble      yres;
 
   if (context->gimp->busy)
     return;
 
-  new_image = gimp_create_image (image->gimp,
-                                 gimp_image_get_width  (image),
-                                 gimp_image_get_height (image),
-                                 GIMP_GRAY, TRUE);
-
-  gimp_image_undo_disable (new_image);
-
-  gimp_image_get_resolution (image, &xres, &yres);
-  gimp_image_set_resolution (new_image, xres, yres);
-  gimp_image_set_unit (new_image, gimp_image_get_unit (image));
-
-  channel = gimp_channel_new_from_component (image, component, NULL, NULL);
-
-  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (channel),
-                                             new_image, GIMP_TYPE_LAYER));
-  g_object_unref (channel);
-
-  gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,
-                       NULL, NULL, &desc, NULL);
-  gimp_object_take_name (GIMP_OBJECT (new_layer),
-                         g_strdup_printf (_("%s Channel Copy"), desc));
-
-  gimp_image_add_layer (new_image, new_layer, 0);
-
-  gimp_image_undo_enable (new_image);
-
+  new_image = gimp_image_new_from_component (context->gimp,
+                                             image, component);
   gimp_create_display (new_image->gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
   g_object_unref (new_image);
 }
@@ -328,43 +257,13 @@ gimp_toolbox_drop_pixbuf (GtkWidget *widget,
                           gpointer   data)
 {
   GimpContext   *context = GIMP_CONTEXT (data);
-  GimpImageType  image_type;
   GimpImage     *new_image;
-  GimpLayer     *new_layer;
 
   if (context->gimp->busy)
     return;
 
-  switch (gdk_pixbuf_get_n_channels (pixbuf))
-    {
-    case 1: image_type = GIMP_GRAY_IMAGE;  break;
-    case 2: image_type = GIMP_GRAYA_IMAGE; break;
-    case 3: image_type = GIMP_RGB_IMAGE;   break;
-    case 4: image_type = GIMP_RGBA_IMAGE;  break;
-      break;
-
-    default:
-      g_return_if_reached ();
-      break;
-    }
-
-  new_image = gimp_create_image (context->gimp,
-                                 gdk_pixbuf_get_width  (pixbuf),
-                                 gdk_pixbuf_get_height (pixbuf),
-                                 GIMP_IMAGE_TYPE_BASE_TYPE (image_type),
-                                 FALSE);
-
-  gimp_image_undo_disable (new_image);
-
-  new_layer =
-    gimp_layer_new_from_pixbuf (pixbuf, new_image, image_type,
-                                _("Dropped Buffer"),
-                                GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
-
-  gimp_image_add_layer (new_image, new_layer, 0);
-
-  gimp_image_undo_enable (new_image);
-
+  new_image = gimp_image_new_from_pixbuf (context->gimp, pixbuf,
+                                          _("Dropped Buffer"));
   gimp_create_display (new_image->gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
   g_object_unref (new_image);
 }

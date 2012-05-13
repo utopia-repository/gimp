@@ -4,9 +4,9 @@
  * gimpsessioninfo-aux.h
  * Copyright (C) 2001-2007 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,14 +15,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_SESSION_INFO_AUX_H__
 #define __GIMP_SESSION_INFO_AUX_H__
 
 
+/**
+ * GimpSessionInfoAux:
+ *
+ * Contains arbitrary data in the session management system, used for
+ * example by dockables to manage dockable-specific data.
+ */
 struct _GimpSessionInfoAux
 {
   gchar *name;
@@ -45,10 +50,6 @@ void         gimp_session_info_aux_serialize      (GimpConfigWriter    *writer,
                                                    GList               *aux_info);
 GTokenType   gimp_session_info_aux_deserialize    (GScanner            *scanner,
                                                    GList              **aux_list);
-
-void         gimp_session_info_aux_set_list       (GtkWidget           *dialog,
-                                                   GList               *aux_info);
-GList      * gimp_session_info_aux_get_list       (GtkWidget           *dialog);
 
 
 #endif  /* __GIMP_SESSION_INFO_AUX_H__ */

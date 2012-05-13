@@ -2,9 +2,9 @@
    GIMP - The GNU Image Manipulation Program
    Copyright (C) 1995 Spencer Kimball and Peter Mattis
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
+   the Free Software Foundation; either version 3 of the License, or
    (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *********************************************************************/
 
 #include "config.h"
@@ -427,7 +426,7 @@ preview_leave_notify_event (GtkWidget      *widget,
 
   preview_redraw ();
 
-  gdk_window_set_cursor (maindlg->window, NULL);
+  gdk_window_set_cursor (gtk_widget_get_window (maindlg), NULL);
 
   return TRUE;
 }
@@ -446,7 +445,7 @@ preview_enter_notify_event (GtkWidget      *widget,
 
     }
 
-  gdk_window_set_cursor (maindlg->window, cursor);
+  gdk_window_set_cursor (gtk_widget_get_window (maindlg), cursor);
 
   return TRUE;
 }
@@ -560,7 +559,7 @@ explorer_dialog (void)
   elements    = g_new (DialogElements, 1);
 
   dialog = maindlg =
-    gimp_dialog_new ("Fractal Explorer", PLUG_IN_BINARY,
+    gimp_dialog_new (_("Fractal Explorer"), PLUG_IN_ROLE,
                      NULL, 0,
                      gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -584,18 +583,18 @@ explorer_dialog (void)
                     G_CALLBACK (gtk_main_quit),
                     NULL);
 
-  top_hbox = gtk_hbox_new (FALSE, 12);
+  top_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (top_hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), top_hbox,
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      top_hbox, FALSE, FALSE, 0);
   gtk_widget_show (top_hbox);
 
-  left_vbox = gtk_vbox_new (FALSE, 12);
+  left_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_box_pack_start (GTK_BOX (top_hbox), left_vbox, FALSE, FALSE, 0);
   gtk_widget_show (left_vbox);
 
   /*  Preview  */
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (left_vbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -658,11 +657,12 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (left_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
 
-  bbox = gtk_hbox_new (TRUE, 6);
+  bbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (bbox), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
@@ -682,7 +682,8 @@ explorer_dialog (void)
                     G_CALLBACK (dialog_step_out_callback),
                     dialog);
 
-  bbox = gtk_hbox_new (TRUE, 6);
+  bbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (bbox), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
@@ -712,7 +713,7 @@ explorer_dialog (void)
   gtk_widget_show (notebook);
 
   /*  "Parameters" page  */
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox,
                             gtk_label_new_with_mnemonic (_("_Parameters")));
@@ -796,7 +797,8 @@ explorer_dialog (void)
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.cy);
 
-  bbox = gtk_hbox_new (TRUE, 6);
+  bbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_box_set_homogeneous (GTK_BOX (bbox), TRUE);
   gtk_table_attach_defaults (GTK_TABLE (table), bbox, 0, 3, 7, 8);
   gtk_widget_show (bbox);
 
@@ -830,7 +832,7 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
@@ -860,7 +862,7 @@ explorer_dialog (void)
 
                               NULL);
 
-  toggle_vbox2 = gtk_vbox_new (FALSE, 2);
+  toggle_vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   for (i = TYPE_BARNSLEY_2; i <= TYPE_SPIDER; i++)
     {
       g_object_ref (elements->type[i]);
@@ -874,7 +876,7 @@ explorer_dialog (void)
       g_object_unref (elements->type[i]);
     }
 
-  toggle_vbox3 = gtk_vbox_new (FALSE, 2);
+  toggle_vbox3 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   for (i = TYPE_MAN_O_WAR; i <= TYPE_SIERPINSKI; i++)
     {
       g_object_ref (elements->type[i]);
@@ -898,7 +900,7 @@ explorer_dialog (void)
   gtk_widget_show (toggle_vbox3);
 
   /*  Color page  */
-  vbox = gtk_vbox_new (FALSE, 12);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox,
                             gtk_label_new_with_mnemonic (_("Co_lors")));
@@ -983,7 +985,7 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_container_add (GTK_CONTAINER (frame), hbox);
   gtk_widget_show (hbox);
 
@@ -992,11 +994,11 @@ explorer_dialog (void)
                                     G_CALLBACK (explorer_radio_update),
                                     &wvals.redmode, wvals.redmode,
 
-                                    _("Sine"),         SINUS,
+                                    _("Sine"),                    SINUS,
                                     &elements->redmode[SINUS],
-                                    _("Cosine"),       COSINUS,
+                                    _("Cosine"),                  COSINUS,
                                     &elements->redmode[COSINUS],
-                                    _("None"),         NONE,
+                                    C_("color-function", "None"), NONE,
                                     &elements->redmode[NONE],
 
                                     NULL);
@@ -1013,7 +1015,7 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  toggle_vbox = GTK_BIN (frame)->child;
+  toggle_vbox = gtk_bin_get_child (GTK_BIN (frame));
 
   elements->redinvert = toggle =
     gtk_check_button_new_with_label (_("Inversion"));
@@ -1033,11 +1035,11 @@ explorer_dialog (void)
                                     G_CALLBACK (explorer_radio_update),
                                     &wvals.greenmode, wvals.greenmode,
 
-                                    _("Sine"),           SINUS,
+                                    _("Sine"),                    SINUS,
                                     &elements->greenmode[SINUS],
-                                    _("Cosine"),         COSINUS,
+                                    _("Cosine"),                  COSINUS,
                                     &elements->greenmode[COSINUS],
-                                    _("None"),           NONE,
+                                    C_("color-function", "None"), NONE,
                                     &elements->greenmode[NONE],
 
                                     NULL);
@@ -1054,7 +1056,7 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  toggle_vbox = GTK_BIN (frame)->child;
+  toggle_vbox = gtk_bin_get_child (GTK_BIN (frame));
 
   elements->greeninvert = toggle =
     gtk_check_button_new_with_label (_("Inversion"));
@@ -1074,11 +1076,11 @@ explorer_dialog (void)
                                     G_CALLBACK (explorer_radio_update),
                                     &wvals.bluemode, wvals.bluemode,
 
-                                    _("Sine"),          SINUS,
+                                    _("Sine"),                    SINUS,
                                     &elements->bluemode[SINUS],
-                                    _("Cosine"),        COSINUS,
+                                    _("Cosine"),                  COSINUS,
                                     &elements->bluemode[COSINUS],
-                                    _("None"),          NONE,
+                                    C_("color-function", "None"), NONE,
                                     &elements->bluemode[NONE],
 
                                     NULL);
@@ -1095,7 +1097,7 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  toggle_vbox = GTK_BIN (frame)->child;
+  toggle_vbox = gtk_bin_get_child (GTK_BIN (frame));
 
   elements->blueinvert = toggle =
     gtk_check_button_new_with_label (_("Inversion"));
@@ -1115,7 +1117,7 @@ explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  toggle_vbox = gtk_vbox_new (FALSE, 2);
+  toggle_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (frame), toggle_vbox);
   gtk_widget_show (toggle_vbox);
 
@@ -1136,7 +1138,7 @@ explorer_dialog (void)
                              "specified above (color density/function). The "
                              "result is visible in the preview image"), NULL);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (toggle_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
@@ -1870,12 +1872,14 @@ explorer_load (void)
     {
       g_message (_("'%s' is not a FractalExplorer file"),
                  gimp_filename_to_utf8 (filename));
+      fclose (fp);
       return;
     }
   if (load_options (current_obj,fp))
     {
       g_message (_("'%s' is corrupt. Line %d Option section incorrect"),
                  gimp_filename_to_utf8 (filename), line_no);
+      fclose (fp);
       return;
     }
 

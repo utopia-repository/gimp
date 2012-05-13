@@ -11,15 +11,16 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
+/* FIXME: #undef GTK_DISABLE_DEPRECATED */
+#undef GTK_DISABLE_DEPRECATED
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -27,9 +28,26 @@
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
 
+#include "gimpwidgetstypes.h"
+
+#undef GIMP_DISABLE_DEPRECATED
+#include "gimpoldwidgets.h"
+#include "gimppropwidgets.h"
+#include "gimpunitmenu.h"
+
+#define GIMP_DISABLE_DEPRECATED
 #include "gimpwidgets.h"
 
 #include "libgimp/libgimp-intl.h"
+
+
+/**
+ * SECTION: gimppropwidgets
+ * @title: GimpPropWidgets
+ * @short_description: Editable views on #GObject properties.
+ *
+ * Editable views on #GObject properties.
+ **/
 
 
 /*  utility function prototypes  */
@@ -541,10 +559,10 @@ gimp_prop_boolean_combo_box_new (GObject     *config,
                 property_name, &value,
                 NULL);
 
-  combo_box = gtk_combo_box_new_text ();
+  combo_box = gtk_combo_box_text_new ();
 
-  gtk_combo_box_append_text (GTK_COMBO_BOX (combo_box), true_text);
-  gtk_combo_box_append_text (GTK_COMBO_BOX (combo_box), false_text);
+  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), true_text);
+  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), false_text);
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (combo_box), value ? 0 : 1);
 
@@ -893,7 +911,7 @@ gimp_prop_boolean_radio_frame_new (GObject     *config,
  * enum_value's nick to the given @stock_prefix.  See
  * gimp_enum_stock_box_new() for more information.
  *
- * Return value: A #GimpEnumStockBox containing the radio buttons.
+ * Return value: A #libgimpwidgets-gimpenumstockbox containing the radio buttons.
  *
  * Since GIMP 2.4
  */
@@ -1010,7 +1028,7 @@ static void   gimp_prop_adjustment_notify   (GObject       *config,
  * Creates a spin button to set and display the value of the
  * specified double property.
  *
- * Return value: A new #GimpSpinButton.
+ * Return value: A new #libgimpwidgets-gimpspinbutton.
  *
  * Since GIMP 2.4
  */
@@ -1135,8 +1153,8 @@ gimp_prop_hscale_new (GObject     *config,
  * @lower_limit:    The spinbutton's lower boundary if @limit_scale is %FALSE.
  * @upper_limit:    The spinbutton's upper boundary if @limit_scale is %FALSE.
  *
- * Creates a #GimpScaleEntry (slider and spin button) to set and
- * display the value of the specified double property.  See
+ * Creates a #libgimpwidgets-gimpscaleentry (slider and spin button)
+ * to set and display the value of the specified double property.  See
  * gimp_scale_entry_new() for more information.
  *
  * Return value: The #GtkSpinButton's #GtkAdjustment.
@@ -1221,10 +1239,10 @@ gimp_prop_scale_entry_new (GObject     *config,
  * @label:         The text for the #GtkLabel which will appear left of the
  *                 #GtkHScale.
  *
- * Creates a #GimpScaleEntry (slider and spin button) to set and
- * display the value of the specified double property, which should
- * represent an "opacity" variable with range 0 to 100.  See
- * gimp_scale_entry_new() for more information.
+ * Creates a #libgimpwidgets-gimpscaleentry (slider and spin button)
+ * to set and display the value of the specified double property,
+ * which should represent an "opacity" variable with range 0 to 100.
+ * See gimp_scale_entry_new() for more information.
  *
  * Return value:  The #GtkSpinButton's #GtkAdjustment.
  *
@@ -3156,11 +3174,20 @@ gimp_prop_coordinates_notify_x (GObject       *config,
 
   if (value != gimp_size_entry_get_refval (entry, 0))
     {
+      gdouble *old_x_value = g_object_get_data (G_OBJECT (entry),
+                                                "old-x-value");
+
       g_signal_handlers_block_by_func (entry,
                                        gimp_prop_coordinates_callback,
                                        config);
 
       gimp_size_entry_set_refval (entry, 0, value);
+
+      if (old_x_value)
+        *old_x_value = value;
+
+      g_signal_emit_by_name (entry, "value-changed",
+                             gimp_size_entry_get_value (entry, 0));
 
       g_signal_handlers_unblock_by_func (entry,
                                          gimp_prop_coordinates_callback,
@@ -3194,11 +3221,20 @@ gimp_prop_coordinates_notify_y (GObject       *config,
 
   if (value != gimp_size_entry_get_refval (entry, 1))
     {
+      gdouble *old_y_value = g_object_get_data (G_OBJECT (entry),
+                                                "old-y-value");
+
       g_signal_handlers_block_by_func (entry,
                                        gimp_prop_coordinates_callback,
                                        config);
 
       gimp_size_entry_set_refval (entry, 1, value);
+
+      if (old_y_value)
+        *old_y_value = value;
+
+      g_signal_emit_by_name (entry, "value-changed",
+                             gimp_size_entry_get_value (entry, 1));
 
       g_signal_handlers_unblock_by_func (entry,
                                          gimp_prop_coordinates_callback,
@@ -3343,6 +3379,132 @@ gimp_prop_color_area_notify (GObject    *config,
 
   g_signal_handlers_unblock_by_func (area,
                                      gimp_prop_color_area_callback,
+                                     config);
+}
+
+
+/********************/
+/*  unit combo box  */
+/********************/
+
+static void   gimp_prop_unit_combo_box_callback (GtkWidget  *combo,
+                                                 GObject    *config);
+static void   gimp_prop_unit_combo_box_notify   (GObject    *config,
+                                                 GParamSpec *param_spec,
+                                                 GtkWidget  *combo);
+
+/**
+ * gimp_prop_unit_combo_box_new:
+ * @config:        Object to which property is attached.
+ * @property_name: Name of Unit property.
+ *
+ * Creates a #GimpUnitComboBox to set and display the value of a Unit
+ * property.  See gimp_unit_combo_box_new() for more information.
+ *
+ * Return value:  A new #GimpUnitComboBox widget.
+ *
+ * Since GIMP 2.8
+ */
+GtkWidget *
+gimp_prop_unit_combo_box_new (GObject     *config,
+                              const gchar *property_name)
+{
+  GParamSpec   *param_spec;
+  GtkWidget    *combo;
+  GtkTreeModel *model;
+  GimpUnit      unit;
+  GValue        value = { 0, };
+  gboolean      show_pixels;
+  gboolean      show_percent;
+
+  param_spec = check_param_spec_w (config, property_name,
+                                   GIMP_TYPE_PARAM_UNIT, G_STRFUNC);
+  if (! param_spec)
+    return NULL;
+
+  g_value_init (&value, param_spec->value_type);
+
+  g_value_set_int (&value, GIMP_UNIT_PIXEL);
+  show_pixels = (g_param_value_validate (param_spec, &value) == FALSE);
+
+  g_value_set_int (&value, GIMP_UNIT_PERCENT);
+  show_percent = (g_param_value_validate (param_spec, &value) == FALSE);
+
+  g_value_unset (&value);
+
+  g_object_get (config,
+                property_name, &unit,
+                NULL);
+
+  combo = gimp_unit_combo_box_new ();
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
+  gimp_unit_store_set_has_pixels (GIMP_UNIT_STORE (model), show_pixels);
+  gimp_unit_store_set_has_percent (GIMP_UNIT_STORE (model), show_percent);
+
+  gimp_unit_combo_box_set_active (GIMP_UNIT_COMBO_BOX (combo), unit);
+
+  set_param_spec (G_OBJECT (combo), combo, param_spec);
+
+  g_signal_connect (combo, "changed",
+                    G_CALLBACK (gimp_prop_unit_combo_box_callback),
+                    config);
+
+  connect_notify (config, property_name,
+                  G_CALLBACK (gimp_prop_unit_combo_box_notify),
+                  combo);
+
+  return combo;
+}
+
+static void
+gimp_prop_unit_combo_box_callback (GtkWidget *combo,
+                                   GObject   *config)
+{
+  GParamSpec *param_spec;
+  GimpUnit    unit;
+
+  param_spec = get_param_spec (G_OBJECT (combo));
+  if (! param_spec)
+    return;
+
+  unit = gimp_unit_combo_box_get_active (GIMP_UNIT_COMBO_BOX (combo));
+
+  /* FIXME gimp_unit_menu_update (menu, &unit); */
+
+  g_signal_handlers_block_by_func (config,
+                                   gimp_prop_unit_combo_box_notify,
+                                   combo);
+
+  g_object_set (config,
+                param_spec->name, unit,
+                NULL);
+
+  g_signal_handlers_unblock_by_func (config,
+                                     gimp_prop_unit_combo_box_notify,
+                                     combo);
+}
+
+static void
+gimp_prop_unit_combo_box_notify (GObject    *config,
+                                 GParamSpec *param_spec,
+                                 GtkWidget  *combo)
+{
+  GimpUnit  unit;
+
+  g_object_get (config,
+                param_spec->name, &unit,
+                NULL);
+
+  g_signal_handlers_block_by_func (combo,
+                                   gimp_prop_unit_combo_box_callback,
+                                   config);
+
+  gimp_unit_combo_box_set_active (GIMP_UNIT_COMBO_BOX (combo), unit);
+
+  /* FIXME gimp_unit_menu_update (menu, &unit); */
+
+  g_signal_handlers_unblock_by_func (combo,
+                                     gimp_prop_unit_combo_box_callback,
                                      config);
 }
 

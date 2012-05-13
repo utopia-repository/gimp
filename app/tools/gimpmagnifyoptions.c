@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -76,12 +75,15 @@ gimp_magnify_options_class_init (GimpMagnifyOptionsClass *klass)
   options_class->reset       = gimp_magnify_options_reset;
 
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_AUTO_RESIZE,
-                                    "auto-resize", NULL,
+                                    "auto-resize",
+                                    N_("Resize image window to accommodate "
+                                       "new zoom level"),
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_ZOOM_TYPE,
-                                 "zoom-type", NULL,
+                                 "zoom-type",
+                                 N_("Direction of magnification"),
                                  GIMP_TYPE_ZOOM_TYPE,
                                  GIMP_ZOOM_IN,
                                  GIMP_PARAM_STATIC_STRINGS);
@@ -156,11 +158,14 @@ gimp_magnify_options_reset (GimpToolOptions *tool_options)
 GtkWidget *
 gimp_magnify_options_gui (GimpToolOptions *tool_options)
 {
-  GObject   *config = G_OBJECT (tool_options);
-  GtkWidget *vbox   = gimp_tool_options_gui (tool_options);
-  GtkWidget *frame;
-  GtkWidget *button;
-  gchar     *str;
+  GObject         *config = G_OBJECT (tool_options);
+  GtkWidget       *vbox   = gimp_tool_options_gui (tool_options);
+  GtkWidget       *frame;
+  GtkWidget       *button;
+  gchar           *str;
+  GdkModifierType  toggle_mask;
+
+  toggle_mask = gimp_get_toggle_behavior_mask ();
 
   /*  the auto_resize toggle button  */
   button = gimp_prop_check_button_new (config, "auto-resize",
@@ -169,8 +174,8 @@ gimp_magnify_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
 
   /*  tool toggle  */
-  str = g_strdup_printf (_("Tool Toggle  (%s)"),
-                         gimp_get_mod_string (GDK_CONTROL_MASK));
+  str = g_strdup_printf (_("Direction  (%s)"),
+                         gimp_get_mod_string (toggle_mask));
 
   frame = gimp_prop_enum_radio_frame_new (config, "zoom-type",
                                           str, 0, 0);

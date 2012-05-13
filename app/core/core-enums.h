@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __CORE_ENUMS_H__
@@ -95,7 +94,7 @@ typedef enum  /*< pdb-skip >*/
 } GimpGravityType;
 
 
-#define GIMP_TYPE_ALIGNMENT (gimp_alignment_type_get_type ())
+#define GIMP_TYPE_ALIGNMENT_TYPE (gimp_alignment_type_get_type ())
 
 GType gimp_alignment_type_get_type (void) G_GNUC_CONST;
 
@@ -116,7 +115,7 @@ typedef enum  /*< pdb-skip >*/
 } GimpAlignmentType;
 
 
-#define GIMP_TYPE_ALIGN_REFERENCE (gimp_align_reference_type_get_type ())
+#define GIMP_TYPE_ALIGN_REFERENCE_TYPE (gimp_align_reference_type_get_type ())
 
 GType gimp_align_reference_type_get_type (void) G_GNUC_CONST;
 
@@ -146,6 +145,17 @@ typedef enum
 } GimpFillType;
 
 
+#define GIMP_TYPE_FILL_STYLE (gimp_fill_style_get_type ())
+
+GType gimp_fill_style_get_type (void) G_GNUC_CONST;
+
+typedef enum  /*< pdb-skip >*/
+{
+  GIMP_FILL_STYLE_SOLID,  /*< desc="Solid color" >*/
+  GIMP_FILL_STYLE_PATTERN /*< desc="Pattern"     >*/
+} GimpFillStyle;
+
+
 #define GIMP_TYPE_STROKE_METHOD (gimp_stroke_method_get_type ())
 
 GType gimp_stroke_method_get_type (void) G_GNUC_CONST;
@@ -155,17 +165,6 @@ typedef enum  /*< pdb-skip >*/
   GIMP_STROKE_METHOD_LIBART,     /*< desc="Stroke line"              >*/
   GIMP_STROKE_METHOD_PAINT_CORE  /*< desc="Stroke with a paint tool" >*/
 } GimpStrokeMethod;
-
-
-#define GIMP_TYPE_STROKE_STYLE (gimp_stroke_style_get_type ())
-
-GType gimp_stroke_style_get_type (void) G_GNUC_CONST;
-
-typedef enum  /*< pdb-skip >*/
-{
-  GIMP_STROKE_STYLE_SOLID,  /*< desc="Solid color" >*/
-  GIMP_STROKE_STYLE_PATTERN /*< desc="Pattern"     >*/
-} GimpStrokeStyle;
 
 
 #define GIMP_TYPE_JOIN_STYLE (gimp_join_style_get_type ())
@@ -291,21 +290,6 @@ typedef enum  /*< pdb-skip >*/
 } GimpViewType;
 
 
-#define GIMP_TYPE_SELECTION_CONTROL (gimp_selection_control_get_type ())
-
-GType gimp_selection_control_get_type (void) G_GNUC_CONST;
-
-typedef enum  /*< pdb-skip >*/
-{
-  GIMP_SELECTION_OFF,
-  GIMP_SELECTION_LAYER_OFF,
-  GIMP_SELECTION_LAYER_ON,
-  GIMP_SELECTION_ON,
-  GIMP_SELECTION_PAUSE,
-  GIMP_SELECTION_RESUME
-} GimpSelectionControl;
-
-
 #define GIMP_TYPE_THUMBNAIL_SIZE (gimp_thumbnail_size_get_type ())
 
 GType gimp_thumbnail_size_get_type (void) G_GNUC_CONST;
@@ -387,7 +371,6 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_GROUP_FS_TO_LAYER,        /*< desc="Floating selection to layer" >*/
   GIMP_UNDO_GROUP_FS_FLOAT,           /*< desc="Float selection"             >*/
   GIMP_UNDO_GROUP_FS_ANCHOR,          /*< desc="Anchor floating selection"   >*/
-  GIMP_UNDO_GROUP_FS_REMOVE,          /*< desc="Remove floating selection"   >*/
   GIMP_UNDO_GROUP_EDIT_PASTE,         /*< desc="Paste"                       >*/
   GIMP_UNDO_GROUP_EDIT_CUT,           /*< desc="Cut"                         >*/
   GIMP_UNDO_GROUP_TEXT,               /*< desc="Text"                        >*/
@@ -412,16 +395,19 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_DRAWABLE,                 /*< desc="Layer/Channel"               >*/
   GIMP_UNDO_DRAWABLE_MOD,             /*< desc="Layer/Channel modification"  >*/
   GIMP_UNDO_MASK,                     /*< desc="Selection mask"              >*/
+  GIMP_UNDO_ITEM_REORDER,             /*< desc="Reorder item"                >*/
   GIMP_UNDO_ITEM_RENAME,              /*< desc="Rename item"                 >*/
   GIMP_UNDO_ITEM_DISPLACE,            /*< desc="Move item"                   >*/
   GIMP_UNDO_ITEM_VISIBILITY,          /*< desc="Item visibility"             >*/
   GIMP_UNDO_ITEM_LINKED,              /*< desc="Link/Unlink item"            >*/
   GIMP_UNDO_LAYER_ADD,                /*< desc="New layer"                   >*/
   GIMP_UNDO_LAYER_REMOVE,             /*< desc="Delete layer"                >*/
-  GIMP_UNDO_LAYER_REPOSITION,         /*< desc="Reposition layer"            >*/
   GIMP_UNDO_LAYER_MODE,               /*< desc="Set layer mode"              >*/
   GIMP_UNDO_LAYER_OPACITY,            /*< desc="Set layer opacity"           >*/
   GIMP_UNDO_LAYER_LOCK_ALPHA,         /*< desc="Lock/Unlock alpha channel"   >*/
+  GIMP_UNDO_GROUP_LAYER_SUSPEND,      /*< desc="Suspend group layer resize"  >*/
+  GIMP_UNDO_GROUP_LAYER_RESUME,       /*< desc="Resume group layer resize"   >*/
+  GIMP_UNDO_GROUP_LAYER_CONVERT,      /*< desc="Convert group layer"         >*/
   GIMP_UNDO_TEXT_LAYER,               /*< desc="Text layer"                  >*/
   GIMP_UNDO_TEXT_LAYER_MODIFIED,      /*< desc="Text layer modification"     >*/
   GIMP_UNDO_LAYER_MASK_ADD,           /*< desc="Add layer mask"              >*/
@@ -430,15 +416,11 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_LAYER_MASK_SHOW,          /*< desc="Show layer mask"             >*/
   GIMP_UNDO_CHANNEL_ADD,              /*< desc="New channel"                 >*/
   GIMP_UNDO_CHANNEL_REMOVE,           /*< desc="Delete channel"              >*/
-  GIMP_UNDO_CHANNEL_REPOSITION,       /*< desc="Reposition channel"          >*/
   GIMP_UNDO_CHANNEL_COLOR,            /*< desc="Channel color"               >*/
   GIMP_UNDO_VECTORS_ADD,              /*< desc="New path"                    >*/
   GIMP_UNDO_VECTORS_REMOVE,           /*< desc="Delete path"                 >*/
   GIMP_UNDO_VECTORS_MOD,              /*< desc="Path modification"           >*/
-  GIMP_UNDO_VECTORS_REPOSITION,       /*< desc="Reposition path"             >*/
   GIMP_UNDO_FS_TO_LAYER,              /*< desc="Floating selection to layer" >*/
-  GIMP_UNDO_FS_RIGOR,                 /*< desc="Rigor floating selection"    >*/
-  GIMP_UNDO_FS_RELAX,                 /*< desc="Relax floating selection"    >*/
   GIMP_UNDO_TRANSFORM,                /*< desc="Transform"                   >*/
   GIMP_UNDO_PAINT,                    /*< desc="Paint"                       >*/
   GIMP_UNDO_INK,                      /*< desc="Ink"                         >*/
@@ -587,6 +569,26 @@ typedef enum  /*< pdb-skip >*/
 } GimpColorProfilePolicy;
 
 
+#define GIMP_TYPE_DYNAMICS_OUTPUT_TYPE (gimp_dynamics_output_type_get_type ())
+
+GType gimp_dynamics_output_type_get_type (void) G_GNUC_CONST;
+
+typedef enum  /*< pdb-skip >*/
+{
+  GIMP_DYNAMICS_OUTPUT_OPACITY,      /*< desc="Opacity"      >*/
+  GIMP_DYNAMICS_OUTPUT_SIZE,         /*< desc="Size"         >*/
+  GIMP_DYNAMICS_OUTPUT_ANGLE,        /*< desc="Angle"        >*/
+  GIMP_DYNAMICS_OUTPUT_COLOR,        /*< desc="Color"        >*/
+  GIMP_DYNAMICS_OUTPUT_HARDNESS,     /*< desc="Hardness"     >*/
+  GIMP_DYNAMICS_OUTPUT_FORCE,        /*< desc="Force"        >*/
+  GIMP_DYNAMICS_OUTPUT_ASPECT_RATIO, /*< desc="Aspect ratio" >*/
+  GIMP_DYNAMICS_OUTPUT_SPACING,      /*< desc="Spacing"      >*/
+  GIMP_DYNAMICS_OUTPUT_RATE,         /*< desc="Rate"         >*/
+  GIMP_DYNAMICS_OUTPUT_FLOW,         /*< desc="Flow"         >*/
+  GIMP_DYNAMICS_OUTPUT_JITTER,       /*< desc="Jitter"       >*/
+} GimpDynamicsOutputType;
+
+
 /*
  * non-registered enums; register them if needed
  */
@@ -594,47 +596,51 @@ typedef enum  /*< pdb-skip >*/
 
 typedef enum  /*< pdb-skip, skip >*/
 {
-  GIMP_CONTEXT_FIRST_PROP      =  2,
+  GIMP_CONTEXT_FIRST_PROP       =  2,
 
-  GIMP_CONTEXT_PROP_IMAGE      =  GIMP_CONTEXT_FIRST_PROP,
-  GIMP_CONTEXT_PROP_DISPLAY    =  3,
-  GIMP_CONTEXT_PROP_TOOL       =  4,
-  GIMP_CONTEXT_PROP_PAINT_INFO =  5,
-  GIMP_CONTEXT_PROP_FOREGROUND =  6,
-  GIMP_CONTEXT_PROP_BACKGROUND =  7,
-  GIMP_CONTEXT_PROP_OPACITY    =  8,
-  GIMP_CONTEXT_PROP_PAINT_MODE =  9,
-  GIMP_CONTEXT_PROP_BRUSH      = 10,
-  GIMP_CONTEXT_PROP_PATTERN    = 11,
-  GIMP_CONTEXT_PROP_GRADIENT   = 12,
-  GIMP_CONTEXT_PROP_PALETTE    = 13,
-  GIMP_CONTEXT_PROP_FONT       = 14,
-  GIMP_CONTEXT_PROP_BUFFER     = 15,
-  GIMP_CONTEXT_PROP_IMAGEFILE  = 16,
-  GIMP_CONTEXT_PROP_TEMPLATE   = 17,
+  GIMP_CONTEXT_PROP_IMAGE       =  GIMP_CONTEXT_FIRST_PROP,
+  GIMP_CONTEXT_PROP_DISPLAY     =  3,
+  GIMP_CONTEXT_PROP_TOOL        =  4,
+  GIMP_CONTEXT_PROP_PAINT_INFO  =  5,
+  GIMP_CONTEXT_PROP_FOREGROUND  =  6,
+  GIMP_CONTEXT_PROP_BACKGROUND  =  7,
+  GIMP_CONTEXT_PROP_OPACITY     =  8,
+  GIMP_CONTEXT_PROP_PAINT_MODE  =  9,
+  GIMP_CONTEXT_PROP_BRUSH       = 10,
+  GIMP_CONTEXT_PROP_DYNAMICS    = 11,
+  GIMP_CONTEXT_PROP_PATTERN     = 12,
+  GIMP_CONTEXT_PROP_GRADIENT    = 13,
+  GIMP_CONTEXT_PROP_PALETTE     = 14,
+  GIMP_CONTEXT_PROP_TOOL_PRESET = 15,
+  GIMP_CONTEXT_PROP_FONT        = 16,
+  GIMP_CONTEXT_PROP_BUFFER      = 17,
+  GIMP_CONTEXT_PROP_IMAGEFILE   = 18,
+  GIMP_CONTEXT_PROP_TEMPLATE    = 19,
 
-  GIMP_CONTEXT_LAST_PROP       = GIMP_CONTEXT_PROP_TEMPLATE
+  GIMP_CONTEXT_LAST_PROP        = GIMP_CONTEXT_PROP_TEMPLATE
 } GimpContextPropType;
 
 
 typedef enum  /*< pdb-skip, skip >*/
 {
-  GIMP_CONTEXT_IMAGE_MASK      = 1 <<  2,
-  GIMP_CONTEXT_DISPLAY_MASK    = 1 <<  3,
-  GIMP_CONTEXT_TOOL_MASK       = 1 <<  4,
-  GIMP_CONTEXT_PAINT_INFO_MASK = 1 <<  5,
-  GIMP_CONTEXT_FOREGROUND_MASK = 1 <<  6,
-  GIMP_CONTEXT_BACKGROUND_MASK = 1 <<  7,
-  GIMP_CONTEXT_OPACITY_MASK    = 1 <<  8,
-  GIMP_CONTEXT_PAINT_MODE_MASK = 1 <<  9,
-  GIMP_CONTEXT_BRUSH_MASK      = 1 << 10,
-  GIMP_CONTEXT_PATTERN_MASK    = 1 << 11,
-  GIMP_CONTEXT_GRADIENT_MASK   = 1 << 12,
-  GIMP_CONTEXT_PALETTE_MASK    = 1 << 13,
-  GIMP_CONTEXT_FONT_MASK       = 1 << 14,
-  GIMP_CONTEXT_BUFFER_MASK     = 1 << 15,
-  GIMP_CONTEXT_IMAGEFILE_MASK  = 1 << 16,
-  GIMP_CONTEXT_TEMPLATE_MASK   = 1 << 17,
+  GIMP_CONTEXT_IMAGE_MASK       = 1 <<  2,
+  GIMP_CONTEXT_DISPLAY_MASK     = 1 <<  3,
+  GIMP_CONTEXT_TOOL_MASK        = 1 <<  4,
+  GIMP_CONTEXT_PAINT_INFO_MASK  = 1 <<  5,
+  GIMP_CONTEXT_FOREGROUND_MASK  = 1 <<  6,
+  GIMP_CONTEXT_BACKGROUND_MASK  = 1 <<  7,
+  GIMP_CONTEXT_OPACITY_MASK     = 1 <<  8,
+  GIMP_CONTEXT_PAINT_MODE_MASK  = 1 <<  9,
+  GIMP_CONTEXT_BRUSH_MASK       = 1 << 10,
+  GIMP_CONTEXT_DYNAMICS_MASK    = 1 << 11,
+  GIMP_CONTEXT_PATTERN_MASK     = 1 << 12,
+  GIMP_CONTEXT_GRADIENT_MASK    = 1 << 13,
+  GIMP_CONTEXT_PALETTE_MASK     = 1 << 14,
+  GIMP_CONTEXT_TOOL_PRESET_MASK = 1 << 15,
+  GIMP_CONTEXT_FONT_MASK        = 1 << 16,
+  GIMP_CONTEXT_BUFFER_MASK      = 1 << 17,
+  GIMP_CONTEXT_IMAGEFILE_MASK   = 1 << 18,
+  GIMP_CONTEXT_TEMPLATE_MASK    = 1 << 19,
 
   /*  aliases  */
   GIMP_CONTEXT_PAINT_PROPS_MASK = (GIMP_CONTEXT_FOREGROUND_MASK |
@@ -642,6 +648,7 @@ typedef enum  /*< pdb-skip, skip >*/
                                    GIMP_CONTEXT_OPACITY_MASK    |
                                    GIMP_CONTEXT_PAINT_MODE_MASK |
                                    GIMP_CONTEXT_BRUSH_MASK      |
+                                   GIMP_CONTEXT_DYNAMICS_MASK   |
                                    GIMP_CONTEXT_PATTERN_MASK    |
                                    GIMP_CONTEXT_GRADIENT_MASK),
   GIMP_CONTEXT_ALL_PROPS_MASK   = (GIMP_CONTEXT_IMAGE_MASK      |

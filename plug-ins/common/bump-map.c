@@ -6,9 +6,9 @@
  * Copyright (C) 1997-2000 Jens Lautenbacher <jtl@gimp.org>
  * Copyright (C) 2000 Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* This plug-in uses the algorithm described by John Schlag, "Fast
@@ -42,6 +41,7 @@
 #define PLUG_IN_PROC       "plug-in-bump-map"
 #define PLUG_IN_TILED_PROC "plug-in-bump-map-tiled"
 #define PLUG_IN_BINARY     "bumpmap"
+#define PLUG_IN_ROLE       "gimp-bumpmap"
 #define PLUG_IN_VERSION    "April 2000, 3.0-pre1-ac2"
 
 #define SCALE_WIDTH       100
@@ -144,7 +144,7 @@ static void bumpmap_convert_row (guchar           *row,
 static gboolean bumpmap_dialog             (void);
 static void     dialog_new_bumpmap         (gboolean       init_offsets);
 static void     dialog_update_preview      (GimpPreview   *preview);
-static gint     dialog_preview_events      (GtkWidget     *area,
+static gboolean dialog_preview_events      (GtkWidget     *area,
                                             GdkEvent      *event,
                                             GimpPreview   *preview);
 static void     dialog_get_rows            (GimpPixelRgn  *pr,
@@ -235,7 +235,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive"   },
+    { GIMP_PDB_INT32,    "run-mode",   "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }"   },
     { GIMP_PDB_IMAGE,    "image",      "Input image"                    },
     { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"                 },
     { GIMP_PDB_DRAWABLE, "bumpmap",    "Bump map drawable"              },
@@ -247,10 +247,10 @@ query (void)
     { GIMP_PDB_INT32,    "waterlevel", "Level that full transparency "
                                        "should represent"               },
     { GIMP_PDB_INT32,    "ambient",    "Ambient lighting factor"        },
-    { GIMP_PDB_INT32,    "compensate", "Compensate for darkening"       },
-    { GIMP_PDB_INT32,    "invert",     "Invert bumpmap"                 },
-    { GIMP_PDB_INT32,    "type",       "Type of map (LINEAR (0), "
-                                       "SPHERICAL (1), SINUSOIDAL (2))" }
+    { GIMP_PDB_INT32,    "compensate", "Compensate for darkening { TRUE, FALSE }" },
+    { GIMP_PDB_INT32,    "invert",     "Invert bumpmap { TRUE, FALSE }" },
+    { GIMP_PDB_INT32,    "type",       "Type of map { LINEAR (0), "
+                                       "SPHERICAL (1), SINUSOIDAL (2) }" }
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
@@ -317,11 +317,15 @@ run (const gchar      *name,
   /* Get drawable information */
   drawable = gimp_drawable_get (param[2].data.d_drawable);
 
-  gimp_drawable_mask_bounds (drawable->drawable_id,
-                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                      &sel_x1, &sel_y1,
+                                      &sel_width, &sel_height))
+    {
+      return;
+    }
 
-  sel_width     = sel_x2 - sel_x1;
-  sel_height    = sel_y2 - sel_y1;
+  sel_x2 = sel_width + sel_x1;
+  sel_y2 = sel_height + sel_y1;
   img_bpp       = gimp_drawable_bpp (drawable->drawable_id);
   img_has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
@@ -524,6 +528,7 @@ bumpmap (void)
     }
 
   /* Done */
+  gimp_progress_update (1.0);
 
   g_free (bm_row1);
   g_free (bm_row2);
@@ -763,7 +768,7 @@ bumpmap_dialog (void)
 
   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Bump Map"), PLUG_IN_BINARY,
+  dialog = gimp_dialog_new (_("Bump Map"), PLUG_IN_ROLE,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -779,22 +784,23 @@ bumpmap_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dialog));
 
-  paned = gtk_hpaned_new ();
+  paned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_container_set_border_width (GTK_CONTAINER (paned), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), paned);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      paned, TRUE, TRUE, 0);
   gtk_widget_show (paned);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, FALSE);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
   gtk_box_pack_end (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
-  gtk_container_add (GTK_CONTAINER (hbox), preview);
+  gtk_box_pack_start (GTK_BOX (hbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 
   g_signal_connect (preview, "invalidated",
@@ -803,17 +809,17 @@ bumpmap_dialog (void)
   g_signal_connect (GIMP_PREVIEW (preview)->area, "event",
                     G_CALLBACK (dialog_preview_events), preview);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_paned_pack2 (GTK_PANED (paned), hbox, FALSE, FALSE);
   gtk_widget_show (hbox);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (hbox), vbox);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   table = gtk_table_new (12, 3, FALSE);
@@ -1001,38 +1007,34 @@ bumpmap_dialog (void)
   return run;
 }
 
-static gint
+static gboolean
 dialog_preview_events (GtkWidget   *area,
                        GdkEvent    *event,
                        GimpPreview *preview)
 {
-  gint            x, y;
-  gint            dx, dy;
-  GdkEventButton *bevent;
-
-  gtk_widget_get_pointer (area, &x, &y);
-
-  bevent = (GdkEventButton *) event;
-
   switch (event->type)
     {
     case GDK_BUTTON_PRESS:
-      switch (bevent->button)
-        {
-        case 2:
-          bmint.drag_mode = DRAG_BUMPMAP;
-          break;
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-        default:
-          return FALSE;
-        }
+        switch (bevent->button)
+          {
+          case 2:
+            bmint.drag_mode = DRAG_BUMPMAP;
+            break;
 
-      bmint.mouse_x = x;
-      bmint.mouse_y = y;
+          default:
+            return FALSE;
+          }
 
-      gtk_grab_add (area);
+        bmint.mouse_x = bevent->x;
+        bmint.mouse_y = bevent->y;
 
-      return TRUE;
+        gtk_grab_add (area);
+
+        return TRUE;
+      }
       break;
 
     case GDK_BUTTON_RELEASE:
@@ -1044,50 +1046,53 @@ dialog_preview_events (GtkWidget   *area,
 
           return TRUE;
         }
-
       break;
 
     case GDK_MOTION_NOTIFY:
-      dx = x - bmint.mouse_x;
-      dy = y - bmint.mouse_y;
+      {
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
+        gint            dx     = mevent->x - bmint.mouse_x;
+        gint            dy     = mevent->y - bmint.mouse_y;
 
-      bmint.mouse_x = x;
-      bmint.mouse_y = y;
+        bmint.mouse_x = mevent->x;
+        bmint.mouse_y = mevent->y;
 
-      if ((dx == 0) && (dy == 0))
-        break;
+        gdk_event_request_motions (mevent);
 
-      switch (bmint.drag_mode)
-        {
-        case DRAG_BUMPMAP:
-          bmvals.xofs = CLAMP (bmvals.xofs - dx, -1000, 1000);
-          g_signal_handlers_block_by_func (bmint.offset_adj_x,
-                                           gimp_int_adjustment_update,
-                                           &bmvals.xofs);
-          gtk_adjustment_set_value (GTK_ADJUSTMENT (bmint.offset_adj_x),
-                                    bmvals.xofs);
-          g_signal_handlers_unblock_by_func (bmint.offset_adj_x,
-                                             gimp_int_adjustment_update,
-                                             &bmvals.xofs);
-
-          bmvals.yofs = CLAMP (bmvals.yofs - dy, -1000, 1000);
-          g_signal_handlers_block_by_func (bmint.offset_adj_y,
-                                           gimp_int_adjustment_update,
-                                           &bmvals.yofs);
-          gtk_adjustment_set_value (GTK_ADJUSTMENT (bmint.offset_adj_y),
-                                    bmvals.yofs);
-          g_signal_handlers_unblock_by_func (bmint.offset_adj_y,
-                                             gimp_int_adjustment_update,
-                                             &bmvals.yofs);
+        if ((dx == 0) && (dy == 0))
           break;
 
-        default:
-          return FALSE;
-        }
+        switch (bmint.drag_mode)
+          {
+          case DRAG_BUMPMAP:
+            bmvals.xofs = CLAMP (bmvals.xofs - dx, -1000, 1000);
+            g_signal_handlers_block_by_func (bmint.offset_adj_x,
+                                             gimp_int_adjustment_update,
+                                             &bmvals.xofs);
+            gtk_adjustment_set_value (GTK_ADJUSTMENT (bmint.offset_adj_x),
+                                      bmvals.xofs);
+            g_signal_handlers_unblock_by_func (bmint.offset_adj_x,
+                                               gimp_int_adjustment_update,
+                                               &bmvals.xofs);
 
-      gimp_preview_invalidate (preview);
+            bmvals.yofs = CLAMP (bmvals.yofs - dy, -1000, 1000);
+            g_signal_handlers_block_by_func (bmint.offset_adj_y,
+                                             gimp_int_adjustment_update,
+                                             &bmvals.yofs);
+            gtk_adjustment_set_value (GTK_ADJUSTMENT (bmint.offset_adj_y),
+                                      bmvals.yofs);
+            g_signal_handlers_unblock_by_func (bmint.offset_adj_y,
+                                               gimp_int_adjustment_update,
+                                               &bmvals.yofs);
+            break;
 
-      return TRUE;
+          default:
+            return FALSE;
+          }
+
+        gimp_preview_invalidate (preview);
+        return TRUE;
+      }
       break;
 
     default:
@@ -1137,11 +1142,10 @@ dialog_new_bumpmap (gboolean init_offsets)
       adj = (GtkAdjustment *) bmint.offset_adj_x;
       if (adj)
         {
-          adj->value = bmvals.xofs;
           g_signal_handlers_block_by_func (adj,
                                            gimp_int_adjustment_update,
                                            &bmvals.xofs);
-          gtk_adjustment_value_changed (adj);
+          gtk_adjustment_set_value (adj, bmvals.xofs);
           g_signal_handlers_unblock_by_func (adj,
                                              gimp_int_adjustment_update,
                                              &bmvals.xofs);
@@ -1150,11 +1154,10 @@ dialog_new_bumpmap (gboolean init_offsets)
       adj = (GtkAdjustment *) bmint.offset_adj_y;
       if (adj)
         {
-          adj->value = bmvals.yofs;
           g_signal_handlers_block_by_func (adj,
                                            gimp_int_adjustment_update,
                                            &bmvals.yofs);
-          gtk_adjustment_value_changed (adj);
+          gtk_adjustment_set_value (adj, bmvals.yofs);
           g_signal_handlers_unblock_by_func (adj,
                                              gimp_int_adjustment_update,
                                              &bmvals.yofs);
@@ -1173,11 +1176,9 @@ dialog_update_preview (GimpPreview *preview)
   gint    y;
   gint    x1, y1;
   gint    width, height;
-  gint    bytes;
 
   gimp_preview_get_position (preview, &x1, &y1);
   gimp_preview_get_size (preview, &width, &height);
-  bytes = drawable->bpp;
 
   /* Initialize source rows */
   gimp_pixel_rgn_init (&bmint.src_rgn, drawable,

@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -146,23 +145,26 @@ gimp_handle_bar_expose (GtkWidget      *widget,
                         GdkEventExpose *eevent)
 {
   GimpHandleBar *bar = GIMP_HANDLE_BAR (widget);
+  GtkAllocation  allocation;
   cairo_t       *cr;
   gint           x, y;
   gint           width, height;
   gint           i;
 
+  gtk_widget_get_allocation (widget, &allocation);
+
   x = y = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
-  width  = widget->allocation.width  - 2 * x;
-  height = widget->allocation.height - 2 * y;
+  width  = allocation.width  - 2 * x;
+  height = allocation.height - 2 * y;
 
-  if (GTK_WIDGET_NO_WINDOW (widget))
+  if (! gtk_widget_get_has_window (widget))
     {
-      x += widget->allocation.x;
-      y += widget->allocation.y;
+      x += allocation.x;
+      y += allocation.y;
     }
 
-  cr = gdk_cairo_create (widget->window);
+  cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
   gdk_cairo_region (cr, eevent->region);
   cairo_clip (cr);
@@ -177,7 +179,7 @@ gimp_handle_bar_expose (GtkWidget      *widget,
       if (bar->slider_adj[i])
         {
           bar->slider_pos[i] = ROUND ((gdouble) width *
-                                      (bar->slider_adj[i]->value - bar->lower) /
+                                      (gtk_adjustment_get_value (bar->slider_adj[i]) - bar->lower) /
                                       (bar->upper - bar->lower + 1));
 
           cairo_set_source_rgb (cr, 0.5 * i, 0.5 * i, 0.5 * i);
@@ -212,12 +214,18 @@ static gboolean
 gimp_handle_bar_button_press (GtkWidget      *widget,
                               GdkEventButton *bevent)
 {
-  GimpHandleBar *bar    = GIMP_HANDLE_BAR (widget);
-  gint           border = gtk_container_get_border_width (GTK_CONTAINER (widget));
-  gint           width  = widget->allocation.width - 2 * border;
+  GimpHandleBar *bar= GIMP_HANDLE_BAR (widget);
+  GtkAllocation  allocation;
+  gint           border;
+  gint           width;
   gdouble        value;
   gint           min_dist;
   gint           i;
+
+  gtk_widget_get_allocation (widget, &allocation);
+
+  border = gtk_container_get_border_width (GTK_CONTAINER (widget));
+  width  = allocation.width - 2 * border;
 
   if (width < 1)
     return FALSE;
@@ -242,14 +250,14 @@ gimp_handle_bar_button_press (GtkWidget      *widget,
 
   gtk_adjustment_set_value (bar->slider_adj[bar->active_slider], value);
 
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
 gimp_handle_bar_button_release (GtkWidget      *widget,
                                 GdkEventButton *bevent)
 {
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
@@ -257,9 +265,15 @@ gimp_handle_bar_motion_notify (GtkWidget      *widget,
                                GdkEventMotion *mevent)
 {
   GimpHandleBar *bar    = GIMP_HANDLE_BAR (widget);
-  gint           border = gtk_container_get_border_width (GTK_CONTAINER (widget));
-  gint           width  = widget->allocation.width - 2 * border;
+  GtkAllocation  allocation;
+  gint           border;
+  gint           width;
   gdouble        value;
+
+  gtk_widget_get_allocation (widget, &allocation);
+
+  border = gtk_container_get_border_width (GTK_CONTAINER (widget));
+  width  = allocation.width - 2 * border;
 
   if (width < 1)
     return FALSE;
@@ -270,7 +284,7 @@ gimp_handle_bar_motion_notify (GtkWidget      *widget,
 
   gtk_adjustment_set_value (bar->slider_adj[bar->active_slider], value);
 
-  return FALSE;
+  return TRUE;
 }
 
 
@@ -326,14 +340,14 @@ gimp_handle_bar_set_adjustment (GimpHandleBar  *bar,
       }
 
     if (bar->slider_adj[0])
-      bar->lower = bar->slider_adj[0]->lower;
+      bar->lower = gtk_adjustment_get_lower (bar->slider_adj[0]);
     else
-      bar->lower = bar->slider_adj[handle_no]->lower;
+      bar->lower = gtk_adjustment_get_lower (bar->slider_adj[handle_no]);
 
     if (bar->slider_adj[2])
-      bar->upper = bar->slider_adj[2]->upper;
+      bar->upper = gtk_adjustment_get_upper (bar->slider_adj[2]);
     else
-      bar->upper = bar->slider_adj[handle_no]->upper;
+      bar->upper = gtk_adjustment_get_upper (bar->slider_adj[handle_no]);
 
     gimp_handle_bar_adjustment_changed (bar->slider_adj[handle_no], bar);
 }

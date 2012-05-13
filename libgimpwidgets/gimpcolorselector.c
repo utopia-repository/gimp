@@ -8,10 +8,10 @@
  * Colour selector module
  * Copyright (C) 1999 Austin Donnelly <austin@greenend.org.uk>
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,9 +19,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,6 +36,17 @@
 #include "gimpwidgetsmarshal.h"
 
 
+/**
+ * SECTION: gimpcolorselector
+ * @title: GimpColorSelector
+ * @short_description: Pluggable GIMP color selector modules.
+ * @see_also: #GModule, #GTypeModule, #GimpModule
+ *
+ * Functions and definitions for creating pluggable GIMP color
+ * selector modules.
+ **/
+
+
 enum
 {
   COLOR_CHANGED,
@@ -45,7 +55,10 @@ enum
 };
 
 
-G_DEFINE_TYPE (GimpColorSelector, gimp_color_selector, GTK_TYPE_VBOX)
+static void   gimp_color_selector_dispose (GObject *object);
+
+
+G_DEFINE_TYPE (GimpColorSelector, gimp_color_selector, GTK_TYPE_BOX)
 
 #define parent_class gimp_color_selector_parent_class
 
@@ -55,6 +68,10 @@ static guint selector_signals[LAST_SIGNAL] = { 0 };
 static void
 gimp_color_selector_class_init (GimpColorSelectorClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = gimp_color_selector_dispose;
+
   selector_signals[COLOR_CHANGED] =
     g_signal_new ("color-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -97,10 +114,21 @@ gimp_color_selector_init (GimpColorSelector *selector)
   selector->toggles_sensitive = TRUE;
   selector->show_alpha        = TRUE;
 
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (selector),
+                                  GTK_ORIENTATION_VERTICAL);
+
   gimp_rgba_set (&selector->rgb, 0.0, 0.0, 0.0, 1.0);
   gimp_rgb_to_hsv (&selector->rgb, &selector->hsv);
 
   selector->channel = GIMP_COLOR_SELECTOR_HUE;
+}
+
+static void
+gimp_color_selector_dispose (GObject *object)
+{
+  gimp_color_selector_set_config (GIMP_COLOR_SELECTOR (object), NULL);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 GtkWidget *
@@ -244,8 +272,8 @@ gimp_color_selector_channel_changed (GimpColorSelector *selector)
 
 /**
  * gimp_color_selector_set_config:
- * @selector:
- * @config:
+ * @selector: a #GimpColorSelector widget.
+ * @config:   a #GimpColorConfig object.
  *
  * Sets the color management configuration to use with this color selector.
  *

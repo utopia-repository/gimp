@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -50,7 +49,8 @@ static GfigObject *operation_obj = NULL;
 static GdkPoint   *move_all_pnt; /* Point moving all from */
 
 
-static void draw_one_obj         (GfigObject *obj);
+static void draw_one_obj         (GfigObject *obj,
+                                  cairo_t    *cr);
 static void do_move_obj          (GfigObject *obj,
                                   GdkPoint   *to_pnt);
 static void do_move_all_obj      (GdkPoint   *to_pnt);
@@ -371,18 +371,14 @@ object_operation_start (GdkPoint *pnt,
     case MOVE_OBJ:
       if (operation_obj->type == BEZIER)
         {
-          d_draw_bezier (operation_obj);
           tmp_bezier = operation_obj;
-          d_draw_bezier (operation_obj);
         }
       break;
 
     case MOVE_POINT:
       if (operation_obj->type == BEZIER)
         {
-          d_draw_bezier (operation_obj);
           tmp_bezier = operation_obj;
-          d_draw_bezier (operation_obj);
         }
       /* If shift is down the break into sep lines */
       if ((operation_obj->type == POLY
@@ -402,6 +398,7 @@ object_operation_start (GdkPoint *pnt,
             }
           /* Re calc which object point we are lookin at */
           scan_obj_points (operation_obj->points, pnt);
+          gtk_widget_queue_draw (gfig_context->preview);
         }
       break;
 
@@ -417,7 +414,7 @@ object_operation_start (GdkPoint *pnt,
           add_to_all_obj (gfig_context->current_obj, new_obj);
           operation_obj = new_obj;
           selvals.otype = MOVE_COPY_OBJ;
-          new_obj->class->drawfunc (new_obj);
+          gtk_widget_queue_draw (gfig_context->preview);
         }
       break;
 
@@ -444,9 +441,7 @@ object_operation_end (GdkPoint *pnt,
   if (selvals.otype != DEL_OBJ && operation_obj &&
       operation_obj->type == BEZIER)
     {
-      d_draw_bezier (operation_obj);
       tmp_bezier = NULL; /* use as switch */
-      d_draw_bezier (operation_obj);
     }
 
   if (operation_obj && selvals.otype != DEL_OBJ)
@@ -563,8 +558,6 @@ remove_obj_from_list (GFigObj    *obj,
 
   if (g_list_find (obj->obj_list, del_obj))
     {
-      del_obj->class->drawfunc (del_obj);
-
       obj->obj_list = g_list_remove (obj->obj_list, del_obj);
 
       free_one_obj (del_obj);
@@ -580,6 +573,8 @@ remove_obj_from_list (GFigObj    *obj,
           draw_grid_clear ();
           obj_show_single = -1; /* Show entry again */
         }
+
+      gtk_widget_queue_draw (gfig_context->preview);
     }
   else
     g_warning (_("Hey where has the object gone ?"));
@@ -601,16 +596,12 @@ do_move_all_obj (GdkPoint *to_pnt)
         {
           GfigObject *obj = all->data;
 
-          /* undraw ! */
-          draw_one_obj (obj);
-
           update_pnts (obj, xdiff, ydiff);
-
-          /* Draw in new pos */
-          draw_one_obj (obj);
         }
 
       *move_all_pnt = *to_pnt;
+
+      gtk_widget_queue_draw (gfig_context->preview);
     }
 }
 
@@ -639,13 +630,9 @@ do_move_obj (GfigObject *obj,
 
   if (xdiff || ydiff)
     {
-      /* undraw ! */
-      draw_one_obj (obj);
-
       update_pnts (obj, xdiff, ydiff);
 
-      /* Draw in new pos */
-      draw_one_obj (obj);
+      gtk_widget_queue_draw (gfig_context->preview);
     }
 }
 
@@ -664,14 +651,11 @@ do_move_obj_pnt (GfigObject *obj,
   if ((!xdiff && !ydiff) || !spnt)
     return;
 
-  /* undraw ! */
-  draw_one_obj (obj);
-
   spnt->pnt.x = spnt->pnt.x - xdiff;
   spnt->pnt.y = spnt->pnt.y - ydiff;
 
   /* Draw in new pos */
-  draw_one_obj (obj);
+  gtk_widget_queue_draw (gfig_context->preview);
 }
 
 /* copy objs */
@@ -698,14 +682,16 @@ copy_all_objs (GList *objs)
 
 /* Screen refresh */
 static void
-draw_one_obj (GfigObject * obj)
+draw_one_obj (GfigObject *obj,
+              cairo_t    *cr)
 {
-  obj->class->drawfunc (obj);
+  obj->class->drawfunc (obj, cr);
 }
 
 void
 draw_objects (GList    *objs,
-              gboolean  show_single)
+              gboolean  show_single,
+              cairo_t  *cr)
 {
   /* Show_single - only one object to draw Unless shift
    * is down in which case show all.
@@ -716,7 +702,7 @@ draw_objects (GList    *objs,
   while (objs)
     {
       if (!show_single || count == obj_show_single || obj_show_single == -1)
-        draw_one_obj (objs->data);
+        draw_one_obj (objs->data, cr);
 
       objs = g_list_next (objs);
       count++;
@@ -789,40 +775,30 @@ object_start (GdkPoint *pnt,
     {
     case LINE:
       /* Shift means we are still drawing */
-      if (!shift_down || !obj_creating)
-        draw_sqr (pnt, TRUE);
       d_line_start (pnt, shift_down);
       break;
     case RECTANGLE:
-      draw_sqr (pnt, TRUE);
       d_rectangle_start (pnt, shift_down);
       break;
     case CIRCLE:
-      draw_sqr (pnt, TRUE);
       d_circle_start (pnt, shift_down);
       break;
     case ELLIPSE:
-      draw_sqr (pnt, TRUE);
       d_ellipse_start (pnt, shift_down);
       break;
     case POLY:
-      draw_sqr (pnt, TRUE);
       d_poly_start (pnt, shift_down);
       break;
     case ARC:
       d_arc_start (pnt, shift_down);
       break;
     case STAR:
-      draw_sqr (pnt, TRUE);
       d_star_start (pnt, shift_down);
       break;
     case SPIRAL:
-      draw_sqr (pnt, TRUE);
       d_spiral_start (pnt, shift_down);
       break;
     case BEZIER:
-      if (!tmp_bezier)
-        draw_sqr (pnt, TRUE);
       d_bezier_start (pnt, shift_down);
       break;
     default:
@@ -851,34 +827,26 @@ object_end (GdkPoint *pnt,
     {
     case LINE:
       d_line_end (pnt, shift_down);
-      draw_sqr (pnt, TRUE);
       break;
     case RECTANGLE:
       d_rectangle_end (pnt, shift_down);
-      draw_sqr (pnt, TRUE);
       break;
     case CIRCLE:
-      draw_sqr (pnt, TRUE);
       d_circle_end (pnt, shift_down);
       break;
     case ELLIPSE:
-      draw_sqr (pnt, TRUE);
       d_ellipse_end (pnt, shift_down);
       break;
     case POLY:
-      draw_sqr (pnt, TRUE);
       d_poly_end (pnt, shift_down);
       break;
     case STAR:
-      draw_sqr (pnt, TRUE);
       d_star_end (pnt, shift_down);
       break;
     case ARC:
-      draw_sqr (pnt, TRUE);
       d_arc_end (pnt, shift_down);
       break;
     case SPIRAL:
-      draw_sqr (pnt, TRUE);
       d_spiral_end (pnt, shift_down);
       break;
     case BEZIER:
@@ -914,10 +882,9 @@ free_one_obj (GfigObject *obj)
 }
 
 void
-free_all_objs (GList * objs)
+free_all_objs (GList *objs)
 {
-  g_list_foreach (objs, (GFunc)free_one_obj, NULL);
-  g_list_free (objs);
+  g_list_free_full (objs, (GDestroyNotify) free_one_obj);
 }
 
 gchar *

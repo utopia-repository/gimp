@@ -3,9 +3,9 @@
  *
  * gimpimagemaptool-settings.c
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -66,6 +65,7 @@ gimp_image_map_tool_add_settings_gui (GimpImageMapTool *image_map_tool)
   GimpToolInfo          *tool_info;
   GtkWidget             *hbox;
   GtkWidget             *label;
+  GtkWidget             *settings_combo;
   gchar                 *filename;
   gchar                 *folder;
 
@@ -73,7 +73,7 @@ gimp_image_map_tool_add_settings_gui (GimpImageMapTool *image_map_tool)
 
   tool_info = GIMP_TOOL (image_map_tool)->tool_info;
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (image_map_tool->main_vbox), hbox,
                       FALSE, FALSE, 0);
   gtk_widget_show (hbox);
@@ -105,8 +105,8 @@ gimp_image_map_tool_add_settings_gui (GimpImageMapTool *image_map_tool)
   g_free (filename);
   g_free (folder);
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label),
-                                 GIMP_SETTINGS_BOX (image_map_tool->settings_box)->combo);
+  settings_combo = gimp_settings_box_get_combo (GIMP_SETTINGS_BOX (image_map_tool->settings_box));
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), settings_combo);
 
   g_signal_connect (image_map_tool->settings_box, "import",
                     G_CALLBACK (gimp_image_map_tool_settings_import),
@@ -178,8 +178,9 @@ gimp_image_map_tool_settings_import (GimpSettingsBox  *box,
 
   if (! tool_class->settings_import (tool, filename, &error))
     {
-      gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (tool->shell),
-                    GIMP_MESSAGE_ERROR, "%s", error->message);
+      gimp_message_literal (GIMP_TOOL (tool)->tool_info->gimp,
+			    G_OBJECT (tool->dialog),
+			    GIMP_MESSAGE_ERROR, error->message);
       g_clear_error (&error);
 
       return FALSE;
@@ -207,8 +208,9 @@ gimp_image_map_tool_settings_export (GimpSettingsBox  *box,
 
   if (! tool_class->settings_export (tool, filename, &error))
     {
-      gimp_message (GIMP_TOOL (tool)->tool_info->gimp, G_OBJECT (tool->shell),
-                    GIMP_MESSAGE_ERROR, "%s", error->message);
+      gimp_message_literal (GIMP_TOOL (tool)->tool_info->gimp,
+			    G_OBJECT (tool->dialog),
+			    GIMP_MESSAGE_ERROR, error->message);
       g_clear_error (&error);
 
       return FALSE;

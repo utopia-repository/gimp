@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "vectors-types.h"
 
@@ -54,11 +53,11 @@ gimp_vectors_get_new_preview (GimpViewable *viewable,
   vectors = GIMP_VECTORS (viewable);
   item    = GIMP_ITEM (viewable);
 
-  xscale = ((gdouble) width)  / gimp_image_get_width  (item->image);
-  yscale = ((gdouble) height) / gimp_image_get_height (item->image);
+  xscale = ((gdouble) width)  / gimp_image_get_width  (gimp_item_get_image (item));
+  yscale = ((gdouble) height) / gimp_image_get_height (gimp_item_get_image (item));
 
   temp_buf = temp_buf_new (width, height, 1, 0, 0, white);
-  data = temp_buf_data (temp_buf);
+  data = temp_buf_get_data (temp_buf);
 
   for (cur_stroke = gimp_vectors_stroke_get_next (vectors, NULL);
        cur_stroke;

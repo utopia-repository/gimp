@@ -4,9 +4,9 @@
  * gimpoperationtilesource.c
  * Copyright (C) 2007 Øyvind Kolås <pippin@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -58,7 +57,8 @@ static GeglRectangle
             gimp_operation_tile_source_get_bounding_box (GeglOperation *operation);
 static gboolean gimp_operation_tile_source_process      (GeglOperation *operation,
                                                          GeglBuffer          *output,
-                                                         const GeglRectangle *result);
+                                                         const GeglRectangle *result,
+                                                         gint                 level);
 
 
 G_DEFINE_TYPE (GimpOperationTileSource, gimp_operation_tile_source,
@@ -78,9 +78,12 @@ gimp_operation_tile_source_class_init (GimpOperationTileSourceClass *klass)
   object_class->set_property          = gimp_operation_tile_source_set_property;
   object_class->get_property          = gimp_operation_tile_source_get_property;
 
-  operation_class->name               = "gimp-tilemanager-source";
-  operation_class->categories         = "input";
-  operation_class->description        = "GIMP TileManager source";
+  gegl_operation_class_set_keys (operation_class,
+                  "name",               "gimp:tilemanager-source",
+                  "categories",         "input",
+                  "description",        "GIMP TileManager source",
+                  NULL);
+
   operation_class->prepare            = gimp_operation_tile_source_prepare;
   operation_class->get_bounding_box   = gimp_operation_tile_source_get_bounding_box;
   operation_class->get_cached_region  = NULL; /* the default source is
@@ -185,15 +188,8 @@ gimp_operation_tile_source_prepare (GeglOperation *operation)
 
   if (self->tile_manager)
     {
-      const Babl *format;
-      guint       bpp = tile_manager_bpp (self->tile_manager);
-
-      if (self->linear)
-        format = gimp_bpp_to_babl_format_linear (bpp);
-      else
-        format = gimp_bpp_to_babl_format (bpp);
-
-      gegl_operation_set_format (operation, "output", format);
+      gegl_operation_set_format (operation, "output",
+                                 babl_format ("RaGaBaA float"));
     }
 }
 
@@ -217,7 +213,8 @@ gimp_operation_tile_source_get_bounding_box (GeglOperation *operation)
 static gboolean
 gimp_operation_tile_source_process (GeglOperation       *operation,
                                     GeglBuffer          *output,
-                                    const GeglRectangle *result)
+                                    const GeglRectangle *result,
+                                    gint                 level)
 {
   GimpOperationTileSource *self = GIMP_OPERATION_TILE_SOURCE (operation);
   const Babl              *format;
@@ -227,7 +224,8 @@ gimp_operation_tile_source_process (GeglOperation       *operation,
   if (! self->tile_manager)
     return FALSE;
 
-  format = gegl_operation_get_format (operation, "output");
+  format = gimp_bpp_to_babl_format (tile_manager_bpp (self->tile_manager),
+                                    self->linear);
 
   pixel_region_init (&srcPR, self->tile_manager,
                      result->x,     result->y,
@@ -240,7 +238,7 @@ gimp_operation_tile_source_process (GeglOperation       *operation,
     {
       GeglRectangle rect = { srcPR.x, srcPR.y, srcPR.w, srcPR.h };
 
-      gegl_buffer_set (output, &rect, format, srcPR.data, srcPR.rowstride);
+      gegl_buffer_set (output, &rect, 0, format, srcPR.data, srcPR.rowstride);
     }
 
   return TRUE;

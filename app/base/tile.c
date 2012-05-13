@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,10 +32,6 @@
 /*  Uncomment for verbose debugging on copy-on-write logic  */
 /*  #define TILE_DEBUG  */
 
-/*  Uncomment to enable global counters to profile the tile system. */
-/*  #define TILE_PROFILING */
-
-
 /*  This is being used from tile-swap, but just for debugging purposes.  */
 static gint tile_ref_count    = 0;
 
@@ -47,8 +42,8 @@ static gint tile_count        = 0;
 static gint tile_share_count  = 0;
 static gint tile_active_count = 0;
 
-static gint tile_exist_peak   = 0;
-static gint tile_exist_count  = 0;
+gint tile_exist_peak          = 0;
+gint tile_exist_count         = 0;
 
 #endif
 
@@ -86,11 +81,8 @@ tile_lock (Tile *tile)
 
   if (tile->ref_count == 1)
     {
-      if (tile->listhead)
-        {
-          /* remove from cache, move to main store */
-          tile_cache_flush (tile);
-        }
+      /* remove from cache, move to main store */
+      tile_cache_flush (tile);
 
 #ifdef TILE_PROFILING
       tile_active_count++;
@@ -172,6 +164,7 @@ tile_alloc (Tile *tile)
 
 #ifdef TILE_PROFILING
   tile_exist_count++;
+
   if (tile_exist_count > tile_exist_peak)
     tile_exist_peak = tile_exist_count;
 #endif
@@ -190,16 +183,26 @@ tile_destroy (Tile *tile)
       g_warning ("tried to destroy an attached tile");
       return;
     }
+
   if (tile->data)
     {
       g_free (tile->data);
       tile->data = NULL;
+
+#ifdef TILE_PROFILING
+      tile_exist_count--;
+#endif
     }
+
   if (tile->rowhint)
     {
       g_slice_free1 (sizeof (TileRowHint) * TILE_HEIGHT, tile->rowhint);
       tile->rowhint = NULL;
     }
+
+  /* must flush before deleting swap */
+  tile_cache_flush (tile);
+
   if (tile->swap_offset != -1)
     {
       /* If the tile is on disk, then delete its
@@ -207,15 +210,11 @@ tile_destroy (Tile *tile)
        */
       tile_swap_delete (tile);
     }
-  if (tile->listhead)
-    tile_cache_flush (tile);
 
   g_slice_free (Tile, tile);
 
 #ifdef TILE_PROFILING
   tile_count--;
-
-  tile_exist_count--;
 #endif
 }
 
@@ -295,7 +294,7 @@ tile_detach (Tile *tile,
   TileLink  *tmp;
 
 #ifdef TILE_DEBUG
-  g_printerr ("tile_detach: %p ~> (%p,%d) r%d *%d\n",
+  g_printerr ("tile_detach: %p ~> (%p,%d) r%d *%u\n",
               tile, tm, tile_num, tile->ref_count, tile->share_count);
 #endif
 

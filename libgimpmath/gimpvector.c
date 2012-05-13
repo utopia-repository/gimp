@@ -7,10 +7,10 @@
  * GCK - The General Convenience Kit
  * Copyright (C) 1996 Tom Bech
  *
- * This library is free software; you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,9 +18,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 /**********************************************/
@@ -32,6 +31,16 @@
 #include <glib-object.h>
 
 #include "gimpmath.h"
+
+
+/**
+ * SECTION: gimpvector
+ * @title: GimpVector
+ * @short_description: Utilities to set up and manipulate vectors.
+ * @see_also: #GimpMatrix2, #GimpMatrix3, #GimpMatrix4
+ *
+ * Utilities to set up and manipulate vectors.
+ **/
 
 
 /*************************/
@@ -452,6 +461,52 @@ gimp_vector2_rotate_val (GimpVector2 vector,
   return result;
 }
 
+/**
+ * gimp_vector2_normal:
+ * @vector: a pointer to a #GimpVector2.
+ *
+ * Compute a normalized perpendicular vector to @vector
+ *
+ * Returns: a #GimpVector2 perpendicular to @vector, with a length of 1.0.
+ * 
+ * Since: 2.8
+ **/
+GimpVector2
+gimp_vector2_normal (GimpVector2  *vector)
+{
+  GimpVector2 result;
+
+  result.x = - vector->y;
+  result.y = vector->x;
+
+  gimp_vector2_normalize (&result);
+
+  return result;
+}
+
+/**
+ * gimp_vector2_normal_val:
+ * @vector: a #GimpVector2.
+ *
+ * This function is identical to gimp_vector2_normal() but the vector
+ * is passed by value rather than by reference.
+ *
+ * Returns: a #GimpVector2 perpendicular to @vector, with a length of 1.0.
+ *
+ * Since: 2.8
+ **/
+GimpVector2
+gimp_vector2_normal_val (GimpVector2  vector)
+{
+  GimpVector2 result;
+
+  result.x = - vector.y;
+  result.y = vector.x;
+
+  gimp_vector2_normalize (&result);
+
+  return result;
+}
 /**************************************/
 /* Three dimensional vector functions */
 /**************************************/

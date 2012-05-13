@@ -1,9 +1,9 @@
 /* Gimp - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,13 +12,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -26,6 +25,7 @@
 
 #include "gimp-utils.h"
 #include "gimpitem.h"
+#include "gimpitemtree.h"
 #include "gimpitempropundo.h"
 #include "gimpparasitelist.h"
 
@@ -37,26 +37,24 @@ enum
 };
 
 
-static GObject * gimp_item_prop_undo_constructor  (GType                  type,
-                                                   guint                  n_params,
-                                                   GObjectConstructParam *params);
-static void      gimp_item_prop_undo_set_property (GObject               *object,
-                                                   guint                  property_id,
-                                                   const GValue          *value,
-                                                   GParamSpec            *pspec);
-static void      gimp_item_prop_undo_get_property (GObject               *object,
-                                                   guint                  property_id,
-                                                   GValue                *value,
-                                                   GParamSpec            *pspec);
+static void     gimp_item_prop_undo_constructed  (GObject             *object);
+static void     gimp_item_prop_undo_set_property (GObject             *object,
+                                                  guint                property_id,
+                                                  const GValue        *value,
+                                                  GParamSpec          *pspec);
+static void     gimp_item_prop_undo_get_property (GObject             *object,
+                                                  guint                property_id,
+                                                  GValue              *value,
+                                                  GParamSpec          *pspec);
 
-static gint64    gimp_item_prop_undo_get_memsize  (GimpObject            *object,
-                                                   gint64                *gui_size);
+static gint64   gimp_item_prop_undo_get_memsize  (GimpObject          *object,
+                                                  gint64              *gui_size);
 
-static void      gimp_item_prop_undo_pop          (GimpUndo              *undo,
-                                                   GimpUndoMode           undo_mode,
-                                                   GimpUndoAccumulator   *accum);
-static void      gimp_item_prop_undo_free         (GimpUndo              *undo,
-                                                   GimpUndoMode           undo_mode);
+static void     gimp_item_prop_undo_pop          (GimpUndo            *undo,
+                                                  GimpUndoMode         undo_mode,
+                                                  GimpUndoAccumulator *accum);
+static void     gimp_item_prop_undo_free         (GimpUndo            *undo,
+                                                  GimpUndoMode         undo_mode);
 
 
 G_DEFINE_TYPE (GimpItemPropUndo, gimp_item_prop_undo, GIMP_TYPE_ITEM_UNDO)
@@ -71,7 +69,7 @@ gimp_item_prop_undo_class_init (GimpItemPropUndoClass *klass)
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor      = gimp_item_prop_undo_constructor;
+  object_class->constructed      = gimp_item_prop_undo_constructed;
   object_class->set_property     = gimp_item_prop_undo_set_property;
   object_class->get_property     = gimp_item_prop_undo_get_property;
 
@@ -93,31 +91,32 @@ gimp_item_prop_undo_init (GimpItemPropUndo *undo)
 {
 }
 
-static GObject *
-gimp_item_prop_undo_constructor (GType                  type,
-                                 guint                  n_params,
-                                 GObjectConstructParam *params)
+static void
+gimp_item_prop_undo_constructed (GObject *object)
 {
-  GObject          *object;
-  GimpItemPropUndo *item_prop_undo;
+  GimpItemPropUndo *item_prop_undo = GIMP_ITEM_PROP_UNDO (object);
   GimpItem         *item;
 
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  item_prop_undo = GIMP_ITEM_PROP_UNDO (object);
+  if (G_OBJECT_CLASS (parent_class)->constructed)
+    G_OBJECT_CLASS (parent_class)->constructed (object);
 
   item = GIMP_ITEM_UNDO (object)->item;
 
   switch (GIMP_UNDO (object)->undo_type)
     {
+    case GIMP_UNDO_ITEM_REORDER:
+      item_prop_undo->parent   = gimp_item_get_parent (item);
+      item_prop_undo->position = gimp_item_get_index (item);
+      break;
+
     case GIMP_UNDO_ITEM_RENAME:
-      item_prop_undo->name = g_strdup (gimp_object_get_name (GIMP_OBJECT (item)));
+      item_prop_undo->name = g_strdup (gimp_object_get_name (item));
       break;
 
     case GIMP_UNDO_ITEM_DISPLACE:
-      gimp_item_offsets (item,
-                         &item_prop_undo->offset_x,
-                         &item_prop_undo->offset_y);
+      gimp_item_get_offset (item,
+                            &item_prop_undo->offset_x,
+                            &item_prop_undo->offset_y);
       break;
 
     case GIMP_UNDO_ITEM_VISIBILITY:
@@ -139,8 +138,6 @@ gimp_item_prop_undo_constructor (GType                  type,
     default:
       g_assert_not_reached ();
     }
-
-  return object;
 }
 
 static void
@@ -210,12 +207,35 @@ gimp_item_prop_undo_pop (GimpUndo            *undo,
 
   switch (undo->undo_type)
     {
+    case GIMP_UNDO_ITEM_REORDER:
+      {
+        GimpItem *parent;
+        gint      position;
+
+        parent   = gimp_item_get_parent (item);
+        position = gimp_item_get_index (item);
+
+        gimp_item_tree_reorder_item (gimp_item_get_tree (item), item,
+                                     item_prop_undo->parent,
+                                     item_prop_undo->position,
+                                     FALSE, NULL);
+
+        item_prop_undo->parent   = parent;
+        item_prop_undo->position = position;
+      }
+      break;
+
     case GIMP_UNDO_ITEM_RENAME:
       {
         gchar *name;
 
-        name = g_strdup (gimp_object_get_name (GIMP_OBJECT (item)));
-        gimp_object_take_name (GIMP_OBJECT (item), item_prop_undo->name);
+        name = g_strdup (gimp_object_get_name (item));
+
+        gimp_item_tree_rename_item (gimp_item_get_tree (item), item,
+                                    item_prop_undo->name,
+                                    FALSE, NULL);
+
+        g_free (item_prop_undo->name);
         item_prop_undo->name = name;
       }
       break;
@@ -225,7 +245,7 @@ gimp_item_prop_undo_pop (GimpUndo            *undo,
         gint offset_x;
         gint offset_y;
 
-        gimp_item_offsets (item, &offset_x, &offset_y);
+        gimp_item_get_offset (item, &offset_x, &offset_y);
 
         gimp_item_translate (item,
                              item_prop_undo->offset_x - offset_x,
@@ -268,10 +288,9 @@ gimp_item_prop_undo_pop (GimpUndo            *undo,
           (gimp_item_parasite_find (item, item_prop_undo->parasite_name));
 
         if (parasite)
-          gimp_parasite_list_add (item->parasites, parasite);
+          gimp_item_parasite_attach (item, parasite, FALSE);
         else
-          gimp_parasite_list_remove (item->parasites,
-                                     item_prop_undo->parasite_name);
+          gimp_item_parasite_detach (item, item_prop_undo->parasite_name, FALSE);
 
         if (parasite)
           gimp_parasite_free (parasite);

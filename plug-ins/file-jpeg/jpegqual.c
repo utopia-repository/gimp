@@ -2,9 +2,9 @@
  *
  * Copyright (C) 2007 Raphaël Quinet <raphael@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -898,7 +897,7 @@ analyze_file (gchar *filename)
 
       if (option_ctable)
         {
-          g_print ("  {\n    /* %s */\n    \"?\", \"?\",\n    %hd, %hd,\n    %d,\n",
+          g_print ("  {\n    /* %s */\n    \"?\", \"?\",\n    %d, %d,\n    %d,\n",
                    filename,
                    cinfo.comp_info[0].h_samp_factor,
                    cinfo.comp_info[0].v_samp_factor,
@@ -1018,7 +1017,7 @@ print_unknown_tables (void)
           } /* FIXME */
 
           g_print ("    \"?\", \"? (hash %x)\",\n"
-                   "    %hd, %hd,\n    %d,\n",
+                   "    %d, %d,\n    %d,\n",
                    table_data->hashval,
                    table_data->subsmp_h,
                    table_data->subsmp_v,

@@ -4,9 +4,9 @@
  * plug-in-icc-profile.c
  * Copyright (C) 2006  Sven Neumann <sven@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,13 +15,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "core/core-types.h"
 
@@ -184,7 +183,7 @@ plug_in_icc_profile_info (GimpImage     *image,
 
         default:
           if (error && *error == NULL)
-            g_set_error (error, 0, 0,
+            g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                          _("Error running '%s'"), ICC_PROFILE_INFO_PROC);
           break;
         }
@@ -194,7 +193,7 @@ plug_in_icc_profile_info (GimpImage     *image,
       return (status == GIMP_PDB_SUCCESS);
     }
 
-  g_set_error (error, 0, 0,
+  g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                _("Plug-In missing (%s)"), ICC_PROFILE_INFO_PROC);
 
   return FALSE;
@@ -243,7 +242,7 @@ plug_in_icc_profile_file_info (Gimp          *gimp,
 
         default:
           if (error && *error == NULL)
-            g_set_error (error, 0, 0,
+            g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                          _("Error running '%s'"), ICC_PROFILE_FILE_INFO_PROC);
           break;
         }
@@ -253,7 +252,7 @@ plug_in_icc_profile_file_info (Gimp          *gimp,
       return (status == GIMP_PDB_SUCCESS);
     }
 
-  g_set_error (error, 0, 0,
+  g_set_error (error, GIMP_PLUG_IN_ERROR, GIMP_PLUG_IN_FAILED,
                _("Plug-In missing (%s)"), ICC_PROFILE_FILE_INFO_PROC);
 
   return FALSE;

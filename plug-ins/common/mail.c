@@ -2,9 +2,9 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1997 Daniel Risacher
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -111,6 +110,7 @@ static const guint8 mail_icon[] =
 
 #define PLUG_IN_PROC   "plug-in-mail-image"
 #define PLUG_IN_BINARY "mail"
+#define PLUG_IN_ROLE   "gimp-mail"
 
 typedef struct
 {
@@ -173,7 +173,7 @@ query (void)
 {
   static const GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run-mode",      "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",      "The run mode { RUN-INTERACTIVE (0), RUN-NONINTERACTIVE (1) }" },
     { GIMP_PDB_IMAGE,    "image",         "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",      "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",      "The name of the file to save the image in" },
@@ -185,17 +185,17 @@ query (void)
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-			  N_("Send the image by email"),
-			  "You need to have sendmail installed",
-			  "Adrian Likins, Reagan Blundell",
-			  "Adrian Likins, Reagan Blundell, Daniel Risacher, "
+                          N_("Send the image by email"),
+                          "You need to have sendmail installed",
+                          "Adrian Likins, Reagan Blundell",
+                          "Adrian Likins, Reagan Blundell, Daniel Risacher, "
                           "Spencer Kimball and Peter Mattis",
-			  "1995-1997",
-			  N_("Send by E_mail..."),
-			  "*",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+                          "1995-1997",
+                          N_("Send by E_mail..."),
+                          "*",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/File/Send");
   gimp_plugin_icon_register (PLUG_IN_PROC, GIMP_ICON_TYPE_INLINE_PIXBUF,
@@ -246,47 +246,47 @@ run (const gchar      *name,
               }
           }
 
-	  if (! save_dialog ())
-	    status = GIMP_PDB_CANCEL;
-	  break;
+          if (! save_dialog ())
+            status = GIMP_PDB_CANCEL;
+          break;
 
-	case GIMP_RUN_NONINTERACTIVE:
-	  /*  Make sure all the arguments are there!  */
-	  if (nparams < 8)
-	    {
-	      status = GIMP_PDB_CALLING_ERROR;
-	    }
-	  else
-	    {
-	      g_strlcpy (mail_info.filename,
+        case GIMP_RUN_NONINTERACTIVE:
+          /*  Make sure all the arguments are there!  */
+          if (nparams < 8)
+            {
+              status = GIMP_PDB_CALLING_ERROR;
+            }
+          else
+            {
+              g_strlcpy (mail_info.filename,
                          param[3].data.d_string, BUFFER_SIZE);
-	      g_strlcpy (mail_info.receipt,
+              g_strlcpy (mail_info.receipt,
                          param[4].data.d_string, BUFFER_SIZE);
-	      g_strlcpy (mail_info.from,
+              g_strlcpy (mail_info.from,
                          param[5].data.d_string, BUFFER_SIZE);
-	      g_strlcpy (mail_info.subject,
+              g_strlcpy (mail_info.subject,
                          param[6].data.d_string, BUFFER_SIZE);
-	      g_strlcpy (mail_info.comment,
+              g_strlcpy (mail_info.comment,
                          param[7].data.d_string, BUFFER_SIZE);
-	    }
-	  break;
+            }
+          break;
 
-	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_get_data (PLUG_IN_PROC, &mail_info);
-	  break;
+        case GIMP_RUN_WITH_LAST_VALS:
+          gimp_get_data (PLUG_IN_PROC, &mail_info);
+          break;
 
-	default:
-	  break;
-	}
+        default:
+          break;
+        }
 
       if (status == GIMP_PDB_SUCCESS)
-	{
-	  status = save_image (mail_info.filename,
-			       image_ID,
-			       drawable_ID,
-			       run_mode);
+        {
+          status = save_image (mail_info.filename,
+                               image_ID,
+                               drawable_ID,
+                               run_mode);
 
-	  if (status == GIMP_PDB_SUCCESS)
+          if (status == GIMP_PDB_SUCCESS)
             {
               if (mesg_body)
                 g_strlcpy (mail_info.comment, mesg_body, BUFFER_SIZE);
@@ -305,9 +305,9 @@ run (const gchar      *name,
 
 static GimpPDBStatusType
 save_image (const gchar *filename,
-	    gint32       image_ID,
-	    gint32       drawable_ID,
-	    gint32       run_mode)
+            gint32       image_ID,
+            gint32       drawable_ID,
+            gint32       run_mode)
 {
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   gchar             *ext;
@@ -341,10 +341,10 @@ save_image (const gchar *filename,
   fflush (mailpipe);
 
   if (! (gimp_file_save (run_mode,
-			 image_ID,
-			 drawable_ID,
-			 tmpname,
-			 tmpname) && valid_file (tmpname)))
+                         image_ID,
+                         drawable_ID,
+                         tmpname,
+                         tmpname) && valid_file (tmpname)))
     {
       goto error;
     }
@@ -404,14 +404,14 @@ save_dialog (void)
       g_free (gump_from);
     }
 
-  dlg = gimp_dialog_new (_("Send by Email"), PLUG_IN_BINARY,
+  dlg = gimp_dialog_new (_("Send by Email"), PLUG_IN_ROLE,
                          NULL, 0,
-			 gimp_standard_help_func, PLUG_IN_PROC,
+                         gimp_standard_help_func, PLUG_IN_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 _("_Send"),       GTK_RESPONSE_OK,
+                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                         _("_Send"),       GTK_RESPONSE_OK,
 
-			 NULL);
+                         NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
                                            GTK_RESPONSE_OK,
@@ -420,9 +420,9 @@ save_dialog (void)
 
   gimp_window_set_transient (GTK_WINDOW (dlg));
 
-  main_vbox = gtk_vbox_new (FALSE, 12);
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox),
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))),
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
@@ -441,8 +441,8 @@ save_dialog (void)
   gtk_entry_set_max_length (GTK_ENTRY (entry), BUFFER_SIZE - 1);
   gtk_entry_set_text (GTK_ENTRY (entry), mail_info.filename);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-			     _("_Filename:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("_Filename:"), 0.0, 0.5,
+                             entry, 1, FALSE);
   g_signal_connect (entry, "changed",
                     G_CALLBACK (mail_entry_callback),
                     mail_info.filename);
@@ -453,8 +453,8 @@ save_dialog (void)
   gtk_entry_set_max_length (GTK_ENTRY (entry), BUFFER_SIZE - 1);
   gtk_entry_set_text (GTK_ENTRY (entry), mail_info.receipt);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-			     _("_To:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             C_("email-address", "_To:"), 0.0, 0.5,
+                             entry, 1, FALSE);
   g_signal_connect (entry, "changed",
                     G_CALLBACK (mail_entry_callback),
                     mail_info.receipt);
@@ -467,8 +467,8 @@ save_dialog (void)
   gtk_entry_set_max_length (GTK_ENTRY (entry), BUFFER_SIZE - 1);
   gtk_entry_set_text (GTK_ENTRY (entry), mail_info.from);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-			     _("_From:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             C_("email-address", "_From:"), 0.0, 0.5,
+                             entry, 1, FALSE);
   g_signal_connect (entry, "changed",
                     G_CALLBACK (mail_entry_callback),
                     mail_info.from);
@@ -479,8 +479,8 @@ save_dialog (void)
   gtk_entry_set_max_length (GTK_ENTRY (entry), BUFFER_SIZE - 1);
   gtk_entry_set_text (GTK_ENTRY (entry), mail_info.subject);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-			     _("S_ubject:"), 0.0, 0.5,
-			     entry, 1, FALSE);
+                             _("S_ubject:"), 0.0, 0.5,
+                             entry, 1, FALSE);
   g_signal_connect (entry, "changed",
                     G_CALLBACK (mail_entry_callback),
                     mail_info.subject);
@@ -499,7 +499,7 @@ save_dialog (void)
 
   g_signal_connect (text_buffer, "changed",
                     G_CALLBACK (mesg_body_callback),
-		    NULL);
+                    NULL);
 
   gtk_text_buffer_set_text (text_buffer, mail_info.comment, -1);
 
@@ -562,9 +562,9 @@ find_content_type (const gchar *filename)
   while (type_mappings[i])
     {
       if (g_ascii_strcasecmp (ext, type_mappings[i]) == 0)
-	{
-	  return g_strdup (type_mappings[i + 1]);
-	}
+        {
+          return g_strdup (type_mappings[i + 1]);
+        }
 
       i += 2;
     }
@@ -587,39 +587,41 @@ find_extension (const gchar *filename)
   while (TRUE)
     {
       if (!ext || ext[1] == '\0' || strchr (ext, G_DIR_SEPARATOR))
-	{
-	  g_message (_("some sort of error with the file extension "
+        {
+          g_message (_("some sort of error with the file extension "
                        "or lack thereof"));
 
-	  return NULL;
-	}
+          return NULL;
+        }
 
       if (0 != g_ascii_strcasecmp (ext, ".gz") &&
           0 != g_ascii_strcasecmp (ext, ".bz2"))
-	{
-	  return ext;
-	}
+        {
+          return ext;
+        }
       else
-	{
-	  /* we found somehting, loop back, and look again */
-	  *ext = 0;
-	  ext = strrchr (filename_copy, '.');
-	}
+        {
+          /* we found somehting, loop back, and look again */
+          *ext = 0;
+          ext = strrchr (filename_copy, '.');
+        }
     }
+
+  g_free (filename_copy);
 
   return ext;
 }
 
 static void
 mail_entry_callback (GtkWidget *widget,
-		     gchar     *data)
+                     gchar     *data)
 {
   g_strlcpy (data, gtk_entry_get_text (GTK_ENTRY (widget)), BUFFER_SIZE);
 }
 
 static void
 mesg_body_callback (GtkTextBuffer *buffer,
-		    gpointer       data)
+                    gpointer       data)
 {
   GtkTextIter start_iter;
   GtkTextIter end_iter;
@@ -707,7 +709,7 @@ to64 (const gchar  *filename,
   bytes = g_base64_encode_close (TRUE, out, &state, &save);
   fwrite (out, 1, bytes, outfile);
 
-  g_mapped_file_free (infile);
+  g_mapped_file_unref (infile);
 
   return TRUE;
 }
@@ -720,7 +722,7 @@ sendmail_pipe (gchar **cmd,
   GError *err = NULL;
 
   if (! g_spawn_async_with_pipes (NULL, cmd, NULL, G_SPAWN_DO_NOT_REAP_CHILD,
-	                          NULL, NULL, pid, &fd, NULL, NULL, &err))
+                                  NULL, NULL, pid, &fd, NULL, NULL, &err))
     {
       g_message (_("Could not start sendmail (%s)"), err->message);
       g_error_free (err);

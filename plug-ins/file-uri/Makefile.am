@@ -12,6 +12,11 @@ if OS_WIN32
 mwindows = -mwindows
 endif
 
+if HAVE_WINDRES
+include $(top_srcdir)/build/windows/gimprc-plug-ins.rule
+file_uri_RC = file-uri.rc.o
+endif
+
 AM_LDFLAGS = $(mwindows)
 
 libexecdir = $(gimpplugindir)/plug-ins
@@ -19,14 +24,9 @@ libexecdir = $(gimpplugindir)/plug-ins
 libexec_PROGRAMS = file-uri
 
 if HAVE_GVFS
-backend_sources = gimpmountoperation.c gimpmountoperation.h uri-backend-gvfs.c
+backend_sources = uri-backend-gvfs.c
 backend_cflags = $(GIO_CFLAGS)
 backend_libs = $(GIO_LIBS)
-else
-if HAVE_GNOMEVFS
-backend_sources = uri-backend-gnomevfs.c
-backend_cflags = $(GNOME_VFS_CFLAGS)
-backend_libs = $(GNOME_VFS_LIBS)
 else
 if HAVE_LIBCURL
 backend_sources = uri-backend-libcurl.c
@@ -36,7 +36,6 @@ else
 backend_sources = uri-backend-wget.c
 backend_cflags = 
 backend_libs = 
-endif
 endif
 endif
 
@@ -62,4 +61,5 @@ LDADD = \
 	$(backend_libs)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
-	$(INTLLIBS)
+	$(INTLLIBS)		\
+	$(file_uri_RC)

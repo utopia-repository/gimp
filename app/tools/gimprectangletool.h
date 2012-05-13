@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef  __GIMP_RECTANGLE_TOOL_H__
@@ -29,7 +28,8 @@ typedef enum
   GIMP_RECTANGLE_TOOL_PROP_Y2,
   GIMP_RECTANGLE_TOOL_PROP_CONSTRAINT,
   GIMP_RECTANGLE_TOOL_PROP_PRECISION,
-  GIMP_RECTANGLE_TOOL_PROP_LAST = GIMP_RECTANGLE_TOOL_PROP_PRECISION
+  GIMP_RECTANGLE_TOOL_PROP_NARROW_MODE,
+  GIMP_RECTANGLE_TOOL_PROP_LAST = GIMP_RECTANGLE_TOOL_PROP_NARROW_MODE
 } GimpRectangleToolProp;
 
 
@@ -47,6 +47,7 @@ typedef enum
   GIMP_RECTANGLE_TOOL_RESIZING_RIGHT,
   GIMP_RECTANGLE_TOOL_RESIZING_TOP,
   GIMP_RECTANGLE_TOOL_RESIZING_BOTTOM,
+  GIMP_RECTANGLE_TOOL_AUTO_SHRINK,
   GIMP_RECTANGLE_TOOL_EXECUTING
 } GimpRectangleFunction;
 
@@ -88,18 +89,18 @@ void        gimp_rectangle_tool_control             (GimpTool                *to
                                                      GimpToolAction           action,
                                                      GimpDisplay             *display);
 void        gimp_rectangle_tool_button_press        (GimpTool                *tool,
-                                                     GimpCoords              *coords,
+                                                     const GimpCoords        *coords,
                                                      guint32                  time,
                                                      GdkModifierType          state,
                                                      GimpDisplay             *display);
 void        gimp_rectangle_tool_button_release      (GimpTool                *tool,
-                                                     GimpCoords              *coords,
+                                                     const GimpCoords        *coords,
                                                      guint32                  time,
                                                      GdkModifierType          state,
                                                      GimpButtonReleaseType    release_type,
                                                      GimpDisplay             *display);
 void        gimp_rectangle_tool_motion              (GimpTool                *tool,
-                                                     GimpCoords              *coords,
+                                                     const GimpCoords        *coords,
                                                      guint32                  time,
                                                      GdkModifierType          state,
                                                      GimpDisplay             *display);
@@ -112,15 +113,16 @@ void        gimp_rectangle_tool_active_modifier_key (GimpTool                *to
                                                      GdkModifierType          state,
                                                      GimpDisplay             *display);
 void        gimp_rectangle_tool_oper_update         (GimpTool                *tool,
-                                                     GimpCoords              *coords,
+                                                     const GimpCoords        *coords,
                                                      GdkModifierType          state,
                                                      gboolean                 proximity,
                                                      GimpDisplay             *display);
 void        gimp_rectangle_tool_cursor_update       (GimpTool                *tool,
-                                                     GimpCoords              *coords,
+                                                     const GimpCoords        *coords,
                                                      GdkModifierType          state,
                                                      GimpDisplay             *display);
-void        gimp_rectangle_tool_draw                (GimpDrawTool            *draw);
+void        gimp_rectangle_tool_draw                (GimpDrawTool            *draw,
+                                                     GimpCanvasGroup         *stroke_group);
 gboolean    gimp_rectangle_tool_execute             (GimpRectangleTool       *rect_tool);
 void        gimp_rectangle_tool_cancel              (GimpRectangleTool       *rect_tool);
 void        gimp_rectangle_tool_set_constraint      (GimpRectangleTool       *rectangle,
@@ -142,6 +144,10 @@ gboolean    gimp_rectangle_tool_rectangle_is_new    (GimpRectangleTool       *re
 gboolean    gimp_rectangle_tool_point_in_rectangle  (GimpRectangleTool       *rect_tool,
                                                      gdouble                  x,
                                                      gdouble                  y);
+void        gimp_rectangle_tool_frame_item          (GimpRectangleTool       *rect_tool,
+                                                     GimpItem                *item);
+
+
 /*  convenience functions  */
 
 void        gimp_rectangle_tool_install_properties  (GObjectClass *klass);

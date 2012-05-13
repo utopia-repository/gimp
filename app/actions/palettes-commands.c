@@ -1,9 +1,9 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,8 +33,6 @@
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpview.h"
-
-#include "dialogs/dialogs.h"
 
 #include "actions.h"
 #include "palettes-commands.h"
@@ -59,8 +56,9 @@ palettes_import_cmd_callback (GtkAction *action,
   GtkWidget *widget;
   return_if_no_widget (widget, data);
 
-  gimp_dialog_factory_dialog_new (global_dialog_factory,
+  gimp_dialog_factory_dialog_new (gimp_dialog_factory_get_singleton (),
                                   gtk_widget_get_screen (widget),
+                                  NULL /*ui_manager*/,
                                   "gimp-palette-import-dialog", -1, TRUE);
 }
 
@@ -91,14 +89,11 @@ palettes_merge_callback (GtkWidget   *widget,
                          const gchar *palette_name,
                          gpointer     data)
 {
-#ifdef __GNUC__
-#warning FIXME: reimplement palettes_merge_callback()
-#endif
+  /* FIXME: reimplement palettes_merge_callback() */
 #if 0
   GimpContainerEditor *editor;
   GimpPalette         *palette;
   GimpPalette         *new_palette;
-  GimpPaletteEntry    *entry;
   GList               *sel_list;
 
   editor = (GimpContainerEditor *) data;
@@ -107,9 +102,10 @@ palettes_merge_callback (GtkWidget   *widget,
 
   if (! sel_list)
     {
-      gimp_message (gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    "Can't merge palettes because "
-                    "there are no palettes selected.");
+      gimp_message_literal (gimp,
+			    G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+			    "Can't merge palettes because "
+			    "there are no palettes selected.");
       return;
     }
 
@@ -118,7 +114,6 @@ palettes_merge_callback (GtkWidget   *widget,
   while (sel_list)
     {
       GimpListItem *list_item;
-      GList        *cols;
 
       list_item = GIMP_LIST_ITEM (sel_list->data);
 
@@ -126,9 +121,13 @@ palettes_merge_callback (GtkWidget   *widget,
 
       if (palette)
         {
-          for (cols = palette->colors; cols; cols = g_list_next (cols))
+          GList *cols;
+
+          for (cols = gimp_palette_get_colors (palette);
+               cols;
+               cols = g_list_next (cols))
             {
-              entry = (GimpPaletteEntry *) cols->data;
+              GimpPaletteEntry *entry = cols->data;
 
               gimp_palette_add_entry (new_palette,
                                       entry->name,

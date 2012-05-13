@@ -1,14 +1,12 @@
-/* blob.h: routines for manipulating scan converted convex
- *         polygons.
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995-1999 Spencer Kimball and Peter Mattis
  *
+ * gimpink-blob.h: routines for manipulating scan converted convex polygons.
  * Copyright 1998, Owen Taylor <otaylor@gtk.org>
  *
- * > Please contact the above author before modifying the copy <
- * > of this file in the GIMP distribution. Thanks.            <
- *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
 */
 
@@ -26,65 +23,65 @@
 #define __GIMP_INK_BLOB_H__
 
 
-typedef struct _BlobPoint BlobPoint;
-typedef struct _BlobSpan  BlobSpan;
-typedef struct _Blob      Blob;
+typedef struct _GimpBlobPoint GimpBlobPoint;
+typedef struct _GimpBlobSpan  GimpBlobSpan;
+typedef struct _GimpBlob      GimpBlob;
 
-typedef Blob * (* BlobFunc) (gdouble xc,
-                             gdouble yc,
-                             gdouble xp,
-                             gdouble yp,
-                             gdouble xq,
-                             gdouble yq);
+typedef GimpBlob * (* GimpBlobFunc) (gdouble xc,
+                                     gdouble yc,
+                                     gdouble xp,
+                                     gdouble yp,
+                                     gdouble xq,
+                                     gdouble yq);
 
-struct _BlobPoint
+struct _GimpBlobPoint
 {
   gint x;
   gint y;
 };
 
-struct _BlobSpan
+struct _GimpBlobSpan
 {
   gint left;
   gint right;
 };
 
-struct _Blob
+struct _GimpBlob
 {
-  gint     y;
-  gint     height;
-  BlobSpan data[1];
+  gint         y;
+  gint         height;
+  GimpBlobSpan data[1];
 };
 
 
-Blob * blob_polygon      (BlobPoint *points,
-                          gint       npoints);
-Blob * blob_square       (gdouble    xc,
-                          gdouble    yc,
-                          gdouble    xp,
-                          gdouble    yp,
-                          gdouble    xq,
-                          gdouble    yq);
-Blob * blob_diamond      (gdouble    xc,
-                          gdouble    yc,
-                          gdouble    xp,
-                          gdouble    yp,
-                          gdouble    xq,
-                          gdouble    yq);
-Blob * blob_ellipse      (gdouble    xc,
-                          gdouble    yc,
-                          gdouble    xp,
-                          gdouble    yp,
-                          gdouble    xq,
-                          gdouble    yq);
-void   blob_bounds       (Blob      *b,
-                          gint      *x,
-                          gint      *y,
-                          gint      *width,
-                          gint      *height);
-Blob * blob_convex_union (Blob      *b1,
-                          Blob      *b2);
-Blob * blob_duplicate    (Blob      *b);
+GimpBlob * gimp_blob_polygon      (GimpBlobPoint *points,
+                                   gint           n_points);
+GimpBlob * gimp_blob_square       (gdouble        xc,
+                                   gdouble        yc,
+                                   gdouble        xp,
+                                   gdouble        yp,
+                                   gdouble        xq,
+                                   gdouble        yq);
+GimpBlob * gimp_blob_diamond      (gdouble        xc,
+                                   gdouble        yc,
+                                   gdouble        xp,
+                                   gdouble        yp,
+                                   gdouble        xq,
+                                   gdouble        yq);
+GimpBlob * gimp_blob_ellipse      (gdouble        xc,
+                                   gdouble        yc,
+                                   gdouble        xp,
+                                   gdouble        yp,
+                                   gdouble        xq,
+                                   gdouble        yq);
+void       gimp_blob_bounds       (GimpBlob      *b,
+                                   gint          *x,
+                                   gint          *y,
+                                   gint          *width,
+                                   gint          *height);
+GimpBlob * gimp_blob_convex_union (GimpBlob      *b1,
+                                   GimpBlob      *b2);
+GimpBlob * gimp_blob_duplicate    (GimpBlob      *b);
 
 
 #endif /* __GIMP_INK_BLOB_H__ */

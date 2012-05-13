@@ -4,9 +4,9 @@
  * gimptemplateeditor.h
  * Copyright (C) 2002 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GIMP_TEMPLATE_EDITOR_H__
@@ -35,38 +34,26 @@ typedef struct _GimpTemplateEditorClass GimpTemplateEditorClass;
 
 struct _GimpTemplateEditor
 {
-  GtkVBox        parent_instance;
-
-  GimpTemplate  *template;
-
-  GimpContainer *stock_id_container;
-  GimpContext   *stock_id_context;
-
-  GtkWidget     *aspect_button;
-  gboolean       block_aspect;
-
-  GtkWidget     *expander;
-  GtkWidget     *size_se;
-  GtkWidget     *memsize_label;
-  GtkWidget     *pixel_label;
-  GtkWidget     *more_label;
-  GtkWidget     *resolution_se;
+  GtkBox  parent_instance;
 };
 
 struct _GimpTemplateEditorClass
 {
-  GtkVBoxClass   parent_class;
+  GtkBoxClass   parent_class;
 };
 
 
-GType       gimp_template_editor_get_type      (void) G_GNUC_CONST;
+GType          gimp_template_editor_get_type      (void) G_GNUC_CONST;
 
-GtkWidget * gimp_template_editor_new           (GimpTemplate       *template,
-                                                Gimp               *gimp,
-                                                gboolean            edit_template);
+GtkWidget    * gimp_template_editor_new           (GimpTemplate       *template,
+                                                   Gimp               *gimp,
+                                                   gboolean            edit_template);
 
-void        gimp_template_editor_show_advanced (GimpTemplateEditor *editor,
-                                                gboolean            expanded);
+GimpTemplate * gimp_template_editor_get_template  (GimpTemplateEditor *editor);
+
+void           gimp_template_editor_show_advanced (GimpTemplateEditor *editor,
+                                                   gboolean            expanded);
+GtkWidget    * gimp_template_editor_get_size_se   (GimpTemplateEditor *editor);
 
 
 #endif  /*  __GIMP_TEMPLATE_EDITOR_H__  */

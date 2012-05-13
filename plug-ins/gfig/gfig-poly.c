@@ -7,9 +7,9 @@
  *
  * Copyright (C) 1997 Andy Thomas  alt@picnic.demon.co.uk
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -38,7 +37,8 @@
 
 static gint poly_num_sides = 3; /* Default to three sided object */
 
-static void        d_draw_poly   (GfigObject *obj);
+static void        d_draw_poly   (GfigObject *obj,
+                                  cairo_t    *cr);
 static GfigObject *d_copy_poly   (GfigObject *obj);
 
 static void        d_update_poly (GdkPoint   *pnt);
@@ -54,7 +54,8 @@ tool_options_poly (GtkWidget *notebook)
 }
 
 static void
-d_draw_poly (GfigObject *obj)
+d_draw_poly (GfigObject *obj,
+             cairo_t    *cr)
 {
   DobjPoints *center_pnt;
   DobjPoints *radius_pnt;
@@ -77,7 +78,7 @@ d_draw_poly (GfigObject *obj)
   /* First point is the center */
   /* Just draw a control point around it */
 
-  draw_sqr (&center_pnt->pnt, obj == gfig_context->selected_obj);
+  draw_sqr (&center_pnt->pnt, obj == gfig_context->selected_obj, cr);
 
   /* Next point defines the radius */
   radius_pnt = center_pnt->next; /* this defines the vertices */
@@ -91,7 +92,10 @@ d_draw_poly (GfigObject *obj)
     }
 
   /* Other control point */
-  draw_sqr (&radius_pnt->pnt, obj == gfig_context->selected_obj);
+  if (obj == obj_creating)
+    draw_circle (&radius_pnt->pnt, TRUE, cr);
+  else
+    draw_sqr (&radius_pnt->pnt, obj == gfig_context->selected_obj, cr);
 
   /* Have center and radius - draw polygon */
 
@@ -124,7 +128,7 @@ d_draw_poly (GfigObject *obj)
           if (calc_pnt.x == start_pnt.x && calc_pnt.y == start_pnt.y)
             continue;
 
-          gfig_draw_line (calc_pnt.x, calc_pnt.y, start_pnt.x, start_pnt.y);
+          gfig_draw_line (calc_pnt.x, calc_pnt.y, start_pnt.x, start_pnt.y, cr);
         }
       else
         {
@@ -134,7 +138,7 @@ d_draw_poly (GfigObject *obj)
       start_pnt = calc_pnt;
     }
 
-  gfig_draw_line (first_pnt.x, first_pnt.y, start_pnt.x, start_pnt.y);
+  gfig_draw_line (first_pnt.x, first_pnt.y, start_pnt.x, start_pnt.y, cr);
 }
 
 void
@@ -143,7 +147,7 @@ d_paint_poly (GfigObject *obj)
   /* first point center */
   /* Next point is radius */
   gdouble    *line_pnts;
-  gint        seg_count = 0;
+  gint        seg_count;
   gint        i = 0;
   DobjPoints *center_pnt;
   DobjPoints *radius_pnt;
@@ -244,17 +248,23 @@ d_paint_poly (GfigObject *obj)
     }
 
 
-  gimp_free_select (gfig_context->image_id,
-                    i, line_pnts,
-                    selopt.type,
-                    selopt.antia,
-                    selopt.feather,
-                    selopt.feather_radius);
+  if (gfig_context_get_current_style ()->fill_type != FILL_NONE)
+    {
+      gimp_context_push ();
+      gimp_context_set_antialias (selopt.antia);
+      gimp_context_set_feather (selopt.feather);
+      gimp_context_set_feather_radius (selopt.feather_radius, selopt.feather_radius);
+      gimp_image_select_polygon (gfig_context->image_id,
+                                 selopt.type,
+                                 i, line_pnts);
+      gimp_context_pop ();
 
-  paint_layer_fill (min_max[0], min_max[1], min_max[2], min_max[3]);
+      paint_layer_fill (min_max[0], min_max[1], min_max[2], min_max[3]);
+      gimp_selection_none (gfig_context->image_id);
+    }
 
   if (obj->style.paint_type == PAINT_BRUSH_TYPE)
-    gimp_edit_stroke (gfig_context->drawable_id);
+    gfig_paint (selvals.brshtype, gfig_context->drawable_id, i, line_pnts);
 
   g_free (line_pnts);
   g_free (min_max);
@@ -265,7 +275,6 @@ d_poly2lines (GfigObject *obj)
 {
   /* first point center */
   /* Next point is radius */
-  gint        seg_count = 0;
   DobjPoints *center_pnt;
   DobjPoints *radius_pnt;
   gint16      shift_x;
@@ -281,16 +290,10 @@ d_poly2lines (GfigObject *obj)
 
   g_assert (obj != NULL);
 
-  /* count - add one to close polygon */
-  seg_count = obj->type_data + 1;
-
   center_pnt = obj->points;
 
   if (!center_pnt)
     return; /* no-line */
-
-  /* Undraw it to start with - removes control points */
-  obj->class->drawfunc (obj);
 
   /* NULL out these points free later */
   obj->points = NULL;
@@ -348,9 +351,6 @@ d_poly2lines (GfigObject *obj)
   /* hey we're a line now */
   obj->type = LINE;
   obj->class = &dobj_class[LINE];
-
-  /* draw it + control pnts */
-  obj->class->drawfunc (obj);
 }
 
 void
@@ -358,7 +358,6 @@ d_star2lines (GfigObject *obj)
 {
   /* first point center */
   /* Next point is radius */
-  gint        seg_count = 0;
   DobjPoints *center_pnt;
   DobjPoints *outer_radius_pnt;
   DobjPoints *inner_radius_pnt;
@@ -376,16 +375,10 @@ d_star2lines (GfigObject *obj)
 
   g_assert (obj != NULL);
 
-  /* count - add one to close polygon */
-  seg_count = 2 * obj->type_data + 1;
-
   center_pnt = obj->points;
 
   if (!center_pnt)
     return; /* no-line */
-
-  /* Undraw it to start with - removes control points */
-  obj->class->drawfunc (obj);
 
   /* NULL out these points free later */
   obj->points = NULL;
@@ -473,9 +466,6 @@ d_star2lines (GfigObject *obj)
   /* hey we're a line now */
   obj->type = LINE;
   obj->class = &dobj_class[LINE];
-
-  /* draw it + control pnts */
-  obj->class->drawfunc (obj);
 }
 
 static GfigObject *
@@ -510,49 +500,20 @@ d_update_poly (GdkPoint *pnt)
 {
   DobjPoints *center_pnt;
   DobjPoints *edge_pnt;
-  gint        saved_cnt_pnt = selvals.opts.showcontrol;
 
-  /* Undraw last one then draw new one */
   center_pnt = obj_creating->points;
 
   if (!center_pnt)
     return; /* No points */
 
-  /* Leave the first pnt alone -
-   * Edge point defines "radius"
-   * Only undraw if already have edge point.
-   */
-
-  /* Hack - turn off cnt points in draw routine
-   * Looking back over the other update routines I could
-   * use this trick again and cut down on code size!
-   */
-
-
   if ((edge_pnt = center_pnt->next))
     {
-      /* Undraw */
-      draw_circle (&edge_pnt->pnt, TRUE);
-      selvals.opts.showcontrol = 0;
-      d_draw_poly (obj_creating);
-
       edge_pnt->pnt = *pnt;
     }
   else
     {
-      /* Radius is a few pixels away */
-      /* First edge point */
       d_pnt_add_line (obj_creating, pnt->x, pnt->y, -1);
-      edge_pnt = center_pnt->next;
     }
-
-  /* draw it */
-  selvals.opts.showcontrol = 0;
-  d_draw_poly (obj_creating);
-  selvals.opts.showcontrol = saved_cnt_pnt;
-
-  /* Realy draw the control points */
-  draw_circle (&edge_pnt->pnt, TRUE);
 }
 
 void
@@ -567,7 +528,6 @@ void
 d_poly_end (GdkPoint *pnt,
             gboolean  shift_down)
 {
-  draw_circle (pnt, TRUE);
   add_to_all_obj (gfig_context->current_obj, obj_creating);
   obj_creating = NULL;
 }

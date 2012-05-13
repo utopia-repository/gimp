@@ -4,9 +4,9 @@
  * gimplist.c
  * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,8 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -194,10 +193,10 @@ gimp_list_get_memsize (GimpObject *object,
   GimpList *list    = GIMP_LIST (object);
   gint64    memsize = 0;
 
-  memsize += (gimp_container_num_children (GIMP_CONTAINER (list)) *
+  memsize += (gimp_container_get_n_children (GIMP_CONTAINER (list)) *
               sizeof (GList));
 
-  if (gimp_container_policy (GIMP_CONTAINER (list)) ==
+  if (gimp_container_get_policy (GIMP_CONTAINER (list)) ==
       GIMP_CONTAINER_POLICY_STRONG)
     {
       GList *glist;
@@ -230,6 +229,8 @@ gimp_list_add (GimpContainer *container,
     list->list = g_list_append (list->list, object);
   else
     list->list = g_list_prepend (list->list, object);
+
+  GIMP_CONTAINER_CLASS (parent_class)->add (container, object);
 }
 
 static void
@@ -244,6 +245,8 @@ gimp_list_remove (GimpContainer *container,
                                           list);
 
   list->list = g_list_remove (list->list, object);
+
+  GIMP_CONTAINER_CLASS (parent_class)->remove (container, object);
 }
 
 static void
@@ -255,7 +258,8 @@ gimp_list_reorder (GimpContainer *container,
 
   list->list = g_list_remove (list->list, object);
 
-  if (new_index == -1 || new_index == container->num_children - 1)
+  if (new_index == -1 ||
+      new_index == gimp_container_get_n_children (container) - 1)
     list->list = g_list_append (list->list, object);
   else
     list->list = g_list_insert (list->list, object, new_index);
@@ -300,7 +304,7 @@ gimp_list_get_child_by_name (const GimpContainer *container,
     {
       GimpObject *object = glist->data;
 
-      if (! strcmp (object->name, name))
+      if (! strcmp (gimp_object_get_name (object), name))
         return object;
     }
 
@@ -410,7 +414,7 @@ gimp_list_reverse (GimpList *list)
 {
   g_return_if_fail (GIMP_IS_LIST (list));
 
-  if (GIMP_CONTAINER (list)->num_children > 1)
+  if (gimp_container_get_n_children (GIMP_CONTAINER (list)) > 1)
     {
       gimp_container_freeze (GIMP_CONTAINER (list));
       list->list = g_list_reverse (list->list);
@@ -458,7 +462,7 @@ gimp_list_sort (GimpList     *list,
   g_return_if_fail (GIMP_IS_LIST (list));
   g_return_if_fail (sort_func != NULL);
 
-  if (GIMP_CONTAINER (list)->num_children > 1)
+  if (gimp_container_get_n_children (GIMP_CONTAINER (list)) > 1)
     {
       gimp_container_freeze (GIMP_CONTAINER (list));
       list->list = g_list_sort (list->list, sort_func);
@@ -487,8 +491,8 @@ static void
 gimp_list_uniquefy_name (GimpList   *gimp_list,
                          GimpObject *object)
 {
-  GList       *list;
-  const gchar *name = gimp_object_get_name (object);
+  gchar *name = (gchar *) gimp_object_get_name (object);
+  GList *list;
 
   if (! name)
     return;
@@ -501,57 +505,65 @@ gimp_list_uniquefy_name (GimpList   *gimp_list,
       if (object != object2 &&
           name2             &&
           ! strcmp (name, name2))
+        break;
+    }
+
+  if (list)
+    {
+      gchar *ext;
+      gchar *new_name   = NULL;
+      gint   unique_ext = 0;
+
+      name = g_strdup (name);
+
+      ext = strrchr (name, '#');
+
+      if (ext)
         {
-          GList *list2;
-          gchar *ext        = strrchr (name, '#');
-          gchar *new_name   = NULL;
-          gint   unique_ext = 0;
+          gchar ext_str[8];
 
-          if (ext)
+          unique_ext = atoi (ext + 1);
+
+          g_snprintf (ext_str, sizeof (ext_str), "%d", unique_ext);
+
+          /*  check if the extension really is of the form "#<n>"  */
+          if (! strcmp (ext_str, ext + 1))
             {
-              gchar *ext_str;
+              if (ext > name && *(ext - 1) == ' ')
+                ext--;
 
-              unique_ext = atoi (ext + 1);
-
-              ext_str = g_strdup_printf ("%d", unique_ext);
-
-              /*  check if the extension really is of the form "#<n>"  */
-              if (! strcmp (ext_str, ext + 1))
-                {
-                  *ext = '\0';
-                }
-              else
-                {
-                  unique_ext = 0;
-                }
-
-              g_free (ext_str);
+              *ext = '\0';
             }
-
-          do
+          else
             {
-              unique_ext++;
-
-              g_free (new_name);
-
-              new_name = g_strdup_printf ("%s#%d", name, unique_ext);
-
-              for (list2 = gimp_list->list; list2; list2 = g_list_next (list2))
-                {
-                  object2 = list2->data;
-                  name2   = gimp_object_get_name (object2);
-
-                  if (object != object2 &&
-                      name2             &&
-                      ! strcmp (new_name, name2))
-                    break;
-                }
+              unique_ext = 0;
             }
-          while (list2);
-
-          gimp_object_take_name (object, new_name);
-          break;
         }
+
+      do
+        {
+          unique_ext++;
+
+          g_free (new_name);
+
+          new_name = g_strdup_printf ("%s #%d", name, unique_ext);
+
+          for (list = gimp_list->list; list; list = g_list_next (list))
+            {
+              GimpObject  *object2 = list->data;
+              const gchar *name2   = gimp_object_get_name (object2);
+
+              if (object != object2 &&
+                  name2             &&
+                  ! strcmp (new_name, name2))
+                break;
+            }
+        }
+      while (list);
+
+      g_free (name);
+
+      gimp_object_take_name (object, new_name);
     }
 }
 

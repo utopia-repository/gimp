@@ -9,10 +9,12 @@ gimpcontext
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -160,7 +162,7 @@ gimpcontext
 
 </para>
 
-@angle: 
+@void: 
 @Returns: 
 
 
@@ -178,7 +180,7 @@ gimpcontext
 
 </para>
 
-@aspect: 
+@void: 
 @Returns: 
 
 
@@ -196,7 +198,7 @@ gimpcontext
 
 </para>
 
-@size: 
+@void: 
 @Returns: 
 
 

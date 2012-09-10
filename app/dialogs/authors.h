@@ -104,6 +104,7 @@ static const gchar * const authors[] =
   "Andreas Turtschan",
   "Massimo Valentini",
   "Thorsten Vollmer",
+  "Clayton Walker",
   "Rupert Weber",
   "Alexis Wilhelm",
   "Andrew Wyatt",
@@ -119,6 +120,7 @@ static const gchar * const artists[] =
   "Alexia Death",
   "Ville Pätsi",
   "Jakub Steiner",
+  "Bernhard Stockmann",
   NULL
 };
 

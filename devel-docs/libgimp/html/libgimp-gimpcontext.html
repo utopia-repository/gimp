@@ -40,10 +40,10 @@
 <pre class="synopsis"><span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-push" title="gimp_context_push ()">gimp_context_push</a>                   (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-pop" title="gimp_context_pop ()">gimp_context_pop</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-defaults" title="gimp_context_set_defaults ()">gimp_context_set_defaults</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-foreground" title="gimp_context_get_foreground ()">gimp_context_get_foreground</a>         (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-foreground" title="gimp_context_set_foreground ()">gimp_context_set_foreground</a>         (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-background" title="gimp_context_get_background ()">gimp_context_get_background</a>         (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-background" title="gimp_context_set_background ()">gimp_context_set_background</a>         (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-foreground" title="gimp_context_get_foreground ()">gimp_context_get_foreground</a>         (<em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-foreground" title="gimp_context_set_foreground ()">gimp_context_set_foreground</a>         (<em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-background" title="gimp_context_get_background ()">gimp_context_get_background</a>         (<em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-background" title="gimp_context_set_background ()">gimp_context_set_background</a>         (<em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-default-colors" title="gimp_context_set_default_colors ()">gimp_context_set_default_colors</a>     (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-swap-colors" title="gimp_context_swap_colors ()">gimp_context_swap_colors</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gdouble</span>             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-opacity" title="gimp_context_get_opacity ()">gimp_context_get_opacity</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -52,11 +52,11 @@
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-paint-mode" title="gimp_context_set_paint_mode ()">gimp_context_set_paint_mode</a>         (<em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects"><span class="type">GimpLayerModeEffects</span></a> paint_mode</code></em>);
 <span class="returnvalue">gchar</span> *             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush" title="gimp_context_get_brush ()">gimp_context_get_brush</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush" title="gimp_context_set_brush ()">gimp_context_set_brush</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush-angle" title="gimp_context_get_brush_angle ()">gimp_context_get_brush_angle</a>        (<em class="parameter"><code><span class="type">gdouble</span> angle</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush-angle" title="gimp_context_get_brush_angle ()">gimp_context_get_brush_angle</a>        (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush-angle" title="gimp_context_set_brush_angle ()">gimp_context_set_brush_angle</a>        (<em class="parameter"><code><span class="type">gdouble</span> angle</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush-aspect-ratio" title="gimp_context_get_brush_aspect_ratio ()">gimp_context_get_brush_aspect_ratio</a> (<em class="parameter"><code><span class="type">gdouble</span> aspect</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush-aspect-ratio" title="gimp_context_get_brush_aspect_ratio ()">gimp_context_get_brush_aspect_ratio</a> (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush-aspect-ratio" title="gimp_context_set_brush_aspect_ratio ()">gimp_context_set_brush_aspect_ratio</a> (<em class="parameter"><code><span class="type">gdouble</span> aspect</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush-size" title="gimp_context_get_brush_size ()">gimp_context_get_brush_size</a>         (<em class="parameter"><code><span class="type">gdouble</span> size</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush-size" title="gimp_context_get_brush_size ()">gimp_context_get_brush_size</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush-size" title="gimp_context_set_brush_size ()">gimp_context_set_brush_size</a>         (<em class="parameter"><code><span class="type">gdouble</span> size</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush-default-size" title="gimp_context_set_brush_default_size ()">gimp_context_set_brush_default_size</a> (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gchar</span> *             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-dynamics" title="gimp_context_get_dynamics ()">gimp_context_get_dynamics</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -93,14 +93,14 @@
                                                         (<em class="parameter"><code><span class="type">gint</span> sample_threshold</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-sample-transparent" title="gimp_context_get_sample_transparent ()">gimp_context_get_sample_transparent</a> (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-sample-transparent" title="gimp_context_set_sample_transparent ()">gimp_context_set_sample_transparent</a> (<em class="parameter"><code><span class="type">gboolean</span> sample_transparent</code></em>);
-<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="returnvalue">GimpInterpolationType</span></a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-interpolation" title="gimp_context_get_interpolation ()">gimp_context_get_interpolation</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-interpolation" title="gimp_context_set_interpolation ()">gimp_context_set_interpolation</a>      (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);
-<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="returnvalue">GimpTransformDirection</span></a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-transform-direction" title="gimp_context_get_transform_direction ()">gimp_context_get_transform_direction</a>
+<a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="returnvalue">GimpInterpolationType</span></a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-interpolation" title="gimp_context_get_interpolation ()">gimp_context_get_interpolation</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-interpolation" title="gimp_context_set_interpolation ()">gimp_context_set_interpolation</a>      (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);
+<a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="returnvalue">GimpTransformDirection</span></a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-transform-direction" title="gimp_context_get_transform_direction ()">gimp_context_get_transform_direction</a>
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-transform-direction" title="gimp_context_set_transform_direction ()">gimp_context_set_transform_direction</a>
-                                                        (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="type">GimpTransformDirection</span></a> transform_direction</code></em>);
-<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="returnvalue">GimpTransformResize</span></a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-transform-resize" title="gimp_context_get_transform_resize ()">gimp_context_get_transform_resize</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-transform-resize" title="gimp_context_set_transform_resize ()">gimp_context_set_transform_resize</a>   (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="type">GimpTransformResize</span></a> transform_resize</code></em>);
+                                                        (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="type">GimpTransformDirection</span></a> transform_direction</code></em>);
+<a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="returnvalue">GimpTransformResize</span></a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-transform-resize" title="gimp_context_get_transform_resize ()">gimp_context_get_transform_resize</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-transform-resize" title="gimp_context_set_transform_resize ()">gimp_context_set_transform_resize</a>   (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="type">GimpTransformResize</span></a> transform_resize</code></em>);
 <span class="returnvalue">gint</span>                <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-transform-recursion" title="gimp_context_get_transform_recursion ()">gimp_context_get_transform_recursion</a>
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-transform-recursion" title="gimp_context_set_transform_recursion ()">gimp_context_set_transform_recursion</a>
@@ -207,7 +207,7 @@ context.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-foreground"></a><h3>gimp_context_get_foreground ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_foreground         (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_foreground         (<em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);</pre>
 <p>
 Get the current GIMP foreground color.
 </p>
@@ -234,7 +234,7 @@ blending, and bucket fill.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-set-foreground"></a><h3>gimp_context_set_foreground ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_foreground         (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_foreground         (<em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *foreground</code></em>);</pre>
 <p>
 Set the current GIMP foreground color.
 </p>
@@ -261,7 +261,7 @@ and bucket fill will use the new value.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-background"></a><h3>gimp_context_get_background ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_background         (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_background         (<em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);</pre>
 <p>
 Get the current GIMP background color.
 </p>
@@ -288,7 +288,7 @@ erasing (with non-alpha images), and image filling.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-set-background"></a><h3>gimp_context_set_background ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_background         (<em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_background         (<em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *background</code></em>);</pre>
 <p>
 Set the current GIMP background color.
 </p>
@@ -500,7 +500,7 @@ becomes active and will be used in all subsequent paint operations.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-brush-angle"></a><h3>gimp_context_get_brush_angle ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_brush_angle        (<em class="parameter"><code><span class="type">gdouble</span> angle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_context_get_brush_angle        (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Get brush angle in degrees.
 </p>
@@ -509,16 +509,10 @@ Set the angle in degrees for brush based paint tools.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>angle</code></em> :</span></p></td>
-<td>angle in degrees.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>TRUE on success.</td>
-</tr>
-</tbody>
+<td>angle in degrees.</td>
+</tr></tbody>
 </table></div>
 <p class="since">Since GIMP 2.8</p>
 </div>
@@ -550,7 +544,7 @@ Set the angle in degrees for brush based paint tools.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-brush-aspect-ratio"></a><h3>gimp_context_get_brush_aspect_ratio ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_brush_aspect_ratio (<em class="parameter"><code><span class="type">gdouble</span> aspect</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_context_get_brush_aspect_ratio (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Get brush aspect ratio.
 </p>
@@ -559,16 +553,10 @@ Set the aspect ratio for brush based paint tools.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>aspect</code></em> :</span></p></td>
-<td>aspect ratio.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>TRUE on success.</td>
-</tr>
-</tbody>
+<td>aspect ratio.</td>
+</tr></tbody>
 </table></div>
 <p class="since">Since GIMP 2.8</p>
 </div>
@@ -600,7 +588,7 @@ Set the aspect ratio for brush based paint tools.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-brush-size"></a><h3>gimp_context_get_brush_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_get_brush_size         (<em class="parameter"><code><span class="type">gdouble</span> size</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             gimp_context_get_brush_size         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Get brush size in pixels.
 </p>
@@ -609,16 +597,10 @@ Get the brush size in pixels for brush based paint tools.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
-<td>brush size in pixels.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>TRUE on success.</td>
-</tr>
-</tbody>
+<td>brush size in pixels.</td>
+</tr></tbody>
 </table></div>
 <p class="since">Since GIMP 2.8</p>
 </div>
@@ -1412,7 +1394,7 @@ This setting affects the following procedures:
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-interpolation"></a><h3>gimp_context_get_interpolation ()</h3>
-<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="returnvalue">GimpInterpolationType</span></a> gimp_context_get_interpolation    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="returnvalue">GimpInterpolationType</span></a> gimp_context_get_interpolation    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Get the interpolation type.
 </p>
@@ -1435,7 +1417,7 @@ gimprc will be used.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-set-interpolation"></a><h3>gimp_context_set_interpolation ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_interpolation      (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_interpolation      (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"><span class="type">GimpInterpolationType</span></a> interpolation</code></em>);</pre>
 <p>
 Set the interpolation type.
 </p>
@@ -1466,7 +1448,7 @@ affects affects the following procedures:
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-transform-direction"></a><h3>gimp_context_get_transform_direction ()</h3>
-<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="returnvalue">GimpTransformDirection</span></a> gimp_context_get_transform_direction
+<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="returnvalue">GimpTransformDirection</span></a> gimp_context_get_transform_direction
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Get the transform direction.
@@ -1489,7 +1471,7 @@ description.
 <div class="refsect2">
 <a name="gimp-context-set-transform-direction"></a><h3>gimp_context_set_transform_direction ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_transform_direction
-                                                        (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="type">GimpTransformDirection</span></a> transform_direction</code></em>);</pre>
+                                                        (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection"><span class="type">GimpTransformDirection</span></a> transform_direction</code></em>);</pre>
 <p>
 Set the transform direction.
 </p>
@@ -1519,7 +1501,7 @@ setting affects affects the following procedures:
 <hr>
 <div class="refsect2">
 <a name="gimp-context-get-transform-resize"></a><h3>gimp_context_get_transform_resize ()</h3>
-<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="returnvalue">GimpTransformResize</span></a> gimp_context_get_transform_resize   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="returnvalue">GimpTransformResize</span></a> gimp_context_get_transform_resize   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Get the transform resize type.
 </p>
@@ -1540,7 +1522,7 @@ argument description.
 <hr>
 <div class="refsect2">
 <a name="gimp-context-set-transform-resize"></a><h3>gimp_context_set_transform_resize ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_transform_resize   (<em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="type">GimpTransformResize</span></a> transform_resize</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_context_set_transform_resize   (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize"><span class="type">GimpTransformResize</span></a> transform_resize</code></em>);</pre>
 <p>
 Set the transform resize type.
 </p>

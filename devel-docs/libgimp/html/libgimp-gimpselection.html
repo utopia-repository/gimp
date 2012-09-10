@@ -71,7 +71,7 @@
                                                          <em class="parameter"><code><span class="type">gint</span> offy</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpselection.html#gimp-selection-layer-alpha" title="gimp_selection_layer_alpha ()">gimp_selection_layer_alpha</a>          (<em class="parameter"><code><span class="type">gint32</span> layer_ID</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpselection.html#gimp-selection-combine" title="gimp_selection_combine ()">gimp_selection_combine</a>              (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>);
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -602,7 +602,7 @@ because of this call are lost.
 <div class="refsect2">
 <a name="gimp-selection-combine"></a><h3>gimp_selection_combine ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_selection_combine              (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_selection_combine</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="libgimp-gimpimageselect.html#gimp-image-select-item" title="gimp_image_select_item ()"><code class="function">gimp_image_select_item()</code></a> instead.</p>

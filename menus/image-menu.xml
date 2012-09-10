@@ -297,7 +297,6 @@
       <menuitem action="view-show-scrollbars"/>
       <menuitem action="view-show-statusbar"/>
       <separator/>
-      <menuitem action="view-use-gegl"/>
     </menu>
 
     <menu action="image-menu" name="Image">
@@ -492,8 +491,6 @@
       <placeholder name="Invert">
         <menuitem action="drawable-invert"/>
       </placeholder>
-      <separator/>
-      <menuitem action="config-use-gegl"/>
       <separator/>
       <menu action="colors-auto-menu" name="Auto">
         <menuitem action="drawable-equalize"/>
@@ -966,7 +963,6 @@
       <menuitem action="view-show-scrollbars"/>
       <menuitem action="view-show-statusbar"/>
       <separator/>
-      <menuitem action="view-use-gegl"/>
     </menu>
 
     <menu action="image-menu" name="Image">
@@ -1161,8 +1157,6 @@
       <placeholder name="Invert">
         <menuitem action="drawable-invert"/>
       </placeholder>
-      <separator/>
-      <menuitem action="config-use-gegl"/>
       <separator/>
       <menu action="colors-auto-menu" name="Auto">
         <menuitem action="drawable-equalize"/>

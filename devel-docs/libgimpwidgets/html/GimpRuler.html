@@ -48,8 +48,8 @@
 <pre class="synopsis">                    <a class="link" href="GimpRuler.html#GimpRuler-struct" title="GimpRuler">GimpRuler</a>;
 <span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpRuler.html#gimp-ruler-new" title="gimp_ruler_new ()">gimp_ruler_new</a>                      (<em class="parameter"><code><span class="type">GtkOrientation</span> orientation</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpRuler.html#gimp-ruler-set-unit" title="gimp_ruler_set_unit ()">gimp_ruler_set_unit</a>                 (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);
-<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            <a class="link" href="GimpRuler.html#gimp-ruler-get-unit" title="gimp_ruler_get_unit ()">gimp_ruler_get_unit</a>                 (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>);
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);
+<a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            <a class="link" href="GimpRuler.html#gimp-ruler-get-unit" title="gimp_ruler_get_unit ()">gimp_ruler_get_unit</a>                 (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpRuler.html#gimp-ruler-set-position" title="gimp_ruler_set_position ()">gimp_ruler_set_position</a>             (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> position</code></em>);
 <span class="returnvalue">gdouble</span>             <a class="link" href="GimpRuler.html#gimp-ruler-get-position" title="gimp_ruler_get_position ()">gimp_ruler_get_position</a>             (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>);
@@ -90,7 +90,7 @@ GimpRuler implements
   "<a class="link" href="GimpRuler.html#GimpRuler--max-size" title='The "max-size" property'>max-size</a>"                 <span class="type">gdouble</span>               : Read / Write
   "<a class="link" href="GimpRuler.html#GimpRuler--orientation" title='The "orientation" property'>orientation</a>"              <span class="type">GtkOrientation</span>        : Read / Write
   "<a class="link" href="GimpRuler.html#GimpRuler--position" title='The "position" property'>position</a>"                 <span class="type">gdouble</span>               : Read / Write
-  "<a class="link" href="GimpRuler.html#GimpRuler--unit" title='The "unit" property'>unit</a>"                     <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>              : Read / Write
+  "<a class="link" href="GimpRuler.html#GimpRuler--unit" title='The "unit" property'>unit</a>"                     <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>              : Read / Write
   "<a class="link" href="GimpRuler.html#GimpRuler--upper" title='The "upper" property'>upper</a>"                    <span class="type">gdouble</span>               : Read / Write
 </pre>
 </div>
@@ -140,7 +140,7 @@ Creates a new ruler.
 <div class="refsect2">
 <a name="gimp-ruler-set-unit"></a><h3>gimp_ruler_set_unit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_ruler_set_unit                 (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);</pre>
 <p>
 This sets the unit of the ruler.
 </p>
@@ -154,7 +154,7 @@ This sets the unit of the ruler.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
-<td>the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> to set the ruler to</td>
+<td>the <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> to set the ruler to</td>
 </tr>
 </tbody>
 </table></div>
@@ -163,7 +163,7 @@ This sets the unit of the ruler.
 <hr>
 <div class="refsect2">
 <a name="gimp-ruler-get-unit"></a><h3>gimp_ruler_get_unit ()</h3>
-<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            gimp_ruler_get_unit                 (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>);</pre>
+<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            gimp_ruler_get_unit                 (<em class="parameter"><code><a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a> *ruler</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -383,7 +383,7 @@ Removes a previously added track widget from the ruler. See
 <hr>
 <div class="refsect2">
 <a name="GimpRuler--unit"></a><h3>The <code class="literal">"unit"</code> property</h3>
-<pre class="programlisting">  "unit"                     <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>              : Read / Write</pre>
+<pre class="programlisting">  "unit"                     <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>              : Read / Write</pre>
 <p>Unit of ruler.</p>
 <p>Allowed values: [0,65535]</p>
 <p>Default value: 0</p>

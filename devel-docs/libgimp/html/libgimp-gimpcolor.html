@@ -53,7 +53,7 @@
                                                          <em class="parameter"><code><span class="type">gint</span> levels</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcolor.html#gimp-desaturate" title="gimp_desaturate ()">gimp_desaturate</a>                     (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcolor.html#gimp-desaturate-full" title="gimp_desaturate_full ()">gimp_desaturate_full</a>                (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"><span class="type">GimpDesaturateMode</span></a> desaturate_mode</code></em>);
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"><span class="type">GimpDesaturateMode</span></a> desaturate_mode</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcolor.html#gimp-equalize" title="gimp_equalize ()">gimp_equalize</a>                       (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> mask_only</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcolor.html#gimp-invert" title="gimp_invert ()">gimp_invert</a>                         (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>);
@@ -66,7 +66,7 @@
                                                          <em class="parameter"><code><span class="type">gint</span> num_bytes</code></em>,
                                                          <em class="parameter"><code>const <span class="type">guint8</span> *curve</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpcolor.html#gimp-color-balance" title="gimp_color_balance ()">gimp_color_balance</a>                  (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"><span class="type">GimpTransferMode</span></a> transfer_mode</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"><span class="type">GimpTransferMode</span></a> transfer_mode</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> preserve_lum</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> cyan_red</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> magenta_green</code></em>,
@@ -312,7 +312,7 @@ This procedure only works on drawables of type RGB color.
 <div class="refsect2">
 <a name="gimp-desaturate-full"></a><h3>gimp_desaturate_full ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_desaturate_full                (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"><span class="type">GimpDesaturateMode</span></a> desaturate_mode</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"><span class="type">GimpDesaturateMode</span></a> desaturate_mode</code></em>);</pre>
 <p>
 Desaturate the contents of the specified drawable, with the
 specified formula.
@@ -498,7 +498,7 @@ Catmull Rom splines.
 <div class="refsect2">
 <a name="gimp-color-balance"></a><h3>gimp_color_balance ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_color_balance                  (<em class="parameter"><code><span class="type">gint32</span> drawable_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"><span class="type">GimpTransferMode</span></a> transfer_mode</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"><span class="type">GimpTransferMode</span></a> transfer_mode</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> preserve_lum</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> cyan_red</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> magenta_green</code></em>,

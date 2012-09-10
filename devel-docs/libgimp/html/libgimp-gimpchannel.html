@@ -42,9 +42,9 @@
                                                          <em class="parameter"><code><span class="type">guint</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">guint</span> height</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 <span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-new-from-component" title="gimp_channel_new_from_component ()">gimp_channel_new_from_component</a>     (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"><span class="type">GimpChannelType</span></a> component</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"><span class="type">GimpChannelType</span></a> component</code></em>,
                                                          <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);
 <span class="returnvalue">gint32</span>              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-copy" title="gimp_channel_copy ()">gimp_channel_copy</a>                   (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-show-masked" title="gimp_channel_get_show_masked ()">gimp_channel_get_show_masked</a>        (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>);
@@ -54,12 +54,12 @@
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-opacity" title="gimp_channel_set_opacity ()">gimp_channel_set_opacity</a>            (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-color" title="gimp_channel_get_color ()">gimp_channel_get_color</a>              (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-color" title="gimp_channel_set_color ()">gimp_channel_set_color</a>              (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-combine-masks" title="gimp_channel_combine_masks ()">gimp_channel_combine_masks</a>          (<em class="parameter"><code><span class="type">gint32</span> channel1_ID</code></em>,
                                                          <em class="parameter"><code><span class="type">gint32</span> channel2_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> offy</code></em>);
 </pre>
@@ -79,7 +79,7 @@ Functions for manipulating channels.
                                                          <em class="parameter"><code><span class="type">guint</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">guint</span> height</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> opacity</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Create a new channel.
 </p>
@@ -130,7 +130,7 @@ undefined initially.
 <div class="refsect2">
 <a name="gimp-channel-new-from-component"></a><h3>gimp_channel_new_from_component ()</h3>
 <pre class="programlisting"><span class="returnvalue">gint32</span>              gimp_channel_new_from_component     (<em class="parameter"><code><span class="type">gint32</span> image_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"><span class="type">GimpChannelType</span></a> component</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"><span class="type">GimpChannelType</span></a> component</code></em>,
                                                          <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
 <p>
 Create a new channel from a color component
@@ -299,7 +299,7 @@ This procedure sets the specified channel's opacity.
 <div class="refsect2">
 <a name="gimp-channel-get-color"></a><h3>gimp_channel_get_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_channel_get_color              (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Get the compositing color of the specified channel.
 </p>
@@ -328,7 +328,7 @@ This procedure returns the specified channel's compositing color.
 <div class="refsect2">
 <a name="gimp-channel-set-color"></a><h3>gimp_channel_set_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_channel_set_color              (<em class="parameter"><code><span class="type">gint32</span> channel_ID</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Set the compositing color of the specified channel.
 </p>
@@ -358,7 +358,7 @@ This procedure sets the specified channel's compositing color.
 <a name="gimp-channel-combine-masks"></a><h3>gimp_channel_combine_masks ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>            gimp_channel_combine_masks          (<em class="parameter"><code><span class="type">gint32</span> channel1_ID</code></em>,
                                                          <em class="parameter"><code><span class="type">gint32</span> channel2_ID</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"><span class="type">GimpChannelOps</span></a> operation</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> offx</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> offy</code></em>);</pre>
 <p>

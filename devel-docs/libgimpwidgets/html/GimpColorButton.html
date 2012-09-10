@@ -49,12 +49,12 @@
 <span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpColorButton.html#gimp-color-button-new" title="gimp_color_button_new ()">gimp_color_button_new</a>               (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpColorButton.html#gimp-color-button-set-color" title="gimp_color_button_set_color ()">gimp_color_button_set_color</a>         (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpColorButton.html#gimp-color-button-get-color" title="gimp_color_button_get_color ()">gimp_color_button_get_color</a>         (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
+                                                         <em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpColorButton.html#gimp-color-button-set-update" title="gimp_color_button_set_update ()">gimp_color_button_set_update</a>        (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> continuous</code></em>);
 <span class="returnvalue">gboolean</span>            <a class="link" href="GimpColorButton.html#gimp-color-button-get-update" title="gimp_color_button_get_update ()">gimp_color_button_get_update</a>        (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>);
@@ -88,7 +88,7 @@ GimpColorButton implements
 <pre class="synopsis">
   "<a class="link" href="GimpColorButton.html#GimpColorButton--area-height" title='The "area-height" property'>area-height</a>"              <span class="type">gint</span>                  : Write / Construct
   "<a class="link" href="GimpColorButton.html#GimpColorButton--area-width" title='The "area-width" property'>area-width</a>"               <span class="type">gint</span>                  : Write / Construct
-  "<a class="link" href="GimpColorButton.html#GimpColorButton--color" title='The "color" property'>color</a>"                    <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct
+  "<a class="link" href="GimpColorButton.html#GimpColorButton--color" title='The "color" property'>color</a>"                    <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct
   "<a class="link" href="GimpColorButton.html#GimpColorButton--continuous-update" title='The "continuous-update" property'>continuous-update</a>"        <span class="type">gboolean</span>              : Read / Write / Construct
   "<a class="link" href="GimpColorButton.html#GimpColorButton--title" title='The "title" property'>title</a>"                    <span class="type">gchar</span>*                : Read / Write / Construct Only
   "<a class="link" href="GimpColorButton.html#GimpColorButton--type" title='The "type" property'>type</a>"                     <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a>     : Read / Write / Construct
@@ -127,7 +127,7 @@ user changes the color, the "color-changed" signal is emitted.
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_color_button_new               (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
                                                          <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> widget.
@@ -156,7 +156,7 @@ signal is emitted.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>A pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</td>
+<td>A pointer to a <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -173,7 +173,7 @@ signal is emitted.
 <div class="refsect2">
 <a name="gimp-color-button-set-color"></a><h3>gimp_color_button_set_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_button_set_color         (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                                                         <em class="parameter"><code>const <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Sets the <em class="parameter"><code>button</code></em> to the given <em class="parameter"><code>color</code></em>.
 </p>
@@ -186,7 +186,7 @@ Sets the <em class="parameter"><code>button</code></em> to the given <em class="
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>Pointer to the new <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</td>
+<td>Pointer to the new <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> color.</td>
 </tr>
 </tbody>
 </table></div>
@@ -195,7 +195,7 @@ Sets the <em class="parameter"><code>button</code></em> to the given <em class="
 <div class="refsect2">
 <a name="gimp-color-button-get-color"></a><h3>gimp_color_button_get_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_button_get_color         (<em class="parameter"><code><a class="link" href="GimpColorButton.html" title="GimpColorButton"><span class="type">GimpColorButton</span></a> *button</code></em>,
-                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>);</pre>
 <p>
 Retrieves the currently set color from the <em class="parameter"><code>button</code></em>.
 </p>
@@ -208,7 +208,7 @@ Retrieves the currently set color from the <em class="parameter"><code>button</c
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
-<td>Pointer to a <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the color.</td>
+<td>Pointer to a <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the color.</td>
 </tr>
 </tbody>
 </table></div>
@@ -331,7 +331,7 @@ The minimum width of the button's <a class="link" href="GimpColorArea.html" titl
 <hr>
 <div class="refsect2">
 <a name="GimpColorButton--color"></a><h3>The <code class="literal">"color"</code> property</h3>
-<pre class="programlisting">  "color"                    <a href="/local/head/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct</pre>
+<pre class="programlisting">  "color"                    <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>*              : Read / Write / Construct</pre>
 <p>
 The color displayed in the button's color area.
 </p>

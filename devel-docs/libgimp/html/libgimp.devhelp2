@@ -388,7 +388,7 @@
     <keyword type="function" name="gimp_drawable_parasite_list ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-list" deprecated="Use gimp_item_get_parasite_list() instead."/>
     <keyword type="function" name="gimp_drawable_parasite_attach ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-attach" deprecated="Use gimp_item_attach_parasite() instead."/>
     <keyword type="function" name="gimp_drawable_parasite_detach ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-detach" deprecated="Use gimp_item_detach_parasite() instead."/>
-    <keyword type="function" name="gimp_drawable_attach_new_parasite ()" link="libgimp-gimpdrawable.html#gimp-drawable-attach-new-parasite" deprecated="use gimp_image_parasite_attach() instead."/>
+    <keyword type="function" name="gimp_drawable_attach_new_parasite ()" link="libgimp-gimpdrawable.html#gimp-drawable-attach-new-parasite" deprecated="use gimp_item_attach_parasite() instead."/>
     <keyword type="function" name="gimp_drawable_transform_flip_simple ()" link="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-simple" deprecated="Use gimp_item_transform_flip_simple() instead." since="GIMP 2.2"/>
     <keyword type="function" name="gimp_drawable_transform_flip ()" link="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip" deprecated="Use gimp_item_transform_flip() instead." since="GIMP 2.2"/>
     <keyword type="function" name="gimp_drawable_transform_flip_default ()" link="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-default" deprecated="Use gimp_item_transform_flip() instead." since="GIMP 2.2"/>
@@ -545,7 +545,7 @@
     <keyword type="function" name="gimp_image_parasite_list ()" link="libgimp-gimpimage.html#gimp-image-parasite-list" deprecated="Use gimp_image_get_parasite_list() instead."/>
     <keyword type="function" name="gimp_image_parasite_attach ()" link="libgimp-gimpimage.html#gimp-image-parasite-attach" deprecated="Use gimp_image_attach_parasite() instead."/>
     <keyword type="function" name="gimp_image_parasite_detach ()" link="libgimp-gimpimage.html#gimp-image-parasite-detach" deprecated="Use gimp_image_detach_parasite() instead."/>
-    <keyword type="function" name="gimp_image_attach_new_parasite ()" link="libgimp-gimpimage.html#gimp-image-attach-new-parasite" deprecated="Use gimp_image_parasite_attach() instead."/>
+    <keyword type="function" name="gimp_image_attach_new_parasite ()" link="libgimp-gimpimage.html#gimp-image-attach-new-parasite" deprecated="Use gimp_image_attach_parasite() instead."/>
     <keyword type="function" name="gimp_image_add_vectors ()" link="libgimp-gimpimage.html#gimp-image-add-vectors" deprecated="Use gimp_image_insert_vectors() instead."/>
     <keyword type="function" name="gimp_image_insert_vectors ()" link="libgimp-gimpimage.html#gimp-image-insert-vectors"/>
     <keyword type="function" name="gimp_image_remove_vectors ()" link="libgimp-gimpimage.html#gimp-image-remove-vectors" since="GIMP 2.4"/>

@@ -1,3 +1,2326 @@
+commit a42a02e1a7419aa7a0de2ab3a32cc0a727eaa5c1
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Aug 23 21:06:41 2012 +0200
+
+    app: adapt tests to file_save() API change
+
+ app/tests/test-save-and-export.c |    9 ++++++---
+ app/tests/test-xcf.c             |    3 ++-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+commit 1ba763e1dcc2c56ea57f24365d9e157a0328894c
+Author: Mikael Magnusson <mikachu@src.gnome.org>
+Date:   Thu Aug 23 20:10:01 2012 +0200
+
+    NEWS: fix another small typo
+
+ NEWS |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 846ce09b83c5e23c3d52a03693a80780ae1fd43f
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Aug 23 20:08:27 2012 +0200
+
+    configure: bump version to 2.8.2 and commit regenerated files
+
+ configure.ac     |    4 ++--
+ docs/gimprc.5.in |    2 +-
+ etc/gimprc       |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 92d400a2393aeb4c0a5ee10dbe3f71a270476501
+Author: Mikael Magnusson <mikachu@src.gnome.org>
+Date:   Thu Aug 23 20:07:51 2012 +0200
+
+    NEWS: fix small typo
+
+ NEWS |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fef532a108c0d72a1fec49a431308b867050e09d
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Aug 23 19:56:15 2012 +0200
+
+    devel-docs: add the new even/odd micro version policy to release-howto
+
+ devel-docs/release-howto.txt |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+commit f3788ae9c3f553ae47373fcb95140328f5b3a974
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Thu Aug 23 19:28:33 2012 +0200
+
+    Installer: use ${gimp_installation_dir} when setting environment
+    instead of
+    hardcoding installation path
+
+ build/windows/installer/gimp3264.iss |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 2048d65ac1d5d1460c982fe504c706b9d0c8c597
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Aug 23 19:27:16 2012 +0200
+
+    NEWS: update for 2.8.2
+
+ NEWS |  634
+ +++---------------------------------------------------------------
+ 1 file changed, 23 insertions(+), 611 deletions(-)
+
+commit 037af495adeaf6b6a862c47250c528180d6ca1dd
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Wed Aug 22 01:44:56 2012 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po |    8 +-
+ po-tips/pl.po     |  374
+ ++++++++++++++++++++++++++---------------------------
+ po/pl.po          |  248 +++++++++++++++++------------------
+ 3 files changed, 315 insertions(+), 315 deletions(-)
+
+commit d16776ecb6dc1edff8b04cba41f54b49908b0c41
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:   Mon Aug 20 20:07:00 2012 +0200
+
+    Updated Spanish translation
+
+ po-plug-ins/es.po |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 06835ad73c34af58f8a7c31cc282dc954e73bc40
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:   Mon Aug 20 20:04:46 2012 +0200
+
+    Updated Spanish translation
+
+ po-plug-ins/es.po |  244
+ ++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 146 insertions(+), 98 deletions(-)
+
+commit 4e46009b6b3f2661712f1a1044e59faf46b97420
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Mon Aug 20 15:02:24 2012 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po |   83
+ +++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 71 insertions(+), 12 deletions(-)
+
+commit 6b642a26daaf0204fa9a6cf622a6b459e3a059ef
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Tue Aug 14 15:27:39 2012 +0200
+
+    file-gif-load: fix type overflow (CVE-2012-3481)
+
+    Cast variables properly to avoid overflowing when computing how much
+    memory to allocate.
+    (cherry picked from commit 43fc9dbd8e2196944c8a71321e525b89b7df9f5c)
+
+ plug-ins/common/file-gif-load.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 4347b3496abd56d8419f3a14cc97fac25e6f546d
+Author: Jan Lieskovsky <jlieskov@redhat.com>
+Date:   Tue Aug 14 12:18:22 2012 +0200
+
+    file-gif-load: limit len and height (CVE-2012-3481)
+
+    Ensure values of len and height can't overflow g_malloc() argument
+    type.
+    (cherry picked from commit d95c2f0bcb6775bdee2bef35b7d84f6dfd490783)
+
+ plug-ins/common/file-gif-load.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit a21aceedf1de04afc8fc06109786e9a1431504b9
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Fri Jul 13 15:33:27 2012 +0200
+
+    file-cel: use g_set_error() for errors instead of g_message()
+    (cherry picked from commit 86f4cd39bd493c88a7a19b56d1827d8b911e07f6)
+
+ plug-ins/common/file-cel.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit 89f4c4042f69c2647f854c5824cb583dfadb6834
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Fri Jul 13 15:30:44 2012 +0200
+
+    file-cel: use statically allocated palette buffer
+    (cherry picked from commit 69b98191cf315bcf0f7b8878896c01600e67c124)
+
+ plug-ins/common/file-cel.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+commit a605d0c4d5c2c77bfe03204423dc3ad70dfa3483
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Fri Jul 13 15:20:06 2012 +0200
+
+    file-cel: validate header data (CVE-2012-3403)
+    (cherry picked from commit b772d1b84c9272bb46ab9a21db4390e6263c9892)
+
+ plug-ins/common/file-cel.c |   83
+ +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 70 insertions(+), 13 deletions(-)
+
+commit 3db516f1e7b1be59ab434925256489178376725c
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Thu Jul 12 15:50:02 2012 +0200
+
+    file-cel: check fread()/g_fopen() return values and pass on errors
+    (cherry picked from commit 797db58b94c64f418c35d38b7a608d933c8cebef)
+
+ plug-ins/common/file-cel.c |  190
+ +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 160 insertions(+), 30 deletions(-)
+
+commit 24130eec55c07ff0ad9e54c9dbac9ca2005565ed
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Aug 14 09:23:16 2012 +0200
+
+    Bug 681799 - Canvas size doesn't show preview after canceling once
+
+    gimp_viewable_get_pixbuf(): if there is a cached pixbuf of the right
+    size, actually return it, instead of the local "pixbuf" variable which
+    is always NULL.
+    (cherry picked from commit 276b5072855de5e57fb4a83cfdb0e628eee2a473)
+
+ app/core/gimpviewable.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit bf9f91923c12104f6f82899ed689db1040c80a1c
+Author: Jiro Matsuzawa <jmatsuzawa@gnome.org>
+Date:   Sun Aug 12 12:00:12 2012 +0900
+
+    [l10n] Update Japanese translation
+
+    Modify the About label
+
+ po/ja.po |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+commit f63d58a5544848a6cfff0217630af7ca4ae83067
+Author: Muhammet Kara <muhammetk@acikkaynak.name.tr>
+Date:   Thu Aug 9 10:07:00 2012 +0300
+
+    [l10n]Updated Turkish translation
+
+ po-libgimp/tr.po |  168
+ ++++++++++++++----------------------------------------
+ 1 file changed, 44 insertions(+), 124 deletions(-)
+
+commit 31ef6fb398d38321000249d8b2b889658fd4c89e
+Author: Praveen Illa <mail2ipn@gmail.com>
+Date:   Thu Aug 9 00:17:46 2012 +0530
+
+    Updated Telugu Translation
+
+ po/te.po | 1913
+ ++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 930 insertions(+), 983 deletions(-)
+
+commit b35c3381b19d302fdfc80e27b3e92ba5775b39cb
+Author: Praveen Illa <mail2ipn@gmail.com>
+Date:   Thu Aug 9 00:01:38 2012 +0530
+
+    Updated Telugu Translation
+
+ po/te.po |   74
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 37 insertions(+), 37 deletions(-)
+
+commit 47b0212a779385669efe9e2ef47223dc1c0a27a8
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Wed Aug 8 02:02:56 2012 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po |   22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
+
+commit b91f60602a0787c5ad996fadf22c7d721ae13e04
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Aug 7 16:02:43 2012 +0200
+
+    Bug 678297 - Cannot find Page Setup in Gimp 2.8
+
+    Embed the page setup dialog only on non-windows systems. This
+    effectively reverts bdc3f7e7e0495b599a712c917d6ab17f05f92164 but puts
+    the diff in #if[n]def EMBED_PAGE_SETUP which is defined as
+    !G_OS_WIN32. Did not revert the bug fixes that were mixed with
+    the original embedding patch.
+    (cherry picked from commit 73fc1df8fff33df87caf8311b9d9e27ac4d9ba20)
+
+ plug-ins/print/print-page-setup.c |   20 +++++
+ plug-ins/print/print-page-setup.h |   11 ++-
+ plug-ins/print/print.c            |  165
+ ++++++++++++++++++++++++++++++++++++-
+ plug-ins/print/print.h            |    4 +
+ 4 files changed, 193 insertions(+), 7 deletions(-)
+
+commit 15c8b3f850047c238278dfe6a8ba1eda4bd949e4
+Author: Clayton Walker <blender3dartist@gmail.com>
+Date:   Sat Aug 4 18:19:38 2012 -0400
+
+    Update osx build scripts, readme, and fix font issue
+
+ build/osx/Info.plist         |    2 +
+ build/osx/README             |    6 +-
+ build/osx/gimp-python.bundle |  177 ++++++++++++++++++++++++++++++++
+ build/osx/gimp.modules       |  229
+ +++++++++++++++++++++++++++++++++++++-----
+ build/osx/gtkrc              |    2 +-
+ build/osx/jhbuildrc-gimp     |    2 +-
+ build/osx/launcher-python.sh |   75 ++++++++++++++
+ build/osx/launcher.sh        |   19 ++--
+ 8 files changed, 478 insertions(+), 34 deletions(-)
+
+commit 209116fcadd7b1c44397a906f196c6afa5607575
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat Aug 4 02:18:15 2012 +0200
+
+    Bug 678732 - gimp-image-insert-layer inserts into a wrong place...
+
+    Fix the docs, the function does what it's supposed to do.  Passing
+    "0, -1" actually means "insert where the ui would insert" and is
+    supposed to be used when e.g. scripts create layers.
+    (cherry picked from commit e620eb8cefe565d372959eba3aee8dfbb8c5734f)
+
+ app/pdb/image-cmds.c       |    2 +-
+ libgimp/gimpimage_pdb.c    |    5 +++--
+ tools/pdbgen/pdb/image.pdb |   15 ++++++++-------
+ 3 files changed, 12 insertions(+), 10 deletions(-)
+
+commit 92f348a96c1beb711b80150600777ee238bf3aa4
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat Aug 4 00:04:47 2012 +0200
+
+    app: improve error message when failing to load an ABR version 6 brush
+    (cherry picked from commit 47c94fc2280c87cee9c9e735ae1a5a6569e7dc9c)
+
+ app/core/gimpbrush-load.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+commit 977311dff84b9a17973e25a3f52b37a8b4863875
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Jul 31 15:14:20 2012 +0200
+
+    Bug 680432 - metadata.exe keeps dying
+
+    Based on a patch by Hartmut Kuhse, run all strings through
+    gimp_any_to_utf8() which always returns something that's UTF-8, even
+    if it's only "(invalid UTF-8 String)". Better than crashing.
+    (cherry picked from commit c207e395fd522d870947e47261da6592c1e4c45c)
+
+ plug-ins/metadata/xmp-encode.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit 3445d5f214f9cb64697085541bd449a6b8c56091
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Jul 30 18:04:27 2012 +0200
+
+    Bug 669795 - Toolbox can't be shrinked to 1 or 2 columns
+
+    Reduce the requested width of the "You can drop foo here" label to 16
+    pixels, which makes is look a bit crappy, but at least the toolbox
+    becomes shrinkable to < 3 columns. Whoever keeps this empty space
+    around without using it shall henceforth be punished by having to see
+    that distorted and misplaced label.
+    (cherry picked from commit 573faa39b006056af4436003a3034200c2b34248)
+
+ app/widgets/gimppanedbox.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7fd0895c0ca11368f0fdffed39d197c9c778151c
+Author: Michael Henning <drawoc@darkrefraction.com>
+Date:   Sun Jul 29 12:36:31 2012 -0400
+
+    Bug 680795 - GIMP segfaults in gimp_clipboard_set_buffer when...
+
+    Fix segfault in gimp_clipboard_set_buffer when n_target_entries is 0.
+    (cherry picked from commit e060da827835a61f3c30140d24e61311b21affb4)
+
+ app/widgets/gimpclipboard.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 64b1ade7b05ba3f6523285808b69a96b35fed6f7
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Jul 30 16:20:11 2012 +0200
+
+    Bug 586462 - Layer inserts misplaced
+
+    Another attempt to fix paste/drop positions for good.
+
+    Paste/drop target is either the selected area of a drawable, the
+    drawable itself, or the image:
+
+    - if the paste is larger than the target, center on the target
+    - if there is a viewport, and the viewport intersects with the
+      target, center on the intersection
+    - otherwise, center on the target
+
+    Finally, if we did viewport-centered pasting, make sure the paste is
+    as completely within image bounds as possible.
+    (cherry picked from commit eda6fa1c14777a534711fe05821ef308023fe4e7)
+
+ app/core/gimp-edit.c               |   92
+ ++++++++++++++++++++++++------------
+ app/display/gimpdisplayshell-dnd.c |   34 ++++++++-----
+ 2 files changed, 84 insertions(+), 42 deletions(-)
+
+commit 67525e4c6b6a69cc6513d56496c181960c56542f
+Author: Seong-ho Cho <darkcircle.0426@gmail.com>
+Date:   Sun Jul 29 09:40:48 2012 +0900
+
+    Update Korean translation
+
+ po/ko.po | 1031
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 519 insertions(+), 512 deletions(-)
+
+commit 7d985af68f41de6eb4932515307d0a12579e1a82
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sat Jul 28 14:12:54 2012 +0200
+
+    Fixed italian po files plural forms
+
+ po-libgimp/it.po   |    2 +-
+ po-plug-ins/it.po  |    2 +-
+ po-python/it.po    |    1 +
+ po-script-fu/it.po |    1 +
+ po-tags/it.po      |    1 +
+ po-tips/it.po      |    1 +
+ po/it.po           |    2 +-
+ 7 files changed, 7 insertions(+), 3 deletions(-)
+
+commit d400813027e7071fa638712973b4653d470bceda
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sat Jul 28 00:03:13 2012 +0200
+
+    Small fix in italian windows setup translation.
+
+ build/windows/installer/lang/it.setup.isl |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 049258a70133dea606c498e2b9dcfd465fa13971
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Fri Jul 27 22:05:13 2012 +0200
+
+    Installer: adjust associations label height automatically according
+    to text length
+
+ build/windows/installer/files.isi    |    2 +-
+ build/windows/installer/gimp3264.iss |    2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 757b5709e4fdd02bdc709a0ba1eb3afd86b82693
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Fri Jul 27 00:51:49 2012 +0200
+
+    Installer: include Italian translation in script
+
+ build/windows/installer/gimp3264.iss |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 5f646592a2c5eeec3035ad4c96c925638aaddadd
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Fri Jul 27 00:49:28 2012 +0200
+
+    Installer: request restart if files couldn't be deleted during
+    uninstall
+
+ build/windows/installer/32on64.isi   |    4 +-
+ build/windows/installer/files.isi    |   20 +++++-----
+ build/windows/installer/gimp3264.iss |   68
+ +++++++++++++++++-----------------
+ 3 files changed, 46 insertions(+), 46 deletions(-)
+
+commit cff132d90bfc375b7a65d76ae7d705191438385a
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Jul 27 00:36:23 2012 +0200
+
+    Added Windows installer italian translation.
+
+ build/windows/installer/lang/it.setup.isl |  113
+ +++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+
+commit cab6d84867bc3f80c30221d597435060b2c16d97
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Jul 26 18:33:05 2012 +0200
+
+    Bug 677987 - Don't allow to assign keybindings with arrow keys...
+
+    Disable assigning arrow-key bindings in gimpactionview.c
+    (cherry picked from commit decc03ae04b042e627a1070591901728a8063c26)
+
+ app/widgets/gimpactionview.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit d6091dbce6f1b60ec606db1e59be7cb069a87477
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Jul 26 18:17:01 2012 +0200
+
+    Bug 678890 - Selection box handles do not respond after changing layer
+
+    Make sure that temporarily setting/unsetting tool->control's "preserve
+    tool across image changes" does not mess up the default value:
+
+    Introduce gimp_tool_control_push/pop_preserve() which restores the old
+    state automatically, and use it in all tools, instead of saying
+    set_preserve(TRUE/FALSE) around image changes.
+    (cherry picked from commit 078128bb09dbca458b4f2f98cbf6d4140b357b29)
+
+ app/tools/gimpcagetool.c            |    8 ++++----
+ app/tools/gimpimagemaptool.c        |   24 ++++++++++++------------
+ app/tools/gimprectangleselecttool.c |   24 ++++++++++++------------
+ app/tools/gimptoolcontrol.c         |   27 +++++++++++++++++++++++++++
+ app/tools/gimptoolcontrol.h         |    6 ++++++
+ app/tools/gimptransformtool.c       |    4 ++--
+ 6 files changed, 63 insertions(+), 30 deletions(-)
+
+commit 0a450f8e22f3b8d54a7be32f07e7bd51717a162b
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Jul 26 16:26:14 2012 +0200
+
+    Bug 680531 - Function gimp-context-get-brush-size takes size
+    argument...
+
+    The context getters need PDB @outargs, not @inargs. This "API change"
+    is OK in stable because the API was totally unusable before this fix.
+    (cherry picked from commit 01dffdc276af6047fee130954cb467a30ef8a5f9)
+
+ app/pdb/context-cmds.c       |  141
+ +++++++++++++++++++++---------------------
+ libgimp/gimpcontext_pdb.c    |   45 +++++++-------
+ libgimp/gimpcontext_pdb.h    |    6 +-
+ tools/pdbgen/pdb/context.pdb |    6 +-
+ 4 files changed, 99 insertions(+), 99 deletions(-)
+
+commit 7506a26940a544980dbd10b0b32dc669e9ba1336
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Sat Jul 21 22:50:02 2012 +0200
+
+    Installer: move language files to a subdirectory
+
+ build/windows/installer/de.setup.isl      |  113
+ -----------------------------
+ build/windows/installer/en.setup.isl      |  113
+ -----------------------------
+ build/windows/installer/gimp3264.iss      |    6 +-
+ build/windows/installer/lang/de.setup.isl |  113
+ +++++++++++++++++++++++++++++
+ build/windows/installer/lang/en.setup.isl |  113
+ +++++++++++++++++++++++++++++
+ build/windows/installer/lang/sl.setup.isl |  105
+ +++++++++++++++++++++++++++
+ build/windows/installer/sl.setup.isl      |  105
+ ---------------------------
+ 7 files changed, 334 insertions(+), 334 deletions(-)
+
+commit a56ae5a82d1621f1a99a6051b62378491be43d1f
+Author: Michael Muré <mure.michael@gmail.com>
+Date:   Sun May 6 16:42:55 2012 +0900
+
+    fix autogen.sh to work with automake 1.12
+
+ autogen.sh |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit f4ce57aa9709e492666c16259e81625a3e4a7796
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Jul 17 22:52:49 2012 +0200
+
+    Bug 676566 - Window title becomes "Untitled" after exporting without
+    saving
+
+    Fix this and other issues more globally by moving the logic that
+    formats the image's display name into the GimpImage object, and return
+    the properly formatted name, e.g. "Foo.xcf", or "[Foo] (imported)"
+    from gimp_image_get_display_name().
+
+    Also add gimp_image_get_display_path() which returns the full path
+    instead. Use the two functions for formatting the image title, and
+    apply various other fixes that make sure the UI always uses the same
+    string to identify the image.
+
+    Call gimp_object_name_changed() whenever the save/export status
+    changes, so the image's cached display name and path get cleared.
+
+    (cherry picked from commit 220b28677be00ec407ff7f274e395ad934be27af)
+
+ app/actions/debug-commands.c         |    4 +-
+ app/actions/file-commands.c          |    6 +-
+ app/actions/windows-actions.c        |   18 +----
+ app/core/gimpimage-private.h         |    1 +
+ app/core/gimpimage.c                 |  133
+ +++++++++++++++++++++++++++++++---
+ app/core/gimpimage.h                 |    1 +
+ app/display/gimpdisplayshell-title.c |   93 +-----------------------
+ app/file/file-open.c                 |    6 +-
+ app/file/file-save.c                 |    2 +
+ app/pdb/image-cmds.c                 |    7 +-
+ tools/pdbgen/pdb/image.pdb           |    7 +-
+ 11 files changed, 153 insertions(+), 125 deletions(-)
+
+commit 805790885379551f88955c81800e2631bdd4c168
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Mon Jul 16 22:20:12 2012 +0200
+
+    Installer: handle /32 properly when reboot is needed before install
+    can continue
+
+ build/windows/installer/rebootcontinue.isi |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit a125d8daccd4485a0983ce37a377e4720e90a9a2
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Sat Jul 14 16:06:34 2012 +0200
+
+    Installer: remember /32 switch between runs
+
+ build/windows/installer/gimp3264.iss |   29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
+
+commit 862bbb829f45d61ebd862dfa51e2d971dac38725
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Sat Jul 14 14:16:21 2012 +0200
+
+    Installer: add /32 command-line parameter to force install of 32-bit
+    version on x64
+
+ build/windows/installer/gimp3264.iss |   24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
+
+commit c3e904fab1b29224b7dd55bb5b4af49f34c3b335
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat Jul 14 00:11:17 2012 +0200
+
+    app: don't ask to confirm reverting "Untitled" when the image was
+    imported
+    (cherry picked from commit b0170ee5ea57a05e6ea6958f33c1ee9a80a2cb97)
+
+ app/actions/file-commands.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
+
+commit d8e71085cc4333e5dc948635dea75ec55ec23e6e
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Fri Jul 13 23:50:07 2012 +0200
+
+    app: create thumbnails also for imported files, not only for XCFs
+
+    file_open_with_proc_and_display(): Use gimp_image_get_any_uri() to
+    check if the opened file has the same URI as the one passed in so
+    the logic works for non-XCF too.
+    (cherry picked from commit afa81b5fbf753f82dd3c12c7795c38bd1aade372)
+
+ app/file/file-open.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+commit d363043370d9f08afa540d89f131c6955804f1a1
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:   Wed Jul 11 20:13:14 2012 +0400
+
+    Updates and fixes to Russian translation
+
+ po-plug-ins/ru.po |  222 +++++++---
+ po/ru.po          | 1278
+ +++++++++++++++++++++++++++--------------------------
+ 2 files changed, 811 insertions(+), 689 deletions(-)
+
+commit 40deca6c048c7348f9ff2156b37a75fbb700264c
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Jul 9 22:53:17 2012 +0200
+
+    Bug 679256 - SWM image tabs must have a minimum width
+
+    Set all tabs to the same width so very narrow images' tabs stay
+    clickable.
+    (cherry picked from commit 2c54f4b340ce9878f32fcd92b2eeb13bd086b88a)
+
+ app/display/gimpimagewindow.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit ee4a81d4189f5f41faec53aa8d97c1eb9c19ef20
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Fri Jul 6 15:27:11 2012 +0200
+
+    Corrections to the Hungarian translation
+
+ po/hu.po | 1102
+ ++++++++++++++++++--------------------------------------------
+ 1 file changed, 308 insertions(+), 794 deletions(-)
+
+commit 917e2f9c9067eea0e77263f802c9663a57b8950a
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Fri Jul 6 15:18:24 2012 +0200
+
+    Updated Hungarian translation by Andras Prim <gimme_at_primandras.hu>
+
+ po/hu.po | 7449
+ ++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 3642 insertions(+), 3807 deletions(-)
+
+commit 5d2933c51caa10c088c061187d79d78aa57699ba
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Thu Jul 5 18:07:57 2012 +0200
+
+    app: don't pass a NULL widget to gtk_widget_event
+
+    <Alt>C C <Ctrl>1 <ESC> used to print:
+
+    (gimp-2.8:1): Gtk-CRITICAL **: IA__gtk_widget_event:
+                    assertion `GTK_IS_WIDGET (widget)' failed
+
+ app/tools/gimpcurvestool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 05da156b30ce95f5b90c0ec1dcd1a69cb5fcda61
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Tue Jul 3 22:10:38 2012 +0200
+
+    Installer: adjust association buttons width according to text length
+    (German text was way too long for the default button widths)
+
+    Also fix empty lines in Ready Memo on upgrades (Select Directory page
+    isn't shown for upgrades, so there's no install directory text shown)
+
+ build/windows/installer/gimp3264.iss |   45
+ ++++++++++++++++++++++++++++++----
+ 1 file changed, 40 insertions(+), 5 deletions(-)
+
+commit 2b6bdfaa041a133ec900561c001cb860c87928c5
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Tue Jul 3 22:10:06 2012 +0200
+
+    Installer: add German translation
+
+ build/windows/installer/de.setup.isl |  113
+ ++++++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+
+commit dca5b0896b823abde17826a0b993a12d27a971e9
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Mon Jul 2 20:27:38 2012 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po |  118
+ ++++++++++++++++++++++++++---------------------------
+ 1 file changed, 59 insertions(+), 59 deletions(-)
+
+commit b874c8af1e7d06a0ca88459427aaaf0b037702b4
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sat Jun 30 13:05:55 2012 +0200
+
+    Bug 679082: Crash after using Rotate tool
+
+ app/display/gimptooldialog.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+commit ec6db4b994dc7079881d3ab5747f06c0a3fc8773
+Author: Timo Jyrinki <timo@debian.org>
+Date:   Tue Jun 26 20:33:54 2012 +0300
+
+    Updated po-tips Finnish translation by Janne Peltonen.
+
+ po-tips/fi.po |  358
+ +++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 180 insertions(+), 178 deletions(-)
+
+commit d8b4de413a2d2a6173b2f4fb6fb140500a0f0458
+Author: Timo Jyrinki <timo@debian.org>
+Date:   Tue Jun 26 20:18:26 2012 +0300
+
+    Updated Finnish translation by Janne Peltonen.
+
+ po-libgimp/fi.po | 1703 +++++++++++++---------
+ po/fi.po         | 4146
+ ++++++++++++++++++++++++++++++------------------------
+ 2 files changed, 3365 insertions(+), 2484 deletions(-)
+
+commit 8a0e26773cbeda8afba43fac63e206d6b7672dcc
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Mon Jun 25 17:45:47 2012 +0200
+
+    Updated italian translation.
+
+ po/it.po |   90
+ ++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 47 insertions(+), 43 deletions(-)
+
+commit bf503ea7dd7b0e4e619b940e76c1dcd57cac3cf0
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sun Jun 24 13:23:10 2012 +0200
+
+    app: compress motion events up to the first release event
+
+    I'm not sure if it'd be better to compress only sequence
+    of contiguous motion events, thinking to the case of anticipating
+    a motion event before a modifier key press/release.
+
+ app/display/gimpdisplayshell-tool-events.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+commit 313ef397cdf642f9d708f3def99f2ee7ce80a0f7
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Thu Jun 21 19:04:31 2012 +0200
+
+    Bug 677040: PDF export does not appear to handle font size...
+
+    ...correctly unless image flattened
+
+    Font size was wrong unless in pixels and
+    gimp_drawable_type returns a GimpImageType
+
+ plug-ins/common/file-pdf-save.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit 8f2246578d8f5f9b23dcd85131bbdde934b1f080
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Thu Jun 21 00:12:43 2012 +0200
+
+    Installer: display a warning when color depth < 32BPP
+
+ build/windows/installer/en.setup.isl |    5 ++++
+ build/windows/installer/gimp3264.iss |   53
+ +++++++++++++++++++++++++++-------
+ build/windows/installer/sl.setup.isl |    5 ++++
+ 3 files changed, 53 insertions(+), 10 deletions(-)
+
+commit f3085d2879663a982267f3c959fe80cc0493dd50
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Wed Jun 20 17:05:28 2012 +0200
+
+    Installer: fix permissions, add .gitignore
+
+ build/windows/installer/.gitignore |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit b99e80dc90d78c9c1e6b94184fffb496de83ddda
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Wed Jun 20 17:04:02 2012 +0200
+
+    Installer: oops, remove duplicate function
+
+ build/windows/installer/utils.isi |    9 ---------
+ 1 file changed, 9 deletions(-)
+
+commit 416dfc458430dc4cd61762c3708e079d7556cac8
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Wed Jun 20 16:34:53 2012 +0200
+
+    Installer: allow override of system-wide configuration files with
+    custom
+    versions during install
+
+ build/windows/installer/configoverride.isi |   36 +++++++++++++++
+ build/windows/installer/gimp3264.iss       |   65
+ +++++++++++++++++++++++++++-
+ build/windows/installer/utils.isi          |    9 ++++
+ 3 files changed, 109 insertions(+), 1 deletion(-)
+
+commit 8be0541df539b0e057bb82c0ec31c97fe365f1d6
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Tue Jun 19 21:51:43 2012 +0200
+
+    Updated Polish translation
+
+ po/pl.po |  128
+ ++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 66 insertions(+), 62 deletions(-)
+
+commit bf8e42330b441202a07461857107779fc126abcb
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Mon Jun 18 18:14:42 2012 +0200
+
+    Bug 677375: tools do not strictly follow mouse...
+
+    pointer (missing motion events)
+
+    Disable calls gimp_help_set_help_data for shell->canavs
+
+ app/display/gimpdisplayshell.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+commit df1752f2876120567af9c8a1dc3bc69d00fbd950
+Author: Dimitris Spingos <dmtrs32@gmail.com>
+Date:   Sun Jun 17 12:48:34 2012 +0300
+
+    Updated 2 Greek translations
+
+ po-plug-ins/el.po |  370
+ +++++++++++++++++++++++++++++------------------------
+ po/el.po          |  227 ++++++++++++++++----------------
+ 2 files changed, 317 insertions(+), 280 deletions(-)
+
+commit 6a5b3b61d760f2c97c49c9d9fcdd0ab4a753f2f1
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:   Sat Jun 16 22:20:06 2012 +0200
+
+    Updated Slovenian translation
+
+ po/sl.po |  136
+ ++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 70 insertions(+), 66 deletions(-)
+
+commit b16aab1e8ed68150b42a688b332b1c123acdb103
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:   Wed Jun 13 10:08:31 2012 +0200
+
+    Updated Spanish translation
+
+ po/es.po |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+commit 9eb45ed8d7a58c345ac8e1027901787e58d32ae5
+Author: Mikael Magnusson <mikachu@src.gnome.org>
+Date:   Wed Jun 13 02:12:27 2012 +0200
+
+    metadata: fix length passed to base64 decoder
+    (cherry picked from commit a4cd8637af7e29a3b78fda6034aa1889df050540)
+
+ plug-ins/metadata/xmp-parse.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit 310a8c4458d72fdcf4f06922108163a6bd3d8239
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Jun 12 22:51:32 2012 +0200
+
+    app: get the help_id from the right action in
+    gimp_editor_add_action_button()
+    (cherry picked from commit 4fbf01baefb346826b3895d47692519d24274248)
+
+ app/widgets/gimpeditor.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit d81669a671a1a849dff8400e6c1cb6b9fe48bac1
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Jun 12 22:33:47 2012 +0200
+
+    Bug 677974 - GIMP suggests XCF as default export format
+
+    Only auto-add .xcf if it's a save (not an export) dialog, instead do
+    not auto-add anything and ask the user to enter an extension, that's
+    less mysterious than saving in the last-exported format which the user
+    maybe doesn't remember or want.
+    (cherry picked from commit 2f8d45611cb5f9bb90280c20f84f4a70ce7f4050)
+
+ app/dialogs/file-save-dialog.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 687fbf458312e73c63c4e2a7c3cb49525cd59689
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Jun 12 21:39:40 2012 +0200
+
+    Bug 677823 - Shift + mouse click to link all layers does not work
+
+    This got lost during layer group porting, reimplement it, but restrict
+    "all layers" to the clicked layer's branch in the tree.
+    (cherry picked from commit 67b5a509b6c830e59f0f9edaae78899afc0ec1c8)
+
+ app/core/gimpitem-exclusive.c  |   91
+ +++++++++++++++++++++++++++++++++++++++-
+ app/core/gimpitem-exclusive.h  |    2 +
+ app/widgets/gimpitemtreeview.c |    2 +-
+ 3 files changed, 92 insertions(+), 3 deletions(-)
+
+commit 8ec18b847cd7eba16b6e3048c0ee5fb4e7f6b110
+Author: Eulalia <eulaliapages@gmail.com>
+Date:   Sun Jun 10 22:56:11 2012 +0200
+
+    [l10n] Update Catalan translation
+
+ po/ca.po | 6497
+ +++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 3475 insertions(+), 3022 deletions(-)
+
+commit 6b63e85a88bb686005b59710725cbc5c368b5f68
+Author: Albert F <lakonfrariadelavila@gmail.com>
+Date:   Sun Jun 10 22:55:49 2012 +0200
+
+    [l10n] Update Catalan translation
+
+ po-plug-ins/ca.po | 1336
+ ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 703 insertions(+), 633 deletions(-)
+
+commit a4ecfde635f993a6c196cacbf357623a93bb0e5b
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sun Jun 10 17:20:43 2012 +0200
+
+    Bug 677375: tools do not strictly follow mouse...
+
+    pointer (missing motion events)
+
+ app/display/gimpcanvas.h |    1 -
+ 1 file changed, 1 deletion(-)
+
+commit 7212f9973dbf88f627469d7e5ecf5d14e4b7a9fe
+Author: Kristian Rietveld <kris@loopnest.org>
+Date:   Sat Jun 9 22:32:02 2012 +0200
+
+    Avoid using CMFlattenProfile
+
+    This symbol is not available to 64-bit applications.  So put another
+    approach in place.
+
+    I can confirm that the code does not crash, but I do not know if it
+    works properly.  Mitch forced me to push anyway.
+    (cherry picked from commit 9514cf4871efbb0b13fc808c1277dbc467e43cac)
+
+ modules/display-filter-lcms.c |   71
+ ++++++++++-------------------------------
+ 1 file changed, 16 insertions(+), 55 deletions(-)
+
+commit 9783b68d0fcf84e1e784418d0c1194331e1cf0c3
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sat Jun 9 20:31:41 2012 +0200
+
+    Little italian translation fix.
+
+ po/it.po |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 0ba99a05ff162a6894686035398b0a82a348a5d7
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sat Jun 9 15:36:35 2012 +0200
+
+    Bug 673729: tiff plug in not working 2.8.0-RC1 windows install
+
+    implement win32 filename Unicode management in the plug-ins
+    to work-around a problem in libtiff TIFFFdOpen.
+
+    Based on a patch from Hartmut Kuhse.
+
+ plug-ins/common/file-tiff-load.c |   46
+ ++++++++++++++++++++++----------------
+ plug-ins/common/file-tiff-save.c |   41 +++++++++++++++++++++++++--------
+ 2 files changed, 59 insertions(+), 28 deletions(-)
+
+commit 03f0a1ab57b440f40c9bc685fed778d5b4eea376
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sat Jun 9 15:36:35 2012 +0200
+
+    Bug 677637: PDF export plug-in does not work
+
+    use g_fopen and cairo_pdf_surface_create_for_stream
+    to avoid file name encoding issues on Windows.
+
+ plug-ins/common/file-pdf-save.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+commit 41ce828243cd751618ac8ea90916f8aa880faeb4
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Sat Jun 9 15:36:34 2012 +0200
+
+    Bug 645345: 'Color Management' display filter causes performance
+    problems
+
+ app/display/gimpcanvasarc.c           |   27 +++++++++++++++++++++++----
+ app/display/gimpdisplayshell-render.c |   20 ++++++++++++++++----
+ 2 files changed, 39 insertions(+), 8 deletions(-)
+
+commit 2fb8ede280b2d60fbb9b33aec8fed621d013fe0c
+Author: Gil Forcada <gforcada@gnome.org>
+Date:   Sat Jun 9 10:32:01 2012 +0200
+
+    Added nn to LINGUAS
+
+ po-tags/LINGUAS |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 25127e10ad39f49c1fdc81e07575787c867e2e8f
+Author: Kolbjørn Stuestøl <kolbjoern@src.gnome.org>
+Date:   Fri Jun 8 20:47:24 2012 +0200
+
+    --amend
+
+ 0 files changed
+
+commit df394ffae096e820809d2b5dbfcbe77f7ada4d98
+Author: Kolbjørn Stuestøl <kolbjoern@src.gnome.org>
+Date:   Fri Jun 8 20:44:34 2012 +0200
+
+    Updatet Norwegian 'po/nn.po' translations
+
+ po/nn.po |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 77db64913da43d35f4dc45808def807c2b0b6455
+Author: Kolbjørn Stuestøl <kolbjoern@src.gnome.org>
+Date:   Fri Jun 8 20:27:59 2012 +0200
+
+    --amend
+
+ po/nn.po |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 4cd5a2fb22c791f2c0d299ee7a184590de878bb4
+Author: Kolbjørn Stuestøl <kolbjoern@src.gnome.org>
+Date:   Fri Jun 8 20:21:10 2012 +0200
+
+    Updated Norwegian (nn) translations
+
+ po-libgimp/nn.po   | 1599 ++++----
+ po-plug-ins/nn.po  | 6991 ++++++++++++++++++---------------
+ po-python/nn.po    |  204 +-
+ po-script-fu/nn.po | 4046 ++++++++-----------
+ po-tags/nn.po      |   29 +
+ po-tips/nn.po      |  309 +-
+ po/nn.po           |10861
+ +++++++++++++++++++++++++++++++++-------------------
+ 7 files changed, 13460 insertions(+), 10579 deletions(-)
+
+commit 242d71fd730ca832f89efcd3bacf8267ce312106
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Fri Jun 8 00:21:07 2012 +0200
+
+    Bug 677262 - move the layer with the arrow keys, broken after...
+
+    commit 9ce8d4fae2f63576828f80dc156e2fb05f34d510. Fix the return_val
+    logic added in that commit, and make sure we always swallow arroy key
+    events, because we don't want focus keynav away from the canvas.
+    (cherry picked from commit f400bc49cac6a234772233c119dc9c83a92f2b7e)
+
+ app/display/gimpdisplayshell-tool-events.c |   26
+ ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+commit 8a85b907ffc9d5772dda177f9d8f18c8ca3e3f9b
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Jun 7 19:44:19 2012 +0200
+
+    build: include the basic-coretext module when building pango for OSX
+
+ build/osx/gimp.modules |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 954f72e4f97d1f5afaa657bfdc9a85e35a19eafc
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Thu Jun 7 11:47:27 2012 +0200
+
+    Add hu to LINGUAS
+
+ po-tags/LINGUAS |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit d405dbb5ef17fd3a6ebe8adeacf1bc2a8f931287
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Thu Jun 7 10:58:53 2012 +0200
+
+    Updated Hungarian po-libgimp translation by Andras Prim
+    <gimme_at_primandras.hu>
+
+ po-libgimp/hu.po | 1580
+ +++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 910 insertions(+), 670 deletions(-)
+
+commit e2a6c5974ad34c45e5403db29e9002ad23ae8eae
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Wed Jun 6 23:05:59 2012 +0200
+
+    Updated Hungarian translation by Andras Prim <gimme_at_primandras.hu>
+
+ po-plug-ins/hu.po | 6765
+ ++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 3812 insertions(+), 2953 deletions(-)
+
+commit 0474376d234bc3d0901fd5e86f89d778a6473dd8
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed Jun 6 21:21:10 2012 +0200
+
+    Bug 676804 - file handling DoS for fit file format
+
+    Apply patch from joe@reactionis.co.uk which fixes a buffer overflow on
+    broken/malicious fits files.
+    (cherry picked from commit ace45631595e8781a1420842582d67160097163c)
+
+ plug-ins/file-fits/fits-io.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+commit 0e3163858890c92fa630c9644c057bb7637dbf8f
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed Jun 6 19:43:42 2012 +0200
+
+    authors.xml: add Clayton Walker
+
+ AUTHORS     |    1 +
+ authors.xml |    1 +
+ 2 files changed, 2 insertions(+)
+
+commit 1bf4f74ca5e0e728de26ef3d98f60f54cb4d2cd2
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed Jun 6 19:36:06 2012 +0200
+
+    menus: really remove the "Use GEGL" menu items this time
+
+    They were never meant to be in 2.8.
+
+ menus/image-menu.xml.in |    3 ---
+ menus/menus.xsl         |    4 +---
+ 2 files changed, 1 insertion(+), 6 deletions(-)
+
+commit b121388b03073496a9df713830c16f2eef05ea99
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Wed Jun 6 14:07:11 2012 +0200
+
+    text-brush: fix TypeError exception (rhbz#827826)
+
+ plug-ins/pygimp/plug-ins/text-brush.py |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit 208e04c66c1711a0b6bbda19d932685c516ff311
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Mon Jun 4 22:07:58 2012 +0200
+
+    Added Hungarian translation for po-tags
+
+ po-tags/hu.po |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+commit 81b03011ab48b731ed62c225538a0776094af84a
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Mon Jun 4 21:58:46 2012 +0200
+
+    Updated Hungarian translation for po-tips
+
+ po-tips/hu.po |  398
+ ++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 199 insertions(+), 199 deletions(-)
+
+commit b3e9473efa94e7f59ad581fed8aacab0865762bd
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Mon Jun 4 21:55:31 2012 +0200
+
+    Updated Hungarian po-python translation by Andras Prim <gimme at
+    primandras dot hu>
+
+ po-python/hu.po |  199
+ ++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 115 insertions(+), 84 deletions(-)
+
+commit c3bf36f3d6d64ac400f0c696be5b3d0034fb3601
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Mon Jun 4 19:32:41 2012 +0200
+
+    app: remove a weak ptr when the object lives longer than the ptr
+
+    Closing the display filter editor with a filter selected
+    in the listview on the right, used to produce (quitting GIMP):
+
+    ==32359== Invalid write of size 8
+    ==32359==    at 0x8808DF5: g_nullify_pointer (glib/glib/gutils.c:2099)
+    ==32359==    by 0x8358781: weak_refs_notify
+    (glib/gobject/gobject.c:2469)
+    ==32359==    by 0x4C3730A: gimp_color_display_dispose
+    (gimp-2-8/libgimpwidgets/gimpcolordisplay.c:197)
+    ==32359==    by 0x83596A7: g_object_unref
+    (glib/gobject/gobject.c:2986)
+    ==32359==    by 0x4C37EFA: gimp_color_display_stack_dispose
+    (gimp-2-8/libgimpwidgets/gimpcolordisplaystack.c:150)
+    ==32359==    by 0x83596A7: g_object_unref
+    (glib/gobject/gobject.c:2986)
+    ==32359==    by 0x53F1C3: gimp_display_shell_filter_set
+    (gimp-2-8/app/display/gimpdisplayshell-filter.c:58)
+    ==32359==    by 0x536A50: gimp_display_shell_dispose
+    (gimp-2-8/app/display/gimpdisplayshell.c:765)
+
+ app/widgets/gimpcolordisplayeditor.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit bf7fa23bebab3cb794c1422fcdf115363ec9ed49
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Thu May 31 19:35:27 2012 +0200
+
+    Bug 676916: Filename garbled when you save .xcf.bz2...
+
+    or .xcf.gz files using non-ASCII characters
+
+ plug-ins/file-compressor/file-compressor.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+commit 5ac0d10aad273abd1000211774a319a7b0f56c93
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:   Thu May 31 14:12:30 2012 +0200
+
+    Updated Spanish translation
+
+ po/es.po |  113
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 56 insertions(+), 57 deletions(-)
+
+commit c66b8c984cdeb677f81bea8c9460f30d14ce5784
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Tue May 29 13:10:44 2012 +0200
+
+    Bug 676871: GIMP reports false positive plugin crash after...
+
+    entering "quit()" in Python Console.
+
+ plug-ins/pygimp/plug-ins/pyconsole.py |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit e608b47ce8d7fe0127df6cd73f1e6f658cf3802a
+Author: Mukund Sivaraman <muks@banu.com>
+Date:   Mon May 28 14:17:30 2012 +0530
+
+    file-compressor: Bug #676916 - Use g_open() and g_fopen() instead
+    of libc
+
+ plug-ins/file-compressor/file-compressor.c |   63
+ ++++++++++++++++++++++------
+ 1 file changed, 51 insertions(+), 12 deletions(-)
+
+commit 3019fdc3fbf7c2dabe643cd3f3eb891b02a46fbe
+Author: Andika Triwidada <andika@gmail.com>
+Date:   Mon May 28 15:12:33 2012 +0700
+
+    Updated Indonesian translation of gimp plugins
+
+ po-plug-ins/id.po |16032
+ +++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 9314 insertions(+), 6718 deletions(-)
+
+commit 43d2b59849be7fc52d667de3320371d56c6aea25
+Author: Andika Triwidada <andika@gmail.com>
+Date:   Mon May 28 14:12:02 2012 +0700
+
+    Updated Indonesian translation of gimp-python
+
+ po-python/id.po |  210
+ ++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 122 insertions(+), 88 deletions(-)
+
+commit df53bc6646f030220561bfd6d8bb09bbe2ae64ea
+Author: Andika Triwidada <andika@gmail.com>
+Date:   Mon May 28 14:07:40 2012 +0700
+
+    Updated Indonesian translation of script-fu
+
+ po-script-fu/id.po | 2679
+ ++++------------------------------------------------
+ 1 file changed, 210 insertions(+), 2469 deletions(-)
+
+commit 8b0cbad26f179cb0d2e8139e669a25d2dc09cac9
+Author: Andika Triwidada <andika@gmail.com>
+Date:   Mon May 28 13:52:05 2012 +0700
+
+    Added Indonesian translation of gimp tags
+
+ po-tags/LINGUAS |    1 +
+ po-tags/id.po   |   29 +++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
+
+commit b02b78bffc562ff6e4d677bb7931ffd515fdc6cd
+Author: Andika Triwidada <andika@gmail.com>
+Date:   Mon May 28 13:35:53 2012 +0700
+
+    Updated Indonesian translation for gimp tips
+
+ po-tips/id.po |  324
+ +++++++++++++--------------------------------------------
+ 1 file changed, 71 insertions(+), 253 deletions(-)
+
+commit 9ce8d4fae2f63576828f80dc156e2fb05f34d510
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun May 27 19:55:42 2012 +0200
+
+    Bug 676872 - Image Properties keyboard shortcut Alt+Return Broken
+
+    Don't swallow key events which were not handled by the keyboard
+    controller.
+    (cherry picked from commit 6c9f1b57159a3899b99a241de01ae1f71ea143ce)
+
+ app/display/gimpdisplayshell-tool-events.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+commit 668891e7455ff9107901b004e7ce9d422041ef71
+Author: Daniel Sabo <DanielSabo@gmail.com>
+Date:   Fri May 25 03:42:36 2012 -0700
+
+    app: use an idle source to dispatch GTK menu events in ige-mac-menu
+
+    in order to work around the crashes in bug #673264 and bug #674108.
+    (cherry picked from commit c1786fe753174a92a271a1acfe729c88495012c1)
+
+ app/gui/ige-mac-menu.c |   22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+commit 20c4a131c5950154152e8ceaf683c986fc840e84
+Author: Wouter Bolsterlee <wbolster@gnome.org>
+Date:   Sun May 27 16:39:46 2012 +0200
+
+    Updated Dutch translation
+
+ po/nl.po |  424
+ ++++++++++++++++++++++++--------------------------------------
+ 1 file changed, 161 insertions(+), 263 deletions(-)
+
+commit b803915631e225eeefd9b4435ce706142139c395
+Author: Wouter Bolsterlee <wbolster@gnome.org>
+Date:   Sun May 27 16:12:34 2012 +0200
+
+    Updated Dutch translation
+
+ po/nl.po |  229
+ ++++++++++++++++++--------------------------------------------
+ 1 file changed, 65 insertions(+), 164 deletions(-)
+
+commit 1c910a1b789558e66306546cb108087b39a75045
+Author: Wouter <Wouter Bolsterlee uws@xs4all.nl>
+Date:   Sun May 27 15:17:32 2012 +0200
+
+    Updated Dutch translation
+
+ po/nl.po |  264
+ ++++++++++++++++----------------------------------------------
+ 1 file changed, 65 insertions(+), 199 deletions(-)
+
+commit 3e5cc6ca50ce187b0ee6e3066b023af319aec3f3
+Author: Wouter <Wouter Bolsterlee uws@xs4all.nl>
+Date:   Sun May 27 14:43:21 2012 +0200
+
+    Updated Dutch translation
+
+ po/nl.po |  247
+ +++++++++-----------------------------------------------------
+ 1 file changed, 35 insertions(+), 212 deletions(-)
+
+commit 3c6c85c33edcc1c330c71121538323caf9f647cd
+Author: Wouter <Wouter Bolsterlee uws@xs4all.nl>
+Date:   Sun May 27 14:31:46 2012 +0200
+
+    Updated Dutch translation
+
+ po/nl.po |  317
+ +++++++++++++++++---------------------------------------------
+ 1 file changed, 87 insertions(+), 230 deletions(-)
+
+commit 5462f0bca00dc7427d3f5e00829bf70f57552beb
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Sun May 27 11:40:23 2012 +0200
+
+    installer: fix permissions
+
+ 0 files changed
+
+commit b50145fb1a27779dd78da3786868a995343a4e09
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Sun May 27 11:38:27 2012 +0200
+
+    installer: Replace TButton with TNewButton
+
+ build/windows/installer/MessageWithURL.isi |    4 ++--
+ build/windows/installer/associations.isi   |    6 +++---
+ build/windows/installer/gimp3264.iss       |   16 ++++++++--------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
+
+commit 354365857ecec763165d1cbb4cea35c2da90e688
+Author: Jernej Simončič <jernej+s-gnome@eternallybored.org>
+Date:   Sat May 26 19:55:08 2012 +0200
+
+    Update zlib1.dll in Windows\System32 when it already exists there
+
+    This will prevent "The procedure entry point gzdirect could not be
+    located in the dynamic link library zlib1.dll" from plugins
+
+ build/windows/installer/gimp3264.iss |   45
+ ++++++++++++++++++++++++++++++++++
+ build/windows/installer/utils.isi    |    9 +++++++
+ 2 files changed, 54 insertions(+)
+
+commit 4437b90b63962209d91719e9a07f37b0ad3603ff
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Fri May 25 21:25:29 2012 +0200
+
+    Bug 676821 - No drag layers in "window layers", after commit...
+
+    Remove the button_release handler again, setting dnd_widget to NULL on
+    container change is enough to fix the crash I've seen, I added the
+    other handler just out of paranoia and apparently didn't test it.
+    (cherry picked from commit 92a3944442aac649d3825f5186e441c6dfa9cbe2)
+
+ app/widgets/gimpcontainertreeview.c |   19 -------------------
+ 1 file changed, 19 deletions(-)
+
+commit 0008be84840284e28d95d0975b0137d0ac9ce407
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Thu May 24 19:42:42 2012 +0200
+
+    Bug 673773: Colour of image changes with zooming
+
+    transform a right shift by 8 in the correct
+    division by 255 and rounds to the nearset
+
+ app/display/gimpdisplayshell-render.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 37a884a31b45a6e1594d8e2f2eebdfa6ee66329c
+Author: Clayton Walker <blender3dartist@gmail.com>
+Date:   Wed May 23 14:45:56 2012 +0200
+
+    Update osx build files and README
+
+ build/osx/Info.plist     | 1058
+ +++++++++++++++++++++++++++++++++++++++++++++-
+ build/osx/README         |   48 +++
+ build/osx/README.txt     |   36 --
+ build/osx/gimp.bundle    |   30 +-
+ build/osx/gtkrc          |    2 +-
+ build/osx/jhbuildrc-gimp |    5 +-
+ build/osx/launcher.sh    |   14 +-
+ 7 files changed, 1124 insertions(+), 69 deletions(-)
+
+commit ca5549a55e868847e9cd8b43069de5a2cda38698
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed May 23 11:50:32 2012 +0200
+
+    libgimpconfig: support $(gimp_installation_dir) in config paths
+    (cherry picked from commit f931f0500639fc21912a549477befe63b4998f60)
+
+ libgimpconfig/gimpconfig-path.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 91665198d4e37e8c3c0f9081635448979f21fbb2
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed May 23 11:49:07 2012 +0200
+
+    libgimpbase: add gimp_installation_directory()
+
+    which returns the toplevel directory of the running GIMP installation.
+    (cherry picked from commit 010b28f39e99e97fae4c5174ad774a6c83a7b96a)
+
+    It's not exactly clean to add new API in 2.8.1, but this is so useful
+    for proper relocation, I've made an exception.
+
+ libgimpbase/gimpbase.def |    1 +
+ libgimpbase/gimpenv.c    |   28 +++++++++++++++++++++++-----
+ libgimpbase/gimpenv.h    |    1 +
+ 3 files changed, 25 insertions(+), 5 deletions(-)
+
+commit 74c20f2222538d5018c18c36e1eb7e502cd92d0b
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed May 23 09:44:51 2012 +0200
+
+    Bug 676585 - Gimp crashes when writing in Arabic and clicking
+    right arrow
+
+    Check for pango_layout_move_cursor_visually() returning a new index of
+    G_MAXINT, which indicates that we moved beyond the end of the layout,
+    and do nothing instead of trying to access the memory there.
+    (cherry picked from commit 7d280abd9a657ba3a649a8823aeaf9d877e8d21e)
+
+ app/tools/gimptexttool-editor.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+commit a4fb9692ae7af6af204962c3db35ec164968a32d
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed May 23 01:25:22 2012 +0200
+
+    Bug 676522 - Changing tabs in single-window-mode should switch the
+    active image
+
+    Change the active image when switching tabs in single-window-mode.
+    (cherry picked from commit c1cfe98d35d29bc2bdae6a4cb53434db1aa3b8c9)
+
+ app/display/gimpimagewindow.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit e2ad99b98ee7f340ccffaa9de290d7ba4ad17a61
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue May 22 12:58:10 2012 +0200
+
+    app: set GimpContainerTreeView->dnd_renderer to NULL more reliably
+
+    specifically in button_release() and when the container changes, we
+    can badly crash in some situations otherwise.
+    (cherry picked from commit 27a767ee5499f862d481fb4c49bb51041b8325ad)
+
+ app/widgets/gimpcontainertreeview.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+commit 75ac9cc230d27ec267001ad80e706c0c6cb863f1
+Author: sebul <sebuls@gmail.com>
+Date:   Tue May 22 02:40:12 2012 +0900
+
+    Updated Korean translation
+
+ po/ko.po |  162
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 81 insertions(+), 81 deletions(-)
+
+commit ae741b527bbd35a6c4236b32c7a7897eb4341c82
+Author: Daniel Winzen <d@winzen4.de>
+Date:   Sun May 20 22:10:53 2012 +0200
+
+    Updated German translation
+
+ po-plug-ins/de.po |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit 6b54e919f49692553434bad7c22799a4882d489c
+Author: Clayton Walker <blender3dartist@gmail.com>
+Date:   Sat May 19 17:41:45 2012 +0200
+
+    Files required for building gimp on osx
+
+ build/osx/README.txt     |   36 +++++
+ build/osx/gimp.icns      |  Bin 0 -> 159919 bytes
+ build/osx/gimp.modules   |  370
+ ++++++++++++++++++++++++++++++++++++++++++++++
+ build/osx/jhbuildrc-gimp |   41 +++++
+ build/osx/xcf.icns       |  Bin 0 -> 120928 bytes
+ 5 files changed, 447 insertions(+)
+
+commit 8a6be41891a7b3e258cf9a0a3d1f424588028bcd
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Sat May 19 18:07:53 2012 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 09e80d1a63bb2db8db30e6eef8a9dd9479e995b2
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Sat May 19 18:01:21 2012 +0200
+
+    Updated Polish translation
+
+ po-plug-ins/pl.po |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit 6899757b092b1d11ae15adfd6ffd2f2a08be5706
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Fri May 18 18:48:51 2012 +0200
+
+    app: make file_save() aware of the difference between overwrite
+    and export
+
+    by having two booleans "export_backward" and "export_forward" in the
+    api instead of just an "export" one that would destroy the "imported
+    from" state. This change fixes the state of the "Overwrite" menu item,
+    so it stays visible until the file got either saved or exported to
+    another filename.
+
+    This also reverts commit a4beeecf2b6f42659bdffac8b3795abfb18eee34, so
+    Ctrl-S is always invokable even if invisible.
+    (cherry picked from commit 39c18e9a48ccc37710d4b0074d520be70f9a95a3)
+
+ app/actions/file-actions.c     |    2 +-
+ app/actions/file-commands.c    |   13 ++++++++++---
+ app/dialogs/file-save-dialog.c |    8 ++++++--
+ app/dialogs/file-save-dialog.h |    3 ++-
+ app/file/file-save.c           |   17 ++++++++++++++---
+ app/file/file-save.h           |    3 ++-
+ app/widgets/gimpdnd-xds.c      |    3 ++-
+ 7 files changed, 37 insertions(+), 12 deletions(-)
+
+commit 187e20f3673ffd1d437c9aeb1232c4764760616f
+Author: Massimo Valentini <mvalentini@src.gnome.org>
+Date:   Fri May 18 17:20:38 2012 +0200
+
+    Bug 675981: Export as JPEG "save defaults" "load defaults" doesn't
+    work
+
+    oversight
+
+ plug-ins/file-jpeg/jpeg-save.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 4fdb1ec90a9c72e17356d1123f3188d6ff9e9b4d
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 17 23:31:48 2012 +0200
+
+    Bug 676279 - Ctrl or Shift causes selection tools to reset...
+
+    Make sure to not override the logic that separates the tool option's
+    selection mode from the one determined by modifiers, by blindly
+    calling gimp_modifiers_to_channel_op(state) on a zero state.
+    (cherry picked from commit 2d882dd64f3d14511489b5c629ff90e76d393be7)
+
+ app/tools/gimpselectiontool.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit c8a3a4f19e402f8166e031cf6de8d1efbd7b974d
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:   Thu May 17 17:44:43 2012 +0200
+
+    Fix license - it was still GPL2
+
+ build/windows/installer/gpl+python.rtf |  212
+ ++++++++++++++++++++------------
+ 1 file changed, 134 insertions(+), 78 deletions(-)
+
+commit a8070954349642ab1977424d8c7fc2178508b33e
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:   Thu May 17 17:43:48 2012 +0200
+
+    Fix permissions
+
+ 0 files changed
+
+commit 088c05e77f72de89005b7aabaad8a6eefc48d14c
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:   Thu May 17 15:44:16 2012 +0200
+
+    Fix language file (XP SP3 required instead of SP2)
+
+ build/windows/installer/en.setup.isl |    2 +-
+ build/windows/installer/sl.setup.isl |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit f6ae4c83ae9c67a2b3b0001456e5ba1168d0953e
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:   Thu May 17 15:43:28 2012 +0200
+
+    Skip asking for install directory when upgrading
+
+ build/windows/installer/gimp3264.iss |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 2a88a5ce02a7de72fe4013e4671577bc7883a49f
+Author: Christian Kirbach <Christian.Kirbach@googlemail.com>
+Date:   Thu May 17 14:44:09 2012 +0200
+
+    Updated German translation
+
+ po/de.po | 1688
+ +++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 894 insertions(+), 794 deletions(-)
+
+commit 0b14297f0a70493b379820a1f405e4c2d57aa1d4
+Author: Christian Kirbach <Christian.Kirbach@googlemail.com>
+Date:   Thu May 17 14:36:27 2012 +0200
+
+    Updated German translation
+
+ po-plug-ins/de.po | 2728
+ +++++++++++++++++++++++++++--------------------------
+ 1 file changed, 1414 insertions(+), 1314 deletions(-)
+
+commit 741daccf0238ccbc022b4e047698be0480e0a5be
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 17 01:14:22 2012 +0200
+
+    Revert "app (gimprc): Delete dead assignment"
+
+    This reverts commit d6d2a0bbd15f25d820631b4db6236f6a42b4b49c
+    and allows more than one unknown gimprc token again.
+
+    Fixes Bug 674096 - Strange behavior with gimprc
+    (cherry picked from commit 8851ec0b6e463c070f513f3f44f40323da25934f)
+
+ app/config/gimprc-unknown.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit be2feeb11175732cb59c2a5acbcc027145310243
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 17 00:07:46 2012 +0200
+
+    Bug 676164 - Text Tool selects hidden layers
+
+    Also fix the other layer picking functions to not pick invisible
+    layers.
+    (cherry picked from commit b50e924df0c5cdc86018e72c67584fe4a61dbf6d)
+
+ app/core/gimpimage-pick-layer.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit 82533e773427d7a435a1aff09b03a7b444657aee
+Author: Daniel Sabo <DanielSabo@gmail.com>
+Date:   Wed May 16 22:58:18 2012 +0200
+
+    Bug 675875 - Gimp Quartz doesn't respond to file open events from
+    finder
+
+    Add Carbon based apple events responder for kAEOpenDocuments
+    (cherry picked from commit 7d62e8370aba7bea9e998bfa68cc03e48120faa4)
+
+ app/gui/gui-unique.c |  131
+ ++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 127 insertions(+), 4 deletions(-)
+
+commit 942860ae32561163366bcd3fec201a00c82496d2
+Author: Wouter Bolsterlee <wbolster@gnome.org>
+Date:   Wed May 16 00:39:22 2012 +0200
+
+    Updated Dutch translation (manual backport from master)
+
+ po/nl.po | 6857
+ +++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 3621 insertions(+), 3236 deletions(-)
+
+commit 29dbea042e479269d5bb3fa061e2f278d0f8558c
+Author: Daniel Nylander <po@danielnylander.se>
+Date:   Wed May 16 00:28:03 2012 +0200
+
+    Updated Swedish translation
+
+ po-tips/sv.po |  161
+ ++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 90 insertions(+), 71 deletions(-)
+
+commit 8dc87ae32fecb17aa41d47a05d6770a4666c7c9f
+Author: Daniel Nylander <po@danielnylander.se>
+Date:   Wed May 16 00:26:50 2012 +0200
+
+    Updated Swedish translation
+
+ po-plug-ins/sv.po | 2968
+ ++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 1805 insertions(+), 1163 deletions(-)
+
+commit 780e88c353732e1c7397650626c54dc3f323fd79
+Author: Daniel Nylander <po@danielnylander.se>
+Date:   Wed May 16 00:22:41 2012 +0200
+
+    Updated Swedish translation
+
+ po/sv.po | 3682
+ ++++++++++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 2626 insertions(+), 1056 deletions(-)
+
+commit 0e5e5c912bcca87729edfbeafe8bd092f3cd51bb
+Author: Clayton Walker <blender3dartist@gmail.com>
+Date:   Tue May 15 23:37:57 2012 +0200
+
+    build: start infrastructure to build GIMP.app on OSX
+
+ build/osx/Info.plist  |   30 +
+ build/osx/gimp.bundle |  135 ++
+ build/osx/gimp.svg    | 3297
+ +++++++++++++++++++++++++++++++++++++++++++++++++
+ build/osx/gtkrc       |    1 +
+ build/osx/launcher.sh |   60 +
+ 5 files changed, 3523 insertions(+)
+
+commit 8d6004e06305d246258b00ed0baf6ce66748b04d
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue May 15 19:46:47 2012 +0200
+
+    Bug 676107 - Picking logic doesn't take group visibility into account
+
+    gimp_layer_get_opacity_at(): use gimp_item_is_visible() not
+    get_visible() so we use the layer's effective visibility.
+    (cherry picked from commit 4d1173570a1191a55cfb32ce488b4c315db9f56e)
+
+ app/core/gimplayer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d137a44af3c8f852aa4cf46979a59b7a168867f2
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue May 15 10:00:24 2012 +0200
+
+    Updated italian translation.
+
+ po/it.po |  126
+ ++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 66 insertions(+), 60 deletions(-)
+
+commit d8f535cc3c6c23cb7bbc5e28b0c70187d11e61d7
+Author: Praveen Illa <mail2ipn@gmail.com>
+Date:   Tue May 15 11:38:39 2012 +0530
+
+    Updated Telugu Translation
+
+ po/te.po |  547
+ ++++++++++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 371 insertions(+), 176 deletions(-)
+
+commit 1e402a46f03d773d8e292033b18f15f7d4ab6fbd
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon May 14 01:44:41 2012 +0200
+
+    Bug 675994 - Opening image with a saved selection breaks histogram
+    updating
+
+    In fact, it broke much more than that because the way XCF loading
+    replaced the image's mask prevented the image's "mask-changed" signal
+    from ever being emitted. Add private API gimp_image_take_mask() which
+    properly sets the mask and use it for image construction and the XCF
+    selection loading hack.
+    (cherry picked from commit ab4c613a700daed56afbf06331f5c96a862b66b1)
+
+ app/core/gimpimage-private.h      |    3 +++
+ app/core/gimpimage.c              |   35
+ ++++++++++++++++++++++++++---------
+ app/widgets/gimphistogrameditor.c |    3 +++
+ app/xcf/xcf-load.c                |    9 +++------
+ 4 files changed, 35 insertions(+), 15 deletions(-)
+
+commit 601db438387f6d79aac0312103b28d54e72b87cd
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon May 14 00:07:52 2012 +0200
+
+    windows/installer: none of the files needs to be executable
+
+ build/windows/installer/installsplash.bmp                 |  Bin 770874
+ -> 770874 bytes
+ build/windows/installer/installsplash_small.bmp           |  Bin 537174
+ -> 537174 bytes
+ build/windows/installer/wilber.bmp                        |  Bin 4158 ->
+ 4158 bytes
+ build/windows/installer/windows-installer-intro-big.bmp   |  Bin 221814
+ -> 221814 bytes
+ build/windows/installer/windows-installer-intro-small.bmp |  Bin 154542
+ -> 154542 bytes
+ 5 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 70ca141159613d40d251a65f3ff7b591eba9e027
+Author: Jernej Simončič <jernej|s-cccp@eternallybored.org>
+Date:   Mon May 14 00:01:17 2012 +0200
+
+    Windows installer - initial import
+
+ build/windows/installer/32on64.isi                 |   60 +
+ build/windows/installer/32on64.list                |   48 +
+ build/windows/installer/MessageWithURL.isi         |  505 +++++++
+ build/windows/installer/associations.isi           |  318 +++++
+ build/windows/installer/directories.isi            |   36 +
+ build/windows/installer/en.setup.isl               |  108 ++
+ build/windows/installer/files.isi                  |   27 +
+ build/windows/installer/gimp3264.iss               | 1382
+ ++++++++++++++++++++
+ build/windows/installer/gpl+python.rtf             |  123 ++
+ build/windows/installer/installsplash.bmp          |  Bin 0 -> 770874
+ bytes
+ build/windows/installer/installsplash_small.bmp    |  Bin 0 -> 537174
+ bytes
+ build/windows/installer/rebootcontinue.isi         |  128 ++
+ build/windows/installer/setup.ini                  |   29 +
+ build/windows/installer/sl.setup.isl               |  100 ++
+ build/windows/installer/uninst.isi                 |  269 ++++
+ build/windows/installer/utils.isi                  |  139 ++
+ build/windows/installer/version.isi                |   28 +
+ build/windows/installer/wilber.bmp                 |  Bin 0 -> 4158 bytes
+ .../installer/windows-installer-intro-big.bmp      |  Bin 0 -> 221814
+ bytes
+ .../installer/windows-installer-intro-small.bmp    |  Bin 0 -> 154542
+ bytes
+ 20 files changed, 3300 insertions(+)
+
+commit 36bb8a625bdb561b8eb13ba12d3148416e11aa0e
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun May 13 20:19:40 2012 +0200
+
+    app: default to half the physical memory for the tile-cache-size
+    setting
+
+    Wanted to do this for ages but forgot...
+
+ app/config/gimpbaseconfig.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit ef9972da7a12fb4ed9bb48206da622ef128ce0b2
+Author: Jihui Choi <jihui.choi@gmail.com>
+Date:   Mon May 14 00:48:50 2012 +0900
+
+    Update Korean translation
+
+ po-libgimp/ko.po  | 1738 +++++++++++++++-----------
+ po-plug-ins/ko.po | 3594
+ ++++++++++++++++++++++++++++-------------------------
+ 2 files changed, 2860 insertions(+), 2472 deletions(-)
+
+commit 5a241911b59c87694ff07e0f5bb6d67df69fc3d6
+Author: sebul <sebuls@gmail.com>
+Date:   Mon May 14 00:45:29 2012 +0900
+
+    Update Korean translation
+
+ po/ko.po | 7301
+ ++++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 3340 insertions(+), 3961 deletions(-)
+
+commit a23a5692cc46bce13a175df268ae1f5a7aac2919
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat May 12 20:56:30 2012 +0200
+
+    libgimpbase: implement relocation for OSX
+
+    Using [[NSBundle mainBundle] resourcePath]
+    (cherry picked from commit db1dda6e3fd9e2a19243f7b0d1de37d04b5ddac9)
+
+ libgimpbase/gimpenv.c |   58
+ +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+
+commit d8ce061715a362971ab81f0300d150d4af327a0b
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat May 12 16:48:05 2012 +0200
+
+    libgimpbase: it's "GIMP" not "Gimp"
+    (cherry picked from commit 4805f875ef6b980c1dba2f2bbd724080def1b61e)
+
+ libgimpbase/gimpenv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit e87b912d706a4ac0ccb162d080efab13ff6ba3d8
+Author: Rudolfs Mazurs <rudolfs.mazurs@gmail.com>
+Date:   Sat May 12 16:24:38 2012 +0300
+
+    Updated Latvian translation.
+
+ po-libgimp/lv.po  |   74 +--
+ po-plug-ins/lv.po | 1239 +++++++++++++++++++++--------------
+ po/lv.po          | 1883
+ +++++++++++++++++++++++++++--------------------------
+ 3 files changed, 1736 insertions(+), 1460 deletions(-)
+
+commit 46127dc789762b5ac1b614f7399f5f610394be72
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat May 12 14:39:44 2012 +0200
+
+    Move gimpdir and thumbnails to proper places on OSX
+
+    gimpdir goes to ~/Library/Gimp/x.y
+    thumbnails go to ~/Library/Caches/org.freedesktop.thumbnails
+
+    The thumbnail location is not standardized yet, but is the only
+    location that makes sense. Also fix user install to search old
+    gimpdirs to migrate in both Library and the classic location.
+    Remove the obsolete CABON_CFLAGS from all makefiles.
+    (cherry picked from commit 9112d68488f44408774f571e7d8fb48e41402674)
+
+ app/Makefile.am                |    1 -
+ app/core/gimp-user-install.c   |   25 +++++++++++++++++++------
+ configure.ac                   |    4 ++++
+ libgimpbase/Makefile.am        |   25 ++++++++++++++++---------
+ libgimpbase/gimpenv.c          |   25 +++++++++++++++++++++++++
+ libgimpthumb/Makefile.am       |   11 +++++++++--
+ libgimpthumb/gimpthumb-utils.c |   34 ++++++++++++++++++++++++++++++----
+ 7 files changed, 103 insertions(+), 22 deletions(-)
+
+commit cb2de506971d8b059a472336cf2d12eb2a8ab226
+Author: Michael Muré <batolettre@gmail.com>
+Date:   Fri May 11 12:34:53 2012 +0900
+
+    cage tool: fix handle added in the wrong side of the cage
+
+    This happened when:
+    1) cage still open
+    2) clicking on the edge between the first and the last handle
+
+ app/tools/gimpcagetool.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit f8bcdcb9a58c832de2ac6bec8b1d27ceb68acb67
+Author: Michael Muré <batolettre@gmail.com>
+Date:   Fri May 11 12:02:58 2012 +0900
+
+    Bug 675825 - (cage) simply using cage transform tool makes gimp
+    to crash.
+
+    Just check if there is enough handles before closing
+
+ app/gegl/gimpcageconfig.c |    1 -
+ app/tools/gimpcagetool.c  |    2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+commit fa8a5a63ab42e8780bc3c379d50b2ac4e6a76463
+Author: Michael Henning <mikehenning@eclipse.net>
+Date:   Tue May 8 16:39:38 2012 -0400
+
+    Bug 568098 - Healing Tool doesn't work at the layer borders.
+
+    Fixes the row stride for the brush mask.
+
+ app/paint/gimpheal.c |   59
+ +++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 20 deletions(-)
+
+commit e5ef5445590a276ee6113fc78b5466e67a42c023
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 10 19:42:05 2012 +0200
+
+    app: make the popup previews transient to their parent's toplevel
+
+    so they don't appear below the dock. Seems to happen on OSX only,
+    but is the right things to do on all platforms.
+    (cherry picked from commit ffb559547c83733310fcfc006fb5a982253b62ac)
+
+ app/widgets/gimpview-popup.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 97eaae443076369860a9b4f4137e898b61acdae4
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Thu May 10 19:24:42 2012 +0200
+
+    Updated Polish translation
+
+ po/pl.po |   53 +++++++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
+
+commit 136cea976f2e8bc00c08a00decd4b4c2e942a721
+Author: Daniel Mustieles <daniel.mustieles@gmail.com>
+Date:   Thu May 10 18:06:14 2012 +0200
+
+    Updated Spanish translation
+
+ po/es.po |  288
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 144 insertions(+), 144 deletions(-)
+
+commit 097ed17822ce0da71e7c56ba3294a8d0b4deb370
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Thu May 10 10:16:05 2012 +0200
+
+    Fix Arabic translation of tags-locale
+
+ po/ar.po |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d661bc34031a7843faa36d6701843026c5acc5be
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:   Thu May 10 09:36:43 2012 +0200
+
+    Updated Slovenian translation
+
+ po/sl.po |  187
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 95 insertions(+), 92 deletions(-)
+
+commit c3d43d8378763216fde4ddb488b9c719b8f03bd9
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:   Thu May 10 09:36:07 2012 +0200
+
+    Updated Slovenian translation
+
+ po-plug-ins/sl.po |  385
+ ++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 250 insertions(+), 135 deletions(-)
+
+commit 062d38d141907d095b92e7a1adc05cd1bc870be2
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 10 01:10:27 2012 +0200
+
+    Bug 675399 - Mention that the image was at least exported in the
+    close...
+
+    If the image was exported, mention it in the close warning dialog.
+    (cherry picked from commit 57d4680ab3ecb748dfbdd9b9a0995da2f4ef01fa)
+
+ app/display/gimpdisplayshell-close.c |   89
+ ++++++++++++++++++++++------------
+ 1 file changed, 59 insertions(+), 30 deletions(-)
+
+commit c4d14752a70cbcc18e57241748c7b3c3da8a250c
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed May 9 00:20:06 2012 +0200
+
+    Bug 630173 - a dockable open from an existing one appears under it
+
+    Show the new dock with gtk_widget_show_now(), which waits until it's
+    mapped, then call gdk_window_raise() explicitly. How sick...
+    (cherry picked from commit bd3f892f7973a13e370b77898fe98b4c8be5e72c)
+
+ app/widgets/gimpdialogfactory.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+commit 8af18fb9d56d1e6b7f3dad164c52e7a36e216925
+Author: Marek Černocký <marek@manet.cz>
+Date:   Tue May 8 21:46:31 2012 +0200
+
+    Updated Czech translation
+
+ po-plug-ins/cs.po |  827
+ +++++++++++++++++++++++++++++------------------------
+ 1 file changed, 459 insertions(+), 368 deletions(-)
+
+commit 7f37903b11e2f4db92814d152484747bf35a582f
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue May 8 21:32:09 2012 +0200
+
+    app: make GimpContainerPopup transient to its parent toplevel
+
+    so it doesn't appear under the dock it's invoked from. Only
+    needed on OSX, but the right thing to do on all platforms.
+    (cherry picked from commit 3545140ad870139c66e011e0c2939fd35ad7d883)
+
+ app/widgets/gimpcontainerpopup.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 562862a486f0f26a8a812e6c19a845eadfb525f0
+Author: Jordi Mallach <jordi@debian.org>
+Date:   Tue May 8 20:27:51 2012 +0200
+
+    Fix Catalan translation for “tags-locale”.
+
+ po/ca.po |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8ec5e865141925a482d5e187090b97d243aae11c
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue May 8 08:08:05 2012 +0200
+
+    AUTHORS: commit generated file
+
+ AUTHORS |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit a7c57d016f3534877b6563f012957078cf426229
+Author: Sebul <sebuls@gmail.com>
+Date:   Mon May 7 01:41:41 2012 +0900
+
+    Updated Korean translation
+
+ po/ko.po |11824
+ ++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 5626 insertions(+), 6198 deletions(-)
+
+commit 7ef8a96465eea86944df381c88a6c845de5aea2e
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat May 5 21:42:04 2012 +0200
+
+    app: don't call gimp_image_flush() when cancelling GimpImageMapTool
+
+    because the tool might be cancelled from some other place opening an
+    undo group, so flushing the image would update menus and whatnot while
+    that other operation is running, with unforeseeable side
+    effects. Also, flusing the image here is not needed because we didn't
+    change anything in the image. Instead, make sure manually that the
+    display is updated correctly after restoring GimpImageMapTool's
+    temporary editing.
+    (cherry picked from commit e7e8c9ef0a7e94413151a4eaffc3824b4ec7467c)
+
+ app/tools/gimpimagemaptool.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+commit 32a0c6355ea034db485424ff79605eb2bb903bce
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat May 5 18:58:04 2012 +0200
+
+    app: fix UI tag matching to always work case-insensitively
+
+    Add gimp_tag_has_prefix() and use it in GimpTagEntry when completing
+    patrially entered tag names, and fix two uses of strcmp() in
+    GimpTagPopup to use gimp_tag_compare_with_string().
+    (cherry picked from commit 30b4fe85105d80bfc67901711a6c54a0561d4a5d)
+
+ app/core/gimptag.c         |   38 +++++++++++++++++++++++++++++++++++++-
+ app/core/gimptag.h         |    2 ++
+ app/widgets/gimptagentry.c |   18 ++++++++----------
+ app/widgets/gimptagpopup.c |   23 +++++++++--------------
+ 4 files changed, 56 insertions(+), 25 deletions(-)
+
+commit 1421545bd62fe6f46a65bb555a64f82061ea6f0b
+Author: Hleb Valoshka <375gnu@gmail.com>
+Date:   Sat May 5 15:07:02 2012 +0300
+
+    Updated Belarusian translation.
+
+ po-plug-ins/be.po |  182 +-
+ po/be.po          | 5938
+ +++++++++++++++++++++++++----------------------------
+ 2 files changed, 2932 insertions(+), 3188 deletions(-)
+
+commit df1e7763faf40aeefb9e063c00395cd13e80bba6
+Author: Sebastian Pipping <sebastian@pipping.org>
+Date:   Fri May 4 23:10:30 2012 +0200
+
+    Fix configure option --with[out]-bzip2
+
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 4c66e50763dac2eebfd9b6fc4dd579a8f5df422c
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat May 5 00:17:51 2012 +0200
+
+    app: make sure Ctrl+E doesn't invoke "Export to" when it's invisible
+
+ app/actions/file-actions.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 862865e37912f03653de481bc8c4edbb9084c95c
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Fri May 4 18:19:29 2012 +0200
+
+    Updated Arabic translation
+
+ po/ar.po |   40 +++++++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 23 deletions(-)
+
+commit f5b184d0d7c63e9367f88aa596535b9432c14409
+Author: Marek Černocký <marek@manet.cz>
+Date:   Fri May 4 15:23:12 2012 +0200
+
+    Updated Czech translation
+
+ po/cs.po | 1158
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 584 insertions(+), 574 deletions(-)
+
+commit 4be1d3471bc41618707cd0e3dc76f303c38f5a8b
+Author: Hleb Valoshka <375gnu@gmail.com>
+Date:   Fri May 4 12:07:20 2012 +0300
+
+    Updated Belarusian translation.
+
+ po/be.po | 6159
+ +++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 3255 insertions(+), 2904 deletions(-)
+
+commit 547e9ee7137fa24851b4cba0ed1046490d32349e
+Author: Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>
+Date:   Thu May 3 19:03:36 2012 +0900
+
+    [l10n] Update Japanese translation
+
+ po-libgimp/ja.po |  226
+ +++++++++++++++++++++++++++---------------------------
+ 1 file changed, 115 insertions(+), 111 deletions(-)
+
+commit 5b59af7c2ec17c1eed8fc71a36244f7106815f25
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 3 00:35:03 2012 +0200
+
+    libgimp: don't recurse infinitely in gimp_parasite_detach()
+
+ libgimp/gimp.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 569c1221379b46f6391531bac6bd36f7decade08
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 3 00:25:08 2012 +0200
+
+    libgimp: fix docs of deprecated functions
+
+ libgimp/gimpdrawable.c |    2 +-
+ libgimp/gimpimage.c    |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit f32706a0d1f587b06cff01a9e32ce8b6c895faee
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu May 3 00:24:19 2012 +0200
+
+    libgimp: don't recurse infinitely in deprecated gimpvectors functions
+
+ libgimp/gimpvectors.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit f7cffc0d6c94599415cf6a2097996ee96e9f632b
+Author: Mikael Magnusson <mikachu@src.gnome.org>
+Date:   Wed May 2 17:02:29 2012 +0200
+
+    authors.xml: Add Bernhard Stockmann
+
+ authors.xml |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 7757edd7021e991781a7ea3bea1db094be825eeb
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed May 2 16:49:06 2012 +0200
+
+    configure: post-release version bump to 2.8.1
+
+ configure.ac |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
 commit 5e9f1dd0ea921ee2db4ae1788495ccea676b1ad8
 Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
 Date:   Wed May 2 18:17:00 2012 +0400

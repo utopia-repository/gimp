@@ -15,7 +15,6 @@ include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/class/gnome.mk
 #include /usr/share/gnome-pkg-tools/1/rules/check-dist.mk
 
-LDFLAGS = -Wl,--as-needed
 # explicitly set PYTHON to be the versioned python binary, since dh_python2
 # will just end up depending on the pythonX.X package, and we don't want a
 # version mismatch between the installed python binary and the private python

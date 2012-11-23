@@ -1,3 +1,10 @@
+gimp (2.8.2-2) unstable; urgency=high
+
+  * xwd-corruption.patch:
+    - Fix memory corruption bug when reading XWD files (Closes: #693977)
+
+ -- Ari Pollak <ari@debian.org>  Fri, 23 Nov 2012 14:33:20 -0500
+
 gimp (2.8.2-1) unstable; urgency=high
 
   * Imported Upstream version 2.8.2

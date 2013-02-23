@@ -526,6 +526,8 @@ libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = ./libgimp-$(GIMP_API_VERSION).la
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
+@PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @OS_WIN32_TRUE@gimp_def = gimp.def
 @OS_WIN32_TRUE@gimpui_def = gimpui.def
 @OS_WIN32_TRUE@libgimp_export_symbols = -export-symbols gimp.def
@@ -539,7 +541,8 @@ AM_CPPFLAGS = \
 INCLUDES = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
-	-I$(includedir)
+	-I$(includedir)	\
+	$(xobjective_c)
 
 lib_LTLIBRARIES = libgimp-2.0.la libgimpui-2.0.la
 PDB_WRAPPERS_C = \
@@ -833,7 +836,8 @@ gimpinclude_HEADERS = \
 libgimp_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
-	$(libgimp_export_symbols)
+	$(libgimp_export_symbols)		\
+	$(framework_cocoa)
 
 libgimp_2_0_la_LIBADD = \
 	$(libgimpconfig)	\
@@ -852,7 +856,8 @@ libgimp_2_0_la_DEPENDENCIES = \
 libgimpui_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
-	$(libgimpui_export_symbols)
+	$(libgimpui_export_symbols)		\
+	$(framework_cocoa)
 
 libgimpui_2_0_la_LIBADD = \
 	$(libgimp)		\

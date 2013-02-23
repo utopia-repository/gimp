@@ -619,7 +619,8 @@ BUILT_SOURCES = $(libapp_generated_sources)
 CLEANFILES = $(libapp_generated_sources)
 libapp_a_SOURCES = $(libapp_sources) $(libapp_generated_sources)
 gimp_2_8_SOURCES = $(libapp_sources) main.c
-@OS_WIN32_TRUE@win32_ldflags = -mwindows $(WIN32_LARGE_ADDRESS_AWARE)
+@PLATFORM_OSX_TRUE@framework_carbon = -framework Carbon
+@OS_WIN32_TRUE@win32_ldflags = -mwindows -Wl,--tsaware $(WIN32_LARGE_ADDRESS_AWARE)
 @USE_BINRELOC_TRUE@munix = -Wl,-rpath '-Wl,$$ORIGIN/../lib'
 @HAVE_WINDRES_TRUE@GIMPAPPRC = $(top_srcdir)/build/windows/gimp.rc
 @HAVE_WINDRES_TRUE@GIMPRC = gimp-$(GIMP_APP_VERSION).rc.o
@@ -705,7 +706,11 @@ gimpconsoleldadd = \
 	$(INTLLIBS)			\
 	$(RT_LIBS)
 
-gimp_2_8_LDFLAGS = $(AM_LDFLAGS) $(win32_ldflags)
+gimp_2_8_LDFLAGS = \
+	$(AM_LDFLAGS)		\
+	$(win32_ldflags)	\
+	$(framework_carbon)
+
 gimp_2_8_LDADD = \
 	gui/libappgui.a		\
 	menus/libappmenus.a	\

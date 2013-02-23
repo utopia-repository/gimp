@@ -47,7 +47,7 @@
                     <a class="link" href="GimpSizeEntry.html#GimpSizeEntryField" title="GimpSizeEntryField">GimpSizeEntryField</a>;
 enum                <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a>;
 <span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()">gimp_size_entry_new</a>                 (<em class="parameter"><code><span class="type">gint</span> number_of_fields</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
                                                          <em class="parameter"><code>const <span class="type">gchar</span> *unit_format</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> menu_show_pixels</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> menu_show_percent</code></em>,
@@ -93,9 +93,9 @@ enum                <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdate
 <span class="returnvalue">void</span>                <a class="link" href="GimpSizeEntry.html#gimp-size-entry-set-refval" title="gimp_size_entry_set_refval ()">gimp_size_entry_set_refval</a>          (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> field</code></em>,
                                                          <em class="parameter"><code><span class="type">gdouble</span> refval</code></em>);
-<a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            <a class="link" href="GimpSizeEntry.html#gimp-size-entry-get-unit" title="gimp_size_entry_get_unit ()">gimp_size_entry_get_unit</a>            (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>);
+<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            <a class="link" href="GimpSizeEntry.html#gimp-size-entry-get-unit" title="gimp_size_entry_get_unit ()">gimp_size_entry_get_unit</a>            (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpSizeEntry.html#gimp-size-entry-set-unit" title="gimp_size_entry_set_unit ()">gimp_size_entry_set_unit</a>            (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpSizeEntry.html#gimp-size-entry-set-pixel-digits" title="gimp_size_entry_set_pixel_digits ()">gimp_size_entry_set_pixel_digits</a>    (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> digits</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="GimpSizeEntry.html#gimp-size-entry-show-unit-menu" title="gimp_size_entry_show_unit_menu ()">gimp_size_entry_show_unit_menu</a>      (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>,
@@ -146,7 +146,7 @@ each field automatic mappings are performed between the field's
 </p>
 <p>
 There is a <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a> right of the entry fields which lets
-you specify the <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> of the displayed values.
+you specify the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> of the displayed values.
 </p>
 <p>
 For each field, there can be one or two <span class="type">GtkSpinButton</span>'s to enter
@@ -159,7 +159,7 @@ selecting GIMP_UNIT_PIXEL.
 The "reference value" is either of GIMP_UNIT_PIXEL or dpi,
 depending on which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> you specify in
 <a class="link" href="GimpSizeEntry.html#gimp-size-entry-new" title="gimp_size_entry_new ()"><code class="function">gimp_size_entry_new()</code></a>.  The "value" is either the size in pixels
-mapped to the size in a real-world-unit (see <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>) or the dpi
+mapped to the size in a real-world-unit (see <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>) or the dpi
 value mapped to pixels per real-world-unit.
 </p>
 </div>
@@ -215,7 +215,7 @@ Update policies for <a class="link" href="GimpSizeEntry.html" title="GimpSizeEnt
 <div class="refsect2">
 <a name="gimp-size-entry-new"></a><h3>gimp_size_entry_new ()</h3>
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_size_entry_new                 (<em class="parameter"><code><span class="type">gint</span> number_of_fields</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
                                                          <em class="parameter"><code>const <span class="type">gchar</span> *unit_format</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> menu_show_pixels</code></em>,
                                                          <em class="parameter"><code><span class="type">gboolean</span> menu_show_percent</code></em>,
@@ -397,7 +397,7 @@ Sets the resolution (in dpi) for field # <em class="parameter"><code>field</code
 </p>
 <p>
 The <em class="parameter"><code>resolution</code></em> passed will be clamped to fit in
-[<a href="../libgimpbase/libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS"><span class="type">GIMP_MIN_RESOLUTION</span></a>..<a href="../libgimpbase/libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS"><span class="type">GIMP_MAX_RESOLUTION</span></a>].
+[<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS"><span class="type">GIMP_MIN_RESOLUTION</span></a>..<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimplimits.html#GIMP-MAX-RESOLUTION:CAPS"><span class="type">GIMP_MAX_RESOLUTION</span></a>].
 </p>
 <p>
 This function does nothing if the <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> specified in
@@ -524,7 +524,7 @@ Returns the value of field # <em class="parameter"><code>field</code></em> of th
 </p>
 <p>
 The <em class="parameter"><code>value</code></em> returned is a distance or resolution
-in the <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
+in the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
 <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a>.
 </p>
 <p>
@@ -561,7 +561,7 @@ Sets the value for field # <em class="parameter"><code>field</code></em> of the 
 </p>
 <p>
 The <em class="parameter"><code>value</code></em> passed is treated to be a distance or resolution
-in the <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
+in the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
 <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a>.
 </p>
 <p>
@@ -726,9 +726,9 @@ depending on which <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdateP
 <hr>
 <div class="refsect2">
 <a name="gimp-size-entry-get-unit"></a><h3>gimp_size_entry_get_unit ()</h3>
-<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            gimp_size_entry_get_unit            (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>);</pre>
+<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="returnvalue">GimpUnit</span></a>            gimp_size_entry_get_unit            (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>);</pre>
 <p>
-Returns the <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
+Returns the <a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> the user has selected in the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
 <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -749,7 +749,7 @@ Returns the <a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span cl
 <div class="refsect2">
 <a name="gimp-size-entry-set-unit"></a><h3>gimp_size_entry_set_unit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gimp_size_entry_set_unit            (<em class="parameter"><code><a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> *gse</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>);</pre>
 <p>
 Sets the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s unit. The reference value for all fields will
 stay the same but the value in units or pixels per unit will change
@@ -959,7 +959,7 @@ can use this function to get a pointer to the spinbuttons.
 </div>
 <div class="refsect1">
 <a name="GimpSizeEntry.see-also"></a><h2>See Also</h2>
-<a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>, <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a>, <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new" title="gimp_coordinates_new ()"><code class="function">gimp_coordinates_new()</code></a>
+<a href="/local/head/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>, <a class="link" href="GimpUnitComboBox.html" title="GimpUnitComboBox"><span class="type">GimpUnitComboBox</span></a>, <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new" title="gimp_coordinates_new ()"><code class="function">gimp_coordinates_new()</code></a>
 </div>
 </div>
 <div class="footer">

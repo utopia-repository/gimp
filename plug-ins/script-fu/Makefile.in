@@ -492,6 +492,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@PLATFORM_OSX_TRUE@xobjective_c = "-xobjective-c"
+@PLATFORM_OSX_TRUE@framework_cocoa = -framework Cocoa
 @OS_WIN32_TRUE@mwindows = -mwindows
 @OS_WIN32_TRUE@WINSOCK_LIBS = -lws2_32
 @OS_WIN32_FALSE@libm = -lm
@@ -507,14 +509,20 @@ libftx = ftx/libftx.a
 @HAVE_WINDRES_TRUE@GIMPPLUGINRC = $(top_srcdir)/build/windows/gimp-plug-ins.rc
 @HAVE_WINDRES_TRUE@script_fu_RC = script-fu.rc.o
 AM_CFLAGS = \
-	-DSTANDALONE=0     \
-	-DUSE_INTERFACE=1  \
-	-DUSE_STRLWR=0     \
-	-I$(top_srcdir)    \
-	$(GTK_CFLAGS)      \
-	-I$(includedir)
+	-DSTANDALONE=0		\
+	-DUSE_INTERFACE=1	\
+	-DUSE_STRLWR=0
 
-AM_LDFLAGS = $(mwindows)
+INCLUDES = \
+	-I$(top_srcdir)	\
+	$(GTK_CFLAGS)	\
+	-I$(includedir)	\
+	$(xobjective_c)
+
+AM_LDFLAGS = \
+	$(mwindows)	\
+	$(framework_cocoa)
+
 SUBDIRS = tinyscheme ftx scripts
 script_fu_SOURCES = \
 	script-fu-types.h		\

@@ -8,11 +8,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [8])
-m4_define([gimp_micro_version], [2])
+m4_define([gimp_micro_version], [4])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [2])
+m4_define([gimp_interface_age], [4])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -1024,7 +1024,7 @@ AC_SUBST(GIMP_COMMAND)
 
 # The list of MIME types that are supported by plug-ins that are compiled
 # unconditionally:
-MIME_TYPES="application/postscript;application/pdf;image/bmp;image/g3fax;image/gif;image/x-fits;image/pcx;image/x-portable-anymap;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;image/x-psd;image/x-sgi;image/x-tga;image/x-xbitmap;image/x-xwindowdump;image/x-xcf;image/x-compressed-xcf;image/x-gimp-gbr;image/x-gimp-pat;image/x-gimp-gih"
+MIME_TYPES="application/postscript;application/pdf;image/bmp;image/g3fax;image/gif;image/x-fits;image/x-pcx;image/x-portable-anymap;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;image/x-psd;image/x-sgi;image/x-tga;image/x-xbitmap;image/x-xwindowdump;image/x-xcf;image/x-compressed-xcf;image/x-gimp-gbr;image/x-gimp-pat;image/x-gimp-gih"
 
 
 ###################

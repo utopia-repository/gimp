@@ -46,14 +46,14 @@
 <pre class="synopsis">                    <a class="link" href="GimpZoomPreview.html#GimpZoomPreview-struct" title="GimpZoomPreview">GimpZoomPreview</a>;
 <span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-new" title="gimp_zoom_preview_new ()">gimp_zoom_preview_new</a>               (<em class="parameter"><code><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> *drawable</code></em>);
 <span class="returnvalue">GtkWidget</span> *         <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-new-with-model" title="gimp_zoom_preview_new_with_model ()">gimp_zoom_preview_new_with_model</a>    (<em class="parameter"><code><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> *drawable</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> *model</code></em>);
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> *model</code></em>);
 <span class="returnvalue">guchar</span> *            <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-get-source" title="gimp_zoom_preview_get_source ()">gimp_zoom_preview_get_source</a>        (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
                                                          <em class="parameter"><code><span class="type">gint</span> *bpp</code></em>);
 <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="returnvalue">GimpDrawable</span></a> *      <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-get-drawable" title="gimp_zoom_preview_get_drawable ()">gimp_zoom_preview_get_drawable</a>      (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>);
 <span class="returnvalue">gdouble</span>             <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-get-factor" title="gimp_zoom_preview_get_factor ()">gimp_zoom_preview_get_factor</a>        (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>);
-<a href="../libgimpwidgets/GimpZoomModel.html"><span class="returnvalue">GimpZoomModel</span></a> *     <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-get-model" title="gimp_zoom_preview_get_model ()">gimp_zoom_preview_get_model</a>         (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>);
+<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="returnvalue">GimpZoomModel</span></a> *     <a class="link" href="GimpZoomPreview.html#gimp-zoom-preview-get-model" title="gimp_zoom_preview_get_model ()">gimp_zoom_preview_get_model</a>         (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -65,8 +65,8 @@
                +----GtkWidget
                      +----GtkContainer
                            +----GtkBox
-                                 +----<a href="../libgimpwidgets/GimpPreview.html">GimpPreview</a>
-                                       +----<a href="../libgimpwidgets/GimpScrolledPreview.html">GimpScrolledPreview</a>
+                                 +----<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpPreview.html">GimpPreview</a>
+                                       +----<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpScrolledPreview.html">GimpScrolledPreview</a>
                                              +----GimpZoomPreview
 </pre>
 </div>
@@ -80,7 +80,7 @@ GimpZoomPreview implements
 <a name="GimpZoomPreview.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpZoomPreview.html#GimpZoomPreview--drawable" title='The "drawable" property'>drawable</a>"                 <span class="type">gpointer</span>              : Read / Write / Construct Only
-  "<a class="link" href="GimpZoomPreview.html#GimpZoomPreview--model" title='The "model" property'>model</a>"                    <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a>*        : Read / Write / Construct Only
+  "<a class="link" href="GimpZoomPreview.html#GimpZoomPreview--model" title='The "model" property'>model</a>"                    <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a>*        : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1">
@@ -124,7 +124,7 @@ Creates a new <a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview
 <div class="refsect2">
 <a name="gimp-zoom-preview-new-with-model"></a><h3>gimp_zoom_preview_new_with_model ()</h3>
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_zoom_preview_new_with_model    (<em class="parameter"><code><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable"><span class="type">GimpDrawable</span></a> *drawable</code></em>,
-                                                         <em class="parameter"><code><a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> *model</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> *model</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> widget for <em class="parameter"><code>drawable</code></em> using the
 given <em class="parameter"><code>model</code></em>.
@@ -145,7 +145,7 @@ factor in sync.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>model</code></em> :</span></p></td>
-<td>a <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a>
+<td>a <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a>
 </td>
 </tr>
 <tr>
@@ -246,9 +246,9 @@ Returns the zoom factor the preview is currently using.
 <hr>
 <div class="refsect2">
 <a name="gimp-zoom-preview-get-model"></a><h3>gimp_zoom_preview_get_model ()</h3>
-<pre class="programlisting"><a href="../libgimpwidgets/GimpZoomModel.html"><span class="returnvalue">GimpZoomModel</span></a> *     gimp_zoom_preview_get_model         (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>);</pre>
+<pre class="programlisting"><a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="returnvalue">GimpZoomModel</span></a> *     gimp_zoom_preview_get_model         (<em class="parameter"><code><a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> *preview</code></em>);</pre>
 <p>
-Returns the <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> the preview is using.
+Returns the <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> the preview is using.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -259,7 +259,7 @@ Returns the <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">Gi
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a pointer to the <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> owned by the <em class="parameter"><code>preview</code></em>
+<td>a pointer to the <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> owned by the <em class="parameter"><code>preview</code></em>
 </td>
 </tr>
 </tbody>
@@ -280,9 +280,9 @@ The drawable the <a class="link" href="GimpZoomPreview.html" title="GimpZoomPrev
 <hr>
 <div class="refsect2">
 <a name="GimpZoomPreview--model"></a><h3>The <code class="literal">"model"</code> property</h3>
-<pre class="programlisting">  "model"                    <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a>*        : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "model"                    <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a>*        : Read / Write / Construct Only</pre>
 <p>
-The <a href="../libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> used by this <a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a>.
+The <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpZoomModel.html"><span class="type">GimpZoomModel</span></a> used by this <a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a>.
 </p>
 <p class="since">Since GIMP 2.4</p>
 </div>

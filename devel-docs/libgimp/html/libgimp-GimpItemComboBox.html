@@ -70,7 +70,7 @@ typedef             <a class="link" href="libgimp-GimpItemComboBox.html#GimpVect
                      +----GtkContainer
                            +----GtkBin
                                  +----GtkComboBox
-                                       +----<a href="../libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
+                                       +----<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
                                              +----GimpDrawableComboBox
 </pre>
 <pre class="synopsis">
@@ -81,7 +81,7 @@ typedef             <a class="link" href="libgimp-GimpItemComboBox.html#GimpVect
                      +----GtkContainer
                            +----GtkBin
                                  +----GtkComboBox
-                                       +----<a href="../libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
+                                       +----<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
                                              +----GimpChannelComboBox
 </pre>
 <pre class="synopsis">
@@ -92,7 +92,7 @@ typedef             <a class="link" href="libgimp-GimpItemComboBox.html#GimpVect
                      +----GtkContainer
                            +----GtkBin
                                  +----GtkComboBox
-                                       +----<a href="../libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
+                                       +----<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
                                              +----GimpLayerComboBox
 </pre>
 <pre class="synopsis">
@@ -103,7 +103,7 @@ typedef             <a class="link" href="libgimp-GimpItemComboBox.html#GimpVect
                      +----GtkContainer
                            +----GtkBin
                                  +----GtkComboBox
-                                       +----<a href="../libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
+                                       +----<a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html">GimpIntComboBox</a>
                                              +----GimpVectorsComboBox
 </pre>
 </div>
@@ -160,15 +160,15 @@ drawables, vectors).
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_drawable_combo_box_new         (<em class="parameter"><code><a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> constraint</code></em>,
                                                          <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>
-Creates a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+Creates a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 drawables. If a <em class="parameter"><code>constraint</code></em> function is specified, it is called for
 each drawable and only if the function returns <code class="literal">TRUE</code>, the drawable
 is added to the combobox.
 </p>
 <p>
-You should use <a href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-connect"><code class="function">gimp_int_combo_box_connect()</code></a> to initialize and connect
-the combo.  Use <a href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-set-active"><code class="function">gimp_int_combo_box_set_active()</code></a> to get the active
-drawable ID and <a href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"><code class="function">gimp_int_combo_box_get_active()</code></a> to retrieve the ID
+You should use <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-connect"><code class="function">gimp_int_combo_box_connect()</code></a> to initialize and connect
+the combo.  Use <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-set-active"><code class="function">gimp_int_combo_box_set_active()</code></a> to get the active
+drawable ID and <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"><code class="function">gimp_int_combo_box_get_active()</code></a> to retrieve the ID
 of the selected drawable.
 </p>
 <div class="variablelist"><table border="0">
@@ -186,7 +186,7 @@ of the selected drawable.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
+<td>a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -205,7 +205,7 @@ of the selected drawable.
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_channel_combo_box_new          (<em class="parameter"><code><a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> constraint</code></em>,
                                                          <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>
-Creates a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+Creates a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 channels. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()"><code class="function">gimp_drawable_combo_box_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
@@ -223,7 +223,7 @@ channels. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
+<td>a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -242,7 +242,7 @@ channels. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_layer_combo_box_new            (<em class="parameter"><code><a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> constraint</code></em>,
                                                          <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>
-Creates a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+Creates a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 layers. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()"><code class="function">gimp_drawable_combo_box_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
@@ -260,7 +260,7 @@ layers. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-co
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
+<td>a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -287,15 +287,15 @@ layers. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-co
 <pre class="programlisting"><span class="returnvalue">GtkWidget</span> *         gimp_vectors_combo_box_new          (<em class="parameter"><code><a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc"><span class="type">GimpVectorsConstraintFunc</span></a> constraint</code></em>,
                                                          <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>
-Creates a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
+Creates a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 vectors objects. If a <em class="parameter"><code>constraint</code></em> function is specified, it is called for
 each vectors object and only if the function returns <code class="literal">TRUE</code>, the vectors
 object is added to the combobox.
 </p>
 <p>
-You should use <a href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-connect"><code class="function">gimp_int_combo_box_connect()</code></a> to initialize and connect
-the combo.  Use <a href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-set-active"><code class="function">gimp_int_combo_box_set_active()</code></a> to set the active
-vectors ID and <a href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"><code class="function">gimp_int_combo_box_get_active()</code></a> to retrieve the ID
+You should use <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-connect"><code class="function">gimp_int_combo_box_connect()</code></a> to initialize and connect
+the combo.  Use <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-set-active"><code class="function">gimp_int_combo_box_set_active()</code></a> to set the active
+vectors ID and <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"><code class="function">gimp_int_combo_box_get_active()</code></a> to retrieve the ID
 of the selected vectors object.
 </p>
 <div class="variablelist"><table border="0">
@@ -313,7 +313,7 @@ of the selected vectors object.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a new <a href="../libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
+<td>a new <a href="/local/head/share/gtk-doc/html/libgimpwidgets/GimpIntComboBox.html"><span class="type">GimpIntComboBox</span></a>.</td>
 </tr>
 </tbody>
 </table></div>

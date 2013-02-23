@@ -61,6 +61,7 @@ static const gchar * const authors[] =
   "Kretynofil",
   "Christian Krippendorf",
   "Eric Lamarque",
+  "Simone Karin Lehmann",
   "Dave Lichterman",
   "Tor Lillqvist",
   "Mikael Magnusson",

@@ -35,11 +35,6 @@ clean::
 	rm -rf $(DEB_BUILDDIR)
 
 common-install-impl::
-	# Remove compiled python files from the distribution, they're compiled
-	# in postrm by dh_python2
-	# TODO: is this still needed?
-	find $(CURDIR)/debian/tmp -name "*.py[co]" -delete
-
 	# Remove all libtool .la files
 	find $(CURDIR)/debian/tmp/usr/lib -name "*.la" -delete
 
